@@ -65,7 +65,7 @@ plural_dictionary_entry *Pluralisation::make(wording W, wording *PW,
 
 @ When the dictionary fails us, we use lexical rewriting to construct plurals
 of phrases found only in the singular in the source. For instance, if the
-designer says that "A wicker basket is a kind of container" then NI will
+designer says that "A wicker basket is a kind of container" then Inform will
 need to recognise not only "wicker basket" but also "wicker baskets", a
 pair of words not found in the source text anywhere. So the following
 routine takes the text |(w1, w2)| and feeds a suitable plural into the

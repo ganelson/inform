@@ -48,7 +48,7 @@ where the five coins are mentioned in two clauses because they happen not
 to be adjacent in the list. The list-writer therefore carries out the activity
 "grouping together" to see if the user would like to tie certain objects
 together into a single entry: what this does is to set suitable |list_together|
-properties for the objects. NI has already given plural objects a similar
+properties for the objects. Inform has already given plural objects a similar
 |list_together| property. The net effect is that any entries in the list with
 a non-blank value of |list_together| must be adjacent to each other.
 
@@ -570,7 +570,7 @@ accordingly. We return $n$, the number of classes.
 The above algorithm will fail unless |ListEqual| is indeed reflexive, symmetric
 and transitive, which ultimately depends on the care with which |Identical|
 is implemented, which in turn hangs on the |parse_noun| properties compiled
-by NI. But this seems to be sound.
+by Inform. But this seems to be sound.
 
 =
 [ ListEqual o1 o2;

@@ -4,10 +4,16 @@ Here we provide some convenient semi-standardised problem messages,
 which also serve as examples of how to use the Level 2 problem message
 routines.
 
-@ The following internal errors should never occur, whatever the provocation:
-if they do, they are symptoms of incorrect code in NI.
+@ Internal errors are essentially failed assertions, and they should never
+occur, whatever the provocation: if they do, they are symptoms of a bug.
 
-The internal error "functions" used by the rest of NI are in fact macros,
+=
+int internal_error_thrown = FALSE;
+int Problems::Issue::internal_errors_have_occurred(void) {
+	return internal_error_thrown;
+}
+
+@ The internal error "functions" used by the rest of Inform are in fact macros,
 in order that they can supply the current filename and line number
 automatically to the actual internal error functions. The result is, for
 instance,
@@ -34,7 +40,7 @@ void Problems::Issue::internal_error_end(void) {
 
 @ And now for the functions which the above macros invoke. There are two
 versions: one which cites the current sentence, and another which doesn't,
-for use if either there is no current sentence (because NI wasn't traversing
+for use if either there is no current sentence (because Inform wasn't traversing
 the parse tree at the time) or if the parse tree is unsafe -- it's possible
 that the internal error occurred during parse tree construction, so we need
 to be cautious.
@@ -86,7 +92,7 @@ void Problems::Issue::internal_error_tu_fn_S(void *T, text_stream *p, char *file
 
 @h Nodal errors.
 Very many routines are designed to work only on nodes within the parse
-tree of a particular node type. If NI is in working order, then they will
+tree of a particular node type. If Inform is in working order, then they will
 never be called at any other nodes; but it seems best to check this. Any
 failure of such an invariant produces a form of internal error called a
 "nodal error".

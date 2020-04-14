@@ -1,6 +1,6 @@
 Output Template.
 
-This is the superstructure of the file of I6 code output by NI:
+This is the superstructure of the file of I6 code output by Inform:
 from ICL commands at the top down to the signing-off comments at the bottom.
 
 @h ICL Commands.
@@ -21,7 +21,7 @@ Both of the compiler and template layer, and of the story file to be produced.
 @h Global Variables.
 These are not the only global variables defined in the template layer:
 those needed locally only by single sections (and not used in definitions
-of phrases in the Standard Rules, or referred to by NI directly) are defined
+of phrases in the Standard Rules, or referred to by Inform directly) are defined
 within those sections -- they can be regarded as unimportant implementation
 details, subject to change at whim. The variables here, on the other hand,
 are more important to understand.
@@ -248,7 +248,7 @@ of language definitions, this needs to come first.
 Object Compass "compass" has concealed;
 
 @h Score and Rankings Table.
-The following command tells NI to compile constant definitions for |INITIAL_MAX_SCORE|
+The following command tells Inform to compile constant definitions for |INITIAL_MAX_SCORE|
 and/or |RANKING_TABLE|, in cases where there are scores and rankings. If there's
 no ranking table, |RANKING_TABLE| is left undefined, so that we can |#ifdef| this
 possibility later.
@@ -323,7 +323,7 @@ Routines to evaluate from equations.
 @h Actions.
 
 @h Phrases.
-The following innocent-looking commands tell NI to compile I6 definitions
+The following innocent-looking commands tell Inform to compile I6 definitions
 for all of the rules which are not I6-written primitives, and also for
 adjective definitions, so it results in a fairly enormous cataract of code.
 
@@ -404,7 +404,7 @@ needed.
 
 @h Deferred Propositions.
 Most conditions, such as "the score is 10", and descriptions, such as
-"open doors which are in lighted rooms", are translated by NI into
+"open doors which are in lighted rooms", are translated by Inform into
 propositions in a form of predicate calculus. Sometimes these can be
 compiled immediately to I6 code, but other times they involve complicated
 searches and have to be "deferred" into special routines which will

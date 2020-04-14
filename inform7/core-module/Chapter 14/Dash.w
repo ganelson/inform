@@ -1237,12 +1237,12 @@ even though Inform is really not set up for this. The point is to allow:
 
 >> let (name - nonexisting variable) be (K - name of kind of word value);
 
-where the "K" parameter would match [1] but not [2], [3] or [4] from:
+where the "K" parameter would match (1) but not (2), (3) or (4) from:
 
->> [1] let X be a number;
->> [2] let X be text;
->> [3] let X be 21;
->> [4] let X be \{1, 2, 3\};
+>> (1) let X be a number;
+>> (2) let X be text;
+>> (3) let X be 21;
+>> (4) let X be \{1, 2, 3\};
 
 What all of this has to do with being |UNKNOWN_NT| is that text parsed in the
 expectation of a value will usually not recognise something like "a list
@@ -1250,14 +1250,14 @@ of numbers", so that would be here as |UNKNOWN_NT|. We take the otherwise
 unheard-of measure of reparsing the text, but we only impose the result
 if the match can definitely be made successfully.
 
-We have to be very careful to take action only on [5] and not [6]:
+We have to be very careful to take action only on (5) and not (6):
 
->> [5] let L be a list of scenes;
->> [6] let L be the list of scenes;
+>> (5) let L be a list of scenes;
+>> (6) let L be the list of scenes;
 
-[5] creates L as an empty list, whereas [6] creates it as the list made up
-of all scenes. We can tell these apart since [6] will have a valid phrase
-in |ith_token|, an invocation of "the list of K", whereas [5] won't.
+(5) creates L as an empty list, whereas (6) creates it as the list made up
+of all scenes. We can tell these apart since (6) will have a valid phrase
+in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 
 @<Cautiously reparse this as a name of a kind of value@> =
 	outcome = NEVER_MATCH;
@@ -1490,10 +1490,10 @@ has similar type-checking needs.
 
 @ There are actually two definitions like this in the Standard Rules:
 
->> [1] To change (o - object) to (w - value): ...
->> [2] To change (o - object) to (p - property): ...
+>> (1) To change (o - object) to (w - value): ...
+>> (2) To change (o - object) to (p - property): ...
 
-Here's the code for [1], the less obvious case. This is needed for something like
+Here's the code for (1), the less obvious case. This is needed for something like
 
 >> change the canvas to blue;
 
@@ -1511,7 +1511,7 @@ to the colour property of the canvas.)
 		else make_check = TRUE;
 	}
 
-@ And here's the simpler case, [2]. A small quirk here is that it will also pick
+@ And here's the simpler case, (2). A small quirk here is that it will also pick
 up "change the Atrium to spiffy" in the following:
 
 >> Atrium is a room. The Atrium can be spiffy, cool or lame.
@@ -1670,15 +1670,15 @@ the scope for any vaguely described properties within the text supplied
 as that property (if it is indeed text). We have to mark any such
 property, and any such say. For instance, suppose we are typechecking
 
->> [1] "Oh, look: [initial appearance of the escritoire]"
+>> (1) "Oh, look: [initial appearance of the escritoire]"
 
 and the initial appearance in question is:
 
->> [2] "A small, portable writing desk holding up to [carrying capacity] letters."
+>> (2) "A small, portable writing desk holding up to [carrying capacity] letters."
 
-Printing text [2], it's important for the |self| object to be the
+Printing text (2), it's important for the |self| object to be the
 escritoire, which might not be the case otherwise; so during the printing
-of [1], we have to change |self| temporarily and restore it afterwards.
+of (1), we have to change |self| temporarily and restore it afterwards.
 
 @<Step (4I.g) Worry about self in say property of@> =
 	LOG_DASH("(4I.g)");

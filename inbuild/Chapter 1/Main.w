@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 	SyntaxModule::start();
 	HTMLModule::start();
 	ArchModule::start();
-	InbuildModule::start();
+	SupervisorModule::start();
 
 @ Targets can arise in three ways:
 (1) They can be specified at the command line, either as bare names of files
@@ -100,7 +100,7 @@ that we want to start work now.
 		@<Carry out the required task on the copy C@>;
 
 @ The list of possible tasks is as follows; they basically all correspond to
-utility functions in the |inbuild| module, which we call.
+utility functions in the |supervisor| module, which we call.
 
 @e INSPECT_TTASK from 1
 @e GRAPH_TTASK
@@ -139,7 +139,7 @@ utility functions in the |inbuild| module, which we call.
 
 @<Shut down the modules@> =
 	ArchModule::end();
-	InbuildModule::end();
+	SupervisorModule::end();
 	HTMLModule::end();
 	SyntaxModule::end();
 	WordsModule::end();
@@ -314,7 +314,7 @@ other options to the selection defined here.
 
 	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
 
-@ Here we handle those options not handled by the |inbuild| module.
+@ Here we handle those options not handled by the |supervisor| module.
 
 =
 void Main::option(int id, int val, text_stream *arg, void *state) {

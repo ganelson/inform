@@ -11,7 +11,6 @@ text_stream *problems_file = &problems_file_struct; /* The actual report of Prob
 
 text_stream *probl = NULL; /* Current destination of problem message text */
 
-int internal_error_thrown = FALSE;
 int it_is_not_worth_adding = FALSE; /* To suppress the "It may be worth adding..." */
 
 int crash_on_all_errors = FALSE;
@@ -54,7 +53,7 @@ void Problems::Fatal::filename_related(char *message, filename *F) {
 }
 
 @ Fatal errors are not necessarily a bad thing. When tracking down why
-NI issues certain problem messages (especially internal errors) it can be
+Inform issues certain problem messages (especially internal errors) it can be
 useful to provoke a deliberate crash of the application, in order to
 get a stack backtrace into the GNU debugger |gdb| (and/or onto the system
 console logs). We can force this using the following variables (which main

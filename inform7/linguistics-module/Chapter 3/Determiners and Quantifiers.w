@@ -78,7 +78,7 @@ The determiner is the part of a noun phrase, always its head, which gives
 counting information to be combined with a common noun. Thus "the" clock,
 "seven" seals, "almost all of the" open doors, and so on. When a
 determiner appears to refer to a range of objects rather than a single
-item, NI translates it into a quantifier. Thus "the" clock is not parsed
+item, Inform translates it into a quantifier. Thus "the" clock is not parsed
 into a quantifier, but "all but three" rooms is.
 
 The same quantifier can have several different verbal forms. For instance,

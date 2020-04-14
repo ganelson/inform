@@ -86,7 +86,7 @@ of "topic" columns in tables. These will usually be simple constructions of
 individual grammar lines, but they need to belong to a grammar verb (GV)
 nevertheless, even if they are the only thing on that GV. Such GVs compile
 to routines for parsing snippets, and no pointers exist to them in other
-NI data structures: the result of the routine below, assuming no problems
+Inform data structures: the result of the routine below, assuming no problems
 are issued, is simply that the name of a snippet-parsing routine is printed.
 
 =

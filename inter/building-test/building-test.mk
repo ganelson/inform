@@ -26,13 +26,8 @@ INWEB = /Users/gnelson/Natural\ Inform/inweb/Tangled/inweb
 INTEST = /Users/gnelson/Natural\ Inform/intest/Tangled/intest
 MYNAME = building-test
 ME = inter/building-test
-# which depends on:
-MODULE1 = /Users/gnelson/Natural\ Inform/inweb/foundation-module
-MODULE2 = inter/building-test/../building-module
-MODULE3 = inter/building-test/../inter-module
-MODULE4 = inter/building-test/../../inbuild/words-module
 
-$(ME)/Tangled/$(MYNAME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(MODULE1)/Contents.w $(MODULE1)/Chapter*/*.w $(MODULE2)/Contents.w $(MODULE2)/Chapter*/*.w $(MODULE3)/Contents.w $(MODULE3)/Chapter*/*.w $(MODULE4)/Contents.w $(MODULE4)/Chapter*/*.w
+$(ME)/Tangled/$(MYNAME): inter/building-test/*.w /Users/gnelson/Natural\ Inform/inweb/foundation-module/Chapter*/*.w inter/building-test/../building-module/Chapter*/*.w inter/building-test/../bytecode-module/Chapter*/*.w inter/building-test/../../shared/words-module/Chapter*/*.w inter/building-test/Chapter*/*.w
 	$(call make-me)
 
 .PHONY: force

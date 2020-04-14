@@ -134,7 +134,7 @@ question is used to store the fact of a relationship: $O_1\sim O_2$ if and
 only if |O1.rel == O2|.
 
 There is no routine to test a 1-to-1 relation, since the predicate calculus
-code in NI simplifies propositions which test these into direct looking up
+code in Inform simplifies propositions which test these into direct looking up
 of the property relation.
 
 =
@@ -758,7 +758,7 @@ relation between doors and rooms, say), route-finding on those relations is
 unlikely to be very useful, so is discouraged. (In the case of doors and
 rooms, a route could never be longer than 1 step, since no object is both a
 door and a room, for instance.) The "fast" V-to-V algorithm requires $D$
-to have the same left and right domains; NI compiles the memory caches for
+to have the same left and right domains; Inform compiles the memory caches for
 V-to-V relations to force any cases with different domains into using the
 "slow" algorithm.
 
@@ -851,7 +851,7 @@ to each other, and then the algorithm will indeed be "slow". So it is
 likely that the "fast" algorithm will always be better, if the memory
 can be spared for it.
 
-We use the fast algorithm for a given relation if and only if the NI compiler
+We use the fast algorithm for a given relation if and only if the Inform compiler
 has allocated the necessary cache memory; the two use options above, for
 map route-finding, don't control this.
 

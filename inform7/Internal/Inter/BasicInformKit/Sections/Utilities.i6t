@@ -233,8 +233,8 @@ object at once.
 ];
 
 @h TestUseOption.
-This routine, compiled by NI, returns |true| if the supplied argument is the
-number of a use option in force for the current run of NI, and |false|
+This routine, compiled by Inform, returns |true| if the supplied argument is the
+number of a use option in force for the current run of Inform, and |false|
 otherwise.
 
 @h ZRegion.
@@ -301,7 +301,7 @@ This is not quite so efficient, but not terrible.
 ];
 
 @h Seed Random Number Generator Rule.
-Unless a seed is provided by NI, and it won't be for released story files,
+Unless a seed is provided by Inform, and it won't be for released story files,
 the VM's interpreter is supposed to start up with a good seed in its random
 number generator: something usually derived from, say, the milliseconds part
 of the current time of day, which is unlikely to repeat or show any pattern

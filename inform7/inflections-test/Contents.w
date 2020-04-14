@@ -5,7 +5,7 @@ Language: InC
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: ../inbuild/words
+Import: ../shared/words
 Import: inflections
 
 Chapter 1: Scaffolding

@@ -5,56 +5,47 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
 	</head>
 	<body>
 		<nav role="navigation">
-		<h1><a href="../webs.html">Sources</a></h1>
-<ul>
-<li><a href="../compiler.html"><b>compiler tools</b></a></li>
+		<h1><a href="../index.html">
+<img src="../docs-src/Figures/Inform.png" height=72">
+</a></h1>
+<ul><li><a href="../compiler.html">compiler tools</a></li>
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html">extensions and kits</a></li>
 <li><a href="../units.html">unit test tools</a></li>
-</ul>
-<h2>Compiler Webs</h2>
-<ul>
+</ul><h2>Compiler Webs</h2><ul>
 <li><a href="../inbuild/index.html">inbuild</a></li>
 <li><a href="../inform7/index.html">inform7</a></li>
 <li><a href="../inter/index.html">inter</a></li>
-</ul>
-<h2>Inbuild Modules</h2>
-<ul>
-<li><a href="../inbuild-module/index.html">inbuild</a></li>
-<li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../words-module/index.html">words</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../html-module/index.html">html</a></li>
-</ul>
-<h2>Inform7 Modules</h2>
-<ul>
+</ul><h2>Inbuild Modules</h2><ul>
+<li><a href="../supervisor-module/index.html">supervisor</a></li>
+</ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
+<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../index-module/index.html">index</a></li>
-</ul>
-<h2>Inter Modules</h2>
-<ul>
-<li><a href="../inter-module/index.html">inter</a></li>
+</ul><h2>Inter Modules</h2><ul>
+<li><a href="../bytecode-module/index.html">bytecode</a></li>
 <li><a href="../building-module/index.html">building</a></li>
-<li><a href="../codegen-module/index.html">codegen</a></li>
-</ul>
-<h2>Foundation</h2>
-<ul>
+<li><span class="unlink">codegen</span></li>
+</ul><h2>Shared Modules</h2><ul>
+<li><a href="../arch-module/index.html">arch</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../html-module/index.html">html</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
+
 </ul>
-
-
 		</nav>
 		<main role="main">
-		<ul class="crumbs"><li><a href="../webs.html">Source</a></li><li><a href="../compiler.html">Compiler Modules</a></li><li><b>codegen</b></li></ul>
+		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><b>codegen</b></li></ul>
 		<p class="purpose">The code generation pipeline. This is version 1.</p>
 		<hr>
 		<ul class="chapterlist">
@@ -89,11 +80,11 @@
 				<p><span class="purpose"></span></p>
 				<ul class="sectionlist">
 					<li>
-						<p><a href="2-lnk.html"><spon class="sectiontitle">Linker</span></a> -
+						<p><a href="2-mt.html"><spon class="sectiontitle">Linker</span></a> -
 						<span class="purpose">To link inter from I7 with template code.</span></p>
 					</li>
 					<li>
-						<p><a href="2-itr.html"><spon class="sectiontitle">I6 Template Reader</span></a> -
+						<p><a href="2-tr.html"><spon class="sectiontitle">I6 Template Reader</span></a> -
 						<span class="purpose">Inform 6 meta-language is the language used by template files (with extension |.i6t|); we need tp be able to read it here in order to assimilate template code.</span></p>
 					</li>
 					<li>
@@ -105,7 +96,7 @@
 						<span class="purpose">To generate the initial state of storage for variables.</span></p>
 					</li>
 					<li>
-						<p><a href="2-alm.html"><spon class="sectiontitle">Assimilate Linked Matter</span></a> -
+						<p><a href="2-ass.html"><spon class="sectiontitle">Assimilate Linked Matter</span></a> -
 						<span class="purpose">To assimilate the material in parsed non-code splats.</span></p>
 					</li>
 					<li>
@@ -181,7 +172,7 @@
 						<span class="purpose">To print a summary of the contents of a repository.</span></p>
 					</li>
 					<li>
-						<p><a href="4-gi6.html"><spon class="sectiontitle">Generating Inform 6</span></a> -
+						<p><a href="4-fi6.html"><spon class="sectiontitle">Generating Inform 6</span></a> -
 						<span class="purpose">To generate I6 code from intermediate code.</span></p>
 					</li>
 				</ul>

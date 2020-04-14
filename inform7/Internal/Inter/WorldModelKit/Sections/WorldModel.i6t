@@ -395,7 +395,7 @@ The following is used as the |found_in| property for any backdrop which is
 It is very important that nobody simply change the value of the |player|
 variable, because so much else must be updated when the identity of the
 player changes: the light situation, floating objects, the |real_location|
-and so on. Because of this, the NI compiler contains code which compiles
+and so on. Because of this, the Inform compiler contains code which compiles
 an assertion of the proposition "is(|player|, $X$)" into a function call
 |ChangePlayer(X)| rather than a variable assignment |player = X|. So we
 cannot catch out the system by writing "now the player is Mr Henderson".

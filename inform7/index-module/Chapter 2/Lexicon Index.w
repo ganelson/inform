@@ -8,9 +8,9 @@ and verbs used in source text for the current project.
 
 @ The lexicon is the part of the Index which gives an alphabetised list of
 adjectives, nouns, verbs and other words which can be used in descriptions
-of things: it's the nearest thing to an index of the meanings inside NI.
+of things: it's the nearest thing to an index of the meanings inside Inform.
 This is in one sense quite an elaborate indexing mechanism, since it brings
-together meanings relating to various different NI structures under a single
+together meanings relating to various different Inform structures under a single
 umbrella, the "lexicon entry" structure:
 
 @d NOUN_LEXE 1 /* a kind */

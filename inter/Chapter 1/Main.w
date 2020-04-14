@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 @<Start up the modules@> =
 	Foundation::start(); /* must be started first */
 	ArchModule::start();
-	InterModule::start();
+	BytecodeModule::start();
 	BuildingModule::start();
 	CodegenModule::start();
 
@@ -119,7 +119,7 @@ form, which would be written to |*outt|.
 	if (output_binarily) Inter::Binary::write(output_binarily, I);
 
 @<Shut down the modules@> =
-	InterModule::end();
+	BytecodeModule::end();
 	BuildingModule::end();
 	CodegenModule::end();
 	ArchModule::end();

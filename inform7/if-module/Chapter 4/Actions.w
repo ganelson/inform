@@ -16,7 +16,7 @@ for instance, printing the name of an object, or asking a disambiguation
 question. These tasks must similarly be customisable by the designer, and
 a system of rulebooks is used which parallels the treatment of actions.
 
-@ Some fields of this structure reflect the history of NI, and of I6 for
+@ Some fields of this structure reflect the history of Inform 7, and of I6 for
 that matter: in particular, very few actions if any now use an I6-library
 defined verb routine, but the ability is kept against future need; and
 the idea of a flexible number of parameters -- which I6 allowed, thus

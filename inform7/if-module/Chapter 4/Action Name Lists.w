@@ -474,7 +474,7 @@ void PL::Actions::Lists::emit(action_name_list *anl) {
 }
 
 @h Specificity of ANLs.
-The following is one of NI's standardised comparison routines, which
+The following is one of Inform's standardised comparison routines, which
 takes a pair of objects A, B and returns 1 if A makes a more specific
 description than B, 0 if they seem equally specific, or $-1$ if B makes a
 more specific description than A. This is transitive, and intended to be

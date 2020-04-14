@@ -47,10 +47,10 @@ int Main::deputy(int argc, char *argv[]) {
 	HTMLModule::start();
 	IndexModule::start();
 	ArchModule::start();
-	InterModule::start();
+	BytecodeModule::start();
 	BuildingModule::start();
 	CodegenModule::start();
-	InbuildModule::start();
+	SupervisorModule::start();
 
 @<Shut down the modules@> =
 	WordsModule::end();
@@ -64,9 +64,9 @@ int Main::deputy(int argc, char *argv[]) {
 	IFModule::end();
 	IndexModule::end();
 	HTMLModule::end();
-	InterModule::end();
+	BytecodeModule::end();
 	ArchModule::end();
 	BuildingModule::end();
 	CodegenModule::end();
-	InbuildModule::end();
+	SupervisorModule::end();
 	Foundation::end(); /* must be ended last */

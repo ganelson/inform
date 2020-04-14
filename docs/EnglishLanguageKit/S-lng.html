@@ -1,0 +1,743 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Language Template</title>
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css"><style type="text/css">
+/* This is a CSS file for pages woven by the literate programming tool inweb */
+
+/* We'll start with syntax colouring, since everyone likes to toy with this: */
+
+.cwebmacrotext { color: #000000; font-weight: bold; } /* The name of a web macro */
+.functiontext  { color: #C00000; } /* When a C function is being defined */
+.string        { color: #408040; } /* A double-quoted C literal string */
+.character     { color: #204020; } /* A single-quoted C literal character */
+.constant     { color: #204020; } /* A named constant */
+.element    { color: #40407f; } /* A C structure element */
+.identifier    { color: #4040ff; } /* An identifier */
+.reserved      { color: #600000; } /* A reserved word */
+
+/* Comments at the end of lines are rendered like so: */
+
+.comment {
+	font: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	color: #404040;
+	font-style:italic;
+}
+
+/* The name of a web macro when being used: */
+
+.cwebmacro {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	text-decoration: none;
+	color: #000000; font-weight: bold;
+}
+
+.cwebmacronumber {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 80%;
+	text-decoration: none;
+	color: #000000;
+}
+
+/* And when being defined: */
+
+.cwebmacrodefn {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	text-decoration: none;
+	color: #000000; font-weight: bold;
+	font-weight:bold;
+}
+
+/* Now some generalities: */
+
+body {
+	background-color: #ffffff;
+	margin: 8px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	background-color: transparent;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Forms of paragraph: */
+
+p {
+	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	clear: both;
+}
+
+/* Where an inweb paragraph begins: */
+
+p.inwebparagraph {
+	width: 60em;
+	line-height: 150%;
+	padding-top: 15px;
+	padding-bottom: 5px;
+}
+
+/* If a web macro definition begins in its own paragraph, this is it: */
+
+p.macrodefinition {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-left: 30px;
+}
+
+/* The endnotes at the foot of code: "The function foo_bar is used in ..." */
+
+p.endnote {
+	font-size: 0.8em;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-left: 30px;
+	text-decoration:none;
+	color: #000000;
+}
+
+/* The Purpose slug: */
+
+p.purpose {
+	width: 60em;
+	line-height: 150%;
+	font-size: 1em;
+	font-style:italic;	
+	margin-left: 15px;
+}
+
+/* Blocks of code appear in these */
+
+pre {
+	font-family: Monaco, monospace;
+}
+
+pre.display {
+	padding: 3px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 30px;
+	margin-right: 10px;
+	background: #f8f8f8;
+	border-width: 1px;
+	border-style: solid solid solid solid;
+	border-color: #ccc;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+pre.displaydefn {
+	padding: 3px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+	background: #f8f8f8;
+	border-width: 1px;
+	border-style: solid solid solid solid;
+	border-color: #ccc;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+pre.definitions {
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+/* The following are for breadcrumbs of links: */
+
+ul, li {
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+
+.crumbs {
+	border:1px solid #dedede;
+	height:3.45em;
+}
+
+.crumbs li {
+	float:left;
+	line-height:2.3em;
+	padding-left:.75em;
+	color:#333;
+	font-size: 1.5em;
+}
+
+.crumbs li a {
+	display:block;
+	padding:0 15px 0 0;
+	background:url(crumbs.gif) no-repeat right center;
+}
+
+.crumbs li a:link, #crumbs li a:visited {
+	text-decoration:none;
+	color:#333;
+}
+
+.crumbs li a:hover, #crumbs li a:focus {
+	color:#dd2c0d;
+}
+
+/* This is for items in lists from inweb source: */
+
+ul.items {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+ul.items li {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	margin-left: 15px;
+}
+
+/* And this is for each section's table of contents: */
+
+ul.toc {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+ul.toc li {
+	float:left;
+	margin-left: 15px;
+	color:#000;
+}
+
+ul.toc li a {
+	display:block;
+}
+
+ul.toc li a:link, ul.toc li a:visited {
+	text-decoration:none;
+	color:#000;
+}
+
+ul.toc li a:hover, ul.toc li a:focus {
+	color:#dd2c0d;
+}
+
+hr.tocbar {
+	clear: both;
+	margin-top:3px;
+	margin-bottom:3px;
+	color:#333;
+	border:0
+	background-color:#333;
+}
+
+/* This is for cross-reference links ("This code is used in ...") */
+
+p.endnote:link, p.endnote:visited, p.endnote:hover, p.endnote:focus {
+	text-decoration:none;
+	color:#000;
+}
+
+p.endnote a:link, p.endnote a:visited {
+	text-decoration:none;
+	color:#000;
+}
+
+p.endnote a:hover, p.endnote a:focus {
+	text-decoration:none;
+	color:#dd2c0d;
+}
+
+/* Now for the index page */
+
+p.heading {
+	margin-top: 2px;
+	margin-bottom: 2px;
+	font-size: 20
+}
+p.chapter {
+	font-size: 14
+}
+p.tight {
+	font-size: 12
+}
+p.tightin {
+	padding-left: 25px;
+	font-size: 12
+}
+.chapterlist li {
+	padding-top: 8px;
+	padding-left: 16px;
+}
+.chaptertitle {
+	font-weight: bold;
+}
+.chapterlist .sectionlist li {
+	padding-left: 48px;
+}
+span.definitionkeyword {
+	color:#801010;
+	font-weight:bold;
+}
+span.extract {
+	font-size: 15px;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	width: 100%;
+	padding: 3px;
+}
+
+nav[role="navigation"] {
+    width: 180px;
+    position: fixed;
+    overflow: scroll;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #FAFAFA;
+    border-right: 1px solid #e6e6e6;
+    padding: 20px 30px
+}
+
+nav[role="navigation"] ul {
+    border-top: 1px solid #e6e6e6;
+    font-weight: 400;
+    margin-bottom: 30px;
+    list-style: none
+}
+
+nav[role="navigation"] ul ul {
+    list-style: none
+}
+
+nav[role="navigation"] ul li {
+    border-bottom: 1px solid #e6e6e6
+}
+
+nav[role="navigation"] ul li.active {
+    border-bottom: 1px solid #333
+}
+
+nav[role="navigation"] ul li.active a {
+    font-weight: 700
+}
+
+nav[role="navigation"] h1 a:link {
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+nav[role="navigation"] h1 a:visited {
+    color: #333
+}
+
+nav[role="navigation"] h1 a:active {
+    font-weight: 700
+}
+
+nav[role="navigation"] h1 a:hover {
+    color: #dd2c0d
+}
+
+nav[role="navigation"] ul li a:link {
+    color: #333;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    display: block;
+    padding: 10px 10px 2px 2px
+}
+
+nav[role="navigation"] ul li span.selectedlink {
+    color: #f25;
+}
+
+nav[role="navigation"] ul li span.unlink {
+    color: #f25;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    display: block;
+    padding: 10px 10px 2px 2px
+}
+
+nav[role="navigation"] ul li a:visited {
+    color: #333
+}
+
+nav[role="navigation"] ul li a:active {
+    font-weight: 700
+}
+
+nav[role="navigation"] ul li a:hover {
+    color: #dd2c0d
+}
+
+nav[role="navigation"] ul li ul {
+    margin-bottom: 10px;
+    border-top: none
+}
+
+nav[role="navigation"] ul li ul li {
+    border-bottom: none;
+    padding: 0.1em
+}
+
+nav[role="navigation"] ul li ul li.active {
+    border-bottom: none
+}
+
+nav[role="navigation"] ul li ul li.active a {
+    font-weight: 700
+}
+
+nav[role="navigation"] ul li ul a:link {
+    color: #dd2c0d;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+    display: block;
+    margin-left: 15px;
+    padding: 0 0 3px;
+    border-bottom: none;
+    font-weight: 300
+}
+
+nav[role="navigation"] ul li ul a:hover {
+    text-decoration: underline
+}
+
+nav[role="navigation"] h2 {
+    font-size: 0.95em;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    color: #999;
+    padding-bottom: 0.5em
+}
+
+nav[role="navigation"] h1 {
+    margin-top: 0em
+}
+
+main {
+    max-width: 1024px;
+    min-width: 320px;
+    margin-left: 250px;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%
+}
+
+#logo {
+    text-indent: -9999px;
+    height: 48px;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 0.5em;
+    padding-bottom: 10px
+}
+
+#logo a {
+    display: block;
+    width: 190px;
+    height: 48px;
+    background-image: url("/assets/images/swift.svg");
+    background-repeat: no-repeat;
+    background-size: 190px 48px;
+    background-position-x: -8px
+}
+
+
+
+
+
+</style>
+
+		
+	</head>
+	<body>
+		<nav role="navigation">
+		<h1><a href="../index.html">
+<img src="../docs-src/Figures/Inform.png" height=72">
+</a></h1>
+<ul><li><a href="../compiler.html">compiler tools</a></li>
+<li><a href="../other.html">other tools</a></li>
+<li><a href="../extensions.html">extensions and kits</a></li>
+<li><a href="../units.html">unit test tools</a></li>
+</ul><h2>Extensions</h2><ul>
+<li><a href="../basic_inform/index.html">basic_inform</a></li>
+<li><a href="../standard_rules/index.html">standard_rules</a></li>
+</ul><h2>Kits</h2><ul>
+<li><a href="../BasicInformKit/index.html">BasicInformKit</a></li>
+<li><a href="../BasicInformExtrasKit/index.html">BasicInformExtrasKit</a></li>
+<li><a href="../CommandParserKit/index.html">CommandParserKit</a></li>
+<li><a href="index.html"><span class="selectedlink">EnglishLanguageKit</span></a></li>
+<li><a href="../WorldModelKit/index.html">WorldModelKit</a></li>
+
+</ul>
+		</nav>
+		<main role="main">
+		
+<!--Weave of 'Language Template' generated by 7-->
+<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><b>EnglishLanguageKit</b></li></ul><p class="purpose">The fundamental definitions needed by the parser and the verb library in order to specify the language of play -- that is, the language used for communications between the story file and the player.</p>
+
+<ul class="toc"><li><a href="#SP1">&#167;1. Vocabulary</a></li><li><a href="#SP2">&#167;2. Pronouns</a></li><li><a href="#SP3">&#167;3. Descriptors</a></li><li><a href="#SP4">&#167;4. Numbers</a></li><li><a href="#SP5">&#167;5. Time</a></li><li><a href="#SP6">&#167;6. Directions</a></li><li><a href="#SP7">&#167;7. Translation</a></li><li><a href="#SP8">&#167;8. Articles</a></li><li><a href="#SP9">&#167;9. Commands</a></li><li><a href="#SP10">&#167;10. Stubs</a></li></ul><hr class="tocbar">
+
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Vocabulary. </b></p>
+
+<pre class="display">
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AGAIN1__WD</span><span class="plain">     = </span><span class="character">'again'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AGAIN2__WD</span><span class="plain">     = </span><span class="character">'g//'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AGAIN3__WD</span><span class="plain">     = </span><span class="character">'again'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OOPS1__WD</span><span class="plain">      = </span><span class="character">'oops'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OOPS2__WD</span><span class="plain">      = </span><span class="character">'o//'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OOPS3__WD</span><span class="plain">      = </span><span class="character">'oops'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">UNDO1__WD</span><span class="plain">      = </span><span class="character">'undo'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">UNDO2__WD</span><span class="plain">      = </span><span class="character">'undo'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">UNDO3__WD</span><span class="plain">      = </span><span class="character">'undo'</span><span class="plain">;</span>
+
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ALL1__WD</span><span class="plain">       = </span><span class="character">'all'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ALL2__WD</span><span class="plain">       = </span><span class="character">'each'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ALL3__WD</span><span class="plain">       = </span><span class="character">'every'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ALL4__WD</span><span class="plain">       = </span><span class="character">'everything'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ALL5__WD</span><span class="plain">       = </span><span class="character">'both'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AND1__WD</span><span class="plain">       = </span><span class="character">'and'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AND2__WD</span><span class="plain">       = </span><span class="character">'and'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AND3__WD</span><span class="plain">       = </span><span class="character">'and'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BUT1__WD</span><span class="plain">       = </span><span class="character">'but'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BUT2__WD</span><span class="plain">       = </span><span class="character">'except'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BUT3__WD</span><span class="plain">       = </span><span class="character">'but'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ME1__WD</span><span class="plain">        = </span><span class="character">'me'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ME2__WD</span><span class="plain">        = </span><span class="character">'myself'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ME3__WD</span><span class="plain">        = </span><span class="character">'self'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OF1__WD</span><span class="plain">        = </span><span class="character">'of'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OF2__WD</span><span class="plain">        = </span><span class="character">'of'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OF3__WD</span><span class="plain">        = </span><span class="character">'of'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OF4__WD</span><span class="plain">        = </span><span class="character">'of'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OTHER1__WD</span><span class="plain">     = </span><span class="character">'another'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OTHER2__WD</span><span class="plain">     = </span><span class="character">'other'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">OTHER3__WD</span><span class="plain">     = </span><span class="character">'other'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">THEN1__WD</span><span class="plain">      = </span><span class="character">'then'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">THEN2__WD</span><span class="plain">      = </span><span class="character">'then'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">THEN3__WD</span><span class="plain">      = </span><span class="character">'then'</span><span class="plain">;</span>
+
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NO1__WD</span><span class="plain">        = </span><span class="character">'n//'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NO2__WD</span><span class="plain">        = </span><span class="character">'no'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NO3__WD</span><span class="plain">        = </span><span class="character">'no'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">YES1__WD</span><span class="plain">       = </span><span class="character">'y//'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">YES2__WD</span><span class="plain">       = </span><span class="character">'yes'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">YES3__WD</span><span class="plain">       = </span><span class="character">'yes'</span><span class="plain">;</span>
+
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AMUSING__WD</span><span class="plain">    = </span><span class="character">'amusing'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">FULLSCORE1__WD</span><span class="plain"> = </span><span class="character">'fullscore'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">FULLSCORE2__WD</span><span class="plain"> = </span><span class="character">'full'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">QUIT1__WD</span><span class="plain">      = </span><span class="character">'q//'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">QUIT2__WD</span><span class="plain">      = </span><span class="character">'quit'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RESTART__WD</span><span class="plain">    = </span><span class="character">'restart'</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RESTORE__WD</span><span class="plain">    = </span><span class="character">'restore'</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Pronouns. </b></p>
+
+<pre class="display">
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguagePronouns</span><span class="plain"> </span><span class="identifier">table</span>
+
+    <span class="plain">  </span><span class="comment">word        possible GNAs                   connected</span>
+    <span class="plain">  </span><span class="comment">            to follow:                      to:</span>
+    <span class="plain">  </span><span class="comment">            a     i</span>
+    <span class="plain">  </span><span class="comment">            s  p  s  p</span>
+    <span class="plain">  </span><span class="comment">            mfnmfnmfnmfn</span>
+
+        <span class="character">'it'</span><span class="plain">      </span><span class="constant">$$001000111000</span><span class="plain">                    </span><span class="identifier">NULL</span>
+        <span class="character">'him'</span><span class="plain">     </span><span class="constant">$$100000000000</span><span class="plain">                    </span><span class="identifier">NULL</span>
+        <span class="character">'her'</span><span class="plain">     </span><span class="constant">$$010000000000</span><span class="plain">                    </span><span class="identifier">NULL</span>
+        <span class="character">'them'</span><span class="plain">    </span><span class="constant">$$000111000111</span><span class="plain">                    </span><span class="identifier">NULL</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Descriptors. </b></p>
+
+<pre class="display">
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageDescriptors</span><span class="plain"> </span><span class="identifier">table</span>
+
+    <span class="plain">  </span><span class="comment">word        possible GNAs   descriptor      connected</span>
+    <span class="plain">  </span><span class="comment">            to follow:      type:           to:</span>
+    <span class="plain">  </span><span class="comment">            a     i</span>
+    <span class="plain">  </span><span class="comment">            s  p  s  p</span>
+    <span class="plain">  </span><span class="comment">            mfnmfnmfnmfn</span>
+
+        <span class="character">'my'</span><span class="plain">      </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">0</span>
+        <span class="character">'this'</span><span class="plain">    </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">0</span>
+        <span class="character">'these'</span><span class="plain">   </span><span class="constant">$$000111000111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">0</span>
+        <span class="character">'that'</span><span class="plain">    </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">1</span>
+        <span class="character">'those'</span><span class="plain">   </span><span class="constant">$$000111000111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">1</span>
+        <span class="character">'his'</span><span class="plain">     </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="character">'him'</span>
+        <span class="character">'her'</span><span class="plain">     </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="character">'her'</span>
+        <span class="character">'their'</span><span class="plain">   </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="character">'them'</span>
+        <span class="character">'its'</span><span class="plain">     </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="character">'it'</span>
+        <span class="character">'the'</span><span class="plain">     </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">DEFART_PK</span><span class="plain">       </span><span class="identifier">NULL</span>
+        <span class="character">'a//'</span><span class="plain">     </span><span class="constant">$$111000111000</span><span class="plain">    </span><span class="identifier">INDEFART_PK</span><span class="plain">     </span><span class="identifier">NULL</span>
+        <span class="character">'an'</span><span class="plain">      </span><span class="constant">$$111000111000</span><span class="plain">    </span><span class="identifier">INDEFART_PK</span><span class="plain">     </span><span class="identifier">NULL</span>
+        <span class="character">'some'</span><span class="plain">    </span><span class="constant">$$000111000111</span><span class="plain">    </span><span class="identifier">INDEFART_PK</span><span class="plain">     </span><span class="identifier">NULL</span>
+        <span class="character">'lit'</span><span class="plain">     </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">light</span><span class="plain">           </span><span class="identifier">NULL</span>
+        <span class="character">'lighted'</span><span class="plain"> </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">light</span><span class="plain">           </span><span class="identifier">NULL</span>
+        <span class="character">'unlit'</span><span class="plain">   </span><span class="constant">$$111111111111</span><span class="plain">    (-</span><span class="identifier">light</span><span class="plain">)        </span><span class="identifier">NULL</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Numbers. </b></p>
+
+<pre class="display">
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageNumbers</span><span class="plain"> </span><span class="identifier">table</span>
+        <span class="character">'one'</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="character">'two'</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="character">'three'</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="character">'four'</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="character">'five'</span><span class="plain"> </span><span class="constant">5</span>
+        <span class="character">'six'</span><span class="plain"> </span><span class="constant">6</span><span class="plain"> </span><span class="character">'seven'</span><span class="plain"> </span><span class="constant">7</span><span class="plain"> </span><span class="character">'eight'</span><span class="plain"> </span><span class="constant">8</span><span class="plain"> </span><span class="character">'nine'</span><span class="plain"> </span><span class="constant">9</span><span class="plain"> </span><span class="character">'ten'</span><span class="plain"> </span><span class="constant">10</span>
+        <span class="character">'eleven'</span><span class="plain"> </span><span class="constant">11</span><span class="plain"> </span><span class="character">'twelve'</span><span class="plain"> </span><span class="constant">12</span><span class="plain"> </span><span class="character">'thirteen'</span><span class="plain"> </span><span class="constant">13</span><span class="plain"> </span><span class="character">'fourteen'</span><span class="plain"> </span><span class="constant">14</span><span class="plain"> </span><span class="character">'fifteen'</span><span class="plain"> </span><span class="constant">15</span>
+        <span class="character">'sixteen'</span><span class="plain"> </span><span class="constant">16</span><span class="plain"> </span><span class="character">'seventeen'</span><span class="plain"> </span><span class="constant">17</span><span class="plain"> </span><span class="character">'eighteen'</span><span class="plain"> </span><span class="constant">18</span><span class="plain"> </span><span class="character">'nineteen'</span><span class="plain"> </span><span class="constant">19</span><span class="plain"> </span><span class="character">'twenty'</span><span class="plain"> </span><span class="constant">20</span>
+        <span class="character">'twenty-one'</span><span class="plain"> </span><span class="constant">21</span><span class="plain"> </span><span class="character">'twenty-two'</span><span class="plain"> </span><span class="constant">22</span><span class="plain"> </span><span class="character">'twenty-three'</span><span class="plain"> </span><span class="constant">23</span><span class="plain"> </span><span class="character">'twenty-four'</span><span class="plain"> </span><span class="constant">24</span>
+        <span class="character">'twenty-five'</span><span class="plain"> </span><span class="constant">25</span><span class="plain"> </span><span class="character">'twenty-six'</span><span class="plain"> </span><span class="constant">26</span><span class="plain"> </span><span class="character">'twenty-seven'</span><span class="plain"> </span><span class="constant">27</span><span class="plain"> </span><span class="character">'twenty-eight'</span><span class="plain"> </span><span class="constant">28</span>
+        <span class="character">'twenty-nine'</span><span class="plain"> </span><span class="constant">29</span><span class="plain"> </span><span class="character">'thirty'</span><span class="plain"> </span><span class="constant">30</span>
+    <span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Time. </b></p>
+
+<pre class="display">
+    <span class="plain">[ </span><span class="identifier">LanguageTimeOfDay</span><span class="plain"> </span><span class="identifier">hours</span><span class="plain"> </span><span class="identifier">mins</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">hours</span><span class="plain">%12;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">12</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="constant">10</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="string">":"</span><span class="plain">, </span><span class="identifier">mins</span><span class="plain">/10, </span><span class="identifier">mins</span><span class="plain">%10;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">hours</span><span class="plain">/12) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" pm"</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> </span><span class="string">" am"</span><span class="plain">;</span>
+    <span class="plain">];</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Directions. </b></p>
+
+<pre class="display">
+    <span class="plain">[ </span><span class="identifier">LanguageDirection</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
+        <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">d</span><span class="plain">;</span>
+    <span class="plain">];</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Translation. </b></p>
+
+<pre class="display">
+    <span class="plain">[ </span><span class="identifier">LanguageToInformese</span><span class="plain">; ];</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Articles. </b></p>
+
+<pre class="display">
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageAnimateGender</span><span class="plain">   = </span><span class="identifier">male</span><span class="plain">;</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageInanimateGender</span><span class="plain"> = </span><span class="identifier">neuter</span><span class="plain">;</span>
+
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageContractionForms</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;     </span><span class="comment">English has two:</span>
+                                            <span class="plain">   </span><span class="comment">0 = starting with a consonant</span>
+                                            <span class="plain">   </span><span class="comment">1 = starting with a vowel</span>
+
+    <span class="plain">[ </span><span class="identifier">LanguageContraction</span><span class="plain"> </span><span class="identifier">text</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">text</span><span class="plain">-&gt;0 == </span><span class="character">'a'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'e'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'i'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'o'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'u'</span>
+                    <span class="reserved">or</span><span class="plain"> </span><span class="character">'A'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'E'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'I'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'O'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'U'</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">];</span>
+
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageArticles</span><span class="plain"> --&gt;</span>
+
+    <span class="plain"> </span><span class="comment">  Contraction form 0:     Contraction form 1:</span>
+    <span class="plain"> </span><span class="comment">  Cdef   Def    Indef     Cdef   Def    Indef</span>
+
+        <span class="plain"> </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"a "</span><span class="plain">      </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"an "</span><span class="plain">          </span><span class="comment">Articles 0</span>
+        <span class="plain"> </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">   </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">;       </span><span class="comment">Articles 1</span>
+
+                    <span class="plain">   </span><span class="comment">            a           i</span>
+                    <span class="plain">   </span><span class="comment">            s     p     s     p</span>
+                    <span class="plain">   </span><span class="comment">            m f n m f n m f n m f n</span>
+
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageGNAsToArticles</span><span class="plain"> --&gt; </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Commands. </b><code class="display"><span class="extract">LanguageVerbLikesAdverb</span></code> is called by <code class="display"><span class="extract">PrintCommand</span></code> when printing an <code class="display"><span class="extract">UPTO_PE</span></code>
+error or an inference message.  Words which are intransitive verbs, i.e.,
+which require a direction name as an adverb ("walk west"), not a noun
+("I only understood you as far as wanting to touch the ground"), should
+cause the routine to return <code class="display"><span class="extract">true</span></code>.
+</p>
+
+<p class="inwebparagraph"><code class="display"><span class="extract">LanguageVerbMayBeName</span></code> is called by <code class="display"><span class="extract">NounDomain</span></code> when dealing with
+the player's reply to a "Which do you mean, the short stick or the
+long stick?" prompt from the parser. If the reply is another verb
+(for example, LOOK) then then previous ambiguous command is discarded
+unless it is one of these words which could be both a verb and an
+adjective in a <code class="display"><span class="extract">name</span></code> property.
+</p>
+
+<pre class="display">
+    <span class="plain">[ </span><span class="identifier">LanguageVerb</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">) {</span>
+        <span class="plain">  </span><span class="character">'i//'</span><span class="plain">,</span><span class="character">'inv'</span><span class="plain">,</span><span class="character">'inventory'</span><span class="plain">:</span>
+                <span class="plain">   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"take inventory"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="character">'l//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"look"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="character">'x//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"examine"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="character">'z//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"wait"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="reserved">default</span><span class="plain">: </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">rtrue</span><span class="plain">;</span>
+    <span class="plain">];</span>
+
+    <span class="plain">[ </span><span class="identifier">LanguageVerbLikesAdverb</span><span class="plain"> </span><span class="identifier">w</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">w</span><span class="plain"> == </span><span class="character">'look'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'go'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'push'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'walk'</span><span class="plain">)</span>
+            <span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
+    <span class="plain">];</span>
+
+    <span class="plain">[ </span><span class="identifier">LanguageVerbMayBeName</span><span class="plain"> </span><span class="identifier">w</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">w</span><span class="plain"> == </span><span class="character">'long'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'short'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'normal'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'brief'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'full'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'verbose'</span><span class="plain">)</span>
+            <span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
+    <span class="plain">];</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Stubs. </b>To reduce the need for conditional compilation, we provide these stub
+routines:
+</p>
+
+<pre class="display">
+    <span class="plain">[ </span><span class="identifier">LanguageIsVerb</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain"> </span><span class="identifier">parse</span><span class="plain"> </span><span class="identifier">verb_wordnum</span><span class="plain">;</span>
+        <span class="reserved">rfalse</span><span class="plain">;</span>
+    <span class="plain">];</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<!--End of weave-->
+		</main>
+	</body>
+</html>
+

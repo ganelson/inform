@@ -1,8 +1,8 @@
 [PL::Parsing::Lines::] Grammar Lines.
 
 A grammar line is a list of tokens to specify a textual pattern.
-For example, the NI source for a grammar line might be |"take [something]
-out"|, which is a sequence of three tokens.
+For example, the Inform source for a grammar line might be "take [something]
+out", which is a sequence of three tokens.
 
 @h Definitions.
 

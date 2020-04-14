@@ -285,10 +285,10 @@ Constant RTP_REGIONSNOTADJACENT      = 69;
 @h Template Activities.
 These are the activities defined in the Standard Rules. Most, though not
 all, are carried out by explicit function calls in the template layer,
-which is why we need their ID numbers: note that NI assigns each activity a
+which is why we need their ID numbers: note that Inform assigns each activity a
 unique ID number on creation, counting upwards from 0, and that it
 processes the Standard Rules before any other source text. (These numbers
-must correspond {\it both} to those in the source of NI, {\it and} to the
+must correspond {\it both} to those in the source of Inform, {\it and} to the
 creation sequence in the Standard Rules.)
 
 =
@@ -337,7 +337,7 @@ Constant PRINTING_LOCALE_PARAGRAPH_ACT   = 33;
 @h Template Rulebooks.
 Rulebooks are created in a similar way, and again are numbered upwards from
 0 in order of creation. These are the ones used in the template layer.
-(These numbers must correspond {\it both} to those in the source of NI,
+(These numbers must correspond {\it both} to those in the source of Inform,
 {\it and} to the creation sequence in the Standard Rules.)
 
 =
@@ -380,8 +380,8 @@ Constant DOES_THE_PLAYER_MEAN_RB		 = 34;
 Constant MULTIPLE_ACTION_PROCESSING_RB   = 35;
 
 @h Kind IDs.
-These are filled in automatically by NI, and have the same names as are used
-in the NI source (and in the Load-.i6t sections): for instance |NUMBER_TY|.
+These are filled in automatically by Inform, and have the same names as are used
+in the Inform source (and in the Load-.i6t sections): for instance |NUMBER_TY|.
 
 @h Parser Error Numbers.
 The traditional ways in which the I6 library's parser, which we adopt here
@@ -529,7 +529,7 @@ enough for us to care. But we do want to avoid this in I7 because, to make
 string-sorting algorithms more efficient, we want direct numerical comparison
 of packed addresses to be equivalent to string comparison: and that means
 the text "exemplum" has to be compiled once and once only. There's a
-general mechanism for this in NI, but the single case most often needed
+general mechanism for this in Inform, but the single case most often needed
 is the empty text, since this is the default value for text variables
 and properties: we give it a name as follows.
 

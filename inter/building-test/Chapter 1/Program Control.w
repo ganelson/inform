@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	Foundation::start();
 	WordsModule::start();
 	BuildingModule::start();
-	InterModule::start();
+	BytecodeModule::start();
 
 	CommandLine::declare_heading(L"building-test: a tool for testing the building module\n");
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 
 	WordsModule::end();
 	BuildingModule::end();
-	InterModule::end();
+	BytecodeModule::end();
 	Foundation::end();
 	return 0;
 }

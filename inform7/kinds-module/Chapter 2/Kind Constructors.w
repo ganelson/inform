@@ -88,7 +88,7 @@ typedef struct kind_constructor {
 	struct text_stream *loop_domain_schema; /* how to compile an I6 loop over the instances */
 
 	/* J: printing and parsing values at run-time */
-	#ifdef INTER_MODULE
+	#ifdef BYTECODE_MODULE
 	struct inter_name *kind_GPR_iname;
 	struct inter_name *instance_GPR_iname;
 	struct inter_name *first_instance_iname;
@@ -269,7 +269,7 @@ I6 template files.
 	/* J: printing and parsing values at run-time */
 	con->dt_I6_identifier = Str::new();
 	con->name_of_printing_rule_ACTIONS = Str::new();
-	#ifdef INTER_MODULE
+	#ifdef BYTECODE_MODULE
 	con->kind_GPR_iname = NULL;
 	con->instance_GPR_iname = NULL;
 	con->first_instance_iname = NULL;

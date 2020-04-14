@@ -48,9 +48,9 @@ the common machinery into which all actions eventually pass.
 
 @h Action Data.
 This is perhaps a good place to document the |ActionData| array, a convenient
-table of metadata about the actions. Since this is compiled by NI, the
+table of metadata about the actions. Since this is compiled by Inform, the
 following structure can't be modified here without making matching changes
-in NI. |ActionData| is an I6 |table| containing a series of fixed-length
+in Inform. |ActionData| is an I6 |table| containing a series of fixed-length
 records, one on each action.
 
 The routine |FindAction| locates the record in this table for a given
@@ -260,7 +260,7 @@ through the specific action processing rules, not the main action-processing
 ones, though that is not easy to see from the code below because it is
 hidden in the call to |LookSub|. The |-Sub| suffix is an I6 usage identifying
 this as the routine to go along with the action |##Look|, and so it is,
-but it looks nothing like the |LookSub| of the old I6 library. NI compiles
+but it looks nothing like the |LookSub| of the old I6 library. Inform compiles
 |-Sub| routines like so:
 = (text as Inform 6)
 	[ LookSub; return GenericVerbSub(153,154,155); ];
@@ -416,7 +416,7 @@ make up the topic in the I6 global variables |consult_words| and |consult_from|.
 We convert them to a valid I7 snippet value.
 (iii) If either the first or second noun is supposed to be an object but
 seems here to be a value, or vice versa, we stop with a parser error. (This
-should be fairly difficult to provoke: NI's type-checking will make it
+should be fairly difficult to provoke: Inform's type-checking will make it
 difficult to arrange without I6 subterfuges.)
 (iv) If either the first or second noun is supposed to be an object and
 required to exist, yet is missing, we use the "supplying a missing noun"

@@ -53,7 +53,7 @@ space the opening text better.
 ];
 
 @h Initial Situation.
-The array |InitialSituation| is compiled by NI and contains:
+The array |InitialSituation| is compiled by Inform and contains:
 
 (-0) The object number for the player, which is usually |selfobj|.
 (-1) The object in or on which the player begins, if he does. (This will

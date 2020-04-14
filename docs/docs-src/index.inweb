@@ -1,0 +1,33 @@
+Title: Overview
+Author: Graham Nelson
+
+@ This is the home page for the source code for the Inform 7 programming
+language. For the language itself, its documentation, and downloads of the
+apps for different platforms, see: http://www.inform7.com
+
+Almost everything here is a "web", or "literate program", powered by //inweb//.
+Those new to literate programming may want first to try the modest examples
+there (say, //goldbach//), and skim the //inweb// manual.
+
+These pages host "woven", human-readable, forms of the source and are intended
+for browsing. To obtain and build the software, or to see resources which
+are not webs and thus not here, see: https://github.com/ganelson/inform
+
+@ The Inform 7 compiler comes with a large penumbra of supporting resources,
+so there are nearly 50 webs in this repository:
+(a) The compiler is built from some 16 modules, plus three front-end command
+line tools controlling them. See //compiler// for a map.
+(b) See //other// for command-line tools useful for building or working with
+Inform, but not involving compilation: //inblorb//, a packager; //indoc//, to
+format documentation; //inpolicy//, a lint-like tool for checking Inform's
+source code; and //inrtps//, to format run-time problem messages.
+(c) The extensions "Basic Inform" (//basic_inform//) and "Standard Rules"
+(//standard_rules//), together with a number of "kits" of precompiled Inter
+code: see //extensions//.
+(d) Small unit-test tools to exercise the modules mentioned in (a): see //units//.
+
+@ Three webs are conspicuously missing, but only because they are on similar
+mini-websites on other Github repositories:
+(a) //inweb// itself, and its function library, //foundation//, which all of
+the Inform tools use;
+(b) the testing utility //intest//, which has a repository of its own.

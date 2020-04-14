@@ -8,16 +8,16 @@ Preform Language: English
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: inbuild/words
-Import: inbuild/syntax
+Import: shared/words
+Import: shared/syntax
+Import: shared/html
+Import: shared/arch
 Import: inflections
 Import: problems
 Import: linguistics
 Import: kinds
-Import: inbuild/html
-Import: inbuild/arch
-Import: inter/inter
-Import: inbuild/inbuild
+Import: inter/bytecode
+Import: inbuild/supervisor
 Import: core
 Import: inter/building
 Import: inter/codegen

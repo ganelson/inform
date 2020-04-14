@@ -31,10 +31,10 @@ Constant AUXF_BINARY = 2; ! False for text files (I7 default), true for binary
 Constant AUXF_STREAM = 3; ! Stream for an open file (meaningless otherwise)
 Constant AUXF_FILENAME = 4; ! Packed address of constant string
 Constant AUXF_IFID_OF_OWNER = 5; ! UUID_ARRAY if owned by this project, or
-	! string array of IFID of owner wrapped in //...//, or NULL to leave open
+	! string array of IFID of owner, or NULL to leave open
 
 @h Instances.
-These structures are not dynamically created: they are precompiled by the NI
+These structures are not dynamically created: they are precompiled by the Inform
 compiler, already filled in with the necessary values. The following command
 generates them.
 

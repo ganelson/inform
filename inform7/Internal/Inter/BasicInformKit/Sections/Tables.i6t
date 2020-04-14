@@ -13,7 +13,7 @@ and |T-->i| is the address of column number |i|. Columns are therefore
 numbered from 1 to |T-->0|, but they are also identified by an ID number of
 100 or more, with each different column name having its own ID number.
 (This is so that multiple tables can share columns with the same name, and
-correlate them: it also means that NI's type-checking machinery can know
+correlate them: it also means that Inform's type-checking machinery can know
 the kind of value of a table entry from the name of the column alone.)
 
 Each column |C| is also a |table| array, with |C-->1| holding the unique
@@ -21,7 +21,7 @@ ID number for the column's name, |C-->2| holding the blank entry flags
 offset and |C-->3| up to |C-->(C-->0)| holding the entries.
 
 |C-->1| also contains seven upper bit flags. These are also defined in
-"Tables.w" in the NI source, and the values must agree.
+"Tables.w" in the Inform source, and the values must agree.
 
 =
 Constant TB_COLUMN_REAL        $8000;

@@ -227,7 +227,7 @@ void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf,
 		return;
 	}
 	TEMPORARY_TEXT(heading_name);
-	int skip_part = FALSE, comment = TRUE;
+	int skip_part = FALSE, comment = TRUE, extract = FALSE;
 	int col = 1, cr, sfp = 0;
 
 	if (Str::len(segment_name) > 0)
@@ -280,9 +280,9 @@ part of the I6T kit.
 		NewCharacter: if (cr == EOF) break;
 		if (((cr == '@') || (cr == '=')) && (col == 1)) {
 			int inweb_syntax = -1;
-			if (cr == '=') inweb_syntax = INWEB_CODE_SYNTAX;
+			if (cr == '=') @<Read the rest of line as an equals-heading@>
 			else @<Read the rest of line as an at-heading@>;
-			@<Act on the at-heading, going in or out of comment mode as appropriate@>;
+			@<Act on the heading, going in or out of comment mode as appropriate@>;
 			continue;
 		}
 		if (comment == FALSE) @<Deal with material which isn't commentary@>;
@@ -313,6 +313,9 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 @d INWEB_CODE_SYNTAX 2
 @d INWEB_DASH_SYNTAX 3
 @d INWEB_PURPOSE_SYNTAX 4
+@d INWEB_FIGURE_SYNTAX 5
+@d INWEB_EQUALS_SYNTAX 6
+@d INWEB_EXTRACT_SYNTAX 7
 
 @<Read the rest of line as an at-heading@> =
 	TEMPORARY_TEXT(I6T_buffer);
@@ -367,11 +370,40 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 	Str::copy(command, I6T_buffer);
 	DISCARD_TEXT(I6T_buffer);
 
+@<Read the rest of line as an equals-heading@> =
+	TEMPORARY_TEXT(I6T_buffer);
+	int i = 0;
+	while (i<MAX_I6T_LINE_LENGTH) {
+		@<Read next character from I6T stream@>;
+		if ((cr == 10) || (cr == 13)) break;
+		PUT_TO(I6T_buffer, cr);
+	}
+	DISCARD_TEXT(I6T_buffer);
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, I6T_buffer, L" %(text%c*%) *")) {
+		inweb_syntax = INWEB_EXTRACT_SYNTAX;
+	} else if (Regexp::match(&mr, I6T_buffer, L" %(figure%c*%) *")) {
+		inweb_syntax = INWEB_FIGURE_SYNTAX;
+	} else if (Regexp::match(&mr, I6T_buffer, L" %(%c*%) *")) {
+		#ifdef PROBLEMS_MODULE
+		Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(...),
+			"An '= (...)' marker has been found at column 0 in "
+			"raw Inform 6 template material, of a kind not allowed.");
+		#endif
+		#ifndef PROBLEMS_MODULE
+		TemplateReader::error(
+			"unsupported '= (...)' marker at column 0 in template matter", NULL);
+		#endif
+	} else {
+		inweb_syntax = INWEB_EQUALS_SYNTAX;
+	}
+	Regexp::dispose_of(&mr);
+
 @ As can be seen, only a small minority of Inweb syntaxes are allowed:
 in particular, no definitions| or angle-bracketed macros. This reader is not
 a full-fledged tangler.
 
-@<Act on the at-heading, going in or out of comment mode as appropriate@> =
+@<Act on the heading, going in or out of comment mode as appropriate@> =
 	switch (inweb_syntax) {
 		case INWEB_PARAGRAPH_SYNTAX: {
 			if ((Str::len(heading_name) > 0) && (Str::len(segment_name) > 0))
@@ -384,6 +416,7 @@ a full-fledged tangler.
 				Str::delete_last_character(heading_name);
 			if (Str::len(heading_name) == 0)
 				TemplateReader::error("Empty heading name in I6 template file", NULL);
+			extract = FALSE; 
 			comment = TRUE; skip_part = FALSE;
 			if (Str::len(segment_name) > 0) {
 				TemplateReader::I6T_file_intervene(OUT,
@@ -394,10 +427,22 @@ a full-fledged tangler.
 			break;
 		}
 		case INWEB_CODE_SYNTAX:
+			extract = FALSE; 
 			if (skip_part == FALSE) comment = FALSE;
+			break;
+		case INWEB_EQUALS_SYNTAX:
+			if (extract) {
+				comment = TRUE; extract = FALSE;
+			} else {
+				if (skip_part == FALSE) comment = FALSE;
+			}
+			break;
+		case INWEB_EXTRACT_SYNTAX:
+			comment = TRUE; extract = TRUE;
 			break;
 		case INWEB_DASH_SYNTAX: break;
 		case INWEB_PURPOSE_SYNTAX: break;
+		case INWEB_FIGURE_SYNTAX: break;
 	}
 
 @<Deal with material which isn't commentary@> =

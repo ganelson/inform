@@ -366,7 +366,7 @@ void PL::Bibliographic::index_bibliographic_variable(OUTPUT_STREAM, nonlocal_var
 of IF compiled: for instance, in the iFiction record, or in the Library
 Card section of the HTML index. Note that the exact output format depends
 on global variables, which allow the bibliographic text writing code to
-configure NI for its current purposes. On non-empty strings this routine
+configure Inform for its current purposes. On non-empty strings this routine
 therefore splits into one of three independent methods.
 
 =
@@ -489,7 +489,7 @@ otherwise it's much the same.
 	return;
 
 @ This code is used to work out a good filename for something given a name
-inside NI. For instance, if a project is called
+inside Inform. For instance, if a project is called
 
 >> "St. Bartholemew's Fair: \'Etude for a Push-Me/Pull-You Machine"
 

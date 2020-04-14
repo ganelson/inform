@@ -7,11 +7,11 @@ Version Number: 1
 Version Name: Avignon
 
 Import: foundation
-Import: words
-Import: syntax
-Import: html
-Import: arch
-Import: inbuild
+Import: shared/words
+Import: shared/syntax
+Import: shared/html
+Import: shared/arch
+Import: supervisor
 
 Manual
 	Using Inbuild

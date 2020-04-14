@@ -116,7 +116,7 @@ things.)
 
 @h Comparison.
 Lists of a given kind of value are always grouped together, in this comparison:
-but the effect of that is unlikely to be noticed since NI's type-checker will
+but the effect of that is unlikely to be noticed since Inform's type-checker will
 probably prevent comparisons of lists of differing items in any case. The
 next criterion is length: a short list precedes a long one. Beyond that, we
 use the list's own preferred comparison function to judge the items in turn,
@@ -325,7 +325,7 @@ where $N$ is the number of items in the list at present.
 
 @h Append List.
 Instead of adjoining a single value, we adjoin an entire second list, which
-must be of a compatible kind of value (something which NI's type-checking
+must be of a compatible kind of value (something which Inform's type-checking
 machinery polices for us). Except that we have a list |more| rather than a
 value |v| to insert, the specification is the same as for
 |LIST_OF_TY_InsertItem|.

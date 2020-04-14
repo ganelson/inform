@@ -72,7 +72,7 @@ in which the player waits.
 ];
 
 @h Setting Up.
-In practice it's convenient for NI to have a routine which creates a stored
+In practice it's convenient for Inform to have a routine which creates a stored
 action with a given slate of action variables, rather than have to set them
 all one at a time, so the following is provided as a shorthand form.
 
@@ -270,7 +270,7 @@ refer to a stored action, the following code won't be nested, and we don't
 need to worry about stacking up saved copies of the action variables.
 
 |SAT_Tmp-->0| stores the outcome of the condition, and is set in code
-compiled by NI.
+compiled by Inform.
 
 =
 Array SAT_Tmp-->7;

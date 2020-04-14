@@ -62,10 +62,10 @@ parse_node *last_problem_headings[NO_HEADING_LEVELS];
 @ Now for the actual displaying of the location text. The outcome image
 is a trickier thing to get right than might appear. By being in this
 routine, we know that a problem has been issued: the run will therefore
-not have been a success, and we can issue the "NI failed" outcome
+not have been a success, and we can issue the "Inform failed" outcome
 image. A success image cannot be placed until right at the end of the
 run, when all possibility of problems has been passed: so there's no
-single point in NI where a single line of code could choose between
+single point in Inform where a single line of code could choose between
 the two possibilities.
 
 =
@@ -76,7 +76,7 @@ void Problems::show_problem_location(parse_node_tree *T) {
 	int i, f = FALSE;
 	if (problem_count == 0) {
 		#ifdef CORE_MODULE
-		if (internal_error_thrown)
+		if (Problems::Issue::internal_errors_have_occurred())
 			HTMLFiles::html_outcome_image(problems_file, "ni_failed_badly", "Failed");
 		else
 			HTMLFiles::html_outcome_image(problems_file, "ni_failed", "Failed");
@@ -107,7 +107,7 @@ which they differ.
 	for (f=FALSE; i<NO_HEADING_LEVELS; i++)
 		if (problem_headings[i] != NULL) {
 			wording W = ParseTree::get_text(problem_headings[i]);
-			#ifdef INBUILD_MODULE
+			#ifdef SUPERVISOR_MODULE
 			W = Headings::get_text(Headings::from_node(problem_headings[i]));
 			#endif
 			pos = Lexer::file_of_origin(Wordings::first_wn(W));
@@ -118,7 +118,7 @@ which they differ.
 		}
 	if (f == FALSE) WRITE_TO(PBUFF, " the main source text");
 	if (pos) {
-		#ifdef INBUILD_MODULE
+		#ifdef SUPERVISOR_MODULE
 		inform_extension *E = Extensions::corresponding_to(pos);
 		if (E) WRITE_TO(PBUFF, " in the extension %X", E->as_copy->edition->work);
 		#endif
@@ -156,7 +156,7 @@ typedef struct problem_quotation {
 
 problem_quotation problem_quotations[10];
 
-@ When some higher-level part of NI wants to issue a formatted problem
+@ When some higher-level part of Inform wants to issue a formatted problem
 message, it first declares the contents of any quotations it will make.
 It does this using the routines |Problems::quote_object|, |Problems::quote_spec|, ...
 below. Thus |Problems::quote_spec(2, SP)| specifies that |%2| should be
@@ -254,7 +254,7 @@ int reading_text_specific_to_long_version;
 
 @ We do not want to keep wittering on with the same old explanations,
 so we remember which ones we've given before (i.e., in previous problem
-messages during the same run of NI). Eventually our patience is exhausted
+messages during the same run of Inform). Eventually our patience is exhausted
 and we give no further explanation in any circumstances.
 
 @d PATIENCE_EXHAUSTION_POINT 100

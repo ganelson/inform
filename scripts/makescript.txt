@@ -16,6 +16,11 @@
 
 {platform-settings}
 
+# The colony file for this collection of webs contains information about their
+# paths, where they are woven to, and so on
+
+COLONY = colony.txt
+
 INTEST = ../intest/Tangled/intest
 INTESTX = ../intest/Tangled/intest
 INTESTWEB = ../intest
@@ -41,9 +46,12 @@ INBUILDX = inbuild/Tangled/inbuild
 # root of the core Inform distribution.
 # In the eventual makefile, the symbol NAMEWEB is defined as its location.
 
-{module} WORDS words inbuild/words-module modules
+{module} WORDS words shared/words-module modules
+{module} SYNTAX syntax shared/syntax-module modules
+{module} HTML html shared/html-module modules
+{module} ARCH arch shared/arch-module modules
+
 {module} INFLECTIONS inflections inform7/inflections-module modules
-{module} SYNTAX syntax inbuild/syntax-module modules
 {module} LINGUISTICS linguistics inform7/linguistics-module modules
 {module} KINDS kinds inform7/kinds-module modules
 {module} PROBLEMS problems inform7/problems-module modules
@@ -51,12 +59,12 @@ INBUILDX = inbuild/Tangled/inbuild
 {module} IF if inform7/if-module modules
 {module} INDEX index inform7/index-module modules
 {module} MULTIMEDIA multimedia inform7/multimedia-module modules
-{module} INTER inter inter/inter-module modules
+
+{module} BYTECODE bytecode inter/bytecode-module modules
 {module} BUILDING building inter/building-module modules
 {module} CODEGEN codegen inter/codegen-module modules
-{module} HTML html inbuild/html-module modules
-{module} ARCH arch inbuild/arch-module modules
-{module} INBUILD inbuild inbuild/inbuild-module modules
+
+{module} SUPERVISOR supervisor inbuild/supervisor-module modules
 
 # First, the tools we need to make, using the same declaration notation.
 # In the eventual makefile, the symbol NAMEWEB is the location of NAME;
@@ -78,13 +86,15 @@ INFORM6X = inform6/Tangled/inform6
 
 # While these are also executables, they only provide unit tests for modules:
 
+{tool} SYNTAXTEST syntax-test shared/syntax-test utools
+{tool} WORDSTEST words-test shared/words-test utools
+{tool} ARCHTEST arch-test shared/arch-test utools
+
 {tool} INFLECTIONSTEST inflections-test inform7/inflections-test utools
 {tool} LINGUISTICSTEST linguistics-test inform7/linguistics-test utools
 {tool} PROBLEMSTEST problems-test inform7/problems-test utools
-{tool} SYNTAXTEST syntax-test inbuild/syntax-test utools
-{tool} WORDSTEST words-test inbuild/words-test utools
+
 {tool} BUILDINGTEST building-test inter/building-test utools
-{tool} ARCHTEST arch-test inbuild/arch-test utools
 
 # And here are other webs:
 
@@ -326,12 +336,12 @@ readmepage:
 
 docs/$(@LEAF)/index.html: {dependent-files-for-tool-alone}@
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Tools:../compiler.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 .PHONY: @FORCEPAGES
 @FORCEPAGES:
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Tools:../compiler.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 {end-block}
 
@@ -341,12 +351,12 @@ docs/$(@LEAF)/index.html: {dependent-files-for-tool-alone}@
 
 docs/$(@LEAF)/index.html: {dependent-files-for-tool-alone}@
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navo.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Other Tools:../other.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 .PHONY: @FORCEPAGES
 @FORCEPAGES:
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navo.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Other Tools:../other.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 {end-block}
 
@@ -356,12 +366,12 @@ docs/$(@LEAF)/index.html: {dependent-files-for-tool-alone}@
 
 docs/$(@LEAF)/index.html: {dependent-files-for-tool-and-modules}@
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 .PHONY: @FORCEPAGES
 @FORCEPAGES:
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navu.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Unit Test Tools:../units.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 {end-block}
 
@@ -371,41 +381,41 @@ docs/$(@LEAF)/index.html: {dependent-files-for-tool-and-modules}@
 
 docs/$(@LEAF)-module/index.html: {dependent-files-for-module}@
 	rm -f docs/$(@LEAF)-module/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF)-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 .PHONY: @FORCEMPAGES
 @FORCEMPAGES:
 	rm -f docs/$(@LEAF)-module/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF)-module -navigation docs/docs-src/navc.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Compiler Modules:../compiler.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 {end-block}
 
 .PHONY: prepages
-prepages: docs/webs.html docs/compiler.html docs/extensions.html docs/other.html docs/units.html
+prepages: docs/index.html docs/compiler.html docs/extensions.html docs/other.html docs/units.html
 
-docs/webs.html: docs/docs-src/webs.inweb docs/docs-src/nav.html
-	$(INWEBX) docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into docs -navigation docs/docs-src/nav.html
+docs/index.html: docs/docs-src/index.inweb docs/docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member overview -weave
 
-docs/compiler.html: docs/docs-src/compiler.inweb docs/docs-src/navc-o.html
-	$(INWEBX) docs/docs-src/compiler.inweb -weave-as GitHubCovers -weave-into docs -navigation docs/docs-src/navc-o.html
+docs/compiler.html: docs/docs-src/compiler.inweb docs/docs-src/navc.html
+	$(INWEBX) -colony $(COLONY) -member compiler -weave
 
-docs/extensions.html: docs/docs-src/extensions.inweb docs/docs-src/navc-o.html
-	$(INWEBX) docs/docs-src/extensions.inweb -weave-as GitHubCovers -weave-into docs -navigation docs/docs-src/navc-o.html
+docs/extensions.html: docs/docs-src/extensions.inweb docs/docs-src/navk.html
+	$(INWEBX) -colony $(COLONY) -member extensions -weave
 
-docs/other.html: docs/docs-src/other.inweb docs/docs-src/navc-o.html
-	$(INWEBX) docs/docs-src/other.inweb -weave-as GitHubCovers -weave-into docs -navigation docs/docs-src/navc-o.html
+docs/other.html: docs/docs-src/other.inweb docs/docs-src/navo.html
+	$(INWEBX) -colony $(COLONY) -member other -weave
 
-docs/units.html: docs/docs-src/units.inweb docs/docs-src/navc-o.html
-	$(INWEBX) docs/docs-src/units.inweb -weave-as GitHubCovers -weave-into docs -navigation docs/docs-src/navc-o.html
+docs/units.html: docs/docs-src/units.inweb docs/docs-src/navu.html
+	$(INWEBX) -colony $(COLONY) -member units -weave
 
 .PHONY: forceprepages
 forceprepages:
 	rm -f docs/*.html
-	$(INWEBX) docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into docs -navigation docs/docs-src/nav.html
-	$(INWEBX) docs/docs-src/compiler.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navc-o.html
-	$(INWEBX) docs/docs-src/extensions.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navk-o.html
-	$(INWEBX) docs/docs-src/other.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navo-o.html
-	$(INWEBX) docs/docs-src/units.inweb -weave-as GitHubCovers -weave-into docs -breadcrumb 'Source:webs.html' -navigation docs/docs-src/navu-o.html
+	$(INWEBX) -colony $(COLONY) -member overview -weave
+	$(INWEBX) -colony $(COLONY) -member compiler -weave
+	$(INWEBX) -colony $(COLONY) -member extensions -weave
+	$(INWEBX) -colony $(COLONY) -member other -weave
+	$(INWEBX) -colony $(COLONY) -member units -weave
 	
 .PHONY: morepages
 morepages: {repeat-webs-span}docs/$(@LEAF)/index.html{end-span}
@@ -414,14 +424,14 @@ morepages: {repeat-webs-span}docs/$(@LEAF)/index.html{end-span}
 
 docs/$(@LEAF)/index.html: {dependent-files-for-tool-alone}@
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Kits:../extensions.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 {end-block}
 {repeat-webs-block:extensions}
 
 docs/$(@LEAF)/index.html: {dependent-files-for-tool-alone}@
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Extensions:../extensions.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 
 {end-block}
 	
@@ -429,11 +439,11 @@ docs/$(@LEAF)/index.html: {dependent-files-for-tool-alone}@
 forcemorepages:
 {repeat-webs-block:kits}
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Kits:../extensions.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 {end-block}
 {repeat-webs-block:extensions}
 	rm -f docs/$(@LEAF)/*.html
-	$(INWEBX) $(@WEB) -weave-docs -weave-into docs/$(@LEAF) -navigation docs/docs-src/navk.html -breadcrumb 'Source:../webs.html' -breadcrumb 'Extensions:../extensions.html'
+	$(INWEBX) -colony $(COLONY) -member $(@LEAF) -weave
 {end-block}
 
 # -----------------------------------------------------------------------------

@@ -5,8 +5,8 @@ To manage links to auxiliary files, and placeholder variables.
 @h Auxiliary files are for items bundled up with the release but which are
 deliberately made accessible for the eventual player: things such as maps
 or manuals. Inblorb needs to know about these only when releasing a website;
-they are also recorded in an iFiction record, but Inblorb does not create
-that (|ni| does).
+they are also recorded in an iFiction record, but Inblorb doesn't create that,
+Inform 7 does.
 
 =
 typedef struct auxiliary_file {

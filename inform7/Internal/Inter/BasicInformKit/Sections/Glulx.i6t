@@ -1636,7 +1636,7 @@ possible to write a routine which can look at a value, work out what it
 must mean, and print it suitably. This is only possible up to a point --
 for instance, it can't distinguish an integer from a function address --
 and in I7 the use of this sort of trick is much less important because
-type-checking in the NI compiler handles the problem much better. Still,
+type-checking in the Inform compiler handles the problem much better. Still,
 we retain some Glulx-only features because they are convenient for writing
 external files to disc, for instance, something which the Z-machine can't
 do in any case.

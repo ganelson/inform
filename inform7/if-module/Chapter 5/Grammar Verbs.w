@@ -137,7 +137,7 @@ is implemented not with a command verb but using I6's hooks for verbless
 commands. The grammar "[number] go" is attached as a grammar line to
 the "no verb verb", which is distinguished by having its command word
 number set to |-1|. Note that the "no verb verb" exists only in runs of
-NI where it has been needed: the Standard Rules do not use it.
+Inform where it has been needed: the Standard Rules do not use it.
 
 Command GVs other than the "no verb verb" are said to be "genuinely
 verbal".

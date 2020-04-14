@@ -6,9 +6,9 @@ the source text.
 
 @ This is grammar in the sense of the parsing structures used at run-time,
 and it occupies a chapter of its own in the source code since it is to some
-extent detached from the rest of NI: what we create in this chapter is
+extent detached from the rest of Inform: what we create in this chapter is
 almost an independent compiler in its own right, but of a much simpler
-language. Although we use many higher-level features of NI in the process,
+language. Although we use many higher-level features of Inform in the process,
 none use this.
 
 Grammar is organised in a three-level hierarchy:

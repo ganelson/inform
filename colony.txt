@@ -1,0 +1,77 @@
+navigation: docs/docs-src/nav.html
+pattern: GitHubPages
+
+breadcrumbs: none
+web: "overview" at "docs/docs-src/index.inweb" in "docs"
+
+navigation: docs/docs-src/navc.html
+breadcrumbs: "Home: //overview//"
+web: "compiler" at "docs/docs-src/compiler.inweb" in "docs"
+breadcrumbs: "Home: //overview//" > "Compiler Tools: //compiler//"
+home: docs
+
+web: "inform7" at "inform7" in "docs/inform7"
+web: "inter" at "inter" in "docs/inter"
+web: "inbuild" at "inbuild" in "docs/inbuild"
+breadcrumbs: "Home: //overview//" > "Inbuild Modules: //compiler//"
+module: "supervisor" at "inbuild/supervisor-module" in "docs/supervisor-module"
+breadcrumbs: "Home: //overview//" > "Inform7 Modules: //compiler//"
+module: "inflections" at "inform7/inflections-module" in "docs/inflections-module"
+module: "linguistics" at "inform7/linguistics-module" in "docs/linguistics-module"
+module: "kinds" at "inform7/kinds-module" in "docs/kinds-module"
+module: "problems" at "inform7/problems-module" in "docs/problems-module"
+module: "core" at "inform7/core-module" in "docs/core-module"
+module: "if" at "inform7/if-module" in "docs/if-module"
+module: "index" at "inform7/index-module" in "docs/index-module"
+module: "multimedia" at "inform7/multimedia-module" in "docs/multimedia-module"
+breadcrumbs: "Home: //overview//" > "Inter Modules: //compiler//"
+module: "bytecode" at "inter/bytecode-module" in "docs/bytecode-module"
+module: "building" at "inter/building-module" in "docs/building-module"
+module: "codegen" at "inter/codegen-module" in "docs/codegen-module"
+breadcrumbs: "Home: //overview//" > "Shared Modules: //compiler//"
+module: "arch" at "shared/arch-module" in "docs/arch-module"
+module: "syntax" at "shared/syntax-module" in "docs/syntax-module"
+module: "words" at "shared/words-module" in "docs/words-module"
+module: "html" at "shared/html-module" in "docs/html-module"
+
+navigation: docs/docs-src/navk.html
+breadcrumbs: "Home: //overview//"
+web: "extensions" at "docs/docs-src/extensions.inweb" in "docs"
+breadcrumbs: "Home: //overview//" > "Extensions: //extensions//"
+web: "basic_inform" at "inform7/extensions/basic_inform" in "docs/basic_inform"
+web: "standard_rules" at "inform7/extensions/standard_rules" in "docs/standard_rules"
+breadcrumbs: "Home: //overview//" > "Kits: //extensions//"
+web: "WorldModelKit" at "inform7/Internal/Inter/WorldModelKit" in "docs/WorldModelKit"
+web: "EnglishLanguageKit" at "inform7/Internal/Inter/EnglishLanguageKit" in "docs/EnglishLanguageKit"
+web: "CommandParserKit" at "inform7/Internal/Inter/CommandParserKit" in "docs/CommandParserKit"
+web: "BasicInformKit" at "inform7/Internal/Inter/BasicInformKit" in "docs/BasicInformKit"
+web: "BasicInformExtrasKit" at "inform7/Internal/Inter/BasicInformExtrasKit" in "docs/BasicInformExtrasKit"
+
+navigation: docs/docs-src/navo.html
+breadcrumbs: "Home: //overview//"
+web: "other" at "docs/docs-src/other.inweb" in "docs"
+breadcrumbs: "Home: //overview//" > "Other Tools: //other//"
+web: "inblorb" at "inblorb" in "docs/inblorb"
+web: "indoc" at "indoc" in "docs/indoc"
+web: "inrtps" at "inrtps" in "docs/inrtps"
+web: "inpolicy" at "inpolicy" in "docs/inpolicy"
+
+navigation: docs/docs-src/navu.html
+breadcrumbs: "Home: //overview//"
+web: "units" at "docs/docs-src/units.inweb" in "docs"
+breadcrumbs: "Home: //overview//" > "Unit Test Tools: //units//"
+web: "arch-test" at "shared/arch-test" in "docs/arch-test"
+web: "building-test" at "inter/building-test" in "docs/building-test"
+web: "inflections-test" at "inform7/inflections-test" in "docs/inflections-test"
+web: "linguistics-test" at "inform7/linguistics-test" in "docs/linguistics-test"
+web: "problems-test" at "inform7/problems-test" in "docs/problems-test"
+web: "syntax-test" at "shared/syntax-test" in "docs/syntax-test"
+web: "words-test" at "shared/words-test" in "docs/words-test"
+
+# external to this repository, and here to facilitate cross-links
+
+module: "foundation" at "../inweb/foundation-module" in "../inweb/docs/foundation-module"
+web: "foundation-test" at "../inweb/foundation-test" in "../inweb/docs/foundation-test"
+web: "inweb" at "../inweb" in "../inweb/docs"
+web: "goldbach" at "../inweb/Examples/goldbach" in "../inweb/docs/goldbach"
+web: "intest" at "../intest/docs/docs-src/index.inweb" in "../intest/docs"

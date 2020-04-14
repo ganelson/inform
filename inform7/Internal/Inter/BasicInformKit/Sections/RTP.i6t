@@ -230,7 +230,7 @@ fails, so that no definition for the phrase can be applied.
 ];
 
 @h Return Type Checking Failed.
-Similarly, though in a more restricted set of circumstances. NI can usually
+Similarly, though in a more restricted set of circumstances. Inform can usually
 prove that the value returned by a phrase matches its supposed kind, but
 because of the deliberately weak type-checking within the kind of value
 "object" it will allow a broader kind of object to be returned when the

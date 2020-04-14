@@ -33,7 +33,7 @@ always been so.
 
 @h Present and Past.
 Each individual condition has its own unique "PT number", counting upwards
-from 0 in order of compilation by NI, and a "chronological record" is a
+from 0 in order of compilation by Inform, and a "chronological record" is a
 word array with a state word as described above for each PT number.
 
 However, we keep not one but two chronological records: one for the situation
@@ -114,7 +114,7 @@ detailed in its code below.
 @h Scheme II.
 Actions discussed in the past tense -- "if we have taken the ball" or,
 more subtly, "Instead of waiting for the third turn" (which also refers
-to the past) -- are handled in a related but simpler way. NI counts such
+to the past) -- are handled in a related but simpler way. Inform counts such
 references, just as with other past tense conditions above, but this time
 stores a state in two simple word arrays: |TimesActionHasHappened| and
 |TurnsActionHasBeenHappening|.
@@ -138,7 +138,7 @@ past tense actions.)
 
 @h Past Action Routines.
 Actions can be quite complicated to test even in the present, and this is
-much more conveniently done in a routine with its own NI-generated stack
+much more conveniently done in a routine with its own Inform-generated stack
 frame; so each past tense action has its own testing routine, with a name
 like |PAPR_41|, which returns true or false depending on whether the action
 is going on now. The word array |PastActionsI6Routines| then contains a

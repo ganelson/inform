@@ -1,0 +1,533 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Complete Program</title>
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css"><style type="text/css">
+/* This is a CSS file for pages woven by the literate programming tool inweb */
+
+/* We'll start with syntax colouring, since everyone likes to toy with this: */
+
+.cwebmacrotext { color: #000000; font-weight: bold; } /* The name of a web macro */
+.functiontext  { color: #C00000; } /* When a C function is being defined */
+.string        { color: #408040; } /* A double-quoted C literal string */
+.character     { color: #204020; } /* A single-quoted C literal character */
+.constant     { color: #204020; } /* A named constant */
+.element    { color: #40407f; } /* A C structure element */
+.identifier    { color: #4040ff; } /* An identifier */
+.reserved      { color: #600000; } /* A reserved word */
+
+/* Comments at the end of lines are rendered like so: */
+
+.comment {
+	font: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	color: #404040;
+	font-style:italic;
+}
+
+/* The name of a web macro when being used: */
+
+.cwebmacro {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	text-decoration: none;
+	color: #000000; font-weight: bold;
+}
+
+.cwebmacronumber {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 80%;
+	text-decoration: none;
+	color: #000000;
+}
+
+/* And when being defined: */
+
+.cwebmacrodefn {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	text-decoration: none;
+	color: #000000; font-weight: bold;
+	font-weight:bold;
+}
+
+/* Now some generalities: */
+
+body {
+	background-color: #ffffff;
+	margin: 8px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	background-color: transparent;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Forms of paragraph: */
+
+p {
+	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	clear: both;
+}
+
+/* Where an inweb paragraph begins: */
+
+p.inwebparagraph {
+	width: 60em;
+	line-height: 150%;
+	padding-top: 15px;
+	padding-bottom: 5px;
+}
+
+/* If a web macro definition begins in its own paragraph, this is it: */
+
+p.macrodefinition {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-left: 30px;
+}
+
+/* The endnotes at the foot of code: "The function foo_bar is used in ..." */
+
+p.endnote {
+	font-size: 0.8em;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-left: 30px;
+	text-decoration:none;
+	color: #000000;
+}
+
+/* The Purpose slug: */
+
+p.purpose {
+	width: 60em;
+	line-height: 150%;
+	font-size: 1em;
+	font-style:italic;	
+	margin-left: 15px;
+}
+
+/* Blocks of code appear in these */
+
+pre {
+	font-family: Monaco, monospace;
+}
+
+pre.display {
+	padding: 3px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 30px;
+	margin-right: 10px;
+	background: #f8f8f8;
+	border-width: 1px;
+	border-style: solid solid solid solid;
+	border-color: #ccc;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+pre.displaydefn {
+	padding: 3px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+	background: #f8f8f8;
+	border-width: 1px;
+	border-style: solid solid solid solid;
+	border-color: #ccc;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+pre.definitions {
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+/* The following are for breadcrumbs of links: */
+
+ul, li {
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+
+.crumbs {
+	border:1px solid #dedede;
+	height:3.45em;
+}
+
+.crumbs li {
+	float:left;
+	line-height:2.3em;
+	padding-left:.75em;
+	color:#333;
+	font-size: 1.5em;
+}
+
+.crumbs li a {
+	display:block;
+	padding:0 15px 0 0;
+	background:url(crumbs.gif) no-repeat right center;
+}
+
+.crumbs li a:link, #crumbs li a:visited {
+	text-decoration:none;
+	color:#333;
+}
+
+.crumbs li a:hover, #crumbs li a:focus {
+	color:#dd2c0d;
+}
+
+/* This is for items in lists from inweb source: */
+
+ul.items {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+ul.items li {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	margin-left: 15px;
+}
+
+/* And this is for each section's table of contents: */
+
+ul.toc {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+ul.toc li {
+	float:left;
+	margin-left: 15px;
+	color:#000;
+}
+
+ul.toc li a {
+	display:block;
+}
+
+ul.toc li a:link, ul.toc li a:visited {
+	text-decoration:none;
+	color:#000;
+}
+
+ul.toc li a:hover, ul.toc li a:focus {
+	color:#dd2c0d;
+}
+
+hr.tocbar {
+	clear: both;
+	margin-top:3px;
+	margin-bottom:3px;
+	color:#333;
+	border:0
+	background-color:#333;
+}
+
+/* This is for cross-reference links ("This code is used in ...") */
+
+p.endnote:link, p.endnote:visited, p.endnote:hover, p.endnote:focus {
+	text-decoration:none;
+	color:#000;
+}
+
+p.endnote a:link, p.endnote a:visited {
+	text-decoration:none;
+	color:#000;
+}
+
+p.endnote a:hover, p.endnote a:focus {
+	text-decoration:none;
+	color:#dd2c0d;
+}
+
+/* Now for the index page */
+
+p.heading {
+	margin-top: 2px;
+	margin-bottom: 2px;
+	font-size: 20
+}
+p.chapter {
+	font-size: 14
+}
+p.tight {
+	font-size: 12
+}
+p.tightin {
+	padding-left: 25px;
+	font-size: 12
+}
+.chapterlist li {
+	padding-top: 8px;
+	padding-left: 16px;
+}
+.chaptertitle {
+	font-weight: bold;
+}
+.chapterlist .sectionlist li {
+	padding-left: 48px;
+}
+span.definitionkeyword {
+	color:#801010;
+	font-weight:bold;
+}
+span.extract {
+	font-size: 15px;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	width: 100%;
+	padding: 3px;
+}
+
+nav[role="navigation"] {
+    width: 180px;
+    position: fixed;
+    overflow: scroll;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #FAFAFA;
+    border-right: 1px solid #e6e6e6;
+    padding: 20px 30px
+}
+
+nav[role="navigation"] ul {
+    border-top: 1px solid #e6e6e6;
+    font-weight: 400;
+    margin-bottom: 30px;
+    list-style: none
+}
+
+nav[role="navigation"] ul ul {
+    list-style: none
+}
+
+nav[role="navigation"] ul li {
+    border-bottom: 1px solid #e6e6e6
+}
+
+nav[role="navigation"] ul li.active {
+    border-bottom: 1px solid #333
+}
+
+nav[role="navigation"] ul li.active a {
+    font-weight: 700
+}
+
+nav[role="navigation"] h1 a:link {
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+nav[role="navigation"] h1 a:visited {
+    color: #333
+}
+
+nav[role="navigation"] h1 a:active {
+    font-weight: 700
+}
+
+nav[role="navigation"] h1 a:hover {
+    color: #dd2c0d
+}
+
+nav[role="navigation"] ul li a:link {
+    color: #333;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    display: block;
+    padding: 10px 10px 2px 2px
+}
+
+nav[role="navigation"] ul li span.selectedlink {
+    color: #f25;
+}
+
+nav[role="navigation"] ul li span.unlink {
+    color: #f25;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    display: block;
+    padding: 10px 10px 2px 2px
+}
+
+nav[role="navigation"] ul li a:visited {
+    color: #333
+}
+
+nav[role="navigation"] ul li a:active {
+    font-weight: 700
+}
+
+nav[role="navigation"] ul li a:hover {
+    color: #dd2c0d
+}
+
+nav[role="navigation"] ul li ul {
+    margin-bottom: 10px;
+    border-top: none
+}
+
+nav[role="navigation"] ul li ul li {
+    border-bottom: none;
+    padding: 0.1em
+}
+
+nav[role="navigation"] ul li ul li.active {
+    border-bottom: none
+}
+
+nav[role="navigation"] ul li ul li.active a {
+    font-weight: 700
+}
+
+nav[role="navigation"] ul li ul a:link {
+    color: #dd2c0d;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+    display: block;
+    margin-left: 15px;
+    padding: 0 0 3px;
+    border-bottom: none;
+    font-weight: 300
+}
+
+nav[role="navigation"] ul li ul a:hover {
+    text-decoration: underline
+}
+
+nav[role="navigation"] h2 {
+    font-size: 0.95em;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    color: #999;
+    padding-bottom: 0.5em
+}
+
+nav[role="navigation"] h1 {
+    margin-top: 0em
+}
+
+main {
+    max-width: 1024px;
+    min-width: 320px;
+    margin-left: 250px;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%
+}
+
+#logo {
+    text-indent: -9999px;
+    height: 48px;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 0.5em;
+    padding-bottom: 10px
+}
+
+#logo a {
+    display: block;
+    width: 190px;
+    height: 48px;
+    background-image: url("/assets/images/swift.svg");
+    background-repeat: no-repeat;
+    background-size: 190px 48px;
+    background-position-x: -8px
+}
+
+
+
+
+
+</style>
+
+		
+	</head>
+	<body>
+		<nav role="navigation">
+		<h1><a href="index.html">
+<img src="docs-src/Figures/Inform.png" height=72">
+</a></h1>
+<ul><li><a href="compiler.html">compiler tools</a></li>
+<li><a href="other.html">other tools</a></li>
+<li><a href="extensions.html">extensions and kits</a></li>
+<li><a href="units.html">unit test tools</a></li>
+</ul><h2>Repository</h2><ul>
+<li><a href="https://github.com/ganelson/inform">github</a></li>
+</ul><h2>Related Projects</h2><ul>
+<li><a href="../../inweb/docs/index.html">inweb</a></li>
+<li><a href="../../intest/docs/index.html">intest</a></li>
+
+</ul>
+		</nav>
+		<main role="main">
+		
+<!--Weave of 'Complete Program' generated by 7-->
+<ul class="crumbs"><li><b>Overview</b></li></ul><p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>This is the home page for the source code for the Inform 7 programming
+language. For the language itself, its documentation, and downloads of the
+apps for different platforms, see: <a href="http://www.inform7.com
+" class="external">http://www.inform7.com
+</a></p>
+
+<p class="inwebparagraph">Almost everything here is a "web", or "literate program", powered by <a href="../../inweb/docs/index.html" class="internal">inweb</a>.
+Those new to literate programming may want first to try the modest examples
+there (say, <a href="../../inweb/docs/goldbach/index.html" class="internal">goldbach</a>), and skim the <a href="../../inweb/docs/index.html" class="internal">inweb</a> manual.
+</p>
+
+<p class="inwebparagraph">These pages host "woven", human-readable, forms of the source and are intended
+for browsing. To obtain and build the software, or to see resources which
+are not webs and thus not here, see: <a href="https://github.com/ganelson/inform
+" class="external">https://github.com/ganelson/inform
+</a></p>
+
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The Inform 7 compiler comes with a large penumbra of supporting resources,
+so there are nearly 50 webs in this repository:
+</p>
+
+<ul class="items"><li>(a) The compiler is built from some 16 modules, plus three front-end command
+line tools controlling them. See <a href="compiler.html" class="internal">compiler</a> for a map.
+</li><li>(b) See <a href="other.html" class="internal">other</a> for command-line tools useful for building or working with
+Inform, but not involving compilation: <a href="inblorb/index.html" class="internal">inblorb</a>, a packager; <a href="indoc/index.html" class="internal">indoc</a>, to
+format documentation; <a href="inpolicy/index.html" class="internal">inpolicy</a>, a lint-like tool for checking Inform's
+source code; and <a href="inrtps/index.html" class="internal">inrtps</a>, to format run-time problem messages.
+</li><li>(c) The extensions "Basic Inform" (<a href="basic_inform/index.html" class="internal">basic_inform</a>) and "Standard Rules"
+(<a href="standard_rules/index.html" class="internal">standard_rules</a>), together with a number of "kits" of precompiled Inter
+code: see <a href="extensions.html" class="internal">extensions</a>.
+</li><li>(d) Small unit-test tools to exercise the modules mentioned in (a): see <a href="units.html" class="internal">units</a>.
+</li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Three webs are conspicuously missing, but only because they are on similar
+mini-websites on other Github repositories:
+</p>
+
+<ul class="items"><li>(a) <a href="../../inweb/docs/index.html" class="internal">inweb</a> itself, and its function library, <a href="../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>, which all of
+the Inform tools use;
+</li><li>(b) the testing utility <a href="../../intest/docs/index.html" class="internal">intest</a>, which has a repository of its own.
+</li></ul>
+<!--End of weave-->
+		</main>
+	</body>
+</html>
+

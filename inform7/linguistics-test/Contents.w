@@ -5,9 +5,9 @@ Language: InC
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: ../inbuild/words
+Import: ../shared/words
 Import: inflections
-Import: ../inbuild/syntax
+Import: ../shared/syntax
 Import: linguistics
 
 Chapter 1: Scaffolding

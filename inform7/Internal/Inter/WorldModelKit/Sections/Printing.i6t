@@ -151,7 +151,7 @@ Array T_SL_Location --> CONSTANT_PACKED_TEXT_STORAGE SL_Location;
 [ DARKNESS_NAME_INTERNAL_R; ];
 
 @h Banner.
-Note that NI always compiles |Story| and |Headline| texts, but does not always
+Note that Inform always compiles |Story| and |Headline| texts, but does not always
 compile a |Story_Author|.
 
 =

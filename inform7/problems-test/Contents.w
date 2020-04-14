@@ -5,8 +5,8 @@ Language: InC
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: ../inbuild/words
-Import: ../inbuild/syntax
+Import: ../shared/words
+Import: ../shared/syntax
 Import: problems
 
 Chapter 1: Scaffolding

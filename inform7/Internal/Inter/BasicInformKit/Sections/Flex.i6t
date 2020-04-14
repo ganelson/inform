@@ -143,7 +143,7 @@ freed and added to the free space object.
 Array Flex_Heap -> (MEMORY_HEAP_SIZE + 16); ! Plus 16 to allow room for head-free-block
 
 @h Initialisation.
-To recap: the constant |MEMORY_HEAP_SIZE| has been predefined by the NI compiler,
+To recap: the constant |MEMORY_HEAP_SIZE| has been predefined by the Inform compiler,
 and is always itself a power of 2, say $2^n$. We therefore have $2^n + 2^4$
 bytes available to us, and we format these as a free space list of two
 blocks: the $2^4$-sized "head-free-block" described above followed by

@@ -123,7 +123,7 @@ to the going action. The following routine converts that into an address on
 the M-stack, in the topmost block with the given ID number (since "room gone
 to", for instance, always means its value in the most current going action
 of those now under way). Typechecking in the compiler should mean that it is
-impossible to produce either error message below: NI will only compile valid
+impossible to produce either error message below: Inform will only compile valid
 uses of |MstVO| ("M-stack variable offset") where the seek succeeds and
 the offset is within range.
 

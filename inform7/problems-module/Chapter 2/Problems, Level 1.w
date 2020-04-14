@@ -16,7 +16,7 @@ void Problems::Buffer::clear(void) {
 }
 
 @  Roughly speaking, text for problem messages comes from two possible sources:
-fairly short standard texts inside NI, and quotations (direct or indirect)
+fairly short standard texts inside Inform, and quotations (direct or indirect)
 from the source text. The latter are inserted by the routines in this section,
 and they are the ones we should be wary of, since bizarre input might cause
 absurdly long quotations to be made. A quotation involves copying text from
@@ -69,7 +69,7 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 	TEMPORARY_TEXT(file);
 	if (referred) {
 		WRITE_TO(file, "%f", TextFromFiles::get_filename(referred));
-		#ifdef INBUILD_MODULE
+		#ifdef SUPERVISOR_MODULE
 		pathname *proj = Projects::path(Inbuild::project());
 		if (proj) {
 			TEMPORARY_TEXT(project_prefix);
@@ -84,7 +84,7 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 	WRITE_TO(PBUFF, "'");
 	Problems::Buffer::copy_text_into_problem_buffer(W);
 	text_stream *paraphrase = file;
-	#ifdef INBUILD_MODULE
+	#ifdef SUPERVISOR_MODULE
 	paraphrase = I"source text";
 	inform_extension *E = Extensions::corresponding_to(referred);
 	if (E) {

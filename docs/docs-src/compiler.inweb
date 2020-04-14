@@ -1,87 +1,61 @@
 Title: The Inform 7 compiler
 Author: Graham Nelson
-Purpose: A documentation page.
-Language: C
 
-@ The task of the Inform 7 compiler is to take source text which may be as
-minimal as "The Taj Mahal is a room.", and to turn it into a computer program.
-It is properly speaking a "transpiler", in that it compiles down to code for
-another compiler to take the rest of the way. Traditionally, that other
-compiler is Inform 6 (1996-2003), a reliable generator of "story files"
-(programs for virtual machines) from typeless but otherwise C-like code.
+@ The task of the Inform 7 compiler is to take natural-language source text
+and "transpile" to down to lower-level, more orthodox code which another
+compiler can take the rest of the way. Usually, but not necessarily, that
+other compiler is the typeless but otherwise C-like Inform 6 (1996-2003).
 
-The Inform 7 compiler works in three phases:
-(1) A build manager reads in the text, breaks it into sentences, finds the
-necessary extensions, merges them in, and generally decides what to do.
-(2) The core of the compiler translates this assemblage of source text into
-a low-level abstract language called "inter".
-(3) The code-generator further translates that intermediate code into our
-final output, which will be code for some lower-level compiler.
+Inform offers three compiler tools: //inbuild//, //inform7//
+and //inter//. These represent the front end (build control, resource
+management), the middle part (actual compilation), and the back end (code
+generation, assimilation of kits), but really they are three points of access
+to the same code base. See //inbuild: Manual//, //inform7: Manual//, //inter: Manual//
+and //inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference Card//.
 
-@ Three ccmmand-line tools are provided: |inbuild|, |inform7|, and |inter|.
-They roughly correspond to the three phases, but |inbuild| can also
-perform some useful archiving and resource management functions, and |inter|
-can also perform assimilation on kits, or translate inter code not originated by
-Inform. |inform7| on its own is capable of performing the complete compilation
-process and is the only one of the three included in the GUI apps of Inform
-for MacOS, Windows and so on.
-
-Each tool has a tiny CLI (or "command-line interface") but is otherwise
-divided up into large segments called "modules", many shared between two or
-even all three tools. |inform7| contains every module. The following diagram
-shows exactly how:
-
-= (text as BoxArt)
+Each tool has its own CLI (or "command-line interface") but is otherwise
+divided up into "modules", many shared between two or even all three tools.
+//inform7// contains every module, and is thus the entire compiler, whereas
+the other tools are subsets of it:
+= (hyperlinked text as BoxArt)
+        INBUILD                  INFORM7                   INTER     
     +-------------+          +-------------+          +-------------+    
-    |   INBUILD   |          |   INFORM7   |          |    INTER    |
-    |             |          |             |          |             |
-+---+.............+---+  +---+.............+---+  +---+.............+---+
-| inbuild (cli shell) |  | inform7 (cli shell) |  |  inter (cli shell)  |
-+---+.............+---+  +---+.............+---+  +---+.............+---+
-    |             |          |             |          |             |
+    |   //inbuild//   |          |   //inform7//   |          |    //inter//    |
+    |    (cli)    |          |    (cli)    |          |    (cli)    |
 +---+.............+----------+.............+---+      |             |
-|   inbuild-module                             |      |             |
-|    syntax-module                             |      |             |
-|     html-module                              |      |             |
+|  //supervisor//-module                           |      |             |
 +---+.............+----------+.............+---+      |             |
     |             |          |             |          |             |
     |             |      +---+.............+---+      |             |
-    |             |      |     core-module     |      |             |
-    |             |      | inflections-module  |      |             |
-    |             |      | linguistics-module  |      |             |
-    |             |      |   problems-module   |      |             |
-    |             |      |    kinds-module     |      |             |
-    |             |      |      if-module      |      |             |
-    |             |      |  multimedia-module  |      |             |
-    |             |      |    index-module     |      |             |
+    |             |      |     //core//-module     |      |             |
+    |             |      | //inflections//-module  |      |             |
+    |             |      | //linguistics//-module  |      |             |
+    |             |      |   //problems//-module   |      |             |
+    |             |      |    //kinds//-module     |      |             |
+    |             |      |      //if//-module      |      |             |
+    |             |      |  //multimedia//-module  |      |             |
+    |             |      |    //index//-module     |      |             |
     |             |      +---+.............+---+      |             |
     |             |          |             |          |             |
     |             |      +---+.............+----------+.............+---+
-    |             |      |                             inter-module     |
-    |             |      |                            building-module   |
-    |             |      |                            codegen-module    |
-    |             |      +---+.............+----------+.............+---+
-    |             |          |             |          |             |
-+---+.............+----------+.............+----------+.............+---+
-|    words-module                                                       |
-|     arch-module                                                       |
-+---+.............+----------+.............+----------+.............+---+
-    |             |          |             |          |             |
-+---+.............+----------+.............+----------+.............+---+
-|                      (foundation-module from inweb)                   |
+    |             |      |                            //bytecode//-module   |
+    |             |      |                            //building//-module   |
+    |             |      |                            //codegen//-module    |
+    +-------------+      +----------------------------------------------+
++-----------------------------------------------------------------------+
+|  SHARED                  shared //syntax//-module                         |
+|                          shared //words//-module                          |
+|                           shared //arch//-module                          |
+|                           shared //html//-module                          |
++-----------------------------------------------------------------------+
++-----------------------------------------------------------------------+
+|  FOUNDATION      //foundation//-module (in inweb repository)              |
 |                   (Posix or Windows-related functions)                |
 |                           (standard C library)                        |
-+---+.............+----------+.............+----------+.............+---+
-    |             |          |             |          |             |
-    +-------------+          +-------------+          +-------------+    
++-----------------------------------------------------------------------+
 =
-
-@ The three CLIs are to be found in the webs called |inbuild|, |inform7|
-and |inter| (and these are the webs which tangle to the three complete tools).
-Each module is also a web, and the above chart shows where it is: a module
-in the INBUILD column, say |syntax-module|, is at the path |inbuild/syntax-module|, 
-for example. But as the diagram shows, it's shared code and runs in both
-|inbuild| and |inform7|.
-
-All three tools also contain the |foundation| module, a library of utility
-code which is present in every Inform tool.
+The three tools each use a "shared" library, made up of four modules
+providing services useful for natural language-based programs. At one time
+this was going to be called "Second Foundation" (or possibly "Foundation
+and Empire"), because there is also //foundation// underneath, a C library
+of utility functions provided by the //inweb// project.
