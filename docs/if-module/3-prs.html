@@ -68,7 +68,7 @@ sort of tomfoolery.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Persons::start<button class="popup" onclick="togglePopup('usagePopup85')">...<span class="popuptext" id="usagePopup85">Usage of <b>PL::Persons::start</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">PLUGIN_REGISTER</span><span class="plain">(</span><span class="identifier">PLUGIN_COMPLETE_MODEL</span><span class="plain">, </span><span class="functiontext"><a href="#SP3">PL::Persons::IF_complete_model</a></span><span class="plain">);</span>
+        <span class="identifier">PLUGIN_REGISTER</span><span class="plain">(</span><span class="identifier">PLUGIN_COMPLETE_MODEL</span><span class="plain">, </span><span class="functiontext"><a href="3-prs.html#SP3">PL::Persons::IF_complete_model</a></span><span class="plain">);</span>
     <span class="plain">}</span>
 
 </pre>
@@ -78,7 +78,7 @@ sort of tomfoolery.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Persons::IF_complete_model<button class="popup" onclick="togglePopup('usagePopup86')">...<span class="popuptext" id="usagePopup86">Usage of <b>PL::Persons::IF_complete_model</b>:<br><a href="#SP2">&#167;2</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Persons::IF_complete_model<button class="popup" onclick="togglePopup('usagePopup86')">...<span class="popuptext" id="usagePopup86">Usage of <b>PL::Persons::IF_complete_model</b>:<br><a href="3-prs.html#SP2">&#167;2</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K_person</span><span class="plain">)) {</span>
             <span class="identifier">P_animate</span><span class="plain"> = </span><span class="identifier">Properties::EitherOr::new_nameless</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"animate"</span><span class="plain">);</span>
             <span class="identifier">Properties::EitherOr::implement_as_attribute</span><span class="plain">(</span><span class="identifier">P_animate</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>

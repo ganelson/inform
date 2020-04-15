@@ -129,7 +129,7 @@ optionally be used.)
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE_FOR_RULE_FILING_SMFT:</span>
-                <span class="functiontext"><a href="#SP18">Rules::Placement::place_in_rulebook</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">,</span>
+                <span class="functiontext"><a href="21-rps.html#SP18">Rules::Placement::place_in_rulebook</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">,</span>
                     <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">listing_sense_ANNOT</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -193,7 +193,7 @@ following won't pick up many false positives.
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE_FOR_RULE_FILING_SMFT:</span>
-                <span class="functiontext"><a href="#SP9">Rules::Placement::request_substitute</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">,</span>
+                <span class="functiontext"><a href="21-rps.html#SP9">Rules::Placement::request_substitute</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">,</span>
                     <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">listing_sense_ANNOT</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -253,12 +253,12 @@ subject and object NPs.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP8">&#167;8</a> (twice), <a href="#SP10">&#167;10</a>, <a href="#SP16">&#167;16</a>, <a href="#SP17">&#167;17</a> (three times).</p>
+<p class="endnote">This code is used in <a href="21-rps.html#SP8">&#167;8</a> (twice), <a href="21-rps.html#SP10">&#167;10</a>, <a href="21-rps.html#SP16">&#167;16</a>, <a href="21-rps.html#SP17">&#167;17</a> (three times).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Placement::request_substitute<button class="popup" onclick="togglePopup('usagePopup1620')">...<span class="popuptext" id="usagePopup1620">Usage of <b>Rules::Placement::request_substitute</b>:<br><a href="#SP7">&#167;7</a></span></button></span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p3</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Placement::request_substitute<button class="popup" onclick="togglePopup('usagePopup1620')">...<span class="popuptext" id="usagePopup1620">Usage of <b>Rules::Placement::request_substitute</b>:<br><a href="21-rps.html#SP7">&#167;7</a></span></button></span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p3</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">) {</span>
         <span class="plain">&lt;</span><span class="identifier">substitutes</span><span class="plain">-</span><span class="reserved">for</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -321,7 +321,7 @@ eventually match &lt;spec-condition&gt;.
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE_FOR_RULE_FILING_SMFT:</span>
-                <span class="functiontext"><a href="#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">);</span>
+                <span class="functiontext"><a href="21-rps.html#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -350,7 +350,7 @@ eventually match &lt;spec-condition&gt;.
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE_FOR_RULE_FILING_SMFT:</span>
-                <span class="functiontext"><a href="#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                <span class="functiontext"><a href="21-rps.html#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -379,7 +379,7 @@ eventually match &lt;spec-condition&gt;.
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE_FOR_RULE_FILING_SMFT:</span>
-                <span class="functiontext"><a href="#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="functiontext"><a href="21-rps.html#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -391,10 +391,10 @@ eventually match &lt;spec-condition&gt;.
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Placement::constrain_effect<button class="popup" onclick="togglePopup('usagePopup1624')">...<span class="popuptext" id="usagePopup1624">Usage of <b>Rules::Placement::constrain_effect</b>:<br><a href="#SP11">&#167;11</a>, <a href="#SP12">&#167;12</a>, <a href="#SP13">&#167;13</a></span></button></span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Placement::constrain_effect<button class="popup" onclick="togglePopup('usagePopup1624')">...<span class="popuptext" id="usagePopup1624">Usage of <b>Rules::Placement::constrain_effect</b>:<br><a href="21-rps.html#SP11">&#167;11</a>, <a href="21-rps.html#SP12">&#167;12</a>, <a href="21-rps.html#SP13">&#167;13</a></span></button></span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
-            <span class="functiontext"><a href="#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
-            <span class="functiontext"><a href="#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
+            <span class="functiontext"><a href="21-rps.html#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
+            <span class="functiontext"><a href="21-rps.html#SP14">Rules::Placement::constrain_effect</a></span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="plain">&lt;</span><span class="identifier">does</span><span class="plain">-</span><span class="identifier">nothing</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">));</span>
@@ -492,7 +492,7 @@ a given rule appears in, and (within limits) where. A simple example:
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">This code is used in <a href="#SP17">&#167;17</a> (three times).</p>
+    <p class="endnote">This code is used in <a href="21-rps.html#SP17">&#167;17</a> (three times).</p>
 
     <p class="inwebparagraph"><a id="SP17_2"></a><b>&#167;17.2.  </b><code class="display">
     &lt;<span class="cwebmacrodefn">Issue PM_ImproperRulePlacement problem</span> <span class="cwebmacronumber">17.2</span>&gt; =
@@ -506,7 +506,7 @@ a given rule appears in, and (within limits) where. A simple example:
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">This code is used in <a href="#SP17">&#167;17</a>.</p>
+    <p class="endnote">This code is used in <a href="21-rps.html#SP17">&#167;17</a>.</p>
 
     <p class="inwebparagraph"><a id="SP17_2_1"></a><b>&#167;17.2.1.  </b><code class="display">
     &lt;<span class="cwebmacrodefn">Actually issue PM_ImproperRulePlacement problem</span> <span class="cwebmacronumber">17.2.1</span>&gt; =
@@ -526,7 +526,7 @@ a given rule appears in, and (within limits) where. A simple example:
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">This code is used in <a href="#SP17_2">&#167;17.2</a>, <a href="#SP18">&#167;18</a>.</p>
+    <p class="endnote">This code is used in <a href="21-rps.html#SP17_2">&#167;17.2</a>, <a href="21-rps.html#SP18">&#167;18</a>.</p>
 
     <p class="inwebparagraph"><a id="SP17_3"></a><b>&#167;17.3.  </b><code class="display">
     &lt;<span class="cwebmacrodefn">Issue PM_NoSuchRulebookPlacement problem</span> <span class="cwebmacronumber">17.3</span>&gt; =
@@ -544,15 +544,15 @@ a given rule appears in, and (within limits) where. A simple example:
 
     <p class="inwebparagraph"></p>
 
-    <p class="endnote">This code is used in <a href="#SP17">&#167;17</a> (four times).</p>
+    <p class="endnote">This code is used in <a href="21-rps.html#SP17">&#167;17</a> (four times).</p>
 
     <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b></p>
 
     <pre class="display">
-        <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Placement::place_in_rulebook<button class="popup" onclick="togglePopup('usagePopup1625')">...<span class="popuptext" id="usagePopup1625">Usage of <b>Rules::Placement::place_in_rulebook</b>:<br><a href="#SP4">&#167;4</a></span></button></span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">) {</span>
+        <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Placement::place_in_rulebook<button class="popup" onclick="togglePopup('usagePopup1625')">...<span class="popuptext" id="usagePopup1625">Usage of <b>Rules::Placement::place_in_rulebook</b>:<br><a href="21-rps.html#SP4">&#167;4</a></span></button></span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
-                <span class="functiontext"><a href="#SP18">Rules::Placement::place_in_rulebook</a></span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
-                <span class="functiontext"><a href="#SP18">Rules::Placement::place_in_rulebook</a></span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
+                <span class="functiontext"><a href="21-rps.html#SP18">Rules::Placement::place_in_rulebook</a></span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
+                <span class="functiontext"><a href="21-rps.html#SP18">Rules::Placement::place_in_rulebook</a></span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
 

@@ -135,26 +135,26 @@ void Requests::create_requested_material(void) {
 }
 
 @<Create a Solution::walkthrough file@> =
-	filename *Skein_filename = Filenames::in_folder(project_folder, I"Skein.skein");
-	filename *solution_filename = Filenames::in_folder(release_folder, I"solution.txt");
+	filename *Skein_filename = Filenames::in(project_folder, I"Skein.skein");
+	filename *solution_filename = Filenames::in(release_folder, I"solution.txt");
 	Solution::walkthrough(Skein_filename, solution_filename);
 
 @<Create a plain text source file@> =
-	pathname *Source = Pathnames::subfolder(project_folder, I"Source");
-	filename *source_text_filename = Filenames::in_folder(Source, I"story.ni");
-	filename *write_to = Filenames::in_folder(release_folder, I"source.txt");
+	pathname *Source = Pathnames::down(project_folder, I"Source");
+	filename *source_text_filename = Filenames::in(Source, I"story.ni");
+	filename *write_to = Filenames::in(release_folder, I"source.txt");
 	BinaryFiles::copy(source_text_filename, write_to, FALSE);
 
 @<Create an iFiction file@> =
-	filename *iFiction_filename = Filenames::in_folder(project_folder, I"Metadata.iFiction");
-	filename *write_to = Filenames::in_folder(release_folder, I"iFiction.xml");
+	filename *iFiction_filename = Filenames::in(project_folder, I"Metadata.iFiction");
+	filename *write_to = Filenames::in(release_folder, I"iFiction.xml");
 	BinaryFiles::copy(iFiction_filename, write_to, FALSE);
 
 @<Copy a file into the release folder@> =
 	pathname *P = release_folder;
 	if (Str::eq_wide_string(req->details3, L"--") == FALSE)
-		P = Pathnames::subfolder(P, req->details3);
-	filename *write_to = Filenames::in_folder(P, req->details2);
+		P = Pathnames::down(P, req->details3);
+	filename *write_to = Filenames::in(P, req->details2);
 	filename *from = Filenames::from_text(req->details1);
 	int size = BinaryFiles::copy(from, write_to, TRUE);
 	req->outcome_data = size;
@@ -206,7 +206,7 @@ the template to add more if it wants to.
 	if (use_css_code_styles) {
 		filename *from = Templates::find_file_in_specific_template(t, I"style.css");
 		if (from) {
-			filename *CSS_filename = Filenames::in_folder(release_folder, I"style.css");
+			filename *CSS_filename = Filenames::in(release_folder, I"style.css");
 			BinaryFiles::copy(from, CSS_filename, FALSE);
 		}
 	}
@@ -220,8 +220,8 @@ the template to add more if it wants to.
 					Requests::release_file_into_website(I"play.html", t, NULL); break;
 				case SOURCE_REQ:
 					Placeholders::set_to(I"SOURCEPREFIX", I"source", 0);
-					pathname *Source = Pathnames::subfolder(project_folder, I"Source");
-					filename *story = Filenames::in_folder(Source, I"story.ni");
+					pathname *Source = Pathnames::down(project_folder, I"Source");
+					filename *story = Filenames::in(Source, I"story.ni");
 					TEMPORARY_TEXT(source_text);
 					WRITE_TO(source_text, "%f", story);
 					Placeholders::set_to(I"SOURCELOCATION", source_text, 0);
@@ -353,8 +353,8 @@ generation of source pages.
 =
 void Requests::release_file_into_website(text_stream *name, text_stream *t, text_stream *sub) {
 	pathname *P = release_folder;
-	if (sub) P = Pathnames::subfolder(P, sub);
-	filename *write_to = Filenames::in_folder(P, name);
+	if (sub) P = Pathnames::down(P, sub);
+	filename *write_to = Filenames::in(P, name);
 
 	filename *from = Templates::find_file_in_specific_template(t, name);
 	if (from == NULL) {
@@ -425,7 +425,7 @@ Inform 7 more seamless: see the manual for an explanation.
 void Requests::declare_where_blorb_should_be_copied(pathname *path) {
 	text_stream *leaf = Placeholders::read(I"STORYFILE");
 	if (leaf == NULL) leaf = I"Story";
-	filename *to = Filenames::in_folder(path, leaf);
+	filename *to = Filenames::in(path, leaf);
 	PRINT("Copy blorb to: [[%f]]\n", to);
 }
 

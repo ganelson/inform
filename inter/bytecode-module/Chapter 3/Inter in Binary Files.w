@@ -120,7 +120,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			Inter::Binary::read_error(&eloc, ftell(fh), I"max zero");
 			grid_extent = 1000;
 		}
-		grid = (inter_t *) Memory::I7_calloc((int) grid_extent, sizeof(inter_t), INTER_BYTECODE_MREASON);
+		grid = (inter_t *) Memory::calloc((int) grid_extent, sizeof(inter_t), INTER_BYTECODE_MREASON);
 		for (inter_t i=0; i<grid_extent; i++) grid[i] = 0;
 		for (inter_t i=0; i<count; i++) {
 			unsigned int from_N;

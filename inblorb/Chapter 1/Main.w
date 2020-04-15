@@ -56,8 +56,8 @@ filename *blorb_filename = NULL;
 int main(int argc, char *argv[]) {
 	Foundation::start();
 	Basics::register_mreasons();
-	blurb_filename = Filenames::in_folder(NULL, I"Release.blurb");
-	blorb_filename = Filenames::in_folder(NULL, I"story.zblorb");
+	blurb_filename = Filenames::in(NULL, I"Release.blurb");
+	blorb_filename = Filenames::in(NULL, I"story.zblorb");
 
 	@<Make the default settings@>;
 	@<Parse command-line arguments@>;
@@ -109,9 +109,9 @@ int main(int argc, char *argv[]) {
 
 	if (project_folder) {
 		if (bare_words > 0) Errors::fatal("if -project is used, no other filenames should be given");
-		blurb_filename = Filenames::in_folder(project_folder, I"Release.blurb");
-		pathname *Build = Pathnames::subfolder(project_folder, I"Build");
-		blorb_filename = Filenames::in_folder(Build, I"output.zblorb");
+		blurb_filename = Filenames::in(project_folder, I"Release.blurb");
+		pathname *Build = Pathnames::down(project_folder, I"Build");
+		blorb_filename = Filenames::in(Build, I"output.zblorb");
 	} else {
 		if (bare_words == 0) blurb_filename = NULL;
 	}

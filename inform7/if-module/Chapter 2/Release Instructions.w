@@ -221,7 +221,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(DW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in_folder(Inbuild::materials(), leaf);
+			filename *A = Filenames::in(Inbuild::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
 				Task::release_path(),
@@ -234,7 +234,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(LW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in_folder(Inbuild::materials(), leaf);
+			filename *A = Filenames::in(Inbuild::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
 				Task::release_path(),
@@ -249,11 +249,11 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(FW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in_folder(Inbuild::materials(), leaf);
+			filename *A = Filenames::in(Inbuild::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			TEMPORARY_TEXT(folder);
 			WRITE_TO(folder, "%N", Wordings::first_wn(FW));
-			pathname *P = Pathnames::subfolder(Task::release_path(), folder);
+			pathname *P = Pathnames::down(Task::release_path(), folder);
 			DISCARD_TEXT(folder);
 			PL::Bibliographic::Release::create_aux_file(A, P, L"--", payload);
 			break;

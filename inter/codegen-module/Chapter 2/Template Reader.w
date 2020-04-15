@@ -264,7 +264,7 @@ part of the I6T kit.
 	for (int area=0; area<kit->no_i6t_file_areas; area++)
 		if (Input_File == NULL)
 			Input_File = Filenames::fopen(
-				Filenames::in_folder(kit->i6t_files[area], segment_name), "r");
+				Filenames::in(kit->i6t_files[area], segment_name), "r");
 	if (Input_File == NULL)
 		TemplateReader::error("unable to open the template segment '%S'", segment_name);
 

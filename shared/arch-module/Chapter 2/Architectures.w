@@ -31,7 +31,7 @@ filename *Architectures::canonical_binary(pathname *P, inter_architecture *A) {
 	if (A == NULL) internal_error("no arch");
 	TEMPORARY_TEXT(leafname);
 	WRITE_TO(leafname, "arch-%S.interb", A->shorthand);
-	filename *F = Filenames::in_folder(P, leafname);
+	filename *F = Filenames::in(P, leafname);
 	DISCARD_TEXT(leafname);
 	return F;
 }
@@ -40,7 +40,7 @@ filename *Architectures::canonical_textual(pathname *P, inter_architecture *A) {
 	if (A == NULL) internal_error("no arch");
 	TEMPORARY_TEXT(leafname);
 	WRITE_TO(leafname, "arch-%S.intert", A->shorthand);
-	filename *F = Filenames::in_folder(P, leafname);
+	filename *F = Filenames::in(P, leafname);
 	DISCARD_TEXT(leafname);
 	return F;
 }

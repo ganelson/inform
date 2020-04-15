@@ -61,11 +61,11 @@ void HTMLUtilities::image_URL(OUTPUT_STREAM, text_stream *leafname) {
 		Dictionaries::write_value(image_usages, leafname, iu);
 	}
 	iu->usage_count++;
-	filename *F = Filenames::in_folder(indoc_settings->images_path, leafname);
+	filename *F = Filenames::in(indoc_settings->images_path, leafname);
 	if (indoc_settings->html_for_Inform_application == 1) WRITE("inform:/%/f", F);
 	else {
 		if (indoc_settings->images_copy)
-			F = Filenames::in_folder(Pathnames::from_text(I"images"), leafname);
+			F = Filenames::in(Pathnames::from_text(I"images"), leafname);
 		WRITE("%/f", F);
 	}
 	iu->resolved_to = F;
@@ -97,14 +97,14 @@ working backwards. As soon as we find a file of that name, we copy it over.
 =
 void HTMLUtilities::copy_images(void) {
 	if (indoc_settings->images_copy) {
-		pathname *I = Pathnames::subfolder(indoc_settings->destination, I"images");
+		pathname *I = Pathnames::down(indoc_settings->destination, I"images");
 		Pathnames::create_in_file_system(I);
 		image_usage *iu;
 		LOOP_OVER(iu, image_usage) {
 			int found = FALSE;
 			image_source *is;
 			LOOP_BACKWARDS_OVER(is, image_source) {
-				filename *F = Filenames::in_folder(is->src, iu->leafname);
+				filename *F = Filenames::in(is->src, iu->leafname);
 				if (TextFiles::exists(F)) {
 					found = TRUE;
 					Shell::copy(F, I, "-f");

@@ -405,8 +405,8 @@ void Emit::add_entry(inter_t v1, inter_t v2) {
 		inter_t *old_data1 = current_A->entry_data1;
 		inter_t *old_data2 = current_A->entry_data2;
 
-		current_A->entry_data1 = Memory::I7_calloc(M, sizeof(inter_t), EMIT_ARRAY_MREASON);
-		current_A->entry_data2 = Memory::I7_calloc(M, sizeof(inter_t), EMIT_ARRAY_MREASON);
+		current_A->entry_data1 = Memory::calloc(M, sizeof(inter_t), EMIT_ARRAY_MREASON);
+		current_A->entry_data2 = Memory::calloc(M, sizeof(inter_t), EMIT_ARRAY_MREASON);
 
 		for (int i=0; i<current_A->capacity; i++) {
 			current_A->entry_data1[i] = old_data1[i];

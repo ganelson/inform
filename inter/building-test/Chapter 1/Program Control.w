@@ -4,7 +4,7 @@ What shall we test?
 
 @h Main routine.
 
-@d INTOOL_NAME "building-test"
+@d PROGRAM_NAME "building-test"
 
 @
 

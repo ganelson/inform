@@ -208,7 +208,7 @@ void Extensions::Census::write_results(OUTPUT_STREAM, extension_census *C) {
 	@<Display the census radio buttons@>;
 
 	int no_entries = NUMBER_CREATED(extension_census_datum);
-	extension_census_datum **sorted_census_results = Memory::I7_calloc(no_entries,
+	extension_census_datum **sorted_census_results = Memory::calloc(no_entries,
 		sizeof(extension_census_datum *), EXTENSION_DICTIONARY_MREASON);
 
 	for (int d=1; d<=5; d++) {
@@ -813,7 +813,7 @@ pathname *Extensions::Census::doc_pathname(void) {
 	pathname *P = Inbuild::transient();
 	if (P == NULL) return NULL;
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
-	P = Pathnames::subfolder(P, I"Documentation");
+	P = Pathnames::down(P, I"Documentation");
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
 	return P;
 }
@@ -821,7 +821,7 @@ pathname *Extensions::Census::doc_pathname(void) {
 void Extensions::Census::write_top_level_extensions_page(text_stream *leaf, int content, extension_census *C) {
 	pathname *P = Extensions::Census::doc_pathname();
 	if (P == NULL) return;
-	filename *F = Filenames::in_folder(P, leaf);
+	filename *F = Filenames::in(P, leaf);
 
 	text_stream HOMEPAGE_struct;
 	text_stream *OUT = &HOMEPAGE_struct;

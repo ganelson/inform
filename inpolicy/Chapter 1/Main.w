@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::disallow);
 
 	path_to_inpolicy = Pathnames::installation_path("INPOLICY_PATH", I"inpolicy");
-	path_to_inpolicy_workspace = Pathnames::subfolder(path_to_inpolicy, I"Workspace");
+	path_to_inpolicy_workspace = Pathnames::down(path_to_inpolicy, I"Workspace");
 	if (verbose_mode) PRINT("Installation path is %p\n", path_to_inpolicy);
 
 	Foundation::end();
@@ -47,7 +47,7 @@ void Main::disallow(int id, text_stream *arg, void *state) {
 
 @d RUNTEST(Routine)
 	path_to_inpolicy = Pathnames::installation_path("INPOLICY_PATH", I"inpolicy");
-	path_to_inpolicy_workspace = Pathnames::subfolder(path_to_inpolicy, I"Workspace");
+	path_to_inpolicy_workspace = Pathnames::down(path_to_inpolicy, I"Workspace");
 	if (silence_mode) {
 		if (Routine(NULL) == FALSE) { return_happy = FALSE; Routine(STDERR); }
 	} else {

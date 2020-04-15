@@ -59,13 +59,13 @@ line breaks, but we don't avail ourselves.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Base64::encode<button class="popup" onclick="togglePopup('usagePopup118')">...<span class="popuptext" id="usagePopup118">Usage of <b>Base64::encode</b>:<br>Releaser - <a href="3-rls.html#SP6_5">&#167;6.5</a></span></button></span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">in_filename</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">out_filename</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">top</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">tail</span><span class="plain">) {</span>
-        <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">IN</span><span class="plain"> = </span><span class="functiontext"><a href="6-bf.html#SP8">BinaryFiles::open_for_reading</a></span><span class="plain">(</span><span class="identifier">in_filename</span><span class="plain">);</span>
+        <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">IN</span><span class="plain"> = </span><span class="functiontext"><a href="../../../inweb/docs/foundation-module/6-bf.html#SP8">BinaryFiles::open_for_reading</a></span><span class="plain">(</span><span class="identifier">in_filename</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">TO_struct</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">TO</span><span class="plain"> = &amp;</span><span class="identifier">TO_struct</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="identifier">out_filename</span><span class="plain">, </span><span class="constant">UTF8_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
             <span class="functiontext"><a href="1-be.html#SP2">BlorbErrors::fatal_fs</a></span><span class="plain">(</span><span class="string">"can't open base-64 encoded story file for output"</span><span class="plain">, </span><span class="identifier">out_filename</span><span class="plain">);</span>
-        <span class="functiontext"><a href="#SP2">Base64::encode_inner</a></span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="identifier">IN</span><span class="plain">, </span><span class="identifier">top</span><span class="plain">, </span><span class="identifier">tail</span><span class="plain">);</span>
-        <span class="functiontext"><a href="6-bf.html#SP8">BinaryFiles::close</a></span><span class="plain">(</span><span class="identifier">IN</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-bs6.html#SP2">Base64::encode_inner</a></span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="identifier">IN</span><span class="plain">, </span><span class="identifier">top</span><span class="plain">, </span><span class="identifier">tail</span><span class="plain">);</span>
+        <span class="functiontext"><a href="../../../inweb/docs/foundation-module/6-bf.html#SP8">BinaryFiles::close</a></span><span class="plain">(</span><span class="identifier">IN</span><span class="plain">);</span>
         <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -113,7 +113,7 @@ line breaks, but we don't avail ourselves.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="3-bs6.html#SP2">&#167;2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Convert triplet to a quartet</span> <span class="cwebmacronumber">2.2</span>&gt; =
@@ -136,7 +136,7 @@ line breaks, but we don't avail ourselves.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="3-bs6.html#SP2">&#167;2</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="3-wm.html">Back to 'Website Maker'</a></li><li><i>(This section ends Chapter 3: Other Material.)</i></li></ul><hr class="tocbar">

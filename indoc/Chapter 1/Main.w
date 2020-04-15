@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
 			Filenames::get_leafname(indoc_settings->book_cover_image));
 		Instructions::apply_ebook_metadata(indoc_settings->ebook);
 		pathname *I = Pathnames::from_text(I"images");
-		filename *cover_in_situ = Filenames::in_folder(I,
+		filename *cover_in_situ = Filenames::in(I,
 			Filenames::get_leafname(indoc_settings->book_cover_image));
 		indoc_settings->destination = Epub::begin_construction(indoc_settings->ebook,
 			indoc_settings->destination, cover_in_situ);

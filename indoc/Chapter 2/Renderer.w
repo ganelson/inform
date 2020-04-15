@@ -667,7 +667,7 @@ text_stream *Renderer::formatted_file_must_be(OUTPUT_STREAM, volume *V, section 
 				Epub::note_page(indoc_settings->ebook, S->section_filename, S->section_file_title, I"");
 			if (S == V->sections[0]) {
 				ebook_volume *ev = Epub::starts_volume(indoc_settings->ebook, page, V->vol_title);
-				filename *F = Filenames::in_folder(indoc_settings->destination, V->vol_CSS_leafname);
+				filename *F = Filenames::in(indoc_settings->destination, V->vol_CSS_leafname);
 				Epub::use_CSS(ev, F);
 			}
 			if (S->begins_which_chapter)

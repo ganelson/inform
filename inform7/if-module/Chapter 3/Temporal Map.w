@@ -13,7 +13,7 @@ seems natural enough to learn in practice.
 =
 void PL::Scenes::Index::index(OUTPUT_STREAM) {
 	int nr = NUMBER_CREATED(scene);
-	scene **sorted = Memory::I7_calloc(nr, sizeof(scene *), INDEX_SORTING_MREASON);
+	scene **sorted = Memory::calloc(nr, sizeof(scene *), INDEX_SORTING_MREASON);
 	@<Sort the scenes@>;
 
 	@<Tabulate the scenes@>;

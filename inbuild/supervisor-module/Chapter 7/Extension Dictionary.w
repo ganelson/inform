@@ -219,9 +219,9 @@ entries, close.
 filename *Extensions::Dictionary::filename(void) {
 	pathname *P = Inbuild::transient();
 	if (P == NULL) return NULL;
-	P = Pathnames::subfolder(P, I"Documentation");
-	P = Pathnames::subfolder(P, I"Census");
-	return Filenames::in_folder(P, I"Dictionary.txt");
+	P = Pathnames::down(P, I"Documentation");
+	P = Pathnames::down(P, I"Census");
+	return Filenames::in(P, I"Dictionary.txt");
 }
 
 void Extensions::Dictionary::load(void) {
@@ -428,7 +428,7 @@ temporarily allocated in memory:
 @<Allocate memory for, and fill, an array of pointers to the EDEs@> =
 	extension_dictionary_entry *ede;
 	int i = 0;
-	sorted_extension_dictionary = Memory::I7_calloc(no_entries,
+	sorted_extension_dictionary = Memory::calloc(no_entries,
 		sizeof(extension_dictionary_entry *), EXTENSION_DICTIONARY_MREASON);
 	LOOP_OVER(ede, extension_dictionary_entry) {
 		if (ede->erased == FALSE)

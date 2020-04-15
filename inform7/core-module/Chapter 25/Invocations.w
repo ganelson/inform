@@ -490,7 +490,7 @@ want to avoid all possible arbitrary limits.)
 		if (number_of_pigeon_holes < 1000)
 			number_of_pigeon_holes = 1000;
 		pigeon_holes =
-			Memory::I7_calloc(number_of_pigeon_holes, sizeof(invocation_sort_block), INV_LIST_MREASON);
+			Memory::calloc(number_of_pigeon_holes, sizeof(invocation_sort_block), INV_LIST_MREASON);
 	}
 
 @ So much for the mechanism. The sorting order is specified by the following.

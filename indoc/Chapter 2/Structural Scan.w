@@ -96,7 +96,7 @@ void Scanner::create_volume(pathname *book_path, text_stream *leaf, text_stream 
  	V->vol_title = Str::duplicate(title);
  	V->vol_prefix = Str::duplicate(pre);
  	V->vol_abbrev = Str::duplicate(abbrev);
- 	V->vol_rawtext_filename = Filenames::in_folder(book_path, leaf);
+ 	V->vol_rawtext_filename = Filenames::in(book_path, leaf);
   	V->vol_CSS_leafname = NULL;
  	V->vol_URL = NULL;
  	V->vol_chapter_count = 0;
@@ -279,7 +279,7 @@ anchor is blank, the filename alone is used.
  		WRITE_TO(S->section_anchor, "c%d_s%d", sr->ch, sr->chs);
  		S->section_file_title = Str::duplicate(sr->owner->vol_title);
  	}
-	S->section_filename = Filenames::in_folder(indoc_settings->destination, leaf);
+	S->section_filename = Filenames::in(indoc_settings->destination, leaf);
 	S->section_URL = Str::duplicate(leaf);
 	S->unanchored_URL = Str::duplicate(leaf);
 	DISCARD_TEXT(leaf);
@@ -304,7 +304,7 @@ helps the Inform application in searching the online documentation.
 
 =
 void Scanner::write_manifest_file(volume *V) {
-	filename *M = Filenames::in_folder(
+	filename *M = Filenames::in(
 		indoc_settings->destination, indoc_settings->manifest_leafname);
 	text_stream M_struct;
 	text_stream *OUT = &M_struct;

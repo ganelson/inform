@@ -58,7 +58,7 @@ the problem message test cases, so we observe them.
 
 =
 void Coverage::which_problems_have_test_cases(void) {
-	filename *CAT = Filenames::in_folder(path_to_inpolicy_workspace, I"cases.txt");
+	filename *CAT = Filenames::in(path_to_inpolicy_workspace, I"cases.txt");
 	TEMPORARY_TEXT(COMMAND);
 	WRITE_TO(COMMAND, "../intest/Tangled/intest inform7 -catalogue ");
 	Shell::redirect(COMMAND, CAT);
@@ -82,8 +82,8 @@ to problem messages:
 =
 void Coverage::which_problems_are_referenced(void) {
 	pathname *D = Pathnames::from_text(I"resources");
-	D = Pathnames::subfolder(D, I"Documentation");
-	filename *WWI = Filenames::in_folder(D, I"Writing with Inform.txt");
+	D = Pathnames::down(D, I"Documentation");
+	filename *WWI = Filenames::in(D, I"Writing with Inform.txt");
 	TextFiles::read(WWI, FALSE, "unable to read 'Writing with Inform' source text", TRUE,
 		&Coverage::xref_harvester, NULL, NULL);
 }
@@ -104,8 +104,8 @@ Which is to say, actually existing problem messages.
 =
 void Coverage::which_problems_exist(void) {
 	pathname *tools = Pathnames::up(path_to_inpolicy);
-	pathname *path_to_inweb = Pathnames::subfolder(Pathnames::up(tools), I"inweb");
-	pathname *path_to_inform7 = Pathnames::subfolder(tools, I"inform7");
+	pathname *path_to_inweb = Pathnames::down(Pathnames::up(tools), I"inweb");
+	pathname *path_to_inform7 = Pathnames::down(tools, I"inform7");
 	web_md *Wm = WebMetadata::get(path_to_inform7, NULL, V2_SYNTAX,
 					NULL, FALSE, TRUE, path_to_inweb);
 	chapter_md *Cm;

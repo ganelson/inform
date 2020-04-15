@@ -78,7 +78,7 @@ void PL::Counting::make_instance_counts(void) {
 @<Allocate the instance count array in memory@> =
 	max_kind_instance_count = NUMBER_CREATED(inference_subject);
 	kind_instance_counts =
-		Memory::I7_calloc(max_kind_instance_count*max_kind_instance_count, sizeof(int),
+		Memory::calloc(max_kind_instance_count*max_kind_instance_count, sizeof(int),
 			INSTANCE_COUNTING_MREASON);
 
 @ The following is quadratic in the number of objects, but this has never been

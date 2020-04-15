@@ -4,7 +4,7 @@ What shall we test?
 
 @h Main routine.
 
-@d INTOOL_NAME "arch-test"
+@d PROGRAM_NAME "arch-test"
 
 @e TEST_COMPATIBILITY_CLSW
 

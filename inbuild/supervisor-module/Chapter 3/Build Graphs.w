@@ -166,7 +166,7 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
 	if (recurse) {
 		if (V->as_copy) stem = V->as_copy->location_if_path;
 		if (V->as_file)
-			stem = Filenames::get_path_to(V->as_file);
+			stem = Filenames::up(V->as_file);
 		build_vertex *W;
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
 			Graphs::describe_r(OUT, depth+1, W, TRUE, stem, TRUE, description_round);
@@ -295,7 +295,7 @@ to |N| if it's already there; but that is difficult to detect.
 	Copies::write_copy(OUT, C);
 
 	pathname *P = C->location_if_path;
-	if (C->location_if_file) P = Filenames::get_path_to(C->location_if_file);
+	if (C->location_if_file) P = Filenames::up(C->location_if_file);
 	TEMPORARY_TEXT(nl);
 	TEMPORARY_TEXT(cl);
 	WRITE_TO(nl, "%p/", N->location);

@@ -67,7 +67,7 @@ inter_warehouse_room *Inter::Warehouse::new_room(inter_warehouse *owner, int cap
 	IS->size = 0;
 	IS->capacity = capacity;
 	IS->bytecode = (inter_t *)
-		Memory::I7_calloc(capacity, sizeof(inter_t), INTER_BYTECODE_MREASON);
+		Memory::calloc(capacity, sizeof(inter_t), INTER_BYTECODE_MREASON);
 	LOGIF(INTER_MEMORY, "Created repository %d segment %d with capacity %d\n",
 		owner->allocation_id, IS->allocation_id, IS->capacity);
 	return IS;
@@ -134,7 +134,7 @@ inter_t Inter::Warehouse::create_resource(inter_warehouse *warehouse) {
 		LOGIF(INTER_MEMORY, "Giving warehouse %d frame list of size %d (up from %d)\n",
 			warehouse->allocation_id, new_size, warehouse->capacity);
 
-		inter_resource_holder *storage = (inter_resource_holder *) Memory::I7_calloc(new_size, sizeof(inter_resource_holder), INTER_LINKS_MREASON);
+		inter_resource_holder *storage = (inter_resource_holder *) Memory::calloc(new_size, sizeof(inter_resource_holder), INTER_LINKS_MREASON);
 		inter_resource_holder *old = warehouse->stored_resources;
 		for (int i=0; i<warehouse->capacity; i++) storage[i] = old[i];
 		if (warehouse->capacity > 0)

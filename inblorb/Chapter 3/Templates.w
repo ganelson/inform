@@ -43,8 +43,8 @@ the presence of templates, not of files.
 template_path *Templates::seek_file(text_stream *name, text_stream *leafname) {
 	template_path *tp;
 	LOOP_OVER(tp, template_path) {
-		pathname *T = Pathnames::subfolder(tp->template_repository, name);
-		filename *possible = Filenames::in_folder(T, leafname);
+		pathname *T = Pathnames::down(tp->template_repository, name);
+		filename *possible = Filenames::in(T, leafname);
 		if (TextFiles::exists(possible)) return tp;
 	}
 	return NULL;
@@ -114,8 +114,8 @@ filename *Templates::find_file_in_specific_template(text_stream *name, text_stre
 filename *Templates::try_single(template *t, text_stream *needed) {
 	if (t == NULL) return NULL;
 
-	pathname *T = Pathnames::subfolder(t->template_location->template_repository, t->template_name);
-	t->latest_use = Filenames::in_folder(T, needed);
+	pathname *T = Pathnames::down(t->template_location->template_repository, t->template_name);
+	t->latest_use = Filenames::in(T, needed);
 	if (verbose_mode) PRINT("! Trying <%f>\n", t->latest_use);
 	if (TextFiles::exists(t->latest_use)) return t->latest_use;
 	return NULL;

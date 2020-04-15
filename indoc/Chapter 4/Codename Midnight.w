@@ -185,7 +185,7 @@ of each volume side by side.
 void Midnight::write_contents_page(navigation_design *self, volume *V) {
 	TEMPORARY_TEXT(leafname);
 	WRITE_TO(leafname, "%S%S.html", V->vol_prefix, indoc_settings->contents_leafname);
-	filename *F = Filenames::in_folder(indoc_settings->destination, leafname);
+	filename *F = Filenames::in(indoc_settings->destination, leafname);
 
 	text_stream C_struct;
 	text_stream *OUT = &C_struct;

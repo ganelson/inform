@@ -28,7 +28,7 @@ void TemplateManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work
 =
 pathname *TemplateManager::path_within_nest(inbuild_nest *N) {
 	if (N == NULL) internal_error("no nest");
-	return Pathnames::subfolder(N->location, I"Templates");
+	return Pathnames::down(N->location, I"Templates");
 }
 
 @ Template copies are annotated with a structure called an |inform_template|,
@@ -70,8 +70,8 @@ void TemplateManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 }
 
 inbuild_copy *TemplateManager::claim_folder_as_copy(pathname *P) {
-	filename *canary1 = Filenames::in_folder(P, I"(manifest).txt");
-	filename *canary2 = Filenames::in_folder(P, I"index.html");
+	filename *canary1 = Filenames::in(P, I"(manifest).txt");
+	filename *canary2 = Filenames::in(P, I"index.html");
 	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2))) {
 		inbuild_copy *C = TemplateManager::new_copy(Pathnames::directory_name(P), P);
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
@@ -95,7 +95,7 @@ void TemplateManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
 				Str::delete_last_character(LEAFNAME);
-				pathname *Q = Pathnames::subfolder(P, LEAFNAME);
+				pathname *Q = Pathnames::down(P, LEAFNAME);
 				inbuild_copy *C = TemplateManager::claim_folder_as_copy(Q);
 				if ((C) && (Requirements::meets(C->edition, req))) {
 					Nests::add_search_result(search_results, N, C, req);
@@ -115,7 +115,7 @@ a folder, we need to |rsync| it.
 pathname *TemplateManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
 	TEMPORARY_TEXT(leaf);
 	Editions::write_canonical_leaf(leaf, E);
-	pathname *P = Pathnames::subfolder(TemplateManager::path_within_nest(N), leaf);
+	pathname *P = Pathnames::down(TemplateManager::path_within_nest(N), leaf);
 	DISCARD_TEXT(leaf);
 	return P;
 }
@@ -123,8 +123,8 @@ pathname *TemplateManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E)
 void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *P = TemplateManager::pathname_in_nest(N, C->edition);
-	filename *canary1 = Filenames::in_folder(P, I"(manifest).txt");
-	filename *canary2 = Filenames::in_folder(P, I"index.html");
+	filename *canary1 = Filenames::in(P, I"(manifest).txt");
+	filename *canary2 = Filenames::in(P, I"index.html");
 	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2))) {
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {

@@ -26,7 +26,7 @@ inter_symbols_table *Inter::SymbolsTables::new(void) {
 	ST->symbols_lookup = NULL;
 	ST->size = INITIAL_INTER_SYMBOLS_ID_RANGE;
 	ST->symbol_array = (inter_symbol **)
-		Memory::I7_calloc(INITIAL_INTER_SYMBOLS_ID_RANGE, sizeof(inter_symbol *), INTER_SYMBOLS_MREASON);
+		Memory::calloc(INITIAL_INTER_SYMBOLS_ID_RANGE, sizeof(inter_symbol *), INTER_SYMBOLS_MREASON);
 	for (int i=0; i<INITIAL_INTER_SYMBOLS_ID_RANGE; i++) ST->symbol_array[i] = NULL;
 	ST->n_index = 0;
 	ST->owning_package = NULL;
@@ -118,7 +118,7 @@ inter_symbol *Inter::SymbolsTables::search_inner(inter_symbols_table *T, text_st
 		while (index >= new_size) new_size = new_size * 4;
 
 		inter_symbol **enlarged = (inter_symbol **)
-			Memory::I7_calloc(new_size, sizeof(inter_symbol *), INTER_SYMBOLS_MREASON);
+			Memory::calloc(new_size, sizeof(inter_symbol *), INTER_SYMBOLS_MREASON);
 		for (int i=0; i<new_size; i++)
 			if (i < T->size)
 				enlarged[i] = T->symbol_array[i];

@@ -4,7 +4,7 @@ Some fundamental definitions.
 
 @
 
-@d INTOOL_NAME "inpolicy"
+@d PROGRAM_NAME "inpolicy"
 
 @ We need to itemise the structures we'll want to allocate:
 

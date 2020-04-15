@@ -18,7 +18,7 @@ typedef struct translator_state {
 } translator_state;
 
 void Translator::go(pathname *from_folder, pathname *to_folder, text_stream *font_setting) {
-	filename *texts = Filenames::in_folder(from_folder, I"texts.txt");
+	filename *texts = Filenames::in(from_folder, I"texts.txt");
 	translator_state ts;
 	ts.current_text = Str::new();
 	ts.current_code = Str::new();
@@ -55,7 +55,7 @@ void Translator::go_helper(text_stream *text, text_file_position *tfp, void *sta
 	} else if (Regexp::match(&mr, text, L" *")) {
 		;
 	} else if (Regexp::match(&mr, text, L" *model *= *(%c*?) *")) {
-		ts->model_to_follow = Filenames::in_folder(from_folder, mr.exp[0]);
+		ts->model_to_follow = Filenames::in(from_folder, mr.exp[0]);
 	} else {
 		WRITE_TO(ts->current_text, "%S", text);
 	}
@@ -73,7 +73,7 @@ void Translator::flush(translator_state *ts) {
 	if (Str::len(ts->current_code) > 0) {
 		TEMPORARY_TEXT(leaf);
 		WRITE_TO(leaf, "%S.html", ts->current_code);
-		filename *F = Filenames::in_folder(ts->destination_folder, leaf);
+		filename *F = Filenames::in(ts->destination_folder, leaf);
 		DISCARD_TEXT(leaf);
 		@<Give any material in double-quotes a blue tint@>;
 		@<Translate the material out to HTML@>;

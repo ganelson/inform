@@ -36,28 +36,28 @@ build_methodology *BuildMethodology::new(pathname *tools_path, int tangled, int 
 	BM->methodology = meth;
 	pathname *inter_path = tools_path;
 	if (tangled) {
-		inter_path = Pathnames::subfolder(inter_path, I"inter");
-		inter_path = Pathnames::subfolder(inter_path, I"Tangled");
+		inter_path = Pathnames::down(inter_path, I"inter");
+		inter_path = Pathnames::down(inter_path, I"Tangled");
 	}
-	BM->to_inter = Filenames::in_folder(inter_path, I"inter");
+	BM->to_inter = Filenames::in(inter_path, I"inter");
 	pathname *inform6_path = tools_path;
 	if (tangled) {
-		inform6_path = Pathnames::subfolder(inform6_path, I"inform6");
-		inform6_path = Pathnames::subfolder(inform6_path, I"Tangled");
+		inform6_path = Pathnames::down(inform6_path, I"inform6");
+		inform6_path = Pathnames::down(inform6_path, I"Tangled");
 	}
-	BM->to_inform6 = Filenames::in_folder(inform6_path, I"inform6");
+	BM->to_inform6 = Filenames::in(inform6_path, I"inform6");
 	pathname *inform7_path = tools_path;
 	if (tangled) {
-		inform7_path = Pathnames::subfolder(inform7_path, I"inform7");
-		inform7_path = Pathnames::subfolder(inform7_path, I"Tangled");
+		inform7_path = Pathnames::down(inform7_path, I"inform7");
+		inform7_path = Pathnames::down(inform7_path, I"Tangled");
 	}
-	BM->to_inform7 = Filenames::in_folder(inform7_path, I"inform7");
+	BM->to_inform7 = Filenames::in(inform7_path, I"inform7");
 	pathname *inblorb_path = tools_path;
 	if (tangled) {
-		inblorb_path = Pathnames::subfolder(inblorb_path, I"inblorb");
-		inblorb_path = Pathnames::subfolder(inblorb_path, I"Tangled");
+		inblorb_path = Pathnames::down(inblorb_path, I"inblorb");
+		inblorb_path = Pathnames::down(inblorb_path, I"Tangled");
 	}
-	BM->to_inblorb = Filenames::in_folder(inblorb_path, I"inblorb");
+	BM->to_inblorb = Filenames::in(inblorb_path, I"inblorb");
 	return BM;
 }
 

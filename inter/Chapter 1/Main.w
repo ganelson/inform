@@ -72,8 +72,8 @@ form, which would be written to |*outt|.
 	inter_architecture *A = CodeGen::Architecture::current();
 	if (A == NULL) Errors::fatal("no -architecture given");
 
-	pathname *path_to_pipelines = Pathnames::subfolder(path_to_inter, I"Pipelines");
-	pipeline_as_file = Filenames::in_folder(path_to_pipelines, I"assimilate.interpipeline");
+	pathname *path_to_pipelines = Pathnames::down(path_to_inter, I"Pipelines");
+	pipeline_as_file = Filenames::in(path_to_pipelines, I"assimilate.interpipeline");
 	pipeline_as_text = NULL; 
 
 	Main::add_pipeline_variable(I"*kit",
@@ -127,7 +127,7 @@ form, which would be written to |*outt|.
 
 @h Command line.
 
-@d INTOOL_NAME "inter"
+@d PROGRAM_NAME "inter"
 
 @e TEXTUAL_CLSW
 @e BINARY_CLSW

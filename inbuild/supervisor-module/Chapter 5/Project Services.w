@@ -92,13 +92,13 @@ void Projects::not_necessarily_parser_IF(inform_project *project) {
 
 void Projects::set_source_filename(inform_project *project, pathname *P, filename *F) {
 	if (P) {
-		filename *manifest = Filenames::in_folder(P, I"Contents.txt");
+		filename *manifest = Filenames::in(P, I"Contents.txt");
 		linked_list *L = NEW_LINKED_LIST(text_stream);
 		TextFiles::read(manifest, FALSE,
 			NULL, FALSE, Projects::manifest_helper, NULL, (void *) L);
 		text_stream *leafname;
 		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
-			build_vertex *S = Graphs::file_vertex(Filenames::in_folder(P, leafname));
+			build_vertex *S = Graphs::file_vertex(Filenames::in(P, leafname));
 			S->source_source = leafname;
 			ADD_TO_LINKED_LIST(S, build_vertex, project->source_vertices);
 		}
@@ -259,14 +259,14 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 
 pathname *Projects::build_pathname(inform_project *project) {
 	pathname *P = Projects::path(project);
-	if (P) return Pathnames::subfolder(P, I"Build");
+	if (P) return Pathnames::down(P, I"Build");
 	return Inbuild::transient();
 }
 
 void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	int releasing, int compile_only) {
 	pathname *build_folder = Projects::build_pathname(project);
-	filename *inf_F = Filenames::in_folder(build_folder, I"auto.inf");
+	filename *inf_F = Filenames::in(build_folder, I"auto.inf");
 
 	build_vertex *inter_V = Graphs::file_vertex(inf_F);
 	Graphs::need_this_to_build(inter_V, project->as_copy->vertex);
@@ -280,7 +280,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 
 	TEMPORARY_TEXT(story_file_leafname);
 	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(VM));
-	filename *unblorbed_F = Filenames::in_folder(build_folder, story_file_leafname);
+	filename *unblorbed_F = Filenames::in(build_folder, story_file_leafname);
 	DISCARD_TEXT(story_file_leafname);
 	project->unblorbed_vertex = Graphs::file_vertex(unblorbed_F);
 	Graphs::need_this_to_build(project->unblorbed_vertex, inf_V);
@@ -289,7 +289,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 
 	TEMPORARY_TEXT(story_file_leafname2);
 	WRITE_TO(story_file_leafname2, "output.%S", TargetVMs::get_blorbed_extension(VM));
-	filename *blorbed_F = Filenames::in_folder(build_folder, story_file_leafname2);
+	filename *blorbed_F = Filenames::in(build_folder, story_file_leafname2);
 	DISCARD_TEXT(story_file_leafname2);
 	project->blorbed_vertex = Graphs::file_vertex(blorbed_F);
 	project->blorbed_vertex->always_build_this = TRUE;
@@ -368,7 +368,7 @@ void Projects::read_source_text_for(inform_project *project) {
 	DISCARD_TEXT(early);
 	inbuild_nest *E = Inbuild::external();
 	if (E) Projects::read_further_mandatory_text(
-		Filenames::in_folder(E->location, I"Options.txt"));
+		Filenames::in(E->location, I"Options.txt"));
 	wording early_W = Wordings::new(wc, lexer_wordcount-1);
 	
 	int l = ParseTree::push_attachment_point(project->syntax_tree, inclusions_heading);

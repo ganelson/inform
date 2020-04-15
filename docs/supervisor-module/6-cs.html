@@ -116,52 +116,52 @@ are added, they can fairly simply be put here.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ControlStructures::create_standard<button class="popup" onclick="togglePopup('usagePopup345')">...<span class="popuptext" id="usagePopup345">Usage of <b>ControlStructures::create_standard</b>:<br>Inbuild Control - <a href="1-ic.html#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">switch_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">switch_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">switch_CSP</span><span class="plain">-&gt;</span><span class="element">body_empty_except_for_subordinates</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">switch_CSP</span><span class="plain">-&gt;</span><span class="element">indent_subblocks</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">switch_CSP</span><span class="plain">-&gt;</span><span class="element">requires_new_syntax</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">switch_CSP</span><span class="plain">-&gt;</span><span class="element">keyword</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"if"</span><span class="plain">;</span>
 
-        <span class="identifier">if_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">if_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">if_CSP</span><span class="plain">-&gt;</span><span class="element">keyword</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"if"</span><span class="plain">;</span>
 
-        <span class="identifier">repeat_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">repeat_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">repeat_CSP</span><span class="plain">-&gt;</span><span class="element">keyword</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"repeat"</span><span class="plain">;</span>
         <span class="identifier">repeat_CSP</span><span class="plain">-&gt;</span><span class="element">is_a_loop</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="identifier">while_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">while_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">while_CSP</span><span class="plain">-&gt;</span><span class="identifier">keyword</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"while"</span><span class="plain">;</span>
         <span class="identifier">while_CSP</span><span class="plain">-&gt;</span><span class="identifier">is_a_loop</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="identifier">otherwise_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">otherwise_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">otherwise_CSP</span><span class="plain">-&gt;</span><span class="element">subordinate_to</span><span class="plain"> =	</span><span class="identifier">if_CSP</span><span class="plain">;</span>
         <span class="identifier">otherwise_CSP</span><span class="plain">-&gt;</span><span class="element">used_at_stage</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
-        <span class="identifier">abbreviated_otherwise_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">abbreviated_otherwise_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">abbreviated_otherwise_CSP</span><span class="plain">-&gt;</span><span class="element">subordinate_to</span><span class="plain"> =	</span><span class="identifier">if_CSP</span><span class="plain">;</span>
         <span class="identifier">abbreviated_otherwise_CSP</span><span class="plain">-&gt;</span><span class="element">used_at_stage</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
-        <span class="identifier">otherwise_if_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">otherwise_if_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">otherwise_if_CSP</span><span class="plain">-&gt;</span><span class="element">subordinate_to</span><span class="plain"> = </span><span class="identifier">if_CSP</span><span class="plain">;</span>
         <span class="identifier">otherwise_if_CSP</span><span class="plain">-&gt;</span><span class="element">used_at_stage</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="identifier">case_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">case_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">case_CSP</span><span class="plain">-&gt;</span><span class="identifier">subordinate_to</span><span class="plain"> = </span><span class="identifier">switch_CSP</span><span class="plain">;</span>
         <span class="identifier">case_CSP</span><span class="plain">-&gt;</span><span class="identifier">used_at_stage</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">case_CSP</span><span class="plain">-&gt;</span><span class="identifier">requires_new_syntax</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">case_CSP</span><span class="plain">-&gt;</span><span class="identifier">allow_run_on</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="identifier">default_case_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">default_case_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
         <span class="identifier">default_case_CSP</span><span class="plain">-&gt;</span><span class="element">subordinate_to</span><span class="plain"> = </span><span class="identifier">switch_CSP</span><span class="plain">;</span>
         <span class="identifier">default_case_CSP</span><span class="plain">-&gt;</span><span class="element">used_at_stage</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
         <span class="identifier">default_case_CSP</span><span class="plain">-&gt;</span><span class="element">requires_new_syntax</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">default_case_CSP</span><span class="plain">-&gt;</span><span class="element">allow_run_on</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="identifier">say_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">say_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
 
-        <span class="identifier">now_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">now_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
 
-        <span class="identifier">instead_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">ControlStructures::new</a></span><span class="plain">();</span>
+        <span class="identifier">instead_CSP</span><span class="plain"> = </span><span class="functiontext"><a href="6-cs.html#SP3">ControlStructures::new</a></span><span class="plain">();</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ControlStructures::log<button class="popup" onclick="togglePopup('usagePopup346')">...<span class="popuptext" id="usagePopup346">Usage of <b>ControlStructures::log</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">control_structure_phrase</span><span class="plain"> *</span><span class="identifier">csp</span><span class="plain">) {</span>

@@ -156,8 +156,8 @@ for use.
 
 =
 void Main::load_preform(inform_language *L) {
-	pathname *P = Pathnames::subfolder(path_to_inbuild, I"Tangled");
-	filename *S = Filenames::in_folder(P, I"Syntax.preform");
+	pathname *P = Pathnames::down(path_to_inbuild, I"Tangled");
+	filename *S = Filenames::in(P, I"Syntax.preform");
 	wording W = Preform::load_from_file(S);
 	Preform::parse_preform(W, FALSE);
 }
@@ -246,7 +246,7 @@ void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
 Note the call below to |Inbuild::declare_options|, which adds a whole lot of
 other options to the selection defined here.
 
-@d INTOOL_NAME "inbuild"
+@d PROGRAM_NAME "inbuild"
 
 @e BUILD_CLSW
 @e REBUILD_CLSW

@@ -550,8 +550,8 @@ int Inbuild::set_I7_bundle(text_stream *loc) {
 	pathname *pathname_of_bundle = Pathnames::from_text(project_bundle_request);
 	pathname *materials = Inbuild::pathname_of_materials(pathname_of_bundle);
 	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "%s-settings.txt", INTOOL_NAME);
-	filename *expert_settings = Filenames::in_folder(materials, leaf);
+	WRITE_TO(leaf, "%s-settings.txt", PROGRAM_NAME);
+	filename *expert_settings = Filenames::in(materials, leaf);
 	if (TextFiles::exists(expert_settings))
 		CommandLine::also_read_file(expert_settings);
 	DISCARD_TEXT(leaf);
@@ -581,8 +581,8 @@ inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 	}
 	if ((pathname_of_bundle) && (filename_of_i7_source == NULL))
 		filename_of_i7_source =
-			Filenames::in_folder(
-				Pathnames::subfolder(pathname_of_bundle, I"Source"),
+			Filenames::in(
+				Pathnames::down(pathname_of_bundle, I"Source"),
 				I"story.ni");
 	if (pathname_of_bundle) {
 		if (C == NULL) C = ProjectBundleManager::claim_folder_as_copy(pathname_of_bundle);
@@ -595,7 +595,7 @@ inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 	@<Create the materials nest@>;
 	if (shared_project) {
 		pathname *P = (shared_materials_nest)?(shared_materials_nest->location):NULL;
-		if (P) P = Pathnames::subfolder(P, I"Source");
+		if (P) P = Pathnames::down(P, I"Source");
 		if (Str::len(project_file_request) > 0) P = NULL;
 		Projects::set_source_filename(shared_project, P, filename_of_i7_source);
 		if (rng_seed_at_start_of_play != 0)
@@ -612,10 +612,10 @@ inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 		if (subfolder_within[0]) {
 			TEMPORARY_TEXT(SF);
 			WRITE_TO(SF, "%s", subfolder_within);
-			P = Pathnames::subfolder(home_path, SF);
+			P = Pathnames::down(home_path, SF);
 			DISCARD_TEXT(SF);
 		}
-		P = Pathnames::subfolder(P, I"Inform");
+		P = Pathnames::down(P, I"Inform");
 		E = Inbuild::add_nest(P, EXTERNAL_NEST_TAG);
 	}
 
@@ -652,7 +652,7 @@ pathname *Inbuild::pathname_of_materials(pathname *pathname_of_bundle) {
 		Str::truncate(mf, i);
 		WRITE_TO(mf, ".materials");
 	}
-	pathname *materials = Pathnames::subfolder(Pathnames::up(pathname_of_bundle), mf);
+	pathname *materials = Pathnames::down(Pathnames::up(pathname_of_bundle), mf);
 	DISCARD_TEXT(mf);
 	return materials;
 }
@@ -712,34 +712,34 @@ Our client can access these files using the following function:
 filename *Inbuild::file_from_installation(int ires) {
 	inbuild_nest *I = Inbuild::internal();
 	if (I == NULL) Errors::fatal("Did not set -internal when calling");
-	pathname *misc = Pathnames::subfolder(I->location, I"Miscellany");
-	pathname *models = Pathnames::subfolder(I->location, I"HTML");
+	pathname *misc = Pathnames::down(I->location, I"Miscellany");
+	pathname *models = Pathnames::down(I->location, I"HTML");
 	switch (ires) {
 		case DOCUMENTATION_SNIPPETS_IRES: 
-				return Filenames::in_folder(misc, I"definitions.html");
+				return Filenames::in(misc, I"definitions.html");
 		case INTRO_BOOKLET_IRES: 
-				return Filenames::in_folder(misc, I"IntroductionToIF.pdf");
+				return Filenames::in(misc, I"IntroductionToIF.pdf");
 		case INTRO_POSTCARD_IRES: 
-				return Filenames::in_folder(misc, I"Postcard.pdf");
+				return Filenames::in(misc, I"Postcard.pdf");
 		case LARGE_DEFAULT_COVER_ART_IRES: 
-				return Filenames::in_folder(misc, I"Cover.jpg");
+				return Filenames::in(misc, I"Cover.jpg");
 		case SMALL_DEFAULT_COVER_ART_IRES: 
-				return Filenames::in_folder(misc, I"Small Cover.jpg");
+				return Filenames::in(misc, I"Small Cover.jpg");
 
 		case CBLORB_REPORT_MODEL_IRES: 
-				return Filenames::in_folder(models, I"CblorbModel.html");
+				return Filenames::in(models, I"CblorbModel.html");
 		case DOCUMENTATION_XREFS_IRES: 
-				return Filenames::in_folder(models, I"xrefs.txt");
+				return Filenames::in(models, I"xrefs.txt");
 		case JAVASCRIPT_FOR_STANDARD_PAGES_IRES: 
-				return Filenames::in_folder(models, I"main.js");
+				return Filenames::in(models, I"main.js");
 		case JAVASCRIPT_FOR_EXTENSIONS_IRES: 
-				return Filenames::in_folder(models, I"extensions.js");
+				return Filenames::in(models, I"extensions.js");
 		case JAVASCRIPT_FOR_ONE_EXTENSION_IRES: 
-				return Filenames::in_folder(models, I"extensionfile.js");
+				return Filenames::in(models, I"extensionfile.js");
 		case CSS_FOR_STANDARD_PAGES_IRES: 
-				return Filenames::in_folder(models, I"main.css");
+				return Filenames::in(models, I"main.css");
 		case EXTENSION_DOCUMENTATION_MODEL_IRES: 
-				return Filenames::in_folder(models, I"extensionfile.html");
+				return Filenames::in(models, I"extensionfile.html");
 		}
 	internal_error("unknown installation resource file");
 	return NULL;

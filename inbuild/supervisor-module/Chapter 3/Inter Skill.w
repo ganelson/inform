@@ -134,7 +134,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 		return FALSE;
 	}
 	CodeGen::Pipeline::set_repository(SS, Emit::tree());
-	CodeGen::Pipeline::run(Filenames::get_path_to(S->vertex->as_file),
+	CodeGen::Pipeline::run(Filenames::up(S->vertex->as_file),
 		SS, Kits::inter_paths(),
 		Projects::list_of_inter_libraries(Inbuild::project()));
 	LOG("Back end elapsed time: %dcs\n",

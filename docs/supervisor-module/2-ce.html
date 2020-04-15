@@ -120,25 +120,25 @@ fields are blank.
     <span class="plain">}</span>
 
     <span class="reserved">copy_error</span><span class="plain"> *</span><span class="functiontext">CopyErrors::new_T<button class="popup" onclick="togglePopup('usagePopup87')">...<span class="popuptext" id="usagePopup87">Usage of <b>CopyErrors::new_T</b>:<br>Extension Services - <a href="5-es.html#SP2_2">&#167;2.2</a>, <a href="5-es.html#SP2_2_3">&#167;2.2.3</a>, <a href="5-es.html#SP2_2_3_2">&#167;2.2.3.2</a>, <a href="5-es.html#SP2_3">&#167;2.3</a><br>Kits - <a href="5-ks.html#SP5">&#167;5</a>, <a href="5-ks.html#SP5_1">&#167;5.1</a>, <a href="5-ks.html#SP5_3">&#167;5.3</a><br>Headings - <a href="6-hdn.html#SP23_2">&#167;23.2</a><br>Inclusions - <a href="6-inc.html#SP6_1_1">&#167;6.1.1</a>, <a href="6-inc.html#SP6_1_2">&#167;6.1.2</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cat</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">subcat</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">NB</span><span class="plain">) {</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext"><a href="#SP2">CopyErrors::new</a></span><span class="plain">(</span><span class="identifier">cat</span><span class="plain">, </span><span class="identifier">subcat</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext"><a href="2-ce.html#SP2">CopyErrors::new</a></span><span class="plain">(</span><span class="identifier">cat</span><span class="plain">, </span><span class="identifier">subcat</span><span class="plain">);</span>
         <span class="identifier">CE</span><span class="plain">-&gt;</span><span class="element">details</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">NB</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">CE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">copy_error</span><span class="plain"> *</span><span class="functiontext">CopyErrors::new_N<button class="popup" onclick="togglePopup('usagePopup88')">...<span class="popuptext" id="usagePopup88">Usage of <b>CopyErrors::new_N</b>:<br>Extension Services - <a href="5-es.html#SP2_3">&#167;2.3</a><br>Source Text - <a href="6-st.html#SP4">&#167;4</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cat</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">subcat</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext"><a href="#SP2">CopyErrors::new</a></span><span class="plain">(</span><span class="identifier">cat</span><span class="plain">, </span><span class="identifier">subcat</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext"><a href="2-ce.html#SP2">CopyErrors::new</a></span><span class="plain">(</span><span class="identifier">cat</span><span class="plain">, </span><span class="identifier">subcat</span><span class="plain">);</span>
         <span class="identifier">CE</span><span class="plain">-&gt;</span><span class="element">details_N</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">CE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">copy_error</span><span class="plain"> *</span><span class="functiontext">CopyErrors::new_F<button class="popup" onclick="togglePopup('usagePopup89')">...<span class="popuptext" id="usagePopup89">Usage of <b>CopyErrors::new_F</b>:<br>Extension Services - <a href="5-es.html#SP2_2">&#167;2.2</a><br>Source Text - <a href="6-st.html#SP1">&#167;1</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cat</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">subcat</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext"><a href="#SP2">CopyErrors::new</a></span><span class="plain">(</span><span class="identifier">cat</span><span class="plain">, </span><span class="identifier">subcat</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext"><a href="2-ce.html#SP2">CopyErrors::new</a></span><span class="plain">(</span><span class="identifier">cat</span><span class="plain">, </span><span class="identifier">subcat</span><span class="plain">);</span>
         <span class="identifier">CE</span><span class="plain">-&gt;</span><span class="element">details_file</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">CE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">copy_error</span><span class="plain"> *</span><span class="functiontext">CopyErrors::new_WT<button class="popup" onclick="togglePopup('usagePopup90')">...<span class="popuptext" id="usagePopup90">Usage of <b>CopyErrors::new_WT</b>:<br>Source Text - <a href="6-st.html#SP2">&#167;2</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cat</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">subcat</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">details_word</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">NB</span><span class="plain">) {</span>
-        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext"><a href="#SP2">CopyErrors::new</a></span><span class="plain">(</span><span class="identifier">cat</span><span class="plain">, </span><span class="identifier">subcat</span><span class="plain">);</span>
+        <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext"><a href="2-ce.html#SP2">CopyErrors::new</a></span><span class="plain">(</span><span class="identifier">cat</span><span class="plain">, </span><span class="identifier">subcat</span><span class="plain">);</span>
         <span class="identifier">CE</span><span class="plain">-&gt;</span><span class="element">details_word</span><span class="plain"> = </span><span class="identifier">details_word</span><span class="plain">;</span>
         <span class="identifier">CE</span><span class="plain">-&gt;</span><span class="element">details</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">NB</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">CE</span><span class="plain">;</span>
@@ -238,7 +238,7 @@ output.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP5">&#167;5</a>.</p>
+<p class="endnote">This code is used in <a href="2-ce.html#SP5">&#167;5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP5_2"></a><b>&#167;5.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Write a syntax error</span> <span class="cwebmacronumber">5.2</span>&gt; =
@@ -312,7 +312,7 @@ output.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP5">&#167;5</a>.</p>
+<p class="endnote">This code is used in <a href="2-ce.html#SP5">&#167;5</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-cps.html">Back to 'Copies'</a></li><li><a href="2-rqr.html">Continue with 'Requirements'</a></li></ul><hr class="tocbar">

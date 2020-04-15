@@ -36,7 +36,7 @@ void ExtensionManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_wor
 =
 pathname *ExtensionManager::path_within_nest(inbuild_nest *N) {
 	if (N == NULL) internal_error("no nest");
-	return Pathnames::subfolder(N->location, I"Extensions");
+	return Pathnames::down(N->location, I"Extensions");
 }
 
 @ Extension copies are annotated with a structure called an |inform_extension|,
@@ -120,7 +120,7 @@ void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	if ((req->work->genre) && (req->work->genre != extension_genre)) return;
 	pathname *P = ExtensionManager::path_within_nest(N);
 	if (Str::len(req->work->author_name) > 0) {
-		pathname *Q = Pathnames::subfolder(P, req->work->author_name);
+		pathname *Q = Pathnames::down(P, req->work->author_name);
 		ExtensionManager::search_nest_for_r(Q, N, req, search_results);
 	} else {
 		ExtensionManager::search_nest_for_r(P, N, req, search_results);
@@ -136,11 +136,11 @@ void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
 				Str::delete_last_character(LEAFNAME);
 				if (Str::ne(LEAFNAME, I"Reserved")) {
-					pathname *Q = Pathnames::subfolder(P, LEAFNAME);
+					pathname *Q = Pathnames::down(P, LEAFNAME);
 					ExtensionManager::search_nest_for_r(Q, N, req, search_results);
 				}
 			} else {
-				filename *F = Filenames::in_folder(P, LEAFNAME);
+				filename *F = Filenames::in(P, LEAFNAME);
 				ExtensionManager::search_nest_for_single_file(F, N, req, search_results);
 			}
 		}
@@ -168,8 +168,8 @@ void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild
 	TEMPORARY_TEXT(leaf);
 	Editions::write_canonical_leaf(leaf, C->edition);
 	WRITE_TO(leaf, ".i7x");
-	filename *F = Filenames::in_folder(
-		Pathnames::subfolder(E, C->edition->work->author_name), leaf);
+	filename *F = Filenames::in(
+		Pathnames::down(E, C->edition->work->author_name), leaf);
 	DISCARD_TEXT(leaf);
 
 	if (TextFiles::exists(F)) {
@@ -178,13 +178,13 @@ void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command);
 			WRITE_TO(command, "mkdir -p ");
-			Shell::quote_path(command, Filenames::get_path_to(F));
+			Shell::quote_path(command, Filenames::up(F));
 			WRITE_TO(STDOUT, "%S\n", command);
 			DISCARD_TEXT(command);
 		} else {
 			Pathnames::create_in_file_system(N->location);
-			Pathnames::create_in_file_system(Pathnames::subfolder(N->location, I"Extensions"));
-			Pathnames::create_in_file_system(Filenames::get_path_to(F));
+			Pathnames::create_in_file_system(Pathnames::down(N->location, I"Extensions"));
+			Pathnames::create_in_file_system(Filenames::up(F));
 		}
 	}
 

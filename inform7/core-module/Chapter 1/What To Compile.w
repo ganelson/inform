@@ -223,19 +223,19 @@ the command line), but they take no time to generate so we make them anyway.
 =
 filename *Task::uuid_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in_folder(inform7_task->path, I"uuid.txt");
+	return Filenames::in(inform7_task->path, I"uuid.txt");
 }
 filename *Task::ifiction_record_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in_folder(inform7_task->path, I"Metadata.iFiction");
+	return Filenames::in(inform7_task->path, I"Metadata.iFiction");
 }
 filename *Task::manifest_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in_folder(inform7_task->path, I"manifest.plist");
+	return Filenames::in(inform7_task->path, I"manifest.plist");
 }
 filename *Task::blurb_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in_folder(inform7_task->path, I"Release.blurb");
+	return Filenames::in(inform7_task->path, I"Release.blurb");
 }
 
 @ The build folder for a project contains all of the working files created
@@ -246,11 +246,11 @@ section for details. In addition we have:
 =
 filename *Task::cblorb_report_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in_folder(inform7_task->build, I"StatusCblorb.html");
+	return Filenames::in(inform7_task->build, I"StatusCblorb.html");
 }
 filename *Task::parse_tree_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in_folder(inform7_task->build, I"Parse tree.txt");
+	return Filenames::in(inform7_task->build, I"Parse tree.txt");
 }
 
 @ The name of the unblorbed story file is chosen for us by Inbuild, so
@@ -273,7 +273,7 @@ details on actions live in the subfolder |Details|: see below.
 =
 pathname *Task::index_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	pathname *P = Pathnames::subfolder(inform7_task->build, I"Index");
+	pathname *P = Pathnames::down(inform7_task->build, I"Index");
 	if (Pathnames::create_in_file_system(P)) return P;
 	return NULL;
 }
@@ -285,7 +285,7 @@ the index as seen by the user.
 
 =
 filename *Task::xml_headings_file(void) {
-	return Filenames::in_folder(Task::index_path(), I"Headings.xml");
+	return Filenames::in(Task::index_path(), I"Headings.xml");
 }
 
 @ Within the Index is a deeper level, into the weeds as it were, called
@@ -293,7 +293,7 @@ filename *Task::xml_headings_file(void) {
 
 =
 pathname *Task::index_details_path(void) {
-	pathname *P = Pathnames::subfolder(Task::index_path(), I"Details");
+	pathname *P = Pathnames::down(Task::index_path(), I"Details");
 	if (Pathnames::create_in_file_system(P)) return P;
 	return NULL;
 }
@@ -309,11 +309,11 @@ filename *Task::index_file(text_stream *leafname, int sub) {
 	if (sub >= 0) {
 		TEMPORARY_TEXT(full_leafname);
 		WRITE_TO(full_leafname, "%d_%S", sub, leafname);
-		filename *F = Filenames::in_folder(Task::index_details_path(), full_leafname);
+		filename *F = Filenames::in(Task::index_details_path(), full_leafname);
 		DISCARD_TEXT(full_leafname);
 		return F;
 	} else {
-		return Filenames::in_folder(Task::index_path(), leafname);
+		return Filenames::in(Task::index_path(), leafname);
 	}
 }
 
@@ -341,10 +341,10 @@ void Task::set_existing_storyfile(text_stream *name) {
 	if (name == NULL) {
 		TEMPORARY_TEXT(leaf);
 		WRITE_TO(leaf, "story.%S", TargetVMs::get_unblorbed_extension(Task::vm()));
-		inform7_task->existing_storyfile = Filenames::in_folder(inform7_task->materials, leaf);
+		inform7_task->existing_storyfile = Filenames::in(inform7_task->materials, leaf);
 		DISCARD_TEXT(leaf);
 	} else {
-		inform7_task->existing_storyfile = Filenames::in_folder(inform7_task->materials, name);
+		inform7_task->existing_storyfile = Filenames::in(inform7_task->materials, name);
 	}
 }
 filename *Task::existing_storyfile_file(void) {
@@ -364,21 +364,21 @@ and Sounds, if any, live: in their own subfolders.
 =
 filename *Task::large_cover_art_file(int JPEG) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	if (JPEG) return Filenames::in_folder(inform7_task->materials, I"Cover.jpg");
-	return Filenames::in_folder(inform7_task->materials, I"Cover.png");
+	if (JPEG) return Filenames::in(inform7_task->materials, I"Cover.jpg");
+	return Filenames::in(inform7_task->materials, I"Cover.png");
 }
 filename *Task::epsmap_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Filenames::in_folder(inform7_task->materials, I"Inform Map.eps");
+	return Filenames::in(inform7_task->materials, I"Inform Map.eps");
 }
 
 pathname *Task::figures_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Pathnames::subfolder(inform7_task->materials, I"Figures");
+	return Pathnames::down(inform7_task->materials, I"Figures");
 }
 pathname *Task::sounds_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Pathnames::subfolder(inform7_task->materials, I"Sounds");
+	return Pathnames::down(inform7_task->materials, I"Sounds");
 }
 
 @ On a release run, Inblorb will populate the Release subfolder of Materials;
@@ -389,14 +389,14 @@ it can all be generated again.
 =
 pathname *Task::release_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	return Pathnames::subfolder(inform7_task->materials, I"Release");
+	return Pathnames::down(inform7_task->materials, I"Release");
 }
 pathname *Task::released_figures_path(void) {
-	return Pathnames::subfolder(Task::release_path(), I"Figures");
+	return Pathnames::down(Task::release_path(), I"Figures");
 }
 pathname *Task::released_sounds_path(void) {
-	return Pathnames::subfolder(Task::release_path(), I"Sounds");
+	return Pathnames::down(Task::release_path(), I"Sounds");
 }
 pathname *Task::released_interpreter_path(void) {
-	return Pathnames::subfolder(Task::release_path(), I"interpreter");
+	return Pathnames::down(Task::release_path(), I"interpreter");
 }

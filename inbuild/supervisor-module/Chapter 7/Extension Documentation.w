@@ -88,7 +88,7 @@ int Extensions::Documentation::write_extension_documentation_page(extension_cens
 
 	pathname *P = Extensions::Documentation::path();
 	if (P == NULL) return 0;
-	if (Pathnames::create_in_file_system(Pathnames::subfolder(P, work->author_name)) == 0)
+	if (Pathnames::create_in_file_system(Pathnames::down(P, work->author_name)) == 0)
 		return 0;
 
 	if (STREAM_OPEN_TO_FILE(DOCF, name, UTF8_ENC) == FALSE)
@@ -103,9 +103,9 @@ int Extensions::Documentation::write_extension_documentation_page(extension_cens
 pathname *Extensions::Documentation::path(void) {
 	pathname *P = Inbuild::transient();
 	if ((P == NULL) || (Pathnames::create_in_file_system(P) == 0)) return NULL;
-	P = Pathnames::subfolder(P, I"Documentation");
+	P = Pathnames::down(P, I"Documentation");
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
-	P = Pathnames::subfolder(P, I"Extensions");
+	P = Pathnames::down(P, I"Extensions");
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
 	return P;
 }
@@ -116,7 +116,7 @@ filename *Extensions::Documentation::location(text_stream *title, text_stream *a
 
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "%S.html", title);
-	filename *F = Filenames::in_folder(Pathnames::subfolder(P, author), leaf);
+	filename *F = Filenames::in(Pathnames::down(P, author), leaf);
 	DISCARD_TEXT(leaf);
 	return F;
 }

@@ -238,7 +238,7 @@ It should be the only thing on its line.
  			HTML::open(rawl, "pre", I"class='changelog'");
  			suppress_p_tag = TRUE;
  		}
- 		filename *cl = Filenames::in_folder(indoc_settings->change_logs_folder, mr2.exp[1]);
+ 		filename *cl = Filenames::in(indoc_settings->change_logs_folder, mr2.exp[1]);
 		TextFiles::read(cl, FALSE, "can't open change log file",
 			TRUE, Rawtext::process_change_log_helper, NULL, rawl);
  		if (indoc_settings->format == HTML_FORMAT) {

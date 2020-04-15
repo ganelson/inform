@@ -650,7 +650,7 @@ void Instances::begin_sequencing_objects(void) {
 	int i, nc = NUMBER_CREATED(instance);
 	if (objects_in_compilation_list == NULL) {
 		objects_in_compilation_list = (instance **)
-			(Memory::I7_calloc(nc, sizeof(instance *), OBJECT_COMPILATION_MREASON));
+			(Memory::calloc(nc, sizeof(instance *), OBJECT_COMPILATION_MREASON));
 	}
 	for (i=0; i<nc; i++) objects_in_compilation_list[i] = NULL;
 	first_object_in_compilation_list = NULL;

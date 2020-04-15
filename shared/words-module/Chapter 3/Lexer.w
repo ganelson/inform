@@ -246,7 +246,7 @@ void Lexer::ensure_space_up_to(int n) {
 	}
 	lexer_details_memory_allocated = new_size*((int) sizeof(lexer_details));
 	lexer_details *new_lw_array =
-		((lexer_details *) (Memory::I7_calloc(new_size, sizeof(lexer_details), LEXER_WORDS_MREASON)));
+		((lexer_details *) (Memory::calloc(new_size, sizeof(lexer_details), LEXER_WORDS_MREASON)));
 
 	if (new_lw_array == NULL) {
 		Lexer::lexer_problem_handler(MEMORY_OUT_LEXERERROR, NULL, NULL);
@@ -300,7 +300,7 @@ void Lexer::ensure_lexer_hwm_can_be_raised_by(int n, int transfer_partial_word) 
 
 void Lexer::allocate_lexer_workspace_chunk(int multiplier) {
 	int extent = multiplier * TEXT_STORAGE_CHUNK_SIZE;
-	lexer_workspace = ((wchar_t *) (Memory::I7_calloc(extent, sizeof(wchar_t), LEXER_TEXT_MREASON)));
+	lexer_workspace = ((wchar_t *) (Memory::calloc(extent, sizeof(wchar_t), LEXER_TEXT_MREASON)));
 	lexer_workspace_allocated += extent;
 	lexer_hwm = lexer_workspace;
 	lexer_workspace_end = lexer_workspace + extent;

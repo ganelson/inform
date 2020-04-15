@@ -124,7 +124,7 @@ compile a link to open a folder on the host filing system.
 =
 void HTML::Javascript::open_file(OUTPUT_STREAM, pathname *P, text_stream *leaf, char *contents) {
 	TEMPORARY_TEXT(fn);
-	if (leaf) WRITE_TO(fn, "%f", Filenames::in_folder(P, leaf));
+	if (leaf) WRITE_TO(fn, "%f", Filenames::in(P, leaf));
 	else WRITE_TO(fn, "%p", P);
 
 	#ifdef WINDOWS_JAVASCRIPT

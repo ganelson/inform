@@ -33,11 +33,11 @@ void Configuration::read_command_line(int argc, char **argv, settings_block *set
 	@<Read the command line@>;
 	path_to_indoc = Pathnames::installation_path("INDOC_PATH", I"indoc");
 	if (settings->verbose_mode) PRINT("Installation path is %p\n", path_to_indoc);
-	path_to_indoc_materials = Pathnames::subfolder(path_to_indoc, I"Materials");
+	path_to_indoc_materials = Pathnames::down(path_to_indoc, I"Materials");
 	Configuration::add_instructions_file(
-		Filenames::in_folder(path_to_indoc_materials, I"basic-instructions.txt"));
+		Filenames::in(path_to_indoc_materials, I"basic-instructions.txt"));
 	Configuration::add_instructions_file(
-		Filenames::in_folder(settings->book_folder, I"indoc-instructions.txt"));
+		Filenames::in(settings->book_folder, I"indoc-instructions.txt"));
 	Configuration::read_instructions(state.target_chosen, settings);
 }
 

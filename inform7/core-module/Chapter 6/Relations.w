@@ -1928,7 +1928,7 @@ time, requiring us to store a whole row, but allowing the world-model code
 to send the pairs in that row in any order.
 
 @<Compile bitmap pre-initialised to the V-to-V relation at start of play@> =
-	char *row_flags = Memory::I7_malloc(right_count, RELATION_CONSTRUCTION_MREASON);
+	char *row_flags = Memory::malloc(right_count, RELATION_CONSTRUCTION_MREASON);
 	if (row_flags) {
 		Relations::begin_bit_stream();
 
@@ -1974,7 +1974,7 @@ int Relations::relation_range(binary_predicate *bp, int index) {
 int *relation_indices = NULL;
 void Relations::allocate_index_storage(void) {
 	int nc = NUMBER_CREATED(inference_subject);
-	relation_indices = (int *) (Memory::I7_calloc(nc, 2*sizeof(int), OBJECT_COMPILATION_MREASON));
+	relation_indices = (int *) (Memory::calloc(nc, 2*sizeof(int), OBJECT_COMPILATION_MREASON));
 }
 
 void Relations::set_relation_index(inference_subject *infs, int i, int v) {
@@ -2060,7 +2060,7 @@ $$ p(P) = 12, p(S) = 23, p(R) = 25, p(D) = 26, p(O) = 31. $$
 void Relations::equivalence_relation_make_singleton_partitions(binary_predicate *bp,
 	int domain_size) {
 	int i;
-	int *partition_array = Memory::I7_calloc(domain_size, sizeof(int), PARTITION_MREASON);
+	int *partition_array = Memory::calloc(domain_size, sizeof(int), PARTITION_MREASON);
 	for (i=0; i<domain_size; i++) partition_array[i] = i+1;
 	bp->equivalence_partition = partition_array;
 }
@@ -2167,11 +2167,11 @@ checking in.
 void Relations::check_OtoO_relation(binary_predicate *bp) {
 	int nc = NUMBER_CREATED(inference_subject);
 	int *right_counts = (int *)
-		(Memory::I7_calloc(nc, sizeof(int), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(int), OBJECT_COMPILATION_MREASON));
 	inference **right_first = (inference **)
-		(Memory::I7_calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
 	inference **right_second = (inference **)
-		(Memory::I7_calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
 
 	property *prn = BinaryPredicates::get_i6_storage_property(bp);
 
@@ -2220,17 +2220,17 @@ void Relations::check_OtoO_relation(binary_predicate *bp) {
 void Relations::check_OtoV_relation(binary_predicate *bp) {
 	int nc = NUMBER_CREATED(inference_subject);
 	int *right_counts = (int *)
-		(Memory::I7_calloc(nc, sizeof(int), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(int), OBJECT_COMPILATION_MREASON));
 	inference **right_first = (inference **)
-		(Memory::I7_calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
 	inference **right_second = (inference **)
-		(Memory::I7_calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
 	int *left_counts = (int *)
-		(Memory::I7_calloc(nc, sizeof(int), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(int), OBJECT_COMPILATION_MREASON));
 	inference **left_first = (inference **)
-		(Memory::I7_calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
 	inference **left_second = (inference **)
-		(Memory::I7_calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
+		(Memory::calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
 
 	inference_subject *infs;
 	LOOP_OVER(infs, inference_subject) right_counts[infs->allocation_id] = 0;

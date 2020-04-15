@@ -31,7 +31,7 @@ void World::Compile::compile(void) {
 	Plugins::Call::compile_model_tables();
 	int nc = NUMBER_CREATED(kind_constructor), i;
 	rough_array_memory_used = (int *)
-		(Memory::I7_calloc(nc, sizeof(int), COMPILATION_SIZE_MREASON));
+		(Memory::calloc(nc, sizeof(int), COMPILATION_SIZE_MREASON));
 	for (i=0; i<nc; i++) rough_array_memory_used[i] = 0;
 	InferenceSubjects::compile_all();
 	Memory::I7_array_free(rough_array_memory_used, COMPILATION_SIZE_MREASON, nc, sizeof(int));

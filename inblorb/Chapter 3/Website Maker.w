@@ -455,7 +455,7 @@ int no_doc_files = 0, no_src_files = 0;
 void Websites::write_source_text_pages(filename *template, pathname *website_pathname) {
 	TEMPORARY_TEXT(contents_leafname);
 	WRITE_TO(contents_leafname, "%S.html", Placeholders::read(I"SOURCEPREFIX"));
-	filename *contents_page = Filenames::in_folder(website_pathname, contents_leafname);
+	filename *contents_page = Filenames::in(website_pathname, contents_leafname);
 	DISCARD_TEXT(contents_leafname);
 
 	@<Devise URLs for the segments@>;
@@ -538,7 +538,7 @@ pages |doc_0.html| and so on up.
 @<Generate the segment pages@> =
 	segment *seg;
 	LOOP_OVER(seg, segment) {
-		filename *segment_page = Filenames::in_folder(website_pathname, seg->segment_url);
+		filename *segment_page = Filenames::in(website_pathname, seg->segment_url);
 		segment_being_written = seg;
 		source_HTML_pages_created++;
 		Websites::web_copy(template, segment_page);

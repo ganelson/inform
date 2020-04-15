@@ -38,13 +38,13 @@ void PL::HTMLMap::calculate_map_grid(void) {
 	int size_needed = Geometry::cuboid_volume(Universe), x;
 
 	room_grid = (instance **)
-		(Memory::I7_calloc(size_needed, sizeof(instance *), MAP_INDEX_MREASON));
+		(Memory::calloc(size_needed, sizeof(instance *), MAP_INDEX_MREASON));
 	for (x=0; x<size_needed; x++) room_grid[x] = NULL;
 
 	icon_grid = (int *)
-		(Memory::I7_calloc(25*size_needed, sizeof(int), MAP_INDEX_MREASON));
+		(Memory::calloc(25*size_needed, sizeof(int), MAP_INDEX_MREASON));
 	exit_grid = (int *)
-		(Memory::I7_calloc(25*size_needed, sizeof(int), MAP_INDEX_MREASON));
+		(Memory::calloc(25*size_needed, sizeof(int), MAP_INDEX_MREASON));
 	for (x=0; x<25*size_needed; x++) {
 		icon_grid[x] = 0;
 		exit_grid[x] = -1;

@@ -60,7 +60,7 @@ but we won't assume that. Remember, |inbuild| knows best.
 		Problems::Fatal::issue(
 			"Unable to create Build folder for project: is it read-only?");
 
-	filename *DF = Filenames::in_folder(build_folder, I"Debug log.txt");
+	filename *DF = Filenames::in(build_folder, I"Debug log.txt");
 	Log::set_debug_log_filename(DF);
 	Log::open();
 	LOG("inform7 was called as:");
@@ -68,7 +68,7 @@ but we won't assume that. Remember, |inbuild| knows best.
 	LOG("\n");
 	CommandLine::play_back_log();
 
-	filename *PF = Filenames::in_folder(build_folder, I"Problems.html");
+	filename *PF = Filenames::in(build_folder, I"Problems.html");
 	Problems::Issue::start_problems_report(PF);
 
 @ Telemetry is not as sinister as it sounds: the app isn't sending data out
@@ -78,7 +78,7 @@ students have been getting stuck on. In any case, it needs to be activated
 with a use option, so by default this file will never be written.
 
 @<Name the telemetry@> =
-	pathname *P = Pathnames::subfolder(Inbuild::transient(), I"Telemetry");
+	pathname *P = Pathnames::down(Inbuild::transient(), I"Telemetry");
 	if (Pathnames::create_in_file_system(P)) {
 		TEMPORARY_TEXT(leafname_of_telemetry);
 		int this_month = the_present->tm_mon + 1;
@@ -86,7 +86,7 @@ with a use option, so by default this file will never be written.
 		int this_year = the_present->tm_year + 1900;
 		WRITE_TO(leafname_of_telemetry,
 			"Telemetry %04d-%02d-%02d.txt", this_year, this_month, this_day);
-		filename *F = Filenames::in_folder(P, leafname_of_telemetry);
+		filename *F = Filenames::in(P, leafname_of_telemetry);
 		Telemetry::locate_telemetry_file(F);
 		DISCARD_TEXT(leafname_of_telemetry);
 	}

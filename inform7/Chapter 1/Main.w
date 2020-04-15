@@ -11,7 +11,7 @@ The only code in |inform7| which lies outside these modules is the following
 set of dummy mains, which simply hand over to the |core| module. If you would
 like a sense of how Inform 7 works, read that, not this.
 
-@d INTOOL_NAME "inform7"
+@d PROGRAM_NAME "inform7"
 
 @ On some platforms the core Inform compiler is a separate command-line tool,
 so that execution should begin with |main()|, as in all C programs. But some

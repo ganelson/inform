@@ -44,7 +44,7 @@ void Inter::Lists::add(inter_node_list *FL, inter_tree_node *F) {
 	if (FL->storage_used >= FL->storage_capacity) {
 		int new_size = 128;
 		while (new_size < 2*FL->storage_capacity) new_size = 2*new_size;
-		inter_node_list_entry *storage = (inter_node_list_entry *) Memory::I7_calloc(new_size, sizeof(inter_node_list_entry), INTER_LINKS_MREASON);
+		inter_node_list_entry *storage = (inter_node_list_entry *) Memory::calloc(new_size, sizeof(inter_node_list_entry), INTER_LINKS_MREASON);
 		FL->spare_storage = storage;
 		FL->storage_used = 0;
 		FL->storage_capacity = new_size;

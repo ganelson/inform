@@ -9,7 +9,7 @@ which may be used either to write Inform or to read the works it compiles.
 void NaturalLanguages::produce_index(void) {
 	inform_project *project = Task::project();
 	I6T::interpret_indext(
-		Filenames::in_folder(
+		Filenames::in(
 			Languages::path_to_bundle(
 				Projects::get_language_of_index(project)),
 			Projects::index_structure(project)));
@@ -90,7 +90,7 @@ At present we do this only for English, but some day...
 wording NaturalLanguages::load_preform(inform_language *L) {
 	if (L == NULL) internal_error("can't load preform from null language");
 	language_being_read_by_Preform = L;
-	filename *preform_file = Filenames::in_folder(Languages::path_to_bundle(L), I"Syntax.preform");
+	filename *preform_file = Filenames::in(Languages::path_to_bundle(L), I"Syntax.preform");
 	PRINT("Reading language definition from <%f>\n", preform_file);
 	return Preform::load_from_file(preform_file);
 }

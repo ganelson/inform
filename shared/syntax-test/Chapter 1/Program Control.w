@@ -4,7 +4,7 @@ What shall we test?
 
 @h Main routine.
 
-@d INTOOL_NAME "syntax-test"
+@d PROGRAM_NAME "syntax-test"
 
 @e TEST_TREE_CLSW
 
@@ -35,9 +35,9 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 
 void Main::load(text_stream *leaf) {
 	pathname *P = Pathnames::from_text(I"inbuild");
-	P = Pathnames::subfolder(P, I"syntax-test");
-	P = Pathnames::subfolder(P, I"Tangled");
-	filename *S = Filenames::in_folder(P, leaf);
+	P = Pathnames::down(P, I"syntax-test");
+	P = Pathnames::down(P, I"Tangled");
+	filename *S = Filenames::in(P, leaf);
 	wording W = Preform::load_from_file(S);
 	Preform::parse_preform(W, FALSE);
 }

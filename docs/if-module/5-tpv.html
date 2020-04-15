@@ -167,8 +167,8 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::number<button class="popup" onclick="togglePopup('usagePopup642')">...<span class="popuptext" id="usagePopup642">Usage of <b>PL::Parsing::Tokens::Values::number</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">DECIMAL_TOKEN_INNER_HL</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+        <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext"><a href="5-gv.html#SP31">PL::Parsing::Verbs::get_parsing_grammar</a></span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gv</span><span class="plain">) </span><span class="functiontext"><a href="5-gv.html#SP27">PL::Parsing::Verbs::compile_iv</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
@@ -182,8 +182,8 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::time<button class="popup" onclick="togglePopup('usagePopup643')">...<span class="popuptext" id="usagePopup643">Usage of <b>PL::Parsing::Tokens::Values::time</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TIME_TOKEN_INNER_HL</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+        <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">PL::TimesOfDay::kind</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) {</span>
             <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext"><a href="5-gv.html#SP31">PL::Parsing::Verbs::get_parsing_grammar</a></span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
@@ -200,8 +200,8 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Tokens::Values::truth_state<button class="popup" onclick="togglePopup('usagePopup644')">...<span class="popuptext" id="usagePopup644">Usage of <b>PL::Parsing::Tokens::Values::truth_state</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TRUTH_STATE_TOKEN_INNER_HL</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+        <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
         <span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain"> = </span><span class="functiontext"><a href="5-gv.html#SP31">PL::Parsing::Verbs::get_parsing_grammar</a></span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gv</span><span class="plain">) </span><span class="functiontext"><a href="5-gv.html#SP27">PL::Parsing::Verbs::compile_iv</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">, </span><span class="identifier">gv</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
@@ -228,20 +228,20 @@
                     <span class="identifier">need_lf_vars</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
-                <span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                <span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_standard_set</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">need_lf_vars</span><span class="plain">) </span><span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_lp_vars</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+                <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
+                <span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+                <span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_standard_set</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">need_lf_vars</span><span class="plain">) </span><span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_lp_vars</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Compile body of kind GPR</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Kinds::RunTime::get_instance_GPR_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                     <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-                    <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
-                    <span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_instance_call</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                    <span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
-                    <span class="functiontext"><a href="#SP1">PL::Parsing::Tokens::Values::add_standard_set</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+                    <span class="reserved">gpr_kit</span><span class="plain"> </span><span class="identifier">gprk</span><span class="plain"> = </span><span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::new_kit</a></span><span class="plain">();</span>
+                    <span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_instance_call</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+                    <span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_original</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
+                    <span class="functiontext"><a href="5-tpv.html#SP1">PL::Parsing::Tokens::Values::add_standard_set</a></span><span class="plain">(&amp;</span><span class="identifier">gprk</span><span class="plain">);</span>
                     <span class="identifier">GV_IS_VALUE_instance_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     &lt;<span class="cwebmacro">Compile body of kind GPR</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
                     <span class="identifier">GV_IS_VALUE_instance_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -347,7 +347,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1">&#167;1</a> (twice).</p>
+<p class="endnote">This code is used in <a href="5-tpv.html#SP1">&#167;1</a> (twice).</p>
 
 <p class="inwebparagraph"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Save word number</span> <span class="cwebmacronumber">1.1.1</span>&gt; =
@@ -364,7 +364,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_1">&#167;1.1</a>.</p>
+<p class="endnote">This code is used in <a href="5-tpv.html#SP1_1">&#167;1.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_1_2"></a><b>&#167;1.1.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Reset word number</span> <span class="cwebmacronumber">1.1.2</span>&gt; =
@@ -381,7 +381,7 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_1">&#167;1.1</a> (three times).</p>
+<p class="endnote">This code is used in <a href="5-tpv.html#SP1_1">&#167;1.1</a> (three times).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-nft.html">Back to 'Noun Filter Tokens'</a></li><li><a href="5-gpr.html">Continue with 'General Parsing Routines'</a></li></ul><hr class="tocbar">

@@ -349,7 +349,7 @@ we need to use the equivalent of traditional <code class="display"><span class="
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
+<p class="endnote">This code is used in <a href="1-cm.html#SP6">&#167;6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6_3"></a><b>&#167;6.3.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Register this module's stream writers</span> <span class="cwebmacronumber">6.3</span>&gt; =
@@ -357,14 +357,14 @@ we need to use the equivalent of traditional <code class="display"><span class="
 
 
 <pre class="displaydefn">
-        <span class="identifier">Writers::register_writer_I</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="#SP7">CoreModule::writer</a></span><span class="plain">);</span>
+        <span class="identifier">Writers::register_writer_I</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="1-cm.html#SP7">CoreModule::writer</a></span><span class="plain">);</span>
         <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'I'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="5-ins.html#SP15">Instances::writer</a></span><span class="plain">);</span>
         <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'L'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="24-lv.html#SP44">LocalVariables::writer</a></span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
+<p class="endnote">This code is used in <a href="1-cm.html#SP6">&#167;6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6_4"></a><b>&#167;6.4.  </b></p>
 
@@ -465,7 +465,7 @@ we need to use the equivalent of traditional <code class="display"><span class="
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
+<p class="endnote">This code is used in <a href="1-cm.html#SP6">&#167;6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6_6"></a><b>&#167;6.6.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Register this module's debugging log writers</span> <span class="cwebmacronumber">6.6</span>&gt; =
@@ -506,12 +506,12 @@ we need to use the equivalent of traditional <code class="display"><span class="
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
+<p class="endnote">This code is used in <a href="1-cm.html#SP6">&#167;6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CoreModule::writer<button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>CoreModule::writer</b>:<br><a href="#SP6_3">&#167;6.3</a></span></button></span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">format_string</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CoreModule::writer<button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>CoreModule::writer</b>:<br><a href="1-cm.html#SP6_3">&#167;6.3</a></span></button></span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">format_string</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Time::fixed</span><span class="plain">()) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"9Z99"</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Inform 7.99.99"</span><span class="plain">);</span>

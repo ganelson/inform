@@ -70,7 +70,7 @@ void Kits::scan(inbuild_copy *C) {
 	K->defines_Main = FALSE;
 	K->supports_nl = FALSE;
 
-	filename *F = Filenames::in_folder(C->location_if_path, I"kit_metadata.txt");
+	filename *F = Filenames::in(C->location_if_path, I"kit_metadata.txt");
 	TextFiles::read(F, FALSE,
 		NULL, FALSE, Kits::read_metadata, NULL, (void *) C);
 }
@@ -219,8 +219,8 @@ loads the base kinds in a kit |K|:
 void Kits::load_types(inform_kit *K) {
 	text_stream *segment;
 	LOOP_OVER_LINKED_LIST(segment, text_stream, K->kind_definitions) {
-		pathname *P = Pathnames::subfolder(K->as_copy->location_if_path, I"kinds");
-		filename *F = Filenames::in_folder(P, segment);
+		pathname *P = Pathnames::down(K->as_copy->location_if_path, I"kinds");
+		filename *F = Filenames::in(P, segment);
 		LOG("Loading kinds definitions from %f\n", F);
 		I6T::interpret_kindt(F);
 	}

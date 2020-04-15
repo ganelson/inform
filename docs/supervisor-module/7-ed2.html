@@ -59,10 +59,10 @@ understand what it entails). The following routine writes both kinds of page.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Documentation::write_detailed<button class="popup" onclick="togglePopup('usagePopup373')">...<span class="popuptext" id="usagePopup373">Usage of <b>Extensions::Documentation::write_detailed</b>:<br>Extension Census - <a href="7-ec.html#SP11">&#167;11</a></span></button></span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="functiontext"><a href="#SP2">Extensions::Documentation::write_extension_documentation</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="7-ed2.html#SP2">Extensions::Documentation::write_extension_documentation</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Documentation::write_sketchy<button class="popup" onclick="togglePopup('usagePopup374')">...<span class="popuptext" id="usagePopup374">Usage of <b>Extensions::Documentation::write_sketchy</b>:<br>Extension Census - <a href="7-ec.html#SP12">&#167;12</a></span></button></span><span class="plain">(</span><span class="reserved">extension_census_datum</span><span class="plain"> *</span><span class="identifier">ecd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain">) {</span>
-        <span class="functiontext"><a href="#SP2">Extensions::Documentation::write_extension_documentation</a></span><span class="plain">(</span><span class="identifier">ecd</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">census_mode</span><span class="plain">);</span>
+        <span class="functiontext"><a href="7-ed2.html#SP2">Extensions::Documentation::write_extension_documentation</a></span><span class="plain">(</span><span class="identifier">ecd</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">census_mode</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -92,11 +92,11 @@ in sequence,
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Documentation::write_extension_documentation<button class="popup" onclick="togglePopup('usagePopup375')">...<span class="popuptext" id="usagePopup375">Usage of <b>Extensions::Documentation::write_extension_documentation</b>:<br><a href="#SP1">&#167;1</a>, <a href="#SP3_1">&#167;3.1</a></span></button></span><span class="plain">(</span><span class="reserved">extension_census_datum</span><span class="plain"> *</span><span class="identifier">ecd</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Documentation::write_extension_documentation<button class="popup" onclick="togglePopup('usagePopup375')">...<span class="popuptext" id="usagePopup375">Usage of <b>Extensions::Documentation::write_extension_documentation</b>:<br><a href="7-ed2.html#SP1">&#167;1</a>, <a href="7-ed2.html#SP3_1">&#167;3.1</a></span></button></span><span class="plain">(</span><span class="reserved">extension_census_datum</span><span class="plain"> *</span><span class="identifier">ecd</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">, </span><span class="identifier">eg_count</span><span class="plain">;</span>
-        <span class="identifier">eg_count</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">Extensions::Documentation::write_extension_documentation_page</a></span><span class="plain">(</span><span class="identifier">ecd</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, -1, </span><span class="identifier">census_mode</span><span class="plain">);</span>
+        <span class="identifier">eg_count</span><span class="plain"> = </span><span class="functiontext"><a href="7-ed2.html#SP3">Extensions::Documentation::write_extension_documentation_page</a></span><span class="plain">(</span><span class="identifier">ecd</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, -1, </span><span class="identifier">census_mode</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">=1; </span><span class="identifier">c</span><span class="plain">&lt;=</span><span class="identifier">eg_count</span><span class="plain">; </span><span class="identifier">c</span><span class="plain">++)</span>
-            <span class="functiontext"><a href="#SP3">Extensions::Documentation::write_extension_documentation_page</a></span><span class="plain">(</span><span class="identifier">ecd</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">, </span><span class="identifier">census_mode</span><span class="plain">);</span>
+            <span class="functiontext"><a href="7-ed2.html#SP3">Extensions::Documentation::write_extension_documentation_page</a></span><span class="plain">(</span><span class="identifier">ecd</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">, </span><span class="identifier">census_mode</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -117,7 +117,7 @@ is any, as well as the correct identifying headings and requirements.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::Documentation::write_extension_documentation_page<button class="popup" onclick="togglePopup('usagePopup376')">...<span class="popuptext" id="usagePopup376">Usage of <b>Extensions::Documentation::write_extension_documentation_page</b>:<br><a href="#SP2">&#167;2</a></span></button></span><span class="plain">(</span><span class="reserved">extension_census_datum</span><span class="plain"> *</span><span class="identifier">ecd</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::Documentation::write_extension_documentation_page<button class="popup" onclick="togglePopup('usagePopup376')">...<span class="popuptext" id="usagePopup376">Usage of <b>Extensions::Documentation::write_extension_documentation_page</b>:<br><a href="7-ed2.html#SP2">&#167;2</a></span></button></span><span class="plain">(</span><span class="reserved">extension_census_datum</span><span class="plain"> *</span><span class="identifier">ecd</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">eg_number</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain">) {</span>
         <span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">text_stream</span><span class="plain"> </span><span class="identifier">DOCF_struct</span><span class="plain">;</span>
@@ -132,7 +132,7 @@ is any, as well as the correct identifying headings and requirements.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
         <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">eg_number</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="string">"-eg%d"</span><span class="plain">, </span><span class="identifier">eg_number</span><span class="plain">);</span>
-        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">Extensions::Documentation::location</a></span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">author_name</span><span class="plain">);</span>
+        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain"> = </span><span class="functiontext"><a href="7-ed2.html#SP3">Extensions::Documentation::location</a></span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">author_name</span><span class="plain">);</span>
 
         <span class="identifier">page_exists_already</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">TEST_DOCF</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="string">"r"</span><span class="plain">);</span>
@@ -147,9 +147,9 @@ is any, as well as the correct identifying headings and requirements.
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null E in extension documentation writer"</span><span class="plain">);</span>
 
-        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">Extensions::Documentation::path</a></span><span class="plain">();</span>
+        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext"><a href="7-ed2.html#SP3">Extensions::Documentation::path</a></span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">author_name</span><span class="plain">)) == </span><span class="constant">0</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">Pathnames::down</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">author_name</span><span class="plain">)) == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">DOCF</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">UTF8_ENC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
@@ -164,20 +164,20 @@ is any, as well as the correct identifying headings and requirements.
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Extensions::Documentation::path<button class="popup" onclick="togglePopup('usagePopup377')">...<span class="popuptext" id="usagePopup377">Usage of <b>Extensions::Documentation::path</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext"><a href="1-ic.html#SP16">Inbuild::transient</a></span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Documentation"</span><span class="plain">);</span>
+        <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::down</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Documentation"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Extensions"</span><span class="plain">);</span>
+        <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::down</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Extensions"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Extensions::Documentation::location<button class="popup" onclick="togglePopup('usagePopup378')">...<span class="popuptext" id="usagePopup378">Usage of <b>Extensions::Documentation::location</b>:<br>none</span></button></span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">author</span><span class="plain">) {</span>
-        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">Extensions::Documentation::path</a></span><span class="plain">();</span>
+        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext"><a href="7-ed2.html#SP3">Extensions::Documentation::path</a></span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="string">"%S.html"</span><span class="plain">, </span><span class="identifier">title</span><span class="plain">);</span>
-        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">author</span><span class="plain">), </span><span class="identifier">leaf</span><span class="plain">);</span>
+        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in</span><span class="plain">(</span><span class="identifier">Pathnames::down</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">author</span><span class="plain">), </span><span class="identifier">leaf</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -204,15 +204,15 @@ calls.
 
 <pre class="displaydefn">
         <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"This sentence provides a firebreak, no more. "</span><span class="plain">);</span>
-        <span class="identifier">E</span><span class="plain"> = </span><span class="functiontext"><a href="#SP4">Extensions::Documentation::load</a></span><span class="plain">(</span><span class="identifier">work</span><span class="plain">);</span>
+        <span class="identifier">E</span><span class="plain"> = </span><span class="functiontext"><a href="7-ed2.html#SP4">Extensions::Documentation::load</a></span><span class="plain">(</span><span class="identifier">work</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; </span><span class="comment"> shouldn't happen: it was there only moments ago</span>
         <span class="functiontext"><a href="2-cps.html#SP7">Copies::get_source_text</a></span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">);</span>
-        <span class="functiontext"><a href="#SP2">Extensions::Documentation::write_extension_documentation</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">census_mode</span><span class="plain">);</span>
+        <span class="functiontext"><a href="7-ed2.html#SP2">Extensions::Documentation::write_extension_documentation</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">census_mode</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3">&#167;3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2.  </b>We now make much the same "paste into the gap in the template" copying
 exercise as when generating the home pages for extensions, though with a
@@ -244,7 +244,7 @@ different template:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3">&#167;3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2_1"></a><b>&#167;3.2.1.  </b>And this is the body:
 </p>
@@ -280,7 +280,7 @@ different template:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_2">&#167;3.2</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3_2">&#167;3.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2_1_1"></a><b>&#167;3.2.1.1.  </b>UTF-8 transcoding in the following is delegated to <code class="display"><span class="extract">HTML::Javascript::paste</span></code>:
 </p>
@@ -301,7 +301,7 @@ different template:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_2_1">&#167;3.2.1</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3_2_1">&#167;3.2.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2_1_2"></a><b>&#167;3.2.1.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Write up any restrictions on VM usage</span> <span class="cwebmacronumber">3.2.1.2</span>&gt; =
@@ -318,7 +318,7 @@ different template:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_2_1">&#167;3.2.1</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3_2_1">&#167;3.2.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2_1_3"></a><b>&#167;3.2.1.3.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Write up the version number, if any, and location</span> <span class="cwebmacronumber">3.2.1.3</span>&gt; =
@@ -338,7 +338,7 @@ different template:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_2_1">&#167;3.2.1</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3_2_1">&#167;3.2.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2_1_4"></a><b>&#167;3.2.1.4.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Write up the rubric, if any</span> <span class="cwebmacronumber">3.2.1.4</span>&gt; =
@@ -358,7 +358,7 @@ different template:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_2_1">&#167;3.2.1</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3_2_1">&#167;3.2.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2_1_5"></a><b>&#167;3.2.1.5.  </b>This appears above the definition paragraphs because it tends to be only
 large extensions which provide TOCs: and they, ipso facto, make many definitions.
@@ -384,7 +384,7 @@ easily be scrolled down off screen when the user first visits the page.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_2_1">&#167;3.2.1</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3_2_1">&#167;3.2.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2_1_6"></a><b>&#167;3.2.1.6.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Write up the extension author's supplied documentation, if any</span> <span class="cwebmacronumber">3.2.1.6</span>&gt; =
@@ -405,12 +405,12 @@ easily be scrolled down off screen when the user first visits the page.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3_2_1">&#167;3.2.1</a>.</p>
+<p class="endnote">This code is used in <a href="7-ed2.html#SP3_2_1">&#167;3.2.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="display">
-    <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="functiontext">Extensions::Documentation::load<button class="popup" onclick="togglePopup('usagePopup379')">...<span class="popuptext" id="usagePopup379">Usage of <b>Extensions::Documentation::load</b>:<br><a href="#SP3_1">&#167;3.1</a></span></button></span><span class="plain">(</span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">) {</span>
+    <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="functiontext">Extensions::Documentation::load<button class="popup" onclick="togglePopup('usagePopup379')">...<span class="popuptext" id="usagePopup379">Usage of <b>Extensions::Documentation::load</b>:<br><a href="7-ed2.html#SP3_1">&#167;3.1</a></span></button></span><span class="plain">(</span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">) {</span>
         <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext"><a href="2-rqr.html#SP2">Requirements::any_version_of</a></span><span class="plain">(</span><span class="identifier">work</span><span class="plain">);</span>
 
         <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>

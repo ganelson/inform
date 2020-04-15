@@ -163,7 +163,7 @@ void PL::Figures::register_figure(wording F, wording FN) {
 		bf->figure_number = Task::get_next_free_blorb_resource_ID();
 		TEMPORARY_TEXT(leaf);
 		WRITE_TO(leaf, "%N", wn);
-		bf->filename_of_image_file = Filenames::in_folder(Task::figures_path(), leaf);
+		bf->filename_of_image_file = Filenames::in(Task::figures_path(), leaf);
 		DISCARD_TEXT(leaf);
 		bf->alt_description = <<alttext>>;
 	} else {

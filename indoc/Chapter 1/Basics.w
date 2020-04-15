@@ -6,7 +6,7 @@ Some fundamental definitions.
 This is a command-line tool built on top of the Foundation module. The first
 definition we need to make is:
 
-@d INTOOL_NAME "indoc"
+@d PROGRAM_NAME "indoc"
 
 =
 void Basics::start(void) {

@@ -83,7 +83,7 @@ void CSS::write_CSS_files(filename *from) {
 		if (no_volumes > 1) WRITE_TO(leafname, "_%S", V->vol_abbrev);
 		WRITE_TO(leafname, ".css");
 		V->vol_CSS_leafname = Str::duplicate(leafname);
-		filename *F = Filenames::in_folder(indoc_settings->destination, leafname);
+		filename *F = Filenames::in(indoc_settings->destination, leafname);
 
 		text_stream CSS_struct;
 		text_stream *OUT = &CSS_struct;

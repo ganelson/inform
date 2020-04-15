@@ -264,7 +264,7 @@ void Index::DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 @<Load in the documentation fragments file@> =
 	FILE *FRAGMENTS = Filenames::fopen(Inbuild::file_from_installation(DOCUMENTATION_SNIPPETS_IRES), "r");
 	if (FRAGMENTS) {
-		char *p = Memory::I7_malloc(MAX_EXTENT_OF_FRAGMENTS, DOC_FRAGMENT_MREASON);
+		char *p = Memory::malloc(MAX_EXTENT_OF_FRAGMENTS, DOC_FRAGMENT_MREASON);
 		@<Scan the file into memory, translating from UTF-8@>;
 		@<Work out where the documentation fragments occur@>;
 		fclose(FRAGMENTS);

@@ -60,7 +60,7 @@ remain empty. But we may as well tell the debugging log.
 @d MAX_BUNDLE_ABOUT_LINE_LENGTH 256  /* which is far more than necessary, really */
 
 @<Read the about.txt file for the bundle@> =
-	filename *about_file = Filenames::in_folder(P, I"about.txt");
+	filename *about_file = Filenames::in(P, I"about.txt");
 
 	if (TextFiles::read(about_file, FALSE,
 		NULL, FALSE, Languages::about_helper, NULL, L) == FALSE)

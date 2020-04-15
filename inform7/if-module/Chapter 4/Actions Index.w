@@ -148,7 +148,7 @@ void PL::Actions::Index::commands(OUTPUT_STREAM) {
 
 void PL::Actions::Index::alphabetical(OUTPUT_STREAM) {
 	int nr = NUMBER_CREATED(action_name);
-	action_name **sorted = Memory::I7_calloc(nr, sizeof(action_name *), INDEX_SORTING_MREASON);
+	action_name **sorted = Memory::calloc(nr, sizeof(action_name *), INDEX_SORTING_MREASON);
 	if (sorted) {
 		@<Sort the action names@>;
 		@<Tabulate the action names@>;

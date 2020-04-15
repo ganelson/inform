@@ -72,7 +72,7 @@ void Examples::scan_examples(void) {
 	TEMPORARY_TEXT(leafname);
 	while (Directories::next(dir, leafname)) {
 		if (Str::get_last_char(leafname) == FOLDER_SEPARATOR) continue;
-		filename *exloc = Filenames::in_folder(indoc_settings->examples_directory, leafname);
+		filename *exloc = Filenames::in(indoc_settings->examples_directory, leafname);
 		if (Regexp::match(NULL, leafname, L"%(Recipes%)%c*")) @<Scan the Recipe Book catalogue@>
 		else @<Scan a regular example@>;
 	}

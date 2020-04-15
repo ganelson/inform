@@ -63,7 +63,7 @@ like a sense of how Inform 7 works, read that, not this.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">INTOOL_NAME</span><span class="plain"> </span><span class="string">"inform7"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PROGRAM_NAME</span><span class="plain"> </span><span class="string">"inform7"</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>On some platforms the core Inform compiler is a separate command-line tool,
 so that execution should begin with <code class="display"><span class="extract">main()</span></code>, as in all C programs. But some
@@ -75,13 +75,13 @@ when they want I7 to run.
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="constant">SUPPRESS_MAIN</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[]) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="#SP2">Main::deputy</a></span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="1-mn.html#SP2">Main::deputy</a></span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Main::deputy<button class="popup" onclick="togglePopup('usagePopup0')">...<span class="popuptext" id="usagePopup0">Usage of <b>Main::deputy</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[]) {</span>
         &lt;<span class="cwebmacro">Start up the modules</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext"><a href="1-mr.html#SP1">CoreMain::main</a></span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext"><a href="../core-module/1-mr.html#SP1">CoreMain::main</a></span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Shut down the modules</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -95,18 +95,18 @@ when they want I7 to run.
 
 
 <pre class="displaydefn">
-        <span class="functiontext"><a href="1-fm.html#SP8">Foundation::start</a></span><span class="plain">(); </span><span class="comment"> must be started first</span>
+        <span class="functiontext"><a href="../../../inweb/docs/foundation-module/1-fm.html#SP8">Foundation::start</a></span><span class="plain">(); </span><span class="comment"> must be started first</span>
         <span class="functiontext"><a href="1-wm.html#SP3">WordsModule::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-im.html#SP3">InflectionsModule::start</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../inflections-module/1-im.html#SP3">InflectionsModule::start</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-sm.html#SP3">SyntaxModule::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-lm.html#SP3">LinguisticsModule::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-km.html#SP3">KindsModule::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-pm.html#SP2">ProblemsModule::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-cm.html#SP6">CoreModule::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-im2.html#SP3">IFModule::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-mm.html#SP3">MultimediaModule::start</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../linguistics-module/1-lm.html#SP3">LinguisticsModule::start</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../kinds-module/1-km.html#SP3">KindsModule::start</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../problems-module/1-pm.html#SP2">ProblemsModule::start</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../core-module/1-cm.html#SP6">CoreModule::start</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../if-module/1-im2.html#SP3">IFModule::start</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../multimedia-module/1-mm.html#SP3">MultimediaModule::start</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-hm.html#SP2">HTMLModule::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-im3.html#SP3">IndexModule::start</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../index-module/1-im3.html#SP3">IndexModule::start</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-am.html#SP3">ArchModule::start</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-bm.html#SP3">BytecodeModule::start</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-bm2.html#SP4">BuildingModule::start</a></span><span class="plain">();</span>
@@ -116,7 +116,7 @@ when they want I7 to run.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Shut down the modules</span> <span class="cwebmacronumber">2.2</span>&gt; =
@@ -125,27 +125,27 @@ when they want I7 to run.
 
 <pre class="displaydefn">
         <span class="functiontext"><a href="1-wm.html#SP3">WordsModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-im.html#SP3">InflectionsModule::end</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../inflections-module/1-im.html#SP3">InflectionsModule::end</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-sm.html#SP3">SyntaxModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-lm.html#SP3">LinguisticsModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-km.html#SP3">KindsModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-pm.html#SP2">ProblemsModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-mm.html#SP3">MultimediaModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-cm.html#SP6">CoreModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-im2.html#SP3">IFModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-im3.html#SP3">IndexModule::end</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../linguistics-module/1-lm.html#SP3">LinguisticsModule::end</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../kinds-module/1-km.html#SP3">KindsModule::end</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../problems-module/1-pm.html#SP2">ProblemsModule::end</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../multimedia-module/1-mm.html#SP3">MultimediaModule::end</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../core-module/1-cm.html#SP6">CoreModule::end</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../if-module/1-im2.html#SP3">IFModule::end</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="../index-module/1-im3.html#SP3">IndexModule::end</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-hm.html#SP2">HTMLModule::end</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-bm.html#SP3">BytecodeModule::end</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-am.html#SP3">ArchModule::end</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-bm2.html#SP5">BuildingModule::end</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-cm2.html#SP3">CodegenModule::end</a></span><span class="plain">();</span>
         <span class="functiontext"><a href="1-sm2.html#SP3">SupervisorModule::end</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="1-fm.html#SP9">Foundation::end</a></span><span class="plain">(); </span><span class="comment"> must be ended last</span>
+        <span class="functiontext"><a href="../../../inweb/docs/foundation-module/1-fm.html#SP9">Foundation::end</a></span><span class="plain">(); </span><span class="comment"> must be ended last</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</p>
 
 <!--End of weave-->
 <script>

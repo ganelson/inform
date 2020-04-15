@@ -90,7 +90,7 @@ another auxiliary resource, but it's produced thus:
 =
 void Links::expand_DOWNLOAD_variable(OUTPUT_STREAM) {
 	filename *eventual_Blorb_location =
-		Filenames::in_folder(release_folder, Placeholders::read(I"STORYFILE"));
+		Filenames::in(release_folder, Placeholders::read(I"STORYFILE"));
 	Links::download_link(OUT, I"Story File", eventual_Blorb_location,
 		Placeholders::read(I"STORYFILE"), I"Blorb");
 }

@@ -71,7 +71,7 @@ deals with systemic collapses.
         <span class="identifier">sigil_of_required_problem</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">sigil</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Fatal::exit<button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Problems::Fatal::exit</b>:<br><a href="#SP2">&#167;2</a>, Problems, Level 3 - <a href="2-pl3.html#SP3">&#167;3</a>, <a href="2-pl3.html#SP13">&#167;13</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Fatal::exit<button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Problems::Fatal::exit</b>:<br><a href="2-pl0.html#SP2">&#167;2</a>, Problems, Level 3 - <a href="2-pl3.html#SP3">&#167;3</a>, <a href="2-pl3.html#SP13">&#167;13</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sigil_of_required_problem</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sigil_of_required_problem_found</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
             <span class="identifier">exit</span><span class="plain">(0); </span><span class="comment"> so that the problem test case will fail in <code class="display"><span class="extract">intest</span></code></span>
         <span class="identifier">exit</span><span class="plain">(</span><span class="identifier">code</span><span class="plain">);</span>
@@ -81,24 +81,24 @@ deals with systemic collapses.
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">crash_on_all_errors</span><span class="plain">) </span><span class="functiontext"><a href="#SP2">Problems::Fatal::force_crash</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="#SP1">Problems::Fatal::exit</a></span><span class="plain">(2);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">crash_on_all_errors</span><span class="plain">) </span><span class="functiontext"><a href="2-pl0.html#SP2">Problems::Fatal::force_crash</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="2-pl0.html#SP1">Problems::Fatal::exit</a></span><span class="plain">(2);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Fatal::issue_t<button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Problems::Fatal::issue_t</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain">) {</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"\nOffending filename: &lt;%s&gt;\n"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">crash_on_all_errors</span><span class="plain">) </span><span class="functiontext"><a href="#SP2">Problems::Fatal::force_crash</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="#SP1">Problems::Fatal::exit</a></span><span class="plain">(2);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">crash_on_all_errors</span><span class="plain">) </span><span class="functiontext"><a href="2-pl0.html#SP2">Problems::Fatal::force_crash</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="2-pl0.html#SP1">Problems::Fatal::exit</a></span><span class="plain">(2);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Fatal::filename_related<button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Problems::Fatal::filename_related</b>:<br>Telemetry - <a href="1-tlm.html#SP1">&#167;1</a></span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="identifier">message</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"\nOffending filename: &lt;%f&gt;\n"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">crash_on_all_errors</span><span class="plain">) </span><span class="functiontext"><a href="#SP2">Problems::Fatal::force_crash</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="#SP1">Problems::Fatal::exit</a></span><span class="plain">(2);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">crash_on_all_errors</span><span class="plain">) </span><span class="functiontext"><a href="2-pl0.html#SP2">Problems::Fatal::force_crash</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="2-pl0.html#SP1">Problems::Fatal::exit</a></span><span class="plain">(2);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -113,14 +113,14 @@ sets with the command-line switch "-gdb").
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Fatal::force_crash<button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Problems::Fatal::force_crash</b>:<br><a href="#SP1">&#167;1</a>, Problems, Level 2 - <a href="2-pl2.html#SP9">&#167;9</a><br>Problems, Level 3 - <a href="2-pl3.html#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Fatal::force_crash<button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Problems::Fatal::force_crash</b>:<br><a href="2-pl0.html#SP1">&#167;1</a>, Problems, Level 2 - <a href="2-pl2.html#SP9">&#167;9</a><br>Problems, Level 3 - <a href="2-pl3.html#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">,</span>
             <span class="string">"*** Intentionally crashing to force stack backtrace to console logs ***\n"</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">PN</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">);</span>
-        <span class="functiontext"><a href="#SP1">Problems::Fatal::exit</a></span><span class="plain">(1);</span>
+        <span class="functiontext"><a href="2-pl0.html#SP1">Problems::Fatal::exit</a></span><span class="plain">(1);</span>
     <span class="plain">}</span>
 </pre>
 

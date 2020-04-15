@@ -147,7 +147,7 @@ void PL::Sounds::register_sound(wording F, wording FN) {
 
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "%N", wn);
-	bs->filename_of_sound_file = Filenames::in_folder(Task::sounds_path(), leaf);
+	bs->filename_of_sound_file = Filenames::in(Task::sounds_path(), leaf);
 	DISCARD_TEXT(leaf);
 
 	bs->name = F;

@@ -19,7 +19,7 @@ int InblorbSkill::inblorb_via_shell(build_skill *skill, build_step *S,
 	if (project == NULL) internal_error("no project");
 
 	Shell::quote_file(command, BM->to_inblorb);
-	filename *blurb = Filenames::in_folder(S->associated_copy->location_if_path,
+	filename *blurb = Filenames::in(S->associated_copy->location_if_path,
 		I"Release.blurb");
 	Shell::quote_file(command, blurb);
 	Shell::quote_file(command, S->vertex->as_file);

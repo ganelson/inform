@@ -5,7 +5,7 @@ this plan out.
 
 @h Main routine.
 
-@d INTOOL_NAME "inrtps"
+@d PROGRAM_NAME "inrtps"
 @d DEFAULT_FONT_TEXT 
 
 =

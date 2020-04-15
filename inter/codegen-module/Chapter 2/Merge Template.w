@@ -36,7 +36,7 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 	pathname *P;
 	int i=0;
 	LOOP_OVER_LINKED_LIST(P, pathname, PP)
-		kit.i6t_files[i] = Pathnames::subfolder(P, I"Sections");
+		kit.i6t_files[i] = Pathnames::down(P, I"Sections");
 	int stage = EARLY_LINK_STAGE;
 	if (Str::eq(template_file, I"none")) stage = CATCH_ALL_LINK_STAGE;
 	TEMPORARY_TEXT(T);

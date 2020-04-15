@@ -28,7 +28,7 @@ void LanguageManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work
 =
 pathname *LanguageManager::path_within_nest(inbuild_nest *N) {
 	if (N == NULL) internal_error("no nest");
-	return Pathnames::subfolder(N->location, I"Languages");
+	return Pathnames::down(N->location, I"Languages");
 }
 
 @ Language copies are annotated with a structure called an |inform_language|,
@@ -93,7 +93,7 @@ void LanguageManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 }
 
 inbuild_copy *LanguageManager::claim_folder_as_copy(pathname *P) {
-	filename *canary = Filenames::in_folder(P, I"about.txt");
+	filename *canary = Filenames::in(P, I"about.txt");
 	if (TextFiles::exists(canary)) {
 		inbuild_copy *C = LanguageManager::new_copy(Pathnames::directory_name(P), P);
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
@@ -116,7 +116,7 @@ void LanguageManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
 				Str::delete_last_character(LEAFNAME);
-				pathname *Q = Pathnames::subfolder(P, LEAFNAME);
+				pathname *Q = Pathnames::down(P, LEAFNAME);
 				inbuild_copy *C = LanguageManager::claim_folder_as_copy(Q);
 				if ((C) && (Requirements::meets(C->edition, req))) {
 					Nests::add_search_result(search_results, N, C, req);
@@ -136,7 +136,7 @@ we need to |rsync| it.
 pathname *LanguageManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
 	TEMPORARY_TEXT(leaf);
 	Editions::write_canonical_leaf(leaf, E);
-	pathname *P = Pathnames::subfolder(LanguageManager::path_within_nest(N), leaf);
+	pathname *P = Pathnames::down(LanguageManager::path_within_nest(N), leaf);
 	DISCARD_TEXT(leaf);
 	return P;
 }
@@ -144,7 +144,7 @@ pathname *LanguageManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E)
 void LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *dest_language = LanguageManager::pathname_in_nest(N, C->edition);
-	filename *dest_language_metadata = Filenames::in_folder(dest_language, I"about.txt");
+	filename *dest_language_metadata = Filenames::in(dest_language, I"about.txt");
 	if (TextFiles::exists(dest_language_metadata)) {
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {

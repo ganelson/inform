@@ -762,7 +762,7 @@ the most.
 	cuboid new_cuboid = old_cuboid;
 	Geometry::thicken_cuboid(&new_cuboid, P, Geometry::vec(20, 20, 3));
 	int extent = Geometry::cuboid_volume(new_cuboid);
-	int *new_cache = Memory::I7_calloc(extent, sizeof(int), MAP_INDEX_MREASON);
+	int *new_cache = Memory::calloc(extent, sizeof(int), MAP_INDEX_MREASON);
 	int x, y, z;
 	for (x = new_cuboid.corner0.x; x <= new_cuboid.corner1.x; x++)
 		for (y = new_cuboid.corner0.y; y <= new_cuboid.corner1.y; y++)
@@ -2360,7 +2360,7 @@ ocean on OS18 "Sound of Harris", despite its being separated by about
 @<(4) Position the components in space@> =
 	int ncom = NUMBER_CREATED(connected_submap);
 	connected_submap **sorted =
-		Memory::I7_calloc(ncom, sizeof(connected_submap *), INDEX_SORTING_MREASON);
+		Memory::calloc(ncom, sizeof(connected_submap *), INDEX_SORTING_MREASON);
 	@<Sort the components into decreasing order of size@>;
 
 	connected_submap *sub, *previous_mc = NULL;

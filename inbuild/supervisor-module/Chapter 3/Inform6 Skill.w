@@ -24,8 +24,8 @@ int Inform6Skill::inform6_via_shell(build_skill *skill, build_step *S,
 	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
 	
-	pathname *build = Pathnames::subfolder(project->as_copy->location_if_path, I"Build");
-	filename *inf_F = Filenames::in_folder(build, I"auto.inf");
+	pathname *build = Pathnames::down(project->as_copy->location_if_path, I"Build");
+	filename *inf_F = Filenames::in(build, I"auto.inf");
 
 	WRITE_TO(command, "-kE2S");
 	if (TargetVMs::debug_enabled((S->for_vm))) WRITE_TO(command, "D");

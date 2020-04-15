@@ -4,7 +4,7 @@ What shall we test?
 
 @h Main routine.
 
-@d INTOOL_NAME "words-test"
+@d PROGRAM_NAME "words-test"
 
 @e TEST_LEXER_CLSW
 @e TEST_PREFORM_CLSW

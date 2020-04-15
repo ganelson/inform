@@ -23,13 +23,13 @@ void CodeGen::IP::prepare(code_generation *gen) {
 	Inter::Tree::traverse(gen->from, CodeGen::IP::count, NULL, NULL, 0);
 	if (no_property_frames > 0)
 		property_frames = (inter_tree_node **)
-			(Memory::I7_calloc(no_property_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
+			(Memory::calloc(no_property_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
 	if (no_instance_frames > 0)
 		instance_frames = (inter_tree_node **)
-			(Memory::I7_calloc(no_instance_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
+			(Memory::calloc(no_instance_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
 	if (no_kind_frames > 0)
 		kind_frames = (inter_tree_node **)
-			(Memory::I7_calloc(no_kind_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
+			(Memory::calloc(no_kind_frames, sizeof(inter_tree_node *), CODE_GENERATION_MREASON));
 	no_property_frames = 0; no_instance_frames = 0; no_kind_frames = 0;
 	Inter::Tree::traverse(gen->from, CodeGen::IP::store, NULL, NULL, 0);
 }
@@ -325,7 +325,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 
 	if (total_no_properties > 0) {
 		all_props_in_source_order = (inter_symbol **)
-			(Memory::I7_calloc(total_no_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+			(Memory::calloc(total_no_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int c = 0;
 		for (int i=0; i<no_property_frames; i++) {
 			inter_tree_node *P = property_frames[i];
@@ -345,7 +345,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 
 	if (properties_found) {
 		props_in_source_order = (inter_symbol **)
-			(Memory::I7_calloc(no_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+			(Memory::calloc(no_properties, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		int c = 0;
 		for (int i=0; i<no_property_frames; i++) {
 			inter_tree_node *P = property_frames[i];
@@ -368,7 +368,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 	if (no_kind_frames == 0) return;
 
 	kinds_in_source_order = (inter_symbol **)
-		(Memory::I7_calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		(Memory::calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 	for (int i=0; i<no_kind_frames; i++) {
 		inter_tree_node *P = kind_frames[i];
 		inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
@@ -379,7 +379,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 
 @<Make a list of kinds in declaration order@> =
 	kinds_in_declaration_order = (inter_symbol **)
-		(Memory::I7_calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+		(Memory::calloc(no_kind_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 	for (int i=0; i<no_kind_frames; i++) {
 		inter_tree_node *P = kind_frames[i];
 		inter_symbol *kind_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
@@ -391,7 +391,7 @@ void CodeGen::IP::knowledge(code_generation *gen) {
 @<Make a list of instances in declaration order@> =
 	if (no_instance_frames > 0) {
 		instances_in_declaration_order = (inter_symbol **)
-			(Memory::I7_calloc(no_instance_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
+			(Memory::calloc(no_instance_frames, sizeof(inter_symbol *), CODE_GENERATION_MREASON));
 		for (int i=0; i<no_instance_frames; i++) {
 			inter_tree_node *P = instance_frames[i];
 			inter_symbol *inst_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);

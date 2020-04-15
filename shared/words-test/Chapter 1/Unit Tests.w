@@ -49,9 +49,9 @@ void Unit::test_lexer(text_stream *arg) {
 @ =
 void Unit::test_preform(text_stream *arg) {
 	pathname *P = Pathnames::from_text(I"inbuild");
-	P = Pathnames::subfolder(P, I"words-test");
-	P = Pathnames::subfolder(P, I"Tangled");
-	filename *S = Filenames::in_folder(P, I"Syntax.preform");
+	P = Pathnames::down(P, I"words-test");
+	P = Pathnames::down(P, I"Tangled");
+	filename *S = Filenames::in(P, I"Syntax.preform");
 	wording W = Preform::load_from_file(S);
 	Preform::parse_preform(W, FALSE);
 

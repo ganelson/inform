@@ -164,9 +164,9 @@ void Instructions::read_instructions(text_stream *target_sought, linked_list *L,
 	settings_block *settings) {
 	int found_flag = FALSE; /* was a target of this name actually found? */
 
-	settings->change_logs_folder = Pathnames::subfolder(settings->book_folder, I"Change Logs");
-	settings->examples_directory = Pathnames::subfolder(settings->book_folder, I"Examples");
-	settings->css_source_file = Filenames::in_folder(path_to_indoc_materials, I"base.css");
+	settings->change_logs_folder = Pathnames::down(settings->book_folder, I"Change Logs");
+	settings->examples_directory = Pathnames::down(settings->book_folder, I"Examples");
+	settings->css_source_file = Filenames::in(path_to_indoc_materials, I"base.css");
 	settings->definitions_index_leafname = Str::duplicate(I"general_index.html");
 
 	filename *F;
@@ -177,7 +177,7 @@ void Instructions::read_instructions(text_stream *target_sought, linked_list *L,
 	@<Reconcile any conflicting instructions@>;
 	@<Declare the format and wrapper as symbols@>;
 
-	HTMLUtilities::add_image_source(Pathnames::subfolder(path_to_indoc_materials, I"images"));
+	HTMLUtilities::add_image_source(Pathnames::down(path_to_indoc_materials, I"images"));
 
 	if (found_flag == FALSE)
 		Errors::fatal_with_text("unknown target %S", target_sought);
@@ -240,7 +240,7 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 				PRINT("%f, line %d: %S\n", tfp->text_file_filename, tfp->line_count, cl);
 			if (Regexp::match(&mr, cl, L" *follow: *(%c*?) *")) {
 				if (Instructions::read_instructions_from(
-					Filenames::in_folder(settings->book_folder, mr.exp[0]),
+					Filenames::in(settings->book_folder, mr.exp[0]),
 					ihs->desired_target, settings))
 					ihs->found_aim = TRUE;
 			} else if (Regexp::match(&mr, cl, L" *declare: *(%c*?) *")) {

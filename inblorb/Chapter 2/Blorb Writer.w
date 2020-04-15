@@ -310,7 +310,7 @@ void Writer::picture_chunk(int n, filename *fn, text_stream *alt) {
     Writer::add_chunk_to_blorb(type, n, fn, "Pict", NULL, 0);
     if (Str::len(alt) > 0) {
     	int L = Str::len(alt)+1;
-    	char *alt_Cs = Memory::I7_malloc(L, STRING_STORAGE_MREASON);
+    	char *alt_Cs = Memory::malloc(L, STRING_STORAGE_MREASON);
     	Str::copy_to_ISO_string(alt_Cs, alt, L);
     	Writer::add_rdes_record(1, n, alt_Cs);
 	}
@@ -359,7 +359,7 @@ void Writer::sound_chunk(int n, filename *fn, text_stream *alt) {
     Writer::add_chunk_to_blorb(type, n, fn, "Snd ", NULL, 0);
     if (Str::len(alt) > 0) {
     	int L = Str::len(alt)+1;
-    	char *alt_Cs = Memory::I7_malloc(L, STRING_STORAGE_MREASON);
+    	char *alt_Cs = Memory::malloc(L, STRING_STORAGE_MREASON);
     	Str::copy_to_ISO_string(alt_Cs, alt, L);
     	Writer::add_rdes_record(2, n, alt_Cs);
 	}
@@ -396,7 +396,7 @@ void Writer::add_rdes_record(int usage, int n, char *alt) {
 void Writer::rdes_chunk(void) {
 	if (size_of_rdes_chunk > 0) {
 		unsigned char *rdes_data =
-			(unsigned char *) Memory::I7_malloc((int) size_of_rdes_chunk + 9, RDES_MREASON);
+			(unsigned char *) Memory::malloc((int) size_of_rdes_chunk + 9, RDES_MREASON);
 		if (rdes_data == NULL) BlorbErrors::fatal("Run out of memory");
 		size_t pos = 4;
 		Writer::s_four_word(rdes_data, NUMBER_CREATED(rdes_record));

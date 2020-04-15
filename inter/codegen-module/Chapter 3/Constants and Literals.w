@@ -314,7 +314,7 @@ int CodeGen::CL::compare_tlh(const void *elem1, const void *elem2) {
 void CodeGen::CL::sort_literals(code_generation *gen) {
 	int no_tlh = NUMBER_CREATED(text_literal_holder);
 	text_literal_holder **sorted = (text_literal_holder **)
-			(Memory::I7_calloc(no_tlh, sizeof(text_literal_holder *), CODE_GENERATION_MREASON));
+			(Memory::calloc(no_tlh, sizeof(text_literal_holder *), CODE_GENERATION_MREASON));
 	int i = 0;
 	text_literal_holder *tlh;
 	LOOP_OVER(tlh, text_literal_holder) sorted[i++] = tlh;

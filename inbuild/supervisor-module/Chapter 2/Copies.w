@@ -132,7 +132,7 @@ void Copies::inspect(OUTPUT_STREAM, inbuild_copy *C) {
 		WRITE(" at path %p", C->location_if_path);
 	}
 	if (C->location_if_file) {
-		pathname *P = Filenames::get_path_to(C->location_if_file);
+		pathname *P = Filenames::up(C->location_if_file);
 		if (P) WRITE(" in directory %p", P);
 	}
 	int N = LinkedLists::len(C->errors_reading_source_text);

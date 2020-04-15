@@ -27,7 +27,7 @@ void PipelineManager::write_work(inbuild_genre *gen, OUTPUT_STREAM, inbuild_work
 =
 pathname *PipelineManager::path_within_nest(inbuild_nest *N) {
 	if (N == NULL) internal_error("no nest");
-	return Pathnames::subfolder(N->location, I"Pipelines");
+	return Pathnames::down(N->location, I"Pipelines");
 }
 
 @ Pipeline copies are annotated with a structure called an |inform_pipeline|,
@@ -94,7 +94,7 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 		TEMPORARY_TEXT(LEAFNAME);
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) != FOLDER_SEPARATOR) {
-				filename *F = Filenames::in_folder(P, LEAFNAME);
+				filename *F = Filenames::in(P, LEAFNAME);
 				inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL);
 				if ((C) && (Requirements::meets(C->edition, req))) {
 					Nests::add_search_result(search_results, N, C, req);
@@ -115,7 +115,7 @@ filename *PipelineManager::filename_in_nest(inbuild_nest *N, inbuild_edition *E)
 	TEMPORARY_TEXT(leaf);
 	Editions::write_canonical_leaf(leaf, E);
 	WRITE_TO(leaf, ".interpipeline");
-	filename *F = Filenames::in_folder(PipelineManager::path_within_nest(N), leaf);
+	filename *F = Filenames::in(PipelineManager::path_within_nest(N), leaf);
 	DISCARD_TEXT(leaf);
 	return F;
 }
@@ -130,12 +130,12 @@ void PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
 			TEMPORARY_TEXT(command);
 			WRITE_TO(command, "mkdir -p ");
-			Shell::quote_path(command, Filenames::get_path_to(F));
+			Shell::quote_path(command, Filenames::up(F));
 			WRITE_TO(STDOUT, "%S\n", command);
 			DISCARD_TEXT(command);
 		} else {
 			Pathnames::create_in_file_system(N->location);
-			Pathnames::create_in_file_system(Filenames::get_path_to(F));
+			Pathnames::create_in_file_system(Filenames::up(F));
 		}
 	}
 

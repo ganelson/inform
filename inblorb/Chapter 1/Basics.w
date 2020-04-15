@@ -6,7 +6,7 @@ Some fundamental definitions.
 This notation tangles out to the current build number as specified in the
 contents section of this web.
 
-@d INTOOL_NAME "inblorb"
+@d PROGRAM_NAME "inblorb"
 
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:
