@@ -4,6 +4,9 @@ Purpose: Dealing with intermediate-level Inform as bytecode in memory.
 Language: InC
 Licence: Artistic License 2.0
 
+Preliminaries
+	What This Module Does
+
 Chapter 1: Setting Up
 "Loading this module."
 	Bytecode Module

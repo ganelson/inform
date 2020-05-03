@@ -494,7 +494,7 @@ sentences and options-file sentences may have been read already.)
 			ParseTree::set_type(new, ssnt);
 			#ifdef SUPERVISOR_MODULE
 			if (ssnt == BIBLIOGRAPHIC_NT)
-				Projects::notify_of_bibliographic_sentence(Inbuild::project(), new);
+				Projects::notify_of_bibliographic_sentence(Supervisor::project(), new);
 			#endif
 			return;
 		}

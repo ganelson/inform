@@ -101,7 +101,7 @@ int Extensions::Documentation::write_extension_documentation_page(extension_cens
 }
 
 pathname *Extensions::Documentation::path(void) {
-	pathname *P = Inbuild::transient();
+	pathname *P = Supervisor::transient();
 	if ((P == NULL) || (Pathnames::create_in_file_system(P) == 0)) return NULL;
 	P = Pathnames::down(P, I"Documentation");
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
@@ -149,12 +149,12 @@ different template:
 	HTML::begin_head(OUT, NULL);
 	HTML::title(OUT, I"Extension");
 	HTML::incorporate_javascript(OUT, TRUE,
-		Inbuild::file_from_installation(JAVASCRIPT_FOR_ONE_EXTENSION_IRES));
-	HTML::incorporate_CSS(OUT, Inbuild::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
+		Supervisor::file_from_installation(JAVASCRIPT_FOR_ONE_EXTENSION_IRES));
+	HTML::incorporate_CSS(OUT, Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
 	HTML::end_head(OUT);
 
 	HTML::begin_body(OUT, NULL);
-	HTML::incorporate_HTML(OUT, Inbuild::file_from_installation(EXTENSION_DOCUMENTATION_MODEL_IRES));
+	HTML::incorporate_HTML(OUT, Supervisor::file_from_installation(EXTENSION_DOCUMENTATION_MODEL_IRES));
 	@<Write documentation for a specific extension into the page@>;
 	HTML::end_body(OUT);
 
@@ -257,7 +257,7 @@ inform_extension *Extensions::Documentation::load(inbuild_work *work) {
 		}
 
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-	Nests::search_for(req, Inbuild::nest_list(), L);
+	Nests::search_for(req, Supervisor::nest_list(), L);
 	inbuild_search_result *search_result;
 	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 		E = ExtensionManager::from_copy(search_result->copy);

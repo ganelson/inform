@@ -356,7 +356,7 @@ allowed; they should probably be withdrawn.
 @ =
 <current-virtual-machine> internal {
 	if (<virtual-machine>(W)) {
-		*X = Compatibility::with((compatibility_specification *) <<rp>>, Inbuild::current_vm());
+		*X = Compatibility::with((compatibility_specification *) <<rp>>, Supervisor::current_vm());
 		return TRUE;
 	} else {
 		*X = FALSE;
@@ -512,7 +512,7 @@ if the target virtual machine on this run of Inform is the Z-machine.)
 
 =
 int Headings::include_material(heading *h) {
-	int releasing = Inbuild::currently_releasing();
+	int releasing = Supervisor::currently_releasing();
 	if ((h->for_release == TRUE) && (releasing == FALSE)) return FALSE;
 	if ((h->for_release == FALSE) && (releasing == TRUE)) return FALSE;
 	if (h->omit_material) return FALSE;

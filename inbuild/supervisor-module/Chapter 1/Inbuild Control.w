@@ -1,4 +1,4 @@
-[Inbuild::] Inbuild Control.
+[Supervisor::] Inbuild Control.
 
 The top-level controller through which client tools use this module.
 
@@ -39,7 +39,7 @@ out of turn.
 
 =
 int inbuild_phase = STARTUP_INBUILD_PHASE;
-void Inbuild::enter_phase(int p) {
+void Supervisor::enter_phase(int p) {
 	if (p <= inbuild_phase) internal_error("phases out of sequence");
 	inbuild_phase = p;
 }
@@ -56,7 +56,7 @@ inbuild_genre *project_bundle_genre = NULL;
 inbuild_genre *project_file_genre = NULL;
 inbuild_genre *template_genre = NULL;
 
-void Inbuild::startup(void) {
+void Supervisor::start(void) {
 	ExtensionManager::start();
 	KitManager::start();
 	LanguageManager::start();
@@ -73,17 +73,17 @@ void Inbuild::startup(void) {
 	ControlStructures::create_standard();
 	
 	inbuild_phase = CONFIGURATION_INBUILD_PHASE;
-	Inbuild::set_defaults();
+	Supervisor::set_defaults();
 }
 
 @h Configuration phase.
 Initially, then, we are in the configuration phase. When the client defines
-its command-line options, we expect it to call |Inbuild::declare_options|
+its command-line options, we expect it to call |Supervisor::declare_options|
 so that we can define further options -- this provides the large set of
 common options found in both |inform7| and |inbuild|, our two possible clients.
 
 =
-void Inbuild::declare_options(void) {
+void Supervisor::declare_options(void) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	@<Declare Inform-related options@>;
 	@<Declare resource-related options@>;
@@ -182,12 +182,12 @@ text_stream *story_filename_extension = NULL; /* What story file we will eventua
 int census_mode = FALSE; /* Running only to update extension documentation */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
-void Inbuild::set_defaults(void) {
+void Supervisor::set_defaults(void) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	#ifdef CODEGEN_MODULE
 	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.ulx");
 	#endif
-	Inbuild::set_inter_pipeline(I"compile");
+	Supervisor::set_inter_pipeline(I"compile");
 }
 
 @ The pipeline name can be set not only here but also by |inform7| much
@@ -198,7 +198,7 @@ later on (way past the configuration stage), if it reads a sentence like:
 =
 text_stream *inter_pipeline_name = NULL;
 
-void Inbuild::set_inter_pipeline(text_stream *name) {
+void Supervisor::set_inter_pipeline(text_stream *name) {
 	if (inter_pipeline_name == NULL) inter_pipeline_name = Str::new();
 	else Str::clear(inter_pipeline_name);
 	WRITE_TO(inter_pipeline_name, "%S", name);
@@ -207,7 +207,7 @@ void Inbuild::set_inter_pipeline(text_stream *name) {
 @ |inform7| needs to know this:
 
 =
-int Inbuild::currently_releasing(void) {
+int Supervisor::currently_releasing(void) {
 	return this_is_a_release_compile;
 }
 
@@ -216,27 +216,27 @@ the client to do, using code from Foundation. When the client finds an option
 it doesn't know about, that will be one of ourse, so it should call the following:
 
 =
-void Inbuild::option(int id, int val, text_stream *arg, void *state) {
+void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	switch (id) {
 		case DEBUG_CLSW: this_is_a_debug_compile = val; break;
 		case FORMAT_CLSW: story_filename_extension = Str::duplicate(arg); break;
 		case RELEASE_CLSW: this_is_a_release_compile = val; break;
 		case NEST_CLSW:
-			Inbuild::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
+			Supervisor::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
 		case INTERNAL_CLSW:
-			Inbuild::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
+			Supervisor::add_nest(Pathnames::from_text(arg), INTERNAL_NEST_TAG); break;
 		case EXTERNAL_CLSW:
-			Inbuild::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
+			Supervisor::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
 		case TRANSIENT_CLSW:
 			shared_transient_resources = Pathnames::from_text(arg); break;
-		case KIT_CLSW: Inbuild::request_kit(arg); break;
+		case KIT_CLSW: Supervisor::request_kit(arg); break;
 		case PROJECT_CLSW:
-			if (Inbuild::set_I7_bundle(arg) == FALSE)
+			if (Supervisor::set_I7_bundle(arg) == FALSE)
 				Errors::fatal_with_text("can't specify the project twice: '%S'", arg);
 			break;
 		case SOURCE_CLSW:
-			if (Inbuild::set_I7_source(arg) == FALSE)
+			if (Supervisor::set_I7_source(arg) == FALSE)
 				Errors::fatal_with_text("can't specify the source file twice: '%S'", arg);
 			break;
 		case CENSUS_CLSW: census_mode = val; break;
@@ -291,32 +291,32 @@ non-incremental compilation of the project. In practice, |inform7| wants
 that but |inbuild| does not.
 
 When this call returns to the client, |inbuild| is in the Targeted phase,
-which continues until the client calls |Inbuild::go_operational| (see below).
+which continues until the client calls |Supervisor::go_operational| (see below).
 
 =
-inbuild_copy *Inbuild::optioneering_complete(inbuild_copy *C, int compile_only,
+inbuild_copy *Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
 	void (*preform_callback)(inform_language *)) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	inbuild_phase = PRETINKERING_INBUILD_PHASE;
 
 	@<Find the virtual machine@>;
-	inform_project *project = Inbuild::create_shared_project(C);
+	inform_project *project = Supervisor::create_shared_project(C);
 	
 	inbuild_phase = TINKERING_INBUILD_PHASE;
-	Inbuild::sort_nest_list();
+	Supervisor::sort_nest_list();
 
 	inbuild_phase = NESTED_INBUILD_PHASE;
 	@<Read the definition of the natural language of syntax@>;
 
 	if (project) {
-		Inbuild::pass_kit_requests();
+		Supervisor::pass_kit_requests();
 		Copies::get_source_text(project->as_copy);
 	}
 
 	inbuild_phase = PROJECTED_INBUILD_PHASE;
 	if (project)
 		Projects::construct_build_target(project,
-			Inbuild::current_vm(), this_is_a_release_compile, compile_only);
+			Supervisor::current_vm(), this_is_a_release_compile, compile_only);
 	
 	inbuild_phase = TARGETED_INBUILD_PHASE;
 	if (project) return project->as_copy;
@@ -333,7 +333,7 @@ line, which is why we couldn't work this out earlier:
 	int with_debugging = FALSE;
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
 		with_debugging = TRUE;
-	Inbuild::set_current_vm(TargetVMs::find(ext, with_debugging));
+	Supervisor::set_current_vm(TargetVMs::find(ext, with_debugging));
 
 @ The "language of syntax" of a project is the natural language, by default
 English, in which its source text is written.
@@ -351,7 +351,7 @@ we would attempt to detect the language of syntax if we could.
 @<Read the definition of the natural language of syntax@> =
 	inbuild_requirement *req = Requirements::anything_of_genre(language_genre);
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-	Nests::search_for(req, Inbuild::nest_list(), L);
+	Nests::search_for(req, Supervisor::nest_list(), L);
 	if (project) {
 		Projects::set_to_English(project);
 		(*preform_callback)(Projects::get_language_of_syntax(project));
@@ -361,21 +361,21 @@ we would attempt to detect the language of syntax if we could.
 
 @ =
 target_vm *current_target_VM = NULL;
-target_vm *Inbuild::current_vm(void) {
+target_vm *Supervisor::current_vm(void) {
 	RUN_ONLY_FROM_PHASE(TINKERING_INBUILD_PHASE)
 	return current_target_VM;
 }
-void Inbuild::set_current_vm(target_vm *VM) {
+void Supervisor::set_current_vm(target_vm *VM) {
 	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
 	current_target_VM = VM;
 }
 
 @h The Graph Construction and Operational phases.
 |inbuild| is now in the Targeted phase, then, meaning that the client has
-called |Inbuild::optioneering_complete| and has been making further
+called |Supervisor::optioneering_complete| and has been making further
 preparations of its own. (For example, it could attach further kit
 dependencies to the shared project.) The client has one further duty to
-perform: to call |Inbuild::go_operational|. After that, everything is ready
+perform: to call |Supervisor::go_operational|. After that, everything is ready
 for use.
 
 The brief "graph construction" phase is used to build out dependency graphs.
@@ -383,10 +383,10 @@ We do that copy by copy. The shared project, if there is one, goes first;
 then everything else known to us.
 
 =
-inform_project *Inbuild::go_operational(void) {
+inform_project *Supervisor::go_operational(void) {
 	RUN_ONLY_IN_PHASE(TARGETED_INBUILD_PHASE)
 	inbuild_phase = GRAPH_CONSTRUCTION_INBUILD_PHASE;
-	inform_project *P = Inbuild::project();
+	inform_project *P = Supervisor::project();
 	if (P) Copies::construct_graph(P->as_copy);
 	inbuild_copy *C;
 	LOOP_OVER(C, inbuild_copy)
@@ -394,7 +394,7 @@ inform_project *Inbuild::go_operational(void) {
 			Copies::construct_graph(C);
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
 	if (census_mode) Extensions::Census::handle_census_mode();
-	return Inbuild::project();
+	return Supervisor::project();
 }
 
 @h The nest list.
@@ -432,7 +432,7 @@ inbuild_nest *shared_internal_nest = NULL;
 inbuild_nest *shared_external_nest = NULL;
 inbuild_nest *shared_materials_nest = NULL;
 
-inbuild_nest *Inbuild::add_nest(pathname *P, int tag) {
+inbuild_nest *Supervisor::add_nest(pathname *P, int tag) {
 	RUN_ONLY_BEFORE_PHASE(TINKERING_INBUILD_PHASE)
 	if (unsorted_nest_list == NULL)
 		unsorted_nest_list = NEW_LINKED_LIST(inbuild_nest);
@@ -453,7 +453,7 @@ are given precedence over those in the external folder, and so on.
 
 =
 linked_list *shared_nest_list = NULL;
-void Inbuild::sort_nest_list(void) {
+void Supervisor::sort_nest_list(void) {
 	RUN_ONLY_IN_PHASE(TINKERING_INBUILD_PHASE)
 	shared_nest_list = NEW_LINKED_LIST(inbuild_nest);
 	inbuild_nest *N;
@@ -474,29 +474,29 @@ void Inbuild::sort_nest_list(void) {
 @ And the rest of Inform or Inbuild can now use:
 
 =
-linked_list *Inbuild::nest_list(void) {
+linked_list *Supervisor::nest_list(void) {
 	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	if (shared_nest_list == NULL) internal_error("nest list never sorted");
 	return shared_nest_list;
 }
 
-inbuild_nest *Inbuild::internal(void) {
+inbuild_nest *Supervisor::internal(void) {
 	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	return shared_internal_nest;
 }
 
-inbuild_nest *Inbuild::external(void) {
+inbuild_nest *Supervisor::external(void) {
 	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	return shared_external_nest;
 }
 
-pathname *Inbuild::materials(void) {
+pathname *Supervisor::materials(void) {
 	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	if (shared_materials_nest == NULL) return NULL;
 	return shared_materials_nest->location;
 }
 
-inbuild_nest *Inbuild::materials_nest(void) {
+inbuild_nest *Supervisor::materials_nest(void) {
 	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	return shared_materials_nest;
 }
@@ -506,7 +506,7 @@ written documentation and telemetry files. |-transient| sets it, but otherwise
 the external nest is used.
 
 =
-pathname *Inbuild::transient(void) {
+pathname *Supervisor::transient(void) {
 	RUN_ONLY_FROM_PHASE(PROJECTED_INBUILD_PHASE)
 	if (shared_transient_resources == NULL)
 		if (shared_external_nest)
@@ -529,7 +529,7 @@ specify the bundle twice, or specify the file twice.
 text_stream *project_bundle_request = NULL;
 text_stream *project_file_request = NULL;
 
-int Inbuild::set_I7_source(text_stream *loc) {
+int Supervisor::set_I7_source(text_stream *loc) {
 	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (Str::len(project_file_request) > 0) return FALSE;
 	project_file_request = Str::duplicate(loc);
@@ -543,12 +543,12 @@ of the client, i.e., it will be |inform7-settings.txt| or |inbuild-settings.txt|
 depending on who's asking.
 
 =
-int Inbuild::set_I7_bundle(text_stream *loc) {
+int Supervisor::set_I7_bundle(text_stream *loc) {
 	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (Str::len(project_bundle_request) > 0) return FALSE;
 	project_bundle_request = Str::duplicate(loc);
 	pathname *pathname_of_bundle = Pathnames::from_text(project_bundle_request);
-	pathname *materials = Inbuild::pathname_of_materials(pathname_of_bundle);
+	pathname *materials = Supervisor::pathname_of_materials(pathname_of_bundle);
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "%s-settings.txt", PROGRAM_NAME);
 	filename *expert_settings = Filenames::in(materials, leaf);
@@ -565,7 +565,7 @@ int Inbuild::set_I7_bundle(text_stream *loc) {
 =
 inform_project *shared_project = NULL;
 
-inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
+inform_project *Supervisor::create_shared_project(inbuild_copy *C) {
 	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
 	filename *filename_of_i7_source = NULL;
 	pathname *pathname_of_bundle = NULL;
@@ -616,25 +616,25 @@ inform_project *Inbuild::create_shared_project(inbuild_copy *C) {
 			DISCARD_TEXT(SF);
 		}
 		P = Pathnames::down(P, I"Inform");
-		E = Inbuild::add_nest(P, EXTERNAL_NEST_TAG);
+		E = Supervisor::add_nest(P, EXTERNAL_NEST_TAG);
 	}
 
 @<Create the materials nest@> =
 	pathname *materials = NULL;
 	if (pathname_of_bundle) {
-		materials = Inbuild::pathname_of_materials(pathname_of_bundle);
+		materials = Supervisor::pathname_of_materials(pathname_of_bundle);
 		Pathnames::create_in_file_system(materials);
 	} else if (filename_of_i7_source) {
 		materials = Pathnames::from_text(I"inform.materials");
 	}
 	if (materials) {
-		shared_materials_nest = Inbuild::add_nest(materials, MATERIALS_NEST_TAG);
+		shared_materials_nest = Supervisor::add_nest(materials, MATERIALS_NEST_TAG);
 	}
 
 @ And the rest of Inform or Inbuild can now use:
 
 =
-inform_project *Inbuild::project(void) {
+inform_project *Supervisor::project(void) {
 	RUN_ONLY_FROM_PHASE(TINKERING_INBUILD_PHASE)
 	return shared_project;
 }
@@ -643,7 +643,7 @@ inform_project *Inbuild::project(void) {
 but ending |.materials| instead of |.inform|.
 
 =
-pathname *Inbuild::pathname_of_materials(pathname *pathname_of_bundle) {
+pathname *Supervisor::pathname_of_materials(pathname *pathname_of_bundle) {
 	TEMPORARY_TEXT(mf);
 	WRITE_TO(mf, "%S", Pathnames::directory_name(pathname_of_bundle));
 	int i = Str::len(mf)-1;
@@ -664,7 +664,7 @@ add them as dependencies only when a project exists.
 
 =
 linked_list *kits_requested_at_command_line = NULL;
-void Inbuild::request_kit(text_stream *name) {
+void Supervisor::request_kit(text_stream *name) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (kits_requested_at_command_line == NULL)
 		kits_requested_at_command_line = NEW_LINKED_LIST(text_stream);
@@ -675,7 +675,7 @@ void Inbuild::request_kit(text_stream *name) {
 	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested_at_command_line);
 }
 
-void Inbuild::pass_kit_requests(void) {
+void Supervisor::pass_kit_requests(void) {
 	RUN_ONLY_IN_PHASE(NESTED_INBUILD_PHASE)
 	if ((shared_project) && (kits_requested_at_command_line)) {
 		text_stream *kit_name;
@@ -709,8 +709,8 @@ Our client can access these files using the following function:
 @e EXTENSION_DOCUMENTATION_MODEL_IRES
 
 =
-filename *Inbuild::file_from_installation(int ires) {
-	inbuild_nest *I = Inbuild::internal();
+filename *Supervisor::file_from_installation(int ires) {
+	inbuild_nest *I = Supervisor::internal();
 	if (I == NULL) Errors::fatal("Did not set -internal when calling");
 	pathname *misc = Pathnames::down(I->location, I"Miscellany");
 	pathname *models = Pathnames::down(I->location, I"HTML");

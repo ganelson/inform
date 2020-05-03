@@ -217,7 +217,7 @@ entries, close.
 
 =
 filename *Extensions::Dictionary::filename(void) {
-	pathname *P = Inbuild::transient();
+	pathname *P = Supervisor::transient();
 	if (P == NULL) return NULL;
 	P = Pathnames::down(P, I"Documentation");
 	P = Pathnames::down(P, I"Census");

@@ -58,7 +58,7 @@ int Task::carry_out(build_step *S) {
 	inform7_task->path = S->associated_copy->location_if_path;
 	inform7_task->build = Projects::build_pathname(project);
 	if (Pathnames::create_in_file_system(inform7_task->build) == 0) return FALSE;
-	inform7_task->materials = Inbuild::materials();
+	inform7_task->materials = Supervisor::materials();
 	inform7_task->existing_storyfile = NULL;
 	inform7_task->stage_of_compilation = -1;
 	inform7_task->next_resource_number = 3;

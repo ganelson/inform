@@ -596,7 +596,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"In")) {
-		Plugins::Manage::index_innards(OUT, Inbuild::current_vm());
+		Plugins::Manage::index_innards(OUT, Supervisor::current_vm());
 		return;
 	}
 

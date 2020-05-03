@@ -52,11 +52,11 @@ in this paragraph runs, those targets are already in the list.
 (2) They can be specified by a search request |-matching R| where |R| is a
 list of requirements to match. We now add anything found that way. (We didn't
 do so when reading the command line because at that time the search path for
-nests did not yet exist: it is created when |Inbuild::optioneering_complete|
+nests did not yet exist: it is created when |Supervisor::optioneering_complete|
 is called.)
 (3) One copy is always special to Inbuild: the "project", usually an Inform
 project bundle with a pathname like |Counterfeit Monkey.inform|. We go
-through a little dance with |Inbuild::optioneering_complete| to ensure that
+through a little dance with |Supervisor::optioneering_complete| to ensure that
 if a project is already in the target list, Inbuild will use that; and if not,
 but the user has specified a project to Inbuild already with |-project| (a
 command-line option recognised by |inbuild| but not by us), then we add that
@@ -73,7 +73,7 @@ error in this case.
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
 		if (C->edition->work->genre == project_bundle_genre)
 			proj = C;
-	proj = Inbuild::optioneering_complete(proj, FALSE, &Main::load_preform);
+	proj = Supervisor::optioneering_complete(proj, FALSE, &Main::load_preform);
 	if (proj) Main::add_target(proj);
 	int count = 0;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
@@ -83,11 +83,11 @@ error in this case.
 		Errors::with_text("can only work on one project bundle at a time", NULL);
 	if (Str::len(filter_text) > 0) Main::add_search_results_as_targets(filter_text);
 
-@ We make the function call |Inbuild::go_operational| to signal to |inbuild|
+@ We make the function call |Supervisor::go_operational| to signal to |inbuild|
 that we want to start work now.
 
 @<Act on the targets@> =
-	Inbuild::go_operational();
+	Supervisor::go_operational();
 	int use = SHELL_METHODOLOGY;
 	if (dry_run_mode) use = DRY_RUN_METHODOLOGY;
 	build_methodology *BM;
@@ -122,7 +122,7 @@ utility functions in the |supervisor| module, which we call.
 		case USE_NEEDS_TTASK: Copies::show_needs(STDOUT, C, TRUE); break;
 		case BUILD_NEEDS_TTASK: Copies::show_needs(STDOUT, C, FALSE); break;
 		case ARCHIVE_TTASK:
-			destination_nest = Inbuild::materials_nest();
+			destination_nest = Supervisor::materials_nest();
 			if (destination_nest == NULL)
 				Errors::with_text("no -project in use, so ignoring -archive", NULL);
 			else 
@@ -192,7 +192,7 @@ void Main::add_search_results_as_targets(text_stream *req_text) {
 		Errors::with_text("requirement malformed: %S", errors);
 	} else {
 		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		Nests::search_for(req, Inbuild::nest_list(), L);
+		Nests::search_for(req, Supervisor::nest_list(), L);
 		inbuild_search_result *R;
 		LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L)
 			Main::add_target(R->copy);
@@ -243,7 +243,7 @@ void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
 }
 
 @h Command line.
-Note the call below to |Inbuild::declare_options|, which adds a whole lot of
+Note the call below to |Supervisor::declare_options|, which adds a whole lot of
 other options to the selection defined here.
 
 @d PROGRAM_NAME "inbuild"
@@ -304,12 +304,12 @@ other options to the selection defined here.
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
-	Inbuild::declare_options();
+	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
 
 	if (LinkedLists::len(unsorted_nest_list) == 0)
-		Inbuild::add_nest(
+		Supervisor::add_nest(
 			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
 
 	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
@@ -345,7 +345,7 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;
 	}
-	Inbuild::option(id, val, arg, state);
+	Supervisor::option(id, val, arg, state);
 }
 
 @ This is called for a command-line argument which doesn't appear as

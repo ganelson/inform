@@ -70,7 +70,7 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 	if (referred) {
 		WRITE_TO(file, "%f", TextFromFiles::get_filename(referred));
 		#ifdef SUPERVISOR_MODULE
-		pathname *proj = Projects::path(Inbuild::project());
+		pathname *proj = Projects::path(Supervisor::project());
 		if (proj) {
 			TEMPORARY_TEXT(project_prefix);
 			WRITE_TO(project_prefix, "%p", proj);

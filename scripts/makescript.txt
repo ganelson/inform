@@ -319,8 +319,14 @@ commit:
 # -----------------------------------------------------------------------------
 
 .PHONY: pages
-pages: readmepage prepages {repeat-tools-span}@PAGES{end-span} \
+pages: icon readmepage prepages {repeat-tools-span}@PAGES{end-span} \
 	{repeat-modules-span}@MPAGES{end-span} morepages
+
+.PHONY: icon
+icon:
+	mkdir -p docs
+	mkdir -p docs/docs-assets
+	cp -f docs-src/Inform.png docs/docs-assets
 
 .PHONY: forcepages
 forcepages: readmepage forceprepages {repeat-tools-span}@FORCEPAGES{end-span} \
@@ -393,19 +399,19 @@ docs/$(@LEAF)-module/index.html: {dependent-files-for-module}@
 .PHONY: prepages
 prepages: docs/index.html docs/compiler.html docs/extensions.html docs/other.html docs/units.html
 
-docs/index.html: docs/docs-src/index.inweb docs/docs-src/nav.html
+docs/index.html: docs-src/index.inweb docs-src/nav.html
 	$(INWEBX) -colony $(COLONY) -member overview -weave
 
-docs/compiler.html: docs/docs-src/compiler.inweb docs/docs-src/navc.html
+docs/compiler.html: docs-src/compiler.inweb docs-src/navc.html
 	$(INWEBX) -colony $(COLONY) -member compiler -weave
 
-docs/extensions.html: docs/docs-src/extensions.inweb docs/docs-src/navk.html
+docs/extensions.html: docs-src/extensions.inweb docs-src/navk.html
 	$(INWEBX) -colony $(COLONY) -member extensions -weave
 
-docs/other.html: docs/docs-src/other.inweb docs/docs-src/navo.html
+docs/other.html: docs-src/other.inweb docs-src/navo.html
 	$(INWEBX) -colony $(COLONY) -member other -weave
 
-docs/units.html: docs/docs-src/units.inweb docs/docs-src/navu.html
+docs/units.html: docs-src/units.inweb docs-src/navu.html
 	$(INWEBX) -colony $(COLONY) -member units -weave
 
 .PHONY: forceprepages

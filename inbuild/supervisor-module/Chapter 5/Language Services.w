@@ -145,7 +145,7 @@ This finds the built-in definition of the English language.
 inform_language *Languages::internal_English(void) {
 	inbuild_requirement *req =
 		Requirements::any_version_of(Works::new(language_genre, I"English", I""));
-	inbuild_nest *I = Inbuild::internal();
+	inbuild_nest *I = Supervisor::internal();
 	if (I) {
 		linked_list *L = NEW_LINKED_LIST(inbuild_nest);
 		ADD_TO_LINKED_LIST(I, inbuild_nest, L);

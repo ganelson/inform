@@ -81,7 +81,7 @@ void SupervisorModule::start(void) {
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	Inbuild::startup();
+	Supervisor::start();
 }
 void SupervisorModule::end(void) {
 }

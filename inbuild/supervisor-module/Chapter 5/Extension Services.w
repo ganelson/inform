@@ -262,7 +262,7 @@ then its sentences will go to the extension's own tree.
 	wording EXW = E->read_into_file->text_read;
 	if (Wordings::nonempty(EXW))
 		@<Break the extension's text into body and documentation@>;
-	inform_project *project = Inbuild::project();
+	inform_project *project = Supervisor::project();
 	if (project) E->syntax_tree = project->syntax_tree;
 	Sentences::break_into_extension_copy(E->syntax_tree, E->body_text, E->as_copy);
 	E->body_text_unbroken = FALSE;

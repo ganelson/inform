@@ -60,7 +60,7 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 	inbuild_requirement *req =
 		Requirements::any_version_of(
 			Works::new(pipeline_genre, I"assimilate.interpipeline", NULL));
-	inbuild_search_result *R = Nests::search_for_best(req, Inbuild::nest_list());
+	inbuild_search_result *R = Nests::search_for_best(req, Supervisor::nest_list());
 	if (R == NULL) {
 		Errors::nowhere("assimilate pipeline could not be found");
 		return FALSE;
@@ -120,7 +120,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 		inbuild_requirement *req =
 			Requirements::any_version_of(
 				Works::new(pipeline_genre, inter_pipeline_name, NULL));
-		inbuild_search_result *R = Nests::search_for_best(req, Inbuild::nest_list());
+		inbuild_search_result *R = Nests::search_for_best(req, Supervisor::nest_list());
 		if (R == NULL) {
 			Errors::with_text("inter pipeline '%S' could not be found",
 				inter_pipeline_name);
@@ -136,7 +136,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	CodeGen::Pipeline::set_repository(SS, Emit::tree());
 	CodeGen::Pipeline::run(Filenames::up(S->vertex->as_file),
 		SS, Kits::inter_paths(),
-		Projects::list_of_inter_libraries(Inbuild::project()));
+		Projects::list_of_inter_libraries(Supervisor::project()));
 	LOG("Back end elapsed time: %dcs\n",
 		((int) (clock() - back_end)) / (CLOCKS_PER_SEC/100));
 	return TRUE;

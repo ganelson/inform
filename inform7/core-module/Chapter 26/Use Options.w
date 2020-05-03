@@ -271,7 +271,7 @@ void UseOptions::set_use_options(parse_node *p) {
 		WRITE_TO(p, "%W", CW);
 		Str::delete_first_character(p);
 		Str::delete_last_character(p);
-		Inbuild::set_inter_pipeline(p);
+		Supervisor::set_inter_pipeline(p);
 		DISCARD_TEXT(p);
 	}
 	return;

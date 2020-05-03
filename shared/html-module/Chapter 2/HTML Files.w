@@ -100,9 +100,9 @@ void HTMLFiles::html_source_link(OUTPUT_STREAM, source_location sl, int nonbreak
 	if (sl.file_of_origin) {
 		TEMPORARY_TEXT(fn);
 		WRITE_TO(fn, "%f", TextFromFiles::get_filename(sl.file_of_origin));
-		if (Projects::path(Inbuild::project())) {
+		if (Projects::path(Supervisor::project())) {
 			TEMPORARY_TEXT(pp);
-			WRITE_TO(pp, "%p", Projects::path(Inbuild::project()));
+			WRITE_TO(pp, "%p", Projects::path(Supervisor::project()));
 			int N = Str::len(pp);
 			if (Str::prefix_eq(fn, pp, N))
 				Str::delete_n_characters(fn, N+1);
@@ -204,9 +204,9 @@ void HTMLFiles::html_header(OUTPUT_STREAM, text_stream *title) {
 	HTML::declare_as_HTML(OUT, FALSE);
 	HTML::begin_head(OUT, NULL);
 	HTML::incorporate_CSS(OUT,
-		Inbuild::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
+		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
 	HTML::incorporate_javascript(OUT, TRUE,
-		Inbuild::file_from_installation(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
+		Supervisor::file_from_installation(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
 	#ifdef INDEX_MODULE
 	Index::scripting(OUT);
 	#endif

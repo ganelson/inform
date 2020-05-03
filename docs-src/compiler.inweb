@@ -2,7 +2,7 @@ Title: The Inform 7 compiler
 Author: Graham Nelson
 
 @ The task of the Inform 7 compiler is to take natural-language source text
-and "transpile" to down to lower-level, more orthodox code which another
+and "transpile" it down to lower-level, more orthodox code which another
 compiler can take the rest of the way. Usually, but not necessarily, that
 other compiler is the typeless but otherwise C-like Inform 6 (1996-2003).
 
@@ -59,3 +59,13 @@ providing services useful for natural language-based programs. At one time
 this was going to be called "Second Foundation" (or possibly "Foundation
 and Empire"), because there is also //foundation// underneath, a C library
 of utility functions provided by the //inweb// project.
+
+@ That's a lot: for code-spelunkers, the Inform compilers are like a
+limestone hillside riddled with points of entry. For first-time cavers,
+here are some suggested entrances.
+(a) See //supervisor: What This Module Does// for an overview of the
+build-management process.
+(b) Or take that on trust, and see //core: What This Module Does// for
+an overview of how Inform 7 basically works.
+(c) If you're more interested in the low-level representation of Inter code,
+and how to generate from it, see //bytecode: What This Module Does//.

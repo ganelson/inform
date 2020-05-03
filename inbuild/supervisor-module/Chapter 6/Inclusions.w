@@ -183,14 +183,14 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_
 }
 
 @<Read the extension file into the lexer, and break it into body and documentation@> =
-	inbuild_search_result *search_result = Nests::search_for_best(req, Inbuild::nest_list());
+	inbuild_search_result *search_result = Nests::search_for_best(req, Supervisor::nest_list());
 	if (search_result) {
 		E = ExtensionManager::from_copy(search_result->copy);
 		Extensions::set_inclusion_sentence(E, at);
 		if (Nests::get_tag(search_result->nest) == INTERNAL_NEST_TAG)
 			E->loaded_from_built_in_area = TRUE;
 		compatibility_specification *C = E->as_copy->edition->compatibility;
-		if (Compatibility::with(C, Inbuild::current_vm()) == FALSE)
+		if (Compatibility::with(C, Supervisor::current_vm()) == FALSE)
 			@<Issue a problem message saying that the VM does not meet requirements@>;
 
 		if (LinkedLists::len(search_result->copy->errors_reading_source_text) == 0) {
@@ -221,7 +221,7 @@ report this problem at the inclusion line.
 @<Issue a cannot-find problem@> =
 	inbuild_requirement *req2 = Requirements::any_version_of(req->work);
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-	Nests::search_for(req2, Inbuild::nest_list(), L);
+	Nests::search_for(req2, Supervisor::nest_list(), L);
 	if (LinkedLists::len(L) == 0) {
 		copy_error *CE = CopyErrors::new(SYNTAX_CE, BogusExtension_SYNERROR);
 		CopyErrors::supply_node(CE, current_sentence);

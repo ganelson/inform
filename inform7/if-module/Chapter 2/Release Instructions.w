@@ -221,7 +221,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(DW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in(Inbuild::materials(), leaf);
+			filename *A = Filenames::in(Supervisor::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
 				Task::release_path(),
@@ -234,7 +234,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(LW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in(Inbuild::materials(), leaf);
+			filename *A = Filenames::in(Supervisor::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
 				Task::release_path(),
@@ -249,7 +249,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(FW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in(Inbuild::materials(), leaf);
+			filename *A = Filenames::in(Supervisor::materials(), leaf);
 			DISCARD_TEXT(leaf);
 			TEMPORARY_TEXT(folder);
 			WRITE_TO(folder, "%N", Wordings::first_wn(FW));
@@ -353,13 +353,13 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 	}
 
 @<Create the Materials folder if not already present@> =
-	if (Pathnames::create_in_file_system(Inbuild::materials()) == FALSE) {
+	if (Pathnames::create_in_file_system(Supervisor::materials()) == FALSE) {
 		Problems::Issue::release_problem_path(_p_(Untestable),
 			"In order to release the story file along with other "
 			"resources, I tried to create a folder alongside this "
 			"Inform project, but was unable to do so. The folder "
 			"was to have been called",
-			Inbuild::materials());
+			Supervisor::materials());
 		return;
 	}
 
@@ -463,7 +463,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	}
 
 @<Read header of existing story file if present@> =
-	if (Inbuild::currently_releasing() == FALSE)
+	if (Supervisor::currently_releasing() == FALSE)
 		@<Issue a problem if this isn't a Release run@>;
 	FILE *STORYF = Filenames::fopen(Task::existing_storyfile_file(), "rb");
 	if (STORYF == NULL) {
@@ -617,7 +617,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 		WRITE("<auxiliary>\n"); INDENT;
 		WRITE("<leafname>");
 		TEMPORARY_TEXT(rel);
-		Filenames::to_text_relative(rel, af->name_of_original_file, Inbuild::materials());
+		Filenames::to_text_relative(rel, af->name_of_original_file, Supervisor::materials());
 		HTMLFiles::write_xml_safe_text(OUT, rel);
 		DISCARD_TEXT(rel);
 		WRITE("</leafname>\n");
@@ -866,7 +866,7 @@ the Blorb-file's filename won't be too long for the file system.
 
 @<Tell Inblorb where to write its report to@> =
 	WRITE("status \"%f\" \"%f\"\n\n",
-		Inbuild::file_from_installation(CBLORB_REPORT_MODEL_IRES),
+		Supervisor::file_from_installation(CBLORB_REPORT_MODEL_IRES),
 		Task::cblorb_report_file());
 
 @<Tell Inblorb where the project and release folders are@> =
@@ -896,11 +896,11 @@ released along with the work.
 		WRITE("cover \"%f\"\n", large);
 		WRITE("picture %d \"%f\"\n", cover_picture_number, large);
 	} else {
-		WRITE("cover \"%f\"\n", Inbuild::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
-		WRITE("picture %d \"%f\"\n", 1, Inbuild::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
+		WRITE("cover \"%f\"\n", Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
+		WRITE("picture %d \"%f\"\n", 1, Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
 		if (release_website) {
-			WRITE("release file \"%f\"\n", Inbuild::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
-			WRITE("release file \"%f\"\n", Inbuild::file_from_installation(SMALL_DEFAULT_COVER_ART_IRES));
+			WRITE("release file \"%f\"\n", Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
+			WRITE("release file \"%f\"\n", Supervisor::file_from_installation(SMALL_DEFAULT_COVER_ART_IRES));
 		}
 	}
 
@@ -978,10 +978,10 @@ own credits.
 		DISCARD_TEXT(rel);
 	}
 	if (release_booklet) {
-		WRITE("auxiliary \"%f\" \"Introduction to IF\" \"--\"\n", Inbuild::file_from_installation(INTRO_BOOKLET_IRES));
+		WRITE("auxiliary \"%f\" \"Introduction to IF\" \"--\"\n", Supervisor::file_from_installation(INTRO_BOOKLET_IRES));
 	}
 	if (release_postcard) {
-		WRITE("auxiliary \"%f\" \"IF Postcard\" \"--\"\n", Inbuild::file_from_installation(INTRO_POSTCARD_IRES));
+		WRITE("auxiliary \"%f\" \"IF Postcard\" \"--\"\n", Supervisor::file_from_installation(INTRO_POSTCARD_IRES));
 		WRITE("placeholder [OTHERCREDITS] = \"The postcard was written by Andrew Plotkin "
 			"and designed by Lea Albaugh.\"\n");
 	}
@@ -1004,14 +1004,14 @@ file online.
 	LOOP_OVER(af, auxiliary_file)
 		if (af->from_payload == JAVASCRIPT_PAYLOAD) {
 			TEMPORARY_TEXT(rel);
-			Filenames::to_text_relative(rel, af->name_of_original_file, Inbuild::materials());
+			Filenames::to_text_relative(rel, af->name_of_original_file, Supervisor::materials());
 			WRITE("<script src='%S'></script>", rel);
 			DISCARD_TEXT(rel);
 		}
 	LOOP_OVER(af, auxiliary_file)
 		if (af->from_payload == CSS_PAYLOAD) {
 			TEMPORARY_TEXT(rel);
-			Filenames::to_text_relative(rel, af->name_of_original_file, Inbuild::materials());
+			Filenames::to_text_relative(rel, af->name_of_original_file, Supervisor::materials());
 			WRITE("<link rel='stylesheet' href='%S' type='text/css' media='all'></link>", rel);
 			DISCARD_TEXT(rel);
 		}
@@ -1033,7 +1033,7 @@ with the earliest quoted searched first.
 
 @<Tell Inblorb where to find the website templates@> =
 	inbuild_nest *N;
-	linked_list *L = Inbuild::nest_list();
+	linked_list *L = Supervisor::nest_list();
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
 		WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(N));
 

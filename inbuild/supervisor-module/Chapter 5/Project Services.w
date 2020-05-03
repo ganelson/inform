@@ -133,7 +133,7 @@ void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name
 	RUN_ONLY_BEFORE_PHASE(OPERATIONAL_INBUILD_PHASE)
 	if (Projects::uses_kit(project, kit_name)) return;
 	kit_dependency *kd = CREATE(kit_dependency);
-	kd->kit = Kits::find_by_name(kit_name, Inbuild::nest_list());
+	kd->kit = Kits::find_by_name(kit_name, Supervisor::nest_list());
 	kd->because_of_language = because_of_language;
 	kd->because_of_kit = because_of_kit;
 	ADD_TO_LINKED_LIST(kd, kit_dependency, project->kits_to_include);
@@ -260,7 +260,7 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 pathname *Projects::build_pathname(inform_project *project) {
 	pathname *P = Projects::path(project);
 	if (P) return Pathnames::down(P, I"Build");
-	return Inbuild::transient();
+	return Supervisor::transient();
 }
 
 void Projects::construct_build_target(inform_project *project, target_vm *VM,
@@ -271,12 +271,12 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	build_vertex *inter_V = Graphs::file_vertex(inf_F);
 	Graphs::need_this_to_build(inter_V, project->as_copy->vertex);
 	BuildSteps::attach(inter_V, compile_using_inform7_skill,
-		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
+		Supervisor::nest_list(), releasing, VM, NULL, project->as_copy);
 
 	build_vertex *inf_V = Graphs::file_vertex(inf_F);
 	Graphs::need_this_to_build(inf_V, inter_V);
 	BuildSteps::attach(inf_V, code_generate_using_inter_skill,
-		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
+		Supervisor::nest_list(), releasing, VM, NULL, project->as_copy);
 
 	TEMPORARY_TEXT(story_file_leafname);
 	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(VM));
@@ -285,7 +285,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	project->unblorbed_vertex = Graphs::file_vertex(unblorbed_F);
 	Graphs::need_this_to_build(project->unblorbed_vertex, inf_V);
 	BuildSteps::attach(project->unblorbed_vertex, compile_using_inform6_skill,
-		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
+		Supervisor::nest_list(), releasing, VM, NULL, project->as_copy);
 
 	TEMPORARY_TEXT(story_file_leafname2);
 	WRITE_TO(story_file_leafname2, "output.%S", TargetVMs::get_blorbed_extension(VM));
@@ -295,7 +295,7 @@ void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	project->blorbed_vertex->always_build_this = TRUE;
 	Graphs::need_this_to_build(project->blorbed_vertex, project->unblorbed_vertex);
 	BuildSteps::attach(project->blorbed_vertex, package_using_inblorb_skill,
-		Inbuild::nest_list(), releasing, VM, NULL, project->as_copy);
+		Supervisor::nest_list(), releasing, VM, NULL, project->as_copy);
 
 	if (compile_only) {
 		project->chosen_build_target = inf_V;
@@ -366,7 +366,7 @@ void Projects::read_source_text_for(inform_project *project) {
 	Projects::early_source_text(early, project);
 	if (Str::len(early) > 0) Feeds::feed_stream(early);
 	DISCARD_TEXT(early);
-	inbuild_nest *E = Inbuild::external();
+	inbuild_nest *E = Supervisor::external();
 	if (E) Projects::read_further_mandatory_text(
 		Filenames::in(E->location, I"Options.txt"));
 	wording early_W = Wordings::new(wc, lexer_wordcount-1);

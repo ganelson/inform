@@ -41,7 +41,7 @@ MathJax = {
 	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Inform.png" height=72">
+<img src="../docs-assets/Inform.png" height=72">
 </a></h1>
 <ul><li><a href="../compiler.html">compiler tools</a></li>
 <li><a href="../other.html">other tools</a></li>
@@ -131,7 +131,8 @@ file is read on demand; in some runs, it won't be needed.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::DocReferences::read_xrefs</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Index::DocReferences::read_xrefs</span></span>:<br/><a href="2-dr.html#SP5">&#167;5</a>, <a href="2-dr.html#SP6">&#167;6</a>, <a href="2-dr.html#SP9">&#167;9</a>, <a href="2-dr.html#SP10">&#167;10</a>, <a href="2-dr.html#SP13">&#167;13</a>, <a href="2-dr.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">xrefs_read</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">xrefs_read</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">TextFiles::read</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inbuild::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">DOCUMENTATION_XREFS_IRES</span><span class="plain-syntax">), </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">TextFiles::read</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">DOCUMENTATION_XREFS_IRES</span><span class="plain-syntax">), </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><a href="2-dr.html#SP4" class="function-link"><span class="function-syntax">Index::DocReferences::read_xrefs_helper</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
@@ -358,7 +359,8 @@ nothing at all &mdash; not issuing any internal errors.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FRAGMENTS</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Filenames::fopen</span><span class="plain-syntax">(</span><span class="identifier-syntax">Inbuild::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">DOCUMENTATION_SNIPPETS_IRES</span><span class="plain-syntax">), </span><span class="string-syntax">"r"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FRAGMENTS</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Filenames::fopen</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">DOCUMENTATION_SNIPPETS_IRES</span><span class="plain-syntax">), </span><span class="string-syntax">"r"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FRAGMENTS</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Memory::malloc</span><span class="plain-syntax">(</span><span class="constant-syntax">MAX_EXTENT_OF_FRAGMENTS</span><span class="plain-syntax">, </span><span class="identifier-syntax">DOC_FRAGMENT_MREASON</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-dr.html#SP12_1_1" class="named-paragraph-link"><span class="named-paragraph">Scan the file into memory, translating from UTF-8</span><span class="named-paragraph-number">12.1.1</span></a></span><span class="plain-syntax">;</span>

@@ -16,7 +16,7 @@ typedef struct extension_census {
 
 extension_census *Extensions::Census::new(void) {
 	extension_census *C = CREATE(extension_census);
-	C->search_list = Inbuild::nest_list();
+	C->search_list = Supervisor::nest_list();
 	C->census_data = NEW_LINKED_LIST(extension_census_datum);
 	C->raw_data = NEW_LINKED_LIST(inbuild_search_result);
 	C->no_census_errors = 0;
@@ -810,7 +810,7 @@ void Extensions::Census::write_top_level_of_extensions_documentation(extension_c
 
 @ =
 pathname *Extensions::Census::doc_pathname(void) {
-	pathname *P = Inbuild::transient();
+	pathname *P = Supervisor::transient();
 	if (P == NULL) return NULL;
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
 	P = Pathnames::down(P, I"Documentation");
@@ -840,9 +840,9 @@ void Extensions::Census::write_top_level_extensions_page(text_stream *leaf, int 
 	HTML::begin_head(OUT, NULL);
 	HTML::title(OUT, I"Extensions");
 	HTML::incorporate_javascript(OUT, TRUE,
-		Inbuild::file_from_installation(JAVASCRIPT_FOR_EXTENSIONS_IRES));
+		Supervisor::file_from_installation(JAVASCRIPT_FOR_EXTENSIONS_IRES));
 	HTML::incorporate_CSS(OUT,
-		Inbuild::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
+		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
 	HTML::end_head(OUT);
 
 	HTML::begin_body(OUT, NULL);

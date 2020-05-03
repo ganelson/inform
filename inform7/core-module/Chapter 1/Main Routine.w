@@ -11,10 +11,10 @@ other hand, |main| simply starts up the modules and hands straight over to us.
 
 So the |CoreMain::main| function certainly has the opportunity to be head
 honcho, and for the first fifteen years of Inform 7, it was exactly that. In
-2020, though, it was deposed in a boardroom coup by a new CEO, the |inbuild|
+2020, though, it was deposed in a boardroom coup by a new CEO, the //supervisor//
 module. High-level decisions on what to compile, where to put the result, and
-so on, are all now taken by |inbuild|. Even the command line is very largely
-read and dealt with by |inbuild| and not by |core|, as we shall see. The
+so on, are all now taken by //supervisor//. Even the command line is very largely
+read and dealt with by //supervisor// and not by |core|, as we shall see. The
 upshot is that |CoreMain::main| is now a manager in name only, reduced to the
 equivalent of unlocking the doors and turning the lights on in the morning.
 
@@ -48,14 +48,14 @@ plain text error written to |stderr|. See the |problems| module for more.
 	PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
 	Plugins::Manage::start();
 
-@ |inbuild| supplies us with a folder in which to write the debugging log
+@ //supervisor// supplies us with a folder in which to write the debugging log
 and the Problems report (the HTML version of our error messages or success
 message, which is displayed in the Inform app when a compilation has finished).
 This folder will usually be the |Build| subfolder of the project folder,
-but we won't assume that. Remember, |inbuild| knows best.
+but we won't assume that. Remember, //supervisor// knows best.
 
 @<Open the debugging log and the problems report@> =
-	pathname *build_folder = Projects::build_pathname(Inbuild::project());
+	pathname *build_folder = Projects::build_pathname(Supervisor::project());
 	if (Pathnames::create_in_file_system(build_folder) == 0)
 		Problems::Fatal::issue(
 			"Unable to create Build folder for project: is it read-only?");
@@ -78,7 +78,7 @@ students have been getting stuck on. In any case, it needs to be activated
 with a use option, so by default this file will never be written.
 
 @<Name the telemetry@> =
-	pathname *P = Pathnames::down(Inbuild::transient(), I"Telemetry");
+	pathname *P = Pathnames::down(Supervisor::transient(), I"Telemetry");
 	if (Pathnames::create_in_file_system(P)) {
 		TEMPORARY_TEXT(leafname_of_telemetry);
 		int this_month = the_present->tm_mon + 1;
@@ -91,19 +91,19 @@ with a use option, so by default this file will never be written.
 		DISCARD_TEXT(leafname_of_telemetry);
 	}
 
-@ The compiler is now ready for use. We ask |inbuild| what project the user
+@ The compiler is now ready for use. We ask //supervisor// what project the user
 seems to want to build (as expressed on the command line), and then we ask
 it to go ahead and build that project.
 
-But the art of leadership is delegation and what |inbuild| then does is to
+But the art of leadership is delegation and what //supervisor// then does is to
 call |core| back again to do the actual work: see the What To Compile section.
 That sounds like an unnecessary round trip, but in fact it's not, because
-|inbuild| also incrementally builds some of the resources we will be using.
+//supervisor// also incrementally builds some of the resources we will be using.
 That business is helpfully invisible to us: so it turns out that CEOs do
 something, after all.
 
 @<Build the project identified for us by Inbuild@> =
-	inform_project *project = Inbuild::go_operational();
+	inform_project *project = Supervisor::go_operational();
 	if (project)
 		Copies::build(STDOUT, project->as_copy,
 			BuildMethodology::stay_in_current_process());
@@ -129,8 +129,8 @@ gargantuan debugging logs if enabled.
 
 @h Command line processing.
 The bulk of the command-line options are both registered and processed by
-|inbuild| rather than here: in particular, every switch ever used by the
-Inform UI apps is really a command to |inbuild| not to |inform7|.
+//supervisor// rather than here: in particular, every switch ever used by the
+Inform UI apps is really a command to //supervisor// not to |inform7|.
 
 =
 int CoreMain::read_command_line(int argc, char *argv[]) {
@@ -139,11 +139,11 @@ int CoreMain::read_command_line(int argc, char *argv[]) {
 		L"Usage: inform7 [OPTIONS]\n");
 
 	@<Register command-line arguments@>;
-	Inbuild::declare_options();
+	Supervisor::declare_options();
 	int proceed = CommandLine::read(argc, argv, NULL, &CoreMain::switch, &CoreMain::bareword);
 	if (proceed) {
 		path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
-		Inbuild::optioneering_complete(NULL, TRUE, &Semantics::read_preform);
+		Supervisor::optioneering_complete(NULL, TRUE, &Semantics::read_preform);
 	}
 	return proceed;
 }
@@ -188,10 +188,10 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case SIGILS_CLSW: echo_problem_message_sigils = val; break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
 	}
-	Inbuild::option(id, val, arg, state);
+	Supervisor::option(id, val, arg, state);
 }
 
 void CoreMain::bareword(int id, text_stream *opt, void *state) {
-	if (Inbuild::set_I7_source(opt) == FALSE)
+	if (Supervisor::set_I7_source(opt) == FALSE)
 		Errors::fatal_with_text("unknown command line argument: %S (see -help)", opt);
 }

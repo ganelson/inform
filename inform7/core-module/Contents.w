@@ -4,6 +4,9 @@ Purpose: The core of the Inform compiler, as a module.
 Language: InC
 Licence: Artistic License 2.0
 
+Preliminaries
+	What This Module Does
+
 Chapter 1: Configuration and Control
 "The management and the production line for the compilation process."
 	Core Module
