@@ -1,13 +1,19 @@
 <html>
 	<head>
 		<title>inblorb</title>
+<link href="Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
+<link href="Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-src/Figures/Inform.png" height=72">
@@ -30,97 +36,123 @@
 		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../other.html">Other Tools</a></li><li><b>inblorb</b></li></ul>
 		<p class="purpose">The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. This is version 4.</p>
 		<hr>
+		<div class="contentspage">
+			<ul class="chapterlist">
+				<li>
+					<p class="chapterentry"><a name="M"></a>
+						<span class="chaptertitle">Manual</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="M-ui.html">
+								<spon class="sectiontitle">Using Inblorb</span></a> -
+							<span class="sectionpurpose">How to use this tool, either from the command line or inside the Inform app.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="M-tbl.html">
+								<spon class="sectiontitle">The Blurb Language</span></a> -
+							<span class="sectionpurpose">A specification for the Blurb language, which describes how to package up a work of interactive fiction.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="M-rc.html">
+								<spon class="sectiontitle">Reference Card</span></a> -
+							<span class="sectionpurpose">The current help information as it would be printed at the command line.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="1"></a>
+						<span class="chaptertitle">Chapter 1: Blurbs</span></p>
+					<p class="chapterpurpose">A little infrastructure, but basically, parsing of our instructions.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="1-bsc.html">
+								<spon class="sectiontitle">Basics</span></a> -
+							<span class="sectionpurpose">Some fundamental definitions.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-mn.html">
+								<spon class="sectiontitle">Main</span></a> -
+							<span class="sectionpurpose">To parse command-line arguments, then start the Blurb interpreter, then report back to the user.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-be.html">
+								<spon class="sectiontitle">Blorb Errors</span></a> -
+							<span class="sectionpurpose">To spool error messages into the HTML report.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-bp.html">
+								<spon class="sectiontitle">Blurb Parser</span></a> -
+							<span class="sectionpurpose">Blurb is an interpreted language, and this is the interpreter for it.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="2"></a>
+						<span class="chaptertitle">Chapter 2: Blorbs</span></p>
+					<p class="chapterpurpose">Our primary purpose is to write a blorb file, and all else is a side-show.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="2-bw.html">
+								<spon class="sectiontitle">Blorb Writer</span></a> -
+							<span class="sectionpurpose">To write the Blorb file, our main output, to disc.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="3"></a>
+						<span class="chaptertitle">Chapter 3: Other Material</span></p>
+					<p class="chapterpurpose">Although non-blorb release material is a side-show, it's a divertingly varied one.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="3-rls.html">
+								<spon class="sectiontitle">Releaser</span></a> -
+							<span class="sectionpurpose">To manage requests to release material other than a Blorb file.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-sd.html">
+								<spon class="sectiontitle">Solution Deviser</span></a> -
+							<span class="sectionpurpose">To make a solution (.sol) file accompanying a release, if requested.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-laaf.html">
+								<spon class="sectiontitle">Links and Auxiliary Files</span></a> -
+							<span class="sectionpurpose">To manage links to auxiliary files, and placeholder variables.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-plc.html">
+								<spon class="sectiontitle">Placeholders</span></a> -
+							<span class="sectionpurpose">To manage placeholder variables.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-tmp.html">
+								<spon class="sectiontitle">Templates</span></a> -
+							<span class="sectionpurpose">To manage templates for website generation.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-wm.html">
+								<spon class="sectiontitle">Website Maker</span></a> -
+							<span class="sectionpurpose">To accompany a release with a mini-website.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-bs6.html">
+								<spon class="sectiontitle">Base64</span></a> -
+							<span class="sectionpurpose">To produce base64-encoded story files ready for in-browser play by a Javascript-based interpreter such as Parchment.</span></p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<hr>
+		<p class="purpose">Importing:</p>
 		<ul class="chapterlist">
 			<li>
-				<p><a name="M"></a><spon class="chaptertitle">Manual</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="M-ui.html"><spon class="sectiontitle">Using Inblorb</span></a> -
-						<span class="purpose">How to use this tool, either from the command line or inside the Inform app.</span></p>
-					</li>
-					<li>
-						<p><a href="M-tbl.html"><spon class="sectiontitle">The Blurb Language</span></a> -
-						<span class="purpose">A specification for the Blurb language, which describes how to package up a work of interactive fiction.</span></p>
-					</li>
-					<li>
-						<p><a href="M-rc.html"><spon class="sectiontitle">Reference Card</span></a> -
-						<span class="purpose">The current help information as it would be printed at the command line.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Blurbs</span></p>
-				<p><span class="purpose">A little infrastructure, but basically, parsing of our instructions.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="1-bsc.html"><spon class="sectiontitle">Basics</span></a> -
-						<span class="purpose">Some fundamental definitions.</span></p>
-					</li>
-					<li>
-						<p><a href="1-mn.html"><spon class="sectiontitle">Main</span></a> -
-						<span class="purpose">To parse command-line arguments, then start the Blurb interpreter, then report back to the user.</span></p>
-					</li>
-					<li>
-						<p><a href="1-be.html"><spon class="sectiontitle">Blorb Errors</span></a> -
-						<span class="purpose">To spool error messages into the HTML report.</span></p>
-					</li>
-					<li>
-						<p><a href="1-bp.html"><spon class="sectiontitle">Blurb Parser</span></a> -
-						<span class="purpose">Blurb is an interpreted language, and this is the interpreter for it.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="2"></a><spon class="chaptertitle">Chapter 2: Blorbs</span></p>
-				<p><span class="purpose">Our primary purpose is to write a blorb file, and all else is a side-show.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="2-bw.html"><spon class="sectiontitle">Blorb Writer</span></a> -
-						<span class="purpose">To write the Blorb file, our main output, to disc.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: Other Material</span></p>
-				<p><span class="purpose">Although non-blorb release material is a side-show, it's a divertingly varied one.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="3-rls.html"><spon class="sectiontitle">Releaser</span></a> -
-						<span class="purpose">To manage requests to release material other than a Blorb file.</span></p>
-					</li>
-					<li>
-						<p><a href="3-sd.html"><spon class="sectiontitle">Solution Deviser</span></a> -
-						<span class="purpose">To make a solution (.sol) file accompanying a release, if requested.</span></p>
-					</li>
-					<li>
-						<p><a href="3-laaf.html"><spon class="sectiontitle">Links and Auxiliary Files</span></a> -
-						<span class="purpose">To manage links to auxiliary files, and placeholder variables.</span></p>
-					</li>
-					<li>
-						<p><a href="3-plc.html"><spon class="sectiontitle">Placeholders</span></a> -
-						<span class="purpose">To manage placeholder variables.</span></p>
-					</li>
-					<li>
-						<p><a href="3-tmp.html"><spon class="sectiontitle">Templates</span></a> -
-						<span class="purpose">To manage templates for website generation.</span></p>
-					</li>
-					<li>
-						<p><a href="3-wm.html"><spon class="sectiontitle">Website Maker</span></a> -
-						<span class="purpose">To accompany a release with a mini-website.</span></p>
-					</li>
-					<li>
-						<p><a href="3-bs6.html"><spon class="sectiontitle">Base64</span></a> -
-						<span class="purpose">To produce base64-encoded story files ready for in-browser play by a Javascript-based interpreter such as Parchment.</span></p>
-					</li>
-				</ul>
+				<p class="chapterentry">
+					<a href="../../../inweb/docs/foundation-module/index.html"><spon class="sectiontitle">inweb/foundation</span></a>
+					- <span class="sectionpurpose">A library of common code used by all of the Inform tools.</span></p>
 			</li>
 		</ul>
+		</div>
 		<hr>
-		<p class="purpose">Together with the following imported module:
-<ul class="chapterlist">
-<li><p>foundation - A library of common code used by all of the Inform tools.</p></li></ul>
-
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
 		</main>
 	</body>
 </html>

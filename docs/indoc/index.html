@@ -1,13 +1,19 @@
 <html>
 	<head>
 		<title>indoc</title>
+<link href="Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
+<link href="Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-src/Figures/Inform.png" height=72">
@@ -30,147 +36,181 @@
 		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../other.html">Other Tools</a></li><li><b>indoc</b></li></ul>
 		<p class="purpose">The documentation-formatter for the Inform 7 system. This is version 4.</p>
 		<hr>
+		<div class="contentspage">
+			<ul class="chapterlist">
+				<li>
+					<p class="chapterentry"><a name="M"></a>
+						<span class="chaptertitle">Manual</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="M-iti.html">
+								<spon class="sectiontitle">Introduction to Indoc</span></a> -
+							<span class="sectionpurpose">What Indoc is, and its limited but complicated uses.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="M-vai.html">
+								<spon class="sectiontitle">Volumes and Instructions</span></a> -
+							<span class="sectionpurpose">Dual- versus single-volume mode, and how to write instructions files.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="M-dm.html">
+								<spon class="sectiontitle">Documentation Markup</span></a> -
+							<span class="sectionpurpose">How to mark up the plain-text source for Inform documentation.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="M-rc.html">
+								<spon class="sectiontitle">Reference Card</span></a> -
+							<span class="sectionpurpose">The current help information as it would be printed at the command line.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="1"></a>
+						<span class="chaptertitle">Chapter 1: Setting Up</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="1-bsc.html">
+								<spon class="sectiontitle">Basics</span></a> -
+							<span class="sectionpurpose">Some fundamental definitions.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-mn.html">
+								<spon class="sectiontitle">Main</span></a> -
+							<span class="sectionpurpose">The top level of the program.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-cnf.html">
+								<spon class="sectiontitle">Configuration</span></a> -
+							<span class="sectionpurpose">Instructions of indoc to different output types.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-ins.html">
+								<spon class="sectiontitle">Instructions</span></a> -
+							<span class="sectionpurpose">Instructions of indoc to different output types.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-cs.html">
+								<spon class="sectiontitle">Context Symbols</span></a> -
+							<span class="sectionpurpose">Provides conditional rendering of text, depending on context.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="2"></a>
+						<span class="chaptertitle">Chapter 2: Processing</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="2-ss.html">
+								<spon class="sectiontitle">Structural Scan</span></a> -
+							<span class="sectionpurpose">Finding out how a volume divides up into chapters and sections.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-exm.html">
+								<spon class="sectiontitle">Examples</span></a> -
+							<span class="sectionpurpose">Keeping track of the metadata on and sequencing of the examples.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-rnd.html">
+								<spon class="sectiontitle">Renderer</span></a> -
+							<span class="sectionpurpose">The general output apparatus for writing a block of documentation.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-rr.html">
+								<spon class="sectiontitle">Rawtext Reader</span></a> -
+							<span class="sectionpurpose">Reading the rawtext in, breaking it up into blocks, and sending them for output as formatted documentation.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-utc.html">
+								<spon class="sectiontitle">Updating the Cross-References</span></a> -
+							<span class="sectionpurpose">Writing the documentation cross-references to a file used by Inform's in-application documentation.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-haj.html">
+								<spon class="sectiontitle">HTML and JavaScript</span></a> -
+							<span class="sectionpurpose">HTML utility code.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-css.html">
+								<spon class="sectiontitle">CSS</span></a> -
+							<span class="sectionpurpose">Cascading style sheets for HTML output.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="3"></a>
+						<span class="chaptertitle">Chapter 3: Indexing</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="3-iu.html">
+								<spon class="sectiontitle">Indexing Utilities</span></a> -
+							<span class="sectionpurpose">Some conveniences shared by our different forms of index.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-gi.html">
+								<spon class="sectiontitle">Contents and Indexes</span></a> -
+							<span class="sectionpurpose">To produce a general index, for HTML output only.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-ei.html">
+								<spon class="sectiontitle">Examples Index</span></a> -
+							<span class="sectionpurpose">To produces the contents and indexing pages, for HTML output and multiple-files mode only.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="4"></a>
+						<span class="chaptertitle">Chapter 4: Navigation Styles</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="4-nd.html">
+								<spon class="sectiontitle">Navigational Designs</span></a> -
+							<span class="sectionpurpose">To render linking gadgets in HTML forms of documentation, so that the reader can navigate from section to section.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-cl.html">
+								<spon class="sectiontitle">Codename Lacuna</span></a> -
+							<span class="sectionpurpose">The "lacuna" style of navigational gadgets, a plain text style with no navigational features at all.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-cm.html">
+								<spon class="sectiontitle">Codename Midnight</span></a> -
+							<span class="sectionpurpose">The "midnight" style of navigational gadgets.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-ca.html">
+								<spon class="sectiontitle">Codename Architect</span></a> -
+							<span class="sectionpurpose">The "architect" style of navigational gadgets.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-ct.html">
+								<spon class="sectiontitle">Codename Twilight</span></a> -
+							<span class="sectionpurpose">The "twilight" style of navigational gadgets, a minimal version of "midnight".</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-cr.html">
+								<spon class="sectiontitle">Codename Roadsign</span></a> -
+							<span class="sectionpurpose">The "roadsign" style of navigational gadgets.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-cu.html">
+								<spon class="sectiontitle">Codename Unsigned</span></a> -
+							<span class="sectionpurpose">The "unsigned" style of navigational gadgets.</span></p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<hr>
+		<p class="purpose">Importing:</p>
 		<ul class="chapterlist">
 			<li>
-				<p><a name="M"></a><spon class="chaptertitle">Manual</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="M-iti.html"><spon class="sectiontitle">Introduction to Indoc</span></a> -
-						<span class="purpose">What Indoc is, and its limited but complicated uses.</span></p>
-					</li>
-					<li>
-						<p><a href="M-vai.html"><spon class="sectiontitle">Volumes and Instructions</span></a> -
-						<span class="purpose">Dual- versus single-volume mode, and how to write instructions files.</span></p>
-					</li>
-					<li>
-						<p><a href="M-dm.html"><spon class="sectiontitle">Documentation Markup</span></a> -
-						<span class="purpose">How to mark up the plain-text source for Inform documentation.</span></p>
-					</li>
-					<li>
-						<p><a href="M-rc.html"><spon class="sectiontitle">Reference Card</span></a> -
-						<span class="purpose">The current help information as it would be printed at the command line.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Setting Up</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="1-bsc.html"><spon class="sectiontitle">Basics</span></a> -
-						<span class="purpose">Some fundamental definitions.</span></p>
-					</li>
-					<li>
-						<p><a href="1-mn.html"><spon class="sectiontitle">Main</span></a> -
-						<span class="purpose">The top level of the program.</span></p>
-					</li>
-					<li>
-						<p><a href="1-cnf.html"><spon class="sectiontitle">Configuration</span></a> -
-						<span class="purpose">Instructions of indoc to different output types.</span></p>
-					</li>
-					<li>
-						<p><a href="1-ins.html"><spon class="sectiontitle">Instructions</span></a> -
-						<span class="purpose">Instructions of indoc to different output types.</span></p>
-					</li>
-					<li>
-						<p><a href="1-cs.html"><spon class="sectiontitle">Context Symbols</span></a> -
-						<span class="purpose">Provides conditional rendering of text, depending on context.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="2"></a><spon class="chaptertitle">Chapter 2: Processing</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="2-ss.html"><spon class="sectiontitle">Structural Scan</span></a> -
-						<span class="purpose">Finding out how a volume divides up into chapters and sections.</span></p>
-					</li>
-					<li>
-						<p><a href="2-exm.html"><spon class="sectiontitle">Examples</span></a> -
-						<span class="purpose">Keeping track of the metadata on and sequencing of the examples.</span></p>
-					</li>
-					<li>
-						<p><a href="2-rnd.html"><spon class="sectiontitle">Renderer</span></a> -
-						<span class="purpose">The general output apparatus for writing a block of documentation.</span></p>
-					</li>
-					<li>
-						<p><a href="2-rr.html"><spon class="sectiontitle">Rawtext Reader</span></a> -
-						<span class="purpose">Reading the rawtext in, breaking it up into blocks, and sending them for output as formatted documentation.</span></p>
-					</li>
-					<li>
-						<p><a href="2-utc.html"><spon class="sectiontitle">Updating the Cross-References</span></a> -
-						<span class="purpose">Writing the documentation cross-references to a file used by Inform's in-application documentation.</span></p>
-					</li>
-					<li>
-						<p><a href="2-haj.html"><spon class="sectiontitle">HTML and JavaScript</span></a> -
-						<span class="purpose">HTML utility code.</span></p>
-					</li>
-					<li>
-						<p><a href="2-css.html"><spon class="sectiontitle">CSS</span></a> -
-						<span class="purpose">Cascading style sheets for HTML output.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: Indexing</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="3-iu.html"><spon class="sectiontitle">Indexing Utilities</span></a> -
-						<span class="purpose">Some conveniences shared by our different forms of index.</span></p>
-					</li>
-					<li>
-						<p><a href="3-gi.html"><spon class="sectiontitle">Contents and Indexes</span></a> -
-						<span class="purpose">To produce a general index, for HTML output only.</span></p>
-					</li>
-					<li>
-						<p><a href="3-ei.html"><spon class="sectiontitle">Examples Index</span></a> -
-						<span class="purpose">To produces the contents and indexing pages, for HTML output and multiple-files mode only.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="4"></a><spon class="chaptertitle">Chapter 4: Navigation Styles</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="4-nd.html"><spon class="sectiontitle">Navigational Designs</span></a> -
-						<span class="purpose">To render linking gadgets in HTML forms of documentation, so that the reader can navigate from section to section.</span></p>
-					</li>
-					<li>
-						<p><a href="4-cl.html"><spon class="sectiontitle">Codename Lacuna</span></a> -
-						<span class="purpose">The "lacuna" style of navigational gadgets, a plain text style with no navigational features at all.</span></p>
-					</li>
-					<li>
-						<p><a href="4-cm.html"><spon class="sectiontitle">Codename Midnight</span></a> -
-						<span class="purpose">The "midnight" style of navigational gadgets.</span></p>
-					</li>
-					<li>
-						<p><a href="4-ca.html"><spon class="sectiontitle">Codename Architect</span></a> -
-						<span class="purpose">The "architect" style of navigational gadgets.</span></p>
-					</li>
-					<li>
-						<p><a href="4-ct.html"><spon class="sectiontitle">Codename Twilight</span></a> -
-						<span class="purpose">The "twilight" style of navigational gadgets, a minimal version of "midnight".</span></p>
-					</li>
-					<li>
-						<p><a href="4-cr.html"><spon class="sectiontitle">Codename Roadsign</span></a> -
-						<span class="purpose">The "roadsign" style of navigational gadgets.</span></p>
-					</li>
-					<li>
-						<p><a href="4-cu.html"><spon class="sectiontitle">Codename Unsigned</span></a> -
-						<span class="purpose">The "unsigned" style of navigational gadgets.</span></p>
-					</li>
-				</ul>
+				<p class="chapterentry">
+					<a href="../../../inweb/docs/foundation-module/index.html"><spon class="sectiontitle">inweb/foundation</span></a>
+					- <span class="sectionpurpose">A library of common code used by all of the Inform tools.</span></p>
 			</li>
 		</ul>
+		</div>
 		<hr>
-		<p class="purpose">Together with the following imported module:
-<ul class="chapterlist">
-<li><p>foundation - A library of common code used by all of the Inform tools.</p></li></ul>
-
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
 		</main>
 	</body>
 </html>

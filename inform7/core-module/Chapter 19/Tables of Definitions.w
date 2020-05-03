@@ -6,12 +6,12 @@ To support tables which amount to massed groups of assertions.
 Tables lie behind the special "defined by" sentence. These come in three
 subtly different versions:
 
->> [1] Some animals are defined by the Table of Specimens.
->> [2] Some men in the Zoo are defined by the Table of Zookeepers.
->> [3] Some kinds of animal are defined by the Table of Zoology.
+>> (1) Some animals are defined by the Table of Specimens.
+>> (2) Some men in the Zoo are defined by the Table of Zookeepers.
+>> (3) Some kinds of animal are defined by the Table of Zoology.
 
-The subject in [1] is the name of a kind; in [2], it's a description which
-incorporates a kind, but can include relative clauses and adjectives; in [3],
+The subject in (1) is the name of a kind; in (2), it's a description which
+incorporates a kind, but can include relative clauses and adjectives; in (3),
 it's something second-order -- a kind of a kind. Given this variety of
 possibilities, we treat "defined by" sentences as if they were abbreviations
 for a mass of assertion sentences, one for each row of the table. We do

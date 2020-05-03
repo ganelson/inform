@@ -847,15 +847,15 @@ by implementing "done by" as if it were a preposition rather than as part
 of a verb. This parses more quickly and makes English passive forms play
 more nicely with implied uses of "to be". For example, in
 
->> number of things carried by the player [1]
+>> number of things carried by the player (1)
 
 Inform has to infer the meaning
 
->> number of things which are carried by the player [2]
+>> number of things which are carried by the player (2)
 
 and it can only do this if it recognises "carried by" as being prepositional
 in nature, like "on" or "in". In other words, if we wrote the |p| step
-above instead of the |p*| step, [2] would still work but [1] would not. (We
+above instead of the |p*| step, (2) would still work but (1) would not. (We
 may have to revisit this for languages other than English.)
 
 =

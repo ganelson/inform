@@ -585,17 +585,17 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 them if we possibly can. Fortunately something much simpler will often do.
 For example, consider:
 
->> [1] the number of members of S
->> [2] the number of closed doors
+>> (1) the number of members of S
+>> (2) the number of closed doors
 
-where S, in [1], is a description which appears as a parameter in a phrase.
-In [1] we have no way of knowing what S might be, but we can safely assume
+where S, in (1), is a description which appears as a parameter in a phrase.
+In (1) we have no way of knowing what S might be, but we can safely assume
 that it has been compiled as a multi-purpose description routine, and
 therefore compile the function call:
 = (text as Inform 6)
 	D(NUMBER_OF_DUSAGE)
 =
-But in case [2] it is sufficient to take $\phi(x) = {\it door}(x)\land{\it closed}(x)$,
+But in case (2) it is sufficient to take $\phi(x) = {\it door}(x)\land{\it closed}(x)$,
 defer it to a proposition with reason |NUMBER_OF_DEFER|, and then compile just
 = (text as Inform 6)
 	Prop_19()

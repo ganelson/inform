@@ -899,14 +899,14 @@ properties) and for kinds (which do, but differently).
 	} else PL::Actions::Patterns::categorise_as(apx, ParseTree::get_text(py));
 	#endif
 
-@h Case 28. Sentence [1] below is deservedly rejected, but [2] makes a
+@h Case 28. Sentence (1) below is deservedly rejected, but (2) makes a
 non-reciprocal map connection: "D of the R is E of the S" is construed as
 "D of the R is S" then "R is E of the S". We have to suppress Inform's
 tendency to make tentative reciprocal map connections, because even though
 they will only be listed as "likely", we know they are in fact impossible
 in this case.
 
->> [1] In the box is on the desk. [2] East of the Pitch is north of the Pavilion.
+>> (1) In the box is on the desk. (2) East of the Pitch is north of the Pavilion.
 
 @<Case 28 - RELATIONSHIP on both sides@> =
 	if ((ParseTree::int_annotation(px, relationship_node_type_ANNOT) == DIRECTION_RELN) &&

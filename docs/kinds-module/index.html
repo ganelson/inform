@@ -1,13 +1,19 @@
 <html>
 	<head>
 		<title>kinds</title>
+<link href="Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
+<link href="Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-src/Figures/Inform.png" height=72">
@@ -48,66 +54,79 @@
 		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><b>kinds</b></li></ul>
 		<p class="purpose">The type system used by Inform. This is version 1.</p>
 		<hr>
-		<ul class="chapterlist">
-			<li>
-				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Starting Up</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="1-km.html"><spon class="sectiontitle">Kinds Module</span></a> -
-						<span class="purpose">Setting up the use of this module.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="2"></a><spon class="chaptertitle">Chapter 2: Kinds</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="2-itk.html"><spon class="sectiontitle">Introduction to Kinds</span></a> -
-						<span class="purpose">A general introduction to kinds.</span></p>
-					</li>
-					<li>
-						<p><a href="2-knd.html"><spon class="sectiontitle">Kinds</span></a> -
-						<span class="purpose">To build tree structures which represent Inform's universe of kinds.</span></p>
-					</li>
-					<li>
-						<p><a href="2-kc.html"><spon class="sectiontitle">Kind Checking</span></a> -
-						<span class="purpose">To test whether two kinds are equivalent to each other, or failing that, whether they are compatible with each other.</span></p>
-					</li>
-					<li>
-						<p><a href="2-kc2.html"><spon class="sectiontitle">Kind Constructors</span></a> -
-						<span class="purpose">The mechanism by which Inform records the characteristics of different kinds.</span></p>
-					</li>
-					<li>
-						<p><a href="2-ki.html"><spon class="sectiontitle">Kind Interpreter</span></a> -
-						<span class="purpose">To read in details of the built-in kinds from template files, setting them up ready for use.</span></p>
-					</li>
-					<li>
-						<p><a href="2-uk.html"><spon class="sectiontitle">Using Kinds</span></a> -
-						<span class="purpose">To determine the characteristics of different kinds, enabling them to be used in practice.</span></p>
-					</li>
-					<li>
-						<p><a href="2-dk.html"><spon class="sectiontitle">Describing Kinds</span></a> -
-						<span class="purpose">Translating kind structures to and from textual or run-time descriptions.</span></p>
-					</li>
-					<li>
-						<p><a href="2-dmn.html"><spon class="sectiontitle">Dimensions</span></a> -
-						<span class="purpose">To keep a small database indicating the physical dimensions of numerical values, and how they combine: for instance, allowing us to specify that a length times a length is an area.</span></p>
-					</li>
-					<li>
-						<p><a href="2-fv.html"><spon class="sectiontitle">Floating-Point Values</span></a> -
-						<span class="purpose">To cope with promotions from integer to floating-point arithmetic.</span></p>
-					</li>
-					<li>
-						<p><a href="2-sav.html"><spon class="sectiontitle">Scaled Arithmetic Values</span></a> -
-						<span class="purpose">To manage the scalings and offsets used when storing arithmetic values at run-time, and/or when using scaled units to refer to them.</span></p>
-					</li>
-				</ul>
-			</li>
-		</ul>
+		<div class="contentspage">
+			<ul class="chapterlist">
+				<li>
+					<p class="chapterentry"><a name="1"></a>
+						<span class="chaptertitle">Chapter 1: Starting Up</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="1-km.html">
+								<spon class="sectiontitle">Kinds Module</span></a> -
+							<span class="sectionpurpose">Setting up the use of this module.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="2"></a>
+						<span class="chaptertitle">Chapter 2: Kinds</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="2-itk.html">
+								<spon class="sectiontitle">Introduction to Kinds</span></a> -
+							<span class="sectionpurpose">A general introduction to kinds.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-knd.html">
+								<spon class="sectiontitle">Kinds</span></a> -
+							<span class="sectionpurpose">To build tree structures which represent Inform's universe of kinds.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-kc.html">
+								<spon class="sectiontitle">Kind Checking</span></a> -
+							<span class="sectionpurpose">To test whether two kinds are equivalent to each other, or failing that, whether they are compatible with each other.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-kc2.html">
+								<spon class="sectiontitle">Kind Constructors</span></a> -
+							<span class="sectionpurpose">The mechanism by which Inform records the characteristics of different kinds.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-ki.html">
+								<spon class="sectiontitle">Kind Interpreter</span></a> -
+							<span class="sectionpurpose">To read in details of the built-in kinds from template files, setting them up ready for use.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-uk.html">
+								<spon class="sectiontitle">Using Kinds</span></a> -
+							<span class="sectionpurpose">To determine the characteristics of different kinds, enabling them to be used in practice.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-dk.html">
+								<spon class="sectiontitle">Describing Kinds</span></a> -
+							<span class="sectionpurpose">Translating kind structures to and from textual or run-time descriptions.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-dmn.html">
+								<spon class="sectiontitle">Dimensions</span></a> -
+							<span class="sectionpurpose">To keep a small database indicating the physical dimensions of numerical values, and how they combine: for instance, allowing us to specify that a length times a length is an area.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-fv.html">
+								<spon class="sectiontitle">Floating-Point Values</span></a> -
+							<span class="sectionpurpose">To cope with promotions from integer to floating-point arithmetic.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-sav.html">
+								<spon class="sectiontitle">Scaled Arithmetic Values</span></a> -
+							<span class="sectionpurpose">To manage the scalings and offsets used when storing arithmetic values at run-time, and/or when using scaled units to refer to them.</span></p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 		<hr>
-		
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
 		</main>
 	</body>
 </html>

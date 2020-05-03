@@ -38,7 +38,7 @@ sentences in turn, refining its tree and then acting on it.
 each sentence. A few primary verbs are reserved for fixed-form syntaxes
 which are easy for us to handle -- for instance,
 
->> [1] Test distros with "wear hat / open can".
+>> (1) Test distros with "wear hat / open can".
 
 When we find a sentence like that, we simply delegate handling it to the
 relevant part of Inform. Sentences like this are inflexible and easy to parse,
@@ -52,7 +52,7 @@ Delegating out work on conceptually boring sentences like this is the task of
 spend the rest of the chapter concentrating on sentences about the model.
 For example:
 
->> [2] The fedora hat is on the can of Ubuntu cola.
+>> (2) The fedora hat is on the can of Ubuntu cola.
 
 There really is an Ubuntu cola; it's a fair-trade product which it amuses my
 more Linux-aware students to drink. This might be called a "genuine assertion",
@@ -62,16 +62,16 @@ to two objects being created, and a relation between them being initially true.
 But as well as genuine assertions, we also have "faux assertions". These
 use "to be" or "to have" as their primary verbs, and that means we
 can't tell them from genuine assertions. What makes them faux is that, like
-sentence [1] above, they're talking about processes or data outside of the
+sentence (1) above, they're talking about processes or data outside of the
 model. For example,
 
->> [3] Printing the name of something is an activity.
+>> (3) Printing the name of something is an activity.
 
 Once again, if we find a sentence like that, we simply take direct action
 by calling the relevant section of Inform -- here, the one in charge of
 activities.
 
-@ So how are we to tell cases [2] and [3] apart? They both have the same
+@ So how are we to tell cases (2) and (3) apart? They both have the same
 primary verb, "to be". This is really why the initial assertion parser
 stopped where it did, because at that stage we didn't have the means to
 answer the question.
@@ -83,7 +83,7 @@ Parse Tree" step applies the S-parser, which among much else recognises the
 names of kinds of value like "activity".
 
 An interesting point about refining the parse tree is that noun phrases often
-talk about things in the model which do not yet exist. [2], for instance,
+talk about things in the model which do not yet exist. (2), for instance,
 might be the first mention of either the hat or the can, or both. With a
 little care we can work out what seems to be new here, and to create it --
 this is the work of "The Creator".
@@ -91,7 +91,7 @@ this is the work of "The Creator".
 We can then roughly categorise the two noun phrases on either side of
 "to be" -- for instance: name I don't recognise on the left, name of
 kind of value on the right. There are currently 14 categories, which means
-that we could potentially divide sentences like [2] and [3] into $14^2 = 196$
+that we could potentially divide sentences like (2) and (3) into $14^2 = 196$
 cases. In fact many of these cases are more or less the same, so we "only"
 need to handle about 60 actually different outcomes, and about half of
 those will be problem messages of one sort or another. This massive

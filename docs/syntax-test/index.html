@@ -1,13 +1,19 @@
 <html>
 	<head>
 		<title>syntax-test</title>
+<link href="Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
+<link href="Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-src/Figures/Inform.png" height=72">
@@ -33,27 +39,47 @@
 		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../units.html">Unit Test Tools</a></li><li><b>syntax-test</b></li></ul>
 		<p class="purpose">Unit tests for the syntax module. This is version 1.</p>
 		<hr>
+		<div class="contentspage">
+			<ul class="chapterlist">
+				<li>
+					<p class="chapterentry"><a name="1"></a>
+						<span class="chaptertitle">Chapter 1: Scaffolding</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="1-pc.html">
+								<spon class="sectiontitle">Program Control</span></a> -
+							<span class="sectionpurpose">What shall we test?</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-ut.html">
+								<spon class="sectiontitle">Unit Tests</span></a> -
+							<span class="sectionpurpose">How we shall test it.</span></p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<hr>
+		<p class="purpose">Importing:</p>
 		<ul class="chapterlist">
 			<li>
-				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Scaffolding</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="1-pc.html"><spon class="sectiontitle">Program Control</span></a> -
-						<span class="purpose">What shall we test?</span></p>
-					</li>
-					<li>
-						<p><a href="1-ut.html"><spon class="sectiontitle">Unit Tests</span></a> -
-						<span class="purpose">How we shall test it.</span></p>
-					</li>
-				</ul>
+				<p class="chapterentry">
+					<a href="../words-module/index.html"><spon class="sectiontitle">shared/words</span></a>
+					- <span class="sectionpurpose">A library of code for reading natural language into a stream of words.</span></p>
+			</li>
+			<li>
+				<p class="chapterentry">
+					<a href="../syntax-module/index.html"><spon class="sectiontitle">shared/syntax</span></a>
+					- <span class="sectionpurpose">A library of code to build a parse tree and break text into sentences.</span></p>
+			</li>
+			<li>
+				<p class="chapterentry">
+					<a href="../../../inweb/docs/foundation-module/index.html"><spon class="sectiontitle">inweb/foundation</span></a>
+					- <span class="sectionpurpose">A library of common code used by all of the Inform tools.</span></p>
 			</li>
 		</ul>
+		</div>
 		<hr>
-		<p class="purpose">Together with the following imported modules:
-<ul class="chapterlist">
-<li><p>foundation - A library of common code used by all of the Inform tools.</p></li><li><p>words - A library of code for reading natural language into a stream of words.</p></li><li><p>syntax - A library of code to build a parse tree and break text into sentences.</p></li></ul>
-
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
 		</main>
 	</body>
 </html>

@@ -31,14 +31,14 @@ expresses no information.
 The use of certainty adverbs is a point of difference between Inform's two
 grammars. In assertions one can write
 
->> A box is usually closed. [1]
+>> A box is usually closed. (1)
 
 but in conditions one can't write
 
->> if a box is usually closed, ... [2]
+>> if a box is usually closed, ... (2)
 
-This is because [1] is essentially a statement about the future, not the
-present or the past, whereas conditions like [2] must always be determinable at
+This is because (1) is essentially a statement about the future, not the
+present or the past, whereas conditions like (2) must always be determinable at
 once: Inform cannot know what will generally happen, only what is now the case
 and what has been the case in the past.
 

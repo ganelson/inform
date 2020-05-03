@@ -28,6 +28,10 @@
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 }
 
+.popuptext {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+}
+
 /* Popup arrow */
 .popup .popuptext::after {
   content: "";

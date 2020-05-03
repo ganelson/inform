@@ -30,7 +30,6 @@ Global property_to_be_totalled; ! used to implement "total P of..."
 Global property_loop_sign; ! $+1$ for increasing order, $-1$ for decreasing
 Global suppress_scope_loops;
 Global temporary_value; ! can be used anywhere side-effects can't occur
-! [13]
 Global clr_fg = 1; ! foreground colour
 Global clr_bg = 1; ! background colour
 Global clr_fgstatus = 1; ! foreground colour of statusline
@@ -40,19 +39,15 @@ Global statuswin_current; ! if writing to top window
 Global suppress_text_substitution = false;
 Global deadflag = 0;
 
-! [14]
 Global statuswin_cursize = 0;
 Global statuswin_size = 1;
 
-! [16]
-! Global debug_flag = 0;
 Global debug_rules = 0;
 Global debug_rule_nesting;
 Global reason_the_action_failed; ! = I7 "reason the action failed"
 Global indef_mode;                  ! "Indefinite" mode - ie, "take a brick"
                                     ! is in this mode
 
-! [3]
 Global standard_interpreter = 0;
 
 Array LocalParking --> 64;

@@ -1,13 +1,19 @@
 <html>
 	<head>
 		<title>WorldModelKit</title>
+<link href="Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
+<link href="Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-src/Figures/Inform.png" height=72">
@@ -32,83 +38,103 @@
 		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><b>WorldModelKit</b></li></ul>
 		<p class="purpose">Inter-level support for modelling space, time and actions in interactive fiction. This is version 1.</p>
 		<hr>
-		<ul class="sectionlist">
-					<li>
-						<p><a href="S-msc.html"><spon class="sectiontitle">Output Template</span></a> -
-						<span class="purpose">This is the superstructure of the file of I6 code output by Inform: from ICL commands at the top down to the signing-off comments at the bottom.</span></p>
-					</li>
-					<li>
-						<p><a href="S-gll.html"><spon class="sectiontitle">Glulx Template</span></a> -
-						<span class="purpose">To provide Glulx-specific actions.</span></p>
-					</li>
-					<li>
-						<p><a href="S-zmc.html"><spon class="sectiontitle">ZMachine Template</span></a> -
-						<span class="purpose">To provide Z-specific actions.</span></p>
-					</li>
-					<li>
-						<p><a href="S-lgh.html"><spon class="sectiontitle">Light Template</span></a> -
-						<span class="purpose">The determination of light, visibility and physical access.</span></p>
-					</li>
-					<li>
-						<p><a href="S-lst.html"><spon class="sectiontitle">ListWriter Template</span></a> -
-						<span class="purpose">A flexible object-lister taking care of plurals, inventory information, various formats and so on.</span></p>
-					</li>
-					<li>
-						<p><a href="S-ord.html"><spon class="sectiontitle">OrderOfPlay Template</span></a> -
-						<span class="purpose">The sequence of events in play: the Main routine which runs the startup rulebook, the turn sequence rulebook and the shutdown rulebook; and most of the I6 definitions of primitive rules in those rulebooks.</span></p>
-					</li>
-					<li>
-						<p><a href="S-act.html"><spon class="sectiontitle">Actions Template</span></a> -
-						<span class="purpose">To try actions by people in the model world, processing the necessary rulebooks.</span></p>
-					</li>
-					<li>
-						<p><a href="S-act2.html"><spon class="sectiontitle">Activities Template</span></a> -
-						<span class="purpose">To run the necessary rulebooks to carry out an activity.</span></p>
-					</li>
-					<li>
-						<p><a href="S-fgr.html"><spon class="sectiontitle">Figures Template</span></a> -
-						<span class="purpose">To display figures and play sound effects.</span></p>
-					</li>
-					<li>
-						<p><a href="S-otf.html"><spon class="sectiontitle">OutOfWorld Template</span></a> -
-						<span class="purpose">To implement some of the out of world actions.</span></p>
-					</li>
-					<li>
-						<p><a href="S-prn.html"><spon class="sectiontitle">Printing Template</span></a> -
-						<span class="purpose">To manage the line skips which space paragraphs out, and to handle the printing of names of objects, pieces of text and numbers.</span></p>
-					</li>
-					<li>
-						<p><a href="S-wrl.html"><spon class="sectiontitle">WorldModel Template</span></a> -
-						<span class="purpose">Testing and changing the fundamental spatial relations.</span></p>
-					</li>
-					<li>
-						<p><a href="S-mpr.html"><spon class="sectiontitle">MapRouteFinding</span></a> -
-						<span class="purpose">Testing and changing the fundamental spatial relations.</span></p>
-					</li>
-					<li>
-						<p><a href="S-rtp.html"><spon class="sectiontitle">RTP Template</span></a> -
-						<span class="purpose">To issue run-time problem messages arising from the world model.</span></p>
-					</li>
-					<li>
-						<p><a href="S-tm.html"><spon class="sectiontitle">Time Template</span></a> -
-						<span class="purpose">Support for parsing and printing times of day.</span></p>
-					</li>
-					<li>
-						<p><a href="S-tst.html"><spon class="sectiontitle">Tests Template</span></a> -
-						<span class="purpose">The command grammar and I6 implementation for testing commands such as TEST, ACTIONS and PURLOIN.</span></p>
-					</li>
-					<li>
-						<p><a href="S-chr.html"><spon class="sectiontitle">Chronology Template</span></a> -
-						<span class="purpose">To record information now which will be needed later, when a condition phrased in the perfect tense is tested.</span></p>
-					</li>
-					<li>
-						<p><a href="S-str.html"><spon class="sectiontitle">StoredAction Template</span></a> -
-						<span class="purpose">Code to support the stored action kind of value.</span></p>
-					</li>
-		</ul>
+		<div class="contentspage">
+			<ul class="chapterlist">
+				<li>
+					<p class="chapterentry"><a href="S-msc.html">
+					<spon class="sectiontitle">Output Template</span></a> -
+					<span class="sectionpurpose">This is the superstructure of the file of I6 code output by Inform: from ICL commands at the top down to the signing-off comments at the bottom.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-gll.html">
+					<spon class="sectiontitle">Glulx Template</span></a> -
+					<span class="sectionpurpose">To provide Glulx-specific actions.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-zmc.html">
+					<spon class="sectiontitle">ZMachine Template</span></a> -
+					<span class="sectionpurpose">To provide Z-specific actions.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-lgh.html">
+					<spon class="sectiontitle">Light Template</span></a> -
+					<span class="sectionpurpose">The determination of light, visibility and physical access.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-lst.html">
+					<spon class="sectiontitle">ListWriter Template</span></a> -
+					<span class="sectionpurpose">A flexible object-lister taking care of plurals, inventory information, various formats and so on.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-ord.html">
+					<spon class="sectiontitle">OrderOfPlay Template</span></a> -
+					<span class="sectionpurpose">The sequence of events in play: the Main routine which runs the startup rulebook, the turn sequence rulebook and the shutdown rulebook; and most of the I6 definitions of primitive rules in those rulebooks.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-act.html">
+					<spon class="sectiontitle">Actions Template</span></a> -
+					<span class="sectionpurpose">To try actions by people in the model world, processing the necessary rulebooks.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-act2.html">
+					<spon class="sectiontitle">Activities Template</span></a> -
+					<span class="sectionpurpose">To run the necessary rulebooks to carry out an activity.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-fgr.html">
+					<spon class="sectiontitle">Figures Template</span></a> -
+					<span class="sectionpurpose">To display figures and play sound effects.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-otf.html">
+					<spon class="sectiontitle">OutOfWorld Template</span></a> -
+					<span class="sectionpurpose">To implement some of the out of world actions.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-prn.html">
+					<spon class="sectiontitle">Printing Template</span></a> -
+					<span class="sectionpurpose">To manage the line skips which space paragraphs out, and to handle the printing of names of objects, pieces of text and numbers.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-wrl.html">
+					<spon class="sectiontitle">WorldModel Template</span></a> -
+					<span class="sectionpurpose">Testing and changing the fundamental spatial relations.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-mpr.html">
+					<spon class="sectiontitle">MapRouteFinding</span></a> -
+					<span class="sectionpurpose">Testing and changing the fundamental spatial relations.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-rtp.html">
+					<spon class="sectiontitle">RTP Template</span></a> -
+					<span class="sectionpurpose">To issue run-time problem messages arising from the world model.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-tm.html">
+					<spon class="sectiontitle">Time Template</span></a> -
+					<span class="sectionpurpose">Support for parsing and printing times of day.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-tst.html">
+					<spon class="sectiontitle">Tests Template</span></a> -
+					<span class="sectionpurpose">The command grammar and I6 implementation for testing commands such as TEST, ACTIONS and PURLOIN.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-chr.html">
+					<spon class="sectiontitle">Chronology Template</span></a> -
+					<span class="sectionpurpose">To record information now which will be needed later, when a condition phrased in the perfect tense is tested.</span></p>
+				</li>
+				<li>
+					<p class="chapterentry"><a href="S-str.html">
+					<spon class="sectiontitle">StoredAction Template</span></a> -
+					<span class="sectionpurpose">Code to support the stored action kind of value.</span></p>
+				</li>
+			</ul>
+		</div>
 		<hr>
-		
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
+		</main>
 	</body>
-
 </html>
 

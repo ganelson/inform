@@ -1,13 +1,19 @@
 <html>
 	<head>
 		<title>codegen</title>
+<link href="Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
+<link href="Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-src/Figures/Inform.png" height=72">
@@ -48,138 +54,166 @@
 		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><b>codegen</b></li></ul>
 		<p class="purpose">The code generation pipeline. This is version 1.</p>
 		<hr>
-		<ul class="chapterlist">
-			<li>
-				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Setting Up</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="1-cm.html"><spon class="sectiontitle">Codegen Module</span></a> -
-						<span class="purpose">Setting up the use of this module.</span></p>
-					</li>
-					<li>
-						<p><a href="1-stg.html"><spon class="sectiontitle">Stages</span></a> -
-						<span class="purpose">To create the stages through which code generation proceeds.</span></p>
-					</li>
-					<li>
-						<p><a href="1-arc.html"><spon class="sectiontitle">Architecture</span></a> -
-						<span class="purpose">To deal with multiple inter architectures.</span></p>
-					</li>
-					<li>
-						<p><a href="1-li.html"><spon class="sectiontitle">Link Instructions</span></a> -
-						<span class="purpose">Inter often needs to assimilate or otherwise deal with architecture-neutral kits of linkable material, and this is where such requirements are noted.</span></p>
-					</li>
-					<li>
-						<p><a href="1-ppl.html"><spon class="sectiontitle">Pipelines</span></a> -
-						<span class="purpose">To build and run through pipelines of code generation stages.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="2"></a><spon class="chaptertitle">Chapter 2: Miscellaneous Pipeline Stages</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="2-mt.html"><spon class="sectiontitle">Linker</span></a> -
-						<span class="purpose">To link inter from I7 with template code.</span></p>
-					</li>
-					<li>
-						<p><a href="2-tr.html"><spon class="sectiontitle">I6 Template Reader</span></a> -
-						<span class="purpose">Inform 6 meta-language is the language used by template files (with extension |.i6t|); we need tp be able to read it here in order to assimilate template code.</span></p>
-					</li>
-					<li>
-						<p><a href="2-plm.html"><spon class="sectiontitle">Parse Linked Matter</span></a> -
-						<span class="purpose">To generate the initial state of storage for variables.</span></p>
-					</li>
-					<li>
-						<p><a href="2-rcc.html"><spon class="sectiontitle">Resolving Conditional Compilation</span></a> -
-						<span class="purpose">To generate the initial state of storage for variables.</span></p>
-					</li>
-					<li>
-						<p><a href="2-ass.html"><spon class="sectiontitle">Assimilate Linked Matter</span></a> -
-						<span class="purpose">To assimilate the material in parsed non-code splats.</span></p>
-					</li>
-					<li>
-						<p><a href="2-res.html"><spon class="sectiontitle">Resolve External Symbols</span></a> -
-						<span class="purpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-					</li>
-					<li>
-						<p><a href="2-ip.html"><spon class="sectiontitle">Inspect Plugs</span></a> -
-						<span class="purpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-					</li>
-					<li>
-						<p><a href="2-unq.html"><spon class="sectiontitle">Uniqueness</span></a> -
-						<span class="purpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-					</li>
-					<li>
-						<p><a href="2-rv.html"><spon class="sectiontitle">Reconcile Verbs</span></a> -
-						<span class="purpose">To reconcile clashes between assimilated and originally generated verbs.</span></p>
-					</li>
-					<li>
-						<p><a href="2-erm.html"><spon class="sectiontitle">Eliminate Redundant Matter</span></a> -
-						<span class="purpose">To remove (for example) functions which we can prove will never be called or referred to as values.</span></p>
-					</li>
-					<li>
-						<p><a href="2-erl.html"><spon class="sectiontitle">Eliminate Redundant Labels</span></a> -
-						<span class="purpose">To remove labels which are defined but never jumped to.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: Inter to Final Code</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="3-cg.html"><spon class="sectiontitle">Code Generation</span></a> -
-						<span class="purpose">To generate final code from intermediate code.</span></p>
-					</li>
-					<li>
-						<p><a href="3-fc.html"><spon class="sectiontitle">Frame Control</span></a> -
-						<span class="purpose">To manage the final-code process, at the frame level.</span></p>
-					</li>
-					<li>
-						<p><a href="3-cal.html"><spon class="sectiontitle">Constants and Literals</span></a> -
-						<span class="purpose">To generate final code for constants, including arrays.</span></p>
-					</li>
-					<li>
-						<p><a href="3-iap.html"><spon class="sectiontitle">Instances and Properties</span></a> -
-						<span class="purpose">To generate the initial state of storage for instances and their properties, and all associated metadata.</span></p>
-					</li>
-					<li>
-						<p><a href="3-vrb.html"><spon class="sectiontitle">Variables</span></a> -
-						<span class="purpose">To generate the initial state of storage for variables.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="4"></a><spon class="chaptertitle">Chapter 4: Final Code</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="4-ft.html"><spon class="sectiontitle">Final Targets</span></a> -
-						<span class="purpose">To create the range of possible targets into which Inter can be converted.</span></p>
-					</li>
-					<li>
-						<p><a href="4-fti.html"><spon class="sectiontitle">Final Textual Inter</span></a> -
-						<span class="purpose">To create the range of possible targets into which Inter can be converted.</span></p>
-					</li>
-					<li>
-						<p><a href="4-fbi.html"><spon class="sectiontitle">Final Binary Inter</span></a> -
-						<span class="purpose">To create the range of possible targets into which Inter can be converted.</span></p>
-					</li>
-					<li>
-						<p><a href="4-fi.html"><spon class="sectiontitle">Final Inventory</span></a> -
-						<span class="purpose">To print a summary of the contents of a repository.</span></p>
-					</li>
-					<li>
-						<p><a href="4-fi6.html"><spon class="sectiontitle">Generating Inform 6</span></a> -
-						<span class="purpose">To generate I6 code from intermediate code.</span></p>
-					</li>
-				</ul>
-			</li>
-		</ul>
+		<div class="contentspage">
+			<ul class="chapterlist">
+				<li>
+					<p class="chapterentry"><a name="1"></a>
+						<span class="chaptertitle">Chapter 1: Setting Up</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="1-cm.html">
+								<spon class="sectiontitle">Codegen Module</span></a> -
+							<span class="sectionpurpose">Setting up the use of this module.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-stg.html">
+								<spon class="sectiontitle">Stages</span></a> -
+							<span class="sectionpurpose">To create the stages through which code generation proceeds.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-arc.html">
+								<spon class="sectiontitle">Architecture</span></a> -
+							<span class="sectionpurpose">To deal with multiple inter architectures.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-li.html">
+								<spon class="sectiontitle">Link Instructions</span></a> -
+							<span class="sectionpurpose">Inter often needs to assimilate or otherwise deal with architecture-neutral kits of linkable material, and this is where such requirements are noted.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-ppl.html">
+								<spon class="sectiontitle">Pipelines</span></a> -
+							<span class="sectionpurpose">To build and run through pipelines of code generation stages.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="2"></a>
+						<span class="chaptertitle">Chapter 2: Miscellaneous Pipeline Stages</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="2-mt.html">
+								<spon class="sectiontitle">Linker</span></a> -
+							<span class="sectionpurpose">To link inter from I7 with template code.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-tr.html">
+								<spon class="sectiontitle">I6 Template Reader</span></a> -
+							<span class="sectionpurpose">Inform 6 meta-language is the language used by template files (with extension |.i6t|); we need tp be able to read it here in order to assimilate template code.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-plm.html">
+								<spon class="sectiontitle">Parse Linked Matter</span></a> -
+							<span class="sectionpurpose">To generate the initial state of storage for variables.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-rcc.html">
+								<spon class="sectiontitle">Resolving Conditional Compilation</span></a> -
+							<span class="sectionpurpose">To generate the initial state of storage for variables.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-ass.html">
+								<spon class="sectiontitle">Assimilate Linked Matter</span></a> -
+							<span class="sectionpurpose">To assimilate the material in parsed non-code splats.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-res.html">
+								<spon class="sectiontitle">Resolve External Symbols</span></a> -
+							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-ip.html">
+								<spon class="sectiontitle">Inspect Plugs</span></a> -
+							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-unq.html">
+								<spon class="sectiontitle">Uniqueness</span></a> -
+							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-rv.html">
+								<spon class="sectiontitle">Reconcile Verbs</span></a> -
+							<span class="sectionpurpose">To reconcile clashes between assimilated and originally generated verbs.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-erm.html">
+								<spon class="sectiontitle">Eliminate Redundant Matter</span></a> -
+							<span class="sectionpurpose">To remove (for example) functions which we can prove will never be called or referred to as values.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-erl.html">
+								<spon class="sectiontitle">Eliminate Redundant Labels</span></a> -
+							<span class="sectionpurpose">To remove labels which are defined but never jumped to.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="3"></a>
+						<span class="chaptertitle">Chapter 3: Inter to Final Code</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="3-cg.html">
+								<spon class="sectiontitle">Code Generation</span></a> -
+							<span class="sectionpurpose">To generate final code from intermediate code.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-fc.html">
+								<spon class="sectiontitle">Frame Control</span></a> -
+							<span class="sectionpurpose">To manage the final-code process, at the frame level.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-cal.html">
+								<spon class="sectiontitle">Constants and Literals</span></a> -
+							<span class="sectionpurpose">To generate final code for constants, including arrays.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-iap.html">
+								<spon class="sectiontitle">Instances and Properties</span></a> -
+							<span class="sectionpurpose">To generate the initial state of storage for instances and their properties, and all associated metadata.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-vrb.html">
+								<spon class="sectiontitle">Variables</span></a> -
+							<span class="sectionpurpose">To generate the initial state of storage for variables.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="4"></a>
+						<span class="chaptertitle">Chapter 4: Final Code</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="4-ft.html">
+								<spon class="sectiontitle">Final Targets</span></a> -
+							<span class="sectionpurpose">To create the range of possible targets into which Inter can be converted.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-fti.html">
+								<spon class="sectiontitle">Final Textual Inter</span></a> -
+							<span class="sectionpurpose">To create the range of possible targets into which Inter can be converted.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-fbi.html">
+								<spon class="sectiontitle">Final Binary Inter</span></a> -
+							<span class="sectionpurpose">To create the range of possible targets into which Inter can be converted.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-fi.html">
+								<spon class="sectiontitle">Final Inventory</span></a> -
+							<span class="sectionpurpose">To print a summary of the contents of a repository.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-fi6.html">
+								<spon class="sectiontitle">Generating Inform 6</span></a> -
+							<span class="sectionpurpose">To generate I6 code from intermediate code.</span></p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 		<hr>
-		
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
 		</main>
 	</body>
 </html>
