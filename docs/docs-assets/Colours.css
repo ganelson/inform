@@ -1,0 +1,38 @@
+/* The following correspond to the Inweb colours !definition, ..., !comment: */
+
+span.definition-syntax  { color: #444444; }
+span.function-syntax    { color: #C00000; }
+span.identifier-syntax  { color: #4040ff; }
+span.element-syntax     { color: #40407f; }
+span.reserved-syntax    { color: #600000; }
+span.string-syntax      { color: #408040; }
+span.character-syntax   { color: #204020; }
+span.constant-syntax    { color: #804020; }
+span.plain-syntax       { color: #000000; }
+span.extract-syntax     { color: #444444; }
+span.comment-syntax     { color: #404040; font-style:italic; }
+
+/* This is used for the "define" or "enum" keyword on Inweb-defined constants: */
+
+span.definition-keyword { color:#801010; font-weight:bold; }
+
+/* These are for the angle-bracketed paragraph names: */
+
+span.named-paragraph, span.named-paragraph-defn { color: #000000; font-size: 90%; }
+span.named-paragraph-number { color: #000000; font-size: 70%; font-style:italic; }
+span.named-paragraph-container {
+	background: #ececf8; border: 1px solid #888888;
+}
+a.named-paragraph-link:link, a.named-paragraph-link:visited {
+	text-decoration: none;
+}
+a.named-paragraph-link:active, a.named-paragraph-link:hover {
+	background: #c8c8e8;
+}
+
+/* This is the box into which multi-line stretches of code are put: */
+
+pre.displayed-code {
+	background: #f8f8f8;
+	border: 1px solid #cccccc;
+}

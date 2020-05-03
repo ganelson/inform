@@ -1,0 +1,239 @@
+/* This is a CSS file for pages woven by the literate programming tool inweb */
+
+span.named-paragraph, span.named-paragraph-defn, span.named-paragraph-number {
+	text-decoration: none;
+}
+span.named-paragraph-number {
+	padding-left: 8px;
+}
+span.named-paragraph-container {
+	border-radius: 6px;
+	padding-top: 1px; 
+	padding-left: 8px; 
+	padding-right: 8px; 
+	padding-bottom: 1px; 
+}
+
+/* Now some generalities: */
+
+body {
+	background-color: #ffffff;
+	margin: 8px;
+	font-size: 16px;
+	line-height: 24px;
+	background-color: transparent;
+	-webkit-font-smoothing: antialiased;
+}
+
+a.function-link:link, a.function-link:visited {
+	text-decoration: black solid underline;
+}
+a.function-link:active, a.function-link:hover {
+	font-weight: 700
+}
+
+a.internal:link, a.internal:visited {
+    color: #22E; text-decoration-style: dotted; text-decoration-line: underline;
+}
+a.internal:active {
+    font-weight: 700
+}
+a.internal:hover {
+    font-weight: 700;
+}
+
+a.external:link, a.external:visited {
+    color: #22E; text-decoration: none;
+}
+a.external:active {
+    font-weight: 700
+}
+a.external:hover {
+    font-weight: 700;
+}
+
+/* Forms of paragraph: */
+
+p {
+	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	clear: both;
+}
+
+/* Each commentary (HTML) paragraph is styled with: */
+
+p.commentary {
+	width: 60em;
+	line-height: 150%;
+	padding-top: 0px;
+	padding-bottom: 5px;
+}
+
+/* And the first in its (Inweb) paragraph, the one with the number up front,
+is also styled with: */
+
+p.firstcommentary {
+	padding-top: 15px;
+}
+
+/* For centred images and the like */
+
+p.center-p {
+	text-align: center;
+}
+
+/* For the text of a footnote: */
+
+p.inwebfootnote {
+	line-height: 130%;
+}
+
+/* If a web macro definition begins in its own paragraph, this is it: */
+
+p.macrodefinition {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-left: 30px;
+}
+
+/* The endnotes at the foot of code: "The function foo_bar is used in ..." */
+
+ul.endnotetexts li {
+	font-size: 0.8em;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-left: 30px;
+	text-decoration:none;
+	color: #000000;
+}
+
+/* The Purpose slug: */
+
+p.purpose {
+	width: 60em;
+	line-height: 150%;
+	font-size: 1em;
+	font-style:italic;	
+	margin-left: 15px;
+}
+
+/* Blocks of code appear in these */
+
+pre.all-displayed-code {
+	padding: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 30px;
+	margin-right: 10px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+pre.definitions {
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 10px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+/* ul is used for many different purposes, but: */
+
+ul, li {
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+
+/* This is for items in lists from inweb source: */
+
+ul.items {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+ul.items li {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	margin-left: 15px;
+}
+
+/* And this is for each section's table of contents: */
+
+ul.toc {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+ul.toc li {
+	float:left;
+	margin-left: 15px;
+	color:#000;
+}
+
+ul.toc li a {
+	display:block;
+}
+
+ul.toc li a:link, ul.toc li a:visited {
+	text-decoration:none;
+	color:#000;
+}
+
+ul.toc li a:hover, ul.toc li a:focus {
+	color:#dd2c0d;
+}
+
+hr.tocbar {
+	clear: both;
+	margin-top:3px;
+	margin-bottom:3px;
+	color:#333;
+	border:0
+	background-color:#333;
+}
+
+/* This is for cross-reference links ("This code is used in ...") */
+
+p.endnote:link, p.endnote:visited, p.endnote:hover, p.endnote:focus {
+	text-decoration:none;
+	color:#000;
+}
+
+p.endnote a:link, p.endnote a:visited {
+	text-decoration:none;
+	color:#000;
+}
+
+p.endnote a:hover, p.endnote a:focus {
+	text-decoration:none;
+	color:#dd2c0d;
+}
+
+/* Now for the index page */
+
+p.heading {
+	margin-top: 2px;
+	margin-bottom: 2px;
+	font-size: 20px
+}
+p.chapter {
+	font-size: 14px
+}
+p.tight {
+	font-size: 12px
+}
+p.tightin {
+	padding-left: 25px;
+	font-size: 12px
+}
+span.extract {
+	font-size: 15px;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	width: 100%;
+	padding: 3px;
+}

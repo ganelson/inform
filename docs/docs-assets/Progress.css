@@ -1,0 +1,106 @@
+nav[role="progress"] {
+	position: -webkit-sticky; /* Safari */
+	position: sticky;
+	bottom: 0;
+	background: #fff;
+	margin-top: 4px;
+	padding-top: 4px;
+}
+
+nav[role="progress"] div.progresscontainer {
+	border:1px solid #dedede;
+    margin-top: 7px;
+    margin-bottom: 0px;
+}
+
+nav[role="progress"] ul {
+	font-weight: 400;
+   	list-style: none
+    font-size: 11px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    padding-left: 7px;
+}
+
+nav[role="progress"] ul li {
+	display: inline;
+    padding: 7px;
+    margin: 2px;
+    background: #E0E0FF;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+nav[role="progress"] ul li.progresschapter {
+    background: #E0FFE0;
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+nav[role="progress"] ul li.progresscurrentchapter {
+    background: #B0CFB0;
+    margin-left: 7px;
+    margin-right: 2px;
+}
+
+nav[role="progress"] ul li.progresscurrent {
+    background: #B0B0CF;
+}
+
+nav[role="progress"] ul li.progressprev {
+    background: #FFE0E0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+nav[role="progress"] ul li.progressprevoff {
+    background: #DFB0B0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+nav[role="progress"] ul li.progressnext {
+    background: #FFE0E0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+nav[role="progress"] ul li.progressnextoff {
+    background: #DFB0B0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+nav[role="progress"] ul li.active a {
+    font-weight: 700
+}
+
+nav[role="progress"] ul li a:link {
+    color: #333;
+    text-decoration: none;
+}
+
+nav[role="progress"] ul li span.selectedlink {
+    color: #f25;
+}
+
+nav[role="progress"] ul li span.unlink {
+    color: #f25;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    display: inline;
+}
+
+nav[role="progress"] ul li a:visited {
+    color: #333
+}
+
+nav[role="progress"] ul li a:active {
+    font-weight: 700
+}
+
+nav[role="progress"] ul li a:hover {
+    color: #dd2c0d
+}

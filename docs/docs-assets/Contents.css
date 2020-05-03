@@ -1,0 +1,34 @@
+/* This is a CSS file for pages woven by the literate programming tool inweb */
+
+/* Contents.css contains styling for the table of contents included in index
+pages made from the template-index.html file */
+
+div.contentspage .chapterlist li {
+	padding-top: 8px;
+	padding-left: 16px;
+	padding-bottom: 0px;
+}
+div.contentspage .chapterlist .sectionlist li {
+	padding-top: 0px;
+	padding-left: 48px;
+	padding-bottom: 0px;
+}
+div.contentspage p.chapterentry {
+	padding-bottom: 0px;
+}
+div.contentspage span.chaptertitle {
+	font-weight: bold;
+}
+div.contentspage p.chapterpurpose {
+	padding-top: 4px;
+	padding-bottom: 2px;
+}
+
+div.contentspage p.sectionentry {
+	padding-top: 4px;
+	padding-bottom: 0px;
+}
+div.contentspage span.sectiontitle {
+}
+div.contentspage span.sectionpurpose {
+}

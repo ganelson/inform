@@ -1,0 +1,144 @@
+nav[role="navigation"] {
+    width: 180px;
+    position: fixed;
+    overflow: scroll;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #FAFAFA;
+    border-right: 1px solid #e6e6e6;
+    padding: 20px 30px
+}
+
+nav[role="navigation"] ul {
+    border-top: 1px solid #e6e6e6;
+    font-weight: 400;
+    margin-bottom: 30px;
+    list-style: none
+}
+
+nav[role="navigation"] ul ul {
+    list-style: none
+}
+
+nav[role="navigation"] ul li {
+    border-bottom: 1px solid #e6e6e6
+}
+
+nav[role="navigation"] ul li.active {
+    border-bottom: 1px solid #333
+}
+
+nav[role="navigation"] ul li.active a {
+    font-weight: 700
+}
+
+nav[role="navigation"] h1 a:link {
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+nav[role="navigation"] h1 a:visited {
+    color: #333
+}
+
+nav[role="navigation"] h1 a:active {
+    font-weight: 700
+}
+
+nav[role="navigation"] h1 a:hover {
+    color: #dd2c0d
+}
+
+nav[role="navigation"] ul li a:link {
+    color: #333;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    display: block;
+    padding: 10px 10px 2px 2px
+}
+
+nav[role="navigation"] ul li span.selectedlink {
+    color: #f25;
+}
+
+nav[role="navigation"] ul li span.unlink {
+    color: #f25;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    display: block;
+    padding: 10px 10px 2px 2px
+}
+
+nav[role="navigation"] ul li a:visited {
+    color: #333
+}
+
+nav[role="navigation"] ul li a:active {
+    font-weight: 700
+}
+
+nav[role="navigation"] ul li a:hover {
+    color: #dd2c0d
+}
+
+nav[role="navigation"] ul li ul {
+    margin-bottom: 10px;
+    border-top: none
+}
+
+nav[role="navigation"] ul li ul li {
+    border-bottom: none;
+    padding: 0.1em
+}
+
+nav[role="navigation"] ul li ul li.active {
+    border-bottom: none
+}
+
+nav[role="navigation"] ul li ul li.active a {
+    font-weight: 700
+}
+
+nav[role="navigation"] ul li ul a:link {
+    color: #dd2c0d;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+    display: block;
+    margin-left: 15px;
+    padding: 0 0 3px;
+    border-bottom: none;
+    font-weight: 300
+}
+
+nav[role="navigation"] ul li ul a:hover {
+    text-decoration: underline
+}
+
+nav[role="navigation"] h2 {
+    font-size: 0.95em;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    color: #999;
+    padding-bottom: 0.5em
+}
+
+nav[role="navigation"] h1 {
+    margin-top: 0em
+}
+
+main {
+    max-width: 1024px;
+    min-width: 320px;
+    margin-left: 250px;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%
+}

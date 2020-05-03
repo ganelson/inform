@@ -1,0 +1,35 @@
+div.breadcrumbs {
+	position: -webkit-sticky; /* Safari */
+	top: 0;
+	position: sticky;
+	background: #fff;
+	padding-bottom: 4px;
+}
+
+.crumbs {
+	border:1px solid #dedede;
+	height:2.95em;
+}
+
+.crumbs li {
+	float:left;
+	line-height: 2.3em;
+	padding-left: .75em;
+	color: #333;
+	font-size: 1.3em;
+}
+
+.crumbs li a {
+	display:block;
+	padding:0 15px 0 0;
+	background:url(crumbs.gif) no-repeat right center;
+}
+
+.crumbs li a:link, #crumbs li a:visited {
+	text-decoration:none;
+	color:#333;
+}
+
+.crumbs li a:hover, #crumbs li a:focus {
+	color:#dd2c0d;
+}

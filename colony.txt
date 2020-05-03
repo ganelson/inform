@@ -1,12 +1,13 @@
-navigation: docs/docs-src/nav.html
+assets: docs/docs-assets
+navigation: docs-src/nav.html
 pattern: GitHubPages
 
 breadcrumbs: none
-web: "overview" at "docs/docs-src/index.inweb" in "docs"
+web: "overview" at "docs-src/index.inweb" in "docs"
 
-navigation: docs/docs-src/navc.html
+navigation: docs-src/navc.html
 breadcrumbs: "Home: //overview//"
-web: "compiler" at "docs/docs-src/compiler.inweb" in "docs"
+web: "compiler" at "docs-src/compiler.inweb" in "docs"
 breadcrumbs: "Home: //overview//" > "Compiler Tools: //compiler//"
 home: docs
 
@@ -34,9 +35,9 @@ module: "syntax" at "shared/syntax-module" in "docs/syntax-module"
 module: "words" at "shared/words-module" in "docs/words-module"
 module: "html" at "shared/html-module" in "docs/html-module"
 
-navigation: docs/docs-src/navk.html
+navigation: docs-src/navk.html
 breadcrumbs: "Home: //overview//"
-web: "extensions" at "docs/docs-src/extensions.inweb" in "docs"
+web: "extensions" at "docs-src/extensions.inweb" in "docs"
 breadcrumbs: "Home: //overview//" > "Extensions: //extensions//"
 web: "basic_inform" at "inform7/extensions/basic_inform" in "docs/basic_inform"
 web: "standard_rules" at "inform7/extensions/standard_rules" in "docs/standard_rules"
@@ -47,18 +48,18 @@ web: "CommandParserKit" at "inform7/Internal/Inter/CommandParserKit" in "docs/Co
 web: "BasicInformKit" at "inform7/Internal/Inter/BasicInformKit" in "docs/BasicInformKit"
 web: "BasicInformExtrasKit" at "inform7/Internal/Inter/BasicInformExtrasKit" in "docs/BasicInformExtrasKit"
 
-navigation: docs/docs-src/navo.html
+navigation: docs-src/navo.html
 breadcrumbs: "Home: //overview//"
-web: "other" at "docs/docs-src/other.inweb" in "docs"
+web: "other" at "docs-src/other.inweb" in "docs"
 breadcrumbs: "Home: //overview//" > "Other Tools: //other//"
 web: "inblorb" at "inblorb" in "docs/inblorb"
 web: "indoc" at "indoc" in "docs/indoc"
 web: "inrtps" at "inrtps" in "docs/inrtps"
 web: "inpolicy" at "inpolicy" in "docs/inpolicy"
 
-navigation: docs/docs-src/navu.html
+navigation: docs-src/navu.html
 breadcrumbs: "Home: //overview//"
-web: "units" at "docs/docs-src/units.inweb" in "docs"
+web: "units" at "docs-src/units.inweb" in "docs"
 breadcrumbs: "Home: //overview//" > "Unit Test Tools: //units//"
 web: "arch-test" at "shared/arch-test" in "docs/arch-test"
 web: "building-test" at "inter/building-test" in "docs/building-test"
@@ -74,4 +75,4 @@ module: "foundation" at "../inweb/foundation-module" in "../inweb/docs/foundatio
 web: "foundation-test" at "../inweb/foundation-test" in "../inweb/docs/foundation-test"
 web: "inweb" at "../inweb" in "../inweb/docs"
 web: "goldbach" at "../inweb/Examples/goldbach" in "../inweb/docs/goldbach"
-web: "intest" at "../intest/docs/docs-src/index.inweb" in "../intest/docs"
+web: "intest" at "../intest/docs-src/index.inweb" in "../intest/docs"
