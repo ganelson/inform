@@ -16,6 +16,10 @@ div.contentspage .chapterlist .sectionlist li {
 div.contentspage p.chapterentry {
 	padding-bottom: 0px;
 }
+div.contentspage p.moduleentry {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
 div.contentspage span.chaptertitle {
 	font-weight: bold;
 }

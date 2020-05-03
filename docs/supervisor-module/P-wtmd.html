@@ -12,7 +12,13 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -58,7 +64,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inbuild Modules</a></li><li><a href="index.html">supervisor</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the supervisor module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. The Supervisor and its Parent</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. The Supervisor and its Parent</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Genre, work, edition, copy</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Searches and requirements</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Discovery</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Limitation</a></li><li><a href="P-wtmd.html#SP9">&#167;9. Build graph</a></li><li><a href="P-wtmd.html#SP11">&#167;11. Reading source text</a></li><li><a href="P-wtmd.html#SP18">&#167;18. Incremental builds</a></li><li><a href="P-wtmd.html#SP19">&#167;19. Extension census</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The supervisor module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -76,19 +82,18 @@ For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. The Supervisor and its Parent. </b>The <a href="index.html" class="internal">supervisor</a> module is part of both <a href="../inform7/index.html" class="internal">inform7</a> and <a href="../inbuild/index.html" class="internal">inbuild</a>, and acts
 as a build manager. To compile an Inform project is not so atomic a task as
-it sounds, because the project may need resources which themselves need to be
-built first, and so on. <a href="index.html" class="internal">supervisor</a> takes charge of this, issuing
-instructions as needed. It does so either "externally", by issuing shell
-commands, or "internally", by calling functions in other modules resident in
-the current compiler tool.
+it sounds, because the project involves not only the original source text but
+also some extensions, and they may need kits of Inter code, which may need to
+be assimilated using pipelines, ... and so on. <a href="index.html" class="internal">supervisor</a> manages this:
+it finds such dependent resources, and sees that they are ready as needed.
 </p>
 
 <p class="commentary">When included in <a href="../inform7/index.html" class="internal">inform7</a>, the Supervisor is given a single task which
 is always the same: build the current Inform 7 project. (See <a href="../core-module/1-mr.html" class="internal">Main Routine (in core)</a>.)
-But when included in <a href="../inbuild/index.html" class="internal">inbuild</a>, a much wider range of tasks can be asked for,
-as specified at the command line. (See <a href="../inbuild/1-mn.html" class="internal">Main (in inbuild)</a>.) In this discussion,
-"the parent" means the tool which is using <a href="index.html" class="internal">supervisor</a>, and might be either
-<a href="../inform7/index.html" class="internal">inform7</a> or <a href="../inbuild/index.html" class="internal">inbuild</a>.
+But when included in <a href="../inbuild/index.html" class="internal">inbuild</a>, it might be asked to perform quite a variety
+of tasks, sometimes several at once, as specified by the user at the command line.
+(See <a href="../inbuild/1-mn.html" class="internal">Main (in inbuild)</a>.) In this discussion, "the parent" means the tool which
+is using <a href="index.html" class="internal">supervisor</a>, and might be either <a href="../inform7/index.html" class="internal">inform7</a> or <a href="../inbuild/index.html" class="internal">inbuild</a>.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b><a href="index.html" class="internal">supervisor</a> has a relationship with its parent tool which involves to and
@@ -103,11 +108,9 @@ subsystems with further calls. But all modules do something like this.
 </li><li>(2) More unusually, when the parent is creating its command-line options, it
 should call <a href="1-ic.html#SP4" class="internal">Supervisor::declare_options</a> to add more. This allows all tools
 containing the Supervisor to offer a unified set of command-line options to
-configure it. (Compare <a href="../inform7/M-rc.html" class="internal">Reference Card (in inform7)</a> and <a href="../inbuild/M-rc.html" class="internal">Reference Card (in inbuild)</a>
-to see the effect.) When the parent is given a command-line switch that
-it doesn't recognise, it should call <a href="1-ic.html#SP8" class="internal">Supervisor::option</a> to handle that; and
-when the command line has been fully processed, it should call
-<a href="1-ic.html#SP9" class="internal">Supervisor::optioneering_complete</a>.
+configure it.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> When the parent is given a switch that it doesn't recognise,
+it should call <a href="1-ic.html#SP8" class="internal">Supervisor::option</a>; and when it has fully processed the
+command line, it should call <a href="1-ic.html#SP9" class="internal">Supervisor::optioneering_complete</a>.
 </li><li>(3) The parent can now, if it chooses, make calls into <a href="index.html" class="internal">supervisor</a> to set
 up additional dependencies. But eventually it will call <a href="1-ic.html#SP11" class="internal">Supervisor::go_operational</a>.
 The Supervisor is now ready for use!
@@ -118,6 +121,453 @@ at a given filing system location. When <a href="../inform7/index.html" class="i
 the call to <a href="1-ic.html#SP11" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP10" class="internal">Copies::build</a>
 on the copy representing the current Inform 7 project. But when <a href="../inbuild/index.html" class="internal">inbuild</a>
 is the parent, a variety of other functions may be made.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Compare <a href="../inform7/M-rc.html" class="internal">Reference Card (in inform7)</a> and <a href="../inbuild/M-rc.html" class="internal">Reference Card (in inbuild)</a>
+to see the effect.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Genre, work, edition, copy. </b>A "genre" is a category of software or artistic work for us to manage. For
+example, "Inform 7 extension" and "website template" are both genres. Each
+different genre is represented by an <a href="2-gnr.html#SP1" class="internal">inbuild_genre</a> object, whose method
+calls provide the behaviour distinctive to that genre. The currently seven
+genre objects are created during <a href="1-ic.html#SP3" class="internal">Supervisor::start</a>, which calls out to
+<a href="4-em.html#SP2" class="internal">ExtensionManager::start</a>, <a href="4-km.html#SP1" class="internal">KitManager::start</a>, and so on: the seven
+sections of <a href="4-em.html" class="internal">Chapter 4: Genre Management</a> are exactly the method calls for the seven genre
+objects.
+</p>
+
+<p class="commentary">A "work" is a single artistic or programming creation; for example, the IF
+story Bronze by Emily Short might be a work. Each different one we deal with
+is represented by an <a href="2-wrk.html#SP1" class="internal">inbuild_work</a> object. Works are identified by genre,
+title and author name, but see <a href="2-wrk.html#SP4" class="internal">Works::normalise_casing</a> for exactly how.
+</p>
+
+<p class="commentary">An "edition" is a versioned work; for example, release 7 of Bronze by Emily
+Short is an edition. These are represented by <a href="2-edt.html#SP1" class="internal">inbuild_edition</a> objects.
+Such objects carry with them a note of which virtual machine architectures
+they work with: see <a href="../arch-module/2-cmp.html" class="internal">Compatibility (in arch)</a> for more on this.
+</p>
+
+<p class="commentary">A "copy" is an instance of an edition actually present somewhere in the file
+system &mdash; note that we might have several copies of the same edition in
+different places. Each copy known to the Supervisor is an <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> object.
+</p>
+
+<p class="commentary">When copies are claimed, they are typically scanned &mdash; exactly how depends
+on the genre &mdash; and this can reveal damage: if so, a <a href="2-ce.html#SP1" class="internal">copy_error</a> object is
+attached to the copy for each different defect turned up. These errors are not
+necessarily reported at once, or at all: if they are reported, the function
+<a href="2-ce.html#SP5" class="internal">CopyErrors::write</a> is used to write a suitable command-line error, but it's
+also possible for the parent to issue its own errors instead. <span class="extract"><span class="extract-syntax">inform7</span></span>
+does this to convert copy errors into Inform problem messages: see
+<a href="../core-module/2-pwst.html" class="internal">Problems With Source Text (in core)</a>.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Note that because it is <a href="index.html" class="internal">supervisor</a> which causes source text to be read
+in, and not <a href="../core-module/index.html" class="internal">core</a>, lexical problems such as improperly paired comment
+brackets or overly long quoted strings will come to light as copy errors,
+as will blunders in identifying extensions. In general, though, a copy which
+has no copy errors is not necessarily a correct program: only one which is
+in good enough condition for the compiler to look at.
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Searches and requirements. </b>Copies may be strewn all over the user's file system, and it's not for us to
+go poking around without being asked.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Instead, the user will give the
+parent tool some locations at the command line: and those command-line
+instructions will be processed by <a href="index.html" class="internal">supervisor</a>. For example, if the user
+typed:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> inform7/Internal</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> ~/mystuff</span><span class="ConsoleText-identifier-syntax"> -project</span><span class="ConsoleText-plain-syntax"> Tadpoles.inform</span>
+</pre>
+<p class="commentary">then all three command-line switches here would actually be parsed by
+<a href="1-ic.html#SP8" class="internal">Supervisor::option</a>, rather than by anything in the <a href="../core-module/index.html" class="internal">core</a> module.
+They would set the "internal" and "external" nest (see <a href="../inbuild/M-ui.html" class="internal">Manual (in inbuild)</a>),
+creating an <a href="2-nst.html#SP1" class="internal">inbuild_nest</a> object for each. The Inform 7 project for the
+run would also be set.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> This would become whose genre is <span class="extract"><span class="ConsoleText-extract-syntax">project_bundle_genre</span></span>.
+</p>
+
+<p class="commentary">Other copies would swiftly be needed &mdash; the definition of the English language
+(found inside the Internal nest), the Standard Rules extension, and several more.
+These are not explicitly named on the command line: instead, they are found by
+searching through the nests. <a href="index.html" class="internal">supervisor</a> does this by creating an
+<a href="2-rqr.html#SP1" class="internal">inbuild_requirement</a> object to specify what it wants, and then calling its
+search engine <a href="2-nst.html#SP7" class="internal">Nests::search_for</a>. This builds a list of <a href="2-nst.html#SP5" class="internal">inbuild_search_result</a>
+objects, each pointing to a new copy which matches the requirement given.
+</p>
+
+<p class="commentary">Requirements can be quite flexible, and are converitble to and from text: see
+<a href="2-rqr.html#SP3" class="internal">Requirements::from_text</a> and <a href="2-rqr.html#SP6" class="internal">Requirements::write</a>.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> The crucial routine
+here is <a href="2-rqr.html#SP7" class="internal">Requirements::meets</a>, which tests whether an edition meets the
+requirement.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Indeed, such a scan would violate sandboxing restrictions, for example
+when <a href="index.html" class="internal">supervisor</a> is running as part of <a href="../inform7/index.html" class="internal">inform7</a> inside the MacOS Inform app.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> The project, singular: see the Limitation note below.
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> A typical requirement might read, say, "genre=extension, author=Emily Short",
+which matches any extension by Emily Short.
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Although such searches can be used with vague requirements to scan for,
+say, everything with a given genre, they can also be used to seek specific
+pieces of software which we will need. <a href="2-nst.html#SP8" class="internal">Nests::search_for_best</a> is a version
+of the search engine which returns a single result (or none): the best one.
+Best is defined by <a href="2-nst.html#SP9" class="internal">Nests::better_result</a> and makes careful use of both
+semantic versioning and the user's intentions to ensure a happy outcome.
+For example, if an Inform project says
+</p>
+
+<blockquote>
+    <p>Include Upturned Faces by Raphael.</p>
+</blockquote>
+
+<p class="commentary">then <a href="2-nst.html#SP8" class="internal">Nests::search_for_best</a> will be used to seek which copy of this
+extension to use.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Discovery. </b>A copy is "claimed" when it is found in the file system: either by being
+right where the user said it would be, or by a search.
+</p>
+
+<p class="commentary">When the search engine wants to look for, say, kits in a given nest, it will
+ask the kit genre how to do this, by a method call: and this will be handled
+by <a href="4-km.html#SP5" class="internal">KitManager::search_nest_for</a>. That enables kits to be looked for in
+a different part of a nest than extensions, for example. Similarly, each
+genre scans and generally vets a copy differently, attaching copy errors
+for different reasons. But in general, a function like <a href="4-km.html#SP3" class="internal">KitManager::new_copy</a>
+will "claim" the copy.
+</p>
+
+<p class="commentary">For most genres, we want each copy to be claimed only once. We might run
+into the copy of version 1.2 of <span class="extract"><span class="ConsoleText-extract-syntax">WorldModelKit</span></span> at <span class="extract"><span class="ConsoleText-extract-syntax">inform7/Internal/Inter</span></span>
+for multiple reasons, as a result of several different searches: we want to
+return the same <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> object each time we do, rather than create
+duplicates. This is done with a dictionary of pathnames: i.e., the Kit
+Manager keeps a dictionary of which pathnames lead to copies it has already
+claimed. Most other managers do the same.
+</p>
+
+<p class="commentary">But if a new <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> is made, then we also give it a rich set of
+genre-specific metadata by attaching "content". In this case, that will be
+an <a href="5-ks.html#SP1" class="internal">inform_kit</a> object, and code in <a href="5-ks.html" class="internal">Kit Services</a> will provide
+special functionality by working on this <a href="5-ks.html#SP1" class="internal">inform_kit</a>. If <span class="extract"><span class="ConsoleText-extract-syntax">C</span></span> is a copy
+which is a kit, then <span class="extract"><span class="ConsoleText-extract-syntax">KitManager::from_copy(C)</span></span> produces its <a href="5-ks.html#SP1" class="internal">inform_kit</a>
+object <span class="extract"><span class="ConsoleText-extract-syntax">K</span></span>; conversely, <span class="extract"><span class="ConsoleText-extract-syntax">K-&gt;as_copy</span></span> produces <span class="extract"><span class="ConsoleText-extract-syntax">C</span></span> again. They correspond in
+a one-to-one fashion.
+</p>
+
+<p class="commentary">This table summarises the genres, where they managed, what type of metadata
+object is attached to each copy of that genre, and where such metadata is
+handled. Note that the two Inform project genres &mdash; one for single files,
+one for whole bundles &mdash; share a metadata format: a project is a project,
+however it is managed on disc.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    GENRE INSTANCE        WHOSE METHODS ARE AT     COPIES GET AN     WHICH IS HANDLED BY</span>
+<span class="plain-syntax">    extension_genre       </span><a href="4-em.html" class="internal">Extension Manager</a><span class="plain-syntax">        inform_extension  </span><a href="5-es.html" class="internal">Extension Services</a>
+<span class="plain-syntax">    kit_genre             </span><a href="4-km.html" class="internal">Kit Manager</a><span class="plain-syntax">              inform_kit        </span><a href="5-ks.html" class="internal">Kit Services</a>
+<span class="plain-syntax">    language_genre        </span><a href="4-lm.html" class="internal">Language Manager</a><span class="plain-syntax">         inform_language   </span><a href="5-ls.html" class="internal">Language Services</a>
+<span class="plain-syntax">    pipeline_genre        </span><a href="4-pm.html" class="internal">Pipeline Manager</a><span class="plain-syntax">         inform_pipeline   </span><a href="5-ps.html" class="internal">Pipeline Services</a>
+<span class="plain-syntax">    project_bundle_genre  </span><a href="4-pbm.html" class="internal">Project Bundle Manager</a><span class="plain-syntax">   inform_project    </span><a href="5-ps2.html" class="internal">Project Services</a>
+<span class="plain-syntax">    project_file_genre    </span><a href="4-pfm.html" class="internal">Project File Manager</a><span class="plain-syntax">     inform_project    </span><a href="5-ps2.html" class="internal">Project Services</a>
+<span class="plain-syntax">    template_genre        </span><a href="4-tm.html" class="internal">Template Manager</a><span class="plain-syntax">         inform_template   </span><a href="5-ts.html" class="internal">Template Services</a>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Limitation. </b>A pragmatic design choice in the Supervisor is that, although it can manage
+large numbers of copies and dependencies simultaneously &mdash; and often does,
+when managing extensions or kits, for example &mdash; it imposes one big limitation
+for simplicity's sake.
+</p>
+
+<ul class="items"><li>(a) It can claim only one full-scale Inform 7 project in a single run.
+To find this, call <a href="1-ic.html#SP20" class="internal">Supervisor::project</a>, which returns the associated
+<a href="5-ps2.html#SP1" class="internal">inform_project</a> object. Of course, there doesn't have to be even one,
+in which case this returns <span class="extract"><span class="extract-syntax">NULL</span></span>.
+</li><li>(b) This can be built for just one virtual machine architecture in a single
+run. To find it, call <a href="1-ic.html#SP10" class="internal">Supervisor::current_vm</a>.
+</li><li>(c) There is consequently a single <span class="extract"><span class="extract-syntax">.Materials</span></span> directory to worry about &mdash;
+the one for the current project. Its pathname can be found by calling
+<a href="1-ic.html#SP15" class="internal">Supervisor::materials</a>.
+</li><li>(d) And because the search list of nests has to include the <span class="extract"><span class="extract-syntax">.Materials</span></span>
+directory as one of those nests, there is just one search list at a time.
+This can be found with <a href="1-ic.html#SP15" class="internal">Supervisor::nest_list</a>, while the nest designated
+as "internal" and "external" are <a href="1-ic.html#SP15" class="internal">Supervisor::internal</a> and <a href="1-ic.html#SP15" class="internal">Supervisor::external</a>.
+</li></ul>
+<p class="commentary">It would be more elegant not to impose these restrictions, but the result would
+seldom be more useful. It's easy enough to batch-run Inbuild with shell
+scripting to handle multiple projects; <span class="extract"><span class="extract-syntax">inform7</span></span> can only handle one project
+on each run anyway; and constantly having to specify which project we mean in
+function calls would involve much more passing of parameters around.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Build graph. </b>See <a href="3-bg.html" class="internal">Build Graphs</a> for the infrastructure of how a dependency graph is stored.
+Basically these consist of <a href="3-bg.html#SP1" class="internal">build_vertex</a> objects joined together by edges,
+represented by lists of other vertices &mdash; each vertex has two lists, one of
+"use edges", the other of "build edges". See the manual at <a href="../inbuild/M-ui.html" class="internal">Using Inbuild (in inbuild)</a>
+for an explanation and examples.
+</p>
+
+<p class="commentary">There are three "colours" of vertex: copy, file and requirement. Each copy
+vertex corresponds to a single <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> and vice versa: thus, the
+dependencies for a copy are represented by the component of the graph which
+runs out from its vertex. File vertices correspond to single files needed
+during a build process, and requirement vertices to unfilled requirements,
+such as extensions which could not be found.
+</p>
+
+<p class="commentary">The three colours of vertex are created by <a href="3-bg.html#SP3" class="internal">Graphs::copy_vertex</a>,
+<a href="3-bg.html#SP2" class="internal">Graphs::file_vertex</a> and <a href="3-bg.html#SP2" class="internal">Graphs::req_vertex</a> respectively, and the
+two colours of edge by <a href="3-bg.html#SP4" class="internal">Graphs::need_this_to_build</a> and <a href="3-bg.html#SP4" class="internal">Graphs::need_this_to_use</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>When are graphs actually built? It would be appealing to do this the moment a
+copy is claimed (i.e., as soon as the <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> object is created),
+but this is impractical: it happens before we know enough about dependencies.
+So when a copy is claimed it gets an isolated copy vertex with no edges, as a
+placeholder.
+</p>
+
+<p class="commentary">The answer in fact depends on genre. For pipelines, languages and website
+templates, there are no dependencies, so there's nothing to build. For kits
+and projects, the task is performed by <a href="4-km.html#SP7" class="internal">KitManager::construct_graph</a>,
+<a href="4-pbm.html#SP6" class="internal">ProjectBundleManager::construct_graph</a>, and <a href="4-pfm.html#SP6" class="internal">ProjectFileManager::construct_graph</a>
+respectively &mdash; though in fact those three functions simply pass the buck to
+<a href="5-ks.html#SP13" class="internal">Kits::construct_graph</a> and <a href="5-ps2.html#SP4" class="internal">Projects::construct_graph</a>.
+</p>
+
+<p class="commentary">All of that happens when the Supervisor "goes operational", because
+<a href="1-ic.html#SP11" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
+every extant copy. The idea is that all the graphs need to be made before we
+can be ready to do any building.
+</p>
+
+<p class="commentary">And yet... they are not, because extensions dependencies are missing from
+this account. Extensions have rich dependency graphs, but they are built
+on demand as the need arises, not at the going operational stage. This is
+becauses <a href="index.html" class="internal">supervisor</a> may have to deal with very large numbers of
+extension copies (for example, when performing a census inside the Inform
+app, or to install or copy extensions), and it takes significant computation
+to read and parse the full text of extensions.<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup>
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Arguably the speed hit would be worth it for the gain in simplicity,
+except that there's also another obstacle: an extension's dependencies
+depend on the virtual machine they are to be used for. Some extensions
+claimed during searches will not be compatible with the current VM at all,
+and that's fine, since they won't be used: but we can't read their text in
+without throwing copy errors. We solve this by reading in only those
+extensions we will actually use, and that means building the graph only
+for those.
+<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Reading source text. </b>For any copy, <a href="2-cps.html#SP7" class="internal">Copies::get_source_text</a> will instruct the Supervisor to
+read in the Inform source text associated with it &mdash; if any: this does nothing
+for languages, pipelines, website templates or kits. Text for a copy is read
+at most once, and is cached so that a second read produces the same result
+as the first.
+</p>
+
+<p class="commentary">Reading is performed by <a href="5-ps2.html#SP5" class="internal">Projects::read_source_text_for</a> and
+<a href="5-es.html#SP3" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
+only a single file, but for projects it can involve multiple files. Each
+such is read by a call to <a href="6-st.html#SP1" class="internal">SourceText::read_file</a>, which then sends out
+to the <a href="../words-module/index.html" class="internal">words</a> module to break the text file into a stream of words:
+see <a href="../words-module/3-tff.html" class="internal">Text From Files (in words)</a>. But it is <a href="6-st.html#SP1" class="internal">SourceText::read_file</a> which
+prints console messages like these:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    I've now read your source text, which is 70 words long.</span>
+<span class="ConsoleText-plain-syntax">    I've also read Basic Inform by Graham Nelson, which is 7645 words long.</span>
+<span class="ConsoleText-plain-syntax">    I've also read English Language by Graham Nelson, which is 2328 words long.</span>
+<span class="ConsoleText-plain-syntax">    I've also read Standard Rules by Graham Nelson, which is 32123 words long.</span>
+</pre>
+<p class="commentary">Any lexical errors arising in <a href="../words-module/index.html" class="internal">words</a> are converted by us into copy errors
+and attached to the <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> object for the extension or project.
+</p>
+
+<p class="commentary">The text is not left as a simple stream of words, but is also "sentence-broken"
+into a syntax tree: that service is also one we subcontract out, to the
+<a href="../syntax-module/index.html" class="internal">syntax</a> module. (See <a href="../syntax-module/2-snt.html" class="internal">Sentences (in syntax)</a> for details of how.) Once
+again, syntax errors can arise, and once again, these are converted into
+copy errors.
+</p>
+
+<p class="commentary">It might seem beyond the scope of a build manager to have to construct a
+syntax tree for the Inform source text it encounters. But (a) we have to do
+this to identify the Include ... sentences in them, and thus detect extension
+dependencies, and (b) the syntax tree is only a rudimentary one at this stage,
+parsing only a few "structural sentences".
+</p>
+
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The definition of "structural sentence" is given in the form of Preform grammar
+in <a href="6-st.html" class="internal">Source Text</a>. (Preform is the natural-language parsing engine provided
+by the <a href="../words-module/index.html" class="internal">words</a> module, and which the InC dialect of C provides a simple way
+to type into code.)
+</p>
+
+<p class="commentary">For reasons which will become clear shortly, the sentences we care most about
+are extension inclusions and headings. Headings are sentences such as:
+</p>
+
+<blockquote>
+    <p>Chapter the First - The Voyage</p>
+</blockquote>
+
+<p class="commentary">These are detected for us by the sentence-breaker in <a href="../syntax-module/index.html" class="internal">syntax</a>, which
+calls out to our function <a href="6-hdn.html#SP11" class="internal">Headings::new</a> when it finds one. Each is
+given a <a href="6-hdn.html#SP2" class="internal">heading</a> object. We will do three things with headings:
+</p>
+
+<ul class="items"><li>(1) Form them into a tree structure, to be able to determine quickly
+which is a subheading of which;
+</li><li>(2) Parse their bracketed caveats, such as "for use with ... only",
+which we will soon need &mdash; this is done by another Preform grammar; and
+</li><li>(3) Move content around to satisfy annotations such as "in place of...",
+though this stage is performed only later &mdash; see below.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>What happens next involves is carefully timed. What we want is to look
+through for sentences like this one:
+</p>
+
+<blockquote>
+    <p>Include Holy Bat Artefacts by Bruce Wayne.</p>
+</blockquote>
+
+<p class="commentary">...so that we can see what extensions the project/extension we are reading
+will further need. And this is performed by the <a href="6-inc.html#SP1" class="internal">Inclusions::traverse</a>
+function, which crawls over the syntax tree looking for such. However, if
+an extension inclusion occurs under a heading in the source text like this one:
+</p>
+
+<blockquote>
+    <p>Chapter 9 - External Files (not for Z-machine)</p>
+</blockquote>
+
+<p class="commentary">and the current virtual machine doesn't meet stipulation, then we must ignore
+the inclusion and there's no dependency; and similarly:
+</p>
+
+<blockquote>
+    <p>Section 1 - Figures (for figures language element only)</p>
+</blockquote>
+
+<p class="commentary">Because of this, we make sure to call <a href="5-ps2.html#SP3" class="internal">Projects::activate_elements</a> before
+looking for inclusion sentences, in order to know whether or not, e.g., the
+figures language element is present.
+</p>
+
+<p class="commentary">Worst of all is the case of an extension inclusion coming underneath a
+heading like this:
+</p>
+
+<blockquote>
+    <p>Section 15 - Bolts (for use with Locksmith by Emily Short)</p>
+</blockquote>
+
+<p class="commentary">We can only base the decision on whether we have so far included Locksmith.
+Otherwise, it would be easy to set up flip-flop like paradoxes where if X
+is not present, Y is present, and vice versa, leaving it a matter of chance
+which of those states actually happens.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>At any rate, when <a href="6-inc.html#SP1" class="internal">Inclusions::traverse</a> finds an Include sentence which
+it decides is valid, it calls <a href="6-inc.html#SP5" class="internal">Inclusions::fulfill_request_to_include_extension</a>.
+This performs a search for the best compatible copy of the extension named &mdash;
+see above &mdash; and, once such a copy is found, calls <a href="6-inc.html#SP6" class="internal">Inclusions::load</a> to
+merge its text into the current syntax tree. (Note: it doesn't form an
+isolated syntax tree of its own.) This is why Inform reads the text of an
+extension as if it appeared at the same position as the Include sentence.
+</p>
+
+<p class="commentary">When a valid Include is found, <a href="6-inc.html#SP5" class="internal">Inclusions::fulfill_request_to_include_extension</a>
+also puts a dependency edge in between the vertex for our copy and the vertex
+for the new extension's copy. That will be a use edge if our copy is also an
+extension &mdash; i.e., you can't use Existing Extension unless you also have
+New Extension &mdash; but a build edge if our copy is a project &mdash; i.e., you can't
+build Existing Project unless you also have New Extension.
+</p>
+
+<p class="commentary">By the end of the process, therefore, all dependencies on or between extensions
+will have been added to the build graph.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Finally comes the complicated business of rearranging the syntax tree due
+to headings like:
+</p>
+
+<blockquote>
+    <p>Chapter 7a (in place of Chapter 7 in Applied Pathology by Attila Hun)</p>
+</blockquote>
+
+<p class="commentary">This is performed by <a href="6-hdn.html#SP23" class="internal">Headings::satisfy_individual_heading_dependency</a>,
+and it has to be done after all the extension inclusions have been made. It's
+a step only performed for the syntax tree of a whole project: if we've just
+made an isolated tree for a single extension, we don't bother, because we
+couldn't compile that in isolation anyway.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>This is all quite a long road, and the way is strewn with potential errors.
+What if a requested extension can't be found? Or is damaged? Or not compatible
+with our VM? Or if a heading is "in place of" one which isn't where it claimed?
+And so on. Such issues are converted into still more copy errors.
+</p>
+
+<p class="commentary">If <a href="index.html" class="internal">supervisor</a> is running in the parent <a href="../inbuild/index.html" class="internal">inbuild</a>, then all errors are
+all issued to the console when text reading is complete. But if it is running
+in the parent <a href="../inform7/index.html" class="internal">inform7</a>, they are suppressed for now, and will be picked
+up later and issued as problem messages by <a href="../core-module/2-pwst.html" class="internal">Problems With Source Text (in core)</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Now that we have read in the text of a project/extension, we know all of its
+dependencies on other extensions. If we were reading an extension, we now have
+its complete graph made, because it can only be dependent on other extensions.
+But a project also depends on kits of Inter codes, on a language definition,
+and so forth: and also on the files it draws its source text from. See
+<a href="5-ps2.html#SP4" class="internal">Projects::construct_graph</a> for the details.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Incremental builds. </b>So, then, at this point we can determine the complete build graph for any copy.
+The parent can do several things:
+</p>
+
+<ul class="items"><li>(a) Call <a href="2-cps.html#SP11" class="internal">Copies::show_graph</a>, or <a href="2-cps.html#SP11" class="internal">Copies::show_needs</a>, or <a href="2-cps.html#SP11" class="internal">Copies::show_missing</a>,
+to print out the graph, show what a project needs in order to be built, or
+show what it needs but doesn't currently have;
+</li><li>(b) Call <a href="2-cps.html#SP12" class="internal">Copies::archive</a> to make archived copies of all dependent resources;
+</li><li>(c) Or, the big one, call <a href="2-cps.html#SP10" class="internal">Copies::build</a> or <a href="2-cps.html#SP10" class="internal">Copies::rebuild</a> to perform
+a build.
+</li></ul>
+<p class="commentary">A "build" is incremental, and uses time-stamps of files to avoid unnecessary
+duplication of previous compilation work; a "rebuild" is not. They are otherwise
+the same, both calling <a href="3-ib.html#SP5" class="internal">IncrementalBuild::build</a>. This works rather like the
+traditional Unix tool <span class="extract"><span class="ConsoleText-extract-syntax">make</span></span>: if it wants to build the resource which a vertex
+represents, it first has to build the resources which that vertex depends on,
+i.e., has edges out to.
+</p>
+
+<p class="commentary">How does one "build a vertex", though? The answer is that if a vertex has been
+given a <a href="3-bs.html#SP1" class="internal">build_script</a>, one follows this script. The script is only a list
+of <a href="3-bs2.html#SP3" class="internal">build_step</a> objects, and each step is an application of a <a href="3-bs2.html#SP1" class="internal">build_skill</a>.
+There are only a few skills known to the Supervisor, created by <a href="1-ic.html#SP3" class="internal">Supervisor::start</a>.
+For example, assimilating a kit is a skill; but the need to apply this skill to
+a particular copy of <span class="extract"><span class="ConsoleText-extract-syntax">WorldModelKit</span></span> is a build step.
+</p>
+
+<p class="commentary">Some build steps can be carried out in two different ways: externally, by
+issuing a command to the shell; or internally, by calling a function in some
+module also present in the parent tool. The Supervisor chooses which way
+according to the <a href="3-bm.html#SP1" class="internal">build_methodology</a> object passed to <a href="3-ib.html#SP5" class="internal">IncrementalBuild::build</a>
+to configure how it should go about its business.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Extension census. </b>That's basically everything except for a few special features to provide
+the Inform GUI apps with nice-looking documentation pages on installed
+extensions. These are constructed by a "census", when the parent calls
+<a href="7-ec.html#SP1" class="internal">Extensions::Census::new</a>. Copies for extensions are annotated with
+metadata on, for example, when they were last used, and such metadata is stored
+between runs in the <a href="7-ed.html" class="internal">Extension Dictionary</a>, and used as part of the
+<a href="7-ed2.html" class="internal">Extension Documentation</a> generated for the benefit of the Inform user
+interface apps.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

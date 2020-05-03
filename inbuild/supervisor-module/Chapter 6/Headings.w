@@ -191,10 +191,10 @@ heading *Headings::from_node(parse_node *PN) {
 
 @
 
-@d NEW_HEADING_HANDLER Headings::new_heading
+@d NEW_HEADING_HANDLER Headings::new
 
 =
-int Headings::new_heading(parse_node_tree *T, parse_node *new) {
+int Headings::new(parse_node_tree *T, parse_node *new) {
 	heading *h = Headings::declare(T, new);
 	#ifdef CORE_MODULE
 	ParseTree::set_embodying_heading(new, h);

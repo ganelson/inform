@@ -1,4 +1,4 @@
-[Kits::] Kits.
+[Kits::] Kit Services.
 
 Behaviour specific to copies of the kit genre.
 
