@@ -37,18 +37,17 @@ which stores data about extensions used by the Inform compiler.
 =
 inform_template *TemplateManager::from_copy(inbuild_copy *C) {
 	if ((C) && (C->edition->work->genre == template_genre)) {
-		return RETRIEVE_POINTER_inform_template(C->content);
+		return RETRIEVE_POINTER_inform_template(C->metadata);
 	}
 	return NULL;
 }
 
 inbuild_copy *TemplateManager::new_copy(text_stream *name, pathname *P) {
-	inform_template *K = Templates::new_it(name, P);
 	inbuild_work *work = Works::new(template_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Editions::new(work, K->version);
-	K->as_copy = Copies::new_in_path(edition, P);
-	Copies::set_content(K->as_copy, STORE_POINTER_inform_template(K));
-	return K->as_copy;
+	inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
+	inbuild_copy *C = Copies::new_in_path(edition, P);
+	Templates::scan(C);
+	return C;
 }
 
 @h Claiming.

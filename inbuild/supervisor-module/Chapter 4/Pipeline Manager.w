@@ -36,16 +36,14 @@ which stores data about pipelines used by the Inform compiler.
 =
 inform_pipeline *PipelineManager::from_copy(inbuild_copy *C) {
 	if ((C) && (C->edition->work->genre == pipeline_genre)) {
-		return RETRIEVE_POINTER_inform_pipeline(C->content);
+		return RETRIEVE_POINTER_inform_pipeline(C->metadata);
 	}
 	return NULL;
 }
 
 inbuild_copy *PipelineManager::new_copy(inbuild_edition *edition, filename *F) {
-	inform_pipeline *E = Pipelines::new_ip(edition->work->title, F);
 	inbuild_copy *C = Copies::new_in_file(edition, F);
-	Copies::set_content(C, STORE_POINTER_inform_pipeline(E));
-	E->as_copy = C;
+	Pipelines::scan(C);
 	return C;
 }
 

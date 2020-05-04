@@ -2,14 +2,11 @@
 
 Behaviour specific to copies of either the projectbundle or projectfile genres.
 
-@ =
-typedef struct kit_dependency {
-	struct inform_kit *kit;
-	struct inform_language *because_of_language;
-	struct inform_kit *because_of_kit;
-	MEMORY_MANAGEMENT
-} kit_dependency;
+@h Scanning metadata.
+Metadata for pipelines -- or rather, the complete lack of same -- is stored
+in the following structure.
 
+=
 typedef struct inform_project {
 	struct inbuild_copy *as_copy;
 	struct semantic_version_number version;
@@ -27,24 +24,38 @@ typedef struct inform_project {
 	MEMORY_MANAGEMENT
 } inform_project;
 
-inform_project *Projects::new_ip(text_stream *name, filename *F, pathname *P) {
-	inform_project *project = CREATE(inform_project);
-	project->as_copy = NULL;
-	project->version = VersionNumbers::null();
-	project->source_vertices = NEW_LINKED_LIST(build_vertex);
-	project->kits_to_include = NEW_LINKED_LIST(kit_dependency);
-	project->assumed_to_be_parser_IF = TRUE;
-	project->language_of_play = NULL;
-	project->language_of_syntax = NULL;
-	project->language_of_index = NULL;
-	project->chosen_build_target = NULL;
-	project->unblorbed_vertex = NULL;
-	project->blorbed_vertex = NULL;
-	project->fix_rng = 0;
-	project->syntax_tree = ParseTree::new_tree();
-	return project;
+@ This is called as soon as a new copy |C| of the language genre is created.
+It doesn't actually do any scanning to speak of, in fact: we may eventually
+learn a lot about the project, but for now we simply initialise to bland
+placeholders.
+
+=
+void Projects::scan(inbuild_copy *C) {
+	inform_project *proj = CREATE(inform_project);
+	proj->as_copy = C;
+	if (C == NULL) internal_error("no copy to scan");
+	Copies::set_metadata(C, STORE_POINTER_inform_project(proj));
+
+	proj->version = VersionNumbers::null();
+	proj->source_vertices = NEW_LINKED_LIST(build_vertex);
+	proj->kits_to_include = NEW_LINKED_LIST(kit_dependency);
+	proj->assumed_to_be_parser_IF = TRUE;
+	proj->language_of_play = NULL;
+	proj->language_of_syntax = NULL;
+	proj->language_of_index = NULL;
+	proj->chosen_build_target = NULL;
+	proj->unblorbed_vertex = NULL;
+	proj->blorbed_vertex = NULL;
+	proj->fix_rng = 0;
+	proj->syntax_tree = ParseTree::new_tree();
 }
 
+@h The project's languages.
+All projects are by default in English, which is one reason it plays a special
+role compared to other natural languages: the other is that the Basic Inform
+and Standard Rules extensions are written in English as well.
+
+=
 void Projects::set_to_English(inform_project *proj) {
 	if (proj == NULL) internal_error("no project");
 	inform_language *E = Languages::internal_English();
@@ -55,6 +66,15 @@ void Projects::set_to_English(inform_project *proj) {
 	} else internal_error("built-in English language definition can't be found'");
 }
 
+@ Inform's ability to work outside of English is limited, at present, but for
+the sake of future improvements we want to distinguish three uses of natural
+language. In principle, a project could use different languages for each of
+these.
+
+First, the "language of play" is the one in which dialogue is printed and parsed
+at run-time.
+
+=
 void Projects::set_language_of_play(inform_project *proj, inform_language *L) {
 	if (proj == NULL) internal_error("no project");
 	proj->language_of_play = L;
@@ -64,6 +84,10 @@ inform_language *Projects::get_language_of_play(inform_project *proj) {
 	return proj->language_of_play;
 }
 
+@ Second, the "language of index" is the one in which the Index of a project is
+written.
+
+=
 void Projects::set_language_of_index(inform_project *proj, inform_language *L) {
 	if (proj == NULL) internal_error("no project");
 	proj->language_of_index = L;
@@ -73,6 +97,10 @@ inform_language *Projects::get_language_of_index(inform_project *proj) {
 	return proj->language_of_index;
 }
 
+@ Third, the "language of syntax" is the one in which the source text of a
+project is written. For the Basic Inform extension, for example, it is English.
+
+=
 void Projects::set_language_of_syntax(inform_project *proj, inform_language *L) {
 	if (proj == NULL) internal_error("no project");
 	proj->language_of_syntax = L;
@@ -82,12 +110,45 @@ inform_language *Projects::get_language_of_syntax(inform_project *proj) {
 	return proj->language_of_syntax;
 }
 
+@h Miscellaneous metadata.
+A project marked "fix RNG" will be compiled with the random-number generator
+initially set to the seed value at run-time. (This sounds like work too junior
+for a build manager to do, but it's controlled by a command-line switch,
+and that means it's not beneath our notice.)
+
+=
 void Projects::fix_rng(inform_project *project, int seed) {
 	project->fix_rng = seed;
 }
 
+@ A project with no explicit Inter kit dependencies is assumed to be meant
+as a work of traditional parser IF. So, if the user does make an explicit kit
+dependency, the following function is called, to tell us not to assume that:
+
+=
 void Projects::not_necessarily_parser_IF(inform_project *project) {
 	project->assumed_to_be_parser_IF = FALSE;
+}
+
+@ The file-system path to the project. For a "bundle" made by the Inform GUI
+apps, the bundle itself is a directory (even if this is concealed from the
+user on macOS) and the following returns that path. For a loose file of
+Inform source text, it's the directory in which the file is found. (This is
+a 2020 change of policy: previously it was the CWD. The practical difference
+is small, but one likes to minimise the effect of the CWD.)
+
+=
+pathname *Projects::path(inform_project *project) {
+	if (project == NULL) return NULL;
+	if (project->as_copy->location_if_path)
+		return project->as_copy->location_if_path;
+	return Filenames::up(project->as_copy->location_if_file);
+}
+
+pathname *Projects::build_path(inform_project *project) {
+	if (project->as_copy->location_if_path)
+		return Pathnames::down(Projects::path(project), I"Build");
+	return Supervisor::transient();
 }
 
 void Projects::set_source_filename(inform_project *project, pathname *P, filename *F) {
@@ -118,15 +179,17 @@ void Projects::manifest_helper(text_stream *text, text_file_position *tfp, void 
 	ADD_TO_LINKED_LIST(Str::duplicate(text), text_stream, L);
 }
 
-pathname *Projects::path(inform_project *project) {
-	if (project == NULL) return NULL;
-	return project->as_copy->location_if_path;
-}
-
 linked_list *Projects::source(inform_project *project) {
 	if (project == NULL) return NULL;
 	return project->source_vertices;
 }
+
+typedef struct kit_dependency {
+	struct inform_kit *kit;
+	struct inform_language *because_of_language;
+	struct inform_kit *because_of_kit;
+	MEMORY_MANAGEMENT
+} kit_dependency;
 
 void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
 	inform_language *because_of_language, inform_kit *because_of_kit) {
@@ -257,15 +320,9 @@ linked_list *Projects::list_of_inter_libraries(inform_project *project) {
 }
 #endif
 
-pathname *Projects::build_pathname(inform_project *project) {
-	pathname *P = Projects::path(project);
-	if (P) return Pathnames::down(P, I"Build");
-	return Supervisor::transient();
-}
-
 void Projects::construct_build_target(inform_project *project, target_vm *VM,
 	int releasing, int compile_only) {
-	pathname *build_folder = Projects::build_pathname(project);
+	pathname *build_folder = Projects::build_path(project);
 	filename *inf_F = Filenames::in(build_folder, I"auto.inf");
 
 	build_vertex *inter_V = Graphs::file_vertex(inf_F);

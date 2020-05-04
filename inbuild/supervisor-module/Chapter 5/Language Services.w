@@ -25,7 +25,7 @@ void Languages::scan(inbuild_copy *C) {
 	inform_language *L = CREATE(inform_language);
 	L->as_copy = C;
 	if (C == NULL) internal_error("no copy to scan");
-	Copies::set_content(C, STORE_POINTER_inform_language(L));
+	Copies::set_metadata(C, STORE_POINTER_inform_language(L));
 
 	TEMPORARY_TEXT(sentence_format);
 	WRITE_TO(sentence_format, "%S language", C->edition->work->title);

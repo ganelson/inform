@@ -35,7 +35,7 @@ compatibility notes given (such as "for Glulx only").
 void Extensions::scan(inbuild_copy *C) {
 	inform_extension *E = CREATE(inform_extension);
 	E->as_copy = C;
-	Copies::set_content(C, STORE_POINTER_inform_extension(E));
+	Copies::set_metadata(C, STORE_POINTER_inform_extension(E));
 	@<Initialise the extension docket@>;
 
 	TEMPORARY_TEXT(claimed_author_name);

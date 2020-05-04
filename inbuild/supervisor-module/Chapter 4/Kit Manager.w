@@ -42,7 +42,7 @@ which stores data about extensions used by the Inform compiler.
 =
 inform_kit *KitManager::from_copy(inbuild_copy *C) {
 	if ((C) && (C->edition->work->genre == kit_genre)) {
-		return RETRIEVE_POINTER_inform_kit(C->content);
+		return RETRIEVE_POINTER_inform_kit(C->metadata);
 	}
 	return NULL;
 }

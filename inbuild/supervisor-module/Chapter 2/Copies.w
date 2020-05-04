@@ -18,7 +18,7 @@ typedef struct inbuild_copy {
 	struct pathname *location_if_path; /* exactly one of these must be non-|NULL| */
 	struct filename *location_if_file;
 
-	general_pointer content; /* the type of which depends on the work's genre */
+	general_pointer metadata; /* the type of which depends on the work's genre */
 	struct build_vertex *vertex; /* head vertex of build graph for this copy */
 	int source_text_read; /* have we attempted to read Inform source text from this? */
 	struct wording source_text; /* the source text we read, if so */
@@ -36,7 +36,7 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	copy->edition = edition;
 	copy->location_if_path = NULL;
 	copy->location_if_file = NULL;
-	copy->content = NULL_GENERAL_POINTER;
+	copy->metadata = NULL_GENERAL_POINTER;
 	copy->vertex = Graphs::copy_vertex(copy);
 	copy->source_text_read = FALSE;
 	copy->source_text = EMPTY_WORDING;
@@ -64,8 +64,8 @@ inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P) {
 additional data specific to your genre:
 
 =
-void Copies::set_content(inbuild_copy *C, general_pointer ref) {
-	C->content = ref;
+void Copies::set_metadata(inbuild_copy *C, general_pointer ref) {
+	C->metadata = ref;
 }
 
 @h List of errors.

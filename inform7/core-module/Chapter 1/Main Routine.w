@@ -55,7 +55,7 @@ This folder will usually be the |Build| subfolder of the project folder,
 but we won't assume that. Remember, //supervisor// knows best.
 
 @<Open the debugging log and the problems report@> =
-	pathname *build_folder = Projects::build_pathname(Supervisor::project());
+	pathname *build_folder = Projects::build_path(Supervisor::project());
 	if (Pathnames::create_in_file_system(build_folder) == 0)
 		Problems::Fatal::issue(
 			"Unable to create Build folder for project: is it read-only?");

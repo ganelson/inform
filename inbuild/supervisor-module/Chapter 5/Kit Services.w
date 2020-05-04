@@ -55,7 +55,7 @@ void Kits::scan(inbuild_copy *C) {
 	inform_kit *K = CREATE(inform_kit);
 	K->as_copy = C;
 	if (C == NULL) internal_error("no copy to scan");
-	Copies::set_content(C, STORE_POINTER_inform_kit(K));
+	Copies::set_metadata(C, STORE_POINTER_inform_kit(K));
 
 	K->attachment_point = Str::new();
 	WRITE_TO(K->attachment_point, "/main/%S", C->edition->work->title);

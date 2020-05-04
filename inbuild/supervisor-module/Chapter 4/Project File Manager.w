@@ -37,18 +37,17 @@ which stores data about extensions used by the Inform compiler.
 =
 inform_project *ProjectFileManager::from_copy(inbuild_copy *C) {
 	if ((C) && (C->edition->work->genre == project_file_genre)) {
-		return RETRIEVE_POINTER_inform_project(C->content);
+		return RETRIEVE_POINTER_inform_project(C->metadata);
 	}
 	return NULL;
 }
 
 inbuild_copy *ProjectFileManager::new_copy(text_stream *name, filename *F) {
-	inform_project *K = Projects::new_ip(name, F, NULL);
 	inbuild_work *work = Works::new(project_file_genre, Str::duplicate(name), NULL);
-	inbuild_edition *edition = Editions::new(work, K->version);
-	K->as_copy = Copies::new_in_file(edition, F);
-	Copies::set_content(K->as_copy, STORE_POINTER_inform_project(K));
-	return K->as_copy;
+	inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
+	inbuild_copy *C = Copies::new_in_file(edition, F);
+	Projects::scan(C);
+	return C;
 }
 
 @h Claiming.

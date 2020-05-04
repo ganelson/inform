@@ -37,7 +37,7 @@ which stores data about extensions used by the Inform compiler.
 =
 inform_language *LanguageManager::from_copy(inbuild_copy *C) {
 	if ((C) && (C->edition->work->genre == language_genre)) {
-		return RETRIEVE_POINTER_inform_language(C->content);
+		return RETRIEVE_POINTER_inform_language(C->metadata);
 	}
 	return NULL;
 }

@@ -45,7 +45,7 @@ which stores data about extensions used by the Inform compiler.
 =
 inform_extension *ExtensionManager::from_copy(inbuild_copy *C) {
 	if ((C) && (C->edition->work->genre == extension_genre)) {
-		return RETRIEVE_POINTER_inform_extension(C->content);
+		return RETRIEVE_POINTER_inform_extension(C->metadata);
 	}
 	return NULL;
 }
