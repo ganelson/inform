@@ -2,20 +2,15 @@
 
 Behaviour specific to copies of the language genre.
 
-@ Inform can read and write text in multiple natural languages, though it
-needs help to do so. Each natural language known to Inform comes from a
-small resource folder called its "bundle", and also has an extension
-associated with it: this includes English. Bundles for common languages
-are included as part of the default distribution for Inform, but the
-extension is only included for English.
-
-Each natural language whose bundle can be located generates an instance
-of the following structure.
+@h Scanning metadata.
+Metadata for natural languages is stored in the following structure.
+Inform can read and write text in multiple natural languages, though it
+needs help to do so: each natural language known to Inform comes from a
+small resource folder called its "bundle". (This includes English.)
 
 =
 typedef struct inform_language {
 	struct inbuild_copy *as_copy;
-	struct semantic_version_number version;
 	struct wording instance_name; /* instance name, e.g., "German language" */
 	struct instance *nl_instance; /* instance, e.g., "German language" */
 	struct wording language_field[MAX_LANGUAGE_FIELDS]; /* contents of the |about.txt| fields */
@@ -23,24 +18,25 @@ typedef struct inform_language {
 	MEMORY_MANAGEMENT
 } inform_language;
 
-inform_language *Languages::new_il(text_stream *name, pathname *P) {
+@ This is called as soon as a new copy |C| of the language genre is created.
+
+=
+void Languages::scan(inbuild_copy *C) {
 	inform_language *L = CREATE(inform_language);
-	L->as_copy = NULL;
-	L->version = VersionNumbers::null();
+	L->as_copy = C;
+	if (C == NULL) internal_error("no copy to scan");
+	Copies::set_content(C, STORE_POINTER_inform_language(L));
+
 	TEMPORARY_TEXT(sentence_format);
-	WRITE_TO(sentence_format, "%S language", name);
+	WRITE_TO(sentence_format, "%S language", C->edition->work->title);
 	L->instance_name = Feeds::feed_stream(sentence_format);
 	DISCARD_TEXT(sentence_format);
 	L->nl_instance = NULL;
 	L->adaptive_person = -1; /* i.e., none yet specified */
 	for (int n=0; n<MAX_LANGUAGE_FIELDS; n++) L->language_field[n] = EMPTY_WORDING;
 	@<Read the about.txt file for the bundle@>;
-	LOG("Found language bundle '%S' (%p)\n", name, P);
-	return L;
-}
-
-pathname *Languages::path_to_bundle(inform_language *L) {
-	return L->as_copy->location_if_path;
+	LOG("Found language bundle '%S' (%p)\n", C->edition->work->title,
+		Languages::path_to_bundle(L));
 }
 
 @ Within the bundle folder is a file called |about.txt|, which sets numbered
@@ -60,10 +56,10 @@ remain empty. But we may as well tell the debugging log.
 @d MAX_BUNDLE_ABOUT_LINE_LENGTH 256  /* which is far more than necessary, really */
 
 @<Read the about.txt file for the bundle@> =
-	filename *about_file = Filenames::in(P, I"about.txt");
+	filename *about_file = Filenames::in(Languages::path_to_bundle(L), I"about.txt");
 
 	if (TextFiles::read(about_file, FALSE,
-		NULL, FALSE, Languages::about_helper, NULL, L) == FALSE)
+		NULL, FALSE, Languages::read_metadata, NULL, L) == FALSE)
 		LOG("Can't find about file: %f\n", about_file);
 
 @ The format of the file is very simple. Each line is introduced by a number
@@ -71,7 +67,7 @@ from 1 to |MAX_LANGUAGE_FIELDS| minus one, and then contains text which
 extends for the rest of the line.
 
 =
-void Languages::about_helper(text_stream *item_name,
+void Languages::read_metadata(text_stream *item_name,
 	text_file_position *tfp, void *vnl) {
 	inform_language *L = (inform_language *) vnl;
 	wording W = Feeds::feed_stream(item_name);
@@ -85,6 +81,11 @@ void Languages::about_helper(text_stream *item_name,
 				Wordings::new(Wordings::first_wn(W)+1, Wordings::last_wn(W));
 		} else LOG("Warning: couldn't read about.txt line: %S\n", item_name);
 	}
+}
+
+@ =
+pathname *Languages::path_to_bundle(inform_language *L) {
+	return L->as_copy->location_if_path;
 }
 
 @h Logging.
