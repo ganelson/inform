@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inbuild Modules</a></li><li><a href="index.html">supervisor</a></li><li><a href="index.html#5">Chapter 5: Genre Services</a></li><li><b>Extension Services</b></li></ul></div>
 <p class="purpose">Behaviour specific to copies of the extension genre.</p>
 
-<ul class="toc"><li><a href="5-es.html#SP1">&#167;1. Scanning metadata</a></li><li><a href="5-es.html#SP3">&#167;3. Search list</a></li><li><a href="5-es.html#SP5">&#167;5. Graph</a></li><li><a href="5-es.html#SP6">&#167;6. Read source text</a></li><li><a href="5-es.html#SP8">&#167;8. Miscellaneous</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-es.html#SP1">&#167;1. Scanning metadata</a></li><li><a href="5-es.html#SP3">&#167;3. Search list</a></li><li><a href="5-es.html#SP5">&#167;5. Graph</a></li><li><a href="5-es.html#SP6">&#167;6. Read source text</a></li><li><a href="5-es.html#SP8">&#167;8. Miscellaneous</a></li><li><a href="5-es.html#SP14">&#167;14. Version requirements</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Scanning metadata. </b>An extension has a title and an author name, each of which is limited in
 length to one character less than the following constants:
@@ -128,6 +128,8 @@ compatibility notes given (such as "for Glulx only").
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_text_unbroken</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">documentation_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">standard</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-wrk.html#SP10" class="function-link"><span class="function-syntax">Works::is_basic_inform</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">)) </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">standard</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-wrk.html#SP10" class="function-link"><span class="function-syntax">Works::is_standard_rules</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">)) </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">standard</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">authorial_modesty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_into_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rubric_as_lexed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
@@ -362,8 +364,16 @@ the Materials folder of the project in question:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">search_list</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Graph. </b>The dependency graph is not so much constructed as discovered, by reading
-in the text and then making Inclusions.
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Graph. </b>The dependency graph is not so much constructed as discovered; dependencies
+are made to each other extension as it's Included in this one, during the
+course of reading in the text.
+</p>
+
+<p class="commentary">Note that this function is not called when graphing a project which Includes
+this extension: this is called only when <a href="../inbuild/index.html" class="internal">inbuild</a> wants to see the graph
+of an extension in isolation from projects. (That's why we must perform the
+Inclusion traverse: for a project this traverse would come later, but with
+no project involved, we must take action ourselves.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -447,7 +457,7 @@ then its sentences will go to the extension's own tree.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ---- </span><span class="identifier-syntax">Documentation</span><span class="plain-syntax"> ----</span>
+<span class="plain-syntax">    ---- Documentation ----</span>
 </pre>
 <p class="commentary">then this is taken as the end of the Inform source, and the beginning of a
 snippet of documentation about the extension; text from that point on is
@@ -509,14 +519,12 @@ calling the routines below.
 its "begins here" line, is parsed as a sentence and will be read as an
 assertion in the usual way when the material from this extension is being
 worked through (quite a long time after the EF structure was created). When
-that happens, the following routine will be called to set the rubric; and
-the one after for the optional extra credit line, used to acknowledge I6
-sources, collaborators, translators and so on.
+that happens, the following routine will be called to set the rubric.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::set_rubric</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unfound ef"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no extension"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rubric_as_lexed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">EXTENSIONS_CENSUS</span><span class="plain-syntax">, </span><span class="string-syntax">"Extension rubric: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rubric_as_lexed</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -525,14 +533,19 @@ sources, collaborators, translators and so on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rubric_as_lexed</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The optional extra credit line is used to acknowledge I6 sources,
+collaborators, translators and so on.
+</p>
 
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::set_extra_credit</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unfound ef"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no extension"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">extra_credit_as_lexed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">EXTENSIONS_CENSUS</span><span class="plain-syntax">, </span><span class="string-syntax">"Extension extra credit: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">extra_credit_as_lexed</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The use option "authorial modesty" is unusual in applying to the extension
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The use option "authorial modesty" is unusual in applying to the extension
 it is found in, not the whole source text. When we read it, we call one of
 the following routines, depending on whether it was in an extension or in
 the main source text:
@@ -541,36 +554,56 @@ the main source text:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_authorial_modesty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::set_authorial_modesty</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unfound ef"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no extension"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">authorial_modesty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::set_general_authorial_modesty</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">general_authorial_modesty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The inclusion sentence for an extension is where it was Included in a
+project's syntax tree (if it was). It isn't used in compilation, only for
+problem messages and the index.
+</p>
 
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::set_inclusion_sentence</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Extensions::set_inclusion_sentence</span></span>:<br/>Inclusions - <a href="6-inc.html#SP6_1">&#167;6.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inclusion_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Extensions::get_inclusion_sentence</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Extensions::get_inclusion_sentence</span></span>:<br/>Inclusions - <a href="6-inc.html#SP6_1_1">&#167;6.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Extensions::get_inclusion_sentence</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Extensions::get_inclusion_sentence</span></span>:<br/>Project Services - <a href="5-ps2.html#SP26">&#167;26</a><br/>Inclusions - <a href="6-inc.html#SP6_1_1">&#167;6.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inclusion_sentence</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>An extension is "standard" if it's either the Standard Rules or Basic Inform.
+(This affects indexing and crediting.)
+</p>
 
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::is_standard</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">standard</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Version requirements. </b>When it's known that an extension must satisfy a given version requirement &mdash;
+say, being version 7.2.1 or better &mdash; the following is called. Note that
+if incompatible requirements are placed on it, the range in <span class="extract"><span class="extract-syntax">E-&gt;must_satisfy</span></span>
+becomes empty and stays that way.
+</p>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::make_standard</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Extensions::make_standard</span></span>:<br/>Extension Manager - <a href="4-em.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">standard</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::must_satisfy</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Extensions::must_satisfy</span></span>:<br/>Inclusions - <a href="6-inc.html#SP6">&#167;6</a><br/>Extension Documentation - <a href="7-ed2.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::must_satisfy</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Extensions::must_satisfy</span></span>:<br/>Inclusions - <a href="6-inc.html#SP6">&#167;6</a><br/>Extension Documentation - <a href="7-ed2.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">must_satisfy</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">must_satisfy</span><span class="plain-syntax"> = </span><span class="identifier-syntax">req</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">VersionNumberRanges::intersect_range</span><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">must_satisfy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">version_range</span><span class="plain-syntax">, </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">version_range</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>And it is certainly possible, if an extension is loaded for multiple
+reasons with different versioning needs, that the extension no longer meets
+its requirements (even though it did when first loaded). This tests for that:
+</p>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::satisfies</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::satisfies</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Extensions::satisfies</span></span>:<br/>Project Services - <a href="5-ps2.html#SP26">&#167;26</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-rqr.html#SP7" class="function-link"><span class="function-syntax">Requirements::meets</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">must_satisfy</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>

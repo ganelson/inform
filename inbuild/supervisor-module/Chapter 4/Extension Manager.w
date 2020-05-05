@@ -65,8 +65,6 @@ inbuild_copy *ExtensionManager::new_copy(filename *F) {
 					VersionNumbers::null()),
 				F);
 		Extensions::scan(C);
-		if (Works::is_standard_rules(C->edition->work))
-			Extensions::make_standard(ExtensionManager::from_copy(C));
 		Dictionaries::create(ext_copy_cache, key);
 		Dictionaries::write_value(ext_copy_cache, key, C);
 	}

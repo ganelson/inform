@@ -122,61 +122,6 @@ places a descriptive report of what's wrong on the |Extensions.html| index
 page -- if people move around or edit extensions by hand, they may run into
 these errors.)
 
-@ With that general discussion out of the way, we can get on with
-implementation. A modest structure is used to store details of extension
-files loaded into Inform: or rather, to store requests to include them, and then
-to keep track of the results.
-
-The rubric of an extension is text found near its opening, describing
-its purpose.
-
-=
-
-@ We begin with some housekeeping, really: the code required to create new
-extension file structures, and to manage existing ones.
-
-=
-
-@h Checking version numbers.
-It's only at the end of semantic analysis, when all extensions have been
-loaded, that we check that all the version numbers are sufficient to meet
-the requests made. The reason we don't do this one at a time, as we load
-them in, is that we might load E at a time when version $V$ is required,
-and find that it matches; but then an extension loaded later might turn out
-to require E version $V+1$. So it is only when all extensions have been
-loaded that we know the full set of requirements, and only then do we
-check that they have been met.
-
-=
-void Extensions::Files::check_versions(void) {
-	inform_extension *E;
-	LOOP_OVER(E, inform_extension) {
-		if (Extensions::satisfies(E) == FALSE) {
-			semantic_version_number have = E->as_copy->edition->version;
-			current_sentence = Extensions::get_inclusion_sentence(E);
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_extension(2, E);
-			if (VersionNumbers::is_null(have) == FALSE) {
-				TEMPORARY_TEXT(vn);
-				VersionNumbers::to_text(vn, have);
-				Problems::quote_stream(3, vn);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-				Problems::issue_problem_segment(
-					"You wrote %1: but my copy of %2 is only version %3.");
-				Problems::issue_problem_end();
-				DISCARD_TEXT(vn);
-			} else {
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-				Problems::issue_problem_segment(
-					"You wrote %1: but my copy of %2 contains no version "
-					"number, and is therefore considered to be earlier than "
-					"all numbered versions.");
-				Problems::issue_problem_end();
-			}
-		}
-	}
-}
-
 @h Credit for extensions.
 Here we compile an I6 routine to print out credits for all the extensions
 present in the compiled work. This is important because the extensions

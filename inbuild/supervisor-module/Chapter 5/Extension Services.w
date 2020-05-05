@@ -57,6 +57,8 @@ void Extensions::scan(inbuild_copy *C) {
 	E->body_text_unbroken = FALSE;
 	E->documentation_text = EMPTY_WORDING;
 	E->standard = FALSE;
+	if (Works::is_basic_inform(C->edition->work)) E->standard = TRUE;
+	if (Works::is_standard_rules(C->edition->work)) E->standard = TRUE;
 	E->authorial_modesty = FALSE;
 	E->read_into_file = NULL;
 	E->rubric_as_lexed = Str::new();
@@ -248,8 +250,15 @@ linked_list *Extensions::nest_list(inform_extension *E) {
 }
 
 @h Graph.
-The dependency graph is not so much constructed as discovered, by reading
-in the text and then making Inclusions.
+The dependency graph is not so much constructed as discovered; dependencies
+are made to each other extension as it's Included in this one, during the
+course of reading in the text.
+
+Note that this function is not called when graphing a project which Includes
+this extension: this is called only when //inbuild// wants to see the graph
+of an extension in isolation from projects. (That's why we must perform the
+Inclusion traverse: for a project this traverse would come later, but with
+no project involved, we must take action ourselves.)
 
 =
 void Extensions::construct_graph(inform_extension *E) {
@@ -316,7 +325,7 @@ then its sentences will go to the extension's own tree.
 	E->body_text_unbroken = FALSE;
 
 @  If an extension file contains the special text (outside literal mode) of
-= (text as Inform 6)
+= (text)
 	---- Documentation ----
 =
 then this is taken as the end of the Inform source, and the beginning of a
@@ -372,13 +381,11 @@ The rubric text for an extension, which is double-quoted matter just below
 its "begins here" line, is parsed as a sentence and will be read as an
 assertion in the usual way when the material from this extension is being
 worked through (quite a long time after the EF structure was created). When
-that happens, the following routine will be called to set the rubric; and
-the one after for the optional extra credit line, used to acknowledge I6
-sources, collaborators, translators and so on.
+that happens, the following routine will be called to set the rubric.
 
 =
 void Extensions::set_rubric(inform_extension *E, text_stream *text) {
-	if (E == NULL) internal_error("unfound ef");
+	if (E == NULL) internal_error("no extension");
 	E->rubric_as_lexed = Str::duplicate(text);
 	LOGIF(EXTENSIONS_CENSUS, "Extension rubric: %S\n", E->rubric_as_lexed);
 }
@@ -388,8 +395,12 @@ text_stream *Extensions::get_rubric(inform_extension *E) {
 	return E->rubric_as_lexed;
 }
 
+@ The optional extra credit line is used to acknowledge I6 sources,
+collaborators, translators and so on.
+
+=
 void Extensions::set_extra_credit(inform_extension *E, text_stream *text) {
-	if (E == NULL) internal_error("unfound ef");
+	if (E == NULL) internal_error("no extension");
 	E->extra_credit_as_lexed = Str::duplicate(text);
 	LOGIF(EXTENSIONS_CENSUS, "Extension extra credit: %S\n", E->extra_credit_as_lexed);
 }
@@ -402,13 +413,18 @@ the main source text:
 =
 int general_authorial_modesty = FALSE;
 void Extensions::set_authorial_modesty(inform_extension *E) {
-	if (E == NULL) internal_error("unfound ef");
+	if (E == NULL) internal_error("no extension");
 	E->authorial_modesty = TRUE;
 }
 void Extensions::set_general_authorial_modesty(void) {
 	general_authorial_modesty = TRUE;
 }
 
+@ The inclusion sentence for an extension is where it was Included in a
+project's syntax tree (if it was). It isn't used in compilation, only for
+problem messages and the index.
+
+=
 void Extensions::set_inclusion_sentence(inform_extension *E, parse_node *N) {
 	E->inclusion_sentence = N;
 }
@@ -417,20 +433,32 @@ parse_node *Extensions::get_inclusion_sentence(inform_extension *E) {
 	return E->inclusion_sentence;
 }
 
+@ An extension is "standard" if it's either the Standard Rules or Basic Inform.
+(This affects indexing and crediting.)
+
+=
 int Extensions::is_standard(inform_extension *E) {
 	if (E == NULL) return FALSE;
 	return E->standard;
 }
 
-void Extensions::make_standard(inform_extension *E) {
-	E->standard = TRUE;
-}
+@h Version requirements.
+When it's known that an extension must satisfy a given version requirement --
+say, being version 7.2.1 or better -- the following is called. Note that
+if incompatible requirements are placed on it, the range in |E->must_satisfy|
+becomes empty and stays that way. 
 
+=
 void Extensions::must_satisfy(inform_extension *E, inbuild_requirement *req) {
 	if (E->must_satisfy == NULL) E->must_satisfy = req;
 	else VersionNumberRanges::intersect_range(E->must_satisfy->version_range, req->version_range);
 }
 
+@ And it is certainly possible, if an extension is loaded for multiple
+reasons with different versioning needs, that the extension no longer meets
+its requirements (even though it did when first loaded). This tests for that:
+
+=
 int Extensions::satisfies(inform_extension *E) {
 	if (E == NULL) return FALSE;
 	return Requirements::meets(E->as_copy->edition, E->must_satisfy);

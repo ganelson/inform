@@ -176,8 +176,8 @@ Sausages by Mr Punch, and loaded it, but then read the sentence
 then we need to note that the version requirement on PS has been raised to 3.
 
 =
-inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_requirement *req,
-	inform_project *for_project) {
+inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
+	inbuild_requirement *req, inform_project *for_project) {
 	inform_extension *E = NULL;
 	LOOP_OVER(E, inform_extension)
 		if ((Requirements::meets(E->as_copy->edition, req)) &&

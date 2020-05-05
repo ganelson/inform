@@ -499,6 +499,7 @@ void Projects::construct_graph(inform_project *proj) {
 		build_vertex *V = proj->as_copy->vertex;
 		@<Construct the graph upstream of V@>;
 		@<Construct the graph downstream of V@>;
+		Projects::check_extension_versions(proj);
 	}
 }
 
@@ -639,6 +640,34 @@ void Projects::graph_dependent_language(inform_project *proj,
 	LOOP_OVER_LINKED_LIST(kd2, kit_dependency, proj->kits_to_include)
 		if ((kd2->because_of_kit == NULL) && (kd2->because_of_language == L))
 			Projects::graph_dependent_kit(proj, LV, kd2, TRUE);
+}
+
+@ One last task. It's unlikely, but possible, that an extension has been
+included in a project twice, for different reasons, but that the two
+inclusions have requirements about the extension's version which can't
+both be met. Therefore we run through the downstream vertices and check
+each extension against the intersection of all requirements put on it:
+
+=
+void Projects::check_extension_versions(inform_project *proj) {
+	Projects::check_extension_versions_d(proj, proj->as_copy->vertex);
+}
+
+void Projects::check_extension_versions_d(inform_project *proj, build_vertex *V) {
+	if ((V->as_copy) && (V->as_copy->edition->work->genre == extension_genre)) {
+		inform_extension *E = ExtensionManager::from_copy(V->as_copy);
+		if (Extensions::satisfies(E) == FALSE) {
+			copy_error *CE = CopyErrors::new_T(SYNTAX_CE, ExtVersionTooLow_SYNERROR,
+				I"two incompatible versions");
+			CopyErrors::supply_node(CE, Extensions::get_inclusion_sentence(E));
+			Copies::attach_error(proj->as_copy, CE);
+		}
+	}
+	build_vertex *W;
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
+		Projects::check_extension_versions_d(proj, W);
+	LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
+		Projects::check_extension_versions_d(proj, W);
 }
 
 @h Reading the source text.
