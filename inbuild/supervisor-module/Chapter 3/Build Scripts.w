@@ -33,11 +33,12 @@ returning |FALSE|, the script halts and returns |FALSE|. An empty script
 always succeeds and returns |TRUE|.
 
 =
-int BuildScripts::execute(build_vertex *V, build_script *BS, build_methodology *BM) {
+int BuildScripts::execute(build_vertex *V, build_script *BS, build_methodology *BM,
+	linked_list *search_list) {
 	int rv = TRUE;
 	build_step *S;
 	LOOP_OVER_LINKED_LIST(S, build_step, BS->steps)
 		if (rv)
-			rv = BuildSteps::execute(V, S, BM);
+			rv = BuildSteps::execute(V, S, BM, search_list);
 	return rv;
 }

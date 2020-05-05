@@ -69,15 +69,19 @@ error in this case.
 
 @<Complete the list of targets@> =
 	linked_list *L = Main::list_of_targets();
-	inbuild_copy *proj = NULL, *C;
+	inbuild_copy *D = NULL, *C;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
-		if (C->edition->work->genre == project_bundle_genre)
-			proj = C;
-	proj = Supervisor::optioneering_complete(proj, FALSE, &Main::load_preform);
-	if (proj) Main::add_target(proj);
+		if ((C->edition->work->genre == project_bundle_genre) ||
+			(C->edition->work->genre == project_file_genre))
+			D = C;
+	Supervisor::optioneering_complete(D, FALSE, &Main::load_preform);
+	inform_project *proj;
+	LOOP_OVER(proj, inform_project)
+		Main::add_target(proj->as_copy);
 	int count = 0;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
-		if (C->edition->work->genre == project_bundle_genre)
+		if ((C->edition->work->genre == project_bundle_genre) ||
+			(C->edition->work->genre == project_file_genre))
 			count++;
 	if (count > 1)
 		Errors::with_text("can only work on one project bundle at a time", NULL);
@@ -100,7 +104,7 @@ that we want to start work now.
 		@<Carry out the required task on the copy C@>;
 
 @ The list of possible tasks is as follows; they basically all correspond to
-utility functions in the |supervisor| module, which we call.
+utility functions in the //supervisor// module, which we call.
 
 @e INSPECT_TTASK from 1
 @e GRAPH_TTASK
@@ -121,13 +125,21 @@ utility functions in the |supervisor| module, which we call.
 		case GRAPH_TTASK: Copies::show_graph(STDOUT, C); break;
 		case USE_NEEDS_TTASK: Copies::show_needs(STDOUT, C, TRUE); break;
 		case BUILD_NEEDS_TTASK: Copies::show_needs(STDOUT, C, FALSE); break;
-		case ARCHIVE_TTASK:
-			destination_nest = Supervisor::materials_nest();
-			if (destination_nest == NULL)
+		case ARCHIVE_TTASK: {
+			inform_project *proj;
+			int c = 0;
+			LOOP_OVER(proj, inform_project) {
+				c++;
+				destination_nest = Projects::materials_nest(proj);
+			}
+			if (c == 0)
 				Errors::with_text("no -project in use, so ignoring -archive", NULL);
+			else if (c > 1)
+				Errors::with_text("multiple projects in use, so ignoring -archive", NULL);
 			else 
 				Copies::archive(STDOUT, C, destination_nest, BM);
 			break;
+		}
 		case ARCHIVE_TO_TTASK: Copies::archive(STDOUT, C, destination_nest, BM); break;
 		case USE_MISSING_TTASK: Copies::show_missing(STDOUT, C, TRUE); break;
 		case BUILD_MISSING_TTASK: Copies::show_missing(STDOUT, C, FALSE); break;
@@ -192,7 +204,7 @@ void Main::add_search_results_as_targets(text_stream *req_text) {
 		Errors::with_text("requirement malformed: %S", errors);
 	} else {
 		linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-		Nests::search_for(req, Supervisor::nest_list(), L);
+		Nests::search_for(req, Supervisor::shared_nest_list(), L);
 		inbuild_search_result *R;
 		LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L)
 			Main::add_target(R->copy);
@@ -314,7 +326,7 @@ other options to the selection defined here.
 
 	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
 
-@ Here we handle those options not handled by the |supervisor| module.
+@ Here we handle those options not handled by the //supervisor// module.
 
 =
 void Main::option(int id, int val, text_stream *arg, void *state) {

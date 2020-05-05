@@ -91,7 +91,6 @@ wording NaturalLanguages::load_preform(inform_language *L) {
 	if (L == NULL) internal_error("can't load preform from null language");
 	language_being_read_by_Preform = L;
 	filename *preform_file = Filenames::in(Languages::path_to_bundle(L), I"Syntax.preform");
-	PRINT("Reading language definition from <%f>\n", preform_file);
 	return Preform::load_from_file(preform_file);
 }
 

@@ -6,7 +6,7 @@ and preparing the way.
 @h The Management.
 All C programs begin execution in |main|, but the function below is not it.
 This is because the compiler proper is a tiny wrapper around a collection of
-modules, of which |core| is only one. |main| is found in that wrapper. On the
+modules, of which //core// is only one. |main| is found in that wrapper. On the
 other hand, |main| simply starts up the modules and hands straight over to us.
 
 So the |CoreMain::main| function certainly has the opportunity to be head
@@ -14,8 +14,8 @@ honcho, and for the first fifteen years of Inform 7, it was exactly that. In
 2020, though, it was deposed in a boardroom coup by a new CEO, the //supervisor//
 module. High-level decisions on what to compile, where to put the result, and
 so on, are all now taken by //supervisor//. Even the command line is very largely
-read and dealt with by //supervisor// and not by |core|, as we shall see. The
-upshot is that |CoreMain::main| is now a manager in name only, reduced to the
+read and dealt with by //supervisor// and not by //core//, as we shall see. The
+upshot is that //CoreMain::main// is now a manager in name only, reduced to the
 equivalent of unlocking the doors and turning the lights on in the morning.
 
 =
@@ -25,9 +25,11 @@ int CoreMain::main(int argc, char *argv[]) {
 	@<Banner and startup@>;
 	int proceed = CoreMain::read_command_line(argc, argv);
 	if (proceed) {
+		inform_project *project = NULL;
+		@<Find the project identified for us by Inbuild@>;
 		@<Open the debugging log and the problems report@>;
 		@<Name the telemetry@>;
-		@<Build the project identified for us by Inbuild@>;
+		@<Build the project@>;
 	}
 
 	// ParseTree::log_tree(DL, Task::syntax_tree()->root_node);
@@ -48,6 +50,19 @@ plain text error written to |stderr|. See the |problems| module for more.
 	PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
 	Plugins::Manage::start();
 
+@ The //supervisor// would happily send us instructions to compile multiple
+projects, but we can only accept one; and in fact the //inform7// command line
+isn't set up to allow more, so this error is not easy to generate.
+
+@<Find the project identified for us by Inbuild@> =
+	inform_project *proj;
+	LOOP_OVER(proj, inform_project) {
+		if (project) 
+			Problems::Fatal::issue(
+				"Multiple projects given on the command line");
+		project = proj;
+	}
+
 @ //supervisor// supplies us with a folder in which to write the debugging log
 and the Problems report (the HTML version of our error messages or success
 message, which is displayed in the Inform app when a compilation has finished).
@@ -55,7 +70,7 @@ This folder will usually be the |Build| subfolder of the project folder,
 but we won't assume that. Remember, //supervisor// knows best.
 
 @<Open the debugging log and the problems report@> =
-	pathname *build_folder = Projects::build_path(Supervisor::project());
+	pathname *build_folder = Projects::build_path(project);
 	if (Pathnames::create_in_file_system(build_folder) == 0)
 		Problems::Fatal::issue(
 			"Unable to create Build folder for project: is it read-only?");
@@ -70,6 +85,8 @@ but we won't assume that. Remember, //supervisor// knows best.
 
 	filename *PF = Filenames::in(build_folder, I"Problems.html");
 	Problems::Issue::start_problems_report(PF);
+
+	HTMLFiles::set_link_abbreviation_path(Projects::path(project));
 
 @ Telemetry is not as sinister as it sounds: the app isn't sending data out
 on the Internet, only (if requested) logging what it's doing to a local file.
@@ -91,19 +108,18 @@ with a use option, so by default this file will never be written.
 		DISCARD_TEXT(leafname_of_telemetry);
 	}
 
-@ The compiler is now ready for use. We ask //supervisor// what project the user
-seems to want to build (as expressed on the command line), and then we ask
-it to go ahead and build that project.
+@ The compiler is now ready for use. We ask //supervisor// to go ahead and
+build that project.
 
 But the art of leadership is delegation and what //supervisor// then does is to
-call |core| back again to do the actual work: see the What To Compile section.
+call //core// back again to do the actual work: see the What To Compile section.
 That sounds like an unnecessary round trip, but in fact it's not, because
 //supervisor// also incrementally builds some of the resources we will be using.
 That business is helpfully invisible to us: so it turns out that CEOs do
 something, after all.
 
-@<Build the project identified for us by Inbuild@> =
-	inform_project *project = Supervisor::go_operational();
+@<Build the project@> =
+	Supervisor::go_operational();
 	if (project)
 		Copies::build(STDOUT, project->as_copy,
 			BuildMethodology::stay_in_current_process());

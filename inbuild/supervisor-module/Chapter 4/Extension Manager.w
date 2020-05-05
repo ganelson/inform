@@ -217,8 +217,7 @@ void ExtensionManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_
 }
 
 void ExtensionManager::ensure_graphed(inbuild_copy *C) {
-	Copies::get_source_text(C);
-	Inclusions::traverse(C, ExtensionManager::from_copy(C)->syntax_tree);
+	Extensions::construct_graph(ExtensionManager::from_copy(C));
 	build_vertex *V;
 	LOOP_OVER_LINKED_LIST(V, build_vertex, C->vertex->use_edges)
 		ExtensionManager::ensure_graphed(V->as_copy);

@@ -124,13 +124,14 @@ int IncrementalBuild::begin_recursion(OUTPUT_STREAM, int gb, build_vertex *V,
 	if (trace_ibg) T = STDOUT;
 	no_build_generations++;
 	WRITE_TO(T, "Incremental build %d:\n", no_build_generations);
-	int rv = IncrementalBuild::recurse(OUT, T, gb, V, BM, &changes, no_build_generations);
+	int rv = IncrementalBuild::recurse(OUT, T, gb, V, BM, &changes,
+		no_build_generations, Supervisor::shared_nest_list());
 	WRITE_TO(T, "%d change(s)\n", changes);
 	return rv;
 }
 
 int IncrementalBuild::recurse(OUTPUT_STREAM, text_stream *T, int gb, build_vertex *V,
-	build_methodology *BM, int *changes, int generation) {
+	build_methodology *BM, int *changes, int generation, linked_list *search_list) {
 	if (T) {
 		WRITE_TO(T, "Visit %c%c%c: ",
 			(gb & BUILD_DEPENDENCIES_MATTER_GB)?'b':'.',
@@ -163,6 +164,11 @@ clear. Here, if a node has no build script attached, it must be because it
 needs no action taken.
 
 @<Build this node if necessary, setting rv to its success or failure@> =
+	if ((V->as_copy) && (V->as_copy->edition->work->genre == project_bundle_genre))
+		search_list = Projects::nest_list(ProjectBundleManager::from_copy(V->as_copy));
+	if ((V->as_copy) && (V->as_copy->edition->work->genre == project_file_genre))
+		search_list = Projects::nest_list(ProjectFileManager::from_copy(V->as_copy));
+	
 	if (T) STREAM_INDENT(T);
 	if (gb & BUILD_DEPENDENCIES_MATTER_GB) @<Build the build dependencies of the node@>;
 	if (gb & USE_DEPENDENCIES_MATTER_GB) @<Build the use dependencies of the node@>;
@@ -179,14 +185,14 @@ building V is itself a use of W, and therefore of X. So we always enable the
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
 		if (rv)
 			rv = IncrementalBuild::recurse(OUT, T,
-				gb | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation);
+				gb | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation, search_list);
 
 @<Build the use dependencies of the node@> =
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
 		if (rv)
 			rv = IncrementalBuild::recurse(OUT, T,
-				gb | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation);
+				gb | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation, search_list);
 
 @ Now for the node |V| itself.
 
@@ -198,7 +204,7 @@ building V is itself a use of W, and therefore of X. So we always enable the
 	if (needs_building) {
 		if (T) { WRITE_TO(T, "Build: "); Graphs::describe(T, V, FALSE); }
 		(*changes)++;
-		rv = BuildScripts::execute(V, V->script, BM);
+		rv = BuildScripts::execute(V, V->script, BM, search_list);
 	} else {
 		if (T) { WRITE_TO(T, "No build\n"); }
 	}

@@ -15,6 +15,7 @@ typedef struct inform_language {
 	struct instance *nl_instance; /* instance, e.g., "German language" */
 	struct wording language_field[MAX_LANGUAGE_FIELDS]; /* contents of the |about.txt| fields */
 	int adaptive_person; /* which person (one of constants below) text subs are written from */
+	int Preform_loaded; /* has a Preform syntax definition been read for this? */
 	MEMORY_MANAGEMENT
 } inform_language;
 
@@ -32,6 +33,7 @@ void Languages::scan(inbuild_copy *C) {
 	L->instance_name = Feeds::feed_stream(sentence_format);
 	DISCARD_TEXT(sentence_format);
 	L->nl_instance = NULL;
+	L->Preform_loaded = FALSE;
 	L->adaptive_person = -1; /* i.e., none yet specified */
 	for (int n=0; n<MAX_LANGUAGE_FIELDS; n++) L->language_field[n] = EMPTY_WORDING;
 	@<Read the about.txt file for the bundle@>;
@@ -127,31 +129,37 @@ text_stream *Languages::kit_name(inform_language *L) {
 
 @h Finding by name.
 Given the name of a natural language (e.g., "German") we find the
-corresponding structure, if it exists. We perform this check case
-insensitively.
+corresponding definition. That will mean searching for a copy, and that
+raises the question of where to look -- in particular, it's important to
+include the Materials folder for any relevant project.
 
 =
-inform_language *Languages::from_name(text_stream *name) {
-	inform_language *L;
-	LOOP_OVER(L, inform_language)
-		if (Str::eq_insensitive(L->as_copy->edition->work->title, name))
-			return L;
-	return NULL;
+linked_list *search_list_for_Preform_callback = NULL;
+void Languages::read_Preform_definition(inform_language *L, linked_list *S) {
+	if (L == NULL) internal_error("no language");
+	if (L->Preform_loaded == FALSE) {
+		L->Preform_loaded = TRUE;
+		search_list_for_Preform_callback = S;
+		(*shared_preform_callback)(L);
+	}
 }
 
-@h English.
-This finds the built-in definition of the English language.
+@ This function is called only from Preform...
+
+@d PREFORM_LANGUAGE_FROM_NAME Languages::Preform_find
 
 =
-inform_language *Languages::internal_English(void) {
+inform_language *Languages::Preform_find(text_stream *name) {
+	return Languages::find_for(name, search_list_for_Preform_callback);
+}
+
+@ ...but this one is more generally available.
+
+=
+inform_language *Languages::find_for(text_stream *name, linked_list *search) {
 	inbuild_requirement *req =
-		Requirements::any_version_of(Works::new(language_genre, I"English", I""));
-	inbuild_nest *I = Supervisor::internal();
-	if (I) {
-		linked_list *L = NEW_LINKED_LIST(inbuild_nest);
-		ADD_TO_LINKED_LIST(I, inbuild_nest, L);
-		inbuild_search_result *R = Nests::search_for_best(req, L);
-		if (R) return LanguageManager::from_copy(R->copy);
-	}
+		Requirements::any_version_of(Works::new(language_genre, name, I""));
+	inbuild_search_result *R = Nests::search_for_best(req, search);
+	if (R) return LanguageManager::from_copy(R->copy);
 	return NULL;
 }

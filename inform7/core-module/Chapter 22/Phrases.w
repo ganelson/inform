@@ -412,7 +412,7 @@ void Phrases::invoke_to_begin(void) {
 				if (n > 1) {
 					Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(...),
 						"there seem to be multiple 'to begin' phrases",
-						"but in Basic mode, Inform expects to see exactly one of "
+						"and in Basic mode, Inform expects to see exactly one of "
 						"these, specifying where execution should begin.");
 				} else {
 					if (Phrases::compiled_inline(ph)) {
@@ -433,7 +433,7 @@ void Phrases::invoke_to_begin(void) {
 		if (n == 0) {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(...),
 				"there seems not to be a 'to begin' phrase",
-				"but in Basic mode, Inform expects to see exactly one of "
+				"and in Basic mode, Inform expects to see exactly one of "
 				"these, specifying where execution should begin.");
 		}
 		Routines::end(save);

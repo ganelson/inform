@@ -9,11 +9,11 @@ if Inform has detected the extension but never used it (and so does not really
 understand what it entails). The following routine writes both kinds of page.
 
 =
-void Extensions::Documentation::write_detailed(inform_extension *E) {
-	Extensions::Documentation::write_extension_documentation(NULL, E, FALSE);
+void Extensions::Documentation::write_detailed(inform_extension *E, inform_project *proj) {
+	Extensions::Documentation::write_extension_documentation(NULL, E, FALSE, proj);
 }
 void Extensions::Documentation::write_sketchy(extension_census_datum *ecd, int census_mode) {
-	Extensions::Documentation::write_extension_documentation(ecd, NULL, census_mode);
+	Extensions::Documentation::write_extension_documentation(ecd, NULL, census_mode, NULL);
 }
 
 @ Thus we pass two arguments, |ecd| and |ef|, to |Extensions::Documentation::write_extension_documentation|:
@@ -35,11 +35,12 @@ in sequence,
 where these are pathnames relative to the external resources area.
 
 =
-void Extensions::Documentation::write_extension_documentation(extension_census_datum *ecd, inform_extension *E, int census_mode) {
+void Extensions::Documentation::write_extension_documentation(extension_census_datum *ecd,
+	inform_extension *E, int census_mode, inform_project *proj) {
 	int c, eg_count;
-	eg_count = Extensions::Documentation::write_extension_documentation_page(ecd, E, -1, census_mode);
+	eg_count = Extensions::Documentation::write_page(ecd, E, -1, census_mode, proj);
 	for (c=1; c<=eg_count; c++)
-		Extensions::Documentation::write_extension_documentation_page(ecd, E, c, census_mode);
+		Extensions::Documentation::write_page(ecd, E, c, census_mode, proj);
 }
 
 @ Here then is the nub of it. An ECD is not really enough information to go on.
@@ -56,8 +57,8 @@ will at least provide the extension author's supplied documentation, if there
 is any, as well as the correct identifying headings and requirements.
 
 =
-int Extensions::Documentation::write_extension_documentation_page(extension_census_datum *ecd, inform_extension *E,
-	int eg_number, int census_mode) {
+int Extensions::Documentation::write_page(extension_census_datum *ecd,
+	inform_extension *E, int eg_number, int census_mode, inform_project *proj) {
 	inbuild_work *work = NULL;
 	text_stream DOCF_struct;
 	text_stream *DOCF = &DOCF_struct;
@@ -133,10 +134,10 @@ calls.
 
 @<Convert ECD to a text-only EF@> =
 	Feeds::feed_text(L"This sentence provides a firebreak, no more. ");
-	E = Extensions::Documentation::load(work);
+	E = Extensions::Documentation::load(work, proj);
 	if (E == NULL) return 0; /* shouldn't happen: it was there only moments ago */
 	Copies::get_source_text(E->as_copy);
-	Extensions::Documentation::write_extension_documentation(NULL, E, census_mode);
+	Extensions::Documentation::write_extension_documentation(NULL, E, census_mode, proj);
 
 @ We now make much the same "paste into the gap in the template" copying
 exercise as when generating the home pages for extensions, though with a
@@ -246,7 +247,8 @@ easily be scrolled down off screen when the user first visits the page.
 @
 
 =
-inform_extension *Extensions::Documentation::load(inbuild_work *work) {
+inform_extension *Extensions::Documentation::load(inbuild_work *work,
+	inform_project *proj) {
 	inbuild_requirement *req = Requirements::any_version_of(work);
 
 	inform_extension *E;
@@ -257,7 +259,7 @@ inform_extension *Extensions::Documentation::load(inbuild_work *work) {
 		}
 
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-	Nests::search_for(req, Supervisor::nest_list(), L);
+	Nests::search_for(req, Projects::nest_list(proj), L);
 	inbuild_search_result *search_result;
 	LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 		E = ExtensionManager::from_copy(search_result->copy);

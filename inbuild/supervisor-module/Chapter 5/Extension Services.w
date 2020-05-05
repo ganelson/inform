@@ -22,8 +22,10 @@ typedef struct inform_extension {
 	struct source_file *read_into_file; /* Which source file loaded this */
 	struct inbuild_requirement *must_satisfy;
 	int loaded_from_built_in_area; /* Located within Inform application */
+	struct inform_project *read_into_project; /* If any */
 	struct parse_node_tree *syntax_tree;
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
+	struct linked_list *search_list; /* of |inbuild_nest| */
 	MEMORY_MANAGEMENT
 } inform_extension;
 
@@ -61,8 +63,10 @@ void Extensions::scan(inbuild_copy *C) {
 	E->extra_credit_as_lexed = NULL;	
 	E->must_satisfy = NULL;
 	E->loaded_from_built_in_area = FALSE;
+	E->read_into_project = NULL;
 	E->syntax_tree = ParseTree::new_tree();
 	E->inclusion_sentence = NULL;
+	E->search_list = NEW_LINKED_LIST(inbuild_nest);
 
 @ The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream |error_text|. If not, this is left
@@ -196,13 +200,14 @@ are immutable, and need to be for the extensions dictionary to work.
 @<Change the edition of the copy in light of the metadata found in the scan@> =
 	if (Str::len(claimed_title) == 0) { WRITE_TO(claimed_title, "Unknown"); }
 	if (Str::len(claimed_author_name) == 0) { WRITE_TO(claimed_author_name, "Anonymous"); }
-	if (Str::len(claimed_title) > MAX_EXTENSION_TITLE_LENGTH) {
-		Copies::attach_error(C, CopyErrors::new_N(EXT_TITLE_TOO_LONG_CE, -1, Str::len(claimed_title)));
-	}
-	if (Str::len(claimed_author_name) > MAX_EXTENSION_AUTHOR_LENGTH) {
-		Copies::attach_error(C, CopyErrors::new_N(EXT_AUTHOR_TOO_LONG_CE, -1, Str::len(claimed_author_name)));
-	}
-	C->edition = Editions::new(Works::new(extension_genre, claimed_title, claimed_author_name), V);
+	if (Str::len(claimed_title) > MAX_EXTENSION_TITLE_LENGTH)
+		Copies::attach_error(C,
+			CopyErrors::new_N(EXT_TITLE_TOO_LONG_CE, -1, Str::len(claimed_title)));
+	if (Str::len(claimed_author_name) > MAX_EXTENSION_AUTHOR_LENGTH)
+		Copies::attach_error(C,
+			CopyErrors::new_N(EXT_AUTHOR_TOO_LONG_CE, -1, Str::len(claimed_author_name)));
+	C->edition = Editions::new(
+		Works::new(extension_genre, claimed_title, claimed_author_name), V);
 	if (Str::len(reqs) > 0) {
 		compatibility_specification *CS = Compatibility::from_text(reqs);
 		if (CS) C->edition->compatibility = CS;
@@ -214,14 +219,56 @@ are immutable, and need to be for the extensions dictionary to work.
 		}
 	}
 
+@h Search list.
+Sometimes ane extension is being looked at in isolation, and then |read_into_project|
+will be |NULL|; but if it is being loaded to be included in the source text of a
+project, then...
+
+=
+void Extensions::set_associated_project(inform_extension *E, inform_project *P) {
+	E->read_into_project = P;
+}
+
+@ ...and this affects its search list, because now its own inclusions can see
+the Materials folder of the project in question:
+
+=
+linked_list *Extensions::nest_list(inform_extension *E) {
+	if (E == NULL) return Supervisor::shared_nest_list();
+	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
+	if (LinkedLists::len(E->search_list) == 0) {
+		inform_project *proj = E->read_into_project;
+		if (proj) ADD_TO_LINKED_LIST(proj->materials_nest, inbuild_nest, E->search_list);
+		inbuild_nest *N;
+		linked_list *L = Supervisor::shared_nest_list();
+		LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
+			ADD_TO_LINKED_LIST(N, inbuild_nest, E->search_list);
+	}
+	return E->search_list;
+}
+
+@h Graph.
+The dependency graph is not so much constructed as discovered, by reading
+in the text and then making Inclusions.
+
+=
+void Extensions::construct_graph(inform_extension *E) {
+	Copies::get_source_text(E->as_copy);
+	Inclusions::traverse(E->as_copy, E->syntax_tree);
+}
+
 @h Read source text.
 The scan only skimmed the surface of the file, and didn't try to parse it as
 natural language text with Preform. But if the extension turns out to be one
 that we need to use for something, we'll need to read its full text eventually.
 This is that time.
 
+At present all extensions are assumed to have English as the language of syntax.
+
 =
 void Extensions::read_source_text_for(inform_extension *E) {
+	inform_language *L = Languages::find_for(I"English", Extensions::nest_list(E));
+	Languages::read_Preform_definition(L, Extensions::nest_list(E));
 	filename *F = E->as_copy->location_if_file;
 	int doc_only = FALSE;
 	if (census_mode) doc_only = TRUE;
@@ -262,9 +309,10 @@ then its sentences will go to the extension's own tree.
 	wording EXW = E->read_into_file->text_read;
 	if (Wordings::nonempty(EXW))
 		@<Break the extension's text into body and documentation@>;
-	inform_project *project = Supervisor::project();
+	inform_project *project = E->read_into_project;
 	if (project) E->syntax_tree = project->syntax_tree;
-	Sentences::break_into_extension_copy(E->syntax_tree, E->body_text, E->as_copy);
+	Sentences::break_into_extension_copy(E->syntax_tree,
+		E->body_text, E->as_copy, project);
 	E->body_text_unbroken = FALSE;
 
 @  If an extension file contains the special text (outside literal mode) of

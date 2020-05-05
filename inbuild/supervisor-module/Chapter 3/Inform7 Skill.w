@@ -18,7 +18,7 @@ void Inform7Skill::create(void) {
 }
 
 int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
-	text_stream *command, build_methodology *BM) {
+	text_stream *command, build_methodology *BM, linked_list *search_list) {
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
 	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
@@ -32,7 +32,8 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
 	WRITE_TO(command, "-format=%S ", TargetVMs::get_unblorbed_extension(S->for_vm));
 
 	inbuild_nest *N;
-	LOOP_OVER_LINKED_LIST(N, inbuild_nest, S->search_path) {
+	linked_list *L = Projects::nest_list(project);
+	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L) {
 		switch (Nests::get_tag(N)) {
 			case MATERIALS_NEST_TAG: continue;
 			case EXTERNAL_NEST_TAG: WRITE_TO(command, "-external "); break;
@@ -48,7 +49,21 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
 	return TRUE;
 }
 
-int Inform7Skill::inform7_internally(build_skill *skill, build_step *S, build_methodology *BM) {
+@ Note that we create the Materials folder in the file system if it doesn't
+already exist, but only for projects in bundles. (If we did this for projects
+in single files, the result would be that batch-testing Inform via //intest//
+would create thousands of unwanted folders. Still, it's a slightly arbitrary
+way to do things. The UI apps for Inform tend to create missing Materials
+folders anyway; maybe we should leave well be.)
+
+=
+int Inform7Skill::inform7_internally(build_skill *skill, build_step *S,
+	build_methodology *BM, linked_list *search_list) {
+	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
+	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	if (project == NULL) internal_error("no project");
+	if (S->associated_copy->edition->work->genre == project_bundle_genre)
+		Pathnames::create_in_file_system(Projects::materials_path(project));
 	#ifdef CORE_MODULE
 	return Task::carry_out(S);
 	#endif

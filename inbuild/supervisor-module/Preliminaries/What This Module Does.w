@@ -111,7 +111,7 @@ then all three command-line switches here would actually be parsed by
 //Supervisor::option//, rather than by anything in the //core// module.
 They would set the "internal" and "external" nest (see //inbuild: Manual//),
 creating an //inbuild_nest// object for each. The Inform 7 project for the
-run would also be set.[2] This would become whose genre is |project_bundle_genre|.
+run would also be set. This would become whose genre is |project_bundle_genre|.
 
 Other copies would swiftly be needed -- the definition of the English language
 (found inside the Internal nest), the Standard Rules extension, and several more.
@@ -122,16 +122,14 @@ search engine //Nests::search_for//. This builds a list of //inbuild_search_resu
 objects, each pointing to a new copy which matches the requirement given.
 
 Requirements can be quite flexible, and are converitble to and from text: see
-//Requirements::from_text// and //Requirements::write//.[3] The crucial routine
+//Requirements::from_text// and //Requirements::write//.[2] The crucial routine
 here is //Requirements::meets//, which tests whether an edition meets the
 requirement.
 
 [1] Indeed, such a scan would violate sandboxing restrictions, for example
 when //supervisor// is running as part of //inform7// inside the MacOS Inform app.
 
-[2] The project, singular: see the Limitation note below.
-
-[3] A typical requirement might read, say, "genre=extension, author=Emily Short",
+[2] A typical requirement might read, say, "genre=extension, author=Emily Short",
 which matches any extension by Emily Short.
 
 @ Although such searches can be used with vague requirements to scan for,
@@ -191,32 +189,6 @@ however it is managed on disc.
     template_genre        //Template Manager//         inform_template   //Template Services//
 =
 
-@h Limitation.
-A pragmatic design choice in the Supervisor is that, although it can manage
-large numbers of copies and dependencies simultaneously -- and often does,
-when managing extensions or kits, for example -- it imposes one big limitation
-for simplicity's sake.
-
-(a) It can claim only one full-scale Inform 7 project in a single run.
-To find this, call //Supervisor::project//, which returns the associated
-//inform_project// object. Of course, there doesn't have to be even one,
-in which case this returns |NULL|.
-(b) This can be built for just one virtual machine architecture in a single
-run. To find it, call //Supervisor::current_vm//.
-(c) There is consequently a single |.Materials| directory to worry about --
-the one for the current project. Its pathname can be found by calling
-//Supervisor::materials//.
-(d) And because the search list of nests has to include the |.Materials|
-directory as one of those nests, there is just one search list at a time.
-This can be found with //Supervisor::nest_list//, while the nest designated
-as "internal" and "external" are //Supervisor::internal// and //Supervisor::external//.
-
-It would be more elegant not to impose these restrictions, but the result would
-seldom be more useful. It's easy enough to batch-run Inbuild with shell
-scripting to handle multiple projects; |inform7| can only handle one project
-on each run anyway; and constantly having to specify which project we mean in
-function calls would involve much more passing of parameters around.
-
 @h Build graph.
 See //Build Graphs// for the infrastructure of how a dependency graph is stored.
 Basically these consist of //build_vertex// objects joined together by edges,
@@ -242,33 +214,26 @@ So when a copy is claimed it gets an isolated copy vertex with no edges, as a
 placeholder.
 
 The answer in fact depends on genre. For pipelines, languages and website
-templates, there are no dependencies, so there's nothing to build. For kits
-and projects, the task is performed by //KitManager::construct_graph//,
-//ProjectBundleManager::construct_graph//, and //ProjectFileManager::construct_graph//
-respectively -- though in fact those three functions simply pass the buck to
-//Kits::construct_graph// and //Projects::construct_graph//.
-
-All of that happens when the Supervisor "goes operational", because
+templates, there are no dependencies, so there's nothing to build. For kits,
+extensions and projects, the task is performed by //Kits::construct_graph//,
+//Extensions::construct_graph// and //Projects::construct_graph//. Kits are
+graphed when the Supervisor "goes operational", because
 //Supervisor::go_operational// calls //Copies::construct_graph// for
-every extant copy. The idea is that all the graphs need to be made before we
-can be ready to do any building.
+every extant copy.
 
-And yet... they are not, because extensions dependencies are missing from
-this account. Extensions have rich dependency graphs, but they are built
-on demand as the need arises, not at the going operational stage. This is
-becauses //supervisor// may have to deal with very large numbers of
-extension copies (for example, when performing a census inside the Inform
-app, or to install or copy extensions), and it takes significant computation
-to read and parse the full text of extensions.[1]
+But extensions and projects are graphed later on, and only on demand. This is
+because they have rich dependency graphs which can be determined only by
+reading and parsing their complete source texts, which is slow when the
+//supervisor// has to handle thousands of extensions at a time (for example,
+when performing a census inside the Inform app, or to install or copy extensions).
+So we only graph what we need.[1]
 
 [1] Arguably the speed hit would be worth it for the gain in simplicity,
-except that there's also another obstacle: an extension's dependencies
+but there's also another technicality: an extension's dependencies
 depend on the virtual machine they are to be used for. Some extensions
 claimed during searches will not be compatible with the current VM at all,
 and that's fine, since they won't be used: but we can't read their text in
-without throwing copy errors. We solve this by reading in only those
-extensions we will actually use, and that means building the graph only
-for those.
+without throwing copy errors. So we read only what we will use.
 
 @h Reading source text.
 For any copy, //Copies::get_source_text// will instruct the Supervisor to

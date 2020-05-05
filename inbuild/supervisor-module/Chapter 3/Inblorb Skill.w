@@ -13,7 +13,7 @@ void InblorbSkill::create(void) {
 }
 
 int InblorbSkill::inblorb_via_shell(build_skill *skill, build_step *S,
-	text_stream *command, build_methodology *BM) {
+	text_stream *command, build_methodology *BM, linked_list *search_list) {
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
 	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");

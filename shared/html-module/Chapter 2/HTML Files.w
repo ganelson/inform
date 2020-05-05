@@ -95,19 +95,28 @@ int source_link_case = 0;
 void HTMLFiles::set_source_link_case(text_stream *p) {
 	source_link_case = Characters::toupper(Str::get_first_char(p));
 }
+pathname *abbreviate_links_within = NULL;
+void HTMLFiles::set_link_abbreviation_path(pathname *P) {
+	abbreviate_links_within = P;
+}
+pathname *HTMLFiles::get_link_abbreviation_path(void) {
+	return abbreviate_links_within;
+}
 
 void HTMLFiles::html_source_link(OUTPUT_STREAM, source_location sl, int nonbreaking_space) {
 	if (sl.file_of_origin) {
 		TEMPORARY_TEXT(fn);
 		WRITE_TO(fn, "%f", TextFromFiles::get_filename(sl.file_of_origin));
-		if (Projects::path(Supervisor::project())) {
+		#ifdef SUPERVISOR_MODULE
+		if (abbreviate_links_within) {
 			TEMPORARY_TEXT(pp);
-			WRITE_TO(pp, "%p", Projects::path(Supervisor::project()));
+			WRITE_TO(pp, "%p", abbreviate_links_within);
 			int N = Str::len(pp);
 			if (Str::prefix_eq(fn, pp, N))
 				Str::delete_n_characters(fn, N+1);
 			DISCARD_TEXT(pp);
 		}
+		#endif
 		if ((Str::begins_with_wide_string(fn, L"Source")) &&
 			(Str::get_at(fn, 6) == FOLDER_SEPARATOR))
 			Str::delete_n_characters(fn, 7);

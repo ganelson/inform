@@ -20,5 +20,5 @@ The //core// module is the largest and most important part of //inform7//,
 while not being included in either //inbuild// or //inter//. It manages the
 entire process of compiling an Inform 7 project, doing a good deal of the
 work itself, but also calling numerous other modules. Though in theory it is
-second-in-command to the //supervisor// module, it always gets essentially the
+second-in-command to the , it always gets essentially the
 same, quite vague, orders to follow, so //core// has wide authority.

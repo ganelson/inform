@@ -221,7 +221,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(DW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in(Supervisor::materials(), leaf);
+			filename *A = Filenames::in(Projects::materials_path(Task::project()), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
 				Task::release_path(),
@@ -234,7 +234,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(LW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in(Supervisor::materials(), leaf);
+			filename *A = Filenames::in(Projects::materials_path(Task::project()), leaf);
 			DISCARD_TEXT(leaf);
 			PL::Bibliographic::Release::create_aux_file(A,
 				Task::release_path(),
@@ -249,7 +249,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			Word::dequote(Wordings::first_wn(FW));
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
-			filename *A = Filenames::in(Supervisor::materials(), leaf);
+			filename *A = Filenames::in(Projects::materials_path(Task::project()), leaf);
 			DISCARD_TEXT(leaf);
 			TEMPORARY_TEXT(folder);
 			WRITE_TO(folder, "%N", Wordings::first_wn(FW));
@@ -353,13 +353,14 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 	}
 
 @<Create the Materials folder if not already present@> =
-	if (Pathnames::create_in_file_system(Supervisor::materials()) == FALSE) {
+	if (Pathnames::create_in_file_system(
+		Projects::materials_path(Task::project())) == FALSE) {
 		Problems::Issue::release_problem_path(_p_(Untestable),
 			"In order to release the story file along with other "
 			"resources, I tried to create a folder alongside this "
 			"Inform project, but was unable to do so. The folder "
 			"was to have been called",
-			Supervisor::materials());
+			Projects::materials_path(Task::project()));
 		return;
 	}
 
@@ -463,7 +464,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	}
 
 @<Read header of existing story file if present@> =
-	if (Supervisor::currently_releasing() == FALSE)
+	if (Projects::currently_releasing(Task::project()) == FALSE)
 		@<Issue a problem if this isn't a Release run@>;
 	FILE *STORYF = Filenames::fopen(Task::existing_storyfile_file(), "rb");
 	if (STORYF == NULL) {
@@ -617,7 +618,8 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 		WRITE("<auxiliary>\n"); INDENT;
 		WRITE("<leafname>");
 		TEMPORARY_TEXT(rel);
-		Filenames::to_text_relative(rel, af->name_of_original_file, Supervisor::materials());
+		Filenames::to_text_relative(rel, af->name_of_original_file,
+			Projects::materials_path(Task::project()));
 		HTMLFiles::write_xml_safe_text(OUT, rel);
 		DISCARD_TEXT(rel);
 		WRITE("</leafname>\n");
@@ -1004,14 +1006,16 @@ file online.
 	LOOP_OVER(af, auxiliary_file)
 		if (af->from_payload == JAVASCRIPT_PAYLOAD) {
 			TEMPORARY_TEXT(rel);
-			Filenames::to_text_relative(rel, af->name_of_original_file, Supervisor::materials());
+			Filenames::to_text_relative(rel, af->name_of_original_file,
+				Projects::materials_path(Task::project()));
 			WRITE("<script src='%S'></script>", rel);
 			DISCARD_TEXT(rel);
 		}
 	LOOP_OVER(af, auxiliary_file)
 		if (af->from_payload == CSS_PAYLOAD) {
 			TEMPORARY_TEXT(rel);
-			Filenames::to_text_relative(rel, af->name_of_original_file, Supervisor::materials());
+			Filenames::to_text_relative(rel, af->name_of_original_file,
+				Projects::materials_path(Task::project()));
 			WRITE("<link rel='stylesheet' href='%S' type='text/css' media='all'></link>", rel);
 			DISCARD_TEXT(rel);
 		}
@@ -1033,7 +1037,7 @@ with the earliest quoted searched first.
 
 @<Tell Inblorb where to find the website templates@> =
 	inbuild_nest *N;
-	linked_list *L = Supervisor::nest_list();
+	linked_list *L = Projects::nest_list(Task::project());
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
 		WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(N));
 

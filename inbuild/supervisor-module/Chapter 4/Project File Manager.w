@@ -22,7 +22,6 @@ void ProjectFileManager::start(void) {
 	METHOD_ADD(project_file_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectFileManager::claim_as_copy);
 	METHOD_ADD(project_file_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectFileManager::search_nest_for);
 	METHOD_ADD(project_file_genre, GENRE_COPY_TO_NEST_MTID, ProjectFileManager::copy_to_nest);
-	METHOD_ADD(project_file_genre, GENRE_CONSTRUCT_GRAPH_MTID, ProjectFileManager::construct_graph);
 	METHOD_ADD(project_file_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectFileManager::read_source_text_for);
 	METHOD_ADD(project_file_genre, GENRE_BUILDING_SOON_MTID, ProjectFileManager::building_soon);
 }
@@ -99,15 +98,14 @@ void ProjectFileManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbui
 }
 
 @h Build graph.
+As with extensions, the graph for a project is made only on demand, because to make
+it would mean fully parsing and partially syntax-analysing its source text.
 
 =
 void ProjectFileManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex **V) {
 	inform_project *project = ProjectFileManager::from_copy(C);
+	Projects::construct_graph(project);
 	*V = project->chosen_build_target;
-}
-
-void ProjectFileManager::construct_graph(inbuild_genre *G, inbuild_copy *C) {
-	Projects::construct_graph(ProjectFileManager::from_copy(C));
 }
 
 @h Source text.

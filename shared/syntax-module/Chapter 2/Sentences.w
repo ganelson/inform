@@ -57,6 +57,7 @@ int sfsm_skipping_material_at_level = -1;
 int sfsm_in_tabbed_mode = FALSE;
 int sfsm_main_source_start_wn = -1;
 COPY_FILE_TYPE *sfsm_copy = NULL;
+void *sfsm_project = NULL;
 
 void Sentences::set_start_of_source(int wn) {
 	sfsm_main_source_start_wn = wn;
@@ -69,16 +70,19 @@ finite state machine.
 
 =
 void Sentences::break(parse_node_tree *T, wording W) {
-	Sentences::break_inner(T, W, FALSE, NULL);
+	Sentences::break_inner(T, W, FALSE, NULL, NULL);
 }
-void Sentences::break_into_project_copy(parse_node_tree *T, wording W, COPY_FILE_TYPE *C) {
-	Sentences::break_inner(T, W, FALSE, C);
+void Sentences::break_into_project_copy(parse_node_tree *T, wording W, COPY_FILE_TYPE *C,
+	void *build_project) {
+	Sentences::break_inner(T, W, FALSE, C, build_project);
 }
-void Sentences::break_into_extension_copy(parse_node_tree *T, wording W, COPY_FILE_TYPE *C) {
-	Sentences::break_inner(T, W, TRUE, C);
+void Sentences::break_into_extension_copy(parse_node_tree *T, wording W, COPY_FILE_TYPE *C,
+	void *build_project) {
+	Sentences::break_inner(T, W, TRUE, C, build_project);
 }
 
-void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension, COPY_FILE_TYPE *from_copy) {
+void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension,
+	COPY_FILE_TYPE *from_copy, void *build_project) {
 	while (((Wordings::nonempty(W))) && (compare_word(Wordings::first_wn(W), PARBREAK_V)))
 		W = Wordings::trim_first_word(W);
 	if (Wordings::empty(W)) return;
@@ -127,6 +131,7 @@ that is why these are global variables rather than locals in |Sentences::break|.
 	sfsm_inside_rule_mode = FALSE;
 	sfsm_skipping_material_at_level = -1;
 	sfsm_copy = from_copy;
+	sfsm_project = build_project;
 	if (is_extension) sfsm_extension_position = 1;
 	else sfsm_extension_position = 0;
 
@@ -340,7 +345,7 @@ is declared as if it were a super-heading in the text.
 		ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
 		ParseTree::insert_sentence(T, implicit_heading);
 		#ifdef NEW_HEADING_HANDLER
-		NEW_HEADING_HANDLER(T, implicit_heading);
+		NEW_HEADING_HANDLER(T, implicit_heading, sfsm_project);
 		#endif
 		sfsm_skipping_material_at_level = -1;
 	}
@@ -413,7 +418,7 @@ in Headings to determine whether we should include the material.
 	ParseTree::annotate_int(new, heading_level_ANNOT, heading_level);
 	ParseTree::insert_sentence(T, new);
 	#ifdef NEW_HEADING_HANDLER
-	if (NEW_HEADING_HANDLER(T, new) == FALSE)
+	if (NEW_HEADING_HANDLER(T, new, sfsm_project) == FALSE)
 		sfsm_skipping_material_at_level = heading_level;
 	#endif
 
@@ -494,7 +499,7 @@ sentences and options-file sentences may have been read already.)
 			ParseTree::set_type(new, ssnt);
 			#ifdef SUPERVISOR_MODULE
 			if (ssnt == BIBLIOGRAPHIC_NT)
-				Projects::notify_of_bibliographic_sentence(Supervisor::project(), new);
+				BiblioSentence::notify(sfsm_project, new);
 			#endif
 			return;
 		}

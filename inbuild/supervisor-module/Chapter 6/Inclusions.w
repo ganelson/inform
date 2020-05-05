@@ -23,8 +23,12 @@ guaranteed to be no INCLUDE nodes remaining in the parse tree.
 
 =
 inbuild_copy *inclusions_errors_to = NULL;
+inform_project *inclusions_for_project = NULL;
 void Inclusions::traverse(inbuild_copy *C, parse_node_tree *T) {
 	inclusions_errors_to = C;
+	inform_project *project = ProjectBundleManager::from_copy(C);
+	if (project == NULL) project = ProjectFileManager::from_copy(C);
+	inclusions_for_project = project;
 	int includes_cleared;
 	do {
 		includes_cleared = TRUE;
@@ -59,7 +63,8 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, 
 	wording author = GET_RW(<structural-sentence>, 2);
 	ParseTree::set_type(pn, INCLUSION_NT); pn->down = NULL;
 	int l = ParseTree::push_attachment_point(T, pn);
-	inform_extension *E = Inclusions::fulfill_request_to_include_extension(last_H0, title, author);
+	inform_extension *E = Inclusions::fulfill_request_to_include_extension(last_H0,
+		title, author, inclusions_for_project);
 	ParseTree::pop_attachment_point(T, l);
 	if (E) {
 		for (parse_node *c = pn->down; c; c = c->next)
@@ -118,7 +123,8 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, 
 }
 
 @ =
-inform_extension *Inclusions::fulfill_request_to_include_extension(parse_node *last_H0, wording TW, wording AW) {
+inform_extension *Inclusions::fulfill_request_to_include_extension(parse_node *last_H0,
+	wording TW, wording AW, inform_project *for_project) {
 	inform_extension *E = NULL;
 	<<t1>> = -1; <<t2>> = -1;
 	<extension-title-and-version>(TW);
@@ -156,7 +162,7 @@ parse tree.
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 
-	E = Inclusions::load(last_H0, current_sentence, req);
+	E = Inclusions::load(last_H0, current_sentence, req, for_project);
 
 @h Extension loading.
 Note that we ignore a request for an extension which has already been
@@ -170,7 +176,8 @@ Sausages by Mr Punch, and loaded it, but then read the sentence
 then we need to note that the version requirement on PS has been raised to 3.
 
 =
-inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_requirement *req) {
+inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_requirement *req,
+	inform_project *for_project) {
 	inform_extension *E = NULL;
 	LOOP_OVER(E, inform_extension)
 		if ((Requirements::meets(E->as_copy->edition, req)) &&
@@ -183,10 +190,12 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at, inbuild_
 }
 
 @<Read the extension file into the lexer, and break it into body and documentation@> =
-	inbuild_search_result *search_result = Nests::search_for_best(req, Supervisor::nest_list());
+	inbuild_search_result *search_result =
+		Nests::search_for_best(req, Projects::nest_list(for_project));
 	if (search_result) {
 		E = ExtensionManager::from_copy(search_result->copy);
 		Extensions::set_inclusion_sentence(E, at);
+		Extensions::set_associated_project(E, for_project);
 		if (Nests::get_tag(search_result->nest) == INTERNAL_NEST_TAG)
 			E->loaded_from_built_in_area = TRUE;
 		compatibility_specification *C = E->as_copy->edition->compatibility;
@@ -221,7 +230,7 @@ report this problem at the inclusion line.
 @<Issue a cannot-find problem@> =
 	inbuild_requirement *req2 = Requirements::any_version_of(req->work);
 	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-	Nests::search_for(req2, Supervisor::nest_list(), L);
+	Nests::search_for(req2, Projects::nest_list(for_project), L);
 	if (LinkedLists::len(L) == 0) {
 		copy_error *CE = CopyErrors::new(SYNTAX_CE, BogusExtension_SYNERROR);
 		CopyErrors::supply_node(CE, current_sentence);

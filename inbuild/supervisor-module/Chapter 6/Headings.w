@@ -194,12 +194,12 @@ heading *Headings::from_node(parse_node *PN) {
 @d NEW_HEADING_HANDLER Headings::new
 
 =
-int Headings::new(parse_node_tree *T, parse_node *new) {
+int Headings::new(parse_node_tree *T, parse_node *new, inform_project *proj) {
 	heading *h = Headings::declare(T, new);
 	#ifdef CORE_MODULE
 	ParseTree::set_embodying_heading(new, h);
 	#endif
-	return Headings::include_material(h);
+	return Headings::include_material(h, Projects::currently_releasing(proj));
 }
 
 heading *Headings::declare(parse_node_tree *T, parse_node *PN) {
@@ -511,10 +511,9 @@ heading with the disclaimer "(for Glulx only)" will not be included
 if the target virtual machine on this run of Inform is the Z-machine.)
 
 =
-int Headings::include_material(heading *h) {
-	int releasing = Supervisor::currently_releasing();
-	if ((h->for_release == TRUE) && (releasing == FALSE)) return FALSE;
-	if ((h->for_release == FALSE) && (releasing == TRUE)) return FALSE;
+int Headings::include_material(heading *h, int are_we_releasing) {
+	if ((h->for_release == TRUE) && (are_we_releasing == FALSE)) return FALSE;
+	if ((h->for_release == FALSE) && (are_we_releasing == TRUE)) return FALSE;
 	if (h->omit_material) return FALSE;
 	return TRUE;
 }

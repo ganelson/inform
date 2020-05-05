@@ -201,7 +201,6 @@ whole thing into a |specification| for the rest of Inform to use.
 @
 
 @d PREFORM_ADAPTIVE_PERSON NaturalLanguages::adaptive_person
-@d PREFORM_LANGUAGE_FROM_NAME Languages::from_name
 @d PREFORM_OPTIMISER Semantics::mark_preform_requirements
 @d PREFORM_CIRCULARITY_BREAKER Semantics::break_preform_circularities
 @d INFLECTIONS_ERROR_HANDLER NaturalLanguages::preform_error

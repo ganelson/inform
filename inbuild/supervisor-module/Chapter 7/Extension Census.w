@@ -14,9 +14,9 @@ typedef struct extension_census {
 	MEMORY_MANAGEMENT
 } extension_census;
 
-extension_census *Extensions::Census::new(void) {
+extension_census *Extensions::Census::new(inform_project *proj) {
 	extension_census *C = CREATE(extension_census);
-	C->search_list = Supervisor::nest_list();
+	C->search_list = Projects::nest_list(proj);
 	C->census_data = NEW_LINKED_LIST(extension_census_datum);
 	C->raw_data = NEW_LINKED_LIST(inbuild_search_result);
 	C->no_census_errors = 0;
@@ -742,21 +742,23 @@ two alternatives are expressed here:
 
 =
 void Extensions::Census::handle_census_mode(void) {
-	extension_census *C = Extensions::Census::new();
+	extension_census *C = Extensions::Census::new(NULL);
+	HTMLFiles::set_link_abbreviation_path(NULL);
 	Extensions::Dictionary::load();
 	Extensions::Census::perform(C);
 	Extensions::Census::write_top_level_of_extensions_documentation(C);
 	Extensions::Census::write_sketchy_documentation_for_extensions_found(TRUE);
 }
 
-void Extensions::Census::update_census(void) {
+void Extensions::Census::update_census(inform_project *proj) {
 	Extensions::Dictionary::load();
-	extension_census *C = Extensions::Census::new();
+	extension_census *C = Extensions::Census::new(proj);
+	HTMLFiles::set_link_abbreviation_path(Projects::path(proj));
 	Extensions::Census::perform(C);
 	Extensions::Census::write_top_level_of_extensions_documentation(C);
 	#ifdef CORE_MODULE
 	inform_extension *E;
-	LOOP_OVER(E, inform_extension) Extensions::Documentation::write_detailed(E);
+	LOOP_OVER(E, inform_extension) Extensions::Documentation::write_detailed(E, proj);
 	#endif
 	Extensions::Census::write_sketchy_documentation_for_extensions_found(FALSE);
 	Extensions::Dictionary::write_back();

@@ -17,7 +17,7 @@ void Inform6Skill::create(void) {
 }
 
 int Inform6Skill::inform6_via_shell(build_skill *skill, build_step *S,
-	text_stream *command, build_methodology *BM) {
+	text_stream *command, build_methodology *BM, linked_list *search_list) {
 	Shell::quote_file(command, BM->to_inform6);
 
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);

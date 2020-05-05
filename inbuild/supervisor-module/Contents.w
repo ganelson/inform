@@ -51,6 +51,8 @@ Chapter 5: Genre Services
 Chapter 6: Inform Source Text
 	Source Text
 	Headings
+	The Bibliographic Sentence
+	The Options File
 	Inclusions
 	Control Structures
 	Virtual Machine Grammar

@@ -32,13 +32,14 @@ one is absent then the skill can't be performed that way.
 
 =
 VMETHOD_TYPE(BUILD_SKILL_COMMAND_MTID,
-	build_skill *S, build_step *BS, text_stream *command, build_methodology *meth)
+	build_skill *S, build_step *BS, text_stream *command, build_methodology *meth,
+	linked_list *search)
 IMETHOD_TYPE(BUILD_SKILL_INTERNAL_MTID,
-	build_skill *S, build_step *BS, build_methodology *meth)
+	build_skill *S, build_step *BS, build_methodology *meth, linked_list *search)
 
 @h Build steps.
 These are essentially just skills, but with a docket of contextual data. The
-idea is that a function outside the |supervisor| module can carry out a skill
+idea is that a function outside the //supervisor// module can carry out a skill
 for us using only the contextual information in this structure, without having
 to access any of |inbuild|'s variables directly.
 
@@ -46,7 +47,6 @@ to access any of |inbuild|'s variables directly.
 typedef struct build_step {
 	struct build_skill *what_to_do;
 	struct build_vertex *vertex; /* what to do it to */
-	struct linked_list *search_path; /* of |inbuild_nest| */
 	struct target_vm *for_vm;
 	struct inter_architecture *for_arch;
 	int for_release;
@@ -57,12 +57,11 @@ typedef struct build_step {
 @ We build scripts for a vertex by attaching one step at a time to it:
 
 =
-build_step *BuildSteps::attach(build_vertex *vertex, build_skill *to_do, linked_list *search,
+build_step *BuildSteps::attach(build_vertex *vertex, build_skill *to_do,
 	int rel, target_vm *VM, inter_architecture *arch, inbuild_copy *assoc) {
 	build_step *S = CREATE(build_step);
 	S->what_to_do = to_do;
 	S->vertex = vertex;
-	S->search_path = search;
 	S->for_vm = VM;
 	S->for_arch = arch;
 	if ((VM) && (arch == NULL)) S->for_arch = TargetVMs::get_architecture(VM);
@@ -78,7 +77,8 @@ we are running inside Inbuild at the command line, but not when we are running
 inside the |inform7| executable, where we are silent throughout.
 
 =
-int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM) {
+int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM,
+	linked_list *search_list) {
 	int rv = TRUE;
 	TEMPORARY_TEXT(command);
 	@<Work out a shell command, and perhaps print or call it@>;
@@ -91,13 +91,13 @@ int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM) {
 }
 
 @<Work out a shell command, and perhaps print or call it@> =
-	VMETHOD_CALL(S->what_to_do, BUILD_SKILL_COMMAND_MTID, S, command, BM);
+	VMETHOD_CALL(S->what_to_do, BUILD_SKILL_COMMAND_MTID, S, command, BM, search_list);
 	if (Str::len(command) > 0) rv = BuildSteps::shell(command, BM);
 
 @<Perform the skill internally if that's called for@> =
 	if (BM->methodology == INTERNAL_METHODOLOGY) {
 		int returned = 0;
-		IMETHOD_CALL(returned, S->what_to_do, BUILD_SKILL_INTERNAL_MTID, S, BM);
+		IMETHOD_CALL(returned, S->what_to_do, BUILD_SKILL_INTERNAL_MTID, S, BM, search_list);
 		if (returned != TRUE) rv = FALSE;
 	}
 

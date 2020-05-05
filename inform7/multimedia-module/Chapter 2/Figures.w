@@ -211,7 +211,8 @@ void PL::Figures::write_picture_manifest(OUTPUT_STREAM, int include_cover,
 		if (bf->figure_number > 1) {
 			WRITE("<key>%d</key>\n", bf->figure_number);
 			TEMPORARY_TEXT(rel);
-			Filenames::to_text_relative(rel, bf->filename_of_image_file, Supervisor::materials());
+			Filenames::to_text_relative(rel, bf->filename_of_image_file,
+				Projects::materials_path(Task::project()));
 			WRITE("<string>%S</string>\n", rel);
 			DISCARD_TEXT(rel);
 		}
@@ -335,7 +336,8 @@ void PL::Figures::index_all(OUTPUT_STREAM) {
 			Index::link(OUT, Wordings::first_wn(bf->name));
 
 			TEMPORARY_TEXT(rel);
-			Filenames::to_text_relative(rel, bf->filename_of_image_file, Supervisor::materials());
+			Filenames::to_text_relative(rel, bf->filename_of_image_file,
+				Projects::materials_path(Task::project()));
 			HTML_TAG("br");
 			WRITE("%SFilename: \"%S\" - resource number %d", line2, rel, bf->figure_number);
 			DISCARD_TEXT(rel);

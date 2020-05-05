@@ -24,7 +24,6 @@ void ProjectBundleManager::start(void) {
 	METHOD_ADD(project_bundle_genre, GENRE_CLAIM_AS_COPY_MTID, ProjectBundleManager::claim_as_copy);
 	METHOD_ADD(project_bundle_genre, GENRE_SEARCH_NEST_FOR_MTID, ProjectBundleManager::search_nest_for);
 	METHOD_ADD(project_bundle_genre, GENRE_COPY_TO_NEST_MTID, ProjectBundleManager::copy_to_nest);
-	METHOD_ADD(project_bundle_genre, GENRE_CONSTRUCT_GRAPH_MTID, ProjectBundleManager::construct_graph);
 	METHOD_ADD(project_bundle_genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, ProjectBundleManager::read_source_text_for);
 	METHOD_ADD(project_bundle_genre, GENRE_BUILDING_SOON_MTID, ProjectBundleManager::building_soon);
 }
@@ -98,15 +97,14 @@ void ProjectBundleManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inb
 }
 
 @h Build graph.
+As with extensions, the graph for a project is made only on demand, because to make
+it would mean fully parsing and partially syntax-analysing its source text.
 
 =
 void ProjectBundleManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex **V) {
 	inform_project *project = ProjectBundleManager::from_copy(C);
+	Projects::construct_graph(project);
 	*V = project->chosen_build_target;
-}
-
-void ProjectBundleManager::construct_graph(inbuild_genre *G, inbuild_copy *C) {
-	Projects::construct_graph(ProjectBundleManager::from_copy(C));
 }
 
 @h Source text.

@@ -276,10 +276,9 @@ void Kits::early_source_text(OUTPUT_STREAM, inform_kit *K) {
 	if (K->early_source) WRITE("%S\n\n", K->early_source);
 }
 
-linked_list *Kits::inter_paths(void) {
+linked_list *Kits::inter_paths(linked_list *L) {
 	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
 	inbuild_nest *N;
-	linked_list *L = Supervisor::nest_list();
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
 		ADD_TO_LINKED_LIST(KitManager::path_within_nest(N), pathname, inter_paths);
 	return inter_paths;
@@ -322,8 +321,7 @@ void Kits::construct_graph(inform_kit *K) {
 	LOOP_OVER(A, inter_architecture) {
 		build_vertex *BV = Graphs::file_vertex(Architectures::canonical_binary(P, A));
 		Graphs::need_this_to_build(KV, BV);
-		BuildSteps::attach(BV, assimilate_using_inter_skill,
-			Supervisor::nest_list(), FALSE, NULL, A, K->as_copy);
+		BuildSteps::attach(BV, assimilate_using_inter_skill, FALSE, NULL, A, K->as_copy);
 		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);
 	}
 

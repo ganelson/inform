@@ -29,7 +29,7 @@ void InterSkill::create(void) {
 
 =
 int InterSkill::assimilate_via_shell(build_skill *skill, build_step *S,
-	text_stream *command, build_methodology *BM) {
+	text_stream *command, build_methodology *BM, linked_list *search_list) {
 	inter_architecture *A = S->for_arch;
 	if (A == NULL) internal_error("no architecture given");
 	pathname *kit_path = S->associated_copy->location_if_path;
@@ -49,7 +49,7 @@ or should be, so the effect is the same.
 
 =
 int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
-	build_methodology *BM) {
+	build_methodology *BM, linked_list *search_list) {
 	#ifdef CODEGEN_MODULE
 	inter_architecture *A = S->for_arch;
 	if (A == NULL) internal_error("no architecture given");
@@ -60,7 +60,8 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 	inbuild_requirement *req =
 		Requirements::any_version_of(
 			Works::new(pipeline_genre, I"assimilate.interpipeline", NULL));
-	inbuild_search_result *R = Nests::search_for_best(req, Supervisor::nest_list());
+	inbuild_search_result *R =
+		Nests::search_for_best(req, search_list);
 	if (R == NULL) {
 		Errors::nowhere("assimilate pipeline could not be found");
 		return FALSE;
@@ -105,7 +106,10 @@ it defaults to |compile|.
 
 =
 int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
-	build_methodology *BM) {
+	build_methodology *BM, linked_list *search_list) {
+	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
+	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
+	if (project == NULL) internal_error("no project");
 	#ifdef CODEGEN_MODULE
 	clock_t back_end = clock();
 	CodeGen::Architecture::set(
@@ -120,7 +124,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 		inbuild_requirement *req =
 			Requirements::any_version_of(
 				Works::new(pipeline_genre, inter_pipeline_name, NULL));
-		inbuild_search_result *R = Nests::search_for_best(req, Supervisor::nest_list());
+		inbuild_search_result *R = Nests::search_for_best(req, search_list);
 		if (R == NULL) {
 			Errors::with_text("inter pipeline '%S' could not be found",
 				inter_pipeline_name);
@@ -135,8 +139,8 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	}
 	CodeGen::Pipeline::set_repository(SS, Emit::tree());
 	CodeGen::Pipeline::run(Filenames::up(S->vertex->as_file),
-		SS, Kits::inter_paths(),
-		Projects::list_of_inter_libraries(Supervisor::project()));
+		SS, Kits::inter_paths(Projects::nest_list(project)),
+		Projects::list_of_link_instructions(project));
 	LOG("Back end elapsed time: %dcs\n",
 		((int) (clock() - back_end)) / (CLOCKS_PER_SEC/100));
 	return TRUE;

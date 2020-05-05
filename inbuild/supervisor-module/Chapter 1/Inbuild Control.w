@@ -1,26 +1,23 @@
 [Supervisor::] Inbuild Control.
 
-The top-level controller through which client tools use this module.
+Who shall supervise the supervisor? This section of code will.
 
 @h Phases.
-The |supervisor| module provides services to whichever program is using it:
-recall that the module is included both in |inform7| and in |inbuild| (the
-command line tool), so either of those might be what we call "the client".
+The //supervisor// module provides services to the parent tool.
 
-This section defines how the client communicates with us to get everything
+This section defines how the parent communicates with us to get everything
 set up correctly. Although nothing at all clever happens in this code, it
 requires careful sequencing to avoid invisible errors coming in because
 function X assumes that function Y has already been called, or perhaos that
-it never will be again. The |supervisor| module therefore runs through a
+it never will be again. The //supervisor// module therefore runs through a
 number of named "phases" on its way to reaching fully-operational status,
-at which time the client can freely use its facilities.
+at which time the parent can freely use its facilities.
 
 @e STARTUP_INBUILD_PHASE from 1
 @e CONFIGURATION_INBUILD_PHASE
 @e PRETINKERING_INBUILD_PHASE
 @e TINKERING_INBUILD_PHASE
 @e NESTED_INBUILD_PHASE
-@e PROJECTED_INBUILD_PHASE
 @e TARGETED_INBUILD_PHASE
 @e GRAPH_CONSTRUCTION_INBUILD_PHASE
 @e OPERATIONAL_INBUILD_PHASE
@@ -45,7 +42,7 @@ void Supervisor::enter_phase(int p) {
 }
 
 @h Startup phase.
-The following is called when the |supervisor| module starts up.
+The following is called when the //supervisor// module starts up.
 
 =
 inbuild_genre *extension_genre = NULL;
@@ -77,10 +74,10 @@ void Supervisor::start(void) {
 }
 
 @h Configuration phase.
-Initially, then, we are in the configuration phase. When the client defines
+Initially, then, we are in the configuration phase. When the parent defines
 its command-line options, we expect it to call |Supervisor::declare_options|
 so that we can define further options -- this provides the large set of
-common options found in both |inform7| and |inbuild|, our two possible clients.
+common options found in both |inform7| and |inbuild|, our two possible parents.
 
 =
 void Supervisor::declare_options(void) {
@@ -204,15 +201,8 @@ void Supervisor::set_inter_pipeline(text_stream *name) {
 	WRITE_TO(inter_pipeline_name, "%S", name);
 }
 
-@ |inform7| needs to know this:
-
-=
-int Supervisor::currently_releasing(void) {
-	return this_is_a_release_compile;
-}
-
-@ The |supervisor| module itself doesn't parse command-line options: that's for
-the client to do, using code from Foundation. When the client finds an option
+@ The //supervisor// module itself doesn't parse command-line options: that's for
+the parent to do, using code from Foundation. When the parent finds an option
 it doesn't know about, that will be one of ourse, so it should call the following:
 
 =
@@ -249,7 +239,7 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 }
 
 @ Note that the following has no effect unless the |codegen| module is part
-of the client. In practice, that will be true for |inform7| but not |inbuild|.
+of the parent. In practice, that will be true for |inform7| but not |inbuild|.
 
 @<Set a pipeline variable@> =
 	match_results mr = Regexp::create_mr();
@@ -277,50 +267,39 @@ such as the one used in the Z-machine VM. It works fine in 32-bit cases too.
 Once the tool has finished with the command line, it should call this
 function. Inbuild rapidly runs through the next few phases as it does so.
 From the "nested" phase, the final list of nests in the search path for
-finding kits, extensions and so on exists; from the "projected" phase,
-the main Inform project (if there is one) exists.
+finding kits, extensions and so on exists; from the "targeted" phase,
+the main Inform project (if there is one) exists as a possible build target.
 
-Recall that Inbuild does not need to be dealing with an Inform 7 project
-as a target, but that if it is, then it is the only such. We call this
-the "shared project". There will be lots of other copies known to Inbuild --
-all the kits and extensions needed to build the shared project -- but only
-one project.
-
-The client should set |compile_only| if it just wants to make a basic,
-non-incremental compilation of the project. In practice, |inform7| wants
+The parent should set |compile_only| if it just wants to make a basic,
+non-incremental compilation of any project. In practice, |inform7| wants
 that but |inbuild| does not.
 
-When this call returns to the client, |inbuild| is in the Targeted phase,
-which continues until the client calls |Supervisor::go_operational| (see below).
+When this call returns to the parent, |inbuild| is in the Targeted phase,
+which continues until the parent calls |Supervisor::go_operational| (see below).
 
 =
-inbuild_copy *Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
+void (*shared_preform_callback)(inform_language *);
+
+void Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
 	void (*preform_callback)(inform_language *)) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	inbuild_phase = PRETINKERING_INBUILD_PHASE;
+	shared_preform_callback = preform_callback;
 
 	@<Find the virtual machine@>;
-	inform_project *project = Supervisor::create_shared_project(C);
+	Supervisor::make_project_from_command_line(C);
 	
+	Supervisor::create_default_externals();
 	inbuild_phase = TINKERING_INBUILD_PHASE;
 	Supervisor::sort_nest_list();
 
 	inbuild_phase = NESTED_INBUILD_PHASE;
-	@<Read the definition of the natural language of syntax@>;
-
-	if (project) {
-		Supervisor::pass_kit_requests();
-		Copies::get_source_text(project->as_copy);
-	}
-
-	inbuild_phase = PROJECTED_INBUILD_PHASE;
-	if (project)
-		Projects::construct_build_target(project,
-			Supervisor::current_vm(), this_is_a_release_compile, compile_only);
+	inform_project *proj;
+	LOOP_OVER(proj, inform_project)
+		Projects::set_compilation_options(proj,
+			this_is_a_release_compile, compile_only, rng_seed_at_start_of_play);
 	
 	inbuild_phase = TARGETED_INBUILD_PHASE;
-	if (project) return project->as_copy;
-	return NULL;
 }
 
 @ The VM to be used depends on the settings of all three of |-format|,
@@ -335,30 +314,6 @@ line, which is why we couldn't work this out earlier:
 		with_debugging = TRUE;
 	Supervisor::set_current_vm(TargetVMs::find(ext, with_debugging));
 
-@ The "language of syntax" of a project is the natural language, by default
-English, in which its source text is written.
-
-We scan the available natural languages first. To do that it's sufficient to
-generate a list of search results for all possible languages: each as it
-comes to light will have been recorded as a possibility. We can then simply
-ignore the search results. Note that this can only be done in the Nested
-phase or after, because we need the nests in order to perform a search.
-
-Once that's done, we ask the client to load the Preform grammar for the
-language of the project. For now that's always English, but here is where
-we would attempt to detect the language of syntax if we could.
-
-@<Read the definition of the natural language of syntax@> =
-	inbuild_requirement *req = Requirements::anything_of_genre(language_genre);
-	linked_list *L = NEW_LINKED_LIST(inbuild_search_result);
-	Nests::search_for(req, Supervisor::nest_list(), L);
-	if (project) {
-		Projects::set_to_English(project);
-		(*preform_callback)(Projects::get_language_of_syntax(project));
-	} else {
-		(*preform_callback)(Languages::internal_English());
-	}
-
 @ =
 target_vm *current_target_VM = NULL;
 target_vm *Supervisor::current_vm(void) {
@@ -371,30 +326,24 @@ void Supervisor::set_current_vm(target_vm *VM) {
 }
 
 @h The Graph Construction and Operational phases.
-|inbuild| is now in the Targeted phase, then, meaning that the client has
+|inbuild| is now in the Targeted phase, then, meaning that the parent has
 called |Supervisor::optioneering_complete| and has been making further
 preparations of its own. (For example, it could attach further kit
-dependencies to the shared project.) The client has one further duty to
+dependencies to the shared project.) The parent has one further duty to
 perform: to call |Supervisor::go_operational|. After that, everything is ready
 for use.
 
 The brief "graph construction" phase is used to build out dependency graphs.
-We do that copy by copy. The shared project, if there is one, goes first;
-then everything else known to us.
+We do that copy by copy.
 
 =
-inform_project *Supervisor::go_operational(void) {
+void Supervisor::go_operational(void) {
 	RUN_ONLY_IN_PHASE(TARGETED_INBUILD_PHASE)
 	inbuild_phase = GRAPH_CONSTRUCTION_INBUILD_PHASE;
-	inform_project *P = Supervisor::project();
-	if (P) Copies::construct_graph(P->as_copy);
 	inbuild_copy *C;
-	LOOP_OVER(C, inbuild_copy)
-		if ((P == NULL) || (C != P->as_copy))
-			Copies::construct_graph(C);
+	LOOP_OVER(C, inbuild_copy) Copies::construct_graph(C);
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
 	if (census_mode) Extensions::Census::handle_census_mode();
-	return Supervisor::project();
 }
 
 @h The nest list.
@@ -417,10 +366,13 @@ used by applications, so |-transient| can be used to divert these.
 
 (c) Every project has its own private nest, in the form of its associated
 Materials folder. For example, in |Jane Eyre.inform| is a project, then
-alongside it is |Jane Eyre.materials| and this is a nest.
+alongside it is |Jane Eyre.materials| and this is a nest. The shared nest
+list contains no Materials folders; each individual project has its own
+search list of nests which contains its own Materials and then the shared
+list from there on.
 
 @ Inform customarily has exactly one |-internal| and one |-external| nest,
-but in fact any number of each are allowed, including none. However, the
+but in fact any number of each is allowed, including none. However, the
 first to be declared are used by the compiler as "the" internal and external
 nests, respectively.
 
@@ -430,7 +382,6 @@ The following hold the nests in declaration order.
 linked_list *unsorted_nest_list = NULL;
 inbuild_nest *shared_internal_nest = NULL;
 inbuild_nest *shared_external_nest = NULL;
-inbuild_nest *shared_materials_nest = NULL;
 
 inbuild_nest *Supervisor::add_nest(pathname *P, int tag) {
 	RUN_ONLY_BEFORE_PHASE(TINKERING_INBUILD_PHASE)
@@ -447,9 +398,24 @@ inbuild_nest *Supervisor::add_nest(pathname *P, int tag) {
 	return N;
 }
 
-@ It is then sorted in tag order. This is so that if we look for, say, an
-extension with a given name, then results in a project's materials folder
-are given precedence over those in the external folder, and so on.
+void Supervisor::create_default_externals(void) {
+	RUN_ONLY_BEFORE_PHASE(TINKERING_INBUILD_PHASE)
+	inbuild_nest *E = shared_external_nest;
+	if (E == NULL) {
+		pathname *P = home_path;
+		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
+		if (subfolder_within[0]) {
+			TEMPORARY_TEXT(SF);
+			WRITE_TO(SF, "%s", subfolder_within);
+			P = Pathnames::down(home_path, SF);
+			DISCARD_TEXT(SF);
+		}
+		P = Pathnames::down(P, I"Inform");
+		E = Supervisor::add_nest(P, EXTERNAL_NEST_TAG);
+	}
+}
+
+@ It is then sorted in tag order:
 
 =
 linked_list *shared_nest_list = NULL;
@@ -474,7 +440,7 @@ void Supervisor::sort_nest_list(void) {
 @ And the rest of Inform or Inbuild can now use:
 
 =
-linked_list *Supervisor::nest_list(void) {
+linked_list *Supervisor::shared_nest_list(void) {
 	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
 	if (shared_nest_list == NULL) internal_error("nest list never sorted");
 	return shared_nest_list;
@@ -490,24 +456,13 @@ inbuild_nest *Supervisor::external(void) {
 	return shared_external_nest;
 }
 
-pathname *Supervisor::materials(void) {
-	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
-	if (shared_materials_nest == NULL) return NULL;
-	return shared_materials_nest->location;
-}
-
-inbuild_nest *Supervisor::materials_nest(void) {
-	RUN_ONLY_FROM_PHASE(NESTED_INBUILD_PHASE)
-	return shared_materials_nest;
-}
-
 @ As noted above, the transient area is used for ephemera such as dynamically
 written documentation and telemetry files. |-transient| sets it, but otherwise
 the external nest is used.
 
 =
 pathname *Supervisor::transient(void) {
-	RUN_ONLY_FROM_PHASE(PROJECTED_INBUILD_PHASE)
+	RUN_ONLY_FROM_PHASE(TINKERING_INBUILD_PHASE)
 	if (shared_transient_resources == NULL)
 		if (shared_external_nest)
 			return shared_external_nest->location;
@@ -539,7 +494,7 @@ int Supervisor::set_I7_source(text_stream *loc) {
 @ If we are given a |-project| on the command line, we can then work out
 where its Materials folder is, and therefore where any expert settings files
 would be. Note that the name of the expert settings file depends on the name
-of the client, i.e., it will be |inform7-settings.txt| or |inbuild-settings.txt|
+of the parent, i.e., it will be |inform7-settings.txt| or |inbuild-settings.txt|
 depending on who's asking.
 
 =
@@ -547,8 +502,9 @@ int Supervisor::set_I7_bundle(text_stream *loc) {
 	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
 	if (Str::len(project_bundle_request) > 0) return FALSE;
 	project_bundle_request = Str::duplicate(loc);
-	pathname *pathname_of_bundle = Pathnames::from_text(project_bundle_request);
-	pathname *materials = Supervisor::pathname_of_materials(pathname_of_bundle);
+	pathname *P = Pathnames::from_text(project_bundle_request);
+	pathname *materials = Projects::materialise_pathname(
+		Pathnames::up(P), Pathnames::directory_name(P));
 	TEMPORARY_TEXT(leaf);
 	WRITE_TO(leaf, "%s-settings.txt", PROGRAM_NAME);
 	filename *expert_settings = Filenames::in(materials, leaf);
@@ -558,103 +514,36 @@ int Supervisor::set_I7_bundle(text_stream *loc) {
 	return TRUE;
 }
 
-@ If a bundle is found, then by default the source text within it is called
-|story.ni|. The |.ni| is an anachronism now, but at one time stood for
-"natural Inform", the working title for Inform 7 in the early 2000s.
+@ This is a deceptively simple-looking function, which took a lot of time
+to get right. The situation is that the parent tool may already have
+identified a copy |C| to be the main Inform project of this run, or it may not.
+If it has, we ignore |-project| but apply |-source| to change its source text
+location. If it hasn't, we create a project using |-project| if possible,
+|-source| if not, and in either case apply |-source| to the result.
 
 =
-inform_project *shared_project = NULL;
-
-inform_project *Supervisor::create_shared_project(inbuild_copy *C) {
+void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 	RUN_ONLY_IN_PHASE(PRETINKERING_INBUILD_PHASE)
-	filename *filename_of_i7_source = NULL;
-	pathname *pathname_of_bundle = NULL;
-	if (Str::len(project_bundle_request) > 0) {
-		pathname_of_bundle = Pathnames::from_text(project_bundle_request);
+
+	filename *F = NULL; /* result of |-source| at the command line */
+	pathname *P = NULL; /* result of |-project| at the command line */
+	if (Str::len(project_bundle_request) > 0)
+		P = Pathnames::from_text(project_bundle_request);
+	if (Str::len(project_file_request) > 0)
+		F = Filenames::from_text(project_file_request);
+	if (C == NULL) {
+		if (P) C = ProjectBundleManager::claim_folder_as_copy(P);
+		else if (F) C = ProjectFileManager::claim_file_as_copy(F);
 	}
-	if (Str::len(project_file_request) > 0) {
-		filename_of_i7_source = Filenames::from_text(project_file_request);
-	}
+	inform_project *proj = NULL;
 	if (C) {
-		pathname_of_bundle = C->location_if_path;
-		filename_of_i7_source = C->location_if_file;
+		if (C->edition->work->genre == project_bundle_genre)
+			proj = ProjectBundleManager::from_copy(C);
+		else if (C->edition->work->genre == project_file_genre)
+			proj = ProjectFileManager::from_copy(C);
+		else internal_error("chosen project is not a project");
+		if (F) Projects::set_primary_source(proj, F);
 	}
-	if ((pathname_of_bundle) && (filename_of_i7_source == NULL))
-		filename_of_i7_source =
-			Filenames::in(
-				Pathnames::down(pathname_of_bundle, I"Source"),
-				I"story.ni");
-	if (pathname_of_bundle) {
-		if (C == NULL) C = ProjectBundleManager::claim_folder_as_copy(pathname_of_bundle);
-		shared_project = ProjectBundleManager::from_copy(C);
-	} else if (filename_of_i7_source) {
-		if (C == NULL) C = ProjectFileManager::claim_file_as_copy(filename_of_i7_source);
-		shared_project = ProjectFileManager::from_copy(C);
-	}
-	@<Create the default externals nest@>;
-	@<Create the materials nest@>;
-	if (shared_project) {
-		pathname *P = (shared_materials_nest)?(shared_materials_nest->location):NULL;
-		if (P) P = Pathnames::down(P, I"Source");
-		if (Str::len(project_file_request) > 0) P = NULL;
-		Projects::set_source_filename(shared_project, P, filename_of_i7_source);
-		if (rng_seed_at_start_of_play != 0)
-			Projects::fix_rng(shared_project, rng_seed_at_start_of_play);
-	}
-	return shared_project;
-}
-
-@<Create the default externals nest@> =
-	inbuild_nest *E = shared_external_nest;
-	if (E == NULL) {
-		pathname *P = home_path;
-		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
-		if (subfolder_within[0]) {
-			TEMPORARY_TEXT(SF);
-			WRITE_TO(SF, "%s", subfolder_within);
-			P = Pathnames::down(home_path, SF);
-			DISCARD_TEXT(SF);
-		}
-		P = Pathnames::down(P, I"Inform");
-		E = Supervisor::add_nest(P, EXTERNAL_NEST_TAG);
-	}
-
-@<Create the materials nest@> =
-	pathname *materials = NULL;
-	if (pathname_of_bundle) {
-		materials = Supervisor::pathname_of_materials(pathname_of_bundle);
-		Pathnames::create_in_file_system(materials);
-	} else if (filename_of_i7_source) {
-		materials = Pathnames::from_text(I"inform.materials");
-	}
-	if (materials) {
-		shared_materials_nest = Supervisor::add_nest(materials, MATERIALS_NEST_TAG);
-	}
-
-@ And the rest of Inform or Inbuild can now use:
-
-=
-inform_project *Supervisor::project(void) {
-	RUN_ONLY_FROM_PHASE(TINKERING_INBUILD_PHASE)
-	return shared_project;
-}
-
-@ The materials folder sits alongside the project folder and has the same name,
-but ending |.materials| instead of |.inform|.
-
-=
-pathname *Supervisor::pathname_of_materials(pathname *pathname_of_bundle) {
-	TEMPORARY_TEXT(mf);
-	WRITE_TO(mf, "%S", Pathnames::directory_name(pathname_of_bundle));
-	int i = Str::len(mf)-1;
-	while ((i>0) && (Str::get_at(mf, i) != '.')) i--;
-	if (i>0) {
-		Str::truncate(mf, i);
-		WRITE_TO(mf, ".materials");
-	}
-	pathname *materials = Pathnames::down(Pathnames::up(pathname_of_bundle), mf);
-	DISCARD_TEXT(mf);
-	return materials;
 }
 
 @h Kit requests.
@@ -675,14 +564,12 @@ void Supervisor::request_kit(text_stream *name) {
 	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested_at_command_line);
 }
 
-void Supervisor::pass_kit_requests(void) {
+void Supervisor::pass_kit_requests(inform_project *proj) {
 	RUN_ONLY_IN_PHASE(NESTED_INBUILD_PHASE)
-	if ((shared_project) && (kits_requested_at_command_line)) {
+	if ((proj) && (kits_requested_at_command_line)) {
 		text_stream *kit_name;
-		LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line) {
-			Projects::add_kit_dependency(shared_project, kit_name, NULL, NULL);
-			Projects::not_necessarily_parser_IF(shared_project);
-		}
+		LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line)
+			Projects::add_kit_dependency(proj, kit_name, NULL, NULL);
 	}
 }
 
@@ -693,7 +580,7 @@ what interactive fiction is. They're never written to, only read. They are
 stored in subdirectories called |Miscellany| or |HTML| of the internal nest;
 but they're just plain old files, and are not managed by Inbuild as "copies".
 
-Our client can access these files using the following function:
+Our parent can access these files using the following function:
 
 @e CBLORB_REPORT_MODEL_IRES from 1
 @e DOCUMENTATION_SNIPPETS_IRES
