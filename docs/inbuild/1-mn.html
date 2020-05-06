@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inbuild</a></li><li><a href="index.html#1">Chapter 1: Outside of inform7</a></li><li><b>Main</b></li></ul></div>
 <p class="purpose">A command-line interface for Inbuild functions which are not part of the normal operation of the Inform compiler.</p>
 
-<ul class="toc"><li><a href="1-mn.html#SP1">&#167;1. Settings variables</a></li><li><a href="1-mn.html#SP2">&#167;2. Main routine</a></li><li><a href="1-mn.html#SP2_6">&#167;2.6. Target list</a></li><li><a href="1-mn.html#SP2_7">&#167;2.7. Command line</a></li><li><a href="1-mn.html#SP5">&#167;5. Interface to Words module</a></li><li><a href="1-mn.html#SP6">&#167;6. Interface to Syntax module</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="1-mn.html#SP1">&#167;1. Settings variables</a></li><li><a href="1-mn.html#SP2">&#167;2. Main routine</a></li><li><a href="1-mn.html#SP2_6">&#167;2.6. Target list</a></li><li><a href="1-mn.html#SP2_7">&#167;2.7. Command line</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Settings variables. </b>The following will be set at the command line.
 </p>
@@ -463,18 +463,6 @@ subordinate to any switch; we take it as the name of a copy.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::bareword</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Main::bareword</span></span>:<br/><a href="1-mn.html#SP2_7">&#167;2.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="1-mn.html#SP2_6" class="function-link"><span class="function-syntax">Main::add_file_or_path_as_target</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Interface to Words module. </b>We use the mighty Preform natural-language parser only a little when
-Inbuild runs on its own, but it needs to be told what C type to use when
-identifying natural languages.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_LANGUAGE_TYPE</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">inform_language</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Interface to Syntax module. </b>Again, we make a fairly light use of <span class="extract"><span class="extract-syntax">syntax</span></span> when Inbuild runs alone.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PARSE_TREE_METADATA_SETUP</span><span class="plain-syntax"> </span><a href="../supervisor-module/6-st.html#SP7" class="function-link"><span class="function-syntax">SourceText::node_metadata</span></a>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-rc.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">mn</li><li class="progressnextoff">&#10095;</li></ul></div>

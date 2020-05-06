@@ -48,7 +48,7 @@ So we carry out the sentence breaking with a simple finite state machine --
 the last sentence having been a rule preamble tells us that the current one
 is probably a phrase, and so on -- and the following is its state.
 
-@default COPY_FILE_TYPE void
+@default SYNTAX_PROBLEM_REF_TYPE void
 
 =
 source_file *sfsm_source_file = NULL;
@@ -56,7 +56,7 @@ int sfsm_inside_rule_mode = FALSE;
 int sfsm_skipping_material_at_level = -1;
 int sfsm_in_tabbed_mode = FALSE;
 int sfsm_main_source_start_wn = -1;
-COPY_FILE_TYPE *sfsm_copy = NULL;
+SYNTAX_PROBLEM_REF_TYPE *sfsm_copy = NULL;
 void *sfsm_project = NULL;
 
 void Sentences::set_start_of_source(int wn) {
@@ -72,17 +72,17 @@ finite state machine.
 void Sentences::break(parse_node_tree *T, wording W) {
 	Sentences::break_inner(T, W, FALSE, NULL, NULL);
 }
-void Sentences::break_into_project_copy(parse_node_tree *T, wording W, COPY_FILE_TYPE *C,
+void Sentences::break_into_project_copy(parse_node_tree *T, wording W, SYNTAX_PROBLEM_REF_TYPE *C,
 	void *build_project) {
 	Sentences::break_inner(T, W, FALSE, C, build_project);
 }
-void Sentences::break_into_extension_copy(parse_node_tree *T, wording W, COPY_FILE_TYPE *C,
+void Sentences::break_into_extension_copy(parse_node_tree *T, wording W, SYNTAX_PROBLEM_REF_TYPE *C,
 	void *build_project) {
 	Sentences::break_inner(T, W, TRUE, C, build_project);
 }
 
 void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension,
-	COPY_FILE_TYPE *from_copy, void *build_project) {
+	SYNTAX_PROBLEM_REF_TYPE *from_copy, void *build_project) {
 	while (((Wordings::nonempty(W))) && (compare_word(Wordings::first_wn(W), PARBREAK_V)))
 		W = Wordings::trim_first_word(W);
 	if (Wordings::empty(W)) return;
@@ -142,7 +142,7 @@ since their entries are governed by different lexical and semantic rules.)
 
 @<Go into table sentence mode if necessary@> =
 	if ((<structural-sentence>(Wordings::from(W, sentence_start))) &&
-		(ParseTree::test_flag(ssnt, TABBED_CONTENT_NFLAG)))
+		(ParseTree::test_flag(ssnt, TABBED_NFLAG)))
 		sfsm_in_tabbed_mode = TRUE;
 	else
 		sfsm_in_tabbed_mode = FALSE;

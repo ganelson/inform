@@ -222,8 +222,8 @@ typedef struct parse_tree_node_type {
 
 @ The bitmap of node flags begins with:
 
-@d DONT_VISIT_NFLAG     	0x00000001 /* not visited in traverses */
-@d TABBED_CONTENT_NFLAG		0x00000002 /* contains tab-delimited lists */
+@d DONT_VISIT_NFLAG 0x00000001 /* not visited in traverses */
+@d TABBED_NFLAG		0x00000002 /* contains tab-delimited lists */
 
 @ Various modules conventionally use this global setting to toggle debugging
 log output:
@@ -239,27 +239,38 @@ Note that the sequence here must exactly match the enumeration above.
 =
 parse_tree_node_type parse_tree_node_types[NO_DEFINED_NT_VALUES];
 
-void ParseTree::md(parse_tree_node_type ptnt) {
-	if (ParseTree::valid_type(ptnt.identity) == FALSE) internal_error("set bad metadata");
-	parse_tree_node_types[ptnt.identity - BASE_OF_ENUMERATED_NTS] = ptnt;
+void ParseTree::md(node_type_t identity, char *node_type_name, int min_children,
+	int max_children, int category, int node_flags) {
+	if (ParseTree::valid_type(identity) == FALSE) internal_error("set bad metadata");
+	parse_tree_node_type *ptnt =
+		&(parse_tree_node_types[identity - BASE_OF_ENUMERATED_NTS]);
+	ptnt->identity = identity;
+	ptnt->node_type_name = node_type_name;
+	ptnt->min_children = min_children;
+	ptnt->max_children = max_children;
+	ptnt->category = category;
+	ptnt->node_flags = node_flags;
 }
 
 @ =
 void ParseTree::metadata_setup(void) {
-	ParseTree::md((parse_tree_node_type) { INVALID_NT, "(INVALID_NT)",		0, INFTY,	INVALID_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { ROOT_NT, "ROOT_NT",				0, INFTY,	L1_NCAT, DONT_VISIT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { INCLUSION_NT, "INCLUSION_NT",	0, INFTY,	L1_NCAT, DONT_VISIT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { HEADING_NT, "HEADING_NT",		0, INFTY,	L1_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { INCLUDE_NT, "INCLUDE_NT",		0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { BEGINHERE_NT, "BEGINHERE_NT",	0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { ENDHERE_NT, "ENDHERE_NT",		0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { SENTENCE_NT, "SENTENCE_NT",		0, INFTY,	L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { AMBIGUITY_NT, "AMBIGUITY_NT",	0, INFTY,	L1_NCAT, 0 });
+	ParseTree::md(INVALID_NT, "(INVALID_NT)",	0, INFTY,	INVALID_NCAT, 0);
+	ParseTree::md(ROOT_NT, "ROOT_NT",			0, INFTY,	L1_NCAT, DONT_VISIT_NFLAG);
+	ParseTree::md(INCLUSION_NT, "INCLUSION_NT",	0, INFTY,	L1_NCAT, DONT_VISIT_NFLAG);
+	ParseTree::md(HEADING_NT, "HEADING_NT",		0, INFTY,	L1_NCAT, 0);
+	ParseTree::md(INCLUDE_NT, "INCLUDE_NT",		0, 0,		L2_NCAT, 0);
+	ParseTree::md(BEGINHERE_NT, "BEGINHERE_NT",	0, 0,		L2_NCAT, 0);
+	ParseTree::md(ENDHERE_NT, "ENDHERE_NT",		0, 0,		L2_NCAT, 0);
+	ParseTree::md(SENTENCE_NT, "SENTENCE_NT",   0, INFTY,	L2_NCAT, 0);
+	ParseTree::md(AMBIGUITY_NT, "AMBIGUITY_NT",	0, INFTY,	L1_NCAT, 0);
 	#ifdef UNKNOWN_NT
-	ParseTree::md((parse_tree_node_type) { UNKNOWN_NT, "UNKNOWN_NT", 0, INFTY, L3_NCAT, 0 });
+	ParseTree::md(UNKNOWN_NT, "UNKNOWN_NT",     0, INFTY,   L3_NCAT, 0);
 	#endif
-	#ifdef PARSE_TREE_METADATA_SETUP
-	PARSE_TREE_METADATA_SETUP();
+	#ifdef SYNTAX_TREE_METADATA_SETUP
+	SYNTAX_TREE_METADATA_SETUP();
+	#endif
+	#ifdef SYNTAX_TREE_FURTHER_METADATA_SETUP
+	SYNTAX_TREE_FURTHER_METADATA_SETUP();
 	#endif
 }
 

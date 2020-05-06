@@ -58,7 +58,7 @@ int my_first_verb = TRUE;
 
 void Unit::start_diagrams(void) {
 	trace_sentences = TRUE;
-	ParseTree::md((parse_tree_node_type) { UNKNOWN_NT, "UNKNOWN_NT", 0, INFTY, L2_NCAT, 0 });
+	ParseTree::md(UNKNOWN_NT, "UNKNOWN_NT", 0, INFTY, L2_NCAT, 0);
 }
 
 parse_node_tree *syntax_tree = NULL;

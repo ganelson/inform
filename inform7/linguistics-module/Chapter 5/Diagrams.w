@@ -22,14 +22,14 @@ To construct standard verb-phrase nodes in the parse tree.
 
 =
 void Diagrams::setup(void) {
-	ParseTree::md((parse_tree_node_type) { AVERB_NT, "AVERB_NT", 0, 0, L3_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { RELATIONSHIP_NT, "RELATIONSHIP_NT",	   					0, 2,		L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { CALLED_NT, "CALLED_NT",				   					2, 2,		L3_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { WITH_NT, "WITH_NT",					   					2, 2,		L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { AND_NT, "AND_NT",						   					2, 2,		L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { KIND_NT, "KIND_NT",				       					0, 1,		L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { PROPER_NOUN_NT, "PROPER_NOUN_NT",		   					0, 0,		L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { PROPERTY_LIST_NT, "PROPERTY_LIST_NT",	   					0, INFTY,	L3_NCAT, ASSERT_NFLAG });
+	ParseTree::md(AVERB_NT, "AVERB_NT",                 0, 0,     L3_NCAT, 0);
+	ParseTree::md(RELATIONSHIP_NT, "RELATIONSHIP_NT",   0, 2,	  L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(CALLED_NT, "CALLED_NT",               2, 2,	  L3_NCAT, 0);
+	ParseTree::md(WITH_NT, "WITH_NT",                   2, 2,	  L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(AND_NT, "AND_NT",                     2, 2,	  L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(KIND_NT, "KIND_NT",                   0, 1,     L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(PROPER_NOUN_NT, "PROPER_NOUN_NT",     0, 0,	  L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(PROPERTY_LIST_NT, "PROPERTY_LIST_NT", 0, INFTY, L3_NCAT, ASSERT_NFLAG);
 	ParseTree::allow_annotation(AVERB_NT, verbal_certainty_ANNOT);
 	ParseTree::allow_annotation(AVERB_NT, sentence_is_existential_ANNOT);
 	ParseTree::allow_annotation(AVERB_NT, possessive_verb_ANNOT);

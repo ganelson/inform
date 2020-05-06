@@ -367,15 +367,3 @@ subordinate to any switch; we take it as the name of a copy.
 void Main::bareword(int id, text_stream *arg, void *state) {
 	Main::add_file_or_path_as_target(arg, TRUE);
 }
-
-@h Interface to Words module.
-We use the mighty Preform natural-language parser only a little when
-Inbuild runs on its own, but it needs to be told what C type to use when
-identifying natural languages.
-
-@d PREFORM_LANGUAGE_TYPE struct inform_language
-
-@h Interface to Syntax module.
-Again, we make a fairly light use of |syntax| when Inbuild runs alone.
-
-@d PARSE_TREE_METADATA_SETUP SourceText::node_metadata

@@ -101,57 +101,55 @@ also makes it easier for us to manipulate the results.
 
 @
 
-@d PARSE_TREE_METADATA_SETUP ParseTreeUsage::md
+@d SYNTAX_TREE_FURTHER_METADATA_SETUP ParseTreeUsage::md
 
 =
 void ParseTreeUsage::md(void) {
     /* first, the structural nodes: */
-	SourceText::node_metadata();
+	ParseTree::md(ALLOWED_NT, "ALLOWED_NT",				   					1, 1,		L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(EVERY_NT, "EVERY_NT", 				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(COMMON_NOUN_NT, "COMMON_NOUN_NT",		   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(ACTION_NT, "ACTION_NT",				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(ADJECTIVE_NT, "ADJECTIVE_NT",			   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(PROPERTYCALLED_NT, "PROPERTYCALLED_NT",  					2, 2,		L3_NCAT, 0);
+	ParseTree::md(TOKEN_NT, "TOKEN_NT",					   					0, INFTY,	L3_NCAT, 0);
+	ParseTree::md(X_OF_Y_NT, "X_OF_Y_NT",				   					2, 2,		L3_NCAT, ASSERT_NFLAG);
+	ParseTree::md(CREATED_NT, "CREATED_NT",				  					0, 0,		L3_NCAT, ASSERT_NFLAG);
 
-	ParseTree::md((parse_tree_node_type) { ALLOWED_NT, "ALLOWED_NT",				   					1, 1,		L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { EVERY_NT, "EVERY_NT", 				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { COMMON_NOUN_NT, "COMMON_NOUN_NT",		   					0, INFTY,	L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { ACTION_NT, "ACTION_NT",				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { ADJECTIVE_NT, "ADJECTIVE_NT",			   					0, INFTY,	L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { PROPERTYCALLED_NT, "PROPERTYCALLED_NT",  					2, 2,		L3_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TOKEN_NT, "TOKEN_NT",					   					0, INFTY,	L3_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { X_OF_Y_NT, "X_OF_Y_NT",				   					2, 2,		L3_NCAT, ASSERT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { CREATED_NT, "CREATED_NT",				  					0, 0,		L3_NCAT, ASSERT_NFLAG });
-
-	ParseTree::md((parse_tree_node_type) { CODE_BLOCK_NT, "CODE_BLOCK_NT",	       					0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { INVOCATION_LIST_NT, "INVOCATION_LIST_NT",		   			0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { INVOCATION_LIST_SAY_NT, "INVOCATION_LIST_SAY_NT",		    0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { INVOCATION_NT, "INVOCATION_NT",		   					0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { VOID_CONTEXT_NT, "VOID_CONTEXT_NT", 						0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { RVALUE_CONTEXT_NT, "RVALUE_CONTEXT_NT", 					0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { LVALUE_CONTEXT_NT, "LVALUE_CONTEXT_NT", 					0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { LVALUE_TR_CONTEXT_NT, "LVALUE_TR_CONTEXT_NT", 			0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { SPECIFIC_RVALUE_CONTEXT_NT, "SPECIFIC_RVALUE_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { MATCHING_RVALUE_CONTEXT_NT, "MATCHING_RVALUE_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { NEW_LOCAL_CONTEXT_NT, "NEW_LOCAL_CONTEXT_NT",				0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { LVALUE_LOCAL_CONTEXT_NT, "LVALUE_LOCAL_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { CONDITION_CONTEXT_NT, "CONDITION_CONTEXT_NT",				0, INFTY,	L4_NCAT, 0 });
+	ParseTree::md(CODE_BLOCK_NT, "CODE_BLOCK_NT",	       					0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(INVOCATION_LIST_NT, "INVOCATION_LIST_NT",		   			0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(INVOCATION_LIST_SAY_NT, "INVOCATION_LIST_SAY_NT",		    0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(INVOCATION_NT, "INVOCATION_NT",		   					0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(VOID_CONTEXT_NT, "VOID_CONTEXT_NT", 						0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(RVALUE_CONTEXT_NT, "RVALUE_CONTEXT_NT", 					0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(LVALUE_CONTEXT_NT, "LVALUE_CONTEXT_NT", 					0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(LVALUE_TR_CONTEXT_NT, "LVALUE_TR_CONTEXT_NT", 			0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(SPECIFIC_RVALUE_CONTEXT_NT, "SPECIFIC_RVALUE_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(MATCHING_RVALUE_CONTEXT_NT, "MATCHING_RVALUE_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(NEW_LOCAL_CONTEXT_NT, "NEW_LOCAL_CONTEXT_NT",				0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(LVALUE_LOCAL_CONTEXT_NT, "LVALUE_LOCAL_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0);
+	ParseTree::md(CONDITION_CONTEXT_NT, "CONDITION_CONTEXT_NT",				0, INFTY,	L4_NCAT, 0);
 
 	/* now the specification nodes: */
 
-	ParseTree::md((parse_tree_node_type) { UNKNOWN_NT, "UNKNOWN_NT", 								0, 0,		UNKNOWN_NCAT, 0 });
+	ParseTree::md(UNKNOWN_NT, "UNKNOWN_NT", 								0, 0,		UNKNOWN_NCAT, 0);
 
-	ParseTree::md((parse_tree_node_type) { CONSTANT_NT, "CONSTANT_NT", 							0, 0,		RVALUE_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { PHRASE_TO_DECIDE_VALUE_NT, "PHRASE_TO_DECIDE_VALUE_NT",	1, 1,		RVALUE_NCAT, PHRASAL_NFLAG });
+	ParseTree::md(CONSTANT_NT, "CONSTANT_NT", 							0, 0,		RVALUE_NCAT, 0);
+	ParseTree::md(PHRASE_TO_DECIDE_VALUE_NT, "PHRASE_TO_DECIDE_VALUE_NT",	1, 1,		RVALUE_NCAT, PHRASAL_NFLAG);
 
-	ParseTree::md((parse_tree_node_type) { LOCAL_VARIABLE_NT, "LOCAL_VARIABLE_NT", 				0, 0,		LVALUE_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { NONLOCAL_VARIABLE_NT, "NONLOCAL_VARIABLE_NT", 			0, 0,		LVALUE_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { PROPERTY_VALUE_NT, "PROPERTY_VALUE_NT", 				2, 2,		LVALUE_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TABLE_ENTRY_NT, "TABLE_ENTRY_NT", 						1, 4,		LVALUE_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { LIST_ENTRY_NT, "LIST_ENTRY_NT", 						2, 2,		LVALUE_NCAT, 0 });
+	ParseTree::md(LOCAL_VARIABLE_NT, "LOCAL_VARIABLE_NT", 				0, 0,		LVALUE_NCAT, 0);
+	ParseTree::md(NONLOCAL_VARIABLE_NT, "NONLOCAL_VARIABLE_NT", 			0, 0,		LVALUE_NCAT, 0);
+	ParseTree::md(PROPERTY_VALUE_NT, "PROPERTY_VALUE_NT", 				2, 2,		LVALUE_NCAT, 0);
+	ParseTree::md(TABLE_ENTRY_NT, "TABLE_ENTRY_NT", 						1, 4,		LVALUE_NCAT, 0);
+	ParseTree::md(LIST_ENTRY_NT, "LIST_ENTRY_NT", 						2, 2,		LVALUE_NCAT, 0);
 
-	ParseTree::md((parse_tree_node_type) { LOGICAL_NOT_NT, "LOGICAL_NOT_NT", 						1, 1,		COND_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { LOGICAL_TENSE_NT, "LOGICAL_TENSE_NT", 					1, 1,		COND_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { LOGICAL_AND_NT, "LOGICAL_AND_NT", 						2, 2,		COND_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { LOGICAL_OR_NT, "LOGICAL_OR_NT", 						2, 2,		COND_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TEST_PROPOSITION_NT, "TEST_PROPOSITION_NT", 			0, 0,		COND_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TEST_PHRASE_OPTION_NT, "TEST_PHRASE_OPTION_NT", 		0, 0, 		COND_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TEST_VALUE_NT, "TEST_VALUE_NT", 						1, 1,		COND_NCAT, 0 });
+	ParseTree::md(LOGICAL_NOT_NT, "LOGICAL_NOT_NT", 						1, 1,		COND_NCAT, 0);
+	ParseTree::md(LOGICAL_TENSE_NT, "LOGICAL_TENSE_NT", 					1, 1,		COND_NCAT, 0);
+	ParseTree::md(LOGICAL_AND_NT, "LOGICAL_AND_NT", 						2, 2,		COND_NCAT, 0);
+	ParseTree::md(LOGICAL_OR_NT, "LOGICAL_OR_NT", 						2, 2,		COND_NCAT, 0);
+	ParseTree::md(TEST_PROPOSITION_NT, "TEST_PROPOSITION_NT", 			0, 0,		COND_NCAT, 0);
+	ParseTree::md(TEST_PHRASE_OPTION_NT, "TEST_PHRASE_OPTION_NT", 		0, 0, 		COND_NCAT, 0);
+	ParseTree::md(TEST_VALUE_NT, "TEST_VALUE_NT", 						1, 1,		COND_NCAT, 0);
 }
 
 @

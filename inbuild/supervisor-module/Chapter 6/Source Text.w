@@ -3,14 +3,38 @@
 Code for reading Inform 7 source text, which Inbuild uses for both extensions
 and projects.
 
-@ This short function is a bridge to the lexer, and is used for reading
-text files of source into either projects or extensions. Note that it
-doesn't attach the fed text to the copy: the copy may need to contain text
-from multiple files and indeed from elsewhere.
+@h Bridge to the Lexer.
+Firstly, we need to tell the //words// module what type to use when referencing
+natural languages.
+
+@d PREFORM_LANGUAGE_TYPE struct inform_language
+
+@ Lexical errors -- overly long words, half-open quotations, and such -- are
+converted into copy errors and attached to the copy currently being worked on.
+The following callback function performs that service.
+
+//words// has no convenient way to keep track of what copy we're working on,
+so we will simply store it in a global variable.
+
+@d LEXER_PROBLEM_HANDLER SourceText::lexer_problem_handler
 
 =
 inbuild_copy *currently_lexing_into = NULL;
+void SourceText::lexer_problem_handler(int err, text_stream *desc, wchar_t *word) {
+	if (err == MEMORY_OUT_LEXERERROR)
+		Errors::fatal("Out of memory: unable to create lexer workspace");
+    if (currently_lexing_into) {
+		copy_error *CE = CopyErrors::new_WT(LEXER_CE, err, word, desc);
+		Copies::attach_error(currently_lexing_into, CE);
+    }
+}
 
+@ This next function is our bridge to the lexer (see //words: Text From Files//),
+and is used for reading text files of source into either projects or extensions.
+Note that it doesn't attach the fed text to the copy: the caller must do that,
+perhaps combining our feed with that of others.
+
+=
 source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *synopsis,
 	int documentation_only, int primary) {
 	currently_lexing_into = C;
@@ -39,50 +63,106 @@ source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *sy
 = (text as ConsoleText)
 	I've also read Standard Rules by Graham Nelson, which is 27204 words long.
 =
-are printed to |stdout| (not |stderr|), in something of an affectionate nod
-to TeX's traditional console output, though occasionally I think silence is
+are printed to |stdout| (not |stderr|), though occasionally I think silence is
 golden and that these messages could go. It's a moot point for almost all users,
-though, because the console output is concealed from them by the Inform
-application.
+though, because the console output is concealed from them by the Inform UI
+applications.
 
 @<Tell console output about the file@> =
-	int wc;
-	char *message;
+	char *message = "I've also read %S, which is %d words long.\n";
 	if (primary) message = "I've now read %S, which is %d words long.\n";
-	else message = "I've also read %S, which is %d words long.\n";
-	wc = TextFromFiles::total_word_count(sf);
+	int wc = TextFromFiles::total_word_count(sf);
 	WRITE_TO(STDOUT, message, synopsis, wc);
 	STREAM_FLUSH(STDOUT);
 	LOG(message, synopsis, wc);
 
-@
+@h Bridge to the syntax analyser.
+Similarly, //supervisor// sits on top of the //syntax// module, which forms
+up the stream of words from the lexer into syntax trees. This too produces
+potential errors, and these will also convert into copy errors, but now we
+have a more elegant way to keep track of the copy; //syntax// can be passed
+a sort of "your ref" pointer to it.
 
-@d LEXER_PROBLEM_HANDLER SourceText::lexer_problem_handler
-
-=
-void SourceText::lexer_problem_handler(int err, text_stream *desc, wchar_t *word) {
-	if (err == MEMORY_OUT_LEXERERROR)
-		Errors::fatal("Out of memory: unable to create lexer workspace");
-    if (currently_lexing_into) {
-		copy_error *CE = CopyErrors::new_WT(LEXER_CE, err, word, desc);
-		Copies::attach_error(currently_lexing_into, CE);
-    }
-}
-
-@
-
-@d COPY_FILE_TYPE inbuild_copy
-
-@
-
+@d SYNTAX_PROBLEM_REF_TYPE inbuild_copy /* the "your ref" is a pointer to this type */
 @d SYNTAX_PROBLEM_HANDLER SourceText::syntax_problem_handler
 
 =
-void SourceText::syntax_problem_handler(int err_no, wording W, void *ref, int k) {
-	inbuild_copy *C = (inbuild_copy *) ref;
+void SourceText::syntax_problem_handler(int err_no, wording W,
+	SYNTAX_PROBLEM_REF_TYPE *C, int k) {
 	copy_error *CE = CopyErrors::new_N(SYNTAX_CE, err_no, k);
 	CopyErrors::supply_wording(CE, W);
 	Copies::attach_error(C, CE);
+}
+
+@ The //inform7// compiler will eventually make a much more detailed syntax
+tree, extending the one we make here: but we will basically just break the
+text into sentences, arrange those under headings, and take action on just a
+few so-called "structural sentences" which have to be dealt with early on.
+
+//syntax// allows us to create a callback function which will be called
+whenever a new sentence is made. What we use it for reflects that fact that
+the vast bulk of the source text is read by //supervisor// early in a run of
+//inform7//, with just a few sentences ("inventions") added later. The bulk
+part is parsed collectively, but the later inventions have to be marked as
+needing to be parsed one by one. So, when //supervisor// has definitely
+finished loading the bulk in, it calls:
+
+=
+int bulk_of_source_loaded = FALSE;
+void SourceText::bulk_of_source_loaded(void) {
+	bulk_of_source_loaded = TRUE;
+}
+
+@ And here is the callback function. It's only ever needed for //inform7//,
+not for //inbuild//, which isn't in the inventions business.
+
+@d SENTENCE_ANNOTATION_FUNCTION SourceText::annotate_new_sentence
+
+=
+void SourceText::annotate_new_sentence(parse_node *new) {
+	if (bulk_of_source_loaded) {
+		ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
+		#ifdef CORE_MODULE
+		Sentences::VPs::seek(new);
+		#endif
+	}
+}
+
+@ The next tweak to //syntax// is to give it some node metadata. //syntax//
+itself places nodes of a small number of basic types into the syntax tree;
+we want to expand on those. (And the //core// module will expand on them still
+further, so this still isn't everything. Note that we give our own version of
+|INVOCATION_LIST_NT| only if //inform7// is not the parent: that's because
+there's a slightly different version in //core: Parse Tree Usage//.)
+
+The node types we're adding are for the "structural sentences" which we will
+look for below. (The asterisk notation isn't known to most Inform users: it
+increases output to the debugging log.)
+
+@d SYNTAX_TREE_METADATA_SETUP SourceText::node_metadata
+
+@e BIBLIOGRAPHIC_NT    /* For the initial title sentence */
+@e ROUTINE_NT          /* "Instead of taking something, ..." */
+@e INFORM6CODE_NT      /* "Include (- ... -) */
+@e TABLE_NT            /* "Table 1 - Counties of England" */
+@e EQUATION_NT         /* "Equation 2 - Newton's Second Law" */
+@e TRACE_NT            /* A sentence consisting of an asterisk and optional quoted text */
+@e INVOCATION_LIST_NT  /* Single invocation of a (possibly compound) phrase */
+
+@d list_node_type ROUTINE_NT
+@d list_entry_node_type INVOCATION_LIST_NT
+
+=
+void SourceText::node_metadata(void) {
+	ParseTree::md(BIBLIOGRAPHIC_NT, "BIBLIOGRAPHIC_NT",     0, 0,     L2_NCAT, 0);
+	ParseTree::md(ROUTINE_NT, "ROUTINE_NT",                 0, INFTY, L2_NCAT, 0);
+	ParseTree::md(INFORM6CODE_NT, "INFORM6CODE_NT",         0, 0,     L2_NCAT, 0);
+	ParseTree::md(TABLE_NT, "TABLE_NT",                     0, 0,     L2_NCAT, TABBED_NFLAG);
+	ParseTree::md(EQUATION_NT, "EQUATION_NT",               0, 0,     L2_NCAT, 0);
+	ParseTree::md(TRACE_NT, "TRACE_NT",                     0, 0,     L2_NCAT, 0);
+	#ifndef CORE_MODULE
+	ParseTree::md(INVOCATION_LIST_NT, "INVOCATION_LIST_NT", 0, INFTY, L2_NCAT, 0);
+	#endif
 }
 
 @ Sentences in the source text are of five categories: dividing sentences,
@@ -153,33 +233,6 @@ source text.
 		}
 	}
 
-@ Structural sentences are defined as follows. (The asterisk notation isn't
-known to most Inform users: it increases output to the debugging log.)
-
-@e BIBLIOGRAPHIC_NT     			/* For the initial title sentence */
-@e ROUTINE_NT           			/* "Instead of taking something, ..." */
-@e INFORM6CODE_NT       			/* "Include (- ... -) */
-@e TABLE_NT             			/* "Table 1 - Counties of England" */
-@e EQUATION_NT          			/* "Equation 2 - Newton's Second Law" */
-@e TRACE_NT             			/* A sentence consisting of an asterisk and optional quoted text */
-@e INVOCATION_LIST_NT   		    /* Single invocation of a (possibly compound) phrase */
-
-@d list_node_type ROUTINE_NT
-@d list_entry_node_type INVOCATION_LIST_NT
-
-@ =
-void SourceText::node_metadata(void) {
-	ParseTree::md((parse_tree_node_type) { BIBLIOGRAPHIC_NT, "BIBLIOGRAPHIC_NT",    					0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { ROUTINE_NT, "ROUTINE_NT", 			   					0, INFTY,	L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { INFORM6CODE_NT, "INFORM6CODE_NT",		   					0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TABLE_NT, "TABLE_NT",					   					0, 0,		L2_NCAT, TABBED_CONTENT_NFLAG });
-	ParseTree::md((parse_tree_node_type) { EQUATION_NT, "EQUATION_NT",			   					0, 0,		L2_NCAT, 0 });
-	ParseTree::md((parse_tree_node_type) { TRACE_NT, "TRACE_NT",					   					0, 0,		L2_NCAT, 0 });
-	#ifndef CORE_MODULE
-	ParseTree::md((parse_tree_node_type) { INVOCATION_LIST_NT, "INVOCATION_LIST_NT",		   			0, INFTY,	L2_NCAT, 0 });
-	#endif
-}
-
 @
 
 =
@@ -204,29 +257,6 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 <language-modifying-sentence> ::=
 	include (- ### in the preform grammar |			==> -2; ssnt = INFORM6CODE_NT;
 	use ... language element/elements				==> -1
-
-@h Sentence division.
-Sentence division can happen either early in Inform's run, when the vast bulk
-of the source text is read, or at intermittent periods later when fresh text
-is generated internally. New sentences need to be parsed as they arise, not
-saved up to be parsed later, so we will use the following:
-
-@d SENTENCE_ANNOTATION_FUNCTION SourceText::annotate_new_sentence
-
-=
-int text_loaded_from_source = FALSE;
-void SourceText::declare_source_loaded(void) {
-	text_loaded_from_source = TRUE;
-}
-
-void SourceText::annotate_new_sentence(parse_node *new) {
-	if (text_loaded_from_source) {
-		ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
-		#ifdef CORE_MODULE
-		Sentences::VPs::seek(new);
-		#endif
-	}
-}
 
 @
 
