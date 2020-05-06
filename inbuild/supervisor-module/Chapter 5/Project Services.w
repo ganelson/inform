@@ -695,6 +695,7 @@ for the extensions they refer to, in a post-processing phase.
 =
 void Projects::read_source_text_for(inform_project *proj) {
 	Languages::read_Preform_definition(proj->language_of_syntax, proj->search_list);
+	Sentences::set_start_of_source(sfsm, -1);
 
 	parse_node *inclusions_heading, *implicit_heading;
 	@<First an implied super-heading for implied inclusions and the Options@>;
@@ -754,7 +755,7 @@ it comes.
 		filename *F = N->as_file;
 		if (start_set == FALSE) {
 			start_set = TRUE;
-			Sentences::set_start_of_source(lexer_wordcount);
+			Sentences::set_start_of_source(sfsm, lexer_wordcount);
 		}
 		N->as_source_file =
 			SourceText::read_file(proj->as_copy, F, N->source_source, FALSE, TRUE);

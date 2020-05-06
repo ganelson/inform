@@ -64,7 +64,7 @@ matches successfully and sets the level to 2 and the name to the word range
 
 =
 <extension-documentation-heading> ::=
-	chapter : ... |			==> 1
+	chapter : ... |    ==> 1
 	section : ...			==> 2
 
 @ =
@@ -92,13 +92,13 @@ an asterisk count of 3, and the rubric being "A Tale of the Texas Oilmen".
 
 =
 <extension-example-header> ::=
-	example : <row-of-asterisks> ... - ... |	==> R[1]
+	example : <row-of-asterisks> ... - ... |    ==> R[1]
 	example : ... - ...							==> 0
 
 <row-of-asterisks> ::=
-	* |					==> 1
-	** |				==> 2
-	\*** |				==> 3
+	* |    ==> 1
+	** |    ==> 2
+	\*** |    ==> 3
 	****				==> 4
 
 @ =

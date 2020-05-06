@@ -54,17 +54,17 @@ type representing only its own value.
 
 =
 <s-type-expression-uncached> ::=
-	<article> <s-type-expression-unarticled> |		==> RP[2]
+	<article> <s-type-expression-unarticled> |    ==> RP[2]
 	<s-type-expression-unarticled>					==> RP[1]
 
 <s-type-expression-unarticled> ::=
-	<s-variable-scope> variable/variables |			==> RP[1]
-	<s-variable-scope> that/which vary/varies	|	==> RP[1]
-	<k-kind> |										==> Specifications::from_kind(RP[1])
-	<s-literal> |									==> RP[1]
-	<s-constant-value> |							==> RP[1]
-	<s-description-uncomposite> |					==> RP[1]
-	<s-action-pattern-as-value> |					==> RP[1]
+	<s-variable-scope> variable/variables |    ==> RP[1]
+	<s-variable-scope> that/which vary/varies	|    ==> RP[1]
+	<k-kind> |    ==> Specifications::from_kind(RP[1])
+	<s-literal> |    ==> RP[1]
+	<s-constant-value> |    ==> RP[1]
+	<s-description-uncomposite> |    ==> RP[1]
+	<s-action-pattern-as-value> |    ==> RP[1]
 	<s-description>									==> RP[1]
 
 @ Note that a list of adjectives with no noun does not qualify as a type
@@ -81,11 +81,11 @@ To allow this, we have a minor variation:
 
 =
 <s-descriptive-type-expression-uncached> ::=
-	<article> <s-descriptive-type-expression-unarticled> |		==> RP[2]
+	<article> <s-descriptive-type-expression-unarticled> |    ==> RP[2]
 	<s-descriptive-type-expression-unarticled>					==> RP[1]
 
 <s-descriptive-type-expression-unarticled> ::=
-	<s-adjective-list-as-desc> |					==> RP[1]
+	<s-adjective-list-as-desc> |    ==> RP[1]
 	<s-type-expression-unarticled>					==> RP[1]
 
 @ And now we parse descriptions of variables such as the one appearing in
@@ -102,15 +102,15 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 
 =
 <s-variable-scope> ::=
-	global |										==> Specifications::new_new_variable_like(NULL)
-	global <s-variable-contents> |					==> RP[1]
+	global |    ==> Specifications::new_new_variable_like(NULL)
+	global <s-variable-contents> |    ==> RP[1]
 	<s-variable-contents>							==> RP[1]
 
 <s-variable-contents> ::=
-	<k-kind> |										==> Specifications::new_new_variable_like(RP[1])
-	<s-literal> |									==> @<Issue PM_TypeCantVary problem@>
-	<s-constant-value> |							==> @<Issue PM_TypeCantVary problem@>
-	<s-description-uncomposite> |					==> @<Issue PM_TypeUnmaintainable problem@>
+	<k-kind> |    ==> Specifications::new_new_variable_like(RP[1])
+	<s-literal> |    ==> @<Issue PM_TypeCantVary problem@>
+	<s-constant-value> |    ==> @<Issue PM_TypeCantVary problem@>
+	<s-description-uncomposite> |    ==> @<Issue PM_TypeUnmaintainable problem@>
 	<s-description>									==> @<Issue PM_TypeUnmaintainable problem@>
 
 @<Issue PM_TypeCantVary problem@> =
@@ -237,25 +237,25 @@ membership, which is to say, really just a syntactic difference.
 
 =
 <s-value-uncached> ::=
-	( <s-value-uncached> ) |											==> RP[1]
-	<s-variable> |														==> ExParser::val(RP[1], W)
-	<if-table-column-expected> <s-table-column-name> |					==> ExParser::val(RP[2], W)
-	<if-property-name-expected> <s-property-name> |						==> ExParser::val(RP[2], W)
-	<s-constant-value>	|												==> ExParser::val(RP[1], W)
-	<s-equation-usage> |												==> RP[1]
-	<s-property-name> |													==> ExParser::val(RP[1], W)
-	<s-action-pattern-as-value> |										==> ExParser::val(RP[1], W)
-	<s-value-phrase-non-of> |											==> ExParser::val(RP[1], W)
-	<s-adjective-list-as-desc> |										==> ExParser::val(RP[1], W)
-	<s-purely-physical-description> |									==> ExParser::val(RP[1], W)
-	<s-table-reference> |												==> ExParser::val(RP[1], W)
-	member/members of <s-description> |									==> ExParser::val(RP[1], W)
-	member/members of <s-local-variable> |								==> ExParser::val(RP[1], W)
-	<s-property-name> of <s-value-uncached> |							==> @<Make a belonging-to-V property@>
-	<if-pronoun-present> <possessive-third-person> <s-property-name> |	==> @<Make a belonging-to-it property@>
-	entry <s-value-uncached> of/in/from <s-value-uncached> |			==> @<Make a list entry@>
-	<s-description> |													==> ExParser::val(RP[1], W)
-	<s-table-column-name> |												==> ExParser::val(RP[1], W)
+	( <s-value-uncached> ) |    ==> RP[1]
+	<s-variable> |    ==> ExParser::val(RP[1], W)
+	<if-table-column-expected> <s-table-column-name> |    ==> ExParser::val(RP[2], W)
+	<if-property-name-expected> <s-property-name> |    ==> ExParser::val(RP[2], W)
+	<s-constant-value>	|    ==> ExParser::val(RP[1], W)
+	<s-equation-usage> |    ==> RP[1]
+	<s-property-name> |    ==> ExParser::val(RP[1], W)
+	<s-action-pattern-as-value> |    ==> ExParser::val(RP[1], W)
+	<s-value-phrase-non-of> |    ==> ExParser::val(RP[1], W)
+	<s-adjective-list-as-desc> |    ==> ExParser::val(RP[1], W)
+	<s-purely-physical-description> |    ==> ExParser::val(RP[1], W)
+	<s-table-reference> |    ==> ExParser::val(RP[1], W)
+	member/members of <s-description> |    ==> ExParser::val(RP[1], W)
+	member/members of <s-local-variable> |    ==> ExParser::val(RP[1], W)
+	<s-property-name> of <s-value-uncached> |    ==> @<Make a belonging-to-V property@>
+	<if-pronoun-present> <possessive-third-person> <s-property-name> |    ==> @<Make a belonging-to-it property@>
+	entry <s-value-uncached> of/in/from <s-value-uncached> |    ==> @<Make a list entry@>
+	<s-description> |    ==> ExParser::val(RP[1], W)
+	<s-table-column-name> |    ==> ExParser::val(RP[1], W)
 	<s-value-phrase>													==> ExParser::val(RP[1], W)
 
 @ =
@@ -266,8 +266,8 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 
 @ =
 <s-equation-usage> ::=
-	<if-let-equation-mode> <s-plain-text-with-equals> where <s-plain-text> |	==> @<Make an equation@>
-	<s-value-uncached> where <s-plain-text> |					==> @<Make an equation, if the kinds are right@>
+	<if-let-equation-mode> <s-plain-text-with-equals> where <s-plain-text> |    ==> @<Make an equation@>
+	<s-value-uncached> where <s-plain-text> |    ==> @<Make an equation, if the kinds are right@>
 	<if-let-equation-mode> <s-plain-text-with-equals>	==> @<Make an inline equation@>
 
 @<Make an equation@> =
@@ -341,14 +341,14 @@ the text "grand total" is parsed as the local.
 
 =
 <s-variable> ::=
-	<definite-article> <s-variable> |				==> RP[2]
-	<s-local-variable> |							==> RP[1]
-	<s-stacked-variable> |							==> RP[1]
+	<definite-article> <s-variable> |    ==> RP[2]
+	<s-local-variable> |    ==> RP[1]
+	<s-stacked-variable> |    ==> RP[1]
 	<s-global-variable>								==> RP[1]
 
 <s-nonglobal-variable> ::=
-	( <s-nonglobal-variable> ) |					==> RP[1]
-	<s-local-variable> |							==> ExParser::val(RP[1], W)
+	( <s-nonglobal-variable> ) |    ==> RP[1]
+	<s-local-variable> |    ==> ExParser::val(RP[1], W)
 	<s-stacked-variable>							==> ExParser::val(RP[1], W)
 
 <s-variable-as-value> ::=
@@ -454,10 +454,10 @@ Again, this is part of a condition, and can't evaluate.
 
 =
 <s-table-reference> ::=
-	<s-table-column-name> entry |																				==> @<Make table entry value@>
-	<s-table-column-name> in row <s-value-uncached> of <s-value-uncached> |										==> @<Make table in row of value@>
-	<s-table-column-name> listed in <s-value-uncached> |														==> @<Make table listed in value@>
-	<s-table-column-name> corresponding to <s-table-column-name> of <s-value-uncached> in <s-value-uncached> |	==> @<Make table corresponding to value@>
+	<s-table-column-name> entry |    ==> @<Make table entry value@>
+	<s-table-column-name> in row <s-value-uncached> of <s-value-uncached> |    ==> @<Make table in row of value@>
+	<s-table-column-name> listed in <s-value-uncached> |    ==> @<Make table listed in value@>
+	<s-table-column-name> corresponding to <s-table-column-name> of <s-value-uncached> in <s-value-uncached> |    ==> @<Make table corresponding to value@>
 	<s-table-column-name> of <s-value-uncached> in <s-value-uncached>											==> @<Make table of in value@>
 
 @<Make table entry value@> =

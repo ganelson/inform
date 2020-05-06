@@ -418,11 +418,11 @@ an object" pseudo-value).
 	_something/anything *** | 	==> 0; <<kind:k>> = K_thing
 	_somewhere/anywhere *** | 	==> 0; <<kind:k>> = K_room
 	_someone/anyone/somebody/anybody *** | 	==> 0; <<kind:k>> = K_person
-	_everything *** |			==> 0; <<kind:k>> = K_thing;  <<quantifier:q>> = for_all_quantifier
-	_everywhere *** |			==> 0; <<kind:k>> = K_room;   <<quantifier:q>> = for_all_quantifier
-	_everyone/everybody *** |	==> 0; <<kind:k>> = K_person; <<quantifier:q>> = for_all_quantifier
-	_nowhere *** |				==> 0; <<kind:k>> = K_room;   <<quantifier:q>> = not_exists_quantifier
-	_nobody/no-one *** |			==> 0; <<kind:k>> = K_person; <<quantifier:q>> = not_exists_quantifier
+	_everything *** |    ==> 0; <<kind:k>> = K_thing;  <<quantifier:q>> = for_all_quantifier
+	_everywhere *** |    ==> 0; <<kind:k>> = K_room;   <<quantifier:q>> = for_all_quantifier
+	_everyone/everybody *** |    ==> 0; <<kind:k>> = K_person; <<quantifier:q>> = for_all_quantifier
+	_nowhere *** |    ==> 0; <<kind:k>> = K_room;   <<quantifier:q>> = not_exists_quantifier
+	_nobody/no-one *** |    ==> 0; <<kind:k>> = K_person; <<quantifier:q>> = not_exists_quantifier
 	_no _one ***					==> 0; <<kind:k>> = K_person; <<quantifier:q>> = not_exists_quantifier
 
 @ Words like "something" or "everywhere" combine a common noun -- thing,

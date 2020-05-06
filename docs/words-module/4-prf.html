@@ -118,7 +118,7 @@ right of them are omitted &mdash; those represent semantics, not syntax.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    &lt;competitor&gt; ::=</span>
-<span class="plain-syntax">        &lt;ordinal-number&gt; runner |				==&gt; TRUE</span>
+<span class="plain-syntax">        &lt;ordinal-number&gt; runner |    ==&gt; TRUE</span>
 <span class="plain-syntax">        runner no &lt;cardinal-number&gt;				==&gt; FALSE</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Each nonterminal, when successfully matched, can provide both or more usually
@@ -151,8 +151,8 @@ of, so <span class="extract"><span class="extract-syntax">R[...]</span></span> c
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    &lt;competitor&gt; ::=</span>
-<span class="plain-syntax">        the pacemaker |							==&gt; 1</span>
-<span class="plain-syntax">        &lt;ordinal-number&gt; runner |				==&gt; R[1]</span>
+<span class="plain-syntax">        the pacemaker |    ==&gt; 1</span>
+<span class="plain-syntax">        &lt;ordinal-number&gt; runner |    ==&gt; R[1]</span>
 <span class="plain-syntax">        runner no &lt;cardinal-number&gt;				==&gt; R[1]</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The arrows and expressions are optional, and if they are omitted, then the

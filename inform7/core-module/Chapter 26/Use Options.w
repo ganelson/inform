@@ -112,7 +112,7 @@ void UseOptions::new_use_option(parse_node *p) {
 	use <nounphrase>			==> TRUE; *XP = RP[1]
 
 <use-translates-as-sentence-object> ::=
-	(- ### |					==> TRUE
+	(- ### |    ==> TRUE
 	...							==> @<Issue PM_UseTranslatesNotI6 problem@>
 
 @<Issue PM_UseTranslatesNotI6 problem@> =
@@ -143,9 +143,9 @@ option name is taken from the |...| or |###| as appropriate:
 
 =
 <use-sentence-object> ::=
-	... of at least <cardinal-number-unlimited> |	==> R[1]
-	### of <cardinal-number-unlimited> |			==> -R[1]
-	<definite-article> ...	|						==> 0
+	... of at least <cardinal-number-unlimited> |    ==> R[1]
+	### of <cardinal-number-unlimited> |    ==> -R[1]
+	<definite-article> ...	|    ==> 0
 	...												==> 0
 
 <use-inter-pipeline> ::=
@@ -324,8 +324,8 @@ those which need immediate action.
 
 =
 <immediate-use> ::=
-	... |											==> TRUE; return preform_lookahead_mode; /* match only when looking ahead */
-	<immediate-use-entry> <immediate-use-tail> |	==> TRUE
+	... |    ==> TRUE; return preform_lookahead_mode; /* match only when looking ahead */
+	<immediate-use-entry> <immediate-use-tail> |    ==> TRUE
 	<immediate-use-entry>							==> TRUE
 
 <immediate-use-tail> ::=
@@ -333,7 +333,7 @@ those which need immediate action.
 	_,/and <immediate-use>
 
 <immediate-use-entry> ::=
-	<notable-use-option-name> |						==> @<Act on this use option immediately@>
+	<notable-use-option-name> |    ==> @<Act on this use option immediately@>
 	......
 
 @<Act on this use option immediately@> =

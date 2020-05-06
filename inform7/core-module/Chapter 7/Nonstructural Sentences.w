@@ -205,13 +205,13 @@ void Sentences::VPs::switch_dl_mode(parse_node *PN, int sense) {
 
 @ =
 <include-in-debugging-sentence-subject> ::=
-	only <debugging-log-request> |		==> R[1] | ONLY_DLR; *XP = RP[1]
+	only <debugging-log-request> |    ==> R[1] | ONLY_DLR; *XP = RP[1]
 	<debugging-log-request>				==> R[1]; *XP = RP[1]
 
 <debugging-log-request> ::=
-	everything |						==> EVERYTHING_DLR
-	nothing |							==> NOTHING_DLR
-	<preform-nonterminal> |				==> PREFORM_DLR; *XP = RP[1]
+	everything |    ==> EVERYTHING_DLR
+	nothing |    ==> NOTHING_DLR
+	<preform-nonterminal> |    ==> PREFORM_DLR; *XP = RP[1]
 	...									==> SOMETHING_DLR
 
 =
@@ -425,7 +425,7 @@ new action.
 	unicode								==> TRUE; *XP = NULL;
 
 <translation-target-i6> ::=
-	i6 |								==> TRUE; *XP = NULL;
+	i6 |    ==> TRUE; *XP = NULL;
 	inform 6							==> TRUE; *XP = NULL;
 
 <translation-target-language> ::=
@@ -511,9 +511,9 @@ Problem message than the one they will otherwise receive later on.
 	... <bad-nonstructural-sentence-diagnosis-tail>
 
 <bad-nonstructural-sentence-diagnosis-tail> ::=
-	<relative-clause-marker> <certainty> <meaningful-nonimperative-verb> ... |	==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	<relative-clause-marker> <meaningful-nonimperative-verb> ... |						==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	<past-tense-verb> ... |																==> @<Issue PM_NonPresentTense problem@>
+	<relative-clause-marker> <certainty> <meaningful-nonimperative-verb> ... |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	<relative-clause-marker> <meaningful-nonimperative-verb> ... |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	<past-tense-verb> ... |    ==> @<Issue PM_NonPresentTense problem@>
 	<negated-verb> ...																	==> @<Issue PM_NegatedVerb1 problem@>
 
 @<Issue PM_NonPresentTense problem@> =
@@ -548,9 +548,9 @@ void Sentences::VPs::log(int verb_number) {
 
 @ =
 <np-relative-phrase-implicit> ::=
-	worn |									==> @<Act on the implicit RP worn@>; /* player\_plugin */
-	carried |								==> @<Act on the implicit RP carried@>; /* player\_plugin */
-	initially carried |						==> @<Act on the implicit RP initially carried@>; /* player\_plugin */
+	worn |    ==> @<Act on the implicit RP worn@>; /* player\_plugin */
+	carried |    ==> @<Act on the implicit RP carried@>; /* player\_plugin */
+	initially carried |    ==> @<Act on the implicit RP initially carried@>; /* player\_plugin */
 	here									==> @<Act on the implicit RP here@>; /* spatial\_plugin */
 
 @<Act on the implicit RP worn@> =

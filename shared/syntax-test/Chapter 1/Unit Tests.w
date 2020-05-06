@@ -6,7 +6,7 @@ How we shall test it.
 
 =
 <dividing-sentence> ::=
-	chapter ... |			==> 1
+	chapter ... |    ==> 1
 	section ...				==> 2
 
 <structural-sentence> ::=

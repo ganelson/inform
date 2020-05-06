@@ -47,7 +47,7 @@ optionally be used.)
 
 =
 <listed-in-sentence-object> ::=
-	listed <nounphrase> |					==> TRUE; *XP = RP[1];
+	listed <nounphrase> |    ==> TRUE; *XP = RP[1];
 	not listed <nounphrase>					==> FALSE; *XP = RP[1];
 
 @ =
@@ -82,12 +82,12 @@ following won't pick up many false positives.
 
 =
 <nounphrase-rule-list> ::=
-	... |											==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<nounphrase-rule> <np-rule-tail> |			==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
+	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
+	<nounphrase-rule> <np-rule-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<nounphrase-rule>								==> 0; *XP = RP[1]
 
 <np-rule-tail> ::=
-	, {_and} <nounphrase-rule-list> |				==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <nounphrase-rule-list> |    ==> Wordings::first_wn(W); *XP= RP[1]
 	{_,/and} <nounphrase-rule-list>					==> Wordings::first_wn(W); *XP= RP[1]
 
 <nounphrase-rule> ::=
@@ -97,8 +97,8 @@ following won't pick up many false positives.
 
 =
 <substitutes-for-sentence-object> ::=
-	<nounphrase-rule> |							==> NOT_APPLICABLE; *XP = RP[1];
-	<nounphrase-rule> if/when <nounphrase> |	==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	<nounphrase-rule> |    ==> NOT_APPLICABLE; *XP = RP[1];
+	<nounphrase-rule> if/when <nounphrase> |    ==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
 	<nounphrase-rule> unless <nounphrase>		==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
 
 @ =
@@ -139,11 +139,11 @@ subject and object NPs.
 
 =
 <substitutes-for-sentence-subject> ::=
-	<rule-name> |											==> TRUE; *XP = RP[1];
+	<rule-name> |    ==> TRUE; *XP = RP[1];
 	...														==> @<Issue PM_NoSuchRuleExists problem@>
 
 <substitutes-for-sentence-object-inner> ::=
-	<rule-name> |											==> TRUE; *XP = RP[1];
+	<rule-name> |    ==> TRUE; *XP = RP[1];
 	...														==> @<Issue PM_NoSuchRuleExists problem@>
 
 @<Issue PM_NoSuchRuleExists problem@> =
@@ -183,7 +183,7 @@ eventually match <spec-condition>.
 	nothing
 
 <does-nothing-sentence-subject> ::=
-	<rule-name> |											==> TRUE; *XP = RP[1];
+	<rule-name> |    ==> TRUE; *XP = RP[1];
 	...														==> @<Issue PM_NoSuchRuleExists problem@>
 
 @ =
@@ -284,33 +284,33 @@ The subject noun phrase is an articled list, each entry of which must match:
 
 =
 <listed-in-sentence-subject> ::=
-	<rule-name> |								==> TRUE; *XP = RP[1];
+	<rule-name> |    ==> TRUE; *XP = RP[1];
 	...											==> FALSE; @<Issue PM_NoSuchRuleExists problem@>
 
 @ The object NP is more flexible:
 
 =
 <listed-in-sentence-object-inner> ::=
-	in any rulebook |							==> ANY_RULE_PLACEMENT
-	in <destination-rulebook> |					==> MIDDLE_PLACEMENT + 1000*IN_SIDE; *XP = RP[1];
-	first in <destination-rulebook> |			==> FIRST_PLACEMENT  + 1000*IN_SIDE; *XP = RP[1];
-	last in <destination-rulebook> |			==> LAST_PLACEMENT   + 1000*IN_SIDE; *XP = RP[1];
-	instead of <rule-name> in <rulebook-name> |	==> MIDDLE_PLACEMENT + 1000*INSTEAD_SIDE; relative_to_which = RP[1]; *XP = RP[2];
-	instead of <rule-name> in ... |				==> @<Issue PM_NoSuchRulebookPlacement problem@>
-	instead of ... in ... |						==> @<Issue PM_NoSuchRuleExists problem@>
-	before <rule-name> in <rulebook-name> |		==> MIDDLE_PLACEMENT + 1000*BEFORE_SIDE; relative_to_which = RP[1]; *XP = RP[2];
-	before <rule-name> in ... |					==> @<Issue PM_NoSuchRulebookPlacement problem@>
-	before ... in ... |							==> @<Issue PM_NoSuchRuleExists problem@>
-	after <rule-name> in <rulebook-name> |		==> MIDDLE_PLACEMENT + 1000*AFTER_SIDE; relative_to_which = RP[1]; *XP = RP[2];
-	after <rule-name> in ... |					==> @<Issue PM_NoSuchRulebookPlacement problem@>
-	after ... in ... |							==> @<Issue PM_NoSuchRuleExists problem@>
-	instead of ... |							==> @<Issue PM_UnspecifiedRulebookPlacement problem@>
-	before ... |								==> @<Issue PM_UnspecifiedRulebookPlacement problem@>
-	after ... |									==> @<Issue PM_UnspecifiedRulebookPlacement problem@>
+	in any rulebook |    ==> ANY_RULE_PLACEMENT
+	in <destination-rulebook> |    ==> MIDDLE_PLACEMENT + 1000*IN_SIDE; *XP = RP[1];
+	first in <destination-rulebook> |    ==> FIRST_PLACEMENT  + 1000*IN_SIDE; *XP = RP[1];
+	last in <destination-rulebook> |    ==> LAST_PLACEMENT   + 1000*IN_SIDE; *XP = RP[1];
+	instead of <rule-name> in <rulebook-name> |    ==> MIDDLE_PLACEMENT + 1000*INSTEAD_SIDE; relative_to_which = RP[1]; *XP = RP[2];
+	instead of <rule-name> in ... |    ==> @<Issue PM_NoSuchRulebookPlacement problem@>
+	instead of ... in ... |    ==> @<Issue PM_NoSuchRuleExists problem@>
+	before <rule-name> in <rulebook-name> |    ==> MIDDLE_PLACEMENT + 1000*BEFORE_SIDE; relative_to_which = RP[1]; *XP = RP[2];
+	before <rule-name> in ... |    ==> @<Issue PM_NoSuchRulebookPlacement problem@>
+	before ... in ... |    ==> @<Issue PM_NoSuchRuleExists problem@>
+	after <rule-name> in <rulebook-name> |    ==> MIDDLE_PLACEMENT + 1000*AFTER_SIDE; relative_to_which = RP[1]; *XP = RP[2];
+	after <rule-name> in ... |    ==> @<Issue PM_NoSuchRulebookPlacement problem@>
+	after ... in ... |    ==> @<Issue PM_NoSuchRuleExists problem@>
+	instead of ... |    ==> @<Issue PM_UnspecifiedRulebookPlacement problem@>
+	before ... |    ==> @<Issue PM_UnspecifiedRulebookPlacement problem@>
+	after ... |    ==> @<Issue PM_UnspecifiedRulebookPlacement problem@>
 	...											==> @<Issue PM_ImproperRulePlacement problem@>
 
 <destination-rulebook> ::=
-	<rulebook-name> |							==> 0; *XP = RP[1];
+	<rulebook-name> |    ==> 0; *XP = RP[1];
 	...											==> @<Issue PM_NoSuchRulebookPlacement problem@>
 
 @

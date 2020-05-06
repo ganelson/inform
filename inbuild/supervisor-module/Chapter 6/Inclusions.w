@@ -93,17 +93,17 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, 
 
 =
 <extension-title-and-version> ::=
-	version <extension-version> of <definite-article> <extension-unversioned> |	==> R[1]
-	version <extension-version> of <extension-unversioned> |					==> R[1]
-	<definite-article> <extension-unversioned>	|								==> -1
+	version <extension-version> of <definite-article> <extension-unversioned> |    ==> R[1]
+	version <extension-version> of <extension-unversioned> |    ==> R[1]
+	<definite-article> <extension-unversioned>	|    ==> -1
 	<extension-unversioned>														==> -1
 
 <extension-unversioned> ::=
-	<extension-unversioned-inner> ( ... )	|	==> 0
+	<extension-unversioned-inner> ( ... )	|    ==> 0
 	<extension-unversioned-inner> 				==> 0
 
 <extension-unversioned-inner> ::=
-	<quoted-text> *** |							==> @<Issue PM_IncludeExtQuoted problem@>
+	<quoted-text> *** |    ==> @<Issue PM_IncludeExtQuoted problem@>
 	...											==> 0; <<t1>> = Wordings::first_wn(W); <<t2>> = Wordings::last_wn(W)
 
 @ Quite a popular mistake, this:

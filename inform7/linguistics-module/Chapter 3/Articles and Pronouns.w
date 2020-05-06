@@ -9,15 +9,15 @@ adjectives, verbs and nouns, it can't make new pronouns.
 
 =
 <pronoun> ::=
-	<nominative-pronoun> |		==> R[1]
+	<nominative-pronoun> |    ==> R[1]
 	<accusative-pronoun>		==> R[1]
 
 <nominative-pronoun> ::=
-	it/he/she |					==> 1		/* singular */
+	it/he/she |    ==> 1		/* singular */
 	they						==> 2		/* plural */
 
 <accusative-pronoun> ::=
-	it/him/her |				==> 1		/* singular */
+	it/him/her |    ==> 1		/* singular */
 	them						==> 2		/* plural */
 
 @h Possessives.
@@ -29,15 +29,15 @@ person to second person).
 
 =
 <possessive-first-person> ::=
-	my |						==> 1		/* singular */
+	my |    ==> 1		/* singular */
 	our							==> 2		/* plural */
 
 <possessive-second-person> ::=
-	your |						==> 1		/* singular */
+	your |    ==> 1		/* singular */
 	your						==> 2		/* plural */
 
 <possessive-third-person> ::=
-	its/his/her |				==> 1		/* singular */
+	its/his/her |    ==> 1		/* singular */
 	their						==> 2		/* plural */
 
 @h Articles.
@@ -49,7 +49,7 @@ person to second person).
 
 =
 <article> ::=
-	<indefinite-article> |		==> R[1]
+	<indefinite-article> |    ==> R[1]
 	<definite-article>			==> R[1]
 
 @ The articles need to be single words, and the following two productions

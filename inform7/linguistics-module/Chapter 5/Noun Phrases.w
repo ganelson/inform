@@ -88,13 +88,13 @@ leave the text empty.
 
 =
 <nounphrase-definite> ::=
-	<definite-article> <nounphrase> |	==> 0; *XP = RP[2]
+	<definite-article> <nounphrase> |    ==> 0; *XP = RP[2]
 	<nounphrase>						==> 0; *XP = RP[1]
 
 <nounphrase-articled> ::=
-	... |																	==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<if-not-deliberately-capitalised> <indefinite-article> <nounphrase> |	==> 0; *XP = RP[3]; @<Annotate node by article@>;
-	<if-not-deliberately-capitalised> <definite-article> <nounphrase> |		==> 0; *XP = RP[3]; @<Annotate node by definite article@>;
+	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
+	<if-not-deliberately-capitalised> <indefinite-article> <nounphrase> |    ==> 0; *XP = RP[3]; @<Annotate node by article@>;
+	<if-not-deliberately-capitalised> <definite-article> <nounphrase> |    ==> 0; *XP = RP[3]; @<Annotate node by definite article@>;
 	<nounphrase>															==> 0; *XP = RP[1]
 
 @<Annotate node by article@> =
@@ -135,11 +135,11 @@ a correctly paired way; otherwise they are the same.
 
 =
 <np-balanced> ::=
-	^<balanced-text> |									==> 0; return FAIL_NONTERMINAL;
+	^<balanced-text> |    ==> 0; return FAIL_NONTERMINAL;
 	<nounphrase>										==> 0; *XP = RP[1]
 
 <np-articled-balanced> ::=
-	^<balanced-text> |									==> 0; return FAIL_NONTERMINAL;
+	^<balanced-text> |    ==> 0; return FAIL_NONTERMINAL;
 	<nounphrase-articled>								==> 0; *XP = RP[1]
 
 @h List-divided nounphrases (NP3).
@@ -151,12 +151,12 @@ as a list of three articled noun phrases.
 
 =
 <nounphrase-articled-list> ::=
-	... |												==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-articled-balanced> <np-articled-tail> |			==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
+	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
+	<np-articled-balanced> <np-articled-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<nounphrase-articled>								==> 0; *XP = RP[1]
 
 <np-articled-tail> ::=
-	, {_and} <nounphrase-articled-list> |				==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <nounphrase-articled-list> |    ==> Wordings::first_wn(W); *XP= RP[1]
 	{_,/and} <nounphrase-articled-list>					==> Wordings::first_wn(W); *XP= RP[1]
 
 @ That builds into a lopsided binary tree: thus "the lion, a witch,
@@ -180,12 +180,12 @@ becomes a tree of three (raw) noun phrases.
 
 =
 <nounphrase-alternative-list> ::=
-	... |											==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-balanced> <np-alternative-tail> |		==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
+	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
+	<np-balanced> <np-alternative-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<nounphrase>									==> 0; *XP = RP[1]
 
 <np-alternative-tail> ::=
-	, {_or} <nounphrase-alternative-list> |			==> Wordings::first_wn(W); *XP= RP[1]
+	, {_or} <nounphrase-alternative-list> |    ==> Wordings::first_wn(W); *XP= RP[1]
 	{_,/or} <nounphrase-alternative-list>			==> Wordings::first_wn(W); *XP= RP[1]
 
 @h Worldly nounphrases (NP4).
@@ -205,16 +205,16 @@ accusative.)
 
 =
 <nounphrase-as-object> ::=
-	<np-inner> |									==> 0; *XP = RP[1]
+	<np-inner> |    ==> 0; *XP = RP[1]
 	<nounphrase-articled>							==> 0; *XP = RP[1]
 
 <nounphrase-as-subject> ::=
-	<if-not-deliberately-capitalised> <np-relative-phrase-limited> |	==> 0; *XP = RP[2]
-	<np-inner-without-rp> |							==> 0; *XP = RP[1]
+	<if-not-deliberately-capitalised> <np-relative-phrase-limited> |    ==> 0; *XP = RP[2]
+	<np-inner-without-rp> |    ==> 0; *XP = RP[1]
 	<nounphrase-articled>							==> 0; *XP = RP[1]
 
 <np-inner> ::=
-	<if-not-deliberately-capitalised> <np-relative-phrase-unlimited> |	==> 0; *XP = RP[2]
+	<if-not-deliberately-capitalised> <np-relative-phrase-unlimited> |    ==> 0; *XP = RP[2]
 	<np-inner-without-rp>							==> 0; *XP = RP[1]
 
 @ So here we go with relative phrases. We've already seen that our two general
@@ -251,12 +251,12 @@ in the case of a participle like "holding".
 
 =
 <np-relative-phrase-limited> ::=
-	<np-relative-phrase-implicit> |								==> 0; *XP = RP[1]
-	<probable-participle> *** |									==> 0; return FAIL_NONTERMINAL;
+	<np-relative-phrase-implicit> |    ==> 0; *XP = RP[1]
+	<probable-participle> *** |    ==> 0; return FAIL_NONTERMINAL;
 	<np-relative-phrase-explicit>								==> 0; *XP = RP[1]
 
 <np-relative-phrase-unlimited> ::=
-	<np-relative-phrase-implicit> |								==> 0; *XP = RP[1]
+	<np-relative-phrase-implicit> |    ==> 0; *XP = RP[1]
 	<np-relative-phrase-explicit>								==> 0; *XP = RP[1]
 
 @ Finally, we define what we mean by implicit and explicit relative phrases.
@@ -276,8 +276,8 @@ directions, in particular, a little better.
 
 =
 <np-relative-phrase-explicit> ::=
-	<permitted-preposition> _,/and ... |				==> 0; return FAIL_NONTERMINAL;
-	<permitted-preposition> _,/and |					==> 0; return FAIL_NONTERMINAL;
+	<permitted-preposition> _,/and ... |    ==> 0; return FAIL_NONTERMINAL;
+	<permitted-preposition> _,/and |    ==> 0; return FAIL_NONTERMINAL;
 	<permitted-preposition> <np-inner-without-rp>		==> 0; @<Work out a meaning@>;
 
 @<Work out a meaning@> =
@@ -358,12 +358,12 @@ speed optimisation, and doesn't affect the language's definition.
 
 =
 <np-inner-without-rp> ::=
-	... |											==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-inner> {called} <np-articled-balanced> |	==> 0; *XP = NounPhrases::PN_pair(CALLED_NT, WR[1], RP[1], RP[2])
-	<np-inner> <np-with-or-having-tail> |			==> 0; *XP = NounPhrases::PN_pair(WITH_NT, Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-inner> <np-and-tail> |						==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-kind-phrase> |								==> 0; *XP = RP[1]
-	<nominative-pronoun> |							==> GENERATE_RAW_NP; ParseTree::annotate_int(*XP, nounphrase_article_ANNOT, IT_ART);
+	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
+	<np-inner> {called} <np-articled-balanced> |    ==> 0; *XP = NounPhrases::PN_pair(CALLED_NT, WR[1], RP[1], RP[2])
+	<np-inner> <np-with-or-having-tail> |    ==> 0; *XP = NounPhrases::PN_pair(WITH_NT, Wordings::one_word(R[2]), RP[1], RP[2])
+	<np-inner> <np-and-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
+	<np-kind-phrase> |    ==> 0; *XP = RP[1]
+	<nominative-pronoun> |    ==> GENERATE_RAW_NP; ParseTree::annotate_int(*XP, nounphrase_article_ANNOT, IT_ART);
 	<np-articled-balanced>							==> 0; *XP = RP[1]
 
 @ The tail of with-or-having parses for instance "with carrying capacity 5"
@@ -381,28 +381,28 @@ bogus object called "locking it".)
 
 =
 <np-with-or-having-tail> ::=
-	it with action *** |						==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	{with/having} (/) *** |						==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	{with/having} ... ( <response-letter> ) |	==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	it with action *** |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	{with/having} (/) *** |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	{with/having} ... ( <response-letter> ) |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
 	{with/having} <np-new-property-list>		==> Wordings::first_wn(WR[1]); *XP = RP[1]
 
 <np-new-property-list> ::=
-	... |										==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-new-property> <np-new-property-tail> |	==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
+	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
+	<np-new-property> <np-new-property-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-new-property>							==> 0; *XP = RP[1];
 
 <np-new-property> ::=
 	...											==> 0; *XP = NounPhrases::PN_void(PROPERTY_LIST_NT, W);
 
 <np-new-property-tail> ::=
-	, {_and} <np-new-property-list> |			==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <np-new-property-list> |    ==> Wordings::first_wn(W); *XP= RP[1]
 	{_,/and} <np-new-property-list>				==> Wordings::first_wn(W); *XP= RP[1]
 
 @ The "and" tail is much easier:
 
 =
 <np-and-tail> ::=
-	, {_and} <np-inner> |						==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <np-inner> |    ==> Wordings::first_wn(W); *XP= RP[1]
 	{_,/and} <np-inner>							==> Wordings::first_wn(W); *XP= RP[1]
 
 @ Kind phrases are easier:
@@ -414,11 +414,11 @@ but definite articles are not.
 
 =
 <np-kind-phrase> ::=
-	<indefinite-article> <np-kind-phrase-unarticled> |	==> 0; *XP = RP[2]
+	<indefinite-article> <np-kind-phrase-unarticled> |    ==> 0; *XP = RP[2]
 	<np-kind-phrase-unarticled>							==> 0; *XP = RP[1]
 
 <np-kind-phrase-unarticled> ::=
-	kind/kinds |								==> 0; *XP = NounPhrases::PN_void(KIND_NT, W)
+	kind/kinds |    ==> 0; *XP = NounPhrases::PN_void(KIND_NT, W)
 	kind/kinds of <np-inner>					==> 0; *XP = NounPhrases::PN_single(KIND_NT, W, RP[1])
 
 @h Relationship nodes.

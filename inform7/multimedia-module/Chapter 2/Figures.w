@@ -76,7 +76,7 @@ blorb_figure *PL::Figures::new_blorb_figure(instance *nc) {
 
 =
 <new-figure-sentence-object> ::=
-	<definite-article> <new-figure-sentence-object-unarticled> |	==> R[2]; *XP = RP[2]
+	<definite-article> <new-figure-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
 	<new-figure-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
 
 <new-figure-sentence-object-unarticled> ::=
@@ -109,12 +109,12 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 
 @ =
 <figure-sentence-object> ::=
-	<figure-source> ( <quoted-text> ) |		==> R[1]; <<alttext>> = R[2];
+	<figure-source> ( <quoted-text> ) |    ==> R[1]; <<alttext>> = R[2];
 	<figure-source>							==> R[1]
 
 <figure-source> ::=
-	of cover art |			==> -1
-	<quoted-text> |			==> R[1]
+	of cover art |    ==> -1
+	<quoted-text> |    ==> R[1]
 	...						==> @<Issue PM_PictureNotTextual problem@>;
 
 @<Issue PM_PictureNotTextual problem@> =

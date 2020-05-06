@@ -8,7 +8,7 @@ How we shall test it.
 parse_node_tree *syntax_tree = NULL;
 
 <dividing-sentence> ::=
-	chapter ... |			==> 1
+	chapter ... |    ==> 1
 	section ...				==> 2
 
 <structural-sentence> ::=

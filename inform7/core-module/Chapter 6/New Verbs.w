@@ -88,18 +88,18 @@ as the object.
 
 =
 <verb-implies-sentence-subject> ::=
-	in <natural-language> <infinitive-declaration> |	==> R[2]; <<inform_language:nl>> = (inform_language *) (RP[1]);
+	in <natural-language> <infinitive-declaration> |    ==> R[2]; <<inform_language:nl>> = (inform_language *) (RP[1]);
 	<infinitive-declaration>							==> R[1]; <<inform_language:nl>> = English_language;
 
 <infinitive-declaration> ::=
-	to <infinitive-usage> ( ... ) |		==> R[1]; <<giving-parts>> = TRUE
-	to <infinitive-usage> |				==> R[1]; <<giving-parts>> = FALSE
-	<infinitive-usage> ( ... ) |		==> R[1]; <<giving-parts>> = TRUE
+	to <infinitive-usage> ( ... ) |    ==> R[1]; <<giving-parts>> = TRUE
+	to <infinitive-usage> |    ==> R[1]; <<giving-parts>> = FALSE
+	<infinitive-usage> ( ... ) |    ==> R[1]; <<giving-parts>> = TRUE
 	<infinitive-usage>					==> R[1]; <<giving-parts>> = FALSE
 
 <infinitive-usage> ::=
-	{be able to ...} |					==> TRUE
-	{be able to} |						==> TRUE
+	{be able to ...} |    ==> TRUE
+	{be able to} |    ==> TRUE
 	...									==> FALSE
 
 @ The text in brackets, if given, is a comma-separated list of conjugations
@@ -107,7 +107,7 @@ of the verb. Each one is matched against this:
 
 =
 <conjugation> ::=
-	<nominative-pronoun> is/are ... |	==> R[1]; <<is-participle>> = TRUE
+	<nominative-pronoun> is/are ... |    ==> R[1]; <<is-participle>> = TRUE
 	<nominative-pronoun> ...			==> R[1]; <<is-participle>> = FALSE
 
 @ This syntax was a design mistake. It generalises badly to other languages,
@@ -136,13 +136,13 @@ now absolutely any non-empty word range is accepted as the property name.
 
 =
 <verb-implies-sentence-object> ::=
-	reversed <relation-name> relation |		==> REL_VERBM; *XP = BinaryPredicates::get_reversal(RP[1])
-	<relation-name> relation |				==> REL_VERBM; *XP = RP[1]
-	to <instance-of-infinitive-form> |		==> @<Use verb infinitive as shorthand@>
-	... property |							==> PROP_VERBM
-	built-in ... meaning |					==> BUILTIN_VERBM
-	... relation |							==> @<Issue PM_VerbRelationUnknown problem@>
-	{relation} |							==> @<Issue PM_VerbRelationVague problem@>
+	reversed <relation-name> relation |    ==> REL_VERBM; *XP = BinaryPredicates::get_reversal(RP[1])
+	<relation-name> relation |    ==> REL_VERBM; *XP = RP[1]
+	to <instance-of-infinitive-form> |    ==> @<Use verb infinitive as shorthand@>
+	... property |    ==> PROP_VERBM
+	built-in ... meaning |    ==> BUILTIN_VERBM
+	... relation |    ==> @<Issue PM_VerbRelationUnknown problem@>
+	{relation} |    ==> @<Issue PM_VerbRelationVague problem@>
 	...										==> @<Issue PM_VerbUnknownMeaning problem@>
 
 @<Issue PM_VerbRelationUnknown problem@> =
@@ -185,11 +185,11 @@ now absolutely any non-empty word range is accepted as the property name.
 
 =
 <new-verb-sentence-object> ::=
-	<indefinite-article> <new-verb-sentence-object-unarticled> |	==> R[2]; *XP = RP[2]
+	<indefinite-article> <new-verb-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
 	<new-verb-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
 
 <new-verb-sentence-object-unarticled> ::=
-	verb |															==> TRUE; *XP = NULL;
+	verb |    ==> TRUE; *XP = NULL;
 	verb implying/meaning <nounphrase-definite>						==> TRUE; *XP = RP[1]
 
 @ =
@@ -217,12 +217,12 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 
 =
 <verb-means-sentence-subject> ::=
-	<definite-article> <verb-means-sentence-subject-unarticled> |	==> R[2]; *XP = RP[2]
+	<definite-article> <verb-means-sentence-subject-unarticled> |    ==> R[2]; *XP = RP[2]
 	<verb-means-sentence-subject-unarticled>							==> R[1]; *XP = RP[1]
 
 <verb-means-sentence-subject-unarticled> ::=
-	verb to |														==> FALSE; return FAIL_NONTERMINAL;
-	verb <nounphrase> in the imperative |							==> TRUE; *XP = RP[1]
+	verb to |    ==> FALSE; return FAIL_NONTERMINAL;
+	verb <nounphrase> in the imperative |    ==> TRUE; *XP = RP[1]
 	verb <nounphrase>												==> FALSE; *XP = RP[1]
 
 @ =
@@ -1079,11 +1079,11 @@ int NewVerbs::takes_contraction_form(word_assemblage *wa) {
 
 =
 <new-adjective-sentence-object> ::=
-	<indefinite-article> <new-adjective-sentence-object-unarticled> |	==> R[2]; *XP = RP[2]
+	<indefinite-article> <new-adjective-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
 	<new-adjective-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
 
 <new-adjective-sentence-object-unarticled> ::=
-	adjective |															==> TRUE; *XP = NULL
+	adjective |    ==> TRUE; *XP = NULL
 	adjective implying/meaning <nounphrase-definite>					==> TRUE; *XP = RP[1]
 
 @ =
@@ -1113,7 +1113,7 @@ int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
 
 @ =
 <adjective-definition-subject> ::=
-	in <natural-language> ... |		==> TRUE; *XP = RP[1];
+	in <natural-language> ... |    ==> TRUE; *XP = RP[1];
 	...								==> TRUE; *XP = Projects::get_language_of_play(Task::project());
 
 @ =

@@ -150,11 +150,11 @@ phrase definitions and timed events don't open the rulebook name.
 
 =
 <new-rulebook-name> ::=
-	<definite-article> <new-rulebook-name> |	==> R[2]
-	<new-rulebook-name> rules/rulebook |		==> R[1]
-	at *** |									==> @<Issue PM_RulebookWithAt problem@>
-	to *** |									==> @<Issue PM_RulebookWithTo problem@>
-	definition *** |							==> @<Issue PM_RulebookWithDefinition problem@>
+	<definite-article> <new-rulebook-name> |    ==> R[2]
+	<new-rulebook-name> rules/rulebook |    ==> R[1]
+	at *** |    ==> @<Issue PM_RulebookWithAt problem@>
+	to *** |    ==> @<Issue PM_RulebookWithTo problem@>
+	definition *** |    ==> @<Issue PM_RulebookWithDefinition problem@>
 	...											==> 0
 
 @<Issue PM_RulebookWithAt problem@> =
@@ -392,7 +392,7 @@ Any new rulebook variable name is vetted by being run through this:
 
 =
 <rulebook-variable-name> ::=
-	<unfortunate-name> |					==> @<Issue PM_RulebookVariableAnd problem@>
+	<unfortunate-name> |    ==> @<Issue PM_RulebookVariableAnd problem@>
 	...										==> TRUE
 
 @<Issue PM_RulebookVariableAnd problem@> =
@@ -677,22 +677,22 @@ of the two outer words and is discontiguous.
 
 =
 <rulebook-stem-inner> ::=
-	<indefinite-article> <rulebook-stem-inner-unarticled> |	==> INDEF_ART; <<place>> = R[2]
-	<definite-article> <rulebook-stem-inner-unarticled> |	==> DEF_ART; <<place>> = R[2]
+	<indefinite-article> <rulebook-stem-inner-unarticled> |    ==> INDEF_ART; <<place>> = R[2]
+	<definite-article> <rulebook-stem-inner-unarticled> |    ==> DEF_ART; <<place>> = R[2]
 	<rulebook-stem-inner-unarticled>						==> NO_ART; <<place>> = R[1]
 
 <rulebook-stem-inner-unarticled> ::=
-	rule for/about/on <rulebook-stem-name> |	==> MIDDLE_PLACEMENT; <<len>> = R[1]
-	rule <rulebook-stem-name> |					==> MIDDLE_PLACEMENT; <<len>> = R[1]
-	first rule <rulebook-stem-name> |			==> FIRST_PLACEMENT; <<len>> = R[1]
-	first <rulebook-stem-name> |				==> FIRST_PLACEMENT; <<len>> = R[1]
-	last rule <rulebook-stem-name> |			==> LAST_PLACEMENT; <<len>> = R[1]
-	last <rulebook-stem-name> |					==> LAST_PLACEMENT; <<len>> = R[1]
+	rule for/about/on <rulebook-stem-name> |    ==> MIDDLE_PLACEMENT; <<len>> = R[1]
+	rule <rulebook-stem-name> |    ==> MIDDLE_PLACEMENT; <<len>> = R[1]
+	first rule <rulebook-stem-name> |    ==> FIRST_PLACEMENT; <<len>> = R[1]
+	first <rulebook-stem-name> |    ==> FIRST_PLACEMENT; <<len>> = R[1]
+	last rule <rulebook-stem-name> |    ==> LAST_PLACEMENT; <<len>> = R[1]
+	last <rulebook-stem-name> |    ==> LAST_PLACEMENT; <<len>> = R[1]
 	<rulebook-stem-name>						==> MIDDLE_PLACEMENT; <<len>> = R[1]
 
 <rulebook-stem-name> ::=
-	{when ... begins} |							==> 2; <<rulebook:m>> = built_in_rulebooks[WHEN_SCENE_BEGINS_RB] /* scenes\_plugin */
-	{when ... ends} |							==> 2; <<rulebook:m>> = built_in_rulebooks[WHEN_SCENE_ENDS_RB] /* scenes\_plugin */
+	{when ... begins} |    ==> 2; <<rulebook:m>> = built_in_rulebooks[WHEN_SCENE_BEGINS_RB] /* scenes\_plugin */
+	{when ... ends} |    ==> 2; <<rulebook:m>> = built_in_rulebooks[WHEN_SCENE_ENDS_RB] /* scenes\_plugin */
 	...											==> 0; <<rulebook:m>> = NULL
 
 @ =
@@ -915,8 +915,8 @@ parses the object noun phrase with the following:
 
 =
 <rulebook-property> ::=
-	outcome/outcomes <rulebook-outcome-list> |	==> TRUE
-	default <rulebook-default-outcome>	|	==> FALSE
+	outcome/outcomes <rulebook-outcome-list> |    ==> TRUE
+	default <rulebook-default-outcome>	|    ==> FALSE
 	...										==> @<Issue PM_NonOutcomeProperty problem@>
 
 @<Issue PM_NonOutcomeProperty problem@> =

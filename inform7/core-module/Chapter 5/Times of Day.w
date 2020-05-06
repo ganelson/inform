@@ -66,12 +66,12 @@ linguistically the same thing at all.
 	<clock-time>													==> Rvalues::from_time(R[1], W)
 
 <elapsed-time> ::=
-	<cardinal-number> hour/hours |									==> 60*R[1]
-	<cardinal-number> minute/minutes |								==>	R[1]
+	<cardinal-number> hour/hours |    ==> 60*R[1]
+	<cardinal-number> minute/minutes |    ==>	R[1]
 	<cardinal-number> hour/hours <cardinal-number> minute/minutes	==> 60*R[1]+R[2]
 
 <clock-time> ::=
-	<cardinal-number> <am-pm> |					==> @<Vet the time for clock range@>
+	<cardinal-number> <am-pm> |    ==> @<Vet the time for clock range@>
 	<digital-clock-time> <am-pm>				==> @<Vet the time for clock range@>
 
 <am-pm> ::=
@@ -157,9 +157,9 @@ a specific time of day, or when a named event occurs.
 
 =
 <event-rule-preamble> ::=
-	at <clock-time> |					==> R[1]
-	at the time when ... |				==> NO_FIXED_TIME
-	at the time that ... |				==> @<Issue PM_AtTimeThat problem@>
+	at <clock-time> |    ==> R[1]
+	at the time when ... |    ==> NO_FIXED_TIME
+	at the time that ... |    ==> @<Issue PM_AtTimeThat problem@>
 	at ...								==> @<Issue PM_AtWithoutTime problem@>
 
 @<Issue PM_AtTimeThat problem@> =

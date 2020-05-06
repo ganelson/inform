@@ -28,12 +28,12 @@ such as "The yourself object" in
 
 =
 <translates-into-i6-sentence-subject> ::=
-	... property |						==> PROPERTY_I6TR
-	... object/kind |					==> NOUN_I6TR
-	{... rule} |						==> RULE_I6TR
-	... variable |						==> VARIABLE_I6TR
-	... action |						==> ACTION_I6TR
-	understand token ... |				==> GRAMMAR_TOKEN_I6TR
+	... property |    ==> PROPERTY_I6TR
+	... object/kind |    ==> NOUN_I6TR
+	{... rule} |    ==> RULE_I6TR
+	... variable |    ==> VARIABLE_I6TR
+	... action |    ==> ACTION_I6TR
+	understand token ... |    ==> GRAMMAR_TOKEN_I6TR
 	...									==> @<Issue PM_TranslatedUnknownCategory problem@>
 
 @<Issue PM_TranslatedUnknownCategory problem@> =
@@ -51,7 +51,7 @@ will be required to pass |<extra-response>|.
 
 =
 <translates-into-i6-sentence-object> ::=
-	<quoted-text> with <nounphrase-articled-list> |	==> R[1]; *XP = RP[2];
+	<quoted-text> with <nounphrase-articled-list> |    ==> R[1]; *XP = RP[2];
 	<quoted-text>									==> R[1]; *XP = NULL;
 
 @ =

@@ -1,11 +1,10 @@
 [SourceText::] Source Text.
 
-Code for reading Inform 7 source text, which Inbuild uses for both extensions
-and projects.
+Using the lexer and syntax analysis modules to read in Inform 7 source text.
 
 @h Bridge to the Lexer.
-Firstly, we need to tell the //words// module what type to use when referencing
-natural languages.
+Lexing is the business of the //words// module, and we need to tell it what
+data type to use when referencing natural languages.
 
 @d PREFORM_LANGUAGE_TYPE struct inform_language
 
@@ -16,7 +15,7 @@ The following callback function performs that service.
 //words// has no convenient way to keep track of what copy we're working on,
 so we will simply store it in a global variable.
 
-@d LEXER_PROBLEM_HANDLER SourceText::lexer_problem_handler
+@d PROBLEM_WORDS_CALLBACK SourceText::lexer_problem_handler
 
 =
 inbuild_copy *currently_lexing_into = NULL;
@@ -83,16 +82,26 @@ potential errors, and these will also convert into copy errors, but now we
 have a more elegant way to keep track of the copy; //syntax// can be passed
 a sort of "your ref" pointer to it.
 
-@d SYNTAX_PROBLEM_REF_TYPE inbuild_copy /* the "your ref" is a pointer to this type */
-@d SYNTAX_PROBLEM_HANDLER SourceText::syntax_problem_handler
+@d PROBLEM_REF_SYNTAX_TYPE struct inbuild_copy /* the "your ref" is a pointer to this type */
+@d PROJECT_REF_SYNTAX_TYPE struct inform_project /* similarly but for the "project ref" */
+@d PROBLEM_SYNTAX_CALLBACK SourceText::syntax_problem_handler
 
 =
 void SourceText::syntax_problem_handler(int err_no, wording W,
-	SYNTAX_PROBLEM_REF_TYPE *C, int k) {
+	PROBLEM_REF_SYNTAX_TYPE *C, int k) {
 	copy_error *CE = CopyErrors::new_N(SYNTAX_CE, err_no, k);
 	CopyErrors::supply_wording(CE, W);
 	Copies::attach_error(C, CE);
 }
+
+@ And in fact we will be producing a number of syntax errors of our own, to
+add to those generated in //syntax//.
+
+@e ExtMultipleBeginsHere_SYNERROR
+@e ExtBeginsAfterEndsHere_SYNERROR
+@e ExtEndsWithoutBegins_SYNERROR
+@e ExtMultipleEndsHere_SYNERROR
+@e UseElementWithdrawn_SYNERROR
 
 @ The //inform7// compiler will eventually make a much more detailed syntax
 tree, extending the one we make here: but we will basically just break the
@@ -116,7 +125,7 @@ void SourceText::bulk_of_source_loaded(void) {
 @ And here is the callback function. It's only ever needed for //inform7//,
 not for //inbuild//, which isn't in the inventions business.
 
-@d SENTENCE_ANNOTATION_FUNCTION SourceText::annotate_new_sentence
+@d SENTENCE_ANNOTATION_SYNTAX_CALLBACK SourceText::annotate_new_sentence
 
 =
 void SourceText::annotate_new_sentence(parse_node *new) {
@@ -136,8 +145,8 @@ further, so this still isn't everything. Note that we give our own version of
 there's a slightly different version in //core: Parse Tree Usage//.)
 
 The node types we're adding are for the "structural sentences" which we will
-look for below. (The asterisk notation isn't known to most Inform users: it
-increases output to the debugging log.)
+look for below. (The asterisk notation for |TRACE_NT| isn't known to most
+Inform users: it increases output to the debugging log.)
 
 @d SYNTAX_TREE_METADATA_SETUP SourceText::node_metadata
 
@@ -179,74 +188,58 @@ regular sentences, those which use the standard verbs. Examples:
 >> The cushion is on the wooden chair [regular]
 
 Dividing sentences are always read, whereas the others may be skipped in
-sections of source not being included for one reason or another. Dividing
-sentences must match the following. Note that the extension end markers are
-only read in extensions, so they can never accidentally match in the main
-source text.
+sections of source not being included for one reason or another.
 
-@e ExtMultipleBeginsHere_SYNERROR
-@e ExtBeginsAfterEndsHere_SYNERROR
-@e ExtEndsWithoutBegins_SYNERROR
-@e ExtMultipleEndsHere_SYNERROR
+//syntax// requires us to define the nonterminal |<dividing-sentence>|,
+and here goes:
 
 =
 <dividing-sentence> ::=
-	<if-start-of-paragraph> <heading> |	==> R[2]
-	<extension-end-marker-sentence>		==> R[1]
+	<if-start-of-paragraph> <heading> | ==> R[2]
+	<extension-end-marker-sentence>     ==> R[1]
 
 <heading> ::=
-	volume ... |						==> 1
-	book ... |							==> 2
-	part ... |							==> 3
-	chapter ... |						==> 4
-	section ...							==> 5
+	volume ... |                        ==> 1
+	book ... |                          ==> 2
+	part ... |                          ==> 3
+	chapter ... |                       ==> 4
+	section ...                         ==> 5
 
 <extension-end-marker-sentence> ::=
-	... begin/begins here |				==> -1; @<Check we can begin an extension here@>;
-	... end/ends here					==> -2; @<Check we can end an extension here@>;
+	... begin/begins here |             ==> -1; @<Check we can begin an extension here@>;
+	... end/ends here                   ==> -2; @<Check we can end an extension here@>;
+
+@ Note that the extension end markers are only read in extensions, so they can
+never accidentally match in the main source text.
 
 @<Check we can begin an extension here@> =
-	switch (sfsm_extension_position) {
-		case 1: sfsm_extension_position++; break;
-		case 2: SYNTAX_PROBLEM_HANDLER(ExtMultipleBeginsHere_SYNERROR, W, sfsm_copy, 0); break;
-		case 3: SYNTAX_PROBLEM_HANDLER(ExtBeginsAfterEndsHere_SYNERROR, W, sfsm_copy, 0); break;
+	switch (sfsm->ext_pos) {
+		case 1: sfsm->ext_pos++; break;
+		case 2: PROBLEM_SYNTAX_CALLBACK(ExtMultipleBeginsHere_SYNERROR, W, sfsm->ref, 0); break;
+		case 3: PROBLEM_SYNTAX_CALLBACK(ExtBeginsAfterEndsHere_SYNERROR, W, sfsm->ref, 0); break;
 	}
 
 @<Check we can end an extension here@> =
-	switch (sfsm_extension_position) {
-		case 1: SYNTAX_PROBLEM_HANDLER(ExtEndsWithoutBegins_SYNERROR, W, sfsm_copy, 0); break;
-		case 2: sfsm_extension_position++; break;
-		case 3: SYNTAX_PROBLEM_HANDLER(ExtMultipleEndsHere_SYNERROR, W, sfsm_copy, 0); break;
+	switch (sfsm->ext_pos) {
+		case 1: PROBLEM_SYNTAX_CALLBACK(ExtEndsWithoutBegins_SYNERROR, W, sfsm->ref, 0); break;
+		case 2: sfsm->ext_pos++; break;
+		case 3: PROBLEM_SYNTAX_CALLBACK(ExtMultipleEndsHere_SYNERROR, W, sfsm->ref, 0); break;
 	}
 
-@<Detect a dividing sentence@> =
-	if (<dividing-sentence>(W)) {
-		switch (<<r>>) {
-			case -1: if (sfsm_extension_position > 0) begins_or_ends = 1;
-				break;
-			case -2:
-				if (sfsm_extension_position > 0) begins_or_ends = -1;
-				break;
-			default:
-				heading_level = <<r>>;
-				break;
-		}
-	}
-
-@
+@ //syntax// also requires this definition:
 
 =
 <structural-sentence> ::=
-	<if-start-of-source-text> <quoted-text> |				==> 0; ssnt = BIBLIOGRAPHIC_NT;
-	<if-start-of-source-text> <quoted-text> ... |			==> 0; ssnt = BIBLIOGRAPHIC_NT;
-	<language-modifying-sentence> |							==> R[1]
-	* |														==> 0; ssnt = TRACE_NT;
-	* <quoted-text-without-subs> |							==> 0; ssnt = TRACE_NT;
-	<if-start-of-paragraph> table ... |						==> 0; ssnt = TABLE_NT;
-	<if-start-of-paragraph> equation ... |					==> 0; ssnt = EQUATION_NT;
-	include the ... by ... |								==> 0; ssnt = INCLUDE_NT;
-	include ... by ... |									==> 0; ssnt = INCLUDE_NT;
-	include (- ...											==> 0; ssnt = INFORM6CODE_NT;
+	<if-start-of-source-text> <quoted-text> |      ==> 0; sfsm->nt = BIBLIOGRAPHIC_NT;
+	<if-start-of-source-text> <quoted-text> ... |  ==> 0; sfsm->nt = BIBLIOGRAPHIC_NT;
+	<language-modifying-sentence> |                ==> R[1]
+	* |                                            ==> 0; sfsm->nt = TRACE_NT;
+	* <quoted-text-without-subs> |                 ==> 0; sfsm->nt = TRACE_NT;
+	<if-start-of-paragraph> table ... |            ==> 0; sfsm->nt = TABLE_NT;
+	<if-start-of-paragraph> equation ... |         ==> 0; sfsm->nt = EQUATION_NT;
+	include the ... by ... |                       ==> 0; sfsm->nt = INCLUDE_NT;
+	include ... by ... |                           ==> 0; sfsm->nt = INCLUDE_NT;
+	include (- ...                                 ==> 0; sfsm->nt = INFORM6CODE_NT;
 
 @ Properly speaking, despite the definition above, language modifying sentences
 are nonstructural. So what are they doing here? The answer is that we need to
@@ -255,31 +248,34 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 
 =
 <language-modifying-sentence> ::=
-	include (- ### in the preform grammar |			==> -2; ssnt = INFORM6CODE_NT;
-	use ... language element/elements				==> -1
+	include (- ### in the preform grammar |        ==> -2; sfsm->nt = INFORM6CODE_NT;
+	use ... language element/elements              ==> -1
 
-@
+@ The following callback function is called by //syntax// when it breaks a
+sentence of type |BEGINHERE_NT| or |ENDHERE_NT| -- i.e., the beginning or end
+of an extension.
 
-@d NEW_BEGINEND_HANDLER SourceText::new_beginend
+@d BEGIN_OR_END_HERE_SYNTAX_CALLBACK SourceText::new_beginend
 
 =
-void SourceText::new_beginend(parse_node *new, inbuild_copy *C) {
+void SourceText::new_beginend(parse_node *pn, inbuild_copy *C) {
 	inform_extension *E = ExtensionManager::from_copy(C);
-	if (ParseTree::get_type(new) == BEGINHERE_NT)
-		Inclusions::check_begins_here(new, E);
-	if (ParseTree::get_type(new) == ENDHERE_NT)
-		Inclusions::check_ends_here(new, E);
+	if (ParseTree::get_type(pn) == BEGINHERE_NT) Inclusions::check_begins_here(pn, E);
+	if (ParseTree::get_type(pn) == ENDHERE_NT) Inclusions::check_ends_here(pn, E);
 }
 
-@
+@ Lastly, this callback is called by //syntax// when it hits a sentence like:
 
-@d NEW_LANGUAGE_HANDLER SourceText::new_language
+>> Use interactive fiction language element.
 
-@e UseElementWithdrawn_SYNERROR
+This feature of Inform has been withdrawn (it has moved lower down the software
+stack into the new world of kits), so we issue a syntax error.
+
+@d LANGUAGE_ELEMENT_SYNTAX_CALLBACK SourceText::new_language
 
 =
 void SourceText::new_language(wording W) {
 	copy_error *CE = CopyErrors::new(SYNTAX_CE, UseElementWithdrawn_SYNERROR);
 	CopyErrors::supply_node(CE, current_sentence);
-	Copies::attach_error(sfsm_copy, CE);
+	Copies::attach_error(sfsm->ref, CE);
 }

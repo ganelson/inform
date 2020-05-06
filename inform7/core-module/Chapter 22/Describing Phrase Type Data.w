@@ -448,20 +448,20 @@ word "to".
 
 =
 <phrase-preamble> ::=
-	<phrase-preamble> ( deprecated ) |			==> R[1]; <<deprecated>> = TRUE
-	<say-preamble>	|							==> SAY_ANN; <<say-ann>> = R[1]
+	<phrase-preamble> ( deprecated ) |    ==> R[1]; <<deprecated>> = TRUE
+	<say-preamble>	|    ==> SAY_ANN; <<say-ann>> = R[1]
 	<to-preamble>								==> R[1]
 
 <to-preamble> ::=
-	<to-preamble> ( arithmetic operation <cardinal-number> ) |	==> R[1]; <<operation>> = R[2]
-	<to-preamble> ( assignment operation ) |	==> R[1]; <<assignment>> = TRUE
-	{let ... be given by ...} |					==> LET_ANN; <<eqn>> = TRUE
-	{let ...} |									==> LET_ANN; <<eqn>> = FALSE
-	... -- end |								==> BLOCK_ANN
-	... -- end conditional |					==> CONDITIONAL_ANN
-	... -- end loop |							==> LOOP_ANN
-	... -- in loop |							==> IN_LOOP_ANN
-	... -- in ### |								==> IN_ANN
+	<to-preamble> ( arithmetic operation <cardinal-number> ) |    ==> R[1]; <<operation>> = R[2]
+	<to-preamble> ( assignment operation ) |    ==> R[1]; <<assignment>> = TRUE
+	{let ... be given by ...} |    ==> LET_ANN; <<eqn>> = TRUE
+	{let ...} |    ==> LET_ANN; <<eqn>> = FALSE
+	... -- end |    ==> BLOCK_ANN
+	... -- end conditional |    ==> CONDITIONAL_ANN
+	... -- end loop |    ==> LOOP_ANN
+	... -- in loop |    ==> IN_LOOP_ANN
+	... -- in ### |    ==> IN_ANN
 	...											==>	NO_ANN
 
 @ The definition remaining after the preamble is removed is then vetted.
@@ -498,15 +498,15 @@ the exception being the primordial phrase for saying text.
 
 =
 <say-preamble> ::=
-	<say-preamble> -- running on |				==> R[1]; <<run-on>> = TRUE
-	{say otherwise/else} |						==> CONTROL_SANN; <<control>> = OTHERWISE_SAY_CS
-	{say otherwise/else if/unless ...} |		==> CONTROL_SANN; <<control>> = OTHERWISE_IF_SAY_CS
-	{say if/unless ...} |						==> CONTROL_SANN; <<control>> = IF_SAY_CS
-	{say end if/unless} |						==> CONTROL_SANN; <<control>> = END_IF_SAY_CS
-	{say ...} -- beginning ### |				==> BEGIN_SANN
-	{say ...} -- continuing ### |				==> CONTINUE_SANN
-	{say ...} -- ending ### with marker ### |	==> ENDM_SANN
-	{say ...} -- ending ### |					==> END_SANN
+	<say-preamble> -- running on |    ==> R[1]; <<run-on>> = TRUE
+	{say otherwise/else} |    ==> CONTROL_SANN; <<control>> = OTHERWISE_SAY_CS
+	{say otherwise/else if/unless ...} |    ==> CONTROL_SANN; <<control>> = OTHERWISE_IF_SAY_CS
+	{say if/unless ...} |    ==> CONTROL_SANN; <<control>> = IF_SAY_CS
+	{say end if/unless} |    ==> CONTROL_SANN; <<control>> = END_IF_SAY_CS
+	{say ...} -- beginning ### |    ==> BEGIN_SANN
+	{say ...} -- continuing ### |    ==> CONTINUE_SANN
+	{say ...} -- ending ### with marker ### |    ==> ENDM_SANN
+	{say ...} -- ending ### |    ==> END_SANN
 	{say ...}									==> NO_SANN
 
 @ The following is used on the same text as <to-preamble>, but later on,
@@ -523,16 +523,16 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 
 =
 <to-return-data> ::=
-	to {decide yes/no} |							==> DEC_RANN
-	to {decide on ...} |							==> DEV_RANN
-	to decide whether/if the ... |					==>	TOC_RANN
-	to decide whether/if ... |						==> TOC_RANN
-	to decide what/which <return-kind> is the ... |	==> TOV_RANN; *XP = RP[1]
-	to decide what/which <return-kind> is ... |		==> TOV_RANN; *XP = RP[1]
+	to {decide yes/no} |    ==> DEC_RANN
+	to {decide on ...} |    ==> DEV_RANN
+	to decide whether/if the ... |    ==>	TOC_RANN
+	to decide whether/if ... |    ==> TOC_RANN
+	to decide what/which <return-kind> is the ... |    ==> TOV_RANN; *XP = RP[1]
+	to decide what/which <return-kind> is ... |    ==> TOV_RANN; *XP = RP[1]
 	to ...											==> TO_RANN
 
 <return-kind> ::=
-	<k-kind-for-template> |							==> 0; *XP = RP[1]
+	<k-kind-for-template> |    ==> 0; *XP = RP[1]
 	...												==> @<Issue PM_UnknownValueToDecide problem@>
 
 @<Issue PM_UnknownValueToDecide problem@> =
@@ -647,10 +647,10 @@ give problems for misuse of brackets.
 
 =
 <phrase-definition-word-or-token> ::=
-	( ) *** |								==> @<Issue PM_TokenWithEmptyBrackets problem@>
-	( <phrase-token-declaration> ) *** |	==> TRUE; <<token-form>> = R[1]; *XP = RP[1]
-	( *** |									==> @<Issue PM_TokenWithoutCloseBracket problem@>
-	) *** |									==> @<Issue PM_TokenWithoutOpenBracket problem@>
+	( ) *** |    ==> @<Issue PM_TokenWithEmptyBrackets problem@>
+	( <phrase-token-declaration> ) *** |    ==> TRUE; <<token-form>> = R[1]; *XP = RP[1]
+	( *** |    ==> @<Issue PM_TokenWithoutCloseBracket problem@>
+	) *** |    ==> @<Issue PM_TokenWithoutOpenBracket problem@>
 	### ***									==> FALSE
 
 @ Phrase token declarations allow a variety of non-standard constructs.
@@ -660,30 +660,30 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 =
 <phrase-token-declaration> ::=
-	*** ( *** - ...... |												==> @<Issue PM_TokenWithNestedBrackets problem@>
-	...... - a nonexisting variable |									==> TRUE; *XP = Specifications::from_kind(K_value); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
-	...... - a nonexisting <k-kind-for-template> variable |				==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
-	...... - a nonexisting <k-kind-for-template> that/which varies |	==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
-	...... - nonexisting variable |										==> TRUE; *XP = Specifications::from_kind(K_value); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
-	...... - nonexisting <k-kind-for-template> variable |				==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
-	...... - nonexisting <k-kind-for-template> that/which varies |		==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
-	...... - {an existing variable} |									==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {an existing <k-kind-for-template> variable} |				==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {an existing <k-kind-for-template> that/which varies} |	==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {existing variable} |										==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {existing <k-kind-for-template> variable} |				==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {existing <k-kind-for-template> that/which varies} |		==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - a condition |												==> TRUE; *XP = NULL; <<token-construct>> = CONDITION_PT_CONSTRUCT
-	...... - condition |												==> TRUE; *XP = NULL; <<token-construct>> = CONDITION_PT_CONSTRUCT
-	...... - a phrase |													==> TRUE; *XP = NULL; <<token-construct>> = VOID_PT_CONSTRUCT
-	...... - phrase |													==> TRUE; *XP = NULL; <<token-construct>> = VOID_PT_CONSTRUCT
-	...... - storage |													==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = STORAGE_PT_CONSTRUCT
-	...... - a table-reference |										==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
-	...... - table-reference |											==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
-	...... - <s-phrase-token-type> |									==> TRUE; *XP = RP[1]; <<token-construct>> = STANDARD_PT_CONSTRUCT
-	...... - <s-kind-as-name-token> |								==> TRUE; *XP = RP[1]; <<token-construct>> = KIND_NAME_PT_CONSTRUCT
-	...... - ...... |													==> @<Issue PM_BadTypeIndication problem@>
-	<s-kind-as-name-token> |											==> FALSE; *XP = RP[1]; <<token-construct>> = KIND_NAME_PT_CONSTRUCT
+	*** ( *** - ...... |    ==> @<Issue PM_TokenWithNestedBrackets problem@>
+	...... - a nonexisting variable |    ==> TRUE; *XP = Specifications::from_kind(K_value); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
+	...... - a nonexisting <k-kind-for-template> variable |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
+	...... - a nonexisting <k-kind-for-template> that/which varies |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
+	...... - nonexisting variable |    ==> TRUE; *XP = Specifications::from_kind(K_value); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
+	...... - nonexisting <k-kind-for-template> variable |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
+	...... - nonexisting <k-kind-for-template> that/which varies |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
+	...... - {an existing variable} |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {an existing <k-kind-for-template> variable} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {an existing <k-kind-for-template> that/which varies} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {existing variable} |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {existing <k-kind-for-template> variable} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {existing <k-kind-for-template> that/which varies} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - a condition |    ==> TRUE; *XP = NULL; <<token-construct>> = CONDITION_PT_CONSTRUCT
+	...... - condition |    ==> TRUE; *XP = NULL; <<token-construct>> = CONDITION_PT_CONSTRUCT
+	...... - a phrase |    ==> TRUE; *XP = NULL; <<token-construct>> = VOID_PT_CONSTRUCT
+	...... - phrase |    ==> TRUE; *XP = NULL; <<token-construct>> = VOID_PT_CONSTRUCT
+	...... - storage |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = STORAGE_PT_CONSTRUCT
+	...... - a table-reference |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
+	...... - table-reference |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
+	...... - <s-phrase-token-type> |    ==> TRUE; *XP = RP[1]; <<token-construct>> = STANDARD_PT_CONSTRUCT
+	...... - <s-kind-as-name-token> |    ==> TRUE; *XP = RP[1]; <<token-construct>> = KIND_NAME_PT_CONSTRUCT
+	...... - ...... |    ==> @<Issue PM_BadTypeIndication problem@>
+	<s-kind-as-name-token> |    ==> FALSE; *XP = RP[1]; <<token-construct>> = KIND_NAME_PT_CONSTRUCT
 	......																==> @<Issue PM_TokenMisunderstood problem@>
 
 @<Issue PM_TokenWithEmptyBrackets problem@> =

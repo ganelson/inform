@@ -132,9 +132,9 @@ void Equations::visit_to_create(parse_node *p) {
 
 =
 <equation-name> ::=
-	equation {<cardinal-number>} - ... |		==> 3
-	equation {<cardinal-number>} |				==> 1
-	equation - ... |							==> 2
+	equation {<cardinal-number>} - ... |    ==> 3
+	equation {<cardinal-number>} |    ==> 1
+	equation - ... |    ==> 2
 	equation ***								==> @<Issue PM_EquationMisnumbered problem@>
 
 @ The above catches all of the named expressions written out in the
@@ -374,29 +374,29 @@ mass, too.
 
 =
 <equation-where-list> ::=
-	... |													==> 0; eq_symbol_wn = Wordings::first_wn(W); return preform_lookahead_mode; /* match only when looking ahead */
-	<equation-where-setting-entry> <equation-where-tail> |	==> 0
+	... |    ==> 0; eq_symbol_wn = Wordings::first_wn(W); return preform_lookahead_mode; /* match only when looking ahead */
+	<equation-where-setting-entry> <equation-where-tail> |    ==> 0
 	<equation-where-setting-entry>							==> 0
 
 <equation-where-tail> ::=
-	, _and <equation-where-list> |							==> 0
+	, _and <equation-where-list> |    ==> 0
 	_,/and <equation-where-list>							==> 0
 
 <equation-where-setting-entry> ::=
 	<equation-where-setting>				==> 0; if (!preform_lookahead_mode) Equations::eqn_dec_var(equation_being_declared, Wordings::one_word(eq_symbol_wn), R[1], RP[1]);
 
 <equation-where-setting> ::=
-	<equation-symbol> is/are <k-kind> |		==> EQW_IDENTIFIES_KIND; *XP = RP[2]; eq_symbol_wn = R[1];
-	<equation-symbol> is/are <s-value> |	==> EQW_IDENTIFIES_VALUE; *XP = RP[2]; eq_symbol_wn = R[1];
-	<equation-symbol> is/are ... |			==> @<Issue PM_EquationSymbolNonValue problem@>
-	<equation-symbol> = <k-kind> |			==> @<Issue PM_EquationSymbolEqualsKOV problem@>
-	<equation-symbol> = <s-value> |		==> EQW_IDENTIFIES_VALUE; *XP = RP[2]; eq_symbol_wn = R[1];
-	<equation-symbol> = ... |				==> @<Issue PM_EquationSymbolNonValue problem@>
+	<equation-symbol> is/are <k-kind> |    ==> EQW_IDENTIFIES_KIND; *XP = RP[2]; eq_symbol_wn = R[1];
+	<equation-symbol> is/are <s-value> |    ==> EQW_IDENTIFIES_VALUE; *XP = RP[2]; eq_symbol_wn = R[1];
+	<equation-symbol> is/are ... |    ==> @<Issue PM_EquationSymbolNonValue problem@>
+	<equation-symbol> = <k-kind> |    ==> @<Issue PM_EquationSymbolEqualsKOV problem@>
+	<equation-symbol> = <s-value> |    ==> EQW_IDENTIFIES_VALUE; *XP = RP[2]; eq_symbol_wn = R[1];
+	<equation-symbol> = ... |    ==> @<Issue PM_EquationSymbolNonValue problem@>
 	<equation-symbol>						==> EQW_IDENTIFIES_NOTHING; eq_symbol_wn = R[1];
 
 <equation-symbol> ::=
-	<valid-equation-symbol>	|				==> R[1]
-	### |									==> @<Issue PM_EquationSymbolMalformed problem@>
+	<valid-equation-symbol>	|    ==> R[1]
+	### |    ==> @<Issue PM_EquationSymbolMalformed problem@>
 	...										==> @<Issue PM_EquationSymbolMisdeclared problem@>
 
 @<Issue PM_EquationSymbolNonValue problem@> =

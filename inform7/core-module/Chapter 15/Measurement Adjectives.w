@@ -218,13 +218,13 @@ always to match <property-name>, and the text in the range must match
 
 =
 <measurement-adjective-definition> ::=
-	<possessive-third-person> ... is/are not ... |								==> @<Issue PM_GradingMisphrased problem@>
-	<possessive-third-person> {<property-name>} is/are <measurement-range> |	==> R[3]; *XP = RP[2]
+	<possessive-third-person> ... is/are not ... |    ==> @<Issue PM_GradingMisphrased problem@>
+	<possessive-third-person> {<property-name>} is/are <measurement-range> |    ==> R[3]; *XP = RP[2]
 	<possessive-third-person> ... is/are <measurement-range>					==> R[2]; *XP = NULL
 
 <measurement-range> ::=
-	... or more |		==> MEASURE_T_OR_MORE
-	... or less |		==> MEASURE_T_OR_LESS
+	... or more |    ==> MEASURE_T_OR_MORE
+	... or less |    ==> MEASURE_T_OR_LESS
 	...					==> MEASURE_T_EXACTLY
 
 @<Issue PM_GradingMisphrased problem@> =

@@ -296,33 +296,33 @@ allowed; they should probably be withdrawn.
 
 =
 <heading-qualifier> ::=
-	... ( <bracketed-heading-qualifier> ) |	==>	R[1]
-	... not for release |					==>	NOT_FOR_RELEASE_HQ
-	... for release only |					==>	FOR_RELEASE_ONLY_HQ
+	... ( <bracketed-heading-qualifier> ) |    ==>	R[1]
+	... not for release |    ==>	NOT_FOR_RELEASE_HQ
+	... for release only |    ==>	FOR_RELEASE_ONLY_HQ
 	... unindexed							==>	UNINDEXED_HQ
 
 <bracketed-heading-qualifier> ::=
-	not for release |						==>	NOT_FOR_RELEASE_HQ
-	for release only |						==>	FOR_RELEASE_ONLY_HQ
-	unindexed |								==>	UNINDEXED_HQ
-	<platform-qualifier> |					==>	R[1]
+	not for release |    ==>	NOT_FOR_RELEASE_HQ
+	for release only |    ==>	FOR_RELEASE_ONLY_HQ
+	unindexed |    ==>	UNINDEXED_HQ
+	<platform-qualifier> |    ==>	R[1]
 	<extension-qualifier>					==> R[1]
 
 <platform-qualifier> ::=
-	for <platform-identifier> only |		==>	(R[1])?PLATFORM_MET_HQ:PLATFORM_UNMET_HQ
+	for <platform-identifier> only |    ==>	(R[1])?PLATFORM_MET_HQ:PLATFORM_UNMET_HQ
 	not for <platform-identifier>			==>	(R[1])?PLATFORM_UNMET_HQ:PLATFORM_MET_HQ
 
 <platform-identifier> ::=
-	<language-element> language element |	==> R[1]
-	...... language element |				==>	@<Issue PM_UnknownLanguageElement problem@>
-	<current-virtual-machine> |				==> R[1]
+	<language-element> language element |    ==> R[1]
+	...... language element |    ==>	@<Issue PM_UnknownLanguageElement problem@>
+	<current-virtual-machine> |    ==> R[1]
 	......									==> @<Issue PM_UnknownVirtualMachine problem@>
 
 <extension-qualifier> ::=
-	for use with <extension-identifier> |					==> USE_WITH_HQ
-	for use without <extension-identifier> |				==> USE_WITHOUT_HQ
-	not for use with <extension-identifier> |				==> USE_WITHOUT_HQ
-	in place of (<quoted-text>) in <extension-identifier> |	==> IN_PLACE_OF_HQ
+	for use with <extension-identifier> |    ==> USE_WITH_HQ
+	for use without <extension-identifier> |    ==> USE_WITHOUT_HQ
+	not for use with <extension-identifier> |    ==> USE_WITHOUT_HQ
+	in place of (<quoted-text>) in <extension-identifier> |    ==> IN_PLACE_OF_HQ
 	in place of ...... in <extension-identifier>			==> IN_PLACE_OF_HQ
 
 <extension-identifier> ::=
@@ -332,13 +332,13 @@ allowed; they should probably be withdrawn.
 	#ifdef CORE_MODULE
 	copy_error *CE = CopyErrors::new(SYNTAX_CE, UnknownLanguageElement_SYNERROR);
 	CopyErrors::supply_node(CE, current_sentence);
-	Copies::attach_error(sfsm_copy, CE);
+	Copies::attach_error(sfsm->ref, CE);
 	#endif
 
 @<Issue PM_UnknownVirtualMachine problem@> =
 	copy_error *CE = CopyErrors::new(SYNTAX_CE, UnknownVirtualMachine_SYNERROR);
 	CopyErrors::supply_node(CE, current_sentence);
-	Copies::attach_error(sfsm_copy, CE);
+	Copies::attach_error(sfsm->ref, CE);
 
 @<Set for-use-with extension identifier@> =
 	*X = R[0] + 4;

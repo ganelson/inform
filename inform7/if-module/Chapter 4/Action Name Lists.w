@@ -103,20 +103,20 @@ operands.
 
 =
 <action-list> ::=
-	doing something/anything other than <anl-excluded> |	==> FALSE; *XP = RP[1];
-	doing something/anything except <anl-excluded> |		==> FALSE; *XP = RP[1];
-	doing something/anything to/with <anl-to-tail> |		==> TRUE; *XP = RP[1];
-	doing something/anything |								==> @<Construct ANL for anything@>
-	doing something/anything ... |							==> TRUE; *XP = NULL; return FAIL_NONTERMINAL;
+	doing something/anything other than <anl-excluded> |    ==> FALSE; *XP = RP[1];
+	doing something/anything except <anl-excluded> |    ==> FALSE; *XP = RP[1];
+	doing something/anything to/with <anl-to-tail> |    ==> TRUE; *XP = RP[1];
+	doing something/anything |    ==> @<Construct ANL for anything@>
+	doing something/anything ... |    ==> TRUE; *XP = NULL; return FAIL_NONTERMINAL;
 	<anl>													==> TRUE; *XP = RP[1];
 
 <anl-excluded> ::=
-	<anl> to/with {<anl-minimal-common-operand>} |			==> @<Add to-clause to excluded ANL@>;
+	<anl> to/with {<anl-minimal-common-operand>} |    ==> @<Add to-clause to excluded ANL@>;
 	<anl>													==> TRUE; *XP = PL::Actions::Lists::flip_anl_parity(RP[1], FALSE);
 
 <anl-minimal-common-operand> ::=
-	_,/or ... |												==> FALSE; return FAIL_NONTERMINAL;
-	... to/with ... |										==> FALSE; return FAIL_NONTERMINAL;
+	_,/or ... |    ==> FALSE; return FAIL_NONTERMINAL;
+	... to/with ... |    ==> FALSE; return FAIL_NONTERMINAL;
 	...														==> TRUE;
 
 @<Construct ANL for anything@> =
@@ -138,15 +138,15 @@ for instance, we don't want to count the "in" from "fixed in place".
 
 =
 <anl-to-tail> ::=
-	<anl-operand> <anl-in-tail> |		==> @<Augment ANL with in clause@>
+	<anl-operand> <anl-in-tail> |    ==> @<Augment ANL with in clause@>
 	<anl-operand>						==> 0; *XP = RP[1]
 
 <anl-operand> ::=
 	...									==> @<Construct ANL for anything applied@>
 
 <anl-in-tail> ::=
-	fixed in place *** |					==> FALSE; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	is/are/was/were/been/listed in *** |	==> FALSE; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	fixed in place *** |    ==> FALSE; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	is/are/was/were/been/listed in *** |    ==> FALSE; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
 	in ...									==> TRUE
 
 @<Augment ANL with in clause@> =
@@ -169,11 +169,11 @@ for instance, we don't want to count the "in" from "fixed in place".
 
 =
 <anl> ::=
-	<anl-entry> <anl-tail> |		==> @<Join parsed ANLs@>
+	<anl-entry> <anl-tail> |    ==> @<Join parsed ANLs@>
 	<anl-entry>						==> 0; *XP = RP[1];
 
 <anl-tail> ::=
-	, _or <anl> |					==> 0; *XP = RP[1];
+	, _or <anl> |    ==> 0; *XP = RP[1];
 	_,/or <anl>						==> 0; *XP = RP[1];
 
 @ Which reduces us to an internal nonterminal for an entry in this list.
@@ -188,8 +188,8 @@ end, but it's syntactically valid.)
 
 =
 <anl-entry> ::=
-	<named-action-pattern>	|				==> @<Make an action pattern from named behaviour@>
-	<named-action-pattern> <anl-in-tail> |	==> @<Make an action pattern from named behaviour plus in@>
+	<named-action-pattern>	|    ==> @<Make an action pattern from named behaviour@>
+	<named-action-pattern> <anl-in-tail> |    ==> @<Make an action pattern from named behaviour plus in@>
 	<anl-entry-with-action>					==> 0; *XP = RP[1];
 
 <named-action-pattern> internal {

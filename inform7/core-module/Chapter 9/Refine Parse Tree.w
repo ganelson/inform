@@ -371,9 +371,9 @@ property of something.
 
 =
 <newfound-property-of> ::=
-	in the presence of ... |		==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	... that varies |				==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	... variable |					==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	in the presence of ... |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	... that varies |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	... variable |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
 	{<property-name-v>} of ...		==> 0; *XP = RP[1]
 
 @<Act on a newly-discovered property of something@> =
@@ -476,9 +476,9 @@ a noun instead of a condition testing the current action.
 
 =
 <assertion-np-as-value> ::=
-	variable |									==> @<Issue PM_VagueVariable problem@>
-	action of <s-explicit-action>	|					==> TRUE; *XP = RP[1]
-	<s-descriptive-type-expression> |		==> TRUE; *XP = RP[1]
+	variable |    ==> @<Issue PM_VagueVariable problem@>
+	action of <s-explicit-action>	|    ==> TRUE; *XP = RP[1]
+	<s-descriptive-type-expression> |    ==> TRUE; *XP = RP[1]
 	<s-global-variable>							==> TRUE; *XP = RP[1]
 
 @<Parse the noun phrase as a value@> =

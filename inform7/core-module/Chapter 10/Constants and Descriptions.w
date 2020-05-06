@@ -14,12 +14,12 @@ is on the table". For now, though, we treat it as a noun.
 
 =
 <s-constant-value> ::=
-	<s-literal> |										==> RP[1]
-	nothing	|											==> Rvalues::new_nothing_object_constant();
-	<s-miscellaneous-proper-noun> |						==> RP[1]
-	<s-rulebook-outcome-name> outcome |					==> RP[1]
-	<s-use-option-name> option |						==> RP[1]
-	verb <instance-of-verb> |							==> @<Compose verb ML@>
+	<s-literal> |    ==> RP[1]
+	nothing	|    ==> Rvalues::new_nothing_object_constant();
+	<s-miscellaneous-proper-noun> |    ==> RP[1]
+	<s-rulebook-outcome-name> outcome |    ==> RP[1]
+	<s-use-option-name> option |    ==> RP[1]
+	verb <instance-of-verb> |    ==> @<Compose verb ML@>
 	<s-rule-name> response ( <response-letter> )		==> @<Compose response ML@>
 
 @<Compose verb ML@> =
@@ -232,14 +232,14 @@ the chimp is either not hairy or not an animal.
 
 =
 <s-adjective-list> ::=
-	not <indefinite-article> <s-adjective-list-unarticled> |	==> 0; *XP = ParseTree::AdjectiveLists::make_adjlist(ParseTree::AdjectiveLists::negate_adjlist(RP[2]), W)
-	<indefinite-article> <s-adjective-list-unarticled> |		==> 0; *XP = ParseTree::AdjectiveLists::make_adjlist(RP[2], W)
+	not <indefinite-article> <s-adjective-list-unarticled> |    ==> 0; *XP = ParseTree::AdjectiveLists::make_adjlist(ParseTree::AdjectiveLists::negate_adjlist(RP[2]), W)
+	<indefinite-article> <s-adjective-list-unarticled> |    ==> 0; *XP = ParseTree::AdjectiveLists::make_adjlist(RP[2], W)
 	<s-adjective-list-unarticled>								==> 0; *XP = ParseTree::AdjectiveLists::make_adjlist(RP[1], W)
 
 <s-adjective-list-unarticled> ::=
-	not <s-adjective> |											==> 0; *XP = ParseTree::AdjectiveLists::negate_adjlist(RP[1])
-	<s-adjective> |												==> 0; *XP = RP[1]
-	not <s-adjective> <s-adjective-list-unarticled> |			==> 0; *XP = ParseTree::AdjectiveLists::join_adjlist(ParseTree::AdjectiveLists::negate_adjlist(RP[1]), RP[2])
+	not <s-adjective> |    ==> 0; *XP = ParseTree::AdjectiveLists::negate_adjlist(RP[1])
+	<s-adjective> |    ==> 0; *XP = RP[1]
+	not <s-adjective> <s-adjective-list-unarticled> |    ==> 0; *XP = ParseTree::AdjectiveLists::join_adjlist(ParseTree::AdjectiveLists::negate_adjlist(RP[1]), RP[2])
 	<s-adjective> <s-adjective-list-unarticled>					==> 0; *XP = ParseTree::AdjectiveLists::join_adjlist(RP[1], RP[2])
 
 @ That reduces us to an internal nonterminal, which matches the longest
@@ -352,7 +352,7 @@ them with conditions like
 
 =
 <s-qualifiable-noun> ::=
-	<k-kind> |								==> Specifications::from_kind(RP[1]); s_adj_domain = RP[1];
+	<k-kind> |    ==> Specifications::from_kind(RP[1]); s_adj_domain = RP[1];
 	<s-instance-name>						==> RP[1]; s_adj_domain = NULL;
 
 <s-qualifiable-common-noun> ::=
@@ -443,36 +443,36 @@ In the grammar for <s-description>, the noun is compulsory.
 
 =
 <s-description> ::=
-	<s-description-uncomposite-inner> |								==> RP[1]
+	<s-description-uncomposite-inner> |    ==> RP[1]
 	<s-np-with-relative-clause>										==> RP[1]
 
 <s-description-uncomposite> ::=
 	<s-description-uncomposite-inner>								==> RP[1]
 
 <s-description-uncomposite-inner> ::=
-	<s-description-uncalled> ( called <s-calling-name> ) |			==> @<Glue on the calling ML@>
+	<s-description-uncalled> ( called <s-calling-name> ) |    ==> @<Glue on the calling ML@>
 	<s-description-uncalled>										==> RP[1]
 
 <s-description-uncalled> ::=
-	<s-specifier> <s-description-unspecified> |						==> @<Glue on the quantification ML@>
-	<s-specifying-noun> |											==> RP[1]
-	<s-specifying-noun> <s-adjective-list> |						==> ParseTree::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
-	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |	==> RP[3]
-	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |	==> @<Issue PM_DefiniteCommonNoun problem@>
-	<definite-article> <s-proper-description-unspecified> |			==> RP[2]
-	<indefinite-article> <s-description-unspecified> |				==> RP[2]
+	<s-specifier> <s-description-unspecified> |    ==> @<Glue on the quantification ML@>
+	<s-specifying-noun> |    ==> RP[1]
+	<s-specifying-noun> <s-adjective-list> |    ==> ParseTree::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
+	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> RP[3]
+	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |    ==> @<Issue PM_DefiniteCommonNoun problem@>
+	<definite-article> <s-proper-description-unspecified> |    ==> RP[2]
+	<indefinite-article> <s-description-unspecified> |    ==> RP[2]
 	<s-description-unspecified>										==> RP[1]
 
 <s-description-unspecified> ::=
-	<s-qualifiable-noun> |											==> RP[1]
+	<s-qualifiable-noun> |    ==> RP[1]
 	<s-applicable-adjective-list> <s-qualifiable-noun>				==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <s-common-description-unspecified> ::=
-	<s-qualifiable-common-noun> |									==> RP[1]
+	<s-qualifiable-common-noun> |    ==> RP[1]
 	<s-applicable-adjective-list> <s-qualifiable-common-noun>		==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <s-proper-description-unspecified> ::=
-	<s-qualifiable-proper-noun> |									==> RP[1]
+	<s-qualifiable-proper-noun> |    ==> RP[1]
 	<s-applicable-adjective-list> <s-qualifiable-proper-noun>		==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <if-trying-omission-permitted> internal 0 {
@@ -492,26 +492,26 @@ except that the noun is optional. The only difference is right at the bottom.
 
 =
 <s-description-nounless> ::=
-	<s-description-nounless-uncomposite> |							==> RP[1]
+	<s-description-nounless-uncomposite> |    ==> RP[1]
 	<s-np-with-relative-clause>										==> RP[1]
 
 <s-description-nounless-uncomposite> ::=
-	<s-description-nounless-uncalled> ( called <s-calling-name> ) |	==> @<Glue on the calling ML@>
+	<s-description-nounless-uncalled> ( called <s-calling-name> ) |    ==> @<Glue on the calling ML@>
 	<s-description-nounless-uncalled>								==> RP[1]
 
 <s-description-nounless-uncalled> ::=
-	<s-specifier> <s-description-nounless-unspecified> |			==> @<Glue on the quantification ML@>
-	<s-specifying-noun> |											==> RP[1]
-	<s-specifying-noun> <s-adjective-list> |						==> ParseTree::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
-	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |	==> RP[3]
-	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |	==> @<Issue PM_DefiniteCommonNoun problem@>
-	<indefinite-article> <s-description-nounless-unspecified> |		==> RP[2]
-	<definite-article> <s-proper-description-unspecified> |			==> RP[2]
+	<s-specifier> <s-description-nounless-unspecified> |    ==> @<Glue on the quantification ML@>
+	<s-specifying-noun> |    ==> RP[1]
+	<s-specifying-noun> <s-adjective-list> |    ==> ParseTree::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
+	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> RP[3]
+	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |    ==> @<Issue PM_DefiniteCommonNoun problem@>
+	<indefinite-article> <s-description-nounless-unspecified> |    ==> RP[2]
+	<definite-article> <s-proper-description-unspecified> |    ==> RP[2]
 	<s-description-nounless-unspecified>							==> RP[1]
 
 <s-description-nounless-unspecified> ::=
-	<s-qualifiable-noun> |											==> RP[1]
-	<s-applicable-adjective-list> <s-qualifiable-noun> |			==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
+	<s-qualifiable-noun> |    ==> RP[1]
+	<s-applicable-adjective-list> <s-qualifiable-noun> |    ==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
 	<s-adjective-list>												==> ParseTree::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1])
 
 @<Glue on the calling ML@> =
@@ -589,7 +589,7 @@ context of a proper noun, as in "some tea", because it may be confusion of
 
 =
 <s-calling-name> ::=
-	<article> ... |		==> ParseTree::new_with_words(UNKNOWN_NT, WR[1])
+	<article> ... |    ==> ParseTree::new_with_words(UNKNOWN_NT, WR[1])
 	...					==> ParseTree::new_with_words(UNKNOWN_NT, WR[1])
 
 @ The following is written as an internal, voracious nonterminal for speed.

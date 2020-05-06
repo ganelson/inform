@@ -26,8 +26,8 @@ The subject must match:
 
 =
 <defined-by-sentence-subject> ::=
-	kind/kinds of <s-type-expression> |	==> TRUE; *XP = RP[1]
-	<s-type-expression> |				==> TRUE; *XP = RP[1]
+	kind/kinds of <s-type-expression> |    ==> TRUE; *XP = RP[1]
+	<s-type-expression> |    ==> TRUE; *XP = RP[1]
 	...									==> @<Issue PM_TableDefiningTheImpossible problem@>
 
 @<Issue PM_TableDefiningTheImpossible problem@> =
@@ -46,7 +46,7 @@ The subject must match:
 
 =
 <defined-by-sentence-object-inner> ::=
-	<s-value> |									==> @<Allow if a table name@>
+	<s-value> |    ==> @<Allow if a table name@>
 	...											==> @<Issue PM_TableUndefined problem@>
 
 @<Allow if a table name@> =

@@ -2495,24 +2495,24 @@ of alternatives each of which matches the following:
 
 =
 <specifies-sentence-subject> ::=
-	... ( {<literal-pattern-group-list>} ) |				==> R[1]; *XP = RP[1]
-	<k-kind-articled> times <k-kind-articled> |				==> TIMES_LPN; LP_left_kind = RP[1]; LP_right_kind = RP[2];
-	<s-type-expression> times <s-type-expression> |	==> @<Issue PM_MultiplyingNonKOVs problem@>
+	... ( {<literal-pattern-group-list>} ) |    ==> R[1]; *XP = RP[1]
+	<k-kind-articled> times <k-kind-articled> |    ==> TIMES_LPN; LP_left_kind = RP[1]; LP_right_kind = RP[2];
+	<s-type-expression> times <s-type-expression> |    ==> @<Issue PM_MultiplyingNonKOVs problem@>
 	...														==> 0; *XP = NULL
 
 <literal-pattern-group-list> ::=
-	<literal-pattern-group> <literal-pattern-group-tail> |	==> R[1] | R[2]; @<Compose LPG lists@>;
+	<literal-pattern-group> <literal-pattern-group-tail> |    ==> R[1] | R[2]; @<Compose LPG lists@>;
 	<literal-pattern-group>						==> R[1]; *XP = RP[1]
 
 <literal-pattern-group-tail> ::=
-	, and <literal-pattern-group-list> |		==> R[1]; *XP = RP[1]
+	, and <literal-pattern-group-list> |    ==> R[1]; *XP = RP[1]
 	,/and <literal-pattern-group-list>			==> R[1]; *XP = RP[1]
 
 <literal-pattern-group> ::=
-	singular |									==> SINGULAR_LPN; *XP = NULL;
-	plural |									==> PLURAL_LPN; *XP = NULL;
-	<literal-pattern-group-name> |				==> IN_LPN; *XP = LiteralPatterns::new_lpn(EMPTY_WORDING, RP[1]);
-	in ...... |									==> IN_LPN; *XP = LiteralPatterns::new_lpn(W, NULL);
+	singular |    ==> SINGULAR_LPN; *XP = NULL;
+	plural |    ==> PLURAL_LPN; *XP = NULL;
+	<literal-pattern-group-name> |    ==> IN_LPN; *XP = LiteralPatterns::new_lpn(EMPTY_WORDING, RP[1]);
+	in ...... |    ==> IN_LPN; *XP = LiteralPatterns::new_lpn(W, NULL);
 	......										==> @<Issue PM_BadLPNameOption problem@>
 
 @<Compose LPG lists@> =
@@ -2557,26 +2557,26 @@ can't set both scaling and an equivalent, for instance.
 
 =
 <specifies-sentence-object> ::=
-	<kind-specified> <literal-pattern-specification-tail> |	==> R[2]; *XP = RP[2]
+	<kind-specified> <literal-pattern-specification-tail> |    ==> R[2]; *XP = RP[2]
 	<kind-specified>										==> 0; *XP = NULL
 
 <kind-specified> ::=
-	<k-kind-articled> |										==> 0; LP_kind_specified = RP[1];
+	<k-kind-articled> |    ==> 0; LP_kind_specified = RP[1];
 	...														==> @<Issue PM_LPNotKOV problem@>
 
 <literal-pattern-specification-tail> ::=
-	with parts <literal-pattern-part-list> |	==> PARTS_LPC; *XP = RP[1];
-	<scaling-instruction> |						==> SCALING_LPC
-	<scaling-instruction> offset by <s-literal> |	==> SCALING_LPC; LP_real_offset = latest_constructed_real; LP_offset_value = RP[2];
-	offset by <s-literal> |						==> OFFSET_LPC; LP_real_offset = latest_constructed_real; LP_offset_value = RP[1];
+	with parts <literal-pattern-part-list> |    ==> PARTS_LPC; *XP = RP[1];
+	<scaling-instruction> |    ==> SCALING_LPC
+	<scaling-instruction> offset by <s-literal> |    ==> SCALING_LPC; LP_real_offset = latest_constructed_real; LP_offset_value = RP[2];
+	offset by <s-literal> |    ==> OFFSET_LPC; LP_real_offset = latest_constructed_real; LP_offset_value = RP[1];
 	equivalent to <s-literal>						==> EQUIVALENT_LPC; LP_real_equivalent = latest_constructed_real; LP_equivalent_value = RP[1];
 
 <scaling-instruction> ::=
-	scaled up by <cardinal-number> |			==> SCALING_LPC; LP_scaling = LP_SCALED_UP; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
-	scaled up by <s-literal-real-number> |		==> SCALING_LPC; LP_scaling = LP_SCALED_UP; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;
-	scaled down by <cardinal-number> |			==> SCALING_LPC; LP_scaling = LP_SCALED_DOWN; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
-	scaled down by <s-literal-real-number> |	==> SCALING_LPC; LP_scaling = LP_SCALED_DOWN; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;
-	scaled at <cardinal-number>	|				==> SCALING_LPC; LP_scaling = LP_SCALED_AT; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
+	scaled up by <cardinal-number> |    ==> SCALING_LPC; LP_scaling = LP_SCALED_UP; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
+	scaled up by <s-literal-real-number> |    ==> SCALING_LPC; LP_scaling = LP_SCALED_UP; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;
+	scaled down by <cardinal-number> |    ==> SCALING_LPC; LP_scaling = LP_SCALED_DOWN; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
+	scaled down by <s-literal-real-number> |    ==> SCALING_LPC; LP_scaling = LP_SCALED_DOWN; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;
+	scaled at <cardinal-number>	|    ==> SCALING_LPC; LP_scaling = LP_SCALED_AT; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
 	scaled at <s-literal-real-number>			==> SCALING_LPC; LP_scaling = LP_SCALED_AT; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;
 
 @<Issue PM_LPNotKOV problem@> =
@@ -2596,27 +2596,27 @@ by a bracketed list of up to three options in any order.
 
 =
 <literal-pattern-part-list> ::=
-	<literal-pattern-part> , and <literal-pattern-part-list> |	==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
-	<literal-pattern-part> , <literal-pattern-part-list> |	==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
-	<literal-pattern-part> and <literal-pattern-part-list> |	==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
+	<literal-pattern-part> , and <literal-pattern-part-list> |    ==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
+	<literal-pattern-part> , <literal-pattern-part-list> |    ==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
+	<literal-pattern-part> and <literal-pattern-part-list> |    ==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
 	<literal-pattern-part>						==> 0; *XP = RP[1]
 
 <literal-pattern-part> ::=
-	<np-balanced> ( <literal-pattern-part-option-list> ) |	==> 0; *XP = RP[1]; if (RP[1]) ParseTree::annotate_int(*XP, lpe_options_ANNOT, R[2]);
+	<np-balanced> ( <literal-pattern-part-option-list> ) |    ==> 0; *XP = RP[1]; if (RP[1]) ParseTree::annotate_int(*XP, lpe_options_ANNOT, R[2]);
 	<np-balanced>								==> 0; *XP = RP[1]
 
 <literal-pattern-part-option-list> ::=
-	<literal-pattern-part-option> <literal-pattern-part-option-tail> |	==> R[1] | R[2]
+	<literal-pattern-part-option> <literal-pattern-part-option-tail> |    ==> R[1] | R[2]
 	<literal-pattern-part-option>				==> R[1]
 
 <literal-pattern-part-option-tail> ::=
-	, and <literal-pattern-part-option-list> |	==> R[1]
+	, and <literal-pattern-part-option-list> |    ==> R[1]
 	,/and <literal-pattern-part-option-list>	==> R[1]
 
 <literal-pattern-part-option> ::=
-	optional |									==> OPTIONAL_LSO
-	preamble optional |							==> PREAMBLE_OPTIONAL_LSO
-	without leading zeros |						==> WITHOUT_LEADING_ZEROS_LSO
+	optional |    ==> OPTIONAL_LSO
+	preamble optional |    ==> PREAMBLE_OPTIONAL_LSO
+	without leading zeros |    ==> WITHOUT_LEADING_ZEROS_LSO
 	......										==> @<Issue PM_BadLPPartOption problem@>
 
 @<Issue PM_BadLPPartOption problem@> =

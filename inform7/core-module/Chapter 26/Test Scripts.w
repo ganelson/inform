@@ -65,10 +65,10 @@ it hard to see what any given component has done.
 
 =
 <test-sentence-subject> ::=
-	<internal-test-case-name> ( internal ) |	==> R[1]
-	### ( internal ) |							==> @<Issue PM_UnknownInternalTest problem@>
-	<quoted-text> |								==> @<Issue PM_TestQuoted problem@>
-	###	|										==> EXTERNAL_INTT
+	<internal-test-case-name> ( internal ) |    ==> R[1]
+	### ( internal ) |    ==> @<Issue PM_UnknownInternalTest problem@>
+	<quoted-text> |    ==> @<Issue PM_TestQuoted problem@>
+	###	|    ==> EXTERNAL_INTT
 	...											==> @<Issue PM_TestMultiWord problem@>
 
 @ These test case names are in English only and may change at any time
@@ -99,20 +99,20 @@ test_scenario *ts_being_parsed = NULL;
 
 =
 <test-sentence-object> ::=
-	<quoted-text> |									==> TRUE; @<Process the quoted test script@>
-	<quoted-text> <test-case-circumstance-list> |	==> TRUE; @<Process the quoted test script@>
+	<quoted-text> |    ==> TRUE; @<Process the quoted test script@>
+	<quoted-text> <test-case-circumstance-list> |    ==> TRUE; @<Process the quoted test script@>
 	...												==> @<Issue PM_TestBadRequirements problem@>
 
 <test-case-circumstance-list> ::=
-	... |														==> 0; return preform_lookahead_mode;
-	<test-case-circumstance-list> <test-case-circumstance> |	==> 0
+	... |    ==> 0; return preform_lookahead_mode;
+	<test-case-circumstance-list> <test-case-circumstance> |    ==> 0
 	<test-case-circumstance>									==> 0
 
 <test-case-circumstance> ::=
-	in <instance-of-object> |				==> @<Process the in-test requirement@>
-	holding/and/, <instance-of-object> |	==> @<Process the holding requirement@>
-	in ... |								==> @<Issue PM_TestBadRequirements problem@>
-	holding/and/, ... |						==> @<Issue PM_TestBadRequirements problem@>
+	in <instance-of-object> |    ==> @<Process the in-test requirement@>
+	holding/and/, <instance-of-object> |    ==> @<Process the holding requirement@>
+	in ... |    ==> @<Issue PM_TestBadRequirements problem@>
+	holding/and/, ... |    ==> @<Issue PM_TestBadRequirements problem@>
 	with ...								==> @<Issue PM_TestDoubleWith problem@>
 
 @<Process the quoted test script@> =

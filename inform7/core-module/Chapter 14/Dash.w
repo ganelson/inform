@@ -2350,7 +2350,7 @@ unrecognised.
 
 =
 <failed-text-substitution-diagnosis> ::=
-	a list of ... |						==> @<Issue PM_SayAList problem@>
+	a list of ... |    ==> @<Issue PM_SayAList problem@>
 	...									==> @<Issue last-resort failed ts problem@>
 
 @<Issue PM_SayAList problem@> =
@@ -2396,18 +2396,18 @@ condition caused the trouble:
 
 =
 <condition-problem-diagnosis> ::=
-	<condition-problem-part> <condition-problem-part-tail> |	==> R[1] | R[2]
+	<condition-problem-part> <condition-problem-part-tail> |    ==> R[1] | R[2]
 	<condition-problem-part>										==> R[1]
 
 <condition-problem-part-tail> ::=
-	, and/or <condition-problem-diagnosis> |						==> R[1]
+	, and/or <condition-problem-diagnosis> |    ==> R[1]
 	,/and/or <condition-problem-diagnosis>							==> R[1]
 
 <condition-problem-part> ::=
-	<s-condition> |							==> 0; @<Quote this-condition-okay segment@>;
-	<s-value> |								==> INVALID_CP_BIT; @<Quote this-condition-value segment@>;
-	... begins/ends |							==> WHENWHILE_CP_BIT+INVALID_CP_BIT; @<Quote scene-begins-or-ends segment@>;
-	when/while *** |							==> WHENWHILE_CP_BIT+INVALID_CP_BIT; @<Quote this-condition-bad segment@>;
+	<s-condition> |    ==> 0; @<Quote this-condition-okay segment@>;
+	<s-value> |    ==> INVALID_CP_BIT; @<Quote this-condition-value segment@>;
+	... begins/ends |    ==> WHENWHILE_CP_BIT+INVALID_CP_BIT; @<Quote scene-begins-or-ends segment@>;
+	when/while *** |    ==> WHENWHILE_CP_BIT+INVALID_CP_BIT; @<Quote this-condition-bad segment@>;
 	...											==> INVALID_CP_BIT; @<Quote this-condition-bad segment@>;
 
 @<Quote this-condition-okay segment@> =
@@ -2558,15 +2558,15 @@ substitution or not.
 
 =
 <unknown-text-shape> ::=
-	say ... |				==> SAY_UTSHAPE
-	... and/or ... |		==> LIST_UTSHAPE
+	say ... |    ==> SAY_UTSHAPE
+	... and/or ... |    ==> LIST_UTSHAPE
 	...						==> NO_UTSHAPE
 
 <unknown-text-substitution-problem-diagnosis> ::=
-	, ... |				==> @<Issue PM_SayComma problem@>
-	unicode ... |		==> @<Issue PM_SayUnicode problem@>
-	... condition |		==> @<Issue PM_SayUnknownCondition problem@>
-	otherwise/else *** |	==> @<Issue PM_SayElseMisplaced problem@>
+	, ... |    ==> @<Issue PM_SayComma problem@>
+	unicode ... |    ==> @<Issue PM_SayUnicode problem@>
+	... condition |    ==> @<Issue PM_SayUnknownCondition problem@>
+	otherwise/else *** |    ==> @<Issue PM_SayElseMisplaced problem@>
 	...					==> @<Issue PM_SayUnknown problem@>
 
 @<Issue PM_SayComma problem@> =
@@ -2686,19 +2686,19 @@ common misunderstanding.
 
 =
 <unknown-value-problem-diagnosis> ::=
-	turns |							==> @<Issue PM_NumberOfTurns problem@>
-	... is/are out of play |		==> @<Issue PM_OutOfPlay problem@>
-	unicode ... |					==> @<Issue PM_MidTextUnicode problem@>
-	... condition |					==> @<Issue PM_UnknownCondition problem@>
+	turns |    ==> @<Issue PM_NumberOfTurns problem@>
+	... is/are out of play |    ==> @<Issue PM_OutOfPlay problem@>
+	unicode ... |    ==> @<Issue PM_MidTextUnicode problem@>
+	... condition |    ==> @<Issue PM_UnknownCondition problem@>
 	...								==> @<Issue PM_Unknown problem@>
 
 <unknown-use-option-diagnosis> ::=
-	... ^option |					==> @<Issue PM_OptionlessOption problem@>
+	... ^option |    ==> @<Issue PM_OptionlessOption problem@>
 	...								==> @<Issue PM_Unknown problem@>
 
 <unknown-activity-diagnosis> ::=
-	... of |						==> @<Issue PM_ActivityOf problem@>
-	... for |						==> @<Issue PM_ActivityWithFor problem@>
+	... of |    ==> @<Issue PM_ActivityOf problem@>
+	... for |    ==> @<Issue PM_ActivityWithFor problem@>
 	...								==> @<Issue PM_Unknown problem@>
 
 @<Issue PM_NumberOfTurns problem@> =

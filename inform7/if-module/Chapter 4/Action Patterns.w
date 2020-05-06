@@ -476,11 +476,11 @@ These are always present tense, and can't be negated.
 
 =
 <action-pattern> ::=
-	asking <action-parameter> to try <action-pattern-core> |				==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
-	<action-parameter> trying <action-pattern-core> |						==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
-	an actor trying <action-pattern-core> |												==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	an actor <action-pattern-core> |													==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	trying <action-pattern-core> |														==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	asking <action-parameter> to try <action-pattern-core> |    ==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
+	<action-parameter> trying <action-pattern-core> |    ==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
+	an actor trying <action-pattern-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	an actor <action-pattern-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	trying <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
 	<action-pattern-core-actor>															==> ACTOR_IMPLICITLY_PLAYER; *XP = RP[1];
 
 @ The second version is for contexts where the AP occurs as a condition: e.g.,
@@ -490,41 +490,41 @@ four combinations:
 
 =
 <we-are-action-pattern> ::=
-	we are asking <action-parameter> to try <action-pattern-core> |		==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
-	asking <action-parameter> to try <action-pattern-core> |				==> ACTOR_REQUESTED; *XP = RP[2]; ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
-	<action-parameter> trying <action-pattern-core> |						==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
-	an actor trying <action-pattern-core> |												==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	an actor <action-pattern-core> |													==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	we are trying <action-pattern-core> |												==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
-	trying <action-pattern-core> |														==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
-	we are <action-pattern-core> |														==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	we are asking <action-parameter> to try <action-pattern-core> |    ==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
+	asking <action-parameter> to try <action-pattern-core> |    ==> ACTOR_REQUESTED; *XP = RP[2]; ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
+	<action-parameter> trying <action-pattern-core> |    ==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
+	an actor trying <action-pattern-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	an actor <action-pattern-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	we are trying <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	trying <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	we are <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
 	<action-pattern-core-actor>															==> ACTOR_IMPLICITLY_PLAYER; *XP = RP[1];
 
 <action-pattern-negated> ::=
-	we are not asking <action-parameter> to try <action-pattern-core> |	==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
-	not asking <action-parameter> to try <action-pattern-core> |			==> ACTOR_REQUESTED; *XP = RP[2]; ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
-	<action-parameter> not trying <action-pattern-core> |					==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
-	an actor not trying <action-pattern-core> |											==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	an actor not <action-pattern-core> |												==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	we are not trying <action-pattern-core> |											==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
-	not trying <action-pattern-core> |													==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
-	we are not <action-pattern-core> |													==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	we are not asking <action-parameter> to try <action-pattern-core> |    ==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
+	not asking <action-parameter> to try <action-pattern-core> |    ==> ACTOR_REQUESTED; *XP = RP[2]; ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
+	<action-parameter> not trying <action-pattern-core> |    ==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
+	an actor not trying <action-pattern-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	an actor not <action-pattern-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	we are not trying <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	not trying <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	we are not <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
 	not <action-pattern-core-actor>														==> ACTOR_IMPLICITLY_PLAYER; *XP = RP[1];
 
 <action-pattern-past> ::=
-	we have asked <action-parameter> to try <action-pattern-core> |		==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
-	<action-parameter> has tried <action-pattern-core> |					==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
-	an actor has tried <action-pattern-core> |											==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	an actor has <action-pattern-past-core> |											==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	we have tried <action-pattern-core> |												==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	we have asked <action-parameter> to try <action-pattern-core> |    ==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
+	<action-parameter> has tried <action-pattern-core> |    ==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
+	an actor has tried <action-pattern-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	an actor has <action-pattern-past-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	we have tried <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
 	we have <action-pattern-past-core>													==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
 
 <action-pattern-past-negated> ::=
-	we have not asked <action-parameter> to try <action-pattern-core> |	==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
-	<action-parameter> has not tried <action-pattern-core> |				==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
-	an actor has not tried <action-pattern-core> |										==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	an actor has not <action-pattern-past-core> |										==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
-	we have not tried <action-pattern-core> |											==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
+	we have not asked <action-parameter> to try <action-pattern-core> |    ==> ACTOR_REQUESTED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = TRUE; ap->actor_spec = RP[1];
+	<action-parameter> has not tried <action-pattern-core> |    ==> ACTOR_NAMED; *XP = RP[2]; ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
+	an actor has not tried <action-pattern-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	an actor has not <action-pattern-past-core> |    ==> ACTOR_EXPLICITLY_UNIVERSAL; *XP = RP[1]; ap = *XP; ap->applies_to_any_actor = TRUE;
+	we have not tried <action-pattern-core> |    ==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
 	we have not <action-pattern-past-core>												==> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];
 
 @ There is one more tweak at this top level. Inform allows an ambiguous but
@@ -541,7 +541,7 @@ actorless possibility can always be written.
 
 =
 <action-pattern-core-actor> ::=
-	<action-pattern-core> |									==> ACTOR_IMPLICITLY_PLAYER; *XP = RP[1];
+	<action-pattern-core> |    ==> ACTOR_IMPLICITLY_PLAYER; *XP = RP[1];
 	<actor-description> <action-pattern-core> 				==> ACTOR_NAMED; *XP = RP[2]; action_pattern *ap = *XP; ap->request = FALSE; ap->actor_spec = RP[1];
 
 @ And this voracious token matches the actor's name as an initial excerpt,
@@ -697,9 +697,9 @@ a condition attached with "when":
 
 =
 <ap-common-core> ::=
-	<ap-common-core-inner> when/while <condition-in-ap> |	==> 0; *XP = RP[1]; action_pattern *ap = *XP; ap->when = RP[2]; if (pap_failure_reason == MISC_PAPF) pap_failure_reason = WHENOKAY_PAPF;
-	<ap-common-core-inner> |								==> 0; *XP = RP[1];
-	... when/while <condition-in-ap> |						==> 0; pap_failure_reason = WHENOKAY_PAPF; return FALSE; /* used only to diagnose problems */
+	<ap-common-core-inner> when/while <condition-in-ap> |    ==> 0; *XP = RP[1]; action_pattern *ap = *XP; ap->when = RP[2]; if (pap_failure_reason == MISC_PAPF) pap_failure_reason = WHENOKAY_PAPF;
+	<ap-common-core-inner> |    ==> 0; *XP = RP[1];
+	... when/while <condition-in-ap> |    ==> 0; pap_failure_reason = WHENOKAY_PAPF; return FALSE; /* used only to diagnose problems */
 	... when/while ...										==> 0; if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF; return FALSE; /* used only to diagnose problems */
 
 @ <condition-in-ap> is really just <spec-condition> in disguise -- i.e.,
@@ -734,7 +734,7 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 
 =
 <ap-common-core-inner> ::=
-	<ap-common-core-inner-inner> in the presence of <action-parameter> |	==> 0; *XP = RP[1]; action_pattern *ap = *XP; ap->presence_spec = RP[2];
+	<ap-common-core-inner-inner> in the presence of <action-parameter> |    ==> 0; *XP = RP[1]; action_pattern *ap = *XP; ap->presence_spec = RP[2];
 	<ap-common-core-inner-inner>											==> 0; *XP = RP[1];
 
 @ Level 5 now. The initial "in" clause, e.g., "in the Pantry", requires
@@ -745,7 +745,7 @@ is valid as an AP, but this enables many natural-looking rules to be written
 
 =
 <ap-common-core-inner-inner> ::=
-	in <action-parameter> |									==> @<Make an actionless action pattern, specifying room only@>
+	in <action-parameter> |    ==> @<Make an actionless action pattern, specifying room only@>
 	<ap-common-core-inner-inner-inner>						==> 0; *XP = RP[1];
 
 @<Make an actionless action pattern, specifying room only@> =
@@ -801,11 +801,11 @@ We treat words like "something" specially to avoid them being read as
 	<action-parameter> 				==> TRUE; *XP = RP[1]
 
 <going-action-irregular-operand> ::=
-	nowhere |						==> FALSE
+	nowhere |    ==> FALSE
 	somewhere						==> TRUE
 
 <understanding-action-irregular-operand> ::=
-	something/anything |			==> TRUE
+	something/anything |    ==> TRUE
 	it								==> FALSE
 
 @ Finally, then, <action-parameter>. Almost anything syntactically matches
@@ -813,10 +813,10 @@ here -- a constant, a description, a table entry, a variable, and so on.
 
 =
 <action-parameter> ::=
-	^<if-nonconstant-action-context> <s-local-variable> |	==> TRUE; return FAIL_NONTERMINAL
-	^<if-nonconstant-action-context> <s-global-variable> |	==> TRUE; return FAIL_NONTERMINAL
-	<s-local-variable> |									==> TRUE; *XP = RP[1]
-	<s-global-variable>	|									==> TRUE; *XP = RP[1]
+	^<if-nonconstant-action-context> <s-local-variable> |    ==> TRUE; return FAIL_NONTERMINAL
+	^<if-nonconstant-action-context> <s-global-variable> |    ==> TRUE; return FAIL_NONTERMINAL
+	<s-local-variable> |    ==> TRUE; *XP = RP[1]
+	<s-global-variable>	|    ==> TRUE; *XP = RP[1]
 	<s-type-expression-or-value>							==> TRUE; *XP = RP[1]
 
 <if-nonconstant-action-context> internal 0 {

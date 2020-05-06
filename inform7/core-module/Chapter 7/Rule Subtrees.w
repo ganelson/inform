@@ -1192,10 +1192,10 @@ to parse the list.
 
 =
 <verify-expanded-text-substitution> ::=
-	*** . *** |								==> @<Issue PM_TSWithPunctuation problem@>; return FAIL_NONTERMINAL
-	, *** |									==> @<Issue PM_EmptySubstitution problem@>; return FAIL_NONTERMINAL
-	*** , |									==> @<Issue PM_EmptySubstitution problem@>; return FAIL_NONTERMINAL
-	*** , , ***	|							==> @<Issue PM_EmptySubstitution problem@>; return FAIL_NONTERMINAL
+	*** . *** |    ==> @<Issue PM_TSWithPunctuation problem@>; return FAIL_NONTERMINAL
+	, *** |    ==> @<Issue PM_EmptySubstitution problem@>; return FAIL_NONTERMINAL
+	*** , |    ==> @<Issue PM_EmptySubstitution problem@>; return FAIL_NONTERMINAL
+	*** , , ***	|    ==> @<Issue PM_EmptySubstitution problem@>; return FAIL_NONTERMINAL
 	...
 
 @ So now just the problem messages:

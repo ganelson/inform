@@ -745,13 +745,13 @@ name or a description.
 
 =
 <new-called-name> ::=
-	<definite-article> <new-called-name-unarticled> |	==> *X = R[2]; *XP = RP[2]
+	<definite-article> <new-called-name-unarticled> |    ==> *X = R[2]; *XP = RP[2]
 	<new-called-name-unarticled>						==> *X = R[1]; *XP = RP[1]
 
 <new-called-name-unarticled> ::=
-	*** - *** |								==> @<Issue PM_CalledWithDash problem@>
-	<existing-local-name> |					==> *X = R[1]; *XP = RP[1]
-	<s-type-expression-or-value> |			==> @<Vet to see if this name can be overloaded@>
+	*** - *** |    ==> @<Issue PM_CalledWithDash problem@>
+	<existing-local-name> |    ==> *X = R[1]; *XP = RP[1]
+	<s-type-expression-or-value> |    ==> @<Vet to see if this name can be overloaded@>
 	...										==> @<Make a new local for this calling@>
 
 <existing-local-name> internal {

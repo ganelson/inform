@@ -342,20 +342,20 @@ itself.
 
 =
 <index-map-sentence-subject> ::=
-	eps file |											==> EPSFILE_IMW
-	<direction-name> mapped as <direction-name> |		==> MAPPED_AS_IMW; <<instance:x>> = RP[1]; <<instance:y>> = RP[2];
-	... mapped as ... |									==> @<Issue PM_MapDirectionClue problem@>
-	<instance-of-object> mapped <map-positioning> |			==> MAPPED_IMW; <<instance:x>> = RP[1]; <<instance:y>> = RP[2];
-	... mapped ... |									==> @<Issue PM_MapPlacement problem@>
-	<map-setting> set to <map-setting-value> |			==> SETTING_IMW; <<scoping>> = R[1]; if (R[1] == NO_IMW) *X = NO_IMW; <<msvtype>> = R[2]
-	<map-setting> set to ... |							==> @<Issue PM_MapSettingTooLong problem@>
-	... set to ... |									==> @<Issue PM_MapSettingOfUnknown problem@>
-	rubric {<quoted-text-without-subs>} *** |			==> RUBRIC_IMW
+	eps file |    ==> EPSFILE_IMW
+	<direction-name> mapped as <direction-name> |    ==> MAPPED_AS_IMW; <<instance:x>> = RP[1]; <<instance:y>> = RP[2];
+	... mapped as ... |    ==> @<Issue PM_MapDirectionClue problem@>
+	<instance-of-object> mapped <map-positioning> |    ==> MAPPED_IMW; <<instance:x>> = RP[1]; <<instance:y>> = RP[2];
+	... mapped ... |    ==> @<Issue PM_MapPlacement problem@>
+	<map-setting> set to <map-setting-value> |    ==> SETTING_IMW; <<scoping>> = R[1]; if (R[1] == NO_IMW) *X = NO_IMW; <<msvtype>> = R[2]
+	<map-setting> set to ... |    ==> @<Issue PM_MapSettingTooLong problem@>
+	... set to ... |    ==> @<Issue PM_MapSettingOfUnknown problem@>
+	rubric {<quoted-text-without-subs>} *** |    ==> RUBRIC_IMW
 	...													==> @<Issue PM_MapHintUnknown problem@>
 
 <map-positioning> ::=
-	<instance-of-object> of/from <instance-of-object> |	==> TRUE; <<instance:dir>> = RP[1]; *XP = RP[2]
-	above <instance-of-object> |						==> TRUE; <<instance:dir>> = I_up; *XP = RP[1]
+	<instance-of-object> of/from <instance-of-object> |    ==> TRUE; <<instance:dir>> = RP[1]; *XP = RP[2]
+	above <instance-of-object> |    ==> TRUE; <<instance:dir>> = I_up; *XP = RP[1]
 	below <instance-of-object>							==> TRUE; <<instance:dir>> = I_down; *XP = RP[1]
 
 @<Issue PM_MapDirectionClue problem@> =
@@ -404,18 +404,18 @@ itself.
 
 =
 <map-setting> ::=
-	<map-parameter> of <map-setting-scope> |	==> R[2]; <<wchar_t:partext>> = RP[1]; <<parindex>> = R[1]
-	<map-parameter> |							==> ENTIRE_MAP_SCOPE; <<wchar_t:partext>> = RP[1]; <<parindex>> = R[1]
+	<map-parameter> of <map-setting-scope> |    ==> R[2]; <<wchar_t:partext>> = RP[1]; <<parindex>> = R[1]
+	<map-parameter> |    ==> ENTIRE_MAP_SCOPE; <<wchar_t:partext>> = RP[1]; <<parindex>> = R[1]
 	... of <map-setting-scope>					==> @<Issue PM_MapSettingUnknown problem@>
 
 <map-setting-scope> ::=
-	<definite-article> <map-setting-scope-unarticled> |						==> R[2]
+	<definite-article> <map-setting-scope-unarticled> |    ==> R[2]
 	<map-setting-scope-unarticled>											==> R[1]
 
 <map-setting-scope-unarticled> ::=
-	first room |				==> FIRST_ROOM_MAP_SCOPE
-	level <cardinal-number> |	==>	LEVEL_MAP_SCOPE; <<level>> = R[1]
-	<k-kind> |					==> KIND_MAP_SCOPE; <<kind:kscope>> = RP[1]
+	first room |    ==> FIRST_ROOM_MAP_SCOPE
+	level <cardinal-number> |    ==>	LEVEL_MAP_SCOPE; <<level>> = R[1]
+	<k-kind> |    ==> KIND_MAP_SCOPE; <<kind:kscope>> = RP[1]
 	<instance-of-object>		==> INSTANCE_MAP_SCOPE; <<instance:iscope>> = RP[1]
 
 @ The map parameters all have one-word, sometimes hyphenated, names, such
@@ -454,14 +454,14 @@ Never mind.
 
 =
 <map-setting-value> ::=
-	<cardinal-number> |			==> INT_MDT; <<msvalue>> = R[1]; <<msword>> = Wordings::first_wn(W);
-	<quoted-text> |				==> TEXT_MDT; <<msvalue>> = R[1]; <<msword>> = Wordings::first_wn(W);
-	<map-setting-boolean> |		==> BOOL_MDT; <<msvalue>> = R[1]; <<msword>> = Wordings::first_wn(W);
-	<map-offset> |				==> OFF_MDT; <<msvalue>> = R[1]; <<msword>> = Wordings::first_wn(W); if (R[1] == ERRONEOUS_OFFSET_VALUE) return FALSE;
+	<cardinal-number> |    ==> INT_MDT; <<msvalue>> = R[1]; <<msword>> = Wordings::first_wn(W);
+	<quoted-text> |    ==> TEXT_MDT; <<msvalue>> = R[1]; <<msword>> = Wordings::first_wn(W);
+	<map-setting-boolean> |    ==> BOOL_MDT; <<msvalue>> = R[1]; <<msword>> = Wordings::first_wn(W);
+	<map-offset> |    ==> OFF_MDT; <<msvalue>> = R[1]; <<msword>> = Wordings::first_wn(W); if (R[1] == ERRONEOUS_OFFSET_VALUE) return FALSE;
 	###							==> -1; <<msword>> = Wordings::first_wn(W); /* leads to a problem message later */
 
 <map-setting-boolean> ::=
-	on |						==> TRUE
+	on |    ==> TRUE
 	off							==> FALSE
 
 @ Map offsets have a cutesy notation: |10&-30|, for example, written as a
@@ -481,10 +481,10 @@ the following:
 
 =
 <map-rubric> ::=
-	size <cardinal-number> *** |						==> RUBRIC_SIZE; <<rsize>> = R[1]; <<edge>> = Wordings::first_wn(WR[1])
-	font {<quoted-text-without-subs>} *** |	==> RUBRIC_FONT; <<rfont>> = R[1]; <<edge>> = Wordings::first_wn(WR[2])
-	colour {<quoted-text-without-subs>} *** |	==> RUBRIC_COLOUR; <<rcol>> = R[1]; <<edge>> = Wordings::first_wn(WR[2])
-	at <map-offset> from ... |							==> RUBRIC_OFFSET; <<roff>> = R[1]; <<edge>> = Wordings::first_wn(WR[1])
+	size <cardinal-number> *** |    ==> RUBRIC_SIZE; <<rsize>> = R[1]; <<edge>> = Wordings::first_wn(WR[1])
+	font {<quoted-text-without-subs>} *** |    ==> RUBRIC_FONT; <<rfont>> = R[1]; <<edge>> = Wordings::first_wn(WR[2])
+	colour {<quoted-text-without-subs>} *** |    ==> RUBRIC_COLOUR; <<rcol>> = R[1]; <<edge>> = Wordings::first_wn(WR[2])
+	at <map-offset> from ... |    ==> RUBRIC_OFFSET; <<roff>> = R[1]; <<edge>> = Wordings::first_wn(WR[1])
 	at <map-offset> ***									==> RUBRIC_POSITION; <<roff>> = R[1]; <<edge>> = Wordings::first_wn(WR[1])
 
 @

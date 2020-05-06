@@ -1100,15 +1100,15 @@ wording Lexer::splice_words(wording W) {
 @h Basic command-line error handler.
 Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |LEXER_PROBLEM_HANDLER|
+texts in HTML. So the client is allowed to define |PROBLEM_WORDS_CALLBACK|
 to some routine of her own, gazumping this one.
 
 =
 void Lexer::lexer_problem_handler(int err, text_stream *problem_source_description, wchar_t *word) {
-	#ifdef LEXER_PROBLEM_HANDLER
-	LEXER_PROBLEM_HANDLER(err, problem_source_description, word);
+	#ifdef PROBLEM_WORDS_CALLBACK
+	PROBLEM_WORDS_CALLBACK(err, problem_source_description, word);
 	#endif
-	#ifndef LEXER_PROBLEM_HANDLER
+	#ifndef PROBLEM_WORDS_CALLBACK
 	if (err == MEMORY_OUT_LEXERERROR)
 		Errors::fatal("Out of memory: unable to create lexer workspace");
 	TEMPORARY_TEXT(word_t);

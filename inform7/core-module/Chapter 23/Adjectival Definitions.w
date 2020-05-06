@@ -76,17 +76,17 @@ the doubled use of colons is unfortunate.)
 
 =
 <adjective-definition> ::=
-	<adjective-domain> is/are <adjective-wording> if ... |		==> DEFINED_POSITIVELY
-	<adjective-domain> is/are <adjective-wording> unless ... |	==> DEFINED_NEGATIVELY
+	<adjective-domain> is/are <adjective-wording> if ... |    ==> DEFINED_POSITIVELY
+	<adjective-domain> is/are <adjective-wording> unless ... |    ==> DEFINED_NEGATIVELY
 	<adjective-domain> is/are <adjective-wording>				==> DEFINED_PHRASALLY
 
 <adjective-domain> ::=
-	... ( called the ... ) |		==> 0; <<calling>> = TRUE
-	... ( called ... ) |			==> 0; <<calling>> = TRUE
+	... ( called the ... ) |    ==> 0; <<calling>> = TRUE
+	... ( called ... ) |    ==> 0; <<calling>> = TRUE
 	...								==> 0; <<calling>> = FALSE
 
 <adjective-wording> ::=
-	... rather than ... |			==> 0; <<antonym>> = TRUE
+	... rather than ... |    ==> 0; <<antonym>> = TRUE
 	...								==> 0; <<antonym>> = FALSE
 
 @ And here is the supporting code:

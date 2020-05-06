@@ -33,7 +33,7 @@ placeholder to stand for a missing noun phrase:
 
 =
 <s-sentence> ::=
-	<s-existential-np> <s-existential-verb-tail> |	==> @<Make SV provided object is descriptive@>;
+	<s-existential-np> <s-existential-verb-tail> |    ==> @<Make SV provided object is descriptive@>;
 	<s-noun-phrase> <s-general-verb-tail>			==> @<Make SV@>;
 
 <s-existential-verb-tail> ::=
@@ -85,8 +85,8 @@ handle its extra object: see below.
 
 =
 <s-general-verb-tail> ::=
-	<universal-verb> <s-universal-relation-term> |								==> ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2])
-	<meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |	==> ExParser::Subtrees::verb_marker(RP[1], RP[2], RP[3])
+	<universal-verb> <s-universal-relation-term> |    ==> ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2])
+	<meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |    ==> ExParser::Subtrees::verb_marker(RP[1], RP[2], RP[3])
 	<meaningful-nonimperative-verb> <s-noun-phrase>								==> ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2])
 
 @ The verb marker is a temporary node used just to store the verb or preposition
@@ -136,16 +136,16 @@ relevant noun subtree with a representation of the player-object for those.
 
 =
 <s-np-with-relative-clause> ::=
-	<s-noun-phrase-nounless> <s-implied-relative-verb-tail> |							==> @<Make SN@>
+	<s-noun-phrase-nounless> <s-implied-relative-verb-tail> |    ==> @<Make SN@>
 	<s-noun-phrase> <s-relative-verb-tail>												==> @<Make SN@>
 
 <s-implied-relative-verb-tail> ::=
-	<copular-preposition> <s-noun-phrase-nounless> |									==> ExParser::Subtrees::verb_marker(regular_to_be, RP[1], RP[2])
+	<copular-preposition> <s-noun-phrase-nounless> |    ==> ExParser::Subtrees::verb_marker(regular_to_be, RP[1], RP[2])
 	not <copular-preposition> <s-noun-phrase-nounless>									==> ExParser::Subtrees::verb_marker(negated_to_be, RP[1], RP[2])
 
 <s-relative-verb-tail> ::=
-	<relative-clause-marker> <universal-verb> <s-universal-relation-term> |				==> ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3])
-	<relative-clause-marker> <meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |	==> ExParser::Subtrees::verb_marker(RP[2], RP[3], RP[4])
+	<relative-clause-marker> <universal-verb> <s-universal-relation-term> |    ==> ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3])
+	<relative-clause-marker> <meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |    ==> ExParser::Subtrees::verb_marker(RP[2], RP[3], RP[4])
 	<relative-clause-marker> <meaningful-nonimperative-verb> <s-noun-phrase> 							==> ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3])
 
 @<Make SN@> =
@@ -228,23 +228,23 @@ is the same as that matched by <s-value>.
 
 =
 <s-noun-phrase> ::=
-	<if-forced-physical> <s-variable-as-value> |		==> RP[2]
-	<if-forced-physical> <s-description> |				==> RP[2]
-	^<if-forced-physical> <s-value-uncached> |			==> RP[2]
+	<if-forced-physical> <s-variable-as-value> |    ==> RP[2]
+	<if-forced-physical> <s-description> |    ==> RP[2]
+	^<if-forced-physical> <s-value-uncached> |    ==> RP[2]
 
 <s-noun-phrase-nounless> ::=
-	<if-forced-physical> <s-variable-as-value> |		==> RP[2]
-	<if-forced-physical> <s-description-nounless> |		==> RP[2]
-	^<if-forced-physical> <s-value-uncached> |			==> RP[2]
+	<if-forced-physical> <s-variable-as-value> |    ==> RP[2]
+	<if-forced-physical> <s-description-nounless> |    ==> RP[2]
+	^<if-forced-physical> <s-value-uncached> |    ==> RP[2]
 
 @ Finally, the following is needed for conditions ("if fixed in place
 scenery, ...") where the object referred to is understood from context.
 
 =
 <s-descriptive-np> ::=
-	( <s-descriptive-np> ) |	==> RP[1]
-	<cardinal-number> |			==> @<Reject a bare number as descriptive@>
-	<s-description> |			==> @<Construct a descriptive SN subtree@>
+	( <s-descriptive-np> ) |    ==> RP[1]
+	<cardinal-number> |    ==> @<Reject a bare number as descriptive@>
+	<s-description> |    ==> @<Construct a descriptive SN subtree@>
 	<s-adjective-list-as-desc>	==> @<Construct a descriptive SN subtree@>
 
 @ The reason a literal number is explicitly not allowed to be a condition is

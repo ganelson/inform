@@ -733,7 +733,7 @@ void Conjugation::error(word_assemblage base_text, nonterminal *nt,
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |SYNTAX_PROBLEM_HANDLER|
+texts in HTML. So the client is allowed to define |PROBLEM_SYNTAX_CALLBACK|
 to some routine of her own, gazumping this one.
 
 =

@@ -68,8 +68,8 @@ The subject (in this example, "a container") is required not to match:
 
 =
 <forbidden-property-owners> ::=
-	<article> kind |		==> @<Issue PM_PropertyOfKind1 problem@>
-	kind |					==> @<Issue PM_PropertyOfKind1 problem@>
+	<article> kind |    ==> @<Issue PM_PropertyOfKind1 problem@>
+	kind |    ==> @<Issue PM_PropertyOfKind1 problem@>
 	<pronoun>				==> @<Issue PM_PropertyOfPronoun problem@>
 
 @<Issue PM_PropertyOfKind1 problem@> =
@@ -157,22 +157,22 @@ which might take forms such as:
 
 =
 <can-be-sentence-object> ::=
-	either <nounphrase-alternative-list> ( <condition-name> ) |	==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	<nounphrase-alternative-list> ( <condition-name> ) |		==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	either <nounphrase-alternative-list> |						==> TRUE; *XP = RP[1]
+	either <nounphrase-alternative-list> ( <condition-name> ) |    ==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	<nounphrase-alternative-list> ( <condition-name> ) |    ==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	either <nounphrase-alternative-list> |    ==> TRUE; *XP = RP[1]
 	<nounphrase-alternative-list>								==> FALSE; *XP = RP[1]
 
 <condition-name> ::=
-	this is <condition-name-inner> |		==> 0; *XP = RP[1]
+	this is <condition-name-inner> |    ==> 0; *XP = RP[1]
 	<condition-name-inner>					==> 0; *XP = RP[1]
 
 <condition-name-inner> ::=
-	<article> <condition-name-innermost> |					==> 0; *XP = RP[2]
-	<possessive-third-person> <condition-name-innermost> |	==> 0; *XP = RP[2]
+	<article> <condition-name-innermost> |    ==> 0; *XP = RP[2]
+	<possessive-third-person> <condition-name-innermost> |    ==> 0; *XP = RP[2]
 	<condition-name-innermost>								==> 0; *XP = RP[1]
 
 <condition-name-innermost> ::=
-	<nounphrase> property |					==> 0; *XP = RP[1]
+	<nounphrase> property |    ==> 0; *XP = RP[1]
 	<nounphrase>							==> 0; *XP = RP[1]
 
 @<An optional condition name can only be given to a condition@> =

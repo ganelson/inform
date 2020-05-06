@@ -141,7 +141,7 @@ with some existing meaning.
 
 =
 <s-type-expression-or-value> ::=
-	<s-type-expression> |	==> RP[1]
+	<s-type-expression> |    ==> RP[1]
 	<s-value>				==> RP[1]
 
 @ One further convenience is for text which describes an explicit action in

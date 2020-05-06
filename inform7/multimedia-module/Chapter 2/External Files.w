@@ -76,18 +76,18 @@ Here is the subject:
 
 =
 <external-file-sentence-subject> ::=
-	<definite-article> <external-file-sentence-subject> |	==> R[2]
-	text <external-file-name> |				==> FALSE; <<ownership>> = R[1]
-	binary <external-file-name> |			==> TRUE;  <<ownership>> = R[1]
+	<definite-article> <external-file-sentence-subject> |    ==> R[2]
+	text <external-file-name> |    ==> FALSE; <<ownership>> = R[1]
+	binary <external-file-name> |    ==> TRUE;  <<ownership>> = R[1]
 	<external-file-name>					==> FALSE; <<ownership>> = R[1]
 
 <external-file-name> ::=
-	{file ...} ( owned by <external-file-owner> ) |		==> R[1]
+	{file ...} ( owned by <external-file-owner> ) |    ==> R[1]
 	{file ...}											==> NOT_APPLICABLE
 
 <external-file-owner> ::=
-	another project |									==> FALSE
-	project {<quoted-text-without-subs>} |		==> TRUE
+	another project |    ==> FALSE
+	project {<quoted-text-without-subs>} |    ==> TRUE
 	...													==> @<Issue PM_BadFileOwner problem@>
 
 @<Issue PM_BadFileOwner problem@> =
@@ -110,7 +110,7 @@ letters or digits, with the first being a letter.
 
 =
 <external-file-sentence-object> ::=
-	<quoted-text> |							==> R[1]
+	<quoted-text> |    ==> R[1]
 	...										==> @<Issue PM_FilenameNotTextual problem@>
 
 @<Issue PM_FilenameNotTextual problem@> =
@@ -123,7 +123,7 @@ letters or digits, with the first being a letter.
 
 =
 <new-file-sentence-object> ::=
-	<indefinite-article> <new-file-sentence-object-unarticled> |	==> R[2]; *XP = RP[2]
+	<indefinite-article> <new-file-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
 	<new-file-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
 
 <new-file-sentence-object-unarticled> ::=

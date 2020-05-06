@@ -138,7 +138,7 @@ to other natural languages.
 
 =
 <documentation-symbol-tail> ::=
-	... ( <documentation-symbol> ) |	==> R[1]
+	... ( <documentation-symbol> ) |    ==> R[1]
 	... -- <documentation-symbol> --	==> R[1]
 
 <documentation-symbol> ::=

@@ -42,11 +42,11 @@ to declare the title and author.
 
 =
 <titling-line> ::=
-	<plain-titling-line> ( in <natural-language> ) |	==> R[1]; *XP = RP[2];
+	<plain-titling-line> ( in <natural-language> ) |    ==> R[1]; *XP = RP[2];
 	<plain-titling-line>								==> R[1]; *XP = NULL;
 
 <plain-titling-line> ::=
-	{<quoted-text-without-subs>} by ... |	==> TRUE
+	{<quoted-text-without-subs>} by ... |    ==> TRUE
 	{<quoted-text-without-subs>}			==> FALSE
 
 @<Extract title and author name wording@> =

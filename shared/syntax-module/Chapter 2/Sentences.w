@@ -3,29 +3,6 @@
 To break up the stream of words produced by the lexer into
 English sentences, and join each to the parse tree.
 
-@h Definitions.
-
-@ The following need to be available so that we can parse the source text
-position.
-
-=
-int sfsm_extension_position = 0; /* 0: not an extension; 1: before "begins here"; 2: before "ends here"; 3: after */
-node_type_t ssnt = 0;
-
-@
-
-@e UnexpectedSemicolon_SYNERROR from 1
-@e ParaEndsInColon_SYNERROR
-@e SentenceEndsInColon_SYNERROR
-@e SentenceEndsInSemicolon_SYNERROR
-@e SemicolonAfterColon_SYNERROR
-@e SemicolonAfterStop_SYNERROR
-@e ExtSpuriouslyContinues_SYNERROR
-@e ExtNoBeginsHere_SYNERROR
-@e ExtNoEndsHere_SYNERROR
-@e HeadingOverLine_SYNERROR
-@e HeadingStopsBeforeEndOfLine_SYNERROR
-
 @h Sentence breaking.
 What breaks a sentence? In ordinary English, question marks, exclamation
 marks, in some cases ellipses, but mainly full stops. In Inform source text,
@@ -44,45 +21,87 @@ divide a sentence:
 
 This means that context is important even here, where it might have been
 expected that all we needed to do was to spot the punctuation marks.
+
+@h Finite state machine.
 So we carry out the sentence breaking with a simple finite state machine --
 the last sentence having been a rule preamble tells us that the current one
-is probably a phrase, and so on -- and the following is its state.
+is probably a phrase, and so on -- and the following is its state. It is
+inelegant that we have a singleton copy of this object and use a pointer
+to it as a global variable; but it saves an awful lot of parameter-passing
+in Preform grammar functions.
 
-@default SYNTAX_PROBLEM_REF_TYPE void
+@default PROBLEM_REF_SYNTAX_TYPE void
+@default PROJECT_REF_SYNTAX_TYPE void
 
 =
-source_file *sfsm_source_file = NULL;
-int sfsm_inside_rule_mode = FALSE;
-int sfsm_skipping_material_at_level = -1;
-int sfsm_in_tabbed_mode = FALSE;
-int sfsm_main_source_start_wn = -1;
-SYNTAX_PROBLEM_REF_TYPE *sfsm_copy = NULL;
-void *sfsm_project = NULL;
+typedef struct syntax_fsm_state {
+	source_file *sf; /* reading from this source file */
+	int ext_pos; /* 0: not extension; 1: before "begins here"; 2: before "ends here"; 3: after */
+	int skipping_material_at_level;
+	int main_source_start_wn;
+	node_type_t nt;
+	int inside_rule_mode;
+	int inside_table_mode;
+	PROBLEM_REF_SYNTAX_TYPE *ref;
+	PROJECT_REF_SYNTAX_TYPE *project_ref;
+} syntax_fsm_state;
 
-void Sentences::set_start_of_source(int wn) {
-	sfsm_main_source_start_wn = wn;
+syntax_fsm_state the_one_and_only;
+syntax_fsm_state *sfsm = &the_one_and_only;
+
+@ Note that a reset zeroes everything out except the |main_source_start_wn|;
+that's because we reset each time we begin a round of sentence-breaking, and
+there may be many such rounds on the same Inform project, but there's only
+one source text start position.
+
+=
+void Sentences::set_start_of_source(syntax_fsm_state *sfsm, int wn) {
+	sfsm->main_source_start_wn = wn;
 }
 
-@ Now for the routine itself. We break into bite-sized chunks, each of which is
-despatched to the |Sentences::make_node| routine with a note of the punctuation
-which was used to end it. Each call to this routine represents one cycle of our
-finite state machine.
+void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
+	PROBLEM_REF_SYNTAX_TYPE *ref, PROJECT_REF_SYNTAX_TYPE *project_ref) {
+	sfsm->sf = NULL;
+	sfsm->inside_rule_mode = FALSE;
+	sfsm->skipping_material_at_level = -1;
+	sfsm->ref = ref;
+	sfsm->project_ref = project_ref;
+	if (is_extension) sfsm->ext_pos = 1; else sfsm->ext_pos = 0;
+}
+
+@ These are the syntax errors we will generate.
+
+@e UnexpectedSemicolon_SYNERROR from 1
+@e ParaEndsInColon_SYNERROR
+@e SentenceEndsInColon_SYNERROR
+@e SentenceEndsInSemicolon_SYNERROR
+@e SemicolonAfterColon_SYNERROR
+@e SemicolonAfterStop_SYNERROR
+@e ExtSpuriouslyContinues_SYNERROR
+@e ExtNoBeginsHere_SYNERROR
+@e ExtNoEndsHere_SYNERROR
+@e HeadingOverLine_SYNERROR
+@e HeadingStopsBeforeEndOfLine_SYNERROR
+
+@ Now for the function itself. We break into bite-sized chunks, each of which is
+despatched to the |Sentences::make_node| function with a note of the punctuation
+which was used to end it.
 
 =
 void Sentences::break(parse_node_tree *T, wording W) {
 	Sentences::break_inner(T, W, FALSE, NULL, NULL);
 }
-void Sentences::break_into_project_copy(parse_node_tree *T, wording W, SYNTAX_PROBLEM_REF_TYPE *C,
-	void *build_project) {
-	Sentences::break_inner(T, W, FALSE, C, build_project);
+void Sentences::break_into_project_copy(parse_node_tree *T, wording W,
+	PROBLEM_REF_SYNTAX_TYPE *ref, void *project_ref) {
+	Sentences::break_inner(T, W, FALSE, ref, project_ref);
 }
-void Sentences::break_into_extension_copy(parse_node_tree *T, wording W, SYNTAX_PROBLEM_REF_TYPE *C,
-	void *build_project) {
-	Sentences::break_inner(T, W, TRUE, C, build_project);
+void Sentences::break_into_extension_copy(parse_node_tree *T, wording W,
+	PROBLEM_REF_SYNTAX_TYPE *ref, PROJECT_REF_SYNTAX_TYPE *project_ref) {
+	Sentences::break_inner(T, W, TRUE, ref, project_ref);
 }
 
 void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension,
-	SYNTAX_PROBLEM_REF_TYPE *from_copy, void *build_project) {
+	PROBLEM_REF_SYNTAX_TYPE *ref, PROJECT_REF_SYNTAX_TYPE *project_ref) {
 	while (((Wordings::nonempty(W))) && (compare_word(Wordings::first_wn(W), PARBREAK_V)))
 		W = Wordings::trim_first_word(W);
 	if (Wordings::empty(W)) return;
@@ -90,7 +109,7 @@ void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension,
 	int sentence_start = Wordings::first_wn(W);
 	ParseTree::enable_last_sentence_cacheing();
 
-	@<Reset the sentence finite state machine@>;
+	Sentences::reset(sfsm, is_extension, ref, project_ref);
 	@<Go into table sentence mode if necessary@>;
 
 	LOOP_THROUGH_WORDING(position, W)
@@ -118,22 +137,8 @@ void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension,
 
 	if (is_extension)
 		@<Issue a problem message if we are missing the begin and end here sentences@>;
-	@<Reset the sentence finite state machine@>;
+	Sentences::reset(sfsm, FALSE, NULL, NULL);
 }
-
-@ Each call to |Sentences::break| starts afresh, with no residual state
-left over from previous calls. (The same cannot be said for |Sentences::make_node|,
-which constructs individual sentences and is repeatedly called by us, and
-that is why these are global variables rather than locals in |Sentences::break|.)
-
-@<Reset the sentence finite state machine@> =
-	sfsm_source_file = NULL;
-	sfsm_inside_rule_mode = FALSE;
-	sfsm_skipping_material_at_level = -1;
-	sfsm_copy = from_copy;
-	sfsm_project = build_project;
-	if (is_extension) sfsm_extension_position = 1;
-	else sfsm_extension_position = 0;
 
 @ A table is any sentence beginning with the word "Table". (Bad news for
 anyone writing "Table Mountain is a room.", of course, but there are other
@@ -142,10 +147,10 @@ since their entries are governed by different lexical and semantic rules.)
 
 @<Go into table sentence mode if necessary@> =
 	if ((<structural-sentence>(Wordings::from(W, sentence_start))) &&
-		(ParseTree::test_flag(ssnt, TABBED_NFLAG)))
-		sfsm_in_tabbed_mode = TRUE;
+		(ParseTree::test_flag(sfsm->nt, TABBED_NFLAG)))
+		sfsm->inside_table_mode = TRUE;
 	else
-		sfsm_in_tabbed_mode = FALSE;
+		sfsm->inside_table_mode = FALSE;
 
 @ We now come to the definition of a sentence break, which is more complicated
 than might have been expected.
@@ -221,19 +226,19 @@ sentence divisions. The other cases are more complicated: see below.
 			stop_character, no_stop_words, sentence_start, position);
 
 @<Issue problem for colon at end of paragraph@> =
-	Sentences::syntax_problem(ParaEndsInColon_SYNERROR, Wordings::new(sentence_start, at-1), sfsm_copy, 0);
+	Sentences::syntax_problem(ParaEndsInColon_SYNERROR, Wordings::new(sentence_start, at-1), sfsm->ref, 0);
 
 @<Issue problem for colon at end of sentence@> =
-	Sentences::syntax_problem(SentenceEndsInColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
+	Sentences::syntax_problem(SentenceEndsInColon_SYNERROR, Wordings::new(sentence_start, at), sfsm->ref, 0);
 
 @<Issue problem for semicolon at end of sentence@> =
-	Sentences::syntax_problem(SentenceEndsInSemicolon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
+	Sentences::syntax_problem(SentenceEndsInSemicolon_SYNERROR, Wordings::new(sentence_start, at), sfsm->ref, 0);
 
 @<Issue problem for semicolon after colon@> =
-	Sentences::syntax_problem(SemicolonAfterColon_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
+	Sentences::syntax_problem(SemicolonAfterColon_SYNERROR, Wordings::new(sentence_start, at), sfsm->ref, 0);
 
 @<Issue problem for semicolon after full stop@> =
-	Sentences::syntax_problem(SemicolonAfterStop_SYNERROR, Wordings::new(sentence_start, at), sfsm_copy, 0);
+	Sentences::syntax_problem(SemicolonAfterStop_SYNERROR, Wordings::new(sentence_start, at), sfsm->ref, 0);
 
 @ Colons are normally dividers, too, but an exception is made if they come
 between two apparently numerical constructions, because this suggests that
@@ -280,7 +285,7 @@ table would be no different if it were not there.
 @<Consider if punctuation within a preceding quoted text divides a sentence, making an X break@> =
 	if ((stopped == FALSE) && /* only look if we are not already at a division */
 		(no_stop_words == 0) && /* be sure not to elide two such texts in a row */
-		(sfsm_in_tabbed_mode == FALSE) && /* check that we are not scanning the body of a table */
+		(sfsm->inside_table_mode == FALSE) && /* check that we are not scanning the body of a table */
 		(isupper(*(Lexer::word_raw_text(at)))) && /* and the current word begins with a capital letter */
 		(Word::text_ending_sentence(at-1))) { /* and the preceding one was quoted text ending in punctuation */
 		stop_character = 'X'; stopped = TRUE;
@@ -298,7 +303,7 @@ what natural language would do, faced with the same basic issue. A book, or
 a government form, would more naturally have a heading making clear that
 the section beneath it is not universal in application. This is what Inform
 does, too: it parses a heading to decide whether to skip the material,
-and if so, the state |sfsm_skipping_material_at_level| is set to the
+and if so, the state |sfsm->skipping_material_at_level| is set to the
 level of the heading in question. We then skip all subsequent sentences
 until reaching the next heading of the same or higher status, or until
 reaching the "... ends here." sentence (if we are reading an extension),
@@ -317,10 +322,10 @@ void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
 	@<Detect a dividing sentence@>;
 
 	if ((begins_or_ends == -1) ||
-		((heading_level > 0) && (heading_level <= sfsm_skipping_material_at_level)))
-		sfsm_skipping_material_at_level = -1;
+		((heading_level > 0) && (heading_level <= sfsm->skipping_material_at_level)))
+		sfsm->skipping_material_at_level = -1;
 
-	if (sfsm_skipping_material_at_level >= 0) return;
+	if (sfsm->skipping_material_at_level >= 0) return;
 
 	if (heading_level > 0) {
 		@<Issue a problem message if the heading incorporates a line break@>;
@@ -338,23 +343,23 @@ source file (e.g., when one extension has been read in and another begins)
 is declared as if it were a super-heading in the text.
 
 @<Detect a change of source file, and declare it as an implicit heading@> =
-	if (Lexer::file_of_origin(Wordings::first_wn(W)) != sfsm_source_file) {
+	if (Lexer::file_of_origin(Wordings::first_wn(W)) != sfsm->sf) {
 		parse_node *implicit_heading = ParseTree::new(HEADING_NT);
 		ParseTree::set_text(implicit_heading, W);
 		ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
 		ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
 		ParseTree::insert_sentence(T, implicit_heading);
 		#ifdef NEW_HEADING_HANDLER
-		NEW_HEADING_HANDLER(T, implicit_heading, sfsm_project);
+		NEW_HEADING_HANDLER(T, implicit_heading, sfsm->project_ref);
 		#endif
-		sfsm_skipping_material_at_level = -1;
+		sfsm->skipping_material_at_level = -1;
 	}
-	sfsm_source_file = Lexer::file_of_origin(Wordings::first_wn(W));
+	sfsm->sf = Lexer::file_of_origin(Wordings::first_wn(W));
 
 @<Reject if we have run on past the end of an extension@> =
-	if ((sfsm_extension_position == 3) && (begins_or_ends == 0)) {
-		Sentences::syntax_problem(ExtSpuriouslyContinues_SYNERROR, W, sfsm_copy, 0);
-		sfsm_extension_position = 4; /* to avoid multiply issuing this */
+	if ((sfsm->ext_pos == 3) && (begins_or_ends == 0)) {
+		Sentences::syntax_problem(ExtSpuriouslyContinues_SYNERROR, W, sfsm->ref, 0);
+		sfsm->ext_pos = 4; /* to avoid multiply issuing this */
 	}
 
 @ The client must define a Preform nonterminal called |<dividing-sentence>|
@@ -365,14 +370,9 @@ important), or |-1| to mean that the sentence begins an extension, or
 @<Detect a dividing sentence@> =
 	if (<dividing-sentence>(W)) {
 		switch (<<r>>) {
-			case -1: if (sfsm_extension_position > 0) begins_or_ends = 1;
-				break;
-			case -2:
-				if (sfsm_extension_position > 0) begins_or_ends = -1;
-				break;
-			default:
-				heading_level = <<r>>;
-				break;
+			case -1: if (sfsm->ext_pos > 0) begins_or_ends = 1; break;
+			case -2: if (sfsm->ext_pos > 0) begins_or_ends = -1; break;
+			default: heading_level = <<r>>; break;
 		}
 	}
 
@@ -388,7 +388,7 @@ continuing regardless.
 	LOOP_THROUGH_WORDING(k, W)
 		if (k > Wordings::first_wn(W))
 			if ((Lexer::break_before(k) == '\n') || (Lexer::indentation_level(k) > 0)) {
-				Sentences::syntax_problem(HeadingOverLine_SYNERROR, W, sfsm_copy, k);
+				Sentences::syntax_problem(HeadingOverLine_SYNERROR, W, sfsm->ref, k);
 				break;
 			}
 
@@ -405,7 +405,7 @@ newlines automatically added at the end of the feed of any source file.
 		for (k = Wordings::last_wn(W)+1;
 			(k<=Wordings::last_wn(W)+8) && (k<lexer_wordcount) && (Lexer::break_before(k) != '\n');
 			k++) ;
-		Sentences::syntax_problem(HeadingStopsBeforeEndOfLine_SYNERROR, W, sfsm_copy, k);
+		Sentences::syntax_problem(HeadingStopsBeforeEndOfLine_SYNERROR, W, sfsm->ref, k);
 	}
 
 @ We now have a genuine heading, and can declare it, calling a routine
@@ -418,17 +418,17 @@ in Headings to determine whether we should include the material.
 	ParseTree::annotate_int(new, heading_level_ANNOT, heading_level);
 	ParseTree::insert_sentence(T, new);
 	#ifdef NEW_HEADING_HANDLER
-	if (NEW_HEADING_HANDLER(T, new, sfsm_project) == FALSE)
-		sfsm_skipping_material_at_level = heading_level;
+	if (NEW_HEADING_HANDLER(T, new, sfsm->project_ref) == FALSE)
+		sfsm->skipping_material_at_level = heading_level;
 	#endif
 
 @ When we finish scanning all the sentences in a given batch, and if they came
 from an extension, we need to make sure we saw both beginning and end:
 
 @<Issue a problem message if we are missing the begin and end here sentences@> =
-	switch (sfsm_extension_position) {
-		case 1: Sentences::syntax_problem(ExtNoBeginsHere_SYNERROR, W, sfsm_copy, 0); break;
-		case 2: Sentences::syntax_problem(ExtNoEndsHere_SYNERROR, W, sfsm_copy, 0); break;
+	switch (sfsm->ext_pos) {
+		case 1: Sentences::syntax_problem(ExtNoBeginsHere_SYNERROR, W, sfsm->ref, 0); break;
+		case 2: Sentences::syntax_problem(ExtNoEndsHere_SYNERROR, W, sfsm->ref, 0); break;
 		case 3: break;
 	}
 
@@ -469,7 +469,7 @@ sentences and options-file sentences may have been read already.)
 <if-start-of-source-text> internal 0 {
 	int w1 = Wordings::first_wn(W);
 	while (w1 >= 0) {
-		if (w1 == sfsm_main_source_start_wn) return TRUE;
+		if (w1 == sfsm->main_source_start_wn) return TRUE;
 		if (compare_word(w1-1, PARBREAK_V) == FALSE) return FALSE;
 		w1--;
 	}
@@ -481,10 +481,10 @@ sentences and options-file sentences may have been read already.)
 	@<Otherwise, make a SENTENCE node@>;
 
 	@<Convert a rule preamble to a ROUTINE node and enter rule mode@>;
-	if (sfsm_inside_rule_mode)
+	if (sfsm->inside_rule_mode)
 		@<Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands@>
 	else if (stop_character == ';') {
-		Sentences::syntax_problem(UnexpectedSemicolon_SYNERROR, W, sfsm_copy, 0);
+		Sentences::syntax_problem(UnexpectedSemicolon_SYNERROR, W, sfsm->ref, 0);
 		stop_character = '.';
 	}
 
@@ -494,12 +494,12 @@ sentences and options-file sentences may have been read already.)
 			@<Detect a language definition sentence and sneakily act upon it@>
 		else if (<<r>> == -2) {
 			@<Detect a Preform grammar inclusion and sneakily act upon it@>
-			ParseTree::set_type(new, ssnt); return;
+			ParseTree::set_type(new, sfsm->nt); return;
 		} else {
-			ParseTree::set_type(new, ssnt);
+			ParseTree::set_type(new, sfsm->nt);
 			#ifdef SUPERVISOR_MODULE
-			if (ssnt == BIBLIOGRAPHIC_NT)
-				BiblioSentence::notify(sfsm_project, new);
+			if (sfsm->nt == BIBLIOGRAPHIC_NT)
+				BiblioSentence::notify(sfsm->project_ref, new);
 			#endif
 			return;
 		}
@@ -509,8 +509,8 @@ sentences and options-file sentences may have been read already.)
 
 	/* none of that happened, so we have a SENTENCE node for certain */
 	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, TRUE);
-	#ifdef SENTENCE_ANNOTATION_FUNCTION
-	SENTENCE_ANNOTATION_FUNCTION(new);
+	#ifdef SENTENCE_ANNOTATION_SYNTAX_CALLBACK
+	SENTENCE_ANNOTATION_SYNTAX_CALLBACK(new);
 	#endif
 
 @ Rules are ordinarily detected by their colon, which divides the header from the
@@ -545,7 +545,7 @@ The following is used to detect "or" in such lists.
 	...... _or ......
 
 @<Convert comma-divided rule into two sentences, if this is allowed@> =
-	if ((sfsm_inside_rule_mode == FALSE)
+	if ((sfsm->inside_rule_mode == FALSE)
 		&& ((stop_character == '.') || (stop_character == '|'))
 		&& (<comma-divisible-sentence>(W)))
 		@<Look for a comma and split the sentence at it, unless in serial list@>;
@@ -621,16 +621,16 @@ instead of a semicolon. We may lament this, but it is so.)
 @<Convert a rule preamble to a ROUTINE node and enter rule mode@> =
 	#ifdef list_node_type
 	if (stop_character == ':') {
-		if ((sfsm_inside_rule_mode) && (ControlStructures::detect(W))) {
+		if ((sfsm->inside_rule_mode) && (ControlStructures::detect(W))) {
 			ParseTree::set_type(new, list_entry_node_type);
 			#ifdef CORE_MODULE
 			ParseTree::annotate_int(new, colon_block_command_ANNOT, TRUE);
 			#endif
-			sfsm_inside_rule_mode = TRUE;
+			sfsm->inside_rule_mode = TRUE;
 			return;
 		} else {
 			ParseTree::set_type(new, list_node_type);
-			sfsm_inside_rule_mode = TRUE;
+			sfsm->inside_rule_mode = TRUE;
 			return;
 		}
 	}
@@ -643,7 +643,7 @@ semicolon to appear indicates an end of the rule.
 	#ifdef list_node_type
 	ParseTree::set_type(new, list_entry_node_type);
 	#endif
-	if (stop_character != ';') sfsm_inside_rule_mode = FALSE;
+	if (stop_character != ';') sfsm->inside_rule_mode = FALSE;
 	return;
 
 @ Finally, we must tidy away the previously detected "begins here" and
@@ -653,16 +653,16 @@ semicolon to appear indicates an end of the rule.
 	if (begins_or_ends == 1) {
 		ParseTree::set_type(new, BEGINHERE_NT);
 		ParseTree::set_text(new, Wordings::trim_last_word(Wordings::trim_last_word(W)));
-		#ifdef NEW_BEGINEND_HANDLER
-		NEW_BEGINEND_HANDLER(new, sfsm_copy);
+		#ifdef BEGIN_OR_END_HERE_SYNTAX_CALLBACK
+		BEGIN_OR_END_HERE_SYNTAX_CALLBACK(new, sfsm->ref);
 		#endif
 		return;
 	}
 	if (begins_or_ends == -1) {
 		ParseTree::set_type(new, ENDHERE_NT);
 		ParseTree::set_text(new, Wordings::trim_last_word(Wordings::trim_last_word(W)));
-		#ifdef NEW_BEGINEND_HANDLER
-		NEW_BEGINEND_HANDLER(new, sfsm_copy);
+		#ifdef BEGIN_OR_END_HERE_SYNTAX_CALLBACK
+		BEGIN_OR_END_HERE_SYNTAX_CALLBACK(new, sfsm->ref);
 		#endif
 		return;
 	}
@@ -673,8 +673,8 @@ it would be too late.
 
 @<Detect a language definition sentence and sneakily act upon it@> =
 	current_sentence = new;
-	#ifdef NEW_LANGUAGE_HANDLER
-	NEW_LANGUAGE_HANDLER(GET_RW(<language-modifying-sentence>, 1));
+	#ifdef LANGUAGE_ELEMENT_SYNTAX_CALLBACK
+	LANGUAGE_ELEMENT_SYNTAX_CALLBACK(GET_RW(<language-modifying-sentence>, 1));
 	#endif
 	ParseTree::annotate_int(new, language_element_ANNOT, TRUE);
 	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
@@ -688,15 +688,15 @@ it would be too late.
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |SYNTAX_PROBLEM_HANDLER|
+texts in HTML. So the client is allowed to define |PROBLEM_SYNTAX_CALLBACK|
 to some routine of her own, gazumping this one.
 
 =
 void Sentences::syntax_problem(int err_no, wording W, void *ref, int k) {
-	#ifdef SYNTAX_PROBLEM_HANDLER
-	SYNTAX_PROBLEM_HANDLER(err_no, W, ref, k);
+	#ifdef PROBLEM_SYNTAX_CALLBACK
+	PROBLEM_SYNTAX_CALLBACK(err_no, W, ref, k);
 	#endif
-	#ifndef SYNTAX_PROBLEM_HANDLER
+	#ifndef PROBLEM_SYNTAX_CALLBACK
 	TEMPORARY_TEXT(text);
 	WRITE_TO(text, "%+W", W);
 	switch (err_no) {

@@ -438,28 +438,28 @@ it handles crashes correctly.
 
 =
 <creation-problem-diagnosis> ::=
-	<article> |								==> @<Issue PM_NameIsArticle problem@>
-	(/)/(- *** |							==> @<Issue PM_NameWithBrackets problem@>
-	*** (/)/(- |							==> @<Issue PM_NameWithBrackets problem@>
-	... (/)/(- ... |						==> @<Issue PM_NameWithBrackets problem@>
-	ni--crash--1 |							==> @<Issue PM_Crash1 problem@>
-	ni--crash--10 |							==> @<Issue PM_Crash10 problem@>
-	ni--crash--11 |							==> @<Issue PM_Crash11 problem@>
-	, ... |									==> @<Issue PM_StartsWithComma problem@>
-	... , |									==> @<Issue PM_EndsWithComma problem@>
-	... when/while ... |					==> @<Issue PM_ObjectIncWhen problem@>
-	*** <quoted-text> *** |					==> @<Issue PM_NameWithText problem@>
-	condition |								==> @<Issue PM_NameReserved problem@>
-	conditions |							==> @<Issue PM_NameReserved problem@>
-	storage |								==> @<Issue PM_NameReserved problem@>
-	storages |								==> @<Issue PM_NameReserved problem@>
-	variable |								==> @<Issue PM_NameReserved problem@>
-	variables |								==> @<Issue PM_NameReserved problem@>
-	property-value |						==> @<Issue PM_NameReserved problem@>
-	property-values |						==> @<Issue PM_NameReserved problem@>
-	table-reference |						==> @<Issue PM_NameReserved problem@>
-	table-references |						==> @<Issue PM_NameReserved problem@>
-	list-entry |							==> @<Issue PM_NameReserved problem@>
+	<article> |    ==> @<Issue PM_NameIsArticle problem@>
+	(/)/(- *** |    ==> @<Issue PM_NameWithBrackets problem@>
+	*** (/)/(- |    ==> @<Issue PM_NameWithBrackets problem@>
+	... (/)/(- ... |    ==> @<Issue PM_NameWithBrackets problem@>
+	ni--crash--1 |    ==> @<Issue PM_Crash1 problem@>
+	ni--crash--10 |    ==> @<Issue PM_Crash10 problem@>
+	ni--crash--11 |    ==> @<Issue PM_Crash11 problem@>
+	, ... |    ==> @<Issue PM_StartsWithComma problem@>
+	... , |    ==> @<Issue PM_EndsWithComma problem@>
+	... when/while ... |    ==> @<Issue PM_ObjectIncWhen problem@>
+	*** <quoted-text> *** |    ==> @<Issue PM_NameWithText problem@>
+	condition |    ==> @<Issue PM_NameReserved problem@>
+	conditions |    ==> @<Issue PM_NameReserved problem@>
+	storage |    ==> @<Issue PM_NameReserved problem@>
+	storages |    ==> @<Issue PM_NameReserved problem@>
+	variable |    ==> @<Issue PM_NameReserved problem@>
+	variables |    ==> @<Issue PM_NameReserved problem@>
+	property-value |    ==> @<Issue PM_NameReserved problem@>
+	property-values |    ==> @<Issue PM_NameReserved problem@>
+	table-reference |    ==> @<Issue PM_NameReserved problem@>
+	table-references |    ==> @<Issue PM_NameReserved problem@>
+	list-entry |    ==> @<Issue PM_NameReserved problem@>
 	list-entries							==> @<Issue PM_NameReserved problem@>
 
 @<Issue PM_NameIsArticle problem@> =

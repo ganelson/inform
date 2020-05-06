@@ -27,7 +27,7 @@ int Unit::allow_generally(verb_conjugation *vc, int tense, int sense, int person
 
 =
 <dividing-sentence> ::=
-	chapter ... |			==> 1
+	chapter ... |    ==> 1
 	section ...				==> 2
 
 <structural-sentence> ::=

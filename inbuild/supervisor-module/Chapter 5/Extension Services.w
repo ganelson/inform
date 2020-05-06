@@ -263,6 +263,7 @@ no project involved, we must take action ourselves.)
 =
 void Extensions::construct_graph(inform_extension *E) {
 	Copies::get_source_text(E->as_copy);
+	Sentences::set_start_of_source(sfsm, -1);
 	Inclusions::traverse(E->as_copy, E->syntax_tree);
 }
 
@@ -336,7 +337,7 @@ present then the extension contains only body source and no documentation.
 
 =
 <extension-body> ::=
-	*** ---- documentation ---- ... |	==> TRUE
+	*** ---- documentation ---- ... |    ==> TRUE
 	...									==> FALSE
 
 @<Break the extension's text into body and documentation@> =

@@ -59,8 +59,8 @@ four constituent tokens.
 
 =
 <grammar-token-breaking> ::=
-	... , ... |				==> NOT_APPLICABLE
-	<quoted-text> |			==> TRUE
+	... , ... |    ==> NOT_APPLICABLE
+	<quoted-text> |    ==> TRUE
 	...						==> FALSE
 
 @ We use a different punctuation set, in which forward slashes break words,
@@ -219,37 +219,37 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 
 =
 <grammar-token> ::=
-	<named-grammar-token> |				==> NAMED_TOKEN_GTC; <<grammar_verb:named>> = RP[1]
-	any things |						==> ANY_THINGS_GTC; <<parse_node:s>> = Specifications::from_kind(K_thing);
-	any <s-description> |				==> ANY_STUFF_GTC; <<parse_node:s>> = RP[1]
-	anything |							==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_thing);
-	anybody |							==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_person);
-	anyone |							==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_person);
-	anywhere |							==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_room);
-	something related by reversed <relation-name> |	==> RELATED_GTC; *XP = BinaryPredicates::get_reversal(RP[1])
-	something related by <relation-name> |			==> RELATED_GTC; *XP = RP[1]
-	something related by ... |			==> @<Issue PM_GrammarBadRelation problem@>
-	<standard-grammar-token> |			==> R[1]
-	<definite-article> <k-kind> |		==> STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(RP[2])
-	<s-description> |					==> STUFF_GTC; <<parse_node:s>> = RP[1]
-	<s-type-expression>	|				==> @<Issue PM_BizarreToken problem@>
+	<named-grammar-token> |    ==> NAMED_TOKEN_GTC; <<grammar_verb:named>> = RP[1]
+	any things |    ==> ANY_THINGS_GTC; <<parse_node:s>> = Specifications::from_kind(K_thing);
+	any <s-description> |    ==> ANY_STUFF_GTC; <<parse_node:s>> = RP[1]
+	anything |    ==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_thing);
+	anybody |    ==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_person);
+	anyone |    ==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_person);
+	anywhere |    ==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_room);
+	something related by reversed <relation-name> |    ==> RELATED_GTC; *XP = BinaryPredicates::get_reversal(RP[1])
+	something related by <relation-name> |    ==> RELATED_GTC; *XP = RP[1]
+	something related by ... |    ==> @<Issue PM_GrammarBadRelation problem@>
+	<standard-grammar-token> |    ==> R[1]
+	<definite-article> <k-kind> |    ==> STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(RP[2])
+	<s-description> |    ==> STUFF_GTC; <<parse_node:s>> = RP[1]
+	<s-type-expression>	|    ==> @<Issue PM_BizarreToken problem@>
 	...									==> @<Issue PM_UnknownToken problem@>
 
 <standard-grammar-token> ::=
-	something |							==> NOUN_TOKEN_GTC
-	things |							==> MULTI_TOKEN_GTC
-	things inside |						==> MULTIINSIDE_TOKEN_GTC
-	things preferably held |			==> MULTIHELD_TOKEN_GTC
-	something preferably held |			==> HELD_TOKEN_GTC
-	other things |						==> MULTIEXCEPT_TOKEN_GTC
-	someone	|							==> CREATURE_TOKEN_GTC
-	somebody |							==> CREATURE_TOKEN_GTC
-	text |								==> TOPIC_TOKEN_GTC
-	topic |								==> @<Issue PM_UseTextNotTopic problem@>
-	a topic |							==> @<Issue PM_UseTextNotTopic problem@>
-	object |							==> @<Issue PM_UseThingNotObject problem@>
-	an object |							==> @<Issue PM_UseThingNotObject problem@>
-	something held |					==> @<Issue something held problem message@>
+	something |    ==> NOUN_TOKEN_GTC
+	things |    ==> MULTI_TOKEN_GTC
+	things inside |    ==> MULTIINSIDE_TOKEN_GTC
+	things preferably held |    ==> MULTIHELD_TOKEN_GTC
+	something preferably held |    ==> HELD_TOKEN_GTC
+	other things |    ==> MULTIEXCEPT_TOKEN_GTC
+	someone	|    ==> CREATURE_TOKEN_GTC
+	somebody |    ==> CREATURE_TOKEN_GTC
+	text |    ==> TOPIC_TOKEN_GTC
+	topic |    ==> @<Issue PM_UseTextNotTopic problem@>
+	a topic |    ==> @<Issue PM_UseTextNotTopic problem@>
+	object |    ==> @<Issue PM_UseThingNotObject problem@>
+	an object |    ==> @<Issue PM_UseThingNotObject problem@>
+	something held |    ==> @<Issue something held problem message@>
 	things held							==> @<Issue things held problem message@>
 
 <named-grammar-token> internal {

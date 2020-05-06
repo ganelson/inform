@@ -70,8 +70,8 @@ void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
 
 =
 <relation-property-name> ::=
-	<either-or-property-name> |		==> @<Issue PM_RelationWithEitherOrProperty problem@>
-	<value-property-name> |			==> TRUE; *XP = RP[1];
+	<either-or-property-name> |    ==> @<Issue PM_RelationWithEitherOrProperty problem@>
+	<value-property-name> |    ==> TRUE; *XP = RP[1];
 	...								==> @<Issue PM_RelationWithBadProperty problem@>
 
 @<Issue PM_RelationWithEitherOrProperty problem@> =

@@ -35,7 +35,7 @@ right of them are omitted -- those represent semantics, not syntax.
 
 = (text)
 	<competitor> ::=
-		<ordinal-number> runner |				==> TRUE
+		<ordinal-number> runner |    ==> TRUE
 		runner no <cardinal-number>				==> FALSE
 
 @ Each nonterminal, when successfully matched, can provide both or more usually
@@ -66,8 +66,8 @@ of, so |R[...]| can't be used.
 
 = (text)
 	<competitor> ::=
-		the pacemaker |							==> 1
-		<ordinal-number> runner |				==> R[1]
+		the pacemaker |    ==> 1
+		<ordinal-number> runner |    ==> R[1]
 		runner no <cardinal-number>				==> R[1]
 
 @ The arrows and expressions are optional, and if they are omitted, then the
