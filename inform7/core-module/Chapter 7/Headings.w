@@ -45,9 +45,11 @@ void Sentences::Headings::verify_divisions(void) {
 	int total = 0, disaster = FALSE;
 	LOOP_OVER(nt, noun)
 		Sentences::Headings::name_resolution_data(nt)->heading_count = 0;
+	parse_node_tree *T = Task::syntax_tree();
 	LOOP_OVER(h, heading)
-		LOOP_OVER_NOUNS_UNDER(nt, h)
-			Sentences::Headings::name_resolution_data(nt)->heading_count++, total++;
+		if (h->owning_syntax_tree == T)
+			LOOP_OVER_NOUNS_UNDER(nt, h)
+				Sentences::Headings::name_resolution_data(nt)->heading_count++, total++;
 	LOOP_OVER(nt, noun)
 		if (Sentences::Headings::name_resolution_data(nt)->heading_count > 1) {
 			LOG("$z occurs under %d headings\n",
@@ -141,6 +143,20 @@ void Sentences::Headings::disturb(void) {
 	noun_search_list_valid_for_this_heading = NULL;
 }
 
+@ The headings and subheadings are formed into a tree in which each heading
+contains its lesser-order headings. The pseudo-heading exists to be the root
+of this tree; the entire text falls under it. It is not a real heading at all,
+and has no "level" or "indentation" as such.
+
+=
+void Sentences::Headings::make_the_tree(void) {
+	Headings::make_tree(Task::syntax_tree());
+}
+
+heading *Sentences::Headings::pseudo_heading(void) {
+	return &(Task::syntax_tree()->heading_root);
+}
+
 @ Leaving aside the cache, then, we build a list as initially empty, then
 all nametags of priority 1 as found by recursively searching headings, then all
 nametags of priority 2, and so on.
@@ -182,7 +198,8 @@ ever get that far.
 @<Start the search list empty@> =
 	nt_search_start = NULL;
 	nt_search_finish = NULL;
-	pseudo_heading.list_of_contents = NULL; /* should always be true, but just in case */
+	heading *pseud = Sentences::Headings::pseudo_heading();
+	pseud->list_of_contents = NULL; /* should always be true, but just in case */
 
 @ The potential for disaster if this algorithm should be incorrect is high,
 so we perform a quick count to see if everything made it onto the list
@@ -196,7 +213,7 @@ and produce an internal error if not.
 		LOG("%d tags created, %d in ordering\n", no_tags_attached, c);
 		Sentences::Headings::log_all_headings();
 		LOG("Making fresh tree:\n");
-		Headings::make_tree();
+		Sentences::Headings::make_the_tree();
 		Sentences::Headings::log_all_headings();
 		internal_error_tree_unsafe("reordering of nametags failed");
 	}
@@ -301,7 +318,8 @@ to the index of the project, and to a freestanding XML file.
 =
 void Sentences::Headings::log(heading *h) {
 	if (h==NULL) { LOG("<null heading>\n"); return; }
-	if (h==&pseudo_heading) { LOG("<pseudo_heading>\n"); return; }
+	heading *pseud = Sentences::Headings::pseudo_heading();
+	if (h == pseud) { LOG("<pseudo_heading>\n"); return; }
 	LOG("H%d ", h->allocation_id);
 	if (h->start_location.file_of_origin)
 		LOG("<%f, line %d>",
@@ -317,9 +335,12 @@ surreptitiously check that it is correctly formed at the same time.
 =
 void Sentences::Headings::log_all_headings(void) {
 	heading *h;
-	LOOP_OVER(h, heading) LOG("$H\n", h);
+	parse_node_tree *T = Task::syntax_tree();
+	LOOP_OVER(h, heading)
+		if (h->owning_syntax_tree == T)
+			LOG("$H\n", h);
 	LOG("\n");
-	Sentences::Headings::log_headings_recursively(&pseudo_heading, 0);
+	Sentences::Headings::log_headings_recursively(Sentences::Headings::pseudo_heading(), 0);
 }
 
 void Sentences::Headings::log_headings_recursively(heading *h, int depth) {
@@ -345,7 +366,8 @@ void Sentences::Headings::index(OUTPUT_STREAM) {
 	HTML_OPEN("p");
 	WRITE("CONTENTS");
 	HTML_CLOSE("p");
-	Sentences::Headings::index_heading_recursively(OUT, pseudo_heading.child_heading);
+	Sentences::Headings::index_heading_recursively(OUT,
+		Sentences::Headings::pseudo_heading()->child_heading);
 	contents_entry *ce;
 	int min_positive_level = 10;
 	LOOP_OVER(ce, contents_entry)
@@ -485,13 +507,15 @@ void Sentences::Headings::write_headings_as_xml_inner(OUTPUT_STREAM) {
 	WRITE("<plist version=\"1.0\"><dict>\n");
 	INDENT;
 	WRITE("<key>Application Version</key><string>%B (build %B)</string>\n", FALSE, TRUE);
-	LOOP_OVER(h, heading) {
-		WRITE("<key>%d</key><dict>\n", h->allocation_id);
-		INDENT;
-		@<Write the dictionary of properties for a single heading@>;
-		OUTDENT;
-		WRITE("</dict>\n");
-	}
+	parse_node_tree *T = Task::syntax_tree();
+	LOOP_OVER(h, heading)
+		if (h->owning_syntax_tree == T) {
+			WRITE("<key>%d</key><dict>\n", h->allocation_id);
+			INDENT;
+			@<Write the dictionary of properties for a single heading@>;
+			OUTDENT;
+			WRITE("</dict>\n");
+		}
 	OUTDENT;
 	WRITE("</dict></plist>\n");
 }
