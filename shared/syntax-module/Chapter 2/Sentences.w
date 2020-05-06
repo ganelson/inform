@@ -349,8 +349,8 @@ is declared as if it were a super-heading in the text.
 		ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
 		ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
 		ParseTree::insert_sentence(T, implicit_heading);
-		#ifdef NEW_HEADING_HANDLER
-		NEW_HEADING_HANDLER(T, implicit_heading, sfsm->project_ref);
+		#ifdef NEW_HEADING_SYNTAX_CALLBACK
+		NEW_HEADING_SYNTAX_CALLBACK(T, implicit_heading, sfsm->project_ref);
 		#endif
 		sfsm->skipping_material_at_level = -1;
 	}
@@ -417,8 +417,8 @@ in Headings to determine whether we should include the material.
 	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
 	ParseTree::annotate_int(new, heading_level_ANNOT, heading_level);
 	ParseTree::insert_sentence(T, new);
-	#ifdef NEW_HEADING_HANDLER
-	if (NEW_HEADING_HANDLER(T, new, sfsm->project_ref) == FALSE)
+	#ifdef NEW_HEADING_SYNTAX_CALLBACK
+	if (NEW_HEADING_SYNTAX_CALLBACK(T, new, sfsm->project_ref) == FALSE)
 		sfsm->skipping_material_at_level = heading_level;
 	#endif
 

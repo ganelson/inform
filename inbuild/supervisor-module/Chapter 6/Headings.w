@@ -9,26 +9,35 @@ trees, and mostly occur when the user has explicitly typed a heading such as:
 
 >> Part VII - The Ghost of the Aragon
 
-The sentence-breaker called |Headings::declare| each time it found one of
-these, but also when a new source file started, because a file boundary is
-construed as beginning with a hidden "heading" of a higher rank than any
-other, and the sentence-breaker made a corresponding HEADING node there
-too. This is important because the doctrine is that each heading starts
-afresh with a new hierarchy of lower-order headings: thus changing the Part
-means we can start again with Chapter 1 if we like, and so on. Because each
-source file starts with an implicit super-heading, each source file gets
-its own independent hierarchy of Volume, and so on. But the convention is
-also important because we need to be able to say that every word loaded
-from disc ultimately falls under some heading, even if the source text as
-typed by the designer does not obviously have any headings in it.
+Source text can make whatever headings it likes: no sequence is illegal. It
+is not for Inform to decide on behalf of the author that it is eccentric to
+place Section C before Section B, for instance. The author might be doing so
+deliberately, to put the Chariot-race before the Baths, say. This is a
+classic case where Inform trying to be too clever would annoy more often
+than assist.
 
-The hierarchy thus runs: File (0), Volume (1), Book (2), Part (3),
-Chapter (4), Section (5). (The implementation in |imbuild| allows for even lower
-levels of subheading, from 6 to 9, but Inform doesn't use them.) Every run
-of Inform declares at least two File (0) headings, representing the start of
-main text and the start of the Standard Rules, and these latter have a
-couple of dozen headings themselves, so the typical number of headings
-in a source text is 30 to 100.
+Nevertheless the sequence and relative hierarchy of headings is important.
+Compare these two sequences:
+= (text)
+	Part A               Chapter A
+	Chapter B            Chapter B
+=
+In the first case, B is subordinate to A; in the second it is not, and this
+affects the meaning of the program.
+
+@ Headings therefore have a numbered "level" of importance, with lower numbers
+more important than higher. The hierarchy runs:
+= (text)
+	Root = -1 > Implied = 0 > Volume = 1 > Book = 2 > Part = 3 > Chapter = 4 > Section = 5
+=
+"Root" headings can be ignored -- there's one at the root of the heading tree,
+but it's only a hook to hang things from. "Implied" headings are inserted
+to mark source file boundaries and the like, and aren't written by the author.
+The importance of implied headings is that they ensure that every sentence
+of source text ultimately falls under some heading.
+
+The implementation allows even lower levels of subheading, 6 to 9, but these
+are currently unused.
 
 @d NO_HEADING_LEVELS 10
 
@@ -36,41 +45,69 @@ in a source text is 30 to 100.
 Two, Section 5, Chapter I, Section 1, Chapter III) would be formed up into
 the heading tree:
 = (text)
-	(the pseudo-heading)  level -1, indentation -1
-	    (File: Standard Rules)  level 0, indentation 0
+	(the pseudo-heading)                level -1, indentation -1
+	    (Implied: inclusions)           level 0, indentation 0
+	    (Implied: Basic Inform)         level 0, indentation 0
 	        ...
-	    (File: primary source text)  level 0, indentation 0
-	        Chapter I  level 4, indentation 1
-	        Book Two  level 2, indentation 1
-	            Section 5  level 5, indentation 2
-	            Chapter I  level 4, indentation 2
-	                Section 1  level 5, indentation 3
-	            Chapter III  level 4, indentation 2
+	    (Implied: primary source text)  level 0, indentation 0
+	        Chapter I                   level 4, indentation 1
+	        Book Two                    level 2, indentation 1
+	            Section 5               level 5, indentation 2
+	            Chapter I               level 4, indentation 2
+	                Section 1           level 5, indentation 3
+	            Chapter III             level 4, indentation 2
+	    (Implied: inventions)           level 0, indentation 0
 =
 Note that the level of a heading is not the same thing as its depth in this
 tree, which we call the "indentation", and there is no simple relationship
-between the two numbers. Clearly we want to start at the left margin. If a
-new heading is subordinate to its predecessor (i.e., has higher level),
-we want to indent further, but by the least amount needed -- a single tap step.
-Adjacent equal-level headings are on a par with each other and should have
-the same indentation. But when the new heading is lower level than its
-predecessor (i.e., more important) then the indentation decreases to
-match the last one equally important.
+between the two numbers: see below for how it is calculated.
 
-@ We can secure the last of those properties with a formal definition as
-follows. The level $\ell_n$ of a heading depends only on its wording (or
-source file origin), but the indentation of the $n$th heading, $i_n$,
-depends on $(\ell_1, \ell_2, ..., \ell_n)$, the sequence of all levels so
-far:
+@h Heading trees.
+Enough theory: now some practice. Each syntax tree also has a heading tree,
+with one "pseudo-heading" (at notional level $-1$) as root. All nodes are
+instances of:
+
+@d NEW_HEADING_TREE_SYNTAX_CALLBACK Headings::initialise_heading_tree
+@d HEADING_TREE_SYNTAX_TYPE struct heading_tree
+
+=
+typedef struct heading_tree {
+	struct parse_node_tree *owning_syntax_tree;
+	struct heading heading_root;
+	int made_at_least_once;
+	int last_indentation_above_level[NO_HEADING_LEVELS];
+	struct linked_list *subordinates; /* of |heading| */
+	MEMORY_MANAGEMENT
+} heading_tree;
+
+heading *Headings::root_of_tree(heading_tree *HT) {
+	return &(HT->heading_root);
+}
+
+heading_tree *Headings::initialise_heading_tree(parse_node_tree *T) {
+	heading_tree *HT = CREATE(heading_tree);
+	HT->owning_syntax_tree = T;
+	HT->made_at_least_once = FALSE;
+	HT->heading_root.parent_heading = NULL;
+	HT->heading_root.child_heading = NULL;
+	HT->heading_root.next_heading = NULL;
+	HT->heading_root.level = -1;
+	HT->heading_root.indentation = -1;
+	for (int i=0; i<NO_HEADING_LEVELS; i++) HT->last_indentation_above_level[i] = -1;
+	HT->subordinates = NEW_LINKED_LIST(heading);
+	return HT;
+}
+
+@ So now we calculate the indentation of a heading. The level $\ell_n$ of a
+heading depends only on its wording (or source file origin), but the indentation
+of the $n$th heading, $i_n$, depends on $(\ell_1, \ell_2, ..., \ell_n)$, the
+sequence of all levels so far:
 $$ i_n = i_m + 1 \qquad {\rm where}\qquad m = {\rm max} \lbrace j \mid 0\leq j < n, \ell_j < \ell_n \rbrace $$
 where $\ell_0 = i_0 = -1$, so that this set always contains 0 and is
 therefore not empty. We deduce that
-
 (a) $i_1 = 0$ and thereafter $i_n \geq 0$, since $\ell_n$ is never negative again,
-
 (b) if $\ell_k = \ell_{k+1}$ then $i_k = i_{k+1}$, since the set over which
 the maximum is taken is the same,
-
 (c) if $\ell_{k+1} > \ell_k$, a subheading of its predecessor, then
 $i_{k+1} = i_k + 1$, a single tab step outward.
 
@@ -83,46 +120,22 @@ $$ i_{m(K)},\qquad {\rm where}\qquad m(K) = {\rm max} \lbrace j \mid 0\leq j < n
 for each possible heading level $K=0, 1, ..., 9$. This requires much less
 storage: we call it the "last indentation above level $K$".
 
-@ This leads to the following algorithm when looking at the headings in any
-individual file of source text: at the top of file,
-= (text as C)
-	for (i=0; i<NO_HEADING_LEVELS; i++) last_indentation_above_level[i] = -1;
-=
-Then parse for headings (they have an easily recognised lexical form); each
-time one is found, work out its |level| as 1, ..., 5 for Volume down to Section,
-and call:
-= (text as C)
-	int find_indentation(int level) {
-	    int i, ind = last_indentation_above_level[level] + 1;
-	    for (i=level+1; i<NO_HEADING_LEVELS; i++)
-	        last_indentation_above_level[i] = ind;
-	    return ind;
-	}
-=
-While this algorithm is trivially equivalent to finding the depth of a
-heading in the tree which we are going to build anyway, it is worth noting
-here for the benefit of anyone writing a tool to (let's say) typeset an
-Inform source text with a table of contents, or provide a navigation
-gadget in the user interface.
+Which proves the correctness of the following innocent-looking function, called
+on each heading in sequence:
 
-@ The primary source text, and indeed the source text in the extensions,
-can make whatever headings they like: no sequence is illegal. It is not
-for Inform to decide on behalf of the author that it is eccentric to place
-Section C before Section B, for instance. The author might be doing so
-deliberately, to put the Chariot-race before the Baths, say; and the
-indexing means that it will be very apparent to the author what the heading
-structure currently is, so mistakes are unlikely to last long. This is a
-classic case where Inform trying to be too clever would annoy more often
-than assist.
+=
+int Headings::indent_from(heading_tree *HT, int level) {
+	int I = HT->last_indentation_above_level[level] + 1;
+	for (int i=level+1; i<NO_HEADING_LEVELS; i++) HT->last_indentation_above_level[i] = I;
+	return I;
+}
 
 @h Heading metadata.
-That's enough theory: now some practice. Each syntax tree also has a
-heading tree, with one "pseudo-heading" (at notional level $-1$) as root.
-All nodes are instances of:
+Each heading gets the following metadata:
 
 =
 typedef struct heading {
-	struct parse_node_tree *owning_syntax_tree;
+	struct heading_tree *owning_tree;
 	struct parse_node *sentence_declaring; /* if any: file starts are undeclared */
 	struct source_location start_location; /* first word under this heading is here */
 	int level; /* 0 for Volume (highest) to 5 for Section (lowest) */
@@ -142,63 +155,13 @@ typedef struct heading {
 	MEMORY_MANAGEMENT
 } heading;
 
-@ =
-typedef struct name_resolution_data {
-	int heading_count; /* used when tallying up objects under their headings */
-	struct noun *next_under_heading; /* next in the list under that */
-	int search_score; /* used when searching nametags to parse names */
-	struct noun *next_to_search; /* similarly */
-} name_resolution_data;
-
-@ =
-typedef struct contents_entry {
-	struct heading *heading_entered;
-	struct contents_entry *next;
-	MEMORY_MANAGEMENT
-} contents_entry;
-
-@h Declarations.
-The heading tree is constructed all at once, after most of the sentence-breaking
-is done, but since a few sentences can in principle be added later, we watch
-for the remote chance of further headings being added, by keeping the following
-flag:
+@ It is guaranteed that this will be called once for each heading (except the
+pseudo-heading, which doesn't count) in sequence order:
 
 =
-int heading_tree_made_at_least_once = FALSE;
-
-@ Now, then, the routine |Headings::declare| is called by the sentence-breaker
-each time it constructs a new HEADING node. (Note that it is not called to
-create the pseudo-heading, which does not come from a node.)
-
-A level 0 heading has text (the first sentence which happens to be in the
-new source file), but this has no significance other than its location,
-and cannot contain information about releasing or about virtual machines.
-
-=
-int last_indentation_above_level[NO_HEADING_LEVELS], lial_made = FALSE;
-inbuild_work *work_identified = NULL;
-
-@ =
-heading *Headings::from_node(parse_node *PN) {
-	return ParseTree::get_embodying_heading(PN);
-}
-
-@
-
-@d NEW_HEADING_HANDLER Headings::new
-
-=
-int Headings::new(parse_node_tree *T, parse_node *new, inform_project *proj) {
-	heading *h = Headings::declare(T, new);
-	#ifdef CORE_MODULE
-	ParseTree::set_embodying_heading(new, h);
-	#endif
-	return Headings::include_material(h, Projects::currently_releasing(proj));
-}
-
-heading *Headings::declare(parse_node_tree *T, parse_node *PN) {
+heading *Headings::new(parse_node_tree *T, parse_node *pn, int level, source_location sl) {
 	heading *h = CREATE(heading);
-	h->owning_syntax_tree = T;
+	h->owning_tree = T->headings;
 	h->parent_heading = NULL; h->child_heading = NULL; h->next_heading = NULL;
 	h->list_of_contents = NULL; h->last_in_list_of_contents = NULL;
 	h->for_release = NOT_APPLICABLE; h->omit_material = FALSE;
@@ -206,40 +169,79 @@ heading *Headings::declare(parse_node_tree *T, parse_node *PN) {
 	h->use_with_or_without = NOT_APPLICABLE;
 	h->in_place_of_text = EMPTY_WORDING;
 	h->for_use_with = NULL;
-
-	if ((PN == NULL) || (Wordings::empty(ParseTree::get_text(PN))))
-		internal_error("heading at textless node");
-	if (ParseTree::get_type(PN) != HEADING_NT) 
-		internal_error("declared a non-HEADING node as heading");
-	h->sentence_declaring = PN;
-	h->start_location = Wordings::location(ParseTree::get_text(PN));
-	h->level = ParseTree::int_annotation(PN, heading_level_ANNOT);
+	h->sentence_declaring = pn;
+	h->start_location = sl;
+	h->level = level;
 	h->heading_text = EMPTY_WORDING;
-
-	if (h->level > 0) @<Parse heading text for release or other stipulations@>;
-
-	if ((h->level < 0) || (h->level >= NO_HEADING_LEVELS)) internal_error("impossible level");
-	@<Determine the indentation from the level@>;
-
-	LOGIF(HEADINGS, "Created heading $H\n", h);
-	if (heading_tree_made_at_least_once) Headings::make_tree(T);
+	h->indentation = Headings::indent_from(T->headings, level);
+	ADD_TO_LINKED_LIST(h, heading, T->headings->subordinates);
 	return h;
 }
 
-@ This implements the indentation algorithm described above.
+@h Declarations.
+The following callback function is called by //syntax// each time a new
+|HEADING_NT| node is created in the syntax tree for a project. It has to
+return |TRUE| or |FALSE| to say whether sentences falling under the current
+heading should be included in the project's source text. (For instance,
+sentences under a heading with the disclaimer "(for Glulx only)" will not be
+included if the target virtual machine on this run of Inform is the Z-machine.)
 
-@<Determine the indentation from the level@> =
-	int i;
-	if (lial_made == FALSE) {
-		for (i=0; i<NO_HEADING_LEVELS; i++) last_indentation_above_level[i] = -1;
-		lial_made = TRUE;
-	}
+@d NEW_HEADING_SYNTAX_CALLBACK Headings::place
 
-	h->indentation = last_indentation_above_level[h->level] + 1;
-	for (i=h->level+1; i<NO_HEADING_LEVELS; i++)
-	    last_indentation_above_level[i] = h->indentation;
+=
+int Headings::place(parse_node_tree *T, parse_node *pn, inform_project *proj) {
+	heading *h = Headings::attach(T, pn);
+	int are_we_releasing = Projects::currently_releasing(proj);
+	if ((h->for_release == TRUE) && (are_we_releasing == FALSE)) return FALSE;
+	if ((h->for_release == FALSE) && (are_we_releasing == TRUE)) return FALSE;
+	if (h->omit_material) return FALSE;
+	return TRUE;
+}
 
-@h Parsing heading qualifiers.
+@ //Projects::read_source_text_for// also constructs implied super-headings
+which do not originate in the sentence-breaker, and which therefore need a
+different way in. (These are never skipped.)
+
+=
+void Headings::place_implied_level_0(parse_node_tree *T, parse_node *pn) {
+	Headings::attach(T, pn);
+	ParseTree::annotate_int(pn, sentence_unparsed_ANNOT, FALSE);
+	ParseTree::annotate_int(pn, heading_level_ANNOT, 0);
+	ParseTree::annotate_int(pn, implied_heading_ANNOT, TRUE);
+}
+
+@ Either way, we can always get back from the parse node to the heading:
+
+=
+heading *Headings::from_node(parse_node *pn) {
+	return ParseTree::get_embodying_heading(pn);
+}
+
+@ So, then, each |HEADING_NT| node in the parse tree produces a call to this
+function, which attaches a new //heading// object to it, and populates that
+with the result of parsing any caveats in its wording.
+
+=
+inbuild_work *work_identified = NULL; /* temporary variable during parsing below */
+
+heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
+	if ((pn == NULL) || (Wordings::empty(ParseTree::get_text(pn))))
+		internal_error("heading at textless node");
+	if (ParseTree::get_type(pn) != HEADING_NT) 
+		internal_error("declared a non-HEADING node as heading");
+	int level = ParseTree::int_annotation(pn, heading_level_ANNOT);
+	if ((level < 0) || (level >= NO_HEADING_LEVELS)) internal_error("impossible level");
+
+	heading *h = Headings::new(T, pn, level, Wordings::location(ParseTree::get_text(pn)));
+	ParseTree::set_embodying_heading(pn, h);
+	if (h->level > 0) @<Parse heading text for release or other stipulations@>;
+
+	LOGIF(HEADINGS, "Created heading $H\n", h);
+	if (T->headings->made_at_least_once) Headings::make_tree(T);
+	return h;
+}
+
+@ And these are the aforementioned caveats:
 
 @d PLATFORM_UNMET_HQ 0
 @d PLATFORM_MET_HQ 1
@@ -251,9 +253,9 @@ heading *Headings::declare(parse_node_tree *T, parse_node *PN) {
 @d IN_PLACE_OF_HQ 7
 
 @<Parse heading text for release or other stipulations@> =
-	current_sentence = PN;
+	current_sentence = pn;
 
-	wording W = ParseTree::get_text(PN);
+	wording W = ParseTree::get_text(pn);
 	while (<heading-qualifier>(W)) {
 		switch (<<r>>) {
 			case PLATFORM_UNMET_HQ: h->omit_material = TRUE; break;
@@ -272,11 +274,6 @@ heading *Headings::declare(parse_node_tree *T, parse_node *PN) {
 	h->heading_text = W;
 	h->for_use_with = work_identified;
 
-@
-
-@e UnknownLanguageElement_SYNERROR
-@e UnknownVirtualMachine_SYNERROR
-
 @ When a heading has been found, we repeatedly try to match it against
 <heading-qualifier> to see if it ends with text telling us what to do with
 the source text it governs. For example,
@@ -290,10 +287,10 @@ allowed; they should probably be withdrawn.
 
 =
 <heading-qualifier> ::=
-	... ( <bracketed-heading-qualifier> ) |    ==>	R[1]
-	... not for release |    ==>	NOT_FOR_RELEASE_HQ
-	... for release only |    ==>	FOR_RELEASE_ONLY_HQ
-	... unindexed							==>	UNINDEXED_HQ
+	... ( <bracketed-heading-qualifier> ) |  ==> R[1]
+	... not for release |                    ==> NOT_FOR_RELEASE_HQ
+	... for release only |                   ==> FOR_RELEASE_ONLY_HQ
+	... unindexed                            ==> UNINDEXED_HQ
 
 <bracketed-heading-qualifier> ::=
 	not for release |    ==>	NOT_FOR_RELEASE_HQ
@@ -366,18 +363,17 @@ to make revisions if late news comes in of a new heading (see above), we
 begin by removing any existing relationships between the heading nodes.
 
 =
-void Headings::make_tree(parse_node_tree *tree) {
+void Headings::make_tree(parse_node_tree *T) {
 	heading *h;
 	@<Reduce the whole heading tree to a pile of twigs@>;
 
-	LOOP_OVER(h, heading) 
-		if (h->owning_syntax_tree == tree) {
-			@<If h is outside the tree, make it a child of the pseudo-heading@>;
-			@<Run through subsequent equal or subordinate headings to move them downward@>;
-		}
+	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) {
+		@<If h is outside the tree, make it a child of the pseudo-heading@>;
+		@<Run through subsequent equal or subordinate headings to move them downward@>;
+	}
 
-	heading_tree_made_at_least_once = TRUE;
-	Headings::verify_heading_tree(tree);
+	T->headings->made_at_least_once = TRUE;
+	Headings::verify_heading_tree(T);
 }
 
 @ Note that the loop over headings below loops through all those which were
@@ -385,14 +381,13 @@ created by the memory manager: which is to say, all of them except for the
 pseudo-heading, which was explicitly placed in static memory above.
 
 @<Reduce the whole heading tree to a pile of twigs@> =
-	tree->heading_root.child_heading = NULL;
-	tree->heading_root.parent_heading = NULL;
-	tree->heading_root.next_heading = NULL;
+	T->headings->heading_root.child_heading = NULL;
+	T->headings->heading_root.parent_heading = NULL;
+	T->headings->heading_root.next_heading = NULL;
 	heading *h;
-	LOOP_OVER(h, heading) 
-		if (h->owning_syntax_tree == tree) {
-			h->parent_heading = NULL; h->child_heading = NULL; h->next_heading = NULL;
-		}
+	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) {
+		h->parent_heading = NULL; h->child_heading = NULL; h->next_heading = NULL;
+	}
 
 @ The idea of the heading loop is that when we place a heading, we also place
 subsequent headings of lesser or equal status until we cannot do so any longer.
@@ -402,7 +397,7 @@ at the top of the tree.
 
 @<If h is outside the tree, make it a child of the pseudo-heading@> =
 	if (h->parent_heading == NULL)
-		Headings::make_child_heading(h, &(tree->heading_root));
+		Headings::make_child_heading(h, &(T->headings->heading_root));
 
 @ Note that the following could be summed up as "move subsequent headings as
 deep in the tree as we can see they need to be from h's perspective alone".
@@ -485,8 +480,8 @@ our working.
 
 =
 int heading_tree_damaged = FALSE;
-void Headings::verify_heading_tree(parse_node_tree *tree) {
-	Headings::verify_heading_tree_r(&(tree->heading_root), &(tree->heading_root), -1);
+void Headings::verify_heading_tree(parse_node_tree *T) {
+	Headings::verify_heading_tree_r(&(T->headings->heading_root), &(T->headings->heading_root), -1);
 	if (heading_tree_damaged) internal_error("heading tree failed to verify");
 }
 
@@ -508,13 +503,6 @@ heading with the disclaimer "(for Glulx only)" will not be included
 if the target virtual machine on this run of Inform is the Z-machine.)
 
 =
-int Headings::include_material(heading *h, int are_we_releasing) {
-	if ((h->for_release == TRUE) && (are_we_releasing == FALSE)) return FALSE;
-	if ((h->for_release == FALSE) && (are_we_releasing == TRUE)) return FALSE;
-	if (h->omit_material) return FALSE;
-	return TRUE;
-}
-
 int Headings::indexed(heading *h) {
 	if (h == NULL) return TRUE; /* definitions made nowhere are normally indexed */
 	return h->index_definitions_made_under_this;
@@ -581,10 +569,9 @@ But when the following is called, we do know that.
 =
 void Headings::satisfy_dependencies(parse_node_tree *T, inbuild_copy *C) {
 	heading *h;
-	LOOP_OVER(h, heading)
-		if (h->owning_syntax_tree == T)
-			if (h->use_with_or_without != NOT_APPLICABLE)
-				Headings::satisfy_individual_heading_dependency(T, C, h);
+	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates)
+		if (h->use_with_or_without != NOT_APPLICABLE)
+			Headings::satisfy_individual_heading_dependency(T, C, h);
 }
 
 @ And now the code to check an individual heading's usage. This whole
@@ -614,19 +601,18 @@ void Headings::satisfy_individual_heading_dependency(parse_node_tree *T, inbuild
 			else {
 				heading *h2;
 				int found = FALSE;
-				LOOP_OVER(h2, heading)		
-					if (h2->owning_syntax_tree == T)
-						if ((Wordings::nonempty(h2->heading_text)) &&
-							(Wordings::match_perhaps_quoted(S, h2->heading_text)) &&
-							(Works::match(
-								Headings::get_extension_containing(h2)->as_copy->edition->work, work))) {
-							found = TRUE;
-							if (h->level != h2->level)
-								@<Can't replace heading unless level matches@>;
-							Headings::excise_material_under(T, C, h2, NULL);
-							Headings::excise_material_under(T, C, h, h2->sentence_declaring);
-							break;
-						}
+				LOOP_OVER_LINKED_LIST(h2, heading, T->headings->subordinates)
+					if ((Wordings::nonempty(h2->heading_text)) &&
+						(Wordings::match_perhaps_quoted(S, h2->heading_text)) &&
+						(Works::match(
+							Headings::get_extension_containing(h2)->as_copy->edition->work, work))) {
+						found = TRUE;
+						if (h->level != h2->level)
+							@<Can't replace heading unless level matches@>;
+						Headings::excise_material_under(T, C, h2, NULL);
+						Headings::excise_material_under(T, C, h, h2->sentence_declaring);
+						break;
+					}
 				if (found == FALSE) @<Can't find heading in the given extension@>;
 			}
 		}

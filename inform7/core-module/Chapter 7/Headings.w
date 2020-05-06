@@ -9,6 +9,16 @@ sentences which belong to it. So when any noun is created, the following
 is called to let the current sentence's heading know that it has a new
 friend.
 
+@ =
+typedef struct name_resolution_data {
+	int heading_count; /* used when tallying up objects under their headings */
+	struct noun *next_under_heading; /* next in the list under that */
+	int search_score; /* used when searching nametags to parse names */
+	struct noun *next_to_search; /* similarly */
+} name_resolution_data;
+
+@
+
 @d LOOP_OVER_NOUNS_UNDER(nt, h)
 	for (nt=h->list_of_contents; nt; nt=Sentences::Headings::name_resolution_data(nt)->next_under_heading)
 
@@ -46,10 +56,9 @@ void Sentences::Headings::verify_divisions(void) {
 	LOOP_OVER(nt, noun)
 		Sentences::Headings::name_resolution_data(nt)->heading_count = 0;
 	parse_node_tree *T = Task::syntax_tree();
-	LOOP_OVER(h, heading)
-		if (h->owning_syntax_tree == T)
-			LOOP_OVER_NOUNS_UNDER(nt, h)
-				Sentences::Headings::name_resolution_data(nt)->heading_count++, total++;
+	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates)
+		LOOP_OVER_NOUNS_UNDER(nt, h)
+			Sentences::Headings::name_resolution_data(nt)->heading_count++, total++;
 	LOOP_OVER(nt, noun)
 		if (Sentences::Headings::name_resolution_data(nt)->heading_count > 1) {
 			LOG("$z occurs under %d headings\n",
@@ -154,7 +163,7 @@ void Sentences::Headings::make_the_tree(void) {
 }
 
 heading *Sentences::Headings::pseudo_heading(void) {
-	return &(Task::syntax_tree()->heading_root);
+	return Headings::root_of_tree(Task::syntax_tree()->headings);
 }
 
 @ Leaving aside the cache, then, we build a list as initially empty, then
@@ -336,9 +345,7 @@ surreptitiously check that it is correctly formed at the same time.
 void Sentences::Headings::log_all_headings(void) {
 	heading *h;
 	parse_node_tree *T = Task::syntax_tree();
-	LOOP_OVER(h, heading)
-		if (h->owning_syntax_tree == T)
-			LOG("$H\n", h);
+	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) LOG("$H\n", h);
 	LOG("\n");
 	Sentences::Headings::log_headings_recursively(Sentences::Headings::pseudo_heading(), 0);
 }
@@ -356,6 +363,12 @@ void Sentences::Headings::log_headings_recursively(heading *h, int depth) {
 @h Describing the heading structure, 2: to the index.
 
 =
+typedef struct contents_entry {
+	struct heading *heading_entered;
+	struct contents_entry *next;
+	MEMORY_MANAGEMENT
+} contents_entry;
+
 int headings_indexed = 0;
 void Sentences::Headings::index(OUTPUT_STREAM) {
 	#ifdef IF_MODULE
@@ -508,14 +521,13 @@ void Sentences::Headings::write_headings_as_xml_inner(OUTPUT_STREAM) {
 	INDENT;
 	WRITE("<key>Application Version</key><string>%B (build %B)</string>\n", FALSE, TRUE);
 	parse_node_tree *T = Task::syntax_tree();
-	LOOP_OVER(h, heading)
-		if (h->owning_syntax_tree == T) {
-			WRITE("<key>%d</key><dict>\n", h->allocation_id);
-			INDENT;
-			@<Write the dictionary of properties for a single heading@>;
-			OUTDENT;
-			WRITE("</dict>\n");
-		}
+	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) {
+		WRITE("<key>%d</key><dict>\n", h->allocation_id);
+		INDENT;
+		@<Write the dictionary of properties for a single heading@>;
+		OUTDENT;
+		WRITE("</dict>\n");
+	}
 	OUTDENT;
 	WRITE("</dict></plist>\n");
 }

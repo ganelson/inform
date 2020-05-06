@@ -22,6 +22,7 @@ which use this module:
 @e extension_census_MT
 @e extension_dictionary_entry_MT
 @e heading_MT
+@e heading_tree_MT
 @e inbuild_copy_MT
 @e inbuild_edition_MT
 @e inbuild_genre_MT
@@ -54,6 +55,7 @@ ALLOCATE_INDIVIDUALLY(extension_census_datum)
 ALLOCATE_INDIVIDUALLY(extension_census)
 ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
 ALLOCATE_INDIVIDUALLY(heading)
+ALLOCATE_INDIVIDUALLY(heading_tree)
 ALLOCATE_INDIVIDUALLY(inbuild_copy)
 ALLOCATE_INDIVIDUALLY(inbuild_edition)
 ALLOCATE_INDIVIDUALLY(inbuild_genre)

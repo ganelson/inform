@@ -26,6 +26,7 @@ have a |next_alternative| link, which -- if used -- forks the tree into
 different possible readings.
 
 @d MAX_ATTACHMENT_STACK_SIZE 100 /* must be at least the number of heading levels plus 3 */
+@default HEADING_TREE_SYNTAX_TYPE void /* in which case, never used */
 
 =
 typedef struct parse_node_tree {
@@ -33,9 +34,7 @@ typedef struct parse_node_tree {
 	int attachment_sp;
 	struct parse_node *attachment_stack_parent[MAX_ATTACHMENT_STACK_SIZE];
 	struct parse_node *one_off_attachment_point;
-	#ifdef SUPERVISOR_MODULE
-	struct heading heading_root;
-	#endif
+	HEADING_TREE_SYNTAX_TYPE *headings;
 	MEMORY_MANAGEMENT
 } parse_node_tree;
 
@@ -45,10 +44,8 @@ parse_node_tree *ParseTree::new_tree(void) {
 	T->attachment_sp = 0;
 	T->one_off_attachment_point = NULL;
 	ParseTree::push_attachment_point(T, T->root_node);
-	#ifdef SUPERVISOR_MODULE
-	T->heading_root.parent_heading = NULL;
-	T->heading_root.child_heading = NULL;
-	T->heading_root.next_heading = NULL;
+	#ifdef NEW_HEADING_TREE_SYNTAX_CALLBACK
+	T->headings = NEW_HEADING_TREE_SYNTAX_CALLBACK(T);
 	#endif
 	return T;
 }

@@ -718,10 +718,7 @@ like Basic Inform or Standard Rules; and also any sentences in the
 	ParseTree::set_text(inclusions_heading,
 		Feeds::feed_text_expanding_strings(L"Implied inclusions"));
 	ParseTree::insert_sentence(proj->syntax_tree, inclusions_heading);
-	ParseTree::annotate_int(inclusions_heading, sentence_unparsed_ANNOT, FALSE);
-	ParseTree::annotate_int(inclusions_heading, heading_level_ANNOT, 0);
-	ParseTree::annotate_int(inclusions_heading, implied_heading_ANNOT, TRUE);
-	Headings::declare(proj->syntax_tree, inclusions_heading);
+	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading);
 
 	int wc = lexer_wordcount;
 	TEMPORARY_TEXT(early);
@@ -776,9 +773,7 @@ ready for those inventions (if in fact there are any).
 	ParseTree::set_text(implicit_heading,
 		Feeds::feed_text_expanding_strings(L"Invented sentences"));
 	ParseTree::insert_sentence(proj->syntax_tree, implicit_heading);
-	ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
-	ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
-	Headings::declare(proj->syntax_tree, implicit_heading);
+	Headings::place_implied_level_0(proj->syntax_tree, implicit_heading);
 	ParseTree::pop_attachment_point(proj->syntax_tree, l);
 	ParseTree::push_attachment_point(proj->syntax_tree, implicit_heading); /* never popped */
 

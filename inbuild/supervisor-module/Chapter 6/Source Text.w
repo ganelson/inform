@@ -102,6 +102,8 @@ add to those generated in //syntax//.
 @e ExtEndsWithoutBegins_SYNERROR
 @e ExtMultipleEndsHere_SYNERROR
 @e UseElementWithdrawn_SYNERROR
+@e UnknownLanguageElement_SYNERROR
+@e UnknownVirtualMachine_SYNERROR
 
 @ The //inform7// compiler will eventually make a much more detailed syntax
 tree, extending the one we make here: but we will basically just break the

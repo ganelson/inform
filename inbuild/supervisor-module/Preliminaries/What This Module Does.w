@@ -281,7 +281,7 @@ are extension inclusions and headings. Headings are sentences such as:
 >> Chapter the First - The Voyage
 
 These are detected for us by the sentence-breaker in //syntax//, which
-calls out to our function //Headings::new// when it finds one. Each is
+calls out to our function //Headings::place// when it finds one. Each is
 given a //heading// object. We will do three things with headings:
 (1) Form them into a tree structure, to be able to determine quickly
 which is a subheading of which;
