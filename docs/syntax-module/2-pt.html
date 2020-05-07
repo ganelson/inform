@@ -110,6 +110,7 @@ different possible readings.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_ATTACHMENT_STACK_SIZE</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="plain-syntax"> </span><span class="comment-syntax"> must be at least the number of heading levels plus 3</span>
+<span class="plain-syntax">@</span><span class="reserved-syntax">default</span><span class="plain-syntax"> </span><span class="constant-syntax">HEADING_TREE_SYNTAX_TYPE</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="comment-syntax"> in which case, never used</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">parse_node_tree</span><span class="plain-syntax"> {</span>
@@ -117,6 +118,7 @@ different possible readings.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">attachment_sp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">attachment_stack_parent</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_ATTACHMENT_STACK_SIZE</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">one_off_attachment_point</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">HEADING_TREE_SYNTAX_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">headings</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">parse_node_tree</span><span class="plain-syntax">;</span>
 
@@ -126,6 +128,9 @@ different possible readings.
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">attachment_sp</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">one_off_attachment_point</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="2-pt.html#SP2" class="function-link"><span class="function-syntax">ParseTree::push_attachment_point</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">root_node</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEW_HEADING_TREE_SYNTAX_CALLBACK</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">headings</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_HEADING_TREE_SYNTAX_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

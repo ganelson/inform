@@ -3,36 +3,29 @@
 To fulfill requests to include extensions, adding their material
 to the parse tree as needed, and removing INCLUDE nodes.
 
-@ At this point in the narrative of a typical run of Inform, we have read in the
-source text supplied by the user. The lexer automatically prefaced this with
-"Include Standard Rules by Graham Nelson", and the sentence-breaker
-converted all such sentences to nodes of type |INCLUDE_NT| which are
-children of the parse tree root. (The eldest child, therefore, is the
-Standard Rules inclusion.)
+@ Our main task here is to look through the syntax tree for |INCLUDE_NT|
+nodes, which are requests to include an extension, and replace them with
+syntax trees for the extensions in question.
 
-We now look through the parse tree in sentence order -- something we shall
-do many times, and which we call a "traverse" -- and look for INCLUDE
-nodes. Each is replaced with a mass of further nodes for the material in
-whatever new extensions were required. This process is repeated until there
-are no "Include" sentences left. In principle this could go on forever if
-A includes B which includes A, or some such, but we log each extension read
-in to ensure that nothing is read twice.
-
-At the end of this routine, provided no Problems have been issued, there are
-guaranteed to be no INCLUDE nodes remaining in the parse tree.
+This process is repeated until there are no |INCLUDE_NT| nodes left.
+In principle this could go on forever if A includes B which includes A, or
+some such, but we log each extension read in to ensure that nothing is
+read twice.
 
 =
 inbuild_copy *inclusions_errors_to = NULL;
 inform_project *inclusions_for_project = NULL;
+
 void Inclusions::traverse(inbuild_copy *C, parse_node_tree *T) {
 	inclusions_errors_to = C;
+	int no_copy_errors = LinkedLists::len(C->errors_reading_source_text);
 	inform_project *project = ProjectBundleManager::from_copy(C);
 	if (project == NULL) project = ProjectFileManager::from_copy(C);
 	inclusions_for_project = project;
 	int includes_cleared;
 	do {
 		includes_cleared = TRUE;
-		if (problem_count > 0) break;
+		if (LinkedLists::len(C->errors_reading_source_text) > no_copy_errors) break;
 		ParseTree::traverse_ppni(T, Inclusions::visit, &includes_cleared);
 	} while (includes_cleared == FALSE);
 	inclusions_errors_to = NULL;
@@ -47,7 +40,8 @@ build_vertex *Inclusions::spawned_from_vertex(parse_node *H0) {
 	return inclusions_errors_to->vertex;
 }
 
-void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, int *includes_cleared) {
+void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
+	int *includes_cleared) {
 	if (ParseTree::get_type(pn) == INCLUDE_NT) {
 		@<Replace INCLUDE node with sentence nodes for any extensions required@>;
 		*includes_cleared = FALSE;
@@ -70,7 +64,8 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, 
 		for (parse_node *c = pn->down; c; c = c->next)
 			if (ParseTree::get_type(c) == HEADING_NT)
 				ParseTree::set_inclusion_of_extension(c, E);
-		if ((last_H0) && (ParseTree::int_annotation(last_H0, implied_heading_ANNOT) != TRUE)) {
+		if ((last_H0) &&
+			(ParseTree::int_annotation(last_H0, implied_heading_ANNOT) != TRUE)) {
 			build_vertex *V = Inclusions::spawned_from_vertex(last_H0);
 			build_vertex *EV = E->as_copy->vertex;
 			if (V->as_copy->edition->work->genre == extension_genre)
@@ -80,31 +75,23 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, 
 		}
 	}
 
-@
-
-@e IncludeExtQuoted_SYNERROR
-@e BogusExtension_SYNERROR
-@e ExtVersionTooLow_SYNERROR
-@e ExtVersionMalformed_SYNERROR
-@e ExtInadequateVM_SYNERROR
-@e ExtMisidentifiedEnds_SYNERROR
-
-@ Here we parse requests to include extensions.
+@ Here we parse the content of an Include sentence: i.e., what comes after the
+word "Include", which might e.g. be "Locksmith by Emily Short".
 
 =
 <extension-title-and-version> ::=
-	version <extension-version> of <definite-article> <extension-unversioned> |    ==> R[1]
-	version <extension-version> of <extension-unversioned> |    ==> R[1]
-	<definite-article> <extension-unversioned>	|    ==> -1
-	<extension-unversioned>														==> -1
+	version <extension-version> of <definite-article> <extension-unversioned> |  ==> R[1]
+	version <extension-version> of <extension-unversioned> |                     ==> R[1]
+	<definite-article> <extension-unversioned> |                                 ==> -1
+	<extension-unversioned>                                                      ==> -1
 
 <extension-unversioned> ::=
-	<extension-unversioned-inner> ( ... )	|    ==> 0
-	<extension-unversioned-inner> 				==> 0
+	<extension-unversioned-inner> ( ... ) |  ==> 0
+	<extension-unversioned-inner>            ==> 0
 
 <extension-unversioned-inner> ::=
-	<quoted-text> *** |    ==> @<Issue PM_IncludeExtQuoted problem@>
-	...											==> 0; <<t1>> = Wordings::first_wn(W); <<t2>> = Wordings::last_wn(W)
+	<quoted-text> *** |  ==> @<Issue PM_IncludeExtQuoted problem@>
+	...                  ==> 0; <<t1>> = Wordings::first_wn(W); <<t2>> = Wordings::last_wn(W)
 
 @ Quite a popular mistake, this:
 
@@ -114,11 +101,12 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, 
 	CopyErrors::supply_node(CE, current_sentence);
 	Copies::attach_error(inclusions_errors_to, CE);
 
-@ This internal parses version text such as "12/110410".
+@ This nonterminal parses text which will probably be something like "3.14" or
+"12/110410", but at this stage it accepts anything: actual parsing comes later.
 
 =
 <extension-version> internal 1 {
-	*X = Wordings::first_wn(W); /* actually, defer parsing by returning a word number here */
+	*X = Wordings::first_wn(W);
 	return TRUE;
 }
 
@@ -144,9 +132,6 @@ and then we call the sentence-breaker to graft the new material on to the
 parse tree.
 
 @<Fulfill request to include a single extension@> =
-	if (version_word >= 0)
-		Inclusions::parse_version(version_word); /* this checks the formatting of the version number */
-
 	TEMPORARY_TEXT(exft);
 	TEMPORARY_TEXT(exfa);
 	WRITE_TO(exft, "%+W", W);
@@ -155,9 +140,7 @@ parse tree.
 	Works::add_to_database(work, LOADED_WDBC);
 	semantic_version_number V = VersionNumbers::null();
 	if (version_word >= 0) V = Inclusions::parse_version(version_word);
-	semver_range *R = NULL;
-	if (VersionNumbers::is_null(V)) R = VersionNumberRanges::any_range();
-	else R = VersionNumberRanges::compatibility_range(V);
+	semver_range *R = VersionNumberRanges::compatibility_range(V);
 	inbuild_requirement *req = Requirements::new(work, R);
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
@@ -186,6 +169,8 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
 			return E;
 		}
 	@<Read the extension file into the lexer, and break it into body and documentation@>;
+	if (for_project)
+		ADD_TO_LINKED_LIST(E, inform_extension, for_project->extensions_included);
 	return E;
 }
 
@@ -293,10 +278,6 @@ First, we check the "begins here" sentence. We also identify where the
 version number is given (if it is), and check that we are not trying to
 use an extension which is marked as not working on the current VM.
 
-It is sufficient to try parsing the version number in order to check it:
-we throw away the answer, as we can't use it yet, but this will provoke
-problem messages if it is malformed.
-
 @ This parses the subject noun-phrase in the sentence
 
 >> Version 3 of Pantomime Sausages by Mr Punch begins here.
@@ -321,9 +302,7 @@ void Inclusions::check_begins_here(parse_node *PN, inform_extension *E) {
 
 @ Similarly, we check the "ends here" sentence. Here there are no
 side-effects: we merely verify that the name matches the one quoted in
-the "begins here". We only check this if the problem count is still 0,
-since we don't want to keep on nagging somebody who has already been told
-that the extension isn't the one he thinks it is.
+the "begins here".
 
 =
 <the-prefix-for-extensions> ::=
@@ -335,7 +314,7 @@ void Inclusions::check_ends_here(parse_node *PN, inform_extension *E) {
 	wording W = ParseTree::get_text(PN);
 	if (<the-prefix-for-extensions>(W)) W = GET_RW(<the-prefix-for-extensions>, 1);
 	wording T = Feeds::feed_stream(E->as_copy->edition->work->title);
-	if ((problem_count == 0) && (Wordings::match(T, W) == FALSE)) {
+	if (Wordings::match(T, W) == FALSE) {
 		copy_error *CE = CopyErrors::new(SYNTAX_CE, ExtMisidentifiedEnds_SYNERROR);
 		CopyErrors::supply_node(CE, PN);
 		CopyErrors::supply_wording(CE, ParseTree::get_text(PN));

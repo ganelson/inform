@@ -378,8 +378,8 @@ are extension inclusions and headings. Headings are sentences such as:
 </blockquote>
 
 <p class="commentary">These are detected for us by the sentence-breaker in <a href="../syntax-module/index.html" class="internal">syntax</a>, which
-calls out to our function <a href="6-hdn.html#SP11" class="internal">Headings::new</a> when it finds one. Each is
-given a <a href="6-hdn.html#SP2" class="internal">heading</a> object. We will do three things with headings:
+calls out to our function <a href="6-hdn.html#SP8" class="internal">Headings::place</a> when it finds one. Each is
+given a <a href="6-hdn.html#SP6" class="internal">heading</a> object. We will do three things with headings:
 </p>
 
 <ul class="items"><li>(1) Form them into a tree structure, to be able to determine quickly
@@ -435,15 +435,15 @@ which of those states actually happens.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>At any rate, when <a href="6-inc.html#SP1" class="internal">Inclusions::traverse</a> finds an Include sentence which
-it decides is valid, it calls <a href="6-inc.html#SP5" class="internal">Inclusions::fulfill_request_to_include_extension</a>.
+it decides is valid, it calls <a href="6-inc.html#SP4" class="internal">Inclusions::fulfill_request_to_include_extension</a>.
 This performs a search for the best compatible copy of the extension named &mdash;
-see above &mdash; and, once such a copy is found, calls <a href="6-inc.html#SP6" class="internal">Inclusions::load</a> to
+see above &mdash; and, once such a copy is found, calls <a href="6-inc.html#SP5" class="internal">Inclusions::load</a> to
 merge its text into the current syntax tree. (Note: it doesn't form an
 isolated syntax tree of its own.) This is why Inform reads the text of an
 extension as if it appeared at the same position as the Include sentence.
 </p>
 
-<p class="commentary">When a valid Include is found, <a href="6-inc.html#SP5" class="internal">Inclusions::fulfill_request_to_include_extension</a>
+<p class="commentary">When a valid Include is found, <a href="6-inc.html#SP4" class="internal">Inclusions::fulfill_request_to_include_extension</a>
 also puts a dependency edge in between the vertex for our copy and the vertex
 for the new extension's copy. That will be a use edge if our copy is also an
 extension &mdash; i.e., you can't use Existing Extension unless you also have
@@ -463,7 +463,7 @@ to headings like:
     <p>Chapter 7a (in place of Chapter 7 in Applied Pathology by Attila Hun)</p>
 </blockquote>
 
-<p class="commentary">This is performed by <a href="6-hdn.html#SP23" class="internal">Headings::satisfy_individual_heading_dependency</a>,
+<p class="commentary">This is performed by <a href="6-hdn.html#SP21" class="internal">Headings::satisfy_individual_heading_dependency</a>,
 and it has to be done after all the extension inclusions have been made. It's
 a step only performed for the syntax tree of a whole project: if we've just
 made an isolated tree for a single extension, we don't bother, because we

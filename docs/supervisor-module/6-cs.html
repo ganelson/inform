@@ -66,8 +66,8 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inbuild Modules</a></li><li><a href="index.html">supervisor</a></li><li><a href="index.html#6">Chapter 6: Inform Source Text</a></li><li><b>Control Structures</b></li></ul></div>
 <p class="purpose">To specify the syntax of control structures such as repeat, if and otherwise.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Certain phrases are "structural": otherwise, if, repeat, while and so
-on. These have different expectations in terms of the layout of surrounding
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Certain phrases are "control structures": otherwise, if, repeat, while and
+so on. These have different expectations in terms of the layout of surrounding
 phrases in rule or phrase definitions, and the following structure defines
 the relevant behaviour. (The contents are static.)
 </p>
@@ -75,6 +75,7 @@ the relevant behaviour. (The contents are static.)
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subordinate_to</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mnemonic</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">indent_subblocks</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">body_empty_except_for_subordinates</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">used_at_stage</span><span class="plain-syntax">;</span>
@@ -86,33 +87,12 @@ the relevant behaviour. (The contents are static.)
 <span class="plain-syntax">} </span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure control_structure_phrase is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The following set is built in to the Inform language; Basic Inform and such
-extensions cannot extend it.
-</p>
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">control_structure_phrase</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">repeat_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">while_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">abbreviated_otherwise_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    *</span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The following functions attempt to contain information about the
-basic structural phrases in one place, so that if future loop constructs
-are added, they can fairly simply be put here.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="function-syntax">ControlStructures::new</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="function-syntax">ControlStructures::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ControlStructures::new</span></span>:<br/><a href="6-cs.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mnemonic</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mnemonic</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">mnemonic</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subordinate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indent_subblocks</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_empty_except_for_subordinates</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -123,72 +103,143 @@ are added, they can fairly simply be put here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_a_loop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">csp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Some cryptic mnemonics for logging the invocation tree:
+</p>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ControlStructures::create_standard</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ControlStructures::create_standard</span></span>:<br/>Inbuild Control - <a href="1-ic.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ControlStructures::log</span><span class="plain-syntax">(</span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">csp</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"---"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mnemonic</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following set is built in to the Inform language; Basic Inform and such
+extensions cannot extend it.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">repeat_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    *</span><span class="identifier-syntax">while_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">abbreviated_otherwise_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    *</span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    *</span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And this is where they are all created:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ControlStructures::create_standard</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ControlStructures::create_standard</span></span>:<br/>Inbuild Control - <a href="1-ic.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"SWI"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_empty_except_for_subordinates</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indent_subblocks</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">requires_new_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">keyword</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="string-syntax">"if"</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"IF"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">keyword</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="string-syntax">"if"</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">repeat_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">repeat_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"RPT"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">repeat_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">keyword</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="string-syntax">"repeat"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">repeat_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_a_loop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">while_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">while_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"WHI"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">while_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">keyword</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="string-syntax">"while"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">while_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_a_loop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"O"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subordinate_to</span><span class="plain-syntax"> =	</span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">used_at_stage</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">abbreviated_otherwise_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">abbreviated_otherwise_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"AO"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">abbreviated_otherwise_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subordinate_to</span><span class="plain-syntax"> =	</span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">abbreviated_otherwise_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">used_at_stage</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"OIF"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subordinate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">used_at_stage</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"CAS"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subordinate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">used_at_stage</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">requires_new_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">allow_run_on</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"DEF"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subordinate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">used_at_stage</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">requires_new_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">allow_run_on</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"SAY"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"NOW"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP3" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"INS"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Control structures such as "if" act as a sort of super-punctuation inside
+rule and phrase definitions, and in particular they affect the actual
+punctuation of the sentences there (consider the rules about colons versus
+semicolons). So, though it's still early in Inform's run, we need to seek
+them out.
+</p>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ControlStructures::log</span><span class="plain-syntax">(</span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">csp</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"IF"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">repeat_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"RPT"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">while_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"WHI"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"SWI"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">otherwise_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"O"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">abbreviated_otherwise_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"AO"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"OIF"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"CAS"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"DEF"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"SAY"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"NOW"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"INS"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"---"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
+<p class="commentary">Here we parse the text of a command phrase which, if any, of the control
+structures it might be. Note that &lt;s-command&gt; has a grammar partially
+overlapping with this, and they need to match.
+</p>
 
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NO_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SAY_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">NOW_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">&lt;</span><span class="identifier-syntax">control</span><span class="plain-syntax">-</span><span class="identifier-syntax">structure</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">&gt; ::=</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax"> |               ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">switch_CSP</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">is</span><span class="plain-syntax"> |                     ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">switch_CSP</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax">/</span><span class="identifier-syntax">unless</span><span class="plain-syntax"> ... |                 ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">if_CSP</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> ... |                    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">repeat_CSP</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ... |                     ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">while_CSP</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax">/</span><span class="identifier-syntax">otherwise</span><span class="plain-syntax"> |                ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">otherwise_CSP</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax">/</span><span class="identifier-syntax">otherwise</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax">/</span><span class="identifier-syntax">unless</span><span class="plain-syntax"> ... |  ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">otherwise_if_CSP</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax">/</span><span class="identifier-syntax">otherwise</span><span class="plain-syntax"> ... |            ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">abbreviated_otherwise_CSP</span>
+<span class="plain-syntax">    -- </span><span class="identifier-syntax">otherwise</span><span class="plain-syntax"> |                  ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">default_case_CSP</span>
+<span class="plain-syntax">    -- ...                          ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">case_CSP</span>
+
+<span class="plain-syntax">&lt;</span><span class="identifier-syntax">end</span><span class="plain-syntax">-</span><span class="identifier-syntax">control</span><span class="plain-syntax">-</span><span class="identifier-syntax">structure</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">&gt; ::=</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax">/</span><span class="identifier-syntax">unless</span><span class="plain-syntax"> |                 ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">if_CSP</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="reserved-syntax">while</span><span class="plain-syntax"> |                     ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">while_CSP</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">repeat</span><span class="plain-syntax">                      ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">repeat_CSP</span>
+
+<span class="plain-syntax">&lt;</span><span class="identifier-syntax">other</span><span class="plain-syntax">-</span><span class="identifier-syntax">significant</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">&gt; ::=</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> ... |                       ==&gt; </span><span class="constant-syntax">SAY_SIGF</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">now</span><span class="plain-syntax"> ...                         ==&gt; </span><span class="constant-syntax">NOW_SIGF</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>This is used to see if an "if" is being used with the comma notation:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">&lt;</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">-</span><span class="identifier-syntax">with</span><span class="plain-syntax">-</span><span class="identifier-syntax">comma</span><span class="plain-syntax">-</span><span class="identifier-syntax">notation</span><span class="plain-syntax">&gt; ::=</span>
+<span class="plain-syntax">    ...... , ......</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>This is used to see if an "if" is being used with the comma notation:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">&lt;</span><span class="identifier-syntax">instead</span><span class="plain-syntax">-</span><span class="identifier-syntax">keyword</span><span class="plain-syntax">&gt; ::=</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">instead</span><span class="plain-syntax"> ... |</span>
+<span class="plain-syntax">    ... </span><span class="identifier-syntax">instead</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Finally, this is used to see if a control structure opens a block:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">&lt;</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">-</span><span class="identifier-syntax">beginning</span><span class="plain-syntax">-</span><span class="identifier-syntax">block</span><span class="plain-syntax">&gt; ::=</span>
+<span class="plain-syntax">    ... </span><span class="identifier-syntax">begin</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>And some miscellaneous provisions:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ControlStructures::comma_possible</span><span class="plain-syntax">(</span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">csp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">if_CSP</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">switch_CSP</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">csp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -235,66 +286,6 @@ are added, they can fairly simply be put here.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (&lt;</span><span class="identifier-syntax">end</span><span class="plain-syntax">-</span><span class="identifier-syntax">control</span><span class="plain-syntax">-</span><span class="identifier-syntax">structure</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &lt;&lt;</span><span class="identifier-syntax">rp</span><span class="plain-syntax">&gt;&gt;;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Control structures such as "if" act as a sort of super-punctuation inside
-rule and phrase definitions, and in particular they affect the actual
-punctuation of the sentences there (consider the rules about colons versus
-semicolons). So, though it's still early in Inform's run, we need to seek
-them out.
-</p>
-
-<p class="commentary">Here we parse the text of a command phrase which, if any, of the control
-structures it might be. Note that &lt;s-command&gt; has a grammar partially
-overlapping with this, and they need to match.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NO_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SAY_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">NOW_SIGF</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">control</span><span class="plain-syntax">-</span><span class="identifier-syntax">structure</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax"> |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">switch_CSP</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">is</span><span class="plain-syntax"> |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">switch_CSP</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax">/</span><span class="identifier-syntax">unless</span><span class="plain-syntax"> ... |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">if_CSP</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> ... |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">repeat_CSP</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ... |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">while_CSP</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax">/</span><span class="identifier-syntax">otherwise</span><span class="plain-syntax"> |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">otherwise_CSP</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax">/</span><span class="identifier-syntax">otherwise</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax">/</span><span class="identifier-syntax">unless</span><span class="plain-syntax"> ... |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">otherwise_if_CSP</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax">/</span><span class="identifier-syntax">otherwise</span><span class="plain-syntax"> ... |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">abbreviated_otherwise_CSP</span>
-<span class="plain-syntax">    -- </span><span class="identifier-syntax">otherwise</span><span class="plain-syntax"> |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">default_case_CSP</span>
-<span class="plain-syntax">    -- ...							==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">case_CSP</span>
-
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">end</span><span class="plain-syntax">-</span><span class="identifier-syntax">control</span><span class="plain-syntax">-</span><span class="identifier-syntax">structure</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax">/</span><span class="identifier-syntax">unless</span><span class="plain-syntax"> |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">if_CSP</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="reserved-syntax">while</span><span class="plain-syntax"> |    ==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">while_CSP</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">repeat</span><span class="plain-syntax">						==&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">repeat_CSP</span>
-
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">other</span><span class="plain-syntax">-</span><span class="identifier-syntax">significant</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">say</span><span class="plain-syntax"> ... |    ==&gt; </span><span class="constant-syntax">SAY_SIGF</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">now</span><span class="plain-syntax"> ...							==&gt; </span><span class="constant-syntax">NOW_SIGF</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>This is used to see if an "if" is being used with the comma notation:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">-</span><span class="identifier-syntax">with</span><span class="plain-syntax">-</span><span class="identifier-syntax">comma</span><span class="plain-syntax">-</span><span class="identifier-syntax">notation</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    ...... , ......</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This is used to see if an "if" is being used with the comma notation:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">instead</span><span class="plain-syntax">-</span><span class="identifier-syntax">keyword</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">instead</span><span class="plain-syntax"> ... |</span>
-<span class="plain-syntax">    ... </span><span class="identifier-syntax">instead</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Finally, this is used to see if a control structure opens a block:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">phrase</span><span class="plain-syntax">-</span><span class="identifier-syntax">beginning</span><span class="plain-syntax">-</span><span class="identifier-syntax">block</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    ... </span><span class="identifier-syntax">begin</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="6-inc.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-gnr.html">2</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-st.html">st</a></li><li class="progresssection"><a href="6-hdn.html">hdn</a></li><li class="progresssection"><a href="6-tbs.html">tbs</a></li><li class="progresssection"><a href="6-tof.html">tof</a></li><li class="progresssection"><a href="6-inc.html">inc</a></li><li class="progresscurrent">cs</li><li class="progresssection"><a href="6-vmg.html">vmg</a></li><li class="progresschapter"><a href="7-ed.html">7</a></li><li class="progressnext"><a href="6-vmg.html">&#10095;</a></li></ul></div>

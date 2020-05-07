@@ -42,7 +42,7 @@ void Modules::look_for_cu(parse_node *p) {
 
 compilation_module *Modules::new(parse_node *from) {
 	source_location sl = Wordings::location(ParseTree::get_text(from));
-	if (sl.file_of_origin == NULL) internal_error("null foo");
+	if (sl.file_of_origin == NULL) return NULL;
 	inform_extension *owner = Extensions::corresponding_to(
 		Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(from))));
 

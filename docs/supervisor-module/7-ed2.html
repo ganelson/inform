@@ -260,12 +260,12 @@ different template:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="7-ed2.html#SP3_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Write up the rubric, if any</span><span class="named-paragraph-number">3.2.1.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="7-ed2.html#SP3_2_1_5" class="named-paragraph-link"><span class="named-paragraph">Write up the table of contents for the extension author's supplied documentation, if any</span><span class="named-paragraph-number">3.2.1.5</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">    #ifdef CORE_MODULE</span>
-<span class="character-syntax">    Extensions::Files::document_in_detail(OUT, E);</span>
-<span class="character-syntax">    #endif</span>
-<span class="character-syntax">    HTML_TAG("hr");</span>
-<span class="character-syntax">    </span><span class="named-paragraph-container code-font"><a href="7-ed2.html#SP3_2_1_6" class="named-paragraph-link"><span class="named-paragraph">Write up the extension author's supplied documentation, if any</span><span class="named-paragraph-number">3.2.1.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="7-ed2.html#SP3_2_1_5" class="named-paragraph-link"><span class="named-paragraph">Write up the table of contents for the extension author's supplied documentation, if any</span><span class="named-paragraph-number">3.2.1.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Extensions::Files::document_in_detail</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_TAG</span><span class="plain-syntax">(</span><span class="string-syntax">"hr"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="7-ed2.html#SP3_2_1_6" class="named-paragraph-link"><span class="named-paragraph">Write up the extension author's supplied documentation, if any</span><span class="named-paragraph-number">3.2.1.6</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ed2.html#SP3_2">&#167;3.2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_2_1_1"></a><b>&#167;3.2.1.1.  </b>UTF-8 transcoding in the following is delegated to <span class="extract"><span class="extract-syntax">HTML::Javascript::paste</span></span>:

@@ -25,13 +25,18 @@ so the sentence-terminator will certainly be a full stop.
 <use-option-sentence-shape> ::=
 	use ... .
 
+@ There is just one options file, so no need to load it more than once.
+
+=
 wording options_file_wording = EMPTY_WORDING_INIT;
 
 void OptionsFile::read(filename *F) {
-	feed_t id = Feeds::begin();
-	TextFiles::read(F, TRUE,
-		NULL, FALSE, OptionsFile::read_helper, NULL, NULL);
-	options_file_wording = Feeds::end(id);
+	if (Wordings::empty(options_file_wording)) {
+		feed_t id = Feeds::begin();
+		TextFiles::read(F, TRUE,
+			NULL, FALSE, OptionsFile::read_helper, NULL, NULL);
+		options_file_wording = Feeds::end(id);
+	}
 }
 
 void OptionsFile::read_helper(text_stream *line,

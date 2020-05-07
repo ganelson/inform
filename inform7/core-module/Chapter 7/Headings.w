@@ -159,7 +159,7 @@ and has no "level" or "indentation" as such.
 
 =
 void Sentences::Headings::make_the_tree(void) {
-	Headings::make_tree(Task::syntax_tree());
+	Headings::assemble_tree(Task::syntax_tree());
 }
 
 heading *Sentences::Headings::pseudo_heading(void) {
@@ -198,7 +198,7 @@ current sentence:
 	if ((current_sentence == NULL) || (Wordings::empty(ParseTree::get_text(current_sentence))))
 		internal_error("cannot establish position P: there is no current sentence");
 	source_location position_P = Wordings::location(ParseTree::get_text(current_sentence));
-	h = Headings::heading_of(position_P);
+	h = Headings::of_location(position_P);
 
 @ The pseudo-heading has no list of contents because all objects are created in
 source files, each certainly underneath a File (0) heading, so nothing should

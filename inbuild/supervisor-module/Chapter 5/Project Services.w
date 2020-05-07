@@ -22,6 +22,7 @@ typedef struct inform_project {
 	struct build_vertex *blorbed_vertex;
 	struct build_vertex *chosen_build_target;
 	struct parse_node_tree *syntax_tree;
+	struct linked_list *extensions_included; /* of |inform_extension| */
 	int fix_rng;
 	int compile_for_release;
 	int compile_only;
@@ -64,6 +65,7 @@ void Projects::scan(inbuild_copy *C) {
 	Nests::set_tag(proj->materials_nest, MATERIALS_NEST_TAG);
 	proj->search_list = NEW_LINKED_LIST(inbuild_nest);
 	proj->primary_source = NULL;
+	proj->extensions_included = NEW_LINKED_LIST(inform_extension);
 }
 
 @ The materials folder sits alongside the project and has the same name,
@@ -788,4 +790,4 @@ place of... instructions after the sweep for inclusions.
 	Projects::activate_elements(proj);
 	#endif
 	Inclusions::traverse(proj->as_copy, proj->syntax_tree);
-	Headings::satisfy_dependencies(proj->syntax_tree, proj->as_copy);
+	Headings::satisfy_dependencies(proj, proj->syntax_tree, proj->as_copy);

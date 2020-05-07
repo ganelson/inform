@@ -104,6 +104,16 @@ add to those generated in //syntax//.
 @e UseElementWithdrawn_SYNERROR
 @e UnknownLanguageElement_SYNERROR
 @e UnknownVirtualMachine_SYNERROR
+@e HeadingInPlaceOfUnincluded_SYNERROR
+@e UnequalHeadingInPlaceOf_SYNERROR
+@e HeadingInPlaceOfSubordinate_SYNERROR
+@e HeadingInPlaceOfUnknown_SYNERROR
+@e IncludeExtQuoted_SYNERROR
+@e BogusExtension_SYNERROR
+@e ExtVersionTooLow_SYNERROR
+@e ExtVersionMalformed_SYNERROR
+@e ExtInadequateVM_SYNERROR
+@e ExtMisidentifiedEnds_SYNERROR
 
 @ The //inform7// compiler will eventually make a much more detailed syntax
 tree, extending the one we make here: but we will basically just break the

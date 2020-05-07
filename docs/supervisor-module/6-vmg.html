@@ -59,7 +59,12 @@
 <p class="purpose">Grammar for parsing natural language descriptions of a virtual machine.</p>
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This nonterminal corresponds to the Inbuild version number syntax in the
-arch module: for example, it matches <span class="extract"><span class="extract-syntax">2.7.6</span></span> or <span class="extract"><span class="extract-syntax">3/990505</span></span>.
+arch module: for example, it matches <span class="extract"><span class="extract-syntax">2.7.6</span></span> or <span class="extract"><span class="extract-syntax">3/990505</span></span>. A bit
+awkwardly, because a semantic version number is stored as an actual <span class="extract"><span class="extract-syntax">struct</span></span>
+rather than being created on the heap as an object: so we can't make the
+return value of this nonterminal a pointer to that <span class="extract"><span class="extract-syntax">struct</span></span>, as that would be
+out of scope when needed. Instead, we have to wrap it up in a holder object
+to give it permanency.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
