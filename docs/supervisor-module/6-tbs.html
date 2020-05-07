@@ -13,6 +13,7 @@
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -99,16 +100,17 @@ after it, and may therefore affect how subsequent sentences are broken.
 to declare the title and author.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">titling</span><span class="plain-syntax">-</span><span class="identifier-syntax">line</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    &lt;</span><span class="identifier-syntax">plain</span><span class="plain-syntax">-</span><span class="identifier-syntax">titling</span><span class="plain-syntax">-</span><span class="identifier-syntax">line</span><span class="plain-syntax">&gt; ( </span><span class="identifier-syntax">in</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">natural</span><span class="plain-syntax">-</span><span class="identifier-syntax">language</span><span class="plain-syntax">&gt; ) |  ==&gt; </span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RP</span><span class="plain-syntax">[2];</span>
-<span class="plain-syntax">    &lt;</span><span class="identifier-syntax">plain</span><span class="plain-syntax">-</span><span class="identifier-syntax">titling</span><span class="plain-syntax">-</span><span class="identifier-syntax">line</span><span class="plain-syntax">&gt;                              ==&gt; </span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]; *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;titling-line&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;plain-titling-line&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;natural-language&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]; *XP = RP[2];</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;plain-titling-line&gt;</span><span class="Preform-plain-syntax">                              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]; *XP = NULL;</span>
 
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">plain</span><span class="plain-syntax">-</span><span class="identifier-syntax">titling</span><span class="plain-syntax">-</span><span class="identifier-syntax">line</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    {&lt;</span><span class="identifier-syntax">quoted</span><span class="plain-syntax">-</span><span class="identifier-syntax">text</span><span class="plain-syntax">-</span><span class="identifier-syntax">without</span><span class="plain-syntax">-</span><span class="identifier-syntax">subs</span><span class="plain-syntax">&gt;} </span><span class="identifier-syntax">by</span><span class="plain-syntax"> ... |  ==&gt; </span><span class="identifier-syntax">TRUE</span>
-<span class="plain-syntax">    {&lt;</span><span class="identifier-syntax">quoted</span><span class="plain-syntax">-</span><span class="identifier-syntax">text</span><span class="plain-syntax">-</span><span class="identifier-syntax">without</span><span class="plain-syntax">-</span><span class="identifier-syntax">subs</span><span class="plain-syntax">&gt;}           ==&gt; </span><span class="identifier-syntax">FALSE</span>
+<span class="Preform-function-syntax">&lt;plain-titling-line&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{&lt;quoted-text-without-subs&gt;}</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">by</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{&lt;quoted-text-without-subs&gt;}</span><span class="Preform-plain-syntax">           </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_2"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Extract title and author name wording</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_2"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Extract title and author name wording</span><span class="named-paragraph-number">1.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

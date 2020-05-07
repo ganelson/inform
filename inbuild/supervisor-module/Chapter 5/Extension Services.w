@@ -326,19 +326,17 @@ then its sentences will go to the extension's own tree.
 	E->body_text_unbroken = FALSE;
 
 @  If an extension file contains the special text (outside literal mode) of
-= (text)
-	---- Documentation ----
-=
-then this is taken as the end of the Inform source, and the beginning of a
-snippet of documentation about the extension; text from that point on is
-saved until later, but not broken into sentences for the parse tree, and it
-is therefore invisible to the rest of Inform. If this division line is not
-present then the extension contains only body source and no documentation.
+|---- Documentation ----| then this is taken as the end of the Inform source,
+and the beginning of a snippet of documentation about the extension; text from
+that point on is saved until later, but not broken into sentences for the
+parse tree, and it is therefore invisible to the rest of Inform. If this
+division line is not present then the extension contains only body source
+and no documentation.
 
 =
 <extension-body> ::=
-	*** ---- documentation ---- ... |    ==> TRUE
-	...									==> FALSE
+	*** ---- documentation ---- ... |  ==> TRUE
+	...                                ==> FALSE
 
 @<Break the extension's text into body and documentation@> =
 	<extension-body>(EXW);

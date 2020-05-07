@@ -316,11 +316,11 @@ allowed; they should probably be withdrawn.
 	......                                   ==> @<Issue PM_UnknownVirtualMachine problem@>
 
 <extension-qualifier> ::=
-	for use with <extension-identifier> |                    ==> USE_WITH_HQ
-	for use without <extension-identifier> |                 ==> USE_WITHOUT_HQ
-	not for use with <extension-identifier> |                ==> USE_WITHOUT_HQ
-	in place of (<quoted-text>) in <extension-identifier> |  ==> IN_PLACE_OF_HQ
-	in place of ...... in <extension-identifier>             ==> IN_PLACE_OF_HQ
+	for use with <extension-identifier> |                      ==> USE_WITH_HQ
+	for use without <extension-identifier> |                   ==> USE_WITHOUT_HQ
+	not for use with <extension-identifier> |                  ==> USE_WITHOUT_HQ
+	in place of ( <quoted-text> ) in <extension-identifier> |  ==> IN_PLACE_OF_HQ
+	in place of ...... in <extension-identifier>               ==> IN_PLACE_OF_HQ
 
 <extension-identifier> ::=
 	...... by ......                         ==> @<Set for-use-with extension identifier@>

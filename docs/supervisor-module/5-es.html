@@ -21,6 +21,7 @@ function togglePopup(material_id) {
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -455,24 +456,21 @@ then its sentences will go to the extension's own tree.
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP6">&#167;6</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6_2_1"></a><b>&#167;6.2.1.  </b>If an extension file contains the special text (outside literal mode) of
+<span class="extract"><span class="extract-syntax">---- Documentation ----</span></span> then this is taken as the end of the Inform source,
+and the beginning of a snippet of documentation about the extension; text from
+that point on is saved until later, but not broken into sentences for the
+parse tree, and it is therefore invisible to the rest of Inform. If this
+division line is not present then the extension contains only body source
+and no documentation.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ---- Documentation ----</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;extension-body&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">----</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">documentation</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">----</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE</span>
 </pre>
-<p class="commentary">then this is taken as the end of the Inform source, and the beginning of a
-snippet of documentation about the extension; text from that point on is
-saved until later, but not broken into sentences for the parse tree, and it
-is therefore invisible to the rest of Inform. If this division line is not
-present then the extension contains only body source and no documentation.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">extension</span><span class="plain-syntax">-</span><span class="identifier-syntax">body</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    *** ---- </span><span class="identifier-syntax">documentation</span><span class="plain-syntax"> ---- ... |    ==&gt; </span><span class="identifier-syntax">TRUE</span>
-<span class="plain-syntax">    ...									==&gt; </span><span class="identifier-syntax">FALSE</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP6_2_2"></a><b>&#167;6.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break the extension's text into body and documentation</span><span class="named-paragraph-number">6.2.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6_2_2"></a><b>&#167;6.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break the extension's text into body and documentation</span><span class="named-paragraph-number">6.2.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
