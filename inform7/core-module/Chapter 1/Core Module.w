@@ -203,7 +203,7 @@ COMPILE_WRITER(table *, Tables::log)
 COMPILE_WRITER(booking *, Rules::Bookings::log)
 COMPILE_WRITER(table_column *, Tables::Columns::log)
 COMPILE_WRITER(pcalc_prop *, Calculus::Propositions::log)
-COMPILE_WRITER(extension_dictionary_entry *, Extensions::Dictionary::log_entry)
+COMPILE_WRITER(extension_dictionary_entry *, ExtensionDictionary::log_entry)
 COMPILE_WRITER(parse_node *, Invocations::log_list)
 COMPILE_WRITER(parse_node *, Invocations::log)
 COMPILE_WRITER(heading *, Sentences::Headings::log)
@@ -368,7 +368,7 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	REGISTER_WRITER('b', Rules::Bookings::log);
 	REGISTER_WRITER('C', Tables::Columns::log);
 	REGISTER_WRITER('D', Calculus::Propositions::log);
-	REGISTER_WRITER('d', Extensions::Dictionary::log_entry);
+	REGISTER_WRITER('d', ExtensionDictionary::log_entry);
 	REGISTER_WRITER('E', Invocations::log_list);
 	REGISTER_WRITER('e', Invocations::log);
 	REGISTER_WRITER('H', Sentences::Headings::log);

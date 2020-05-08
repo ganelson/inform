@@ -402,8 +402,8 @@ to configure how it should go about its business.
 That's basically everything except for a few special features to provide
 the Inform GUI apps with nice-looking documentation pages on installed
 extensions. These are constructed by a "census", when the parent calls
-//Extensions::Census::new//. Copies for extensions are annotated with
+//ExtensionCensus::new//. Copies for extensions are annotated with
 metadata on, for example, when they were last used, and such metadata is stored
-between runs in the //Extension Dictionary//, and used as part of the
-//Extension Documentation// generated for the benefit of the Inform user
+between runs in the //Dictionary//, and used as part of the
+//Documentation// generated for the benefit of the Inform user
 interface apps.

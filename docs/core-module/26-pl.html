@@ -21,6 +21,7 @@ function togglePopup(material_id) {
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -125,46 +126,48 @@ the rest &mdash; using it uses all of them.
 <p class="commentary">For now, at least, these names should not be translated out of English.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="reserved-syntax">plugin</span><span class="plain-syntax">-</span><span class="identifier-syntax">name</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">core</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">instance</span><span class="plain-syntax"> </span><span class="identifier-syntax">counting</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">interactive</span><span class="plain-syntax"> </span><span class="identifier-syntax">fiction</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">multimedia</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">naming</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">command</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">actions</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">spatial</span><span class="plain-syntax"> </span><span class="identifier-syntax">model</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">mapping</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">persons</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">player</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">regions</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">backdrops</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">devices</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">showme</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">times</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">day</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">scenes</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">figures</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">sounds</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">glulx</span><span class="plain-syntax"> </span><span class="identifier-syntax">external</span><span class="plain-syntax"> </span><span class="identifier-syntax">files</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">bibliographic</span><span class="plain-syntax"> </span><span class="identifier-syntax">data</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">scoring</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">chronology</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;plugin-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">core</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">instance</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">counting</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">interactive</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">fiction</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">multimedia</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">naming</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">command</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">actions</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">spatial</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">model</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">mapping</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">persons</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">player</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">regions</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">backdrops</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">devices</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">showme</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">times</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">day</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">scenes</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">figures</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">sounds</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">glulx</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">external</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">files</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">bibliographic</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">data</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">scoring</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">chronology</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And the following matches if and only if the text in question is (a) a
 valid plugin name, and (b) the name of a plugin which is being used at
 present.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">language</span><span class="plain-syntax">-</span><span class="identifier-syntax">element</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    &lt;</span><span class="reserved-syntax">plugin</span><span class="plain-syntax">-</span><span class="identifier-syntax">name</span><span class="plain-syntax">&gt;	==&gt; </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">registered_plugins</span><span class="plain-syntax">[</span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]] == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">registered_plugins</span><span class="plain-syntax">[</span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]]-&gt;</span><span class="element-syntax">now_plugged_in</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;language-element&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;plugin-name&gt;</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; if ((registered_plugins[R[1]] == NULL) || (registered_plugins[R[1]]-&gt;now_plugged_in == FALSE)) *X = FALSE;</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="function-syntax">Plugins::Manage::wording</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Plugins::Manage::wording</span></span>:<br/><a href="26-pl.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Preform::Nonparsing::wording</span><span class="plain-syntax">(&lt;</span><span class="reserved-syntax">plugin</span><span class="plain-syntax">-</span><span class="identifier-syntax">name</span><span class="plain-syntax">&gt;, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Preform::Nonparsing::wording</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;plugin-name&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Plugins. </b></p>
@@ -416,7 +419,7 @@ with the following.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">VM</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"target VM not set yet"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Index::anchor</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"STORYFILE"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Story file format: "</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Extensions::Census::plot_icon</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">VM</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ExtensionCensus::plot_icon</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">VM</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TargetVMs::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">VM</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>

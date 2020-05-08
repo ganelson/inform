@@ -58,6 +58,6 @@ Chapter 6: Inform Source Text
 	Virtual Machine Grammar
 
 Chapter 7: Extension Indexing
-	Extension Dictionary
-	Extension Documentation
-	Extension Census
+	Dictionary
+	Census
+	Documentation

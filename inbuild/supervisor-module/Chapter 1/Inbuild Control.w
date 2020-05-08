@@ -343,7 +343,7 @@ void Supervisor::go_operational(void) {
 	inbuild_copy *C;
 	LOOP_OVER(C, inbuild_copy) Copies::construct_graph(C);
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
-	if (census_mode) Extensions::Census::handle_census_mode();
+	if (census_mode) ExtensionCensus::handle_census_mode();
 }
 
 @h The nest list.

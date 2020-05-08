@@ -311,8 +311,8 @@ documentation page could be forgiven for thinking it a miscellany.
 
 =
 void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
-	Extensions::Dictionary::erase_entries(E);
-	if (E) Extensions::Dictionary::time_stamp(E);
+	ExtensionDictionary::erase_entries_concerning(E);
+	ExtensionDictionary::time_stamp(E);
 
 	@<Document and dictionary the kinds made in extension@>;
 	@<Document and dictionary the objects made in extension@>;
@@ -470,7 +470,7 @@ int Extensions::Files::document_headword(OUTPUT_STREAM, int kc, inform_extension
 	if (kc++ == 0) { HTML_OPEN("p"); WRITE("%s: ", par_heading); }
 	else WRITE(", ");
 	WRITE("<b>%+W</b>", W);
-	Extensions::Dictionary::new_entry(category, E, W);
+	ExtensionDictionary::new_entry_from_wording(category, E, W);
 	return kc;
 }
 

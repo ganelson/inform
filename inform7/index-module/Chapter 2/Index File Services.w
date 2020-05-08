@@ -569,7 +569,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"C")) {
 		Sentences::Headings::index(OUT);
 		Extensions::Files::index(OUT);
-		Extensions::Census::update_census(Task::project());
+		ExtensionCensus::update_census(Task::project());
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Vl")) {

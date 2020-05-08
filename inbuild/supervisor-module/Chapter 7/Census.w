@@ -1,4 +1,4 @@
-[Extensions::Census::] Extension Census.
+[ExtensionCensus::] Census.
 
 To conduct a census of all the extensions installed (whether used
 on this run or not), and keep the documentation index for them up to date.
@@ -14,7 +14,7 @@ typedef struct extension_census {
 	MEMORY_MANAGEMENT
 } extension_census;
 
-extension_census *Extensions::Census::new(inform_project *proj) {
+extension_census *ExtensionCensus::new(inform_project *proj) {
 	extension_census *C = CREATE(extension_census);
 	C->search_list = Projects::nest_list(proj);
 	C->census_data = NEW_LINKED_LIST(extension_census_datum);
@@ -23,7 +23,7 @@ extension_census *Extensions::Census::new(inform_project *proj) {
 	return C;
 }
 
-pathname *Extensions::Census::internal_path(extension_census *C) {
+pathname *ExtensionCensus::internal_path(extension_census *C) {
 	inbuild_nest *N = NULL;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, C->search_list)
 		if (Nests::get_tag(N) == INTERNAL_NEST_TAG)
@@ -31,7 +31,7 @@ pathname *Extensions::Census::internal_path(extension_census *C) {
 	return NULL;
 }
 
-pathname *Extensions::Census::external_path(extension_census *C) {
+pathname *ExtensionCensus::external_path(extension_census *C) {
 	inbuild_nest *N = NULL;
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, C->search_list)
 		if (Nests::get_tag(N) == EXTERNAL_NEST_TAG)
@@ -58,7 +58,7 @@ typedef struct extension_census_datum {
 	MEMORY_MANAGEMENT
 } extension_census_datum;
 
-text_stream *Extensions::Census::ecd_rubric(extension_census_datum *ecd) {
+text_stream *ExtensionCensus::ecd_rubric(extension_census_datum *ecd) {
 	return Extensions::get_rubric(ExtensionManager::from_copy(ecd->found_as->copy));
 }
 
@@ -75,7 +75,7 @@ ever be reversed, a matching change would need to be made in the code which
 opens extension files in Read Source Text.)
 
 =
-void Extensions::Census::perform(extension_census *C) {
+void ExtensionCensus::perform(extension_census *C) {
 	inbuild_requirement *req = Requirements::anything_of_genre(extension_genre);
 	Nests::search_for(req, C->search_list, C->raw_data);
 	
@@ -127,7 +127,7 @@ top of the listing, because otherwise its position at the bottom will be
 invisible unless the user scrolls a long way:
 
 =
-void Extensions::Census::warn_about_census_errors(OUTPUT_STREAM, extension_census *C) {
+void ExtensionCensus::warn_about_census_errors(OUTPUT_STREAM, extension_census *C) {
 	if (C->no_census_errors == 0) return; /* no need for a warning */
 	if (NUMBER_CREATED(extension_census_datum) < 20) return; /* it's a short page anyway */
 	HTML_OPEN("p");
@@ -139,7 +139,7 @@ void Extensions::Census::warn_about_census_errors(OUTPUT_STREAM, extension_censu
  }
 
 @ =
-void Extensions::Census::transcribe_census_errors(OUTPUT_STREAM, extension_census *C) {
+void ExtensionCensus::transcribe_census_errors(OUTPUT_STREAM, extension_census *C) {
 	if (C->no_census_errors == 0) return; /* nothing to include, then */
 	@<Include the headnote explaining what census errors are@>;
 	inbuild_search_result *R;
@@ -194,9 +194,9 @@ any oddities found in the external extensions area.
 @d SORT_CE_BY_LENGTH 5
 
 =
-void Extensions::Census::write_results(OUTPUT_STREAM, extension_census *C) {
+void ExtensionCensus::write_results(OUTPUT_STREAM, extension_census *C) {
 	@<Display the location of installed extensions@>;
-	Extensions::Census::warn_about_census_errors(OUT, C);
+	ExtensionCensus::warn_about_census_errors(OUT, C);
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 	HTML_TAG("hr");
@@ -218,7 +218,7 @@ void Extensions::Census::write_results(OUTPUT_STREAM, extension_census *C) {
 		HTML_CLOSE("div");
 	}
 	@<Print the key to any symbols used in the census lines@>;
-	Extensions::Census::transcribe_census_errors(OUT, C);
+	ExtensionCensus::transcribe_census_errors(OUT, C);
 	Memory::I7_array_free(sorted_census_results, EXTENSION_DICTIONARY_MREASON,
 		no_entries, sizeof(extension_census_datum *));
 }
@@ -245,7 +245,7 @@ void Extensions::Census::write_results(OUTPUT_STREAM, extension_census *C) {
 		WRITE("&nbsp;You have no other extensions installed at present.");
 	} else {
 		#ifdef INDEX_MODULE
-		HTML::Javascript::open_file(OUT, Extensions::Census::external_path(C), NULL,
+		HTML::Javascript::open_file(OUT, ExtensionCensus::external_path(C), NULL,
 			"src='inform:/doc_images/folder4.png' border=0");
 		#endif
 		WRITE("&nbsp;You have %d further extension%s installed. These are marked "
@@ -258,7 +258,7 @@ void Extensions::Census::write_results(OUTPUT_STREAM, extension_census *C) {
 	if (nps > 0) {
 		HTML_OPEN("p");
 		#ifdef INDEX_MODULE
-		HTML::Javascript::open_file(OUT, Extensions::Census::internal_path(C), NULL, PROJECT_SPECIFIC_SYMBOL);
+		HTML::Javascript::open_file(OUT, ExtensionCensus::internal_path(C), NULL, PROJECT_SPECIFIC_SYMBOL);
 		#endif
 		WRITE("&nbsp;You have %d extension%s in the .materials folder for the "
 			"current project. (Click the purple folder icon to show the "
@@ -275,7 +275,7 @@ documentation as used today until the next run, for obscure timing reasons.
 	#ifdef CORE_MODULE
 	inform_extension *E;
 	LOOP_OVER(E, inform_extension)
-		Extensions::Dictionary::time_stamp(E);
+		ExtensionDictionary::time_stamp(E);
 	#endif
 
 @ I am the first to admit that this implementation is not inspired. There
@@ -365,7 +365,7 @@ just a blank image used for horizontal spacing to keep margins straight.
 		if (key_vms) {
 			#ifdef CORE_MODULE
 			HTML_TAG("br");
-			Extensions::Census::write_key(OUT);
+			ExtensionCensus::write_key(OUT);
 			#endif
 		}
 		HTML_CLOSE("p");
@@ -378,11 +378,11 @@ just a blank image used for horizontal spacing to keep margins straight.
 		sorted_census_results[i++] = ecd;
 	int (*criterion)(const void *, const void *) = NULL;
 	switch (d) {
-		case SORT_CE_BY_TITLE: criterion = Extensions::Census::compare_ecd_by_title; break;
-		case SORT_CE_BY_AUTHOR: criterion = Extensions::Census::compare_ecd_by_author; break;
-		case SORT_CE_BY_INSTALL: criterion = Extensions::Census::compare_ecd_by_installation; break;
-		case SORT_CE_BY_DATE: criterion = Extensions::Census::compare_ecd_by_date; break;
-		case SORT_CE_BY_LENGTH: criterion = Extensions::Census::compare_ecd_by_length; break;
+		case SORT_CE_BY_TITLE: criterion = ExtensionCensus::compare_ecd_by_title; break;
+		case SORT_CE_BY_AUTHOR: criterion = ExtensionCensus::compare_ecd_by_author; break;
+		case SORT_CE_BY_INSTALL: criterion = ExtensionCensus::compare_ecd_by_installation; break;
+		case SORT_CE_BY_DATE: criterion = ExtensionCensus::compare_ecd_by_date; break;
+		case SORT_CE_BY_LENGTH: criterion = ExtensionCensus::compare_ecd_by_length; break;
 		default: internal_error("no such sorting criterion");
 	}
 	qsort(sorted_census_results, (size_t) no_entries, sizeof(extension_census_datum *),
@@ -443,8 +443,8 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		@<End a tinted census line@>;
 		stripe = 0;
 	}
-	if ((d == SORT_CE_BY_INSTALL) && (Extensions::Census::installation_region(ecd) != current_installation)) {
-		current_installation = Extensions::Census::installation_region(ecd);
+	if ((d == SORT_CE_BY_INSTALL) && (ExtensionCensus::installation_region(ecd) != current_installation)) {
+		current_installation = ExtensionCensus::installation_region(ecd);
 		@<Begin a tinted census line@>;
 		@<Print the installation region in the extension census table@>;
 		@<End a tinted census line@>;
@@ -483,7 +483,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	for (j = i; j < no_entries; j++) {
 		ecd2 = sorted_census_results[j];
 		if (Str::ne(current_author_name, ecd2->found_as->copy->edition->work->author_name)) break;
-		if (Extensions::Census::ecd_used(ecd2)) cu++;
+		if (ExtensionCensus::ecd_used(ecd2)) cu++;
 		else cn++;
 	}
 	WRITE("&nbsp;&nbsp;");
@@ -506,14 +506,14 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		case 0:
 			WRITE("Supplied in the .materials folder&nbsp;&nbsp;");
 			HTML_OPEN_WITH("span", "class=\"smaller\"");
-			WRITE("%p", Extensions::Census::internal_path(C));
+			WRITE("%p", ExtensionCensus::internal_path(C));
 			HTML_CLOSE("span"); break;
 		case 1: WRITE("Built in to Inform"); break;
 		case 2: WRITE("User installed but overriding a built-in extension"); break;
 		case 3:
 			WRITE("User installed&nbsp;&nbsp;");
 			HTML_OPEN_WITH("span", "class=\"smaller\"");
-			WRITE("%p", Extensions::Census::external_path(C));
+			WRITE("%p", ExtensionCensus::external_path(C));
 			HTML_CLOSE("span"); break;
 	}
 
@@ -541,11 +541,11 @@ where all is optional except the title part.
 
 @<Print column 1 of the census line@> =
 	char *bulletornot = UNINDEXED_SYMBOL;
-	if (Extensions::Census::ecd_used(ecd)) { bulletornot = INDEXED_SYMBOL; key_bullet = TRUE; }
+	if (ExtensionCensus::ecd_used(ecd)) { bulletornot = INDEXED_SYMBOL; key_bullet = TRUE; }
 	WRITE("&nbsp;");
 	HTML_TAG_WITH("img", "%s", bulletornot);
 
-	Works::begin_extension_link(OUT, ecd->found_as->copy->edition->work, Extensions::Census::ecd_rubric(ecd));
+	Works::begin_extension_link(OUT, ecd->found_as->copy->edition->work, ExtensionCensus::ecd_rubric(ecd));
 	if (d != SORT_CE_BY_AUTHOR) {
 		HTML::begin_colour(OUT, I"404040");
 		WRITE("%S", ecd->found_as->copy->edition->work->raw_title);
@@ -578,7 +578,7 @@ the first and last word and just look at what is in between:
 @<Append icons which signify the VM requirements of the extension@> =
 	WRITE("&nbsp;%S", C->parsed_from);
 	#ifdef CORE_MODULE
-	Extensions::Census::write_icons(OUT, C);
+	ExtensionCensus::write_icons(OUT, C);
 	#endif
 
 @<Print column 2 of the census line@> =
@@ -624,8 +624,8 @@ the first and last word and just look at what is in between:
 		else
 			WRITE("%d words", Works::get_word_count(ecd->found_as->copy->edition->work));
 	} else {
-		if (Str::len(Extensions::Census::ecd_rubric(ecd)) > 0)
-			WRITE("%S", Extensions::Census::ecd_rubric(ecd));
+		if (Str::len(ExtensionCensus::ecd_rubric(ecd)) > 0)
+			WRITE("%S", ExtensionCensus::ecd_rubric(ecd));
 		else
 			WRITE("--");
 	}
@@ -634,14 +634,14 @@ the first and last word and just look at what is in between:
 @ Two useful measurements:
 
 =
-int Extensions::Census::installation_region(extension_census_datum *ecd) {
+int ExtensionCensus::installation_region(extension_census_datum *ecd) {
 	if (ecd->project_specific) return 0;
 	if (ecd->built_in) return 1;
 	if (ecd->overriding_a_built_in_extension) return 2;
 	return 3;
 }
 
-int Extensions::Census::ecd_used(extension_census_datum *ecd) {
+int ExtensionCensus::ecd_used(extension_census_datum *ecd) {
 	if ((Works::no_times_used_in_context(ecd->found_as->copy->edition->work, LOADED_WDBC) > 0) ||
 		(Works::no_times_used_in_context(ecd->found_as->copy->edition->work, DICTIONARY_REFERRED_WDBC) > 0))
 		return TRUE;
@@ -651,33 +651,33 @@ int Extensions::Census::ecd_used(extension_census_datum *ecd) {
 @ The following give the sorting criteria:
 
 =
-int Extensions::Census::compare_ecd_by_title(const void *ecd1, const void *ecd2) {
+int ExtensionCensus::compare_ecd_by_title(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
 	return Works::compare_by_title(e1->found_as->copy->edition->work, e2->found_as->copy->edition->work);
 }
 
-int Extensions::Census::compare_ecd_by_author(const void *ecd1, const void *ecd2) {
+int ExtensionCensus::compare_ecd_by_author(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
 	return Works::compare(e1->found_as->copy->edition->work, e2->found_as->copy->edition->work);
 }
 
-int Extensions::Census::compare_ecd_by_installation(const void *ecd1, const void *ecd2) {
+int ExtensionCensus::compare_ecd_by_installation(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	int d = Extensions::Census::installation_region(e1) - Extensions::Census::installation_region(e2);
+	int d = ExtensionCensus::installation_region(e1) - ExtensionCensus::installation_region(e2);
 	if (d != 0) return d;
 	return Works::compare_by_title(e1->found_as->copy->edition->work, e2->found_as->copy->edition->work);
 }
 
-int Extensions::Census::compare_ecd_by_date(const void *ecd1, const void *ecd2) {
+int ExtensionCensus::compare_ecd_by_date(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
 	return Works::compare_by_date(e1->found_as->copy->edition->work, e2->found_as->copy->edition->work);
 }
 
-int Extensions::Census::compare_ecd_by_length(const void *ecd1, const void *ecd2) {
+int ExtensionCensus::compare_ecd_by_length(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
 	return Works::compare_by_length(e1->found_as->copy->edition->work, e2->found_as->copy->edition->work);
@@ -689,21 +689,21 @@ the current VM or some set of permitted VMs. The following plots the
 icon associated with a given minor VM, and explicates what the icons mean:
 
 =
-void Extensions::Census::plot_icon(OUTPUT_STREAM, target_vm *VM) {
+void ExtensionCensus::plot_icon(OUTPUT_STREAM, target_vm *VM) {
 	if (Str::len(VM->VM_image) > 0) {
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/%S", VM->VM_image);
 		WRITE("&nbsp;");
 	}
 }
 
-void Extensions::Census::write_key(OUTPUT_STREAM) {
+void ExtensionCensus::write_key(OUTPUT_STREAM) {
 	WRITE("Extensions compatible with specific story file formats only: ");
 	int i = 0;
 	target_vm *VM;
 	LOOP_OVER(VM, target_vm) {
 		if (VM->with_debugging_enabled) continue; /* avoids listing twice */
     	if (i++ > 0) WRITE(", ");
-    	Extensions::Census::plot_icon(OUT, VM);
+    	ExtensionCensus::plot_icon(OUT, VM);
 		TargetVMs::write(OUT, VM);
 	}
 }
@@ -714,7 +714,7 @@ row of icons (but do not bother for the common case where some extension
 has no restriction on its use).
 
 =
-void Extensions::Census::write_icons(OUTPUT_STREAM, compatibility_specification *C) {
+void ExtensionCensus::write_icons(OUTPUT_STREAM, compatibility_specification *C) {
 	int something = FALSE, everything = TRUE;
 	target_vm *VM;
 	LOOP_OVER(VM, target_vm)
@@ -726,7 +726,7 @@ void Extensions::Census::write_icons(OUTPUT_STREAM, compatibility_specification 
 	if (everything == FALSE)
 		LOOP_OVER(VM, target_vm)
 			if (Compatibility::with(C, VM))
-				Extensions::Census::plot_icon(OUT, VM);
+				ExtensionCensus::plot_icon(OUT, VM);
 }
 
 @h Updating the documentation.
@@ -741,27 +741,27 @@ as well. (In both cases the extension dictionary is also worked upon.) The
 two alternatives are expressed here:
 
 =
-void Extensions::Census::handle_census_mode(void) {
-	extension_census *C = Extensions::Census::new(NULL);
+void ExtensionCensus::handle_census_mode(void) {
+	extension_census *C = ExtensionCensus::new(NULL);
 	HTMLFiles::set_link_abbreviation_path(NULL);
-	Extensions::Dictionary::load();
-	Extensions::Census::perform(C);
-	Extensions::Census::write_top_level_of_extensions_documentation(C);
-	Extensions::Census::write_sketchy_documentation_for_extensions_found(TRUE);
+	ExtensionDictionary::read_from_file();
+	ExtensionCensus::perform(C);
+	ExtensionCensus::write_top_level_of_extensions_documentation(C);
+	ExtensionCensus::write_sketchy_documentation_for_extensions_found(TRUE);
 }
 
-void Extensions::Census::update_census(inform_project *proj) {
-	Extensions::Dictionary::load();
-	extension_census *C = Extensions::Census::new(proj);
+void ExtensionCensus::update_census(inform_project *proj) {
+	ExtensionDictionary::read_from_file();
+	extension_census *C = ExtensionCensus::new(proj);
 	HTMLFiles::set_link_abbreviation_path(Projects::path(proj));
-	Extensions::Census::perform(C);
-	Extensions::Census::write_top_level_of_extensions_documentation(C);
+	ExtensionCensus::perform(C);
+	ExtensionCensus::write_top_level_of_extensions_documentation(C);
 	#ifdef CORE_MODULE
 	inform_extension *E;
-	LOOP_OVER(E, inform_extension) Extensions::Documentation::write_detailed(E, proj);
+	LOOP_OVER(E, inform_extension) ExtensionDocumentation::write_detailed(E, proj);
 	#endif
-	Extensions::Census::write_sketchy_documentation_for_extensions_found(FALSE);
-	Extensions::Dictionary::write_back();
+	ExtensionCensus::write_sketchy_documentation_for_extensions_found(FALSE);
+	ExtensionDictionary::write_back();
 	if (Log::aspect_switched_on(EXTENSIONS_CENSUS_DA)) Works::log_work_hash_table();
 }
 
@@ -770,10 +770,10 @@ results in no particular order and create a sketchy page of documentation,
 if there's no better one already.
 
 =
-void Extensions::Census::write_sketchy_documentation_for_extensions_found(int census_mode) {
+void ExtensionCensus::write_sketchy_documentation_for_extensions_found(int census_mode) {
 	extension_census_datum *ecd;
 	LOOP_OVER(ecd, extension_census_datum)
-		Extensions::Documentation::write_sketchy(ecd, census_mode);
+		ExtensionDocumentation::write_sketchy(ecd, census_mode);
 }
 
 @h Writing the extensions home pages.
@@ -805,13 +805,13 @@ platform, for reasons as always to do with the vagaries of Internet
 Explorer 7 for Windows.
 
 =
-void Extensions::Census::write_top_level_of_extensions_documentation(extension_census *C) {
-	Extensions::Census::write_top_level_extensions_page(I"Extensions.html", 1, C);
-	Extensions::Census::write_top_level_extensions_page(I"ExtIndex.html", 2, NULL);
+void ExtensionCensus::write_top_level_of_extensions_documentation(extension_census *C) {
+	ExtensionCensus::write_top_level_extensions_page(I"Extensions.html", 1, C);
+	ExtensionCensus::write_top_level_extensions_page(I"ExtIndex.html", 2, NULL);
 }
 
 @ =
-pathname *Extensions::Census::doc_pathname(void) {
+pathname *ExtensionCensus::doc_pathname(void) {
 	pathname *P = Supervisor::transient();
 	if (P == NULL) return NULL;
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
@@ -820,8 +820,8 @@ pathname *Extensions::Census::doc_pathname(void) {
 	return P;
 }
 
-void Extensions::Census::write_top_level_extensions_page(text_stream *leaf, int content, extension_census *C) {
-	pathname *P = Extensions::Census::doc_pathname();
+void ExtensionCensus::write_top_level_extensions_page(text_stream *leaf, int content, extension_census *C) {
+	pathname *P = ExtensionCensus::doc_pathname();
 	if (P == NULL) return;
 	filename *F = Filenames::in(P, leaf);
 
@@ -863,8 +863,8 @@ void Extensions::Census::write_top_level_extensions_page(text_stream *leaf, int 
 	HTML_CLOSE("div");
 
 	switch (content) {
-		case 1: Extensions::Census::write_results(OUT, C); break;
-		case 2: Extensions::Dictionary::write_to_HTML(OUT); break;
+		case 1: ExtensionCensus::write_results(OUT, C); break;
+		case 2: ExtensionDictionary::write_to_HTML(OUT); break;
 	}
 
 	HTML::end_body(OUT);
