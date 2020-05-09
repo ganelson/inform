@@ -75,11 +75,8 @@ int ExtensionCensus::installation_region(extension_census_datum *ecd) {
 }
 
 int ExtensionCensus::ecd_used(extension_census_datum *ecd) {
-	inbuild_work *work = ecd->found_as->copy->edition->work;
-	if ((Works::no_times_used_in_context(work, LOADED_WDBC) > 0) ||
-		(Works::no_times_used_in_context(work, DICTIONARY_REFERRED_WDBC) > 0))
-		return TRUE;
-	return FALSE;
+	inform_extension *E = ExtensionManager::from_copy(ecd->found_as->copy);
+	return E->has_historically_been_used;
 }
 
 @ The following give some sorting criteria, and are functions fit to be
@@ -89,44 +86,44 @@ handed to |qsort|.
 int ExtensionCensus::compare_ecd_by_title(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inbuild_work *work1 = e1->found_as->copy->edition->work;
-	inbuild_work *work2 = e2->found_as->copy->edition->work;
-	return Works::compare_by_title(work1, work2);
+	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
+	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	return Extensions::compare_by_title(E2, E1);
 }
 
 int ExtensionCensus::compare_ecd_by_author(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inbuild_work *work1 = e1->found_as->copy->edition->work;
-	inbuild_work *work2 = e2->found_as->copy->edition->work;
-	return Works::compare(work1, work2);
+	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
+	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	return Extensions::compare_by_author(E2, E1);
 }
 
 int ExtensionCensus::compare_ecd_by_installation(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inbuild_work *work1 = e1->found_as->copy->edition->work;
-	inbuild_work *work2 = e2->found_as->copy->edition->work;
 	int d = ExtensionCensus::installation_region(e1) -
 		ExtensionCensus::installation_region(e2);
 	if (d != 0) return d;
-	return Works::compare_by_title(work1, work2);
+	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
+	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	return Extensions::compare_by_edition(E1, E2);
 }
 
 int ExtensionCensus::compare_ecd_by_date(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inbuild_work *work1 = e1->found_as->copy->edition->work;
-	inbuild_work *work2 = e2->found_as->copy->edition->work;
-	return Works::compare_by_date(work1, work2);
+	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
+	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	return Extensions::compare_by_date(E1, E2);
 }
 
 int ExtensionCensus::compare_ecd_by_length(const void *ecd1, const void *ecd2) {
 	extension_census_datum *e1 = *((extension_census_datum **) ecd1);
 	extension_census_datum *e2 = *((extension_census_datum **) ecd2);
-	inbuild_work *work1 = e1->found_as->copy->edition->work;
-	inbuild_work *work2 = e2->found_as->copy->edition->work;
-	return Works::compare_by_length(work1, work2);
+	inform_extension *E1 = ExtensionManager::from_copy(e1->found_as->copy);
+	inform_extension *E2 = ExtensionManager::from_copy(e2->found_as->copy);
+	return Extensions::compare_by_length(E1, E2);
 }
 
 @h Performing the census.
@@ -174,6 +171,5 @@ truncate it.
 @<Add to the census data@> =
 	extension_census_datum *ecd = CREATE(extension_census_datum);
 	ecd->found_as = R;
-	Works::add_to_database(R->copy->edition->work, INSTALLED_WDBC);
 	ecd->overriding_a_built_in_extension = FALSE;
 	ecd->next = NULL;

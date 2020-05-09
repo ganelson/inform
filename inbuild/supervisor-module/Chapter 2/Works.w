@@ -29,8 +29,6 @@ typedef struct inbuild_work {
 @ Each work structure is written only once, and its title and author name are
 not subsequently altered.
 
-@d WORK_HASH_CODING_BASE 499
-
 =
 inbuild_work *Works::new(inbuild_genre *genre, text_stream *ti, text_stream *an) {
 	return Works::new_inner(genre, ti, an, TRUE);
@@ -66,11 +64,11 @@ inbuild_work *Works::new_inner(inbuild_genre *genre, text_stream *ti, text_strea
 	return work;
 }
 
-@ We hash-code all works on arrival, using the X 30011 algorithm, with 499
-(coprime to 30011) as base, to the text of the pseudo-pathname |Author/Title|.
+@ We hash-code all works on arrival, using the X 30011 algorithm, on the text
+of the pseudo-pathname |Author/Title|. The result is an integer between 0 and
+the following constant minus 1.
 
-The hash code is an integer between 0 and the following constant minus 1,
-derived from its title and author name.
+@d WORK_HASH_CODING_BASE 499 /* this is coprime to 30011 */
 
 @<Compute the hash code@> =
 	unsigned int hc = 0;
@@ -175,8 +173,7 @@ int Works::match(inbuild_work *eid1, inbuild_work *eid2) {
 	return TRUE;
 }
 
-@ These are quite a deal slower, but are trichotomous and can be used for
-sorting.
+@ This is quite a deal slower, but is trichotomous and can be used for sorting.
 
 =
 int Works::compare(inbuild_work *eid1, inbuild_work *eid2) {
@@ -186,31 +183,6 @@ int Works::compare(inbuild_work *eid1, inbuild_work *eid2) {
 	return Str::cmp(eid1->title, eid2->title);
 }
 
-int Works::compare_by_title(inbuild_work *eid1, inbuild_work *eid2) {
-	if ((eid1 == NULL) || (eid2 == NULL)) internal_error("bad work match");
-	int d = Str::cmp(eid1->title, eid2->title);
-	if (d != 0) return d;
-	return Str::cmp(eid1->author_name, eid2->author_name);
-}
-
-int Works::compare_by_date(inbuild_work *eid1, inbuild_work *eid2) {
-	if ((eid1 == NULL) || (eid2 == NULL)) internal_error("bad work match");
-	int d = Str::cmp(Works::get_sort_date(eid2), Works::get_sort_date(eid1));
-	if (d != 0) return d;
-	d = Str::cmp(eid1->title, eid2->title);
-	if (d != 0) return d;
-	return Str::cmp(eid1->author_name, eid2->author_name);
-}
-
-int Works::compare_by_length(inbuild_work *eid1, inbuild_work *eid2) {
-	if ((eid1 == NULL) || (eid2 == NULL)) internal_error("bad work match");
-	int d = Str::cmp(Works::get_sort_word_count(eid2), Works::get_sort_word_count(eid1));
-	if (d != 0) return d;
-	d = Str::cmp(eid1->title, eid2->title);
-	if (d != 0) return d;
-	return Str::cmp(eid1->author_name, eid2->author_name);
-}
-
 @ Because Basic Inform and the Standard Rules extensions are treated slightly
 differently by the documentation, and so forth, it's convenient to provide a
 single function testing if a work refers to them.
@@ -218,229 +190,20 @@ single function testing if a work refers to them.
 =
 inbuild_work *a_work_for_standard_rules = NULL;
 int Works::is_standard_rules(inbuild_work *work) {
-	if (a_work_for_standard_rules == NULL) {
+	if (a_work_for_standard_rules == NULL)
 		a_work_for_standard_rules =
 			Works::new(extension_genre, I"Standard Rules", I"Graham Nelson");
-		Works::add_to_database(a_work_for_standard_rules, HYPOTHETICAL_WDBC);
-	}
 	if (work == NULL) return FALSE;
 	return Works::match(work, a_work_for_standard_rules);
 }
 
 inbuild_work *a_work_for_basic_inform = NULL;
 int Works::is_basic_inform(inbuild_work *work) {
-	if (a_work_for_basic_inform == NULL) {
+	if (a_work_for_basic_inform == NULL)
 		a_work_for_basic_inform =
 			Works::new(extension_genre, I"Basic Inform", I"Graham Nelson");
-		Works::add_to_database(a_work_for_basic_inform, HYPOTHETICAL_WDBC);
-	}
 	if (work == NULL) return FALSE;
 	return Works::match(work, a_work_for_basic_inform);
-}
-
-@h The database of known works.
-We will need to be able to give rapid answers to questions like "is there
-an installed extension with this work?" and "does any entry in the dictionary
-relate to this work?": there may be many extensions and very many dictionary
-entries, so we keep an incidence count of each work and in what context it
-has been used, and store that in a hash table. Note that each distinct work
-is recorded only once in the table: this is important, as although an
-individual extension can only be loaded or installed once, it could be
-referred to in the dictionary dozens or even hundreds of times.
-
-The table is unsorted and is intended for rapid searching. Typically there
-will be only a handful of works in the list of those with a given hash code:
-indeed, the typical number will be 0 or 1.
-
-Works are entered into the database with one of the following contexts:
-
-@d NO_WDB_CONTEXTS 6
-@d LOADED_WDBC 0
-@d INSTALLED_WDBC 1
-@d DICTIONARY_REFERRED_WDBC 2
-@d HYPOTHETICAL_WDBC 3
-@d USEWITH_WDBC 4
-@d CLAIMED_WDBC 5
-
-=
-typedef struct inbuild_work_database_entry {
-	struct inbuild_work *work;
-	struct inbuild_work_database_entry *hash_next; /* next one in hashed work database */
-	int incidence_count[NO_WDB_CONTEXTS];
-	struct text_stream *last_usage_date;
-	struct text_stream *sort_usage_date;
-	struct text_stream *word_count_text;
-	int word_count_number;
-} inbuild_work_database_entry;
-
-int work_database_created = FALSE;
-inbuild_work_database_entry *hash_of_works[WORK_HASH_CODING_BASE];
-
-void Works::add_to_database(inbuild_work *work, int context) {
-	if (work_database_created == FALSE) {
-		work_database_created = TRUE;
-		for (int i=0; i<WORK_HASH_CODING_BASE; i++) hash_of_works[i] = NULL;
-	}
-
-	int hc = work->inbuild_work_hash_code;
-
-	inbuild_work_database_entry *iwde;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			iwde->incidence_count[context]++;
-			return;
-		}
-	iwde = CREATE(inbuild_work_database_entry);
-	iwde->hash_next = hash_of_works[hc]; hash_of_works[hc] = iwde;
-	iwde->work = work;
-	for (int i=0; i<NO_WDB_CONTEXTS; i++) iwde->incidence_count[i] = 0;
-	iwde->incidence_count[context] = 1;
-	iwde->last_usage_date = Str::new();
-	iwde->sort_usage_date = Str::new();
-	iwde->word_count_text = Str::new();
-}
-
-@ This gives us reasonably rapid access to a shared date:
-
-=
-void Works::set_usage_date(inbuild_work *work, text_stream *date) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			Str::copy(iwde->last_usage_date, date);
-			return;
-		}
-}
-
-void Works::set_sort_date(inbuild_work *work, text_stream *date) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			Str::copy(iwde->sort_usage_date, date);
-			return;
-		}
-}
-
-text_stream *Works::get_usage_date(inbuild_work *work) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			if (Str::len(iwde->last_usage_date) > 0)
-				return iwde->last_usage_date;
-			if (iwde->incidence_count[DICTIONARY_REFERRED_WDBC] > 0)
-				return I"Once upon a time";
-			return I"Never";
-		}
-	return I"---";
-}
-
-text_stream *Works::get_sort_date(inbuild_work *work) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			if (Str::len(iwde->sort_usage_date) > 0)
-				return iwde->sort_usage_date;
-			if (iwde->incidence_count[DICTIONARY_REFERRED_WDBC] > 0)
-				return I"00000000000000Once upon a time";
-			return I"00000000000000Never";
-		}
-	return I"000000000000000";
-}
-
-void Works::set_word_count(inbuild_work *work, int wc) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			WRITE_TO(iwde->word_count_text, "%08d words", wc);
-			iwde->word_count_number = wc;
-			return;
-		}
-}
-
-text_stream *Works::get_sort_word_count(inbuild_work *work) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			if (Str::len(iwde->word_count_text) > 0)
-				return iwde->word_count_text;
-			if (iwde->incidence_count[DICTIONARY_REFERRED_WDBC] > 0)
-				return I"00000000I did read this, but forgot";
-			return I"00000000I've never read this";
-		}
-	return I"---";
-}
-
-int Works::forgot(inbuild_work *work) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			if (Str::len(iwde->word_count_text) > 0)
-				return FALSE;
-			if (iwde->incidence_count[DICTIONARY_REFERRED_WDBC] > 0)
-				return TRUE;
-			return FALSE;
-		}
-	return FALSE;
-}
-
-int Works::never(inbuild_work *work) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) {
-			if (Str::len(iwde->word_count_text) > 0)
-				return FALSE;
-			if (iwde->incidence_count[DICTIONARY_REFERRED_WDBC] > 0)
-				return FALSE;
-			return TRUE;
-		}
-	return FALSE;
-}
-
-int Works::get_word_count(inbuild_work *work) {
-	inbuild_work_database_entry *iwde;
-	int hc = work->inbuild_work_hash_code;
-	for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work))
-			return iwde->word_count_number;
-	return 0;
-}
-
-@ The purpose of the hash table is to enable us to reply quickly when asked
-for one of the following usage counts:
-
-=
-int Works::no_times_used_in_context(inbuild_work *work, int context) {
-	inbuild_work_database_entry *iwde;
-	for (iwde = hash_of_works[work->inbuild_work_hash_code]; iwde; iwde = iwde->hash_next)
-		if (Works::match(work, iwde->work)) return iwde->incidence_count[context];
-	return 0;
-}
-
-@ The work hash table makes quite interesting reading, so:
-
-=
-void Works::log_work_hash_table(void) {
-	int hc, total = 0;
-	LOG("Work identifier hash table:\n");
-	for (hc=0; hc<WORK_HASH_CODING_BASE; hc++) {
-		inbuild_work_database_entry *iwde;
-		for (iwde = hash_of_works[hc]; iwde; iwde = iwde->hash_next) {
-			total++;
-			LOG("%03d %3d %3d %3d %3d  %X\n",
-				hc, iwde->incidence_count[0], iwde->incidence_count[1],
-				iwde->incidence_count[2], iwde->incidence_count[3],
-				iwde->work);
-		}
-	}
-	LOG("%d entries in all\n", total);
 }
 
 @h Documentation links.

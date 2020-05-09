@@ -8,7 +8,7 @@ which use this module:
 
 @d MULTIMEDIA_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e blorb_figure_CLASS
 @e blorb_sound_CLASS

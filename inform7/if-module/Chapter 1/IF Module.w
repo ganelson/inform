@@ -8,7 +8,7 @@ which use this module:
 
 @d IF_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e action_name_CLASS
 @e auxiliary_file_CLASS

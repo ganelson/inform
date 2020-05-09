@@ -8,7 +8,7 @@ which use this module:
 
 @d INDEX_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e documentation_ref_CLASS
 @e index_page_CLASS

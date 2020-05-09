@@ -74,7 +74,6 @@ inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *erro
 	inbuild_copy *C = PipelineManager::new_copy(
 		Editions::new(Works::new_raw(pipeline_genre, unext, NULL), V), F);
 	DISCARD_TEXT(unext);
-	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	return C;
 }
 

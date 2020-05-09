@@ -8,7 +8,7 @@ which use this module:
 
 @d CORE_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e bibliographic_datum_CLASS
 @e phrase_CLASS

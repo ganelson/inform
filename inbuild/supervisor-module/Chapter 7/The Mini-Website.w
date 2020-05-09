@@ -54,8 +54,6 @@ void ExtensionWebsite::go(inform_project *proj, int force_update) {
 	@<Write individual pages on individual extensions@>;
 
 	ExtensionDictionary::write_back();
-
-	if (Log::aspect_switched_on(EXTENSIONS_CENSUS_DA)) Works::log_work_hash_table();
 }
 
 @ This simply ensures that dates used are updated to today's date for
@@ -65,8 +63,10 @@ documentation as used today until the next run, for obscure timing reasons.
 @<Time-stamp extensions used in the project as being last used today@> =
 	if (proj) {
 		inform_extension *E;
-		LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included)
+		LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included) {
 			ExtensionDictionary::time_stamp(E);
+			E->has_historically_been_used = TRUE;
+		}
 	}
 
 @<Write index pages@> =

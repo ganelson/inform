@@ -71,11 +71,8 @@ void TemplateManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 inbuild_copy *TemplateManager::claim_folder_as_copy(pathname *P) {
 	filename *canary1 = Filenames::in(P, I"(manifest).txt");
 	filename *canary2 = Filenames::in(P, I"index.html");
-	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2))) {
-		inbuild_copy *C = TemplateManager::new_copy(Pathnames::directory_name(P), P);
-		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-		return C;
-	}
+	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2)))
+		return TemplateManager::new_copy(Pathnames::directory_name(P), P);
 	return NULL;
 }
 

@@ -65,7 +65,7 @@ which use this module:
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">SUPERVISOR_MODULE</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>To begin with, this module needs to allocate memory:
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>This module defines the following classes:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">build_methodology_CLASS</span>
@@ -76,8 +76,8 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">control_structure_phrase_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">copy_error_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">element_activation_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">extension_census_datum_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">extension_census_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">extension_census_datum_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">extension_dictionary_entry_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">heading_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">heading_tree_CLASS</span>
@@ -89,15 +89,14 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_search_result_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_work_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_extension_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">inform_kit_ittt_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_kit_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">inform_kit_ittt_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_language_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_pipeline_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_project_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inform_template_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">kit_dependency_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">known_extension_clash_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">inbuild_work_database_entry_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">build_methodology</span><span class="plain-syntax">)</span>
@@ -111,8 +110,8 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">extension_census_datum</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">extension_census</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">extension_dictionary_entry</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">heading</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">heading_tree</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">heading</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_edition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax">)</span>
@@ -129,8 +128,6 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_template</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">kit_dependency</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">known_extension_clash</span><span class="plain-syntax">)</span>
-
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_work_database_entry</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
 </p>

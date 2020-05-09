@@ -8,7 +8,7 @@ which use this module:
 
 @d INFLECTIONS_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e name_cluster_CLASS
 @e individual_name_CLASS

@@ -8,7 +8,7 @@ which use this module:
 
 @d LINGUISTICS_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e adjectival_phrase_CLASS
 @e adjective_usage_CLASS

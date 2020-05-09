@@ -8,7 +8,7 @@ which use this module:
 
 @d BYTECODE_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e inter_tree_CLASS
 @e inter_tree_node_CLASS

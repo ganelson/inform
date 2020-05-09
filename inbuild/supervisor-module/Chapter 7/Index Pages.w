@@ -556,16 +556,15 @@ the first and last word and just look at what is in between:
 	}
 
 @<Print column 4 of the census line@> =
+	inform_extension *E = ExtensionManager::from_copy(ecd->found_as->copy);
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
 	if ((d == SORT_CE_BY_DATE) || (d == SORT_CE_BY_INSTALL)) {
-		WRITE("%S", Works::get_usage_date(ecd->found_as->copy->edition->work));
+		WRITE("%S", Extensions::get_usage_date(E));
 	} else if (d == SORT_CE_BY_LENGTH) {
-		if (Works::forgot(ecd->found_as->copy->edition->work))
-			WRITE("I did read this, but forgot");
-		else if (Works::never(ecd->found_as->copy->edition->work))
-			WRITE("I've never read this");
+		if (Extensions::get_word_count(E) == 0)
+			WRITE("--");
 		else
-			WRITE("%d words", Works::get_word_count(ecd->found_as->copy->edition->work));
+			WRITE("%d words", Extensions::get_word_count(E));
 	} else {
 		if (Str::len(ExtensionCensus::ecd_rubric(ecd)) > 0)
 			WRITE("%S", ExtensionCensus::ecd_rubric(ecd));

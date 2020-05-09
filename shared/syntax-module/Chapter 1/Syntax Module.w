@@ -8,7 +8,7 @@ which use this module:
 
 @d SYNTAX_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e parse_node_CLASS
 @e parse_node_tree_CLASS

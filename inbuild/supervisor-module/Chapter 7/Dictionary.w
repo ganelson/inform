@@ -56,6 +56,7 @@ record marked "to be erased" will not be saved back to the file in due course.
 
 =
 typedef struct extension_dictionary_entry {
+	struct inform_extension *ede_extension;
 	struct inbuild_work *ede_work; /* author name and title, with hash code */
 	struct text_stream *entry_text; /* text of the dictionary entry */
 	struct text_stream *type; /* grammatical category, such as "kind" */
@@ -66,16 +67,18 @@ typedef struct extension_dictionary_entry {
 } extension_dictionary_entry;
 
 @ =
-void ExtensionDictionary::new_ede(text_stream *category,
+void ExtensionDictionary::new_ede(inform_extension *E, text_stream *category,
 	text_stream *author, text_stream *title, text_stream *headword) {
+	if (E == NULL) internal_error("no E for EDE");
 	extension_dictionary_entry *ede = CREATE(extension_dictionary_entry);
-	ede->ede_work = Works::new(extension_genre, title, author);
-	Works::add_to_database(ede->ede_work, DICTIONARY_REFERRED_WDBC);
+	ede->ede_extension = E;
+	ede->ede_work = E->as_copy->edition->work;
 	ede->entry_text = Str::duplicate(headword);
 	ede->type = Str::duplicate(category);
 	ede->sorting = Str::new();
 	if (Str::eq_wide_string(category, L"indexing"))
-		@<Change the sort and usage dates, and word count, for the extension work@>;
+		@<Change the sort and usage dates, and word count, for the extension work@>
+	else E->has_historically_been_used = TRUE;
 	ede->erased = FALSE;
 	ede->next_in_sorted_dictionary = NULL;
 	LOGIF(EXTENSIONS_CENSUS, "Created $d", ede);
@@ -103,9 +106,9 @@ the extension:
 				break;
 		}
 	}
-	if (Str::len(sdate) > 0) Works::set_sort_date(ede->ede_work, sdate);
-	if (wc > 0) Works::set_word_count(ede->ede_work, wc);
-	if (Str::len(udate) > 0) Works::set_usage_date(ede->ede_work, udate);
+	if (Str::len(sdate) > 0) Extensions::set_sort_date(ede->ede_extension, sdate);
+	if (wc > 0) Extensions::set_word_count(ede->ede_extension, wc);
+	if (Str::len(udate) > 0) Extensions::set_usage_date(ede->ede_extension, udate);
 	DISCARD_TEXT(sdate);
 	DISCARD_TEXT(udate);
 
@@ -126,7 +129,7 @@ void ExtensionDictionary::time_stamp(inform_extension *E) {
 		ascday[the_present->tm_wday], the_present->tm_mday,
 		ascmon[the_present->tm_mon], the_present->tm_year+1900,
 		the_present->tm_hour, the_present->tm_min);
-	ExtensionDictionary::new_ede(I"indexing",
+	ExtensionDictionary::new_ede(E, I"indexing",
 		E->as_copy->edition->work->author_name, E->as_copy->edition->work->title, dbuff);
 	DISCARD_TEXT(dbuff);
 }
@@ -146,7 +149,7 @@ void ExtensionDictionary::new_entry_from_wording(text_stream *category,
 
 void ExtensionDictionary::new_entry(text_stream *category,
 	inform_extension *E, text_stream *headword) {
-	ExtensionDictionary::new_ede(category,
+	ExtensionDictionary::new_ede(E, category,
 		E->as_copy->edition->work->author_name,
 		E->as_copy->edition->work->title, headword);
 }
@@ -206,18 +209,20 @@ void ExtensionDictionary::load_helper(text_stream *line_entry,
 	TEMPORARY_TEXT(title);
 	TEMPORARY_TEXT(headword);
 	TEMPORARY_TEXT(category);
-	for (int strokes = 0, pos = 0; strokes <= 4; pos++) {
+	TEMPORARY_TEXT(at);
+	int strokes, pos;
+	for (strokes = 0, pos = 0; strokes <= 5; pos++) {
 		wchar_t c = Str::get_at(line_entry, pos);
 		if (c == 0) break;
 		if (c == '|') {
-			if (++strokes == 5)
-				ExtensionDictionary::new_ede(category, author, title, headword);
+			if (strokes < 5) strokes++;
 		} else {
 			switch(strokes) {
 				case 1: PUT_TO(author, c); break;
 				case 2: PUT_TO(title, c); break;
 				case 3: PUT_TO(headword, c); break;
 				case 4: PUT_TO(category, c); break;
+				case 5: PUT_TO(at, c); break;
 			}
 		}
 	}
@@ -225,6 +230,21 @@ void ExtensionDictionary::load_helper(text_stream *line_entry,
 	DISCARD_TEXT(title);
 	DISCARD_TEXT(headword);
 	DISCARD_TEXT(category);
+	DISCARD_TEXT(at);
+	if (Str::len(at) == 0) {
+		inbuild_requirement *req =
+			Requirements::any_version_of(Works::new(extension_genre, title, author));
+		inbuild_search_result *R =
+			Nests::search_for_best(req, Supervisor::shared_nest_list());
+		if (R) ExtensionDictionary::new_ede(ExtensionManager::from_copy(R->copy),
+			category, author, title, headword);
+	} else {
+		filename *F = Filenames::from_text(at);
+		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
+		if (C) ExtensionDictionary::new_ede(ExtensionManager::from_copy(C),
+			category, author, title, headword);
+		else PRINT("Hapless! on %S\n", line_entry);
+	}
 }
 
 @h Writing out.
@@ -247,9 +267,9 @@ void ExtensionDictionary::write_back(void) {
 	LOOP_OVER(ede, extension_dictionary_entry)
 		if (ede->erased == FALSE) {
 			LOGIF(EXTENSIONS_CENSUS, "Writing $d", ede);
-			WRITE_TO(DICTF, "|%S|%S|%S|%S|\n",
+			WRITE_TO(DICTF, "|%S|%S|%S|%S|%f\n",
 				ede->ede_work->author_name, ede->ede_work->title,
-				ede->entry_text, ede->type);
+				ede->entry_text, ede->type, ede->ede_extension->as_copy->location_if_file);
 		} else LOGIF(EXTENSIONS_CENSUS, "Suppressing $d\n", ede);
 	LOGIF(EXTENSIONS_CENSUS, "Finished writing dictionary file\n");
 
@@ -258,28 +278,9 @@ As noted above, any entry marked |erased| is not written back to the
 dictionary file, and effectively that takes it out of the dictionary for
 subsequent runs of Inform.
 
-The following functions are for the two reasons to mark records in this way:
-first, when an extension has, accordingly to the census, been uninstalled,
-we remove its dictionary entries.
-
-=
-void ExtensionDictionary::erase_entries_of_uninstalled_extensions(void) {
-	extension_dictionary_entry *ede;
-	LOGIF(EXTENSIONS_CENSUS,
-		"Erasure of dictionary entries for uninstalled extensions\n");
-	LOOP_OVER(ede, extension_dictionary_entry)
-		if ((ede->erased == FALSE) &&
-			(Works::no_times_used_in_context(ede->ede_work, INSTALLED_WDBC) == 0)) {
-			ede->erased = TRUE;
-			LOGIF(EXTENSIONS_CENSUS, "Erased $d", ede);
-		}
-	LOGIF(EXTENSIONS_CENSUS, "Done\n");
-}
-
-@ The second reason arises when we are making the dictionary entries for an
-extension which was used on the current run. Before making new entries, we
-erase all entries left over from some previous usage of it: it may, after all,
-have changed.
+This arises when we are making the dictionary entries for an extension which
+was used on the current run. Before making new entries, we erase all entries
+left over from some previous usage of it: it may, after all, have changed.
 
 =
 void ExtensionDictionary::erase_entries_concerning(inform_extension *E) {
@@ -401,23 +402,22 @@ fact, the HTML rendering of the dictionary constructed above.
 
 =
 void ExtensionDictionary::write_to_HTML(OUTPUT_STREAM) {
-	int n;
-	int first_letter = 'a';
-	extension_dictionary_entry *ede, *previous_ede, *next_ede;
-	ExtensionDictionary::erase_entries_of_uninstalled_extensions();
-	n = ExtensionDictionary::sort_extension_dictionary();
-	if (n <= 0) return;
-	for (previous_ede = NULL, ede = first_in_sorted_dictionary; ede;
-		previous_ede = ede, ede = ede->next_in_sorted_dictionary) {
-		if (Str::eq_wide_string(ede->type, L"indexing")) continue;
-		next_ede = ede->next_in_sorted_dictionary;
-		int this_first = Characters::tolower(Str::get_first_char(ede->entry_text));
-		if (first_letter != this_first) {
-			HTML_TAG("br"); first_letter = this_first;
+	int n = ExtensionDictionary::sort_extension_dictionary();
+	if (n > 0) {
+		int first_letter = 'a';
+		for (extension_dictionary_entry *previous_ede = NULL,
+			*ede = first_in_sorted_dictionary; ede;
+			previous_ede = ede, ede = ede->next_in_sorted_dictionary) {
+			if (Str::eq_wide_string(ede->type, L"indexing")) continue;
+			extension_dictionary_entry *next_ede = ede->next_in_sorted_dictionary;
+			int this_first = Characters::tolower(Str::get_first_char(ede->entry_text));
+			if (first_letter != this_first) {
+				HTML_TAG("br"); first_letter = this_first;
+			}
+			@<Write extension dictionary entry for this headword@>;
 		}
-		@<Write extension dictionary entry for this headword@>;
+		ExtensionDictionary::list_known_extension_clashes(OUT);
 	}
-	ExtensionDictionary::list_known_extension_clashes(OUT);
 }
 
 @ A run of $N$ words which are all the same should appear in tinted type

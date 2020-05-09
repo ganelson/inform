@@ -137,7 +137,6 @@ parse tree.
 	WRITE_TO(exft, "%+W", W);
 	WRITE_TO(exfa, "%+W", AW);
 	inbuild_work *work = Works::new(extension_genre, exft, exfa);
-	Works::add_to_database(work, LOADED_WDBC);
 	semantic_version_number V = VersionNumbers::null();
 	if (version_word >= 0) V = Inclusions::parse_version(version_word);
 	semver_range *R = VersionNumberRanges::compatibility_range(V);

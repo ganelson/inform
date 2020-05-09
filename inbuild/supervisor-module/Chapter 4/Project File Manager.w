@@ -72,9 +72,7 @@ void ProjectFileManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 }
 
 inbuild_copy *ProjectFileManager::claim_file_as_copy(filename *F) {
-	inbuild_copy *C = ProjectFileManager::new_copy(Filenames::get_leafname(F), F);
-	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-	return C;
+	return ProjectFileManager::new_copy(Filenames::get_leafname(F), F);
 }
 
 @h Searching.

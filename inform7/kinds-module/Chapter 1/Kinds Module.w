@@ -8,7 +8,7 @@ which use this module:
 
 @d KINDS_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e dimensional_rule_CLASS
 @e kind_CLASS

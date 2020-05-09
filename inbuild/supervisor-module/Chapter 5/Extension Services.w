@@ -25,7 +25,11 @@ typedef struct inform_extension {
 	struct inform_project *read_into_project; /* If any */
 	struct parse_node_tree *syntax_tree;
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
-	struct linked_list *search_list; /* of |inbuild_nest| */
+	struct linked_list *search_list; /* of |inbuild_nest| */	
+	int word_count; /* or 0 if this hasn't been read (yet) */
+	struct text_stream *last_usage_date; /* perhaps on a previous run */
+	struct text_stream *sort_usage_date; /* used temporarily when sorting */	
+	int has_historically_been_used;
 	CLASS_DEFINITION
 } inform_extension;
 
@@ -46,7 +50,6 @@ void Extensions::scan(inbuild_copy *C) {
 	semantic_version_number V = VersionNumbers::null();
 	@<Scan the file@>;
 	@<Change the edition of the copy in light of the metadata found in the scan@>;
-	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	DISCARD_TEXT(claimed_author_name);
 	DISCARD_TEXT(claimed_title);
 	DISCARD_TEXT(reqs);
@@ -69,7 +72,11 @@ void Extensions::scan(inbuild_copy *C) {
 	E->syntax_tree = ParseTree::new_tree();
 	E->inclusion_sentence = NULL;
 	E->search_list = NEW_LINKED_LIST(inbuild_nest);
-
+	E->has_historically_been_used = FALSE;
+	E->word_count = 0;
+	E->last_usage_date = Str::new();
+	E->sort_usage_date = Str::new();
+	
 @ The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream |error_text|. If not, this is left
 alone, and the version number is returned.
@@ -220,6 +227,81 @@ are immutable, and need to be for the extensions dictionary to work.
 			DISCARD_TEXT(err);
 		}
 	}
+
+@h Cached metadata.
+The following data hides between runs in the //Dictionary//.
+
+=
+void Extensions::set_usage_date(inform_extension *E, text_stream *date) {
+	Str::clear(E->last_usage_date);
+	Str::copy(E->last_usage_date, date);
+}
+
+void Extensions::set_sort_date(inform_extension *E, text_stream *date) {
+	Str::clear(E->sort_usage_date);
+	Str::copy(E->sort_usage_date, date);
+}
+
+text_stream *Extensions::get_usage_date(inform_extension *E) {
+	return E->last_usage_date;
+}
+
+text_stream *Extensions::get_sort_date(inform_extension *E) {
+	return E->sort_usage_date;
+}
+
+void Extensions::set_word_count(inform_extension *E, int wc) {
+	E->word_count = wc;
+}
+
+int Extensions::get_word_count(inform_extension *E) {
+	return E->word_count;
+}
+
+text_stream *Extensions::get_sort_word_count(inform_extension *E) {
+	text_stream *T = Str::new();
+	WRITE_TO(T, "%8d", E->word_count);
+	return T;
+}
+
+int Extensions::compare_by_edition(inform_extension *E1, inform_extension *E2) {
+	if ((E1 == NULL) || (E2 == NULL)) internal_error("bad work match");
+	int d = Works::compare(E1->as_copy->edition->work, E2->as_copy->edition->work);
+	if (d != 0) return d;
+	return VersionNumbers::cmp(
+		E1->as_copy->edition->version, E2->as_copy->edition->version);
+}
+
+int Extensions::compare_by_date(inform_extension *E1, inform_extension *E2) {
+	if ((E1 == NULL) || (E2 == NULL)) internal_error("bad work match");
+	int d = Str::cmp(Extensions::get_sort_date(E2), Extensions::get_sort_date(E1));
+	if (d != 0) return d;
+	return Extensions::compare_by_edition(E1, E2);
+}
+
+int Extensions::compare_by_author(inform_extension *E1, inform_extension *E2) {
+	if ((E1 == NULL) || (E2 == NULL)) internal_error("bad work match");
+	int d = Str::cmp(E2->as_copy->edition->work->author_name,
+		E1->as_copy->edition->work->author_name);
+	if (d != 0) return d;
+	return Extensions::compare_by_edition(E1, E2);
+}
+
+int Extensions::compare_by_title(inform_extension *E1, inform_extension *E2) {
+	if ((E1 == NULL) || (E2 == NULL)) internal_error("bad work match");
+	int d = Str::cmp(E2->as_copy->edition->work->title,
+		E1->as_copy->edition->work->title);
+	if (d != 0) return d;
+	return Extensions::compare_by_edition(E1, E2);
+}
+
+int Extensions::compare_by_length(inform_extension *E1, inform_extension *E2) {
+	if ((E1 == NULL) || (E2 == NULL)) internal_error("bad work match");
+	int d = Str::cmp(
+		Extensions::get_sort_word_count(E2), Extensions::get_sort_word_count(E1));
+	if (d != 0) return d;
+	return Extensions::compare_by_edition(E1, E2);
+}
 
 @h Search list.
 Sometimes ane extension is being looked at in isolation, and then |read_into_project|

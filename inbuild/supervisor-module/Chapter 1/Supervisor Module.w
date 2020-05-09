@@ -8,7 +8,7 @@ which use this module:
 
 @d SUPERVISOR_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e build_methodology_CLASS
 @e build_script_CLASS
@@ -18,8 +18,8 @@ which use this module:
 @e control_structure_phrase_CLASS
 @e copy_error_CLASS
 @e element_activation_CLASS
-@e extension_census_datum_CLASS
 @e extension_census_CLASS
+@e extension_census_datum_CLASS
 @e extension_dictionary_entry_CLASS
 @e heading_CLASS
 @e heading_tree_CLASS
@@ -31,16 +31,14 @@ which use this module:
 @e inbuild_search_result_CLASS
 @e inbuild_work_CLASS
 @e inform_extension_CLASS
-@e inform_kit_ittt_CLASS
 @e inform_kit_CLASS
+@e inform_kit_ittt_CLASS
 @e inform_language_CLASS
 @e inform_pipeline_CLASS
 @e inform_project_CLASS
 @e inform_template_CLASS
 @e kit_dependency_CLASS
 @e known_extension_clash_CLASS
-
-@e inbuild_work_database_entry_CLASS
 
 =
 DECLARE_CLASS(build_methodology)
@@ -54,8 +52,8 @@ DECLARE_CLASS(element_activation)
 DECLARE_CLASS(extension_census_datum)
 DECLARE_CLASS(extension_census)
 DECLARE_CLASS(extension_dictionary_entry)
-DECLARE_CLASS(heading)
 DECLARE_CLASS(heading_tree)
+DECLARE_CLASS(heading)
 DECLARE_CLASS(inbuild_copy)
 DECLARE_CLASS(inbuild_edition)
 DECLARE_CLASS(inbuild_genre)
@@ -72,8 +70,6 @@ DECLARE_CLASS(inform_project)
 DECLARE_CLASS(inform_template)
 DECLARE_CLASS(kit_dependency)
 DECLARE_CLASS(known_extension_clash)
-
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inbuild_work_database_entry, 100)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

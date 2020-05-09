@@ -346,7 +346,6 @@ allowed; they should probably be withdrawn.
 	WRITE_TO(exft, "%+W", TW);
 	WRITE_TO(exfa, "%+W", AW);
 	work_identified = Works::new(extension_genre, exft, exfa);
-	Works::add_to_database(work_identified, USEWITH_WDBC);
 	DISCARD_TEXT(exft);
 	DISCARD_TEXT(exfa);
 

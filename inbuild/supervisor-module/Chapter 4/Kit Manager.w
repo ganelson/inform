@@ -92,11 +92,8 @@ void KitManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 
 inbuild_copy *KitManager::claim_folder_as_copy(pathname *P) {
 	filename *canary = Filenames::in(P, I"kit_metadata.txt");
-	if (TextFiles::exists(canary)) {
-		inbuild_copy *C = KitManager::new_copy(Pathnames::directory_name(P), P);
-		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-		return C;
-	}
+	if (TextFiles::exists(canary))
+		return KitManager::new_copy(Pathnames::directory_name(P), P);
 	return NULL;
 }
 

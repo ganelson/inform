@@ -8,7 +8,7 @@ which use this module:
 
 @d WORDS_MODULE TRUE
 
-@ To begin with, this module needs to allocate memory:
+@ This module defines the following classes:
 
 @e LEXER_TEXT_MREASON
 @e LEXER_WORDS_MREASON

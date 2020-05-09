@@ -95,9 +95,7 @@ void ExtensionManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 
 inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F) {
 	if (TextFiles::exists(F) == FALSE) return NULL;
-	inbuild_copy *C = ExtensionManager::new_copy(F);
-	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-	return C;
+	return ExtensionManager::new_copy(F);
 }
 
 @h Searching.

@@ -302,7 +302,7 @@ placeholder.
 <p class="commentary">The answer in fact depends on genre. For pipelines, languages and website
 templates, there are no dependencies, so there's nothing to build. For kits,
 extensions and projects, the task is performed by <a href="5-ks.html#SP13" class="internal">Kits::construct_graph</a>,
-<a href="5-es.html#SP5" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP24" class="internal">Projects::construct_graph</a>. Kits are
+<a href="5-es.html#SP6" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP24" class="internal">Projects::construct_graph</a>. Kits are
 graphed when the Supervisor "goes operational", because
 <a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
 every extant copy.
@@ -331,7 +331,7 @@ as the first.
 </p>
 
 <p class="commentary">Reading is performed by <a href="5-ps2.html#SP27" class="internal">Projects::read_source_text_for</a> and
-<a href="5-es.html#SP6" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
+<a href="5-es.html#SP7" class="internal">Extensions::read_source_text_for</a>. For extensions this involves reading
 only a single file, but for projects it can involve multiple files. Each
 such is read by a call to <a href="6-st.html#SP3" class="internal">SourceText::read_file</a>, which then sends out
 to the <a href="../words-module/index.html" class="internal">words</a> module to break the text file into a stream of words:

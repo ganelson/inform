@@ -71,9 +71,7 @@ void ProjectBundleManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 }
 
 inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
-	inbuild_copy *C = ProjectBundleManager::new_copy(Pathnames::directory_name(P), P);
-	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-	return C;
+	return ProjectBundleManager::new_copy(Pathnames::directory_name(P), P);
 }
 
 @h Searching.
