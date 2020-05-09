@@ -583,7 +583,7 @@ runs in linear time.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-hdn.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The above routine, then, calls <span class="extract"><span class="extract-syntax">Headings::move_below</span></span> to attach a heading
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The above function, then, calls <span class="extract"><span class="extract-syntax">Headings::move_below</span></span> to attach a heading
 to the tree as a child of a given parent:
 </p>
 
@@ -671,7 +671,7 @@ affects problem messages.
 </p>
 
 <p class="commentary">Because every file has an Implied (0) heading registered at line 1, the loop
-in the following routine is guaranteed to return a valid heading provided
+in the following function is guaranteed to return a valid heading provided
 the original source location is well formed (i.e., has a non-null source
 file and a line number of at least 1).
 </p>
@@ -705,7 +705,7 @@ file and a line number of at least 1).
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>Although Implied (0) headings do have text, contrary to the implication of
-the routine here, this text is only what happens to be first in the file,
+the function here, this text is only what happens to be first in the file,
 or else is something supplied by <a href="index.html" class="internal">supervisor</a> purely to make the debugging
 log comprehensible: it isn't a heading typed as such by the user, which is all
 that we are interested in for this purpose. So we send back a null word range.
@@ -889,7 +889,7 @@ elsewhere).
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-hdn.html#SP21">&#167;21</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="6-st.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-gnr.html">2</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-st.html">st</a></li><li class="progresscurrent">hdn</li><li class="progresssection"><a href="6-tbs.html">tbs</a></li><li class="progresssection"><a href="6-tof.html">tof</a></li><li class="progresssection"><a href="6-inc.html">inc</a></li><li class="progresssection"><a href="6-cs.html">cs</a></li><li class="progresssection"><a href="6-vmg.html">vmg</a></li><li class="progresschapter"><a href="7-dct.html">7</a></li><li class="progressnext"><a href="6-tbs.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="6-st.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-gnr.html">2</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-st.html">st</a></li><li class="progresscurrent">hdn</li><li class="progresssection"><a href="6-tbs.html">tbs</a></li><li class="progresssection"><a href="6-tof.html">tof</a></li><li class="progresssection"><a href="6-inc.html">inc</a></li><li class="progresssection"><a href="6-cs.html">cs</a></li><li class="progresssection"><a href="6-vmg.html">vmg</a></li><li class="progresschapter"><a href="7-tm.html">7</a></li><li class="progressnext"><a href="6-tbs.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

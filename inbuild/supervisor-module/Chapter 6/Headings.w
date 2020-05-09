@@ -436,7 +436,7 @@ runs in linear time.)
 		Headings::move_below(subseq, h); /* all lesser headings in the run become h's children */
 	}
 
-@ The above routine, then, calls |Headings::move_below| to attach a heading
+@ The above function, then, calls |Headings::move_below| to attach a heading
 to the tree as a child of a given parent:
 
 =
@@ -512,7 +512,7 @@ the scope of local variables in a conventional programming language. It also
 affects problem messages.
 
 Because every file has an Implied (0) heading registered at line 1, the loop
-in the following routine is guaranteed to return a valid heading provided
+in the following function is guaranteed to return a valid heading provided
 the original source location is well formed (i.e., has a non-null source
 file and a line number of at least 1).
 
@@ -545,7 +545,7 @@ inform_extension *Headings::get_extension_containing(heading *h) {
 }
 
 @ Although Implied (0) headings do have text, contrary to the implication of
-the routine here, this text is only what happens to be first in the file,
+the function here, this text is only what happens to be first in the file,
 or else is something supplied by //supervisor// purely to make the debugging
 log comprehensible: it isn't a heading typed as such by the user, which is all
 that we are interested in for this purpose. So we send back a null word range.

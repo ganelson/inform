@@ -58,6 +58,8 @@ Chapter 6: Inform Source Text
 	Virtual Machine Grammar
 
 Chapter 7: Extension Indexing
+	The Mini-Website
 	Dictionary
 	Census
-	Documentation
+	Index Pages
+	Individual Pages

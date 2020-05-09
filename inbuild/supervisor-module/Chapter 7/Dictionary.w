@@ -162,7 +162,7 @@ void ExtensionDictionary::log_entry(extension_dictionary_entry *ede) {
 }
 
 @h Reading in.
-Not a surprising routine: open, convert one line at a time to an
+Not a surprising function: open, convert one line at a time to an
 //extension_dictionary_entry// object, close.
 
 =
@@ -401,13 +401,6 @@ fact, the HTML rendering of the dictionary constructed above.
 
 =
 void ExtensionDictionary::write_to_HTML(OUTPUT_STREAM) {
-	HTML_OPEN("p");
-	WRITE("Whenever an extension is used, its definitions are entered into the "
-		"following index. (Thus, a newly installed but never-used extension "
-		"is not indexed yet.).");
-	HTML_CLOSE("p");
-	HTML::end_html_row(OUT);
-	HTML::end_html_table(OUT);
 	int n;
 	int first_letter = 'a';
 	extension_dictionary_entry *ede, *previous_ede, *next_ede;
@@ -504,11 +497,9 @@ not exemplify a clash.
 
 (c) For each extension L, there is at most one KEC whose left EDE derives
 from L and which has the "first known" flag set.
-
-(-c.1) If such a KEC does not exist, then L does not clash with any other
+If such a KEC does not exist, then L does not clash with any other
 extension.
-
-(-c.2) If such a KEC does exist, then it is the head of a linked list of
+If such a KEC does exist, then it is the head of a linked list of
 KECs all of which have lefthand EDE deriving from L, and in which no two
 entries have righthand EDEs deriving from the same extension as each other.
 

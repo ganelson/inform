@@ -321,7 +321,7 @@ void Plugins::Manage::index_VM(OUTPUT_STREAM, target_vm *VM) {
 	if (VM == NULL) internal_error("target VM not set yet");
 	Index::anchor(OUT, I"STORYFILE");
 	HTML_OPEN("p"); WRITE("Story file format: ");
-	ExtensionCensus::plot_icon(OUT, VM);
+	ExtensionIndex::plot_icon(OUT, VM);
 	TargetVMs::write(OUT, VM);
 	HTML_CLOSE("p");
 }

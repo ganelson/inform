@@ -122,7 +122,7 @@ search engine //Nests::search_for//. This builds a list of //inbuild_search_resu
 objects, each pointing to a new copy which matches the requirement given.
 
 Requirements can be quite flexible, and are converitble to and from text: see
-//Requirements::from_text// and //Requirements::write//.[2] The crucial routine
+//Requirements::from_text// and //Requirements::write//.[2] The crucial function
 here is //Requirements::meets//, which tests whether an edition meets the
 requirement.
 
@@ -399,11 +399,9 @@ according to the //build_methodology// object passed to //IncrementalBuild::buil
 to configure how it should go about its business.
 
 @h Extension census.
-That's basically everything except for a few special features to provide
-the Inform GUI apps with nice-looking documentation pages on installed
-extensions. These are constructed by a "census", when the parent calls
-//ExtensionCensus::new//. Copies for extensions are annotated with
-metadata on, for example, when they were last used, and such metadata is stored
-between runs in the //Dictionary//, and used as part of the
-//Documentation// generated for the benefit of the Inform user
-interface apps.
+That's basically everything except for the lengthy but unimportant code in
+//Chapter 7//, which constructs a mini-website of extension documentation for
+use inside the GUI app. None of this affects how builds are made. See
+//The Mini-Website// for the site's makeup. A little metadata is cached
+between runs of //inform7// in a file called the //Dictionary//, and the
+search for all installed extensions is called the //Census//.

@@ -380,7 +380,7 @@ The rubric text for an extension, which is double-quoted matter just below
 its "begins here" line, is parsed as a sentence and will be read as an
 assertion in the usual way when the material from this extension is being
 worked through (quite a long time after the EF structure was created). When
-that happens, the following routine will be called to set the rubric.
+that happens, the following function will be called to set the rubric.
 
 =
 void Extensions::set_rubric(inform_extension *E, text_stream *text) {

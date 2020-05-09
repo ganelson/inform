@@ -197,7 +197,7 @@ objects, each pointing to a new copy which matches the requirement given.
 </p>
 
 <p class="commentary">Requirements can be quite flexible, and are converitble to and from text: see
-<a href="2-rqr.html#SP3" class="internal">Requirements::from_text</a> and <a href="2-rqr.html#SP6" class="internal">Requirements::write</a>.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> The crucial routine
+<a href="2-rqr.html#SP3" class="internal">Requirements::from_text</a> and <a href="2-rqr.html#SP6" class="internal">Requirements::write</a>.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> The crucial function
 here is <a href="2-rqr.html#SP7" class="internal">Requirements::meets</a>, which tests whether an edition meets the
 requirement.
 </p>
@@ -524,18 +524,16 @@ according to the <a href="3-bm.html#SP1" class="internal">build_methodology</a> 
 to configure how it should go about its business.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Extension census. </b>That's basically everything except for a few special features to provide
-the Inform GUI apps with nice-looking documentation pages on installed
-extensions. These are constructed by a "census", when the parent calls
-<a href="7-cns.html#SP1" class="internal">ExtensionCensus::new</a>. Copies for extensions are annotated with
-metadata on, for example, when they were last used, and such metadata is stored
-between runs in the <a href="7-dct.html" class="internal">Dictionary</a>, and used as part of the
-<a href="7-dcm.html" class="internal">Documentation</a> generated for the benefit of the Inform user
-interface apps.
+<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Extension census. </b>That's basically everything except for the lengthy but unimportant code in
+<a href="7-tm.html" class="internal">Chapter 7: Extension Indexing</a>, which constructs a mini-website of extension documentation for
+use inside the GUI app. None of this affects how builds are made. See
+<a href="7-tm.html" class="internal">The Mini-Website</a> for the site's makeup. A little metadata is cached
+between runs of <a href="../inform7/index.html" class="internal">inform7</a> in a file called the <a href="7-dct.html" class="internal">Dictionary</a>, and the
+search for all installed extensions is called the <a href="7-cns.html" class="internal">Census</a>.
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-gnr.html">2</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresschapter"><a href="6-st.html">6</a></li><li class="progresschapter"><a href="7-dct.html">7</a></li><li class="progressnext"><a href="1-sm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-gnr.html">2</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresschapter"><a href="6-st.html">6</a></li><li class="progresschapter"><a href="7-tm.html">7</a></li><li class="progressnext"><a href="1-sm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

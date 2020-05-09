@@ -207,7 +207,7 @@ variable created by <a href="../../../inweb/docs/foundation-module/index.html" c
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionDictionary::time_stamp</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ExtensionDictionary::time_stamp</span></span>:<br/>Census - <a href="7-cns.html#SP6_2">&#167;6.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionDictionary::time_stamp</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ExtensionDictionary::time_stamp</span></span>:<br/>The Mini-Website - <a href="7-tm.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">dbuff</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ascday</span><span class="plain-syntax">[] = { </span><span class="string-syntax">"Sun"</span><span class="plain-syntax">, </span><span class="string-syntax">"Mon"</span><span class="plain-syntax">, </span><span class="string-syntax">"Tue"</span><span class="plain-syntax">, </span><span class="string-syntax">"Wed"</span><span class="plain-syntax">, </span><span class="string-syntax">"Thu"</span><span class="plain-syntax">, </span><span class="string-syntax">"Fri"</span><span class="plain-syntax">, </span><span class="string-syntax">"Sat"</span><span class="plain-syntax"> };</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ascmon</span><span class="plain-syntax">[] = { </span><span class="string-syntax">"January"</span><span class="plain-syntax">, </span><span class="string-syntax">"February"</span><span class="plain-syntax">, </span><span class="string-syntax">"March"</span><span class="plain-syntax">, </span><span class="string-syntax">"April"</span><span class="plain-syntax">, </span><span class="string-syntax">"May"</span><span class="plain-syntax">, </span><span class="string-syntax">"June"</span><span class="plain-syntax">,</span>
@@ -256,12 +256,12 @@ but note that it lists the erasure flag too:
 <span class="plain-syntax">        </span><span class="identifier-syntax">ede</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">entry_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">ede</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Reading in. </b>Not a surprising routine: open, convert one line at a time to an
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Reading in. </b>Not a surprising function: open, convert one line at a time to an
 <a href="7-dct.html#SP3" class="internal">extension_dictionary_entry</a> object, close.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionDictionary::read_from_file</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">ExtensionDictionary::read_from_file</span></span>:<br/>Census - <a href="7-cns.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionDictionary::read_from_file</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">ExtensionDictionary::read_from_file</span></span>:<br/>The Mini-Website - <a href="7-tm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="7-dct.html#SP1" class="function-link"><span class="function-syntax">ExtensionDictionary::filename</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">F</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 
@@ -332,7 +332,7 @@ days when overlong records were truncated.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionDictionary::write_back</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">ExtensionDictionary::write_back</span></span>:<br/>Census - <a href="7-cns.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionDictionary::write_back</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">ExtensionDictionary::write_back</span></span>:<br/>The Mini-Website - <a href="7-tm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">DICTF_struct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DICTF</span><span class="plain-syntax"> = &amp;</span><span class="identifier-syntax">DICTF_struct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="7-dct.html#SP1" class="function-link"><span class="function-syntax">ExtensionDictionary::filename</span></a><span class="plain-syntax">();</span>
@@ -525,14 +525,7 @@ fact, the HTML rendering of the dictionary constructed above.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionDictionary::write_to_HTML</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">ExtensionDictionary::write_to_HTML</span></span>:<br/>Census - <a href="7-cns.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Whenever an extension is used, its definitions are entered into the "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"following index. (Thus, a newly installed but never-used extension "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"is not indexed yet.)."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTML::end_html_row</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTML::end_html_table</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionDictionary::write_to_HTML</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">ExtensionDictionary::write_to_HTML</span></span>:<br/>Index Pages - <a href="7-ip.html#SP1_2_2">&#167;1.2.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first_letter</span><span class="plain-syntax"> = </span><span class="character-syntax">'a'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">extension_dictionary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ede</span><span class="plain-syntax">, *</span><span class="identifier-syntax">previous_ede</span><span class="plain-syntax">, *</span><span class="identifier-syntax">next_ede</span><span class="plain-syntax">;</span>
@@ -637,16 +630,12 @@ one of John Clemens's.) Different EDEs deriving from the same extension do
 not exemplify a clash.
 </li><li>(c) For each extension L, there is at most one KEC whose left EDE derives
 from L and which has the "first known" flag set.
-</li></ul>
-<p class="commentary">(-c.1) If such a KEC does not exist, then L does not clash with any other
+If such a KEC does not exist, then L does not clash with any other
 extension.
-</p>
-
-<p class="commentary">(-c.2) If such a KEC does exist, then it is the head of a linked list of
+If such a KEC does exist, then it is the head of a linked list of
 KECs all of which have lefthand EDE deriving from L, and in which no two
 entries have righthand EDEs deriving from the same extension as each other.
-</p>
-
+</li></ul>
 <p class="commentary">It follows that we can determine if extensions X and Y clash by arranging
 them as L and R (rule (a)), looking for L among the left EDEs of all KECs
 with the "first known" flag set (rule (c)), and then looking for Y among
@@ -800,7 +789,7 @@ are, if anything, a sign of life and activity.
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-dct.html#SP19">&#167;19</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="6-vmg.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-gnr.html">2</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresschapter"><a href="6-st.html">6</a></li><li class="progresscurrentchapter">7</li><li class="progresscurrent">dct</li><li class="progresssection"><a href="7-cns.html">cns</a></li><li class="progresssection"><a href="7-dcm.html">dcm</a></li><li class="progressnext"><a href="7-cns.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="7-tm.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-gnr.html">2</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresschapter"><a href="6-st.html">6</a></li><li class="progresscurrentchapter">7</li><li class="progresssection"><a href="7-tm.html">tm</a></li><li class="progresscurrent">dct</li><li class="progresssection"><a href="7-cns.html">cns</a></li><li class="progresssection"><a href="7-ip.html">ip</a></li><li class="progresssection"><a href="7-ip2.html">ip2</a></li><li class="progressnext"><a href="7-cns.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

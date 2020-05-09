@@ -9,7 +9,7 @@ project has been read in.
 
 But this isn't fast enough, because the sentence also specifies the language
 of syntax, and we need to know of any non-English choice immediately. So a
-special hook in the //syntax// module calls the following routine as soon as
+special hook in the //syntax// module calls the following function as soon as
 such a sentence is found; thus, it happens during sentence-breaking, not
 after it, and may therefore affect how subsequent sentences are broken.
 
