@@ -10,7 +10,7 @@ attached to |V|. This is only a list of steps:
 =
 typedef struct build_script {
 	struct linked_list *steps; /* of |build_step| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } build_script;
 
 build_script *BuildScripts::new(void) {

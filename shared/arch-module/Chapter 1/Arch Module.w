@@ -10,14 +10,14 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e inter_architecture_MT
-@e target_vm_MT
-@e compatibility_specification_MT
+@e inter_architecture_CLASS
+@e target_vm_CLASS
+@e compatibility_specification_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(inter_architecture)
-ALLOCATE_INDIVIDUALLY(target_vm)
-ALLOCATE_INDIVIDUALLY(compatibility_specification)
+DECLARE_CLASS(inter_architecture)
+DECLARE_CLASS(target_vm)
+DECLARE_CLASS(compatibility_specification)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

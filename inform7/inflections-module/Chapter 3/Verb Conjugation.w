@@ -25,7 +25,7 @@ typedef struct verb_conjugation {
 	#endif
 	int auxiliary_only; /* used only as an auxiliary, e.g. the "have" in "I have gone" */
 	int instance_of_verb; /* defines an instance of kind "verb" at run-time */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } verb_conjugation;
 
 typedef struct verb_tabulation {

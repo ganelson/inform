@@ -16,7 +16,7 @@ typedef struct noun_filter_token {
 	int parse_using_gpr;
 	int nft_compiled;
 	struct inter_name *nft_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } noun_filter_token;
 
 @ There are only three things we can do with these: create them, compile

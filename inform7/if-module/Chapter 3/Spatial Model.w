@@ -43,7 +43,7 @@ typedef struct spatial_data {
 	struct instance *incorp_tree_sibling;
 	int I6_definition_depth; /* i.e., how many arrows |->| appear in its I6 header */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } spatial_data;
 
 @ Here, first, are the special kinds of inference needed to store these vague

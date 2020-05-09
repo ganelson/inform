@@ -28,7 +28,7 @@ typedef struct example {
 	struct section *example_belongs_to_section[MAX_VOLUMES]; /* e.g., an example might belong to section 7 */
 	struct section *example_displayed_at_section[MAX_VOLUMES]; /* but be held back and appear at end of section 23 */
 	int example_position[MAX_VOLUMES]; /* sequence, counting from 0 */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } example;
 
 @ Examples are referenced both by a flat array (in ENO order) and in a hash

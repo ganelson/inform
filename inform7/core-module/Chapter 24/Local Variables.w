@@ -61,7 +61,7 @@ typedef struct local_variable {
 	int parsed_recently; /* name recognised since this was last wiped? */
 
 	struct local_variable *next; /* on the same slate */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } local_variable;
 
 @ A local variable needs to be stored somewhere at run-time. The obvious

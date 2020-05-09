@@ -17,7 +17,7 @@ int CodeGen::Uniqueness::run_pipeline_stage(pipeline_step *step) {
 
 typedef struct uniqueness_count {
 	int count;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } uniqueness_count;
 
 void CodeGen::Uniqueness::visitor(inter_tree *I, inter_tree_node *P, void *state) {

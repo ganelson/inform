@@ -98,7 +98,7 @@ usages in a sentence.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">verb_package</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">verb_identity</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_identity is accessed in 4/vu, 4/prp, 5/vp and here.</li></ul>
@@ -218,7 +218,7 @@ form usages can be legal for the same form, this is a bitmap:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_of_senses</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_form</span><span class="plain-syntax">; </span><span class="comment-syntax"> within the linked list for the verb</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">verb_form</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_form is accessed in 4/vu, 4/prp, 5/vp and here.</li></ul>
@@ -236,7 +236,7 @@ can be joined into a linked list. Verb meanings are described elsewhere.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">vm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_sense</span><span class="plain-syntax">; </span><span class="comment-syntax"> within the linked list for the verb form</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_sense is accessed in 4/vu, 4/prp, 5/vp and here.</li></ul>

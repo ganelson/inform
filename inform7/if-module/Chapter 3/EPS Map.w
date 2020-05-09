@@ -104,7 +104,7 @@ typedef struct rubric_holder {
 	wchar_t *colour;
 	int at_offset;
 	struct instance *offset_from;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } rubric_holder;
 
 @ Each horizontal level of the EPS map needs its own storage, not least to
@@ -124,7 +124,7 @@ typedef struct EPS_map_level {
 	int contains_titling;
 	int eps_origin;
 	struct map_parameter_scope map_parameters;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } EPS_map_level;
 
 @ The following are the directions at which arrows for UP, DOWN, IN and OUT

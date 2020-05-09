@@ -34,7 +34,7 @@ can have a permanently valid pointer to a unique new PHSF.
 =
 typedef struct ph_stack_frame_box {
 	struct ph_stack_frame boxed_phsf;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ph_stack_frame_box;
 
 @ Within each stack frame is a linked list of notes about pointer values
@@ -49,7 +49,7 @@ typedef struct pointer_allocation {
 	int offset_index; /* start of small block wrt current stack frame */
 	int offset_past; /* just past the end of the small block */
 	struct pointer_allocation *next_in_frame; /* within the linked list */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } pointer_allocation;
 
 @h Creation.

@@ -15,7 +15,7 @@ typedef struct to_phrase_request {
 	struct kind *requested_exact_kind;
 	struct kind *kind_variables_interpretation[27];
 	struct inter_name *req_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } to_phrase_request;
 
 @h Logical priority of To phrases.

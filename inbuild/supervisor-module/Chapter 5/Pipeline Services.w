@@ -10,7 +10,7 @@ in the following structure.
 typedef struct inform_pipeline {
 	struct inbuild_copy *as_copy;
 	struct semantic_version_number version;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inform_pipeline;
 
 @ This is called as soon as a new copy |C| of the language genre is created.

@@ -87,7 +87,7 @@ typedef struct settings_block {
 	struct ebook *ebook;
 	struct navigation_design *navigation;
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } settings_block;
 
 @
@@ -608,7 +608,7 @@ int Instructions::set_yn(text_stream *key, text_stream *val, text_file_position 
 typedef struct dc_metadatum {
 	struct text_stream *dc_key;
 	struct text_stream *dc_val;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } dc_metadatum;
 
 void Instructions::create_ebook_metadata(text_stream *key, text_stream *value) {

@@ -16,7 +16,7 @@ typedef struct blorb_sound {
 	struct filename *filename_of_sound_file; /* relative to the Resources folder */
 	int sound_number; /* resource number of this picture inside Blorb */
 	int alt_description; /* word number of double-quoted description */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } blorb_sound;
 
 @ And we define one type ID.

@@ -45,7 +45,7 @@ typedef struct auxiliary_file {
 	struct pathname *folder_to_release_to; /* e.g., "Sounds" */
 	struct text_stream *brief_description; /* e.g., "Collegio Magazine" */
 	int from_payload;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } auxiliary_file;
 
 @ A sentence like this allows for a shopping list of release ingredients:

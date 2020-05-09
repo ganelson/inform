@@ -23,7 +23,7 @@ typedef struct inform_kit {
 	struct text_stream *index_structure; /* for indexing projects using this kit */
 	int defines_Main; /* does the Inter code in this kit define the |Main| routine? */
 	int supports_nl; /* does the Inter code in this kit support a natural language extension? */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inform_kit;
 
 @ Kits come with an "if this then that" service for including other kits,
@@ -34,7 +34,7 @@ typedef struct inform_kit_ittt {
 	struct text_stream *if_name;
 	int if_included;
 	struct text_stream *then_name;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inform_kit_ittt;
 
 @ Kits can also enable elements of the Inform programming language: that is,
@@ -45,7 +45,7 @@ interactive fiction features of the compiler, but BasicInformKit does not.
 typedef struct element_activation {
 	struct text_stream *element_name;
 	int activate;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } element_activation;
 
 @ Here goes, then:

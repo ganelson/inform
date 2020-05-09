@@ -237,7 +237,7 @@ typedef struct binary_predicate {
 	int comparison_sign; /* ...and |+1| or |-1| according to sign of definition */
 	int *equivalence_partition; /* (if right way) partition array of equivalence classes */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } binary_predicate;
 
 @ This seems a good point to lay out a classification of all of the BPs

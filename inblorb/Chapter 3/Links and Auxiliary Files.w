@@ -15,7 +15,7 @@ typedef struct auxiliary_file {
 	struct text_stream *aux_subfolder;
 	struct text_stream *description;
 	struct text_stream *format; /* e.g., "jpg", "pdf" */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } auxiliary_file;
 
 @h Registration.

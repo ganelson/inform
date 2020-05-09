@@ -13,12 +13,12 @@ typedef struct image_usage {
 	struct text_stream *leafname;
 	int usage_count;
 	struct filename *resolved_to;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } image_usage;
 
 typedef struct image_source {
 	struct pathname *src; /* a location from which images can be taken */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } image_source;
 
 @ We can either generate entirely fresh HTML pages, or we can inject

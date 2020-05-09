@@ -10,30 +10,30 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e dimensional_rule_array_MT
-@e kind_array_MT
-@e kind_variable_declaration_MT
-@e kind_constructor_MT
-@e kind_template_definition_MT
-@e kind_macro_definition_MT
-@e kind_template_obligation_MT
-@e kind_constructor_comparison_schema_array_MT
-@e kind_constructor_casting_rule_array_MT
-@e kind_constructor_instance_array_MT
-@e unit_sequence_array_MT
+@e dimensional_rule_array_CLASS
+@e kind_array_CLASS
+@e kind_variable_declaration_CLASS
+@e kind_constructor_CLASS
+@e kind_template_definition_CLASS
+@e kind_macro_definition_CLASS
+@e kind_template_obligation_CLASS
+@e kind_constructor_comparison_schema_array_CLASS
+@e kind_constructor_casting_rule_array_CLASS
+@e kind_constructor_instance_array_CLASS
+@e unit_sequence_array_CLASS
 
 =
-ALLOCATE_IN_ARRAYS(dimensional_rule, 100)
-ALLOCATE_IN_ARRAYS(kind, 1000)
-ALLOCATE_INDIVIDUALLY(kind_variable_declaration)
-ALLOCATE_INDIVIDUALLY(kind_constructor)
-ALLOCATE_INDIVIDUALLY(kind_macro_definition)
-ALLOCATE_INDIVIDUALLY(kind_template_definition)
-ALLOCATE_INDIVIDUALLY(kind_template_obligation)
-ALLOCATE_IN_ARRAYS(kind_constructor_casting_rule, 100)
-ALLOCATE_IN_ARRAYS(kind_constructor_comparison_schema, 100)
-ALLOCATE_IN_ARRAYS(kind_constructor_instance, 100)
-ALLOCATE_IN_ARRAYS(unit_sequence, 50)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dimensional_rule, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind, 1000)
+DECLARE_CLASS(kind_variable_declaration)
+DECLARE_CLASS(kind_constructor)
+DECLARE_CLASS(kind_macro_definition)
+DECLARE_CLASS(kind_template_definition)
+DECLARE_CLASS(kind_template_obligation)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_casting_rule, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_comparison_schema, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_instance, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unit_sequence, 50)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

@@ -33,7 +33,7 @@ typedef struct request {
 	struct text_stream *details3;
 	int private; /* is this request private, i.e., not to contribute to a website? */
 	int outcome_data; /* e.g. number of bytes copied */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } request;
 
 @h Receiving requests.

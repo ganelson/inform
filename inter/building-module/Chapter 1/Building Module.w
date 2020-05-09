@@ -9,37 +9,37 @@ Setting up the use of this module.
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:
 
-@e inter_name_array_MT
-@e inter_name_generator_array_MT
-@e package_request_MT
-@e hierarchy_location_MT
-@e hierarchy_attachment_point_MT
-@e hierarchy_metadatum_MT
-@e module_package_MT
-@e submodule_identity_MT
-@e submodule_request_MT
-@e compilation_module_MT
-@e inter_schema_MT
-@e inter_schema_node_MT
-@e inter_schema_token_MT
+@e inter_name_array_CLASS
+@e inter_name_generator_array_CLASS
+@e package_request_CLASS
+@e hierarchy_location_CLASS
+@e hierarchy_attachment_point_CLASS
+@e hierarchy_metadatum_CLASS
+@e module_package_CLASS
+@e submodule_identity_CLASS
+@e submodule_request_CLASS
+@e compilation_module_CLASS
+@e inter_schema_CLASS
+@e inter_schema_node_CLASS
+@e inter_schema_token_CLASS
 
 @ With allocation functions:
 
 =
-ALLOCATE_INDIVIDUALLY(hierarchy_location)
-ALLOCATE_INDIVIDUALLY(hierarchy_attachment_point)
-ALLOCATE_INDIVIDUALLY(hierarchy_metadatum)
-ALLOCATE_INDIVIDUALLY(package_request)
-ALLOCATE_INDIVIDUALLY(module_package)
-ALLOCATE_INDIVIDUALLY(submodule_identity)
-ALLOCATE_INDIVIDUALLY(submodule_request)
-ALLOCATE_INDIVIDUALLY(compilation_module)
-ALLOCATE_INDIVIDUALLY(inter_schema)
-ALLOCATE_INDIVIDUALLY(inter_schema_node)
-ALLOCATE_INDIVIDUALLY(inter_schema_token)
+DECLARE_CLASS(hierarchy_location)
+DECLARE_CLASS(hierarchy_attachment_point)
+DECLARE_CLASS(hierarchy_metadatum)
+DECLARE_CLASS(package_request)
+DECLARE_CLASS(module_package)
+DECLARE_CLASS(submodule_identity)
+DECLARE_CLASS(submodule_request)
+DECLARE_CLASS(compilation_module)
+DECLARE_CLASS(inter_schema)
+DECLARE_CLASS(inter_schema_node)
+DECLARE_CLASS(inter_schema_token)
 
-ALLOCATE_IN_ARRAYS(inter_name, 1000)
-ALLOCATE_IN_ARRAYS(inter_name_generator, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_name, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_name_generator, 1000)
 
 #ifdef CORE_MODULE
 MAKE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)

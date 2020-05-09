@@ -146,7 +146,7 @@ record marked "to be erased" will not be saved back to the file in due course.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">erased</span><span class="plain-syntax">; </span><span class="comment-syntax"> marked to be erased</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">extension_dictionary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_in_sorted_dictionary</span><span class="plain-syntax">; </span><span class="comment-syntax"> temporary use only</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sorting</span><span class="plain-syntax">; </span><span class="comment-syntax"> temporary use only</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">extension_dictionary_entry</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure extension_dictionary_entry is accessed in 3/bg, 3/ib and here.</li></ul>
@@ -594,7 +594,7 @@ extension lexicographically earlier than the second (the right one).
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">extension_dictionary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leftx</span><span class="plain-syntax">; </span><span class="comment-syntax"> clash is between this entry...</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">extension_dictionary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rightx</span><span class="plain-syntax">; </span><span class="comment-syntax"> ...and this one</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number_clashes</span><span class="plain-syntax">; </span><span class="comment-syntax"> number of entries clashing between </span><span class="extract"><span class="extract-syntax">ede1</span></span><span class="comment-syntax"> and </span><span class="extract"><span class="extract-syntax">ede2</span></span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">known_extension_clash</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure known_extension_clash is accessed in 6/hdn, 6/inc, 7/cns and here.</li></ul>

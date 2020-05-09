@@ -8,9 +8,9 @@ Some fundamental definitions.
 
 @ We need to itemise the structures we'll want to allocate:
 
-@e known_problem_MT
+@e known_problem_CLASS
 
 @ And then expand:
 
 =
-ALLOCATE_INDIVIDUALLY(known_problem)
+DECLARE_CLASS(known_problem)

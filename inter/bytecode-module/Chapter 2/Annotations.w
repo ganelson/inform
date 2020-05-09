@@ -9,7 +9,7 @@ typedef struct inter_annotation_form {
 	inter_t annotation_ID;
 	int textual_flag;
 	struct text_stream *annotation_keyword;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_annotation_form;
 
 typedef struct inter_annotation {

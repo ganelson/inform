@@ -130,7 +130,7 @@ and in particular into a global instance of this called <span class="extract"><s
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="reserved-syntax">ebook</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">navigation_design</span><span class="plain-syntax"> *</span><span class="identifier-syntax">navigation</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">settings_block</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure settings_block is accessed in 1/mn, 1/cnf, 2/ss, 2/exm, 2/rnd, 2/rr, 2/utc, 2/haj, 2/css, 3/iu, 3/gi, 3/ei, 4/nd, 4/cm, 4/ca, 4/ct, 4/cr and here.</li></ul>
@@ -707,7 +707,7 @@ home folder, <span class="extract"><span class="extract-syntax">~~</span></span>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">dc_metadatum</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dc_key</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dc_val</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">dc_metadatum</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Instructions::create_ebook_metadata</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Instructions::create_ebook_metadata</span></span>:<br/><a href="1-ins.html#SP5_1">&#167;5.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">key</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">value</span><span class="plain-syntax">) {</span>

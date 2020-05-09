@@ -23,8 +23,8 @@ typedef struct inter_construct {
 	int usage_permissions;
 	struct text_stream *singular_name;
 	struct text_stream *plural_name;
-	METHOD_CALLS
-	MEMORY_MANAGEMENT
+	struct method_set *methods;
+	CLASS_DEFINITION
 } inter_construct;
 
 inter_construct *IC_lookup[MAX_INTER_CONSTRUCTS];
@@ -33,7 +33,7 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 	text_stream *sing,
 	text_stream *plur) {
 	inter_construct *IC = CREATE(inter_construct);
-	ENABLE_METHOD_CALLS(IC);
+	IC->methods = Methods::new_set();
 	IC->construct_ID = ID;
 	IC->construct_syntax = syntax;
 	if (ID >= MAX_INTER_CONSTRUCTS) internal_error("too many constructs");
@@ -55,11 +55,11 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 @e VERIFY_INTER_CHILDREN_MTID
 
 =
-VMETHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *, inter_line_parse *, inter_error_location *, inter_error_message **E)
-VMETHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t max, inter_error_message **E)
-VMETHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E)
-VMETHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_tree_node *P, inter_error_message **E)
-VMETHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_tree_node *P, inter_error_message **E)
+VOID_METHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *, inter_line_parse *, inter_error_location *, inter_error_message **E)
+VOID_METHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t max, inter_error_message **E)
+VOID_METHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E)
+VOID_METHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_tree_node *P, inter_error_message **E)
+VOID_METHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_tree_node *P, inter_error_message **E)
 
 @
 
@@ -172,7 +172,7 @@ inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_t
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	VMETHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, owner, &E);
+	VOID_METHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, owner, &E);
 	return E;
 }
 
@@ -180,7 +180,7 @@ inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inte
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	VMETHOD_CALL(IC, CONSTRUCT_TRANSPOSE_MTID, P, grid, max, &E);
+	VOID_METHOD_CALL(IC, CONSTRUCT_TRANSPOSE_MTID, P, grid, max, &E);
 	return E;
 }
 
@@ -204,7 +204,7 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
 	for (inter_t L=0; L<P->W.data[LEVEL_IFLD]; L++) WRITE("\t");
-	VMETHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
+	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
 	inter_t ID = Inter::Node::get_comment(P);
 	if (ID != 0) {
 		if (P->W.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
@@ -270,7 +270,7 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		if (IC->construct_syntax)
 			if (Regexp::match(&ilp.mr, ilp.line, IC->construct_syntax)) {
 				inter_error_message *E = NULL;
-				VMETHOD_CALL(IC, CONSTRUCT_READ_MTID, IBM, &ilp, eloc, &E);
+				VOID_METHOD_CALL(IC, CONSTRUCT_READ_MTID, IBM, &ilp, eloc, &E);
 				return E;
 			}
 	return Inter::Errors::plain(I"bad inter line", eloc);
@@ -328,7 +328,7 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 		return Inter::Node::error(P, M, NULL);
 	}
 	E = NULL;
-	VMETHOD_CALL(IC, VERIFY_INTER_CHILDREN_MTID, P, &E);
+	VOID_METHOD_CALL(IC, VERIFY_INTER_CHILDREN_MTID, P, &E);
 	if (E) Inter::Errors::backtrace(STDERR, P);
 	return E;
 }

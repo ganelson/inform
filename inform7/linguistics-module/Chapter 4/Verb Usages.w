@@ -40,7 +40,7 @@ typedef struct verb_usage {
 
 	struct verb_usage *next_in_search_list; /* within a linked list of all usages in length order */
 	struct verb_usage *next_within_tier;	/* within the linked list for this tier (see below) */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } verb_usage;
 
 verb_usage *regular_to_be = NULL; /* "is" */
@@ -77,7 +77,7 @@ typedef struct verb_usage_tier {
 	int priority;
 	struct verb_usage *tier_contents; /* head of linked list for this tier */
 	struct verb_usage_tier *next_tier;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } verb_usage_tier;
 
 verb_usage_tier *first_search_tier = NULL; /* head of linked list of tiers */

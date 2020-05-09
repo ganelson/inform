@@ -20,7 +20,7 @@ typedef struct response_message {
 	int launcher_compiled;
 	int via_I6; /* if responding to a rule defined by I6 code, not source text */
 	int via_I6_routine_compiled;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } response_message;
 
 @ Continuing with our naming convention for text resources at runtime, here

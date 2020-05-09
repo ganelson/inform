@@ -21,7 +21,7 @@ defined as "At 9:00 AM: ..." But two values are special:
 typedef struct use_as_event {
 	struct parse_node *where_triggered; /* sentence which specifies when this occurs */
 	struct use_as_event *next;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } use_as_event;
 
 @ Timed events are stored in two simple arrays, processed by run-time code.

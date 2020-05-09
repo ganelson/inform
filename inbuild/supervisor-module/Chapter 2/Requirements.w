@@ -13,7 +13,7 @@ we can give a semantic version number range:
 typedef struct inbuild_requirement {
 	struct inbuild_work *work;
 	struct semver_range *version_range;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inbuild_requirement;
 
 @ Here are some creators:

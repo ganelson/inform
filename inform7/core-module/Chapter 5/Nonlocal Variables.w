@@ -46,7 +46,7 @@ typedef struct nonlocal_variable {
 
 	int substitution_marker; /* to prevent infinite regress when substituting */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } nonlocal_variable;
 
 @ These three special NLVs are used for the "notable" hacky Standard Rules

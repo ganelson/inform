@@ -10,7 +10,7 @@ an implementation for conditions such as "in the presence of Mrs Dalloway".
 typedef struct loop_over_scope {
 	struct parse_node *what_to_find;
 	struct inter_name *los_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } loop_over_scope;
 
 @ =

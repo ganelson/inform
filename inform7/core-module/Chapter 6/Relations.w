@@ -23,7 +23,7 @@ typedef struct relation_guard {
 	struct inter_name *guard_test_iname;
 	struct inter_name *guard_make_true_iname;
 	struct inter_name *guard_make_false_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } relation_guard;
 
 @h Built-in relation names.

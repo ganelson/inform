@@ -12,7 +12,7 @@ typedef struct named_action_pattern {
 	struct action_pattern *first; /* list of APs defining this NAP */
 	struct wording text_of_declaration;
 	struct inter_name *nap_iname; /* for an I6 routine to test this NAP */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } named_action_pattern;
 
 @ =

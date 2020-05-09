@@ -23,7 +23,7 @@ typedef struct known_problem {
 	struct text_stream *name;
 	int contexts_observed; /* bitmap of the above bits */
 	int contexts_observed_multiple_times; /* bitmap of the above bits */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } known_problem;
 
 @ When a problem is observed, we create a dictionary entry for it, if necessary,

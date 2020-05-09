@@ -28,7 +28,7 @@ typedef struct volume {
  	struct section *sections[MAX_SECTIONS_PER_VOLUME]; /* but these count from 0 */
  	struct example *examples_sequence[MAX_EXAMPLES_PER_VOLUME]; /* also these */
 	struct dictionary *sections_by_name;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } volume;
 
 volume *volumes[MAX_VOLUMES];
@@ -46,7 +46,7 @@ typedef struct chapter {
  	struct chapter *next_chapter;
  	struct chapter *previous_chapter;
  	struct ebook_chapter *ebook_ref;
- 	MEMORY_MANAGEMENT
+ 	CLASS_DEFINITION
 } chapter;
 
 @ Sections:
@@ -71,7 +71,7 @@ typedef struct section {
   	struct section *next_section;
  	struct section *previous_section;
  	int number_within_volume;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } section;
 
 @h Volumes.

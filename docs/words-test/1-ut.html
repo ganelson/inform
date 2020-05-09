@@ -21,6 +21,7 @@ function togglePopup(material_id) {
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -81,22 +82,23 @@ function togglePopup(material_id) {
 </pre>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Preform. </b></p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">text</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">invade</span><span class="plain-syntax"> ... |    ==&gt;	</span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Invading %+W\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(&lt;</span><span class="identifier-syntax">text</span><span class="plain-syntax">&gt;, </span><span class="constant-syntax">1</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">proclaim</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">any</span><span class="plain-syntax">-</span><span class="identifier-syntax">integer</span><span class="plain-syntax">&gt; |    ==&gt;	</span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"It is now %d.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">announce</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">quoted</span><span class="plain-syntax">-</span><span class="identifier-syntax">text</span><span class="plain-syntax">&gt; |    ==&gt;	</span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Attention: %w.\n"</span><span class="plain-syntax">, </span><a href="../words-module/3-lxr.html#SP18" class="function-link"><span class="function-syntax">Lexer::word_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]));</span>
-<span class="plain-syntax">    &lt;</span><span class="identifier-syntax">declaration</span><span class="plain-syntax">&gt; |    ==&gt; </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Dominion %d now independent\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]);</span>
-<span class="plain-syntax">    ...							==&gt;	</span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Unknown command\n"</span><span class="plain-syntax">);</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;text&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">invade</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax">	TRUE; PRINT("Invading %+W\n", GET_RW(&lt;text&gt;, 1));</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">proclaim</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;any-integer&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax">	TRUE; PRINT("It is now %d.\n", R[1]);</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">announce</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;quoted-text&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax">	TRUE; PRINT("Attention: %w.\n", Lexer::word_text(R[1]));</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;declaration&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; PRINT("Dominion %d now independent\n", R[1]);</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax">	FALSE; PRINT("Unknown command\n");</span>
 
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">declaration</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">declare</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">dominion</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">independent</span><span class="plain-syntax">	==&gt;	</span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]</span>
+<span class="Preform-function-syntax">&lt;declaration&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">declare</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;dominion&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">independent</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax">	R[1]</span>
 
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">dominion</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">canada</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">india</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">malaya</span>
+<span class="Preform-function-syntax">&lt;dominion&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">canada</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">india</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">malaya</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -120,7 +122,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">            </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="../words-module/3-wrd.html#SP6" class="function-link"><span class="function-syntax">Wordings::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">-1);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">j</span><span class="plain-syntax">-1;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"command: %W: "</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (&lt;</span><span class="identifier-syntax">text</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">W</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Failed Preform\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;text&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Failed Preform\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>

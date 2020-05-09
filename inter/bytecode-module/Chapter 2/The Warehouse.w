@@ -11,7 +11,7 @@ typedef struct inter_warehouse {
 	int size;
 	int capacity;
 	struct inter_resource_holder *stored_resources;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_warehouse;
 
 @
@@ -41,7 +41,7 @@ typedef struct inter_warehouse_room {
 	int capacity;
 	inter_t *bytecode;
 	struct inter_warehouse_room *next_room;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_warehouse_room;
 
 @ =
@@ -170,7 +170,7 @@ inter_t Inter::Warehouse::store_origin(inter_warehouse *warehouse, inter_error_l
 typedef struct inter_error_stash {
 	struct inter_error_location stashed_eloc;
 	struct text_file_position stashed_tfp;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_error_stash;
 
 inter_error_location *Inter::Warehouse::retrieve_origin(inter_warehouse *warehouse, inter_t C) {

@@ -10,16 +10,16 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e name_cluster_MT
-@e individual_name_MT
-@e plural_dictionary_entry_MT
-@e verb_conjugation_MT
+@e name_cluster_CLASS
+@e individual_name_CLASS
+@e plural_dictionary_entry_CLASS
+@e verb_conjugation_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(individual_name)
-ALLOCATE_INDIVIDUALLY(name_cluster)
-ALLOCATE_INDIVIDUALLY(plural_dictionary_entry)
-ALLOCATE_INDIVIDUALLY(verb_conjugation)
+DECLARE_CLASS(individual_name)
+DECLARE_CLASS(name_cluster)
+DECLARE_CLASS(plural_dictionary_entry)
+DECLARE_CLASS(verb_conjugation)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

@@ -90,178 +90,178 @@ which use this module:
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>To begin with, this module needs to allocate memory:
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">bibliographic_datum_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">phrase_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">inference_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">property_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">property_permission_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">rulebook_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">booking_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">phrase_option_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">instance_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">table_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">table_column_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">literal_text_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">text_substitution_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">invocation_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">implication_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_list_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">use_option_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">i6_memory_setting_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">definition_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">binary_predicate_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_prop_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_func_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_prop_deferral_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">literal_pattern_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">generalisation_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">i6_schema_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">list_together_routine_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">past_tense_condition_record_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">past_tense_action_record_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">named_rulebook_outcome_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_list_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_owner_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_owner_list_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">pointer_allocation_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ph_stack_frame_box_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">i6_inclusion_matter_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">literal_list_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_meaning_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_meaning_block_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">measurement_definition_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">literal_pattern_name_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">equation_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">equation_symbol_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">equation_node_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">placement_affecting_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_crossref_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">invocation_options_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">inv_token_problem_token_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">application_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">plugin_call_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">plugin_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">nonlocal_variable_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">inference_subject_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">property_of_value_storage_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">to_phrase_request_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">constant_phrase_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">use_as_event_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">instance_usage_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">rule_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">rulebook_outcome_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">applicability_condition_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">llist_entry_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">response_message_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">table_contribution_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">contents_entry_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">local_variable_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">relation_guard_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_term_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">special_meaning_holder_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">runtime_kind_structure_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">internal_test_case_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">test_scenario_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">counting_data_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">kind_interaction_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">dval_written_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">nascent_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">value_holster_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_iname_holder_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">label_namespace_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">compile_task_data_MT</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">bibliographic_datum_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">phrase_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">inference_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">property_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">property_permission_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">rulebook_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">booking_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">phrase_option_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">instance_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">table_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">table_column_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">literal_text_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">text_substitution_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">invocation_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">implication_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_list_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">use_option_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">i6_memory_setting_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">definition_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">binary_predicate_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_prop_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_func_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_prop_deferral_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">literal_pattern_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">generalisation_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">i6_schema_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">list_together_routine_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">past_tense_condition_record_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">past_tense_action_record_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">named_rulebook_outcome_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_list_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_owner_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_owner_list_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">pointer_allocation_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ph_stack_frame_box_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">i6_inclusion_matter_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">literal_list_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_meaning_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_meaning_block_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">measurement_definition_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">literal_pattern_name_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">equation_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">equation_symbol_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">equation_node_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">placement_affecting_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_crossref_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">invocation_options_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">inv_token_problem_token_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">application_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">plugin_call_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">plugin_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">nonlocal_variable_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">inference_subject_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">property_of_value_storage_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">to_phrase_request_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">constant_phrase_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">use_as_event_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">instance_usage_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">rule_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">rulebook_outcome_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">applicability_condition_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">llist_entry_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">response_message_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">table_contribution_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">contents_entry_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">local_variable_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">relation_guard_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_term_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">special_meaning_holder_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">runtime_kind_structure_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">internal_test_case_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">test_scenario_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">counting_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">kind_interaction_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">dval_written_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">nascent_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">value_holster_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_iname_holder_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">label_namespace_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">compile_task_data_CLASS</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Deep breath, then: the following macros define several hundred functions.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">activity</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning_block</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">applicability_condition</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">binary_predicate</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">booking</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">constant_phrase</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">contents_entry</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">counting_data</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">definition</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">dval_written</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">equation_node</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">equation_symbol</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">equation</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">generalisation</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">i6_inclusion_matter</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">i6_memory_setting</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">implication</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">inference</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">instance</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">internal_test_case</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">inv_token_problem_token</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind_interaction</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">list_together_routine</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_list</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_pattern_name</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_pattern</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_text</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">llist_entry</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">measurement_definition</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">named_rulebook_outcome</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">nascent_array</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">past_tense_action_record</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">past_tense_condition_record</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop_deferral</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">ph_stack_frame_box</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">phrase</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">plugin</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">pointer_allocation</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">property_of_value_storage</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">property_permission</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">property</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">relation_guard</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">response_message</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">rule</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook_outcome</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">special_meaning_holder</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">table_column</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">table</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">test_scenario</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_substitution</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">to_phrase_request</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">use_as_event</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">use_option</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">runtime_kind_structure</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_iname_holder</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">label_namespace</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">compile_task_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">activity</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning_block</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">applicability_condition</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">binary_predicate</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">booking</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">constant_phrase</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">contents_entry</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">counting_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">definition</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">dval_written</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">equation_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">equation_symbol</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">equation</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">generalisation</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">i6_inclusion_matter</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">i6_memory_setting</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">implication</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inference</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">instance</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">internal_test_case</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inv_token_problem_token</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind_interaction</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">list_together_routine</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_list</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_pattern_name</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_pattern</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_text</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">llist_entry</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">measurement_definition</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">named_rulebook_outcome</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">nascent_array</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">past_tense_action_record</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">past_tense_condition_record</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop_deferral</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ph_stack_frame_box</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">phrase</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">plugin</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pointer_allocation</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">property_of_value_storage</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">property_permission</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">property</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">relation_guard</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">response_message</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">rule</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook_outcome</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">special_meaning_holder</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">table_column</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">table</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">test_scenario</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_substitution</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">to_phrase_request</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">use_as_event</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">use_option</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">runtime_kind_structure</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_iname_holder</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">label_namespace</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">compile_task_data</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>So much for the managed structures: now for the unmanaged structures.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">activity_crossref</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">activity_list</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">application</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">i6_schema</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">instance_usage</span><span class="plain-syntax">, </span><span class="constant-syntax">200</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">invocation_options</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">local_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_func</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">phrase_option</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">placement_affecting</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">plugin_call</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">stacked_variable_list</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">stacked_variable_owner_list</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">stacked_variable_owner</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">stacked_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">table_contribution</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">activity_crossref</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">activity_list</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">application</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">i6_schema</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">instance_usage</span><span class="plain-syntax">, </span><span class="constant-syntax">200</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">invocation_options</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">local_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_func</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">phrase_option</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">placement_affecting</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">plugin_call</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">stacked_variable_list</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">stacked_variable_owner_list</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">stacked_variable_owner</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">stacked_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">table_contribution</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Next we define some functions, by macro, which write to the debugging log
 or other text streams.

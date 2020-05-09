@@ -192,7 +192,7 @@ be the empty string: see above). The argument must not include |}|.
 @ I7 expressions can be included in I6T code exactly as in inline invocation
 definitions: thus
 = (text)
-	Constant FROG_CLASS = (+ pond-dwelling amphibian +);
+	Constant FROG_CL = (+ pond-dwelling amphibian +);
 =
 will expand "pond-dwelling amphibian" into the I6 translation of the kind
 of object with this name. Because of this syntax, one has to watch out for

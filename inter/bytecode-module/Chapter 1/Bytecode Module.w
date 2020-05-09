@@ -10,40 +10,40 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e inter_tree_MT
-@e inter_tree_node_array_MT
-@e inter_warehouse_MT
-@e inter_warehouse_room_MT
-@e inter_symbols_table_MT
-@e inter_symbol_array_MT
-@e inter_annotation_array_MT
-@e inter_data_type_MT
-@e inter_construct_MT
-@e inter_annotation_form_MT
-@e inter_error_location_MT
-@e inter_error_message_MT
-@e inter_error_stash_MT
-@e inter_package_MT
-@e inter_node_list_MT
-@e inter_node_list_entry_MT
+@e inter_tree_CLASS
+@e inter_tree_node_array_CLASS
+@e inter_warehouse_CLASS
+@e inter_warehouse_room_CLASS
+@e inter_symbols_table_CLASS
+@e inter_symbol_array_CLASS
+@e inter_annotation_array_CLASS
+@e inter_data_type_CLASS
+@e inter_construct_CLASS
+@e inter_annotation_form_CLASS
+@e inter_error_location_CLASS
+@e inter_error_message_CLASS
+@e inter_error_stash_CLASS
+@e inter_package_CLASS
+@e inter_node_list_CLASS
+@e inter_node_list_entry_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(inter_tree)
-ALLOCATE_INDIVIDUALLY(inter_warehouse)
-ALLOCATE_INDIVIDUALLY(inter_warehouse_room)
-ALLOCATE_INDIVIDUALLY(inter_symbols_table)
-ALLOCATE_INDIVIDUALLY(inter_data_type)
-ALLOCATE_INDIVIDUALLY(inter_construct)
-ALLOCATE_INDIVIDUALLY(inter_annotation_form)
-ALLOCATE_INDIVIDUALLY(inter_error_location)
-ALLOCATE_INDIVIDUALLY(inter_error_message)
-ALLOCATE_INDIVIDUALLY(inter_error_stash)
-ALLOCATE_INDIVIDUALLY(inter_package)
-ALLOCATE_INDIVIDUALLY(inter_node_list)
-ALLOCATE_INDIVIDUALLY(inter_node_list_entry)
-ALLOCATE_IN_ARRAYS(inter_symbol, 1024)
-ALLOCATE_IN_ARRAYS(inter_tree_node, 8192)
-ALLOCATE_IN_ARRAYS(inter_annotation, 8192)
+DECLARE_CLASS(inter_tree)
+DECLARE_CLASS(inter_warehouse)
+DECLARE_CLASS(inter_warehouse_room)
+DECLARE_CLASS(inter_symbols_table)
+DECLARE_CLASS(inter_data_type)
+DECLARE_CLASS(inter_construct)
+DECLARE_CLASS(inter_annotation_form)
+DECLARE_CLASS(inter_error_location)
+DECLARE_CLASS(inter_error_message)
+DECLARE_CLASS(inter_error_stash)
+DECLARE_CLASS(inter_package)
+DECLARE_CLASS(inter_node_list)
+DECLARE_CLASS(inter_node_list_entry)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_symbol, 1024)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_tree_node, 8192)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_annotation, 8192)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

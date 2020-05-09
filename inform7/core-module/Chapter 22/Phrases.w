@@ -69,7 +69,7 @@ typedef struct phrase {
 	struct phrase *next_in_logical_order; /* for "to..." phrases only */
 	int sequence_count; /* within the logical order list, from 0 */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } phrase;
 
 @ "To..." phrases, though no others, are listed in logical precedence order:

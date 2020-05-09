@@ -21,7 +21,7 @@ typedef struct command_index_entry {
 	struct text_stream *command_headword; /* text of command headword, such as "REMOVE" */
 	struct grammar_verb *gv_indexed; /* ...leading to... */
 	struct command_index_entry *next_alphabetically; /* next in linked list */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } command_index_entry;
 
 command_index_entry *sorted_command_index = NULL; /* in alphabetical order of |text| */

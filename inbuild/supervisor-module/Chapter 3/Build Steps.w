@@ -11,14 +11,14 @@ Each different skill is an instance of:
 =
 typedef struct build_skill {
 	struct text_stream *name;
-	METHOD_CALLS
-	MEMORY_MANAGEMENT
+	struct method_set *methods;
+	CLASS_DEFINITION
 } build_skill;
 
 build_skill *BuildSteps::new_skill(text_stream *name) {
 	build_skill *S = CREATE(build_skill);
 	S->name = Str::duplicate(name);
-	ENABLE_METHOD_CALLS(S);
+	S->methods = Methods::new_set();
 	return S;
 }
 
@@ -31,10 +31,10 @@ one is absent then the skill can't be performed that way.
 @e BUILD_SKILL_INTERNAL_MTID
 
 =
-VMETHOD_TYPE(BUILD_SKILL_COMMAND_MTID,
+VOID_METHOD_TYPE(BUILD_SKILL_COMMAND_MTID,
 	build_skill *S, build_step *BS, text_stream *command, build_methodology *meth,
 	linked_list *search)
-IMETHOD_TYPE(BUILD_SKILL_INTERNAL_MTID,
+INT_METHOD_TYPE(BUILD_SKILL_INTERNAL_MTID,
 	build_skill *S, build_step *BS, build_methodology *meth, linked_list *search)
 
 @h Build steps.
@@ -51,7 +51,7 @@ typedef struct build_step {
 	struct inter_architecture *for_arch;
 	int for_release;
 	struct inbuild_copy *associated_copy; /* e.g., the Inform project causing this work */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } build_step;
 
 @ We build scripts for a vertex by attaching one step at a time to it:
@@ -91,13 +91,13 @@ int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM,
 }
 
 @<Work out a shell command, and perhaps print or call it@> =
-	VMETHOD_CALL(S->what_to_do, BUILD_SKILL_COMMAND_MTID, S, command, BM, search_list);
+	VOID_METHOD_CALL(S->what_to_do, BUILD_SKILL_COMMAND_MTID, S, command, BM, search_list);
 	if (Str::len(command) > 0) rv = BuildSteps::shell(command, BM);
 
 @<Perform the skill internally if that's called for@> =
 	if (BM->methodology == INTERNAL_METHODOLOGY) {
 		int returned = 0;
-		IMETHOD_CALL(returned, S->what_to_do, BUILD_SKILL_INTERNAL_MTID, S, BM, search_list);
+		INT_METHOD_CALL(returned, S->what_to_do, BUILD_SKILL_INTERNAL_MTID, S, BM, search_list);
 		if (returned != TRUE) rv = FALSE;
 	}
 

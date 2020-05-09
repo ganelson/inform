@@ -29,7 +29,7 @@ typedef struct definition {
 	struct wording condition_to_match; /* text of condition to match, if |+1| or |-1| */
 	struct wording domain_calling; /* what if anything the term is called */
 	struct adjective_meaning *am_of_def; /* which adjective meaning */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } definition;
 
 @h The adjectives traverse.

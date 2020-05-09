@@ -68,7 +68,7 @@ typedef struct property {
 	struct inference_subject *condition_of; /* or is it a condition of an object? */
 	int condition_anonymously_named; /* if so, is it named just "... condition"? */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } property;
 
 @ The only four properties which have special significance to core Inform

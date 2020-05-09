@@ -100,7 +100,7 @@ can have a permanently valid pointer to a unique new PHSF.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ph_stack_frame_box</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ph_stack_frame</span><span class="plain-syntax"> </span><span class="identifier-syntax">boxed_phsf</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ph_stack_frame_box</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ph_stack_frame_box is private to this section.</li></ul>
@@ -117,7 +117,7 @@ for which memory allocation and deallocation will be needed:
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">offset_index</span><span class="plain-syntax">; </span><span class="comment-syntax"> start of small block wrt current stack frame</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">offset_past</span><span class="plain-syntax">; </span><span class="comment-syntax"> just past the end of the small block</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pointer_allocation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_in_frame</span><span class="plain-syntax">; </span><span class="comment-syntax"> within the linked list</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">pointer_allocation</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pointer_allocation is accessed in 26/rt and here.</li></ul>

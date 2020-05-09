@@ -18,7 +18,7 @@ typedef struct control_structure_phrase {
 	int requires_new_syntax;
 	int allow_run_on;
 	wchar_t *keyword;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } control_structure_phrase;
 
 @ =

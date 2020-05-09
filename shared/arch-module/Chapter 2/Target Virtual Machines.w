@@ -18,7 +18,7 @@ typedef struct target_vm {
 	struct text_stream *default_browser_interpreter; /* e.g., "Parchment" */
 	struct text_stream *iFiction_format_name; /* e.g., "zcode": see the Treaty of Babel */
 	int supports_floating_point;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } target_vm;
 
 target_vm *TargetVMs::new(text_stream *code, text_stream *nick, semantic_version_number V,

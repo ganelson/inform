@@ -15,7 +15,7 @@ typedef struct counting_data {
 	struct property *instance_count_prop; /* the (|I6| only) IK-Count property for this kind */
 	struct property *instance_link_prop; /* the (|I6| only) IK-Link property for this kind */
 	int has_instances; /* are there any instances of this kind? */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } counting_data;
 
 @ In addition to these I6 properties, two for each kind, there's a single

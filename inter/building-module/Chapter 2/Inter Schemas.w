@@ -38,7 +38,7 @@ typedef struct inter_schema {
 	struct inter_schema_node *node_tree; /* the structure */
 	int mid_case; /* does this seem to be used inside a switch case? */
 	int dereference_mode; /* emit from this in dereference-pointers mode */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_schema;
 
 @ =
@@ -88,7 +88,7 @@ typedef struct inter_schema_node {
 
 	int blocked_by_conditional;						/* used in code generation */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_schema_node;
 
 @ =
@@ -251,7 +251,7 @@ typedef struct inter_schema_token {
 	int preinsert;								/* fleeting markers only */
 	int postinsert;
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_schema_token;
 
 @ =

@@ -70,7 +70,7 @@ typedef struct inference {
 	struct parse_node *inferred_property_value; /* and its value, if any */
 
 	struct inference *next; /* next in list of inferences on same subject */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inference;
 
 @h Creation.

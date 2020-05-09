@@ -35,6 +35,7 @@ function togglePopup(material_id) {
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -141,7 +142,7 @@ containers, for instance, where the parameter is 3 or 17 respectively.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">can_be_used_in_assertions</span><span class="plain-syntax">; </span><span class="comment-syntax"> can be used in assertion sentences</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">negated_quant</span><span class="plain-syntax">; </span><span class="comment-syntax"> the logically converse determiner</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">log_text</span><span class="plain-syntax">; </span><span class="comment-syntax"> to be used in the debugging log when logging propositions</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure quantifier is private to this section.</li></ul>
@@ -186,7 +187,7 @@ are stored in the <span class="extract"><span class="extract-syntax">determiner<
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">takes_number</span><span class="plain-syntax">; </span><span class="comment-syntax"> does a number follow? (e.g. for "at least N"</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quantifier_meant</span><span class="plain-syntax">; </span><span class="comment-syntax"> meaning of this quantifier</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_text</span><span class="plain-syntax">; </span><span class="comment-syntax"> used in the Phrasebook index lexicon</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">determiner</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure determiner is private to this section.</li></ul>
@@ -461,7 +462,7 @@ options open.
 <span class="reserved-syntax">determiner</span><span class="plain-syntax"> *</span><span class="function-syntax">Quantifiers::det_new</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::det_new</span></span>:<br/><a href="3-daq.html#SP18_1">&#167;18.1</a>, <a href="3-daq.html#SP18_2">&#167;18.2</a>, <a href="3-daq.html#SP18_3">&#167;18.3</a>, <a href="3-daq.html#SP18_4">&#167;18.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">num</span><span class="plain-syntax">, </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quant</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">wa</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pr</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">wa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WordAssemblages::lit_0</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">wa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Preform::Nonparsing::wording</span><span class="plain-syntax">(&lt;</span><span class="reserved-syntax">determiner</span><span class="plain-syntax">-</span><span class="identifier-syntax">names</span><span class="plain-syntax">&gt;, </span><span class="identifier-syntax">pr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">wa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Preform::Nonparsing::wording</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;determiner-names&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">pr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">determiner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">det</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">determiner</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">det</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_of_det</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wa</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">det</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">takes_number</span><span class="plain-syntax"> = </span><span class="identifier-syntax">num</span><span class="plain-syntax">;</span>
@@ -484,35 +485,36 @@ it's empty of text: this is the determiner in "three blind mice", where
 no text appears in front of the number "three".
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="reserved-syntax">determiner</span><span class="plain-syntax">-</span><span class="identifier-syntax">names</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">all</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">each</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">every</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">no</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">none</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">some</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">any</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">all</span><span class="plain-syntax"> </span><span class="identifier-syntax">but</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">all</span><span class="plain-syntax"> </span><span class="identifier-syntax">except</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">almost</span><span class="plain-syntax"> </span><span class="identifier-syntax">all</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">almost</span><span class="plain-syntax"> </span><span class="identifier-syntax">no</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">most</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">under</span><span class="plain-syntax"> </span><span class="identifier-syntax">half</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">least</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">most</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">exactly</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">fewer</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">less</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">greater</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">other</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;determiner-names&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">all</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">each</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">every</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">none</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">some</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">any</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">all</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">but</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">all</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">except</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">almost</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">all</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">almost</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">most</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">under</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">half</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">least</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">most</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">exactly</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">fewer</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">than</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">less</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">than</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">more</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">than</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">greater</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">than</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">other</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">than</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Parsing the determiner at the head of a noun phrase. </b>We run through the possible determiners in reverse creation order, choosing the
 first which matches. The following returns \(-1\) if nothing was found, or
 else the first word number after the determiner words, and in that case
-it also writes a pointer to the quantifier meant to <span class="extract"><span class="extract-syntax">*which_quant</span></span> and the
-parameter value to <span class="extract"><span class="extract-syntax">*which_P</span></span>.
+it also writes a pointer to the quantifier meant to <span class="extract"><span class="Preform-extract-syntax">*which_quant</span></span> and the
+parameter value to <span class="extract"><span class="Preform-extract-syntax">*which_P</span></span>.
 </p>
 
 <p class="commentary">(Reverse order is used really only to make sure "all but" and "all except"
@@ -521,9 +523,9 @@ are tried before "all".)
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Quantifiers::parse_against_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">which_P</span><span class="plain-syntax">, </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> **</span><span class="identifier-syntax">which_quant</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (&lt;</span><span class="identifier-syntax">excluded</span><span class="plain-syntax">-</span><span class="identifier-syntax">from</span><span class="plain-syntax">-</span><span class="identifier-syntax">determiners</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">not_flag</span><span class="plain-syntax"> = &lt;</span><span class="identifier-syntax">negated</span><span class="plain-syntax">-</span><span class="identifier-syntax">clause</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">not_flag</span><span class="plain-syntax">) </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(&lt;</span><span class="identifier-syntax">negated</span><span class="plain-syntax">-</span><span class="identifier-syntax">clause</span><span class="plain-syntax">&gt;, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;excluded-from-determiners&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">not_flag</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;negated-clause&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">not_flag</span><span class="plain-syntax">) </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;negated-clause&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    *</span><span class="identifier-syntax">which_P</span><span class="plain-syntax"> = -1; *</span><span class="identifier-syntax">which_quant</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
@@ -560,12 +562,13 @@ It's legal to include "of the":
 names like "three of clubs", meaning a single playing card.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">determination</span><span class="plain-syntax">-</span><span class="identifier-syntax">of</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> ... |    ==&gt; </span><span class="identifier-syntax">TRUE</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">of</span><span class="plain-syntax"> ... |    ==&gt; </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FAIL_NONTERMINAL</span>
-<span class="plain-syntax">    ...					==&gt; </span><span class="identifier-syntax">TRUE</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;determination-of&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; return FAIL_NONTERMINAL</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>English has an awkward ambiguity here: what does this mean?
 </p>
 
@@ -583,15 +586,16 @@ to stop this reading, so that we can read "no one" as if it were "nobody".
 from determiner parsing:
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">excluded</span><span class="plain-syntax">-</span><span class="identifier-syntax">from</span><span class="plain-syntax">-</span><span class="identifier-syntax">determiners</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">no</span><span class="plain-syntax"> </span><span class="identifier-syntax">one</span><span class="plain-syntax"> ***</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;excluded-from-determiners&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">one</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>We attempt to see if the word range begins with (or consists of) text which
 refers to the given determiner, returning the first word past this text and
 also (where appropriate) setting the number specified. For instance, for
-"at least three doors are open" and the <span class="extract"><span class="extract-syntax">at_least_determiner</span></span> we would
-return the word "doors" and set <span class="extract"><span class="extract-syntax">which_P</span></span> to 3.
+"at least three doors are open" and the <span class="extract"><span class="Preform-extract-syntax">at_least_determiner</span></span> we would
+return the word "doors" and set <span class="extract"><span class="Preform-extract-syntax">which_P</span></span> to 3.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -603,14 +607,14 @@ return the word "doors" and set <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::from</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">x</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">det</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">takes_number</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((&lt;</span><span class="identifier-syntax">cardinal</span><span class="plain-syntax">-</span><span class="identifier-syntax">number</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">Wordings::one_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) ||</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;cardinal-number&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::one_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">Word::unexpectedly_upper_case</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::trim_first_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">parameter</span><span class="plain-syntax"> = &lt;&lt;</span><span class="identifier-syntax">r</span><span class="plain-syntax">&gt;&gt;;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">parameter</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (&lt;</span><span class="identifier-syntax">determination</span><span class="plain-syntax">-</span><span class="identifier-syntax">of</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(&lt;</span><span class="identifier-syntax">determination</span><span class="plain-syntax">-</span><span class="identifier-syntax">of</span><span class="plain-syntax">&gt;, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;determination-of&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;determination-of&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        *</span><span class="identifier-syntax">which_P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">parameter</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="3-aap.html#SP6" class="function-link"><span class="function-syntax">Articles::remove_the</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>

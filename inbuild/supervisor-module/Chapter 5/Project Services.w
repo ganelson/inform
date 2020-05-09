@@ -26,7 +26,7 @@ typedef struct inform_project {
 	int fix_rng;
 	int compile_for_release;
 	int compile_only;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inform_project;
 
 @ This is called as soon as a new copy |C| of the language genre is created.
@@ -315,7 +315,7 @@ typedef struct kit_dependency {
 	struct inform_kit *kit;
 	struct inform_language *because_of_language;
 	struct inform_kit *because_of_kit;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } kit_dependency;
 
 @ =

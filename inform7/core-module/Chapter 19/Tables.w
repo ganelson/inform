@@ -36,7 +36,7 @@ typedef struct table {
 	int no_columns; /* must be at least 1 */
 	struct table_column_usage columns[MAX_COLUMNS_PER_TABLE];
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } table;
 
 @ For indexing purposes only:

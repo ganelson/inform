@@ -16,7 +16,7 @@ typedef struct inform_language {
 	struct wording language_field[MAX_LANGUAGE_FIELDS]; /* contents of the |about.txt| fields */
 	int adaptive_person; /* which person (one of constants below) text subs are written from */
 	int Preform_loaded; /* has a Preform syntax definition been read for this? */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inform_language;
 
 @ This is called as soon as a new copy |C| of the language genre is created.

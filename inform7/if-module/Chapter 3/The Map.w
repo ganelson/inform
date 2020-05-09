@@ -46,7 +46,7 @@ typedef struct map_data {
 	struct map_parameter_scope local_map_parameters; /* temporary: used in EPS mapping */
 	int eps_x, eps_y;
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } map_data;
 
 @ It's obvious why the kinds direction and door are special. It's not so
@@ -95,7 +95,7 @@ typedef struct door_dir_notice {
 	struct instance *R1;
 	struct instance *D1;
 	struct instance *D2;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } door_dir_notice;
 
 typedef struct door_to_notice {
@@ -103,7 +103,7 @@ typedef struct door_to_notice {
 	struct instance *door;
 	struct instance *R1;
 	struct instance *R2;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } door_to_notice;
 
 @h Initialisation.

@@ -245,7 +245,7 @@ void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
 	inbuild_genre *G;
 	LOOP_OVER(G, inbuild_genre)
 		if (C == NULL)
-			VMETHOD_CALL(G, GENRE_CLAIM_AS_COPY_MTID, &C, arg, ext, directory_status);
+			VOID_METHOD_CALL(G, GENRE_CLAIM_AS_COPY_MTID, &C, arg, ext, directory_status);
 	DISCARD_TEXT(ext);
 	if (C == NULL) {
 		if (throwing_error) Errors::with_text("unable to identify '%S'", arg);

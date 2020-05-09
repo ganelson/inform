@@ -21,7 +21,7 @@ typedef struct pipeline_stage {
 	int (*execute)(void *);
 	int stage_arg; /* one of the |*_ARG| values above */
 	int takes_repository;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } pipeline_stage;
 
 pipeline_stage *CodeGen::Stage::new(text_stream *name, int (*X)(struct pipeline_step *), int arg, int tr) {

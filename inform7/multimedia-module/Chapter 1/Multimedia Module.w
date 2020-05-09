@@ -10,14 +10,14 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e blorb_figure_MT
-@e blorb_sound_MT
-@e external_file_MT
+@e blorb_figure_CLASS
+@e blorb_sound_CLASS
+@e external_file_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(blorb_figure)
-ALLOCATE_INDIVIDUALLY(blorb_sound)
-ALLOCATE_INDIVIDUALLY(external_file)
+DECLARE_CLASS(blorb_figure)
+DECLARE_CLASS(blorb_sound)
+DECLARE_CLASS(external_file)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

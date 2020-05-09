@@ -30,40 +30,40 @@ void Basics::end(void) {
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:
 
-@e settings_block_MT
-@e volume_MT
-@e chapter_MT
-@e section_MT
-@e formatted_file_MT
-@e indexing_category_MT
-@e index_lemma_MT
-@e example_index_data_MT
-@e image_source_MT
-@e image_usage_MT
-@e example_MT
-@e CSS_tweak_data_MT
-@e span_notation_MT
-@e dc_metadatum_MT
-@e navigation_design_MT
+@e settings_block_CLASS
+@e volume_CLASS
+@e chapter_CLASS
+@e section_CLASS
+@e formatted_file_CLASS
+@e indexing_category_CLASS
+@e index_lemma_CLASS
+@e example_index_data_CLASS
+@e image_source_CLASS
+@e image_usage_CLASS
+@e example_CLASS
+@e CSS_tweak_data_CLASS
+@e span_notation_CLASS
+@e dc_metadatum_CLASS
+@e navigation_design_CLASS
 
 @ And then expand:
 
 =
-ALLOCATE_INDIVIDUALLY(settings_block)
-ALLOCATE_INDIVIDUALLY(volume)
-ALLOCATE_INDIVIDUALLY(chapter)
-ALLOCATE_INDIVIDUALLY(section)
-ALLOCATE_INDIVIDUALLY(formatted_file)
-ALLOCATE_INDIVIDUALLY(indexing_category)
-ALLOCATE_INDIVIDUALLY(index_lemma)
-ALLOCATE_INDIVIDUALLY(example_index_data)
-ALLOCATE_INDIVIDUALLY(image_source)
-ALLOCATE_INDIVIDUALLY(image_usage)
-ALLOCATE_INDIVIDUALLY(example)
-ALLOCATE_INDIVIDUALLY(CSS_tweak_data)
-ALLOCATE_INDIVIDUALLY(span_notation)
-ALLOCATE_INDIVIDUALLY(dc_metadatum)
-ALLOCATE_INDIVIDUALLY(navigation_design)
+DECLARE_CLASS(settings_block)
+DECLARE_CLASS(volume)
+DECLARE_CLASS(chapter)
+DECLARE_CLASS(section)
+DECLARE_CLASS(formatted_file)
+DECLARE_CLASS(indexing_category)
+DECLARE_CLASS(index_lemma)
+DECLARE_CLASS(example_index_data)
+DECLARE_CLASS(image_source)
+DECLARE_CLASS(image_usage)
+DECLARE_CLASS(example)
+DECLARE_CLASS(CSS_tweak_data)
+DECLARE_CLASS(span_notation)
+DECLARE_CLASS(dc_metadatum)
+DECLARE_CLASS(navigation_design)
 
 @h The Unicode for section.
 Since this doesn't lie in the ASCII character range, I'll refer to it by

@@ -203,7 +203,7 @@ typedef struct dval_written {
 	kind *K_written;
 	inter_t v1;
 	inter_t v2;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } dval_written;
 
 void Emit::ensure_defaultvalue(kind *K) {
@@ -355,7 +355,7 @@ typedef struct nascent_array {
 	inter_t *entry_data2;
 	struct nascent_array *up;
 	struct nascent_array *down;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } nascent_array;
 
 nascent_array *first_A = NULL, *current_A = NULL;

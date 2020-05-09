@@ -37,7 +37,7 @@ typedef struct copy_error {
 	struct inbuild_work *details_work2;
 	wchar_t *details_word;
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } copy_error;
 
 @ And now some creators.

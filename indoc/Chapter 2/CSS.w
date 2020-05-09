@@ -27,7 +27,7 @@ typedef struct CSS_tweak_data {
 	int css_plus; /* 1 for "augment this style", 0 for "replace this style" */
 	int css_to_be_added;
 	struct volume *within_volume;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } CSS_tweak_data;
 
 @ Span notations allow markup such as |this is *dreadful*| to represent
@@ -48,7 +48,7 @@ typedef struct span_notation {
 	wchar_t sp_right[MAX_PATTERN_LENGTH];	/* wide C string: and end pattern */
 	int sp_right_len;
 	struct text_stream *sp_style;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } span_notation;
 
 @h Requesting CSS tweaks.

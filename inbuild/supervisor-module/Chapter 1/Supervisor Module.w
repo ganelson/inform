@@ -10,70 +10,70 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e build_methodology_MT
-@e build_script_MT
-@e build_skill_MT
-@e build_step_MT
-@e build_vertex_MT
-@e control_structure_phrase_MT
-@e copy_error_MT
-@e element_activation_MT
-@e extension_census_datum_MT
-@e extension_census_MT
-@e extension_dictionary_entry_MT
-@e heading_MT
-@e heading_tree_MT
-@e inbuild_copy_MT
-@e inbuild_edition_MT
-@e inbuild_genre_MT
-@e inbuild_nest_MT
-@e inbuild_requirement_MT
-@e inbuild_search_result_MT
-@e inbuild_work_MT
-@e inform_extension_MT
-@e inform_kit_ittt_MT
-@e inform_kit_MT
-@e inform_language_MT
-@e inform_pipeline_MT
-@e inform_project_MT
-@e inform_template_MT
-@e kit_dependency_MT
-@e known_extension_clash_MT
+@e build_methodology_CLASS
+@e build_script_CLASS
+@e build_skill_CLASS
+@e build_step_CLASS
+@e build_vertex_CLASS
+@e control_structure_phrase_CLASS
+@e copy_error_CLASS
+@e element_activation_CLASS
+@e extension_census_datum_CLASS
+@e extension_census_CLASS
+@e extension_dictionary_entry_CLASS
+@e heading_CLASS
+@e heading_tree_CLASS
+@e inbuild_copy_CLASS
+@e inbuild_edition_CLASS
+@e inbuild_genre_CLASS
+@e inbuild_nest_CLASS
+@e inbuild_requirement_CLASS
+@e inbuild_search_result_CLASS
+@e inbuild_work_CLASS
+@e inform_extension_CLASS
+@e inform_kit_ittt_CLASS
+@e inform_kit_CLASS
+@e inform_language_CLASS
+@e inform_pipeline_CLASS
+@e inform_project_CLASS
+@e inform_template_CLASS
+@e kit_dependency_CLASS
+@e known_extension_clash_CLASS
 
-@e inbuild_work_database_entry_array_MT
+@e inbuild_work_database_entry_array_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(build_methodology)
-ALLOCATE_INDIVIDUALLY(build_script)
-ALLOCATE_INDIVIDUALLY(build_skill)
-ALLOCATE_INDIVIDUALLY(build_step)
-ALLOCATE_INDIVIDUALLY(build_vertex)
-ALLOCATE_INDIVIDUALLY(control_structure_phrase)
-ALLOCATE_INDIVIDUALLY(copy_error)
-ALLOCATE_INDIVIDUALLY(element_activation)
-ALLOCATE_INDIVIDUALLY(extension_census_datum)
-ALLOCATE_INDIVIDUALLY(extension_census)
-ALLOCATE_INDIVIDUALLY(extension_dictionary_entry)
-ALLOCATE_INDIVIDUALLY(heading)
-ALLOCATE_INDIVIDUALLY(heading_tree)
-ALLOCATE_INDIVIDUALLY(inbuild_copy)
-ALLOCATE_INDIVIDUALLY(inbuild_edition)
-ALLOCATE_INDIVIDUALLY(inbuild_genre)
-ALLOCATE_INDIVIDUALLY(inbuild_nest)
-ALLOCATE_INDIVIDUALLY(inbuild_requirement)
-ALLOCATE_INDIVIDUALLY(inbuild_search_result)
-ALLOCATE_INDIVIDUALLY(inbuild_work)
-ALLOCATE_INDIVIDUALLY(inform_extension)
-ALLOCATE_INDIVIDUALLY(inform_kit_ittt)
-ALLOCATE_INDIVIDUALLY(inform_kit)
-ALLOCATE_INDIVIDUALLY(inform_language)
-ALLOCATE_INDIVIDUALLY(inform_pipeline)
-ALLOCATE_INDIVIDUALLY(inform_project)
-ALLOCATE_INDIVIDUALLY(inform_template)
-ALLOCATE_INDIVIDUALLY(kit_dependency)
-ALLOCATE_INDIVIDUALLY(known_extension_clash)
+DECLARE_CLASS(build_methodology)
+DECLARE_CLASS(build_script)
+DECLARE_CLASS(build_skill)
+DECLARE_CLASS(build_step)
+DECLARE_CLASS(build_vertex)
+DECLARE_CLASS(control_structure_phrase)
+DECLARE_CLASS(copy_error)
+DECLARE_CLASS(element_activation)
+DECLARE_CLASS(extension_census_datum)
+DECLARE_CLASS(extension_census)
+DECLARE_CLASS(extension_dictionary_entry)
+DECLARE_CLASS(heading)
+DECLARE_CLASS(heading_tree)
+DECLARE_CLASS(inbuild_copy)
+DECLARE_CLASS(inbuild_edition)
+DECLARE_CLASS(inbuild_genre)
+DECLARE_CLASS(inbuild_nest)
+DECLARE_CLASS(inbuild_requirement)
+DECLARE_CLASS(inbuild_search_result)
+DECLARE_CLASS(inbuild_work)
+DECLARE_CLASS(inform_extension)
+DECLARE_CLASS(inform_kit_ittt)
+DECLARE_CLASS(inform_kit)
+DECLARE_CLASS(inform_language)
+DECLARE_CLASS(inform_pipeline)
+DECLARE_CLASS(inform_project)
+DECLARE_CLASS(inform_template)
+DECLARE_CLASS(kit_dependency)
+DECLARE_CLASS(known_extension_clash)
 
-ALLOCATE_IN_ARRAYS(inbuild_work_database_entry, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inbuild_work_database_entry, 100)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

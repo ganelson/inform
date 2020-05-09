@@ -20,7 +20,7 @@ typedef struct activity {
 	struct wording av_documentation_symbol; /* cross-reference to HTML documentation, if any */
 	int activity_indexed; /* has this been indexed yet? */
 	struct activity_crossref *cross_references;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } activity;
 
 typedef struct activity_list {

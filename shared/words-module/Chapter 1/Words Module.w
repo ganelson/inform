@@ -13,20 +13,20 @@ which use this module:
 @e LEXER_TEXT_MREASON
 @e LEXER_WORDS_MREASON
 
-@e source_file_MT
-@e vocabulary_entry_array_MT
-@e nonterminal_MT
-@e production_MT
-@e production_list_MT
-@e ptoken_MT
+@e source_file_CLASS
+@e vocabulary_entry_array_CLASS
+@e nonterminal_CLASS
+@e production_CLASS
+@e production_list_CLASS
+@e ptoken_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(source_file)
-ALLOCATE_IN_ARRAYS(vocabulary_entry, 100)
-ALLOCATE_INDIVIDUALLY(nonterminal)
-ALLOCATE_INDIVIDUALLY(production_list)
-ALLOCATE_INDIVIDUALLY(production)
-ALLOCATE_INDIVIDUALLY(ptoken)
+DECLARE_CLASS(source_file)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(vocabulary_entry, 100)
+DECLARE_CLASS(nonterminal)
+DECLARE_CLASS(production_list)
+DECLARE_CLASS(production)
+DECLARE_CLASS(ptoken)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

@@ -63,7 +63,7 @@ typedef struct grammar_verb {
 	int slashed; /* slashing has been done */
 	int determined; /* determination has been done */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } grammar_verb;
 
 @ A few imperative verbs are reserved for Inform testing, such as SHOWME.
@@ -72,7 +72,7 @@ We record those as instances of the following:
 =
 typedef struct reserved_command_verb {
 	text_stream *reserved_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } reserved_command_verb;
 
 @ We begin as usual with a constructor and some debug log tracing.

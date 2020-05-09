@@ -37,7 +37,7 @@ typedef struct noun {
 	struct inter_name *nt_iname;
 	struct name_resolution_data name_resolution; /* see the Headings section on this */
 	#endif
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } noun;
 
 @h Creation.

@@ -24,7 +24,7 @@ typedef struct backdrop_found_in_notice {
 	struct instance *backdrop;
 	struct inter_name *found_in_routine_iname;
 	int many_places;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } backdrop_found_in_notice;
 
 @h Initialisation.

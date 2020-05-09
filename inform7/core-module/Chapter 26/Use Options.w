@@ -31,7 +31,7 @@ typedef struct use_option {
 	int option_used; /* set if this option has been taken */
 	int source_file_scoped; /* scope is the current source file only? */
 	int minimum_setting_value; /* for those which are numeric */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } use_option;
 
 @ Five of the pragma-like settings are stored here:
@@ -59,7 +59,7 @@ by hand with a sentence in the source text.
 typedef struct i6_memory_setting {
 	struct text_stream *ICL_identifier; /* see the DM4 for the I6 memory setting names */
 	int number; /* e.g., |50000| means "at least 50,000" */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } i6_memory_setting;
 
 @ Here first is the sentence handler for "Use ... means ..." sentences.

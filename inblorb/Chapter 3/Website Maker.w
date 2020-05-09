@@ -13,7 +13,7 @@ scanning the source text for typographically significant structures:
 typedef struct table {
 	int table_line_start; /* line number in the source where the table heading appears */
 	int table_line_end; /* line number of the blank line which marks the end of the table body */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } table;
 
 typedef struct heading {
@@ -22,7 +22,7 @@ typedef struct heading {
 	int heading_has_content; /* is there anything other than white space before the next heading? */
 	struct segment *heading_to_segment; /* which segment contains the heading */
 	struct text_stream *heading_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } heading;
 
 @ Segments are used to divide the source text into pieces of what we hope will
@@ -72,7 +72,7 @@ typedef struct segment {
 	struct text_stream *link_previous;
 	struct text_stream *link_next;
 	int page_number;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } segment;
 
 @h Styling with CSS.

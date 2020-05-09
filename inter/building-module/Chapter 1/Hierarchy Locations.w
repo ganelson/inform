@@ -92,7 +92,7 @@ typedef struct hierarchy_location {
 	struct inter_name *equates_to_iname;
 	struct text_stream *package_type;
 	struct name_translation trans;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } hierarchy_location;
 
 hierarchy_location *HierarchyLocations::new(void) {
@@ -305,7 +305,7 @@ typedef struct hierarchy_attachment_point {
 	struct text_stream *name_stem;
 	struct text_stream *type;
 	struct location_requirement requirements;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } hierarchy_attachment_point;
 
 void HierarchyLocations::index_ap(inter_tree *I, hierarchy_attachment_point *hap) {
@@ -358,7 +358,7 @@ typedef struct hierarchy_metadatum {
 	int hm_id;
 	struct text_stream *key;
 	struct location_requirement requirements;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } hierarchy_metadatum;
 
 void HierarchyLocations::index_md(inter_tree *I, hierarchy_metadatum *hmd) {

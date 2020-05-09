@@ -160,7 +160,7 @@ typedef struct nonterminal {
 	int watched; /* watch goings-on to the debugging log */
 	int nonterminal_tries; /* used only in instrumented mode */
 	int nonterminal_matches; /* ditto */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } nonterminal;
 
 @ Each (external) nonterminal is then defined by lists of productions:
@@ -173,7 +173,7 @@ typedef struct production_list {
 	struct production *first_production;
 	struct production_list *next_production_list;
 	struct match_avinue *as_avinue; /* when compiled to a trie rather than for Preform */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } production_list;
 
 @ So now we reach the production, which encodes a typical "row" of grammar;
@@ -234,7 +234,7 @@ typedef struct production {
 	struct wording sample_text; /* ditto */
 
 	struct production *next_production; /* within its production list */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } production;
 
 @ And at the bottom of the chain, the lowly ptoken. Even this can spawn another
@@ -294,7 +294,7 @@ typedef struct ptoken {
 	struct range_requirement token_req;
 
 	struct ptoken *next_ptoken; /* within its production list */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ptoken;
 
 @ The parser records the result of the most recently matched nonterminal in the

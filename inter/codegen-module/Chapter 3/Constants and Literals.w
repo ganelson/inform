@@ -291,7 +291,7 @@ int CodeGen::CL::constant_depth_inner(inter_symbol *con) {
 typedef struct text_literal_holder {
 	struct text_stream *definition_code;
 	struct text_stream *literal_content;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } text_literal_holder;
 
 text_stream *CodeGen::CL::literal_text_at(code_generation *gen, text_stream *S) {

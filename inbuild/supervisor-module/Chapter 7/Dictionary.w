@@ -62,7 +62,7 @@ typedef struct extension_dictionary_entry {
 	int erased; /* marked to be erased */
 	struct extension_dictionary_entry *next_in_sorted_dictionary; /* temporary use only */
 	struct text_stream *sorting; /* temporary use only */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } extension_dictionary_entry;
 
 @ =
@@ -463,7 +463,7 @@ typedef struct known_extension_clash {
 	struct extension_dictionary_entry *leftx; /* clash is between this entry... */
 	struct extension_dictionary_entry *rightx; /* ...and this one */
 	int number_clashes; /* number of entries clashing between |ede1| and |ede2| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } known_extension_clash;
 
 @ =

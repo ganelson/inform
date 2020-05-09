@@ -34,7 +34,7 @@ typedef struct pcalc_prop_deferral {
 	struct package_request *ppd_package; /* where to put both of the following: */
 	struct inter_name *ppd_iname; /* routine to implement this */
 	struct inter_name *rtp_iname; /* compile a string of the origin text for run-time problems? */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } pcalc_prop_deferral;
 
 @h The guillotine.

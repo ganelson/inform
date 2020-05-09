@@ -15,7 +15,7 @@ typedef struct source_file {
 	int words_of_quoted_text; /* word count for text in double-quotes */
 	FILE *handle; /* file handle while open */
 	general_pointer your_ref; /* for the client to attach some meaning */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } source_file;
 
 @h Feeding whole files into the lexer.

@@ -10,36 +10,36 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e adjectival_phrase_MT
-@e adjective_usage_array_MT
-@e quantifier_MT
-@e determiner_MT
-@e verb_identity_MT
-@e verb_form_MT
-@e verb_meaning_array_MT
-@e verb_sense_MT
-@e verb_usage_MT
-@e verb_usage_tier_MT
-@e preposition_identity_MT
-@e time_period_array_MT
-@e excerpt_meaning_MT
-@e noun_MT
+@e adjectival_phrase_CLASS
+@e adjective_usage_array_CLASS
+@e quantifier_CLASS
+@e determiner_CLASS
+@e verb_identity_CLASS
+@e verb_form_CLASS
+@e verb_meaning_array_CLASS
+@e verb_sense_CLASS
+@e verb_usage_CLASS
+@e verb_usage_tier_CLASS
+@e preposition_identity_CLASS
+@e time_period_array_CLASS
+@e excerpt_meaning_CLASS
+@e noun_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(adjectival_phrase)
-ALLOCATE_IN_ARRAYS(adjective_usage, 1000)
-ALLOCATE_INDIVIDUALLY(quantifier)
-ALLOCATE_INDIVIDUALLY(determiner)
-ALLOCATE_INDIVIDUALLY(verb_identity)
-ALLOCATE_INDIVIDUALLY(verb_form)
-ALLOCATE_IN_ARRAYS(verb_meaning, 100)
-ALLOCATE_INDIVIDUALLY(verb_sense)
-ALLOCATE_INDIVIDUALLY(verb_usage)
-ALLOCATE_INDIVIDUALLY(verb_usage_tier)
-ALLOCATE_INDIVIDUALLY(preposition_identity)
-ALLOCATE_IN_ARRAYS(time_period, 100)
-ALLOCATE_INDIVIDUALLY(excerpt_meaning)
-ALLOCATE_INDIVIDUALLY(noun)
+DECLARE_CLASS(adjectival_phrase)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(adjective_usage, 1000)
+DECLARE_CLASS(quantifier)
+DECLARE_CLASS(determiner)
+DECLARE_CLASS(verb_identity)
+DECLARE_CLASS(verb_form)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(verb_meaning, 100)
+DECLARE_CLASS(verb_sense)
+DECLARE_CLASS(verb_usage)
+DECLARE_CLASS(verb_usage_tier)
+DECLARE_CLASS(preposition_identity)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(time_period, 100)
+DECLARE_CLASS(excerpt_meaning)
+DECLARE_CLASS(noun)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

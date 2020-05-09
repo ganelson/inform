@@ -23,7 +23,7 @@ typedef struct inbuild_work {
 	struct text_stream *title;
 	struct text_stream *raw_title;
 	int inbuild_work_hash_code; /* hash code derived from the above */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inbuild_work;
 
 @ Each work structure is written only once, and its title and author name are
@@ -105,7 +105,7 @@ As noted above, the raw forms are used for output.
 
 =
 void Works::write(OUTPUT_STREAM, inbuild_work *work) {
-	VMETHOD_CALL(work->genre, GENRE_WRITE_WORK_MTID, OUT, work);
+	VOID_METHOD_CALL(work->genre, GENRE_WRITE_WORK_MTID, OUT, work);
 }
 
 void Works::write_to_HTML_file(OUTPUT_STREAM, inbuild_work *work, int fancy) {

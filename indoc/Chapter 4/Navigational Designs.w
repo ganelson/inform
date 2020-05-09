@@ -14,8 +14,8 @@ typedef struct navigation_design {
 	int simplified_examples;
 	int simplified_letter_rows;
 	struct text_stream *contents_body_class;
-	METHOD_CALLS
-	MEMORY_MANAGEMENT
+	struct method_set *methods;
+	CLASS_DEFINITION
 } navigation_design;
 
 navigation_design *Nav::new(text_stream *code, int e, int p) {
@@ -78,23 +78,23 @@ At the front end of a section, before any of its text.
 @e RENDER_SECTION_TITLE_MTID
 
 =
-VMETHOD_TYPE(RENDER_VOLUME_TITLE_MTID, navigation_design *ND, text_stream *OUT, volume *V)
-VMETHOD_TYPE(RENDER_CHAPTER_TITLE_MTID, navigation_design *ND, text_stream *OUT, volume *V, chapter *C)
-VMETHOD_TYPE(RENDER_SECTION_TITLE_MTID, navigation_design *ND, text_stream *OUT, volume *V, chapter *C, section *S)
+VOID_METHOD_TYPE(RENDER_VOLUME_TITLE_MTID, navigation_design *ND, text_stream *OUT, volume *V)
+VOID_METHOD_TYPE(RENDER_CHAPTER_TITLE_MTID, navigation_design *ND, text_stream *OUT, volume *V, chapter *C)
+VOID_METHOD_TYPE(RENDER_SECTION_TITLE_MTID, navigation_design *ND, text_stream *OUT, volume *V, chapter *C, section *S)
 
 void Nav::render_navigation_top(OUTPUT_STREAM, volume *V, section *S) {
 	if (indoc_settings->insertion_filename)
 		HTML::incorporate_HTML(OUT, indoc_settings->insertion_filename);
 
-	if (V->sections[0] == S) VMETHOD_CALL(indoc_settings->navigation, RENDER_VOLUME_TITLE_MTID, OUT, V);
+	if (V->sections[0] == S) VOID_METHOD_CALL(indoc_settings->navigation, RENDER_VOLUME_TITLE_MTID, OUT, V);
 
 	chapter *C = S->begins_which_chapter;
-	if (C) VMETHOD_CALL(indoc_settings->navigation, RENDER_CHAPTER_TITLE_MTID, OUT, V, C);
+	if (C) VOID_METHOD_CALL(indoc_settings->navigation, RENDER_CHAPTER_TITLE_MTID, OUT, V, C);
 
 	if (indoc_settings->html_for_Inform_application)
 		@<Write HTML comments giving the Inform user interface search assistance@>;
 
-	VMETHOD_CALL(indoc_settings->navigation, RENDER_SECTION_TITLE_MTID, OUT, V, C, S);
+	VOID_METHOD_CALL(indoc_settings->navigation, RENDER_SECTION_TITLE_MTID, OUT, V, C, S);
 }
 
 @<Write HTML comments giving the Inform user interface search assistance@> =
@@ -116,13 +116,13 @@ And this is a variant for index pages, such as the index of examples.
 @e RENDER_INDEX_TOP_MTID
 
 =
-VMETHOD_TYPE(RENDER_INDEX_TOP_MTID, navigation_design *ND, text_stream *OUT, text_stream *filename, text_stream *title)
+VOID_METHOD_TYPE(RENDER_INDEX_TOP_MTID, navigation_design *ND, text_stream *OUT, text_stream *filename, text_stream *title)
 
 void Nav::render_navigation_index_top(OUTPUT_STREAM, text_stream *filename, text_stream *title) {
 	if (indoc_settings->insertion_filename)
 		HTML::incorporate_HTML(OUT, indoc_settings->insertion_filename);
 
-	VMETHOD_CALL(indoc_settings->navigation, RENDER_INDEX_TOP_MTID, OUT, filename, title);
+	VOID_METHOD_CALL(indoc_settings->navigation, RENDER_INDEX_TOP_MTID, OUT, filename, title);
 }
 
 @h Middle.
@@ -131,10 +131,10 @@ At the middle part, when the text is over, but before any example cues.
 @e RENDER_NAV_MIDDLE_MTID
 
 =
-VMETHOD_TYPE(RENDER_NAV_MIDDLE_MTID, navigation_design *ND, text_stream *OUT, volume *V, section *S)
+VOID_METHOD_TYPE(RENDER_NAV_MIDDLE_MTID, navigation_design *ND, text_stream *OUT, volume *V, section *S)
 
 void Nav::render_navigation_middle(OUTPUT_STREAM, volume *V, section *S) {
-	VMETHOD_CALL(indoc_settings->navigation, RENDER_NAV_MIDDLE_MTID, OUT, V, S);
+	VOID_METHOD_CALL(indoc_settings->navigation, RENDER_NAV_MIDDLE_MTID, OUT, V, S);
 }
 
 @h Example top.
@@ -144,7 +144,7 @@ one example will be:
 @e RENDER_EXAMPLE_TOP_MTID
 
 =
-VMETHOD_TYPE(RENDER_EXAMPLE_TOP_MTID, navigation_design *ND, text_stream *OUT, volume *V, section *S)
+VOID_METHOD_TYPE(RENDER_EXAMPLE_TOP_MTID, navigation_design *ND, text_stream *OUT, volume *V, section *S)
 
 void Nav::render_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
 
@@ -162,7 +162,7 @@ void Nav::render_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
 
 	if (indoc_settings->format == HTML_FORMAT) { HTML_CLOSE("p"); } else WRITE("\n\n");
 
-	VMETHOD_CALL(indoc_settings->navigation, RENDER_EXAMPLE_TOP_MTID, OUT, V, S);
+	VOID_METHOD_CALL(indoc_settings->navigation, RENDER_EXAMPLE_TOP_MTID, OUT, V, S);
 }
 
 @h Example bottom.
@@ -172,7 +172,7 @@ last example is rendered, provided at least one example has been.
 @e RENDER_EXAMPLE_BOTTOM_MTID
 
 =
-VMETHOD_TYPE(RENDER_EXAMPLE_BOTTOM_MTID, navigation_design *ND, text_stream *OUT, volume *V, section *S)
+VOID_METHOD_TYPE(RENDER_EXAMPLE_BOTTOM_MTID, navigation_design *ND, text_stream *OUT, volume *V, section *S)
 
 void Nav::render_navigation_example_bottom(OUTPUT_STREAM, volume *V, section *S) {
 	if (indoc_settings->format == PLAIN_FORMAT) WRITE("\n\n");
@@ -183,7 +183,7 @@ void Nav::render_navigation_example_bottom(OUTPUT_STREAM, volume *V, section *S)
 		HTML::end_div(OUT);
 	}
 
-	VMETHOD_CALL(indoc_settings->navigation, RENDER_EXAMPLE_BOTTOM_MTID, OUT, V, S);
+	VOID_METHOD_CALL(indoc_settings->navigation, RENDER_EXAMPLE_BOTTOM_MTID, OUT, V, S);
 }
 
 @h Bottom.
@@ -193,11 +193,11 @@ bodied. (In a section with no examples, this immediately follows the middle.)
 @e RENDER_NAV_BOTTOM_MTID
 
 =
-VMETHOD_TYPE(RENDER_NAV_BOTTOM_MTID, navigation_design *ND, text_stream *OUT, volume *V, section *S)
+VOID_METHOD_TYPE(RENDER_NAV_BOTTOM_MTID, navigation_design *ND, text_stream *OUT, volume *V, section *S)
 
 void Nav::render_navigation_bottom(OUTPUT_STREAM, volume *V, section *S) {
 	if (indoc_settings->format == HTML_FORMAT) HTML::comment(OUT, I"START IGNORE");
-	VMETHOD_CALL(indoc_settings->navigation, RENDER_NAV_BOTTOM_MTID, OUT, V, S);
+	VOID_METHOD_CALL(indoc_settings->navigation, RENDER_NAV_BOTTOM_MTID, OUT, V, S);
 	if (indoc_settings->format == HTML_FORMAT) HTML::comment(OUT, I"END IGNORE");
 }
 
@@ -208,13 +208,13 @@ Midnight provides a contents page of its very own.
 @e RENDER_CONTENTS_HEADING_MTID
 
 =
-VMETHOD_TYPE(RENDER_CONTENTS_MTID, navigation_design *ND)
-VMETHOD_TYPE(RENDER_CONTENTS_HEADING_MTID, navigation_design *ND, text_stream *OUT, volume *V)
+VOID_METHOD_TYPE(RENDER_CONTENTS_MTID, navigation_design *ND)
+VOID_METHOD_TYPE(RENDER_CONTENTS_HEADING_MTID, navigation_design *ND, text_stream *OUT, volume *V)
 
 void Nav::render_navigation_contents_files(void) {
-	VMETHOD_CALLV(indoc_settings->navigation, RENDER_CONTENTS_MTID);
+	VOID_METHOD_CALL_WITHOUT_ARGUMENTS(indoc_settings->navigation, RENDER_CONTENTS_MTID);
 }
 
 void Nav::navigation_contents_heading(OUTPUT_STREAM, volume *V) {
-	VMETHOD_CALL(indoc_settings->navigation, RENDER_CONTENTS_HEADING_MTID, OUT, V);
+	VOID_METHOD_CALL(indoc_settings->navigation, RENDER_CONTENTS_HEADING_MTID, OUT, V);
 }

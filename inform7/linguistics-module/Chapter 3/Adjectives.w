@@ -38,7 +38,7 @@ typedef struct adjectival_phrase {
 	struct package_request *aph_package;
 	#endif
 	ADJECTIVE_MEANING_TYPE *meanings;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } adjectival_phrase;
 
 @ The following declares a new adjective, creating it only if necessary:

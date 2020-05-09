@@ -37,7 +37,7 @@ typedef struct scene {
 	int indexed; /* temporary storage during Scenes index creation */
 	struct parse_node *scene_declared_at; /* where defined */
 	struct parse_node *anchor_condition_set[MAX_SCENE_ENDS]; /* where set */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } scene;
 
 @ The following either/or property needs some compiler support:

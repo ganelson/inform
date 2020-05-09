@@ -23,7 +23,7 @@ typedef struct compile_task_data {
 	int stage_of_compilation;
 	int next_resource_number;
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } compile_task_data;
 
 @ An early and perhaps arguable design decision for inform7 was that it would

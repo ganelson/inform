@@ -18,7 +18,7 @@ typedef struct plugin {
 	void *starter_routine;
 	int now_plugged_in;
 	int stores_data;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } plugin;
 
 @

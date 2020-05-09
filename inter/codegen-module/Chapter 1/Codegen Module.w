@@ -10,30 +10,30 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e I6T_intervention_MT
-@e codegen_pipeline_MT
-@e pipeline_step_MT
-@e uniqueness_count_MT
-@e text_literal_holder_MT
-@e routine_body_request_MT
-@e pipeline_stage_MT
-@e code_generation_target_MT
-@e code_generation_MT
-@e generated_segment_MT
-@e link_instruction_MT
+@e I6T_intervention_CLASS
+@e codegen_pipeline_CLASS
+@e pipeline_step_CLASS
+@e uniqueness_count_CLASS
+@e text_literal_holder_CLASS
+@e routine_body_request_CLASS
+@e pipeline_stage_CLASS
+@e code_generation_target_CLASS
+@e code_generation_CLASS
+@e generated_segment_CLASS
+@e link_instruction_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(I6T_intervention)
-ALLOCATE_INDIVIDUALLY(codegen_pipeline)
-ALLOCATE_INDIVIDUALLY(pipeline_step)
-ALLOCATE_INDIVIDUALLY(uniqueness_count)
-ALLOCATE_INDIVIDUALLY(text_literal_holder)
-ALLOCATE_INDIVIDUALLY(routine_body_request)
-ALLOCATE_INDIVIDUALLY(pipeline_stage)
-ALLOCATE_INDIVIDUALLY(code_generation_target)
-ALLOCATE_INDIVIDUALLY(code_generation)
-ALLOCATE_INDIVIDUALLY(generated_segment)
-ALLOCATE_INDIVIDUALLY(link_instruction)
+DECLARE_CLASS(I6T_intervention)
+DECLARE_CLASS(codegen_pipeline)
+DECLARE_CLASS(pipeline_step)
+DECLARE_CLASS(uniqueness_count)
+DECLARE_CLASS(text_literal_holder)
+DECLARE_CLASS(routine_body_request)
+DECLARE_CLASS(pipeline_stage)
+DECLARE_CLASS(code_generation_target)
+DECLARE_CLASS(code_generation)
+DECLARE_CLASS(generated_segment)
+DECLARE_CLASS(link_instruction)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

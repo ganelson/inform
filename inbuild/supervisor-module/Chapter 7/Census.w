@@ -11,7 +11,7 @@ typedef struct extension_census {
 	struct linked_list *census_data; /* of |extension_census_datum| */
 	struct linked_list *raw_data; /* of |inbuild_search_result| */
 	int no_census_errors;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } extension_census;
 
 @ Here |proj| will be null in case (a), and will be the project just
@@ -56,7 +56,7 @@ typedef struct extension_census_datum {
 	struct inbuild_search_result *found_as;
 	int overriding_a_built_in_extension; /* not built in, but overriding one which is */
 	struct extension_census_datum *next; /* next one in lexicographic order */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } extension_census_datum;
 
 @ An ECD is actually a wrapper for an //inform_extension// object in disguise,

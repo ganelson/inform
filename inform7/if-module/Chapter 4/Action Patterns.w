@@ -64,7 +64,7 @@ typedef struct ap_optional_clause {
 	struct parse_node *clause_spec;
 	int allow_region_as_room;
 	struct ap_optional_clause *next;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ap_optional_clause;
 
 @ When we parse action patterns, we record why they fail, in order to make

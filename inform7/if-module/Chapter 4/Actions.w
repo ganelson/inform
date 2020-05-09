@@ -61,7 +61,7 @@ typedef struct action_name {
 	int an_specification_text_word; /* description used in index */
 	int an_index_group; /* paragraph number it belongs to (1, 2, 3, ...) */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } action_name;
 
 @

@@ -19,15 +19,15 @@ the instance |kit_genre| and provides its method functions.
 typedef struct inbuild_genre {
 	text_stream *genre_name;
 	int stored_in_nests;
-	METHOD_CALLS
-	MEMORY_MANAGEMENT
+	struct method_set *methods;
+	CLASS_DEFINITION
 } inbuild_genre;
 
 inbuild_genre *Genres::new(text_stream *name, int nested) {
 	inbuild_genre *gen = CREATE(inbuild_genre);
 	gen->genre_name = Str::duplicate(name);
 	gen->stored_in_nests = nested;
-	ENABLE_METHOD_CALLS(gen);
+	gen->methods = Methods::new_set();
 	return gen;
 }
 
@@ -68,7 +68,7 @@ by Emily Short".
 @e GENRE_WRITE_WORK_MTID
 
 =
-VMETHOD_TYPE(GENRE_WRITE_WORK_MTID,
+VOID_METHOD_TYPE(GENRE_WRITE_WORK_MTID,
 	inbuild_genre *gen, text_stream *OUT, inbuild_work *work)
 
 @ This looks at a textual file locator, which might be a pathname or a
@@ -84,7 +84,7 @@ attached to the copy for later issuing.
 @e GENRE_CLAIM_AS_COPY_MTID
 
 =
-VMETHOD_TYPE(GENRE_CLAIM_AS_COPY_MTID,
+VOID_METHOD_TYPE(GENRE_CLAIM_AS_COPY_MTID,
 	inbuild_genre *gen, inbuild_copy **C, text_stream *arg, text_stream *ext,
 	int directory_status)
 
@@ -96,7 +96,7 @@ not provide this method, then nothing of that genre can ever appear in
 @e GENRE_SEARCH_NEST_FOR_MTID
 
 =
-VMETHOD_TYPE(GENRE_SEARCH_NEST_FOR_MTID,
+VOID_METHOD_TYPE(GENRE_SEARCH_NEST_FOR_MTID,
 	inbuild_genre *gen, inbuild_nest *N, inbuild_requirement *req,
 	linked_list *search_results)
 
@@ -114,7 +114,7 @@ of it from there.
 @e GENRE_READ_SOURCE_TEXT_FOR_MTID
 
 =
-VMETHOD_TYPE(GENRE_READ_SOURCE_TEXT_FOR_MTID,
+VOID_METHOD_TYPE(GENRE_READ_SOURCE_TEXT_FOR_MTID,
 	inbuild_genre *gen, inbuild_copy *C)
 
 @ At the Graph Construction phase of Inbuild, each copy is offered the chance
@@ -128,7 +128,7 @@ provides it) which has been claimed by Inbuild.
 @e GENRE_CONSTRUCT_GRAPH_MTID
 
 =
-VMETHOD_TYPE(GENRE_CONSTRUCT_GRAPH_MTID,
+VOID_METHOD_TYPE(GENRE_CONSTRUCT_GRAPH_MTID,
 	inbuild_genre *gen, inbuild_copy *C)
 
 @ This method is called when a copy is about to be built or have its graph
@@ -142,7 +142,7 @@ is ignored for other inspection options such as |-use-missing|.)
 @e GENRE_BUILDING_SOON_MTID
 
 =
-VMETHOD_TYPE(GENRE_BUILDING_SOON_MTID,
+VOID_METHOD_TYPE(GENRE_BUILDING_SOON_MTID,
 	inbuild_genre *gen, inbuild_copy *C, build_vertex **V)
 
 @ This duplicates, or syncs, a copy |C| of a work in our genre, placing it
@@ -152,6 +152,6 @@ the Inbuild command-line options |-copy-to N| and |-sync-to N|.
 @e GENRE_COPY_TO_NEST_MTID
 
 =
-VMETHOD_TYPE(GENRE_COPY_TO_NEST_MTID,
+VOID_METHOD_TYPE(GENRE_COPY_TO_NEST_MTID,
 	inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N, int syncing,
 	build_methodology *meth)

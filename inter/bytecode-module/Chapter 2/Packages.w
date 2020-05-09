@@ -12,7 +12,7 @@ typedef struct inter_package {
 	struct inter_symbols_table *package_scope;
 	int package_flags;
 	struct dictionary *name_lookup;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_package;
 
 @

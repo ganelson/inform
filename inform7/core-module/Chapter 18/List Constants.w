@@ -29,7 +29,7 @@ typedef struct literal_list {
 
 	int list_compiled; /* lists are compiled at several different points: has this one been done? */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } literal_list;
 
 @ I believe "llath" is the Welsh word for "mile": not sure about "llist".
@@ -38,7 +38,7 @@ typedef struct literal_list {
 typedef struct llist_entry {
 	struct parse_node *llist_entry_value;
 	struct llist_entry *next_llist_entry;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } llist_entry;
 
 @ One of the few pieces of Inform syntax which wouldn't look out of place in

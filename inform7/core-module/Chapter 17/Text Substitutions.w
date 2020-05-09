@@ -28,7 +28,7 @@ typedef struct text_substitution {
 	struct inter_name *ts_routine_iname; /* the routine to implement it */
 	int ts_sb_needed; /* reference copy of small block needed as a constant? */
 	struct compilation_module *belongs_to_module;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } text_substitution;
 
 @ We are only allowed to create new ones until the following is set:

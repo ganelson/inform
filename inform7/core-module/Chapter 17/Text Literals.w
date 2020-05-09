@@ -56,7 +56,7 @@ typedef struct literal_text {
 	int small_block_array_needed;
 	struct inter_name *lt_iname;
 	struct inter_name *lt_sba_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } literal_text;
 
 @ The tree is always connected, with a single root node. The so-called Z node

@@ -75,7 +75,7 @@ typedef struct property_permission {
 	struct general_pointer pp_storage_data; /* how we'll compile this at run-time */
 	void *plugin_pp[MAX_PLUGINS]; /* storage for plugins to attach, if they want to */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } property_permission;
 
 @ These macros simply provide access to plugin data, exactly as for world

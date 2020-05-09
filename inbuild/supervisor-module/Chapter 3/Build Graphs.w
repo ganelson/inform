@@ -46,7 +46,7 @@ typedef struct build_vertex {
 	int always_build_this; /* i.e., don't look at timestamps hoping to skip it */
 	struct build_script *script; /* how to build what this node represents */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } build_vertex;
 
 @h Creation.

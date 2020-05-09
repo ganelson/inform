@@ -10,14 +10,14 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e parse_node_MT
-@e parse_node_tree_MT
-@e parse_node_annotation_array_MT
+@e parse_node_CLASS
+@e parse_node_tree_CLASS
+@e parse_node_annotation_array_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(parse_node)
-ALLOCATE_INDIVIDUALLY(parse_node_tree)
-ALLOCATE_IN_ARRAYS(parse_node_annotation, 500)
+DECLARE_CLASS(parse_node)
+DECLARE_CLASS(parse_node_tree)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(parse_node_annotation, 500)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

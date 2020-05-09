@@ -35,6 +35,7 @@ MathJax = {
 </script>
 
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -127,7 +128,7 @@ that it really isn't.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">map_parameter_scope</span><span class="plain-syntax"> </span><span class="identifier-syntax">local_map_parameters</span><span class="plain-syntax">; </span><span class="comment-syntax"> temporary: used in EPS mapping</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">eps_x</span><span class="plain-syntax">, </span><span class="identifier-syntax">eps_y</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">map_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure map_data is accessed in 3/mcr, 3/sm2, 3/hm, 3/em and here.</li></ul>
@@ -182,7 +183,7 @@ makes for more legible code if we use a special inference type of our own:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">door_dir_notice</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">door_to_notice</span><span class="plain-syntax"> {</span>
@@ -190,7 +191,7 @@ makes for more legible code if we use a special inference type of our own:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">door</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">door_to_notice</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure door_dir_notice is private to this section.</li><li>The structure door_to_notice is private to this section.</li></ul>
@@ -267,17 +268,18 @@ support for; it recognises the English name when defined by the Standard
 Rules. (So there is no need to translate this to other languages.)
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">notable</span><span class="plain-syntax">-</span><span class="identifier-syntax">map</span><span class="plain-syntax">-</span><span class="identifier-syntax">kinds</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">direction</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">door</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;notable-map-kinds&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">direction</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">door</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Map::map_new_base_kind_notify</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">PL::Map::map_new_base_kind_notify</span></span>:<br/><a href="3-tm.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new_base</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (&lt;</span><span class="identifier-syntax">notable</span><span class="plain-syntax">-</span><span class="identifier-syntax">map</span><span class="plain-syntax">-</span><span class="identifier-syntax">kinds</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (&lt;&lt;</span><span class="identifier-syntax">r</span><span class="plain-syntax">&gt;&gt;) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-map-kinds&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">K_direction</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_base</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">K_door</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_base</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
@@ -383,11 +385,12 @@ recognises the English names when defined by the Standard Rules. (So there is
 no need to translate this to other languages.)
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">notable</span><span class="plain-syntax">-</span><span class="identifier-syntax">map</span><span class="plain-syntax">-</span><span class="identifier-syntax">directions</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">up</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">down</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;notable-map-directions&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">up</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">down</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -397,8 +400,8 @@ no need to translate this to other languages.)
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::Compare::le</span><span class="plain-syntax">(</span><span class="identifier-syntax">k</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_direction</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">IW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-tm.html#SP21_1" class="named-paragraph-link"><span class="named-paragraph">Vet the direction name for acceptability</span><span class="named-paragraph-number">21.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (&lt;</span><span class="identifier-syntax">notable</span><span class="plain-syntax">-</span><span class="identifier-syntax">map</span><span class="plain-syntax">-</span><span class="identifier-syntax">directions</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">IW</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (&lt;&lt;</span><span class="identifier-syntax">r</span><span class="plain-syntax">&gt;&gt;) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-map-directions&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">IW</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">I_up</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">I_down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
@@ -572,17 +575,18 @@ support for; it recognises the English names when they are defined by the
 Standard Rules. (So there is no need to translate this to other languages.)
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">notable</span><span class="plain-syntax">-</span><span class="identifier-syntax">map</span><span class="plain-syntax">-</span><span class="identifier-syntax">properties</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">opposite</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">other</span><span class="plain-syntax"> </span><span class="identifier-syntax">side</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;notable-map-properties&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">opposite</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">other</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">side</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Map::map_new_property_notify</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">PL::Map::map_new_property_notify</span></span>:<br/><a href="3-tm.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (&lt;</span><span class="identifier-syntax">notable</span><span class="plain-syntax">-</span><span class="identifier-syntax">map</span><span class="plain-syntax">-</span><span class="identifier-syntax">properties</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (&lt;&lt;</span><span class="identifier-syntax">r</span><span class="plain-syntax">&gt;&gt;) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-map-properties&gt;(prn-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">P_opposite</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prn</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">P_other_side</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prn</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
@@ -660,17 +664,18 @@ and there seems little point in writing this any better.
 <p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31. Linguistic extras. </b>These NPs allow us to refer to the special directions "up" and "down":
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;</span><span class="identifier-syntax">notable</span><span class="plain-syntax">-</span><span class="identifier-syntax">map</span><span class="plain-syntax">-</span><span class="identifier-syntax">noun</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrases</span><span class="plain-syntax">&gt; ::=</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">below</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">above</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;notable-map-noun-phrases&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">below</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">above</span>
 </pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Map::map_act_on_special_NPs</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">PL::Map::map_act_on_special_NPs</span></span>:<br/><a href="3-tm.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (&lt;</span><span class="identifier-syntax">notable</span><span class="plain-syntax">-</span><span class="identifier-syntax">map</span><span class="plain-syntax">-</span><span class="identifier-syntax">noun</span><span class="plain-syntax">-</span><span class="identifier-syntax">phrases</span><span class="plain-syntax">&gt;(</span><span class="identifier-syntax">ParseTree::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (&lt;&lt;</span><span class="identifier-syntax">r</span><span class="plain-syntax">&gt;&gt;) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-map-noun-phrases&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">ParseTree::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I_down</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Assertions::Refiner::noun_from_infs</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I_down</span><span class="plain-syntax">));</span>

@@ -35,7 +35,7 @@ typedef struct generalisation {
 	struct parse_node *what_to_make; /* subtree for what to assemble */
 	struct parse_node *substitute_at; /* position under |look_for| of the EVERY node */
 	struct generalisation *next; /* next in list of generalisations about kind */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } generalisation;
 
 @ For reasons to do with timing, each object needs to keep track of which

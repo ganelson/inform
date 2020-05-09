@@ -58,7 +58,7 @@ typedef struct rule {
 	struct kind *kind_of_rule; /* determined from its rulebook(s) */
 	struct rulebook *kind_of_rule_set_from;
 	struct wording lettered_responses_value[26];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } rule;
 
 @
@@ -86,7 +86,7 @@ typedef struct applicability_condition {
 	struct rule *substituted_rule; /* rule to use instead if not, or |NULL| to do nothing */
 	struct parse_node *where_imposed;
 	struct applicability_condition *next_applicability_condition;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } applicability_condition;
 
 @h The rule structure.

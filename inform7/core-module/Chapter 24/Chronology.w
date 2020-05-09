@@ -16,7 +16,7 @@ typedef struct past_tense_condition_record {
 	struct action_pattern *ap_to_test; /* condition to be evaluated */
 	#endif
 	struct parse_node *where_ptc_tested; /* sentence in which condition is found */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } past_tense_condition_record;
 
 typedef struct past_tense_action_record {
@@ -25,7 +25,7 @@ typedef struct past_tense_action_record {
 	#endif
 	struct parse_node *where_pta_tested; /* sentence in which AP is found */
 	struct inter_name *pta_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } past_tense_action_record;
 
 @h Compiling chronology.

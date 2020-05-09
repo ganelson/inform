@@ -366,7 +366,7 @@ void Sentences::Headings::log_headings_recursively(heading *h, int depth) {
 typedef struct contents_entry {
 	struct heading *heading_entered;
 	struct contents_entry *next;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } contents_entry;
 
 int headings_indexed = 0;

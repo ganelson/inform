@@ -16,7 +16,7 @@ typedef struct inbuild_edition {
 	struct inbuild_work *work;
 	struct semantic_version_number version;
 	struct compatibility_specification *compatibility;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inbuild_edition;
 
 inbuild_edition *Editions::new(inbuild_work *work, semantic_version_number version) {

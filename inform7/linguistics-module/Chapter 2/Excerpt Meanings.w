@@ -61,7 +61,7 @@ typedef struct excerpt_meaning {
 	int no_em_tokens; /* length of token list */
 	struct vocabulary_entry *em_tokens[MAX_TOKENS_PER_EXCERPT_MEANING]; /* token list */
 	int excerpt_hash; /* hash code generated from the token list */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } excerpt_meaning;
 
 @h Meaning codes.

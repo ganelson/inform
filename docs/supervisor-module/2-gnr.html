@@ -86,15 +86,15 @@ the instance <span class="extract"><span class="extract-syntax">kit_genre</span>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">genre_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stored_in_nests</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_CALLS</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">methods</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="function-syntax">Genres::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Genres::new</span></span>:<br/>Extension Manager - <a href="4-em.html#SP2">&#167;2</a><br/>Kit Manager - <a href="4-km.html#SP1">&#167;1</a><br/>Language Manager - <a href="4-lm.html#SP1">&#167;1</a><br/>Pipeline Manager - <a href="4-pm.html#SP1">&#167;1</a><br/>Project Bundle Manager - <a href="4-pbm.html#SP1">&#167;1</a><br/>Project File Manager - <a href="4-pfm.html#SP1">&#167;1</a><br/>Template Manager - <a href="4-tm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nested</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">genre_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stored_in_nests</span><span class="plain-syntax"> = </span><span class="identifier-syntax">nested</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">ENABLE_METHOD_CALLS</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">methods</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Methods::new_set</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">gen</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -103,7 +103,7 @@ the instance <span class="extract"><span class="extract-syntax">kit_genre</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">G</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">genre_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure inbuild_genre is accessed in 2/rqr, 3/bg and here.</li></ul>
+<ul class="endnotetexts"><li>The structure inbuild_genre is accessed in 2/rqr, 3/bg, 3/bs2 and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Some genres of work, such as kits and extensions, can be stored in nests;
 others, such as Inform projects, cannot. Whether a copy can be stored in a
 nest depends only on its genre.
@@ -139,7 +139,7 @@ by Emily Short".
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GENRE_WRITE_WORK_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_WRITE_WORK_MTID</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_WRITE_WORK_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_work</span><span class="plain-syntax"> *</span><span class="identifier-syntax">work</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>This looks at a textual file locator, which might be a pathname or a
@@ -157,7 +157,7 @@ attached to the copy for later issuing.
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GENRE_CLAIM_AS_COPY_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_CLAIM_AS_COPY_MTID</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_CLAIM_AS_COPY_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> **</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ext</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">directory_status</span><span class="plain-syntax">)</span>
 </pre>
@@ -170,7 +170,7 @@ not provide this method, then nothing of that genre can ever appear in
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GENRE_SEARCH_NEST_FOR_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_SEARCH_NEST_FOR_MTID</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_SEARCH_NEST_FOR_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search_results</span><span class="plain-syntax">)</span>
 </pre>
@@ -191,7 +191,7 @@ of it from there.
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GENRE_READ_SOURCE_TEXT_FOR_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_READ_SOURCE_TEXT_FOR_MTID</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_READ_SOURCE_TEXT_FOR_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>At the Graph Construction phase of Inbuild, each copy is offered the chance
@@ -207,7 +207,7 @@ provides it) which has been claimed by Inbuild.
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GENRE_CONSTRUCT_GRAPH_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_CONSTRUCT_GRAPH_MTID</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_CONSTRUCT_GRAPH_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>This method is called when a copy is about to be built or have its graph
@@ -222,7 +222,7 @@ is ignored for other inspection options such as <span class="extract"><span clas
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GENRE_BUILDING_SOON_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_BUILDING_SOON_MTID</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_BUILDING_SOON_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">build_vertex</span><span class="plain-syntax"> **</span><span class="identifier-syntax">V</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>This duplicates, or syncs, a copy <span class="extract"><span class="extract-syntax">C</span></span> of a work in our genre, placing it
@@ -233,7 +233,7 @@ the Inbuild command-line options <span class="extract"><span class="extract-synt
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GENRE_COPY_TO_NEST_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_COPY_TO_NEST_MTID</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_COPY_TO_NEST_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">syncing</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">build_methodology</span><span class="plain-syntax"> *</span><span class="identifier-syntax">meth</span><span class="plain-syntax">)</span>
 </pre>

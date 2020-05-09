@@ -15,7 +15,7 @@ typedef struct plural_dictionary_entry {
 	PREFORM_LANGUAGE_TYPE *defined_in;
 	struct wording singular_form; /* words of singular form */
 	struct wording plural_form; /* words of plural form */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } plural_dictionary_entry;
 
 @ Note that we are entirely allowed to register a new plural for a phrase

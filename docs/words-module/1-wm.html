@@ -70,20 +70,20 @@ which use this module:
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">LEXER_TEXT_MREASON</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">LEXER_WORDS_MREASON</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">source_file_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">vocabulary_entry_array_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">nonterminal_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">production_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">production_list_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ptoken_MT</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">source_file_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">vocabulary_entry_array_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">nonterminal_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">production_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">production_list_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ptoken_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">source_file</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">production_list</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">production</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">ptoken</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">source_file</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">production_list</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">production</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ptoken</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
 </p>
@@ -92,10 +92,10 @@ which use this module:
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">WordsModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">LEXER_TEXT_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"source text"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">LEXER_WORDS_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"source text details"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-wm.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.1</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-wm.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Register this module's stream writers</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-wm.html#SP3_4" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.4</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-wm.html#SP3_5" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log writers</span><span class="named-paragraph-number">3.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-wm.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-wm.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Register this module's stream writers</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-wm.html#SP3_4" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-wm.html#SP3_5" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log writers</span><span class="named-paragraph-number">3.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="3-lxr.html#SP11" class="function-link"><span class="function-syntax">Lexer::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-vcb.html#SP3" class="function-link"><span class="function-syntax">Vocabulary::create_punctuation</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="4-prf.html#SP24" class="function-link"><span class="function-syntax">Preform::begin</span></a><span class="plain-syntax">();</span>

@@ -27,7 +27,7 @@ typedef struct preposition_identity {
 	#endif
 	struct parse_node *where_prep_created; /* for use if problem messages needed */
 	int allow_unexpected_upper_case; /* for preps like "in Cahoots With" */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } preposition_identity;
 
 @ As with verbs, "prepositions" can be long, but are not unlimited.

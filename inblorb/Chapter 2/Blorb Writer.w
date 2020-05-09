@@ -45,7 +45,7 @@ typedef struct chunk_metadata {
 	int resource_id; /* meaningful only if this is a chunk which is indexed */
 	int byte_offset; /* from the start of the chunks, which is not quite the start of the IFF file */
 	int size; /* in bytes */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } chunk_metadata;
 
 @ It is not legal to have two or more Snd resources with the same number.  The
@@ -55,7 +55,7 @@ resource numbers encountered.
 =
 typedef struct resource_number {
 	int num;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } resource_number;
 
 linked_list *sound_resource = NULL; /* of |resource_number| */
@@ -69,7 +69,7 @@ typedef struct rdes_record {
 	int usage;
 	int resource_id;
 	char *description;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } rdes_record;
 
 @h Big-endian integers.
@@ -389,8 +389,8 @@ void Writer::add_rdes_record(int usage, int n, char *alt) {
 	rdes_record *rr = CREATE(rdes_record);
 	rr->usage = usage;
 	rr->resource_id = n;
-	rr->description = Memory::new_string(alt);
-	size_of_rdes_chunk += 12 + (size_t) strlen(alt);
+	rr->description = CStrings::park_string(alt);
+	size_of_rdes_chunk += 12 + (size_t) CStrings::strlen_unbounded(alt);
 }
 
 void Writer::rdes_chunk(void) {

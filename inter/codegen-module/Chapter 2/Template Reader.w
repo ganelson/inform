@@ -22,7 +22,7 @@ typedef struct I6T_intervention {
 	#ifdef CORE_MODULE
 	struct parse_node *where_intervention_requested; /* at what sentence? */
 	#endif
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } I6T_intervention;
 
 @ =

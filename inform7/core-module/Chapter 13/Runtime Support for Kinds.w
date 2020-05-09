@@ -16,7 +16,7 @@ typedef struct runtime_kind_structure {
 	int make_default;
 	struct inter_name *rks_iname;
 	struct inter_name *rks_dv_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } runtime_kind_structure;
 
 @h Kinds as I6 classes.
@@ -903,7 +903,7 @@ int Kinds::RunTime::base_represented_in_inter(kind *K) {
 typedef struct kind_interaction {
 	struct kind *noted_kind;
 	struct inter_name *noted_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } kind_interaction;
 
 @

@@ -25,7 +25,7 @@ typedef struct test_scenario {
 	struct parse_node *sentence_test_declared_at;
 	struct inter_name *text_iname; /* name at runtime for the text of the commands */
 	struct inter_name *req_iname; /* ditto for the array of requirements */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } test_scenario;
 
 @ =
@@ -33,7 +33,7 @@ typedef struct internal_test_case {
 	int itc_code; /* one of the above |*_INTT| values */
 	struct wording text_supplying_the_case;
 	struct parse_node *itc_defined_at;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } internal_test_case;
 
 @ Internal test cases are numbered thus:

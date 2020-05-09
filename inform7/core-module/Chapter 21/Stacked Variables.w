@@ -13,13 +13,13 @@ typedef struct stacked_variable {
 	int owner_id; /* who owns this */
 	int offset_in_owning_frame; /* word offset of storage (counts from 0) */
 	struct wording match_wording_text; /* matching text (relevant for action variables only) */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } stacked_variable;
 
 typedef struct stacked_variable_list {
 	struct stacked_variable *the_stv; /* the STV */
 	struct stacked_variable_list *next; /* in linked list */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } stacked_variable_list;
 
 typedef struct stacked_variable_owner {
@@ -27,13 +27,13 @@ typedef struct stacked_variable_owner {
 	int recognition_id;
 	struct stacked_variable_list *list_of_stvs;
 	struct inter_name *stvo_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } stacked_variable_owner;
 
 typedef struct stacked_variable_owner_list {
 	struct stacked_variable_owner *stvo; /* the STO */
 	struct stacked_variable_owner_list *next; /* in linked list */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } stacked_variable_owner_list;
 
 @

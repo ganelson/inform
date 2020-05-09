@@ -10,72 +10,72 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e action_name_MT
-@e auxiliary_file_MT
-@e backdrop_found_in_notice_MT
-@e cached_understanding_MT
-@e command_index_entry_MT
-@e connected_submap_MT
-@e door_dir_notice_MT
-@e door_to_notice_MT
-@e EPS_map_level_MT
-@e grammar_line_MT
-@e grammar_verb_MT
-@e loop_over_scope_MT
-@e map_data_MT
-@e named_action_pattern_MT
-@e noun_filter_token_MT
-@e parse_name_notice_MT
-@e parsing_data_MT
-@e parsing_pp_data_MT
-@e regions_data_MT
-@e reserved_command_verb_MT
-@e rubric_holder_MT
-@e scene_MT
-@e short_name_notice_MT
-@e slash_gpr_MT
-@e spatial_data_MT
+@e action_name_CLASS
+@e auxiliary_file_CLASS
+@e backdrop_found_in_notice_CLASS
+@e cached_understanding_CLASS
+@e command_index_entry_CLASS
+@e connected_submap_CLASS
+@e door_dir_notice_CLASS
+@e door_to_notice_CLASS
+@e EPS_map_level_CLASS
+@e grammar_line_CLASS
+@e grammar_verb_CLASS
+@e loop_over_scope_CLASS
+@e map_data_CLASS
+@e named_action_pattern_CLASS
+@e noun_filter_token_CLASS
+@e parse_name_notice_CLASS
+@e parsing_data_CLASS
+@e parsing_pp_data_CLASS
+@e regions_data_CLASS
+@e reserved_command_verb_CLASS
+@e rubric_holder_CLASS
+@e scene_CLASS
+@e short_name_notice_CLASS
+@e slash_gpr_CLASS
+@e spatial_data_CLASS
 
-@e action_name_list_array_MT
-@e action_pattern_array_MT
-@e ap_optional_clause_array_MT
-@e scene_connector_array_MT
-@e understanding_item_array_MT
-@e understanding_reference_array_MT
+@e action_name_list_array_CLASS
+@e action_pattern_array_CLASS
+@e ap_optional_clause_array_CLASS
+@e scene_connector_array_CLASS
+@e understanding_item_array_CLASS
+@e understanding_reference_array_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(action_name)
-ALLOCATE_INDIVIDUALLY(auxiliary_file)
-ALLOCATE_INDIVIDUALLY(backdrop_found_in_notice)
-ALLOCATE_INDIVIDUALLY(cached_understanding)
-ALLOCATE_INDIVIDUALLY(command_index_entry)
-ALLOCATE_INDIVIDUALLY(connected_submap)
-ALLOCATE_INDIVIDUALLY(door_dir_notice)
-ALLOCATE_INDIVIDUALLY(door_to_notice)
-ALLOCATE_INDIVIDUALLY(EPS_map_level)
-ALLOCATE_INDIVIDUALLY(grammar_line)
-ALLOCATE_INDIVIDUALLY(grammar_verb)
-ALLOCATE_INDIVIDUALLY(loop_over_scope)
-ALLOCATE_INDIVIDUALLY(map_data)
-ALLOCATE_INDIVIDUALLY(named_action_pattern)
-ALLOCATE_INDIVIDUALLY(noun_filter_token)
-ALLOCATE_INDIVIDUALLY(parse_name_notice)
-ALLOCATE_INDIVIDUALLY(parsing_data)
-ALLOCATE_INDIVIDUALLY(parsing_pp_data)
-ALLOCATE_INDIVIDUALLY(regions_data)
-ALLOCATE_INDIVIDUALLY(reserved_command_verb)
-ALLOCATE_INDIVIDUALLY(rubric_holder)
-ALLOCATE_INDIVIDUALLY(scene)
-ALLOCATE_INDIVIDUALLY(short_name_notice)
-ALLOCATE_INDIVIDUALLY(slash_gpr)
-ALLOCATE_INDIVIDUALLY(spatial_data)
+DECLARE_CLASS(action_name)
+DECLARE_CLASS(auxiliary_file)
+DECLARE_CLASS(backdrop_found_in_notice)
+DECLARE_CLASS(cached_understanding)
+DECLARE_CLASS(command_index_entry)
+DECLARE_CLASS(connected_submap)
+DECLARE_CLASS(door_dir_notice)
+DECLARE_CLASS(door_to_notice)
+DECLARE_CLASS(EPS_map_level)
+DECLARE_CLASS(grammar_line)
+DECLARE_CLASS(grammar_verb)
+DECLARE_CLASS(loop_over_scope)
+DECLARE_CLASS(map_data)
+DECLARE_CLASS(named_action_pattern)
+DECLARE_CLASS(noun_filter_token)
+DECLARE_CLASS(parse_name_notice)
+DECLARE_CLASS(parsing_data)
+DECLARE_CLASS(parsing_pp_data)
+DECLARE_CLASS(regions_data)
+DECLARE_CLASS(reserved_command_verb)
+DECLARE_CLASS(rubric_holder)
+DECLARE_CLASS(scene)
+DECLARE_CLASS(short_name_notice)
+DECLARE_CLASS(slash_gpr)
+DECLARE_CLASS(spatial_data)
 
-ALLOCATE_IN_ARRAYS(action_name_list, 1000)
-ALLOCATE_IN_ARRAYS(action_pattern, 100)
-ALLOCATE_IN_ARRAYS(ap_optional_clause, 400)
-ALLOCATE_IN_ARRAYS(scene_connector, 1000)
-ALLOCATE_IN_ARRAYS(understanding_item, 100)
-ALLOCATE_IN_ARRAYS(understanding_reference, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(action_name_list, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(action_pattern, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(ap_optional_clause, 400)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(scene_connector, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_item, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_reference, 100)
 
 MAKE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
 MAKE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)

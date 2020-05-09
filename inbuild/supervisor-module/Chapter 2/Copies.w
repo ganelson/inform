@@ -24,7 +24,7 @@ typedef struct inbuild_copy {
 	struct wording source_text; /* the source text we read, if so */
 	struct inbuild_requirement *found_by; /* if this was claimed in a search */
 	struct linked_list *errors_reading_source_text; /* of |copy_error| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inbuild_copy;
 
 @ Copies are created by the managers for the respective genres, usually when
@@ -107,7 +107,7 @@ wording Copies::get_source_text(inbuild_copy *C) {
 	if (C->source_text_read == FALSE) {
 		C->source_text_read = TRUE;
 		feed_t id = Feeds::begin();
-		VMETHOD_CALL(C->edition->work->genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, C);
+		VOID_METHOD_CALL(C->edition->work->genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, C);
 		wording W = Feeds::end(id);
 		if (Wordings::nonempty(W)) C->source_text = W;
 	}
@@ -118,7 +118,7 @@ wording Copies::get_source_text(inbuild_copy *C) {
 
 =
 void Copies::construct_graph(inbuild_copy *C) {
-	VMETHOD_CALL(C->edition->work->genre, GENRE_CONSTRUCT_GRAPH_MTID, C);
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_CONSTRUCT_GRAPH_MTID, C);
 }
 
 @h Miscellaneous Inbuild commands.
@@ -153,12 +153,12 @@ its main task: building an Inform project.
 =
 void Copies::build(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 	build_vertex *V = C->vertex;
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	IncrementalBuild::build(OUT, V, BM);
 }
 void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 	build_vertex *V = C->vertex;
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	IncrementalBuild::rebuild(OUT, V, BM);
 }
 
@@ -168,17 +168,17 @@ void Copies::rebuild(OUTPUT_STREAM, inbuild_copy *C, build_methodology *BM) {
 =
 void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
 	build_vertex *V = C->vertex;
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	Graphs::describe(OUT, V, TRUE);
 }
 void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
 	build_vertex *V = C->vertex;
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	Graphs::show_needs(OUT, C->vertex, uses_only);
 }
 void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
 	build_vertex *V = C->vertex;
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	int N = Graphs::show_missing(OUT, C->vertex, uses_only);
 	if (N == 0) WRITE("Nothing is missing\n");
 }
@@ -188,7 +188,7 @@ void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
 =
 void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_methodology *BM) {
 	build_vertex *V = C->vertex;
-	VMETHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
+	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	int NM = Graphs::show_missing(OUT, C->vertex, FALSE);
 	if (NM > 0) WRITE("Because there are missing resources, -archive is cancelled\n");
 	else if (N) Graphs::archive(OUT, C->vertex, N, BM);
@@ -200,7 +200,7 @@ void Copies::archive(OUTPUT_STREAM, inbuild_copy *C, inbuild_nest *N, build_meth
 void Copies::copy_to(inbuild_copy *C, inbuild_nest *destination_nest, int syncing,
 	build_methodology *meth) {
 	if (destination_nest)
-		VMETHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, 
+		VOID_METHOD_CALL(C->edition->work->genre, GENRE_COPY_TO_NEST_MTID, 
 			C, destination_nest, syncing, meth);
 }
 

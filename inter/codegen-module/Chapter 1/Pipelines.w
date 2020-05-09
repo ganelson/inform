@@ -23,7 +23,7 @@ typedef struct pipeline_step {
 	struct linked_list *requirements_list; /* of |inter_library| */
 	struct inter_tree *repository;
 	struct codegen_pipeline *pipeline;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } pipeline_step;
 
 pipeline_step *CodeGen::Pipeline::new_step(void) {
@@ -167,7 +167,7 @@ typedef struct codegen_pipeline {
 	struct inter_tree *repositories[10];
 	struct linked_list *steps; /* of |pipeline_step| */
 	int erroneous;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } codegen_pipeline;
 
 dictionary *CodeGen::Pipeline::basic_dictionary(text_stream *leafname) {

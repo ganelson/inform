@@ -103,7 +103,7 @@ Also as with tables, each can have a number, a name or both.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">equation_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parsed_equation</span><span class="plain-syntax">; </span><span class="comment-syntax"> and the equation itself (when eventually parsed)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eqn_iname</span><span class="plain-syntax">; </span><span class="comment-syntax"> used at run-time to identify this</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">equation_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symbol_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> the symbols used</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">equation</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure equation is accessed in 2/si and here.</li></ul>
@@ -128,7 +128,7 @@ instance has its own <span class="extract"><span class="extract-syntax">equation
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">equation_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax"> in the list belonging to the equation</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">local_map</span><span class="plain-syntax">; </span><span class="comment-syntax"> when being solved in a given stack frame</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">promote_local_to_real</span><span class="plain-syntax">; </span><span class="comment-syntax"> from integer, if necessary</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">equation_symbol</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure equation_symbol is accessed in 2/sq, 2/si, 3/pd, 5/lp, 5/ut, 5/un, 5/ins, 5/nv, 6/rlt, 6/nv, 7/ns, 7/oaf, 7/rs, 8/ef, 9/tfa, 9/tbath, 9/rpt, 9/tc, 9/ma, 9/pk, 9/rk, 9/ass, 9/imp, 9/pd, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/pr, 15/ep, 15/vp, 15/cp, 15/spr, 16/is, 16/in, 16/cmw, 17/rs, 19/tc, 19/tb, 19/rsft, 19/tod, 21/rl, 21/rl2, 21/fao, 21/rps, 21/sv, 21/ac, 22/ph, 22/pu, 22/dptd, 22/po, 22/pav, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/uo, 26/tti, 26/pc, 26/ts, 27/cm and here.</li></ul>
@@ -201,7 +201,7 @@ value <span class="extract"><span class="extract-syntax">pi</span></span>.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">enode_promotion</span><span class="plain-syntax">; </span><span class="comment-syntax"> promote this from an integer to a real number?</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rational_n</span><span class="plain-syntax">; </span><span class="comment-syntax"> represents the rational number </span><span class="extract"><span class="extract-syntax">n/m</span></span><span class="comment-syntax">...</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rational_m</span><span class="plain-syntax">; </span><span class="comment-syntax"> ...unless </span><span class="extract"><span class="extract-syntax">m</span></span><span class="comment-syntax"> is zero</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">equation_node</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure equation_node is accessed in 13/ca and here.</li></ul>

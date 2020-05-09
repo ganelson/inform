@@ -27,7 +27,7 @@ typedef struct label_namespace {
 	int allocate_storage; /* number of words of memory to reserve for each label */
 	struct inter_name *label_storage_iname;
 	struct compilation_module *module;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } label_namespace;
 
 @ The creator for new label namespaces. Note that, by default, a label namespace

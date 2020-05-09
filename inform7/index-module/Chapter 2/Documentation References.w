@@ -28,7 +28,7 @@ typedef struct documentation_ref {
 	int ext_usage_count;
 	wchar_t *chapter_reference; /* Or |NULL| if no chapter name supplied */
 	wchar_t *section_reference; /* Or |NULL| if no section name supplied */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } documentation_ref;
 
 @

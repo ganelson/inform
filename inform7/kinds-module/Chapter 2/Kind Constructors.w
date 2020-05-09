@@ -118,7 +118,7 @@ typedef struct kind_constructor {
 	int indexed_grey_if_empty; /* shaded grey in the Kinds index */
 	struct text_stream *documentation_reference; /* documentation symbol, if any */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } kind_constructor;
 
 @ The "tupling" of an argument is the extent to which an argument can be

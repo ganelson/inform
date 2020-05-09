@@ -64,7 +64,7 @@ typedef struct inference_subject {
 	char *infs_name_in_log; /* solely to make the debugging log more legible */
 	struct nonlocal_variable *alias_variable; /* alias to this variable, like "yourself" to "player" */
 	void *plugin_subj[MAX_PLUGINS];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inference_subject;
 
 @ Recall that plugins are pieces of Inform which provide specialist additions

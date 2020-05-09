@@ -18,7 +18,7 @@ typedef struct constant_phrase {
 	struct kind *cphr_kind; /* ditto */
 	struct inter_name *cphr_iname;
 	struct wording associated_preamble_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } constant_phrase;
 
 @ Here we create a new named phrase ("doubling", say):

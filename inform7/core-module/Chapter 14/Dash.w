@@ -51,7 +51,7 @@ typedef struct inv_token_problem_token {
 	struct parse_node *as_parsed;
 	int already_described;
 	int new_name; /* found in context of a name not yet defined */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inv_token_problem_token;
 
 @h The Dashboard.

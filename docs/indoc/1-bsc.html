@@ -83,41 +83,41 @@ definition we need to make is:
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Setting up the memory manager. </b>We need to itemise the structures we'll want to allocate:
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">settings_block_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">volume_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">chapter_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">section_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">formatted_file_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">indexing_category_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">index_lemma_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">example_index_data_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">image_source_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">image_usage_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">example_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">CSS_tweak_data_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">span_notation_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">dc_metadatum_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">navigation_design_MT</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">settings_block_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">volume_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">chapter_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">section_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">formatted_file_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">indexing_category_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">index_lemma_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">example_index_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">image_source_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">image_usage_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">example_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">CSS_tweak_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">span_notation_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">dc_metadatum_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">navigation_design_CLASS</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>And then expand:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">settings_block</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">volume</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">chapter</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">section</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">formatted_file</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">indexing_category</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_lemma</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">example_index_data</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">image_source</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">image_usage</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">example</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">CSS_tweak_data</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">span_notation</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">dc_metadatum</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">navigation_design</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">settings_block</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">volume</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">chapter</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">section</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">formatted_file</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">indexing_category</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">index_lemma</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">example_index_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">image_source</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">image_usage</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">example</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">CSS_tweak_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">span_notation</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">dc_metadatum</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">navigation_design</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The Unicode for section. </b>Since this doesn't lie in the ASCII character range, I'll refer to it by
 its Unicode number rather than placing the character in question in the

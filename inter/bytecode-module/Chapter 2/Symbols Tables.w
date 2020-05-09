@@ -12,7 +12,7 @@ typedef struct inter_symbols_table {
 	struct inter_symbol **symbol_array;
 	int n_index;
 	inter_t next_free_ID;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_symbols_table;
 
 @

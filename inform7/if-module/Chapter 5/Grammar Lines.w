@@ -57,7 +57,7 @@ typedef struct grammar_line {
 	int general_sort_bonus; /* temporary values used in grammar line sorting */
 	int understanding_sort_bonus;
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } grammar_line;
 
 @ =
@@ -65,7 +65,7 @@ typedef struct slash_gpr {
 	struct parse_node *first_choice;
 	struct parse_node *last_choice;
 	struct inter_name *sgpr_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } slash_gpr;
 
 @ =

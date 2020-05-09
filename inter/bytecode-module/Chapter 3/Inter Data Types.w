@@ -9,7 +9,7 @@ typedef struct inter_data_type {
 	long long int min_value;
 	long long int max_value;
 	int enumerated;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_data_type;
 
 inter_data_type *int32_idt = NULL;

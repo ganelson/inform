@@ -11,34 +11,34 @@ contents section of this web.
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:
 
-@e auxiliary_file_MT
-@e chunk_metadata_MT
-@e heading_MT
-@e placeholder_MT
-@e rdes_record_MT
-@e request_MT
-@e resource_number_MT
-@e segment_MT
-@e skein_node_MT
-@e table_MT
-@e template_MT
-@e template_path_MT
+@e auxiliary_file_CLASS
+@e chunk_metadata_CLASS
+@e heading_CLASS
+@e placeholder_CLASS
+@e rdes_record_CLASS
+@e request_CLASS
+@e resource_number_CLASS
+@e segment_CLASS
+@e skein_node_CLASS
+@e table_CLASS
+@e template_CLASS
+@e template_path_CLASS
 
 @ And then expand:
 
 =
-ALLOCATE_INDIVIDUALLY(auxiliary_file)
-ALLOCATE_INDIVIDUALLY(skein_node)
-ALLOCATE_INDIVIDUALLY(chunk_metadata)
-ALLOCATE_INDIVIDUALLY(placeholder)
-ALLOCATE_INDIVIDUALLY(heading)
-ALLOCATE_INDIVIDUALLY(table)
-ALLOCATE_INDIVIDUALLY(rdes_record)
-ALLOCATE_INDIVIDUALLY(resource_number)
-ALLOCATE_INDIVIDUALLY(segment)
-ALLOCATE_INDIVIDUALLY(request)
-ALLOCATE_INDIVIDUALLY(template)
-ALLOCATE_INDIVIDUALLY(template_path)
+DECLARE_CLASS(auxiliary_file)
+DECLARE_CLASS(skein_node)
+DECLARE_CLASS(chunk_metadata)
+DECLARE_CLASS(placeholder)
+DECLARE_CLASS(heading)
+DECLARE_CLASS(table)
+DECLARE_CLASS(rdes_record)
+DECLARE_CLASS(resource_number)
+DECLARE_CLASS(segment)
+DECLARE_CLASS(request)
+DECLARE_CLASS(template)
+DECLARE_CLASS(template_path)
 
 @h Simple allocations.
 Not all of our memory will be claimed in the form of structures: now and then

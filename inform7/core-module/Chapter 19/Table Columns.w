@@ -25,7 +25,7 @@ typedef struct table_column {
 	struct kind *kind_stored_in_column; /* what kind of value is stored in this column */
 	struct table *table_from_which_kind_inferred; /* usually the earliest use */
 	struct binary_predicate *listed_in_predicate; /* see above */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } table_column;
 
 @ When a column appears in a particular table, this is recorded with the

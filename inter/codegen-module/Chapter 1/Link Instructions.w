@@ -9,7 +9,7 @@ kits of linkable material, and this is where such requirements are noted.
 typedef struct link_instruction {
 	struct pathname *location;
 	struct text_stream *attachment_point;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } link_instruction;
 
 link_instruction *CodeGen::LinkInstructions::new(pathname *P, text_stream *attach) {

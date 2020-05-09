@@ -35,7 +35,7 @@ typedef struct parse_node_tree {
 	struct parse_node *attachment_stack_parent[MAX_ATTACHMENT_STACK_SIZE];
 	struct parse_node *one_off_attachment_point;
 	HEADING_TREE_SYNTAX_TYPE *headings;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } parse_node_tree;
 
 parse_node_tree *ParseTree::new_tree(void) {
@@ -155,7 +155,7 @@ typedef struct parse_node {
 	struct parse_node *next_alternative; /* fork to alternative interpretation */
 
 	int log_time; /* used purely as a defensive measure when writing debugging log */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } parse_node;
 
 @h Where we currently are in the text.

@@ -23,7 +23,7 @@ typedef struct booking {
 	char *next_rule_specificity_law; /* description of reason */
 	char *next_rule_specificity_lawname; /* name of Law used to sort */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } booking;
 
 @ When bookings are gathered into linked lists, they are positioned using

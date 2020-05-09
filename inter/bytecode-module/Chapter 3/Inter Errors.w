@@ -10,7 +10,7 @@ typedef struct inter_error_location {
 	struct text_stream *error_line;
 	struct filename *error_interb;
 	size_t error_offset;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_error_location;
 
 inter_error_location Inter::Errors::file_location(text_stream *line, text_file_position *tfp) {
@@ -35,7 +35,7 @@ typedef struct inter_error_message {
 	struct inter_error_location error_at;
 	struct text_stream *error_body;
 	struct text_stream *error_quote;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_error_message;
 
 inter_error_message *Inter::Errors::quoted(text_stream *err, text_stream *quote, inter_error_location *eloc) {

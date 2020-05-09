@@ -97,7 +97,7 @@ typedef struct kind_variable_declaration {
 	int kv_number; /* must be from 1 to 26 */
 	struct kind *kv_value; /* must be a definite non-|NULL| kind */
 	struct kind_variable_declaration *next;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } kind_variable_declaration;
 
 @ The following constants will be used to represent the results of kind

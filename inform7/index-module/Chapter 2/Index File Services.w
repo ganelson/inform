@@ -21,7 +21,7 @@ typedef struct index_page {
 	struct text_stream *page_title;
 	struct text_stream *page_explanation;
 	struct text_stream *page_leafname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } index_page;
 
 @ =
@@ -31,7 +31,7 @@ typedef struct index_element {
 	struct text_stream *element_name;
 	struct text_stream *explanatory_note;
 	struct index_page *owning_page;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } index_element;
 
 @ The index is written at the end of each successful compilation. During

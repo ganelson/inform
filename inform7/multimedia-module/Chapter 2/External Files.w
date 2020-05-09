@@ -22,7 +22,7 @@ typedef struct external_file {
 	struct text_stream *IFID_of_owner; /* an I6 identifier */
 	struct inter_name *exf_iname;
 	struct inter_name *IFID_array_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } external_file;
 
 @ A |-->| array to a run-time data structure associated

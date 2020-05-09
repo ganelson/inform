@@ -61,7 +61,7 @@ typedef struct rulebook {
 
 	struct package_request *rb_package;
 	struct inter_name *rb_iname; /* run-time storage/routine holding contents */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } rulebook;
 
 @ The following is used only to store the result of parsing text as a
@@ -87,7 +87,7 @@ have affected it in this way:
 typedef struct placement_affecting {
 	struct parse_node *placement_sentence;
 	struct placement_affecting *next;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } placement_affecting;
 
 @ As rulebooks are declared, the first few are quietly copied into

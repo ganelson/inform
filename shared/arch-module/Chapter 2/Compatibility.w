@@ -9,7 +9,7 @@ typedef struct compatibility_specification {
 	struct text_stream *parsed_from;
 	int default_allows;
 	struct linked_list *exceptions; /* of |target_vm| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } compatibility_specification;
 
 compatibility_specification *Compatibility::all(void) {

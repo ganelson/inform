@@ -21,7 +21,7 @@ typedef struct build_methodology {
 	filename *to_inform7;
 	filename *to_inblorb;
 	int methodology;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } build_methodology;
 
 @ If the |tangled| flag is set, we expect |inform7|, for example, to be at

@@ -24,7 +24,7 @@ contains a pointer to its own unique copy of the following structure:
 =
 typedef struct parsing_data {
 	struct grammar_verb *understand_as_this_object; /* grammar for parsing the name at run-time */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } parsing_data;
 
 @ And every property permission likewise:
@@ -34,7 +34,7 @@ typedef struct parsing_pp_data {
 	int visibility_level_in_parser; /* if so, does the run-time I6 parser recognise it? */
 	struct wording visibility_condition; /* (at least if...?) */
 	struct parse_node *visibility_sentence; /* where this is specified */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } parsing_pp_data;
 
 @h Initialising.

@@ -65,14 +65,14 @@ its outcomes.
 typedef struct named_rulebook_outcome {
 	struct noun *name; /* Name in source text */
 	struct inter_name *nro_iname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } named_rulebook_outcome;
 
 typedef struct rulebook_outcome {
 	struct rulebook_outcome *next;
 	struct named_rulebook_outcome *outcome_name;
 	int kind_of_outcome; /* one of the three values above */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } rulebook_outcome;
 
 @ =

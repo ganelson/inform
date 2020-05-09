@@ -92,7 +92,7 @@ MathJax = {
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_meaning_block</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">possible_meanings</span><span class="plain-syntax">; </span><span class="comment-syntax"> list of definitions in order given</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sorted_meanings</span><span class="plain-syntax">; </span><span class="comment-syntax"> the same list sorted into logical order</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">adjective_meaning_block</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure adjective_meaning_block is private to this section.</li></ul>
@@ -151,7 +151,7 @@ rather than <span class="extract"><span class="extract-syntax">TRUE</span></span
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">defined_already</span><span class="plain-syntax">; </span><span class="comment-syntax"> temporary workspace used when compiling support routines</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure adjective_meaning is private to this section.</li></ul>
@@ -231,7 +231,7 @@ adjectival phrase in sorted order, so:
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task_code</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">weak_ID_of_domain</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname_held</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">adjective_iname_holder</span><span class="plain-syntax">;</span>
 
 <span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="function-syntax">Adjectives::Meanings::iname</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Adjectives::Meanings::iname</span></span>:<br/><a href="4-am.html#SP28_1">&#167;28.1</a>, <a href="4-am.html#SP29">&#167;29</a>, <a href="4-am.html#SP33_2">&#167;33.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">adjectival_phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">aph</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">weak_id</span><span class="plain-syntax">) {</span>

@@ -78,7 +78,7 @@ typedef struct heading_tree {
 	int last_indentation_above_level[NO_HEADING_LEVELS];
 	struct linked_list *subordinates; /* of |heading| */
 	int damaged; /* i.e., failed verification */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } heading_tree;
 
 heading *Headings::root_of_tree(heading_tree *HT) {
@@ -154,7 +154,7 @@ typedef struct heading {
 	struct heading *parent_heading;
 	struct heading *child_heading;
 	struct heading *next_heading;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } heading;
 
 @ It is guaranteed that this will be called once for each heading (except the

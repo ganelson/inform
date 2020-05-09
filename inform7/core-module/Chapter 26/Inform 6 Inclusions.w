@@ -17,7 +17,7 @@ declarations in the I6 output, but always outside of a routine.
 typedef struct i6_inclusion_matter {
 	struct parse_node *material_to_include; /* normally an I6 escape |(- ... -)| */
 	struct inference_subject *infs_to_include_with; /* typically an object or class definition */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } i6_inclusion_matter;
 
 @ Inclusions are primitive things, but fine control is needed over exactly

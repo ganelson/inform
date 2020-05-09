@@ -15,7 +15,7 @@ with lingistic roles. For example, the cluster of names for the common noun
 =
 typedef struct name_cluster {
 	struct individual_name *first_name;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } name_cluster;
 
 typedef struct individual_name {
@@ -25,7 +25,7 @@ typedef struct individual_name {
 	int name_gender; /* 1 is neuter, 2 is masculine, 3 is feminine */
 	PREFORM_LANGUAGE_TYPE *name_language; /* always non-null */
 	struct individual_name *next; /* within its cluster */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } individual_name;
 
 @ A cluster begins empty.

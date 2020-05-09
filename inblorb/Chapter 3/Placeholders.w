@@ -24,7 +24,7 @@ typedef struct placeholder {
 	struct text_stream *pl_contents; /* current value */
 	int reservation; /* one of the |*_RPL| values above, or 0 for unreserved */
 	int locked; /* currently being expanded: locked to prevent mise-en-abyme */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } placeholder;
 
 @h Initial values.

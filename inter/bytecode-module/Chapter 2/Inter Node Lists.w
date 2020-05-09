@@ -11,14 +11,14 @@ typedef struct inter_node_list {
 	struct inter_node_list_entry *spare_storage;
 	struct inter_node_list_entry *first_in_inl;
 	struct inter_node_list_entry *last_in_inl;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_node_list;
 
 typedef struct inter_node_list_entry {
 	struct inter_tree_node *listed_node;
 	struct inter_node_list_entry *next_in_inl;
 	struct inter_node_list_entry *prev_in_inl;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_node_list_entry;
 
 @

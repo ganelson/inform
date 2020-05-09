@@ -41,7 +41,7 @@ typedef struct instance {
 	int index_appearances; /* how many times have I appeared thus far in the World index? */
 	struct instance_usage *first_noted_usage;
 	struct instance_usage *last_noted_usage;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } instance;
 
 @ We are going to record uses of these in the index, so:

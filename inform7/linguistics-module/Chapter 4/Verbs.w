@@ -30,7 +30,7 @@ typedef struct verb_identity {
 	#ifdef CORE_MODULE
 	struct package_request *verb_package;
 	#endif
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } verb_identity;
 
 @ Note that the first verb submitted with the copular flag set is considered
@@ -142,7 +142,7 @@ typedef struct verb_form {
 	struct verb_sense *list_of_senses;
 
 	struct verb_form *next_form; /* within the linked list for the verb */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } verb_form;
 
 @h Verb senses.
@@ -158,7 +158,7 @@ can be joined into a linked list. Verb meanings are described elsewhere.
 typedef struct verb_sense {
 	struct verb_meaning vm;
 	struct verb_sense *next_sense; /* within the linked list for the verb form */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } verb_sense;
 
 @h Creating forms and senses.

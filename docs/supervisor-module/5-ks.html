@@ -103,7 +103,7 @@ module of <span class="extract"><span class="extract-syntax">inform7</span></spa
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_structure</span><span class="plain-syntax">; </span><span class="comment-syntax"> for indexing projects using this kit</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">defines_Main</span><span class="plain-syntax">; </span><span class="comment-syntax"> does the Inter code in this kit define the </span><span class="extract"><span class="extract-syntax">Main</span></span><span class="comment-syntax"> routine?</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">supports_nl</span><span class="plain-syntax">; </span><span class="comment-syntax"> does the Inter code in this kit support a natural language extension?</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">inform_kit</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inform_kit is accessed in 3/bg, 3/ib, 3/is2, 3/is3, 4/em, 5/es, 5/ls, 5/ps, 5/ps2, 5/ts, 6/hdn, 6/tbs, 6/inc, 7/dct, 7/ip2 and here.</li></ul>
@@ -116,7 +116,7 @@ and we represent rules with the following:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">if_included</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">then_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">inform_kit_ittt</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inform_kit_ittt is private to this section.</li></ul>
@@ -129,7 +129,7 @@ interactive fiction features of the compiler, but BasicInformKit does not.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">element_activation</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">element_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">activate</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">element_activation</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure element_activation is private to this section.</li></ul>

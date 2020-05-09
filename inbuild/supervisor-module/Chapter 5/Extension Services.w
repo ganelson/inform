@@ -26,7 +26,7 @@ typedef struct inform_extension {
 	struct parse_node_tree *syntax_tree;
 	struct parse_node *inclusion_sentence; /* Where the source called for this */
 	struct linked_list *search_list; /* of |inbuild_nest| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inform_extension;
 
 @ This is called as soon as a new copy |C| of the extension genre is created.

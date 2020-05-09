@@ -19,7 +19,7 @@ typedef struct implication {
 	struct parse_node *then_pn; /* what assertion is implied about them */
 	int implied_likelihood; /* with what certainty level */
 	struct implication *next_implication; /* in list of implications */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } implication;
 
 @ We also need a little piece of storage attached to each property name:

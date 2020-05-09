@@ -9,7 +9,7 @@ typedef struct inter_architecture {
 	struct text_stream *shorthand; /* such as |32d| */
 	int sixteen_bit;
 	int debug_enabled;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_architecture;
 
 inter_architecture *Architectures::new(text_stream *code, int s, int d) {

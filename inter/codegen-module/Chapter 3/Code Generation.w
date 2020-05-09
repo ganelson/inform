@@ -60,7 +60,7 @@ typedef struct code_generation {
 	struct generated_segment *segments[MAX_CG_SEGMENTS];
 	struct generated_segment *current_segment; /* an entry in that array, or null */
 	int temporarily_diverted; /* to the temporary segment */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } code_generation;
 
 code_generation *CodeGen::new_generation(pipeline_step *step, inter_tree *I,
@@ -83,7 +83,7 @@ But we abstract it in case it's ever useful for it to be more.
 =
 typedef struct generated_segment {
 	struct text_stream *generated_code;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } generated_segment;
 
 generated_segment *CodeGen::new_segment(void) {

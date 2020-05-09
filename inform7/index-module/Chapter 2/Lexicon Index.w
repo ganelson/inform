@@ -40,7 +40,7 @@ typedef struct lexicon_entry {
 
 	struct text_stream *reduced_to_lower_case; /* text converted to lower case for sorting */
 	struct lexicon_entry *sorted_next; /* next in lexicographic order */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } lexicon_entry;
 
 @

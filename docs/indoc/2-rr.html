@@ -115,25 +115,25 @@ must be. (A block ends when a new heading line appears, or at end of file.)
 
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_4" class="named-paragraph-link"><span class="named-paragraph">Scan the file and render blocks as they complete</span><span class="named-paragraph-number">3.4</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_3" class="named-paragraph-link"><span class="named-paragraph">Render the block just completed, unless it's empty</span><span class="named-paragraph-number">3.3</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">    Str::dispose_of(rhs-&gt;title_of_block_being_read);</span>
-<span class="character-syntax">    return OUT;</span>
-<span class="character-syntax">}</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_3" class="named-paragraph-link"><span class="named-paragraph">Render the block just completed, unless it's empty</span><span class="named-paragraph-number">3.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::dispose_of</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rhs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title_of_block_being_read</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
-<span class="character-syntax">typedef struct rawtext_helper_state {</span>
-<span class="character-syntax">    struct text_stream *OUT;</span>
-<span class="character-syntax">    struct volume *V;</span>
-<span class="character-syntax">    struct example *E;</span>
-<span class="character-syntax">    int skipping_current_block;</span>
-<span class="character-syntax">    int skip_opening_lines;</span>
-<span class="character-syntax">    int no_blocks_written;</span>
-<span class="character-syntax">    int this_is_first_block_in_file;</span>
-<span class="character-syntax">    int no_chapters_read_in_current_rawtext;</span>
-<span class="character-syntax">    int no_blocks_read_in_current_chapter;</span>
-<span class="character-syntax">    int no_pars_read_in_current_block;</span>
-<span class="character-syntax">    int partial_only;</span>
-<span class="character-syntax">    struct text_stream *title_of_block_being_read;</span>
-<span class="character-syntax">} rawtext_helper_state;</span>
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">rawtext_helper_state</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">example</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">skipping_current_block</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">skip_opening_lines</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_blocks_written</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">this_is_first_block_in_file</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_chapters_read_in_current_rawtext</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_blocks_read_in_current_chapter</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_pars_read_in_current_block</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">partial_only</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title_of_block_being_read</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">rawtext_helper_state</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure rawtext_helper_state is accessed in 2/exm, 2/utc, 2/css and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Prepare to read a new chapter of rawtext</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
@@ -258,18 +258,18 @@ be the first section.
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rhs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">skipping_current_block</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rhs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">OUT</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_3" class="named-paragraph-link"><span class="named-paragraph">Render the block just completed, unless it's empty</span><span class="named-paragraph-number">3.3</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">        rhs-&gt;OUT = OUT;</span>
-<span class="character-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP4_1_1" class="named-paragraph-link"><span class="named-paragraph">Take note of documentation references</span><span class="named-paragraph-number">4.1.1</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">        Str::copy(rhs-&gt;title_of_block_being_read, title);</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_3" class="named-paragraph-link"><span class="named-paragraph">Render the block just completed, unless it's empty</span><span class="named-paragraph-number">3.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">rhs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">OUT</span><span class="plain-syntax"> = </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP4_1_1" class="named-paragraph-link"><span class="named-paragraph">Take note of documentation references</span><span class="named-paragraph-number">4.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rhs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title_of_block_being_read</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">);</span>
 
-<span class="character-syntax">        if (Regexp::match(&amp;mr2, block_header, L"Chapter: (%c*)")) {</span>
-<span class="character-syntax">            ++(rhs-&gt;no_chapters_read_in_current_rawtext);</span>
-<span class="character-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Prepare to read a new chapter of rawtext</span><span class="named-paragraph-number">3.1</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">        }</span>
-<span class="character-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Prepare to read a new block of rawtext</span><span class="named-paragraph-number">3.2</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">    }</span>
-<span class="character-syntax">    Regexp::dispose_of(&amp;mr2);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr2</span><span class="plain-syntax">, </span><span class="identifier-syntax">block_header</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"Chapter: (%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            ++(</span><span class="identifier-syntax">rhs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_chapters_read_in_current_rawtext</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Prepare to read a new chapter of rawtext</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-rr.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Prepare to read a new block of rawtext</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr2</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rr.html#SP4">&#167;4</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_1_1"></a><b>&#167;4.1.1.  </b>Section headings can be marked with braced documentation references:

@@ -169,14 +169,14 @@ typedef struct kind_command_definition {
 typedef struct kind_template_definition {
 	struct text_stream *template_name; /* including the asterisk, e.g., |"*PRINTING-ROUTINE"| */
 	struct text_stream *template_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } kind_template_definition;
 
 typedef struct kind_macro_definition {
 	struct text_stream *kind_macro_name; /* including the sharp, e.g., |"#UNIT"| */
 	int kind_macro_line_count;
 	struct single_kind_command kind_macro_line[MAX_KIND_MACRO_LENGTH];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } kind_macro_definition;
 
 @ And this makes a note to insert the relevant chunk of I7 source text
@@ -187,7 +187,7 @@ in Inform's run, whereas I7 source text can only be lexed later.)
 typedef struct kind_template_obligation {
 	struct kind_template_definition *remembered_template; /* I7 source to insert... */
 	struct kind_constructor *remembered_constructor; /* ...concerning this kind */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } kind_template_obligation;
 
 @h Errors and limitations.

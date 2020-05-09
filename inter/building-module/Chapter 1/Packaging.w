@@ -20,7 +20,7 @@ typedef struct package_request {
 	struct package_request *parent_request;
 	struct inter_bookmark write_position;
 	struct linked_list *iname_generators; /* of |inter_name_generator| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } package_request;
 
 @ =
@@ -280,7 +280,7 @@ inter_package *Packaging::incarnate(package_request *R) {
 typedef struct compilation_module {
 	struct module_package *inter_presence;
 	struct parse_node *hanging_from;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } compilation_module;
 
 compilation_module *Packaging::new_cm(void) {
@@ -300,7 +300,7 @@ following creates modules on demand.
 typedef struct module_package {
 	struct package_request *the_package;
 	struct linked_list *submodules; /* of |submodule_request| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } module_package;
 
 module_package *Packaging::get_module(inter_tree *I, text_stream *name) {
@@ -327,7 +327,7 @@ as it turns out, this is presently just a wrapper for a name.
 =
 typedef struct submodule_identity {
 	struct text_stream *submodule_name;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } submodule_identity;
 
 submodule_identity *Packaging::register_submodule(text_stream *name) {
@@ -373,7 +373,7 @@ package_request *Packaging::template_submodule(inter_tree *I, submodule_identity
 typedef struct submodule_request {
 	struct submodule_identity *which_submodule;
 	struct package_request *where_found;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } submodule_request;
 
 package_request *Packaging::new_submodule_inner(inter_tree *I, module_package *M, submodule_identity *sid) {

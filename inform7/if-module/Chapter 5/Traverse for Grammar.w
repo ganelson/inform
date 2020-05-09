@@ -11,7 +11,7 @@ upon Understand... sentences in the source text.
 typedef struct cached_understanding {
 	struct wording understanding_text; /* word range of the understanding text */
 	struct inter_name *cu_iname; /* the runtime name for this |Consult_Grammar_N| routine */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } cached_understanding;
 
 @ And this will help with parsing:

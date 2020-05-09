@@ -51,7 +51,7 @@ typedef struct indexing_category {
 	int cat_usage; /* for counting headwords */
 	struct text_stream *cat_under; /* for automatic subentries */
 	int cat_alsounder; /* for automatic subentries */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } indexing_category;
 
 dictionary *categories_by_name = NULL;
@@ -295,7 +295,7 @@ typedef struct index_lemma {
 	struct text_stream *index_points; /* comma-separated list of refs */
 	struct text_stream *index_see; /* |<--|-separated list of refs */
 	struct text_stream *sorting_key; /* final reading order is alphabetic on this */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } index_lemma;
 
 dictionary *index_points_dict = NULL;

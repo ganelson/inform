@@ -75,7 +75,7 @@ typedef struct connected_submap {
 	int incidence_cache_size; /* how large that cache is */
 	struct cuboid incidence_cache_bounds; /* bounds of the incidence cache array */
 	int superpositions; /* number of pairs of rooms which share the same grid location */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } connected_submap;
 
 @ Just as each submap has a bounding cuboid, so does the whole assemblage:

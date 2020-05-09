@@ -10,7 +10,7 @@ One individual meaning which an adjective can have.
 typedef struct adjective_meaning_block {
 	struct adjective_meaning *possible_meanings; /* list of definitions in order given */
 	struct adjective_meaning *sorted_meanings; /* the same list sorted into logical order */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } adjective_meaning_block;
 
 @ Each individual sense of an adjective has its own |adjective_meaning|
@@ -65,7 +65,7 @@ typedef struct adjective_meaning {
 
 	int defined_already; /* temporary workspace used when compiling support routines */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } adjective_meaning;
 
 @ What are adjectives for? Since an adjective is a unary predicate, it can be
@@ -124,7 +124,7 @@ typedef struct adjective_iname_holder {
 	int task_code;
 	int weak_ID_of_domain;
 	struct inter_name *iname_held;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } adjective_iname_holder;
 
 inter_name *Adjectives::Meanings::iname(adjectival_phrase *aph, int task, int weak_id) {

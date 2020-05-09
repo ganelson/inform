@@ -15,7 +15,7 @@ typedef struct blorb_figure {
 	struct filename *filename_of_image_file;
 	int figure_number; /* resource number of this picture inside Blorb */
 	int alt_description; /* word number of double-quoted description */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } blorb_figure;
 
 @ One is special:

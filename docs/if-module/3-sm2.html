@@ -161,7 +161,7 @@ as the "heat", a term to be explained later.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">incidence_cache_size</span><span class="plain-syntax">; </span><span class="comment-syntax"> how large that cache is</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">cuboid</span><span class="plain-syntax"> </span><span class="identifier-syntax">incidence_cache_bounds</span><span class="plain-syntax">; </span><span class="comment-syntax"> bounds of the incidence cache array</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">superpositions</span><span class="plain-syntax">; </span><span class="comment-syntax"> number of pairs of rooms which share the same grid location</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">connected_submap</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure connected_submap is private to this section.</li></ul>
@@ -1768,15 +1768,15 @@ call; <span class="extract"><span class="extract-syntax">size</span></span> is t
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LATTICE_DIRECTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax"> = </span><a href="3-sm2.html#SP11" class="function-link"><span class="function-syntax">PL::SpatialMap::read_slock</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">at</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Exclude generating this way if we don't need to</span><span class="named-paragraph-number">25.1</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_2" class="named-paragraph-link"><span class="named-paragraph">Actually generate this way</span><span class="named-paragraph-number">25.2</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">        }</span>
-<span class="character-syntax">    }</span>
-<span class="character-syntax">    locking_to_neighbours = FALSE;</span>
-<span class="character-syntax">    LOOP_OVER_LATTICE_DIRECTIONS(i) {</span>
-<span class="character-syntax">        instance *T = PL::SpatialMap::read_smap(at, i);</span>
-<span class="character-syntax">        if (T) {</span>
-<span class="character-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Exclude generating this way if we don't need to</span><span class="named-paragraph-number">25.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Exclude generating this way if we don't need to</span><span class="named-paragraph-number">25.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_2" class="named-paragraph-link"><span class="named-paragraph">Actually generate this way</span><span class="named-paragraph-number">25.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">locking_to_neighbours</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LATTICE_DIRECTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax"> = </span><a href="3-sm2.html#SP10" class="function-link"><span class="function-syntax">PL::SpatialMap::read_smap</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">at</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Exclude generating this way if we don't need to</span><span class="named-paragraph-number">25.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_2" class="named-paragraph-link"><span class="named-paragraph">Actually generate this way</span><span class="named-paragraph-number">25.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
@@ -1854,9 +1854,9 @@ there, maybe just a broom cupboard.
 <span class="plain-syntax">        </span><span class="identifier-syntax">inner_contact_generation</span><span class="plain-syntax">, </span><span class="identifier-syntax">inner_contact_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">inner_contact_to</span><span class="plain-syntax">, </span><span class="identifier-syntax">inner_contact_dir</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">rooms_visited</span><span class="plain-syntax"> += </span><span class="identifier-syntax">rooms_explored_in_the_beyond</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_2_2" class="named-paragraph-link"><span class="named-paragraph">Copy interesting items from the returning team's clipboard to ours</span><span class="named-paragraph-number">25.2.2</span></a></span><span class="character-syntax">;</span>
-<span class="character-syntax">    if (locking_to_neighbours == FALSE)</span>
-<span class="character-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_2_3" class="named-paragraph-link"><span class="named-paragraph">Consider this link as a potential cut-position</span><span class="named-paragraph-number">25.2.3</span></a></span><span class="character-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_2_2" class="named-paragraph-link"><span class="named-paragraph">Copy interesting items from the returning team's clipboard to ours</span><span class="named-paragraph-number">25.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">locking_to_neighbours</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm2.html#SP25_2_3" class="named-paragraph-link"><span class="named-paragraph">Consider this link as a potential cut-position</span><span class="named-paragraph-number">25.2.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm2.html#SP25">&#167;25</a> (twice).</li></ul>
 <p class="commentary firstcommentary"><a id="SP25_2_1"></a><b>&#167;25.2.1.  </b>Each fresh team of explorers gets a fresh clipboard on which to record what

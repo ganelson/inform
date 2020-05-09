@@ -123,7 +123,7 @@ typedef struct meaning_list {
 	int score; /* a scoring system is used to choose most likely alternative */
 	struct meaning_list *sibling; /* tree of meanings of subordinate clauses */
 	struct meaning_list *child;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } meaning_list;
 
 int no_permanent_MLs = 0, no_ephemeral_MLs = 0, GAP_movements = 0;

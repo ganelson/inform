@@ -31,7 +31,7 @@ typedef struct skein_node {
 	struct skein_node *parent; /* within the Skein tree: |NULL| for the root only */
 	struct skein_node *child; /* within the Skein tree: |NULL| if a leaf */
 	struct skein_node *sibling; /* within the Skein tree: |NULL| if the final option from its parent */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } skein_node;
 
 @ The root of the Skein, representing the start position before any command

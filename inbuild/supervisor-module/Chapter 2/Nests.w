@@ -12,7 +12,7 @@ typedef struct inbuild_nest {
 	struct pathname *location;
 	int read_only; /* files cannot be written into this nest */
 	int tag_value; /* used to indicate whether internal, external, and such */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inbuild_nest;
 
 =
@@ -86,7 +86,7 @@ we create one of these for each hit:
 typedef struct inbuild_search_result {
 	struct inbuild_copy *copy; /* what was found */
 	struct inbuild_nest *nest; /* from whence it came */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inbuild_search_result;
 
 @ These can be created only as entries in a list:
@@ -112,7 +112,7 @@ void Nests::search_for(inbuild_requirement *req,
 	LOOP_OVER_LINKED_LIST(N, inbuild_nest, search_list) {
 		inbuild_genre *G;
 		LOOP_OVER(G, inbuild_genre)
-			VMETHOD_CALL(G, GENRE_SEARCH_NEST_FOR_MTID, N, req, results);
+			VOID_METHOD_CALL(G, GENRE_SEARCH_NEST_FOR_MTID, N, req, results);
 	}
 }
 

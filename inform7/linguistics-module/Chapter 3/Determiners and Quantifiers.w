@@ -54,7 +54,7 @@ typedef struct quantifier {
 	int can_be_used_in_assertions; /* can be used in assertion sentences */
 	struct quantifier *negated_quant; /* the logically converse determiner */
 	char *log_text; /* to be used in the debugging log when logging propositions */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } quantifier;
 
 @ The built-in set of 16 quantifiers, arranged in eight pairs, is as follows:
@@ -94,7 +94,7 @@ typedef struct determiner {
 	int takes_number; /* does a number follow? (e.g. for "at least N" */
 	struct quantifier *quantifier_meant; /* meaning of this quantifier */
 	char *index_text; /* used in the Phrasebook index lexicon */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } determiner;
 
 @h Creating a quantifier.

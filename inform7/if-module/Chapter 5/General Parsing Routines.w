@@ -9,7 +9,7 @@ properties as required by the I7 grammar.
 typedef struct parse_name_notice {
 	inter_name *pnn_iname;
 	inference_subject *parse_subject;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } parse_name_notice;
 
 @ In this section we compile GPRs, routines to handle |Consult|-like text,

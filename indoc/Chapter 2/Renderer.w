@@ -39,7 +39,7 @@ those are the keys of the following hash:
 =
 typedef struct formatted_file {
 	struct filename *name;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } formatted_file;
 
 @ Miscellaneously:

@@ -29,7 +29,7 @@ typedef struct regions_data {
 	struct instance *in_region; /* smallest region containing me (rooms only) */
 	struct parse_node *in_region_set_at; /* where this is decided */
 	struct inter_name *in_region_iname; /* for testing regional containment found-ins */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } regions_data;
 
 @h Initialising.

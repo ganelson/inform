@@ -8,7 +8,7 @@ Template paths define, in order of priority, where to look for templates.
 =
 typedef struct template_path {
 	struct pathname *template_repository; /* pathname of folder of repository */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } template_path;
 
 @ Whereas templates are the things themselves.
@@ -18,7 +18,7 @@ typedef struct template {
 	struct text_stream *template_name; /* e.g., "Standard" */
 	struct template_path *template_location;
 	struct filename *latest_use; /* filename most recently sought from it */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } template;
 
 @h Defining template paths.

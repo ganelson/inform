@@ -20,7 +20,7 @@ typedef struct list_together_routine {
 	struct inter_name *ltr_array_iname;
 	struct inter_name *ltr_routine_iname;
 	int articles_bit; /* if false, add |NOARTICLE_BIT| to the I6 listing style */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } list_together_routine;
 
 @h Creation.

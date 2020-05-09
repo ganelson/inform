@@ -10,176 +10,176 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e bibliographic_datum_MT
-@e phrase_MT
-@e inference_MT
-@e property_MT
-@e property_permission_MT
-@e rulebook_MT
-@e booking_MT
-@e phrase_option_array_MT
-@e instance_MT
-@e table_MT
-@e table_column_MT
-@e literal_text_MT
-@e text_substitution_MT
-@e invocation_array_MT
-@e implication_MT
-@e activity_MT
-@e activity_list_array_MT
-@e use_option_MT
-@e i6_memory_setting_MT
-@e definition_MT
-@e binary_predicate_MT
-@e pcalc_prop_array_MT
-@e pcalc_func_array_MT
-@e pcalc_prop_deferral_MT
-@e literal_pattern_MT
-@e generalisation_MT
-@e i6_schema_array_MT
-@e list_together_routine_MT
-@e past_tense_condition_record_MT
-@e past_tense_action_record_MT
-@e named_rulebook_outcome_MT
-@e stacked_variable_array_MT
-@e stacked_variable_list_array_MT
-@e stacked_variable_owner_array_MT
-@e stacked_variable_owner_list_array_MT
-@e pointer_allocation_MT
-@e ph_stack_frame_box_MT
-@e i6_inclusion_matter_MT
-@e literal_list_MT
-@e adjective_meaning_MT
-@e adjective_meaning_block_MT
-@e measurement_definition_MT
-@e literal_pattern_name_MT
-@e equation_MT
-@e equation_symbol_MT
-@e equation_node_MT
-@e placement_affecting_array_MT
-@e activity_crossref_array_MT
-@e invocation_options_array_MT
-@e inv_token_problem_token_MT
-@e application_array_MT
-@e plugin_call_array_MT
-@e plugin_MT
-@e nonlocal_variable_MT
-@e inference_subject_MT
-@e property_of_value_storage_MT
-@e to_phrase_request_MT
-@e constant_phrase_MT
-@e use_as_event_MT
-@e instance_usage_array_MT
-@e rule_MT
-@e rulebook_outcome_MT
-@e applicability_condition_MT
-@e llist_entry_MT
-@e response_message_MT
-@e table_contribution_array_MT
-@e contents_entry_MT
-@e local_variable_array_MT
-@e relation_guard_MT
-@e pcalc_term_array_MT
-@e special_meaning_holder_MT
-@e runtime_kind_structure_MT
-@e internal_test_case_MT
-@e test_scenario_MT
-@e counting_data_MT
-@e kind_interaction_MT
-@e dval_written_MT
-@e nascent_array_MT
-@e value_holster_array_MT
-@e adjective_iname_holder_MT
-@e label_namespace_MT
-@e compile_task_data_MT
+@e bibliographic_datum_CLASS
+@e phrase_CLASS
+@e inference_CLASS
+@e property_CLASS
+@e property_permission_CLASS
+@e rulebook_CLASS
+@e booking_CLASS
+@e phrase_option_array_CLASS
+@e instance_CLASS
+@e table_CLASS
+@e table_column_CLASS
+@e literal_text_CLASS
+@e text_substitution_CLASS
+@e invocation_array_CLASS
+@e implication_CLASS
+@e activity_CLASS
+@e activity_list_array_CLASS
+@e use_option_CLASS
+@e i6_memory_setting_CLASS
+@e definition_CLASS
+@e binary_predicate_CLASS
+@e pcalc_prop_array_CLASS
+@e pcalc_func_array_CLASS
+@e pcalc_prop_deferral_CLASS
+@e literal_pattern_CLASS
+@e generalisation_CLASS
+@e i6_schema_array_CLASS
+@e list_together_routine_CLASS
+@e past_tense_condition_record_CLASS
+@e past_tense_action_record_CLASS
+@e named_rulebook_outcome_CLASS
+@e stacked_variable_array_CLASS
+@e stacked_variable_list_array_CLASS
+@e stacked_variable_owner_array_CLASS
+@e stacked_variable_owner_list_array_CLASS
+@e pointer_allocation_CLASS
+@e ph_stack_frame_box_CLASS
+@e i6_inclusion_matter_CLASS
+@e literal_list_CLASS
+@e adjective_meaning_CLASS
+@e adjective_meaning_block_CLASS
+@e measurement_definition_CLASS
+@e literal_pattern_name_CLASS
+@e equation_CLASS
+@e equation_symbol_CLASS
+@e equation_node_CLASS
+@e placement_affecting_array_CLASS
+@e activity_crossref_array_CLASS
+@e invocation_options_array_CLASS
+@e inv_token_problem_token_CLASS
+@e application_array_CLASS
+@e plugin_call_array_CLASS
+@e plugin_CLASS
+@e nonlocal_variable_CLASS
+@e inference_subject_CLASS
+@e property_of_value_storage_CLASS
+@e to_phrase_request_CLASS
+@e constant_phrase_CLASS
+@e use_as_event_CLASS
+@e instance_usage_array_CLASS
+@e rule_CLASS
+@e rulebook_outcome_CLASS
+@e applicability_condition_CLASS
+@e llist_entry_CLASS
+@e response_message_CLASS
+@e table_contribution_array_CLASS
+@e contents_entry_CLASS
+@e local_variable_array_CLASS
+@e relation_guard_CLASS
+@e pcalc_term_array_CLASS
+@e special_meaning_holder_CLASS
+@e runtime_kind_structure_CLASS
+@e internal_test_case_CLASS
+@e test_scenario_CLASS
+@e counting_data_CLASS
+@e kind_interaction_CLASS
+@e dval_written_CLASS
+@e nascent_array_CLASS
+@e value_holster_array_CLASS
+@e adjective_iname_holder_CLASS
+@e label_namespace_CLASS
+@e compile_task_data_CLASS
 
 @ Deep breath, then: the following macros define several hundred functions.
 
 =
-ALLOCATE_INDIVIDUALLY(activity)
-ALLOCATE_INDIVIDUALLY(adjective_meaning)
-ALLOCATE_INDIVIDUALLY(adjective_meaning_block)
-ALLOCATE_INDIVIDUALLY(applicability_condition)
-ALLOCATE_INDIVIDUALLY(binary_predicate)
-ALLOCATE_INDIVIDUALLY(booking)
-ALLOCATE_INDIVIDUALLY(constant_phrase)
-ALLOCATE_INDIVIDUALLY(contents_entry)
-ALLOCATE_INDIVIDUALLY(counting_data)
-ALLOCATE_INDIVIDUALLY(definition)
-ALLOCATE_INDIVIDUALLY(dval_written)
-ALLOCATE_INDIVIDUALLY(equation_node)
-ALLOCATE_INDIVIDUALLY(equation_symbol)
-ALLOCATE_INDIVIDUALLY(equation)
-ALLOCATE_INDIVIDUALLY(generalisation)
-ALLOCATE_INDIVIDUALLY(i6_inclusion_matter)
-ALLOCATE_INDIVIDUALLY(i6_memory_setting)
-ALLOCATE_INDIVIDUALLY(implication)
-ALLOCATE_INDIVIDUALLY(inference)
-ALLOCATE_INDIVIDUALLY(inference_subject)
-ALLOCATE_INDIVIDUALLY(instance)
-ALLOCATE_INDIVIDUALLY(internal_test_case)
-ALLOCATE_INDIVIDUALLY(inv_token_problem_token)
-ALLOCATE_INDIVIDUALLY(kind_interaction)
-ALLOCATE_INDIVIDUALLY(list_together_routine)
-ALLOCATE_INDIVIDUALLY(literal_list)
-ALLOCATE_INDIVIDUALLY(literal_pattern_name)
-ALLOCATE_INDIVIDUALLY(literal_pattern)
-ALLOCATE_INDIVIDUALLY(literal_text)
-ALLOCATE_INDIVIDUALLY(llist_entry)
-ALLOCATE_INDIVIDUALLY(measurement_definition)
-ALLOCATE_INDIVIDUALLY(named_rulebook_outcome)
-ALLOCATE_INDIVIDUALLY(nascent_array)
-ALLOCATE_INDIVIDUALLY(nonlocal_variable)
-ALLOCATE_INDIVIDUALLY(past_tense_action_record)
-ALLOCATE_INDIVIDUALLY(past_tense_condition_record)
-ALLOCATE_INDIVIDUALLY(pcalc_prop_deferral)
-ALLOCATE_INDIVIDUALLY(ph_stack_frame_box)
-ALLOCATE_INDIVIDUALLY(phrase)
-ALLOCATE_INDIVIDUALLY(plugin)
-ALLOCATE_INDIVIDUALLY(pointer_allocation)
-ALLOCATE_INDIVIDUALLY(property_of_value_storage)
-ALLOCATE_INDIVIDUALLY(property_permission)
-ALLOCATE_INDIVIDUALLY(property)
-ALLOCATE_INDIVIDUALLY(relation_guard)
-ALLOCATE_INDIVIDUALLY(response_message)
-ALLOCATE_INDIVIDUALLY(rule)
-ALLOCATE_INDIVIDUALLY(rulebook_outcome)
-ALLOCATE_INDIVIDUALLY(rulebook)
-ALLOCATE_INDIVIDUALLY(special_meaning_holder)
-ALLOCATE_INDIVIDUALLY(table_column)
-ALLOCATE_INDIVIDUALLY(table)
-ALLOCATE_INDIVIDUALLY(test_scenario)
-ALLOCATE_INDIVIDUALLY(text_substitution)
-ALLOCATE_INDIVIDUALLY(to_phrase_request)
-ALLOCATE_INDIVIDUALLY(use_as_event)
-ALLOCATE_INDIVIDUALLY(use_option)
-ALLOCATE_INDIVIDUALLY(runtime_kind_structure)
-ALLOCATE_INDIVIDUALLY(adjective_iname_holder)
-ALLOCATE_INDIVIDUALLY(label_namespace)
-ALLOCATE_INDIVIDUALLY(compile_task_data)
+DECLARE_CLASS(activity)
+DECLARE_CLASS(adjective_meaning)
+DECLARE_CLASS(adjective_meaning_block)
+DECLARE_CLASS(applicability_condition)
+DECLARE_CLASS(binary_predicate)
+DECLARE_CLASS(booking)
+DECLARE_CLASS(constant_phrase)
+DECLARE_CLASS(contents_entry)
+DECLARE_CLASS(counting_data)
+DECLARE_CLASS(definition)
+DECLARE_CLASS(dval_written)
+DECLARE_CLASS(equation_node)
+DECLARE_CLASS(equation_symbol)
+DECLARE_CLASS(equation)
+DECLARE_CLASS(generalisation)
+DECLARE_CLASS(i6_inclusion_matter)
+DECLARE_CLASS(i6_memory_setting)
+DECLARE_CLASS(implication)
+DECLARE_CLASS(inference)
+DECLARE_CLASS(inference_subject)
+DECLARE_CLASS(instance)
+DECLARE_CLASS(internal_test_case)
+DECLARE_CLASS(inv_token_problem_token)
+DECLARE_CLASS(kind_interaction)
+DECLARE_CLASS(list_together_routine)
+DECLARE_CLASS(literal_list)
+DECLARE_CLASS(literal_pattern_name)
+DECLARE_CLASS(literal_pattern)
+DECLARE_CLASS(literal_text)
+DECLARE_CLASS(llist_entry)
+DECLARE_CLASS(measurement_definition)
+DECLARE_CLASS(named_rulebook_outcome)
+DECLARE_CLASS(nascent_array)
+DECLARE_CLASS(nonlocal_variable)
+DECLARE_CLASS(past_tense_action_record)
+DECLARE_CLASS(past_tense_condition_record)
+DECLARE_CLASS(pcalc_prop_deferral)
+DECLARE_CLASS(ph_stack_frame_box)
+DECLARE_CLASS(phrase)
+DECLARE_CLASS(plugin)
+DECLARE_CLASS(pointer_allocation)
+DECLARE_CLASS(property_of_value_storage)
+DECLARE_CLASS(property_permission)
+DECLARE_CLASS(property)
+DECLARE_CLASS(relation_guard)
+DECLARE_CLASS(response_message)
+DECLARE_CLASS(rule)
+DECLARE_CLASS(rulebook_outcome)
+DECLARE_CLASS(rulebook)
+DECLARE_CLASS(special_meaning_holder)
+DECLARE_CLASS(table_column)
+DECLARE_CLASS(table)
+DECLARE_CLASS(test_scenario)
+DECLARE_CLASS(text_substitution)
+DECLARE_CLASS(to_phrase_request)
+DECLARE_CLASS(use_as_event)
+DECLARE_CLASS(use_option)
+DECLARE_CLASS(runtime_kind_structure)
+DECLARE_CLASS(adjective_iname_holder)
+DECLARE_CLASS(label_namespace)
+DECLARE_CLASS(compile_task_data)
 
 @ So much for the managed structures: now for the unmanaged structures.
 
 =
-ALLOCATE_IN_ARRAYS(activity_crossref, 100)
-ALLOCATE_IN_ARRAYS(activity_list, 1000)
-ALLOCATE_IN_ARRAYS(application, 100)
-ALLOCATE_IN_ARRAYS(i6_schema, 100)
-ALLOCATE_IN_ARRAYS(instance_usage, 200)
-ALLOCATE_IN_ARRAYS(invocation_options, 100)
-ALLOCATE_IN_ARRAYS(local_variable, 100)
-ALLOCATE_IN_ARRAYS(pcalc_func, 1000)
-ALLOCATE_IN_ARRAYS(pcalc_prop, 1000)
-ALLOCATE_IN_ARRAYS(pcalc_term, 1000)
-ALLOCATE_IN_ARRAYS(phrase_option, 100)
-ALLOCATE_IN_ARRAYS(placement_affecting, 100)
-ALLOCATE_IN_ARRAYS(plugin_call, 100)
-ALLOCATE_IN_ARRAYS(stacked_variable_list, 100)
-ALLOCATE_IN_ARRAYS(stacked_variable_owner_list, 100)
-ALLOCATE_IN_ARRAYS(stacked_variable_owner, 100)
-ALLOCATE_IN_ARRAYS(stacked_variable, 100)
-ALLOCATE_IN_ARRAYS(table_contribution, 100)
-ALLOCATE_IN_ARRAYS(value_holster, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_list, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(application, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(i6_schema, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(instance_usage, 200)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(local_variable, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_func, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_prop, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_term, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(plugin_call, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_list, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_owner_list, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_owner, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(table_contribution, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(value_holster, 100)
 
 @ Next we define some functions, by macro, which write to the debugging log
 or other text streams.

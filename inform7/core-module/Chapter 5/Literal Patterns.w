@@ -78,7 +78,7 @@ typedef struct literal_pattern {
 	int marked_for_printing; /* used in compiling printing routines */
 	inter_symbol *jump_label;
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } literal_pattern;
 
 @
@@ -162,7 +162,7 @@ typedef struct literal_pattern_name {
 	struct literal_pattern_name *next; /* other names for the same kind */
 	struct literal_pattern_name *next_with_rp; /* used in parsing only: list applied to one notation */
 	int lpn_compiled_already;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } literal_pattern_name;
 
 @h Creating patterns, tokens and elements.

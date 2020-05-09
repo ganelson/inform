@@ -11,7 +11,7 @@ typedef struct inter_tree {
 	struct inter_tree_node *root_node;
 	struct inter_package *root_package;
 	struct building_site site;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inter_tree;
 
 @ =

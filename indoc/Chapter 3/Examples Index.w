@@ -14,7 +14,7 @@ typedef struct example_index_data {
 	struct section *alpha_index_to_S;
 	struct example *alpha_index_to_E;
 	struct text_stream *sort_key;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } example_index_data;
 
 dictionary *example_index_data_by_rubric = NULL;

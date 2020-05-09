@@ -68,7 +68,7 @@ typedef struct measurement_definition {
 	struct wording region_threshold_text; /* text of threshold value */
 
 	int property_schema_written; /* I6 schema for testing written yet? */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } measurement_definition;
 
 @h Measurements.

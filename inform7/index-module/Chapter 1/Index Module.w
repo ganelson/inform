@@ -10,16 +10,16 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e documentation_ref_MT
-@e index_page_MT
-@e index_element_MT
-@e lexicon_entry_MT
+@e documentation_ref_CLASS
+@e index_page_CLASS
+@e index_element_CLASS
+@e lexicon_entry_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(documentation_ref)
-ALLOCATE_INDIVIDUALLY(index_element)
-ALLOCATE_INDIVIDUALLY(index_page)
-ALLOCATE_INDIVIDUALLY(lexicon_entry)
+DECLARE_CLASS(documentation_ref)
+DECLARE_CLASS(index_element)
+DECLARE_CLASS(index_page)
+DECLARE_CLASS(lexicon_entry)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

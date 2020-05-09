@@ -21,7 +21,7 @@ typedef struct equation {
 	struct equation_node *parsed_equation; /* and the equation itself (when eventually parsed) */
 	struct inter_name *eqn_iname; /* used at run-time to identify this */
 	struct equation_symbol *symbol_list; /* the symbols used */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } equation;
 
 @ Each equation is allowed to use one or more symbols. Some may correspond
@@ -44,7 +44,7 @@ typedef struct equation_symbol {
 	struct equation_symbol *next; /* in the list belonging to the equation */
 	struct local_variable *local_map; /* when being solved in a given stack frame */
 	int promote_local_to_real; /* from integer, if necessary */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } equation_symbol;
 
 @ In addition, there are some standing symbols used by all equations: the
@@ -110,7 +110,7 @@ typedef struct equation_node {
 	int enode_promotion; /* promote this from an integer to a real number? */
 	int rational_n; /* represents the rational number |n/m|... */
 	int rational_m; /* ...unless |m| is zero */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } equation_node;
 
 @h Traversing for equations.

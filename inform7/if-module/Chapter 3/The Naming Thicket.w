@@ -32,7 +32,7 @@ typedef struct short_name_notice {
 	struct instance *namee;
 	struct inference_subject *after_subject;
 	int capped;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } short_name_notice;
 
 @h Plugin startup.

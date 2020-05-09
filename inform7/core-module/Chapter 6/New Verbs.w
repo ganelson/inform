@@ -17,7 +17,7 @@ typedef struct special_meaning_holder {
 	int (*sm_func)(int, parse_node *, wording *); /* (for tangling reasons, can't use typedef here) */
 	struct text_stream *sm_name;
 	int verb_priority;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } special_meaning_holder;
 
 @h Inequalities as operator verbs.

@@ -767,7 +767,7 @@ typedef struct routine_body_request {
 	struct inter_package *block_package;
 	int pass2_offset;
 	struct text_stream *body;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } routine_body_request;
 
 int rb_splat_count = 1;

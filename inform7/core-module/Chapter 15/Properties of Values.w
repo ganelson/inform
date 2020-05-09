@@ -12,7 +12,7 @@ which table will store the property values at run-time, or else is left as
 =
 typedef struct property_of_value_storage {
 	struct inter_name *storage_table_iname; /* for the relevant column array */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } property_of_value_storage;
 
 property_of_value_storage *latest_povs = NULL; /* see below */

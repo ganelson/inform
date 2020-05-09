@@ -10,7 +10,7 @@ stored in the following structure.
 typedef struct inform_template {
 	struct inbuild_copy *as_copy;
 	struct semantic_version_number version;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } inform_template;
 
 @ This is called as soon as a new copy |C| of the language genre is created.
