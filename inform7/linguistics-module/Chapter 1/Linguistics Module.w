@@ -11,17 +11,17 @@ which use this module:
 @ To begin with, this module needs to allocate memory:
 
 @e adjectival_phrase_CLASS
-@e adjective_usage_array_CLASS
+@e adjective_usage_CLASS
 @e quantifier_CLASS
 @e determiner_CLASS
 @e verb_identity_CLASS
 @e verb_form_CLASS
-@e verb_meaning_array_CLASS
+@e verb_meaning_CLASS
 @e verb_sense_CLASS
 @e verb_usage_CLASS
 @e verb_usage_tier_CLASS
 @e preposition_identity_CLASS
-@e time_period_array_CLASS
+@e time_period_CLASS
 @e excerpt_meaning_CLASS
 @e noun_CLASS
 

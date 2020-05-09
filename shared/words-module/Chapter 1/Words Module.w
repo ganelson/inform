@@ -14,7 +14,7 @@ which use this module:
 @e LEXER_WORDS_MREASON
 
 @e source_file_CLASS
-@e vocabulary_entry_array_CLASS
+@e vocabulary_entry_CLASS
 @e nonterminal_CLASS
 @e production_CLASS
 @e production_list_CLASS

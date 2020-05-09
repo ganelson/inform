@@ -9,8 +9,8 @@ Setting up the use of this module.
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:
 
-@e inter_name_array_CLASS
-@e inter_name_generator_array_CLASS
+@e inter_name_CLASS
+@e inter_name_generator_CLASS
 @e package_request_CLASS
 @e hierarchy_location_CLASS
 @e hierarchy_attachment_point_CLASS

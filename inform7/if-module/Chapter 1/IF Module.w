@@ -36,12 +36,12 @@ which use this module:
 @e slash_gpr_CLASS
 @e spatial_data_CLASS
 
-@e action_name_list_array_CLASS
-@e action_pattern_array_CLASS
-@e ap_optional_clause_array_CLASS
-@e scene_connector_array_CLASS
-@e understanding_item_array_CLASS
-@e understanding_reference_array_CLASS
+@e action_name_list_CLASS
+@e action_pattern_CLASS
+@e ap_optional_clause_CLASS
+@e scene_connector_CLASS
+@e understanding_item_CLASS
+@e understanding_reference_CLASS
 
 =
 DECLARE_CLASS(action_name)

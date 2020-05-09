@@ -40,7 +40,7 @@ which use this module:
 @e kit_dependency_CLASS
 @e known_extension_clash_CLASS
 
-@e inbuild_work_database_entry_array_CLASS
+@e inbuild_work_database_entry_CLASS
 
 =
 DECLARE_CLASS(build_methodology)

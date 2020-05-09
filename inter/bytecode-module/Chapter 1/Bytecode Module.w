@@ -11,12 +11,12 @@ which use this module:
 @ To begin with, this module needs to allocate memory:
 
 @e inter_tree_CLASS
-@e inter_tree_node_array_CLASS
+@e inter_tree_node_CLASS
 @e inter_warehouse_CLASS
 @e inter_warehouse_room_CLASS
 @e inter_symbols_table_CLASS
-@e inter_symbol_array_CLASS
-@e inter_annotation_array_CLASS
+@e inter_symbol_CLASS
+@e inter_annotation_CLASS
 @e inter_data_type_CLASS
 @e inter_construct_CLASS
 @e inter_annotation_form_CLASS

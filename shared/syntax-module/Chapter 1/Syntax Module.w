@@ -12,7 +12,7 @@ which use this module:
 
 @e parse_node_CLASS
 @e parse_node_tree_CLASS
-@e parse_node_annotation_array_CLASS
+@e parse_node_annotation_CLASS
 
 =
 DECLARE_CLASS(parse_node)

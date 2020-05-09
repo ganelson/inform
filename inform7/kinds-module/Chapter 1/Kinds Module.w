@@ -10,17 +10,17 @@ which use this module:
 
 @ To begin with, this module needs to allocate memory:
 
-@e dimensional_rule_array_CLASS
-@e kind_array_CLASS
+@e dimensional_rule_CLASS
+@e kind_CLASS
 @e kind_variable_declaration_CLASS
 @e kind_constructor_CLASS
 @e kind_template_definition_CLASS
 @e kind_macro_definition_CLASS
 @e kind_template_obligation_CLASS
-@e kind_constructor_comparison_schema_array_CLASS
-@e kind_constructor_casting_rule_array_CLASS
-@e kind_constructor_instance_array_CLASS
-@e unit_sequence_array_CLASS
+@e kind_constructor_comparison_schema_CLASS
+@e kind_constructor_casting_rule_CLASS
+@e kind_constructor_instance_CLASS
+@e unit_sequence_CLASS
 
 =
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dimensional_rule, 100)
