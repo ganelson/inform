@@ -3,6 +3,14 @@
 To deal with multiple inter architectures.
 
 @h Architectures.
+An "architecture" is a choice of how to use Inter code: for example, with the
+expectation that it will have 32-bit rather than 16-bit integers. These are
+not different Inter formats: two Inter files could, in fact, be identical
+and yet one could be intended to be code-generated to a 32-bit program
+and another to 16-bit. In effect, an "architecture" holds the settings which
+//inform7// uses when turning source text into Inter code.
+
+Each different architecture is represented by one of these:
 
 =
 typedef struct inter_architecture {
@@ -12,6 +20,7 @@ typedef struct inter_architecture {
 	CLASS_DEFINITION
 } inter_architecture;
 
+@ =
 inter_architecture *Architectures::new(text_stream *code, int s, int d) {
 	inter_architecture *A = CREATE(inter_architecture);
 	A->shorthand = Str::duplicate(code);
@@ -20,6 +29,11 @@ inter_architecture *Architectures::new(text_stream *code, int s, int d) {
 	return A;
 }
 
+@h Standard set.
+This is called when the //arch// module starts up; no other architectures
+are ever made.
+
+=
 void Architectures::create(void) {
 	Architectures::new(I"16", TRUE, FALSE);
 	Architectures::new(I"16d", TRUE, TRUE);
@@ -27,6 +41,11 @@ void Architectures::create(void) {
 	Architectures::new(I"32d", FALSE, TRUE);
 }
 
+@h Canonical filenames.
+When a kit is assimilated, its Inter code is stored in files with these
+leafnames:
+
+=
 filename *Architectures::canonical_binary(pathname *P, inter_architecture *A) {
 	if (A == NULL) internal_error("no arch");
 	TEMPORARY_TEXT(leafname);
@@ -45,6 +64,10 @@ filename *Architectures::canonical_textual(pathname *P, inter_architecture *A) {
 	return F;
 }
 
+@h Shorthand.
+These functions turn an architecture into a text like |16d| and back again:
+
+=
 text_stream *Architectures::to_codename(inter_architecture *A) {
 	if (A == NULL) return NULL;
 	return A->shorthand;
@@ -58,6 +81,10 @@ inter_architecture *Architectures::from_codename(text_stream *name) {
 	return NULL;
 }
 
+@h What an architecture offers.
+At present, this all there is, so in a sense all possible architectures exist:
+
+=
 int Architectures::is_16_bit(inter_architecture *A) {
 	if (A == NULL) internal_error("no arch");
 	return A->sixteen_bit;

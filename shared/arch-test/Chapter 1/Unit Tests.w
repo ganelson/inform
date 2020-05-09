@@ -35,7 +35,7 @@ void Unit::test_one(OUTPUT_STREAM, text_stream *test) {
 	WRITE(":\n"); INDENT;
 	target_vm *VM;
 	LOOP_OVER(VM, target_vm) {
-		if (Compatibility::with(C, VM)) {
+		if (Compatibility::test(C, VM)) {
 			TargetVMs::write(OUT, VM);
 			WRITE("\n");
 		}

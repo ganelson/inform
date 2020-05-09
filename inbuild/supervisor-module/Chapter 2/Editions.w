@@ -60,7 +60,7 @@ void Editions::write_canonical_leaf(OUTPUT_STREAM, inbuild_edition *E) {
 =
 void Editions::inspect(OUTPUT_STREAM, inbuild_edition *E) {
 	Editions::write(OUT, E);
-	if (Compatibility::universal(E->compatibility) == FALSE) {
+	if (Compatibility::test_universal(E->compatibility) == FALSE) {
 		WRITE(" (");
 		Compatibility::write(OUT, E->compatibility);
 		WRITE(")");

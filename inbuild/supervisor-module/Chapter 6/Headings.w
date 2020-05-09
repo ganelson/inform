@@ -357,7 +357,7 @@ otherwise.
 <current-virtual-machine> internal {
 	if (<virtual-machine>(W)) {
 		compatibility_specification *vms = (compatibility_specification *) <<rp>>;
-		*X = Compatibility::with(vms, Supervisor::current_vm());
+		*X = Compatibility::test(vms, Supervisor::current_vm());
 		return TRUE;
 	} else {
 		*X = FALSE;

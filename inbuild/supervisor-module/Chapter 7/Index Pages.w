@@ -608,14 +608,14 @@ void ExtensionIndex::write_icons(OUTPUT_STREAM, compatibility_specification *C) 
 	int something = FALSE, everything = TRUE;
 	target_vm *VM;
 	LOOP_OVER(VM, target_vm)
-		if (Compatibility::with(C, VM))
+		if (Compatibility::test(C, VM))
 			something = TRUE;
 		else
 			everything = FALSE;
 	if (something == FALSE) WRITE("none");
 	if (everything == FALSE)
 		LOOP_OVER(VM, target_vm)
-			if ((Compatibility::with(C, VM)) && (TargetVMs::debug_enabled(VM)))
+			if ((Compatibility::test(C, VM)) && (TargetVMs::debug_enabled(VM)))
 				ExtensionIndex::plot_icon(OUT, VM);
 }
 

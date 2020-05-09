@@ -183,7 +183,7 @@ inform_extension *Inclusions::load(parse_node *last_H0, parse_node *at,
 		if (Nests::get_tag(search_result->nest) == INTERNAL_NEST_TAG)
 			E->loaded_from_built_in_area = TRUE;
 		compatibility_specification *C = E->as_copy->edition->compatibility;
-		if (Compatibility::with(C, Supervisor::current_vm()) == FALSE)
+		if (Compatibility::test(C, Supervisor::current_vm()) == FALSE)
 			@<Issue a problem message saying that the VM does not meet requirements@>;
 
 		if (LinkedLists::len(search_result->copy->errors_reading_source_text) == 0) {
