@@ -214,7 +214,7 @@ int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
 @ More constraints beats fewer.
 
 @<Apply comparison law I@> =
-	c_s_stage_law = "I - Number of aspects constrained";
+	c_s_stage_law = I"I - Number of aspects constrained";
 	int rct1 = 0, rct2 = 0;
 	#ifdef IF_MODULE
 	rct1 = PL::Actions::Patterns::count_aspects(ap1);
@@ -239,7 +239,7 @@ int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
 @ More when/while conditions beats fewer.
 
 @<Apply comparison law III@> =
-	c_s_stage_law = "III - When/while requirement";
+	c_s_stage_law = I"III - When/while requirement";
 	if ((Wordings::nonempty(AL1W)) && (Wordings::empty(AL2W))) return 1;
 	if ((Wordings::empty(AL1W)) && (Wordings::nonempty(AL2W))) return -1;
 	if (Wordings::nonempty(AL1W)) {
@@ -252,7 +252,7 @@ int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
 @ A more specific action (or parameter) beats a less specific one.
 
 @<Apply comparison law IV@> =
-	c_s_stage_law = "IV - Action requirement";
+	c_s_stage_law = I"IV - Action requirement";
 	#ifdef IF_MODULE
 	int rv = PL::Actions::Patterns::compare_specificity(ap1, ap2);
 	if (rv != 0) return rv;
@@ -261,7 +261,7 @@ int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
 @ A rule with a scene requirement beats one without.
 
 @<Apply comparison law V@> =
-	c_s_stage_law = "V - Scene requirement";
+	c_s_stage_law = I"V - Scene requirement";
 	#ifdef IF_MODULE
 	if ((sc1 != NULL) && (sc2 == NULL)) return 1;
 	if ((sc1 == NULL) && (sc2 != NULL)) return -1;

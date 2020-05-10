@@ -421,7 +421,7 @@ void PL::Parsing::Verbs::index_tokens(OUTPUT_STREAM) {
 
 void PL::Parsing::Verbs::index_tokens_for(OUTPUT_STREAM, wording W, char *special, parse_node *where,
 	grammar_line *defns, text_stream *help, char *explanation) {
-	HTMLFiles::open_para(OUT, 1, "tight");
+	HTML::open_indented_p(OUT, 1, "tight");
 	WRITE("\"[");
 	if (special) WRITE("%s", special); else WRITE("%+W", W);
 	WRITE("]\"");

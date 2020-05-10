@@ -20,8 +20,8 @@ typedef struct booking {
 
 	/* used only to show how the page was added to its rulebook, for the index: */
 	int next_rule_specificity; /* $1$ more specific than following, $0$ equal, $-1$ less */
-	char *next_rule_specificity_law; /* description of reason */
-	char *next_rule_specificity_lawname; /* name of Law used to sort */
+	struct text_stream *next_rule_specificity_law; /* description of reason */
+	struct text_stream *next_rule_specificity_lawname; /* name of Law used to sort */
 
 	CLASS_DEFINITION
 } booking;
@@ -562,7 +562,7 @@ void Rules::Bookings::list_resume_indexed_links(void) {
 }
 
 void Rules::Bookings::br_start_index_line(OUTPUT_STREAM, booking *prev, char *billing) {
-	HTMLFiles::open_para(OUT, 2, "hanging");
+	HTML::open_indented_p(OUT, 2, "hanging");
 	if ((billing[0]) && (show_index_links)) Rules::Bookings::br_show_linkage_icon(OUT, prev);
 	WRITE("%s", billing);
 	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -573,19 +573,20 @@ void Rules::Bookings::br_start_index_line(OUTPUT_STREAM, booking *prev, char *bi
 
 =
 void Rules::Bookings::br_show_linkage_icon(OUTPUT_STREAM, booking *prev) {
-	char *icon_name = NULL; /* redundant assignment to appease |gcc -O2| */
+	text_stream *icon_name = NULL; /* redundant assignment to appease |gcc -O2| */
 	if ((prev == NULL) || (prev->next_rule_specificity_law == NULL)) {
-		HTMLFiles::html_icon_with_tooltip(OUT, "rulenone.png", "start of rulebook", NULL);
+		HTML::icon_with_tooltip(OUT, I"inform:/doc_images/rulenone.png",
+			I"start of rulebook", NULL);
 		return;
 	}
 	switch (prev->next_rule_specificity) {
-		case -1: icon_name = "ruleless.png"; break;
-		case 0: icon_name = "ruleequal.png"; break;
-		case 1: icon_name = "rulemore.png"; break;
+		case -1: icon_name = I"inform:/doc_images/ruleless.png"; break;
+		case 0: icon_name = I"inform:/doc_images/ruleequal.png"; break;
+		case 1: icon_name = I"inform:/doc_images/rulemore.png"; break;
 		default: internal_error("unknown rule specificity");
 	}
-	HTMLFiles::html_icon_with_tooltip(OUT, icon_name, prev->next_rule_specificity_law,
-		prev->next_rule_specificity_lawname);
+	HTML::icon_with_tooltip(OUT, icon_name,
+		prev->next_rule_specificity_law, prev->next_rule_specificity_lawname);
 }
 
 @h Calculating the specificities.
@@ -617,13 +618,11 @@ void Rules::Bookings::list_judge_ordering(booking *list_head) {
 			switch(br->next_rule->placement) {
 				case MIDDLE_PLACEMENT:
 					br->next_rule_specificity_law =
-						"the rule above was listed as 'first' so precedes this "
-						"one, which wasn't";
+						I"the rule above was listed as 'first' so precedes this one, which wasn't";
 					break;
 				case LAST_PLACEMENT:
 					br->next_rule_specificity_law =
-						"the rule above was listed as 'first' so precedes this "
-						"one, which was listed as 'last'";
+						I"the rule above was listed as 'first' so precedes this one, which was listed as 'last'";
 					break;
 				default:
 					Rules::Bookings::list_log(list_head);
@@ -635,8 +634,7 @@ void Rules::Bookings::list_judge_ordering(booking *list_head) {
 			switch(br->next_rule->placement) {
 				case LAST_PLACEMENT:
 					br->next_rule_specificity_law =
-						"the rule below was listed as 'last' so comes after the "
-						"rule above, which wasn't";
+						I"the rule below was listed as 'last' so comes after the rule above, which wasn't";
 					break;
 				default:
 					Rules::Bookings::list_log(list_head);
@@ -656,27 +654,23 @@ void Rules::Bookings::list_judge_ordering(booking *list_head) {
 		case FIRST_PLACEMENT:
 			br->next_rule_specificity = 0;
 			br->next_rule_specificity_law =
-				"these rules were both listed as 'first', so they appear in "
-				"reverse order of listing";
+				I"these rules were both listed as 'first', so they appear in reverse order of listing";
 			break;
 		case MIDDLE_PLACEMENT:
 			r = Rules::Bookings::compare_specificity_of_br(br, br->next_rule, FALSE);
 			br->next_rule_specificity = r;
 			if (r == 0) br->next_rule_specificity_law =
-				"these rules are equally ranked, so their order is determined by "
-				"which was defined first (or by explicit 'listed in' sentences)";
+				I"these rules are equally ranked, so their order is determined by which was defined first (or by explicit 'listed in' sentences)";
 			else {
 				br->next_rule_specificity_law =
-				"the arrow points from a more specific rule to a more general one, "
-				"as decided by Law";
+				I"the arrow points from a more specific rule to a more general one, as decided by Law";
 				br->next_rule_specificity_lawname = c_s_stage_law;
 			}
 			break;
 		case LAST_PLACEMENT:
 			br->next_rule_specificity = 0;
 			br->next_rule_specificity_law =
-				"these rules were both listed as 'last', so they appear in order "
-				"of listing";
+				I"these rules were both listed as 'last', so they appear in order of listing";
 			break;
 	}
 
@@ -706,11 +700,11 @@ void Rules::Bookings::list_compile_rule_phrases(booking *list_head,
 				WRITE_TO(C, " ---");
 				Produce::comment(Emit::tree(), C);
 			} else {
-				char *law = br->next_rule_specificity_lawname;
+				text_stream *law = br->next_rule_specificity_lawname;
 				switch(br->next_rule_specificity) {
-					case -1: WRITE_TO(C, "  <<< %s <<<", law); Produce::comment(Emit::tree(), C); break;
+					case -1: WRITE_TO(C, "  <<< %S <<<", law); Produce::comment(Emit::tree(), C); break;
 					case 0: WRITE_TO(C, "  === equally specific with ==="); Produce::comment(Emit::tree(), C); break;
-					case 1: WRITE_TO(C, "  >>> %s >>>", law); Produce::comment(Emit::tree(), C); break;
+					case 1: WRITE_TO(C, "  >>> %S >>>", law); Produce::comment(Emit::tree(), C); break;
 				}
 			}
 			DISCARD_TEXT(C);

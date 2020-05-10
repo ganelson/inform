@@ -75,11 +75,8 @@ void Problems::show_problem_location(parse_node_tree *T) {
 	parse_node *problem_headings[NO_HEADING_LEVELS];
 	int i, f = FALSE;
 	if (problem_count == 0) {
-		#ifdef CORE_MODULE
-		if (Problems::Issue::internal_errors_have_occurred())
-			HTMLFiles::html_outcome_image(problems_file, "ni_failed_badly", "Failed");
-		else
-			HTMLFiles::html_outcome_image(problems_file, "ni_failed", "Failed");
+		#ifdef FIRST_PROBLEM_CALLBACK
+		FIRST_PROBLEM_CALLBACK(problems_file);
 		#endif
 		for (i=0; i<NO_HEADING_LEVELS; i++) last_problem_headings[i] = NULL;
 	}

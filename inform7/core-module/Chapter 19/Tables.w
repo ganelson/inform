@@ -1392,7 +1392,7 @@ Helvetica-style lower case "x", but life is full of compromises.
 			TEMPORARY_TEXT(TEMP);
 			WRITE_TO(TEMP, "%+W", CW);
 			if (t->first_column_by_definition == FALSE) WRITE_TO(TEMP, " entry");
-			HTML::Javascript::paste_stream(OUT, TEMP);
+			PasteButtons::paste_text(OUT, TEMP);
 			DISCARD_TEXT(TEMP);
 		}
 		HTML::next_html_column(OUT, 0);

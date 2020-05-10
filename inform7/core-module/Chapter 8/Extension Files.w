@@ -256,7 +256,7 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, inform_extension *f
 		}
 		if (owner != from) continue;
 		if (show_head) {
-			HTMLFiles::open_para(OUT, 2, "hanging");
+			HTML::open_indented_p(OUT, 2, "hanging");
 			HTML::begin_colour(OUT, I"808080");
 			WRITE("Included ");
 			if (Extensions::is_standard(from)) WRITE("automatically by Inform");

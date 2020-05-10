@@ -356,7 +356,7 @@ int Rules::compare_specificity(rule *R1, rule *R2, int dflag) {
 	if (ph2) phrcd2 = &(ph2->runtime_context_data);
 	int rv = Phrases::Context::compare_specificity(phrcd1, phrcd2);
 	if (dflag) {
-		if (rv != 0) LOG("Decided by Law %s that ", c_s_stage_law);
+		if (rv != 0) LOG("Decided by Law %S that ", c_s_stage_law);
 		else LOG("Decided that ");
 		switch(rv) {
 			case -1: LOG("(2) is more specific than (1)\n"); break;
@@ -775,12 +775,12 @@ int Rules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 
 	TEMPORARY_TEXT(S);
 	WRITE_TO(S, "%+W", R->name);
-	HTML::Javascript::paste_stream(OUT, S);
+	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>name</i> ");
 
 	Str::clear(S);
 	WRITE_TO(S, "The %W is not listed in the %W rulebook.\n", R->name, owner->primary_name);
-	HTML::Javascript::paste_stream(OUT, S);
+	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>unlist</i>");
 	DISCARD_TEXT(S);
 

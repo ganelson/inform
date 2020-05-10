@@ -36,12 +36,12 @@ same either way. Here are the functions for (a) and (b) respectively:
 
 =
 void ExtensionWebsite::handle_census_mode(void) {
-	HTMLFiles::set_link_abbreviation_path(NULL);
+	HTML::set_link_abbreviation_path(NULL);
 	ExtensionWebsite::go(NULL, TRUE);
 }
 
 void ExtensionWebsite::index_after_compilation(inform_project *proj) {
-	HTMLFiles::set_link_abbreviation_path(Projects::path(proj));
+	HTML::set_link_abbreviation_path(Projects::path(proj));
 	ExtensionWebsite::go(proj, FALSE);
 }
 

@@ -12,6 +12,14 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -58,9 +66,11 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#2">Chapter 2: Bridge to Problems Module</a></li><li><b>Using Problems</b></li></ul></div>
 <p class="purpose">Interface to the Problems module.</p>
 
+<ul class="toc"><li><a href="2-up.html#SP3">&#167;3. Outcome images</a></li></ul><hr class="tocbar">
+
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b></p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEMS_HTML_EMITTER</span><span class="plain-syntax"> </span><span class="identifier-syntax">HTMLFiles::char_out</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEMS_HTML_EMITTER</span><span class="plain-syntax"> </span><span class="identifier-syntax">HTML::put</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Inform tops and tails its output of problem messages, and it also prints
 non-problem messages when everything was fine. That all happens here:
@@ -73,7 +83,9 @@ non-problem messages when everything was fine. That all happens here:
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Problems::Using::start_problems_report</span><span class="plain-syntax">(</span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">UTF8_ENC</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::Fatal::filename_related</span><span class="plain-syntax">(</span><span class="string-syntax">"Can't open problem log"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTMLFiles::html_header</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Translating the Source"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML::header</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Translating the Source"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">CSS_FOR_STANDARD_PAGES_IRES</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Supervisor::file_from_installation</span><span class="plain-syntax">(</span><span class="identifier-syntax">JAVASCRIPT_FOR_STANDARD_PAGES_IRES</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Problems::Using::final_report</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">disaster_struck</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">problems_count</span><span class="plain-syntax">) {</span>
@@ -88,7 +100,7 @@ non-problem messages when everything was fine. That all happens here:
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::Buffer::redirect_problem_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rooms</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">things</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">HTMLFiles::html_outcome_image</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">, </span><span class="string-syntax">"ni_succeeded"</span><span class="plain-syntax">, </span><span class="string-syntax">"Succeeded"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-up.html#SP4" class="function-link"><span class="function-syntax">Problems::Using::html_outcome_image</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">, </span><span class="string-syntax">"ni_succeeded"</span><span class="plain-syntax">, </span><span class="string-syntax">"Succeeded"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PL::Spatial::get_world_size</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">rooms</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">things</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
@@ -143,7 +155,7 @@ ingratitude of some &mdash; oh, all right.
 <span class="plain-syntax">            </span><span class="string-syntax">"Problems occurring in translation prevented the game "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"from being properly created. (Correct the source text to "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"remove these problems and click on Go once again.)"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTMLFiles::outcome_image_tail</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-up.html#SP4" class="function-link"><span class="function-syntax">Problems::Using::outcome_image_tail</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">STATUS</span><span class="plain-syntax"> = </span><a href="1-pp.html#SP2" class="function-link"><span class="function-syntax">ProgressBar::begin_outcome</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STATUS</span><span class="plain-syntax">) {</span>
@@ -181,7 +193,7 @@ command line &mdash; deserves the truth.
 <span class="plain-syntax">        </span><span class="string-syntax">"into a world with %1 %2 and %3 %4, and the index has been "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"brought up to date."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTMLFiles::outcome_image_tail</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-up.html#SP4" class="function-link"><span class="function-syntax">Problems::Using::outcome_image_tail</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">telemetry_recording</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Telemetry::ensure_telemetry_file</span><span class="plain-syntax">();</span>
@@ -215,6 +227,75 @@ command line &mdash; deserves the truth.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-up.html#SP2">&#167;2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Outcome images. </b>These are the two images used on the Problems page to visually indicate
+success or failure. We also use special images on special occasions.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">CENTRED_OUTCOME_IMAGE_STYLE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SIDE_OUTCOME_IMAGE_STYLE</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome_image_style</span><span class="plain-syntax"> = </span><span class="constant-syntax">SIDE_OUTCOME_IMAGE_STYLE</span><span class="plain-syntax">;</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>This callback function is called just as the <a href="../problems-module/index.html" class="internal">problems</a> module is about
+to issue its first problem of the run:
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">FIRST_PROBLEM_CALLBACK</span><span class="plain-syntax"> </span><a href="2-up.html#SP4" class="function-link"><span class="function-syntax">Problems::Using::html_outcome_failed</span></a>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Problems::Using::html_outcome_failed</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Problems::Issue::internal_errors_have_occurred</span><span class="plain-syntax">())</span>
+<span class="plain-syntax">        </span><a href="2-up.html#SP4" class="function-link"><span class="function-syntax">Problems::Using::html_outcome_image</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">, </span><span class="string-syntax">"ni_failed_badly"</span><span class="plain-syntax">, </span><span class="string-syntax">"Failed"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
+<span class="plain-syntax">        </span><a href="2-up.html#SP4" class="function-link"><span class="function-syntax">Problems::Using::html_outcome_image</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">, </span><span class="string-syntax">"ni_failed"</span><span class="plain-syntax">, </span><span class="string-syntax">"Failed"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Problems::Using::html_outcome_image</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Problems::Using::html_outcome_image</span></span>:<br/><a href="2-up.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">image</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">verdict</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vn</span><span class="plain-syntax"> = </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">be_festive</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Problems::Issue::internal_errors_have_occurred</span><span class="plain-syntax">() == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">be_festive</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">be_festive</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Time::feast</span><span class="plain-syntax">()) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHRISTMAS_FEAST:</span><span class="plain-syntax"> </span><span class="identifier-syntax">vn</span><span class="plain-syntax"> = </span><span class="string-syntax">"_2"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">EASTER_FEAST:</span><span class="plain-syntax"> </span><span class="identifier-syntax">vn</span><span class="plain-syntax"> = </span><span class="string-syntax">"_3"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vn</span><span class="plain-syntax">[0]) </span><span class="identifier-syntax">outcome_image_style</span><span class="plain-syntax"> = </span><span class="constant-syntax">CENTRED_OUTCOME_IMAGE_STYLE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::issue_problems_banner</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">verdict</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">outcome_image_style</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CENTRED_OUTCOME_IMAGE_STYLE:</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"center"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML_TAG_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"img"</span><span class="plain-syntax">, </span><span class="string-syntax">"src=inform:/outcome_images/%s%s.png border=0"</span><span class="plain-syntax">, </span><span class="identifier-syntax">image</span><span class="plain-syntax">, </span><span class="identifier-syntax">vn</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"center"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SIDE_OUTCOME_IMAGE_STYLE:</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML::begin_html_table</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML::first_html_column</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">110</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML_TAG_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"img"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"src=inform:/outcome_images/%s%s@2x.png border=1 width=100 height=100"</span><span class="plain-syntax">, </span><span class="identifier-syntax">image</span><span class="plain-syntax">, </span><span class="identifier-syntax">vn</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">HTML::next_html_column</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"HEADNOTE"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">, </span><span class="string-syntax">"style=\"margin-top:0;\""</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(Each time &lt;b&gt;Go&lt;/b&gt; or &lt;b&gt;Replay&lt;/b&gt; is clicked, Inform tries to "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"translate the source text into a working story, and updates this report.)"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"PROBLEMS BEGIN"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Problems::Using::outcome_image_tail</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Problems::Using::outcome_image_tail</span></span>:<br/><a href="2-up.html#SP2_2">&#167;2.2</a>, <a href="2-up.html#SP2_3">&#167;2.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">outcome_image_style</span><span class="plain-syntax"> == </span><span class="constant-syntax">SIDE_OUTCOME_IMAGE_STYLE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">HTML::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"PROBLEMS END"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">HTML::end_html_row</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">HTML::end_html_table</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">HTML::comment</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"FOOTNOTE"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="1-pp.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">up</li><li class="progresssection"><a href="2-sq.html">sq</a></li><li class="progresssection"><a href="2-si.html">si</a></li><li class="progresssection"><a href="2-pwst.html">pwst</a></li><li class="progresschapter"><a href="3-nl.html">3</a></li><li class="progresschapter"><a href="4-its.html">4</a></li><li class="progresschapter"><a href="5-lp.html">5</a></li><li class="progresschapter"><a href="6-bp.html">6</a></li><li class="progresschapter"><a href="7-ptu.html">7</a></li><li class="progresschapter"><a href="8-ef.html">8</a></li><li class="progresschapter"><a href="9-ita.html">9</a></li><li class="progresschapter"><a href="10-aots.html">10</a></li><li class="progresschapter"><a href="11-itpc.html">11</a></li><li class="progresschapter"><a href="12-ter.html">12</a></li><li class="progresschapter"><a href="13-kak.html">13</a></li><li class="progresschapter"><a href="14-sp.html">14</a></li><li class="progresschapter"><a href="15-pr.html">15</a></li><li class="progresschapter"><a href="16-is.html">16</a></li><li class="progresschapter"><a href="17-tl.html">17</a></li><li class="progresschapter"><a href="18-lc.html">18</a></li><li class="progresschapter"><a href="19-tc.html">19</a></li><li class="progresschapter"><a href="20-eq.html">20</a></li><li class="progresschapter"><a href="21-rl.html">21</a></li><li class="progresschapter"><a href="22-itp.html">22</a></li><li class="progresschapter"><a href="23-ad.html">23</a></li><li class="progresschapter"><a href="24-lv.html">24</a></li><li class="progresschapter"><a href="25-in.html">25</a></li><li class="progresschapter"><a href="26-fc.html">26</a></li><li class="progresschapter"><a href="27-hr.html">27</a></li><li class="progressnext"><a href="2-sq.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

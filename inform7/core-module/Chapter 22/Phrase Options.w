@@ -77,7 +77,7 @@ void Phrases::Options::index(OUTPUT_STREAM, ph_options_data *phod) {
 			if (phod->multiple_options_permitted) WRITE("<i>and/or</i> ");
 			else WRITE("<i>or</i> ");
 		}
-		HTML::Javascript::paste_W(OUT, po->name);
+		PasteButtons::paste_W(OUT, po->name);
 		WRITE("&nbsp;%+W", po->name);
 		if (i < phod->no_options_permitted-1) {
 			WRITE(",");

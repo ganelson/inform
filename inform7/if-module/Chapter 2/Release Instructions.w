@@ -620,12 +620,12 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 		TEMPORARY_TEXT(rel);
 		Filenames::to_text_relative(rel, af->name_of_original_file,
 			Projects::materials_path(Task::project()));
-		HTMLFiles::write_xml_safe_text(OUT, rel);
+		HTML::write_xml_safe_text(OUT, rel);
 		DISCARD_TEXT(rel);
 		WRITE("</leafname>\n");
 		if (Str::len(af->brief_description) > 0) {
 			WRITE("<description>");
-			HTMLFiles::write_xml_safe_text(OUT, af->brief_description);
+			HTML::write_xml_safe_text(OUT, af->brief_description);
 			WRITE("</description>\n");
 		}
 		OUTDENT; WRITE("</auxiliary>\n");

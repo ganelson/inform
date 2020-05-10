@@ -267,7 +267,7 @@ void Phrases::TypeData::Textual::write_reveal_box(OUTPUT_STREAM, ph_type_data *p
 @<Present a paste button containing the text of the phrase@> =
 	TEMPORARY_TEXT(TEMP);
 	Phrases::write_HTML_representation(TEMP, ph, PASTE_PHRASE_FORMAT);
-	HTML::Javascript::paste_stream(OUT, TEMP);
+	PasteButtons::paste_text(OUT, TEMP);
 	DISCARD_TEXT(TEMP);
 	WRITE("&nbsp;");
 
@@ -291,7 +291,7 @@ of course.
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		WRITE("<b>In equations:</b> write as ");
-		HTML::Javascript::paste_W(OUT, W);
+		PasteButtons::paste_W(OUT, W);
 		WRITE("&nbsp;%+W()", W);
 	}
 
@@ -301,7 +301,7 @@ of course.
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		WRITE("<b>Name:</b> ");
-		HTML::Javascript::paste_W(OUT, W);
+		PasteButtons::paste_W(OUT, W);
 		WRITE("&nbsp;%+W", W);
 	}
 

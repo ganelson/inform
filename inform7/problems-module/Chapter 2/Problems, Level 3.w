@@ -234,7 +234,7 @@ void Problems::Issue::problem_documentation_links(OUTPUT_STREAM) {
 	wchar_t *chap = NULL, *sec = NULL;
 	wchar_t *leaf = Index::DocReferences::link_if_possible_once(sigil_of_latest_unlinked_problem, &chap, &sec);
 	if (leaf) {
-		HTMLFiles::open_para(OUT, 2, "tight");
+		HTML::open_indented_p(OUT, 2, "tight");
 		HTML_OPEN_WITH("a", "href=inform:/%w.html", leaf);
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/help.png");
 		HTML_CLOSE("a");

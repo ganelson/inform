@@ -43,22 +43,9 @@ void Problems::Buffer::redirect_problem_sentence(parse_node *from, parse_node *A
 	redirected_sentence = from; redirected_to_A = A; redirected_to_B = B;
 }
 
-@ A special escape sequence, marked by starting and finishing with a character
-which otherwise can never occur, is expanded to a source code link. If we used
-an asterisk to denote this, then a source reference is fed into
-|HTMLFiles::char_out| as the following stream of characters:
+@ These two special character codes are used as a temporary measure to
+mask out angle brackets which we don't want to interpret as HTML:
 
-|*source text*Source/story.ni*14*|
-
-(with |SOURCE_REF_CHAR| used in place of the asterisk).
-
-But of course we don't use an asterisk as trigger -- we use character |F0|.
-Arguably this is dodgy, since the character is legal in ISO Latin-1. But it
-is a lower-case Icelandic eth, which is not allowed in unquoted Inform 7 source
-text (because of being absent from the ZSCII character set).
-
-@d SOURCE_REF_CHAR L'\xf0'
-@d FORCE_NEW_PARA_CHAR L'\xd0'
 @d PROTECTED_LT_CHAR L'\x01'
 @d PROTECTED_GT_CHAR L'\x02'
 
@@ -70,7 +57,7 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 	if (referred) {
 		WRITE_TO(file, "%f", TextFromFiles::get_filename(referred));
 		#ifdef HTML_MODULE
-		pathname *proj = HTMLFiles::get_link_abbreviation_path();
+		pathname *proj = HTML::get_link_abbreviation_path();
 		if (proj) {
 			TEMPORARY_TEXT(project_prefix);
 			WRITE_TO(project_prefix, "%p", proj);

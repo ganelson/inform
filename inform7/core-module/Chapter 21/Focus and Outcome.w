@@ -394,7 +394,7 @@ void Rulebooks::Outcomes::index_outcomes(OUTPUT_STREAM, outcomes *outs, int supp
 		rulebook_outcome *ro;
 		for (ro = outs->named_outcomes; ro; ro = ro->next) {
 			named_rulebook_outcome *rbno = ro->outcome_name;
-			HTMLFiles::open_para(OUT, 2, "hanging");
+			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("<i>outcome</i>&nbsp;&nbsp;");
 			if (outs->default_named_outcome == ro) WRITE("<b>");
 			WRITE("%+W", Nouns::nominative(rbno->name));
@@ -412,7 +412,7 @@ void Rulebooks::Outcomes::index_outcomes(OUTPUT_STREAM, outcomes *outs, int supp
 	if ((outs->default_named_outcome == NULL) &&
 		(outs->default_rule_outcome != NO_OUTCOME) &&
 		(suppress_outcome == FALSE)) {
-		HTMLFiles::open_para(OUT, 2, "hanging");
+		HTML::open_indented_p(OUT, 2, "hanging");
 		WRITE("<i>default outcome is</i> ");
 		switch(outs->default_rule_outcome) {
 			case SUCCESS_OUTCOME: WRITE("success"); break;

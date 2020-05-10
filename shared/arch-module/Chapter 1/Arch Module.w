@@ -23,24 +23,9 @@ DECLARE_CLASS(compatibility_specification)
 
 =
 void ArchModule::start(void) {
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
-	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
 	Architectures::create();
 	TargetVMs::create();
 }
+
 void ArchModule::end(void) {
 }
-
-@<Register this module's memory allocation reasons@> =
-	;
-
-@<Register this module's stream writers@> =
-	;
-
-@<Register this module's debugging log aspects@> =
-	;
-
-@<Register this module's debugging log writers@> =
-	;

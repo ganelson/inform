@@ -965,7 +965,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
 	HTML_OPEN_WITH("span", "style=\"font-size:%dpx;\"", HTML_MAP_FONT_SIZE);
 	#endif
 	LOOP_THROUGH_TEXT(pos, abbrev)
-		HTMLFiles::char_out(OUT, Str::get(pos));
+		HTML::put(OUT, Str::get(pos));
 	#ifdef HTML_MAP_FONT_SIZE
 	HTML_CLOSE("span");
 	#endif

@@ -15,23 +15,15 @@ void ExtensionIndex::write(filename *F, int content, extension_census *C) {
 	text_stream *OUT = &HOMEPAGE_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) return;
 
-	HTML::declare_as_HTML(OUT, FALSE);
-	@<Write the head of the HTML@>;
+	HTML::header(OUT, I"Extensions",
+		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES),
+		Supervisor::file_from_installation(JAVASCRIPT_FOR_EXTENSIONS_IRES));
 	@<Write the body of the HTML@>;
 	STREAM_CLOSE(OUT);
+	HTML::footer(OUT);
 }
 
-@<Write the head of the HTML@> =
-	HTML::begin_head(OUT, NULL);
-	HTML::title(OUT, I"Extensions");
-	HTML::incorporate_javascript(OUT, TRUE,
-		Supervisor::file_from_installation(JAVASCRIPT_FOR_EXTENSIONS_IRES));
-	HTML::incorporate_CSS(OUT,
-		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
-	HTML::end_head(OUT);
-
 @<Write the body of the HTML@> =
-	HTML::begin_body(OUT, NULL);
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
 	HTML_TAG_WITH("img",
@@ -51,7 +43,6 @@ void ExtensionIndex::write(filename *F, int content, extension_census *C) {
 	HTML::end_html_table(OUT);
 	HTML_TAG("hr");
 	@<Write the main content for the page@>;
-	HTML::end_body(OUT);
 
 @<Write the heading details text for the page@> =
 	switch (content) {
@@ -100,7 +91,7 @@ page, not the index of terms, which is all handled by
 		WRITE("&nbsp;You have no other extensions installed at present.");
 	} else {
 		#ifdef INDEX_MODULE
-		HTML::Javascript::open_file(OUT, ExtensionCensus::external_path(C), NULL,
+		PasteButtons::open_file(OUT, ExtensionCensus::external_path(C), NULL,
 			"src='inform:/doc_images/folder4.png' border=0");
 		#endif
 		WRITE("&nbsp;You have %d further extension%s installed. These are marked "
@@ -113,7 +104,7 @@ page, not the index of terms, which is all handled by
 	if (nps > 0) {
 		HTML_OPEN("p");
 		#ifdef INDEX_MODULE
-		HTML::Javascript::open_file(OUT, ExtensionCensus::internal_path(C),
+		PasteButtons::open_file(OUT, ExtensionCensus::internal_path(C),
 			NULL, PROJECT_SPECIFIC_SYMBOL);
 		#endif
 		WRITE("&nbsp;You have %d extension%s in the .materials folder for the "
@@ -266,7 +257,7 @@ of extensions found by the census:
 				LOOP_OVER_LINKED_LIST(CE, copy_error,
 					R->copy->errors_reading_source_text) {
 					#ifdef INDEX_MODULE
-					HTMLFiles::open_para(OUT, 2, "hanging");
+					HTML::open_indented_p(OUT, 2, "hanging");
 					#endif
 					#ifndef INDEX_MODULE
 					HTML_OPEN("p");
@@ -550,7 +541,7 @@ the first and last word and just look at what is in between:
 	else {
 		#ifdef INDEX_MODULE
 		pathname *area = ExtensionManager::path_within_nest(ecd->found_as->nest);
-		HTML::Javascript::open_file(OUT, area,
+		PasteButtons::open_file(OUT, area,
 			ecd->found_as->copy->edition->work->raw_author_name, opener);
 		#endif
 	}

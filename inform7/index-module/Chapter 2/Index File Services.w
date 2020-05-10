@@ -77,7 +77,9 @@ text_stream *Index::open_file(text_stream *index_leaf, text_stream *title, int s
 
 	@<Set the current index page@>;
 
-	HTMLFiles::html_header(OUT, title);
+	HTML::header(OUT, title,
+		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES),
+		Supervisor::file_from_installation(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
 	index_file_counter++;
 	if (Str::get_first_char(title) == '<') {
 		Index::index_banner_line(OUT, 1, I"^", I"Details",
@@ -302,6 +304,8 @@ void Index::index_banner_line(OUTPUT_STREAM, int N, text_stream *sym, text_strea
 	HTML_CLOSE("td");
 
 @h So here goes with the CSS and Javascript.
+
+@d ADDITIONAL_SCRIPTING_HTML_CALLBACK Index::scripting
 
 =
 void Index::scripting(OUTPUT_STREAM) {
@@ -743,7 +747,7 @@ void Index::complete(void) {
 
 void Index::close_index_file(void) {
 	if (ifl == NULL) return;
-	HTMLFiles::html_footer(ifl);
+	HTML::footer(ifl);
 	STREAM_CLOSE(ifl); ifl = NULL;
 }
 
@@ -785,7 +789,7 @@ void Index::link_to_location(OUTPUT_STREAM, source_location sl, int nonbreaking_
 		}
 		return;
 	}
-	HTMLFiles::html_source_link(OUT, sl, nonbreaking_space);
+	SourceLinks::link(OUT, sl, nonbreaking_space);
 }
 
 @h Links to detail pages.
@@ -862,7 +866,7 @@ void Index::noextra_link(OUTPUT_STREAM) {
 =
 void Index::extra_div_open(OUTPUT_STREAM, int id, int indent, char *colour) {
 	HTML_OPEN_WITH("div", "id=\"extra%d\" style=\"display: none;\"", id);
-	HTMLFiles::open_para(OUT, indent, "");
+	HTML::open_indented_p(OUT, indent, "");
 	HTML::open_coloured_box(OUT, colour, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 }
 
@@ -874,7 +878,7 @@ void Index::extra_div_close(OUTPUT_STREAM, char *colour) {
 
 void Index::extra_div_open_nested(OUTPUT_STREAM, int id, int indent) {
 	HTML_OPEN_WITH("div", "id=\"extra%d\" style=\"display: none;\"", id);
-	HTMLFiles::open_para(OUT, indent, "");
+	HTML::open_indented_p(OUT, indent, "");
 }
 
 void Index::extra_div_close_nested(OUTPUT_STREAM) {

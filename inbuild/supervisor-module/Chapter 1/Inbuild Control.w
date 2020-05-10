@@ -234,7 +234,7 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 		case PIPELINE_FILE_CLSW: inter_pipeline_file = Filenames::from_text(arg); break;
 		case PIPELINE_VARIABLE_CLSW: @<Set a pipeline variable@>; break;
 		case RNG_CLSW: @<Seed the random number generator@>; break;
-		case CASE_CLSW: HTMLFiles::set_source_link_case(arg); break;
+		case CASE_CLSW: SourceLinks::set_case(arg); break;
 	}
 }
 

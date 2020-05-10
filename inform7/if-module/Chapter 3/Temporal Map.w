@@ -120,7 +120,7 @@ fact, end.
 	}
 
 @<Index the name and recurrence status of the scene@> =
-	HTMLFiles::open_para(OUT, 1, "hanging");
+	HTML::open_indented_p(OUT, 1, "hanging");
 	Index::anchor_numbered(OUT, sc->allocation_id);
 	WRITE("<b>The <i>%+W</i> scene</b>", PL::Scenes::get_name(sc));
 	Index::link(OUT, Wordings::first_wn(ParseTree::get_text(sc->scene_declared_at)));
@@ -130,7 +130,7 @@ fact, end.
 	HTML_CLOSE("p");
 
 @<Explain the Entire Game scene@> =
-	HTMLFiles::open_para(OUT, 1, "tight");
+	HTML::open_indented_p(OUT, 1, "tight");
 	WRITE("The Entire Game scene is built-in. It is going on whenever play is "
 		"going on. (It is recurring so that if the story ends, but then resumes, "
 		"it too will end but then begin again.)");
@@ -142,11 +142,11 @@ fact, end.
 	LOOP_OVER(rb, rulebook) {
 		if (Rulebooks::is_empty(rb, Rulebooks::scene_context(sc)) == FALSE) {
 			if (rbc++ == 0) {
-				HTMLFiles::open_para(OUT, 1, "hanging");
+				HTML::open_indented_p(OUT, 1, "hanging");
 				WRITE("<i>During this scene:</i>");
 				HTML_CLOSE("p");
 			}
-			HTMLFiles::open_para(OUT, 2, "hanging");
+			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("<i>%+W</i>", rb->primary_name); HTML_CLOSE("p");
 			int ignore_me = 0;
 			Rulebooks::index(OUT, rb, "", Rulebooks::scene_context(sc), &ignore_me);
@@ -154,7 +154,7 @@ fact, end.
 	}
 
 @<Index the conditions for this scene end to occur@> =
-	HTMLFiles::open_para(OUT, 1, "hanging");
+	HTML::open_indented_p(OUT, 1, "hanging");
 	WRITE("<i>%s ", (end==0)?"Begins":"Ends");
 	if (end >= 2) WRITE("%+W ", sc->end_names[end]);
 	WRITE("when:</i> ");
@@ -202,7 +202,7 @@ fact, end.
 
 @<Index the rules which apply when this scene end occurs@> =
 	if (Rulebooks::is_empty(sc->end_rulebook[end], Rulebooks::no_rule_context()) == FALSE) {
-		HTMLFiles::open_para(OUT, 1, "hanging");
+		HTML::open_indented_p(OUT, 1, "hanging");
 		WRITE("<i>What happens:</i>"); HTML_CLOSE("p");
 		int ignore_me = 0;
 		Rulebooks::index(OUT, sc->end_rulebook[end], "", Rulebooks::no_rule_context(), &ignore_me);
@@ -226,7 +226,7 @@ on the initial call when |depth| is 0.
 =
 void PL::Scenes::Index::index_from_scene(OUTPUT_STREAM, scene *sc, int depth,
 	int end, scene *sc_from, scene **sorted, int nr) {
-	HTMLFiles::open_para(OUT, depth+1, "tight");
+	HTML::open_indented_p(OUT, depth+1, "tight");
 	@<Indicate the route by which this scene was reached@>;
 	@<Name the scene in the table, italicised if we've seen it already@>;
 	if (sc->indexed == FALSE) {

@@ -1426,7 +1426,7 @@ int PL::Parsing::Lines::index_list_with_action(OUTPUT_STREAM, grammar_line *gl) 
 			TEMPORARY_TEXT(trueverb);
 			if (Wordings::nonempty(VW))
 				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
-			HTMLFiles::open_para(OUT, 2, "hanging");
+			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("&quot;");
 			PL::Actions::Index::verb_definition(OUT,
 				Lexer::word_text(gl->original_text), trueverb, VW);
@@ -1453,7 +1453,7 @@ void PL::Parsing::Lines::index_list_for_token(OUTPUT_STREAM, grammar_line *gl) {
 			TEMPORARY_TEXT(trueverb);
 			if (Wordings::nonempty(VW))
 				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
-			HTMLFiles::open_para(OUT, 2, "hanging");
+			HTML::open_indented_p(OUT, 2, "hanging");
 			if (k++ == 0) WRITE("="); else WRITE("or");
 			WRITE(" &quot;");
 			PL::Actions::Index::verb_definition(OUT,

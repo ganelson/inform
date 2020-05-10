@@ -683,7 +683,7 @@ void Activities::index_cross_references(OUTPUT_STREAM, activity *av) {
 	for (acr = av->cross_references; acr; acr = acr->next) {
 		phrase *ph = acr->rule_dependent;
 		if ((ph->declaration_node) && (Wordings::nonempty(ParseTree::get_text(ph->declaration_node)))) {
-			HTMLFiles::open_para(OUT, 2, "tight");
+			HTML::open_indented_p(OUT, 2, "tight");
 			WRITE("NB: %W", ParseTree::get_text(ph->declaration_node));
 			Index::link(OUT, Wordings::first_wn(ParseTree::get_text(ph->declaration_node)));
 			HTML_CLOSE("p");

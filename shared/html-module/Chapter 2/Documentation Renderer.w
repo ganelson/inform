@@ -1,18 +1,13 @@
-[HTML::Documentation::] HTML Documentation.
+[DocumentationRenderer::] Documentation Renderer.
 
-To translate a passage of source text into HTML-format documentation,
-for use in the automatically generated documentation pages on each installed
-extension.
+To render a passage of extension documentation as HTML.
 
-@ This is a port of a simplified version of the Inform documentation tool
-|indoc|, and like all Perl scripts ported to C, it bears a few scars.
-
-Documentation is extracted from extensions by lexing them (ignoring all
-of the actual source text and picking up only after the divider line)
-and then running the code below on the word range for the lexed
-documentation. Our task is therefore to print out this documentation
-in an HTML format which matches the look and feel of pages produced
-by |indoc| for the manuals.
+@h Disclaimer.
+The following code originated as a port of a simplified version of an early
+form of the Inform documentation tool //indoc//: in general, that will do a
+better all-round job, but this cut-down version is adequate for what we use
+it for, which is to make extension documentation pages. Those use a much
+simplified range of syntax compared to the full gamut known to //indoc//.
 
 @h Links and leafnames.
 Matters are complicated because an extension typically has not only a
@@ -41,7 +36,7 @@ This will fail if anyone's extension has a title ending in |-eg| followed
 by a number. I believe I can live with the guilt.
 
 =
-void HTML::Documentation::href_of_example(OUTPUT_STREAM, text_stream *base_leafname,
+void DocumentationRenderer::href_of_example(OUTPUT_STREAM, text_stream *base_leafname,
 	int to_example_variant, int to_example_anchor) {
 	for (int i=0, L = Str::len(base_leafname); i<L; i++) {
 		if ((Str::includes_wide_string_at(base_leafname, L"-eg", i)) &&
@@ -64,11 +59,11 @@ matches successfully and sets the level to 2 and the name to the word range
 
 =
 <extension-documentation-heading> ::=
-	chapter : ... |    ==> 1
-	section : ...			==> 2
+	chapter : ... |  ==> 1
+	section : ...    ==> 2
 
 @ =
-int HTML::Documentation::extension_documentation_heading(wording W, int *level, wording *HW) {
+int DocumentationRenderer::extension_documentation_heading(wording W, int *level, wording *HW) {
 	if (<extension-documentation-heading>(W)) {
 		if (Wordings::length(W) > 10) return FALSE; /* not enough space: this runs into the end-of-file padding */
 		*level = <<r>>;
@@ -90,26 +85,31 @@ more exacting specification: a paragraph in the shape
 which would result in the name being set to the range "Gelignite Anderson",
 an asterisk count of 3, and the rubric being "A Tale of the Texas Oilmen".
 
+Note the unusual use of the Preform escape character |\| below: this is
+because |***| is a reserved token in Preform, whereas we want the literal
+text of three asterisks in a row.
+
 =
 <extension-example-header> ::=
-	example : <row-of-asterisks> ... - ... |    ==> R[1]
-	example : ... - ...							==> 0
+	example : <row-of-asterisks> ... - ... |  ==> R[1]
+	example : ... - ...                       ==> 0
 
 <row-of-asterisks> ::=
-	* |    ==> 1
+	* |     ==> 1
 	** |    ==> 2
-	\*** |    ==> 3
-	****				==> 4
+	\*** |  ==> 3
+	****    ==> 4
 
 @ =
-int HTML::Documentation::extension_documentation_example(wording W,
+int DocumentationRenderer::extension_documentation_example(wording W,
 	int *asterisks, wording *egn, wording *egr) {
-	if (Wordings::length(W) > 10) return FALSE; /* not enough space: this runs into the end-of-file padding */
+	if (Wordings::length(W) > 10) return FALSE; /* not enough space */
 	if (<extension-example-header>(W)) {
 		wording NW = GET_RW(<extension-example-header>, 1);
 		wording RW = Wordings::first_word(GET_RW(<extension-example-header>, 2));
 		int r2 = Wordings::first_wn(RW);
-		while ((r2 <= Wordings::last_wn(W)) && ((Lexer::word(r2) == PARBREAK_V) == FALSE)) r2++;
+		while ((r2 <= Wordings::last_wn(W)) &&
+			((Lexer::word(r2) == PARBREAK_V) == FALSE)) r2++;
 		if (r2 >= Wordings::last_wn(W)) return FALSE;
 		r2--;
 		/* a successful match has now been made */
@@ -120,32 +120,33 @@ int HTML::Documentation::extension_documentation_example(wording W,
 }
 
 @h The table of contents.
-The user sees chapters as A subheadings, numbered upwards from 1, and
-sees sections as B subheadings, numbered from 1 within each chapter.
-It is legal to have only A subheadings; only B subheadings; or a mixture
-of the two.
+The user sees chapters as A subheadings, numbered upwards from 1, and sees
+sections as B subheadings, numbered from 1 within each chapter. It is legal to
+have only A subheadings; only B subheadings; or a mixture of the two.
 
-If a scan can find any headings at all then we will wish to typeset
-a table of contents up front. The following routine looks for what material
-might go into a TOC, and sets one if it finds anything: otherwise, it sets
-nothing and has no effect. Because of the compulsory paragraph break
-following the divider line in the extension, we can safely assume that
-every headng will follow a paragraph break word, even one right at the
-top of the extension's documentation.
+If a scan can find any headings at all then we will wish to typeset a table of
+contents up front. The following routine looks for what material might go into
+a TOC, and sets one if it finds anything: otherwise, it sets nothing and has
+no effect. Because of the compulsory paragraph break following the divider
+line in the extension, we can safely assume that every headng will follow a
+paragraph break word, even one right at the top of the extension's
+documentation.
 
-(Examples are included in the table of contents only if they occur after
-the first heading, which I think is reasonable enough: there can be at most
-26 per extension, enabling them to be lettered as Example A to Example Z.)
+(Examples are included in the table of contents only if they occur after the
+first heading, which I think is reasonable enough: there can be at most 26 per
+extension, enabling them to be lettered as Example A to Example Z.)
 
 =
-void HTML::Documentation::set_table_of_contents(wording W, OUTPUT_STREAM, text_stream *base_leafname) {
+void DocumentationRenderer::table_of_contents(wording W, OUTPUT_STREAM, text_stream *base_leafname) {
 	int heading_count = 0, chapter_count = 0, section_count = 0, example_count = 0;
 	LOOP_THROUGH_WORDING(i, W) {
 		int edhl, asterisks;
 		wording NW = EMPTY_WORDING, RUBW = EMPTY_WORDING;
-		if (Lexer::word(i) == PARBREAK_V) { /* the lexer records this to mean a paragraph break */
-			while (Lexer::word(i) == PARBREAK_V) i++; if (i>Wordings::last_wn(W)) break;
-			if (HTML::Documentation::extension_documentation_heading(Wordings::from(W, i), &edhl, &NW)) {
+		if (Lexer::word(i) == PARBREAK_V) {
+			while (Lexer::word(i) == PARBREAK_V) i++;
+			if (i>Wordings::last_wn(W)) break;
+			if (DocumentationRenderer::extension_documentation_heading(
+				Wordings::from(W, i), &edhl, &NW)) {
 				heading_count++;
 				if (heading_count == 1) {
 					HTML_CLOSE("p");
@@ -154,14 +155,14 @@ void HTML::Documentation::set_table_of_contents(wording W, OUTPUT_STREAM, text_s
 				}
 				if (edhl == 1) {
 					chapter_count++; section_count = 0;
-					if (chapter_count > 1) HTML_TAG("br"); /* skip a line between chapters in TOC */
+					if (chapter_count > 1) HTML_TAG("br"); /* skip a line between chapters */
 				}
 				if (edhl == 2) section_count++;
 				@<Typeset the table of contents entry for this heading@>;
 				i = Wordings::last_wn(NW); continue;
 			}
 			if ((heading_count > 0) && (example_count < 26) &&
-				(HTML::Documentation::extension_documentation_example(
+				(DocumentationRenderer::extension_documentation_example(
 					Wordings::from(W, i), &asterisks, &NW, &RUBW))) {
 				if (++example_count == 1) {
 					HTML_TAG("br");
@@ -191,7 +192,8 @@ These are the destinations of links from heading lines in the TOC.
 	switch (edhl) {
 		case 1:
 			HTML_OPEN("b");
-			HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=#docsec%d", heading_count);
+			HTML_OPEN_WITH("a",
+				"style=\"text-decoration: none\" href=#docsec%d", heading_count);
 			HTML::begin_colour(OUT, I"000000");
 			WRITE("Chapter %d: ", chapter_count);
 			HTML::end_colour(OUT);
@@ -213,7 +215,7 @@ These are the destinations of links from heading lines in the TOC.
 			break;
 		default: internal_error("unable to set this heading level in extension TOC");
 	}
-	HTML::Documentation::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
+	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
 	HTML_TAG("br");
 
 @ The TOC entries for examples are similar. Here the link is to the variant
@@ -225,12 +227,12 @@ far as the user is concerned it opens the example and goes there.
 	WRITE("&nbsp;&nbsp;&nbsp;"); /* always indent TOC entries for examples */
 	TEMPORARY_TEXT(link);
 	WRITE_TO(link, "style=\"text-decoration: none\" href=\"");
-	HTML::Documentation::href_of_example(link, base_leafname, example_count, example_count);
+	DocumentationRenderer::href_of_example(link, base_leafname, example_count, example_count);
 	WRITE_TO(link, "\"");
 	HTML_OPEN_WITH("a", "%S", link);
 	HTML::begin_colour(OUT, I"000000");
 	PUT('A'+example_count-1); /* the letter A to Z */
-	HTML::Documentation::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
+	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
 	HTML::end_colour(OUT);
 	HTML_CLOSE("a");
 	HTML_TAG("br");
@@ -247,7 +249,7 @@ far as the user is concerned it opens the example and goes there.
 @d EDOC_FRAGMENT_ONLY -2 /* must differ from this and from all example variant numbers */
 
 =
-int HTML::Documentation::set_body_text(wording W, OUTPUT_STREAM,
+int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 	int example_which_is_open, text_stream *base_leafname) {
 	int heading_count = 0, chapter_count = 0, section_count = 0, example_count = 0;
 	int mid_example = FALSE, skipping_text_of_an_example = FALSE,
@@ -262,7 +264,7 @@ int HTML::Documentation::set_body_text(wording W, OUTPUT_STREAM,
 			while (Lexer::word(i) == PARBREAK_V) i++;
 			if (i>Wordings::last_wn(W)) break; /* treat multiple paragraph breaks as one */
 			@<Determine indentation of new paragraph@>;
-			if (HTML::Documentation::extension_documentation_heading(Wordings::from(W, i), &edhl, &NW)) {
+			if (DocumentationRenderer::extension_documentation_heading(Wordings::from(W, i), &edhl, &NW)) {
 				heading_count++;
 				if (edhl == 1) {
 					chapter_count++; section_count = 0;
@@ -275,7 +277,7 @@ int HTML::Documentation::set_body_text(wording W, OUTPUT_STREAM,
 				@<Typeset the heading of this chapter or section@>;
 				i = Wordings::last_wn(NW); continue;
 			}
-			if ((example_count < 26) && (HTML::Documentation::extension_documentation_example(
+			if ((example_count < 26) && (DocumentationRenderer::extension_documentation_example(
 					Wordings::from(W, i), &asterisks, &NW, &RUBW))) {
 				skipping_text_of_an_example = FALSE;
 				if (mid_example) @<Close the previous example's text@>;
@@ -366,7 +368,7 @@ can move on to the subsequent word.
 			|| (p[0] == '(') || (p[0] == '{') || (p[0] == '}'))
 		&& (compare_word(i-1, OPENBRACKET_V)==FALSE))
 		WRITE(" "); /* restore normal spacing around punctuation */
-	for (j=0; p[j]; j++) HTMLFiles::char_out(OUT, p[j]); /* set the actual word */
+	for (j=0; p[j]; j++) HTML::put(OUT, p[j]); /* set the actual word */
 	if (Lexer::word(i) == OPENI6_V) close_I6_position = i+1; /* ensure I6 literals are closed */
 
 @ A paste causes the same material to be set twice: once in the argument to
@@ -386,7 +388,7 @@ but does not advance |i| commensurately.
 			if ((j<y) && ((Lexer::break_before(j) == '\t') || (Lexer::indentation_level(j) > 0))) continue;
 			y = possible_end; break;
 		}
-	HTML::Javascript::paste_W(OUT, Wordings::new(x, y));
+	PasteButtons::paste_W(OUT, Wordings::new(x, y));
 
 @ The first step of indentation is handled using the |<blockquote>| tag;
 within that, further tab stops are simulated by printing a row of four
@@ -441,7 +443,7 @@ anchor |#docsecN|.
 			WRITE("%d: ", section_count);
 			break;
 	}
-	HTML::Documentation::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
+	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
 	HTML::end_colour(OUT);
 	HTML_CLOSE("b");
 
@@ -473,12 +475,12 @@ in the next section.
 	WRITE("&nbsp;Example&nbsp;");
 	HTML::end_colour(OUT);
 	HTML::begin_colour(OUT, I"000000");
-	HTML::Documentation::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
+	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
 	HTML::end_colour(OUT);
 	HTML_CLOSE("b");
 	HTML_CLOSE("a"); /* end the textual link */
 	HTML_TAG("br");
-	HTML::Documentation::set_body_text(RUBW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
+	DocumentationRenderer::set_body_text(RUBW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
 	HTML_OPEN("p");
 
 	HTML_CLOSE("td");
@@ -519,9 +521,9 @@ closes it up, if it's currently open.
 	TEMPORARY_TEXT(url);
 	WRITE_TO(url, "href=\"");
 	if (example_count == example_which_is_open) /* this example currently open */
-		HTML::Documentation::href_of_example(url, base_leafname, EDOC_ALL_EXAMPLES_CLOSED, example_count);
+		DocumentationRenderer::href_of_example(url, base_leafname, EDOC_ALL_EXAMPLES_CLOSED, example_count);
 	else /* this example not yet open */
-		HTML::Documentation::href_of_example(url, base_leafname, example_count, example_count);
+		DocumentationRenderer::href_of_example(url, base_leafname, example_count, example_count);
 	WRITE_TO(url, "\" style=\"text-decoration: none\"");
 	HTML_OPEN_WITH("a", "%S", url);
 	DISCARD_TEXT(url);
@@ -536,24 +538,16 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	HTML::begin_plain_html_table(OUT);
 	HTML::first_html_column(OUT, 0);
 
-@ Drinka.
-
 @<End table cell for I7 table in extension documentation@> =
 	HTML::end_colour(OUT);
 	HTML::next_html_column(OUT, 0);
 
-@ Pinta.
-
 @<Begin table cell for I7 table in extension documentation@> =
 	HTML::begin_colour(OUT, I"000080");
-
-@ Milka.
 
 @<Begin new row of I7 table in extension documentation@> =
 	HTML::end_html_row(OUT);
 	HTML::first_html_column(OUT, 0);
-
-@ Day.
 
 @<End I7 table in extension documentation@> =
 	HTML::end_html_row(OUT);

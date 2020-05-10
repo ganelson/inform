@@ -466,7 +466,7 @@ void UseOptions::index(OUTPUT_STREAM) {
 	}
 	if (nt > 0) {
 		HTML_OPEN("p"); WRITE("Whereas these are not in force:"); HTML_CLOSE("p");
-		HTMLFiles::open_para(OUT, 2, "tight");
+		HTML::open_indented_p(OUT, 2, "tight");
 		LOOP_OVER(uo, use_option) {
 			if (uo->source_file_scoped) continue;
 			if ((uo->option_used == FALSE) && (uo->minimum_setting_value < 0)) {
@@ -482,7 +482,7 @@ void UseOptions::index(OUTPUT_STREAM) {
 	HTML_OPEN_WITH("span", "style=\"white-space:nowrap\";");
 	TEMPORARY_TEXT(TEMP);
 	WRITE_TO(TEMP, "Use %+W.", uo->name);
-	HTML::Javascript::paste_stream(OUT, TEMP);
+	PasteButtons::paste_text(OUT, TEMP);
 	DISCARD_TEXT(TEMP);
 	WRITE("&nbsp;%+W", uo->name);
 	HTML_CLOSE("span");
@@ -510,7 +510,7 @@ void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, inform
 }
 
 @<Write in the use option subheading@> =
-	HTMLFiles::open_para(OUT, 2, "tight");
+	HTML::open_indented_p(OUT, 2, "tight");
 	HTML::begin_colour(OUT, I"808080");
 	WRITE("Set from ");
 	switch (category) {
@@ -530,7 +530,7 @@ void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, inform
 	HTML_CLOSE("p");
 
 @<Write in the index line for a use option taken@> =
-	HTMLFiles::open_para(OUT, 3, "tight");
+	HTML::open_indented_p(OUT, 3, "tight");
 	WRITE("Use %+W", uo->name);
 	if (uo->minimum_setting_value >= 0) WRITE(" of at least %d", uo->minimum_setting_value);
 	if (uo->where_used) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(uo->where_used)));
@@ -538,7 +538,7 @@ void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, inform
 		WRITE("&nbsp;");
 		TEMPORARY_TEXT(TEMP);
 		WRITE_TO(TEMP, "Use %+W of at least %d.", uo->name, 2*(uo->minimum_setting_value));
-		HTML::Javascript::paste_stream(OUT, TEMP);
+		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP);
 		WRITE("&nbsp;<i>Double this</i>");
 	}

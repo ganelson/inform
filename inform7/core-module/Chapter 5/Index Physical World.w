@@ -183,7 +183,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 @<Begin the object citation line@> =
 	if (tabulating_kinds_index) Kinds::Index::begin_chart_row(OUT);
 	if (details) {
-		HTMLFiles::open_para(OUT, depth, "halftight");
+		HTML::open_indented_p(OUT, depth, "halftight");
 		if ((K) || (I != indexing_room)) Index::anchor(OUT, UseNouns::identifier(nt));
 	} else {
 		#ifdef IF_MODULE
@@ -283,7 +283,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	}
 
 @<Add a subsidiary paragraph of details about this object@> =
-	HTMLFiles::open_para(OUT, depth, "tight");
+	HTML::open_indented_p(OUT, depth, "tight");
 	if (I) World::Inferences::index(OUT, Instances::as_subject(I), TRUE);
 	else World::Inferences::index(OUT, Kinds::Knowledge::as_subject(K), TRUE);
 	if (K) {
@@ -292,7 +292,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	}
 
 @<Add the chain of kinds@> =
-	HTMLFiles::open_para(OUT, 1, "tight");
+	HTML::open_indented_p(OUT, 1, "tight");
 	kind *IK = Instances::to_kind(I);
 	int i = 0;
 	while ((IK != K_object) && (IK)) {
@@ -319,7 +319,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 
 @ =
 void Data::Objects::index_instances(OUTPUT_STREAM, kind *K, int depth) {
-	HTMLFiles::open_para(OUT, depth, "tight");
+	HTML::open_indented_p(OUT, depth, "tight");
 	int c = 0;
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K) c++;

@@ -40,7 +40,7 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 						case 1: @<Write table row for this kind@>; break;
 						case 2:
 							@<Write heading for the detailed index entry for this kind@>;
-							HTMLFiles::open_para(OUT, 1, "tight");
+							HTML::open_indented_p(OUT, 1, "tight");
 							@<Index kinds of kinds matched by this kind@>;
 							@<Index explanatory text supplied for a kind@>;
 							@<Index literal patterns which can specify this kind@>;
@@ -178,7 +178,7 @@ row.
 @ The detailed entry lower down the page begins with:
 
 @<Write heading for the detailed index entry for this kind@> =
-	HTMLFiles::open_para(OUT, 1, "halftight");
+	HTML::open_indented_p(OUT, 1, "halftight");
 	Index::anchor_numbered(OUT, Kinds::get_construct(K)->allocation_id); /* ...the anchor to which the grey icon in the table led */
 	WRITE("<b>"); Kinds::Index::index_kind(OUT, K, FALSE, TRUE); WRITE("</b>");
 	WRITE(" (<i>plural</i> "); Kinds::Index::index_kind(OUT, K, TRUE, FALSE); WRITE(")");
@@ -186,7 +186,7 @@ row.
 		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K)); /* blue help icon, if any */
 	HTML_CLOSE("p");
 	if (Kinds::is_proper_constructor(K)) {
-		HTMLFiles::open_para(OUT, 1, "tight");
+		HTML::open_indented_p(OUT, 1, "tight");
 		int i, a = Kinds::Constructors::arity(Kinds::get_construct(K));
 		if ((a == 2) &&
 			(Kinds::Constructors::variance(Kinds::get_construct(K), 0) ==

@@ -449,12 +449,12 @@ void Strings::index_response(OUTPUT_STREAM, rule *R, int marker, response_messag
 	WRITE("&nbsp;&nbsp;");
 	TEMPORARY_TEXT(S);
 	WRITE_TO(S, "%+W response (%c)", R->name, 'A' + marker);
-	HTML::Javascript::paste_stream(OUT, S);
+	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>name</i>");
 	WRITE("&nbsp;");
 	Str::clear(S);
 	WRITE_TO(S, "The %+W response (%c) is \"New text.\".");
-	HTML::Javascript::paste_stream(OUT, S);
+	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>set</i>");
 	DISCARD_TEXT(S);
 }

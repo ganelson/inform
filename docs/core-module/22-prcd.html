@@ -315,7 +315,7 @@ all of them fail to decide, we return 0.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="string-syntax">"I - Number of aspects constrained"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"I - Number of aspects constrained"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rct1</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">rct2</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">rct1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PL::Actions::Patterns::count_aspects</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap1</span><span class="plain-syntax">);</span>
@@ -350,7 +350,7 @@ all of them fail to decide, we return 0.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="string-syntax">"III - When/while requirement"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"III - When/while requirement"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">AL1W</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">AL2W</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">AL1W</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">AL2W</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">AL1W</span><span class="plain-syntax">)) {</span>
@@ -368,7 +368,7 @@ all of them fail to decide, we return 0.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="string-syntax">"IV - Action requirement"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"IV - Action requirement"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PL::Actions::Patterns::compare_specificity</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap1</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> != </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
@@ -382,7 +382,7 @@ all of them fail to decide, we return 0.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="string-syntax">"V - Scene requirement"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"V - Scene requirement"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">sc1</span><span class="plain-syntax"> != </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">sc2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">sc1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">sc2</span><span class="plain-syntax"> != </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>

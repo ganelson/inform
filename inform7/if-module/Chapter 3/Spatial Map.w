@@ -2833,7 +2833,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 		instance *D = NULL;
 		instance *S = PL::SpatialMap::room_exit(R, i, &D);
 		if ((S) || (D)) {
-			HTMLFiles::open_para(OUT, 1, "tight");
+			HTML::open_indented_p(OUT, 1, "tight");
 			char *icon = "e_arrow";
 			if ((S) && (D)) icon = "e_arrow_door";
 			else if (D) icon = "e_arrow_door_blocked";
@@ -2881,7 +2881,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 		wording DW = Instances::get_name(dir, FALSE); /* name of the direction */
 		k++;
 		if (k == 1) {
-			HTMLFiles::open_para(OUT, 1, "hanging");
+			HTML::open_indented_p(OUT, 1, "hanging");
 			WRITE("<i>add:</i> ");
 		} else {
 			WRITE("; ");
@@ -2898,7 +2898,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 		if (Wordings::nonempty(RW)) WRITE_TO(TEMP, "%+W", RW);
 		else WRITE_TO(TEMP, "here");
 		WRITE_TO(TEMP, " is .[=0x000A=]");
-		HTML::Javascript::paste_stream(OUT, TEMP);
+		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP);
 		WRITE("&nbsp;%+W", DW);
 	}

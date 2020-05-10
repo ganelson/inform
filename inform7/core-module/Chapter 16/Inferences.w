@@ -468,7 +468,7 @@ void World::Inferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 					if ((prnbar) && (S < 0)) continue;
 					if (S != UNKNOWN_CE) {
 						k++;
-						if (k == 1) HTMLFiles::open_para(OUT, 1, "hanging");
+						if (k == 1) HTML::open_indented_p(OUT, 1, "hanging");
 						else WRITE("; ");
 						if (S < 0) WRITE("not ");
 						WRITE("%+W", prn->name);
@@ -484,7 +484,7 @@ void World::Inferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 					parse_node *P = NULL;
 					parse_node *S = World::Inferences::get_prop_state_without_inheritance(infs, prn, &P);
 					if ((S) && (Wordings::nonempty(ParseTree::get_text(S)))) {
-						HTMLFiles::open_para(OUT, 1, "hanging");
+						HTML::open_indented_p(OUT, 1, "hanging");
 						WRITE("%+W: ", prn->name);
 						HTML::begin_colour(OUT, I"000080");
 						WRITE("%+W", ParseTree::get_text(S));

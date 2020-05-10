@@ -308,7 +308,7 @@ void Plugins::Manage::index_innards(OUTPUT_STREAM, target_vm *VM) {
 		if (Str::len(da->unhyphenated_name) > 0) {
 			TEMPORARY_TEXT(is);
 			WRITE_TO(is, "Include %S in the debugging log.", da->unhyphenated_name);
-			HTML::Javascript::paste_stream(OUT, is);
+			PasteButtons::paste_text(OUT, is);
 			WRITE("&nbsp;%S", is);
 			DISCARD_TEXT(is);
 			HTML_TAG("br");

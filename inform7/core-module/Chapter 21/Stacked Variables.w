@@ -166,7 +166,7 @@ void StackedVariables::index_owner(OUTPUT_STREAM, stacked_variable_owner *stvo) 
 	stacked_variable_list *stvl;
 	for (stvl=stvo->list_of_stvs; stvl; stvl = stvl->next)
 		if ((stvl->the_stv) && (stvl->the_stv->underlying_var)) {
-			HTMLFiles::open_para(OUT, 2, "tight");
+			HTML::open_indented_p(OUT, 2, "tight");
 			NonlocalVariables::index_single(OUT, stvl->the_stv->underlying_var);
 			HTML_CLOSE("p");
 		}

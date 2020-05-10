@@ -82,22 +82,13 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 	return 0;
 
 @<Write the actual extension documentation page@> =
-	HTML::declare_as_HTML(OUT, FALSE);
-
-	HTML::begin_head(OUT, NULL);
-	HTML::title(OUT, I"Extension");
-	HTML::incorporate_javascript(OUT, TRUE,
+	HTML::header(OUT, I"Extension",
+		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES),
 		Supervisor::file_from_installation(JAVASCRIPT_FOR_ONE_EXTENSION_IRES));
-	HTML::incorporate_CSS(OUT,
-		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES));
-	HTML::end_head(OUT);
-
-	HTML::begin_body(OUT, NULL);
-
 	HTML::incorporate_HTML(OUT,
 		Supervisor::file_from_installation(EXTENSION_DOCUMENTATION_MODEL_IRES));
 	@<Write documentation for a specific extension into the page@>;
-	HTML::end_body(OUT);
+	HTML::footer(OUT);
 
 @<Write documentation for a specific extension into the page@> =
 	HTML_OPEN("p");
@@ -131,7 +122,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 @<Write Javascript paste icon for source text to include this extension@> =
 	TEMPORARY_TEXT(inclusion_text);
 	WRITE_TO(inclusion_text, "Include %X.\n\n\n", work);
-	HTML::Javascript::paste_stream(OUT, inclusion_text);
+	PasteButtons::paste_text(OUT, inclusion_text);
 	DISCARD_TEXT(inclusion_text);
 	WRITE("&nbsp;");
 
@@ -166,13 +157,13 @@ easily be scrolled down off screen when the user first visits the page.
 @<Write up the table of contents for the supplied documentation, if any@> =
 	if (Wordings::nonempty(E->documentation_text)) {
 		HTML_OPEN("p");
-		HTML::Documentation::set_table_of_contents(E->documentation_text, OUT, leaf);
+		DocumentationRenderer::table_of_contents(E->documentation_text, OUT, leaf);
 		HTML_CLOSE("p");
 	}
 
 @<Write up the supplied documentation, if any@> =
 	if (Wordings::nonempty(E->documentation_text))
-		no_egs = HTML::Documentation::set_body_text(E->documentation_text, OUT,
+		no_egs = DocumentationRenderer::set_body_text(E->documentation_text, OUT,
 			eg_number, leaf);
 	else {
 		HTML_OPEN("p");

@@ -578,7 +578,7 @@ void Instances::index_usages(OUTPUT_STREAM, instance *I) {
 			if (Projects::draws_from_source_file(Task::project(), sf)) {
 				k++;
 				if (k == 1) {
-					HTMLFiles::open_para(OUT, 1, "tight");
+					HTML::open_indented_p(OUT, 1, "tight");
 					WRITE("<i>mentioned in rules:</i> ");
 				} else WRITE("; ");
 				Index::link(OUT, Wordings::first_wn(ParseTree::get_text(at)));

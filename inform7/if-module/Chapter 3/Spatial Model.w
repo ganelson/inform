@@ -1352,7 +1352,7 @@ void PL::Spatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, in
 =
 int PL::Spatial::spatial_add_to_World_index(OUTPUT_STREAM, instance *O) {
 	if ((O) && (Instances::of_kind(O, K_thing))) {
-		HTMLFiles::open_para(OUT, 1, "tight");
+		HTML::open_indented_p(OUT, 1, "tight");
 		instance *P = PL::Spatial::progenitor(O);
 		if (P) {
 			WRITE("<i>initial location:</i> ");

@@ -4,7 +4,7 @@ Interface to the Problems module.
 
 @
 
-@d PROBLEMS_HTML_EMITTER HTMLFiles::char_out
+@d PROBLEMS_HTML_EMITTER HTML::put
 
 @ Inform tops and tails its output of problem messages, and it also prints
 non-problem messages when everything was fine. That all happens here:
@@ -16,7 +16,9 @@ non-problem messages when everything was fine. That all happens here:
 void Problems::Using::start_problems_report(filename *F) {
 	if (STREAM_OPEN_TO_FILE(problems_file, F, UTF8_ENC) == FALSE)
 		Problems::Fatal::filename_related("Can't open problem log", F);
-	HTMLFiles::html_header(problems_file, I"Translating the Source");
+	HTML::header(problems_file, I"Translating the Source",
+		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES),
+		Supervisor::file_from_installation(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
 }
 
 void Problems::Using::final_report(int disaster_struck, int problems_count) {
@@ -31,7 +33,7 @@ void Problems::Using::final_report(int disaster_struck, int problems_count) {
 		Problems::Buffer::redirect_problem_stream(NULL);
 	} else {
 		int rooms = 0, things = 0;
-		HTMLFiles::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
+		Problems::Using::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
 		#ifdef IF_MODULE
 		PL::Spatial::get_world_size(&rooms, &things);
 		#endif
@@ -77,7 +79,7 @@ ingratitude of some -- oh, all right.
 			"Problems occurring in translation prevented the game "
 			"from being properly created. (Correct the source text to "
 			"remove these problems and click on Go once again.)");
-	HTMLFiles::outcome_image_tail(problems_file);
+	Problems::Using::outcome_image_tail(problems_file);
 
 	text_stream *STATUS = ProgressBar::begin_outcome();
 	if (STATUS) {
@@ -109,7 +111,7 @@ command line -- deserves the truth.
 		"into a world with %1 %2 and %3 %4, and the index has been "
 		"brought up to date.");
 	Problems::issue_problem_end();
-	HTMLFiles::outcome_image_tail(problems_file);
+	Problems::Using::outcome_image_tail(problems_file);
 
 	if (telemetry_recording) {
 		Telemetry::ensure_telemetry_file();
@@ -141,3 +143,71 @@ command line -- deserves the truth.
 			things, (things==1)?"":"s");
 		ProgressBar::end_outcome();
 	}
+
+@h Outcome images.
+These are the two images used on the Problems page to visually indicate
+success or failure. We also use special images on special occasions.
+
+@d CENTRED_OUTCOME_IMAGE_STYLE 1
+@d SIDE_OUTCOME_IMAGE_STYLE 2
+
+=
+int outcome_image_style = SIDE_OUTCOME_IMAGE_STYLE;
+
+@ This callback function is called just as the //problems// module is about
+to issue its first problem of the run:
+
+@d FIRST_PROBLEM_CALLBACK Problems::Using::html_outcome_failed
+
+=
+void Problems::Using::html_outcome_failed(OUTPUT_STREAM) {
+	if (Problems::Issue::internal_errors_have_occurred())
+		Problems::Using::html_outcome_image(problems_file, "ni_failed_badly", "Failed");
+	else
+		Problems::Using::html_outcome_image(problems_file, "ni_failed", "Failed");
+}
+
+void Problems::Using::html_outcome_image(OUTPUT_STREAM, char *image, char *verdict) {
+	char *vn = "";
+	int be_festive = TRUE;
+	if (Problems::Issue::internal_errors_have_occurred() == FALSE) be_festive = FALSE;
+	if (be_festive) {
+		switch (Time::feast()) {
+			case CHRISTMAS_FEAST: vn = "_2"; break;
+			case EASTER_FEAST: vn = "_3"; break;
+		}
+		if (vn[0]) outcome_image_style = CENTRED_OUTCOME_IMAGE_STYLE;
+	}
+	Problems::Issue::issue_problems_banner(OUT, verdict);
+	switch (outcome_image_style) {
+		case CENTRED_OUTCOME_IMAGE_STYLE:
+			HTML_OPEN("p");
+			HTML_OPEN("center");
+			HTML_TAG_WITH("img", "src=inform:/outcome_images/%s%s.png border=0", image, vn);
+			HTML_CLOSE("center");
+			HTML_CLOSE("p");
+			break;
+		case SIDE_OUTCOME_IMAGE_STYLE:
+			HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
+			HTML::first_html_column(OUT, 110);
+			HTML_TAG_WITH("img",
+				"src=inform:/outcome_images/%s%s@2x.png border=1 width=100 height=100", image, vn);
+			HTML::next_html_column(OUT, 0);
+			break;
+	}
+	HTML::comment(OUT, I"HEADNOTE");
+	HTML_OPEN_WITH("p", "style=\"margin-top:0;\"");
+	WRITE("(Each time <b>Go</b> or <b>Replay</b> is clicked, Inform tries to "
+		"translate the source text into a working story, and updates this report.)");
+	HTML_CLOSE("p");
+	HTML::comment(OUT, I"PROBLEMS BEGIN");
+}
+
+void Problems::Using::outcome_image_tail(OUTPUT_STREAM) {
+	if (outcome_image_style == SIDE_OUTCOME_IMAGE_STYLE) {
+		HTML::comment(OUT, I"PROBLEMS END");
+		HTML::end_html_row(OUT);
+		HTML::end_html_table(OUT);
+		HTML::comment(OUT, I"FOOTNOTE");
+	}
+}

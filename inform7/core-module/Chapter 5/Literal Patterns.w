@@ -1900,7 +1900,7 @@ note that the following uses the raw text of the word.
 	WRITE("%<N", lp->lp_tokens[tc].token_wn);
 
 @<Index a character token within a literal pattern@> =
-	HTMLFiles::char_out(OUT, lp->lp_tokens[tc].token_char);
+	HTML::put(OUT, lp->lp_tokens[tc].token_char);
 
 @<Index an element token within a literal pattern@> =
 	if (Kinds::FloatingPoint::uses_floating_point(lp->kind_specified)) {

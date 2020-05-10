@@ -1231,12 +1231,12 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 	if ((ap1->valid == FALSE) && (ap2->valid != FALSE)) return -1;
 	if ((ap1->valid != FALSE) && (ap2->valid == FALSE)) return 1;
 
-	c_s_stage_law = "III.1 - Object To Which Rule Applies";
+	c_s_stage_law = I"III.1 - Object To Which Rule Applies";
 
 	rv = Specifications::compare_specificity(ap1->parameter_spec, ap2->parameter_spec, NULL);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.2.1 - Action/Where/Going In Exotic Ways";
+	c_s_stage_law = I"III.2.1 - Action/Where/Going In Exotic Ways";
 
 	rct1 = PL::Actions::Patterns::ap_count_going(ap1); rct2 = PL::Actions::Patterns::ap_count_going(ap2);
 	if (rct1 > rct2) return 1;
@@ -1251,7 +1251,7 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 	rv = Specifications::compare_specificity(ap1->through_spec, ap2->through_spec, NULL);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.2.2 - Action/Where/Room Where Action Takes Place";
+	c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
 
 	rct1 = PL::Actions::Patterns::ap_count_rooms(ap1); rct2 = PL::Actions::Patterns::ap_count_rooms(ap2);
 	if (rct1 > rct2) return 1;
@@ -1284,22 +1284,22 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 	rv = Specifications::compare_specificity(ap1->to_spec, ap2->to_spec, NULL);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.2.3 - Action/Where/In The Presence Of";
+	c_s_stage_law = I"III.2.3 - Action/Where/In The Presence Of";
 
 	rv = Specifications::compare_specificity(ap1->presence_spec, ap2->presence_spec, NULL);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.2.4 - Action/Where/Other Optional Clauses";
+	c_s_stage_law = I"III.2.4 - Action/Where/Other Optional Clauses";
 
 	rv = PL::Actions::Patterns::compare_specificity_of_apoc_list(ap1, ap2);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.3.1 - Action/What/Second Thing Acted On";
+	c_s_stage_law = I"III.3.1 - Action/What/Second Thing Acted On";
 
 	rv = Specifications::compare_specificity(ap1->second_spec, ap2->second_spec, NULL);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.3.2 - Action/What/Thing Acted On";
+	c_s_stage_law = I"III.3.2 - Action/What/Thing Acted On";
 
 	rv = Specifications::compare_specificity(ap1->noun_spec, ap2->noun_spec, NULL);
 	if (rv != 0) return rv;
@@ -1307,27 +1307,27 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 	if ((ap1->nowhere_flag) && (ap2->nowhere_flag == FALSE)) return -1;
 	if ((ap1->nowhere_flag == FALSE) && (ap2->nowhere_flag)) return 1;
 
-	c_s_stage_law = "III.3.3 - Action/What/Actor Performing Action";
+	c_s_stage_law = I"III.3.3 - Action/What/Actor Performing Action";
 
 	rv = Specifications::compare_specificity(ap1->actor_spec, ap2->actor_spec, NULL);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.4.1 - Action/How/What Happens";
+	c_s_stage_law = I"III.4.1 - Action/How/What Happens";
 
 	rv = PL::Actions::Lists::compare_specificity(ap1->action, ap2->action);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.5.1 - Action/When/Duration";
+	c_s_stage_law = I"III.5.1 - Action/When/Duration";
 
 	rv = Occurrence::compare_specificity(&(ap1->duration), &(ap2->duration));
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.5.2 - Action/When/Circumstances";
+	c_s_stage_law = I"III.5.2 - Action/When/Circumstances";
 
 	rv = Conditions::compare_specificity_of_CONDITIONs(ap1->when, ap2->when);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = "III.6.1 - Action/Name/Is This Named";
+	c_s_stage_law = I"III.6.1 - Action/Name/Is This Named";
 
 	if ((PL::Actions::Patterns::is_named(ap1)) && (PL::Actions::Patterns::is_named(ap2) == FALSE))
 		return 1;

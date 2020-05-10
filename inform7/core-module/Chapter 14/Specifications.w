@@ -143,10 +143,10 @@ used in sorting algorithms.
 
 =
 int cco = 0; /* comparison count: used to make the debugging log vaguely searchable */
-char *c_s_stage_law = ""; /* name of the law being applied, which caused this to be called */
+text_stream *c_s_stage_law = NULL; /* name of the law being applied, which caused this to be called */
 
 int Specifications::compare_specificity(parse_node *spec1, parse_node *spec2, int *wont_mix) {
-	LOGIF(SPECIFICITIES, "Law %s (test %d): comparing $P with $P\n",
+	LOGIF(SPECIFICITIES, "Law %S (test %d): comparing $P with $P\n",
 		c_s_stage_law, cco++, spec1, spec2);
 
 	@<Existence is itself something specific@>;

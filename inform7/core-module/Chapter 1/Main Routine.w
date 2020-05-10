@@ -86,7 +86,7 @@ but we won't assume that. Remember, //supervisor// knows best.
 	filename *PF = Filenames::in(build_folder, I"Problems.html");
 	Problems::Issue::start_problems_report(PF);
 
-	HTMLFiles::set_link_abbreviation_path(Projects::path(project));
+	HTML::set_link_abbreviation_path(Projects::path(project));
 
 @ Telemetry is not as sinister as it sounds: the app isn't sending data out
 on the Internet, only (if requested) logging what it's doing to a local file.

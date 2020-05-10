@@ -1162,7 +1162,7 @@ void NewVerbs::tabulate(OUTPUT_STREAM, lexicon_entry *lex, int tense, char *tens
 			 && (VerbUsages::get_tense_used(vu) == tense)) {
 			vocabulary_entry *lastword = WordAssemblages::last_word(&(vu->vu_text));
 			if (f) {
-				HTMLFiles::open_para(OUT, 2, "tight");
+				HTML::open_indented_p(OUT, 2, "tight");
 				WRITE("<i>%s:</i>&nbsp;", tensename);
 			} else WRITE("; ");
 			if (Wide::cmp(Vocabulary::get_exemplar(lastword, FALSE), L"by") == 0) WRITE("B ");

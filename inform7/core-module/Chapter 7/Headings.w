@@ -485,7 +485,7 @@ in practice strews distractingly many orange berries across the page.
 		wording W = Nouns::get_name(nt, FALSE);
 		if (Wordings::nonempty(W)) {
 			if (c++ == 0) {
-				HTMLFiles::open_para(OUT, ind_used+1, "hanging");
+				HTML::open_indented_p(OUT, ind_used+1, "hanging");
 				HTML::begin_colour(OUT, I"808080");
 			} else WRITE(", ");
 			WRITE("<i>%+W</i>", W);

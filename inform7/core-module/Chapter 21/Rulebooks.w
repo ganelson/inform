@@ -1182,7 +1182,7 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 	Str::put(start, Characters::tolower(Str::get(start)));
 
 	if (hide_behind_plus) {
-		HTMLFiles::open_para(OUT, indent+1, "tight");
+		HTML::open_indented_p(OUT, indent+1, "tight");
 		Index::extra_link(OUT, xtra_no);
 		if (n == 0) HTML::begin_colour(OUT, I"808080");
 		WRITE("%S", textual_name);
@@ -1193,7 +1193,7 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 
 		Index::extra_div_open(OUT, xtra_no, indent+1, col);
 	} else {
-		HTMLFiles::open_para(OUT, indent, "");
+		HTML::open_indented_p(OUT, indent, "");
 		HTML::open_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 	}
 
@@ -1201,30 +1201,30 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 	HTML::first_html_column(OUT, 0);
 
 
-	HTMLFiles::open_para(OUT, 1, "tight");
+	HTML::open_indented_p(OUT, 1, "tight");
 	WRITE("<b>%S</b>", textual_name);
 	@<Write the titling line of an index rules box@>;
 	HTML_CLOSE("p");
 
 	HTML::next_html_column_right_justified(OUT, 0);
 
-	HTMLFiles::open_para(OUT, 1, "tight");
+	HTML::open_indented_p(OUT, 1, "tight");
 	if (av) {
 		TEMPORARY_TEXT(skeleton);
 		WRITE_TO(skeleton, "Before %S:", textual_name);
-		HTML::Javascript::paste_stream(OUT, skeleton);
+		PasteButtons::paste_text(OUT, skeleton);
 		WRITE("&nbsp;<i>b</i> ");
 		Str::clear(skeleton);
 		WRITE_TO(skeleton, "Rule for %S:", textual_name);
-		HTML::Javascript::paste_stream(OUT, skeleton);
+		PasteButtons::paste_text(OUT, skeleton);
 		WRITE("&nbsp;<i>f</i> ");
 		Str::clear(skeleton);
 		WRITE_TO(skeleton, "After %S:", textual_name);
-		HTML::Javascript::paste_stream(OUT, skeleton);
+		PasteButtons::paste_text(OUT, skeleton);
 		WRITE("&nbsp;<i>a</i>");
 		DISCARD_TEXT(skeleton);
 	} else {
-		HTML::Javascript::paste_stream(OUT, textual_name);
+		PasteButtons::paste_text(OUT, textual_name);
 		WRITE("&nbsp;<i>name</i>");
 	}
 	HTML_CLOSE("p");
@@ -1236,7 +1236,7 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 	if ((rb) && (Rulebooks::is_empty(rb, Rulebooks::no_rule_context())))
 		text = "There are no rules in this rulebook.";
 	if (text) {
-		HTMLFiles::open_para(OUT, 2, "tight");
+		HTML::open_indented_p(OUT, 2, "tight");
 		WRITE("%s", text); HTML_CLOSE("p");
 	} else {
 		if (rb) {
