@@ -214,7 +214,7 @@ parse_node *World::Inferences::get_property_value(inference *i) {
 }
 
 parse_node *World::Inferences::set_property_value_kind(inference *i, kind *K) {
-	ParseTree::set_kind_of_value(i->inferred_property_value, K);
+	Node::set_kind_of_value(i->inferred_property_value, K);
 	return i->inferred_property_value;
 }
 
@@ -372,7 +372,7 @@ void World::Inferences::index(OUTPUT_STREAM, inference_subject *infs, int brief)
 	KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF)
 		if (World::Inferences::get_property(inf) == P_specification) {
 			parse_node *spec = World::Inferences::get_property_value(inf);
-			Index::dequote(OUT, Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(spec))));
+			Index::dequote(OUT, Lexer::word_raw_text(Wordings::first_wn(Node::get_text(spec))));
 			HTML_TAG("br");
 		}
 
@@ -472,7 +472,7 @@ void World::Inferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 						else WRITE("; ");
 						if (S < 0) WRITE("not ");
 						WRITE("%+W", prn->name);
-						if (P) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(P)));
+						if (P) Index::link(OUT, Wordings::first_wn(Node::get_text(P)));
 					}
 				}
 			}
@@ -483,13 +483,13 @@ void World::Inferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 				if (World::Permissions::find(infs, prn, TRUE)) {
 					parse_node *P = NULL;
 					parse_node *S = World::Inferences::get_prop_state_without_inheritance(infs, prn, &P);
-					if ((S) && (Wordings::nonempty(ParseTree::get_text(S)))) {
+					if ((S) && (Wordings::nonempty(Node::get_text(S)))) {
 						HTML::open_indented_p(OUT, 1, "hanging");
 						WRITE("%+W: ", prn->name);
 						HTML::begin_colour(OUT, I"000080");
-						WRITE("%+W", ParseTree::get_text(S));
+						WRITE("%+W", Node::get_text(S));
 						HTML::end_colour(OUT);
-						if (P) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(P)));
+						if (P) Index::link(OUT, Wordings::first_wn(Node::get_text(P)));
 						HTML_CLOSE("p");
 					}
 				}
@@ -762,7 +762,7 @@ and so clashed are impossible.)
 				binary_predicate *bp =
 					Properties::Valued::get_stored_relation(i->inferred_property);
 				if (bp) {
-					if (Wordings::match(ParseTree::get_text(current_sentence), ParseTree::get_text(list->inferred_from))) {
+					if (Wordings::match(Node::get_text(current_sentence), Node::get_text(list->inferred_from))) {
 						Problems::quote_source(1, current_sentence);
 						Problems::quote_relation(3, bp);
 						Problems::quote_subject(4, infs);

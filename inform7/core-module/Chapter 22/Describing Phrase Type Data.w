@@ -125,9 +125,9 @@ void Phrases::TypeData::Textual::write_HTML_representation(OUTPUT_STREAM,
 			if (inv) {
 				parse_node *found = Invocations::get_token_as_parsed(inv, ix);
 				text_stream *col = I"008000";
-				if (ParseTree::is(found, UNKNOWN_NT)) col = I"800000";
+				if (Node::is(found, UNKNOWN_NT)) col = I"800000";
 				HTML::begin_colour(OUT, col);
-				WRITE("%W", ParseTree::get_text(found));
+				WRITE("%W", Node::get_text(found));
 				HTML::end_colour(OUT);
 				WRITE(" - ");
 				Dash::note_inv_token_text(found,
@@ -149,10 +149,10 @@ void Phrases::TypeData::Textual::write_HTML_representation(OUTPUT_STREAM,
 				HTML::begin_colour(OUT, I"4040ff");
 				Kinds::Textual::write(OUT, Specifications::to_kind(spec));
 				HTML::end_colour(OUT);
-			} else if ((ParseTree::is(spec, CONSTANT_NT)) ||
+			} else if ((Node::is(spec, CONSTANT_NT)) ||
 					(Specifications::is_description(spec))) {
 				HTML::begin_colour(OUT, I"4040ff");
-				WRITE("%W", ParseTree::get_text(spec));
+				WRITE("%W", Node::get_text(spec));
 				HTML::end_colour(OUT);
 			} else {
 				HTML_OPEN("i");
@@ -203,7 +203,7 @@ Which enables this rather cool depiction used in Problem messages:
 
 =
 void Phrases::TypeData::Textual::inv_write_HTML_representation(OUTPUT_STREAM, parse_node *inv) {
-	phrase *ph = ParseTree::get_phrase_invoked(inv);
+	phrase *ph = Node::get_phrase_invoked(inv);
 	if (ph) {
 		ph_type_data *phtd = &(ph->type_data);
 		if (Wordings::nonempty(ph->ph_documentation_symbol)) {
@@ -212,7 +212,7 @@ void Phrases::TypeData::Textual::inv_write_HTML_representation(OUTPUT_STREAM, pa
 			Index::DocReferences::link_to(OUT, pds, -1);
 			DISCARD_TEXT(pds);
 		} else
-			Index::link_to(OUT, Wordings::first_wn(ParseTree::get_text(ph->declaration_node)), FALSE);
+			Index::link_to(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)), FALSE);
 		WRITE(" ");
 		Phrases::TypeData::Textual::write_HTML_representation(OUT, phtd, INDEX_PHRASE_FORMAT, inv);
 		WRITE(" ");
@@ -667,19 +667,19 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 	...... - nonexisting variable |    ==> TRUE; *XP = Specifications::from_kind(K_value); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
 	...... - nonexisting <k-kind-for-template> variable |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
 	...... - nonexisting <k-kind-for-template> that/which varies |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); <<token-construct>> = NEW_LOCAL_PT_CONSTRUCT
-	...... - {an existing variable} |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {an existing <k-kind-for-template> variable} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {an existing <k-kind-for-template> that/which varies} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {existing variable} |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {existing <k-kind-for-template> variable} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
-	...... - {existing <k-kind-for-template> that/which varies} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {an existing variable} |    ==> TRUE; *XP = Specifications::from_kind(K_value); Node::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {an existing <k-kind-for-template> variable} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); Node::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {an existing <k-kind-for-template> that/which varies} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); Node::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {existing variable} |    ==> TRUE; *XP = Specifications::from_kind(K_value); Node::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {existing <k-kind-for-template> variable} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); Node::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
+	...... - {existing <k-kind-for-template> that/which varies} |    ==> TRUE; *XP = Specifications::from_kind(RP[1]); Node::set_text(*XP, WR[2]); <<token-construct>> = EXISTING_LOCAL_PT_CONSTRUCT
 	...... - a condition |    ==> TRUE; *XP = NULL; <<token-construct>> = CONDITION_PT_CONSTRUCT
 	...... - condition |    ==> TRUE; *XP = NULL; <<token-construct>> = CONDITION_PT_CONSTRUCT
 	...... - a phrase |    ==> TRUE; *XP = NULL; <<token-construct>> = VOID_PT_CONSTRUCT
 	...... - phrase |    ==> TRUE; *XP = NULL; <<token-construct>> = VOID_PT_CONSTRUCT
-	...... - storage |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = STORAGE_PT_CONSTRUCT
-	...... - a table-reference |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
-	...... - table-reference |    ==> TRUE; *XP = Specifications::from_kind(K_value); ParseTree::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
+	...... - storage |    ==> TRUE; *XP = Specifications::from_kind(K_value); Node::set_text(*XP, WR[2]); <<token-construct>> = STORAGE_PT_CONSTRUCT
+	...... - a table-reference |    ==> TRUE; *XP = Specifications::from_kind(K_value); Node::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
+	...... - table-reference |    ==> TRUE; *XP = Specifications::from_kind(K_value); Node::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
 	...... - <s-phrase-token-type> |    ==> TRUE; *XP = RP[1]; <<token-construct>> = STANDARD_PT_CONSTRUCT
 	...... - <s-kind-as-name-token> |    ==> TRUE; *XP = RP[1]; <<token-construct>> = KIND_NAME_PT_CONSTRUCT
 	...... - ...... |    ==> @<Issue PM_BadTypeIndication problem@>
@@ -752,7 +752,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 	kind_parsing_mode = s;
 	if (t) {
 		parse_node *spec = Specifications::from_kind(<<rp>>);
-		ParseTree::set_text(spec, W);
+		Node::set_text(spec, W);
 		*XP = spec;
 		*X = TRUE;
 		return TRUE;
@@ -820,7 +820,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 	if (phtd->no_tokens >= MAX_TOKENS_PER_PHRASE) {
 		if (phtd->no_tokens == MAX_TOKENS_PER_PHRASE) {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(spec));
+			Problems::quote_wording(2, Node::get_text(spec));
 			int n = MAX_TOKENS_PER_PHRASE;
 			Problems::quote_number(3, &n);
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TooManyTokens));
@@ -840,7 +840,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 		(<<token-construct>> != KIND_NAME_PT_CONSTRUCT) &&
 		(phtd->as_inline.invoked_inline_not_as_call == FALSE)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(spec));
+		Problems::quote_wording(2, Node::get_text(spec));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoninlineUsesNonvalues));
 		Problems::issue_problem_segment(
 			"In %1, the text '%2' after the hyphen should tell me what kind of "
@@ -854,11 +854,11 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 	}
 
 @<Phrase tokens cannot be quantified@> =
-	if (ParseTree::is(spec, TEST_VALUE_NT)) {
+	if (Node::is(spec, TEST_VALUE_NT)) {
 		pcalc_prop *prop = Descriptions::to_proposition(spec);
 		if (Calculus::Variables::number_free(prop) != 1) {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(spec));
+			Problems::quote_wording(2, Node::get_text(spec));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseTokenQuantified));
 			Problems::issue_problem_segment(
 				"In %1, the text '%2' after the hyphen should tell me what kind of "

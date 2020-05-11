@@ -356,7 +356,7 @@ can't normally be unravelled at compile time.
 
 @<Create the adjectival meaning arising from this measurement@> =
 	adjective_meaning *am = Adjectives::Meanings::new(MEASUREMENT_KADJ,
-		STORE_POINTER_measurement_definition(mdef), ParseTree::get_text(q));
+		STORE_POINTER_measurement_definition(mdef), Node::get_text(q));
 	mdef->headword_as_adjective = am;
 	Adjectives::Meanings::declare(am, AW, 3);
 	Adjectives::Meanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);

@@ -41,14 +41,14 @@ void Inter::Reference::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 }
 
 inter_error_message *Inter::Reference::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Node::fill_1(IBM, REFERENCE_IST, 0, eloc, (inter_t) level);
+	inter_tree_node *P = Inode::fill_1(IBM, REFERENCE_IST, 0, eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
 void Inter::Reference::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_RCE_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_RCE_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 }
 
 void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -58,7 +58,7 @@ void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 void Inter::Reference::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((C->W.data[0] != INV_IST) && (C->W.data[0] != REF_IST) && (C->W.data[0] != SPLAT_IST) && (C->W.data[0] != VAL_IST) && (C->W.data[0] != LABEL_IST)) {
-			*E = Inter::Node::error(C, I"only an inv, a ref, a splat, a val, or a label can be below a reference", NULL);
+			*E = Inode::error(C, I"only an inv, a ref, a splat, a val, or a label can be below a reference", NULL);
 			return;
 		}
 	}

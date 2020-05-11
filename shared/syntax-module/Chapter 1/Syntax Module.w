@@ -19,34 +19,19 @@ DECLARE_CLASS(parse_node)
 DECLARE_CLASS(parse_node_tree)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(parse_node_annotation, 500)
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a |start| and |end| function. Here,
+all we need do is set up some debugging log facilities.
 
 =
 void SyntaxModule::start(void) {
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
-	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
-	ParseTree::metadata_setup();
+	NodeType::make_parentage_allowed_table();
+	NodeType::metadata_setup();
+	Annotations::make_annotation_allowed_table();
+	Writers::register_logger('m', Node::log_tree);    /* |$m| = log syntax tree from node */
+	Writers::register_logger_I('N', NodeType::log);  /* |$N| = log individual node type */
+	Writers::register_logger('P', Node::log_node);    /* |$P| = log individual parse node */
+	Writers::register_logger('T', Node::log_subtree); /* |$T| = log tree under node */
 }
+
 void SyntaxModule::end(void) {
 }
-
-@<Register this module's memory allocation reasons@> =
-	;
-
-@<Register this module's stream writers@> =
-	;
-
-@
-
-@e VERIFICATIONS_DA
-
-@<Register this module's debugging log aspects@> =
-	Log::declare_aspect(VERIFICATIONS_DA, L"verifications", FALSE, FALSE);
-
-@<Register this module's debugging log writers@> =
-	Writers::register_logger('m', ParseTree::log_tree);
-	Writers::register_logger_I('N', ParseTree::log_type);
-	Writers::register_logger('P', ParseTree::log_node);
-	Writers::register_logger('T', ParseTree::log_subtree);

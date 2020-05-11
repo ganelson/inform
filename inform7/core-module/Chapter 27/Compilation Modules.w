@@ -30,25 +30,25 @@ level-0 headings, which are the nodes from which these blocks of source text han
 
 =
 void Modules::traverse_to_define(void) {
-	ParseTree::traverse(Task::syntax_tree(), Modules::look_for_cu);
+	SyntaxTree::traverse(Task::syntax_tree(), Modules::look_for_cu);
 }
 
 void Modules::look_for_cu(parse_node *p) {
-	if (ParseTree::get_type(p) == HEADING_NT) {
+	if (Node::get_type(p) == HEADING_NT) {
 		heading *h = Headings::from_node(p);
 		if ((h) && (h->level == 0)) Modules::new(p);
 	}
 }
 
 compilation_module *Modules::new(parse_node *from) {
-	source_location sl = Wordings::location(ParseTree::get_text(from));
+	source_location sl = Wordings::location(Node::get_text(from));
 	if (sl.file_of_origin == NULL) return NULL;
 	inform_extension *owner = Extensions::corresponding_to(
-		Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(from))));
+		Lexer::file_of_origin(Wordings::first_wn(Node::get_text(from))));
 
 	compilation_module *C = Packaging::new_cm();
 	C->hanging_from = from;
-	ParseTree::set_module(from, C);
+	Node::set_module(from, C);
 	Modules::propagate_downwards(from->down, C);
 
 	TEMPORARY_TEXT(pname);
@@ -96,7 +96,7 @@ them. This is done by "propagating downwards", as follows.
 @ =
 void Modules::propagate_downwards(parse_node *P, compilation_module *C) {
 	while (P) {
-		ParseTree::set_module(P, C);
+		Node::set_module(P, C);
 		Modules::propagate_downwards(P->down, C);
 		P = P->next;
 	}
@@ -108,7 +108,7 @@ but that's now easy, as we just have to read off the annotation made above --
 =
 compilation_module *Modules::find(parse_node *from) {
 	if (from == NULL) return NULL;
-	return ParseTree::get_module(from);
+	return Node::get_module(from);
 }
 
 @h Current module.

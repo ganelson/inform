@@ -66,20 +66,20 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 	parse_node *inv;
 	LOOP_THROUGH_INVOCATION_LIST(inv, invl) {
 		LOGIF(MATCHING, "C%d: $e\n", pos, inv); pos++;
-		if (ParseTree::get_say_verb(inv)) {
+		if (Node::get_say_verb(inv)) {
 			NewVerbs::ConjugateVerb_invoke_emit(
-				ParseTree::get_say_verb(inv),
-				ParseTree::get_modal_verb(inv),
-				ParseTree::int_annotation(inv, say_verb_negated_ANNOT));
-		} else if (ParseTree::get_say_adjective(inv)) {
-			Adjectives::Meanings::emit(ParseTree::get_say_adjective(inv));
+				Node::get_say_verb(inv),
+				Node::get_modal_verb(inv),
+				Annotations::read_int(inv, say_verb_negated_ANNOT));
+		} else if (Node::get_say_adjective(inv)) {
+			Adjectives::Meanings::emit(Node::get_say_adjective(inv));
 		} else {
 			@<Otherwise, use the standard way to compile an invoked phrase@>;
 		}
 	}
 
 @<Otherwise, use the standard way to compile an invoked phrase@> =
-	phrase *ph = ParseTree::get_phrase_invoked(inv);
+	phrase *ph = Node::get_phrase_invoked(inv);
 	tokens_packet tokens;
 	@<First construct an arguments packet@>;
 	value_holster VH2 = Holsters::new(VH->vhmode_wanted);
@@ -105,7 +105,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 		else
 			tokens.args[i] = val;
 	}
-	kind *return_kind = ParseTree::get_kind_resulting(Invocations::first_in_list(invl));
+	kind *return_kind = Node::get_kind_resulting(Invocations::first_in_list(invl));
 	if ((return_kind == NULL) && (ph)) return_kind = ph->type_data.return_kind;
 	tokens.as_requested =
 		Kinds::function_kind(tokens.tokens_count, tokens.kind_required, return_kind);
@@ -154,7 +154,7 @@ be Inform 6 statements in a void context, and "value mode", where the phrases
 will be expressions being evaluated.
 
 @<Compile using run-time resolution to choose between invocations@> =
-	phrase *ph = ParseTree::get_phrase_invoked(Invocations::first_in_list(invl));
+	phrase *ph = Node::get_phrase_invoked(Invocations::first_in_list(invl));
 
 	int N = Invocations::get_no_tokens(Invocations::first_in_list(invl));
 	Frames::need_at_least_this_many_formals(N);
@@ -386,15 +386,15 @@ no subsequent lines are looked at.
 	Produce::up(Emit::tree());
 
 @<Compile code to apply this invocation if it's applicable@> =
-	if (ParseTree::get_say_verb(inv))
+	if (Node::get_say_verb(inv))
 		NewVerbs::ConjugateVerb_invoke_emit(
-			ParseTree::get_say_verb(inv),
-			ParseTree::get_modal_verb(inv),
-			ParseTree::int_annotation(inv, say_verb_negated_ANNOT));
-	else if (ParseTree::get_say_adjective(inv))
-		Adjectives::Meanings::emit(ParseTree::get_say_adjective(inv));
+			Node::get_say_verb(inv),
+			Node::get_modal_verb(inv),
+			Annotations::read_int(inv, say_verb_negated_ANNOT));
+	else if (Node::get_say_adjective(inv))
+		Adjectives::Meanings::emit(Node::get_say_adjective(inv));
 	else {
-		phrase *ph = ParseTree::get_phrase_invoked(inv);
+		phrase *ph = Node::get_phrase_invoked(inv);
 		tokens_packet tokens;
 		@<First construct an arguments packet@>;
 		@<Substitute the formal parameter variables into the tokens@>;
@@ -403,15 +403,15 @@ no subsequent lines are looked at.
 	}
 
 @<Compile code to apply this invocation if it's applicable, expression version@> =
-	if (ParseTree::get_say_verb(inv))
+	if (Node::get_say_verb(inv))
 		NewVerbs::ConjugateVerb_invoke_emit(
-			ParseTree::get_say_verb(inv),
-			ParseTree::get_modal_verb(inv),
-			ParseTree::int_annotation(inv, say_verb_negated_ANNOT));
-	else if (ParseTree::get_say_adjective(inv))
-		Adjectives::Meanings::emit(ParseTree::get_say_adjective(inv));
+			Node::get_say_verb(inv),
+			Node::get_modal_verb(inv),
+			Annotations::read_int(inv, say_verb_negated_ANNOT));
+	else if (Node::get_say_adjective(inv))
+		Adjectives::Meanings::emit(Node::get_say_adjective(inv));
 	else {
-		phrase *ph = ParseTree::get_phrase_invoked(inv);
+		phrase *ph = Node::get_phrase_invoked(inv);
 		tokens_packet tokens;
 		@<First construct an arguments packet@>;
 		@<Substitute the formal parameter variables into the tokens@>;
@@ -580,7 +580,7 @@ int Invocations::Compiler::compile_single_invocation(value_holster *VH, parse_no
 	LOGIF(MATCHING, "Compiling single invocation: $e\n", inv);
 	BEGIN_COMPILATION_MODE;
 
-	phrase *ph = ParseTree::get_phrase_invoked(inv);
+	phrase *ph = Node::get_phrase_invoked(inv);
 	int manner_of_return = DONT_KNOW_MOR;
 
 	@<The art of invocation is delegation@>;
@@ -614,7 +614,7 @@ stop automatically generates a newline:
 	if ((Invocations::implies_newline(inv)) &&
 		(tokens->tokens_count > 0) &&
 		(Rvalues::is_CONSTANT_of_kind(tokens->args[0], K_text)) &&
-		(Word::text_ending_sentence(Wordings::first_wn(ParseTree::get_text(tokens->args[0]))))) {
+		(Word::text_ending_sentence(Wordings::first_wn(Node::get_text(tokens->args[0]))))) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), I"\n");

@@ -92,13 +92,13 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 	if ((redirected_sentence) &&
 		(redirected_to_A) &&
 		(redirected_to_B) &&
-		(Wordings::eq(ParseTree::get_text(redirected_sentence), W))) {
+		(Wordings::eq(Node::get_text(redirected_sentence), W))) {
 		WRITE_TO(PBUFF, " (which asserts that ");
 		Problems::Buffer::copy_source_reference_into_problem_buffer(
-			ParseTree::get_text(redirected_to_A));
+			Node::get_text(redirected_to_A));
 		WRITE_TO(PBUFF, " is/are ");
 		Problems::Buffer::copy_source_reference_into_problem_buffer(
-			ParseTree::get_text(redirected_to_B));
+			Node::get_text(redirected_to_B));
 		WRITE_TO(PBUFF, ")");
 	}
 	DISCARD_TEXT(file);

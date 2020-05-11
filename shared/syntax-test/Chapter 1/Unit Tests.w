@@ -26,13 +26,13 @@ void Unit::test_tree(text_stream *arg) {
 	source_file *sf = TextFromFiles::feed_into_lexer(F, NULL_GENERAL_POINTER);
 	wording W = Feeds::end(FD);
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
-	syntax_tree = ParseTree::new_tree();
+	syntax_tree = SyntaxTree::new();
 	PRINT("Read %d words\n", Wordings::length(W));
 	Sentences::break(syntax_tree, W);
 
 	text_stream *save_DL = DL;
 	DL = STDOUT;
 	Streams::enable_debugging(DL);
-	ParseTree::log_tree(DL, syntax_tree->root_node);
+	Node::log_tree(DL, syntax_tree->root_node);
 	DL = save_DL;
 }

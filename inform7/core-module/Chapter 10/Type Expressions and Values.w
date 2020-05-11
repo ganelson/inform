@@ -260,7 +260,7 @@ membership, which is to say, really just a syntactic difference.
 
 @ =
 parse_node *ExParser::val(parse_node *v, wording W) {
-	ParseTree::set_text(v, W);
+	Node::set_text(v, W);
 	return v;
 }
 
@@ -271,9 +271,9 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 	<if-let-equation-mode> <s-plain-text-with-equals>	==> @<Make an inline equation@>
 
 @<Make an equation@> =
-	equation *eqn = Equations::new(ParseTree::get_text((parse_node *) RP[2]), TRUE);
+	equation *eqn = Equations::new(Node::get_text((parse_node *) RP[2]), TRUE);
 	parse_node *eq = Rvalues::from_equation(eqn);
-	Equations::set_wherewithal(eqn, ParseTree::get_text((parse_node *) RP[3]));
+	Equations::set_wherewithal(eqn, Node::get_text((parse_node *) RP[3]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
 	*XP = ExParser::val(eq, W);
@@ -283,13 +283,13 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 	if (!(Rvalues::is_CONSTANT_of_kind(p, K_equation))) return FALSE;
 	parse_node *eq = p;
 	equation *eqn = Rvalues::to_equation(eq);
-	Equations::set_usage_notes(eqn, ParseTree::get_text((parse_node *) RP[2]));
+	Equations::set_usage_notes(eqn, Node::get_text((parse_node *) RP[2]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
 	*XP = ExParser::val(eq, W);
 
 @<Make an inline equation@> =
-	equation *eqn = Equations::new(ParseTree::get_text((parse_node *) RP[2]), TRUE);
+	equation *eqn = Equations::new(Node::get_text((parse_node *) RP[2]), TRUE);
 	parse_node *eq = Rvalues::from_equation(eqn);
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
@@ -313,20 +313,20 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 @ =
 parse_node *ExParser::p_o_val(parse_node *A, parse_node *B) {
 	parse_node *pts =
-		(ParseTree::get_type(A) == UNKNOWN_NT) ?
-			Specifications::new_UNKNOWN(ParseTree::get_text(A)) :
+		(Node::get_type(A) == UNKNOWN_NT) ?
+			Specifications::new_UNKNOWN(Node::get_text(A)) :
 			A;
 	parse_node *vts = B;
 	parse_node *spec = Lvalues::new_PROPERTY_VALUE(pts, vts);
-	wording PW = ParseTree::get_text(A);
-	wording VW = ParseTree::get_text(B);
+	wording PW = Node::get_text(A);
+	wording VW = Node::get_text(B);
 	if ((Wordings::nonempty(PW)) && (Wordings::nonempty(VW))) {
 		wording MW = PW;
 		if (Wordings::first_wn(MW) > Wordings::first_wn(VW))
 			MW = Wordings::from(MW, Wordings::first_wn(VW));
 		if (Wordings::last_wn(MW) < Wordings::last_wn(VW))
 			MW = Wordings::up_to(MW, Wordings::last_wn(VW));
-		ParseTree::set_text(spec, MW);
+		Node::set_text(spec, MW);
 	}
 	return spec;
 }
@@ -419,7 +419,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	parse_node *p = ExParser::parse_excerpt(VALUE_PHRASE_MC, W);
 	word_to_suppress_in_phrases = suppression;
 	if (p) {
-		parse_node *spec = ParseTree::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
+		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
 		*XP = spec; return TRUE;
 	}
@@ -430,7 +430,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	W = Articles::remove_the(W);
 	parse_node *p = ExParser::parse_excerpt(VALUE_PHRASE_MC, W);
 	if (p) {
-		parse_node *spec = ParseTree::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
+		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
 		*XP = spec; return TRUE;
 	}
@@ -512,7 +512,7 @@ Again, this is part of a condition, and can't evaluate.
 @ =
 parse_node *ExParser::arg(parse_node *val) {
 	if (val == NULL) return Specifications::new_UNKNOWN(EMPTY_WORDING);
-	return ParseTree::duplicate(val);
+	return Node::duplicate(val);
 }
 
 @ Action patterns, such as "taking a container" or "opening a closed door",

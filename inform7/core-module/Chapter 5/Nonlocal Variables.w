@@ -181,7 +181,7 @@ nonlocal_variable *NonlocalVariables::parse(wording W) {
 	W = Articles::remove_the(W);
 	if (<s-global-variable>(W)) {
 		parse_node *val = <<rp>>;
-		return ParseTree::get_constant_nonlocal_variable(val);
+		return Node::get_constant_nonlocal_variable(val);
 	}
 	return NULL;
 }
@@ -209,7 +209,7 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 	}
 	nlv->nlv_name_translated = TRUE;
 	TEMPORARY_TEXT(name);
-	WRITE_TO(name, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
+	WRITE_TO(name, "%N", Wordings::first_wn(Node::get_text(p2)));
 	if (Str::eq(name, I"nothing")) {
 		NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_nothing());
 		NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_nothing());
@@ -220,7 +220,7 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 	}
 	DISCARD_TEXT(name);
 	LOGIF(VARIABLE_CREATIONS,
-		"Translated variable: $Z as %N\n", nlv, Wordings::first_wn(ParseTree::get_text(p2)));
+		"Translated variable: $Z as %N\n", nlv, Wordings::first_wn(Node::get_text(p2)));
 }
 
 @ In general, the following allows us to set the R-value and L-value forms
@@ -603,7 +603,7 @@ wording NonlocalVariables::treat_as_plain_text_word(nonlocal_variable *nlv) {
 	inference_subject *infs = NonlocalVariables::get_knowledge(nlv);
 	POSITIVE_KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF)
 		if (World::Inferences::get_property(inf) == P_variable_initial_value)
-			return ParseTree::get_text(
+			return Node::get_text(
 				World::Inferences::set_property_value_kind(inf, K_text));
 	return EMPTY_WORDING;
 }
@@ -664,7 +664,7 @@ parse_node *NonlocalVariables::substitute_constants(parse_node *spec) {
 			}
 			nlv->substitution_marker = substitution_session_id;
 			parse_node *sspec = NonlocalVariables::get_initial_value(nlv);
-			if (ParseTree::is(sspec, UNKNOWN_NT) == FALSE) { spec = sspec; continue; }
+			if (Node::is(sspec, UNKNOWN_NT) == FALSE) { spec = sspec; continue; }
 		}
 		break;
 	}
@@ -728,7 +728,7 @@ void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_var
 		NonlocalVariables::substitute_constants(
 			NonlocalVariables::get_initial_value(
 				nlv));
-	if (ParseTree::is(val, UNKNOWN_NT)) {
+	if (Node::is(val, UNKNOWN_NT)) {
 		current_sentence = nlv->nlv_created_at;
 		@<Initialise with the default value of its kind@>
 	} else {
@@ -756,7 +756,7 @@ void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_var
 	}
 
 @<Issue a problem for one variable set equal to another@> =
-	nonlocal_variable *the_other = ParseTree::get_constant_nonlocal_variable(val);
+	nonlocal_variable *the_other = Node::get_constant_nonlocal_variable(val);
 	if (the_other == NULL) internal_error(
 		"Tried to compile initial value of variable as null variable");
 	if (the_other == nlv) {

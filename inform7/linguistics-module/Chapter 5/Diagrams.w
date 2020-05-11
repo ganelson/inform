@@ -4,8 +4,6 @@ To construct standard verb-phrase nodes in the parse tree.
 
 @h Node types.
 
-@e L3_NCAT
-
 @e AVERB_NT             			/* "is" */
 @e PROPER_NOUN_NT       			/* "the red handkerchief" */
 
@@ -20,64 +18,70 @@ To construct standard verb-phrase nodes in the parse tree.
 
 @e TwoLikelihoods_LINERROR
 
+@d EVEN_MORE_NODE_METADATA_SETUP_SYNTAX_CALLBACK Diagrams::setup
+@d EVEN_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK Diagrams::permissions
+
 =
 void Diagrams::setup(void) {
-	ParseTree::md(AVERB_NT, "AVERB_NT",                 0, 0,     L3_NCAT, 0);
-	ParseTree::md(RELATIONSHIP_NT, "RELATIONSHIP_NT",   0, 2,	  L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(CALLED_NT, "CALLED_NT",               2, 2,	  L3_NCAT, 0);
-	ParseTree::md(WITH_NT, "WITH_NT",                   2, 2,	  L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(AND_NT, "AND_NT",                     2, 2,	  L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(KIND_NT, "KIND_NT",                   0, 1,     L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(PROPER_NOUN_NT, "PROPER_NOUN_NT",     0, 0,	  L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(PROPERTY_LIST_NT, "PROPERTY_LIST_NT", 0, INFTY, L3_NCAT, ASSERT_NFLAG);
-	ParseTree::allow_annotation(AVERB_NT, verbal_certainty_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, sentence_is_existential_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, possessive_verb_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, inverted_verb_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, verb_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, preposition_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, second_preposition_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, verb_meaning_ANNOT);
-	ParseTree::allow_annotation(RELATIONSHIP_NT, preposition_ANNOT);
-	ParseTree::allow_annotation(RELATIONSHIP_NT, relationship_node_type_ANNOT);
-	ParseTree::allow_annotation_to_category(L3_NCAT, linguistic_error_here_ANNOT);
-	ParseTree::allow_annotation_to_category(L3_NCAT, gender_reference_ANNOT);
-	ParseTree::allow_annotation_to_category(L3_NCAT, nounphrase_article_ANNOT);
-	ParseTree::allow_annotation_to_category(L3_NCAT, plural_reference_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, implicitly_refers_to_ANNOT);
+	NodeType::new(AVERB_NT, I"AVERB_NT",                 0, 0,     L3_NCAT, 0);
+	NodeType::new(RELATIONSHIP_NT, I"RELATIONSHIP_NT",   0, 2,	  L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(CALLED_NT, I"CALLED_NT",               2, 2,	  L3_NCAT, 0);
+	NodeType::new(WITH_NT, I"WITH_NT",                   2, 2,	  L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(AND_NT, I"AND_NT",                     2, 2,	  L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(KIND_NT, I"KIND_NT",                   0, 1,     L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(PROPER_NOUN_NT, I"PROPER_NOUN_NT",     0, 0,	  L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(PROPERTY_LIST_NT, I"PROPERTY_LIST_NT", 0, INFTY, L3_NCAT, ASSERT_NFLAG);
+}
+
+void Diagrams::permissions(void) {
+	Annotations::allow(AVERB_NT, verbal_certainty_ANNOT);
+	Annotations::allow(AVERB_NT, sentence_is_existential_ANNOT);
+	Annotations::allow(AVERB_NT, possessive_verb_ANNOT);
+	Annotations::allow(AVERB_NT, inverted_verb_ANNOT);
+	Annotations::allow(AVERB_NT, verb_ANNOT);
+	Annotations::allow(AVERB_NT, preposition_ANNOT);
+	Annotations::allow(AVERB_NT, second_preposition_ANNOT);
+	Annotations::allow(AVERB_NT, verb_meaning_ANNOT);
+	Annotations::allow(RELATIONSHIP_NT, preposition_ANNOT);
+	Annotations::allow(RELATIONSHIP_NT, relationship_node_type_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, linguistic_error_here_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, gender_reference_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, nounphrase_article_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, plural_reference_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, implicitly_refers_to_ANNOT);
 }
 
 @ =
 void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
-	switch (ParseTree::int_annotation(pn, linguistic_error_here_ANNOT)) {
+	switch (Annotations::read_int(pn, linguistic_error_here_ANNOT)) {
 		case TwoLikelihoods_LINERROR: WRITE(" (*** TwoLikelihoods_LINERROR ***)"); break;
 	}
 	switch(pn->node_type) {
 		case AVERB_NT:
-			if (ParseTree::int_annotation(pn, sentence_is_existential_ANNOT))
+			if (Annotations::read_int(pn, sentence_is_existential_ANNOT))
 				WRITE(" (existential)");
-			if (ParseTree::int_annotation(pn, possessive_verb_ANNOT))
+			if (Annotations::read_int(pn, possessive_verb_ANNOT))
 				WRITE(" (possessive)");
-			if (ParseTree::int_annotation(pn, inverted_verb_ANNOT))
+			if (Annotations::read_int(pn, inverted_verb_ANNOT))
 				WRITE(" (inverted)");
-			if (ParseTree::get_verb_meaning(pn)) {
-				WRITE(" $y", ParseTree::get_verb_meaning(pn));
+			if (Node::get_verb_meaning(pn)) {
+				WRITE(" $y", Node::get_verb_meaning(pn));
 			}
 			break;
 		case PROPER_NOUN_NT:
-			switch (ParseTree::int_annotation(pn, nounphrase_article_ANNOT)) {
+			switch (Annotations::read_int(pn, nounphrase_article_ANNOT)) {
 				case IT_ART: WRITE(" (pronoun)"); break;
 				case DEF_ART: WRITE(" (definite)"); break;
 				case INDEF_ART: WRITE(" (indefinite)"); break;
 			}
-			if (ParseTree::int_annotation(pn, plural_reference_ANNOT)) WRITE(" (plural)");
+			if (Annotations::read_int(pn, plural_reference_ANNOT)) WRITE(" (plural)");
 			break;
 		case RELATIONSHIP_NT:
-			switch (ParseTree::int_annotation(pn, relationship_node_type_ANNOT)) {
+			switch (Annotations::read_int(pn, relationship_node_type_ANNOT)) {
 				case STANDARD_RELN:
 					#ifdef CORE_MODULE
-					if (ParseTree::get_relationship(pn))
-						LOG(" (%S)", ParseTree::get_relationship(pn)->debugging_log_name);
+					if (Node::get_relationship(pn))
+						LOG(" (%S)", Node::get_relationship(pn)->debugging_log_name);
 					#endif
 					break;
 				case PARENTAGE_HERE_RELN: WRITE(" (here)"); break;

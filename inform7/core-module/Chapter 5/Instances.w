@@ -187,7 +187,7 @@ parse_node *Instances::get_creating_sentence(instance *I) {
 @ =
 source_file *Instances::get_creating_file(instance *I) {
 	if (I == NULL) return NULL;
-	return Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(I->creating_sentence)));
+	return Lexer::file_of_origin(Wordings::first_wn(Node::get_text(I->creating_sentence)));
 }
 
 @h Coincidence with property names.
@@ -358,10 +358,10 @@ instance *Instances::parse_object(wording W) {
 	if (nt == NULL) return NULL;
 	if (Nouns::priority(nt) != LOW_NOUN_PRIORITY) return NULL;
 	parse_node *pn = RETRIEVE_POINTER_parse_node(Nouns::tag_holder(nt));
-	if (ParseTree::is(pn, CONSTANT_NT)) {
-		kind *K = ParseTree::get_kind_of_value(pn);
+	if (Node::is(pn, CONSTANT_NT)) {
+		kind *K = Node::get_kind_of_value(pn);
 		if (Kinds::Compare::le(K, K_object))
-			return ParseTree::get_constant_instance(pn);
+			return Node::get_constant_instance(pn);
 	}
 	return NULL;
 }
@@ -574,14 +574,14 @@ void Instances::index_usages(OUTPUT_STREAM, instance *I) {
 	for (; IU; IU = IU->next) {
 		parse_node *at = IU->where_instance_used;
 		if (at) {
-			source_file *sf = Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(at)));
+			source_file *sf = Lexer::file_of_origin(Wordings::first_wn(Node::get_text(at)));
 			if (Projects::draws_from_source_file(Task::project(), sf)) {
 				k++;
 				if (k == 1) {
 					HTML::open_indented_p(OUT, 1, "tight");
 					WRITE("<i>mentioned in rules:</i> ");
 				} else WRITE("; ");
-				Index::link(OUT, Wordings::first_wn(ParseTree::get_text(at)));
+				Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 			}
 		}
 	}

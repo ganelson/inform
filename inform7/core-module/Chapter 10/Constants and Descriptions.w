@@ -1,4 +1,4 @@
-[ParseTree::AdjectiveLists::] Constants and Descriptions.
+[Node::AdjectiveLists::] Constants and Descriptions.
 
 To parse noun phrases in constant contexts, which specify values
 either explicitly or by describing them more or less vaguely.
@@ -25,13 +25,13 @@ is on the table". For now, though, we treat it as a noun.
 @<Compose verb ML@> =
 	verb_form *vf = (verb_form *) (RP[1]);
 	parse_node *spec = Rvalues::from_verb_form(vf);
-	ParseTree::set_text(spec, W);
+	Node::set_text(spec, W);
 	*XP = spec;
 
 @<Compose response ML@> =
 	parse_node *spec = RP[1];
-	ParseTree::set_kind_of_value(spec, K_response);
-	ParseTree::annotate_int(spec, response_code_ANNOT, R[2]);
+	Node::set_kind_of_value(spec, K_response);
+	Annotations::write_int(spec, response_code_ANNOT, R[2]);
 	*XP = spec;
 
 @ Screening for this saves time.
@@ -142,9 +142,9 @@ to do this.
 	if (p) {
 		*XP = p;
 		if (<property-name-as-noun-phrase>(W))
-			ParseTree::annotate_int(p, property_name_used_as_noun_ANNOT, TRUE);
+			Annotations::write_int(p, property_name_used_as_noun_ANNOT, TRUE);
 		else
-			ParseTree::annotate_int(p, property_name_used_as_noun_ANNOT, FALSE);
+			Annotations::write_int(p, property_name_used_as_noun_ANNOT, FALSE);
 		return TRUE;
 	}
 	return FALSE;
@@ -172,7 +172,7 @@ is read as if it were "scenery thing".
 
 =
 <s-adjective-list-as-desc> ::=
-	<s-adjective-list>				==> ParseTree::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1])
+	<s-adjective-list>				==> Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1])
 
 @ So now we test whether an excerpt is a list of adjectives; for example,
 this matches
@@ -232,15 +232,15 @@ the chimp is either not hairy or not an animal.
 
 =
 <s-adjective-list> ::=
-	not <indefinite-article> <s-adjective-list-unarticled> |    ==> 0; *XP = ParseTree::AdjectiveLists::make_adjlist(ParseTree::AdjectiveLists::negate_adjlist(RP[2]), W)
-	<indefinite-article> <s-adjective-list-unarticled> |    ==> 0; *XP = ParseTree::AdjectiveLists::make_adjlist(RP[2], W)
-	<s-adjective-list-unarticled>								==> 0; *XP = ParseTree::AdjectiveLists::make_adjlist(RP[1], W)
+	not <indefinite-article> <s-adjective-list-unarticled> |    ==> 0; *XP = Node::AdjectiveLists::make_adjlist(Node::AdjectiveLists::negate_adjlist(RP[2]), W)
+	<indefinite-article> <s-adjective-list-unarticled> |    ==> 0; *XP = Node::AdjectiveLists::make_adjlist(RP[2], W)
+	<s-adjective-list-unarticled>								==> 0; *XP = Node::AdjectiveLists::make_adjlist(RP[1], W)
 
 <s-adjective-list-unarticled> ::=
-	not <s-adjective> |    ==> 0; *XP = ParseTree::AdjectiveLists::negate_adjlist(RP[1])
+	not <s-adjective> |    ==> 0; *XP = Node::AdjectiveLists::negate_adjlist(RP[1])
 	<s-adjective> |    ==> 0; *XP = RP[1]
-	not <s-adjective> <s-adjective-list-unarticled> |    ==> 0; *XP = ParseTree::AdjectiveLists::join_adjlist(ParseTree::AdjectiveLists::negate_adjlist(RP[1]), RP[2])
-	<s-adjective> <s-adjective-list-unarticled>					==> 0; *XP = ParseTree::AdjectiveLists::join_adjlist(RP[1], RP[2])
+	not <s-adjective> <s-adjective-list-unarticled> |    ==> 0; *XP = Node::AdjectiveLists::join_adjlist(Node::AdjectiveLists::negate_adjlist(RP[1]), RP[2])
+	<s-adjective> <s-adjective-list-unarticled>					==> 0; *XP = Node::AdjectiveLists::join_adjlist(RP[1], RP[2])
 
 @ That reduces us to an internal nonterminal, which matches the longest
 possible adjective name it can see.
@@ -250,11 +250,11 @@ possible adjective name it can see.
 	parse_node *p = ExParser::parse_excerpt_maximal(ADJECTIVE_MC, W);
 	if (p) {
 		adjective_usage *ale = AdjectiveUsages::new(
-			RETRIEVE_POINTER_adjectival_phrase(ExcerptMeanings::data(ParseTree::get_meaning(p))),
+			RETRIEVE_POINTER_adjectival_phrase(ExcerptMeanings::data(Node::get_meaning(p))),
 				TRUE);
 		*XP = Descriptions::from_proposition(NULL, W);
 		Descriptions::add_to_adjective_list(ale, *XP);
-		int sc = ParseTree::get_score(p);
+		int sc = Node::get_score(p);
 		if (sc == 0) internal_error("Length-scored maximal parse with length 0");
 		return Wordings::first_wn(W) + sc - 1;
 	}
@@ -262,7 +262,7 @@ possible adjective name it can see.
 }
 
 @ =
-parse_node *ParseTree::AdjectiveLists::join_adjlist(parse_node *A, parse_node *B) {
+parse_node *Node::AdjectiveLists::join_adjlist(parse_node *A, parse_node *B) {
 	adjective_usage *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, B)
@@ -270,7 +270,7 @@ parse_node *ParseTree::AdjectiveLists::join_adjlist(parse_node *A, parse_node *B
 	return A;
 }
 
-parse_node *ParseTree::AdjectiveLists::join_adjlist_w(parse_node *A, parse_node *B) {
+parse_node *Node::AdjectiveLists::join_adjlist_w(parse_node *A, parse_node *B) {
 	adjective_usage *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, B)
@@ -278,12 +278,12 @@ parse_node *ParseTree::AdjectiveLists::join_adjlist_w(parse_node *A, parse_node 
 	return A;
 }
 
-parse_node *ParseTree::AdjectiveLists::make_adjlist(parse_node *A, wording W) {
-	ParseTree::set_text(A, W);
+parse_node *Node::AdjectiveLists::make_adjlist(parse_node *A, wording W) {
+	Node::set_text(A, W);
 	return A;
 }
 
-parse_node *ParseTree::AdjectiveLists::negate_adjlist(parse_node *A) {
+parse_node *Node::AdjectiveLists::negate_adjlist(parse_node *A) {
 	adjective_usage *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A)
@@ -292,20 +292,20 @@ parse_node *ParseTree::AdjectiveLists::negate_adjlist(parse_node *A) {
 }
 
 @ =
-parse_node *ParseTree::AdjectiveLists::add_adjlist(parse_node *spec, parse_node *adjlist) {
+parse_node *Node::AdjectiveLists::add_adjlist(parse_node *spec, parse_node *adjlist) {
 	if (adjlist) {
 		instance *I = Rvalues::to_object_instance(spec);
-		if (I) spec = Descriptions::from_instance(I, ParseTree::get_text(spec));
-		ParseTree::AdjectiveLists::join_adjlist(spec, adjlist);
+		if (I) spec = Descriptions::from_instance(I, Node::get_text(spec));
+		Node::AdjectiveLists::join_adjlist(spec, adjlist);
 	}
 	return spec;
 }
 
-parse_node *ParseTree::AdjectiveLists::add_adjlist_w(parse_node *spec, parse_node *adjlist) {
+parse_node *Node::AdjectiveLists::add_adjlist_w(parse_node *spec, parse_node *adjlist) {
 	if (adjlist) {
 		instance *I = Rvalues::to_object_instance(spec);
-		if (I) spec = Descriptions::from_instance(I, ParseTree::get_text(spec));
-		ParseTree::AdjectiveLists::join_adjlist_w(spec, adjlist);
+		if (I) spec = Descriptions::from_instance(I, Node::get_text(spec));
+		Node::AdjectiveLists::join_adjlist_w(spec, adjlist);
 	}
 	return spec;
 }
@@ -313,7 +313,7 @@ parse_node *ParseTree::AdjectiveLists::add_adjlist_w(parse_node *spec, parse_nod
 @ And this makes a more semantic check:
 
 =
-int ParseTree::AdjectiveLists::adjlist_applies_to_kind(parse_node *A, kind *K) {
+int Node::AdjectiveLists::adjlist_applies_to_kind(parse_node *A, kind *K) {
 	adjective_usage *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A) {
@@ -387,7 +387,7 @@ whereas "empty rulebook" will work.
 
 =
 <s-applicable-adjective-list> ::=
-	<s-adjective-list>	==> RP[1]; if ((s_adj_domain) && (ParseTree::AdjectiveLists::adjlist_applies_to_kind(RP[1], s_adj_domain) == FALSE)) return FALSE;
+	<s-adjective-list>	==> RP[1]; if ((s_adj_domain) && (Node::AdjectiveLists::adjlist_applies_to_kind(RP[1], s_adj_domain) == FALSE)) return FALSE;
 
 @h Descriptions.
 In most programming languages, commands are like imperative verbs, but their
@@ -456,7 +456,7 @@ In the grammar for <s-description>, the noun is compulsory.
 <s-description-uncalled> ::=
 	<s-specifier> <s-description-unspecified> |    ==> @<Glue on the quantification ML@>
 	<s-specifying-noun> |    ==> RP[1]
-	<s-specifying-noun> <s-adjective-list> |    ==> ParseTree::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
+	<s-specifying-noun> <s-adjective-list> |    ==> Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
 	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> RP[3]
 	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |    ==> @<Issue PM_DefiniteCommonNoun problem@>
 	<definite-article> <s-proper-description-unspecified> |    ==> RP[2]
@@ -465,15 +465,15 @@ In the grammar for <s-description>, the noun is compulsory.
 
 <s-description-unspecified> ::=
 	<s-qualifiable-noun> |    ==> RP[1]
-	<s-applicable-adjective-list> <s-qualifiable-noun>				==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
+	<s-applicable-adjective-list> <s-qualifiable-noun>				==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <s-common-description-unspecified> ::=
 	<s-qualifiable-common-noun> |    ==> RP[1]
-	<s-applicable-adjective-list> <s-qualifiable-common-noun>		==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
+	<s-applicable-adjective-list> <s-qualifiable-common-noun>		==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <s-proper-description-unspecified> ::=
 	<s-qualifiable-proper-noun> |    ==> RP[1]
-	<s-applicable-adjective-list> <s-qualifiable-proper-noun>		==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
+	<s-applicable-adjective-list> <s-qualifiable-proper-noun>		==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <if-trying-omission-permitted> internal 0 {
 	#ifdef IF_MODULE
@@ -502,7 +502,7 @@ except that the noun is optional. The only difference is right at the bottom.
 <s-description-nounless-uncalled> ::=
 	<s-specifier> <s-description-nounless-unspecified> |    ==> @<Glue on the quantification ML@>
 	<s-specifying-noun> |    ==> RP[1]
-	<s-specifying-noun> <s-adjective-list> |    ==> ParseTree::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
+	<s-specifying-noun> <s-adjective-list> |    ==> Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
 	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> RP[3]
 	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |    ==> @<Issue PM_DefiniteCommonNoun problem@>
 	<indefinite-article> <s-description-nounless-unspecified> |    ==> RP[2]
@@ -511,14 +511,14 @@ except that the noun is optional. The only difference is right at the bottom.
 
 <s-description-nounless-unspecified> ::=
 	<s-qualifiable-noun> |    ==> RP[1]
-	<s-applicable-adjective-list> <s-qualifiable-noun> |    ==> ParseTree::AdjectiveLists::add_adjlist(RP[2], RP[1])
-	<s-adjective-list>												==> ParseTree::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1])
+	<s-applicable-adjective-list> <s-qualifiable-noun> |    ==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
+	<s-adjective-list>												==> Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1])
 
 @<Glue on the calling ML@> =
 	parse_node *p = RP[1];
 	parse_node *c = RP[2];
 
-	if (ParseTree::is(p, CONSTANT_NT)) {
+	if (Node::is(p, CONSTANT_NT)) {
 		if (PM_SpecificCalling_issued_at != current_sentence) {
 			PM_SpecificCalling_issued_at = current_sentence;
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SpecificCalling),
@@ -532,7 +532,7 @@ except that the noun is optional. The only difference is right at the bottom.
 		}
 	} else {
 		if (Frames::current_stack_frame()) {
-			wording C = ParseTree::get_text(c);
+			wording C = Node::get_text(c);
 			Descriptions::attach_calling(p, C);
 			kind *K = Specifications::to_kind(p);
 			LocalVariables::ensure_called_local(C, K);
@@ -548,12 +548,12 @@ context of a proper noun, as in "some tea", because it may be confusion of
 @<Glue on the quantification ML@> =
 	parse_node *p = RP[2];
 	parse_node *annotation = RP[1];
-	quantifier *quant = ParseTree::get_quant(annotation);
+	quantifier *quant = Node::get_quant(annotation);
 	if (quant) {
 		if (Specifications::is_description(p)) {
 			Descriptions::quantify(p,
-				quant, ParseTree::int_annotation(annotation, quantification_parameter_ANNOT));
-		} else if (!((quant == exists_quantifier) && (ParseTree::is(p, CONSTANT_NT))))
+				quant, Annotations::read_int(annotation, quantification_parameter_ANNOT));
+		} else if (!((quant == exists_quantifier) && (Node::is(p, CONSTANT_NT))))
 			p = Specifications::new_UNKNOWN(W);
 	}
 	*XP = p;
@@ -589,8 +589,8 @@ context of a proper noun, as in "some tea", because it may be confusion of
 
 =
 <s-calling-name> ::=
-	<article> ... |    ==> ParseTree::new_with_words(UNKNOWN_NT, WR[1])
-	...					==> ParseTree::new_with_words(UNKNOWN_NT, WR[1])
+	<article> ... |    ==> Node::new_with_words(UNKNOWN_NT, WR[1])
+	...					==> Node::new_with_words(UNKNOWN_NT, WR[1])
 
 @ The following is written as an internal, voracious nonterminal for speed.
 It matches text like
@@ -611,8 +611,8 @@ blind eye to singular vs plural.
 	if (x1 >= 0) {
 		if ((x1<Wordings::last_wn(W)) && (Preform::test_word(x1, <article>))) x1++;
 		parse_node *qp = Specifications::new_UNKNOWN(Wordings::up_to(W, x1-1));
-		ParseTree::set_quant(qp, quantifier_used);
-		ParseTree::annotate_int(qp, quantification_parameter_ANNOT, which_N);
+		Node::set_quant(qp, quantifier_used);
+		Annotations::write_int(qp, quantification_parameter_ANNOT, which_N);
 		*XP = qp;
 		return x1-1;
 	}

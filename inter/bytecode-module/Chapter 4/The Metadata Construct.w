@@ -51,7 +51,7 @@ void Inter::Metadata::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Metadata::new(inter_bookmark *IBM, inter_t SID, inter_t TID, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Node::fill_3(IBM,
+	inter_tree_node *P = Inode::fill_3(IBM,
 		METADATA_IST, SID, LITERAL_TEXT_IVAL, TID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
@@ -59,7 +59,7 @@ inter_error_message *Inter::Metadata::new(inter_bookmark *IBM, inter_t SID, inte
 }
 
 void Inter::Metadata::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_MD_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_MD_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_MD_IFLD);
 }
 
@@ -70,6 +70,6 @@ void Inter::Metadata::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		Inter::Types::write(OUT, P, NULL,
 			P->W.data[VAL1_MD_IFLD], P->W.data[VAL1_MD_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
-		{ *E = Inter::Node::error(P, I"metadata can't be written", NULL); return; }
+		{ *E = Inode::error(P, I"metadata can't be written", NULL); return; }
 	}
 }

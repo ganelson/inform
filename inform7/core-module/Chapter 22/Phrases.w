@@ -85,7 +85,7 @@ invocation which is given as verbatim I6.
 
 =
 void Phrases::create_from_preamble(parse_node *p) {
-	if ((p == NULL) || (ParseTree::get_type(p) != ROUTINE_NT))
+	if ((p == NULL) || (Node::get_type(p) != ROUTINE_NT))
 		internal_error("a phrase preamble should be at a ROUTINE_NT node");
 	int inline_wn = -1; 		/* the word number of an inline I6 definition if any */
 	int mor = DONT_KNOW_MOR;	/* and its manner of return */
@@ -121,7 +121,7 @@ void Phrases::create_from_preamble(parse_node *p) {
 @<Look for an inline definition@> =
 	if ((p->down) && (p->down->down) && (p->down->down->next == NULL))
 		Phrases::parse_possible_inline_defn(
-			ParseTree::get_text(p->down->down), &inline_wn, &mor);
+			Node::get_text(p->down->down), &inline_wn, &mor);
 	if (inline_wn >= 0) {
 		wchar_t *inline_defn = Lexer::word_text(inline_wn);
 		if (Wide::len(inline_defn) >= MAX_INLINE_DEFN_LENGTH)
@@ -129,7 +129,7 @@ void Phrases::create_from_preamble(parse_node *p) {
 	}
 
 @<Parse for the PHUD in fine mode@> =
-	phud = Phrases::Usage::new(ParseTree::get_text(p), FALSE);
+	phud = Phrases::Usage::new(Node::get_text(p), FALSE);
 
 @<Construct the PHTD, find the phrase options, find the documentation reference@> =
 	wording XW = Phrases::Usage::get_preamble_text(&phud);

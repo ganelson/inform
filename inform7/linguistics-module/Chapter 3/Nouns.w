@@ -227,7 +227,7 @@ noun *Nouns::disambiguate(parse_node *p, int priority) {
 	int candidates = 0; noun *first_nt = NULL;
 	for (parse_node *p2 = p; p2; p2 = p2->next_alternative) {
 		noun *nt = RETRIEVE_POINTER_noun(
-			ExcerptMeanings::data(ParseTree::get_meaning(p2)));
+			ExcerptMeanings::data(Node::get_meaning(p2)));
 		if ((nt->search_priority >= 1) && (nt->search_priority <= priority)) {
 			first_nt = nt; candidates++;
 		}
@@ -243,10 +243,10 @@ noun *Nouns::disambiguate(parse_node *p, int priority) {
 
 	for (parse_node *p2 = p; p2; p2 = p2->next_alternative) {
 		noun *nt = RETRIEVE_POINTER_noun(
-			ExcerptMeanings::data(ParseTree::get_meaning(p2)));
+			ExcerptMeanings::data(Node::get_meaning(p2)));
 		if ((nt->search_priority >= 1) && (nt->search_priority <= priority))
 			Sentences::Headings::set_noun_search_score(nt,
-				ParseTree::get_score(p2));
+				Node::get_score(p2));
 	}
 	noun *best_nt = Sentences::Headings::highest_scoring_noun_searched();
 	if (best_nt) return best_nt;

@@ -137,12 +137,12 @@ int PL::Actions::actions_compile_constant(value_holster *VH, kind *K, parse_node
 		return TRUE;
 	}
 	if (Kinds::Compare::eq(K, K_description_of_action)) {
-		action_pattern *ap = ParseTree::get_constant_action_pattern(spec);
+		action_pattern *ap = Node::get_constant_action_pattern(spec);
 		PL::Actions::Patterns::compile_pattern_match(VH, *ap, FALSE);
 		return TRUE;
 	}
 	if (Kinds::Compare::eq(K, K_stored_action)) {
-		action_pattern *ap = ParseTree::get_constant_action_pattern(spec);
+		action_pattern *ap = Node::get_constant_action_pattern(spec);
 		if (TEST_COMPILATION_MODE(CONSTANT_CMODE))
 			PL::Actions::Patterns::as_stored_action(VH, ap);
 		else {
@@ -509,7 +509,7 @@ void PL::Actions::translates(wording W, parse_node *p2) {
 
 	an->translated = TRUE;
 	an->translated_name = Str::new();
-	WRITE_TO(an->translated_name, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
+	WRITE_TO(an->translated_name, "%N", Wordings::first_wn(Node::get_text(p2)));
 	LOGIF(ACTION_CREATIONS, "Translated action: $l as %n\n", an, PL::Actions::base_iname(an));
 }
 
@@ -573,7 +573,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 	wording MW = EMPTY_WORDING, NW = EMPTY_WORDING;
 	stacked_variable *stv = NULL;
 
-	if (ParseTree::get_type(cnode) != PROPERTYCALLED_NT) {
+	if (Node::get_type(cnode) != PROPERTYCALLED_NT) {
 		Problems::quote_source(1, current_sentence);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarUncalled));
 		Problems::issue_problem_segment(
@@ -589,7 +589,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 
 	if (an->owned_by_an == NULL) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(cnode->down->next));
+		Problems::quote_wording(2, Node::get_text(cnode->down->next));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(Untestable)); /* since we no longer define such actions */
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make "
@@ -601,9 +601,9 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 		return;
 	}
 
-	NW = ParseTree::get_text(cnode->down->next);
+	NW = Node::get_text(cnode->down->next);
 
-	if (<action-variable>(ParseTree::get_text(cnode->down->next))) {
+	if (<action-variable>(Node::get_text(cnode->down->next))) {
 		if (<<r>> == NOT_APPLICABLE) return;
 		NW = GET_RW(<action-variable-name>, 1);
 		if (<<r>>) {
@@ -629,13 +629,13 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 	}
 
 	kind *K = NULL;
-	if (<k-kind>(ParseTree::get_text(cnode->down))) K = <<rp>>;
+	if (<k-kind>(Node::get_text(cnode->down))) K = <<rp>>;
 	else {
 		parse_node *spec = NULL;
-		if (<s-type-expression>(ParseTree::get_text(cnode->down))) spec = <<rp>>;
+		if (<s-type-expression>(Node::get_text(cnode->down))) spec = <<rp>>;
 		if (Specifications::is_description(spec)) {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+			Problems::quote_wording(2, Node::get_text(cnode->down));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarOverspecific));
 			Problems::issue_problem_segment(
 				"You wrote %1, which I am reading as a request to make "
@@ -650,7 +650,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 		} else {
 			LOG("Offending SP: $T", spec);
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+			Problems::quote_wording(2, Node::get_text(cnode->down));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarUnknownKOV));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is not the name of a kind of "
@@ -662,7 +662,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 
 	if (Kinds::Compare::eq(K, K_value)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+		Problems::quote_wording(2, Node::get_text(cnode->down));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarValue));
 		Problems::issue_problem_segment(
 			"You wrote %1, but saying that a variable is a 'value' "
@@ -682,7 +682,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 	stv = StackedVariables::add_empty(an->owned_by_an, NW, K);
 
 	LOGIF(ACTION_CREATIONS, "Created action variable for $l: %W ($u)\n",
-		an, ParseTree::get_text(cnode->down->next), K);
+		an, Node::get_text(cnode->down->next), K);
 
 	if (Wordings::nonempty(MW)) {
 		StackedVariables::set_matching_text(stv, MW);
@@ -731,7 +731,7 @@ int PL::Actions::new_action_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<new-action-sentence-object>(OW)) {
 				if (<<r>> == FALSE) return FALSE;
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -908,7 +908,7 @@ wording PL::Actions::set_past_participle(wording W, int irregular_pp) {
 
 @ =
 void PL::Actions::act_parse_definition(parse_node *p) {
-	<action-sentence-subject>(ParseTree::get_text(p->next));
+	<action-sentence-subject>(Node::get_text(p->next));
 	action_name *an = <<rp>>;
 	if (an == NULL) return;
 
@@ -922,7 +922,7 @@ void PL::Actions::act_parse_definition(parse_node *p) {
 		<<kind:op2>> = K_object;
 		<<num>> = 0;
 
-		<action-sentence-object>(ParseTree::get_text(p->next->next));
+		<action-sentence-object>(Node::get_text(p->next->next));
 	}
 
 	if (an->max_parameters >= 2) {
@@ -1127,7 +1127,7 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 		if (an->designers_specification == NULL)
 			Problems::quote_text(2, "<none given>");
 		else
-			Problems::quote_wording(2, ParseTree::get_text(an->designers_specification));
+			Problems::quote_wording(2, Node::get_text(an->designers_specification));
 		Problems::quote_wording(3, an->present_name);
 		Problems::quote_text(4, failed_on);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarMismatchesAction));
@@ -1446,7 +1446,7 @@ int PL::Actions::index(OUTPUT_STREAM, action_name *an, int pass,
 	if (pass == 2) {
 		int swn = PL::Actions::an_get_specification_text(an);
 		WRITE("</b>");
-		Index::link(OUT, Wordings::first_wn(ParseTree::get_text(an->designers_specification)));
+		Index::link(OUT, Wordings::first_wn(Node::get_text(an->designers_specification)));
 		Index::anchor(OUT, PL::Actions::identifier(an));
 		if (an->requires_light) WRITE(" (requires light)");
 		WRITE(" (<i>past tense</i> %+W)", an->past_name);
@@ -1488,7 +1488,7 @@ int PL::Actions::index(OUTPUT_STREAM, action_name *an, int pass,
 		}
 		HTML_CLOSE("p");
 	} else {
-		Index::link(OUT, Wordings::first_wn(ParseTree::get_text(an->designers_specification)));
+		Index::link(OUT, Wordings::first_wn(Node::get_text(an->designers_specification)));
 		Index::detail_link(OUT, "A", an->allocation_id, (on_details_page)?FALSE:TRUE);
 	}
 	return f;

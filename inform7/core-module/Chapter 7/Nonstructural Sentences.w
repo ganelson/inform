@@ -94,26 +94,26 @@ in quick succession, the second run-through does nothing.)
 
 =
 void Sentences::VPs::traverse(void) {
-	ParseTree::traverse(Task::syntax_tree(), Sentences::VPs::visit);
+	SyntaxTree::traverse(Task::syntax_tree(), Sentences::VPs::visit);
 }
 void Sentences::VPs::visit(parse_node *p) {
-	if (ParseTree::get_type(p) == TRACE_NT) {
+	if (Node::get_type(p) == TRACE_NT) {
 		trace_sentences = 1 - trace_sentences;
 		Log::tracing_on(trace_sentences, I"Diagramming");
 	}
-	if ((ParseTree::get_type(p) == SENTENCE_NT) &&
-		(ParseTree::int_annotation(p, sentence_unparsed_ANNOT))) {
+	if ((Node::get_type(p) == SENTENCE_NT) &&
+		(Annotations::read_int(p, sentence_unparsed_ANNOT))) {
 		Sentences::VPs::seek(p);
 		@<Check that this is allowed, if it occurs in the Options file@>;
 		Sentences::Rearrangement::check_sentence_for_direction_creation(p);
-		ParseTree::annotate_int(p, sentence_unparsed_ANNOT, FALSE);
+		Annotations::write_int(p, sentence_unparsed_ANNOT, FALSE);
 	}
 }
 
 @<Check that this is allowed, if it occurs in the Options file@> =
-	if (Wordings::within(ParseTree::get_text(p), options_file_wording)) {
+	if (Wordings::within(Node::get_text(p), options_file_wording)) {
 		int rev = FALSE;
-		verb_meaning *vm = ParseTree::get_verb_meaning(p->down);
+		verb_meaning *vm = Node::get_verb_meaning(p->down);
 		special_meaning_fn soa = VerbMeanings::get_special_meaning(vm, &rev);
 		int err = TRUE;
 		if ((soa == UseOptions::use_SMF) ||
@@ -148,8 +148,8 @@ void Sentences::VPs::seek(parse_node *PN) {
 	}
 	nss_tree_head = PN;
 	CLEAR_RW(<nonstructural-sentence>);
-	if (!(<nonstructural-sentence>(ParseTree::get_text(PN))))
-		<bad-nonstructural-sentence-diagnosis>(ParseTree::get_text(PN));
+	if (!(<nonstructural-sentence>(Node::get_text(PN))))
+		<bad-nonstructural-sentence-diagnosis>(Node::get_text(PN));
 }
 
 @ =
@@ -163,7 +163,7 @@ int Sentences::VPs::include_in_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Index map with ..." */
 		case ACCEPT_SMFT:
 			if (<the-debugging-log>(OW)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<nounphrase-articled-list>(O2W);
 				V->next = <<rp>>;
 				Sentences::VPs::switch_dl_mode(V->next, TRUE);
@@ -180,7 +180,7 @@ int Sentences::VPs::omit_from_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Index map with ..." */
 		case ACCEPT_SMFT:
 			if (<the-debugging-log>(OW)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<nounphrase-articled-list>(O2W);
 				V->next = <<rp>>;
 				Sentences::VPs::switch_dl_mode(V->next, FALSE);
@@ -195,12 +195,12 @@ int Sentences::VPs::omit_from_SMF(int task, parse_node *V, wording *NPs) {
 
 @ =
 void Sentences::VPs::switch_dl_mode(parse_node *PN, int sense) {
-	if (ParseTree::get_type(PN) == AND_NT) {
+	if (Node::get_type(PN) == AND_NT) {
 		Sentences::VPs::switch_dl_mode(PN->down, sense);
 		Sentences::VPs::switch_dl_mode(PN->down->next, sense);
 		return;
 	}
-	Sentences::VPs::set_aspect_from_text(ParseTree::get_text(PN), sense);
+	Sentences::VPs::set_aspect_from_text(Node::get_text(PN), sense);
 }
 
 @ =
@@ -325,11 +325,11 @@ action declarations continue with usually extensive further text:
 @<Construct NSS subtree for regular sentence@> =
 	*X = 0;
 	parse_node *VP_PN = RP[1];
-	if (ParseTree::int_annotation(VP_PN, linguistic_error_here_ANNOT) == TwoLikelihoods_LINERROR)
+	if (Annotations::read_int(VP_PN, linguistic_error_here_ANNOT) == TwoLikelihoods_LINERROR)
 		@<Issue two likelihoods problem@>;
-	if (ParseTree::int_annotation(VP_PN, verb_id_ANNOT) == 0)
-		ParseTree::annotate_int(VP_PN, verb_id_ANNOT, ASSERT_VB);
-	ParseTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
+	if (Annotations::read_int(VP_PN, verb_id_ANNOT) == 0)
+		Annotations::write_int(VP_PN, verb_id_ANNOT, ASSERT_VB);
+	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
 
 	if (trace_sentences) {
 		LOG("$T\n", nss_tree_head); STREAM_FLUSH(DL);
@@ -359,32 +359,32 @@ This is made by |Sentences::VPs::nss_tree2|, but there are variants for one noun
 
 =
 int Sentences::VPs::nss_tree1(int t, wording VW, parse_node *np1) {
-	parse_node *VP_PN = ParseTree::new(AVERB_NT);
-	ParseTree::set_text(VP_PN, VW);
-	ParseTree::annotate_int(VP_PN, verb_id_ANNOT, t);
-	ParseTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
-	ParseTree::graft(Task::syntax_tree(), np1, nss_tree_head);
+	parse_node *VP_PN = Node::new(AVERB_NT);
+	Node::set_text(VP_PN, VW);
+	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
+	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
+	SyntaxTree::graft(Task::syntax_tree(), np1, nss_tree_head);
 	return 0;
 }
 
 int Sentences::VPs::nss_tree2(int t, wording VW, parse_node *np1, parse_node *np2) {
-	parse_node *VP_PN = ParseTree::new(AVERB_NT);
-	ParseTree::set_text(VP_PN, VW);
-	ParseTree::annotate_int(VP_PN, verb_id_ANNOT, t);
-	ParseTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
-	ParseTree::graft(Task::syntax_tree(), np1, nss_tree_head);
-	ParseTree::graft(Task::syntax_tree(), np2, nss_tree_head);
+	parse_node *VP_PN = Node::new(AVERB_NT);
+	Node::set_text(VP_PN, VW);
+	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
+	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
+	SyntaxTree::graft(Task::syntax_tree(), np1, nss_tree_head);
+	SyntaxTree::graft(Task::syntax_tree(), np2, nss_tree_head);
 	return 0;
 }
 
 int Sentences::VPs::nss_tree3(int t, wording VW, parse_node *np1, parse_node *np2, parse_node *np3) {
-	parse_node *VP_PN = ParseTree::new(AVERB_NT);
-	ParseTree::set_text(VP_PN, VW);
-	ParseTree::annotate_int(VP_PN, verb_id_ANNOT, t);
-	ParseTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
-	ParseTree::graft(Task::syntax_tree(), np1, nss_tree_head);
-	ParseTree::graft(Task::syntax_tree(), np2, nss_tree_head);
-	ParseTree::graft(Task::syntax_tree(), np3, nss_tree_head);
+	parse_node *VP_PN = Node::new(AVERB_NT);
+	Node::set_text(VP_PN, VW);
+	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
+	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
+	SyntaxTree::graft(Task::syntax_tree(), np1, nss_tree_head);
+	SyntaxTree::graft(Task::syntax_tree(), np2, nss_tree_head);
+	SyntaxTree::graft(Task::syntax_tree(), np3, nss_tree_head);
 	return 0;
 }
 
@@ -439,7 +439,7 @@ int Sentences::VPs::translates_into_unicode_as_SMF(int task, parse_node *V, word
 	switch (task) { /* "Black king chess piece translates into Unicode as 9818" */
 		case ACCEPT_SMFT:
 			if (<translation-target-unicode>(O2W)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<nounphrase-definite>(SW);
 				V->next = <<rp>>;
 				<nounphrase-articled>(OW);
@@ -461,7 +461,7 @@ int Sentences::VPs::translates_into_I6_as_SMF(int task, parse_node *V, wording *
 	switch (task) { /* "Black king chess piece translates into Unicode as 9818" */
 		case ACCEPT_SMFT:
 			if (<translation-target-i6>(O2W)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<nounphrase-definite>(SW);
 				V->next = <<rp>>;
 				<nounphrase-articled>(OW);
@@ -484,13 +484,13 @@ int Sentences::VPs::translates_into_language_as_SMF(int task, parse_node *V, wor
 	switch (task) { /* "Black king chess piece translates into Unicode as 9818" */
 		case ACCEPT_SMFT:
 			if (<translation-target-language>(O2W)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				inform_language *nl = (inform_language *) (<<rp>>);
 				<nounphrase-definite>(SW);
 				V->next = <<rp>>;
 				<nounphrase-articled>(OW);
 				V->next->next = <<rp>>;
-				ParseTree::set_defn_language(V->next->next, nl);
+				Node::set_defn_language(V->next->next, nl);
 				return TRUE;
 			}
 			break;
@@ -517,8 +517,8 @@ Problem message than the one they will otherwise receive later on.
 	<negated-verb> ...																	==> @<Issue PM_NegatedVerb1 problem@>
 
 @<Issue PM_NonPresentTense problem@> =
-	if (ParseTree::int_annotation(current_sentence, verb_problem_issued_ANNOT) == FALSE) {
-		ParseTree::annotate_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
+	if (Annotations::read_int(current_sentence, verb_problem_issued_ANNOT) == FALSE) {
+		Annotations::write_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonPresentTense),
 			"assertions about the initial state of play must be given in the "
 			"present tense",
@@ -530,8 +530,8 @@ Problem message than the one they will otherwise receive later on.
 @ This catches sentences like "Timothy does not carry the ring".
 
 @<Issue PM_NegatedVerb1 problem@> =
-	if (ParseTree::int_annotation(current_sentence, verb_problem_issued_ANNOT) == FALSE) {
-		ParseTree::annotate_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
+	if (Annotations::read_int(current_sentence, verb_problem_issued_ANNOT) == FALSE) {
+		Annotations::write_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
 		Problems::Issue::negative_sentence_problem(Task::syntax_tree(), _p_(PM_NegatedVerb1));
 	}
 

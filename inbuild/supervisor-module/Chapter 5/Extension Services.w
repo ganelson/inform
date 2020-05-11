@@ -69,7 +69,7 @@ void Extensions::scan(inbuild_copy *C) {
 	E->must_satisfy = NULL;
 	E->loaded_from_built_in_area = FALSE;
 	E->read_into_project = NULL;
-	E->syntax_tree = ParseTree::new_tree();
+	E->syntax_tree = SyntaxTree::new();
 	E->inclusion_sentence = NULL;
 	E->search_list = NEW_LINKED_LIST(inbuild_nest);
 	E->has_historically_been_used = FALSE;

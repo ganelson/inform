@@ -184,7 +184,7 @@ produce.
 int phod_being_parsed_silently = FALSE; /* context for the grammar below */
 
 int Phrases::Options::parse_invoked_options(parse_node *inv, int silently) {
-	phrase *ph = ParseTree::get_phrase_invoked(inv);
+	phrase *ph = Node::get_phrase_invoked(inv);
 	wording W = Invocations::get_phrase_options(inv);
 
 	ph_being_parsed = ph;

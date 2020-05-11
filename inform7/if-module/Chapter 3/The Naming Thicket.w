@@ -348,7 +348,7 @@ together in lists.
 @<Assert male, female, neuter adjectives from grammatical gender@> =
 	parse_node *spec = World::Inferences::get_prop_state(subj, P_grammatical_gender);
 	if (spec) {
-		int g = ParseTree::int_annotation(spec, constant_enumeration_ANNOT);
+		int g = Annotations::read_int(spec, constant_enumeration_ANNOT);
 		switch (g) {
 			case NEUTER_GENDER:
 				if (World::Permissions::grant(subj, P_neuter, TRUE))

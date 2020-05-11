@@ -15,7 +15,7 @@ parse_node *Specifications::from_kind(kind *K) {
 }
 
 kind *Specifications::to_kind(parse_node *spec) {
-	if (ParseTree::is(spec, AMBIGUITY_NT)) spec = spec->down;
+	if (Node::is(spec, AMBIGUITY_NT)) spec = spec->down;
 	if (Specifications::is_description(spec))
 		return Descriptions::to_kind(spec);
 	if (ParseTreeUsage::is_lvalue(spec)) return Lvalues::to_kind(spec);
@@ -30,8 +30,8 @@ kind *Specifications::to_true_kind(parse_node *spec) {
 }
 
 kind *Specifications::to_true_kind_disambiguated(parse_node *spec) {
-	if (ParseTree::is(spec, AMBIGUITY_NT)) spec = spec->down;
-	if (ParseTree::is(spec, TEST_VALUE_NT)) spec = spec->down;
+	if (Node::is(spec, AMBIGUITY_NT)) spec = spec->down;
+	if (Node::is(spec, TEST_VALUE_NT)) spec = spec->down;
 	if (ParseTreeUsage::is_lvalue(spec)) return Lvalues::to_kind(spec);
 	else if (ParseTreeUsage::is_rvalue(spec)) return Rvalues::to_kind(spec);
 	return NULL;
@@ -61,7 +61,7 @@ int Specifications::is_description_like(parse_node *p) {
 }
 
 int Specifications::is_description(parse_node *p) {
-	if ((ParseTree::is(p, TEST_VALUE_NT)) &&
+	if ((Node::is(p, TEST_VALUE_NT)) &&
 		(Rvalues::is_CONSTANT_construction(p->down, CON_description))) return TRUE;
 	return FALSE;
 }
@@ -70,7 +70,7 @@ pcalc_prop *Specifications::to_proposition(parse_node *p) {
 	if (p == NULL) return NULL;
 	if (Specifications::is_description(p))
 		return Descriptions::to_proposition(p);
-	return ParseTree::get_proposition(p);
+	return Node::get_proposition(p);
 }
 
 @ Specifications which talk about objects lie in two different families:
@@ -124,7 +124,7 @@ void Specifications::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 	else if (ParseTreeUsage::is_lvalue(spec)) Lvalues::write_out_in_English(OUT, spec);
 	else if (ParseTreeUsage::is_rvalue(spec)) Rvalues::write_out_in_English(OUT, spec);
 	else if (ParseTreeUsage::is_condition(spec)) Conditions::write_out_in_English(OUT, spec);
-	else if (ParseTree::is(spec, AMBIGUITY_NT)) Specifications::write_out_in_English(OUT, spec->down);
+	else if (Node::is(spec, AMBIGUITY_NT)) Specifications::write_out_in_English(OUT, spec->down);
 	else WRITE("something unrecognised");
 }
 
@@ -249,8 +249,8 @@ this is a good convention, but users reported the previous absence of such
 a convention as a bug, which is usually telling.
 
 @<Table entries are more specific than other non-descriptions@> =
-	int t1 = ParseTree::is(spec1, TABLE_ENTRY_NT);
-	int t2 = ParseTree::is(spec2, TABLE_ENTRY_NT);
+	int t1 = Node::is(spec1, TABLE_ENTRY_NT);
+	int t2 = Node::is(spec2, TABLE_ENTRY_NT);
 	if ((t1 == TRUE) && (t2 == FALSE)) return 1;
 	if ((t1 == FALSE) && (t2 == TRUE)) return -1;
 
@@ -271,6 +271,6 @@ meaning could be found.
 
 =
 parse_node *Specifications::new_UNKNOWN(wording W) {
-	return ParseTree::new_with_words(UNKNOWN_NT, W);
+	return Node::new_with_words(UNKNOWN_NT, W);
 }
 

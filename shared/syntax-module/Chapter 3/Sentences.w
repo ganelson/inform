@@ -107,7 +107,7 @@ void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension,
 	if (Wordings::empty(W)) return;
 
 	int sentence_start = Wordings::first_wn(W);
-	ParseTree::enable_last_sentence_cacheing();
+	SyntaxTree::enable_last_sentence_cache(T);
 
 	Sentences::reset(sfsm, is_extension, ref, project_ref);
 	@<Go into table sentence mode if necessary@>;
@@ -133,7 +133,7 @@ void Sentences::break_inner(parse_node_tree *T, wording W, int is_extension,
 		Sentences::make_node(T, Wordings::from(W, sentence_start), '.');
 	}
 
-	ParseTree::disable_last_sentence_cacheing();
+	SyntaxTree::disable_last_sentence_cache(T);
 
 	if (is_extension)
 		@<Issue a problem message if we are missing the begin and end here sentences@>;
@@ -147,7 +147,7 @@ since their entries are governed by different lexical and semantic rules.)
 
 @<Go into table sentence mode if necessary@> =
 	if ((<structural-sentence>(Wordings::from(W, sentence_start))) &&
-		(ParseTree::test_flag(sfsm->nt, TABBED_NFLAG)))
+		(NodeType::has_flag(sfsm->nt, TABBED_NFLAG)))
 		sfsm->inside_table_mode = TRUE;
 	else
 		sfsm->inside_table_mode = FALSE;
@@ -344,11 +344,11 @@ is declared as if it were a super-heading in the text.
 
 @<Detect a change of source file, and declare it as an implicit heading@> =
 	if (Lexer::file_of_origin(Wordings::first_wn(W)) != sfsm->sf) {
-		parse_node *implicit_heading = ParseTree::new(HEADING_NT);
-		ParseTree::set_text(implicit_heading, W);
-		ParseTree::annotate_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
-		ParseTree::annotate_int(implicit_heading, heading_level_ANNOT, 0);
-		ParseTree::insert_sentence(T, implicit_heading);
+		parse_node *implicit_heading = Node::new(HEADING_NT);
+		Node::set_text(implicit_heading, W);
+		Annotations::write_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
+		Annotations::write_int(implicit_heading, heading_level_ANNOT, 0);
+		SyntaxTree::graft_sentence(T, implicit_heading);
 		#ifdef NEW_HEADING_SYNTAX_CALLBACK
 		NEW_HEADING_SYNTAX_CALLBACK(T, implicit_heading, sfsm->project_ref);
 		#endif
@@ -412,11 +412,11 @@ newlines automatically added at the end of the feed of any source file.
 in Headings to determine whether we should include the material.
 
 @<Make a new HEADING node, possibly beginning to skip material@> =
-	new = ParseTree::new(HEADING_NT);
-	ParseTree::set_text(new, W);
-	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
-	ParseTree::annotate_int(new, heading_level_ANNOT, heading_level);
-	ParseTree::insert_sentence(T, new);
+	new = Node::new(HEADING_NT);
+	Node::set_text(new, W);
+	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
+	Annotations::write_int(new, heading_level_ANNOT, heading_level);
+	SyntaxTree::graft_sentence(T, new);
 	#ifdef NEW_HEADING_SYNTAX_CALLBACK
 	if (NEW_HEADING_SYNTAX_CALLBACK(T, new, sfsm->project_ref) == FALSE)
 		sfsm->skipping_material_at_level = heading_level;
@@ -494,9 +494,9 @@ sentences and options-file sentences may have been read already.)
 			@<Detect a language definition sentence and sneakily act upon it@>
 		else if (<<r>> == -2) {
 			@<Detect a Preform grammar inclusion and sneakily act upon it@>
-			ParseTree::set_type(new, sfsm->nt); return;
+			Node::set_type(new, sfsm->nt); return;
 		} else {
-			ParseTree::set_type(new, sfsm->nt);
+			Node::set_type(new, sfsm->nt);
 			#ifdef SUPERVISOR_MODULE
 			if (sfsm->nt == BIBLIOGRAPHIC_NT)
 				BiblioSentence::notify(sfsm->project_ref, new);
@@ -508,7 +508,7 @@ sentences and options-file sentences may have been read already.)
 	@<Convert a begins here or ends here sentence to a BEGINHERE or ENDHERE node and return@>;
 
 	/* none of that happened, so we have a SENTENCE node for certain */
-	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, TRUE);
+	Annotations::write_int(new, sentence_unparsed_ANNOT, TRUE);
 	#ifdef SENTENCE_ANNOTATION_SYNTAX_CALLBACK
 	SENTENCE_ANNOTATION_SYNTAX_CALLBACK(new);
 	#endif
@@ -575,15 +575,15 @@ will make a |INVOCATION_LIST_NT| node.)
 	}
 
 @ At this point we know that the text |W| will make one and only
-one sentence node in the parse tree, so we may as well create and ParseTree::graft it
+one sentence node in the parse tree, so we may as well create and SyntaxTree::graft it
 now. There are a number of special cases with variant node types, but the
 commonest outcome is a SENTENCE node, so that's what we shall assume for now.
 
 @<Otherwise, make a SENTENCE node@> =
-	new = ParseTree::new(SENTENCE_NT);
-	ParseTree::set_text(new, W);
-	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
-	ParseTree::insert_sentence(T, new);
+	new = Node::new(SENTENCE_NT);
+	Node::set_text(new, W);
+	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
+	SyntaxTree::graft_sentence(T, new);
 
 @ Rules are sequences of phrases with a preamble in front, which we detect by
 its terminating colon. For instance:
@@ -622,14 +622,14 @@ instead of a semicolon. We may lament this, but it is so.)
 	#ifdef list_node_type
 	if (stop_character == ':') {
 		if ((sfsm->inside_rule_mode) && (ControlStructures::detect(W))) {
-			ParseTree::set_type(new, list_entry_node_type);
+			Node::set_type(new, list_entry_node_type);
 			#ifdef CORE_MODULE
-			ParseTree::annotate_int(new, colon_block_command_ANNOT, TRUE);
+			Annotations::write_int(new, colon_block_command_ANNOT, TRUE);
 			#endif
 			sfsm->inside_rule_mode = TRUE;
 			return;
 		} else {
-			ParseTree::set_type(new, list_node_type);
+			Node::set_type(new, list_node_type);
 			sfsm->inside_rule_mode = TRUE;
 			return;
 		}
@@ -641,7 +641,7 @@ semicolon to appear indicates an end of the rule.
 
 @<Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands@> =
 	#ifdef list_node_type
-	ParseTree::set_type(new, list_entry_node_type);
+	Node::set_type(new, list_entry_node_type);
 	#endif
 	if (stop_character != ';') sfsm->inside_rule_mode = FALSE;
 	return;
@@ -651,16 +651,16 @@ semicolon to appear indicates an end of the rule.
 
 @<Convert a begins here or ends here sentence to a BEGINHERE or ENDHERE node and return@> =
 	if (begins_or_ends == 1) {
-		ParseTree::set_type(new, BEGINHERE_NT);
-		ParseTree::set_text(new, Wordings::trim_last_word(Wordings::trim_last_word(W)));
+		Node::set_type(new, BEGINHERE_NT);
+		Node::set_text(new, Wordings::trim_last_word(Wordings::trim_last_word(W)));
 		#ifdef BEGIN_OR_END_HERE_SYNTAX_CALLBACK
 		BEGIN_OR_END_HERE_SYNTAX_CALLBACK(new, sfsm->ref);
 		#endif
 		return;
 	}
 	if (begins_or_ends == -1) {
-		ParseTree::set_type(new, ENDHERE_NT);
-		ParseTree::set_text(new, Wordings::trim_last_word(Wordings::trim_last_word(W)));
+		Node::set_type(new, ENDHERE_NT);
+		Node::set_text(new, Wordings::trim_last_word(Wordings::trim_last_word(W)));
 		#ifdef BEGIN_OR_END_HERE_SYNTAX_CALLBACK
 		BEGIN_OR_END_HERE_SYNTAX_CALLBACK(new, sfsm->ref);
 		#endif
@@ -676,15 +676,15 @@ it would be too late.
 	#ifdef LANGUAGE_ELEMENT_SYNTAX_CALLBACK
 	LANGUAGE_ELEMENT_SYNTAX_CALLBACK(GET_RW(<language-modifying-sentence>, 1));
 	#endif
-	ParseTree::annotate_int(new, language_element_ANNOT, TRUE);
-	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
+	Annotations::write_int(new, language_element_ANNOT, TRUE);
+	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
 
 @ And for similar reasons:
 
 @<Detect a Preform grammar inclusion and sneakily act upon it@> =
 	current_sentence = new;
 	Preform::parse_preform(GET_RW(<language-modifying-sentence>, 1), TRUE);
-	ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
+	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem

@@ -59,17 +59,17 @@ all in the |VALUE| family.
 
 =
 parse_node *Lvalues::new_LOCAL_VARIABLE(wording W, local_variable *lvar) {
-	parse_node *spec = ParseTree::new(LOCAL_VARIABLE_NT);
-	ParseTree::set_text(spec, W);
-	ParseTree::set_constant_local_variable(spec, lvar);
+	parse_node *spec = Node::new(LOCAL_VARIABLE_NT);
+	Node::set_text(spec, W);
+	Node::set_constant_local_variable(spec, lvar);
 	if (lvar == NULL) internal_error("bad local variable");
 	return spec;
 }
 
 parse_node *Lvalues::new_actual_NONLOCAL_VARIABLE(nonlocal_variable *nlv) {
-	parse_node *spec = ParseTree::new(NONLOCAL_VARIABLE_NT);
-	ParseTree::set_constant_nonlocal_variable(spec, nlv);
-	ParseTree::set_text(spec, nlv->name);
+	parse_node *spec = Node::new(NONLOCAL_VARIABLE_NT);
+	Node::set_constant_nonlocal_variable(spec, nlv);
+	Node::set_text(spec, nlv->name);
 	return spec;
 }
 
@@ -78,7 +78,7 @@ parse_node *Lvalues::new_actual_NONLOCAL_VARIABLE(nonlocal_variable *nlv) {
 
 =
 parse_node *Lvalues::new_TABLE_ENTRY(wording W) {
-	parse_node *spec = ParseTree::new_with_words(TABLE_ENTRY_NT, W);
+	parse_node *spec = Node::new_with_words(TABLE_ENTRY_NT, W);
 	return spec;
 }
 
@@ -86,7 +86,7 @@ parse_node *Lvalues::new_TABLE_ENTRY(wording W) {
 
 =
 parse_node *Lvalues::new_LIST_ENTRY(parse_node *owner, parse_node *index) {
-	parse_node *spec = ParseTree::new(LIST_ENTRY_NT);
+	parse_node *spec = Node::new(LIST_ENTRY_NT);
 	spec->down = owner;
 	spec->down->next = index;
 	return spec;
@@ -102,11 +102,11 @@ make problem messages more readable.
 
 =
 parse_node *Lvalues::new_PROPERTY_VALUE(parse_node *prop, parse_node *owner) {
-	parse_node *spec = ParseTree::new(PROPERTY_VALUE_NT);
+	parse_node *spec = Node::new(PROPERTY_VALUE_NT);
 	spec->down = prop;
 	spec->down->next = owner;
-	ParseTree::set_text(spec,
-		Wordings::union(ParseTree::get_text(prop), ParseTree::get_text(owner)));
+	Node::set_text(spec,
+		Wordings::union(Node::get_text(prop), Node::get_text(owner)));
 	return spec;
 }
 
@@ -114,7 +114,7 @@ parse_node *Lvalues::new_PROPERTY_VALUE(parse_node *prop, parse_node *owner) {
 
 =
 parse_node *Lvalues::underlying_property(parse_node *spec) {
-	if (ParseTree::is(spec, PROPERTY_VALUE_NT)) {
+	if (Node::is(spec, PROPERTY_VALUE_NT)) {
 		if (Rvalues::is_self_object_constant(spec->down->next))
 			return spec->down;
 		return spec;
@@ -126,7 +126,7 @@ parse_node *Lvalues::underlying_property(parse_node *spec) {
 
 =
 node_type_t Lvalues::get_storage_form(parse_node *spec) {
-	if (ParseTreeUsage::is_lvalue(spec)) return ParseTree::get_type(spec);
+	if (ParseTreeUsage::is_lvalue(spec)) return Node::get_type(spec);
 	return UNKNOWN_NT;
 }
 
@@ -134,13 +134,13 @@ node_type_t Lvalues::get_storage_form(parse_node *spec) {
 
 =
 int Lvalues::is_actual_NONLOCAL_VARIABLE(parse_node *spec) {
-	if (ParseTree::is(spec, NONLOCAL_VARIABLE_NT)) return TRUE;
+	if (Node::is(spec, NONLOCAL_VARIABLE_NT)) return TRUE;
 	return FALSE;
 }
 
 nonlocal_variable *Lvalues::get_nonlocal_variable_if_any(parse_node *spec) {
-	if (ParseTree::is(spec, NONLOCAL_VARIABLE_NT))
-		return ParseTree::get_constant_nonlocal_variable(spec);
+	if (Node::is(spec, NONLOCAL_VARIABLE_NT))
+		return Node::get_constant_nonlocal_variable(spec);
 	return NULL;
 }
 
@@ -163,18 +163,18 @@ int Lvalues::is_global_variable(parse_node *spec) {
 
 =
 void Lvalues::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
-	switch(ParseTree::get_type(spec)) {
+	switch(Node::get_type(spec)) {
 		case LOCAL_VARIABLE_NT: WRITE("a temporary named value"); break;
 		case NONLOCAL_VARIABLE_NT:
-			if (ParseTree::get_kind_of_value(spec)) {
-				Kinds::Textual::write_articled(OUT, ParseTree::get_kind_of_value(spec));
+			if (Node::get_kind_of_value(spec)) {
+				Kinds::Textual::write_articled(OUT, Node::get_kind_of_value(spec));
 				WRITE(" that varies");
 			} else WRITE("a non-temporary variable");
 			break;
 		case TABLE_ENTRY_NT: WRITE("a table entry"); break;
 		case LIST_ENTRY_NT: WRITE("a list entry"); break;
 		case PROPERTY_VALUE_NT:
-			if ((ParseTree::no_children(spec) == 2) &&
+			if ((Node::no_children(spec) == 2) &&
 				(Rvalues::is_CONSTANT_construction(spec->down, CON_property))) {
 				property *prn = Rvalues::to_property(
 					spec->down);
@@ -190,14 +190,14 @@ void Lvalues::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 
 =
 void Lvalues::log(parse_node *spec) {
-	switch (ParseTree::get_type(spec)) {
+	switch (Node::get_type(spec)) {
 		case LOCAL_VARIABLE_NT: {
-			local_variable *lvar = ParseTree::get_constant_local_variable(spec);
+			local_variable *lvar = Node::get_constant_local_variable(spec);
 			LOG("(%~L;$u)", lvar, LocalVariables::unproblematic_kind(lvar));
 			break;
 		}
 		case NONLOCAL_VARIABLE_NT: {
-			nonlocal_variable *q = ParseTree::get_constant_nonlocal_variable(spec);
+			nonlocal_variable *q = Node::get_constant_nonlocal_variable(spec);
 			LOG("($Z)", q);
 			break;
 		}
@@ -209,7 +209,7 @@ void Lvalues::log(parse_node *spec) {
 =
 kind *Lvalues::to_kind(parse_node *spec) {
 	if (spec == NULL) internal_error("Rvalues::to_kind on NULL");
-	switch (ParseTree::get_type(spec)) {
+	switch (Node::get_type(spec)) {
 		case LOCAL_VARIABLE_NT: @<Return the kind of a local variable@>;
 		case NONLOCAL_VARIABLE_NT: @<Return the kind of a non-local variable@>;
 		case TABLE_ENTRY_NT: @<Return the kind of a table entry@>;
@@ -220,19 +220,19 @@ kind *Lvalues::to_kind(parse_node *spec) {
 }
 
 @<Return the kind of a local variable@> =
-	local_variable *lvar = ParseTree::get_constant_local_variable(spec);
+	local_variable *lvar = Node::get_constant_local_variable(spec);
 	if (lvar == NULL) return K_value; /* for "existing" */
 	return LocalVariables::unproblematic_kind(lvar);
 
 @<Return the kind of a non-local variable@> =
-	nonlocal_variable *nlv = ParseTree::get_constant_nonlocal_variable(spec);
+	nonlocal_variable *nlv = Node::get_constant_nonlocal_variable(spec);
 	return NonlocalVariables::kind(nlv);
 
 @ In every form of table entry, argument 0 is the column, and the column
 is enough to determine the kind:
 
 @<Return the kind of a table entry@> =
-	if (ParseTree::no_children(spec) > 0) { /* i.e., always, for actual table entry specifications */
+	if (Node::no_children(spec) > 0) { /* i.e., always, for actual table entry specifications */
 		parse_node *fts = spec->down;
 		table_column *tc = Rvalues::to_table_column(fts);
 		return Tables::Columns::get_kind(tc);
@@ -240,7 +240,7 @@ is enough to determine the kind:
 	return NULL; /* can happen when scanning phrase arguments, which are generic */
 
 @<Return the kind of a list entry@> =
-	if (ParseTree::no_children(spec) == 2) { /* i.e., always, for actual list entry specifications */
+	if (Node::no_children(spec) == 2) { /* i.e., always, for actual list entry specifications */
 		kind *K1 = Specifications::to_kind(spec->down);
 		if (Kinds::unary_construction_material(K1)) return Kinds::unary_construction_material(K1);
 		return K_value; /* to help the type-checker produce better problem messages */
@@ -248,7 +248,7 @@ is enough to determine the kind:
 	return NULL; /* can happen when scanning phrase arguments, which are generic */
 
 @<Return the kind of a property value@> =
-	if (ParseTree::no_children(spec) == 2) {
+	if (Node::no_children(spec) == 2) {
 		property *prn = Rvalues::to_property(spec->down);
 		if ((prn) && (Properties::is_either_or(prn) == FALSE)) return Properties::Valued::kind(prn);
 		return K_value; /* to help the type-checker produce better problem messages */
@@ -257,8 +257,8 @@ is enough to determine the kind:
 
 @ =
 local_variable *Lvalues::get_local_variable_if_any(parse_node *spec) {
-	if (ParseTree::is(spec, LOCAL_VARIABLE_NT))
-		return ParseTree::get_constant_local_variable(spec);
+	if (Node::is(spec, LOCAL_VARIABLE_NT))
+		return Node::get_constant_local_variable(spec);
 	return NULL;
 }
 
@@ -268,7 +268,7 @@ evaluating to the contents of the storage item specified.
 
 =
 void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
-	switch (ParseTree::get_type(spec_found)) {
+	switch (Node::get_type(spec_found)) {
 		case LOCAL_VARIABLE_NT: @<Compile a local variable specification@>;
 		case NONLOCAL_VARIABLE_NT: @<Compile a non-local variable specification@>;
 		case PROPERTY_VALUE_NT: @<Compile a property value specification@>;
@@ -280,7 +280,7 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 }
 
 @<Compile a local variable specification@> =
-	local_variable *lvar = ParseTree::get_constant_local_variable(spec_found);
+	local_variable *lvar = Node::get_constant_local_variable(spec_found);
 	inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 	if (lvar == NULL) {
 		LOG("Bad: %08x\n", spec_found);
@@ -290,12 +290,12 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 	return;
 
 @<Compile a non-local variable specification@> =
-	nonlocal_variable *nlv = ParseTree::get_constant_nonlocal_variable(spec_found);
+	nonlocal_variable *nlv = Node::get_constant_nonlocal_variable(spec_found);
 	NonlocalVariables::emit_lvalue(nlv);
 	return;
 
 @<Compile a property value specification@> =
-	if (ParseTree::no_children(spec_found) != 2) internal_error("malformed PROPERTY_OF SP");
+	if (Node::no_children(spec_found) != 2) internal_error("malformed PROPERTY_OF SP");
 	if (spec_found->down == NULL) internal_error("PROPERTY_OF with null arg 0");
 	if (spec_found->down->next == NULL) internal_error("PROPERTY_OF with null arg 1");
 	property *prn = Rvalues::to_property(spec_found->down);
@@ -356,7 +356,7 @@ we need to make sure that this other property is looked up from the same
 object as produced the original text containing the substitution.
 
 @<Emit the property's owner@> =
-	if (ParseTree::int_annotation(spec_found, record_as_self_ANNOT)) {
+	if (Annotations::read_int(spec_found, record_as_self_ANNOT)) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
@@ -369,7 +369,7 @@ object as produced the original text containing the substitution.
 @ List entries are blessedly simpler.
 
 @<Compile a list entry specification@> =
-	if (ParseTree::no_children(spec_found) != 2) internal_error("malformed LIST_OF SP");
+	if (Node::no_children(spec_found) != 2) internal_error("malformed LIST_OF SP");
 	if (spec_found->down == NULL) internal_error("LIST_OF with null arg 0");
 	if (spec_found->down->next == NULL) internal_error("LIST_OF with null arg 1");
 
@@ -401,7 +401,7 @@ object as produced the original text containing the substitution.
 		lookup_corr = Hierarchy::find(EXISTSTABLELOOKUPCORR_HL);
 	}
 
-	switch(ParseTree::no_children(spec_found)) {
+	switch(Node::no_children(spec_found)) {
 		case 1:
 			if (TEST_COMPILATION_MODE(JUST_ROUTINE_CMODE)) {
 				Produce::val_iname(Emit::tree(), K_value, lookup);

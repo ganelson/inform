@@ -12,9 +12,9 @@ relevant routines. Firstly, creating a CONSTANT node from one of these
 pointers:
 
 @d CONV_FROM(structure, K)
-	parse_node *spec = ParseTree::new(CONSTANT_NT);
-	ParseTree::set_kind_of_value(spec, K);
-	ParseTree::set_constant_##structure(spec, val);
+	parse_node *spec = Node::new(CONSTANT_NT);
+	Node::set_kind_of_value(spec, K);
+	Node::set_constant_##structure(spec, val);
 	return spec;
 
 =
@@ -50,7 +50,7 @@ parse_node *Rvalues::from_verb_form(verb_form *val) { CONV_FROM(verb_form, K_ver
 
 @d CONV_TO(structure)
 	if (spec == NULL) return NULL;
-	structure *val = ParseTree::get_constant_##structure(spec);
+	structure *val = Node::get_constant_##structure(spec);
 	return val;
 
 =
@@ -79,11 +79,11 @@ objects.
 
 =
 parse_node *Rvalues::from_instance(instance *I) {
-	parse_node *val = ParseTree::new(CONSTANT_NT);
-	ParseTree::set_kind_of_value(val, Instances::to_kind(I));
-	ParseTree::set_constant_instance(val, I);
-	ParseTree::annotate_int(val, constant_enumeration_ANNOT, Instances::get_numerical_value(I));
-	ParseTree::set_text(val, Instances::get_name(I, FALSE));
+	parse_node *val = Node::new(CONSTANT_NT);
+	Node::set_kind_of_value(val, Instances::to_kind(I));
+	Node::set_constant_instance(val, I);
+	Annotations::write_int(val, constant_enumeration_ANNOT, Instances::get_numerical_value(I));
+	Node::set_text(val, Instances::get_name(I, FALSE));
 	return val;
 }
 
@@ -93,8 +93,8 @@ instance *Rvalues::to_instance(parse_node *spec) { CONV_TO(instance) }
 
 =
 int Rvalues::is_object(parse_node *spec) {
-	if ((ParseTree::is(spec, CONSTANT_NT)) &&
-		(Kinds::Compare::le(ParseTree::get_kind_of_value(spec), K_object)))
+	if ((Node::is(spec, CONSTANT_NT)) &&
+		(Kinds::Compare::le(Node::get_kind_of_value(spec), K_object)))
 		return TRUE;
 	return FALSE;
 }
@@ -110,16 +110,16 @@ special annotations.
 
 =
 parse_node *Rvalues::new_self_object_constant(void) {
-	parse_node *spec = ParseTree::new(CONSTANT_NT);
-	ParseTree::set_kind_of_value(spec, K_object);
-	ParseTree::annotate_int(spec, self_object_ANNOT, TRUE);
+	parse_node *spec = Node::new(CONSTANT_NT);
+	Node::set_kind_of_value(spec, K_object);
+	Annotations::write_int(spec, self_object_ANNOT, TRUE);
 	return spec;
 }
 
 parse_node *Rvalues::new_nothing_object_constant(void) {
-	parse_node *spec = ParseTree::new(CONSTANT_NT);
-	ParseTree::set_kind_of_value(spec, K_object);
-	ParseTree::annotate_int(spec, nothing_object_ANNOT, TRUE);
+	parse_node *spec = Node::new(CONSTANT_NT);
+	Node::set_kind_of_value(spec, K_object);
+	Annotations::write_int(spec, nothing_object_ANNOT, TRUE);
 	return spec;
 }
 
@@ -128,12 +128,12 @@ title from "The Big Bang Theory"),
 
 =
 int Rvalues::is_nothing_object_constant(parse_node *spec) {
-	if (ParseTree::int_annotation(spec, nothing_object_ANNOT)) return TRUE;
+	if (Annotations::read_int(spec, nothing_object_ANNOT)) return TRUE;
 	return FALSE;
 }
 
 int Rvalues::is_self_object_constant(parse_node *spec) {
-	if (ParseTree::int_annotation(spec, self_object_ANNOT)) return TRUE;
+	if (Annotations::read_int(spec, self_object_ANNOT)) return TRUE;
 	return FALSE;
 }
 
@@ -143,16 +143,16 @@ perhaps 24000, and the following turns that into an rvalue:
 
 =
 parse_node *Rvalues::from_encoded_notation(kind *K, int encoded_value, wording W) {
-	parse_node *spec = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(spec, K);
-	ParseTree::annotate_int(spec, explicit_literal_ANNOT, TRUE);
-	ParseTree::annotate_int(spec, constant_number_ANNOT, encoded_value);
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(spec, K);
+	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
+	Annotations::write_int(spec, constant_number_ANNOT, encoded_value);
 	return spec;
 }
 
 int Rvalues::to_encoded_notation(parse_node *spec) {
-	if (ParseTree::int_annotation(spec, explicit_literal_ANNOT))
-		return ParseTree::int_annotation(spec, constant_number_ANNOT);
+	if (Annotations::read_int(spec, explicit_literal_ANNOT))
+		return Annotations::read_int(spec, constant_number_ANNOT);
 	return 0;
 }
 
@@ -161,17 +161,17 @@ annotation, not a pointer one.
 
 =
 parse_node *Rvalues::from_int(int n, wording W) {
-	parse_node *spec = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(spec, K_number);
-	ParseTree::annotate_int(spec, explicit_literal_ANNOT, TRUE);
-	ParseTree::annotate_int(spec, constant_number_ANNOT, n);
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(spec, K_number);
+	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
+	Annotations::write_int(spec, constant_number_ANNOT, n);
 	return spec;
 }
 
 int Rvalues::to_int(parse_node *spec) {
 	if (spec == NULL) return 0;
-	if (ParseTree::int_annotation(spec, explicit_literal_ANNOT))
-		return ParseTree::int_annotation(spec, constant_number_ANNOT);
+	if (Annotations::read_int(spec, explicit_literal_ANNOT))
+		return Annotations::read_int(spec, constant_number_ANNOT);
 	return 0;
 }
 
@@ -181,16 +181,16 @@ of |float| to be consistent across all Inform's platforms to use it.
 
 =
 parse_node *Rvalues::from_IEEE_754(unsigned int n, wording W) {
-	parse_node *spec = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(spec, K_real_number);
-	ParseTree::annotate_int(spec, explicit_literal_ANNOT, TRUE);
-	ParseTree::annotate_int(spec, constant_number_ANNOT, (int) n);
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(spec, K_real_number);
+	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
+	Annotations::write_int(spec, constant_number_ANNOT, (int) n);
 	return spec;
 }
 
 unsigned int Rvalues::to_IEEE_754(parse_node *spec) {
 	if (Rvalues::is_CONSTANT_of_kind(spec, K_real_number))
-		return (unsigned int) ParseTree::int_annotation(spec, constant_number_ANNOT);
+		return (unsigned int) Annotations::read_int(spec, constant_number_ANNOT);
 	return 0x7F800001; /* which is a NaN value */
 }
 
@@ -198,16 +198,16 @@ unsigned int Rvalues::to_IEEE_754(parse_node *spec) {
 
 =
 parse_node *Rvalues::from_boolean(int flag, wording W) {
-	parse_node *spec = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(spec, K_truth_state);
-	ParseTree::annotate_int(spec, explicit_literal_ANNOT, TRUE);
-	ParseTree::annotate_int(spec, constant_number_ANNOT, flag);
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(spec, K_truth_state);
+	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
+	Annotations::write_int(spec, constant_number_ANNOT, flag);
 	return spec;
 }
 
 int Rvalues::to_boolean(parse_node *spec) {
 	if (Rvalues::is_CONSTANT_of_kind(spec, K_truth_state))
-		return ParseTree::int_annotation(spec, constant_number_ANNOT);
+		return Annotations::read_int(spec, constant_number_ANNOT);
 	return FALSE;
 }
 
@@ -215,16 +215,16 @@ int Rvalues::to_boolean(parse_node *spec) {
 
 =
 parse_node *Rvalues::from_Unicode_point(int code_point, wording W) {
-	parse_node *spec = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(spec, K_unicode_character);
-	ParseTree::annotate_int(spec, explicit_literal_ANNOT, TRUE);
-	ParseTree::annotate_int(spec, constant_number_ANNOT, code_point);
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(spec, K_unicode_character);
+	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
+	Annotations::write_int(spec, constant_number_ANNOT, code_point);
 	return spec;
 }
 
 int Rvalues::to_Unicode_point(parse_node *spec) {
 	if (Rvalues::is_CONSTANT_of_kind(spec, K_unicode_character))
-		return ParseTree::int_annotation(spec, constant_number_ANNOT);
+		return Annotations::read_int(spec, constant_number_ANNOT);
 	return 0;
 }
 
@@ -233,16 +233,16 @@ reduced modulo 1440, the number of minutes in a day.
 
 =
 parse_node *Rvalues::from_time(int minutes_since_midnight, wording W) {
-	parse_node *spec = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(spec, PL::TimesOfDay::kind());
-	ParseTree::annotate_int(spec, explicit_literal_ANNOT, TRUE);
-	ParseTree::annotate_int(spec, constant_number_ANNOT, minutes_since_midnight);
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(spec, PL::TimesOfDay::kind());
+	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
+	Annotations::write_int(spec, constant_number_ANNOT, minutes_since_midnight);
 	return spec;
 }
 
 int Rvalues::to_time(parse_node *spec) {
 	if (Rvalues::is_CONSTANT_of_kind(spec, PL::TimesOfDay::kind()))
-		return ParseTree::int_annotation(spec, constant_number_ANNOT);
+		return Annotations::read_int(spec, constant_number_ANNOT);
 	return 0;
 }
 
@@ -251,8 +251,8 @@ together with their kinds:
 
 =
 parse_node *Rvalues::from_wording_of_list(kind *K, wording W) {
-	parse_node *spec = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(spec, K);
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(spec, K);
 	return spec;
 }
 
@@ -260,8 +260,8 @@ parse_node *Rvalues::from_wording_of_list(kind *K, wording W) {
 
 =
 parse_node *Rvalues::from_wording(wording W) {
-	parse_node *spec = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(spec, K_text);
+	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(spec, K_text);
 	return spec;
 }
 
@@ -271,16 +271,16 @@ be interpreted literally, not as escapes for a text substitution:
 =
 parse_node *Rvalues::from_unescaped_wording(wording W) {
 	parse_node *spec = Rvalues::from_wording(W);
-	ParseTree::annotate_int(spec, text_unescaped_ANNOT, TRUE);
+	Annotations::write_int(spec, text_unescaped_ANNOT, TRUE);
 	return spec;
 }
 
 @ =
 parse_node *Rvalues::from_iname(inter_name *I) {
-	parse_node *spec = ParseTree::new(CONSTANT_NT);
-	ParseTree::set_kind_of_value(spec, K_text);
-	ParseTree::annotate_int(spec, explicit_literal_ANNOT, TRUE);
-	ParseTree::set_explicit_iname(spec, I);
+	parse_node *spec = Node::new(CONSTANT_NT);
+	Node::set_kind_of_value(spec, K_text);
+	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
+	Node::set_explicit_iname(spec, I);
 	return spec;
 }
 
@@ -296,8 +296,8 @@ parse_node *Rvalues::from_pair(parse_node *X, parse_node *Y) {
 	kind *kX = Specifications::to_true_kind_disambiguated(X);
 	kind *kY = Specifications::to_true_kind_disambiguated(Y);
 	kind *K = Kinds::pair_kind(kX, kY);
-	parse_node *spec = ParseTree::new(CONSTANT_NT);
-	ParseTree::set_kind_of_value(spec, K);
+	parse_node *spec = Node::new(CONSTANT_NT);
+	Node::set_kind_of_value(spec, K);
 	spec->down = X; spec->down->next = Y;
 	return spec;
 }
@@ -314,8 +314,8 @@ in the proposition.
 
 =
 parse_node *Rvalues::constant_description(pcalc_prop *prop, wording W) {
-	parse_node *con = ParseTree::new_with_words(CONSTANT_NT, W);
-	ParseTree::set_kind_of_value(con,
+	parse_node *con = Node::new_with_words(CONSTANT_NT, W);
+	Node::set_kind_of_value(con,
 		Kinds::unary_construction(CON_description, K_object));
 	Rvalues::set_constant_description_proposition(con, prop);
 	return con;
@@ -323,8 +323,8 @@ parse_node *Rvalues::constant_description(pcalc_prop *prop, wording W) {
 
 void Rvalues::set_constant_description_proposition(parse_node *spec, pcalc_prop *prop) {
 	if (Rvalues::is_CONSTANT_construction(spec, CON_description)) {
-		ParseTree::set_proposition(spec, prop);
-		ParseTree::set_kind_of_value(spec,
+		Node::set_proposition(spec, prop);
+		Node::set_kind_of_value(spec,
 			Kinds::unary_construction(CON_description,
 				Calculus::Variables::infer_kind_of_variable_0(prop)));
 	} else internal_error("set constant description proposition wrongly");
@@ -334,15 +334,15 @@ void Rvalues::set_constant_description_proposition(parse_node *spec, pcalc_prop 
 
 =
 int Rvalues::is_CONSTANT_construction(parse_node *spec, kind_constructor *con) {
-	if ((ParseTree::is(spec, CONSTANT_NT)) &&
-		(Kinds::get_construct(ParseTree::get_kind_of_value(spec)) == con))
+	if ((Node::is(spec, CONSTANT_NT)) &&
+		(Kinds::get_construct(Node::get_kind_of_value(spec)) == con))
 		return TRUE;
 	return FALSE;
 }
 
 int Rvalues::is_CONSTANT_of_kind(parse_node *spec, kind *K) {
-	if ((ParseTree::is(spec, CONSTANT_NT)) &&
-		(Kinds::Compare::eq(ParseTree::get_kind_of_value(spec), K)))
+	if ((Node::is(spec, CONSTANT_NT)) &&
+		(Kinds::Compare::eq(Node::get_kind_of_value(spec), K)))
 		return TRUE;
 	return FALSE;
 }
@@ -381,15 +381,15 @@ doesn't need to be especially rapid.
 
 =
 int Rvalues::compare_CONSTANT(parse_node *spec1, parse_node *spec2) {
-	if (ParseTree::is(spec1, CONSTANT_NT) == FALSE) return FALSE;
-	if (ParseTree::is(spec2, CONSTANT_NT) == FALSE) return FALSE;
-	kind *K1 = ParseTree::get_kind_of_value(spec1);
-	kind *K2 = ParseTree::get_kind_of_value(spec2);
+	if (Node::is(spec1, CONSTANT_NT) == FALSE) return FALSE;
+	if (Node::is(spec2, CONSTANT_NT) == FALSE) return FALSE;
+	kind *K1 = Node::get_kind_of_value(spec1);
+	kind *K2 = Node::get_kind_of_value(spec2);
 	if ((Kinds::Compare::le(K1, K2) == FALSE) &&
 		(Kinds::Compare::le(K2, K1) == FALSE)) return FALSE;
 	if (Kinds::Compare::eq(K1, K_text)) {
 		if (Wordings::match_perhaps_quoted(
-			ParseTree::get_text(spec1), ParseTree::get_text(spec2))) return TRUE;
+			Node::get_text(spec1), Node::get_text(spec2))) return TRUE;
 		return FALSE;
 	}
 	switch (Kinds::Behaviour::get_constant_compilation_method(K1)) {
@@ -429,7 +429,7 @@ int Rvalues::compare_CONSTANT(parse_node *spec1, parse_node *spec2) {
 
 =
 void Rvalues::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
-	switch (ParseTree::get_type(spec)) {
+	switch (Node::get_type(spec)) {
 		case PHRASE_TO_DECIDE_VALUE_NT: {
 			kind *dtr = Specifications::to_kind(spec);
 			if (dtr == NULL) WRITE("a phrase");
@@ -440,7 +440,7 @@ void Rvalues::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 			break;
 		}
 		case CONSTANT_NT: {
-			wording W = ParseTree::get_text(spec);
+			wording W = Node::get_text(spec);
 			if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
 				if (Wordings::nonempty(W)) WRITE("%+W", W);
 				else WRITE("the name of a property");
@@ -461,13 +461,13 @@ void Rvalues::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 
 =
 void Rvalues::log(parse_node *spec) {
-	switch (ParseTree::get_type(spec)) {
+	switch (Node::get_type(spec)) {
 		case CONSTANT_NT: {
 			instance *I = Rvalues::to_instance(spec);
 			if (I) LOG("(%~I)", I);
 			if (Rvalues::is_object(spec)) {
-				if (ParseTree::int_annotation(spec, self_object_ANNOT)) LOG("(-self-)");
-				else if (ParseTree::int_annotation(spec, nothing_object_ANNOT)) LOG("(-nothing-)");
+				if (Annotations::read_int(spec, self_object_ANNOT)) LOG("(-self-)");
+				else if (Annotations::read_int(spec, nothing_object_ANNOT)) LOG("(-nothing-)");
 				else LOG("($O)", Rvalues::to_instance(spec));
 			}
 		}
@@ -481,7 +481,7 @@ result have?
 =
 kind *Rvalues::to_kind(parse_node *spec) {
 	if (spec == NULL) internal_error("Rvalues::to_kind on NULL");
-	switch (ParseTree::get_type(spec)) {
+	switch (Node::get_type(spec)) {
 		case CONSTANT_NT:
 			if (Rvalues::is_object(spec))
 				@<Work out the kind for a constant object@>;
@@ -495,7 +495,7 @@ kind *Rvalues::to_kind(parse_node *spec) {
 				@<Work out the kind for a constant list@>;
 			if (Rvalues::is_CONSTANT_construction(spec, CON_table_column))
 				@<Work out the kind for a table column@>;
-			return ParseTree::get_kind_of_value(spec);
+			return Node::get_kind_of_value(spec);
 		case PHRASE_TO_DECIDE_VALUE_NT:
 			@<Work out the kind returned by a phrase@>;
 	}
@@ -508,8 +508,8 @@ narrowest we can: "nothing" comes out as "object", "Cobbled Crawl"
 as "room" (a kind of object), "animal" as itself (ditto).
 
 @<Work out the kind for a constant object@> =
-	if (ParseTree::int_annotation(spec, self_object_ANNOT)) return K_object;
-	else if (ParseTree::int_annotation(spec, nothing_object_ANNOT)) return K_object;
+	if (Annotations::read_int(spec, self_object_ANNOT)) return K_object;
+	else if (Annotations::read_int(spec, nothing_object_ANNOT)) return K_object;
 	else {
 		instance *I = Rvalues::to_instance(spec);
 		if (I) return Instances::to_kind(I);
@@ -527,7 +527,7 @@ as "room" (a kind of object), "animal" as itself (ditto).
 	return Kinds::unary_construction(CON_property, Properties::Valued::kind(prn));
 
 @<Work out the kind for a constant list@> =
-	return Lists::kind_of_list_at(ParseTree::get_text(spec));
+	return Lists::kind_of_list_at(Node::get_text(spec));
 
 @<Work out the kind for a table column@> =
 	return Kinds::unary_construction(CON_table_column,
@@ -566,13 +566,13 @@ some problem message.
 @<Work out the kind returned by a phrase@> =
 	parse_node *deciding_inv = spec->down->down;
 	if (deciding_inv) {
-		phrase *ph = ParseTree::get_phrase_invoked(deciding_inv);
+		phrase *ph = Node::get_phrase_invoked(deciding_inv);
 		if ((ph) && (Phrases::TypeData::get_mor(&(ph->type_data)) == DECIDES_VALUE_MOR)) {
 			if (Phrases::TypeData::return_decided_dimensionally(&(ph->type_data))) {
-				if (ParseTree::get_kind_resulting(deciding_inv)) return ParseTree::get_kind_resulting(deciding_inv);
+				if (Node::get_kind_resulting(deciding_inv)) return Node::get_kind_resulting(deciding_inv);
 				return K_value;
 			} else {
-				if (ParseTree::get_kind_resulting(deciding_inv)) return ParseTree::get_kind_resulting(deciding_inv);
+				if (Node::get_kind_resulting(deciding_inv)) return Node::get_kind_resulting(deciding_inv);
 				kind *K = Phrases::TypeData::get_return_kind(&(ph->type_data));
 				if (Kinds::Behaviour::definite(K) == FALSE) return K_value;
 				return K;
@@ -585,13 +585,13 @@ some problem message.
 
 =
 void Rvalues::compile(value_holster *VH, parse_node *spec_found) {
-	switch(ParseTree::get_type(spec_found)) {
+	switch(Node::get_type(spec_found)) {
 		case PHRASE_TO_DECIDE_VALUE_NT:
 			Invocations::Compiler::compile_invocation_list(VH,
-				spec_found->down->down, ParseTree::get_text(spec_found));
+				spec_found->down->down, Node::get_text(spec_found));
 			break;
 		case CONSTANT_NT: {
-			kind *kind_of_constant = ParseTree::get_kind_of_value(spec_found);
+			kind *kind_of_constant = Node::get_kind_of_value(spec_found);
 			int ccm = Kinds::Behaviour::get_constant_compilation_method(kind_of_constant);
 			switch(ccm) {
 				case NONE_CCM: /* constant values of this kind cannot exist */
@@ -621,7 +621,7 @@ a number: all that matters is that the correct integer value is compiled.
 @ Whereas here, an instance is attached.
 
 @<Compile a quantitative-compilation-mode constant@> =
-	instance *I = ParseTree::get_constant_instance(spec_found);
+	instance *I = Node::get_constant_instance(spec_found);
 	if (I) {
 		if (Holsters::data_acceptable(VH)) {
 			inter_name *N = Instances::emitted_iname(I);
@@ -669,7 +669,7 @@ kinds of value:
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_list_of) {
-		inter_name *N = Lists::compile_literal_list(ParseTree::get_text(spec_found));
+		inter_name *N = Lists::compile_literal_list(Node::get_text(spec_found));
 		if (N) Emit::holster(VH, N);
 		return;
 	}
@@ -680,11 +680,11 @@ kinds of value:
 		return;
 	}
 	if (Kinds::Compare::le(kind_of_constant, K_object)) {
-		if (ParseTree::int_annotation(spec_found, self_object_ANNOT)) {
+		if (Annotations::read_int(spec_found, self_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH)) {
 				Emit::holster(VH, Hierarchy::find(SELF_HL));
 			}
-		} else if (ParseTree::int_annotation(spec_found, nothing_object_ANNOT)) {
+		} else if (Annotations::read_int(spec_found, nothing_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH))
 				Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		} else {
@@ -743,10 +743,10 @@ kinds of value:
 	}
 	#ifdef IF_MODULE
 	if ((K_understanding) && (Kinds::Compare::eq(kind_of_constant, K_understanding))) {
-		if (Wordings::empty(ParseTree::get_text(spec_found)))
+		if (Wordings::empty(Node::get_text(spec_found)))
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
 		inter_t v1 = 0, v2 = 0;
-		PL::Parsing::compile_understanding(&v1, &v2, ParseTree::get_text(spec_found), FALSE);
+		PL::Parsing::compile_understanding(&v1, &v2, Node::get_text(spec_found), FALSE);
 		if (Holsters::data_acceptable(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
 		}
@@ -766,7 +766,7 @@ kinds of value:
 	}
 	if (Kinds::Compare::eq(kind_of_constant, K_response)) {
 		rule *R = Rvalues::to_rule(spec_found);
-		int c = ParseTree::int_annotation(spec_found, response_code_ANNOT);
+		int c = Annotations::read_int(spec_found, response_code_ANNOT);
 		inter_name *iname = Strings::response_constant_iname(R, c);
 		if (iname) Emit::holster(VH, iname);
 		else Holsters::holster_pair(VH, LITERAL_IVAL, 0);
@@ -794,7 +794,7 @@ in several contexts by using a tilde: |~attr|.
 	if (Properties::is_either_or(prn)) {
 		int parity = 1;
 		property *prn_to_eval = prn;
-		if (<negated-clause>(ParseTree::get_text(spec_found))) parity = -1;
+		if (<negated-clause>(Node::get_text(spec_found))) parity = -1;
 		if (Properties::EitherOr::stored_in_negation(prn)) {
 			parity = -parity;
 			prn_to_eval = Properties::EitherOr::get_negation(prn_to_eval);

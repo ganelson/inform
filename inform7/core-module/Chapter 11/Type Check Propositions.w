@@ -137,7 +137,7 @@ be a term in a proposition.
 			parse_node *spec = Calculus::Terms::constant_underlying(&(pl->terms[j]));
 			if (spec) {
 				int rv = NEVER_MATCH;
-				if (!(ParseTree::is(spec, UNKNOWN_NT))) {
+				if (!(Node::is(spec, UNKNOWN_NT))) {
 					if (tck->issue_error) rv = Dash::check_value(spec, NULL);
 					else rv = Dash::check_value_silently(spec, NULL);
 				}
@@ -231,7 +231,7 @@ problem message has already been issued, but just in case not...
 		if (tck->log_to_I6_text) LOG("Atom $o contains failed constant\n", pl);
 		if (tck->issue_error == FALSE) return NEVER_MATCH;
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(spec));
+		Problems::quote_wording(2, Node::get_text(spec));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"The sentence %1 seems to contain a value '%2' which I can't make "
@@ -550,7 +550,7 @@ produce a |kinds_required| which is |NULL|.
 	}
 
 	parse_node *left = pl->terms[0].constant;
-	if (ParseTree::is(left, CONSTANT_NT)) {
+	if (Node::is(left, CONSTANT_NT)) {
 		bp = Rvalues::to_binary_predicate(left);
 		kind *cleft = NULL, *cright = NULL;
 		Kinds::binary_construction_material(kinds_of_terms[1], &cleft, &cright);

@@ -87,7 +87,7 @@ sentence_handler INFORM6CODE_SH_handler =
 
 void Config::Inclusions::inform_6_inclusion(parse_node *PN) {
 	current_sentence = PN;
-	wording IW = ParseTree::get_text(PN);
+	wording IW = Node::get_text(PN);
 	/* skip to the instructions */
 	IW = Wordings::trim_first_word(Wordings::trim_first_word(Wordings::trim_first_word(IW)));
 
@@ -121,7 +121,7 @@ appropriate time.
 
 @<There are no specific instructions about where it goes@> =
 	Config::Inclusions::new_intervention(AFTER_LINK_STAGE, I"Output.i6t", I"I6 Inclusions",
-		Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(PN)) + 2), NULL);
+		Lexer::word_raw_text(Wordings::first_wn(Node::get_text(PN)) + 2), NULL);
 	return;
 
 @<It's positioned with respect to a template segment@> =
@@ -129,7 +129,7 @@ appropriate time.
 	TEMPORARY_TEXT(seg);
 	WRITE_TO(seg, "%W", Wordings::one_word(segment_inclusion_wn));
 	Config::Inclusions::new_intervention(inclusion_side, seg, NULL,
-		Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(PN)) + 2), NULL);
+		Lexer::word_raw_text(Wordings::first_wn(Node::get_text(PN)) + 2), NULL);
 	DISCARD_TEXT(seg);
 
 @<It's positioned with respect to a template section@> =
@@ -140,7 +140,7 @@ appropriate time.
 	WRITE_TO(sec, "%W", Wordings::one_word(section_inclusion_wn));
 	WRITE_TO(seg, "%W", Wordings::one_word(segment_inclusion_wn));
 	Config::Inclusions::new_intervention(inclusion_side, seg, sec,
-		Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(PN)) + 2), NULL);
+		Lexer::word_raw_text(Wordings::first_wn(Node::get_text(PN)) + 2), NULL);
 	DISCARD_TEXT(sec);
 	DISCARD_TEXT(seg);
 
@@ -187,7 +187,7 @@ void Config::Inclusions::compile_inclusions_for_subject(OUTPUT_STREAM, inference
 	LOOP_OVER (inclm, i6_inclusion_matter)
 		if (inclm->infs_to_include_with == infs) {
 			I6T::interpret_i6t(OUT,
-				Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(inclm->material_to_include)) + 2),
+				Lexer::word_raw_text(Wordings::first_wn(Node::get_text(inclm->material_to_include)) + 2),
 				-1);
 			WRITE("\n");
 		}

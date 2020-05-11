@@ -16,7 +16,7 @@ void ProblemsModule::start(void) {
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-	ParseTree::allow_annotation_to_category(L2_NCAT, problem_falls_under_ANNOT);
+	Annotations::allow_for_category(L2_NCAT, problem_falls_under_ANNOT);
 }
 void ProblemsModule::end(void) {
 }

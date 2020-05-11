@@ -72,7 +72,7 @@ void Problems::expand_object(OUTPUT_STREAM, void *p) {
 			parse_node *from = Instances::get_creating_sentence(I);
 			if (from) {
 				WRITE(" created in the sentence ");
-				Problems::append_source(ParseTree::get_text(from));
+				Problems::append_source(Node::get_text(from));
 			}
 		}
 	}
@@ -121,10 +121,10 @@ actual constant 15 to the generic constant "number":
 =
 void Problems::quote_kind_of(int t, parse_node *spec) {
 	if (Rvalues::is_object(spec)) {
-		if (ParseTree::int_annotation(spec, self_object_ANNOT)) {
+		if (Annotations::read_int(spec, self_object_ANNOT)) {
 			Problems::quote_text(t, "implicit object"); /* this is probably never seen, but just in case */
 			return;
-		} else if (ParseTree::int_annotation(spec, nothing_object_ANNOT)) {
+		} else if (Annotations::read_int(spec, nothing_object_ANNOT)) {
 			Problems::quote_text(t, "the 'nothing' non-object"); /* whereas this can certainly happen */
 			return;
 		} else {

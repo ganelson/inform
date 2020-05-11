@@ -200,7 +200,7 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<new-verb-sentence-object>(OW)) {
 				if (<<r>> == FALSE) return FALSE;
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -233,7 +233,7 @@ int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<verb-means-sentence-subject>(SW)) {
 				int imperative_flag = <<r>>;
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				V->next = <<rp>>;
 				<nounphrase-articled>(OW);
 				V->next->next = <<rp>>;
@@ -256,7 +256,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 	if (PN->next->next)
 		@<Find the underlying relation of the new verb or preposition@>;
 
-	if (<verb-implies-sentence-subject>(ParseTree::get_text(PN->next))) {
+	if (<verb-implies-sentence-subject>(Node::get_text(PN->next))) {
 		inform_language *nl = <<inform_language:nl>>;
 		int r = <<r>>;
 		wording W = GET_RW(<infinitive-usage>, 1);
@@ -326,7 +326,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 @h I: Semantics.
 
 @<Find the underlying relation of the new verb or preposition@> =
-	<verb-implies-sentence-object>(ParseTree::get_text(PN->next->next));
+	<verb-implies-sentence-object>(Node::get_text(PN->next->next));
 	switch (<<r>>) {
 		case PROP_VERBM: {
 			wording RW = GET_RW(<verb-implies-sentence-object>, 1);
@@ -1093,7 +1093,7 @@ int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "In French petit is an adjective meaning..." */
 		case ACCEPT_SMFT:
 			if (<new-adjective-sentence-object>(OW)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				if (O == NULL) { <nounphrase>(OW); O = <<rp>>; }
 				<nounphrase>(SW);
@@ -1118,7 +1118,7 @@ int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
 
 @ =
 void NewVerbs::declare_meaningless_adjective(parse_node *p) {
-	wording W = ParseTree::get_text(p->next);
+	wording W = Node::get_text(p->next);
 	<adjective-definition-subject>(W);
 	PREFORM_LANGUAGE_TYPE *nl = <<rp>>;
 	W = GET_RW(<adjective-definition-subject>, 1);
@@ -1180,7 +1180,7 @@ void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
 	LOOP_OVER(vu, verb_usage)
 		if (vu->vu_lex_entry == lex) {
 			if (vu->where_vu_created)
-				Index::link(OUT, Wordings::first_wn(ParseTree::get_text(vu->where_vu_created)));
+				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
 			verb_meaning *vm = Verbs::regular_meaning(vu->verb_used, NULL, NULL);
 			if (vm) {
 				binary_predicate *bp = VerbMeanings::get_relational_meaning(vm);
@@ -1192,7 +1192,7 @@ void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
 	LOOP_OVER(prep, preposition_identity)
 		if (prep->prep_lex_entry == lex) {
 			if (prep->where_prep_created)
-				Index::link(OUT, Wordings::first_wn(ParseTree::get_text(prep->where_prep_created)));
+				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
 			verb_meaning *vm = Verbs::regular_meaning(copular_verb, prep, NULL);
 			if (vm) {
 				binary_predicate *bp = VerbMeanings::get_relational_meaning(vm);

@@ -463,11 +463,11 @@ node using this wording in order to produce better problem messages if need be.
 
 @ =
 int PL::Spatial::spatial_act_on_special_NPs(parse_node *p) {
-	if ((<notable-spatial-noun-phrases>(ParseTree::get_text(p))) &&
-		(Word::unexpectedly_upper_case(Wordings::first_wn(ParseTree::get_text(p))) == FALSE) &&
+	if ((<notable-spatial-noun-phrases>(Node::get_text(p))) &&
+		(Word::unexpectedly_upper_case(Wordings::first_wn(Node::get_text(p))) == FALSE) &&
 		(K_room)) {
 		Assertions::Refiner::noun_from_value(p, Rvalues::new_nothing_object_constant());
-		ParseTree::annotate_int(p, nowhere_ANNOT, TRUE);
+		Annotations::write_int(p, nowhere_ANNOT, TRUE);
 		return TRUE;
 	}
 	return FALSE;
@@ -477,8 +477,8 @@ int PL::Spatial::spatial_act_on_special_NPs(parse_node *p) {
 
 =
 int PL::Spatial::spatial_intervene_in_assertion(parse_node *px, parse_node *py) {
-	if (ParseTree::int_annotation(py, nowhere_ANNOT)) {
-		inference_subject *left_subject = ParseTree::get_subject(px);
+	if (Annotations::read_int(py, nowhere_ANNOT)) {
+		inference_subject *left_subject = Node::get_subject(px);
 		if (left_subject) {
 			if (InferenceSubjects::domain(left_subject))
 				Problems::Issue::subject_problem_at_sentence(_p_(PM_KindNowhere),
@@ -864,7 +864,8 @@ sentence, setting |whereabouts| to any rooms it finds along the way, so that
 when it finishes this will be set to the most recently mentioned.
 
 @<Set the whereabouts to the last discussed room prior to this inference being drawn@> =
-	ParseTree::traverse_up_to_ip(Task::syntax_tree(), here_sentence, PL::Spatial::seek_room, &whereabouts);
+	SyntaxTree::traverse_up_to_ip(Task::syntax_tree(), here_sentence,
+		PL::Spatial::seek_room, (void **) &whereabouts);
 
 @<Determine whether the object in question is a component part@> =
 	inference *inf;
@@ -886,8 +887,9 @@ when it finishes this will be set to the most recently mentioned.
 	}
 
 @ =
-void PL::Spatial::seek_room(parse_node *sent, instance **I) {
-	inference_subject *isub = ParseTree::get_interpretation_of_subject(sent);
+void PL::Spatial::seek_room(parse_node *sent, void **v_I) {
+	instance **I = (instance **) v_I;
+	inference_subject *isub = Node::get_interpretation_of_subject(sent);
 	instance *sub = InferenceSubjects::as_object_instance(isub);
 	if (PL::Spatial::object_is_a_room(sub)) *I = sub;
 }
@@ -1367,7 +1369,7 @@ int PL::Spatial::spatial_add_to_World_index(OUTPUT_STREAM, instance *O) {
 			WRITE("%s ", rel);
 			Instances::index_name(OUT, P);
 			parse_node *at = PF_I(spatial, O)->progenitor_set_at;
-			if (at) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(at)));
+			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 
 		}
 		HTML_CLOSE("p");

@@ -67,7 +67,7 @@ int Assertions::Maker::which_assertion_case(parse_node *px, parse_node *py) {
 		internal_error("make assertion with improper nodes");
 	}
 	int i, x=-1, y=-1;
-	node_type_t wx = ParseTree::get_type(px), wy = ParseTree::get_type(py);
+	node_type_t wx = Node::get_type(px), wy = Node::get_type(py);
 	for (i=0; i<ASSERTION_MATRIX_DIM; i++) {
 		if (assertion_matrix[i].row_node_type == wx) x=i;
 		if (assertion_matrix[i].row_node_type == wy) y=i;
@@ -97,8 +97,8 @@ void Assertions::Maker::make_assertion_recursive_inner(parse_node *px, parse_nod
 	int ma_case = Assertions::Maker::which_assertion_case(px, py);
 
 	LOGIF(ASSERTIONS, "[%W/$N] =%d [%W/$N]\n",
-		ParseTree::get_text(px), ParseTree::get_type(px), ma_case,
-		ParseTree::get_text(py), ParseTree::get_type(py));
+		Node::get_text(px), Node::get_type(px), ma_case,
+		Node::get_text(py), Node::get_type(py));
 
 	@<Split the assertion-handler into cases@>;
 }
@@ -114,8 +114,8 @@ void Assertions::Maker::make_assertion_recursive_inner(parse_node *px, parse_nod
 
 @<Reject three forms of assertion@> =
 	if ((prevailing_mood == INITIALLY_CE) &&
-		((ParseTree::get_type(px) != PROPER_NOUN_NT) ||
-			(ParseTree::get_type(py) != PROPER_NOUN_NT))) {
+		((Node::get_type(px) != PROPER_NOUN_NT) ||
+			(Node::get_type(py) != PROPER_NOUN_NT))) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MisplacedInitially),
 			"you can only say 'initially' when creating variables using 'is'",
 			"so 'The squirrel population is initially 0' is fine, but not "
@@ -124,9 +124,9 @@ void Assertions::Maker::make_assertion_recursive_inner(parse_node *px, parse_nod
 		return;
 	}
 	if ((prevailing_mood != UNKNOWN_CE) &&
-		(Rvalues::is_CONSTANT_construction(ParseTree::get_evaluation(px), CON_property) == FALSE) &&
-		(Lvalues::is_actual_NONLOCAL_VARIABLE(ParseTree::get_evaluation(px)) == FALSE) &&
-		(ParseTree::get_type(px) == PROPER_NOUN_NT)) {
+		(Rvalues::is_CONSTANT_construction(Node::get_evaluation(px), CON_property) == FALSE) &&
+		(Lvalues::is_actual_NONLOCAL_VARIABLE(Node::get_evaluation(px)) == FALSE) &&
+		(Node::get_type(px) == PROPER_NOUN_NT)) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_VagueAboutSpecific),
 			"you can only equivocate with 'usually', 'rarely', "
 			"'always' and the like when talking about kinds of thing",
@@ -135,12 +135,12 @@ void Assertions::Maker::make_assertion_recursive_inner(parse_node *px, parse_nod
 			"fine, but not 'the Mystic Wood is usually dark'.");
 		return;
 	}
-	if (((ParseTree::get_type(px) == COMMON_NOUN_NT)
-		&& (ParseTree::get_evaluation(px)) && (ParseTree::int_annotation(px, multiplicity_ANNOT) > 1)
-		&& (ParseTree::get_type(py) != RELATIONSHIP_NT)) ||
-		((ParseTree::get_type(py) == COMMON_NOUN_NT)
-		&& (ParseTree::get_evaluation(py)) && (ParseTree::int_annotation(py, multiplicity_ANNOT) > 1)
-		&& (ParseTree::get_type(px) != RELATIONSHIP_NT))) {
+	if (((Node::get_type(px) == COMMON_NOUN_NT)
+		&& (Node::get_evaluation(px)) && (Annotations::read_int(px, multiplicity_ANNOT) > 1)
+		&& (Node::get_type(py) != RELATIONSHIP_NT)) ||
+		((Node::get_type(py) == COMMON_NOUN_NT)
+		&& (Node::get_evaluation(py)) && (Annotations::read_int(py, multiplicity_ANNOT) > 1)
+		&& (Node::get_type(px) != RELATIONSHIP_NT))) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MultiplyVague),
 			"multiple objects can only be put into relationships",
 			"by saying something like 'In the Drawing Room are two women.', "
@@ -228,12 +228,12 @@ strange sentences like this are:
 >> A container with description "Solid." is the solid box.
 
 @<Case 2 - WITH vs Miscellaneous@> =
-	if ((ParseTree::get_type(px->down) == COMMON_NOUN_NT) &&
+	if ((Node::get_type(px->down) == COMMON_NOUN_NT) &&
 		(Assertions::Maker::is_adjlist(px->down->next)) &&
 		(Assertions::Maker::is_adjlist(py))) {
 		Assertions::Implications::new(px, py);
-	} else if ((ParseTree::get_type(px->down) == PROPER_NOUN_NT) &&
-		(ParseTree::get_type(px->next) == COMMON_NOUN_NT)) {
+	} else if ((Node::get_type(px->down) == PROPER_NOUN_NT) &&
+		(Node::get_type(px->next) == COMMON_NOUN_NT)) {
 		int np = problem_count;
 		Assertions::Maker::make_assertion_recursive(px->down, py); /* A is B */
 		if (problem_count == np)
@@ -266,9 +266,9 @@ at which point it becomes a |PROPER_NOUN_NT| node.)
 
 @<Case 3 - Miscellaneous vs WITH@> =
 	#ifdef IF_MODULE
-	if ((ParseTree::get_type(px) == PROPER_NOUN_NT) &&
-		(PL::Map::is_a_direction(ParseTree::get_subject(px))) &&
-		(ParseTree::get_type(py->down) == PROPER_NOUN_NT)) {
+	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
+		(PL::Map::is_a_direction(Node::get_subject(px))) &&
+		(Node::get_type(py->down) == PROPER_NOUN_NT)) {
 		int np = problem_count;
 		Assertions::Maker::make_assertion_recursive(px, py->down); /* A is a B */
 		if (problem_count == np)
@@ -336,15 +336,15 @@ specifying its edibility.
 
 @<Case 8 - Miscellaneous vs KIND@> =
 	if (traverse == 2) return;
-	if ((py->down) && (ParseTree::get_type(py->down) == KIND_NT))
+	if ((py->down) && (Node::get_type(py->down) == KIND_NT))
 		@<Don't allow a kind of kind@>;
-	if ((py->down) && (ParseTree::get_type(py->down) == EVERY_NT))
+	if ((py->down) && (Node::get_type(py->down) == EVERY_NT))
 		@<Don't allow a kind of everything@>;
 	if (prevailing_mood != UNKNOWN_CE)
 		@<Don't allow a kind declaration to have uncertainty@>;
 
-	inference_subject *inst = ParseTree::get_subject(px);
-	inference_subject *kind_of_what = ParseTree::get_subject(py);
+	inference_subject *inst = Node::get_subject(px);
+	inference_subject *kind_of_what = Node::get_subject(py);
 	if (kind_of_what == NULL) internal_error("KIND node without subject");
 
 	if ((InferenceSubjects::is_an_object(inst)) ||
@@ -355,10 +355,10 @@ specifying its edibility.
 
 		pcalc_prop *subject_to = NULL;
 		if (py->down) {
-			if (ParseTree::get_type(py->down) == WITH_NT)
-				subject_to = ParseTree::get_creation_proposition(py->down);
+			if (Node::get_type(py->down) == WITH_NT)
+				subject_to = Node::get_creation_proposition(py->down);
 			else
-				subject_to = Specifications::to_proposition(ParseTree::get_evaluation(py->down));
+				subject_to = Specifications::to_proposition(Node::get_evaluation(py->down));
 		}
 
 		Calculus::Propositions::Abstract::assert_kind_of_subject(inst, kind_of_what, subject_to);
@@ -388,9 +388,9 @@ specifying its edibility.
 	return;
 
 @<Don't allow an existing property name to be redeclared as a kind@> =
-	if (ParseTree::get_type(px) == PROPER_NOUN_NT) {
+	if (Node::get_type(px) == PROPER_NOUN_NT) {
 		property *prn = Rvalues::to_property(
-			ParseTree::get_evaluation(px));
+			Node::get_evaluation(px));
 		if (prn) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_property(2, prn);
@@ -409,12 +409,12 @@ specifying its edibility.
 	}
 
 @<Don't allow any existing actual value to be redeclared as a kind@> =
-	if (ParseTree::get_type(px) == PROPER_NOUN_NT) {
-		parse_node *val = ParseTree::get_evaluation(px);
-		if (ParseTree::is(val, CONSTANT_NT)) {
+	if (Node::get_type(px) == PROPER_NOUN_NT) {
+		parse_node *val = Node::get_evaluation(px);
+		if (Node::is(val, CONSTANT_NT)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind_of(2, val);
-			Problems::quote_wording_as_source(3, ParseTree::get_text(px));
+			Problems::quote_wording_as_source(3, Node::get_text(px));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_KindAsActualValue));
 			Problems::issue_problem_segment(
 				"You wrote '%1', but that seems to say that a value already "
@@ -460,7 +460,7 @@ same thing.
 >> The before rulebook has a text called the standard demurral.
 
 @<Case 10 - Miscellaneous vs ALLOWED@> =
-	if (ParseTree::get_type(px) == KIND_NT)
+	if (Node::get_type(px) == KIND_NT)
 		@<Issue the too vague to have properties or variables problem message@>
 	else
 		@<Issue the not allowed to have properties or variables problem message@>;
@@ -471,10 +471,10 @@ further sub-cases later.
 >> The description of the Pitch is open.
 
 @<Case 11 - X OF Y vs PROPERTY LIST, ACTION, COMMON NOUN@> =
-	if (ParseTree::get_type(py) == COMMON_NOUN_NT) {
+	if (Node::get_type(py) == COMMON_NOUN_NT) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(py));
-		Problems::quote_kind_of(3, ParseTree::get_evaluation(py));
+		Problems::quote_wording(2, Node::get_text(py));
+		Problems::quote_kind_of(3, Node::get_evaluation(py));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyObj2));
 		Problems::issue_problem_segment(
 			"In %1 you give a value of a property as '%2', but it "
@@ -484,8 +484,8 @@ further sub-cases later.
 		return;
 	}
 	#ifdef IF_MODULE
-	if (ParseTree::get_type(py) == ACTION_NT) {
-		action_pattern *ap = ParseTree::get_action_meaning(py);
+	if (Node::get_type(py) == ACTION_NT) {
+		action_pattern *ap = Node::get_action_meaning(py);
 		if ((ap) && (PL::Actions::Patterns::is_unspecific(ap) == FALSE) &&
 			(PL::Actions::Patterns::is_overspecific(ap) == FALSE)) {
 			parse_node *val = Rvalues::from_action_pattern(ap);
@@ -511,9 +511,9 @@ further sub-cases later.
 
 @<Case 13 - X OF Y vs ADJECTIVE@> =
 	if (traverse == 1) return;
-	if (Adjectives::Meanings::has_ENUMERATIVE_meaning(ParseTree::get_aph(py))) {
-		property *prn = Properties::Valued::obtain(ParseTree::get_text(px->down->next));
-		if (ParseTree::get_type(px->down) == WITH_NT) {
+	if (Adjectives::Meanings::has_ENUMERATIVE_meaning(Node::get_aph(py))) {
+		property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
+		if (Node::get_type(px->down) == WITH_NT) {
 			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_EOOwnerMutable),
 				"either/or properties have to be given to clearly identifiable "
 				"owners",
@@ -523,7 +523,7 @@ further sub-cases later.
 		} else {
 			Assertions::Refiner::turn_player_to_yourself(px->down);
 			Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(prn,
-				ParseTree::get_subject(px->down), py);
+				Node::get_subject(px->down), py);
 		}
 	} else {
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_NonAdjectivalProperty),
@@ -579,13 +579,13 @@ which syntactically resembles a property list, though in fact is not.
 
 @<Case 18 - PROPERTY LIST, COMMON NOUN, PROPER NOUN on both sides@> =
 	if (traverse == 1) return;
-	if ((ParseTree::get_type(px) == PROPER_NOUN_NT) &&
-		(Rvalues::is_CONSTANT_construction(ParseTree::get_evaluation(px), CON_rulebook))) {
-		Rulebooks::parse_properties(Rvalues::to_rulebook(ParseTree::get_evaluation(px)),
-			Wordings::new(ParseTree::left_edge_of(py), ParseTree::right_edge_of(py)));
+	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
+		(Rvalues::is_CONSTANT_construction(Node::get_evaluation(px), CON_rulebook))) {
+		Rulebooks::parse_properties(Rvalues::to_rulebook(Node::get_evaluation(px)),
+			Wordings::new(Node::left_edge_of(py), Node::right_edge_of(py)));
 		return;
 	}
-	if (ParseTree::get_type(px) == PROPERTY_LIST_NT) Assertions::PropertyKnowledge::assert_property_list(py, px);
+	if (Node::get_type(px) == PROPERTY_LIST_NT) Assertions::PropertyKnowledge::assert_property_list(py, px);
 	else Assertions::PropertyKnowledge::assert_property_list(px, py);
 
 @h Case 19. This usually occurs as a name-clash, since it's otherwise something
@@ -594,7 +594,7 @@ pretty improbable:
 >> Taking something is 100. The turn count is taking something.
 
 @<Case 19 - ACTION, KIND, PROPERTY LIST, ADJECTIVE vs PROPERTY LIST, ACTION, COMMON NOUN, PROPER NOUN@> =
-	if (ParseTree::get_subject(py))
+	if (Node::get_subject(py))
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_ActionEquated),
 			"an action can't be the same as a thing",
 			"so my guess is that this is an attempt to categorise an action which went "
@@ -653,7 +653,7 @@ possible to coerce the left side to a noun, we will.
 
 @<Case 22 - ADJECTIVE, PROPERTY LIST vs PROPERTY LIST, ADJECTIVE@> =
 	Assertions::Refiner::coerce_adjectival_usage_to_noun(px);
-	if (ParseTree::get_type(px) == PROPER_NOUN_NT) {
+	if (Node::get_type(px) == PROPER_NOUN_NT) {
 		Assertions::Maker::make_assertion_recursive(px, py);
 		return;
 	}
@@ -684,21 +684,21 @@ or a kind of value.
 	if (Assertions::Refiner::turn_player_to_yourself(px)) {
 		Assertions::Maker::make_assertion_recursive(px, py); return;
 	}
-	parse_node *spec = ParseTree::get_evaluation(px);
-	if ((ParseTree::get_subject(px) == NULL) &&
+	parse_node *spec = Node::get_evaluation(px);
+	if ((Node::get_subject(px) == NULL) &&
 		(Rvalues::is_CONSTANT_construction(spec, CON_property))) {
-		property *prn = ParseTree::get_constant_property(spec);
+		property *prn = Node::get_constant_property(spec);
 		if ((prn) && (Properties::Valued::coincides_with_kind(prn))) {
 			kind *K = Properties::Valued::kind(prn);
-			ParseTree::set_type_and_clear_annotations(px, COMMON_NOUN_NT);
-			ParseTree::set_subject(px, Kinds::Knowledge::as_subject(K));
-			ParseTree::set_evaluation(px, Specifications::from_kind(K));
+			Node::set_type_and_clear_annotations(px, COMMON_NOUN_NT);
+			Node::set_subject(px, Kinds::Knowledge::as_subject(K));
+			Node::set_evaluation(px, Specifications::from_kind(K));
 		}
 	}
 
-	if (ParseTree::get_subject(px) == NULL) {
+	if (Node::get_subject(px) == NULL) {
 		kind *K = Specifications::to_kind(spec);
-		if (ParseTree::is(spec, CONSTANT_NT)) {
+		if (Node::is(spec, CONSTANT_NT)) {
 			if (Plugins::Call::offered_property(K, spec, py->down)) return;
 			if (Kinds::get_construct(K) == CON_activity) @<Assign a new activity variable@>;
 			if (Kinds::get_construct(K) == CON_rulebook) @<Assign a new rulebook variable@>;
@@ -714,7 +714,7 @@ but not in this context.
 	activity *av = Rvalues::to_activity(spec);
 	if (av == NULL) internal_error("failed to extract activity structure");
 	if (traverse == 2) {
-		if (<activity-name-formal>(ParseTree::get_text(px)))
+		if (<activity-name-formal>(Node::get_text(px)))
 			Activities::add_variable(av, py->down);
 		else
 			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_BadActivityRef),
@@ -735,7 +735,7 @@ but not in this context.
 	rulebook *rb = Rvalues::to_rulebook(spec);
 	if (rb == NULL) internal_error("failed to extract rulebook structure");
 	if (traverse == 2) {
-		if (<rulebook-name-formal>(ParseTree::get_text(px)))
+		if (<rulebook-name-formal>(Node::get_text(px)))
 			Rulebooks::add_variable(rb, py->down);
 		else
 			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_BadRulebookRef),
@@ -776,20 +776,20 @@ but in fact isn't one;
 @<Case 26 - X OF Y vs PROPER NOUN@> =
 	if (traverse == 1) return;
 	Assertions::Refiner::turn_player_to_yourself(px->down);
-	if (<negated-clause>(ParseTree::get_text(py))) {
+	if (<negated-clause>(Node::get_text(py))) {
 		Problems::Issue::negative_sentence_problem(Task::syntax_tree(), _p_(PM_NonValue)); return;
 	}
 
-	parse_node *owner = ParseTree::get_evaluation(px->down);
-	property *prn = Properties::Valued::obtain(ParseTree::get_text(px->down->next));
+	parse_node *owner = Node::get_evaluation(px->down);
+	property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
 	if (prn == P_specification) @<We're setting the specification pseudo-property@>;
 	Assertions::Refiner::coerce_adjectival_usage_to_noun(px->down);
 
-	if ((ParseTree::get_type(px->down) == PROPER_NOUN_NT) ||
-		(ParseTree::get_type(px->down) == COMMON_NOUN_NT)) {
-		inference_subject *owner_infs = ParseTree::get_subject(px->down);
+	if ((Node::get_type(px->down) == PROPER_NOUN_NT) ||
+		(Node::get_type(px->down) == COMMON_NOUN_NT)) {
+		inference_subject *owner_infs = Node::get_subject(px->down);
 		if (owner_infs == NULL) {
-			if (<k-kind>(ParseTree::get_text(px->down)))
+			if (<k-kind>(Node::get_text(px->down)))
 				owner_infs = Kinds::Knowledge::as_subject(<<rp>>);
 		}
 		if ((Specifications::is_description(owner)) &&
@@ -813,7 +813,7 @@ are set, but exceptions are made for action names (which otherwise don't have
 properties) and for kinds (which do, but differently).
 
 @<We're setting the specification pseudo-property@> =
-	wording W = ParseTree::get_text(py);
+	wording W = Node::get_text(py);
 	@<Extract the raw text of a specification@>;
 	if (Specifications::is_kind_like(owner)) {
 		kind *K = Specifications::to_kind(owner);
@@ -826,7 +826,7 @@ properties) and for kinds (which do, but differently).
 		}
 	} else if (Plugins::Call::offered_specification(owner, W)) {
 		return;
-	} else if (ParseTree::get_type(px->down) != COMMON_NOUN_NT) {
+	} else if (Node::get_type(px->down) != COMMON_NOUN_NT) {
 		LOG("$T\n", current_sentence);
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_Unspecifiable),
 			"this tries to set specification text for a particular value",
@@ -887,8 +887,8 @@ properties) and for kinds (which do, but differently).
 @<Case 27 - ACTION on both sides@> =
 	if (traverse == 1) return;
 	#ifdef IF_MODULE
-	action_pattern *apx = ParseTree::get_action_meaning(px);
-	action_pattern *apy = ParseTree::get_action_meaning(py);
+	action_pattern *apx = Node::get_action_meaning(px);
+	action_pattern *apy = Node::get_action_meaning(py);
 	if ((PL::Actions::Patterns::is_valid(apy)) &&
 		(PL::Actions::Patterns::is_named(apy) == FALSE)) {
 		LOG("Actions: $A and $A\n", apx, apy);
@@ -896,7 +896,7 @@ properties) and for kinds (which do, but differently).
 			"two actions are rather oddly equated here",
 			"which would only make sense if the second were a named pattern of actions "
 			"like (say) 'unseemly behaviour'.");
-	} else PL::Actions::Patterns::categorise_as(apx, ParseTree::get_text(py));
+	} else PL::Actions::Patterns::categorise_as(apx, Node::get_text(py));
 	#endif
 
 @h Case 28. Sentence (1) below is deservedly rejected, but (2) makes a
@@ -909,8 +909,8 @@ in this case.
 >> (1) In the box is on the desk. (2) East of the Pitch is north of the Pavilion.
 
 @<Case 28 - RELATIONSHIP on both sides@> =
-	if ((ParseTree::int_annotation(px, relationship_node_type_ANNOT) == DIRECTION_RELN) &&
-		(ParseTree::int_annotation(py, relationship_node_type_ANNOT) == DIRECTION_RELN)) {
+	if ((Annotations::read_int(px, relationship_node_type_ANNOT) == DIRECTION_RELN) &&
+		(Annotations::read_int(py, relationship_node_type_ANNOT) == DIRECTION_RELN)) {
 		#ifdef IF_MODULE
 		PL::Map::enter_one_way_mode();
 		#endif
@@ -941,7 +941,7 @@ or comedic intent. (As in Peter Schickele's spoof example of an 18th-century
 opera about a dog, "Collared Is Bowser".)
 
 @<Case 30 - ADJECTIVE vs COMMON NOUN, PROPER NOUN@> =
-	if (ParseTree::get_subject(py))
+	if (Node::get_subject(py))
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_AdjectiveIsObject),
 			"that seems to say that an adjective is a noun",
 			"like saying 'Open are the doubled doors': which I'm picky about, preferring "
@@ -961,7 +961,7 @@ opera about a dog, "Collared Is Bowser".)
 @h Case 32. A problem message issued purely on stylistic grounds.
 
 @<Case 32 - COMMON NOUN, PROPER NOUN vs ACTION@> =
-	if ((ParseTree::get_subject(px)) && (InferenceSubjects::domain(ParseTree::get_subject(px)))) {
+	if ((Node::get_subject(px)) && (InferenceSubjects::domain(Node::get_subject(px)))) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_source(2, py);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_KindIsAction));
@@ -997,16 +997,16 @@ this ought to be allowed...
 	@<There is... relationships are allowed too@>;
 
 	if (prevailing_mood == CERTAIN_CE) {
-		ParseTree::set_subject(px,
+		Node::set_subject(px,
 			Kinds::Knowledge::as_subject(
 				Specifications::to_kind(
-					ParseTree::get_evaluation(px))));
-		ParseTree::set_type(px, EVERY_NT);
+					Node::get_evaluation(px))));
+		Node::set_type(px, EVERY_NT);
 		Assertions::Maker::make_assertion_recursive(px, py);
 		return;
 	}
 
-	if (Kinds::Compare::le(Specifications::to_kind(ParseTree::get_evaluation(px)), K_object))
+	if (Kinds::Compare::le(Specifications::to_kind(Node::get_evaluation(px)), K_object))
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_KindRelated),
 			"something described only by its kind should not be given a "
 			"specific place or role in the world",
@@ -1034,7 +1034,7 @@ this ought to be allowed...
 >> An animal is in every desk.
 
 @<Generalised relationships are allowed@> =
-	if ((py->down) && (ParseTree::get_type(py->down) == EVERY_NT)) {
+	if ((py->down) && (Node::get_type(py->down) == EVERY_NT)) {
 		if (traverse == 1) Assertions::Assemblies::make_generalisation(py, px);
 		return;
 	}
@@ -1049,7 +1049,7 @@ that we're discussing a number of actual objects, not the category of doors
 in general.
 
 @<Multiple objects in a relationship are allowed@> =
-	if (ParseTree::int_annotation(px, multiplicity_ANNOT) >= 1) {
+	if (Annotations::read_int(px, multiplicity_ANNOT) >= 1) {
 		Assertions::Creator::convert_instance_to_nounphrase(px, NULL);
 		Assertions::Maker::make_assertion_recursive(py, px);
 		return;
@@ -1060,7 +1060,7 @@ in general.
 >> A chair usually allows sitting. A thing usually weighs 1kg.
 
 @<Certain non-spatial relationships are allowed too@> =
-	binary_predicate *bp = ParseTree::get_relationship(py);
+	binary_predicate *bp = Node::get_relationship(py);
 	if ((bp) && ((Properties::SettingRelations::bp_sets_a_property(bp)) ||
 		(BinaryPredicates::relates_values_not_objects(bp)))) {
 		if (traverse == 2) Assertions::Relational::assert_subtree_in_relationship(px, py);
@@ -1072,7 +1072,7 @@ in general.
 >> There is a coin in the strongbox.
 
 @<There is... relationships are allowed too@> =
-	if (ParseTree::int_annotation(current_sentence->down, sentence_is_existential_ANNOT)) {
+	if (Annotations::read_int(current_sentence->down, sentence_is_existential_ANNOT)) {
 		Assertions::Creator::convert_instance_to_nounphrase(px, NULL);
 		Assertions::Maker::make_assertion_recursive(py, px);
 		return;
@@ -1083,10 +1083,10 @@ in general.
 >> In the desk is a copy of Wisden. On the table is a container.
 
 @<Case 35 - RELATIONSHIP vs COMMON NOUN@> =
-	if ((px->down) && (ParseTree::get_type(px->down) == EVERY_NT)) {
+	if ((px->down) && (Node::get_type(px->down) == EVERY_NT)) {
 		if (traverse == 1) Assertions::Assemblies::make_generalisation(px, py);
 	} else {
-		Assertions::Creator::convert_instance_to_nounphrase(py, ParseTree::get_relationship(px));
+		Assertions::Creator::convert_instance_to_nounphrase(py, Node::get_relationship(px));
 		Assertions::Maker::make_assertion_recursive(px, py);
 	}
 
@@ -1124,8 +1124,8 @@ two whole domains. (We have the "kind of..." syntax instead.)
 @<Case 38 - COMMON NOUN on both sides@> =
 	@<Produce a problem if two values that vary are equated@>;
 	@<Issue a problem for a namespace clash between a variable name and a kind@>;
-	inference_subject *left_object = ParseTree::get_subject(px);
-	inference_subject *right_kind = ParseTree::get_subject(py);
+	inference_subject *left_object = Node::get_subject(px);
+	inference_subject *right_kind = Node::get_subject(py);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_subject(2, left_object);
 	Problems::quote_subject(3, right_kind);
@@ -1152,11 +1152,11 @@ two whole domains. (We have the "kind of..." syntax instead.)
 >> A number that varies is a text that varies.
 
 @<Produce a problem if two values that vary are equated@> =
-	if ((Specifications::is_new_variable_like(ParseTree::get_evaluation(px))) &&
-		(Specifications::is_new_variable_like(ParseTree::get_evaluation(py)))) {
+	if ((Specifications::is_new_variable_like(Node::get_evaluation(px))) &&
+		(Specifications::is_new_variable_like(Node::get_evaluation(py)))) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(px));
-		Problems::quote_wording(3, ParseTree::get_text(py));
+		Problems::quote_wording(2, Node::get_text(px));
+		Problems::quote_wording(3, Node::get_text(py));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_VariablesEquated));
 		Problems::issue_problem_segment(
 			"The sentence %1 seems to tell me that '%2', which describes "
@@ -1170,7 +1170,7 @@ two whole domains. (We have the "kind of..." syntax instead.)
 	}
 
 @<Issue a problem for a namespace clash between a variable name and a kind@> =
-	if (Specifications::is_new_variable_like(ParseTree::get_evaluation(py))) {
+	if (Specifications::is_new_variable_like(Node::get_evaluation(py))) {
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_VarKOVClash),
 			"the name supplied for this new variable is a piece of text "
 			"which is not available because it has a rival meaning already",
@@ -1203,16 +1203,16 @@ has already been defined and its kind is long since established. (But we do
 allow one case, where the declaration is redundant and harmless.)
 
 @<Case 39 - PROPER NOUN vs COMMON NOUN@> =
-	if ((InferenceSubjects::is_an_object(ParseTree::get_subject(px))) ||
-		(InferenceSubjects::is_a_kind_of_object(ParseTree::get_subject(px)))) {
-		if ((ParseTree::get_subject(py) != Kinds::Knowledge::as_subject(K_object)) &&
-			(InferenceSubjects::is_a_kind_of_object(ParseTree::get_subject(py)) == FALSE))
+	if ((InferenceSubjects::is_an_object(Node::get_subject(px))) ||
+		(InferenceSubjects::is_a_kind_of_object(Node::get_subject(px)))) {
+		if ((Node::get_subject(py) != Kinds::Knowledge::as_subject(K_object)) &&
+			(InferenceSubjects::is_a_kind_of_object(Node::get_subject(py)) == FALSE))
 			Assertions::Maker::issue_value_equation_problem(px, py);
 		else @<Assert that X is an instance of Y@>;
 		return;
 	}
-	parse_node *g_spec = ParseTree::get_evaluation(py);
-	parse_node *a_spec = ParseTree::get_evaluation(px);
+	parse_node *g_spec = Node::get_evaluation(py);
+	parse_node *a_spec = Node::get_evaluation(px);
 	kind *g_kind = Specifications::to_kind(g_spec);
 	if (Specifications::is_new_variable_like(g_spec))
 		g_kind = Specifications::kind_of_new_variable_like(g_spec);
@@ -1237,7 +1237,7 @@ allow one case, where the declaration is redundant and harmless.)
 	if (var_set == FALSE) @<Dabble further in ruthless sarcasm@>;
 
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(px));
+	Problems::quote_wording(2, Node::get_text(px));
 	Problems::quote_kind_of(3, a_spec);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ChangedKind));
 	Problems::issue_problem_segment(
@@ -1254,8 +1254,8 @@ contradicted.
 
 @<We're declaring the kind of the variable, not setting its value@> =
 	nonlocal_variable *nlv =
-	ParseTree::get_constant_nonlocal_variable(ParseTree::get_evaluation(px));
-	parse_node *val = ParseTree::get_evaluation(py);
+	Node::get_constant_nonlocal_variable(Node::get_evaluation(px));
+	parse_node *val = Node::get_evaluation(py);
 	kind *kind_as_declared = NonlocalVariables::kind(nlv);
 	kind *constant_kind = Specifications::to_kind(val);
 	if (Specifications::is_new_variable_like(val))
@@ -1266,12 +1266,12 @@ contradicted.
 		if (nlv)
 			Problems::quote_wording(2, nlv->name);
 		else
-			Problems::quote_wording(2, ParseTree::get_text(px));
+			Problems::quote_wording(2, Node::get_text(px));
 		Problems::quote_kind(3, constant_kind);
 		if (nlv)
 			Problems::quote_kind(4, kind_as_declared);
 		else
-			Problems::quote_kind(4, Specifications::to_kind(ParseTree::get_evaluation(px)));
+			Problems::quote_kind(4, Specifications::to_kind(Node::get_evaluation(px)));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GlobalRedeclared));
 		Problems::issue_problem_segment(
 			"The sentence %1 seems to tell me that '%2', which has already been "
@@ -1298,7 +1298,7 @@ file: this may possibly be useful to I6 hackers.
 		Problems::issue_problem_end();
 	}
 	if ((var_set == FALSE) && (Kinds::Compare::eq(a_kind, K_text))) {
-		Strings::TextLiterals::compile_literal(NULL, TRUE, ParseTree::get_text(px));
+		Strings::TextLiterals::compile_literal(NULL, TRUE, Node::get_text(px));
 	}
 	return;
 
@@ -1307,7 +1307,7 @@ file: this may possibly be useful to I6 hackers.
 @<Dabble further in ruthless sarcasm@> =
 	if (Kinds::Compare::eq(a_kind, K_number)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(px));
+		Problems::quote_wording(2, Node::get_text(px));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_Sarcasm2));
 		Problems::issue_problem_segment("%1: That, sir, is a damnable lie. '%2' is a number.");
 		Problems::issue_problem_end();
@@ -1315,7 +1315,7 @@ file: this may possibly be useful to I6 hackers.
 	}
 	if (Kinds::Compare::eq(a_kind, K_text)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(px));
+		Problems::quote_wording(2, Node::get_text(px));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_Sarcasm3));
 		Problems::issue_problem_segment("%1: And I am the King of Siam. '%2' is some text.");
 		Problems::issue_problem_end();
@@ -1337,8 +1337,8 @@ certain place, for instance -- will not yet be enforced. These will be in
 the "creation proposition" of Y, and we now assert this to be true about X.
 
 @<Assert that X is an instance of Y@> =
-	inference_subject *left_object = ParseTree::get_subject(px);
-	pcalc_prop *prop = ParseTree::get_creation_proposition(py);
+	inference_subject *left_object = Node::get_subject(px);
+	pcalc_prop *prop = Node::get_creation_proposition(py);
 	if (prop) {
 		if ((Calculus::Variables::number_free(prop) == 0) && (left_object)) {
 			LOG("Proposition is: $D\n", prop);
@@ -1352,7 +1352,7 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 		}
 		Calculus::Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
 	} else {
-		kind *K = Specifications::to_kind(ParseTree::get_evaluation(py));
+		kind *K = Specifications::to_kind(Node::get_evaluation(py));
 		if (K) {
 			pcalc_prop *prop = Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0));
 			Calculus::Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
@@ -1362,9 +1362,9 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 @h Case 40. And so on, with one exemption.
 
 @<Case 40 - COMMON NOUN vs PROPER NOUN@> =
-	parse_node *spec = ParseTree::get_evaluation(py);
+	parse_node *spec = Node::get_evaluation(py);
 	@<Silently pass sentences like "The colours are red and blue."@>;
-	if (Kinds::Compare::le(Specifications::to_kind(ParseTree::get_evaluation(py)), K_object))
+	if (Kinds::Compare::le(Specifications::to_kind(Node::get_evaluation(py)), K_object))
 		Assertions::Maker::issue_value_equation_problem(py, px);
 	else Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_CommonIsProper),
 		"this seems to say that a general description is something else",
@@ -1379,7 +1379,7 @@ message.
 @<Silently pass sentences like "The colours are red and blue."@> =
 	if (Rvalues::to_instance(spec)) {
 		kind *c_kind = Instances::to_kind(Rvalues::to_instance(spec));
-		kind *v_kind = Specifications::to_kind(ParseTree::get_evaluation(px));
+		kind *v_kind = Specifications::to_kind(Node::get_evaluation(px));
 		if ((v_kind == NULL) || (Kinds::Compare::eq(c_kind, v_kind))) return;
 	}
 
@@ -1403,31 +1403,31 @@ There is also one case in which an object can be set equal to another object:
 	@<Allow the case of a variable being assigned to@>;
 	@<Allow the case of a new value for a kind which coincides with a property name@>;
 
-	kind *K = Specifications::to_kind(ParseTree::get_evaluation(py));
+	kind *K = Specifications::to_kind(Node::get_evaluation(py));
 	property *pname = Properties::Conditions::get_coinciding_property(K);
 	if (pname) {
 		if (traverse == 2)
-			Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(pname, ParseTree::get_subject(px), py);
+			Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(pname, Node::get_subject(px), py);
 		return;
 	}
 
 	#ifdef IF_MODULE
-	if ((PL::Map::is_a_direction(ParseTree::get_subject(px))) ||
-		(PL::Map::is_a_direction(ParseTree::get_subject(py))))
+	if ((PL::Map::is_a_direction(Node::get_subject(px))) ||
+		(PL::Map::is_a_direction(Node::get_subject(py))))
 		@<This is a map connection referred to metonymically@>
 	else
 	#endif
-	if (Rvalues::is_object(ParseTree::get_evaluation(py)))
+	if (Rvalues::is_object(Node::get_evaluation(py)))
 		@<Otherwise it's just wrong to equate objects@>
-	else if (Rvalues::is_CONSTANT_construction(ParseTree::get_evaluation(py), CON_property))
+	else if (Rvalues::is_CONSTANT_construction(Node::get_evaluation(py), CON_property))
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsProperty),
 			"that seems to say that some object is a property",
 			"like saying 'The brick building is the description': if you want to specify "
 			"the description of the current object, try putting the sentence the other way "
 			"around ('The description is...').");
-	else if (ParseTree::get_subject(px)) {
+	else if (Node::get_subject(px)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(px));
+		Problems::quote_wording(2, Node::get_text(px));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ObjectIsValue));
 		Problems::issue_problem_segment(
 			"I am reading the sentence %1 as saying that a thing called "
@@ -1444,9 +1444,9 @@ There is also one case in which an object can be set equal to another object:
 			"so this is like starting with 'North is the Aviary': I can't tell where from.");
 		return;
 	}
-	inference_subject *target = ParseTree::get_subject(py), *way = ParseTree::get_subject(px);
+	inference_subject *target = Node::get_subject(py), *way = Node::get_subject(px);
 	if (PL::Map::is_a_direction(target)) {
-		target = ParseTree::get_subject(px); way = ParseTree::get_subject(py);
+		target = Node::get_subject(px); way = Node::get_subject(py);
 	}
 	if (traverse == 2) {
 		if (target == NULL) {
@@ -1462,15 +1462,15 @@ There is also one case in which an object can be set equal to another object:
 
 @<Otherwise it's just wrong to equate objects@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(px));
-	Problems::quote_wording(3, ParseTree::get_text(py));
+	Problems::quote_wording(2, Node::get_text(px));
+	Problems::quote_wording(3, Node::get_text(py));
 
-	if (ParseTree::get_subject(px) == ParseTree::get_subject(py))
+	if (Node::get_subject(px) == Node::get_subject(py))
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_ProperIsItself),
 			"this seems to say that something is itself",
 			"like saying 'the coin is the coin'. This is an odd thing "
 			"to say, and makes me think that I've misunderstood you.");
-	else if (<control-structure-phrase>(ParseTree::get_text(px))) {
+	else if (<control-structure-phrase>(Node::get_text(px))) {
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_IfInAssertion));
 		Problems::issue_problem_segment(
 			"I am reading the sentence %1 as a declaration of the initial "
@@ -1483,13 +1483,13 @@ There is also one case in which an object can be set equal to another object:
 			"circumstances, it shouldn't be used in a direct assertion.");
 		Problems::issue_problem_end();
 	} else if (Rvalues::is_object(
-		ParseTree::get_evaluation(px)))
+		Node::get_evaluation(px)))
 		@<Issue the generic problem message for equating objects@>
 	else @<Issue a problem for equating an object to a value@>;
 
 @<Issue a problem for equating an object to a value@> =
-	Problems::quote_kind_of(4, ParseTree::get_evaluation(px));
-	Problems::quote_kind_of(5, ParseTree::get_evaluation(py));
+	Problems::quote_kind_of(4, Node::get_evaluation(px));
+	Problems::quote_kind_of(5, Node::get_evaluation(py));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ObjectAndValueEquated));
 	Problems::issue_problem_segment(
 		"The sentence %1 seems to say that '%2', which I think is %4, and "
@@ -1562,16 +1562,16 @@ We set such variables on traverse 2 because not all of the object values exist
 yet during traverse 1.
 
 @<Allow the case of a variable being assigned to@> =
-	if (Lvalues::get_storage_form(ParseTree::get_evaluation(px)) == NONLOCAL_VARIABLE_NT) {
-		nonlocal_variable *nlv = ParseTree::get_constant_nonlocal_variable(ParseTree::get_evaluation(px));
+	if (Lvalues::get_storage_form(Node::get_evaluation(px)) == NONLOCAL_VARIABLE_NT) {
+		nonlocal_variable *nlv = Node::get_constant_nonlocal_variable(Node::get_evaluation(px));
 		if (nlv) {
-			parse_node *val = ParseTree::get_evaluation(py);
-			if (val) ParseTree::set_text(val, ParseTree::get_text(py));
+			parse_node *val = Node::get_evaluation(py);
+			if (val) Node::set_text(val, Node::get_text(py));
 			val = NonlocalVariables::substitute_constants(val);
 			if (traverse == 2) {
 				Assertions::PropertyKnowledge::initialise_global_variable(nlv, val);
 			} else {
-				if (ParseTree::is(val, CONSTANT_NT))
+				if (Node::is(val, CONSTANT_NT))
 					if (Plugins::Call::variable_set_warning(nlv, val))
 						Assertions::PropertyKnowledge::initialise_global_variable(nlv, val);
 			}
@@ -1580,7 +1580,7 @@ yet during traverse 1.
 	}
 
 @<Allow the case of a property name, implicitly a property, being assigned to@> =
-	if (Rvalues::is_CONSTANT_construction(ParseTree::get_evaluation(px), CON_property)) {
+	if (Rvalues::is_CONSTANT_construction(Node::get_evaluation(px), CON_property)) {
 		inference_subject *talking_about = Assertions::Traverse::get_current_subject();
 		if (talking_about == NULL)
 			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_NothingDiscussed),
@@ -1588,10 +1588,10 @@ yet during traverse 1.
 				"so this is like starting with 'The description is \"Orange.\"': "
 				"I can't tell what of.");
 		else if (traverse == 2) {
-				if (<negated-clause>(ParseTree::get_text(py)))
+				if (<negated-clause>(Node::get_text(py)))
 					Problems::Issue::negative_sentence_problem(Task::syntax_tree(), _p_(PM_NonValue2));
 				else Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(
-				Rvalues::to_property(ParseTree::get_evaluation(px)), talking_about, py);
+				Rvalues::to_property(Node::get_evaluation(px)), talking_about, py);
 		}
 		return;
 	}
@@ -1607,10 +1607,10 @@ both sides are |VALUE| nodes; "grade 5" is being used adjectivally here,
 but that's not evident without a lot of contextual checking.
 
 @<Allow the case where a constant value is being assigned a property value@> =
-	parse_node *constant = ParseTree::get_evaluation(px);
+	parse_node *constant = Node::get_evaluation(px);
 	if ((Rvalues::to_instance(constant)) ||
 		(Specifications::is_kind_like(constant))) {
-		instance *q = Rvalues::to_instance(ParseTree::get_evaluation(py));
+		instance *q = Rvalues::to_instance(Node::get_evaluation(py));
 		property *pname = Properties::Conditions::get_coinciding_property(Instances::to_kind(q));
 		if (pname) {
 			if (traverse == 2)
@@ -1620,13 +1620,13 @@ but that's not evident without a lot of contextual checking.
 	}
 
 @<Allow the case where a constant response is being assigned a text value@> =
-	parse_node *constant = ParseTree::get_evaluation(px);
-	parse_node *val = ParseTree::get_evaluation(py);
+	parse_node *constant = Node::get_evaluation(px);
+	parse_node *val = Node::get_evaluation(py);
 	if ((Rvalues::is_CONSTANT_of_kind(constant, K_response)) &&
 		(Rvalues::is_CONSTANT_of_kind(val, K_text))) {
 		rule *R = Rvalues::to_rule(constant);
-		int c = ParseTree::int_annotation(constant, response_code_ANNOT);
-		Strings::assert_response_value(R, c, ParseTree::get_text(val));
+		int c = Annotations::read_int(constant, response_code_ANNOT);
+		Strings::assert_response_value(R, c, Node::get_text(val));
 		return;
 	}
 
@@ -1640,13 +1640,13 @@ property name (a proper noun), not the kind name (a common noun), and we
 need to switch interpretations to avoid the problem message.
 
 @<Allow the case of a new value for a kind which coincides with a property name@> =
-	if (Rvalues::is_CONSTANT_construction(ParseTree::get_evaluation(py), CON_property)) {
-		property *prn = Rvalues::to_property(ParseTree::get_evaluation(py));
+	if (Rvalues::is_CONSTANT_construction(Node::get_evaluation(py), CON_property)) {
+		property *prn = Rvalues::to_property(Node::get_evaluation(py));
 		if ((Properties::is_either_or(prn) == FALSE) &&
 			(Properties::Valued::coincides_with_kind(prn))) {
 			kind *K = Properties::Valued::kind(prn);
-			ParseTree::set_type_and_clear_annotations(py, COMMON_NOUN_NT);
-			ParseTree::set_evaluation(py, Specifications::from_kind(K));
+			Node::set_type_and_clear_annotations(py, COMMON_NOUN_NT);
+			Node::set_evaluation(py, Specifications::from_kind(K));
 			Assertions::Maker::make_assertion_recursive(px, py);
 			return;
 		}
@@ -1656,13 +1656,13 @@ need to switch interpretations to avoid the problem message.
 
 @<Produce a problem to the effect that two values can't be asserted equal@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(px));
-	Problems::quote_wording(3, ParseTree::get_text(py));
-	Problems::quote_kind_of(4, ParseTree::get_evaluation(px));
-	Problems::quote_kind_of(5, ParseTree::get_evaluation(py));
+	Problems::quote_wording(2, Node::get_text(px));
+	Problems::quote_wording(3, Node::get_text(py));
+	Problems::quote_kind_of(4, Node::get_evaluation(px));
+	Problems::quote_kind_of(5, Node::get_evaluation(py));
 
-	if (Kinds::Compare::eq(Specifications::to_kind(ParseTree::get_evaluation(px)),
-			Specifications::to_kind(ParseTree::get_evaluation(py)))) {
+	if (Kinds::Compare::eq(Specifications::to_kind(Node::get_evaluation(px)),
+			Specifications::to_kind(Node::get_evaluation(py)))) {
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SimilarValuesEquated));
 		Problems::issue_problem_segment(
 			"Before reading %1, I already knew that '%2' is %4 and "
@@ -1723,11 +1723,11 @@ can also be used adjectivally.
 
 =
 int Assertions::Maker::convert_adjective_to_noun(parse_node *p) {
-	if ((ParseTree::get_type(p) == ADJECTIVE_NT) &&
-		(ParseTree::int_annotation(p, negated_boolean_ANNOT) == FALSE)) {
-		if (<s-value>(ParseTree::get_text(p)))
+	if ((Node::get_type(p) == ADJECTIVE_NT) &&
+		(Annotations::read_int(p, negated_boolean_ANNOT) == FALSE)) {
+		if (<s-value>(Node::get_text(p)))
 			Assertions::Refiner::noun_from_value(p, <<rp>>);
-		if (ParseTree::get_type(p) != ADJECTIVE_NT) return TRUE;
+		if (Node::get_type(p) != ADJECTIVE_NT) return TRUE;
 	}
 	return FALSE;
 }
@@ -1735,21 +1735,21 @@ int Assertions::Maker::convert_adjective_to_noun(parse_node *p) {
 @ =
 void Assertions::Maker::issue_value_equation_problem(parse_node *px, parse_node *py) {
 	if ((current_sentence) &&
-		(<something-loose-diagnosis>(ParseTree::get_text(current_sentence))))
+		(<something-loose-diagnosis>(Node::get_text(current_sentence))))
 		return;
 
-	if ((ParseTree::get_type(px) != PROPER_NOUN_NT) ||
-		((ParseTree::get_type(py) != PROPER_NOUN_NT) && (ParseTree::get_type(py) != COMMON_NOUN_NT))) {
+	if ((Node::get_type(px) != PROPER_NOUN_NT) ||
+		((Node::get_type(py) != PROPER_NOUN_NT) && (Node::get_type(py) != COMMON_NOUN_NT))) {
 		LOG("$T", px); LOG("$T", py);
 		internal_error("Assert PX of type PY on bad node types");
 	}
 	LOG("$T", px); LOG("$T", py);
 
-	if ((ParseTree::get_subject(px)) &&
-		(InferenceSubjects::where_created(ParseTree::get_subject(px)) != current_sentence)) {
-		Problems::quote_wording(1, ParseTree::get_text(px));
+	if ((Node::get_subject(px)) &&
+		(InferenceSubjects::where_created(Node::get_subject(px)) != current_sentence)) {
+		Problems::quote_wording(1, Node::get_text(px));
 		Problems::quote_source(2, current_sentence);
-		Problems::quote_source(3, InferenceSubjects::where_created(ParseTree::get_subject(px)));
+		Problems::quote_source(3, InferenceSubjects::where_created(Node::get_subject(px)));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantUncreate));
 		Problems::issue_problem_segment(
 			"In order to act on %2, I seem to need to give "
@@ -1764,10 +1764,10 @@ void Assertions::Maker::issue_value_equation_problem(parse_node *px, parse_node 
 		return;
 	}
 
-	if ((ParseTree::get_type(px) == PROPER_NOUN_NT) && (ParseTree::get_type(py) == COMMON_NOUN_NT)) {
+	if ((Node::get_type(px) == PROPER_NOUN_NT) && (Node::get_type(py) == COMMON_NOUN_NT)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(py));
-		if (Wordings::nonempty(ParseTree::get_text(px))) Problems::quote_wording(3, ParseTree::get_text(px));
+		Problems::quote_wording(2, Node::get_text(py));
+		if (Wordings::nonempty(Node::get_text(px))) Problems::quote_wording(3, Node::get_text(px));
 		else Problems::quote_text(3, "(something not given an explicit name)");
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_IdentityUnclear));
 		Problems::issue_problem_segment(
@@ -1794,14 +1794,14 @@ void Assertions::Maker::instantiate_related_common_nouns(parse_node *p) {
 
 void Assertions::Maker::instantiate_related_common_nouns_r(parse_node *from, parse_node *at) {
 	if (at == NULL) return;
-	if (ParseTree::get_type(at) == COMMON_NOUN_NT)
+	if (Node::get_type(at) == COMMON_NOUN_NT)
 		Assertions::Creator::convert_instance_to_nounphrase(at,
-			ParseTree::get_relationship(from));
-	if (ParseTree::get_type(at) == AND_NT) {
+			Node::get_relationship(from));
+	if (Node::get_type(at) == AND_NT) {
 		Assertions::Maker::instantiate_related_common_nouns_r(from, at->down);
 		Assertions::Maker::instantiate_related_common_nouns_r(from, at->down->next);
 	}
-	if (ParseTree::get_type(at) == WITH_NT) {
+	if (Node::get_type(at) == WITH_NT) {
 		Assertions::Maker::instantiate_related_common_nouns_r(from, at->down);
 		Assertions::PropertyKnowledge::assert_property_list(at->down, at->down->next);
 	}
@@ -1812,7 +1812,7 @@ void Assertions::Maker::instantiate_related_common_nouns_r(parse_node *from, par
 =
 int Assertions::Maker::is_adjlist(parse_node *p) {
 	if (p == NULL) return FALSE;
-	switch (ParseTree::get_type(p)) {
+	switch (Node::get_type(p)) {
 		case ADJECTIVE_NT: return TRUE;
 		case AND_NT: return ((Assertions::Maker::is_adjlist(p->down)) && (Assertions::Maker::is_adjlist(p->down->next)));
 		default: return FALSE;

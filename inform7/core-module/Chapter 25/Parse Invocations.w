@@ -243,7 +243,7 @@ parse_node *Phrases::Parser::parse_against(phrase *ph, parse_node *p) {
 
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, WW);
-	ParseTree::set_phrase_invoked(inv, ph);
+	Node::set_phrase_invoked(inv, ph);
 
 	Dash::suspend_validation(FALSE);
 	ph_type_data *phtd = &(ph->type_data);
@@ -261,15 +261,15 @@ parse_node *Phrases::Parser::parse_against(phrase *ph, parse_node *p) {
 register phrases with more than that number of tokens anyway.
 
 @<Extract all this text from the subtree@> =
-	WW = ParseTree::get_text(p);
+	WW = Node::get_text(p);
 	p = p->down;
-	if (p && (ParseTree::int_annotation(p, is_phrase_option_ANNOT))) {
-		OW = ParseTree::get_text(p);
+	if (p && (Annotations::read_int(p, is_phrase_option_ANNOT))) {
+		OW = Node::get_text(p);
 		p = p->next;
 	}
 	for (; ((p) && (no_tokens<15)); p = p->next) {
-		if (ParseTree::get_type(p) == UNKNOWN_NT)
-			token_text[no_tokens++] = ParseTree::get_text(p);
+		if (Node::get_type(p) == UNKNOWN_NT)
+			token_text[no_tokens++] = Node::get_text(p);
 		else internal_error("Unexpected production in phrase args");
 	}
 	if (no_tokens > MAX_TOKENS_PER_PHRASE)
@@ -293,9 +293,9 @@ parser needs our help in the first place.)
 		Invocations::make_token(inv, i, LVALUE_LOCAL_CONTEXT_NT, X, phtd->token_sequence[i].token_kind);
 	}
 	else if (phtd->token_sequence[i].construct == STORAGE_PT_CONSTRUCT)
-		Invocations::make_token(inv, i, LVALUE_CONTEXT_NT, X, ParseTree::get_kind_of_value(to_match));
+		Invocations::make_token(inv, i, LVALUE_CONTEXT_NT, X, Node::get_kind_of_value(to_match));
 	else if (phtd->token_sequence[i].construct == TABLE_REFERENCE_PT_CONSTRUCT)
-		Invocations::make_token(inv, i, LVALUE_TR_CONTEXT_NT, X, ParseTree::get_kind_of_value(to_match));
+		Invocations::make_token(inv, i, LVALUE_TR_CONTEXT_NT, X, Node::get_kind_of_value(to_match));
 	else if (phtd->token_sequence[i].construct == CONDITION_PT_CONSTRUCT)
 		Invocations::make_token(inv, i, CONDITION_CONTEXT_NT, X, NULL);
 	else if (phtd->token_sequence[i].construct == VOID_PT_CONSTRUCT)
@@ -304,7 +304,7 @@ parser needs our help in the first place.)
 		Invocations::make_token(inv, i, RVALUE_CONTEXT_NT, X, Specifications::to_kind(to_match));
 	else if (Specifications::is_description(to_match))
 		Invocations::make_token(inv, i, MATCHING_RVALUE_CONTEXT_NT, X, Specifications::to_kind(to_match));
-	else if (ParseTree::is(to_match, CONSTANT_NT))
+	else if (Node::is(to_match, CONSTANT_NT))
 		Invocations::make_token(inv, i, SPECIFIC_RVALUE_CONTEXT_NT, X, Specifications::to_kind(to_match));
 	else Invocations::make_token(inv, i, RVALUE_CONTEXT_NT, X, NULL); /* doesn't actually happen */
 	Invocations::set_token_to_be_parsed_against(inv, i, to_match);
@@ -318,11 +318,11 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 	for (int i = 0; i < N; i++) {
 		parse_node *to_match = Invocations::get_token_to_be_parsed_against(inv, i);
 		int cons = -1;
-		phrase *ph = ParseTree::get_phrase_invoked(inv);
+		phrase *ph = Node::get_phrase_invoked(inv);
 		if (ph) cons = ph->type_data.token_sequence[i].construct;
 		if ((to_match) || (cons == CONDITION_PT_CONSTRUCT) || (cons == VOID_PT_CONSTRUCT)) {
 			parse_node *as_parsed = Invocations::get_token_as_parsed(inv, i);
-			wording XW = ParseTree::get_text(as_parsed);
+			wording XW = Node::get_text(as_parsed);
 			#ifdef IF_MODULE
 				int pto = permit_trying_omission;
 				if ((Specifications::is_kind_like(to_match)) &&
@@ -337,7 +337,7 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 				}
 				permit_trying_omission = pto;
 			#endif
-			ParseTree::set_text(as_parsed, XW);
+			Node::set_text(as_parsed, XW);
 			Invocations::set_token_as_parsed(inv, i, as_parsed);
 		}
 	}

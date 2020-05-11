@@ -57,7 +57,7 @@ implemented this as a hand-coded nonterminal instead.
 		(<s-condition-atomic>(Wordings::up_to(W, end_of_non_time_part)))) {
 		parse_node *atomic_cnd = <<rp>>;
 		parse_node *spec = atomic_cnd;
-		if (ParseTree::is(spec, CONSTANT_NT)) {
+		if (Node::is(spec, CONSTANT_NT)) {
 			action_pattern *ap = Rvalues::to_action_pattern(spec);
 			spec = Conditions::new_TEST_ACTION(ap, W);
 		}
@@ -137,9 +137,9 @@ testing the existence of something.
 <s-phrase-to-decide> internal {
 	parse_node *p = ExParser::parse_excerpt(COND_PHRASE_MC, W);
 	if (p) {
-		parse_node *spec = ParseTree::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
+		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
-		parse_node *tval = ParseTree::new_with_words(TEST_VALUE_NT, W);
+		parse_node *tval = Node::new_with_words(TEST_VALUE_NT, W);
 		tval->down = spec;
 		*XP = tval; return TRUE;
 	}
@@ -239,7 +239,7 @@ typechecking to choose between much later on.
 <s-to-phrase> internal {
 	parse_node *p = ExParser::parse_excerpt(VOID_PHRASE_MC, W);
 	if (p) {
-		parse_node *spec = ParseTree::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
+		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
 		*XP = spec; return TRUE;
 	}
@@ -250,7 +250,7 @@ typechecking to choose between much later on.
 <s-text-substitution> internal {
 	parse_node *p = ExParser::parse_excerpt(SAY_PHRASE_MC, W);
 	if (p) {
-		parse_node *spec = ParseTree::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
+		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
 		*XP = spec; return TRUE;
 	}
@@ -267,11 +267,11 @@ singulars.
 
 =
 parse_node *ExParser::say_adjective(adjectival_phrase *aph, wording W) {
-	parse_node *spec = ParseTree::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
+	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
 	Invocations::set_adjectival_phrase(inv, aph);
-	spec->down = ParseTree::new(INVOCATION_LIST_NT);
+	spec->down = Node::new(INVOCATION_LIST_NT);
 	spec->down->down = Invocations::add_to_list(spec->down->down, inv);
 	return spec;
 }
@@ -281,11 +281,11 @@ person plurals.
 
 =
 parse_node *ExParser::say_verb(verb_conjugation *vc, int neg, verb_conjugation *mvc, wording W) {
-	parse_node *spec = ParseTree::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
+	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
 	Invocations::set_verb_conjugation(inv, vc, mvc, neg);
-	spec->down = ParseTree::new(INVOCATION_LIST_NT);
+	spec->down = Node::new(INVOCATION_LIST_NT);
 	spec->down->down = Invocations::add_to_list(spec->down->down, inv);
 	return spec;
 }
@@ -319,15 +319,15 @@ S-tree as we run sideways through the alternative readings.
 @<Build the invocation list@> =
 	for (; p; p = p->next_alternative) {
 		phrase *ph = RETRIEVE_POINTER_phrase(
-			ExcerptMeanings::data(ParseTree::get_meaning(p)));
+			ExcerptMeanings::data(Node::get_meaning(p)));
 		parse_node *inv = Phrases::Parser::parse_against(ph, p);
 		if ((Phrases::TypeData::is_the_primordial_say(&(ph->type_data)) == FALSE) &&
 			(Rvalues::is_CONSTANT_of_kind(
 				Invocations::get_token_as_parsed(inv, 0), K_text)))
 			continue;
 		if (spec->down == NULL) {
-			spec->down = ParseTree::new(INVOCATION_LIST_NT);
-			ParseTree::set_text(spec->down, ParseTree::get_text(spec));
+			spec->down = Node::new(INVOCATION_LIST_NT);
+			Node::set_text(spec->down, Node::get_text(spec));
 		}
 		spec->down->down = Invocations::add_to_list(spec->down->down, inv);
 	}
@@ -341,7 +341,7 @@ limit that we were unable to construct a test case for it.
 
 @<Issue overcomplicated phrase problem message@> =
 	spec->down->down->next = NULL; /* truncate to just one */
-	ParseTree::set_text(spec, ParseTree::get_text(current_sentence));
+	Node::set_text(spec, Node::get_text(current_sentence));
 	Problems::quote_source(1, current_sentence);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(

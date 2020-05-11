@@ -173,7 +173,7 @@ something.
 		if (Rvalues::is_CONSTANT_construction(spec, CON_table_column)) okay = TRUE;
 		if (Rvalues::is_CONSTANT_construction(spec, CON_property)) okay = TRUE;
 		if (Specifications::is_description(spec)) okay = TRUE;
-		if (ParseTree::is(spec, NONLOCAL_VARIABLE_NT)) okay = TRUE;
+		if (Node::is(spec, NONLOCAL_VARIABLE_NT)) okay = TRUE;
 		if (okay == FALSE) {
 			LOG("Existing meaning: $P", spec);
 			Problems::quote_source(1, current_sentence);
@@ -540,7 +540,7 @@ to sentences like:
 void Properties::translates(wording W, parse_node *p2) {
 	property *prn = NULL;
 	if (<property-name>(W)) prn = <<rp>>;
-	wchar_t *text = Lexer::word_text(Wordings::first_wn(ParseTree::get_text(p2)));
+	wchar_t *text = Lexer::word_text(Wordings::first_wn(Node::get_text(p2)));
 
 	@<Make sure this is a genuine and previously untranslated property@>;
 

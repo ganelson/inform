@@ -77,57 +77,26 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node_tree</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node_annotation</span><span class="plain-syntax">, </span><span class="constant-syntax">500</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function. Here,
+all we need do is set up some debugging log facilities.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SyntaxModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-sm.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-sm.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Register this module's stream writers</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-sm.html#SP3_4" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-sm.html#SP3_5" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log writers</span><span class="named-paragraph-number">3.5</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="2-pt.html#SP17" class="function-link"><span class="function-syntax">ParseTree::metadata_setup</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-nt.html#SP4" class="function-link"><span class="function-syntax">NodeType::make_parentage_allowed_table</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-nt.html#SP11" class="function-link"><span class="function-syntax">NodeType::metadata_setup</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-na.html#SP12" class="function-link"><span class="function-syntax">Annotations::make_annotation_allowed_table</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'m'</span><span class="plain-syntax">, </span><a href="2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::log_tree</span></a><span class="plain-syntax">);    /* |$</span><span class="identifier-syntax">m</span><span class="plain-syntax">| = </span><span class="identifier-syntax">log</span><span class="plain-syntax"> </span><span class="identifier-syntax">syntax</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">node</span><span class="plain-syntax"> */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger_I</span><span class="plain-syntax">(</span><span class="character-syntax">'N'</span><span class="plain-syntax">, </span><a href="2-nt.html#SP7" class="function-link"><span class="function-syntax">NodeType::log</span></a><span class="plain-syntax">);  /* |$</span><span class="identifier-syntax">N</span><span class="plain-syntax">| = </span><span class="identifier-syntax">log</span><span class="plain-syntax"> </span><span class="identifier-syntax">individual</span><span class="plain-syntax"> </span><span class="identifier-syntax">node</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax"> */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'P'</span><span class="plain-syntax">, </span><a href="2-pn.html#SP18" class="function-link"><span class="function-syntax">Node::log_node</span></a><span class="plain-syntax">);    /* |$</span><span class="identifier-syntax">P</span><span class="plain-syntax">| = </span><span class="identifier-syntax">log</span><span class="plain-syntax"> </span><span class="identifier-syntax">individual</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse</span><span class="plain-syntax"> </span><span class="identifier-syntax">node</span><span class="plain-syntax"> */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'T'</span><span class="plain-syntax">, </span><a href="2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::log_subtree</span></a><span class="plain-syntax">); /* |$</span><span class="identifier-syntax">T</span><span class="plain-syntax">| = </span><span class="identifier-syntax">log</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> </span><span class="identifier-syntax">under</span><span class="plain-syntax"> </span><span class="identifier-syntax">node</span><span class="plain-syntax"> */</span>
 <span class="plain-syntax">}</span>
+
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SyntaxModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-sm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's stream writers</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-sm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b></p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">VERIFICATIONS_DA</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP3_4"></a><b>&#167;3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.4</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">VERIFICATIONS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"verifications"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-sm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_5"></a><b>&#167;3.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log writers</span><span class="named-paragraph-number">3.5</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'m'</span><span class="plain-syntax">, </span><a href="2-pt.html#SP45" class="function-link"><span class="function-syntax">ParseTree::log_tree</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger_I</span><span class="plain-syntax">(</span><span class="character-syntax">'N'</span><span class="plain-syntax">, </span><a href="2-pt.html#SP20" class="function-link"><span class="function-syntax">ParseTree::log_type</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'P'</span><span class="plain-syntax">, </span><a href="2-pt.html#SP47" class="function-link"><span class="function-syntax">ParseTree::log_node</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'T'</span><span class="plain-syntax">, </span><a href="2-pt.html#SP45" class="function-link"><span class="function-syntax">ParseTree::log_subtree</span></a><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-sm.html#SP3">&#167;3</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">1</li><li class="progresscurrent">sm</li><li class="progresschapter"><a href="2-pt.html">2</a></li><li class="progressnext"><a href="2-pt.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">sm</li><li class="progresschapter"><a href="2-st.html">2</a></li><li class="progresschapter"><a href="3-snt.html">3</a></li><li class="progressnext"><a href="2-st.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

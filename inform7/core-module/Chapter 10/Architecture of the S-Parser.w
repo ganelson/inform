@@ -56,7 +56,7 @@ variable or other storage object, or a phrase to decide a value.
 =
 <s-value> internal {
 	parse_node *spec = ExParser::parse_with_cache(W, 0, <s-value-uncached>);
-	if (ParseTree::is(spec, UNKNOWN_NT)) return FALSE;
+	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
 	*XP = spec;
 	return TRUE;
 }
@@ -69,7 +69,7 @@ animals have been in the Stables".
 <s-condition> internal {
 	LocalVariables::make_necessary_callings(W);
 	parse_node *spec = ExParser::parse_with_cache(W, 1, <s-condition-uncached>);
-	if (ParseTree::is(spec, UNKNOWN_NT)) return FALSE;
+	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
 	*XP = spec;
 	return TRUE;
 }
@@ -87,7 +87,7 @@ as conditions, so for example "taking something" would not match.
 	#ifdef IF_MODULE
 	PL::Actions::Patterns::resume(old_state);
 	#endif
-	if (ParseTree::is(spec, UNKNOWN_NT)) return FALSE;
+	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
 	*XP = spec;
 	return TRUE;
 }
@@ -99,7 +99,7 @@ specification of a phrase argument.
 =
 <s-type-expression> internal {
 	parse_node *spec = ExParser::parse_with_cache(W, 3, <s-type-expression-uncached>);
-	if (ParseTree::is(spec, UNKNOWN_NT)) return FALSE;
+	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
 	*XP = spec;
 	return TRUE;
 }
@@ -115,7 +115,7 @@ and <s-value> as a constant value of the kind "colour".
 =
 <s-descriptive-type-expression> internal {
 	parse_node *spec = ExParser::parse_with_cache(W, 4, <s-descriptive-type-expression-uncached>);
-	if (ParseTree::is(spec, UNKNOWN_NT)) return FALSE;
+	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
 	*XP = spec;
 	return TRUE;
 }
@@ -227,12 +227,12 @@ parse_node *ExParser::parse_with_cache(wording W, int context, nonterminal *nt) 
 	int plm = preform_lookahead_mode;
 	preform_lookahead_mode = FALSE;
 	if (Preform::parse_nt_against_word_range(nt, W, &unwanted, (void **) &spec)) {
-		if (Wordings::empty(ParseTree::get_text(spec))) ParseTree::set_text(spec, W);
+		if (Wordings::empty(Node::get_text(spec))) Node::set_text(spec, W);
 	} else spec = Specifications::new_UNKNOWN(W);
 	preform_lookahead_mode = plm;
 
 	@<Write the newly discovered specification to the cache for future use@>;
-	ParseTree::verify_structure(spec);
+	VerifyTree::verify_structure(spec);
 
 	return spec;
 }
@@ -311,10 +311,10 @@ void ExParser::parse_say_term(parse_node *p) {
 void ExParser::parse_phrase_inner(parse_node *p, int as_say_term) {
 	if (p == NULL) internal_error("no node to parse");
 	p->down = NULL;
-	if (Wordings::nonempty(ParseTree::get_text(p))) {
+	if (Wordings::nonempty(Node::get_text(p))) {
 		parse_node *results = NULL;
-		if ((as_say_term == FALSE) && (<s-command>(ParseTree::get_text(p)))) results = <<rp>>;
-		if ((as_say_term) && (<s-say-command>(ParseTree::get_text(p)))) results = <<rp>>;
+		if ((as_say_term == FALSE) && (<s-command>(Node::get_text(p)))) results = <<rp>>;
+		if ((as_say_term) && (<s-say-command>(Node::get_text(p)))) results = <<rp>>;
 		if ((results) && (results->down)) p->down = results->down->down;
 	}
 }

@@ -103,13 +103,13 @@ it can be applied.
 	if (verb_phrase_subtree->down == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "VP subtree broken");
 	object_phrase_subtree = verb_phrase_subtree->down;
 
-	verb_usage *vu = ParseTree::get_vu(verb_phrase_subtree);
+	verb_usage *vu = Node::get_vu(verb_phrase_subtree);
 	if (vu == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "verb null");
 	if ((SV_not_SN == FALSE) && (VerbUsages::get_tense_used(vu) != IS_TENSE))
 		@<Disallow the past tenses in relative clauses@>;
 
-	preposition_identity *prep = ParseTree::get_prep(verb_phrase_subtree);
-	preposition_identity *second_prep = ParseTree::get_second_preposition(verb_phrase_subtree);
+	preposition_identity *prep = Node::get_prep(verb_phrase_subtree);
+	preposition_identity *second_prep = Node::get_second_preposition(verb_phrase_subtree);
 
 	verb_phrase_relation = VerbUsages::get_regular_meaning(vu, prep, second_prep);
 
@@ -470,13 +470,13 @@ pcalc_prop *Calculus::Propositions::FromSentences::NP_subtree_to_proposition(pca
 	pcalc_prop *NP_prop = NULL; wording W;
 	@<Tell the debugging log about the NP-subtree@>;
 
-	pcalc_term *st = ParseTree::get_subject_term(p);
+	pcalc_term *st = Node::get_subject_term(p);
 	if (st) {
 		*subject_of_NP = *st;
 		NP_prop = Calculus::Propositions::copy(Specifications::to_proposition(p));
 	} else {
 		if (Specifications::is_description_like(p)) @<This NP was parsed as a description@>
-		else if (ParseTree::get_type(p) == UNKNOWN_NT) @<This NP is only a ghostly presence@>
+		else if (Node::get_type(p) == UNKNOWN_NT) @<This NP is only a ghostly presence@>
 		else @<This NP was parsed as a value@>;
 	}
 
@@ -491,7 +491,7 @@ pcalc_prop *Calculus::Propositions::FromSentences::NP_subtree_to_proposition(pca
 @ Just as for SV-subtrees, we tell the debugging log at the start...
 
 @<Tell the debugging log about the NP-subtree@> =
-	W = ParseTree::get_text(p);
+	W = Node::get_text(p);
 	conv_log_depth++;
 	LOGIF(PREDICATE_CALCULUS, "[%d] Starting Calculus::Propositions::FromSentences::NP_subtree_to_proposition on: <%W>\n",
 		conv_log_depth, W);
@@ -620,7 +620,7 @@ show this. (Score values otherwise aren't used for property names.)
 
 @<If we have a single adjective which could also be a noun, and a value is required, convert it to a noun@> =
 	if (((Rvalues::is_CONSTANT_construction(p, CON_property)) &&
-		(ParseTree::int_annotation(p, property_name_used_as_noun_ANNOT))) || (K)) {
+		(Annotations::read_int(p, property_name_used_as_noun_ANNOT))) || (K)) {
 		pcalc_term pct = Calculus::Propositions::convert_adj_to_noun(NP_prop);
 		if (pct.constant) { *subject_of_NP = pct; NP_prop = NULL; }
 	}

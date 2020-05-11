@@ -392,7 +392,7 @@ void Kinds::Index::index_kind(OUTPUT_STREAM, kind *K, int plural, int with_links
 			if (with_links) {
 				int wn = Wordings::first_wn(W);
 				if (Kinds::Behaviour::get_creating_sentence(K))
-					wn = Wordings::first_wn(ParseTree::get_text(Kinds::Behaviour::get_creating_sentence(K)));
+					wn = Wordings::first_wn(Node::get_text(Kinds::Behaviour::get_creating_sentence(K)));
 				Index::link(OUT, wn);
 			}
 		}

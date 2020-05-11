@@ -834,7 +834,7 @@ void Kinds::problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2) {
 	#endif
 	#ifndef KINDS_PROBLEM_HANDLER
 	TEMPORARY_TEXT(text);
-	WRITE_TO(text, "%+W", ParseTree::get_text(pn));
+	WRITE_TO(text, "%+W", Node::get_text(pn));
 	switch (err_no) {
 		case DimensionRedundant_KINDERROR:
 			Errors::with_text("multiplication rule given twice: %S", text);

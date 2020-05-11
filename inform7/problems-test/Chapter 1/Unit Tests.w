@@ -37,16 +37,16 @@ void Unit::test_problems(text_stream *arg) {
 	source_file *sf = TextFromFiles::feed_into_lexer(F, NULL_GENERAL_POINTER);
 	wording W = Feeds::end(FD);
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
-	syntax_tree = ParseTree::new_tree();
+	syntax_tree = SyntaxTree::new();
 	PRINT("Read %d words\n", Wordings::length(W));
 	Sentences::break(syntax_tree, W);
 
-	ParseTree::traverse(syntax_tree, Unit::scan_tree);
+	SyntaxTree::traverse(syntax_tree, Unit::scan_tree);
 }
 
 void Unit::scan_tree(parse_node *p) {
-	if (ParseTree::get_type(p) == SENTENCE_NT) {
-		wording W = ParseTree::get_text(p);
+	if (Node::get_type(p) == SENTENCE_NT) {
+		wording W = Node::get_text(p);
 		<scan-individual-phrase>(W);
 	}
 }

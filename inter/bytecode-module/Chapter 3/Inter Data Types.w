@@ -73,10 +73,10 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
 			if (idt) {
 				long long int I = (signed_inter_t) V2;
-				if ((I < idt->min_value) || (I > idt->max_value)) return Inter::Node::error(P, I"value out of range", NULL);
+				if ((I < idt->min_value) || (I > idt->max_value)) return Inode::error(P, I"value out of range", NULL);
 				return NULL;
 			}
-			return Inter::Node::error(P, I"unknown kind for value", NULL);
+			return Inode::error(P, I"unknown kind for value", NULL);
 		}
 		case ALIAS_IVAL: {
 			inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(scope, V2);
@@ -85,12 +85,12 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 				LOG("V2 is %08x\n", V2);
 				LOG("IST is $4\n", scope);
 				LOG("(did you forget to make the package type enclosing?)\n");
-				return Inter::Node::error(P, I"no such symbol", NULL);
+				return Inode::error(P, I"no such symbol", NULL);
 			}
 			if (Inter::Symbols::is_predeclared(symb)) return NULL;
 			if (Inter::Symbols::is_extern(symb)) return NULL;
 			inter_tree_node *D = Inter::Symbols::definition(symb);
-			if (D == NULL) return Inter::Node::error(P, I"undefined symbol", symb->symbol_name);
+			if (D == NULL) return Inode::error(P, I"undefined symbol", symb->symbol_name);
 
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
 			if (idt == unchecked_idt) return NULL;
@@ -101,10 +101,10 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 			else if (D->W.data[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
 			else if (D->W.data[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
 			else if (D->W.data[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
-			else return Inter::Node::error(P, I"nonconstant symbol", symb->symbol_name);
+			else return Inode::error(P, I"nonconstant symbol", symb->symbol_name);
 			if (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE) {
 				WRITE_TO(STDERR, "cks %S, ks %S\n", ckind_symbol->symbol_name, kind_symbol->symbol_name);
-				return Inter::Node::error(P, I"value of wrong kind", symb->symbol_name);
+				return Inode::error(P, I"value of wrong kind", symb->symbol_name);
 			}
 			return NULL;
 		}
@@ -117,7 +117,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 		case DIVIDER_IVAL:
 			return NULL;
 	}
-	return Inter::Node::error(P, I"value of unknown category", NULL);
+	return Inode::error(P, I"value of unknown category", NULL);
 }
 
 inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T, inter_t V1, inter_t V2) {
@@ -155,12 +155,12 @@ void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *kind_s
 			else WRITE("%d", V2); break;
 		case REAL_IVAL:
 			WRITE("r\"");
-			Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
 			WRITE("\"");
 			break;
 		case LITERAL_TEXT_IVAL:
 			WRITE("\"");
-			Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
 			WRITE("\"");
 			break;
 		case ALIAS_IVAL: {
@@ -171,22 +171,22 @@ void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *kind_s
 		case UNDEF_IVAL: WRITE("undef"); break;
 		case GLOB_IVAL:
 			WRITE("&\"");
-			Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
 			WRITE("\"");
 			break;
 		case DWORD_IVAL:
 			WRITE("dw'");
-			Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
 			WRITE("'");
 			break;
 		case PDWORD_IVAL:
 			WRITE("dwp'");
-			Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
 			WRITE("'");
 			break;
 		case DIVIDER_IVAL:
 			WRITE("^\"");
-			Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
 			WRITE("\"");
 			break;
 		default: WRITE("<invalid-value-type>"); break;

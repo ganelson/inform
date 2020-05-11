@@ -46,16 +46,16 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Lab::new(inter_bookmark *IBM, inter_symbol *label, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Node::fill_2(IBM, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, label), eloc, (inter_t) level);
+	inter_tree_node *P = Inode::fill_2(IBM, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, label), eloc, (inter_t) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
 void Inter::Lab::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_LAB_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_LAB_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(owner, P->W.data[LABEL_LAB_IFLD]);
-	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Node::error(P, I"no such label", NULL); return; }
+	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inode::error(P, I"no such label", NULL); return; }
 }
 
 void Inter::Lab::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -63,7 +63,7 @@ void Inter::Lab::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	inter_symbol *label = Inter::SymbolsTables::local_symbol_from_id(pack, P->W.data[LABEL_LAB_IFLD]);
 	if (label) {
 		WRITE("lab %S", label->symbol_name);
-	} else { *E = Inter::Node::error(P, I"cannot write lab", NULL); return; }
+	} else { *E = Inode::error(P, I"cannot write lab", NULL); return; }
 }
 
 inter_symbol *Inter::Lab::label_symbol(inter_tree_node *P) {

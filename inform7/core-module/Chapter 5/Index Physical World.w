@@ -262,7 +262,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	parse_node *C = NULL;
 	if (K) C = Kinds::Behaviour::get_creating_sentence(K);
 	if (I) C = Instances::get_creating_sentence(I);
-	if (C) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(C)));
+	if (C) Index::link(OUT, Wordings::first_wn(Node::get_text(C)));
 	if ((K) && (Kinds::Behaviour::get_documentation_reference(K)))
 		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K));
 	if ((details == FALSE) && (K))
@@ -308,7 +308,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 		WRITE("%+W", W);
 	}
 	parse_node *P = Instances::get_kind_set_sentence(I);
-	if (P) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(P)));
+	if (P) Index::link(OUT, Wordings::first_wn(Node::get_text(P)));
 	WRITE(" &gt; <b>");
 	Instances::index_name(OUT, I);
 	WRITE("</b>");
@@ -341,7 +341,7 @@ void Data::Objects::index_instances(OUTPUT_STREAM, kind *K, int depth) {
 			Instances::index_name(OUT, I);
 			HTML::end_colour(OUT);
 			parse_node *at = Instances::get_creating_sentence(I);
-			if (at) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(at)));
+			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 		}
 		Index::extra_div_close(OUT, "e0e0e0");
 	} else {
@@ -352,7 +352,7 @@ void Data::Objects::index_instances(OUTPUT_STREAM, kind *K, int depth) {
 			Instances::index_name(OUT, I);
 			HTML::end_colour(OUT);
 			parse_node *at = Instances::get_creating_sentence(I);
-			if (at) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(at)));
+			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 		}
 		HTML_CLOSE("p");
 	}

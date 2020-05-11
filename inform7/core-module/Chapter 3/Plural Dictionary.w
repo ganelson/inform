@@ -25,12 +25,12 @@ int Plurals::plural_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			FSW = SW; FOW = OW;
 			if (<plural-sentence-subject>(SW)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				V->next = <<rp>>;
 				<nounphrase>(OW);
 				V->next->next = <<rp>>;
-				wording S = ParseTree::get_text(V->next);
-				wording P = ParseTree::get_text(V->next->next);
+				wording S = Node::get_text(V->next);
+				wording P = Node::get_text(V->next->next);
 				@<Forbid plural declarations containing quoted text@>;
 				if (Assertions::Creator::vet_name_for_noun(P) == FALSE) return TRUE;
 				Pluralisation::register(S, P, English_language);

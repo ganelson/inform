@@ -22,7 +22,7 @@ inter_tree *Inter::Tree::new(void) {
 	inter_symbols_table *globals = Inter::Warehouse::get_symbols_table(I->housed, N);
 	inter_t root_package_ID = Inter::Warehouse::create_package(I->housed, I);
 	I->root_package = Inter::Warehouse::get_package(I->housed, root_package_ID);
-	I->root_node = Inter::Node::root_frame(I->housed, I);
+	I->root_node = Inode::root_frame(I->housed, I);
 	I->root_package->package_head = I->root_node;
 	Inter::Packages::make_rootlike(I->root_package);
 	Inter::Packages::set_scope(I->root_package, globals);

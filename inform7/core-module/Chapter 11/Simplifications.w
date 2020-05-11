@@ -168,7 +168,7 @@ pcalc_prop *Calculus::Simplifications::use_listed_in(pcalc_prop *prop, int *chan
 		for (j=0; j<pl->arity; j++) {
 			parse_node *spec = Calculus::Terms::constant_underlying(&(pl->terms[j]));
 			if ((spec) && (Lvalues::get_storage_form(spec) == TABLE_ENTRY_NT) &&
-				(ParseTree::no_children(spec) == 2)) {
+				(Node::no_children(spec) == 2)) {
 				parse_node *col = spec->down;
 				parse_node *tab = spec->down->next;
 				table_column *tc = Rvalues::to_table_column(col);
@@ -1040,7 +1040,7 @@ term $C$.
 	property *prn = Rvalues::to_property(spec);
 	parse_node *po_spec =
 		Lvalues::new_PROPERTY_VALUE(spec, pl->terms[1-i].constant);
-	ParseTree::set_text(po_spec, prn->name);
+	Node::set_text(po_spec, prn->name);
 	int no_substitutions_made;
 	prop = Calculus::Simplifications::prop_substitute_prop_cons(prop, prn, po_spec, &no_substitutions_made, pl);
 	if (no_substitutions_made > 0) {

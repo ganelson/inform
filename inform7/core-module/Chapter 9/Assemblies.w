@@ -109,11 +109,11 @@ first it's a |RELATIONSHIP_NT| subtree.
 =
 void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_node *what_to_make) {
 	parse_node *EVERY_node = NULL;
-	if (ParseTree::get_type(look_for) == EVERY_NT) EVERY_node = look_for;
-	else if ((look_for->down) && (ParseTree::get_type(look_for->down) == EVERY_NT))
+	if (Node::get_type(look_for) == EVERY_NT) EVERY_node = look_for;
+	else if ((look_for->down) && (Node::get_type(look_for->down) == EVERY_NT))
 		EVERY_node = look_for->down;
 	else internal_error("Generalisation without EVERY node");
-	inference_subject *k = ParseTree::get_subject(EVERY_node);
+	inference_subject *k = Node::get_subject(EVERY_node);
 	if (k == NULL) internal_error("Malformed EVERY node");
 
 	if ((Assertions::Assemblies::subtree_mentions_kind(look_for,k,0)) ||
@@ -124,7 +124,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 	@<Forbid generalisation on both sides@>;
 	@<If we have to make a kind qualified by adjectives, expand that into a suitable subtree@>;
 
-	ParseTree::set_text(EVERY_node, EMPTY_WORDING);
+	Node::set_text(EVERY_node, EMPTY_WORDING);
 
 	generalisation *g = CREATE(generalisation);
 	g->look_for = look_for;
@@ -133,7 +133,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 
 	@<Add this new generalisation to the list for the kind it applies to@>;
 
-	ParseTree::annotate_int(current_sentence, you_can_ignore_ANNOT, TRUE);
+	Annotations::write_int(current_sentence, you_can_ignore_ANNOT, TRUE);
 
 	LOGIF(ASSEMBLIES, "New generalisation made concerning $j:\nLook for: $T\nMake: $T\n",
 		k, g->look_for, g->what_to_make);
@@ -157,7 +157,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 	}
 
 @<Forbid generalisation on both sides@> =
-	if ((what_to_make) && (ParseTree::get_type(what_to_make->down) == EVERY_NT)) {
+	if ((what_to_make) && (Node::get_type(what_to_make->down) == EVERY_NT)) {
 		LOG("$T", look_for);
 		LOG("$T", what_to_make);
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_AssemblyOnBothSides),
@@ -168,9 +168,9 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 	}
 
 @<If we have to make a kind qualified by adjectives, expand that into a suitable subtree@> =
-	parse_node *val = ParseTree::get_evaluation(what_to_make);
+	parse_node *val = Node::get_evaluation(what_to_make);
 	if ((val) && (Descriptions::is_adjectives_plus_kind(val))) {
-		Assertions::Refiner::refine_from_simple_description(what_to_make, ParseTree::duplicate(val));
+		Assertions::Refiner::refine_from_simple_description(what_to_make, Node::duplicate(val));
 	}
 
 @<Add this new generalisation to the list for the kind it applies to@> =
@@ -199,8 +199,8 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 
 =
 int Assertions::Assemblies::subtree_mentions_kind(parse_node *subtree, inference_subject *k, int level) {
-	if ((ParseTree::get_type(subtree) == COMMON_NOUN_NT) &&
-			(ParseTree::get_subject(subtree) == k)) return TRUE;
+	if ((Node::get_type(subtree) == COMMON_NOUN_NT) &&
+			(Node::get_subject(subtree) == k)) return TRUE;
 	if ((subtree->down) && (Assertions::Assemblies::subtree_mentions_kind(subtree->down, k, level+1)))
 		return TRUE;
 	if ((level>0) && (subtree->next) && (Assertions::Assemblies::subtree_mentions_kind(subtree->next, k, level)))
@@ -301,32 +301,32 @@ void Assertions::Assemblies::satisfies_generalisation(inference_subject *infs, g
 			infs, snatcher, counterpart);
 		if (snatcher) return;
 	}
-	inference_subject *infs_k = ParseTree::get_subject(g->substitute_at);
+	inference_subject *infs_k = Node::get_subject(g->substitute_at);
 	@<Throw the infinite regress exception if the current sentence makes too many things@>;
 
-	parse_node *new_sentence = ParseTree::new(SENTENCE_NT);
+	parse_node *new_sentence = Node::new(SENTENCE_NT);
 
 	/* mark this sentence as implicit, and increase its generation count: */
-	ParseTree::set_implicit_in_creation_of(new_sentence, infs);
-	ParseTree::annotate_int(new_sentence, implicitness_count_ANNOT,
-		ParseTree::int_annotation(current_sentence, implicitness_count_ANNOT) + 1);
-	ParseTree::set_text(new_sentence, ParseTree::get_text(current_sentence));
+	Node::set_implicit_in_creation_of(new_sentence, infs);
+	Annotations::write_int(new_sentence, implicitness_count_ANNOT,
+		Annotations::read_int(current_sentence, implicitness_count_ANNOT) + 1);
+	Node::set_text(new_sentence, Node::get_text(current_sentence));
 
 	/* temporarily make the |EVERY_NT| node refer to the specific new |infs|: */
 	Assertions::Refiner::noun_from_infs(g->substitute_at, infs);
 
 	/* make the new sentence an assertion: */
-	new_sentence->down = ParseTree::new(AVERB_NT);
-	ParseTree::annotate_int(new_sentence->down, verb_id_ANNOT, ASSERT_VB);
-	new_sentence->down->next = ParseTree::new(CREATED_NT);
-	ParseTree::copy_subtree(g->look_for, new_sentence->down->next, 0);
-	new_sentence->down->next->next = ParseTree::new(CREATED_NT);
-	ParseTree::copy_subtree(g->what_to_make, new_sentence->down->next->next, 0);
+	new_sentence->down = Node::new(AVERB_NT);
+	Annotations::write_int(new_sentence->down, verb_id_ANNOT, ASSERT_VB);
+	new_sentence->down->next = Node::new(CREATED_NT);
+	Node::copy_subtree(g->look_for, new_sentence->down->next, 0);
+	new_sentence->down->next->next = Node::new(CREATED_NT);
+	Node::copy_subtree(g->what_to_make, new_sentence->down->next->next, 0);
 	new_sentence->down->next->next->next = NULL;
 
 	/* restore the |EVERY_NT| node, now that the tree containing it has been copied: */
-	ParseTree::set_type(g->substitute_at, EVERY_NT);
-	ParseTree::set_subject(g->substitute_at, infs_k);
+	Node::set_type(g->substitute_at, EVERY_NT);
+	Node::set_subject(g->substitute_at, infs_k);
 
 	/* insert this sentence after the current assembly position: */
 	new_sentence->next = assembly_position->next;
@@ -349,7 +349,7 @@ $L$ but each $L$ must contain a $K$.
 
 @<Throw the infinite regress exception if the current sentence makes too many things@> =
 	if (implicit_recursion_exception) return;
-	if (ParseTree::int_annotation(current_sentence, implicitness_count_ANNOT) >= MAX_ASSEMBLY_SIZE) {
+	if (Annotations::read_int(current_sentence, implicitness_count_ANNOT) >= MAX_ASSEMBLY_SIZE) {
 		implicit_recursion_exception = TRUE;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_subject(2, infs_k);

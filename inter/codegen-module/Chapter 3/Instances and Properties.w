@@ -639,10 +639,10 @@ because I6 doesn't allow function calls in a constant context.
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_name), kind_name)) {
 			int found = 0;
 			inter_node_list *PVL =
-				Inter::Node::ID_to_frame_list(X,
+				Inode::ID_to_frame_list(X,
 					Inter::Instance::properties_list(inst_name));
 			@<Work through this frame list of values@>;
-			PVL = Inter::Node::ID_to_frame_list(X,
+			PVL = Inode::ID_to_frame_list(X,
 					Inter::Kind::properties_list(kind_name));
 			@<Work through this frame list of values@>;
 			if (found == 0) WRITE_TO(sticks, " (0)");
@@ -933,7 +933,7 @@ void CodeGen::IP::object_instance(code_generation *gen, inter_tree_node *P) {
 		WRITE("\n    class %S\n", CodeGen::CL::name(inst_kind));
 		CodeGen::IP::append(gen, inst_name);
 		inter_node_list *FL =
-			Inter::Node::ID_to_frame_list(P,
+			Inode::ID_to_frame_list(P,
 				Inter::Instance::properties_list(inst_name));
 		CodeGen::IP::plist(gen, FL);
 		WRITE(";\n\n");

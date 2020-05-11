@@ -339,8 +339,8 @@ void Rulebooks::rb_index_placements(OUTPUT_STREAM, rulebook *rb) {
 	while (npl) {
 		WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		HTML_OPEN_WITH("span", "class=\"smaller\"");
-		WRITE("<i>NB:</i> %W", ParseTree::get_text(npl->placement_sentence));
-		Index::link(OUT, Wordings::first_wn(ParseTree::get_text(npl->placement_sentence)));
+		WRITE("<i>NB:</i> %W", Node::get_text(npl->placement_sentence));
+		Index::link(OUT, Wordings::first_wn(Node::get_text(npl->placement_sentence)));
 		HTML_CLOSE("span");
 		HTML_TAG("br");
 		npl = npl->next;
@@ -410,7 +410,7 @@ Any new rulebook variable name is vetted by being run through this:
 
 @ =
 void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
-	if (ParseTree::get_type(cnode) != PROPERTYCALLED_NT) {
+	if (Node::get_type(cnode) != PROPERTYCALLED_NT) {
 		Problems::quote_source(1, current_sentence);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVarUncalled));
 		Problems::issue_problem_segment(
@@ -424,17 +424,17 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 		return;
 	}
 
-	if (<rulebook-variable-name>(ParseTree::get_text(cnode->down->next))) {
+	if (<rulebook-variable-name>(Node::get_text(cnode->down->next))) {
 		if (<<r>> == NOT_APPLICABLE) return;
 	}
 
 	parse_node *spec = NULL;
-	if (<s-type-expression>(ParseTree::get_text(cnode->down))) spec = <<rp>>;
+	if (<s-type-expression>(Node::get_text(cnode->down))) spec = <<rp>>;
 
 	if ((Specifications::is_description(spec)) &&
 		(Descriptions::is_qualified(spec))) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+		Problems::quote_wording(2, Node::get_text(cnode->down));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableTooSpecific));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make "
@@ -448,10 +448,10 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 		Problems::issue_problem_end();
 		return;
 	}
-	if (ParseTree::is(spec, CONSTANT_NT)) {
+	if (Node::is(spec, CONSTANT_NT)) {
 		LOG("Offending SP: $T", spec);
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+		Problems::quote_wording(2, Node::get_text(cnode->down));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableBadKind));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' is not the name of a kind of "
@@ -463,7 +463,7 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 	kind *K = Specifications::to_kind(spec);
 	if (K == NULL) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+		Problems::quote_wording(2, Node::get_text(cnode->down));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableKindless));
 		Problems::issue_problem_segment(
 			"You wrote %1, but I was expecting to see a kind of value there, "
@@ -474,7 +474,7 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 
 	if (Kinds::Compare::eq(K, K_value)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+		Problems::quote_wording(2, Node::get_text(cnode->down));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableVague));
 		Problems::issue_problem_segment(
 			"You wrote %1, but saying that a variable is a 'value' "
@@ -486,7 +486,7 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 		return;
 	}
 
-	StackedVariables::add_empty(rb->owned_by_rb, ParseTree::get_text(cnode->down->next), K);
+	StackedVariables::add_empty(rb->owned_by_rb, Node::get_text(cnode->down->next), K);
 }
 
 void Rulebooks::make_stvs_accessible(rulebook *rb, stacked_variable_owner *stvo) {

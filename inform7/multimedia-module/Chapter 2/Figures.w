@@ -89,7 +89,7 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Figure... is the file..." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-figure>(SW)) && (<new-figure-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -100,8 +100,8 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 		case TRAVERSE1_SMFT:
 			if (Plugins::Manage::plugged_in(figures_plugin) == FALSE)
 				internal_error("Figures plugin inactive");
-			PL::Figures::register_figure(ParseTree::get_text(V->next),
-				ParseTree::get_text(V->next->next));
+			PL::Figures::register_figure(Node::get_text(V->next),
+				Node::get_text(V->next->next));
 			break;
 	}
 	return FALSE;

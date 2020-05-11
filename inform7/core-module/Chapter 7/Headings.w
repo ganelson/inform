@@ -31,7 +31,7 @@ name_resolution_data *Sentences::Headings::name_resolution_data(noun *t) {
 int no_tags_attached = 0;
 void Sentences::Headings::attach_noun(noun *new_tag) {
 	if (current_sentence == NULL) return;
-	heading *h = Headings::of_wording(ParseTree::get_text(current_sentence));
+	heading *h = Headings::of_wording(Node::get_text(current_sentence));
 	if (h == NULL) return;
 	no_tags_attached++;
 	name_resolution_data *nrd = Sentences::Headings::name_resolution_data(new_tag);
@@ -195,9 +195,9 @@ void Sentences::Headings::construct_noun_search_list(void) {
 current sentence:
 
 @<Work out the heading from which we wish to search@> =
-	if ((current_sentence == NULL) || (Wordings::empty(ParseTree::get_text(current_sentence))))
+	if ((current_sentence == NULL) || (Wordings::empty(Node::get_text(current_sentence))))
 		internal_error("cannot establish position P: there is no current sentence");
-	source_location position_P = Wordings::location(ParseTree::get_text(current_sentence));
+	source_location position_P = Wordings::location(Node::get_text(current_sentence));
 	h = Headings::of_location(position_P);
 
 @ The pseudo-heading has no list of contents because all objects are created in
@@ -415,7 +415,7 @@ void Sentences::Headings::index(OUTPUT_STREAM) {
 			WRITE("Preamble");
 	} else {
 		/* write the text of the heading title */
-		WRITE("%+W", ParseTree::get_text(h->sentence_declaring));
+		WRITE("%+W", Node::get_text(h->sentence_declaring));
 	}
 	HTML_CLOSE("span");
 	HTML_OPEN("span");
@@ -423,8 +423,8 @@ void Sentences::Headings::index(OUTPUT_STREAM) {
 	if (h->level != 0)
 		while ((next_ce) && (next_ce->heading_entered->level > ce->heading_entered->level))
 			next_ce = NEXT_OBJECT(next_ce, contents_entry);
-	int start_word = Wordings::first_wn(ParseTree::get_text(ce->heading_entered->sentence_declaring));
-	int end_word = (next_ce)?(Wordings::first_wn(ParseTree::get_text(next_ce->heading_entered->sentence_declaring)))
+	int start_word = Wordings::first_wn(Node::get_text(ce->heading_entered->sentence_declaring));
+	int end_word = (next_ce)?(Wordings::first_wn(Node::get_text(next_ce->heading_entered->sentence_declaring)))
 		: (TextFromFiles::last_lexed_word(FIRST_OBJECT(source_file)));
 
 	int N = 0;
@@ -458,8 +458,8 @@ void Sentences::Headings::index_heading_recursively(OUTPUT_STREAM, heading *h) {
 		show_heading = FALSE;
 		if ((headings_indexed == 0) &&
 			((next == NULL) ||
-				(Wordings::first_wn(ParseTree::get_text(next->sentence_declaring)) !=
-					Wordings::first_wn(ParseTree::get_text(h->sentence_declaring)))))
+				(Wordings::first_wn(Node::get_text(next->sentence_declaring)) !=
+					Wordings::first_wn(Node::get_text(h->sentence_declaring)))))
 			show_heading = TRUE;
 	}
 	if (Extensions::corresponding_to(h->start_location.file_of_origin))

@@ -769,7 +769,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 @ For example, if the SP is the number 17, we return the proposition {\it is}($x$, 17).
 
 @<It must be an ordinary noun@> =
-	prop = Calculus::Atoms::prop_x_is_constant(ParseTree::duplicate(spec));
+	prop = Calculus::Atoms::prop_x_is_constant(Node::duplicate(spec));
 	@<Typecheck the propositional form, and return@>;
 
 @ In all cases, we finish by doing the following. In the one-atom noun cases

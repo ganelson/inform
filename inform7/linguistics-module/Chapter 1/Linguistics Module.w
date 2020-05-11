@@ -52,7 +52,6 @@ void LinguisticsModule::start(void) {
 	Cardinals::enable_in_word_form();
 	Articles::mark_for_preform();
 	Prepositions::mark_for_preform();
-	Diagrams::setup();
 }
 void LinguisticsModule::end(void) {
 }

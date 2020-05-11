@@ -30,8 +30,8 @@ void Routines::Compile::routine(phrase *ph,
 	applicability_condition *acl) {
 
 	if ((ph->declaration_node == NULL) ||
-		(ParseTree::get_type(ph->declaration_node) != ROUTINE_NT) ||
-		(Wordings::empty(ParseTree::get_text(ph->declaration_node))))
+		(Node::get_type(ph->declaration_node) != ROUTINE_NT) ||
+		(Wordings::empty(Node::get_text(ph->declaration_node))))
 		internal_error("tried to compile phrase with bad ROUTINE node");
 	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", ph->declaration_node);
 
@@ -79,9 +79,9 @@ void Routines::Compile::routine(phrase *ph,
 	current_sentence = ph->declaration_node;
 	if (Phrases::Context::compile_test_head(ph, acl) == FALSE) {
 		if (ph->declaration_node) {
-			ParseTree::verify_structure(ph->declaration_node);
+			VerifyTree::verify_structure(ph->declaration_node);
 			Routines::Compile::code_block_outer(1, ph->declaration_node->down);
-			ParseTree::verify_structure(ph->declaration_node);
+			VerifyTree::verify_structure(ph->declaration_node);
 		}
 		current_sentence = ph->declaration_node;
 		Phrases::Context::compile_test_tail(ph, acl);
@@ -135,7 +135,7 @@ int Routines::Compile::code_block(int statement_count, parse_node *pn, int top_l
 	if (pn) {
 		int m = <s-value-uncached>->multiplicitous;
 		<s-value-uncached>->multiplicitous = TRUE;
-		if (ParseTree::get_type(pn) != CODE_BLOCK_NT) internal_error("not a code block");
+		if (Node::get_type(pn) != CODE_BLOCK_NT) internal_error("not a code block");
 		if ((top_level == FALSE) && (pn->down) && (pn->down->next == NULL) && (pn->down->down == NULL))
 			disallow_let_assignments = TRUE;
 		for (parse_node *p = pn->down; p; p = p->next) {
@@ -148,7 +148,7 @@ int Routines::Compile::code_block(int statement_count, parse_node *pn, int top_l
 }
 
 int Routines::Compile::code_line(int statement_count, parse_node *p) {
-	control_structure_phrase *csp = ParseTree::get_control_structure_used(p);
+	control_structure_phrase *csp = Node::get_control_structure_used(p);
 	parse_node *to_compile = p;
 	if (ControlStructures::opens_block(csp)) {
 		Frames::Blocks::beginning_block_phrase(csp);
@@ -164,10 +164,10 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 }
 
 @<Compile a comment about this line@> =
-	if (Wordings::nonempty(ParseTree::get_text(to_compile))) {
+	if (Wordings::nonempty(Node::get_text(to_compile))) {
 		TEMPORARY_TEXT(C);
 		WRITE_TO(C, "[%d: ", statement_count);
-		CompiledText::comment(C, ParseTree::get_text(to_compile));
+		CompiledText::comment(C, Node::get_text(to_compile));
 		WRITE_TO(C, "]");
 		Emit::code_comment(C);
 		DISCARD_TEXT(C);
@@ -185,11 +185,11 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 		parse_node *inv = Invocations::first_in_list(say_node->down);
 		if (inv) {
 			if (prev_sn) {
-				if ((ParseTree::get_say_verb(inv)) ||
-					(ParseTree::get_say_adjective(inv)) ||
-					((Phrases::TypeData::is_a_say_phrase(ParseTree::get_phrase_invoked(inv))) &&
-						(ParseTree::get_phrase_invoked(inv)->type_data.as_say.say_phrase_running_on)))
-					ParseTree::annotate_int(prev_sn, suppress_newlines_ANNOT, TRUE);
+				if ((Node::get_say_verb(inv)) ||
+					(Node::get_say_adjective(inv)) ||
+					((Phrases::TypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
+						(Node::get_phrase_invoked(inv)->type_data.as_say.say_phrase_running_on)))
+					Annotations::write_int(prev_sn, suppress_newlines_ANNOT, TRUE);
 			}
 		}
 	}
@@ -201,19 +201,19 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 	Routines::Compile::verify_say_node_list(p->down);
 
 @<Compile the midriff@> =
-	if (ParseTree::get_type(to_compile) == INVOCATION_LIST_SAY_NT) @<Compile a say term midriff@>
+	if (Node::get_type(to_compile) == INVOCATION_LIST_SAY_NT) @<Compile a say term midriff@>
 	else if (csp == now_CSP) @<Compile a now midriff@>
 	else if (csp == if_CSP) @<Compile an if midriff@>
 	else if (csp == switch_CSP) @<Compile a switch midriff@>
 	else if ((csp != say_CSP) && (csp != instead_CSP)) {
-		if (<named-rulebook-outcome>(ParseTree::get_text(to_compile)))
+		if (<named-rulebook-outcome>(Node::get_text(to_compile)))
 			@<Compile a named rulebook outline midriff@>
 		else @<Compile a standard midriff@>;
 	}
 
 @<Compile a say term midriff@> =
 	BEGIN_COMPILATION_MODE;
-	if (ParseTree::int_annotation(to_compile, suppress_newlines_ANNOT))
+	if (Annotations::read_int(to_compile, suppress_newlines_ANNOT))
 		COMPILATION_MODE_EXIT(IMPLY_NEWLINES_IN_SAY_CMODE);
 	Routines::Compile::line(to_compile, TRUE, INTER_VOID_VHMODE);
 	END_COMPILATION_MODE;
@@ -224,14 +224,14 @@ henceforth to be true, so we simply compile empty code in that case.
 
 @<Compile a now midriff@> =
 	current_sentence = to_compile;
-	wording XW = ParseTree::get_text(p->down);
+	wording XW = Node::get_text(p->down);
 	parse_node *cs = NULL;
 	if (<s-condition>(XW)) cs = <<rp>>; else cs = Specifications::new_UNKNOWN(XW);
 	LOGIF(MATCHING, "Now cond is $T\n", cs);
 	int rv = Dash::check_condition(cs);
 	LOGIF(MATCHING, "After Dash, it's $T\n", cs);
 
-	if (ParseTree::is(cs, TEST_PROPOSITION_NT)) {
+	if (Node::is(cs, TEST_PROPOSITION_NT)) {
 		if (rv != NEVER_MATCH) {
 			pcalc_prop *prop = Specifications::to_proposition(cs);
 			if (prop) {
@@ -249,8 +249,8 @@ henceforth to be true, so we simply compile empty code in that case.
 
 @<Issue a problem message for the wrong sort of condition in a "now"@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(cs));
-	if (ParseTree::is(cs, TEST_VALUE_NT)) {
+	Problems::quote_wording(2, Node::get_text(cs));
+	if (Node::is(cs, TEST_VALUE_NT)) {
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow1));
 		Problems::issue_problem_segment(
 			"You wrote %1, but although '%2' is a condition which it is legal "
@@ -259,7 +259,7 @@ henceforth to be true, so we simply compile empty code in that case.
 			"depends on current circumstances: so to make it true, you will "
 			"need to adjust those circumstances.");
 		Problems::issue_problem_end();
-	} else if (ParseTree::is(cs, LOGICAL_AND_NT)) {
+	} else if (Node::is(cs, LOGICAL_AND_NT)) {
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow2));
 		Problems::issue_problem_segment(
 			"You wrote %1, but 'now' does not work with the condition '%2' "
@@ -278,7 +278,7 @@ henceforth to be true, so we simply compile empty code in that case.
 @<Issue a problem message for an unrecognised condition@> =
 	LOG("$T\n", current_sentence);
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(cs));
+	Problems::quote_wording(2, Node::get_text(cs));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2'	isn't a condition, so I can't see how to "
@@ -287,7 +287,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 @<Issue a problem message for an unrecognised action@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(cs));
+	Problems::quote_wording(2, Node::get_text(cs));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2'	isn't an action, so I can't see how to try it.");
@@ -301,7 +301,7 @@ henceforth to be true, so we simply compile empty code in that case.
 		if ((ram != RULE_IN_RULEBOOK_EFF) &&
 			(ram != RULE_NOT_IN_RULEBOOK_EFF)) {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(to_compile));
+			Problems::quote_wording(2, Node::get_text(to_compile));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome2));
 			Problems::issue_problem_segment(
 				"You wrote %1, but this is a rulebook outcome which can only be used "
@@ -313,7 +313,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	rulebook *rb = Rulebooks::Outcomes::allow_outcome(nrbo);
 	if (rb) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(to_compile));
+		Problems::quote_wording(2, Node::get_text(to_compile));
 		Problems::quote_wording(3, rb->primary_name);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome));
 		Problems::issue_problem_segment(
@@ -386,20 +386,20 @@ henceforth to be true, so we simply compile empty code in that case.
 				current_sentence = ow_node;
 				Frames::Blocks::divide_code_block();
 
-				if (ParseTree::get_control_structure_used(ow_node) == default_case_CSP) {
+				if (Node::get_control_structure_used(ow_node) == default_case_CSP) {
 					if (pointery) @<Handle a pointery default@>
 					else @<Handle a non-pointery default@>;
 				} else {
-					if (<s-type-expression-or-value>(ParseTree::get_text(ow_node))) {
+					if (<s-type-expression-or-value>(Node::get_text(ow_node))) {
 						parse_node *case_spec = <<rp>>;
 						case_spec = NonlocalVariables::substitute_constants(case_spec);
-						ParseTree::set_evaluation(ow_node, case_spec);
+						Node::set_evaluation(ow_node, case_spec);
 						if (Dash::check_value(case_spec, NULL) != NEVER_MATCH) {
 							kind *case_kind = Specifications::to_kind(case_spec);
 							instance *I = Rvalues::to_object_instance(case_spec);
 							if (I) case_kind = Instances::to_kind(I);
 							LOGIF(MATCHING, "(h.3) switch kind is $u, case kind is $u\n", switch_kind, case_kind);
-							if ((ParseTree::get_kind_of_value(case_spec) == NULL) && (I == NULL)) {
+							if ((Node::get_kind_of_value(case_spec) == NULL) && (I == NULL)) {
 								Problems::quote_source(1, current_sentence);
 								Problems::quote_kind(2, switch_kind);
 								Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueNonConstant));
@@ -442,12 +442,12 @@ henceforth to be true, so we simply compile empty code in that case.
 			int dup = FALSE;
 			for (parse_node *B = A->next; B; B = B->next)
 				if (Rvalues::compare_CONSTANT(
-					ParseTree::get_evaluation(A), ParseTree::get_evaluation(B)))
+					Node::get_evaluation(A), Node::get_evaluation(B)))
 						dup = TRUE;
 			if (dup) {
 				current_sentence = A;
 				Problems::quote_source(1, A);
-				Problems::quote_spec(2, ParseTree::get_evaluation(A));
+				Problems::quote_spec(2, Node::get_evaluation(A));
 				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueDuplicated));
 				Problems::issue_problem_segment(
 					"The case %1 occurs more than once in this 'if' switch.");
@@ -568,15 +568,15 @@ parse_node *void_phrase_please = NULL; /* instructions for the typechecker */
 void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 	int initial_problem_count = problem_count;
 
-	LOGIF(EXPRESSIONS, "\n-- -- Evaluating <%W> -- --\n", ParseTree::get_text(p));
+	LOGIF(EXPRESSIONS, "\n-- -- Evaluating <%W> -- --\n", Node::get_text(p));
 
 	LOGIF(EXPRESSIONS, "(a) Parsing:\n");
 	if (already_parsed) {
 		parse_node *inv = Invocations::first_in_list(p->down);
 		if ((inv) &&
-			(ParseTree::get_phrase_invoked(inv)) &&
-			(Phrases::TypeData::is_a_say_phrase(ParseTree::get_phrase_invoked(inv))) &&
-			(ParseTree::get_phrase_invoked(inv)->type_data.as_say.say_control_structure == NO_SAY_CS)) {
+			(Node::get_phrase_invoked(inv)) &&
+			(Phrases::TypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
+			(Node::get_phrase_invoked(inv)->type_data.as_say.say_control_structure == NO_SAY_CS)) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARACONTENT_HL));
 		}
 	} else {
@@ -592,7 +592,7 @@ void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 		LOGIF(EXPRESSIONS, "(c) Compilation:\n$E", p->down);
 		value_holster VH = Holsters::new(vhm);
 		Invocations::Compiler::compile_invocation_list(&VH,
-			p->down, ParseTree::get_text(p));
+			p->down, Node::get_text(p));
 	}
 
 	if (initial_problem_count == problem_count) {
@@ -672,8 +672,8 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 		if (invl) {
 			parse_node *inv;
 			LOOP_THROUGH_INVOCATION_LIST(inv, invl) {
-				phrase *ph = ParseTree::get_phrase_invoked(inv);
-				if ((ParseTree::get_phrase_invoked(inv)) &&
+				phrase *ph = Node::get_phrase_invoked(inv);
+				if ((Node::get_phrase_invoked(inv)) &&
 					(Phrases::TypeData::is_a_say_phrase(ph))) {
 					int say_cs, ssp_tok, ssp_ctok, ssp_pos;
 					Phrases::TypeData::get_say_data(&(ph->type_data.as_say),
@@ -714,20 +714,20 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 @<This is a middle term in a complex SSP@> =
 	if ((SSP_sp > 0) && (SSP_stack[SSP_sp-1] != -1) &&
 		(compare_words(SSP_stack[SSP_sp-1], ssp_tok))) {
-		ParseTree::annotate_int(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT,
-			ParseTree::int_annotation(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT)+1);
-		ParseTree::annotate_int(inv, ssp_segment_count_ANNOT,
-			ParseTree::int_annotation(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT));
+		Annotations::write_int(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT,
+			Annotations::read_int(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT)+1);
+		Annotations::write_int(inv, ssp_segment_count_ANNOT,
+			Annotations::read_int(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT));
 	} else @<Issue a problem message for middle without start@>;
 
 @<This ends a complex SSP@> =
 	if ((SSP_sp > 0) && (SSP_stack[SSP_sp-1] != -1) &&
 		(compare_words(SSP_stack[SSP_sp-1], ssp_tok))) {
-		ParseTree::annotate_int(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT,
-			ParseTree::int_annotation(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT)+1);
-		ParseTree::annotate_int(SSP_invocations[SSP_sp-1], ssp_closing_segment_wn_ANNOT, ssp_ctok);
-		ParseTree::annotate_int(inv, ssp_segment_count_ANNOT,
-			ParseTree::int_annotation(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT));
+		Annotations::write_int(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT,
+			Annotations::read_int(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT)+1);
+		Annotations::write_int(SSP_invocations[SSP_sp-1], ssp_closing_segment_wn_ANNOT, ssp_ctok);
+		Annotations::write_int(inv, ssp_segment_count_ANNOT,
+			Annotations::read_int(SSP_invocations[SSP_sp-1], ssp_segment_count_ANNOT));
 		SSP_sp--;
 	} else @<Issue a problem message for end without start@>;
 
@@ -762,7 +762,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 @<Issue a problem message for middle without start@> =
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(inv));
+		Problems::quote_wording(2, Node::get_text(inv));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure));
 		Problems::issue_problem_segment(
 			"In the text at %1, the text substitution '[%2]' ought to occur as the "
@@ -775,7 +775,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 @<Issue a problem message for end without start@> =
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(inv));
+		Problems::quote_wording(2, Node::get_text(inv));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure2));
 		Problems::issue_problem_segment(
 			"In the text at %1, the text substitution '[%2]' ought to occur as the "
@@ -820,7 +820,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 @<Issue a problem message for say otherwise interleaved with another construction@> =
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(inv));
+		Problems::quote_wording(2, Node::get_text(inv));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure5));
 		Problems::issue_problem_segment(
 			"In the text at %1, the '[%2]' ought to occur inside an [if ...], but "
@@ -852,7 +852,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 @<Issue a problem message for say end if interleaved with another construction@> =
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(inv));
+		Problems::quote_wording(2, Node::get_text(inv));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure4));
 		Problems::issue_problem_segment(
 			"In the text at %1, the '[%2]' is cut off from its [if ...], because "
@@ -873,7 +873,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 			}
 		if (stinv) {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(stinv));
+			Problems::quote_wording(2, Node::get_text(stinv));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure3));
 			Problems::issue_problem_segment(
 				"In the text at %1, the text substitution '[%2]' seems to start a "

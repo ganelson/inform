@@ -9,7 +9,7 @@ node beneath it of kind "description of K":
 
 =
 parse_node *Descriptions::from_proposition(pcalc_prop *prop, wording W) {
-	parse_node *spec = ParseTree::new_with_words(TEST_VALUE_NT, W);
+	parse_node *spec = Node::new_with_words(TEST_VALUE_NT, W);
 	spec->down = Rvalues::constant_description(prop, W);
 	return spec;
 }
@@ -113,15 +113,15 @@ parse_node *Descriptions::to_rvalue(parse_node *spec) {
 	if (prop) {
 		prop = Calculus::Propositions::trim_universal_quantifier(prop);
 		if (Calculus::Variables::number_free(prop) != 1)
-			return NULL; /* Specifications::new_UNKNOWN(ParseTree::get_text(spec)); */
+			return NULL; /* Specifications::new_UNKNOWN(Node::get_text(spec)); */
 	}
 
-	parse_node *con = ParseTree::new(CONSTANT_NT);
-	ParseTree::set_kind_of_value(con,
+	parse_node *con = Node::new(CONSTANT_NT);
+	Node::set_kind_of_value(con,
 		Kinds::unary_construction(CON_description,
 			Calculus::Variables::infer_kind_of_variable_0(prop)));
-	ParseTree::set_proposition(con, prop);
-	ParseTree::set_text(con, ParseTree::get_text(spec));
+	Node::set_proposition(con, prop);
+	Node::set_text(con, Node::get_text(spec));
 	return con;
 }
 

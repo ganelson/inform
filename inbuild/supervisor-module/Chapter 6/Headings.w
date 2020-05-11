@@ -207,16 +207,16 @@ different way in. (These are never skipped.)
 =
 void Headings::place_implied_level_0(parse_node_tree *T, parse_node *pn) {
 	Headings::attach(T, pn);
-	ParseTree::annotate_int(pn, sentence_unparsed_ANNOT, FALSE);
-	ParseTree::annotate_int(pn, heading_level_ANNOT, 0);
-	ParseTree::annotate_int(pn, implied_heading_ANNOT, TRUE);
+	Annotations::write_int(pn, sentence_unparsed_ANNOT, FALSE);
+	Annotations::write_int(pn, heading_level_ANNOT, 0);
+	Annotations::write_int(pn, implied_heading_ANNOT, TRUE);
 }
 
 @ Either way, we can always get back from the parse node to the heading:
 
 =
 heading *Headings::from_node(parse_node *pn) {
-	return ParseTree::get_embodying_heading(pn);
+	return Node::get_embodying_heading(pn);
 }
 
 @ So, then, each |HEADING_NT| node in the parse tree produces a call to this
@@ -227,20 +227,20 @@ with the result of parsing any caveats in its wording.
 inbuild_work *work_identified = NULL; /* temporary variable during parsing below */
 
 heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
-	if ((pn == NULL) || (Wordings::empty(ParseTree::get_text(pn))))
+	if ((pn == NULL) || (Wordings::empty(Node::get_text(pn))))
 		internal_error("heading at textless node");
-	if (ParseTree::get_type(pn) != HEADING_NT) 
+	if (Node::get_type(pn) != HEADING_NT) 
 		internal_error("declared a non-HEADING node as heading");
-	int level = ParseTree::int_annotation(pn, heading_level_ANNOT);
+	int level = Annotations::read_int(pn, heading_level_ANNOT);
 	if ((level < 0) || (level >= NO_HEADING_LEVELS)) internal_error("impossible level");
 
-	heading *h = Headings::new(T, pn, level, Wordings::location(ParseTree::get_text(pn)));
-	ParseTree::set_embodying_heading(pn, h);
+	heading *h = Headings::new(T, pn, level, Wordings::location(Node::get_text(pn)));
+	Node::set_embodying_heading(pn, h);
 	if (h->level > 0) @<Parse heading text for release or other stipulations@>;
 
 	for (int i=0; i<h->indentation; i++) LOGIF(HEADINGS, "  ");
 	LOGIF(HEADINGS, "Attach heading %W level %d ind %d\n",
-		ParseTree::get_text(pn), h->level, h->indentation);
+		Node::get_text(pn), h->level, h->indentation);
 
 	if (T->headings->assembled_at_least_once)
 		Headings::assemble_tree(T); /* to include new heading: unlikely but possible */
@@ -261,7 +261,7 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
 @<Parse heading text for release or other stipulations@> =
 	current_sentence = pn;
 
-	wording W = ParseTree::get_text(pn);
+	wording W = Node::get_text(pn);
 	while (<heading-qualifier>(W)) {
 		switch (<<r>>) {
 			case PLATFORM_UNMET_HQ: h->omit_material = TRUE; break;
@@ -587,12 +587,12 @@ void Headings::satisfy_individual_heading_dependency(inform_project *proj,
 		if ((h->for_use_with) && (Works::match(E->as_copy->edition->work, work)))
 			loaded = TRUE;
 	LOGIF(HEADINGS, "SIHD on $H: loaded %d: annotation %d: %W: %d\n", h, loaded,
-		ParseTree::int_annotation(h->sentence_declaring,
+		Annotations::read_int(h->sentence_declaring,
 			suppress_heading_dependencies_ANNOT),
 		h->in_place_of_text, h->use_with_or_without);
 	if (Wordings::nonempty(h->in_place_of_text)) {
 		wording S = h->in_place_of_text;
-		if (ParseTree::int_annotation(h->sentence_declaring,
+		if (Annotations::read_int(h->sentence_declaring,
 			suppress_heading_dependencies_ANNOT) == FALSE) {
 			if (<quoted-text>(h->in_place_of_text)) {
 				Word::dequote(Wordings::first_wn(S));
@@ -654,13 +654,13 @@ void Headings::excise_material_under(parse_node_tree *T, inbuild_copy *C,
 	}
 
 	Headings::suppress_dependencies(hpn);
-	if (transfer_to) ParseTree::graft(T, hpn->down, transfer_to);
+	if (transfer_to) SyntaxTree::graft(T, hpn->down, transfer_to);
 	hpn->down = NULL;
 }
 
 @ =
 heading *Headings::find_dependent_heading(parse_node *pn) {
-	if (ParseTree::get_type(pn) == HEADING_NT) {
+	if (Node::get_type(pn) == HEADING_NT) {
 		heading *h = Headings::from_node(pn);
 		if ((h) && (Wordings::nonempty(h->in_place_of_text))) return h;
 	}
@@ -672,8 +672,8 @@ heading *Headings::find_dependent_heading(parse_node *pn) {
 }
 
 void Headings::suppress_dependencies(parse_node *pn) {
-	if (ParseTree::get_type(pn) == HEADING_NT)
-		ParseTree::annotate_int(pn, suppress_heading_dependencies_ANNOT, TRUE);
+	if (Node::get_type(pn) == HEADING_NT)
+		Annotations::write_int(pn, suppress_heading_dependencies_ANNOT, TRUE);
 	for (parse_node *p = pn->down; p; p = p->next)
 		Headings::suppress_dependencies(p);
 }

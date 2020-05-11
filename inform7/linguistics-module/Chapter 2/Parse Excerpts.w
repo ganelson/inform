@@ -170,11 +170,11 @@ if we aren't looking for text substitutions.
 which have a meaning code among those we are looking for:
 
 @d EXCERPT_MEANING_RELEVANT(p)
-	(no_meanings_tried++, ((mc_bitmap & (ParseTree::get_meaning(p)->meaning_code))!=0))
+	(no_meanings_tried++, ((mc_bitmap & (Node::get_meaning(p)->meaning_code))!=0))
 
 @d EXAMINE_EXCERPT_MEANING_IN_DETAIL
 	LOGIF(EXCERPT_PARSING,
-		"Trying $M (parsing mode %d)\n", ParseTree::get_meaning(p), parsing_mode);
+		"Trying $M (parsing mode %d)\n", Node::get_meaning(p), parsing_mode);
 	no_meanings_tried_in_detail++;
 
 @h Exact parsing mode.
@@ -195,14 +195,14 @@ parsing mode).
 @ In exact parsing, the hash codes must agree perfectly:
 
 @<Try to match excerpt in exact parsing mode@> =
-	if (EXCERPT_MEANING_RELEVANT(p) && (h == ParseTree::get_meaning(p)->excerpt_hash)) {
+	if (EXCERPT_MEANING_RELEVANT(p) && (h == Node::get_meaning(p)->excerpt_hash)) {
 		EXAMINE_EXCERPT_MEANING_IN_DETAIL;
-		if (ParseTree::get_meaning(p)->no_em_tokens == Wordings::length(W)) {
+		if (Node::get_meaning(p)->no_em_tokens == Wordings::length(W)) {
 			int j, k, err;
-			for (j=0, k=Wordings::first_wn(W), err = FALSE; j<ParseTree::get_meaning(p)->no_em_tokens; j++, k++)
-				if (ParseTree::get_meaning(p)->em_tokens[j] != Lexer::word(k)) { err=TRUE; break; }
+			for (j=0, k=Wordings::first_wn(W), err = FALSE; j<Node::get_meaning(p)->no_em_tokens; j++, k++)
+				if (Node::get_meaning(p)->em_tokens[j] != Lexer::word(k)) { err=TRUE; break; }
 			if (err == FALSE)
-				results = ExParser::result(ParseTree::get_meaning(p), 1, results);
+				results = ExParser::result(Node::get_meaning(p), 1, results);
 		}
 	}
 
@@ -218,7 +218,7 @@ parsing mode).
 		if (best_p)
 			results =
 				ExParser::result(
-					ParseTree::get_meaning(best_p), best_score, results);
+					Node::get_meaning(best_p), best_score, results);
 	}
 
 @ In maximal matching, we keep only the longest exact match found, and
@@ -227,12 +227,12 @@ never be the case that clashes occur.)
 
 @<Try to match excerpt in maximal parsing mode@> =
 	if (EXCERPT_MEANING_RELEVANT(p) &&
-		((h & ParseTree::get_meaning(p)->excerpt_hash) == ParseTree::get_meaning(p)->excerpt_hash)) {
+		((h & Node::get_meaning(p)->excerpt_hash) == Node::get_meaning(p)->excerpt_hash)) {
 		EXAMINE_EXCERPT_MEANING_IN_DETAIL;
-		if (ParseTree::get_meaning(p)->no_em_tokens <= Wordings::length(W)) {
+		if (Node::get_meaning(p)->no_em_tokens <= Wordings::length(W)) {
 			int j, k, err;
-			for (err=FALSE, j=0, k=Wordings::first_wn(W); j<ParseTree::get_meaning(p)->no_em_tokens; j++, k++)
-				if (ParseTree::get_meaning(p)->em_tokens[j] != Lexer::word(k)) { err = TRUE; break; }
+			for (err=FALSE, j=0, k=Wordings::first_wn(W); j<Node::get_meaning(p)->no_em_tokens; j++, k++)
+				if (Node::get_meaning(p)->em_tokens[j] != Lexer::word(k)) { err = TRUE; break; }
 			if ((err == FALSE) && (j>best_score)) {
 				best_p = p; best_score = j;
 			}
@@ -251,11 +251,11 @@ i.e., where any text X can appear in "award X points", for example.
 	if (EM_ALLOW_BLANK_TEST(mc_bitmap)) {
 		for (p = blank_says_p; p; p = p->next_alternative) {
 			parse_node *this_result =
-				ParseTree::new_with_words(mc_bitmap, W);
-			wording SW = ParseTree::get_text(this_result);
-			ParseTree::copy(this_result, p);
-			ParseTree::set_text(this_result, SW);
-			this_result->down = ParseTree::new_with_words(UNKNOWN_NT, W);
+				Node::new_with_words(mc_bitmap, W);
+			wording SW = Node::get_text(this_result);
+			Node::copy(this_result, p);
+			Node::set_text(this_result, SW);
+			this_result->down = Node::new_with_words(UNKNOWN_NT, W);
 			this_result->next_alternative = results;
 			results = this_result;
 			no_meanings_tried++, no_meanings_tried_in_detail++;
@@ -282,12 +282,12 @@ i.e., where any text X can appear in "award X points", for example.
 though it can be any type of phrase.
 
 @<Try to match excerpt in parametrised parsing mode@> =
-	int eh = ParseTree::get_meaning(p)->excerpt_hash;
+	int eh = Node::get_meaning(p)->excerpt_hash;
 	if (EXCERPT_MEANING_RELEVANT(p) &&
 		((h & eh) == eh) &&
-		((ParseTree::get_meaning(p)->em_tokens[0] == 0) ||
+		((Node::get_meaning(p)->em_tokens[0] == 0) ||
 			((h & CAPITALISED_VARIANT_FORM) == (eh & CAPITALISED_VARIANT_FORM)))) {
-		int no_tokens_to_match = ParseTree::get_meaning(p)->no_em_tokens;
+		int no_tokens_to_match = Node::get_meaning(p)->no_em_tokens;
 		wording saved_W = W;
 		wording params_W[MAX_TOKENS_PER_EXCERPT_MEANING];
 		#ifdef CORE_MODULE
@@ -301,14 +301,14 @@ though it can be any type of phrase.
 		for (err=FALSE, j=0, scan_pos=Wordings::first_wn(W), t=0, bl=0;
 			(j<no_tokens_to_match) && (scan_pos<=Wordings::last_wn(W)); j++) {
 			LOGIF(EXCERPT_PARSING, "j=%d, scan_pos=%d, t=%d\n", j, scan_pos, t);
-			vocabulary_entry *this_word = ParseTree::get_meaning(p)->em_tokens[j];
+			vocabulary_entry *this_word = Node::get_meaning(p)->em_tokens[j];
 			if (this_word) @<We're required to match a fixed word@>
 			else if (j == no_tokens_to_match-1)
 				@<We're required to match a parameter at the excerpt's end@>
 			else
 				@<We're required to match a parameter before the excerpt's end@>;
 		}
-		LOGIF(EXCERPT_PARSING, "outcome has err=%d (hash here %08x)\n", err, ParseTree::get_meaning(p)->excerpt_hash);
+		LOGIF(EXCERPT_PARSING, "outcome has err=%d (hash here %08x)\n", err, Node::get_meaning(p)->excerpt_hash);
 		@<Check the matched parameters for sanity@>;
 		if (err == FALSE) @<Record a successful parametrised match@>;
 		W = saved_W;
@@ -316,7 +316,7 @@ though it can be any type of phrase.
 
 @<Look through to see if there are phrase options at the end@> =
 	#ifdef CORE_MODULE
-	phrase *ph = Routines::ToPhrases::meaning_as_phrase(ParseTree::get_meaning(p));
+	phrase *ph = Routines::ToPhrases::meaning_as_phrase(Node::get_meaning(p));
 	if (Routines::ToPhrases::allows_options(ph)) {
 		LOGIF(EXCERPT_PARSING, "Looking for phrase options\n");
 		for (bl=0, scan_pos=Wordings::first_wn(W)+1; scan_pos<Wordings::last_wn(W); scan_pos++) {
@@ -343,7 +343,7 @@ though it can be any type of phrase.
 @<We're required to match a parameter before the excerpt's end@> =
 	int fixed_words_at_end = 0;
 	for (; j+1+fixed_words_at_end < no_tokens_to_match; fixed_words_at_end++)
-		if (ParseTree::get_meaning(p)->em_tokens[j+1+fixed_words_at_end] == NULL) {
+		if (Node::get_meaning(p)->em_tokens[j+1+fixed_words_at_end] == NULL) {
 			fixed_words_at_end = 0; break;
 		}
 
@@ -351,7 +351,7 @@ though it can be any type of phrase.
 		params_W[t++] = Wordings::new(scan_pos, Wordings::last_wn(W) - fixed_words_at_end);
 		scan_pos = Wordings::last_wn(W) - fixed_words_at_end + 1;
 	} else {
-		vocabulary_entry *sentinel = ParseTree::get_meaning(p)->em_tokens[j+1];
+		vocabulary_entry *sentinel = Node::get_meaning(p)->em_tokens[j+1];
 		int bl_initial = bl;
 		int start_word = scan_pos;
 		err = TRUE;
@@ -394,20 +394,20 @@ nodes for the parameters and any phrase options.
 @<Record a successful parametrised match@> =
 	parse_node *last_param = NULL;
 	parse_node *this_result =
-		ParseTree::new_with_words(ParseTree::get_meaning(p)->meaning_code, W);
-	ParseTree::set_meaning(this_result, ParseTree::get_meaning(p));
+		Node::new_with_words(Node::get_meaning(p)->meaning_code, W);
+	Node::set_meaning(this_result, Node::get_meaning(p));
 	this_result->next_alternative = results;
-	ParseTree::set_score(this_result, 1);
+	Node::set_score(this_result, 1);
 	#ifdef CORE_MODULE
 	if (Wordings::nonempty(ph_opt_W)) {
-		this_result->down = ParseTree::new_with_words(UNKNOWN_NT, ph_opt_W);
-		ParseTree::annotate_int(this_result->down, is_phrase_option_ANNOT, TRUE);
+		this_result->down = Node::new_with_words(UNKNOWN_NT, ph_opt_W);
+		Annotations::write_int(this_result->down, is_phrase_option_ANNOT, TRUE);
 		last_param = this_result->down;
 	}
 	#endif
 	for (int x=0; x<t; x++) {
 		parse_node *p2;
-		p2 = ParseTree::new_with_words(UNKNOWN_NT, params_W[x]);
+		p2 = Node::new_with_words(UNKNOWN_NT, params_W[x]);
 		if (last_param) last_param->next = p2;
 		else this_result->down = p2;
 		last_param = p2;
@@ -444,19 +444,19 @@ abbreviated form of an object name like "Chamber 11".
 	SubsetFailed: ;
 
 @<Try to match excerpt in subset parsing mode@> =
-	if (EXCERPT_MEANING_RELEVANT(p) && ((h & ParseTree::get_meaning(p)->excerpt_hash) == h)) {
+	if (EXCERPT_MEANING_RELEVANT(p) && ((h & Node::get_meaning(p)->excerpt_hash) == h)) {
 		EXAMINE_EXCERPT_MEANING_IN_DETAIL;
-		if (Wordings::length(W) <= ParseTree::get_meaning(p)->no_em_tokens) {
+		if (Wordings::length(W) <= Node::get_meaning(p)->no_em_tokens) {
 			int err = FALSE;
-			if (ParseTree::get_meaning(p)->meaning_code == NOUN_MC) {
-				noun *nt = RETRIEVE_POINTER_noun(ParseTree::get_meaning(p)->data);
+			if (Node::get_meaning(p)->meaning_code == NOUN_MC) {
+				noun *nt = RETRIEVE_POINTER_noun(Node::get_meaning(p)->data);
 				if ((nt) && (Nouns::exactitude(nt))) {
-					LOGIF(EXCERPT_PARSING, "Require exact matching of $M\n", ParseTree::get_meaning(p));
+					LOGIF(EXCERPT_PARSING, "Require exact matching of $M\n", Node::get_meaning(p));
 					err = TRUE;
-					if (ParseTree::get_meaning(p)->no_em_tokens == Wordings::length(W)) {
+					if (Node::get_meaning(p)->no_em_tokens == Wordings::length(W)) {
 						for (j=0, k=Wordings::first_wn(W), err = FALSE;
-							j<ParseTree::get_meaning(p)->no_em_tokens; j++, k++)
-							if (ParseTree::get_meaning(p)->em_tokens[j] != Lexer::word(k)) {
+							j<Node::get_meaning(p)->no_em_tokens; j++, k++)
+							if (Node::get_meaning(p)->em_tokens[j] != Lexer::word(k)) {
 								err=TRUE; break;
 							}
 					}
@@ -465,13 +465,13 @@ abbreviated form of an object name like "Chamber 11".
 			}
 			LOOP_THROUGH_WORDING(k, W) {
 				err = TRUE;
-				for (j=0; j<ParseTree::get_meaning(p)->no_em_tokens; j++)
-					if (ParseTree::get_meaning(p)->em_tokens[j] == Lexer::word(k)) err=FALSE;
+				for (j=0; j<Node::get_meaning(p)->no_em_tokens; j++)
+					if (Node::get_meaning(p)->em_tokens[j] == Lexer::word(k)) err=FALSE;
 				if (err) break;
 			}
 			SubsetMatchDecided:
 			if (err == FALSE) {
-				excerpt_meaning *em = ParseTree::get_meaning(p);
+				excerpt_meaning *em = Node::get_meaning(p);
 				results = ExParser::result(em,
 					100-((em->no_em_tokens) - (Wordings::length(W)-1)),
 					results);
@@ -486,14 +486,14 @@ parse_node *ExParser::result(excerpt_meaning *em, int score, parse_node *alterna
 	parse_node *this_result;
 	if (VALID_POINTER_parse_node(ExcerptMeanings::data(em))) {
 		parse_node *val = RETRIEVE_POINTER_parse_node(ExcerptMeanings::data(em));
-		this_result = ParseTree::new(INVALID_NT);
-		ParseTree::copy(this_result, val);
+		this_result = Node::new(INVALID_NT);
+		Node::copy(this_result, val);
 	} else {
-		this_result = ParseTree::new(em->meaning_code);
-		ParseTree::set_meaning(this_result, em);
+		this_result = Node::new(em->meaning_code);
+		Node::set_meaning(this_result, em);
 	}
 	this_result->next_alternative = alternatives;
-	ParseTree::set_score(this_result, score);
+	Node::set_score(this_result, score);
 	return this_result;
 }
 

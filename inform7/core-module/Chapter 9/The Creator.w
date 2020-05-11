@@ -35,7 +35,7 @@ int problem_count_when_creator_started;
 
 int Assertions::Creator::consult_the_creator(parse_node *px, parse_node *py) {
 	problem_count_when_creator_started = problem_count;
-	if (<s-existential-np>(ParseTree::get_text(px)))
+	if (<s-existential-np>(Node::get_text(px)))
 		@<Perform creation duties on a "There is..." sentence@>
 	else
 		@<Perform creation duties on a copular sentence@>;
@@ -97,14 +97,14 @@ ought to have a |CREATED_NT| node type, but doesn't because it has been read
 as an action instead. We correct the spurious |ACTION_NT| to a |CREATED_NT|.
 
 @<Take care of two ambiguities to do with actions@> =
-	if ((Assertions::Creator::actionlike(px)) && (ParseTree::get_type(py) == CREATED_NT))
-		ParseTree::set_type(py, ACTION_NT);
+	if ((Assertions::Creator::actionlike(px)) && (Node::get_type(py) == CREATED_NT))
+		Node::set_type(py, ACTION_NT);
 	if ((Assertions::Creator::actionlike(px)) && (Assertions::Creator::actionlike(py))) {
 		Assertions::Creator::to_action_node(px);
 		Assertions::Creator::to_action_node(py);
 	}
-	if ((ParseTree::get_type(px) == ACTION_NT) && (ParseTree::get_type(py) == KIND_NT))
-		ParseTree::set_type(px, CREATED_NT);
+	if ((Node::get_type(px) == ACTION_NT) && (Node::get_type(py) == KIND_NT))
+		Node::set_type(px, CREATED_NT);
 
 @ There are two ways to know the kind being expressed. One is that the sentence
 makes unambiguous use of a relation which forces the kinds on each side. For
@@ -147,9 +147,9 @@ The other way to find the kinds is to look at what the two sides explicitly say:
 @ =
 int Assertions::Creator::actionlike(parse_node *p) {
 	#ifdef IF_MODULE
-	if (ParseTree::get_type(p) == ACTION_NT) return TRUE;
-	if (ParseTree::get_type(p) == PROPER_NOUN_NT) {
-		parse_node *spec = ParseTree::get_evaluation(p);
+	if (Node::get_type(p) == ACTION_NT) return TRUE;
+	if (Node::get_type(p) == PROPER_NOUN_NT) {
+		parse_node *spec = Node::get_evaluation(p);
 		if (Rvalues::is_CONSTANT_of_kind(spec, K_stored_action))
 			return TRUE;
 	}
@@ -159,13 +159,13 @@ int Assertions::Creator::actionlike(parse_node *p) {
 
 void Assertions::Creator::to_action_node(parse_node *p) {
 	#ifdef IF_MODULE
-	if (ParseTree::get_type(p) == ACTION_NT) return;
-	if (ParseTree::get_type(p) == PROPER_NOUN_NT) {
-		parse_node *spec = ParseTree::get_evaluation(p);
+	if (Node::get_type(p) == ACTION_NT) return;
+	if (Node::get_type(p) == PROPER_NOUN_NT) {
+		parse_node *spec = Node::get_evaluation(p);
 		if (Rvalues::is_CONSTANT_of_kind(spec, K_stored_action)) {
-			action_pattern *ap = ParseTree::get_constant_action_pattern(spec);
-			ParseTree::set_type(p, ACTION_NT);
-			ParseTree::set_action_meaning(p, ap);
+			action_pattern *ap = Node::get_constant_action_pattern(spec);
+			Node::set_type(p, ACTION_NT);
+			Node::set_action_meaning(p, ap);
 			return;
 		}
 	}
@@ -177,7 +177,7 @@ void Assertions::Creator::to_action_node(parse_node *p) {
 
 =
 binary_predicate *Assertions::Creator::bp_of_subtree(parse_node *p) {
-	if ((p) && (ParseTree::get_type(p) == RELATIONSHIP_NT)) return ParseTree::get_relationship(p);
+	if ((p) && (Node::get_type(p) == RELATIONSHIP_NT)) return Node::get_relationship(p);
 	return NULL;
 }
 
@@ -186,12 +186,12 @@ binary_predicate *Assertions::Creator::bp_of_subtree(parse_node *p) {
 =
 kind *Assertions::Creator::kind_of_subtree(parse_node *p, parse_node **governing) {
 	if (p == NULL) return NULL;
-	switch (ParseTree::get_type(p)) {
+	switch (Node::get_type(p)) {
 		case AND_NT: @<Recurse downwards, preferring the leftmost item in a list@>;
 		case WITH_NT: return Assertions::Creator::kind_of_subtree(p->down, governing); /* the owner, not the property */
 		case KIND_NT: @<Handle the kind of a "kind of..." clause@>;
 		default: {
-			parse_node *spec = ParseTree::get_evaluation(p);
+			parse_node *spec = Node::get_evaluation(p);
 			@<Kinds of variable and of value produce the obvious kind as result@>;
 			@<Initially values produce their own weakened kind@>;
 			@<Descriptions produce the kind of whatever's described@>;
@@ -212,7 +212,7 @@ in the node's subject, so this case is easy.
 
 @<Handle the kind of a "kind of..." clause@> =
 	*governing = p;
-	return InferenceSubjects::domain(ParseTree::get_subject(p));
+	return InferenceSubjects::domain(Node::get_subject(p));
 
 @ Less surprisingly, "number that varies" and "number" return |K_number|.
 
@@ -232,7 +232,7 @@ in the node's subject, so this case is easy.
 
 @<Initially values produce their own weakened kind@> =
 	if ((prevailing_mood == INITIALLY_CE) || (prevailing_mood == CERTAIN_CE)) {
-		if ((ParseTree::is(spec, CONSTANT_NT)) ||
+		if ((Node::is(spec, CONSTANT_NT)) ||
 			(Lvalues::is_constant_NONLOCAL_VARIABLE(spec))) {
 			*governing = p;
 			return Kinds::weaken(Specifications::to_kind(spec));
@@ -285,7 +285,7 @@ void Assertions::Creator::tabular_definitions(table *t) {
 }
 
 void Assertions::Creator::noun_creator(parse_node *p, kind *create_as, parse_node *governor) {
-	switch (ParseTree::get_type(p)) {
+	switch (Node::get_type(p)) {
 		case CALLED_NT: @<Check we are sure about this@>; @<Perform creation on a CALLED node@>; return;
 		case CREATED_NT: @<Check we are sure about this@>; @<Perform creation on a CREATED node@>; return;
 	}
@@ -320,8 +320,8 @@ an object, but we know locally that Peter must further have the kind "man".
 	parse_node *what_to_make_node = p->down; /* e.g., "a man" */
 	parse_node *called_name_node = p->down->next; /* a |CREATED_NT| node, e.g., "Peter" */
 
-	if ((ParseTree::get_type(what_to_make_node) != COMMON_NOUN_NT) &&
-		(ParseTree::get_type(what_to_make_node) != WITH_NT)) {
+	if ((Node::get_type(what_to_make_node) != COMMON_NOUN_NT) &&
+		(Node::get_type(what_to_make_node) != WITH_NT)) {
 		@<Complain that nothing else can be called@>; return;
 	}
 
@@ -340,16 +340,16 @@ or adjectives specified in the |what_to_make_node| side.
 
 @<Replace the CALLED subtree with the new creation, mutatis mutandis@> =
 	parse_node *p_sibling = p->next;
-	ParseTree::copy(p, called_name_node); p->down = NULL; p->next = p_sibling;
+	Node::copy(p, called_name_node); p->down = NULL; p->next = p_sibling;
 
-	inference_subject *new_creation = ParseTree::get_subject(p);
-	inference_subject *its_domain = ParseTree::get_subject(what_to_make_node);
+	inference_subject *new_creation = Node::get_subject(p);
+	inference_subject *its_domain = Node::get_subject(what_to_make_node);
 
 	if ((new_creation) && (its_domain))
 		Calculus::Propositions::Abstract::assert_kind_of_subject(new_creation, its_domain,
-			Specifications::to_proposition(ParseTree::get_evaluation(what_to_make_node)));
+			Specifications::to_proposition(Node::get_evaluation(what_to_make_node)));
 
-	if (ParseTree::get_type(what_to_make_node) == WITH_NT)
+	if (Node::get_type(what_to_make_node) == WITH_NT)
 		Assertions::PropertyKnowledge::assert_property_list(p, what_to_make_node->down->next);
 
 @ Ordinarily the use of the definite article doesn't tell us much, but
@@ -363,9 +363,9 @@ is why the following only applies to those.)
 
 @<If the CALLED name used the definite article, make a note of that@> =
 	#ifdef IF_MODULE
-	if ((ParseTree::get_type(called_name_node) == PROPER_NOUN_NT) &&
-		(ParseTree::int_annotation(called_name_node, nounphrase_article_ANNOT) == DEF_ART)) {
-		inference_subject *subj = ParseTree::get_subject(p);
+	if ((Node::get_type(called_name_node) == PROPER_NOUN_NT) &&
+		(Annotations::read_int(called_name_node, nounphrase_article_ANNOT) == DEF_ART)) {
+		inference_subject *subj = Node::get_subject(p);
 		if ((InferenceSubjects::is_an_object(subj)) ||
 			(InferenceSubjects::is_a_kind_of_object(subj)))
 			PL::Naming::object_takes_definite_article(subj);
@@ -385,8 +385,8 @@ disappears from the tree entirely when the creator has finished work.
 		"would not normally mean anything to me, because 'archway' is not one of the "
 		"standard kinds in Inform. (Try consulting the Kinds index.)");
 	/* now recover from the error as best we can: */
-	ParseTree::set_type(p, CREATED_NT);
-	ParseTree::set_text(p, ParseTree::get_text(called_name_node));
+	Node::set_type(p, CREATED_NT);
+	Node::set_text(p, Node::get_text(called_name_node));
 	p->down = NULL;
 
 @ Names are not permitted to contain brackets, but we do allow them as an indicator
@@ -408,14 +408,14 @@ of |COMMON_NOUN_NT| (e.g., "Colour is a kind of value"); or |PROPER_NOUN_NT|
 from the tree.
 
 @<Perform creation on a CREATED node@> =
-	wording W = ParseTree::get_text(p);
+	wording W = Node::get_text(p);
 	if (Wordings::empty(W)) internal_error("CREATED node without name");
 	if (<grammatical-gender-marker>(W)) {
 		W = GET_RW(<grammatical-gender-marker>, 1);
-		ParseTree::annotate_int(p, gender_reference_ANNOT, -(<<r>> + 1));
+		Annotations::write_int(p, gender_reference_ANNOT, -(<<r>> + 1));
 	}
 	if (<creation-problem-diagnosis>(W)) W = EMPTY_WORDING;
-	ParseTree::set_text(p, W);
+	Node::set_text(p, W);
 	if (((create_as == NULL) || (Kinds::Compare::le(create_as, K_object))) &&
 		(prevailing_mood != INITIALLY_CE) &&
 		(prevailing_mood != CERTAIN_CE)) {
@@ -423,13 +423,13 @@ from the tree.
 		if (Wordings::nonempty(W)) @<Create an object or kind of object rather than a value@>;
 		if (recent_creation) {
 			Assertions::Refiner::noun_from_infs(p, Instances::as_subject(recent_creation));
-			ParseTree::annotate_int(p, creation_site_ANNOT, TRUE);
+			Annotations::write_int(p, creation_site_ANNOT, TRUE);
 		}
 	} else {
 		parse_node *val = NULL;
 		if (Wordings::nonempty(W)) @<Create a value rather than an object@>;
 		Assertions::Refiner::noun_from_value(p, val);
-		if (val) ParseTree::annotate_int(p, creation_site_ANNOT, TRUE);
+		if (val) Annotations::write_int(p, creation_site_ANNOT, TRUE);
 	}
 
 @ There now follows a pretty tedious trawl through reasons to object to names.
@@ -597,7 +597,7 @@ to abbreviated forms of object names are normally allowed.
 
 @<Actually create a fresh object@> =
 	int is_a_kind = FALSE;
-	if ((governor) && (ParseTree::get_type(governor) == KIND_NT)) is_a_kind = TRUE;
+	if ((governor) && (Node::get_type(governor) == KIND_NT)) is_a_kind = TRUE;
 
 	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(K_object, W);
 	if (is_a_kind)
@@ -607,12 +607,12 @@ to abbreviated forms of object names are normally allowed.
 	if (is_a_kind == FALSE) {
 		recent_creation = latest_instance;
 		#ifdef IF_MODULE
-		if (ParseTree::int_annotation(p, plural_reference_ANNOT))
+		if (Annotations::read_int(p, plural_reference_ANNOT))
 			PL::Naming::object_now_has_plural_name(recent_creation);
-		if (ParseTree::int_annotation(p, nounphrase_article_ANNOT) == NO_ART)
+		if (Annotations::read_int(p, nounphrase_article_ANNOT) == NO_ART)
 			PL::Naming::object_now_has_proper_name(recent_creation);
 		#endif
-		int g = ParseTree::int_annotation(p, gender_reference_ANNOT);
+		int g = Annotations::read_int(p, gender_reference_ANNOT);
 		if ((g != 0) &&
 			(P_grammatical_gender) &&
 			(no_ggs_recorded == NO_GRAMMATICAL_GENDERS)) {
@@ -626,14 +626,14 @@ to abbreviated forms of object names are normally allowed.
 	} else {
 		parse_node *val = Specifications::from_kind(latest_base_kind_of_value);
 		Assertions::Refiner::noun_from_value(p, val);
-		ParseTree::annotate_int(p, creation_site_ANNOT, TRUE);
+		Annotations::write_int(p, creation_site_ANNOT, TRUE);
 	}
 
 @ Something of a rag-bag, this: it's everything else that can be created.
 
 @<Create a value rather than an object@> =
-	parse_node *governing_spec = ParseTree::get_evaluation(governor);
-	if ((governor) && (ParseTree::get_type(governor) == KIND_NT))
+	parse_node *governing_spec = Node::get_evaluation(governor);
+	if ((governor) && (Node::get_type(governor) == KIND_NT))
 		@<Create a new kind of value@>
 	else if ((Specifications::is_new_variable_like(governing_spec)) ||
 		(prevailing_mood == INITIALLY_CE) ||
@@ -654,7 +654,7 @@ to abbreviated forms of object names are normally allowed.
 	else
 		@<Issue an unable-to-create problem message@>;
 	Index::DocReferences::position_of_symbol(&W);
-	ParseTree::set_text(p, W);
+	Node::set_text(p, W);
 
 @<Create a new kind of value@> =
 	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(NULL, W);
@@ -663,7 +663,7 @@ to abbreviated forms of object names are normally allowed.
 	val = Specifications::from_kind(latest_base_kind_of_value);
 
 @<Create a new variable@> =
-	kind *domain = ParseTree::get_kind_of_value(governing_spec);
+	kind *domain = Node::get_kind_of_value(governing_spec);
 	if (domain == NULL) domain = Kinds::weaken(Specifications::to_kind(governing_spec));
 	if (Specifications::is_new_variable_like(governing_spec))
 		domain = Specifications::kind_of_new_variable_like(governing_spec);
@@ -679,7 +679,7 @@ to abbreviated forms of object names are normally allowed.
 
 @<Create an instance of an enumerated kind@> =
 	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(create_as, W);
-	pcalc_prop *such_that = ParseTree::get_creation_proposition(governor);
+	pcalc_prop *such_that = Node::get_creation_proposition(governor);
 	if (such_that) prop = Calculus::Propositions::concatenate(prop, such_that);
 	Calculus::Propositions::Assert::assert_true(prop, prevailing_mood);
 	val = Rvalues::from_instance(latest_instance);
@@ -696,18 +696,18 @@ them by asserting propositions to be true; we act directly.
 	if (Kinds::Compare::eq(producing, K_value)) producing = K_nil;
 	create_as = Kinds::binary_construction(CON_rulebook, basis, producing);
 	if (governor)
-		ParseTree::set_evaluation(governor,
+		Node::set_evaluation(governor,
 			Specifications::from_kind(create_as));
 	package_request *P = Hierarchy::local_package(RULEBOOKS_HAP);
 	rulebook *rb = Rulebooks::new(create_as, W, P);
 
 	val = Rvalues::from_rulebook(rb);
-	ParseTree::annotate_int(current_sentence, clears_pronouns_ANNOT, TRUE);
+	Annotations::write_int(current_sentence, clears_pronouns_ANNOT, TRUE);
 
 @<Create a new activity@> =
 	activity *av = Activities::new(create_as, W);
 	val = Rvalues::from_activity(av);
-	ParseTree::annotate_int(current_sentence, clears_pronouns_ANNOT, TRUE);
+	Annotations::write_int(current_sentence, clears_pronouns_ANNOT, TRUE);
 
 @ And to wind up, sundry problem messages.
 
@@ -825,8 +825,8 @@ void Assertions::Creator::convert_instance_to_nounphrase(parse_node *p, binary_p
 	#endif
 	int instance_count;
 	wording CW = EMPTY_WORDING; /* the calling */
-	if (<text-ending-with-a-calling>(ParseTree::get_text(p))) {
-		ParseTree::set_text(p, GET_RW(<text-ending-with-a-calling>, 1)); /* the text before the bracketed clause */
+	if (<text-ending-with-a-calling>(Node::get_text(p))) {
+		Node::set_text(p, GET_RW(<text-ending-with-a-calling>, 1)); /* the text before the bracketed clause */
 		CW = GET_RW(<text-ending-with-a-calling>, 2); /* the bracketed text */
 		if (<article>(CW)) {
 			@<Issue a problem for calling something an article@>;
@@ -834,16 +834,16 @@ void Assertions::Creator::convert_instance_to_nounphrase(parse_node *p, binary_p
 		}
 	}
 	kind *instance_kind = K_object;
-	if (Specifications::is_kind_like(ParseTree::get_evaluation(p)))
-		instance_kind = Specifications::to_kind(ParseTree::get_evaluation(p));
+	if (Specifications::is_kind_like(Node::get_evaluation(p)))
+		instance_kind = Specifications::to_kind(Node::get_evaluation(p));
 	if ((Kinds::Compare::le(instance_kind, K_object) == FALSE) &&
 		(Kinds::Behaviour::has_named_constant_values(instance_kind) == FALSE))
 		@<Point out that it's impossible to create values implicitly for this kind@>;
 	@<Calculate the instance count, that is, the number of duplicates to be made@>;
-	parse_node *list_subtree = ParseTree::new(COMMON_NOUN_NT);
+	parse_node *list_subtree = Node::new(COMMON_NOUN_NT);
 	parse_node *original_next = p->next;
 	@<Construct a list subtree containing the right number of duplicates@>;
-	ParseTree::copy(p, list_subtree);
+	Node::copy(p, list_subtree);
 	p->next = original_next;
 }
 
@@ -857,7 +857,7 @@ void Assertions::Creator::convert_instance_to_nounphrase(parse_node *p, binary_p
 		"value which I can just create new values for.");
 	Problems::issue_problem_end();
 	instance_kind = K_object;
-	ParseTree::annotate_int(p, multiplicity_ANNOT, 1);
+	Annotations::write_int(p, multiplicity_ANNOT, 1);
 
 @<Issue a problem for calling something an article@> =
 	Problems::quote_source(1, current_sentence);
@@ -877,7 +877,7 @@ message says about performance, too.)
 @d MAX_DUPLICATES_AT_ONCE 100 /* change the problem message below if this is changed */
 
 @<Calculate the instance count, that is, the number of duplicates to be made@> =
-	instance_count = ParseTree::int_annotation(p, multiplicity_ANNOT);
+	instance_count = Annotations::read_int(p, multiplicity_ANNOT);
 	if (instance_count < 1) instance_count = 1;
 	if (instance_count > MAX_DUPLICATES_AT_ONCE) {
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_TooManyDuplicates),
@@ -899,15 +899,15 @@ to a different vehicle object.
 		inference_subject *new_instance = NULL;
 		@<Fashion a new object matching the description in the COMMON NOUN node@>;
 		if (i < instance_count) {
-			ParseTree::set_type_and_clear_annotations(attach_to, AND_NT);
-			attach_to->down = ParseTree::new(PROPER_NOUN_NT);
+			Node::set_type_and_clear_annotations(attach_to, AND_NT);
+			attach_to->down = Node::new(PROPER_NOUN_NT);
 			Assertions::Refiner::noun_from_infs(attach_to->down, new_instance);
-			ParseTree::annotate_int(attach_to->down, creation_site_ANNOT, TRUE);
-			attach_to->down->next = ParseTree::new(PROPER_NOUN_NT);
+			Annotations::write_int(attach_to->down, creation_site_ANNOT, TRUE);
+			attach_to->down->next = Node::new(PROPER_NOUN_NT);
 			attach_to = attach_to->down->next;
 		} else {
 			Assertions::Refiner::noun_from_infs(attach_to, new_instance);
-			ParseTree::annotate_int(attach_to, creation_site_ANNOT, TRUE);
+			Annotations::write_int(attach_to, creation_site_ANNOT, TRUE);
 		}
 	}
 
@@ -919,7 +919,7 @@ to a different vehicle object.
 	if (Kinds::Compare::le(instance_kind, K_object) == FALSE)
 		@<Check that the new name is non-empty and distinct from all existing ones@>;
 	NW = Wordings::truncate(NW, 32); /* truncate to the maximum length */
-	parse_node *pz = ParseTree::new(PROPER_NOUN_NT);
+	parse_node *pz = Node::new(PROPER_NOUN_NT);
 	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(instance_kind, NW);
 	Calculus::Propositions::Assert::assert_true(prop, prevailing_mood);
 	new_instance = Instances::as_subject(latest_instance);
@@ -935,7 +935,7 @@ to a different vehicle object.
 	if (propriety) PL::Naming::now_has_proper_name(new_instance);
 	#endif
 	Assertions::Refiner::noun_from_infs(pz, new_instance);
-	ParseTree::annotate_int(pz, creation_site_ANNOT, TRUE);
+	Annotations::write_int(pz, creation_site_ANNOT, TRUE);
 	Assertions::Maker::make_assertion_recursive(pz, p);
 
 @ The following is used only in assemblies, where the instance count is always
@@ -943,13 +943,13 @@ to a different vehicle object.
 and an |COMMON_NOUN_NT| node, "nose".
 
 @<Confect a name for the new object, if that's the bag we're into@> =
-	inference_subject *owner = ParseTree::get_implicit_in_creation_of(current_sentence);
+	inference_subject *owner = Node::get_implicit_in_creation_of(current_sentence);
 	if ((owner) && (instance_count == 1) &&
 		((confect_name_flag) ||
 		(Kinds::Compare::le(instance_kind, K_object) == FALSE) || (Wordings::nonempty(CW)))) {
 		wording OW = InferenceSubjects::get_name_text(owner);
 
-		inference_subject *subject_here = ParseTree::get_subject(p);
+		inference_subject *subject_here = Node::get_subject(p);
 		if (subject_here) {
 			NW = InferenceSubjects::get_name_text(subject_here);
 		}

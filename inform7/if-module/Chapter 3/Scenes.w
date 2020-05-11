@@ -298,7 +298,7 @@ int PL::Scenes::begins_when_SMF(int task, parse_node *V, wording *NPs) {
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "The Ballroom Scene begins when..." */
 		case ACCEPT_SMFT:
-			ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<nounphrase>(OW);
 			parse_node *O = <<rp>>;
 			<nounphrase>(SW);
@@ -325,7 +325,7 @@ int PL::Scenes::ends_when_SMF(int task, parse_node *V, wording *NPs) {
 	wording O2W = (NPs)?(NPs[2]):EMPTY_WORDING;
 	switch (task) { /* "The Ballroom Scene ends when..." */
 		case ACCEPT_SMFT:
-			ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<nounphrase>(OW);
 			parse_node *O = <<rp>>;
 			<nounphrase>(SW);
@@ -472,14 +472,14 @@ void PL::Scenes::new_scene_anchor(parse_node *p, int phase, int given_end) {
 	parse_node *external_condition = NULL; /* Or: an absolute condition... */
 	int when_play_begins = FALSE; /* Or: anchor to the start of play */
 
-	wording SW = ParseTree::get_text(p->next); /* scene name */
+	wording SW = Node::get_text(p->next); /* scene name */
 	wording EW = EMPTY_WORDING; /* end name, if any */
 	wording CW = EMPTY_WORDING; /* condition for end to occur */
 	if (p->next->next->next) {
-		EW = ParseTree::get_text(p->next->next);
-		CW = ParseTree::get_text(p->next->next->next);
+		EW = Node::get_text(p->next->next);
+		CW = Node::get_text(p->next->next->next);
 	} else {
-		CW = ParseTree::get_text(p->next->next);
+		CW = Node::get_text(p->next->next);
 	}
 
 	@<Parse the scene and end to be anchored@>;
@@ -701,11 +701,11 @@ void PL::Scenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s, inter_sy
 
 @<Reparse the scene end condition in this new context@> =
 	current_sentence = sc->anchor_condition_set[end];
-	if (ParseTree::is(S, UNKNOWN_NT)) {
-		if (<s-condition>(ParseTree::get_text(S))) S = <<rp>>;
+	if (Node::is(S, UNKNOWN_NT)) {
+		if (<s-condition>(Node::get_text(S))) S = <<rp>>;
 		sc->anchor_condition[end] = S;
 	}
-	if (ParseTree::is(S, UNKNOWN_NT)) {
+	if (Node::is(S, UNKNOWN_NT)) {
 		LOG("Condition: $P\n", S);
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesBadCondition),
 			"'begins when' and 'ends when' must be followed by a condition",

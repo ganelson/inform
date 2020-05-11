@@ -9,7 +9,7 @@ adjective_meaning *Phrases::Condition::ADJ_parse(parse_node *q,
 	definition *def = Phrases::Adjectives::def_new(q);
 	adjective_meaning *am =
 		Adjectives::Meanings::new(CONDITION_KADJ, STORE_POINTER_definition(def),
-			ParseTree::get_text(q));
+			Node::get_text(q));
 	def->condition_to_match = CONW;
 	def->format = sense;
 	def->domain_calling = CALLW;

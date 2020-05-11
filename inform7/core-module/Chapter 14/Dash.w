@@ -165,15 +165,15 @@ All of these funnel downwards into level 2:
 
 =
 int Dash::check_condition(parse_node *p) {
-	parse_node *cn = ParseTree::new(CONDITION_CONTEXT_NT);
+	parse_node *cn = Node::new(CONDITION_CONTEXT_NT);
 	cn->down = p;
 	LOGIF(MATCHING, "Dash (1): condition\n");
 	return Dash::funnel_to_level_2(cn, FALSE);
 }
 
 int Dash::check_value(parse_node *p, kind *K) {
-	parse_node *vn = ParseTree::new(RVALUE_CONTEXT_NT);
-	if (K) ParseTree::set_kind_required_by_context(vn, K);
+	parse_node *vn = Node::new(RVALUE_CONTEXT_NT);
+	if (K) Node::set_kind_required_by_context(vn, K);
 	vn->down = p;
 	if (K) LOGIF(MATCHING, "Dash (1): value of kind $u\n", K);
 	if (K == NULL) LOGIF(MATCHING, "Dash (1): value\n");
@@ -181,8 +181,8 @@ int Dash::check_value(parse_node *p, kind *K) {
 }
 
 int Dash::check_value_silently(parse_node *p, kind *K) {
-	parse_node *vn = ParseTree::new(RVALUE_CONTEXT_NT);
-	if (K) ParseTree::set_kind_required_by_context(vn, K);
+	parse_node *vn = Node::new(RVALUE_CONTEXT_NT);
+	if (K) Node::set_kind_required_by_context(vn, K);
 	vn->down = p;
 	if (K) LOGIF(MATCHING, "Dash (1): value of kind $u\n", K);
 	if (K == NULL) LOGIF(MATCHING, "Dash (1): value\n");
@@ -190,7 +190,7 @@ int Dash::check_value_silently(parse_node *p, kind *K) {
 }
 
 int Dash::check_invl(parse_node *p) {
-	LOGIF(MATCHING, "Dash (1): invocation list '%W'\n", ParseTree::get_text(p));
+	LOGIF(MATCHING, "Dash (1): invocation list '%W'\n", Node::get_text(p));
 	return Dash::funnel_to_level_2(p, FALSE);
 }
 
@@ -268,7 +268,7 @@ then it will be the "random ..." phrase which is backtraced, and not the
 @<Consider adding a backtrace of what the type-checker was up to@> =
 	if (problem_count > backtraced_problem_count) {
 		if ((p) && (p->down) &&
-			(ParseTree::get_type(p) == INVOCATION_LIST_NT)) {
+			(Node::get_type(p) == INVOCATION_LIST_NT)) {
 			it_is_not_worth_adding = TRUE;
 			@<Backtrace what phrase definitions the type-checker was looking at@>;
 			it_is_not_worth_adding = FALSE;
@@ -287,7 +287,7 @@ from a text substitution.)
 
 	int to_show = 0;
 	LOOP_THROUGH_ALTERNATIVES(inv, p->down) {
-		phrase *ph = ParseTree::get_phrase_invoked(inv);
+		phrase *ph = Node::get_phrase_invoked(inv);
 		if (Phrases::TypeData::is_a_spare_say_X_phrase(&(ph->type_data))) continue;
 		to_show++;
 	}
@@ -315,7 +315,7 @@ from a text substitution.)
 @<Produce the list of possibilities@> =
 	int shown = 0;
 	LOOP_THROUGH_ALTERNATIVES(inv, p->down) {
-		phrase *ph = ParseTree::get_phrase_invoked(inv);
+		phrase *ph = Node::get_phrase_invoked(inv);
 		if (Phrases::TypeData::is_a_spare_say_X_phrase(&(ph->type_data))) continue;
 		shown++;
 		Problems::quote_number(1, &shown);
@@ -335,7 +335,7 @@ from a text substitution.)
 	int any = FALSE;
 	inv_token_problem_token *itpt;
 	LOOP_OVER(itpt, inv_token_problem_token)
-		if (ParseTree::is(itpt->as_parsed, UNKNOWN_NT) == FALSE)
+		if (Node::is(itpt->as_parsed, UNKNOWN_NT) == FALSE)
 			if (itpt->already_described == FALSE) {
 				itpt->already_described = TRUE;
 				if (any == FALSE) {
@@ -359,7 +359,7 @@ from a text substitution.)
 		if (Kinds::Compare::eq(K, K_real_number)) real_found = TRUE;
 		if (ParseTreeUsage::is_lvalue(itpt->as_parsed))
 			@<Produce the token for an lvalue@>
-		else if (ParseTree::is(itpt->as_parsed, PHRASE_TO_DECIDE_VALUE_NT))
+		else if (Node::is(itpt->as_parsed, PHRASE_TO_DECIDE_VALUE_NT))
 			@<Produce the token for a phrase deciding a value@>
 		else
 			@<Produce the token for a constant rvalue@>;
@@ -381,8 +381,8 @@ from a text substitution.)
 				"but which I can't make sense of";
 			for (int i=0; i<Invocations::get_no_tokens(inv); i++) {
 				parse_node *tok = Invocations::get_token_as_parsed(inv, i);
-				if (ParseTree::is(tok, UNKNOWN_NT)) {
-					Problems::quote_wording(4, ParseTree::get_text(tok));
+				if (Node::is(tok, UNKNOWN_NT)) {
+					Problems::quote_wording(4, Node::get_text(tok));
 					seg = "%1 = an instruction I think should work out <i>%3</i>, "
 						"but which I can't perform because '%4' doesn't make sense here";
 					break;
@@ -395,7 +395,7 @@ from a text substitution.)
 @<Produce the token for a constant rvalue@> =
 	char *seg = "%1 = <i>%3</i>";
 	if (Rvalues::is_CONSTANT_construction(itpt->as_parsed, CON_property)) {
-		property *prn = ParseTree::get_constant_property(itpt->as_parsed);
+		property *prn = Node::get_constant_property(itpt->as_parsed);
 		if (Properties::is_value_property(prn)) {
 			binary_predicate *bp = Properties::Valued::get_stored_relation(prn);
 			if (bp) {
@@ -411,7 +411,7 @@ from a text substitution.)
 	int unknowns = 0;
 	inv_token_problem_token *itpt;
 	LOOP_OVER(itpt, inv_token_problem_token)
-		if ((ParseTree::is(itpt->as_parsed, UNKNOWN_NT)) && (itpt->new_name))
+		if ((Node::is(itpt->as_parsed, UNKNOWN_NT)) && (itpt->new_name))
 			if (itpt->already_described == FALSE) {
 				itpt->already_described = TRUE;
 				if (unknowns < 5) {
@@ -437,7 +437,7 @@ from a text substitution.)
 	int unknowns = 0;
 	inv_token_problem_token *itpt;
 	LOOP_OVER(itpt, inv_token_problem_token)
-		if ((ParseTree::is(itpt->as_parsed, UNKNOWN_NT)) &&
+		if ((Node::is(itpt->as_parsed, UNKNOWN_NT)) &&
 			(itpt->new_name == FALSE))
 			if (itpt->already_described == FALSE) {
 				itpt->already_described = TRUE;
@@ -529,13 +529,13 @@ the value meets some extra requirement. For example:
 
 @<Switch context to a table reference lvalue@> =
 	int rv = SWITCH_CONTEXT_AND_RECURSE(p);
-	if (ParseTree::is(p->down, TABLE_ENTRY_NT) == FALSE)
+	if (Node::is(p->down, TABLE_ENTRY_NT) == FALSE)
 		@<Issue problem for not being a table reference@>;
 	return rv;
 
 @<Switch context to an existing local variable lvalue@> =
 	int rv = SWITCH_CONTEXT_AND_RECURSE(p);
-	if (ParseTree::is(p->down, LOCAL_VARIABLE_NT) == FALSE)
+	if (Node::is(p->down, LOCAL_VARIABLE_NT) == FALSE)
 		@<Issue problem for not being an existing local@>;
 	return rv;
 
@@ -561,7 +561,7 @@ check afterwards, when we know the kinds at least must be right.
 	if (rv != NEVER_MATCH)
 		rv = Dash::worst_case(rv,
 			Dash::compatible_with_description(p->down,
-				ParseTree::get_token_to_be_parsed_against(p)));
+				Node::get_token_to_be_parsed_against(p)));
 	return rv;
 
 @ This is something else that wouldn't appear in a typical typechecker.
@@ -585,8 +585,8 @@ compared are word values.
 	if (rv != NEVER_MATCH) {
 		kind *K = Specifications::to_kind(p->down);
 		if ((Kinds::Behaviour::uses_pointer_values(K) == FALSE) &&
-			(ParseTree::is(p->down, CONSTANT_NT))) {
-			parse_node *val = ParseTree::get_token_to_be_parsed_against(p);
+			(Node::is(p->down, CONSTANT_NT))) {
+			parse_node *val = Node::get_token_to_be_parsed_against(p);
 			if (!(Rvalues::compare_CONSTANT(p->down, val)))
 				@<Issue problem for being the wrong rvalue@>;
 		} else {
@@ -603,7 +603,7 @@ extension, which made use of the old undocumented |phrase| token.
 @<Switch to a void context@> =
 	int rv = SWITCH_CONTEXT_AND_RECURSE(p);
 	if (rv != NEVER_MATCH) {
-		if (!(ParseTree::is(p->down, PHRASE_TO_DECIDE_VALUE_NT))) {
+		if (!(Node::is(p->down, PHRASE_TO_DECIDE_VALUE_NT))) {
 			@<Issue problem for not being a phrase@>;
 		}
 	}
@@ -614,7 +614,7 @@ extension, which made use of the old undocumented |phrase| token.
 @<Issue problem for not being an lvalue@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p->down));
+	Problems::quote_wording(2, Node::get_text(p->down));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ValueAsStorageItem));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2' is a value, not a place where a value is "
@@ -630,7 +630,7 @@ extension, which made use of the old undocumented |phrase| token.
 @<Issue problem for not being a table reference@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p->down));
+	Problems::quote_wording(2, Node::get_text(p->down));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ValueAsTableReference));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2' is a value, not a reference to an entry "
@@ -642,7 +642,7 @@ extension, which made use of the old undocumented |phrase| token.
 	if (TEST_DASH_MODE(ISSUE_LOCAL_PROBLEMS_DMODE)) {
 		THIS_IS_AN_ORDINARY_PROBLEM;
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(p));
+		Problems::quote_wording(2, Node::get_text(p));
 		if (Specifications::is_kind_like(p->down))
 			Problems::quote_text(3, "a kind of value");
 		else
@@ -658,7 +658,7 @@ extension, which made use of the old undocumented |phrase| token.
 @<Issue problem for being the wrong rvalue@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p->down));
+	Problems::quote_wording(2, Node::get_text(p->down));
 	Problems::quote_spec(3, p->down);
 	Problems::quote_spec(4, val);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NotExactValueWanted));
@@ -671,7 +671,7 @@ extension, which made use of the old undocumented |phrase| token.
 @<Issue problem for not being a phrase@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p->down));
+	Problems::quote_wording(2, Node::get_text(p->down));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"In the sentence %1, I was expecting that '%2' would be a phrase.");
@@ -698,9 +698,9 @@ which sorts this out, because only the typechecker can decide which of the
 subtly different forms of "let" is being used.
 
 @<Deal with a new local variable name@> =
-	kind *K = ParseTree::get_kind_required_by_context(p);
+	kind *K = Node::get_kind_required_by_context(p);
 	parse_node *check = p->down;
-	if (ParseTree::is(check, AMBIGUITY_NT)) check = check->down;
+	if (Node::is(check, AMBIGUITY_NT)) check = check->down;
 	if (LocalVariables::permit_as_new_local(check, FALSE)) {
 		if (kind_of_var_to_create) *kind_of_var_to_create = K;
 		return ALWAYS_MATCH;
@@ -717,7 +717,7 @@ species; and then to misuse that phrase.
 @<Issue a problem for an inappropriate variable name@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
+	Problems::quote_wording(2, Node::get_text(p));
 	if (Specifications::is_kind_like(p->down))
 		Problems::quote_text(3, "a kind of value");
 	else
@@ -742,12 +742,12 @@ invocations. Here's the code which does the switching:
 	kind *kind_needed = NULL;
 	int condition_context = FALSE;
 	if (context) {
-		kind_needed = ParseTree::get_kind_required_by_context(context);
-		if ((ParseTree::is(context, CONDITION_CONTEXT_NT)) ||
-			(ParseTree::is(context, LOGICAL_AND_NT)) ||
-			(ParseTree::is(context, LOGICAL_OR_NT)) ||
-			(ParseTree::is(context, LOGICAL_NOT_NT)) ||
-			(ParseTree::is(context, LOGICAL_TENSE_NT)))
+		kind_needed = Node::get_kind_required_by_context(context);
+		if ((Node::is(context, CONDITION_CONTEXT_NT)) ||
+			(Node::is(context, LOGICAL_AND_NT)) ||
+			(Node::is(context, LOGICAL_OR_NT)) ||
+			(Node::is(context, LOGICAL_NOT_NT)) ||
+			(Node::is(context, LOGICAL_TENSE_NT)))
 			condition_context = TRUE;
 	}
 	LOG_DASH("(4)");
@@ -815,12 +815,12 @@ later rules can override earlier ones but still make use of them.
 	LOG_DASH("(4A.a)");
 	parse_node *alt;
 	LOOP_THROUGH_ALTERNATIVES(alt, p)
-		if ((ParseTree::is(alt, INVOCATION_NT)) &&
-			(ParseTree::get_phrase_invoked(alt) != phrase_being_compiled))
+		if ((Node::is(alt, INVOCATION_NT)) &&
+			(Node::get_phrase_invoked(alt) != phrase_being_compiled))
 			@<Add this reading to the list of test cases@>;
 	LOOP_THROUGH_ALTERNATIVES(alt, p)
-		if (!((ParseTree::is(alt, INVOCATION_NT)) &&
-			(ParseTree::get_phrase_invoked(alt) != phrase_being_compiled)))
+		if (!((Node::is(alt, INVOCATION_NT)) &&
+			(Node::get_phrase_invoked(alt) != phrase_being_compiled)))
 			@<Add this reading to the list of test cases@>;
 	LOGIF(MATCHING, "Resolving %d possible readings:\n", no_of_possible_readings);
 	for (int i=0; i<no_of_possible_readings; i++)
@@ -863,7 +863,7 @@ let it consider alternatives, that would be circular: we'd end up here
 again, and so on forever.)
 
 @<Test the current reading and set its results flags accordingly@> =
-	LOGIF(MATCHING, "(P%d) Trying <%W>: $e\n", ref, ParseTree::get_text(inv), inv);
+	LOGIF(MATCHING, "(P%d) Trying <%W>: $e\n", ref, Node::get_text(inv), inv);
 
 	BEGIN_DASH_MODE;
 	DASH_MODE_EXIT(ISSUE_PROBLEMS_DMODE);
@@ -903,7 +903,7 @@ checking.
 @<Step (4A.c.1) Winnow the reading list down to the survivors@> =
 	LOG_DASH("(4A.c.1)");
 	int invocational = TRUE;
-	if (ParseTree::is(Dash_ambiguity_list, AMBIGUITY_NT)) invocational = FALSE;
+	if (Node::is(Dash_ambiguity_list, AMBIGUITY_NT)) invocational = FALSE;
 
 	LOGIF(MATCHING, "Winnow %s from $T\n",
 		(invocational)?"invocationally":"regularly", Dash_ambiguity_list);
@@ -921,7 +921,7 @@ checking.
 				last_survivor = inv;
 			} else {
 				parse_node *link = Dash_ambiguity_list->next;
-				ParseTree::copy(Dash_ambiguity_list, inv);
+				Node::copy(Dash_ambiguity_list, inv);
 				Dash_ambiguity_list->next = link;
 				Dash_ambiguity_list->next_alternative = NULL;
 				break;
@@ -934,7 +934,7 @@ checking.
 		int nfi = -1, number_ambiguity = FALSE;
 		parse_node *inv;
 		LOOP_THROUGH_ALTERNATIVES(inv, p)
-			if (ParseTree::is(inv, INVOCATION_NT)) {
+			if (Node::is(inv, INVOCATION_NT)) {
 				int nti = Invocations::get_no_tokens(inv);
 				if (nfi == -1) nfi = nti;
 				else if (nfi != nti) number_ambiguity = TRUE;
@@ -978,7 +978,7 @@ for the surviving nodes.
 	LOG_DASH("(4A.c.2)");
 	parse_node *inv;
 	LOOP_THROUGH_ALTERNATIVES(inv, p)
-		if (ParseTree::is(inv, INVOCATION_NT))
+		if (Node::is(inv, INVOCATION_NT))
 			if (Dash::set_up_any_local_required(inv) == NEVER_MATCH)
 				return NEVER_MATCH;
 
@@ -1011,9 +1011,9 @@ the problem.
 	parse_node *inv = p;
 	Phrases::Parser::parse_within_inv(inv);
 	Dash::set_flag(inv, TESTED_DASHFLAG);
-	phrase *ph = ParseTree::get_phrase_invoked(inv);
+	phrase *ph = Node::get_phrase_invoked(inv);
 	if (ph) {
-		ParseTree::set_kind_resulting(inv, Phrases::TypeData::get_return_kind(&(ph->type_data)));
+		Node::set_kind_resulting(inv, Phrases::TypeData::get_return_kind(&(ph->type_data)));
 
 		/* are the arguments of the right kind? */
 		if (outcome != NEVER_MATCH) @<Step (4I.a) Take care of arithmetic phrases@>;
@@ -1070,7 +1070,7 @@ Room" is a number, because the kind of the property "carrying capacity" is
 	if ((rv != NEVER_MATCH) && (Rvalues::is_CONSTANT_construction(P, CON_property))) {
 		property *prn = Rvalues::to_property(P);
 		if (Properties::is_value_property(prn))
-			ParseTree::set_kind_resulting(inv, Properties::Valued::kind(prn));
+			Node::set_kind_resulting(inv, Properties::Valued::kind(prn));
 		else {
 			THIS_IS_AN_INTERESTING_PROBLEM {
 				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TotalEitherOr),
@@ -1086,7 +1086,7 @@ with it.)
 
 @<Fail the invocation for totalling something other than a property@> =
 	LOG_DASH("(4I.a.1) failed as nonproperty");
-	if (Kinds::get_construct(ParseTree::get_kind_of_value(P)) == CON_table_column) {
+	if (Kinds::get_construct(Node::get_kind_of_value(P)) == CON_table_column) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TotalTableColumn),
 				"this seems to be an attempt to total up the column of a table",
@@ -1107,7 +1107,7 @@ with it.)
 	@<Work out the kinds of the operands, and what we want, and what we get@>;
 	LOGIF(MATCHING, "$u (~) $u = $u\n", left_kind, right_kind, kind_produced);
 
-	if (kind_produced) ParseTree::set_kind_resulting(inv, kind_produced);
+	if (kind_produced) Node::set_kind_resulting(inv, kind_produced);
 	else @<Fail the invocation for a dimensional problem@>;
 
 @ For the way this is actually worked out, see the section on "Dimensions".
@@ -1139,8 +1139,8 @@ L and R are more definite.
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			LOG("So the inv subtree is:\n$T\n", inv);
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(L));
-			Problems::quote_wording(3, ParseTree::get_text(R));
+			Problems::quote_wording(2, Node::get_text(L));
+			Problems::quote_wording(3, Node::get_text(R));
 			Problems::quote_kind(4, left_kind);
 			Problems::quote_kind(5, right_kind);
 			switch(op_number) {
@@ -1200,12 +1200,12 @@ instance, if |inv| is an invocation of this phrase:
 		END_DASH_MODE;
 		switch(rv) {
 			case NEVER_MATCH:
-				LOGIF(MATCHING, "(4I.b) on %W failed at token %d\n", ParseTree::get_text(p), i);
+				LOGIF(MATCHING, "(4I.b) on %W failed at token %d\n", Node::get_text(p), i);
 				outcome = NEVER_MATCH;
 				if (Dash::problems_have_been_issued()) exit_at_once = TRUE;
 				break;
 			case SOMETIMES_MATCH:
-				LOGIF(MATCHING, "(4I.b) on %W qualified at token %d\n", ParseTree::get_text(p), i);
+				LOGIF(MATCHING, "(4I.b) on %W qualified at token %d\n", Node::get_text(p), i);
 				Invocations::set_token_check_to_do(inv, i, ith_spec);
 				qualified = TRUE;
 				break;
@@ -1264,14 +1264,14 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 	parse_node *ith_token = Invocations::get_token_as_parsed(inv, i);
 	LOGIF(MATCHING, "(4I.b) thinking about reparsing: $P\n", ith_token);
 	int warned_already = FALSE;
-	if (ParseTree::is(ith_token, AMBIGUITY_NT)) ith_token = ith_token->down;
-	if ((ParseTree::is(ith_token, UNKNOWN_NT)) ||
+	if (Node::is(ith_token, AMBIGUITY_NT)) ith_token = ith_token->down;
+	if ((Node::is(ith_token, UNKNOWN_NT)) ||
 		(Specifications::is_description(ith_token)) ||
 		(Rvalues::is_CONSTANT_construction(ith_token, CON_property)) ||
 		(Specifications::is_kind_like(ith_token)) ||
 		((Phrases::TypeData::is_a_let_assignment(ph) == FALSE) &&
-			(ParseTree::is(ith_token, PHRASE_TO_DECIDE_VALUE_NT)))) {
-		wording W = ParseTree::get_text(ith_token);
+			(Node::is(ith_token, PHRASE_TO_DECIDE_VALUE_NT)))) {
+		wording W = Node::get_text(ith_token);
 
 		kind *K = NULL;
 		parse_node *reparsed = NULL;
@@ -1291,7 +1291,7 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 			if (Kinds::Behaviour::definite(K)) {
 				if (Kinds::Compare::compatible(K, ikind) == ALWAYS_MATCH) {
 					LOGIF(MATCHING, "(4I.b) allows name-of token: $P\n", reparsed);
-					Invocations::set_token_as_parsed(inv, i, ParseTree::duplicate(reparsed));
+					Invocations::set_token_as_parsed(inv, i, Node::duplicate(reparsed));
 					outcome = ALWAYS_MATCH;
 				} else {
 					THIS_IS_AN_ORDINARY_PROBLEM {
@@ -1329,7 +1329,7 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 	if ((!Specifications::is_kind_like(ith_token)) && (warned_already == FALSE)) {
 		THIS_IS_AN_ORDINARY_PROBLEM {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(ith_token));
+			Problems::quote_wording(2, Node::get_text(ith_token));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NameOfKindIsnt));
 			Problems::issue_problem_segment(
 				"You wrote %1, but although '%2' does have a meaning, "
@@ -1398,23 +1398,23 @@ against a definition like:
 			}
 		}
 		kind_checker_mode = save_kcm;
-		if (outcome != NEVER_MATCH) ParseTree::set_kind_variable_declarations(inv, most_recent_interpretation);
+		if (outcome != NEVER_MATCH) Node::set_kind_variable_declarations(inv, most_recent_interpretation);
 		most_recent_interpretation = save_most_recent_interpretation;
 	}
 
-	if (Kinds::contains(ParseTree::get_kind_resulting(inv), CON_KIND_VARIABLE)) {
+	if (Kinds::contains(Node::get_kind_resulting(inv), CON_KIND_VARIABLE)) {
 		int changed = FALSE;
-		kind *K = Kinds::substitute(ParseTree::get_kind_resulting(inv), NULL, &changed);
+		kind *K = Kinds::substitute(Node::get_kind_resulting(inv), NULL, &changed);
 		if (changed) {
 			LOGIF(MATCHING, "(4I.c) amended kind returned to $u\n", K);
-			ParseTree::set_kind_resulting(inv, K);
+			Node::set_kind_resulting(inv, K);
 		} else @<Disallow an undeclared kind variable as return kind@>;
 	}
 
 @<Disallow an undeclared kind variable as return kind@> =
 	THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
+	Problems::quote_wording(2, Node::get_text(p));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"In the line %1, you seem to be using '%2' to produce a value, but "
@@ -1481,7 +1481,7 @@ has similar type-checking needs.
 	instance *target_wo = Rvalues::to_object_instance(target);
 	property *prn = NULL;
 	int make_check = FALSE;
-	if (Kinds::Compare::eq(ParseTree::get_kind_of_value(new_value_spec), K_value))
+	if (Kinds::Compare::eq(Node::get_kind_of_value(new_value_spec), K_value))
 		@<Maybe we're changing an object to a value of a kind coinciding with a property@>;
 	if (Rvalues::is_CONSTANT_construction(new_value_spec, CON_property))
 		@<Maybe we're changing an object to a named either/or property or condition state@>;
@@ -1557,8 +1557,8 @@ this case in the type-checker is never exercised.
 	if (prn == NULL) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(target));
-			Problems::quote_wording(3, ParseTree::get_text(new_value));
+			Problems::quote_wording(2, Node::get_text(target));
+			Problems::quote_wording(3, Node::get_text(new_value));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* the parser seems not to allow these */
 			Problems::issue_problem_segment(
 				"You wrote %1, asking to change the object '%2'. This would "
@@ -1572,7 +1572,7 @@ this case in the type-checker is never exercised.
 		(World::Permissions::find(Instances::as_subject(target_wo), prn, TRUE) == NULL)) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(target));
+			Problems::quote_wording(2, Node::get_text(target));
 			Problems::quote_property(3, prn);
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 			Problems::issue_problem_segment(
@@ -1601,11 +1601,11 @@ literal can mean are too generous.)
 	kind_found = Specifications::to_kind(new_value);
 
 	parse_node *new_invl = new_value->down;
-	if (ParseTree::is(new_invl, INVOCATION_LIST_NT)) {
+	if (Node::is(new_invl, INVOCATION_LIST_NT)) {
 		parse_node *new_inv;
 		LOOP_THROUGH_ALTERNATIVES(new_inv, new_invl)
 			if (Dash::test_flag(new_inv, PASSED_DASHFLAG)) break;
-		if (new_inv) kind_found = ParseTree::get_kind_resulting(new_inv);
+		if (new_inv) kind_found = Node::get_kind_resulting(new_inv);
 	}
 	LOGIF(MATCHING, "Kinds found: $u, wanted: $u\n", kind_found, kind_wanted);
 
@@ -1614,9 +1614,9 @@ literal can mean are too generous.)
 		|| (Kinds::Compare::compatible(kind_found, kind_wanted) == NEVER_MATCH)) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(target));
+			Problems::quote_wording(2, Node::get_text(target));
 			Problems::quote_kind(3, Specifications::to_kind(target));
-			Problems::quote_wording(4, ParseTree::get_text(new_value));
+			Problems::quote_wording(4, Node::get_text(new_value));
 			Problems::quote_kind(5, Specifications::to_kind(new_value));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ChangeToWrongValue));
 			Problems::issue_problem_segment(
@@ -1645,9 +1645,9 @@ to a number.
 	int outcome_test = ALWAYS_MATCH;
 	if (kind_needed) {
 		LOGIF(MATCHING, "Checking returned $u against desired $u\n",
-			ParseTree::get_kind_resulting(inv), kind_needed);
+			Node::get_kind_resulting(inv), kind_needed);
 		outcome_test = Kinds::Compare::compatible(
-			ParseTree::get_kind_resulting(inv), kind_needed);
+			Node::get_kind_resulting(inv), kind_needed);
 	}
 	switch (outcome_test) {
 		case NEVER_MATCH: outcome = NEVER_MATCH; break;
@@ -1659,7 +1659,7 @@ options are properly used.
 
 @<Step (4I.f) Check any phrase options@> =
 	LOG_DASH("(4I.f)");
-	if ((outcome != NEVER_MATCH) && (ParseTree::get_phrase_options_invoked(inv))) {
+	if ((outcome != NEVER_MATCH) && (Node::get_phrase_options_invoked(inv))) {
 		int cso = Phrases::Options::parse_invoked_options(
 			inv, (TEST_DASH_MODE(ISSUE_PROBLEMS_DMODE))?FALSE:TRUE);
 		if (cso == FALSE) outcome = NEVER_MATCH;
@@ -1685,7 +1685,7 @@ of (1), we have to change |self| temporarily and restore it afterwards.
 	if ((Phrases::TypeData::is_a_say_phrase(ph)) &&
 		(Invocations::get_no_tokens(inv) == 1) &&
 		(Lvalues::get_storage_form(Invocations::get_token_as_parsed(inv, 0)) == PROPERTY_VALUE_NT)) {
-		ParseTree::annotate_int(Invocations::get_token_as_parsed(inv, 0), record_as_self_ANNOT, TRUE);
+		Annotations::write_int(Invocations::get_token_as_parsed(inv, 0), record_as_self_ANNOT, TRUE);
 		Invocations::mark_to_save_self(inv);
 	}
 
@@ -1773,7 +1773,7 @@ extensions).
 			TEMPORARY_TEXT(pds);
 			WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(NW)));
 			Index::DocReferences::doc_mark_used(pds,
-				Wordings::first_wn(ParseTree::get_text(inv)));
+				Wordings::first_wn(Node::get_text(inv)));
 			DISCARD_TEXT(pds);
 		}
 	}
@@ -1797,11 +1797,11 @@ to level 5.
 				Dash::typecheck_recursive(arg, p, TRUE));
 
 	if ((outcome != NEVER_MATCH) && (p->down)) {
-		if (ParseTree::is(p, LIST_ENTRY_NT))
+		if (Node::is(p, LIST_ENTRY_NT))
 			@<Step (4S.c) Check arguments of a list entry@>;
-		if (ParseTree::is(p, PROPERTY_VALUE_NT))
+		if (Node::is(p, PROPERTY_VALUE_NT))
 			@<Step (4S.d) Check arguments of a property value@>;
-		if (ParseTree::is(p, TABLE_ENTRY_NT))
+		if (Node::is(p, TABLE_ENTRY_NT))
 			@<Step (4S.e) Check arguments of a table reference@>;
 	}
 
@@ -1809,10 +1809,10 @@ to level 5.
 and allowed only in phrases using the |table-reference| token.
 
 @<Allow listed-in table references only where these are expected@> =
-	if ((ParseTree::is(p, TABLE_ENTRY_NT)) &&
-		(ParseTree::no_children(p) == 2) &&
+	if ((Node::is(p, TABLE_ENTRY_NT)) &&
+		(Node::no_children(p) == 2) &&
 		(kind_needed) &&
-		(!(ParseTree::is(context, LVALUE_TR_CONTEXT_NT)))) {
+		(!(Node::is(context, LVALUE_TR_CONTEXT_NT)))) {
 		THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_InexplicitTableEntryAsValue),
 			"this form of table entry can only be used in certain special phrases",
@@ -1881,8 +1881,8 @@ a property when recovering from other problems.
 @<Issue a "not a property" problem message@> =
 	THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
-	Problems::quote_wording(3, ParseTree::get_text(the_property));
+	Problems::quote_wording(2, Node::get_text(p));
+	Problems::quote_wording(3, Node::get_text(the_property));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend '%2' to be a property "
@@ -1893,7 +1893,7 @@ a property when recovering from other problems.
 @<Issue a "not a value property" problem message@> =
 	THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
+	Problems::quote_wording(2, Node::get_text(p));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EitherOrAsValue));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend '%2' to be the value "
@@ -1905,18 +1905,18 @@ a property when recovering from other problems.
 @<Issue a problem message for being too vague about the owner@> =
 	THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
+	Problems::quote_wording(2, Node::get_text(p));
 	int owner_quoted = TRUE;
 	if ((Specifications::to_kind(the_owner)) &&
 		(Descriptions::get_quantifier(the_owner) == NULL))
 		Problems::quote_kind(3, Specifications::to_kind(the_owner));
-	else if (Wordings::nonempty(ParseTree::get_text(the_owner)))
-		Problems::quote_wording(3, ParseTree::get_text(the_owner));
+	else if (Wordings::nonempty(Node::get_text(the_owner)))
+		Problems::quote_wording(3, Node::get_text(the_owner));
 	else owner_quoted = FALSE;
 	LOG("Owner tree is $T\n", the_owner);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyOfKind2));
 	if (owner_quoted) {
-		if (Wordings::nonempty(ParseTree::get_text(p)))
+		if (Wordings::nonempty(Node::get_text(p)))
 			Problems::issue_problem_segment(
 				"In the sentence %1, it looks as if you intend '%2' to be a property, "
 				"but '%3' is not specific enough about who or what the owner is. ");
@@ -1926,7 +1926,7 @@ a property when recovering from other problems.
 				"of something, but '%3' is not specific enough about who or what "
 				"the owner is. ");
 	} else {
-		if (Wordings::nonempty(ParseTree::get_text(p)))
+		if (Wordings::nonempty(Node::get_text(p)))
 			Problems::issue_problem_segment(
 				"In the sentence %1, it looks as if you intend '%2' to be a property, "
 				"but you're not specific enough about who or what the owner is. ");
@@ -1961,7 +1961,7 @@ a property when recovering from other problems.
 
 @<Step (4S.e) Check arguments of a table reference@> =
 	LOG_DASH("(4S.e)");
-	if (ParseTree::no_children(p) == 4) {
+	if (Node::no_children(p) == 4) {
 		kind *col_kind = Specifications::to_kind(p->down->next);
 		kind *col_contents_kind = Kinds::unary_construction_material(col_kind);
 		kind *key_kind = Specifications::to_kind(p->down->next->next);
@@ -1992,8 +1992,8 @@ a property when recovering from other problems.
 
 @<Unknown found text occurs as a command@> =
 	THIS_IS_A_GROSS_PROBLEM;
-	if (<structural-phrase-problem-diagnosis>(ParseTree::get_text(p)) == FALSE) {
-		if (Wordings::mismatched_brackets(ParseTree::get_text(p))) {
+	if (<structural-phrase-problem-diagnosis>(Node::get_text(p)) == FALSE) {
+		if (Wordings::mismatched_brackets(Node::get_text(p))) {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnpairedBrackets),
 				"this is a phrase which I don't recognise",
 				"perhaps because it uses brackets '(' and ')' or braces '{' and '}' "
@@ -2033,25 +2033,25 @@ which because of polymorphism is not as straightforward as it looks.
 
 =
 kind *Dash::fix_arithmetic_operand(parse_node *operand) {
-	if (ParseTree::is(operand->down, UNKNOWN_NT)) return NULL;
-	if (ParseTree::get_type(operand) != RVALUE_CONTEXT_NT)
+	if (Node::is(operand->down, UNKNOWN_NT)) return NULL;
+	if (Node::get_type(operand) != RVALUE_CONTEXT_NT)
 		internal_error("arithmetic operand not an rvalue");
 	kind *expected = NULL;
 	parse_node *check = operand->down;
-	if (ParseTree::is(check, AMBIGUITY_NT)) check = check->down;
+	if (Node::is(check, AMBIGUITY_NT)) check = check->down;
 	if (Rvalues::is_CONSTANT_construction(check, CON_property)) {
 		property *prn = Rvalues::to_property(check);
 		if (Properties::is_either_or(prn) == FALSE)
 			expected = Properties::Valued::kind(prn);
 	}
-	kind *K = ParseTree::get_kind_required_by_context(operand);
-	ParseTree::set_kind_required_by_context(operand, expected);
+	kind *K = Node::get_kind_required_by_context(operand);
+	Node::set_kind_required_by_context(operand, expected);
 	BEGIN_DASH_MODE;
 	DASH_MODE_EXIT(ISSUE_PROBLEMS_DMODE);
 	DASH_MODE_CREATE(NULL);
 	int rv = Dash::typecheck_recursive(operand, NULL, TRUE);
 	END_DASH_MODE;
-	ParseTree::set_kind_required_by_context(operand, K);
+	Node::set_kind_required_by_context(operand, K);
 	if (rv == NEVER_MATCH) return NULL;
 	return Specifications::to_kind(operand->down);
 }
@@ -2079,7 +2079,7 @@ int Dash::set_up_any_local_required(parse_node *inv) {
 		kind *K = Invocations::get_token_variable_kind(inv, i);
 		if (K) {
 			if ((i == 0) && (N >= 2) && (Kinds::Compare::eq(K, K_value)) &&
-				(Phrases::TypeData::is_a_let_assignment(ParseTree::get_phrase_invoked(inv))))
+				(Phrases::TypeData::is_a_let_assignment(Node::get_phrase_invoked(inv))))
 				@<Infer the kind of the new variable@>;
 
 			int changed = FALSE;
@@ -2101,9 +2101,9 @@ and decide that K should be "text".
 
 @<Infer the kind of the new variable@> =
 	parse_node *val = Invocations::get_token_as_parsed(inv, i);
-	wording W = ParseTree::get_text(val);
+	wording W = Node::get_text(val);
 	parse_node *initial_value = Invocations::get_token_as_parsed(inv, 1);
-	parse_node *iv_spec = ParseTree::get_phrase_invoked(inv)->type_data.token_sequence[1].to_match;
+	parse_node *iv_spec = Node::get_phrase_invoked(inv)->type_data.token_sequence[1].to_match;
 	if (initial_value)
 		@<Where no kind was explicitly stated, infer this from the supplied initial value@>;
 
@@ -2129,8 +2129,8 @@ of a relation.
 @<Where no kind was explicitly stated, infer this from the supplied initial value@> =
 	kind *seems_to_be = NULL;
 	if ((Specifications::is_kind_like(iv_spec)) &&
-		(ParseTree::is(initial_value, CONSTANT_NT))) {
-		kind *K = ParseTree::get_kind_of_value(initial_value);
+		(Node::is(initial_value, CONSTANT_NT))) {
+		kind *K = Node::get_kind_of_value(initial_value);
 		if (Kinds::get_construct(K) == CON_description) {
 			kind *DK = Kinds::unary_construction_material(K);
 			if (Kinds::get_construct(DK) == CON_relation) seems_to_be = DK;
@@ -2158,7 +2158,7 @@ of a relation.
 @<Fail: the initial value of the local is unknown@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(initial_value));
+	Problems::quote_wording(2, Node::get_text(initial_value));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"The phrase %1 tries to use 'let' to give a temporary name to a value, "
@@ -2173,7 +2173,7 @@ relevant code to issue a better problem message if it can.
 @<Fail: the initial value of the local is the empty list@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	int pc = problem_count;
-	Lists::check_one(ParseTree::get_text(initial_value));
+	Lists::check_one(Node::get_text(initial_value));
 	if (pc == problem_count) {
 		Problems::quote_source(1, current_sentence);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantLetEmptyList));
@@ -2253,12 +2253,12 @@ int Dash::failed(parse_node **list_of_possible_readings, int no_of_possible_read
 		if ((Dash::test_flag(inv, INTERESTINGLY_FAILED_DASHFLAG)) &&
 			(first_failing_interestingly == NULL)) first_failing_interestingly = inv;
 		if (first_inv_in_group == NULL) first_inv_in_group = inv;
-		phrase *ph = ParseTree::get_phrase_invoked(inv);
+		phrase *ph = Node::get_phrase_invoked(inv);
 		if (ph) {
 			if (Phrases::TypeData::is_a_let_assignment(ph)) list_includes_lets = TRUE;
 			if (Dash::test_flag(inv, GROSSLY_FAILED_DASHFLAG) == FALSE) {
 				first_not_failing_grossly = inv;
-				if (Phrases::TypeData::is_a_say_X_phrase(&(ph->type_data))) SW = ParseTree::get_text(inv);
+				if (Phrases::TypeData::is_a_say_X_phrase(&(ph->type_data))) SW = Node::get_text(inv);
 				nongross_count++;
 			}
 		}
@@ -2303,11 +2303,11 @@ int Dash::failed(parse_node **list_of_possible_readings, int no_of_possible_read
 	}
 	END_DASH_MODE;
 	if (problem_count == ec) {
-		kind *K = ParseTree::get_kind_resulting(most_likely_to_have_been_intended);
+		kind *K = Node::get_kind_resulting(most_likely_to_have_been_intended);
 		kind *W = kind_needed;
 		if ((K) && (W) && (Kinds::Compare::compatible(K, W) == NEVER_MATCH)) {
 			THIS_IS_AN_ORDINARY_PROBLEM;
-			wording PW = ParseTree::get_text(list_of_possible_readings[0]);
+			wording PW = Node::get_text(list_of_possible_readings[0]);
 			if (!(Wordings::eq(PM_BadIntermediateKind_wording, PW))) {
 				PM_BadIntermediateKind_wording = PW;
 				Problems::quote_source(1, current_sentence);
@@ -2377,14 +2377,14 @@ or |"frog"| since these are glaringly obvious.
 void Dash::note_inv_token_text(parse_node *p, int new_name) {
 	inv_token_problem_token *itpt;
 	LOOP_OVER(itpt, inv_token_problem_token)
-		if (Wordings::eq(itpt->problematic_text, ParseTree::get_text(p))) {
+		if (Wordings::eq(itpt->problematic_text, Node::get_text(p))) {
 			if (new_name) itpt->new_name = TRUE;
 			return;
 		}
 	itpt = CREATE(inv_token_problem_token);
-	itpt->problematic_text = ParseTree::get_text(p);
+	itpt->problematic_text = Node::get_text(p);
 	itpt->new_name = new_name;
-	if (ParseTree::is(p, AMBIGUITY_NT)) p = p->down;
+	if (Node::is(p, AMBIGUITY_NT)) p = p->down;
 	itpt->as_parsed = p; itpt->already_described = FALSE;
 	if ((Rvalues::is_CONSTANT_of_kind(p, K_number)) ||
 		(Rvalues::is_CONSTANT_of_kind(p, K_text))) itpt->already_described = TRUE;
@@ -2467,7 +2467,7 @@ us with the air of having just made a great discovery; well, you can't have
 @<Disallow "nothing" as a match for a description requiring a kind of object@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
+	Problems::quote_wording(2, Node::get_text(p));
 	Problems::quote_kind(3, kind_expected);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NothingForSomething));
 	Problems::issue_problem_segment(
@@ -2487,7 +2487,7 @@ helpful about what exactly is wrong.
 
 @<Step (5.a) Deal with the UNKNOWN_NT@> =
 	LOG_DASH("(5.a)");
-	if (ParseTree::is(p, UNKNOWN_NT)) {
+	if (Node::is(p, UNKNOWN_NT)) {
 		THIS_IS_A_GROSS_PROBLEM;
 		LOG("(5.a) problem message:\nfound: $Texpected: $u", p, kind_expected);
 		#ifdef IF_MODULE
@@ -2495,7 +2495,7 @@ helpful about what exactly is wrong.
 			@<Unknown found text occurs as an action to try@>;
 		#endif
 		Problems::quote_source_eliding_begin(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(p));
+		Problems::quote_wording(2, Node::get_text(p));
 		if (condition_context)
 			Problems::quote_text(3, "a condition");
 		else if (kind_expected == NULL)
@@ -2505,18 +2505,18 @@ helpful about what exactly is wrong.
 
 		int shape = NO_UTSHAPE;
 		if (current_sentence) {
-			<unknown-text-shape>(ParseTree::get_text(current_sentence));
+			<unknown-text-shape>(Node::get_text(current_sentence));
 			shape = <<r>>;
 		}
 		if (shape == NO_UTSHAPE) {
-			<unknown-text-shape>(ParseTree::get_text(p));
+			<unknown-text-shape>(Node::get_text(p));
 			shape = <<r>>;
 		}
 
-		int preceding = Wordings::first_wn(ParseTree::get_text(p)) - 1;
+		int preceding = Wordings::first_wn(Node::get_text(p)) - 1;
 		if ((preceding >= 0) && (current_sentence) &&
 			(((compiling_text_routines_mode) || (shape == SAY_UTSHAPE))) &&
-			((preceding == Wordings::first_wn(ParseTree::get_text(current_sentence)))
+			((preceding == Wordings::first_wn(Node::get_text(current_sentence)))
 				|| (Lexer::word(preceding) == COMMA_V)))
 			@<Unknown found text occurs as a text substitution@>
 		else if ((condition_context) && (shape == LIST_UTSHAPE))
@@ -2531,12 +2531,12 @@ helpful about what exactly is wrong.
 	parse_node *spec = NULL;
 	kind *K = NULL, *K2 = NULL;
 	Dash::clear_validation_case();
-	<action-pattern>(ParseTree::get_text(p));
+	<action-pattern>(Node::get_text(p));
 	if (Dash::get_validation_case(&spec, &K, &K2)) {
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownTryAction1));
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(p));
-		Problems::quote_wording(3, ParseTree::get_text(spec));
+		Problems::quote_wording(2, Node::get_text(p));
+		Problems::quote_wording(3, Node::get_text(spec));
 		Problems::quote_kind(4, K);
 		Problems::quote_kind(5, K2);
 		Problems::issue_problem_segment(
@@ -2639,7 +2639,7 @@ substitution or not.
 	Problems::issue_problem_end();
 
 @<Unknown found text occurs as a text substitution@> =
-	<unknown-text-substitution-problem-diagnosis>(ParseTree::get_text(p));
+	<unknown-text-substitution-problem-diagnosis>(Node::get_text(p));
 
 @ It's a bit unenlightening when an entire condition is rejected as
 unknown if, in fact, only one of perhaps many clauses is broken. We
@@ -2656,7 +2656,7 @@ the clauses, summing up their status in turn:
 		"It didn't make sense as one long phrase, but because it was divided up by "
 		"'and'/'or', I tried breaking it down into smaller conditions, but "
 		"that didn't work either. ");
-	<condition-problem-diagnosis>(ParseTree::get_text(p));
+	<condition-problem-diagnosis>(Node::get_text(p));
 	int dubious = <<r>>;
 	if (dubious & INVALID_CP_BIT)
 		Problems::issue_problem_segment(
@@ -2789,11 +2789,11 @@ common misunderstanding.
 
 @<Issue a problem message for miscellaneous suspicious wordings@> =
 	if (Kinds::Compare::eq(kind_expected, K_use_option)) {
-		<unknown-use-option-diagnosis>(ParseTree::get_text(p));
+		<unknown-use-option-diagnosis>(Node::get_text(p));
 	} else if (Kinds::get_construct(kind_expected) == CON_activity) {
-		<unknown-activity-diagnosis>(ParseTree::get_text(p));
+		<unknown-activity-diagnosis>(Node::get_text(p));
 	} else {
-		<unknown-value-problem-diagnosis>(ParseTree::get_text(p));
+		<unknown-value-problem-diagnosis>(Node::get_text(p));
 	}
 
 @h Rule (5.b).
@@ -2805,7 +2805,7 @@ its owner.
 	LOG_DASH("(5.b)");
 	if (Kinds::get_construct(kind_expected) != CON_property) {
 		parse_node *check = p;
-		if (ParseTree::is(check, AMBIGUITY_NT)) check = check->down;
+		if (Node::is(check, AMBIGUITY_NT)) check = check->down;
 		if (Rvalues::is_CONSTANT_construction(check, CON_property)) {
 			property *prn = Rvalues::to_property(check);
 			@<Step (5.b.2) If a bare property name is used where we expect a value, coerce it if the kinds allow@>;
@@ -2839,8 +2839,8 @@ stack frame, and this is unlikely to be what anyone wanted.
 				(Kinds::get_construct(kind_if_coerced) != CON_relation)) {
 				LOGIF(MATCHING, "(5.b.2) coercing to description\n");
 				parse_node *become = Specifications::from_kind(kind_if_coerced);
-				ParseTree::set_text(become, ParseTree::get_text(p));
-				ParseTree::copy_in_place(p, Descriptions::to_rvalue(become));
+				Node::set_text(become, Node::get_text(p));
+				Node::copy_in_place(p, Descriptions::to_rvalue(become));
 				p->down = NULL;
 			} else {
 				LOGIF(MATCHING, "(5.b.2) declining to cast into property value form\n");
@@ -2858,10 +2858,10 @@ the owner. The I6 library and our own run-time code conspire to ensure that
 
 @<Coerce into a property of the "self" object@> =
 	parse_node *was = p->next_alternative;
-	parse_node *pr = ParseTree::duplicate(p);
+	parse_node *pr = Node::duplicate(p);
 	pr->next_alternative = NULL;
 	parse_node *become = Lvalues::new_PROPERTY_VALUE(pr, Rvalues::new_self_object_constant());
-	ParseTree::copy(p, become);
+	Node::copy(p, become);
 	p->next_alternative = was;
 
 	LOGIF(MATCHING, "(5.b) coercing PROPERTY to PROPERTY VALUE: $P\n", p);
@@ -2877,7 +2877,7 @@ delegate that to "Type Check Propositions.w".
 @<Step (5.c) Deal with any attached proposition@> =
 	LOG_DASH("(5.c)");
 	char *desired_to = NULL;
-	if (ParseTree::is(p, TEST_PROPOSITION_NT)) desired_to = "be a condition";
+	if (Node::is(p, TEST_PROPOSITION_NT)) desired_to = "be a condition";
 	if (Descriptions::is_complex(p)) desired_to = "be a description";
 
 	if (desired_to) {
@@ -2888,7 +2888,7 @@ delegate that to "Type Check Propositions.w".
 				p, Specifications::to_proposition(p));
 			THIS_IS_A_GROSS_PROBLEM;
 			Calculus::Propositions::Checker::type_check(Specifications::to_proposition(p),
-				Calculus::Propositions::Checker::tc_problem_reporting(ParseTree::get_text(p), desired_to));
+				Calculus::Propositions::Checker::tc_problem_reporting(Node::get_text(p), desired_to));
 			return NEVER_MATCH;
 		} else { LOG_DASH("(5.c) Okay!"); }
 	}
@@ -2914,11 +2914,11 @@ action value, which is a specific action.
 	LOG_DASH("(5.d.1)");
 	if ((Conditions::is_TEST_ACTION(p)) && (kind_expected) &&
 		(Kinds::Compare::compatible(K_stored_action, kind_expected))) {
-		action_pattern *ap = ParseTree::get_constant_action_pattern(p->down);
+		action_pattern *ap = Node::get_constant_action_pattern(p->down);
 		if (PL::Actions::Patterns::is_unspecific(ap)) {
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(p));
+			Problems::quote_wording(2, Node::get_text(p));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionNotSpecific));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is too vague to describe a specific action. "
@@ -2931,7 +2931,7 @@ action value, which is a specific action.
 		if (PL::Actions::Patterns::is_overspecific(ap)) {
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(p));
+			Problems::quote_wording(2, Node::get_text(p));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionTooSpecific));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' imposes too many restrictions on the "
@@ -2946,18 +2946,18 @@ action value, which is a specific action.
 			Problems::issue_problem_end();
 			return NEVER_MATCH;
 		}
-		ParseTree::copy_in_place(p, p->down);
+		Node::copy_in_place(p, p->down);
 		p->down = NULL;
 		LOGIF(MATCHING, "Coerced to sa: $P\n", p);
 		return ALWAYS_MATCH;
 	}
 	if ((condition_context) &&
-		(ParseTree::is(p, CONSTANT_NT))) {
+		(Node::is(p, CONSTANT_NT))) {
 		kind *E = Specifications::to_kind(p);
 		if (Kinds::Compare::compatible(E, K_stored_action)) {
-			parse_node *val = ParseTree::duplicate(p);
-			ParseTree::copy_in_place(p, ParseTree::new(TEST_VALUE_NT));
-			ParseTree::set_text(p, ParseTree::get_text(val));
+			parse_node *val = Node::duplicate(p);
+			Node::copy_in_place(p, Node::new(TEST_VALUE_NT));
+			Node::set_text(p, Node::get_text(val));
 			p->down = val;
 			LOGIF(MATCHING, "Coerced back again to sa: $P\n", p);
 			return ALWAYS_MATCH;
@@ -2974,7 +2974,7 @@ different representations at run-time.
 	LOG_DASH("(5.d.2)");
 	if ((Rvalues::is_CONSTANT_of_kind(p, K_text)) &&
 		(K_understanding) && (Kinds::Compare::eq(kind_expected, K_understanding))) {
-		ParseTree::set_kind_of_value(p, K_understanding);
+		Node::set_kind_of_value(p, K_understanding);
 	}
 
 @ Another ambiguity is that the text "women who are in lighted rooms" in:
@@ -3006,7 +3006,7 @@ it to a constant value, using the "description of..." constructor.
 		parse_node *as_con = Descriptions::to_rvalue(p);
 		if (as_con == NULL)
 			@<Issue a problem message for a malformed proposition in the description@>;
-		ParseTree::copy_in_place(p, as_con);
+		Node::copy_in_place(p, as_con);
 		p->down = NULL;
 		return ALWAYS_MATCH;
 	}
@@ -3016,7 +3016,7 @@ it to a constant value, using the "description of..." constructor.
 @<Issue a problem message for a quantified proposition in the description@> =
 	THIS_IS_AN_INTERESTING_PROBLEM {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(p));
+		Problems::quote_wording(2, Node::get_text(p));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadQuantifierInDescription));
 		Problems::issue_problem_segment(
 			"In %1 you wrote the description '%2' in the context of a value, "
@@ -3036,7 +3036,7 @@ defined a phrase for only one case:
 	if (made_match == FALSE) {
 		THIS_IS_AN_ORDINARY_PROBLEM;
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(p));
+		Problems::quote_wording(2, Node::get_text(p));
 		Problems::quote_kind(3, K);
 		Problems::quote_kind(4, domain);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
@@ -3055,7 +3055,7 @@ any universal quantifier ("all", etc.) is removed.
 @<Issue a problem message for a malformed proposition in the description@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
+	Problems::quote_wording(2, Node::get_text(p));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"In the line %1, the text '%2' is given where a description of a collection "
@@ -3077,7 +3077,7 @@ have made an understandable confusion.
 		if (K == NULL) {
 			THIS_IS_AN_ORDINARY_PROBLEM;
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(p));
+			Problems::quote_wording(2, Node::get_text(p));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* screened out at definition time */
 			Problems::issue_problem_segment(
 				"In the line %1, '%2' ought to be a value, but isn't - there must be "
@@ -3122,7 +3122,7 @@ conclusion about the return kind of the phrase.
 @<Step (5.e.2) Exception: when expecting a generic or actual CONSTANT@> =
 	LOG_DASH("(5.e.2)");
 	if ((kind_expected) && (ParseTreeUsage::is_value(p))) {
-		if (ParseTree::is(p, PHRASE_TO_DECIDE_VALUE_NT)) {
+		if (Node::is(p, PHRASE_TO_DECIDE_VALUE_NT)) {
 			LOGIF(MATCHING, "(5.e.2) exempting phrase from return value checking for now\n");
 		} else {
 			switch (Kinds::Compare::compatible(
@@ -3148,11 +3148,11 @@ it says the value has the wrong kind.
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	LOG("Offending subtree: $T\n", p);
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
+	Problems::quote_wording(2, Node::get_text(p));
 	Problems::quote_kind(3, kind_expected);
 
-	if (ParseTree::is(p, LOCAL_VARIABLE_NT)) {
-		local_variable *lvar = ParseTree::get_constant_local_variable(p);
+	if (Node::is(p, LOCAL_VARIABLE_NT)) {
+		local_variable *lvar = Node::get_constant_local_variable(p);
 		Problems::quote_kind(4, LocalVariables::kind(lvar));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LocalMismatch));
 		Problems::issue_problem_segment(
@@ -3162,7 +3162,7 @@ it says the value has the wrong kind.
 	} else if (Kinds::Compare::eq(kind_expected, K_sayable_value)) {
 		Problems::quote_kind(4, Specifications::to_kind(p));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_AllSayInvsFailed));
-		if (Wordings::empty(ParseTree::get_text(p)))
+		if (Wordings::empty(Node::get_text(p)))
 			Problems::issue_problem_segment(
 				"You wrote %1, but that only works for sayable values, that is, "
 				"values which I can display in text form. '%2' isn't one of those "
@@ -3178,7 +3178,7 @@ it says the value has the wrong kind.
 			kind_expected);
 		Problems::quote_kind(4, Specifications::to_kind(p));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TypeMismatch));
-		if (Wordings::empty(ParseTree::get_text(p)))
+		if (Wordings::empty(Node::get_text(p)))
 			Problems::issue_problem_segment(
 				"You wrote %1, but that has the wrong kind of value: %4 rather than %3.");
 		else
@@ -3210,7 +3210,7 @@ same species as well.
 	if (Descriptions::is_complex(p)) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(p));
+			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_kind(3, kind_expected);
 			Problems::quote_kind_of(4, p);
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GenericDescription));
@@ -3224,7 +3224,7 @@ same species as well.
 	} else {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(p));
+			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_kind(3, kind_expected);
 			Problems::quote_kind_of(4, p);
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LiteralDescriptionAsValue));
@@ -3249,7 +3249,7 @@ resorts when it has nothing more specific to say.
 	THIS_IS_AN_ORDINARY_PROBLEM;
 
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(p));
+	Problems::quote_wording(2, Node::get_text(p));
 	Problems::quote_kind(3, kind_expected);
 	Problems::quote_kind_of(4, p);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* at any rate I haven't seen it lately */
@@ -3303,23 +3303,23 @@ char *Dash::quick_verdict_to_text(parse_node *p) {
 =
 void Dash::set_flag(parse_node *p, int flag) {
 	if (p == NULL) internal_error("tried to set flag for null p");
-	int bm = ParseTree::int_annotation(p, epistemological_status_ANNOT);
-	ParseTree::annotate_int(p, epistemological_status_ANNOT, bm | flag);
+	int bm = Annotations::read_int(p, epistemological_status_ANNOT);
+	Annotations::write_int(p, epistemological_status_ANNOT, bm | flag);
 }
 
 void Dash::clear_flags(parse_node *p) {
 	if (p == NULL) internal_error("tried to clear flags for null p");
-	ParseTree::annotate_int(p, epistemological_status_ANNOT, 0);
+	Annotations::write_int(p, epistemological_status_ANNOT, 0);
 }
 
 void Dash::clear_flag(parse_node *p, int flag) {
 	if (p == NULL) internal_error("tried to clear flag for null p");
-	int bm = ParseTree::int_annotation(p, epistemological_status_ANNOT);
-	ParseTree::annotate_int(p, epistemological_status_ANNOT, bm & (~flag));
+	int bm = Annotations::read_int(p, epistemological_status_ANNOT);
+	Annotations::write_int(p, epistemological_status_ANNOT, bm & (~flag));
 }
 
 int Dash::test_flag(parse_node *p, int flag) {
-	int bm = (p)?(ParseTree::int_annotation(p, epistemological_status_ANNOT)):0;
+	int bm = (p)?(Annotations::read_int(p, epistemological_status_ANNOT)):0;
 	if (bm & flag) return TRUE;
 	return FALSE;
 }
@@ -3331,7 +3331,7 @@ int Dash::test_flag(parse_node *p, int flag) {
 int Dash::validate_conditional_clause(parse_node *spec) {
 	LOGIF(ACTION_PATTERN_PARSING, "Validating conditional clause: $P\n", spec);
 	if (spec == NULL) return TRUE;
-	if (ParseTree::is(spec, UNKNOWN_NT)) return FALSE;
+	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
 	if (Dash::check_condition(spec) == NEVER_MATCH) return FALSE;
 	return TRUE;
 }
@@ -3372,7 +3372,7 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 	kind *kind_found = NULL;
 	if (spec == NULL) return TRUE;
 	LOGIF(ACTION_PATTERN_PARSING, "Validating parameter in action pattern: $P ($u)\n", spec, K);
-	if (ParseTree::is(spec, UNKNOWN_NT)) goto DontValidate;
+	if (Node::is(spec, UNKNOWN_NT)) goto DontValidate;
 
 	if (Specifications::is_description(spec)) {
 		pcalc_prop *prop = Descriptions::to_proposition(spec);
@@ -3389,12 +3389,12 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 		(Kinds::Compare::eq(K, K_understanding)))
 		return TRUE;
 	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)) &&
-		(ParseTree::is(spec, CONSTANT_NT) == FALSE) &&
+		(Node::is(spec, CONSTANT_NT) == FALSE) &&
 		(Kinds::Compare::eq(kind_found, K_text)))
 		goto DontValidate;
 	vts = Specifications::from_kind(K);
 	if (Dash::compatible_with_description(spec, vts) == NEVER_MATCH) {
-		if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)) && (ParseTree::is(spec, CONSTANT_NT))) {
+		if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)) && (Node::is(spec, CONSTANT_NT))) {
 			vts = Specifications::from_kind(K_snippet);
 			if (Dash::compatible_with_description(spec, vts) != NEVER_MATCH) return TRUE;
 		}
@@ -3407,7 +3407,7 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 		LOGIF(ACTION_PATTERN_PARSING,
 			"Fails to validate for type-checking reasons: wanted $u, found $u\n",
 			K, kind_found);
-		last_spec_failing_to_validate = ParseTree::duplicate(spec);
+		last_spec_failing_to_validate = Node::duplicate(spec);
 		last_kind_failing_to_validate = K;
 		last_kind_found_failing_to_validate = kind_found;
 		return FALSE;
@@ -3494,7 +3494,7 @@ void Dash::experiment(wording W, int full) {
 	<s-value-uncached>->multiplicitous = FALSE;
 	<s-value-uncached>->watched = FALSE;
 	if (n > 1) {
-		parse_node *holder = ParseTree::new(AMBIGUITY_NT);
+		parse_node *holder = Node::new(AMBIGUITY_NT);
 		holder->down = test_tree;
 		test_tree = holder;
 	}

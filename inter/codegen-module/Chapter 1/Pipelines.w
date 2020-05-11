@@ -394,15 +394,15 @@ void CodeGen::Pipeline::lint(inter_tree *I) {
 }
 
 void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_t c = Inter::Node::get_package(P)->index_n;
-	inter_t a = Inter::Node::get_package_alt(P);
+	inter_t c = Inode::get_package(P)->index_n;
+	inter_t a = Inode::get_package_alt(P);
 	if (c != a) {
 		LOG("Frame gives package as $6, but its location is in package $6\n",
-			Inter::Node::ID_to_package(P, c),
-			Inter::Node::ID_to_package(P, a));
+			Inode::ID_to_package(P, c),
+			Inode::ID_to_package(P, a));
 		WRITE_TO(STDERR, "Frame gives package as %d, but its location is in package %d\n",
-			Inter::Node::ID_to_package(P, c)->index_n,
-			Inter::Node::ID_to_package(P, a)->index_n);
+			Inode::ID_to_package(P, c)->index_n,
+			Inode::ID_to_package(P, a)->index_n);
 		internal_error("misplaced package");
 	}
 

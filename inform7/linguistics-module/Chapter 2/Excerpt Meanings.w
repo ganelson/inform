@@ -420,8 +420,8 @@ excerpt parser, so these never live on into trees.
 
 =
 parse_node *ExcerptMeanings::new_em_pnode(excerpt_meaning *em) {
-	parse_node *pn = ParseTree::new(em->meaning_code);
-	ParseTree::set_meaning(pn, em);
+	parse_node *pn = Node::new(em->meaning_code);
+	Node::set_meaning(pn, em);
 	return pn;
 }
 

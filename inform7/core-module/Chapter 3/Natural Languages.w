@@ -72,8 +72,8 @@ int NaturalLanguages::adaptive_person(inform_language *L) {
 		instance *I = L->nl_instance;
 		parse_node *spec = World::Inferences::get_prop_state(
 			Instances::as_subject(I), P_adaptive_text_viewpoint);
-		if (ParseTree::is(spec, CONSTANT_NT)) {
-			instance *V = ParseTree::get_constant_instance(spec);
+		if (Node::is(spec, CONSTANT_NT)) {
+			instance *V = Node::get_constant_instance(spec);
 			L->adaptive_person = Instances::get_numerical_value(V)-1;
 		}
 	}

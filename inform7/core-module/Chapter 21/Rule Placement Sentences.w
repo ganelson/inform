@@ -13,7 +13,7 @@ name, whose double-quotes have already been removed.
 
 =
 void Rules::Placement::declare_I6_written_rule(wording W, parse_node *p2) {
-	wchar_t *I6_name = Lexer::word_text(Wordings::first_wn(ParseTree::get_text(p2)));
+	wchar_t *I6_name = Lexer::word_text(Wordings::first_wn(Node::get_text(p2)));
 	rule *R = Rules::new(W, TRUE);
 	Rules::set_I6_definition(R, I6_name);
 }
@@ -57,8 +57,8 @@ int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The time passes rule is listed in the turn sequence rulebook." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<listed-in-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				ParseTree::annotate_int(V, listing_sense_ANNOT, <<r>>);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, listing_sense_ANNOT, <<r>>);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -68,7 +68,7 @@ int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
 			break;
 		case TRAVERSE_FOR_RULE_FILING_SMFT:
 			Rules::Placement::place_in_rulebook(V->next, V->next->next,
-				ParseTree::int_annotation(V, listing_sense_ANNOT));
+				Annotations::read_int(V, listing_sense_ANNOT));
 			break;
 	}
 	return FALSE;
@@ -108,8 +108,8 @@ int Rules::Placement::substitutes_for_SMF(int task, parse_node *V, wording *NPs)
 	switch (task) { /* "The time passes slowly rule substitutes for the time passes rule." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<substitutes-for-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				ParseTree::annotate_int(V, listing_sense_ANNOT, <<r>>);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, listing_sense_ANNOT, <<r>>);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -119,7 +119,7 @@ int Rules::Placement::substitutes_for_SMF(int task, parse_node *V, wording *NPs)
 			break;
 		case TRAVERSE_FOR_RULE_FILING_SMFT:
 			Rules::Placement::request_substitute(V->next, V->next->next, V->next->next->next,
-				ParseTree::int_annotation(V, listing_sense_ANNOT));
+				Annotations::read_int(V, listing_sense_ANNOT));
 			break;
 	}
 	return FALSE;
@@ -158,14 +158,14 @@ subject and object NPs.
 @ =
 void Rules::Placement::request_substitute(parse_node *p1, parse_node *p2, parse_node *p3,
 	int sense) {
-	<substitutes-for-sentence-subject>(ParseTree::get_text(p1));
+	<substitutes-for-sentence-subject>(Node::get_text(p1));
 	if (<<r>> == FALSE) return;
 	rule *new_rule = <<rp>>;
-	<substitutes-for-sentence-object-inner>(ParseTree::get_text(p2));
+	<substitutes-for-sentence-object-inner>(Node::get_text(p2));
 	if (<<r>> == FALSE) return;
 	rule *old_rule = <<rp>>;
 	wording CW = EMPTY_WORDING;
-	if (p3) CW = ParseTree::get_text(p3);
+	if (p3) CW = Node::get_text(p3);
 	Rules::impose_constraint(new_rule, old_rule, CW, (sense)?FALSE:TRUE);
 }
 
@@ -193,7 +193,7 @@ int Rules::Placement::does_nothing_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The time passes rule does nothing." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -216,7 +216,7 @@ int Rules::Placement::does_nothing_if_SMF(int task, parse_node *V, wording *NPs)
 	switch (task) { /* "The time passes rule does nothing if ..." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<nounphrase>(SW);
 				V->next = <<rp>>;
 				<nounphrase>(CW);
@@ -240,7 +240,7 @@ int Rules::Placement::does_nothing_unless_SMF(int task, parse_node *V, wording *
 	switch (task) { /* "The time passes rule does nothing unless ..." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<nounphrase>(SW);
 				V->next = <<rp>>;
 				<nounphrase>(CW);
@@ -258,16 +258,16 @@ int Rules::Placement::does_nothing_unless_SMF(int task, parse_node *V, wording *
 
 @ =
 void Rules::Placement::constrain_effect(parse_node *p1, parse_node *p2, int sense) {
-	if (ParseTree::get_type(p1) == AND_NT) {
+	if (Node::get_type(p1) == AND_NT) {
 		Rules::Placement::constrain_effect(p1->down, p2, sense);
 		Rules::Placement::constrain_effect(p1->down->next, p2, sense);
 		return;
 	}
-	<does-nothing-sentence-subject>(ParseTree::get_text(p1));
+	<does-nothing-sentence-subject>(Node::get_text(p1));
 	if (<<r>> == FALSE) return;
 	rule *existing_rule = <<rp>>;
 	if (p2)
-		Rules::impose_constraint(NULL, existing_rule, ParseTree::get_text(p2), sense);
+		Rules::impose_constraint(NULL, existing_rule, Node::get_text(p2), sense);
 	else
 		Rules::impose_constraint(NULL, existing_rule, EMPTY_WORDING, FALSE);
 }
@@ -352,7 +352,7 @@ The subject noun phrase is an articled list, each entry of which must match:
 
 @ =
 void Rules::Placement::place_in_rulebook(parse_node *p1, parse_node *p2, int sense) {
-	if (ParseTree::get_type(p1) == AND_NT) {
+	if (Node::get_type(p1) == AND_NT) {
 		Rules::Placement::place_in_rulebook(p1->down, p2, sense);
 		Rules::Placement::place_in_rulebook(p1->down->next, p2, sense);
 		return;
@@ -363,7 +363,7 @@ void Rules::Placement::place_in_rulebook(parse_node *p1, parse_node *p2, int sen
 
 	relative_to_which = NULL;
 	int pc = problem_count;
-	<listed-in-sentence-object-inner>(ParseTree::get_text(p2));
+	<listed-in-sentence-object-inner>(Node::get_text(p2));
 	if (problem_count > pc) return;
 	rulebook *the_rulebook = <<rp>>;
 	int pair = <<r>>;
@@ -392,7 +392,7 @@ void Rules::Placement::place_in_rulebook(parse_node *p1, parse_node *p2, int sen
 		return;
 	}
 
-	<listed-in-sentence-subject>(ParseTree::get_text(p1));
+	<listed-in-sentence-subject>(Node::get_text(p1));
 	if (<<r>> == FALSE) return;
 	rule *existing_rule = <<rp>>;
 

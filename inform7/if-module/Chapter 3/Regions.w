@@ -157,10 +157,10 @@ messages which would have been less helpful if core Inform had produced them.
 
 =
 int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) {
-	if ((ParseTree::get_type(px) == PROPER_NOUN_NT) &&
-		(ParseTree::get_type(py) == COMMON_NOUN_NT)) {
-		inference_subject *left_subject = ParseTree::get_subject(px);
-		inference_subject *right_kind = ParseTree::get_subject(py);
+	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
+		(Node::get_type(py) == COMMON_NOUN_NT)) {
+		inference_subject *left_subject = Node::get_subject(px);
+		inference_subject *right_kind = Node::get_subject(py);
 		if ((InferenceSubjects::is_an_object(left_subject)) &&
 			(right_kind == Kinds::Knowledge::as_subject(K_region))) {
 			instance *left_object = InferenceSubjects::as_object_instance(left_subject);
@@ -177,8 +177,8 @@ int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) 
 			}
 		}
 	}
-	if ((ParseTree::get_type(px) == RELATIONSHIP_NT) &&
-		(ParseTree::get_subject(py) == Kinds::Knowledge::as_subject(K_region))) {
+	if ((Node::get_type(px) == RELATIONSHIP_NT) &&
+		(Node::get_subject(py) == Kinds::Knowledge::as_subject(K_region))) {
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_RegionRelated),
 			"a region cannot be given a specific location",
 			"since it contains what may be many rooms, which may not be "

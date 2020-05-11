@@ -61,7 +61,7 @@ For both these reasons, then, we perform a simple type-check here.
 	LOG("Variable: $u; constant: $u\n", kind_as_declared, constant_kind);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, q->name);
-	Problems::quote_wording(3, ParseTree::get_text(val));
+	Problems::quote_wording(3, Node::get_text(val));
 	Problems::quote_kind(4, kind_as_declared);
 	Problems::quote_kind(5, constant_kind);
 	if ((Kinds::Compare::lt(kind_as_declared, K_object)) &&
@@ -107,10 +107,10 @@ void Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_
 
 void Assertions::PropertyKnowledge::assert_property_list(parse_node *owner_subtree, parse_node *list_subtree) {
 	@<Check that the owner subtree isn't dangerously elaborate@>;
-	inference_subject *owner = ParseTree::get_subject(owner_subtree);
+	inference_subject *owner = Node::get_subject(owner_subtree);
 	if (owner == NULL) {
 		parse_node *owner_spec = NULL;
-		if (<s-type-expression>(ParseTree::get_text(owner_subtree)))
+		if (<s-type-expression>(Node::get_text(owner_subtree)))
 			owner_spec = <<rp>>;
 		if ((Specifications::is_description(owner_spec)) &&
 			(Descriptions::is_qualified(owner_spec) == FALSE)) {
@@ -143,7 +143,7 @@ are typechecked at run-time rather than compile-time in that domain.)
 	}
 
 @<Check that the owner subtree isn't dangerously elaborate@> =
-	parse_node *owner_spec = ParseTree::get_evaluation(owner_subtree);
+	parse_node *owner_spec = Node::get_evaluation(owner_subtree);
 	if (Specifications::is_description(owner_spec)) {
 		if ((Calculus::Propositions::contains_binary_predicate(Specifications::to_proposition(owner_spec))) ||
 			(Descriptions::number_of_adjectives_applied_to(owner_spec) > 0) ||
@@ -188,10 +188,10 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 	@<Check that the subtree does indeed express a property value@>;
 
 	parse_node *val = NonlocalVariables::substitute_constants(
-		ParseTree::get_evaluation(py));
+		Node::get_evaluation(py));
 	kind *property_kind = Properties::Valued::kind(prn);
 
-	if ((ParseTreeUsage::is_value(val)) && (ParseTree::is(val, CONSTANT_NT) == FALSE))
+	if ((ParseTreeUsage::is_value(val)) && (Node::is(val, CONSTANT_NT) == FALSE))
 		@<Issue a problem for a property value which isn't a constant@>;
 
 	return val;
@@ -211,7 +211,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 
 @<Issue a problem, as this makes sense only for value properties@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(py));
+	Problems::quote_wording(2, Node::get_text(py));
 	Problems::quote_property(3, prn);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
@@ -222,12 +222,12 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 
 @<Check that the subtree does indeed express a property value@> =
 	Assertions::Refiner::coerce_adjectival_usage_to_noun(py);
-	switch(ParseTree::get_type(py)) {
+	switch(Node::get_type(py)) {
 		case PROPER_NOUN_NT:
-			if ((ParseTree::get_evaluation(py) == NULL) ||
-				(ParseTree::is(ParseTree::get_evaluation(py), UNKNOWN_NT))) {
+			if ((Node::get_evaluation(py) == NULL) ||
+				(Node::is(Node::get_evaluation(py), UNKNOWN_NT))) {
 				Problems::quote_source(1, current_sentence);
-				Problems::quote_wording(2, ParseTree::get_text(py));
+				Problems::quote_wording(2, Node::get_text(py));
 				Problems::quote_property(3, prn);
 				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyValueUnknown));
 				Problems::issue_problem_segment(
@@ -261,7 +261,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 			return NULL;
 		default:
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(py));
+			Problems::quote_wording(2, Node::get_text(py));
 			Problems::quote_property(3, prn);
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PeculiarPropertyValue));
 			Problems::issue_problem_segment(
@@ -273,7 +273,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 
 @<Issue a problem for a property value which isn't a constant@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(py));
+	Problems::quote_wording(2, Node::get_text(py));
 	Problems::quote_kind(3, property_kind);
 	Problems::quote_property(4, prn);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyNonConstant));

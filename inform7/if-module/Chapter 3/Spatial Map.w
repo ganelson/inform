@@ -2730,7 +2730,7 @@ void PL::SpatialMap::log_precis_of_map(void) {
 		PF_I(map, R)->zone = 0;
 	}
 	@<Declare the map connections in the precis@>;
-	ParseTree::traverse(Task::syntax_tree(), PL::SpatialMap::visit_to_transcribe);
+	SyntaxTree::traverse(Task::syntax_tree(), PL::SpatialMap::visit_to_transcribe);
 	LOG("\n[Precis complete.]\n\n");
 }
 
@@ -2815,7 +2815,7 @@ void PL::SpatialMap::log_precis_of_map(void) {
 
 @ =
 void PL::SpatialMap::visit_to_transcribe(parse_node *p) {
-	if ((ParseTree::get_type(p) == SENTENCE_NT) && (p->down)) {
+	if ((Node::get_type(p) == SENTENCE_NT) && (p->down)) {
 		Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_MAP_INDEX_SMFT, p->down);
 	}
 }
@@ -2870,7 +2870,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 				}
 			}
 			parse_node *at = PF_I(map, R)->exits_set_at[i];
-			if (at) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(at)));
+			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 			HTML_CLOSE("p");
 		}
 	}

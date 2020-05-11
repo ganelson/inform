@@ -135,15 +135,15 @@ Are created thus:
 
 =
 parse_node *Invocations::new(void) {
-	parse_node *inv = ParseTree::new(INVOCATION_NT);
-	ParseTree::set_phrase_invoked(inv, NULL);
-	ParseTree::set_say_verb(inv, NULL);
-	ParseTree::set_modal_verb(inv, NULL);
-	ParseTree::set_say_adjective(inv, NULL);
-	ParseTree::set_kind_resulting(inv, NULL);
-	ParseTree::set_phrase_options_invoked(inv, NULL);
-	ParseTree::set_kind_variable_declarations(inv, NULL);
-	ParseTree::annotate_int(inv, ssp_closing_segment_wn_ANNOT, -1);
+	parse_node *inv = Node::new(INVOCATION_NT);
+	Node::set_phrase_invoked(inv, NULL);
+	Node::set_say_verb(inv, NULL);
+	Node::set_modal_verb(inv, NULL);
+	Node::set_say_adjective(inv, NULL);
+	Node::set_kind_resulting(inv, NULL);
+	Node::set_phrase_options_invoked(inv, NULL);
+	Node::set_kind_variable_declarations(inv, NULL);
+	Annotations::write_int(inv, ssp_closing_segment_wn_ANNOT, -1);
 	return inv;
 }
 
@@ -157,16 +157,16 @@ void Invocations::log(parse_node *inv) {
 	char *verdict = Dash::verdict_to_text(inv);
 
 	LOG("[%04d%s] %8s ",
-		Routines::ToPhrases::sequence_count(ParseTree::get_phrase_invoked(inv)),
+		Routines::ToPhrases::sequence_count(Node::get_phrase_invoked(inv)),
 		(Invocations::is_marked_to_save_self(inv))?"-save-self":"",
 		verdict);
-	if (ParseTree::get_say_verb(inv)) {
-		LOG("verb:%d", ParseTree::get_say_verb(inv)->allocation_id);
-		if (ParseTree::get_modal_verb(inv)) LOG("modal:%d", ParseTree::get_modal_verb(inv)->allocation_id);
-	} else if (ParseTree::get_say_adjective(inv)) {
-		LOG("adj:%d", ParseTree::get_say_adjective(inv)->allocation_id);
+	if (Node::get_say_verb(inv)) {
+		LOG("verb:%d", Node::get_say_verb(inv)->allocation_id);
+		if (Node::get_modal_verb(inv)) LOG("modal:%d", Node::get_modal_verb(inv)->allocation_id);
+	} else if (Node::get_say_adjective(inv)) {
+		LOG("adj:%d", Node::get_say_adjective(inv)->allocation_id);
 	} else {
-		Phrases::log_briefly(ParseTree::get_phrase_invoked(inv));
+		Phrases::log_briefly(Node::get_phrase_invoked(inv));
 		for (i=0; i<Invocations::get_no_tokens(inv); i++) {
 			LOG(" ($P", Invocations::get_token_as_parsed(inv, i));
 			if (Invocations::get_token_check_to_do(inv, i))
@@ -176,7 +176,7 @@ void Invocations::log(parse_node *inv) {
 		wording OW = Invocations::get_phrase_options(inv);
 		if (Wordings::nonempty(OW))
 			LOG(" [0x%x %W]", Invocations::get_phrase_options_bitmap(inv), OW);
-		kind_variable_declaration *kvd = ParseTree::get_kind_variable_declarations(inv);
+		kind_variable_declaration *kvd = Node::get_kind_variable_declarations(inv);
 		for (; kvd; kvd=kvd->next) LOG(" %c=$u", 'A'+kvd->kv_number-1, kvd->kv_value);
 	}
 }
@@ -185,19 +185,19 @@ void Invocations::log(parse_node *inv) {
 
 =
 void Invocations::mark_to_save_self(parse_node *inv) {
-	ParseTree::annotate_int(inv, save_self_ANNOT, TRUE);
+	Annotations::write_int(inv, save_self_ANNOT, TRUE);
 }
 
 int Invocations::is_marked_to_save_self(parse_node *inv) {
-	return ParseTree::int_annotation(inv, save_self_ANNOT);
+	return Annotations::read_int(inv, save_self_ANNOT);
 }
 
 void Invocations::mark_unproven(parse_node *inv) {
-	ParseTree::annotate_int(inv, unproven_ANNOT, TRUE);
+	Annotations::write_int(inv, unproven_ANNOT, TRUE);
 }
 
 int Invocations::is_marked_unproven(parse_node *inv) {
-	return ParseTree::int_annotation(inv, unproven_ANNOT);
+	return Annotations::read_int(inv, unproven_ANNOT);
 }
 
 @ The word range:
@@ -205,7 +205,7 @@ int Invocations::is_marked_unproven(parse_node *inv) {
 =
 void Invocations::set_word_range(parse_node *inv, wording W) {
 	if (inv == NULL) internal_error("tried to set word range of null inv");
-	ParseTree::set_text(inv, W);
+	Node::set_text(inv, W);
 }
 
 @ The say verb:
@@ -214,9 +214,9 @@ void Invocations::set_word_range(parse_node *inv, wording W) {
 void Invocations::set_verb_conjugation(parse_node *inv,
 	verb_conjugation *vc, verb_conjugation *modal, int neg) {
 	if (inv == NULL) internal_error("tried to set VC of null inv");
-	ParseTree::set_say_verb(inv, vc);
-	ParseTree::set_modal_verb(inv, modal);
-	ParseTree::annotate_int(inv, say_verb_negated_ANNOT, neg);
+	Node::set_say_verb(inv, vc);
+	Node::set_modal_verb(inv, modal);
+	Annotations::write_int(inv, say_verb_negated_ANNOT, neg);
 }
 
 @ The say adjective:
@@ -224,7 +224,7 @@ void Invocations::set_verb_conjugation(parse_node *inv,
 =
 void Invocations::set_adjectival_phrase(parse_node *inv, adjectival_phrase *aph) {
 	if (inv == NULL) internal_error("tried to set ADJ of null inv");
-	ParseTree::set_say_adjective(inv, aph);
+	Node::set_say_adjective(inv, aph);
 }
 
 @ The tokens. Recall that these are stored as a linked list; the following
@@ -232,10 +232,10 @@ creates a new entry structure.
 
 =
 parse_node *Invocations::new_token(node_type_t t) {
-	parse_node *it = ParseTree::new(t);
-	ParseTree::set_token_check_to_do(it, NULL);
-	ParseTree::set_token_to_be_parsed_against(it, NULL);
-	ParseTree::set_kind_of_new_variable(it, NULL);
+	parse_node *it = Node::new(t);
+	Node::set_token_check_to_do(it, NULL);
+	Node::set_token_to_be_parsed_against(it, NULL);
+	Node::set_kind_of_new_variable(it, NULL);
 	return it;
 }
 
@@ -250,9 +250,9 @@ void Invocations::make_token(parse_node *inv, int i, node_type_t t, wording W, k
 	if (inv->down == NULL) inv->down = Invocations::new_token(t);
 	for (itl = inv->down, k = 0; itl; itl = itl->next, k++) {
 		if (k == i) {
-			ParseTree::set_text(itl, W);
-			ParseTree::set_type(itl, t);
-			ParseTree::set_kind_required_by_context(itl, K);
+			Node::set_text(itl, W);
+			Node::set_type(itl, t);
+			Node::set_kind_required_by_context(itl, K);
 			return;
 		}
 		if (itl->next == NULL) itl->next = Invocations::new_token(t);
@@ -265,7 +265,7 @@ void Invocations::set_token_check_to_do(parse_node *inv, int i, parse_node *spec
 	if (i<0) internal_error("tried to set token out of range");
 	if (inv->down == NULL) inv->down = Invocations::new_token(INVALID_NT);
 	for (itl = inv->down, k = 0; itl; itl = itl->next, k++) {
-		if (k == i) { ParseTree::set_token_check_to_do(itl, spec); return; }
+		if (k == i) { Node::set_token_check_to_do(itl, spec); return; }
 		if (itl->next == NULL) itl->next = Invocations::new_token(INVALID_NT);
 	}
 }
@@ -287,7 +287,7 @@ void Invocations::set_token_to_be_parsed_against(parse_node *inv, int i, parse_n
 	if (i<0) internal_error("tried to set token out of range");
 	if (inv->down == NULL) inv->down = Invocations::new_token(INVALID_NT);
 	for (itl = inv->down, k = 0; itl; itl = itl->next, k++) {
-		if (k == i) { ParseTree::set_token_to_be_parsed_against(itl, spec); return; }
+		if (k == i) { Node::set_token_to_be_parsed_against(itl, spec); return; }
 		if (itl->next == NULL) itl->next = Invocations::new_token(INVALID_NT);
 	}
 }
@@ -298,7 +298,7 @@ void Invocations::set_token_variable_kind(parse_node *inv, int i, kind *K) {
 	if (i<0) internal_error("tried to set token out of range");
 	if (inv->down == NULL) inv->down = Invocations::new_token(INVALID_NT);
 	for (itl = inv->down, k = 0; itl; itl = itl->next, k++) {
-		if (k == i) { ParseTree::set_kind_of_new_variable(itl, K); return; }
+		if (k == i) { Node::set_kind_of_new_variable(itl, K); return; }
 		if (itl->next == NULL) itl->next = Invocations::new_token(INVALID_NT);
 	}
 }
@@ -318,7 +318,7 @@ parse_node *Invocations::get_token_check_to_do(parse_node *inv, int i) {
 	int k;
 	parse_node *itl;
 	for (itl = inv->down, k = 0; itl; itl = itl->next, k++)
-		if (k == i) return ParseTree::get_token_check_to_do(itl);
+		if (k == i) return Node::get_token_check_to_do(itl);
 	return NULL;
 }
 
@@ -334,7 +334,7 @@ parse_node *Invocations::get_token_to_be_parsed_against(parse_node *inv, int i) 
 	int k;
 	parse_node *itl;
 	for (itl = inv->down, k = 0; itl; itl = itl->next, k++)
-		if (k == i) return ParseTree::get_token_to_be_parsed_against(itl);
+		if (k == i) return Node::get_token_to_be_parsed_against(itl);
 	return NULL;
 }
 
@@ -342,7 +342,7 @@ kind *Invocations::get_token_variable_kind(parse_node *inv, int i) {
 	int k;
 	parse_node *itl;
 	for (itl = inv->down, k = 0; itl; itl = itl->next, k++)
-		if (k == i) return ParseTree::get_kind_of_new_variable(itl);
+		if (k == i) return Node::get_kind_of_new_variable(itl);
 	return NULL;
 }
 
@@ -359,9 +359,9 @@ variable-argument phrases like C's |printf|.
 =
 int Invocations::get_no_tokens_needed(parse_node *inv) {
 	if (inv == NULL) internal_error("tried to read NTI of null inv");
-	if (ParseTree::get_phrase_invoked(inv))
+	if (Node::get_phrase_invoked(inv))
 		return Phrases::TypeData::get_no_tokens(
-			&(ParseTree::get_phrase_invoked(inv)->type_data));
+			&(Node::get_phrase_invoked(inv)->type_data));
 	return 0;
 }
 
@@ -369,11 +369,11 @@ int Invocations::get_no_tokens_needed(parse_node *inv) {
 
 =
 void Invocations::set_phrase_options(parse_node *inv, wording W) {
-	invocation_options *invo = ParseTree::get_phrase_options_invoked(inv);
+	invocation_options *invo = Node::get_phrase_options_invoked(inv);
 	if (invo == NULL) {
 		invo = CREATE(invocation_options);
 		invo->options = 0;
-		ParseTree::set_phrase_options_invoked(inv, invo);
+		Node::set_phrase_options_invoked(inv, invo);
 	}
 	invo->options_invoked_text = W;
 }
@@ -382,7 +382,7 @@ void Invocations::set_phrase_options(parse_node *inv, wording W) {
 
 =
 wording Invocations::get_phrase_options(parse_node *inv) {
-	invocation_options *invo = ParseTree::get_phrase_options_invoked(inv);
+	invocation_options *invo = Node::get_phrase_options_invoked(inv);
 	if (invo == NULL) return EMPTY_WORDING;
 	return invo->options_invoked_text;
 }
@@ -392,19 +392,19 @@ When no options are set, the bitmap is always 0.
 
 =
 int Invocations::get_phrase_options_bitmap(parse_node *inv) {
-	invocation_options *invo = ParseTree::get_phrase_options_invoked(inv);
+	invocation_options *invo = Node::get_phrase_options_invoked(inv);
 	if (invo == NULL) return 0;
 	return invo->options;
 }
 
 void Invocations::set_phrase_options_bitmap(parse_node *inv, int further_bits) {
 	if (further_bits == 0) return;
-	invocation_options *invo = ParseTree::get_phrase_options_invoked(inv);
+	invocation_options *invo = Node::get_phrase_options_invoked(inv);
 	if (invo == NULL) {
 		invo = CREATE(invocation_options);
 		invo->options_invoked_text = EMPTY_WORDING;
 		invo->options = 0;
-		ParseTree::set_phrase_options_invoked(inv, invo);
+		Node::set_phrase_options_invoked(inv, invo);
 	}
 	invo->options |= further_bits;
 }
@@ -414,7 +414,7 @@ This is applied only when the invocation passes the following stringent test:
 
 =
 int Invocations::implies_newline(parse_node *inv) {
-	if (!(Phrases::TypeData::is_a_say_phrase(ParseTree::get_phrase_invoked(inv)))) return FALSE;
+	if (!(Phrases::TypeData::is_a_say_phrase(Node::get_phrase_invoked(inv)))) return FALSE;
 	if (!(TEST_COMPILATION_MODE(IMPLY_NEWLINES_IN_SAY_CMODE))) return FALSE;
 	return TRUE;
 }
@@ -520,8 +520,8 @@ int Invocations::comparison(const void *i1, const void *i2) {
 
 	/* (a) sort by logical priority */
 	int delta =
-		Routines::ToPhrases::sequence_count(ParseTree::get_phrase_invoked(inv1->inv_data)) -
-		Routines::ToPhrases::sequence_count(ParseTree::get_phrase_invoked(inv2->inv_data));
+		Routines::ToPhrases::sequence_count(Node::get_phrase_invoked(inv1->inv_data)) -
+		Routines::ToPhrases::sequence_count(Node::get_phrase_invoked(inv2->inv_data));
 	if (delta != 0) return delta;
 
 	/* (b) sort by creation sequence */
@@ -536,7 +536,7 @@ int Invocations::eq(parse_node *inv1, parse_node *inv2) {
 	if ((inv1 == NULL) && (inv2)) return FALSE;
 	if (inv1 == NULL) return TRUE;
 
-	if (ParseTree::get_phrase_invoked(inv1) != ParseTree::get_phrase_invoked(inv2))
+	if (Node::get_phrase_invoked(inv1) != Node::get_phrase_invoked(inv2))
 		return FALSE;
 	if (Invocations::get_no_tokens(inv1) != Invocations::get_no_tokens(inv2))
 		return FALSE;
@@ -544,11 +544,11 @@ int Invocations::eq(parse_node *inv1, parse_node *inv2) {
 	for (int i=0; i<Invocations::get_no_tokens(inv1); i++) {
 		parse_node *m1 = Invocations::get_token_to_be_parsed_against(inv1, i);
 		parse_node *m2 = Invocations::get_token_to_be_parsed_against(inv2, i);
-		if (ParseTree::get_type(m1) != ParseTree::get_type(m2)) return FALSE;
+		if (Node::get_type(m1) != Node::get_type(m2)) return FALSE;
 		parse_node *v1 = Invocations::get_token_as_parsed(inv1, i);
 		parse_node *v2 = Invocations::get_token_as_parsed(inv2, i);
-		if (ParseTree::get_type(v1) != ParseTree::get_type(v2)) return FALSE;
-		if (!Wordings::eq(ParseTree::get_text(v1), ParseTree::get_text(v2))) return FALSE;
+		if (Node::get_type(v1) != Node::get_type(v2)) return FALSE;
+		if (!Wordings::eq(Node::get_text(v1), Node::get_text(v2))) return FALSE;
 	}
 	return TRUE;
 }
@@ -584,7 +584,7 @@ void Invocations::log_list_in_detail(parse_node *invl) {
 		for (j=0; j<Invocations::get_no_tokens(inv); j++) {
 			parse_node *tok = Invocations::get_token_as_parsed(inv, j);
 			LOG("  %d: $P\n", j, tok);
-			if (ParseTree::is(tok->down, INVOCATION_LIST_NT)) {
+			if (Node::is(tok->down, INVOCATION_LIST_NT)) {
 				LOG_INDENT;
 				Invocations::log_list_in_detail(tok->down->down);
 				LOG_OUTDENT;

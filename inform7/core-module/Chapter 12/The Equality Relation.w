@@ -137,7 +137,7 @@ int Calculus::Equality::REL_assert(binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	if (Lvalues::is_actual_NONLOCAL_VARIABLE(spec0)) {
-		nonlocal_variable *q = ParseTree::get_constant_nonlocal_variable(spec0);
+		nonlocal_variable *q = Node::get_constant_nonlocal_variable(spec0);
 		int allowed = TRUE;
 		if ((prevailing_mood != UNKNOWN_CE) && (prevailing_mood != LIKELY_CE))
 			allowed = FALSE;

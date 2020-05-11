@@ -14,15 +14,15 @@ objects or values, but there are two exceptional cases to take care of.
 void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, parse_node *relationship_subtree) {
 	if ((value == NULL) || (relationship_subtree == NULL))
 		internal_error("assert relation between null subtrees");
-	if (ParseTree::get_type(relationship_subtree) != RELATIONSHIP_NT)
+	if (Node::get_type(relationship_subtree) != RELATIONSHIP_NT)
 		internal_error("asserted malformed relationship subtree");
-	if (ParseTree::get_type(value) == AND_NT) {
+	if (Node::get_type(value) == AND_NT) {
 		Assertions::Relational::assert_subtree_in_relationship(value->down, relationship_subtree);
 		Assertions::Relational::assert_subtree_in_relationship(value->down->next, relationship_subtree);
 		return;
 	}
 
-	switch(ParseTree::int_annotation(relationship_subtree, relationship_node_type_ANNOT)) {
+	switch(Annotations::read_int(relationship_subtree, relationship_node_type_ANNOT)) {
 		case STANDARD_RELN: @<Standard relationship nodes (the vast majority)@>;
 		#ifdef IF_MODULE
 		case PARENTAGE_HERE_RELN: @<Exceptional relationship nodes for placing objects "here"@>;
@@ -33,14 +33,14 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 }
 
 @<Standard relationship nodes (the vast majority)@> =
-	binary_predicate *bp = BinaryPredicates::get_reversal(ParseTree::get_relationship(relationship_subtree));
+	binary_predicate *bp = BinaryPredicates::get_reversal(Node::get_relationship(relationship_subtree));
 	if (bp == NULL) internal_error("asserted bp-less relationship subtree");
 	Properties::SettingRelations::fix_property_bp(bp);
 	Assertions::Relational::assert_relation_between_subtrees(value, bp, relationship_subtree->down);
 	break;
 
 @<Exceptional relationship nodes for placing objects "here"@> =
-	if (ParseTree::get_subject(value) == NULL) {
+	if (Node::get_subject(value) == NULL) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_HereFailedOnNothing),
 			"that is an assertion which puts nothing 'here'",
 			"which looks as if it might be trying to give me negative rather "
@@ -49,7 +49,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 	} else {
 		Calculus::Propositions::Assert::assert_true_about(
 			Calculus::Propositions::Abstract::to_put_here(),
-			ParseTree::get_subject(value), prevailing_mood);
+			Node::get_subject(value), prevailing_mood);
 	}
 	break;
 
@@ -57,11 +57,11 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 	@<Make some paranoid checks that the map subtree is valid@>;
 	Assertions::Relational::substitute_at_node(relationship_subtree->down);
 	Assertions::Relational::substitute_at_node(relationship_subtree->down->next);
-	inference_subject *iy = ParseTree::get_subject(relationship_subtree->down);
-	inference_subject *id = ParseTree::get_subject(relationship_subtree->down->next);
+	inference_subject *iy = Node::get_subject(relationship_subtree->down);
+	inference_subject *id = Node::get_subject(relationship_subtree->down->next);
 	if (iy == NULL) {
 		if (Rvalues::is_nothing_object_constant(
-			ParseTree::get_evaluation(relationship_subtree->down)))
+			Node::get_evaluation(relationship_subtree->down)))
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MapFromNowhere),
 				"the source of a map connection can't be nowhere",
 				"so sentences like 'The pink door is south of nowhere.' are not "
@@ -77,8 +77,8 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 		internal_error("malformed directional subtree");
 	if (Rvalues::is_nothing_object_constant(value))
 		PL::Map::connect(iy, NULL, id);
-	else if (Rvalues::is_object(ParseTree::get_evaluation(value)))
-		PL::Map::connect(iy, ParseTree::get_subject(value), id);
+	else if (Rvalues::is_object(Node::get_evaluation(value)))
+		PL::Map::connect(iy, Node::get_subject(value), id);
 	else {
 		LOG("Val is $P\n", value);
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MapToNonobject),
@@ -93,13 +93,13 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 		(relationship_subtree->down->next == NULL) ||
 		(relationship_subtree->down->next->next != NULL))
 		internal_error("malformed DIRECTION");
-	if (ParseTree::get_type(relationship_subtree->down) != PROPER_NOUN_NT) {
+	if (Node::get_type(relationship_subtree->down) != PROPER_NOUN_NT) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is not straightforward in saying which room (or door) leads away from",
 			"and should just name the source.");
 		break;
 	}
-	if (ParseTree::get_type(relationship_subtree->down->next) != PROPER_NOUN_NT) {
+	if (Node::get_type(relationship_subtree->down->next) != PROPER_NOUN_NT) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is not straightforward in saying which direction the room (or door) lies in",
 			"and should just name the direction.");
@@ -108,7 +108,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 
 @ =
 void Assertions::Relational::substitute_at_node(parse_node *p) {
-	parse_node *spec = ParseTree::get_evaluation(p);
+	parse_node *spec = Node::get_evaluation(p);
 	spec = NonlocalVariables::substitute_constants(spec);
 	Assertions::Refiner::noun_from_value(p, spec);
 }
@@ -119,16 +119,16 @@ $T_Y$ is a list of values or objects (joined into an |AND_NT| tree).
 
 =
 void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, binary_predicate *bp, parse_node *py) {
-	if (ParseTree::get_type(py) == AND_NT) {
+	if (Node::get_type(py) == AND_NT) {
 		Assertions::Relational::assert_relation_between_subtrees(px, bp, py->down);
 		Assertions::Relational::assert_relation_between_subtrees(px, bp, py->down->next);
 		return;
 	}
-	if (ParseTree::get_type(py) == WITH_NT) {
+	if (Node::get_type(py) == WITH_NT) {
 		Assertions::Relational::assert_relation_between_subtrees(px, bp, py->down);
 		return;
 	}
-	if (ParseTree::get_type(py) == EVERY_NT) @<Issue problem for "every" used on the right@>;
+	if (Node::get_type(py) == EVERY_NT) @<Issue problem for "every" used on the right@>;
 
 	/* reverse the relation (and swap the terms) to ensure it's the right way round */
 	if (BinaryPredicates::is_the_wrong_way_round(bp)) {
@@ -140,7 +140,7 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 	@<Impose a tedious restriction on relations between objects and values@>;
 
 	Calculus::Propositions::Assert::assert_true(
-		Calculus::Propositions::Abstract::to_set_relation(bp, ParseTree::get_subject(px), ParseTree::get_evaluation(px), ParseTree::get_subject(py), ParseTree::get_evaluation(py)),
+		Calculus::Propositions::Abstract::to_set_relation(bp, Node::get_subject(px), Node::get_evaluation(px), Node::get_subject(py), Node::get_evaluation(py)),
 		prevailing_mood);
 }
 
@@ -150,8 +150,8 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 	Assertions::Refiner::coerce_adjectival_usage_to_noun(px); Assertions::Refiner::turn_player_to_yourself(px);
 	Assertions::Refiner::coerce_adjectival_usage_to_noun(py); Assertions::Refiner::turn_player_to_yourself(py);
 
-	if (((ParseTree::get_type(px) != PROPER_NOUN_NT) && (ParseTree::get_type(px) != COMMON_NOUN_NT)) ||
-		((ParseTree::get_type(py) != PROPER_NOUN_NT) && (ParseTree::get_type(py) != COMMON_NOUN_NT))) {
+	if (((Node::get_type(px) != PROPER_NOUN_NT) && (Node::get_type(px) != COMMON_NOUN_NT)) ||
+		((Node::get_type(py) != PROPER_NOUN_NT) && (Node::get_type(py) != COMMON_NOUN_NT))) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadRelation),
 			"this description of a relationship makes no sense to me",
 			"and should be something like 'X is in Y' (or 'on' or 'part of Y'); "
@@ -163,8 +163,8 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 
 @<Impose a tedious restriction on relations between objects and values@> =
 	if ((BinaryPredicates::relates_values_not_objects(bp)) &&
-		(((ParseTree::get_subject(px)) && (InferenceSubjects::domain(ParseTree::get_subject(px)))) ||
-		((ParseTree::get_subject(py)) && (InferenceSubjects::domain(ParseTree::get_subject(py)))))) {
+		(((Node::get_subject(px)) && (InferenceSubjects::domain(Node::get_subject(px)))) ||
+		((Node::get_subject(py)) && (InferenceSubjects::domain(Node::get_subject(py)))))) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_KindRelatedToValue),
 			"relations between objects and values have to be made one "
 			"object at a time",

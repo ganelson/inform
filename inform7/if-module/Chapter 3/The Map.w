@@ -535,7 +535,7 @@ These NPs allow us to refer to the special directions "up" and "down":
 
 @ =
 int PL::Map::map_act_on_special_NPs(parse_node *p) {
-	if (<notable-map-noun-phrases>(ParseTree::get_text(p))) {
+	if (<notable-map-noun-phrases>(Node::get_text(p))) {
 		switch (<<r>>) {
 			case 0:
 				if (I_down) {
@@ -591,16 +591,16 @@ because, of course, that does set its kind.
 
 =
 int PL::Map::map_intervene_in_assertion(parse_node *px, parse_node *py) {
-	if ((ParseTree::get_type(px) == PROPER_NOUN_NT) &&
-		(ParseTree::get_type(py) == COMMON_NOUN_NT)) {
-		inference_subject *left_object = ParseTree::get_subject(px);
-		inference_subject *right_kind = ParseTree::get_subject(py);
+	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
+		(Node::get_type(py) == COMMON_NOUN_NT)) {
+		inference_subject *left_object = Node::get_subject(px);
+		inference_subject *right_kind = Node::get_subject(py);
 		if ((PL::Map::is_a_direction(left_object)) &&
 			(PL::Map::is_a_direction(right_kind) == FALSE)) {
 			Assertions::Creator::convert_instance_to_nounphrase(py, NULL);
 			return FALSE;
 		}
-		if (ParseTree::int_annotation(px, nowhere_ANNOT)) {
+		if (Annotations::read_int(px, nowhere_ANNOT)) {
 			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_NowhereDescribed),
 				"'nowhere' cannot be made specific",
 				"and so cannot have specific properties or be of any given kind.");

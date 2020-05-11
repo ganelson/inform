@@ -145,7 +145,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 
 	if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
 		inter_t ID = P->W.data[DATA_CONST_IFLD];
-		text_stream *S = Inter::Node::ID_to_text(P, ID);
+		text_stream *S = Inode::ID_to_text(P, ID);
 		WRITE("Array UUID_ARRAY string \"UUID://");
 		for (int i=0, L=Str::len(S); i<L; i++) WRITE("%c", Characters::toupper(Str::get_at(S, i)));
 		WRITE("//\";\n");
@@ -163,7 +163,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	switch (P->W.data[FORMAT_CONST_IFLD]) {
 		case CONSTANT_INDIRECT_TEXT: {
 			inter_t ID = P->W.data[DATA_CONST_IFLD];
-			text_stream *S = Inter::Node::ID_to_text(P, ID);
+			text_stream *S = Inode::ID_to_text(P, ID);
 			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
 			WRITE("\"%S\"", S);
 			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));

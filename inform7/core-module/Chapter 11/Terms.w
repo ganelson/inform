@@ -97,7 +97,7 @@ pcalc_term Calculus::Terms::new_function(binary_predicate *bp, pcalc_term ptof, 
 
 =
 pcalc_term Calculus::Terms::copy(pcalc_term pt) {
-	if (pt.constant) pt.constant = ParseTree::duplicate(pt.constant);
+	if (pt.constant) pt.constant = Node::duplicate(pt.constant);
 	if (pt.function) pt = Calculus::Terms::new_function(pt.function->bp,
 		Calculus::Terms::copy(pt.function->fn_of), pt.function->from_term);
 	return pt;
@@ -172,11 +172,11 @@ adjective_usage *Calculus::Terms::noun_to_adj_conversion(pcalc_term pt) {
 	kind *K;
 	adjectival_phrase *aph;
 	parse_node *spec = pt.constant;
-	if (ParseTree::is(spec, CONSTANT_NT) == FALSE) return NULL;
-	K = ParseTree::get_kind_of_value(spec);
+	if (Node::is(spec, CONSTANT_NT) == FALSE) return NULL;
+	K = Node::get_kind_of_value(spec);
 	if (Properties::Conditions::get_coinciding_property(K) == NULL) return NULL;
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
-		instance *I = ParseTree::get_constant_instance(spec);
+		instance *I = Node::get_constant_instance(spec);
 		aph = Instances::get_adjectival_phrase(I);
 		return AdjectiveUsages::new(aph, TRUE);
 	}
@@ -246,8 +246,8 @@ void Calculus::Terms::log(pcalc_term *pt) {
 	} else if (pt->constant) {
 		parse_node *spec = pt->constant;
 		if (pt->cinder >= 0) { LOG("const_%d", pt->cinder); return; }
-		if (Wordings::nonempty(ParseTree::get_text(spec))) { LOG("'%W'", ParseTree::get_text(spec)); return; }
-		if (ParseTree::is(spec, CONSTANT_NT)) {
+		if (Wordings::nonempty(Node::get_text(spec))) { LOG("'%W'", Node::get_text(spec)); return; }
+		if (Node::is(spec, CONSTANT_NT)) {
 			instance *I = Rvalues::to_object_instance(spec);
 			if (I) { LOG("$O", I); return; }
 		}

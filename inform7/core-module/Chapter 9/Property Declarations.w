@@ -21,7 +21,7 @@ int Assertions::Property::either_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "A room is either dark or lighted." */
 		case ACCEPT_SMFT:
 			if (<either-sentence-object>(OW)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -42,7 +42,7 @@ int Assertions::Property::optional_either_SMF(int task, parse_node *V, wording *
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "A room can be dark or lighted." */
 		case ACCEPT_SMFT:
-			ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<nounphrase>(OW);
 			parse_node *O = <<rp>>;
 			<nounphrase>(SW);
@@ -101,13 +101,13 @@ void Assertions::Property::declare_property_can_be(parse_node *p) {
 	parse_node *the_owner = p->next;
 	parse_node *the_list = the_owner->next;
 
-	<can-be-sentence-object>(ParseTree::get_text(the_list));
+	<can-be-sentence-object>(Node::get_text(the_list));
 	int either_flag = <<r>>;
 	the_list->down = <<rp>>;
 	the_list = the_list->down;
 
 	wording CNW = EMPTY_WORDING;
-	if (the_list->next) CNW = ParseTree::get_text(the_list->next);
+	if (the_list->next) CNW = Node::get_text(the_list->next);
 
 	Assertions::Refiner::refine(the_owner, FORBID_CREATION);
 	@<Possession must be time-independent@>;
@@ -116,13 +116,13 @@ void Assertions::Property::declare_property_can_be(parse_node *p) {
 	@<An optional condition name can only be given to a condition@>;
 
 	wording FW = EMPTY_WORDING;
-	if (count == 1) FW = ParseTree::get_text(the_list);
-	else FW = ParseTree::get_text(the_list->down);
+	if (count == 1) FW = Node::get_text(the_list);
+	else FW = Node::get_text(the_list->down);
 	@<Allow the word "either" as syntactic sugar when there are two alternatives@>;
 	wording SW = EMPTY_WORDING;
-	if (count >= 2) SW = ParseTree::get_text(the_list->down->next);
+	if (count >= 2) SW = Node::get_text(the_list->down->next);
 
-	if (<forbidden-property-owners>(ParseTree::get_text(the_owner))) return;
+	if (<forbidden-property-owners>(Node::get_text(the_owner))) return;
 
 	inference_subject *owner_infs = NULL;
 	@<Determine the proud owner, and see if it's someone we consider worthy@>;
@@ -142,7 +142,7 @@ void Assertions::Property::declare_property_can_be(parse_node *p) {
 @ =
 int Assertions::Property::list_length(parse_node *P) {
 	if (P == NULL) internal_error("Ooops");
-	if (ParseTree::get_type(P) == AND_NT)
+	if (Node::get_type(P) == AND_NT)
 		return Assertions::Property::list_length(P->down) + Assertions::Property::list_length(P->down->next);
 	return 1;
 }
@@ -189,7 +189,7 @@ which might take forms such as:
 	}
 
 @<Possession must be time-independent@> =
-	if (ParseTree::get_type(the_owner) == WITH_NT) {
+	if (Node::get_type(the_owner) == WITH_NT) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_QualifiedCanBe),
 			"only a room, a thing or a kind can have such adjectives applied to it",
 			"and qualifications cannot be used. It makes no sense to say 'An open door "
@@ -222,15 +222,15 @@ differently as a result.
 	}
 
 @<Determine the proud owner, and see if it's someone we consider worthy@> =
-	parse_node *owner_spec = ParseTree::get_evaluation(the_owner);
+	parse_node *owner_spec = Node::get_evaluation(the_owner);
 	if (Lvalues::is_actual_NONLOCAL_VARIABLE(owner_spec))
 		@<Disallow this variable as a new owner of a property@>;
 	if (Descriptions::is_qualified(owner_spec))
 		@<Disallow this as an owner not time-independent@>;
-	owner_infs = ParseTree::get_subject(the_owner);
+	owner_infs = Node::get_subject(the_owner);
 	if (owner_infs == NULL) {
 		owner_spec = NULL;
-		if (<s-type-expression>(ParseTree::get_text(the_owner)))
+		if (<s-type-expression>(Node::get_text(the_owner)))
 			owner_infs = Kinds::Knowledge::as_subject(Specifications::to_kind(<<rp>>));
 	}
 	kind *K = InferenceSubjects::domain(owner_infs);
@@ -255,7 +255,7 @@ differently as a result.
 
 @<Disallow this variable as a new owner of a property@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(the_owner));
+	Problems::quote_wording(2, Node::get_text(the_owner));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_VariableCantHaveProperties));
 	Problems::issue_problem_segment(
 		"The sentence %1 looked to me as if it might be trying to create an either/or "
@@ -409,10 +409,10 @@ or sky blue pink".
 	kind *condition_kind = Properties::Valued::kind(prn);
 	for (option = the_list; option; option = (option->down)?(option->down->next):NULL) {
 		wording PW;
-		if (ParseTree::get_type(option) == AND_NT)
-			PW = ParseTree::get_text(option->down);
+		if (Node::get_type(option) == AND_NT)
+			PW = Node::get_text(option->down);
 		else
-			PW = ParseTree::get_text(option);
+			PW = Node::get_text(option);
 		@<Disallow this option name if it clashes with something non-adjectival@>;
 		@<Disallow this option name if it clashes with an either-or@>;
 		pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(condition_kind, PW);
@@ -481,7 +481,7 @@ a recursive traverse of the left-hand subtree.
 
 =
 property *Assertions::Property::recursively_declare_properties(parse_node *owner_ref, parse_node *p) {
-	switch(ParseTree::get_type(p)) {
+	switch(Node::get_type(p)) {
 		case AND_NT:
 			Assertions::Property::recursively_declare_properties(owner_ref, p->down);
 			Assertions::Property::recursively_declare_properties(owner_ref, p->down->next);
@@ -498,7 +498,7 @@ property *Assertions::Property::recursively_declare_properties(parse_node *owner
 automatically creates it.
 
 @<This is a leaf containing just a property name@> =
-	if ((<k-kind>(ParseTree::get_text(p))) &&
+	if ((<k-kind>(Node::get_text(p))) &&
 		((<<rp>> == K_number) || (<<rp>> == K_text))) {
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_BareProperty),
 			"this would create a property called 'number' or 'text'",
@@ -506,12 +506,12 @@ automatically creates it.
 			"these aren't. Instead, try '... has a number called position.' or "
 			"something like that, to give the property a name.");
 	}
-	inference_subject *owner_infs = ParseTree::get_subject(owner_ref);
+	inference_subject *owner_infs = Node::get_subject(owner_ref);
 	kind *K = InferenceSubjects::domain(owner_infs);
 	Kinds::Behaviour::convert_to_enumeration(Task::syntax_tree(), K); /* if that's possible; does nothing if not */
 	if ((K) && (Kinds::Behaviour::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of a value property@>;
-	property *prn = Properties::Valued::obtain(ParseTree::get_text(p));
+	property *prn = Properties::Valued::obtain(Node::get_text(p));
 	Calculus::Propositions::Assert::assert_true_about(Calculus::Propositions::Abstract::to_provide_property(prn),
 		owner_infs, prevailing_mood);
 	return prn;
@@ -548,7 +548,7 @@ several property names, e.g., in
 
 =
 void Assertions::Property::recursively_call_properties(parse_node *owner_ref, parse_node *kind_ref, parse_node *prn_ref) {
-	switch(ParseTree::get_type(prn_ref)) {
+	switch(Node::get_type(prn_ref)) {
 		case AND_NT:
 			Assertions::Property::recursively_call_properties(owner_ref, kind_ref, prn_ref->down);
 			Assertions::Property::recursively_call_properties(owner_ref, kind_ref, prn_ref->down->next);
@@ -569,17 +569,17 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 		@<Issue a problem message for giving the wrong kind of an existing property@>;
 
 @<Find the kind of value being asked for@> =
-	if (<k-kind>(ParseTree::get_text(kind_ref))) K = <<rp>>;
+	if (<k-kind>(Node::get_text(kind_ref))) K = <<rp>>;
 	else @<Issue a problem message for a non-kind as the property kind@>;
 
 @<Issue a problem message for a non-kind as the property kind@> =
 	parse_node *spec = NULL;
-	if (<s-type-expression>(ParseTree::get_text(kind_ref)))
+	if (<s-type-expression>(Node::get_text(kind_ref)))
 		spec = <<rp>>;
 	LOG("Offending SP: $T", spec);
 	if (Specifications::is_new_variable_like(spec)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(kind_ref));
+		Problems::quote_wording(2, Node::get_text(kind_ref));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RedundantThatVaries));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make a new named property - "
@@ -591,7 +591,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 		Problems::issue_problem_end();
 	} else if (Specifications::is_description(spec)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(kind_ref));
+		Problems::quote_wording(2, Node::get_text(kind_ref));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyTooSpecific));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make a new named property - "
@@ -603,7 +603,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 		Problems::issue_problem_end();
 	} else {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(kind_ref));
+		Problems::quote_wording(2, Node::get_text(kind_ref));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyKindUnknown));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' is not the name of a kind of value which I know (such "
@@ -616,7 +616,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 	if (Kinds::Compare::eq(K, K_value)) {
 		if (prn == P_variable_initial_value) return;
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(kind_ref));
+		Problems::quote_wording(2, Node::get_text(kind_ref));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyKindVague));
 		Problems::issue_problem_segment(
 			"You wrote %1, but saying that a property is a 'value' does not give me a clear "
@@ -629,7 +629,7 @@ void Assertions::Property::recursively_call_properties(parse_node *owner_ref, pa
 
 @<Issue a problem message for giving the wrong kind of an existing property@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(kind_ref));
+	Problems::quote_wording(2, Node::get_text(kind_ref));
 	Problems::quote_property(3, prn);
 	Problems::quote_kind(4, current_kind);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyKindClashes));

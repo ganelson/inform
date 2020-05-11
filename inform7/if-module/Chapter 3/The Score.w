@@ -48,7 +48,7 @@ void PL::Score::compile_max_score(void) {
 			if ((PN != NULL) && (max_score_VAR) &&
 				(NonlocalVariables::has_initial_value_set(max_score_VAR) == FALSE))
 				Assertions::PropertyKnowledge::initialise_global_variable(
-					max_score_VAR, ParseTree::get_evaluation(PN));
+					max_score_VAR, Node::get_evaluation(PN));
 			Hierarchy::make_available(Emit::tree(), iname);
 			UseOptions::ranking_table_given();
 			rt_made = TRUE;

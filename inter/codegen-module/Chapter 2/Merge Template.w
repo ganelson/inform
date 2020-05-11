@@ -49,11 +49,11 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 
 void CodeGen::MergeTemplate::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	if (P->W.data[ID_IFLD] == LINK_IST) {
-		text_stream *S1 = Inter::Node::ID_to_text(P, P->W.data[SEGMENT_LINK_IFLD]);
-		text_stream *S2 = Inter::Node::ID_to_text(P, P->W.data[PART_LINK_IFLD]);
-		text_stream *S3 = Inter::Node::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
-		text_stream *S4 = Inter::Node::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
-		void *ref = Inter::Node::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
+		text_stream *S1 = Inode::ID_to_text(P, P->W.data[SEGMENT_LINK_IFLD]);
+		text_stream *S2 = Inode::ID_to_text(P, P->W.data[PART_LINK_IFLD]);
+		text_stream *S3 = Inode::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
+		text_stream *S4 = Inode::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
+		void *ref = Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
 		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
 	}
 }
@@ -62,9 +62,9 @@ void CodeGen::MergeTemplate::catch_all_visitor(inter_tree *I, inter_tree_node *P
 	if (P->W.data[ID_IFLD] == LINK_IST) {
 		text_stream *S1 = NULL;
 		text_stream *S2 = NULL;
-		text_stream *S3 = Inter::Node::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
-		text_stream *S4 = Inter::Node::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
-		void *ref = Inter::Node::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
+		text_stream *S3 = Inode::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
+		text_stream *S4 = Inode::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
+		void *ref = Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
 		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
 	}
 }

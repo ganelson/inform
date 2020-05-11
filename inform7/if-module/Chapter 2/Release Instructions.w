@@ -108,7 +108,7 @@ int PL::Bibliographic::Release::release_along_with_SMF(int task, parse_node *V, 
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "Use American dialect." */
 		case ACCEPT_SMFT:
-			ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<nounphrase-articled-list>(OW);
 			V->next = <<rp>>;
 			return TRUE;
@@ -121,13 +121,13 @@ int PL::Bibliographic::Release::release_along_with_SMF(int task, parse_node *V, 
 
 @ =
 void PL::Bibliographic::Release::visit_to_quote(OUTPUT_STREAM, parse_node *p) {
-	if ((ParseTree::get_type(p) == SENTENCE_NT) && (p->down)) {
-		verb_meaning *vm = ParseTree::get_verb_meaning(p->down);
+	if ((Node::get_type(p) == SENTENCE_NT) && (p->down)) {
+		verb_meaning *vm = Node::get_verb_meaning(p->down);
 		int rev = FALSE;
 		special_meaning_fn soa = VerbMeanings::get_special_meaning(vm, &rev);
 		if (soa == PL::Bibliographic::Release::release_along_with_SMF) {
 			TEMPORARY_TEXT(TEMP);
-			Index::link_to(TEMP, Wordings::first_wn(ParseTree::get_text(p)), TRUE);
+			Index::link_to(TEMP, Wordings::first_wn(Node::get_text(p)), TRUE);
 			WRITE("status instruction ||");
 			STREAM_COPY(OUT, TEMP);
 			WRITE("||\n");
@@ -141,13 +141,13 @@ void PL::Bibliographic::Release::handle_release_declaration(parse_node *p) {
 }
 
 void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p) {
-	if (ParseTree::get_type(p) == AND_NT) {
+	if (Node::get_type(p) == AND_NT) {
 		PL::Bibliographic::Release::handle_release_declaration_inner(p->down);
 		PL::Bibliographic::Release::handle_release_declaration_inner(p->down->next);
 		return;
 	}
 	current_sentence = p;
-	if (<release-sentence-object>(ParseTree::get_text(p)))
+	if (<release-sentence-object>(Node::get_text(p)))
 		@<Respond to an individual release instruction@>
 	else
 		@<Issue a bad release instruction problem message@>;
@@ -750,7 +750,7 @@ int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variabl
 				NonlocalVariables::get_initial_value(
 					nlv));
 		kind *K = NonlocalVariables::kind(nlv);
-		if (ParseTree::is(val, UNKNOWN_NT)) {
+		if (Node::is(val, UNKNOWN_NT)) {
 			if (Kinds::Compare::eq(K, K_number)) WRITE("0");
 		} else {
 			if (Kinds::Compare::eq(K, K_number)) {
@@ -760,7 +760,7 @@ int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variabl
 				Holsters::unholster_pair(&VH, &v1, &v2);
 				WRITE("%d", (inter_t) v2);
 			} else {
-				wording W = ParseTree::get_text(val);
+				wording W = Node::get_text(val);
 				int w1 = Wordings::first_wn(W);
 				PL::Bibliographic::compile_bibliographic_text(OUT, Lexer::word_text(w1));
 			}
@@ -778,7 +778,7 @@ int PL::Bibliographic::Release::write_var_to_text(OUTPUT_STREAM, nonlocal_variab
 				NonlocalVariables::get_initial_value(
 					nlv));
 		kind *K = NonlocalVariables::kind(nlv);
-		if (ParseTree::is(val, UNKNOWN_NT)) {
+		if (Node::is(val, UNKNOWN_NT)) {
 			if (Kinds::Compare::eq(K, K_number)) WRITE("0");
 		} else {
 			if (Kinds::Compare::eq(K, K_number)) {
@@ -788,7 +788,7 @@ int PL::Bibliographic::Release::write_var_to_text(OUTPUT_STREAM, nonlocal_variab
 				Holsters::unholster_pair(&VH, &v1, &v2);
 				WRITE("%d", (inter_t) v2);
 			} else {
-				wording W = ParseTree::get_text(val);
+				wording W = Node::get_text(val);
 				int w1 = Wordings::first_wn(W);
 				PL::Bibliographic::compile_bibliographic_text(OUT, Lexer::word_text(w1));
 			}
@@ -1047,7 +1047,7 @@ instead of what he actually did choose, and we'll write those hints now, for
 Inblorb to copy out later.
 
 @<Give hints to Inblorb for its HTML status page@> =
-	ParseTree::traverse_with_stream(Task::syntax_tree(), OUT, PL::Bibliographic::Release::visit_to_quote);
+	SyntaxTree::traverse_text(Task::syntax_tree(), OUT, PL::Bibliographic::Release::visit_to_quote);
 	if (release_cover == FALSE) {
 		WRITE("status alternative ||Using 'Release along with cover art', to "
 			"provide something more distinctive than the default artwork above");

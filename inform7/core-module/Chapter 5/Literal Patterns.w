@@ -2340,7 +2340,7 @@ int LiteralPatterns::specifies_SMF(int task, parse_node *V, wording *NPs) {
 				if (<nounphrase>(OW)) {
 					parse_node *O = <<rp>>;
 					V->next = S; V->next->next = O;
-					ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+					Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 					return TRUE;
 				}
 			}
@@ -2368,7 +2368,7 @@ and then on "2 tonnes" with the "1 tonne" LP as its owner.
 =
 literal_pattern *LiteralPatterns::new_literal_specification_list(parse_node *p, parse_node *q,
 	literal_pattern *lp_main) {
-	if (ParseTree::get_type(p) == AND_NT) {
+	if (Node::get_type(p) == AND_NT) {
 		lp_main = LiteralPatterns::new_literal_specification_list(p->down, q, lp_main);
 		return LiteralPatterns::new_literal_specification_list(p->down->next, q, lp_main);
 	}
@@ -2398,7 +2398,7 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(parse_node *p,
 	kind *K = NULL;
 	literal_pattern *lp = NULL; /* what we will create, if all goes well */
 	int notation_options = 0; literal_pattern_name *notation_groups = NULL;
-	wording SPW = ParseTree::get_text(p);
+	wording SPW = Node::get_text(p);
 
 	@<Parse the subject noun phrase of the specifies sentence@>;
 	@<Parse the object noun phrase of the specifies sentence@>;
@@ -2543,7 +2543,7 @@ of alternatives each of which matches the following:
 
 @<Parse the object noun phrase of the specifies sentence@> =
 	LP_offset_value = NULL;
-	<specifies-sentence-object>(ParseTree::get_text(q));
+	<specifies-sentence-object>(Node::get_text(q));
 	switch (<<r>>) {
 		case PARTS_LPC: part_np_list = <<rp>>; break;
 		case SCALING_LPC: scaled = LP_scaling_amount; scaled_dir = LP_scaling; break;
@@ -2602,7 +2602,7 @@ by a bracketed list of up to three options in any order.
 	<literal-pattern-part>						==> 0; *XP = RP[1]
 
 <literal-pattern-part> ::=
-	<np-balanced> ( <literal-pattern-part-option-list> ) |    ==> 0; *XP = RP[1]; if (RP[1]) ParseTree::annotate_int(*XP, lpe_options_ANNOT, R[2]);
+	<np-balanced> ( <literal-pattern-part-option-list> ) |    ==> 0; *XP = RP[1]; if (RP[1]) Annotations::write_int(*XP, lpe_options_ANNOT, R[2]);
 	<np-balanced>								==> 0; *XP = RP[1]
 
 <literal-pattern-part-option-list> ::=
@@ -2880,8 +2880,8 @@ this is deferred until all elements exist, at which point we --
 	parse_node *p;
 	for (i=0, p=part_np_list; (i<lp->no_lp_elements) && (p); i++, p = p->next) {
 		literal_pattern_element *lpe = &(lp->lp_elements[i]);
-		lpe->element_name = ParseTree::get_text(p);
-		int O = ParseTree::int_annotation(p, lpe_options_ANNOT);
+		lpe->element_name = Node::get_text(p);
+		int O = Annotations::read_int(p, lpe_options_ANNOT);
 		if (O & OPTIONAL_LSO) lpe->element_optional = TRUE;
 		if (O & PREAMBLE_OPTIONAL_LSO) {
 			lpe->element_optional = TRUE; lpe->preamble_optional = TRUE;

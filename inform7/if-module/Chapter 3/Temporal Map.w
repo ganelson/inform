@@ -123,7 +123,7 @@ fact, end.
 	HTML::open_indented_p(OUT, 1, "hanging");
 	Index::anchor_numbered(OUT, sc->allocation_id);
 	WRITE("<b>The <i>%+W</i> scene</b>", PL::Scenes::get_name(sc));
-	Index::link(OUT, Wordings::first_wn(ParseTree::get_text(sc->scene_declared_at)));
+	Index::link(OUT, Wordings::first_wn(Node::get_text(sc->scene_declared_at)));
 	if (World::Inferences::get_EO_state(
 		Instances::as_subject(sc->as_instance), P_recurring) > 0)
 		WRITE("&nbsp;&nbsp;<i>recurring</i>");
@@ -181,8 +181,8 @@ fact, end.
 			HTML_TAG("br");
 			WRITE("<i>or when:</i> ");
 		}
-		WRITE("%+W", ParseTree::get_text(sc->anchor_condition[end]));
-		Index::link(OUT, Wordings::first_wn(ParseTree::get_text(sc->anchor_condition_set[end])));
+		WRITE("%+W", Node::get_text(sc->anchor_condition[end]));
+		Index::link(OUT, Wordings::first_wn(Node::get_text(sc->anchor_condition_set[end])));
 		count++;
 	}
 
@@ -196,7 +196,7 @@ fact, end.
 		wording NW = Instances::get_name(scon->connect_to->as_instance, FALSE);
 		WRITE("<b>%+W</b> <i>%s</i>", NW, (scon->end==0)?"begins":"ends");
 		if (scon->end >= 2) WRITE(" %+W", scon->connect_to->end_names[scon->end]);
-		Index::link(OUT, Wordings::first_wn(ParseTree::get_text(scon->where_said)));
+		Index::link(OUT, Wordings::first_wn(Node::get_text(scon->where_said)));
 		count++;
 	}
 

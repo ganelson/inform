@@ -116,15 +116,15 @@ void Problems::Issue::nodal_error_fn_S(parse_node_tree *T, parse_node *pn, text_
 void Problems::Issue::nodal_check(parse_node_tree *T, parse_node *pn, node_type_t node_type_required, char *filename, int linenum) {
 	if (pn == NULL) {
 		TEMPORARY_TEXT(internal_message);
-		WRITE_TO(internal_message, "NULL node found where type %s expected",
-			ParseTree::get_type_name(node_type_required));
+		WRITE_TO(internal_message, "NULL node found where type %S expected",
+			NodeType::get_name(node_type_required));
 		Problems::Issue::internal_error_tu_fn_S(T, internal_message, filename, linenum);
 		DISCARD_TEXT(internal_message);
-	} else if (ParseTree::get_type(pn) != node_type_required) {
+	} else if (Node::get_type(pn) != node_type_required) {
 		TEMPORARY_TEXT(internal_message);
-		WRITE_TO(internal_message, "Node of type %s found where type %s expected",
-			ParseTree::get_type_name(ParseTree::get_type(pn)),
-			ParseTree::get_type_name(node_type_required));
+		WRITE_TO(internal_message, "Node of type %S found where type %S expected",
+			NodeType::get_name(Node::get_type(pn)),
+			NodeType::get_name(node_type_required));
 		Problems::Issue::nodal_error_fn_S(T, pn, internal_message, filename, linenum);
 		DISCARD_TEXT(internal_message);
 	}
@@ -140,8 +140,8 @@ void Problems::Issue::internal_error_on_node_type_fn(parse_node_tree *T,
 	TEMPORARY_TEXT(internal_message);
 	if (pn == NULL)
 		Problems::Issue::internal_error_tu_fn(T, "Unexpected NULL node found", filename, linenum);
-	WRITE_TO(internal_message, "Unexpectedly found node of type %s",
-		ParseTree::get_type_name(ParseTree::get_type(pn)));
+	WRITE_TO(internal_message, "Unexpectedly found node of type %S",
+		NodeType::get_name(Node::get_type(pn)));
 	Problems::Issue::nodal_error_fn_S(T, pn, internal_message, filename, linenum);
 	DISCARD_TEXT(internal_message);
 }
@@ -453,19 +453,19 @@ void Problems::Issue::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS, cha
 	wording RTW = EMPTY_WORDING; /* "rather than" text */
 	ACT_ON_SIGIL
 	if ((current_sentence == NULL) || (current_sentence->down == NULL) ||
-		(ParseTree::get_type(current_sentence->down) != AVERB_NT)) {
+		(Node::get_type(current_sentence->down) != AVERB_NT)) {
 		LOG("(Assertion error reverting to sentence error.)\n");
 		Problems::Issue::sentence_problem(T, PASS_SIGIL, message, explanation);
 		return;
 	}
 
 	LOG("(Assertion error: looking for alternative verbs in <%W>.)\n",
-		ParseTree::get_text(current_sentence));
-	wording AW = Wordings::trim_both_ends(ParseTree::get_text(current_sentence));
+		Node::get_text(current_sentence));
+	wording AW = Wordings::trim_both_ends(Node::get_text(current_sentence));
 	LOOP_THROUGH_WORDING(i, AW)
-		if ((i != Wordings::first_wn(ParseTree::get_text(current_sentence->down))) &&
+		if ((i != Wordings::first_wn(Node::get_text(current_sentence->down))) &&
 			(Word::unexpectedly_upper_case(i) == FALSE)) {
-			int j = <meaningful-nonimperative-verb>(Wordings::from(ParseTree::get_text(current_sentence), i));
+			int j = <meaningful-nonimperative-verb>(Wordings::from(Node::get_text(current_sentence), i));
 			if (j > 0) RTW = Wordings::new(i, j);
 		}
 	Problems::quote_source(1, current_sentence);
@@ -474,7 +474,7 @@ void Problems::Issue::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS, cha
 	Problems::issue_problem_begin(T, explanation);
 	Problems::issue_problem_segment("You wrote %1: %Sagain, %%%Lbut %%%2%|, %3");
 	if (Wordings::nonempty(RTW)) {
-		Problems::quote_wording(4, ParseTree::get_text(current_sentence->down));
+		Problems::quote_wording(4, Node::get_text(current_sentence->down));
 		Problems::quote_wording(5, RTW);
 		Problems::issue_problem_segment( /* see also PM_AmbiguousVerb */
 			" %P(It may help to know that I am reading the primary verb here "
@@ -486,9 +486,9 @@ void Problems::Issue::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS, cha
 
 void Problems::Issue::diagnose_further(void) {
 	if (current_sentence == NULL) return;
-	if (Wordings::empty(ParseTree::get_text(current_sentence))) return;
+	if (Wordings::empty(Node::get_text(current_sentence))) return;
 	int sqc = 0;
-	LOOP_THROUGH_WORDING(i, ParseTree::get_text(current_sentence)) sqc += Word::singly_quoted(i);
+	LOOP_THROUGH_WORDING(i, Node::get_text(current_sentence)) sqc += Word::singly_quoted(i);
 	if (sqc >= 2)
 		Problems::issue_problem_segment(
 			" %P(I notice what look like single quotation marks in this "
@@ -496,7 +496,7 @@ void Problems::Issue::diagnose_further(void) {
 			"be in double quotes, \"like this\" and not 'like this'.)");
 
 	control_structure_phrase *csp =
-		ControlStructures::detect(ParseTree::get_text(current_sentence));
+		ControlStructures::detect(Node::get_text(current_sentence));
 	if (csp)
 		Problems::issue_problem_segment(
 			" %P(The way this sentence starts makes me think it might have been "

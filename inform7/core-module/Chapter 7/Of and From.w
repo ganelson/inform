@@ -61,9 +61,9 @@ void Sentences::Rearrangement::further_material(void) {
 }
 
 void Sentences::Rearrangement::tidy_up_ofs_and_froms(void) {
-	ParseTree::verify_integrity(Task::syntax_tree()->root_node, FALSE);
-	ParseTree::traverse_wfirst(Task::syntax_tree(), Sentences::Rearrangement::traverse_for_property_names);
-	ParseTree::traverse(Task::syntax_tree(), Sentences::Rearrangement::traverse_for_nonbreaking_ofs);
+	VerifyTree::verify_integrity(Task::syntax_tree()->root_node, FALSE);
+	SyntaxTree::traverse_wfirst(Task::syntax_tree(), Sentences::Rearrangement::traverse_for_property_names);
+	SyntaxTree::traverse(Task::syntax_tree(), Sentences::Rearrangement::traverse_for_nonbreaking_ofs);
 }
 
 @ The following array is used only by Traversals 1 to 3, and is how we
@@ -86,7 +86,7 @@ roof, since it might need to recurse thousands of function calls deep.
 
 =
 void Sentences::Rearrangement::traverse_for_property_names(parse_node *pn) {
-	if (ParseTree::get_type(pn) == AVERB_NT)
+	if (Node::get_type(pn) == AVERB_NT)
 		@<See if this assertion creates property names with "... has ... called ..."@>;
 }
 
@@ -95,14 +95,14 @@ void Sentences::Rearrangement::traverse_for_property_names(parse_node *pn) {
 =
 void Sentences::Rearrangement::check_sentence_for_direction_creation(parse_node *pn) {
 	#ifdef IF_MODULE
-	if (ParseTree::get_type(pn) != SENTENCE_NT) return;
+	if (Node::get_type(pn) != SENTENCE_NT) return;
 	if ((pn->down == NULL) || (pn->down->next == NULL) || (pn->down->next->next == NULL)) return;
-	if (ParseTree::get_type(pn->down) != AVERB_NT) return;
-	if (ParseTree::get_type(pn->down->next) != PROPER_NOUN_NT) return;
-	if (ParseTree::get_type(pn->down->next->next) != PROPER_NOUN_NT) return;
+	if (Node::get_type(pn->down) != AVERB_NT) return;
+	if (Node::get_type(pn->down->next) != PROPER_NOUN_NT) return;
+	if (Node::get_type(pn->down->next->next) != PROPER_NOUN_NT) return;
 	current_sentence = pn;
 	pn = pn->down->next;
-	if (!((<notable-map-kinds>(ParseTree::get_text(pn->next)))
+	if (!((<notable-map-kinds>(Node::get_text(pn->next)))
 			&& (<<r>> == 0))) return;
 	if (no_directions_noticed >= MAX_DIRECTIONS) {
 		Problems::Issue::limit_problem(Task::syntax_tree(), _p_(PM_TooManyDirections),
@@ -110,7 +110,7 @@ void Sentences::Rearrangement::check_sentence_for_direction_creation(parse_node 
 		return;
 	}
 	direction_relations_noticed[no_directions_noticed] =
-		PL::MapDirections::create_sketchy_mapping_direction(ParseTree::get_text(pn));
+		PL::MapDirections::create_sketchy_mapping_direction(Node::get_text(pn));
 	directions_noticed[no_directions_noticed++] = pn;
 	#endif
 }
@@ -141,26 +141,26 @@ We therefore look for this subtree structure:
 the new property.
 
 @<See if this assertion creates property names with "... has ... called ..."@> =
-	if ((ParseTree::int_annotation(pn, verb_id_ANNOT) == ASSERT_VB)
-		&& (ParseTree::int_annotation(pn, possessive_verb_ANNOT))
+	if ((Annotations::read_int(pn, verb_id_ANNOT) == ASSERT_VB)
+		&& (Annotations::read_int(pn, possessive_verb_ANNOT))
 		&& (pn->next)
 		&& (pn->next->next)
-		&& (ParseTree::get_type(pn->next->next) == CALLED_NT)
+		&& (Node::get_type(pn->next->next) == CALLED_NT)
 		&& (pn->next->next->down)
 		&& (pn->next->next->down->next)) {
 		parse_node *apparent_subject = pn->next;
-		wording SW = ParseTree::get_text(apparent_subject);
-		if (ParseTree::get_type(apparent_subject) == WITH_NT)
+		wording SW = Node::get_text(apparent_subject);
+		if (Node::get_type(apparent_subject) == WITH_NT)
 			if (apparent_subject->down) {
-				int s1 = Wordings::first_wn(ParseTree::get_text(apparent_subject->down));
+				int s1 = Wordings::first_wn(Node::get_text(apparent_subject->down));
 				if (apparent_subject->down->next)
-					SW = Wordings::new(s1, Wordings::last_wn(ParseTree::get_text(apparent_subject->down->next)));
+					SW = Wordings::new(s1, Wordings::last_wn(Node::get_text(apparent_subject->down->next)));
 				else
 					SW = Wordings::new(s1, Wordings::last_wn(SW));
 			}
 
 		if (<prohibited-property-owners>(SW) == FALSE) {
-			<has-properties-called-sentence-object>(ParseTree::get_text(pn->next->next->down->next));
+			<has-properties-called-sentence-object>(Node::get_text(pn->next->next->down->next));
 		}
 	}
 
@@ -277,11 +277,11 @@ wastes only a negligible amount of memory.
 
 =
 void Sentences::Rearrangement::traverse_for_nonbreaking_ofs(parse_node *pn) {
-	if ((ParseTree::get_type(pn) == SENTENCE_NT) &&
-		(pn->down) && (ParseTree::get_type(pn->down) == AVERB_NT)) {
-		int vn = ParseTree::int_annotation(pn->down, verb_id_ANNOT);
-		if (((vn == ASSERT_VB) || (ParseTree::int_annotation(pn->down, examine_for_ofs_ANNOT))) &&
-			(<sentence-needing-second-look>(ParseTree::get_text(pn)))) {
+	if ((Node::get_type(pn) == SENTENCE_NT) &&
+		(pn->down) && (Node::get_type(pn->down) == AVERB_NT)) {
+		int vn = Annotations::read_int(pn->down, verb_id_ANNOT);
+		if (((vn == ASSERT_VB) || (Annotations::read_int(pn->down, examine_for_ofs_ANNOT))) &&
+			(<sentence-needing-second-look>(Node::get_text(pn)))) {
 			current_sentence = pn; /* (just in case any problem messages are issued) */
 			pn->down = NULL; /* thus cutting off and forgetting its former subtree */
 			Sentences::VPs::seek(pn); /* ...in order to make a new one */

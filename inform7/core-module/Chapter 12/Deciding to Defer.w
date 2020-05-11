@@ -565,7 +565,7 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 	if (Calculus::Variables::detect_locals(prop, &example) > 0) {
 		LOG("Offending proposition: $D\n", prop);
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(example));
+		Problems::quote_wording(2, Node::get_text(example));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LocalInDescription));
 		Problems::issue_problem_segment(
 			"You wrote %1, but descriptions used as values are not allowed to "
@@ -689,7 +689,7 @@ void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 =
 void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 	if (Rvalues::is_CONSTANT_construction(spec, CON_description)) {
-		kind *K = ParseTree::get_kind_of_value(spec);
+		kind *K = Node::get_kind_of_value(spec);
 		K = Kinds::unary_construction_material(K);
 		if ((K) && (Kinds::Behaviour::is_an_enumeration(K)) &&
 			(Specifications::to_proposition(spec) == NULL) &&
@@ -1210,9 +1210,9 @@ void Calculus::Deferrals::prop_verify_descriptive(pcalc_prop *prop, char *billin
 	if (constructor == NULL) internal_error("description with null constructor");
 
 	/* best guess at the text to quote in any problem message */
-	wording EW = ParseTree::get_text(constructor);
+	wording EW = Node::get_text(constructor);
 	if ((Wordings::empty(EW)) && (constructor->down))
-		EW = ParseTree::get_text(constructor->down);
+		EW = Node::get_text(constructor->down);
 
 	if (Calculus::Variables::is_well_formed(prop) == FALSE)
 		internal_error("malformed proposition in description verification");

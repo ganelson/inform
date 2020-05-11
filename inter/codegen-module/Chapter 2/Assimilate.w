@@ -134,7 +134,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	Regexp::dispose_of(&mr);
 
 @<Parse text of splat for identifier and value@> =
-	text_stream *S = Inter::Node::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 	if (plm == VERB_PLM) {
 		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
 			identifier = I"assim_gv"; value = mr.exp[0]; proceed = TRUE;
@@ -339,12 +339,12 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			}
 
 			inter_tree_node *array_in_progress =
-				Inter::Node::fill_3(IBM, CONSTANT_IST,
+				Inode::fill_3(IBM, CONSTANT_IST,
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), list_of_unchecked_kind_symbol),
 					CONSTANT_INDIRECT_LIST, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
 			int pos = array_in_progress->W.extent;
-			if (Inter::Node::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
+			if (Inode::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
 				internal_error("can't extend frame");
 			for (int i=0; i<no_assimilated_array_entries; i++) {
 				array_in_progress->W.data[pos++] = v1_pile[i];
@@ -391,7 +391,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	if (identifier) @<Act on parsed header@>;
 
 @<Parse the routine or stub header@> =
-	text_stream *S = Inter::Node::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 	if (P->W.data[PLM_SPLAT_IFLD] == ROUTINE_PLM) {
 		if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
 			identifier = mr.exp[0]; body = mr.exp[1];
@@ -724,9 +724,9 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 	if (i1 == NULL) return NULL;
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inter::Node::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
-	if (Inter::Node::extend(array_in_progress, 4) == FALSE)
+	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
 	array_in_progress->W.data[pos] = LITERAL_IVAL; array_in_progress->W.data[pos+1] = 0;
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
@@ -738,9 +738,9 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op, inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inter::Node::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
-	if (Inter::Node::extend(array_in_progress, 4) == FALSE)
+	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos]), &(array_in_progress->W.data[pos+1]));
 	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));

@@ -136,7 +136,7 @@ and never needs more than a single array entry lookup at run-time:
 
 =
 int Calculus::Deferrals::Cinders::spec_needs_to_be_cindered(parse_node *spec) {
-	if (ParseTree::is(spec, CONSTANT_NT)) return FALSE;
+	if (Node::is(spec, CONSTANT_NT)) return FALSE;
 	if (Lvalues::is_global_variable(spec)) return FALSE;
 	return TRUE;
 }
@@ -169,7 +169,7 @@ int Calculus::Deferrals::Cinders::cind_declare_in(int cinder_number, pcalc_term 
 	if (pt->function)
 		return Calculus::Deferrals::Cinders::cind_declare_in(cinder_number, &(pt->function->fn_of));
 	if ((pt->constant) && (pt->cinder >= 0))
-		if (ParseTree::is(pt->constant, CONSTANT_NT) == FALSE) {
+		if (Node::is(pt->constant, CONSTANT_NT) == FALSE) {
 			TEMPORARY_TEXT(cinder_name);
 			WRITE_TO(cinder_name, "const_%d", cinder_number++);
 			LocalVariables::add_named_call_as_symbol(cinder_name);

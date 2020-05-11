@@ -29,7 +29,7 @@ adjective_meaning *Phrases::Phrasal::ADJ_parse(parse_node *q,
 	if (sense != 0) return NULL;
 	definition *def = Phrases::Adjectives::def_new(q);
 	adjective_meaning *am = Adjectives::Meanings::new(PHRASE_KADJ,
-		STORE_POINTER_definition(def), ParseTree::get_text(q));
+		STORE_POINTER_definition(def), Node::get_text(q));
 	def->domain_calling = CALLW;
 	def->am_of_def = am;
 	Adjectives::Meanings::declare(am, AW, 7);

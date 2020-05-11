@@ -41,7 +41,7 @@ int Unit::allow_generally(verb_conjugation *vc, int tense, int sense, int person
 
 @<Report any error@> =
 	parse_node *VP_PN = RP[1];
-	if (ParseTree::int_annotation(VP_PN, linguistic_error_here_ANNOT) == TwoLikelihoods_LINERROR)
+	if (Annotations::read_int(VP_PN, linguistic_error_here_ANNOT) == TwoLikelihoods_LINERROR)
 		Errors::nowhere("two certainties");
 	*XP = VP_PN;
 
@@ -51,14 +51,11 @@ int Unit::allow_generally(verb_conjugation *vc, int tense, int sense, int person
 
 @h Syntax tree.
 
-@e UNKNOWN_NT
-
 =
 int my_first_verb = TRUE;
 
 void Unit::start_diagrams(void) {
 	trace_sentences = TRUE;
-	ParseTree::md(UNKNOWN_NT, "UNKNOWN_NT", 0, INFTY, L2_NCAT, 0);
 }
 
 parse_node_tree *syntax_tree = NULL;
@@ -69,21 +66,21 @@ void Unit::test_diagrams(text_stream *arg) {
 	source_file *sf = TextFromFiles::feed_into_lexer(F, NULL_GENERAL_POINTER);
 	wording W = Feeds::end(FD);
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
-	syntax_tree = ParseTree::new_tree();
+	syntax_tree = SyntaxTree::new();
 	PRINT("Read %d words\n", Wordings::length(W));
 	Sentences::break(syntax_tree, W);
 
 	text_stream *save_DL = DL;
 	DL = STDOUT;
 	Streams::enable_debugging(DL);
-	ParseTree::traverse(syntax_tree, Unit::diagram);
-	ParseTree::log_tree(DL, syntax_tree->root_node);
+	SyntaxTree::traverse(syntax_tree, Unit::diagram);
+	Node::log_tree(DL, syntax_tree->root_node);
 	DL = save_DL;
 }
 
 void Unit::diagram(parse_node *p) {
-	if (ParseTree::get_type(p) == SENTENCE_NT) {
-		wording W = ParseTree::get_text(p);
+	if (Node::get_type(p) == SENTENCE_NT) {
+		wording W = Node::get_text(p);
 		if (<stock>(W)) {
 			verb_conjugation *vc = <<rp>>;
 			int cop = FALSE;
@@ -97,7 +94,7 @@ void Unit::diagram(parse_node *p) {
 			Verbs::add_form(vi, NULL, NULL, VerbMeanings::new(vc, NULL), SVO_FS_BIT);
 		} else {
 			if (<unexceptional-sentence>(W)) {
-				ParseTree::graft(syntax_tree, <<rp>>, p);
+				SyntaxTree::graft(syntax_tree, <<rp>>, p);
 			} else {
 				PRINT("Failed: %W\n", W);
 			}

@@ -340,7 +340,7 @@ void Kinds::Dimensions::record_multiplication_rule(kind *left, kind *right, kind
 	dimr_new->right = right;
 	dimr_new->outcome = outcome;
 	if (current_sentence)
-		dimr_new->name = ParseTree::get_text(current_sentence);
+		dimr_new->name = Node::get_text(current_sentence);
 	else
 		dimr_new->name = EMPTY_WORDING;
 	dimr_new->next = dimrs->multiplications;

@@ -375,7 +375,7 @@ parse_node *Kinds::Behaviour::cast_constant(parse_node *value, kind *to) {
 	kind *from = Specifications::to_kind(value);
 	if (Kinds::Behaviour::cast_possible(from, to))
 		if ((Kinds::Compare::eq(from, K_number)) && (Kinds::Compare::eq(to, K_real_number))) {
-			wording W = ParseTree::get_text(value);
+			wording W = Node::get_text(value);
 			if (<s-literal-real-number>(W)) value = <<rp>>;
 			else internal_error("can't parse integer as real");
 		}

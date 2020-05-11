@@ -41,7 +41,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
 		if (P->W.data[ID_IFLD] == SPLAT_IST) {
-			text_stream *S = Inter::Node::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+			text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 			switch (P->W.data[PLM_SPLAT_IFLD]) {
 				case CONSTANT_PLM:
 				case GLOBAL_PLM:

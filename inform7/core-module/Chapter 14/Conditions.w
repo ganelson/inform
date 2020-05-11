@@ -55,7 +55,7 @@ in any other way.)
 
 =
 parse_node *Conditions::new(time_period *tp) {
-	parse_node *spec = ParseTree::new(TEST_PROPOSITION_NT);
+	parse_node *spec = Node::new(TEST_PROPOSITION_NT);
 	if (Occurrence::get_tense(tp) != IS_TENSE) internal_error("tense improperly applied");
 	Conditions::attach_historic_requirement(spec, tp);
 	return spec;
@@ -65,14 +65,14 @@ parse_node *Conditions::new(time_period *tp) {
 
 =
 parse_node *Conditions::new_LOGICAL_AND(parse_node *spec1, parse_node *spec2) {
-	parse_node *spec = ParseTree::new(LOGICAL_AND_NT);
+	parse_node *spec = Node::new(LOGICAL_AND_NT);
 	spec->down = spec1;
 	spec->down->next = spec2;
 	return spec;
 }
 
 parse_node *Conditions::new_LOGICAL_OR(parse_node *spec1, parse_node *spec2) {
-	parse_node *spec = ParseTree::new(LOGICAL_OR_NT);
+	parse_node *spec = Node::new(LOGICAL_OR_NT);
 	spec->down = spec1;
 	spec->down->next = spec2;
 	return spec;
@@ -80,8 +80,8 @@ parse_node *Conditions::new_LOGICAL_OR(parse_node *spec1, parse_node *spec2) {
 
 @ =
 parse_node *Conditions::negate(parse_node *cond) {
-	if (ParseTree::is(cond, LOGICAL_NOT_NT)) return cond->down;
-	parse_node *spec = ParseTree::new_with_words(LOGICAL_NOT_NT, ParseTree::get_text(cond));
+	if (Node::is(cond, LOGICAL_NOT_NT)) return cond->down;
+	parse_node *spec = Node::new_with_words(LOGICAL_NOT_NT, Node::get_text(cond));
 	spec->down = cond;
 	return spec;
 }
@@ -91,8 +91,8 @@ parse_node *Conditions::negate(parse_node *cond) {
 
 =
 parse_node *Conditions::new_TEST_PROPOSITION(pcalc_prop *prop) {
-	parse_node *spec = ParseTree::new(TEST_PROPOSITION_NT);
-	ParseTree::set_proposition(spec, prop);
+	parse_node *spec = Node::new(TEST_PROPOSITION_NT);
+	Node::set_proposition(spec, prop);
 	return spec;
 }
 
@@ -101,8 +101,8 @@ exactly feasible, since the specification data field is 16 bits wide.
 
 =
 parse_node *Conditions::new_TEST_PHRASE_OPTION(int opt_num) {
-	parse_node *spec = ParseTree::new(TEST_PHRASE_OPTION_NT);
-	ParseTree::annotate_int(spec, phrase_option_ANNOT, opt_num);
+	parse_node *spec = Node::new(TEST_PHRASE_OPTION_NT);
+	Annotations::write_int(spec, phrase_option_ANNOT, opt_num);
 	return spec;
 }
 
@@ -110,9 +110,9 @@ parse_node *Conditions::new_TEST_PHRASE_OPTION(int opt_num) {
 #ifdef IF_MODULE
 parse_node *Conditions::new_TEST_ACTION(action_pattern *ap, wording W) {
 	if (ap == NULL) internal_error("null action pattern");
-	parse_node *spec = ParseTree::new_with_words(TEST_VALUE_NT, W);
+	parse_node *spec = Node::new_with_words(TEST_VALUE_NT, W);
 	spec->down = Rvalues::from_action_pattern(ap);
-	ParseTree::set_text(spec->down, W);
+	Node::set_text(spec->down, W);
 	return spec;
 }
 #endif
@@ -125,7 +125,7 @@ parse_node *Conditions::new_TEST_ACTION(void *ap, wording W) {
 
 int Conditions::is_TEST_ACTION(parse_node *spec) {
 	#ifdef IF_MODULE
-	if ((ParseTree::is(spec, TEST_VALUE_NT)) &&
+	if ((Node::is(spec, TEST_VALUE_NT)) &&
 		(Rvalues::to_action_pattern(spec->down))) return TRUE;
 	#endif
 	return FALSE;
@@ -150,42 +150,42 @@ created condition:
 =
 parse_node *Conditions::attach_tense(parse_node *cond, int t) {
 	parse_node *spec = NULL;
-	if (ParseTree::is(cond, LOGICAL_TENSE_NT)) {
+	if (Node::is(cond, LOGICAL_TENSE_NT)) {
 		spec = cond;
-		Occurrence::set_tense(ParseTree::get_condition_tense(spec), t);
+		Occurrence::set_tense(Node::get_condition_tense(spec), t);
 	} else {
-		spec = ParseTree::new_with_words(LOGICAL_TENSE_NT, ParseTree::get_text(cond));
-		ParseTree::set_condition_tense(spec, Occurrence::store(Occurrence::new_tense_marker(t)));
+		spec = Node::new_with_words(LOGICAL_TENSE_NT, Node::get_text(cond));
+		Node::set_condition_tense(spec, Occurrence::store(Occurrence::new_tense_marker(t)));
 		spec->down = cond;
 	}
 	return spec;
 }
 
 parse_node *Conditions::attach_historic_requirement(parse_node *cond, time_period *tp) {
-	if (ParseTree::is(cond, AMBIGUITY_NT)) {
+	if (Node::is(cond, AMBIGUITY_NT)) {
 		parse_node *amb = NULL;
 		for (cond = cond->down; cond; cond = cond->next_alternative) {
-			parse_node *reading = ParseTree::duplicate(cond);
+			parse_node *reading = Node::duplicate(cond);
 			reading->next_alternative = NULL;
 			reading = Conditions::attach_historic_requirement(reading, tp);
-			if (ParseTree::is(reading, UNKNOWN_NT) == FALSE)
-				amb = ParseTree::add_possible_reading(amb,
-					reading, ParseTree::get_text(cond));
+			if (Node::is(reading, UNKNOWN_NT) == FALSE)
+				amb = Node::add_possible_reading(amb,
+					reading, Node::get_text(cond));
 		}
 		return amb;
 	}
 	int t = IS_TENSE;
 	parse_node *spec = NULL;
-	if (ParseTree::is(cond, LOGICAL_TENSE_NT)) {
+	if (Node::is(cond, LOGICAL_TENSE_NT)) {
 		spec = cond;
-		t = Occurrence::get_tense(ParseTree::get_condition_tense(cond));
+		t = Occurrence::get_tense(Node::get_condition_tense(cond));
 	} else {
-		spec = ParseTree::new_with_words(LOGICAL_TENSE_NT, ParseTree::get_text(cond));
+		spec = Node::new_with_words(LOGICAL_TENSE_NT, Node::get_text(cond));
 		spec->down = cond;
 		t = IS_TENSE;
 	}
-	ParseTree::set_condition_tense(spec, tp);
-	Occurrence::set_tense(ParseTree::get_condition_tense(spec), t);
+	Node::set_condition_tense(spec, tp);
+	Occurrence::set_tense(Node::get_condition_tense(spec), t);
 	return spec;
 }
 
@@ -195,7 +195,7 @@ parse_node *Conditions::attach_historic_requirement(parse_node *cond, time_perio
 void Conditions::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 	if (Specifications::is_description(spec)) {
 		Descriptions::write_out_in_English(OUT, spec);
-	} else if ((ParseTree::is(spec, TEST_VALUE_NT)) && (ParseTree::is(spec->down, CONSTANT_NT))) {
+	} else if ((Node::is(spec, TEST_VALUE_NT)) && (Node::is(spec->down, CONSTANT_NT))) {
 		kind *K = Specifications::to_kind(spec->down);
 		if (K) {
 			Kinds::Textual::write_articled(OUT, K);
@@ -210,9 +210,9 @@ void Conditions::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 
 =
 void Conditions::log(parse_node *spec) {
-	if (ParseTree::get_condition_tense(spec))
-		Occurrence::log(DL, ParseTree::get_condition_tense(spec));
-	if (ParseTree::is(spec, TEST_PROPOSITION_NT))
+	if (Node::get_condition_tense(spec))
+		Occurrence::log(DL, Node::get_condition_tense(spec));
+	if (Node::is(spec, TEST_PROPOSITION_NT))
 		LOG("(test: $D)", Specifications::to_proposition(spec));
 	if (Specifications::is_description(spec)) {
 		LOG("(st: $D)", Descriptions::to_proposition(spec));
@@ -246,7 +246,7 @@ Inform; this bit of scruffy, rather than neat, logic will have to do.)
 int Conditions::count(parse_node *spec) {
 	if (spec == NULL) return 0;
 	if (ParseTreeUsage::is_condition(spec) == FALSE) return 1;
-	switch (ParseTree::get_type(spec)) {
+	switch (Node::get_type(spec)) {
 		case LOGICAL_AND_NT:
 			return Conditions::count(spec->down)
 				+ Conditions::count(spec->down->next);
@@ -273,7 +273,7 @@ of brackets never does any harm; so we always compile one.
 
 =
 void Conditions::compile(value_holster *VH, parse_node *spec_found) {
-	switch (ParseTree::get_type(spec_found)) {
+	switch (Node::get_type(spec_found)) {
 		case TEST_PROPOSITION_NT:
 			Calculus::Deferrals::emit_test_of_proposition(NULL,
 				Specifications::to_proposition(spec_found));
@@ -304,7 +304,7 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 @ An easy case, running straight out to I6 operators:
 
 @<Compile a logical negation@> =
-	if (ParseTree::no_children(spec_found) != 1)
+	if (Node::no_children(spec_found) != 1)
 		internal_error("Compiled malformed LOGICAL_NOT_NT");
 	Produce::inv_primitive(Emit::tree(), NOT_BIP);
 	Produce::down(Emit::tree());
@@ -314,15 +314,15 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 @ An easy case, running straight out to I6 operators:
 
 @<Compile a logical operator@> =
-	if (ParseTree::no_children(spec_found) != 2)
+	if (Node::no_children(spec_found) != 2)
 		internal_error("Compiled malformed logical operator");
 	parse_node *left_operand = spec_found->down;
 	parse_node *right_operand = spec_found->down->next;
 	if ((left_operand == NULL) || (right_operand == NULL))
 		internal_error("Compiled CONDITION/AND with LHS operands");
 
-	if (ParseTree::is(spec_found, LOGICAL_AND_NT)) Produce::inv_primitive(Emit::tree(), AND_BIP);
-	if (ParseTree::is(spec_found, LOGICAL_OR_NT)) Produce::inv_primitive(Emit::tree(), OR_BIP);
+	if (Node::is(spec_found, LOGICAL_AND_NT)) Produce::inv_primitive(Emit::tree(), AND_BIP);
+	if (Node::is(spec_found, LOGICAL_OR_NT)) Produce::inv_primitive(Emit::tree(), OR_BIP);
 	Produce::down(Emit::tree());
 		Specifications::Compiler::emit_as_val(K_value, left_operand);
 		Specifications::Compiler::emit_as_val(K_value, right_operand);
@@ -341,5 +341,5 @@ type-checker won't allow these specifications to be compiled anywhere else.
 		if (po == NULL) internal_error("no phrase options exist in this frame");
 		inter_symbol *po_s = LocalVariables::declare_this(po, FALSE, 8);
 		Produce::val_symbol(Emit::tree(), K_value, po_s);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ParseTree::int_annotation(spec_found, phrase_option_ANNOT));
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) Annotations::read_int(spec_found, phrase_option_ANNOT));
 	Produce::up(Emit::tree());

@@ -57,7 +57,7 @@ The noun phrase of an existential sentence is recognised thus:
 
 =
 <s-existential-np> ::=
-	there							==> ParseTree::new(UNKNOWN_NT);
+	there							==> Node::new(UNKNOWN_NT);
 
 @ We will want to spot adverbs of certainty adjacent to the verb itself;
 English allows these either side, so "A man is usually happy" and "Peter
@@ -434,18 +434,18 @@ representing the verb.
 	int possessive = FALSE;
 	if (VerbMeanings::get_relational_meaning(vm) == VERB_MEANING_POSSESSION)
 		possessive = TRUE;
-	parse_node *VP_PN = ParseTree::new(AVERB_NT);
+	parse_node *VP_PN = Node::new(AVERB_NT);
 	if (certainty != UNKNOWN_CE)
-		ParseTree::annotate_int(VP_PN, verbal_certainty_ANNOT, certainty);
-	if (vu) ParseTree::set_verb(VP_PN, vu);
-	ParseTree::set_preposition(VP_PN, prep);
-	ParseTree::set_second_preposition(VP_PN, second_prep);
+		Annotations::write_int(VP_PN, verbal_certainty_ANNOT, certainty);
+	if (vu) Node::set_verb(VP_PN, vu);
+	Node::set_preposition(VP_PN, prep);
+	Node::set_second_preposition(VP_PN, second_prep);
 
-	ParseTree::set_text(VP_PN, VW);
-	if (possessive) ParseTree::annotate_int(VP_PN, possessive_verb_ANNOT, TRUE);
-	if (existential) ParseTree::annotate_int(VP_PN, sentence_is_existential_ANNOT, TRUE);
+	Node::set_text(VP_PN, VW);
+	if (possessive) Annotations::write_int(VP_PN, possessive_verb_ANNOT, TRUE);
+	if (existential) Annotations::write_int(VP_PN, sentence_is_existential_ANNOT, TRUE);
 	if ((pre_certainty != UNKNOWN_CE) && (post_certainty != UNKNOWN_CE))
-		ParseTree::annotate_int(VP_PN, linguistic_error_here_ANNOT, TwoLikelihoods_LINERROR);
+		Annotations::write_int(VP_PN, linguistic_error_here_ANNOT, TwoLikelihoods_LINERROR);
 
 	VP_PN = VerbPhrases::accept(vf, VP_PN, SW, OW, O2W);
 	if (VP_PN) {
@@ -479,7 +479,7 @@ parse_node *VerbPhrases::accept(verb_form *vf, parse_node *VP_PN, wording SW, wo
 	NPs[0] = SW; NPs[1] = OW; NPs[2] = O2W;
 	for (verb_sense *vs = (vf)?vf->list_of_senses:NULL; vs; vs = vs->next_sense) {
 		verb_meaning *vm = &(vs->vm);
-		ParseTree::set_verb_meaning(VP_PN, vm);
+		Node::set_verb_meaning(VP_PN, vm);
 		int rev = FALSE;
 		special_meaning_fn soa = VerbMeanings::get_special_meaning(vm, &rev);
 		if (soa) {
@@ -504,7 +504,7 @@ int VerbPhrases::default_verb(int task, parse_node *V, wording *NPs) {
 	if (Wordings::nonempty(NPs[2])) return FALSE;
 	switch (task) {
 		case ACCEPT_SMFT: {
-			verb_usage *vu = ParseTree::get_verb(V);
+			verb_usage *vu = Node::get_verb(V);
 			verb_identity *vsave = permitted_verb_identity;
 			permitted_verb_identity = (vu)?vu->verb_used:NULL;
 
@@ -539,11 +539,11 @@ sentence not the subject: we thus turn the idea of Darcy wearing the hat into
 the exactly equivalent idea of the hat being worn by Darcy.
 
 @<Insert a relationship subtree if the verb creates one without a relative phrase@> =
-	verb_meaning *vm = ParseTree::get_verb_meaning(V);
+	verb_meaning *vm = Node::get_verb_meaning(V);
 	VERB_MEANING_TYPE *meaning = VerbMeanings::get_relational_meaning(vm);
 	if (meaning == NULL) return FALSE;
-	ParseTree::set_verb_meaning(V, vm);
-	if ((ParseTree::int_annotation(V, possessive_verb_ANNOT) == FALSE) && (meaning != VERB_MEANING_EQUALITY)) {
+	Node::set_verb_meaning(V, vm);
+	if ((Annotations::read_int(V, possessive_verb_ANNOT) == FALSE) && (meaning != VERB_MEANING_EQUALITY)) {
 		V->next->next = NounPhrases::PN_rel(
-			ParseTree::get_text(V), VerbMeanings::reverse_VMT(meaning), STANDARD_RELN, O_PN);
+			Node::get_text(V), VerbMeanings::reverse_VMT(meaning), STANDARD_RELN, O_PN);
 	}

@@ -32,7 +32,7 @@ void Phrases::Index::index_page_Phrasebook(OUTPUT_STREAM) {
 					continue;
 				/* and only if it is under an indexed heading */
 				heading *this_heading =
-					Headings::of_wording(ParseTree::get_text(Phrases::declaration_node(ph)));
+					Headings::of_wording(Node::get_text(Phrases::declaration_node(ph)));
 				if (Headings::indexed(this_heading) == FALSE) continue;
 				/* and only if that heading lies in the piece of source for this division */
 				inform_extension *this_extension =
@@ -170,7 +170,7 @@ code for the box.
 	Phrases::TypeData::Textual::write_index_representation(OUT, &(ph->type_data), ph);
 	if (Phrases::TypeData::deprecated(&(ph->type_data)))
 		Index::deprecation_icon(OUT, run_begin->allocation_id);
-	Index::link(OUT, Wordings::first_wn(ParseTree::get_text(ph->declaration_node)));
+	Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
 	HTML_CLOSE("p");
 
 	if (run_end == ph) {

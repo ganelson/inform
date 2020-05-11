@@ -190,7 +190,7 @@ int PL::Parsing::TestScripts::test_with_SMF(int task, parse_node *V, wording *NP
 	wording O2W = (NPs)?(NPs[2]):EMPTY_WORDING;
 	switch (task) { /* "Test me with..." */
 		case ACCEPT_SMFT:
-			ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<nounphrase>(O2W);
 			V->next = <<rp>>;
 			<nounphrase>(OW);
@@ -204,11 +204,11 @@ int PL::Parsing::TestScripts::test_with_SMF(int task, parse_node *V, wording *NP
 }
 
 void PL::Parsing::TestScripts::new_test_text(parse_node *PN) {
-	if (<test-sentence-subject>(ParseTree::get_text(PN->next))) {
+	if (<test-sentence-subject>(Node::get_text(PN->next))) {
 		switch (<<r>>) {
 			case NO_INTT: return;
 			case EXTERNAL_INTT: @<Create a test script@>; break;
-			default: PL::Parsing::TestScripts::new_internal(<<r>>, ParseTree::get_text(PN->next->next));
+			default: PL::Parsing::TestScripts::new_internal(<<r>>, Node::get_text(PN->next->next));
 				break;
 		}
 	}
@@ -242,7 +242,7 @@ void PL::Parsing::TestScripts::new_test_text(parse_node *PN) {
 	test->req_iname = Hierarchy::make_iname_in(REQUIREMENTS_HL, P);
 
 	ts_being_parsed = test;
-    <test-sentence-object>(ParseTree::get_text(PN->next->next));
+    <test-sentence-object>(Node::get_text(PN->next->next));
 
 @ =
 void PL::Parsing::TestScripts::check_test_command(text_stream *p) {
@@ -542,11 +542,11 @@ void PL::Parsing::TestScripts::end_internal_reporting(void) {
 void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
 	TEMPORARY_TEXT(OUT);
 	itc_save_OUT = OUT;
-	if (ParseTree::is(spec, PROPERTY_VALUE_NT))
+	if (Node::is(spec, PROPERTY_VALUE_NT))
 		spec = Lvalues::underlying_property(spec);
 	kind *K = Specifications::to_kind(spec);
-	if (ParseTree::is(spec, CONSTANT_NT) == FALSE)
-		WRITE("\"%+W\" = ", ParseTree::get_text(spec));
+	if (Node::is(spec, CONSTANT_NT) == FALSE)
+		WRITE("\"%+W\" = ", Node::get_text(spec));
 	@<Begin reporting on the internal test case@>;
 	Kinds::Textual::log(K);
 	@<End reporting on the internal test case@>;

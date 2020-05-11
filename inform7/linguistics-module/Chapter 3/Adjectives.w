@@ -100,7 +100,7 @@ Inform.
 	parse_node *p = ExParser::parse_excerpt(ADJECTIVE_MC, W);
 	if (p) {
 		*XP = RETRIEVE_POINTER_adjectival_phrase(
-			ExcerptMeanings::data(ParseTree::get_meaning(p)));
+			ExcerptMeanings::data(Node::get_meaning(p)));
 		return TRUE;
 	}
 	return FALSE;

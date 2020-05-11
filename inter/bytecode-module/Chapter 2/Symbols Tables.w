@@ -238,7 +238,7 @@ inter_symbol *Inter::SymbolsTables::symbol_from_frame_data(inter_tree_node *P, i
 }
 
 inter_symbol *Inter::SymbolsTables::global_symbol_from_frame_data(inter_tree_node *P, int x) {
-	return Inter::SymbolsTables::symbol_from_id(Inter::Node::globals(P), P->W.data[x]);
+	return Inter::SymbolsTables::symbol_from_id(Inode::globals(P), P->W.data[x]);
 }
 
 inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_package *owner, inter_t ID) {
@@ -322,7 +322,7 @@ inter_t Inter::SymbolsTables::id_from_symbol(inter_tree *I, inter_package *P, in
 }
 
 inter_t Inter::SymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package *P, inter_symbol *S) {
-	return Inter::SymbolsTables::id_from_symbol_inner(Inter::Node::globals(F), P, S);
+	return Inter::SymbolsTables::id_from_symbol_inner(Inode::globals(F), P, S);
 }
 
 inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {

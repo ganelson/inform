@@ -137,7 +137,7 @@ void Specifications::Compiler::emit_to_kind(parse_node *value, kind *K_wanted) {
 	Kinds::RunTime::notify_of_use(K_found);
 
 	if ((K_understanding) && (Kinds::Compare::eq(K_wanted, K_understanding)) && (Kinds::Compare::eq(K_found, K_text))) {
-		ParseTree::set_kind_of_value(value, K_understanding);
+		Node::set_kind_of_value(value, K_understanding);
 		K_found = K_understanding;
 	}
 

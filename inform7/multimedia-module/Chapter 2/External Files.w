@@ -136,7 +136,7 @@ int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "File... is the file..." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-external-file>(SW)) && (<new-file-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -147,8 +147,8 @@ int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
 		case TRAVERSE1_SMFT:
 			if (Plugins::Manage::plugged_in(files_plugin) == FALSE)
 				internal_error("Files plugin inactive");
-			PL::Files::register_file(ParseTree::get_text(V->next),
-				ParseTree::get_text(V->next->next));
+			PL::Files::register_file(Node::get_text(V->next),
+				Node::get_text(V->next->next));
 			break;
 	}
 	return FALSE;

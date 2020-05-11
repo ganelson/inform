@@ -102,7 +102,7 @@ grammar_line *PL::Parsing::Lines::new(int wn, action_name *ac,
 }
 
 void PL::Parsing::Lines::log(grammar_line *gl) {
-	LOG("<GL%d:%W>", gl->allocation_id, ParseTree::get_text(gl->tokens));
+	LOG("<GL%d:%W>", gl->allocation_id, Node::get_text(gl->tokens));
 }
 
 void PL::Parsing::Lines::set_single_type(grammar_line *gl, parse_node *gl_value) {
@@ -453,11 +453,11 @@ int PL::Parsing::Lines::gl_contains_single_unconditional_word(grammar_line *gl) 
 	parse_node *pn = gl->tokens->down;
 	if ((pn)
 		&& (pn->next == NULL)
-		&& (ParseTree::int_annotation(pn, slash_class_ANNOT) == 0)
-		&& (ParseTree::int_annotation(pn, grammar_token_literal_ANNOT))
+		&& (Annotations::read_int(pn, slash_class_ANNOT) == 0)
+		&& (Annotations::read_int(pn, grammar_token_literal_ANNOT))
 		&& (gl->pluralised == FALSE)
 		&& (PL::Parsing::Lines::conditional(gl) == FALSE))
-		return Wordings::first_wn(ParseTree::get_text(pn));
+		return Wordings::first_wn(Node::get_text(pn));
 	return -1;
 }
 
@@ -523,26 +523,26 @@ void PL::Parsing::Lines::slash_grammar_line(grammar_line *gl) {
 	LOGIF(GRAMMAR_CONSTRUCTION, "Preparing grammar line:\n$T", gl->tokens);
 
 	for (pn = gl->tokens->down; pn; pn = pn->next)
-		ParseTree::annotate_int(pn, slash_class_ANNOT, 0);
+		Annotations::write_int(pn, slash_class_ANNOT, 0);
 
 	parse_node *class_start = NULL;
 	for (pn = gl->tokens->down; pn; pn = pn->next) {
 		if ((pn->next) &&
-			(Wordings::length(ParseTree::get_text(pn->next)) == 1) &&
-			(Lexer::word(Wordings::first_wn(ParseTree::get_text(pn->next))) == FORWARDSLASH_V)) { /* slash follows: */
-			if (ParseTree::int_annotation(pn, slash_class_ANNOT) == 0) {
+			(Wordings::length(Node::get_text(pn->next)) == 1) &&
+			(Lexer::word(Wordings::first_wn(Node::get_text(pn->next))) == FORWARDSLASH_V)) { /* slash follows: */
+			if (Annotations::read_int(pn, slash_class_ANNOT) == 0) {
 				class_start = pn; alternatives_group++; /* start new equiv class */
-				ParseTree::annotate_int(class_start, slash_dash_dash_ANNOT, FALSE);
+				Annotations::write_int(class_start, slash_dash_dash_ANNOT, FALSE);
 			}
 
-			ParseTree::annotate_int(pn, slash_class_ANNOT,
+			Annotations::write_int(pn, slash_class_ANNOT,
 				alternatives_group); /* make two sides of slash equiv */
 			if (pn->next->next)
-				ParseTree::annotate_int(pn->next->next, slash_class_ANNOT, alternatives_group);
+				Annotations::write_int(pn->next->next, slash_class_ANNOT, alternatives_group);
 			if ((pn->next->next) &&
-				(Wordings::length(ParseTree::get_text(pn->next->next)) == 1) &&
-				(Lexer::word(Wordings::first_wn(ParseTree::get_text(pn->next->next))) == DOUBLEDASH_V)) { /* -- follows: */
-				ParseTree::annotate_int(class_start, slash_dash_dash_ANNOT, TRUE);
+				(Wordings::length(Node::get_text(pn->next->next)) == 1) &&
+				(Lexer::word(Wordings::first_wn(Node::get_text(pn->next->next))) == DOUBLEDASH_V)) { /* -- follows: */
+				Annotations::write_int(class_start, slash_dash_dash_ANNOT, TRUE);
 				pn->next = pn->next->next->next; /* excise slash and dash-dash */
 			} else {
 				pn->next = pn->next->next; /* excise the slash from the token list */
@@ -553,8 +553,8 @@ void PL::Parsing::Lines::slash_grammar_line(grammar_line *gl) {
 	LOGIF(GRAMMAR_CONSTRUCTION, "Regrouped as:\n$T", gl->tokens);
 
 	for (pn = gl->tokens->down; pn; pn = pn->next)
-		if ((ParseTree::int_annotation(pn, slash_class_ANNOT) > 0) &&
-			(ParseTree::int_annotation(pn, grammar_token_literal_ANNOT) == FALSE)) {
+		if ((Annotations::read_int(pn, slash_class_ANNOT) > 0) &&
+			(Annotations::read_int(pn, grammar_token_literal_ANNOT) == FALSE)) {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OverAmbitiousSlash),
 				"the slash '/' can only be used between single literal words",
 				"so 'underneath/under/beneath' is allowed but "
@@ -565,9 +565,9 @@ void PL::Parsing::Lines::slash_grammar_line(grammar_line *gl) {
 	gl->lexeme_count = 0;
 
 	for (pn = gl->tokens->down; pn; pn = pn->next) {
-		int i = ParseTree::int_annotation(pn, slash_class_ANNOT);
+		int i = Annotations::read_int(pn, slash_class_ANNOT);
 		if (i > 0)
-			while ((pn->next) && (ParseTree::int_annotation(pn->next, slash_class_ANNOT) == i))
+			while ((pn->next) && (Annotations::read_int(pn->next, slash_class_ANNOT) == i))
 				pn = pn->next;
 		gl->lexeme_count++;
 	}
@@ -660,12 +660,12 @@ parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
 
 	int multiples = 0;
 	for (i=0; pn; pn = pn->next, i++) {
-		if (ParseTree::get_type(pn) != TOKEN_NT)
+		if (Node::get_type(pn) != TOKEN_NT)
 			internal_error("Bogus node types on grammar");
 
 		int score = 0;
 		spec = PL::Parsing::Tokens::determine(pn, depth, &score);
-		LOGIF(GRAMMAR_CONSTRUCTION, "Result of token <%W> is $P\n", ParseTree::get_text(pn), spec);
+		LOGIF(GRAMMAR_CONSTRUCTION, "Result of token <%W> is $P\n", Node::get_text(pn), spec);
 
 		if (spec) {
 			if ((Specifications::is_kind_like(spec)) &&
@@ -1046,7 +1046,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 
 	pn = gl->tokens->down;
 	if ((genuinely_verbal) && (pn)) {
-		if (ParseTree::int_annotation(pn, slash_class_ANNOT) != 0) {
+		if (Annotations::read_int(pn, slash_class_ANNOT) != 0) {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SlashedCommand),
 				"at present you're not allowed to use a / between command "
 				"words at the start of a line",
@@ -1203,7 +1203,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 				"make sense of things.");
 		}
 
-		if ((ParseTree::get_grammar_token_relation(pn)) && (gv_is != GV_IS_OBJECT)) {
+		if ((Node::get_grammar_token_relation(pn)) && (gv_is != GV_IS_OBJECT)) {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarObjectlessRelation),
 				"a grammar token in an 'Understand...' can only be based "
 				"on a relation if it is to understand the name of a room or thing",
@@ -1213,17 +1213,17 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 
 		int first_token_in_lexeme = FALSE, last_token_in_lexeme = FALSE;
 
-		if (ParseTree::int_annotation(pn, slash_class_ANNOT) != 0) { /* in a multi-token lexeme */
+		if (Annotations::read_int(pn, slash_class_ANNOT) != 0) { /* in a multi-token lexeme */
 			if ((pn->next == NULL) ||
-				(ParseTree::int_annotation(pn->next, slash_class_ANNOT) !=
-					ParseTree::int_annotation(pn, slash_class_ANNOT)))
+				(Annotations::read_int(pn->next, slash_class_ANNOT) !=
+					Annotations::read_int(pn, slash_class_ANNOT)))
 				last_token_in_lexeme = TRUE;
-			if (ParseTree::int_annotation(pn, slash_class_ANNOT) != lexeme_equivalence_class) {
+			if (Annotations::read_int(pn, slash_class_ANNOT) != lexeme_equivalence_class) {
 				first_token_in_lexeme = TRUE;
 				empty_text_allowed_in_lexeme =
-					ParseTree::int_annotation(pn, slash_dash_dash_ANNOT);
+					Annotations::read_int(pn, slash_dash_dash_ANNOT);
 			}
-			lexeme_equivalence_class = ParseTree::int_annotation(pn, slash_class_ANNOT);
+			lexeme_equivalence_class = Annotations::read_int(pn, slash_class_ANNOT);
 			if (first_token_in_lexeme) alternative_number = 1;
 			else alternative_number++;
 		} else { /* in a single-token lexeme */
@@ -1267,8 +1267,8 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 			slash_gpr *sgpr = CREATE(slash_gpr);
 			sgpr->first_choice = pn;
 			while ((pn->next) &&
-					(ParseTree::int_annotation(pn->next, slash_class_ANNOT) ==
-					ParseTree::int_annotation(pn, slash_class_ANNOT))) pn = pn->next;
+					(Annotations::read_int(pn->next, slash_class_ANNOT) ==
+					Annotations::read_int(pn, slash_class_ANNOT))) pn = pn->next;
 			sgpr->last_choice = pn;
 			package_request *PR = Hierarchy::local_package(SLASH_TOKENS_HAP);
 			sgpr->sgpr_iname = Hierarchy::make_iname_in(SLASH_FN_HL, PR);

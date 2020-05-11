@@ -641,7 +641,7 @@ can't be avoided.
 @ Similarly:
 
 @<Reject domain of adjective unless a kind of value or description of objects@> =
-	if ((ParseTree::is(supplied, CONSTANT_NT)) &&
+	if ((Node::is(supplied, CONSTANT_NT)) &&
 		(Specifications::is_description_like(supplied) == FALSE) &&
 		(Rvalues::to_instance(supplied) == NULL)) {
 		if ((early) || (am->problems_thrown++ > 0)) return;
@@ -736,16 +736,16 @@ the duplicates are all mutually consistent; these do not arise from the
 author's source text.)
 
 @<Worry about definitions of the same adjective on the same domain@> =
-	if ((Wordings::nonempty(ParseTree::get_text(am1->defined_at))) &&
-		(Wordings::nonempty(ParseTree::get_text(am2->defined_at))) &&
+	if ((Wordings::nonempty(Node::get_text(am1->defined_at))) &&
+		(Wordings::nonempty(Node::get_text(am2->defined_at))) &&
 		(am1->adjective_form != ENUMERATIVE_KADJ) &&
 		(am2->adjective_form != ENUMERATIVE_KADJ)) {
 		inform_extension *ef1 =
 			Extensions::corresponding_to(
-				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(am1->defined_at))));
+				Lexer::file_of_origin(Wordings::first_wn(Node::get_text(am1->defined_at))));
 		inform_extension *ef2 =
 			Extensions::corresponding_to(
-				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(am2->defined_at))));
+				Lexer::file_of_origin(Wordings::first_wn(Node::get_text(am2->defined_at))));
 		if ((ef1 == ef2) || ((ef1) && (ef2))) {
 			current_sentence = am1->defined_at;
 			Problems::quote_wording_as_source(1, am1->adjective_index_text);

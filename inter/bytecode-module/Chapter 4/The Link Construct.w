@@ -64,7 +64,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	inter_t stage, inter_t text1, inter_t text2, inter_t text3, inter_t text4, inter_t ref, inter_t level,
 	struct inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Node::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
+	inter_tree_node *P = Inode::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
@@ -76,17 +76,17 @@ void Inter::Link::transpose(inter_construct *IC, inter_tree_node *P, inter_t *gr
 }
 
 void Inter::Link::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_LINK_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_LINK_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 
 	if ((P->W.data[STAGE_LINK_IFLD] != EARLY_LINK_STAGE) &&
 		(P->W.data[STAGE_LINK_IFLD] != BEFORE_LINK_STAGE) &&
 		(P->W.data[STAGE_LINK_IFLD] != INSTEAD_LINK_STAGE) &&
 		(P->W.data[STAGE_LINK_IFLD] != AFTER_LINK_STAGE))
-		{ *E = Inter::Node::error(P, I"bad stage marker on link", NULL); return; }
-	if (P->W.data[SEGMENT_LINK_IFLD] == 0) { *E = Inter::Node::error(P, I"no segment text", NULL); return; }
-	if (P->W.data[PART_LINK_IFLD] == 0) { *E = Inter::Node::error(P, I"no part text", NULL); return; }
-	if (P->W.data[TO_RAW_LINK_IFLD] == 0) { *E = Inter::Node::error(P, I"no to-raw text", NULL); return; }
-	if (P->W.data[TO_SEGMENT_LINK_IFLD] == 0) { *E = Inter::Node::error(P, I"no to-segment text", NULL); return; }
+		{ *E = Inode::error(P, I"bad stage marker on link", NULL); return; }
+	if (P->W.data[SEGMENT_LINK_IFLD] == 0) { *E = Inode::error(P, I"no segment text", NULL); return; }
+	if (P->W.data[PART_LINK_IFLD] == 0) { *E = Inode::error(P, I"no part text", NULL); return; }
+	if (P->W.data[TO_RAW_LINK_IFLD] == 0) { *E = Inode::error(P, I"no to-raw text", NULL); return; }
+	if (P->W.data[TO_SEGMENT_LINK_IFLD] == 0) { *E = Inode::error(P, I"no to-segment text", NULL); return; }
 }
 
 void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -99,7 +99,7 @@ void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 	}
 	for (int i=SEGMENT_LINK_IFLD; i<=TO_SEGMENT_LINK_IFLD; i++) {
 		WRITE(" \"");
-		text_stream *S = Inter::Node::ID_to_text(P, P->W.data[i]);
+		text_stream *S = Inode::ID_to_text(P, P->W.data[i]);
 		Inter::Constant::write_text(OUT, S);
 		WRITE("\"");
 	}

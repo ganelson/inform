@@ -16,9 +16,9 @@ typedef struct loop_over_scope {
 @ =
 loop_over_scope *PL::Actions::ScopeLoops::new(parse_node *what) {
 	loop_over_scope *los = CREATE(loop_over_scope);
-	los->what_to_find = ParseTree::duplicate(what);
+	los->what_to_find = Node::duplicate(what);
 	if (Specifications::is_description(what)) {
-		los->what_to_find->down = ParseTree::duplicate(los->what_to_find->down);
+		los->what_to_find->down = Node::duplicate(los->what_to_find->down);
 		Descriptions::clear_calling(los->what_to_find);
 	}
 	package_request *PR = Hierarchy::local_package(LOOP_OVER_SCOPES_HAP);

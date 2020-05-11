@@ -57,7 +57,7 @@ int PL::Parsing::understand_as_SMF(int task, parse_node *V, wording *NPs) {
 	wording O2W = (NPs)?(NPs[2]):EMPTY_WORDING;
 	switch (task) { /* "Understand... as..." */
 		case ACCEPT_SMFT:
-			ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<nounphrase>(O2W);
 			V->next = <<rp>>;
 			<nounphrase>(OW);
@@ -65,7 +65,7 @@ int PL::Parsing::understand_as_SMF(int task, parse_node *V, wording *NPs) {
 			return TRUE;
 		case TRAVERSE_FOR_GRAMMAR_SMFT:
 			base_problem_count = problem_count;
-			PL::Parsing::understand_sentence(ParseTree::get_text(V->next), ParseTree::get_text(V->next->next));
+			PL::Parsing::understand_sentence(Node::get_text(V->next), Node::get_text(V->next->next));
 			break;
 	}
 	return FALSE;
@@ -73,10 +73,10 @@ int PL::Parsing::understand_as_SMF(int task, parse_node *V, wording *NPs) {
 
 @ =
 void PL::Parsing::traverse(void) {
-	ParseTree::traverse(Task::syntax_tree(), PL::Parsing::visit);
+	SyntaxTree::traverse(Task::syntax_tree(), PL::Parsing::visit);
 }
 void PL::Parsing::visit(parse_node *p) {
-	if ((ParseTree::get_type(p) == SENTENCE_NT) && (p->down))
+	if ((Node::get_type(p) == SENTENCE_NT) && (p->down))
 		Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_GRAMMAR_SMFT, p->down);
 }
 
@@ -664,7 +664,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 					if (ParseTreeUsage::is_phrasal(spec)) goto ImpreciseProblemMessage;
 					if (Rvalues::is_nothing_object_constant(spec)) goto ImpreciseProblemMessage;
 					if (ParseTreeUsage::is_rvalue(spec)) {
-						K = ParseTree::get_kind_of_value(spec);
+						K = Node::get_kind_of_value(spec);
 						if (Kinds::Behaviour::request_I6_GPR(K)) {
 							gl_value = spec;
 							gv_is = GV_IS_VALUE;
@@ -787,7 +787,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 
 		if (PL::Parsing::Tokens::is_literal(to_pn->down) == FALSE)
 			file_under = EMPTY_WORDING; /* this will go into the no verb verb */
-		else file_under = Wordings::first_word(ParseTree::get_text(to_pn->down));
+		else file_under = Wordings::first_word(Node::get_text(to_pn->down));
 	}
 	LOGIF(GRAMMAR, "GV is %d, an is $l, file under is %W\n", gv_is, an, file_under);
 	if (gv_is != GV_IS_COMMAND) gl = PL::Parsing::Lines::new(Wordings::first_wn(W), NULL, to_pn, reversed, pluralised);

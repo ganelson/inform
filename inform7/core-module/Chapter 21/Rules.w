@@ -654,7 +654,7 @@ void Rules::RulePrintingRule_routine(void) {
 	} else if (R->defn_as_phrase->declaration_node) {
 		CompiledText::from_text(OUT,
 			Articles::remove_the(
-				ParseTree::get_text(R->defn_as_phrase->declaration_node)));
+				Node::get_text(R->defn_as_phrase->declaration_node)));
 	} else WRITE("%n", Rules::iname(R));
 
 @ =
@@ -809,8 +809,8 @@ int Rules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 
 @<Index some text extracted from the first line of the otherwise anonymous rule@> =
 	parse_node *pn = R->defn_as_phrase->declaration_node->down;
-	if ((pn) && (Wordings::nonempty(ParseTree::get_text(pn)))) {
-		WRITE("(%+W", ParseTree::get_text(pn));
+	if ((pn) && (Wordings::nonempty(Node::get_text(pn)))) {
+		WRITE("(%+W", Node::get_text(pn));
 		if (pn->next) WRITE("; ...");
 		WRITE(")");
 	}
@@ -818,8 +818,8 @@ int Rules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 @<Index a link to the first line of the rule's definition@> =
 	if (R->defn_as_phrase) {
 		parse_node *pn = R->defn_as_phrase->declaration_node;
-		if ((pn) && (Wordings::nonempty(ParseTree::get_text(pn))))
-			Index::link(OUT, Wordings::first_wn(ParseTree::get_text(pn)));
+		if ((pn) && (Wordings::nonempty(Node::get_text(pn))))
+			Index::link(OUT, Wordings::first_wn(Node::get_text(pn)));
 	}
 
 @<Index the small type rule numbering@> =
@@ -833,8 +833,8 @@ int Rules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 	applicability_condition *acl;
 	for (acl = R->first_applicability_condition; acl; acl = acl->next_applicability_condition) {
 		HTML_TAG("br");
-		Index::link(OUT, Wordings::first_wn(ParseTree::get_text(acl->where_imposed)));
-		WRITE("&nbsp;%+W", ParseTree::get_text(acl->where_imposed));
+		Index::link(OUT, Wordings::first_wn(Node::get_text(acl->where_imposed)));
+		WRITE("&nbsp;%+W", Node::get_text(acl->where_imposed));
 	}
 
 @h Actor testing.

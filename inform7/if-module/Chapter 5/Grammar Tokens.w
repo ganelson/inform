@@ -92,23 +92,23 @@ void PL::Parsing::Tokens::break_into_tokens(parse_node *pn, wording W) {
 			W = Feeds::feed_text_full(Lexer::word_text(Wordings::first_wn(W)), FALSE, GRAMMAR_PUNCTUATION_MARKS);
 			LOOP_THROUGH_WORDING(i, W) {
 				parse_node *newpn = NounPhrases::new_raw(Wordings::one_word(i));
-				ParseTree::set_type(newpn, TOKEN_NT);
-				ParseTree::annotate_int(newpn, grammar_token_literal_ANNOT, TRUE);
-				ParseTree::graft(Task::syntax_tree(), newpn, pn);
+				Node::set_type(newpn, TOKEN_NT);
+				Annotations::write_int(newpn, grammar_token_literal_ANNOT, TRUE);
+				SyntaxTree::graft(Task::syntax_tree(), newpn, pn);
 			}
 			break;
 		case FALSE: {
 			parse_node *newpn = NounPhrases::new_raw(W);
-			ParseTree::set_type(newpn, TOKEN_NT);
-			ParseTree::annotate_int(newpn, grammar_token_literal_ANNOT, FALSE);
-			ParseTree::graft(Task::syntax_tree(), newpn, pn);
+			Node::set_type(newpn, TOKEN_NT);
+			Annotations::write_int(newpn, grammar_token_literal_ANNOT, FALSE);
+			SyntaxTree::graft(Task::syntax_tree(), newpn, pn);
 			break;
 		}
 	}
 }
 
 int PL::Parsing::Tokens::is_literal(parse_node *pn) {
-	return ParseTree::int_annotation(pn, grammar_token_literal_ANNOT);
+	return Annotations::read_int(pn, grammar_token_literal_ANNOT);
 }
 
 @h Multiple tokens.
@@ -117,7 +117,7 @@ instance, permits the use of "all".
 
 =
 int PL::Parsing::Tokens::is_multiple(parse_node *pn) {
-	switch (ParseTree::int_annotation(pn, grammar_token_code_ANNOT)) {
+	switch (Annotations::read_int(pn, grammar_token_code_ANNOT)) {
 		case MULTI_TOKEN_GTC:
 		case MULTIINSIDE_TOKEN_GTC:
 		case MULTIHELD_TOKEN_GTC:
@@ -131,7 +131,7 @@ int PL::Parsing::Tokens::is_multiple(parse_node *pn) {
 
 =
 int PL::Parsing::Tokens::is_text(parse_node *pn) {
-	switch (ParseTree::int_annotation(pn, grammar_token_code_ANNOT)) {
+	switch (Annotations::read_int(pn, grammar_token_code_ANNOT)) {
 		case TOPIC_TOKEN_GTC:
 			return TRUE;
 	}
@@ -369,10 +369,10 @@ look seriously at tokens is in Phase II.
 =
 parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score) {
 	parse_node *spec = NULL;
-	if (ParseTree::int_annotation(pn, grammar_token_literal_ANNOT)) return NULL;
+	if (Annotations::read_int(pn, grammar_token_literal_ANNOT)) return NULL;
 
 	<<grammar_verb:named>> = NULL;
-	<grammar-token>(ParseTree::get_text(pn));
+	<grammar-token>(Node::get_text(pn));
 	switch (<<r>>) {
 		case NAMED_TOKEN_GTC: @<Determine a named grammar token@>; break;
 		case ANY_STUFF_GTC: @<Determine an any grammar token@>; break;
@@ -388,28 +388,28 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 @<Determine a named grammar token@> =
 	parse_node *val = Rvalues::from_grammar_verb(<<grammar_verb:named>>);
 	spec = PL::Parsing::Verbs::determine(<<grammar_verb:named>>, depth+1); /* this is where Phase II recurses */
-	ParseTree::set_grammar_value(pn, val);
+	Node::set_grammar_value(pn, val);
 
 @<Determine an any grammar token@> =
 	spec = <<parse_node:s>>;
 	if (Specifications::is_description(spec)) {
 		int any_things = FALSE;
 		if (<<r>> == ANY_THINGS_GTC) any_things = TRUE;
-		ParseTree::annotate_int(pn, grammar_token_code_ANNOT,
+		Annotations::write_int(pn, grammar_token_code_ANNOT,
 			PL::Parsing::Tokens::Filters::new_id(spec, TRUE, any_things));
-		ParseTree::set_grammar_value(pn, spec);
+		Node::set_grammar_value(pn, spec);
 	}
 
 @<Determine a related grammar token@> =
 	binary_predicate *bp = <<rp>>;
-	if (bp) ParseTree::set_grammar_token_relation(pn, bp);
+	if (bp) Node::set_grammar_token_relation(pn, bp);
 
 @<Determine a kind grammar token@> =
 	spec = <<parse_node:s>>;
-	ParseTree::set_grammar_value(pn, spec);
+	Node::set_grammar_value(pn, spec);
 	if (Specifications::is_description_like(spec)) {
 		*score = 5;
-		ParseTree::annotate_int(pn, grammar_token_code_ANNOT,
+		Annotations::write_int(pn, grammar_token_code_ANNOT,
 			PL::Parsing::Tokens::Filters::new_id(spec, FALSE, FALSE));
 	}
 
@@ -417,10 +417,10 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 	int p = <<r>>;
 	kind *K = PL::Parsing::Tokens::kind_for_special_token(p);
 	spec = Specifications::from_kind(K);
-	ParseTree::set_text(spec, ParseTree::get_text(pn));
+	Node::set_text(spec, Node::get_text(pn));
 	*score = PL::Parsing::Tokens::gsb_for_special_token(p);
-	ParseTree::set_grammar_value(pn, spec);
-	ParseTree::annotate_int(pn, grammar_token_code_ANNOT, p);
+	Node::set_grammar_value(pn, spec);
+	Annotations::write_int(pn, grammar_token_code_ANNOT, p);
 
 @<Vet the grammar token determination for parseability at run-time@> =
 	if (Specifications::is_description(spec)) {
@@ -430,7 +430,7 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 			(Kinds::Compare::eq(K, K_understanding) == FALSE) &&
 			(Kinds::Behaviour::request_I6_GPR(K) == FALSE)) {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(pn));
+			Problems::quote_wording(2, Node::get_text(pn));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnparsableKind));
 			Problems::issue_problem_segment(
 				"The grammar token '%2' in the sentence %1 "
@@ -459,12 +459,12 @@ nothing else.
 int ol_loop_counter = 0;
 kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 	inter_symbol *failure_label, int consult_mode) {
-	int wn = Wordings::first_wn(ParseTree::get_text(pn));
+	int wn = Wordings::first_wn(Node::get_text(pn));
 	parse_node *spec;
 	binary_predicate *bp;
 	grammar_verb *gv;
 
-	if (ParseTree::int_annotation(pn, grammar_token_literal_ANNOT)) {
+	if (Annotations::read_int(pn, grammar_token_literal_ANNOT)) {
 		if (code_mode) {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
@@ -487,7 +487,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		return NULL;
 	}
 
-	bp = ParseTree::get_grammar_token_relation(pn);
+	bp = Node::get_grammar_token_relation(pn);
 	if (bp) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ARTICLEDESCRIPTORS_HL));
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -1038,16 +1038,16 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			return NULL;
 		}
 
-	spec = ParseTree::get_grammar_value(pn);
+	spec = Node::get_grammar_value(pn);
 	if (spec == NULL) PL::Parsing::Tokens::determine(pn, 10, NULL);
-	spec = ParseTree::get_grammar_value(pn);
+	spec = Node::get_grammar_value(pn);
 	if (spec == NULL) {
 		LOG("$T", pn);
 		internal_error("NULL result of non-preposition token");
 	}
 
 	if (Specifications::is_kind_like(spec)) {
-		kind *K = ParseTree::get_kind_of_value(spec);
+		kind *K = Node::get_kind_of_value(spec);
 		if ((K_understanding) &&
 			(Kinds::Compare::le(K, K_object) == FALSE) &&
 			(Kinds::Compare::eq(K, K_understanding) == FALSE)) {
@@ -1105,7 +1105,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		return K_object;
 	} else {
 		kind *K = NULL;
-		int gtc = ParseTree::int_annotation(pn, grammar_token_code_ANNOT);
+		int gtc = Annotations::read_int(pn, grammar_token_code_ANNOT);
 		if (gtc < 0) {
 			inter_name *i6_token_iname = PL::Parsing::Tokens::iname_for_special_token(gtc);
 			K = PL::Parsing::Tokens::kind_for_special_token(gtc);
@@ -1242,7 +1242,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					} else internal_error("no token for description");
 				}
 			} else {
-				if (ParseTree::is(spec, CONSTANT_NT)) {
+				if (Node::is(spec, CONSTANT_NT)) {
 					if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_understanding))) {
 						gv = Rvalues::to_grammar_verb(spec);
 						if (code_mode) {

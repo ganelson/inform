@@ -55,11 +55,11 @@ name of a new constant.
 =
 void Phrases::Manager::traverse_for_names(void) {
 	Phrases::Manager::advance_phrase_time_to(EARLY_MORNING_PHT);
-	ParseTree::traverse(Task::syntax_tree(), Phrases::Manager::visit_for_names);
+	SyntaxTree::traverse(Task::syntax_tree(), Phrases::Manager::visit_for_names);
 }
 
 void Phrases::Manager::visit_for_names(parse_node *p) {
-	if (ParseTree::get_type(p) == ROUTINE_NT)
+	if (Node::get_type(p) == ROUTINE_NT)
 		Phrases::Usage::predeclare_name_in(p);
 }
 
@@ -128,8 +128,8 @@ void Phrases::Manager::traverse(void) {
 	Phrases::Manager::advance_phrase_time_to(LATE_MORNING_PHT);
 
 	int progress_target = 0, progress_made = 0;
-	ParseTree::traverse_int(Task::syntax_tree(), Phrases::Manager::visit_to_count, &progress_target);
-	ParseTree::traverse_int_int(Task::syntax_tree(), Phrases::Manager::visit_to_create, &progress_target, &progress_made);
+	SyntaxTree::traverse_intp(Task::syntax_tree(), Phrases::Manager::visit_to_count, &progress_target);
+	SyntaxTree::traverse_intp_intp(Task::syntax_tree(), Phrases::Manager::visit_to_create, &progress_target, &progress_made);
 }
 
 void Phrases::Manager::visit_to_count(parse_node *p, int *progress_target) {
@@ -142,7 +142,7 @@ void Phrases::Manager::visit_to_create(parse_node *p, int *progress_target, int 
 		ProgressBar::update(3,
 			((float) (*progress_made))/((float) (*progress_target)));
 
-	if (ParseTree::get_type(p) == ROUTINE_NT) {
+	if (Node::get_type(p) == ROUTINE_NT) {
 		Phrases::create_from_preamble(p);
 	}
 }
@@ -229,16 +229,16 @@ only conditionally, or substituted by other rules.
 =
 void Phrases::Manager::parse_rule_placements(void) {
 	Phrases::Manager::advance_phrase_time_to(EARLY_AFTERNOON_PHT);
-	ParseTree::traverse(Task::syntax_tree(), Phrases::Manager::visit_to_parse_placements);
+	SyntaxTree::traverse(Task::syntax_tree(), Phrases::Manager::visit_to_parse_placements);
 }
 
 void Phrases::Manager::visit_to_parse_placements(parse_node *p) {
-	if ((ParseTree::get_type(p) == SENTENCE_NT) &&
+	if ((Node::get_type(p) == SENTENCE_NT) &&
 		(p->down) &&
-		(ParseTree::get_type(p->down) == AVERB_NT)) {
+		(Node::get_type(p->down) == AVERB_NT)) {
 		prevailing_mood =
-			ParseTree::int_annotation(p->down, verbal_certainty_ANNOT);
-		if (ParseTree::int_annotation(p->down, verb_id_ANNOT) == SPECIAL_MEANING_VB)
+			Annotations::read_int(p->down, verbal_certainty_ANNOT);
+		if (Annotations::read_int(p->down, verb_id_ANNOT) == SPECIAL_MEANING_VB)
 			Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_RULE_FILING_SMFT, p->down);
 	}
 }

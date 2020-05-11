@@ -425,7 +425,7 @@ void PL::Parsing::Verbs::index_tokens_for(OUTPUT_STREAM, wording W, char *specia
 	WRITE("\"[");
 	if (special) WRITE("%s", special); else WRITE("%+W", W);
 	WRITE("]\"");
-	if (where) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(where)));
+	if (where) Index::link(OUT, Wordings::first_wn(Node::get_text(where)));
 	if (Str::len(help) > 0) Index::DocReferences::link(OUT, help);
 	if (explanation) WRITE(" - %s", explanation);
 	HTML_CLOSE("p");
@@ -446,7 +446,7 @@ void PL::Parsing::Verbs::translates(wording W, parse_node *p2) {
 			return;
 		}
 	gv = PL::Parsing::Verbs::named_token_new(W);
-	WRITE_TO(gv->gv_I6_identifier, "%N", Wordings::first_wn(ParseTree::get_text(p2)));
+	WRITE_TO(gv->gv_I6_identifier, "%N", Wordings::first_wn(Node::get_text(p2)));
 }
 
 inter_name *PL::Parsing::Verbs::i6_token_as_iname(grammar_verb *gv) {

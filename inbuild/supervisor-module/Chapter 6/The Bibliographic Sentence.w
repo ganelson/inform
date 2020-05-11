@@ -17,7 +17,7 @@ after it, and may therefore affect how subsequent sentences are broken.
 
 =
 void BiblioSentence::notify(inform_project *proj, parse_node *PN) {
-	wording W = ParseTree::get_text(PN);
+	wording W = Node::get_text(PN);
 	if (<titling-line>(W)) {
 		text_stream *T = proj->as_copy->edition->work->title;
 		if (proj->as_copy->edition->work->author_name == NULL)

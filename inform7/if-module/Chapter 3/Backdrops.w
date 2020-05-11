@@ -192,9 +192,9 @@ can be said to be "everywhere", which nothing else can).
 
 @ =
 int PL::Backdrops::backdrops_intervene_in_assertion(parse_node *px, parse_node *py) {
-	if ((ParseTree::get_type(py) == EVERY_NT) &&
-		(<notable-backdrops-noun-phrases>(ParseTree::get_text(py)))) {
-		inference_subject *left_subject = ParseTree::get_subject(px);
+	if ((Node::get_type(py) == EVERY_NT) &&
+		(<notable-backdrops-noun-phrases>(Node::get_text(py)))) {
+		inference_subject *left_subject = Node::get_subject(px);
 		if (left_subject == NULL)
 			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_ValueEverywhere),
 				"'everywhere' can only be used to place individual backdrops",

@@ -86,7 +86,7 @@ void PL::Parsing::Tokens::Types::compile_to_string(grammar_type *gty) {
 
 kind *PL::Parsing::Tokens::Types::get_data_type_as_token(grammar_type *gty) {
 	if (gty->no_resulting_values > 0) {
-		if ((ParseTree::is(gty->first_type, CONSTANT_NT)) ||
+		if ((Node::is(gty->first_type, CONSTANT_NT)) ||
 			(Specifications::is_description(gty->first_type)))
 			return Specifications::to_kind(gty->first_type);
 	}

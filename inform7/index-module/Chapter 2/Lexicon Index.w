@@ -479,7 +479,7 @@ void Index::Lexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, inform_e
 	LOOP_OVER(lex, lexicon_entry)
 		if (((lex->part_of_speech == VERB_LEXE) || (lex->part_of_speech == ABLE_VERB_LEXE))
 			&& (lex->verb_defined_at)
-			&& (Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(lex->verb_defined_at))) == sf)) {
+			&& (Lexer::file_of_origin(Wordings::first_wn(Node::get_text(lex->verb_defined_at))) == sf)) {
 			TEMPORARY_TEXT(entry_text);
 			Index::Lexicon::lexicon_copy_to_stream(lex, entry_text);
 			if (verb_count++ == 0) { HTML_OPEN("p"); WRITE("Verbs: "); } else WRITE(", ");

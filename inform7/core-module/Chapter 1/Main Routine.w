@@ -32,7 +32,7 @@ int CoreMain::main(int argc, char *argv[]) {
 		@<Build the project@>;
 	}
 
-	// ParseTree::log_tree(DL, Task::syntax_tree()->root_node);
+	// Node::log_tree(DL, Task::syntax_tree()->root_node);
 
 	@<Post mortem logging@>;
 	if (proceed) @<Shutdown and rennab@>;

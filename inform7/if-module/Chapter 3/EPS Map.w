@@ -292,11 +292,11 @@ This happens in two passes: pass 1 before HTML mapping, pass 2 before EPS mappin
 =
 void PL::EPSMap::traverse_for_map_parameters(int pass) {
 	if (pass == 1) PL::SpatialMap::initialise_page_directions();
-	ParseTree::traverse_int(Task::syntax_tree(), PL::EPSMap::look_for_map_parameters, &pass);
+	SyntaxTree::traverse_intp(Task::syntax_tree(), PL::EPSMap::look_for_map_parameters, &pass);
 }
 
 void PL::EPSMap::look_for_map_parameters(parse_node *p, int *pass) {
-	if ((ParseTree::get_type(p) == SENTENCE_NT)
+	if ((Node::get_type(p) == SENTENCE_NT)
 		&& (p->down)) {
 		if (*pass == 1) Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_MAP1_SMFT, p->down);
 		else Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_MAP2_SMFT, p->down);
@@ -308,7 +308,7 @@ int PL::EPSMap::index_map_with_SMF(int task, parse_node *V, wording *NPs) {
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "Index map with ..." */
 		case ACCEPT_SMFT:
-			ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<nounphrase-articled-list>(OW);
 			V->next = <<rp>>;
 			return TRUE;
@@ -319,7 +319,7 @@ int PL::EPSMap::index_map_with_SMF(int task, parse_node *V, wording *NPs) {
 			PL::EPSMap::new_map_hint_sentence(2, V->next);
 			break;
 		case TRAVERSE_FOR_MAP_INDEX_SMFT:
-			LOG("\nIndex map with %+W.\n", ParseTree::get_text(V->next));
+			LOG("\nIndex map with %+W.\n", Node::get_text(V->next));
 			break;
 	}
 	return FALSE;
@@ -509,7 +509,7 @@ the following:
 
 =
 void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
-	if (ParseTree::get_type(p) == AND_NT) {
+	if (Node::get_type(p) == AND_NT) {
 		PL::EPSMap::new_map_hint_sentence(pass, p->down);
 		PL::EPSMap::new_map_hint_sentence(pass, p->down->next);
 		return;
@@ -519,7 +519,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 	index_map_with_p = p;
 
 	/* the following take effect on pass 1 */
-	<index-map-sentence-subject>(ParseTree::get_text(p));
+	<index-map-sentence-subject>(Node::get_text(p));
 	switch (<<r>>) {
 		case EPSFILE_IMW: if (pass == 1) write_EPS_format_map = TRUE;
 			break;
@@ -625,7 +625,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 	rh->at_offset = <<roff>>;
 
 	if (<<r>> == RUBRIC_OFFSET) {
-		instance *I = Instances::parse_object(Wordings::from(ParseTree::get_text(p), i));
+		instance *I = Instances::parse_object(Wordings::from(Node::get_text(p), i));
 		i = Wordings::last_wn(RESTW) + 1;
 		if (I == NULL) {
 			Problems::Issue::map_problem(_p_(PM_MapUnknownOffsetBase),
@@ -1121,8 +1121,8 @@ void PL::EPSMap::plot_text_at(OUTPUT_STREAM, wchar_t *text_to_plot, instance *I,
 		parse_node *V = World::Inferences::get_prop_state_at(
 			Instances::as_subject(I), P_printed_name, NULL);
 		if ((Rvalues::is_CONSTANT_of_kind(V, K_text)) &&
-			(Wordings::nonempty(ParseTree::get_text(V)))) {
-			int wn = Wordings::first_wn(ParseTree::get_text(V));
+			(Wordings::nonempty(Node::get_text(V)))) {
+			int wn = Wordings::first_wn(Node::get_text(V));
 			WRITE_TO(txt, "%+W", Wordings::one_word(wn));
 			if (Str::get_first_char(txt) == '\"') Str::delete_first_character(txt);
 			if (Str::get_last_char(txt) == '\"') Str::delete_last_character(txt);

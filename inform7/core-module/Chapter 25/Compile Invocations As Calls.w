@@ -8,16 +8,16 @@ for by an invocation list.
 =
 void Invocations::AsCalls::csi_by_call(value_holster *VH, parse_node *inv,
 	source_location *where_from, tokens_packet *tokens) {
-	phrase *ph = ParseTree::get_phrase_invoked(inv);
+	phrase *ph = Node::get_phrase_invoked(inv);
 
 	inter_name *IS = Routines::Compile::iname(ph,
 		Routines::ToPhrases::make_request(ph, tokens->as_requested,
-			ParseTree::get_kind_variable_declarations(inv), ParseTree::get_text(inv)));
+			Node::get_kind_variable_declarations(inv), Node::get_text(inv)));
 	LOGIF(MATCHING, "Calling routine %n with kind $u from $e\n", IS,
 		tokens->as_requested, inv);
 
 	int options_supplied = Invocations::get_phrase_options_bitmap(inv);
-	if (ParseTree::get_phrase_options_invoked(inv) == NULL) options_supplied = -1;
+	if (Node::get_phrase_options_invoked(inv) == NULL) options_supplied = -1;
 
 	if (VH->vhmode_wanted == INTER_VAL_VHMODE) VH->vhmode_provided = INTER_VAL_VHMODE;
 	else VH->vhmode_provided = INTER_VOID_VHMODE;

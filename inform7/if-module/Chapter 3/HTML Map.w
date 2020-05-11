@@ -1020,7 +1020,7 @@ void PL::HTMLMap::colour_chip(OUTPUT_STREAM, instance *I, instance *Reg, parse_n
 		PF_I(map, Reg)->world_index_colour);
 	WRITE("&nbsp;");
 	Instances::index_name(OUT, Reg); WRITE(" region");
-	if (at) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(at)));
+	if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 	WRITE("&nbsp;");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");

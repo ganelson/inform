@@ -89,6 +89,8 @@ void UseExcerptMeanings::linguistics_problem_handler(int err_no, wording W, void
 @h Debugging log.
 Here we log a general bitmap made up from meaning codes:
 
+@d LOG_UNENUMERATED_NODE_TYPES_SYNTAX_CALLBACK UseExcerptMeanings::log_meaning_code
+
 =
 void UseExcerptMeanings::log_meaning_code(OUTPUT_STREAM, unsigned int mc) {
 	int i, f = FALSE;

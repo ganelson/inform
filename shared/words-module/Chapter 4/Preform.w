@@ -1746,7 +1746,7 @@ and the pointer result is null.
 		if (nt->multiplicitous) {
 			#ifdef CORE_MODULE
 			added_to_result = QP;
-			acc_result = (void *) ParseTree::add_possible_reading((parse_node *) acc_result, QP, W);
+			acc_result = (void *) Node::add_possible_reading((parse_node *) acc_result, QP, W);
 			#endif
 			goto Fail;
 		}

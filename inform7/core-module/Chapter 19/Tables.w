@@ -73,10 +73,10 @@ established names of tables and columns:
 
 =
 void Tables::traverse_to_create(void) {
-	ParseTree::traverse(Task::syntax_tree(), Tables::visit_to_create);
+	SyntaxTree::traverse(Task::syntax_tree(), Tables::visit_to_create);
 }
 void Tables::visit_to_create(parse_node *p) {
-	if (ParseTree::get_type(p) == TABLE_NT)
+	if (Node::get_type(p) == TABLE_NT)
 		Tables::create_table(p);
 }
 
@@ -299,7 +299,7 @@ table and then destroy the temporary one made here.
 
 =
 void Tables::create_table(parse_node *PN) {
-	wording W = ParseTree::get_text(PN);
+	wording W = Node::get_text(PN);
 	int connection = TABLE_IS_NEW; /* i.e., no connection with existing tables */
 	table *t = Tables::new_table_structure(PN);
 
@@ -541,8 +541,8 @@ a node in the parse tree representing the column's use within this table.
 			"is already full. (This entry would be in column %5 and the table has "
 			"only %6.)");
 	} else {
-		ParseTree::annotate_int(cell, table_cell_unspecified_ANNOT, FALSE);
-		ParseTree::graft(Task::syntax_tree(), cell, t->columns[col_count].entries);
+		Annotations::write_int(cell, table_cell_unspecified_ANNOT, FALSE);
+		SyntaxTree::graft(Task::syntax_tree(), cell, t->columns[col_count].entries);
 	}
 
 @ If a row finishes early, we pad it out with blanks.
@@ -550,8 +550,8 @@ a node in the parse tree representing the column's use within this table.
 @<Add implied blank data cells to fill out the row as needed@> =
 	while (col_count < t->no_columns) { /* which can only happen on data rows */
 		parse_node *cell = Tables::empty_cell_node();
-		ParseTree::annotate_int(cell, table_cell_unspecified_ANNOT, TRUE);
-		ParseTree::graft(Task::syntax_tree(), cell, t->columns[col_count].entries);
+		Annotations::write_int(cell, table_cell_unspecified_ANNOT, TRUE);
+		SyntaxTree::graft(Task::syntax_tree(), cell, t->columns[col_count].entries);
 		col_count++;
 	}
 
@@ -609,14 +609,14 @@ the new table's rows onto the ends of the old table's columns.
 		int j;
 		for (j=0; j<old_t->no_columns; j++)
 			if (old_to_new[j] >= 0) {
-				ParseTree::graft(Task::syntax_tree(), t->columns[old_to_new[j]].entries->down,
+				SyntaxTree::graft(Task::syntax_tree(), t->columns[old_to_new[j]].entries->down,
 					old_t->columns[j].entries);
 			} else {
 				int i;
 				for (i=1; i<row_count; i++) { /* from 1 to omit the column headings */
 					parse_node *blank = Tables::empty_cell_node();
-					ParseTree::annotate_int(blank, table_cell_unspecified_ANNOT, TRUE);
-					ParseTree::graft(Task::syntax_tree(), blank, old_t->columns[j].entries);
+					Annotations::write_int(blank, table_cell_unspecified_ANNOT, TRUE);
+					SyntaxTree::graft(Task::syntax_tree(), blank, old_t->columns[j].entries);
 				}
 			}
 	}
@@ -786,8 +786,8 @@ columns and in the same order.
 @ =
 parse_node *Tables::empty_cell_node(void) {
 	parse_node *PN;
-	PN = ParseTree::new(PROPER_NOUN_NT);
-	ParseTree::annotate_int(PN, nounphrase_article_ANNOT, NO_ART);
+	PN = Node::new(PROPER_NOUN_NT);
+	Annotations::write_int(PN, nounphrase_article_ANNOT, NO_ART);
 	return PN;
 }
 
@@ -817,7 +817,7 @@ void Tables::stock_table(table *t, int phase) {
 				int row_count;
 				parse_node *PN;
 				for (PN = t->columns[i].entries->down, row_count = 1; PN; PN = PN->next, row_count++)
-					if (Wordings::nonempty(ParseTree::get_text(PN))) /* if there's anything written there at all */
+					if (Wordings::nonempty(Node::get_text(PN))) /* if there's anything written there at all */
 						Tables::stock_table_cell(t, PN, row_count, i);
 				break;
 			}
@@ -884,13 +884,13 @@ us issue more contextual problem messages.
 @<Make anomalous entry for kind@> =
 	*X = KIND_TABLE_ENTRY;
 	parse_node *new = Specifications::from_kind(RP[1]);
-	ParseTree::set_text(new, W);
+	Node::set_text(new, W);
 	*XP = new;
 
 @<Make anomalous entry for text to be understood@> =
 	*X = TOPIC_TABLE_ENTRY;
 	parse_node *new = Specifications::from_kind(K_text);
-	ParseTree::set_text(new, W);
+	Node::set_text(new, W);
 	*XP = new;
 
 @<Issue PM_NonconstantActionInTable problem@> =
@@ -973,7 +973,7 @@ void Tables::stock_table_cell(table *t, parse_node *cell, int row_count, int col
 	table_cell_col = col_count;
 
 	@<Parse the table cell and give it an evaluation as a noun@>;
-	parse_node *evaluation = ParseTree::get_evaluation(cell);
+	parse_node *evaluation = Node::get_evaluation(cell);
 	LOGIF(TABLES, "Cell evaluates to: $P\n", evaluation);
 
 	if (topic_exception == FALSE) @<Require the cell to evaluate to an actual constant@>;
@@ -982,11 +982,11 @@ void Tables::stock_table_cell(table *t, parse_node *cell, int row_count, int col
 }
 
 @<Parse the table cell and give it an evaluation as a noun@> =
-	<table-cell>(ParseTree::get_text(cell));
+	<table-cell>(Node::get_text(cell));
 	parse_node *spec = <<rp>>;
 	switch (<<r>>) {
 		case BLANK_TABLE_ENTRY:
-			ParseTree::annotate_int(cell, table_cell_unspecified_ANNOT, TRUE);
+			Annotations::write_int(cell, table_cell_unspecified_ANNOT, TRUE);
 			return;
 		case SPEC_TABLE_ENTRY:
 			Assertions::Refiner::noun_from_value(cell, spec);
@@ -999,7 +999,7 @@ void Tables::stock_table_cell(table *t, parse_node *cell, int row_count, int col
 			Assertions::Refiner::noun_from_value(cell, spec);
 			break;
 		case KIND_TABLE_ENTRY:
-			ParseTree::annotate_int(cell, table_cell_unspecified_ANNOT, TRUE);
+			Annotations::write_int(cell, table_cell_unspecified_ANNOT, TRUE);
 			kind *K = Specifications::to_kind(spec);
 			Tables::Columns::note_kind(t, col_count, &(t->columns[col_count]), cell,
 				K, TRUE);
@@ -1030,7 +1030,7 @@ void Tables::stock_table_cell(table *t, parse_node *cell, int row_count, int col
 			"of things with no definite value, and can't be stored as a table entry.");
 		return;
 	}
-	if (ParseTree::is(evaluation, CONSTANT_NT) == FALSE) {
+	if (Node::is(evaluation, CONSTANT_NT) == FALSE) {
 		LOG("Evaluation is $P\n", evaluation);
 		@<Actually issue PM_TableUnknownEntry problem@>;
 	}
@@ -1149,7 +1149,7 @@ Eventually this should leave only a single row, and that's the winner.
 	for (col = 0; col < main_table->no_columns; col++) {
 		parse_node *amend_cell;
 		@<Set the amend-cell to this column's cell in the current amendment row@>;
-		if (ParseTree::int_annotation(amend_cell, table_cell_unspecified_ANNOT) == FALSE) {
+		if (Annotations::read_int(amend_cell, table_cell_unspecified_ANNOT) == FALSE) {
 			int only_row_left = -1;
 			@<Use the key value in the amend-cell to make an amendment@>;
 			if (only_row_left >= 0) {
@@ -1169,7 +1169,7 @@ always at least one column.)
 	for (leftmost_cell = main_table->columns[0].entries->down;
 		leftmost_cell;
 		leftmost_cell = leftmost_cell->next) {
-		ParseTree::annotate_int(leftmost_cell, row_amendable_ANNOT, TRUE);
+		Annotations::write_int(leftmost_cell, row_amendable_ANNOT, TRUE);
 		matches_in_last_round++;
 	}
 
@@ -1189,9 +1189,9 @@ of the main table -- in this case the amendment will have no effect, but
 put another way, it can do no harm.
 
 @<Use the key value in the amend-cell to make an amendment@> =
-	parse_node *amend_key = ParseTree::get_evaluation(amend_cell);
+	parse_node *amend_key = Node::get_evaluation(amend_cell);
 	LOGIF(TABLES, "Amend row %d, col %d, key $P: $T\n", amend_row, col, amend_key, amend_cell);
-	if (ParseTree::is(amend_key, CONSTANT_NT) == FALSE)
+	if (Node::is(amend_key, CONSTANT_NT) == FALSE)
 		internal_error("bad key in amendments table"); /* code above should make this impossible */
 
 	int matches = 0;
@@ -1218,8 +1218,8 @@ possible match.
 		row++,
 		main_cell = main_cell->next,
 		leftmost_cell = leftmost_cell->next) {
-		parse_node *main_value = ParseTree::get_evaluation(main_cell);
-		if (ParseTree::int_annotation(leftmost_cell, row_amendable_ANNOT))
+		parse_node *main_value = Node::get_evaluation(main_cell);
+		if (Annotations::read_int(leftmost_cell, row_amendable_ANNOT))
 			@<See if this possible-match row has the right key value in the new column@>;
 	}
 
@@ -1228,12 +1228,12 @@ possible-match set if there isn't.
 
 @<See if this possible-match row has the right key value in the new column@> =
 	LOG("Key in row %d is $P\n", row, main_value);
-	if ((ParseTree::is(main_value, CONSTANT_NT)) &&
+	if ((Node::is(main_value, CONSTANT_NT)) &&
 		(Rvalues::compare_CONSTANT(amend_key, main_value))) {
 		matches++;
 		only_row_left = row;
 	} else {
-		ParseTree::annotate_int(leftmost_cell, row_amendable_ANNOT, FALSE);
+		Annotations::write_int(leftmost_cell, row_amendable_ANNOT, FALSE);
 	}
 
 @ That just leaves the problem message, a very subtle one which took a long
@@ -1295,8 +1295,8 @@ void Tables::splice_table_row(table *table_to, table *table_from, int row_to, in
 				cell_from && (row < row_from); cell_from = cell_from->next, row++) ;
 		if ((cell_to) && (cell_from)) {
 			Assertions::Refiner::copy_noun_details(cell_to, cell_from);
-			ParseTree::annotate_int(cell_to, table_cell_unspecified_ANNOT,
-				ParseTree::int_annotation(cell_from, table_cell_unspecified_ANNOT));
+			Annotations::write_int(cell_to, table_cell_unspecified_ANNOT,
+				Annotations::read_int(cell_from, table_cell_unspecified_ANNOT));
 		} else internal_error("bad table row splice");
 	}
 }
@@ -1350,11 +1350,11 @@ Helvetica-style lower case "x", but life is full of compromises.
 
 @<Index this table@> =
 	HTML::first_html_column_spaced(OUT, 0);
-	WRITE("<b>%+W</b>", ParseTree::get_text(t->headline_fragment));
+	WRITE("<b>%+W</b>", Node::get_text(t->headline_fragment));
 	table_contribution *tc; int ntc = 0;
 	for (tc = t->table_created_at; tc; tc = tc->next) {
 		if (ntc++ > 0) WRITE(" +");
-		Index::link(OUT, Wordings::first_wn(ParseTree::get_text(tc->source_table)));
+		Index::link(OUT, Wordings::first_wn(Node::get_text(tc->source_table)));
 	}
 	HTML::next_html_column_spaced(OUT, 0);
 	int rc = Tables::get_no_rows(t);
@@ -1384,8 +1384,8 @@ Helvetica-style lower case "x", but life is full of compromises.
 		wording CW = Nouns::nominative(t->columns[col].column_identity->name);
 		if ((t->first_column_by_definition) && (col == 0)) {
 			parse_node *PN = t->where_used_to_define;
-			WRITE("%+W", ParseTree::get_text(PN));
-			Index::link(OUT, Wordings::first_wn(ParseTree::get_text(PN)));
+			WRITE("%+W", Node::get_text(PN));
+			Index::link(OUT, Wordings::first_wn(Node::get_text(PN)));
 		} else {
 			if (t->first_column_by_definition) WRITE("<i>sets</i> ");
 			WRITE("%+W&nbsp;", CW);
@@ -1401,8 +1401,8 @@ Helvetica-style lower case "x", but life is full of compromises.
 			int row;
 			for (row = 1, cell = t->columns[0].entries->down; cell; cell = cell->next, row++) {
 				if (row > 1) WRITE(", ");
-				WRITE("%+W", ParseTree::get_text(cell));
-				Index::link(OUT, Wordings::first_wn(ParseTree::get_text(cell)));
+				WRITE("%+W", Node::get_text(cell));
+				Index::link(OUT, Wordings::first_wn(Node::get_text(cell)));
 			}
 		} else if (t->first_column_by_definition) {
 			Kinds::Textual::write(OUT,
@@ -1424,7 +1424,7 @@ given extension:
 =
 int Tables::table_within(table *t, inform_extension *E) {
 	if (t->amendment_of) return FALSE;
-	heading *at_heading = Headings::of_wording(ParseTree::get_text(t->table_created_at->source_table));
+	heading *at_heading = Headings::of_wording(Node::get_text(t->table_created_at->source_table));
 	inform_extension *at_E = Headings::get_extension_containing(at_heading);
 	if (E == at_E) return TRUE;
 	return FALSE;

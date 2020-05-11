@@ -60,23 +60,23 @@ void UseNouns::name_all(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		Kinds::RunTime::assure_iname_exists(K);
-	ParseTree::traverse(Task::syntax_tree(), UseNouns::visit_to_name);
+	SyntaxTree::traverse(Task::syntax_tree(), UseNouns::visit_to_name);
 }
 
 void UseNouns::visit_to_name(parse_node *p) {
-	if ((ParseTree::get_type(p) == SENTENCE_NT) && (p->down) &&
-		(ParseTree::int_annotation(p->down, category_of_I6_translation_ANNOT) == NOUN_I6TR))
+	if ((Node::get_type(p) == SENTENCE_NT) && (p->down) &&
+		(Annotations::read_int(p->down, category_of_I6_translation_ANNOT) == NOUN_I6TR))
 		@<Act on a request to translate a noun in a specific way@>;
 }
 
 @<Act on a request to translate a noun in a specific way@> =
-	wording W = Wordings::trim_last_word(ParseTree::get_text(p->down->next));
+	wording W = Wordings::trim_last_word(Node::get_text(p->down->next));
 	parse_node *res = ExParser::parse_excerpt(NOUN_MC, W);
 	if (res) {
 		noun *nt = Nouns::disambiguate(res, MAX_NOUN_PRIORITY);
 		if (nt) {
 			TEMPORARY_TEXT(i6r);
-			WRITE_TO(i6r, "%N", Wordings::first_wn(ParseTree::get_text(p->down->next->next)));
+			WRITE_TO(i6r, "%N", Wordings::first_wn(Node::get_text(p->down->next->next)));
 			UseNouns::noun_set_I6_representation(nt, i6r);
 			DISCARD_TEXT(i6r);
 		}
@@ -105,8 +105,8 @@ and is a somewhat provisional feature for now.
 @ =
 void UseNouns::nl_translates(parse_node *pn) {
 	/* the object */
-	inform_language *nl = ParseTree::get_defn_language(pn->next->next);
-	int g = ParseTree::int_annotation(pn->next->next, gender_reference_ANNOT);
+	inform_language *nl = Node::get_defn_language(pn->next->next);
+	int g = Annotations::read_int(pn->next->next, gender_reference_ANNOT);
 	if (nl == NULL) internal_error("No such NL");
 	if (nl == English_language) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantTranslateIntoEnglish),
@@ -115,7 +115,7 @@ void UseNouns::nl_translates(parse_node *pn) {
 		return;
 	}
 
-	if ((<translates-into-nl-sentence-subject>(ParseTree::get_text(pn->next))) == FALSE) {
+	if ((<translates-into-nl-sentence-subject>(Node::get_text(pn->next))) == FALSE) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantTranslateValue),
 			"this isn't something which can be translated",
 			"that is, it isn't a kind.");
@@ -127,7 +127,7 @@ void UseNouns::nl_translates(parse_node *pn) {
 			instance *I = <<rp>>;
 			noun *t = Instances::get_noun(I);
 			if (t == NULL) internal_error("stuck on instance name");
-			Nouns::add_to_noun_and_reg(t, ParseTree::get_text(pn->next->next), nl, g,
+			Nouns::add_to_noun_and_reg(t, Node::get_text(pn->next->next), nl, g,
 				1, REGISTER_SINGULAR_NTOPT);
 			break;
 		}
@@ -137,7 +137,7 @@ void UseNouns::nl_translates(parse_node *pn) {
 			if (KC == NULL) internal_error("stuck on kind name");
 			noun *t = Kinds::Constructors::get_noun(KC);
 			if (t == NULL) internal_error("further stuck on kind name");
-			Nouns::add_to_noun_and_reg(t, ParseTree::get_text(pn->next->next), nl, g,
+			Nouns::add_to_noun_and_reg(t, Node::get_text(pn->next->next), nl, g,
 				1, REGISTER_SINGULAR_NTOPT + REGISTER_PLURAL_NTOPT);
 			break;
 		}

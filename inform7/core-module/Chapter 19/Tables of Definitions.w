@@ -96,8 +96,8 @@ int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<defined-by-sentence-object>(OW)) {
 				if (<<r>> == FALSE) return FALSE;
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				ParseTree::annotate_int(V, examine_for_ofs_ANNOT, TRUE);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, examine_for_ofs_ANNOT, TRUE);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -120,8 +120,8 @@ connection with ordinary tables.
 
 =
 void Tables::Defining::kind_defined_by_table(parse_node *pn) {
-	wording LTW = ParseTree::get_text(pn->next->next);
-	wording SPW = ParseTree::get_text(pn->next);
+	wording LTW = Node::get_text(pn->next->next);
+	wording SPW = Node::get_text(pn->next);
 	LOGIF(TABLES, "Traverse %d: I now want to define <%W> by table <%W>\n",
 		traverse, SPW, LTW);
 
@@ -256,17 +256,17 @@ have occurred, but if it does then the creation has worked.
 	int objections = 0, blank_objections = 0, row_count;
 	for (name_entry = t->columns[0].entries->down, row_count = 1; name_entry;
 		name_entry=name_entry->next, row_count++) {
-		wording NW = ParseTree::get_text(name_entry);
+		wording NW = Node::get_text(name_entry);
 		LOGIF(TABLES, "So I want to create: <%W>\n", NW);
 		if (<table-cell-blank>(NW))
 			@<Issue a problem for trying to create a blank name@>;
 		parse_node *evaluation = NULL;
-		if (<s-type-expression>(ParseTree::get_text(name_entry)))
+		if (<s-type-expression>(Node::get_text(name_entry)))
 			evaluation = <<rp>>;
 		Assertions::Refiner::noun_from_value(name_entry, evaluation);
 		if (Specifications::is_kind_like(evaluation))
 			@<Issue a problem for trying to create an existing kind as a new instance@>;
-		if ((evaluation) && (ParseTree::is(evaluation, UNKNOWN_NT) == FALSE))
+		if ((evaluation) && (Node::is(evaluation, UNKNOWN_NT) == FALSE))
 			@<Issue a problem for trying to create any existing meaning as a new instance@>;
 
 		Assertions::Creator::tabular_definitions(t);
@@ -274,16 +274,16 @@ have occurred, but if it does then the creation has worked.
 		Problems::Buffer::redirect_problem_sentence(current_sentence, name_entry, pn->next);
 		Assertions::Copular::make_assertion(name_entry, pn->next);
 		Problems::Buffer::redirect_problem_sentence(NULL, NULL, NULL);
-		ParseTree::set_text(name_entry, NW);
+		Node::set_text(name_entry, NW);
 		evaluation = NULL;
 		if (<k-kind>(NW))
 			evaluation = Specifications::from_kind(<<rp>>);
-		else if (<s-type-expression>(ParseTree::get_text(name_entry)))
+		else if (<s-type-expression>(Node::get_text(name_entry)))
 			evaluation = <<rp>>;
 		Assertions::Refiner::noun_from_value(name_entry, evaluation);
 		Assertions::Creator::tabular_definitions(NULL);
 
-		if (ParseTree::get_subject(name_entry) == NULL)
+		if (Node::get_subject(name_entry) == NULL)
 			@<Issue a problem to say that the creation failed@>;
 	}
 	if (objections > 0) return;
@@ -438,12 +438,12 @@ but the latter might cause contradiction problem messages if there are
 also ordinary sentences about the property value, and the former won't.
 
 @<Make an assertion that this name has that property@> =
-	inference_subject *subj = ParseTree::get_subject(name_entry);
+	inference_subject *subj = Node::get_subject(name_entry);
 	if (traverse == 2) {
-		if ((Wordings::nonempty(ParseTree::get_text(data_entry))) &&
-			(<table-cell-blank>(ParseTree::get_text(data_entry)) == FALSE)) {
-			parse_node *val = ParseTree::get_evaluation(data_entry);
-			if (ParseTree::is(val, UNKNOWN_NT)) {
+		if ((Wordings::nonempty(Node::get_text(data_entry))) &&
+			(<table-cell-blank>(Node::get_text(data_entry)) == FALSE)) {
+			parse_node *val = Node::get_evaluation(data_entry);
+			if (Node::is(val, UNKNOWN_NT)) {
 				if (problem_count == 0) internal_error("misevaluated cell");
 			} else {
 				Assertions::Refiner::noun_from_value(data_entry, val);

@@ -462,7 +462,7 @@ void Strings::index_response(OUTPUT_STREAM, rule *R, int marker, response_messag
 @ =
 int Strings::get_marker_from_response_spec(parse_node *rs) {
 	if (Rvalues::is_CONSTANT_of_kind(rs, K_response)) {
-		wording SW = ParseTree::get_text(rs);
+		wording SW = Node::get_text(rs);
 		if ((Wordings::length(SW) >= 2) && (<response-letter>(Wordings::one_word(Wordings::last_wn(SW)-1))))
 			return <<r>>;
 	}
@@ -484,14 +484,14 @@ text needs to be printed in a particular way.
 
 =
 void Strings::compile_general(value_holster *VH, parse_node *str) {
-	wording SW = ParseTree::get_text(str);
-	if (ParseTree::int_annotation(str, explicit_literal_ANNOT)) {
-		if (ParseTree::get_explicit_iname(str)) {
+	wording SW = Node::get_text(str);
+	if (Annotations::read_int(str, explicit_literal_ANNOT)) {
+		if (Node::get_explicit_iname(str)) {
 			if (Holsters::data_acceptable(VH)) {
-				Emit::holster(VH, ParseTree::get_explicit_iname(str));
+				Emit::holster(VH, Node::get_explicit_iname(str));
 			} else internal_error("unvalued SCG");
 		} else {
-			int A = ParseTree::int_annotation(str, constant_number_ANNOT);
+			int A = Annotations::read_int(str, constant_number_ANNOT);
 			if (Holsters::data_acceptable(VH))
 				Holsters::holster_pair(VH, LITERAL_IVAL, (inter_t) A);
 		}
@@ -541,7 +541,7 @@ so the penultimate word, if it's there, is the letter.
 	}
 
 @<This isn't a response@> =
-	if (ParseTree::int_annotation(str, text_unescaped_ANNOT)) {
+	if (Annotations::read_int(str, text_unescaped_ANNOT)) {
 		literal_text *lt = Strings::TextLiterals::compile_literal_sb(VH, SW);
 		Strings::TextLiterals::mark_as_unescaped(lt);
 	} else if (Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC)) {

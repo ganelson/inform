@@ -6,11 +6,11 @@ Shims for the parse tree.
 
 @
 
-@d PARSE_TREE_COPIER ParseTreeUsage::copy_annotations
+@d ANNOTATION_COPY_SYNTAX_CALLBACK ParseTreeUsage::copy_annotations
 
 =
 void ParseTreeUsage::copy_annotations(parse_node_annotation *to, parse_node_annotation *from) {
-	if (from->kind_of_annotation == proposition_ANNOT)
+	if (from->annotation_id == proposition_ANNOT)
 		to->annotation_pointer =
 			STORE_POINTER_pcalc_prop(
 				Calculus::Propositions::copy(
@@ -43,13 +43,6 @@ void ParseTreeUsage::copy_annotations(parse_node_annotation *to, parse_node_anno
 @e NEW_LOCAL_CONTEXT_NT			/* Argument which creates a local */
 @e LVALUE_LOCAL_CONTEXT_NT		/* Argument which names a local */
 @e CONDITION_CONTEXT_NT          /* Used for "now" conditions */
-
-@ Next we enumerate the specification node types, beginning with the one which
-signifies that text has no known meaning -- either because we tried to make
-sense of it and failed, or because we are choosing not to parse it until
-later on, and are representing it as unknown until then.
-
-@e UNKNOWN_NT					/* "arfle barfle gloop" */
 
 @ The next specification nodes are the rvalues. These express I6 values --
 numbers, objects, text and so on -- but cannot be assigned to, so that in an
@@ -91,8 +84,6 @@ also makes it easier for us to manipulate the results.
 
 @
 
-@e L4_NCAT
-@e UNKNOWN_NCAT
 @e LVALUE_NCAT
 @e RVALUE_NCAT
 @e COND_NCAT
@@ -101,63 +92,60 @@ also makes it easier for us to manipulate the results.
 
 @
 
-@d SYNTAX_TREE_FURTHER_METADATA_SETUP ParseTreeUsage::md
+@d MORE_NODE_METADATA_SETUP_SYNTAX_CALLBACK ParseTreeUsage::md
 
 =
 void ParseTreeUsage::md(void) {
     /* first, the structural nodes: */
-	ParseTree::md(ALLOWED_NT, "ALLOWED_NT",				   					1, 1,		L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(EVERY_NT, "EVERY_NT", 				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(COMMON_NOUN_NT, "COMMON_NOUN_NT",		   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(ACTION_NT, "ACTION_NT",				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(ADJECTIVE_NT, "ADJECTIVE_NT",			   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(PROPERTYCALLED_NT, "PROPERTYCALLED_NT",  					2, 2,		L3_NCAT, 0);
-	ParseTree::md(TOKEN_NT, "TOKEN_NT",					   					0, INFTY,	L3_NCAT, 0);
-	ParseTree::md(X_OF_Y_NT, "X_OF_Y_NT",				   					2, 2,		L3_NCAT, ASSERT_NFLAG);
-	ParseTree::md(CREATED_NT, "CREATED_NT",				  					0, 0,		L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(ALLOWED_NT, I"ALLOWED_NT",				   				1, 1,		L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(EVERY_NT, I"EVERY_NT", 				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(COMMON_NOUN_NT, I"COMMON_NOUN_NT",		   				0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(ACTION_NT, I"ACTION_NT",				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(ADJECTIVE_NT, I"ADJECTIVE_NT",			   				0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(PROPERTYCALLED_NT, I"PROPERTYCALLED_NT",  				2, 2,		L3_NCAT, 0);
+	NodeType::new(TOKEN_NT, I"TOKEN_NT",					   				0, INFTY,	L3_NCAT, 0);
+	NodeType::new(X_OF_Y_NT, I"X_OF_Y_NT",				   					2, 2,		L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(CREATED_NT, I"CREATED_NT",				  				0, 0,		L3_NCAT, ASSERT_NFLAG);
 
-	ParseTree::md(CODE_BLOCK_NT, "CODE_BLOCK_NT",	       					0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(INVOCATION_LIST_NT, "INVOCATION_LIST_NT",		   			0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(INVOCATION_LIST_SAY_NT, "INVOCATION_LIST_SAY_NT",		    0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(INVOCATION_NT, "INVOCATION_NT",		   					0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(VOID_CONTEXT_NT, "VOID_CONTEXT_NT", 						0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(RVALUE_CONTEXT_NT, "RVALUE_CONTEXT_NT", 					0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(LVALUE_CONTEXT_NT, "LVALUE_CONTEXT_NT", 					0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(LVALUE_TR_CONTEXT_NT, "LVALUE_TR_CONTEXT_NT", 			0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(SPECIFIC_RVALUE_CONTEXT_NT, "SPECIFIC_RVALUE_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(MATCHING_RVALUE_CONTEXT_NT, "MATCHING_RVALUE_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(NEW_LOCAL_CONTEXT_NT, "NEW_LOCAL_CONTEXT_NT",				0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(LVALUE_LOCAL_CONTEXT_NT, "LVALUE_LOCAL_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0);
-	ParseTree::md(CONDITION_CONTEXT_NT, "CONDITION_CONTEXT_NT",				0, INFTY,	L4_NCAT, 0);
+	NodeType::new(CODE_BLOCK_NT, I"CODE_BLOCK_NT",	       					0, INFTY,	L4_NCAT, 0);
+	NodeType::new(INVOCATION_LIST_NT, I"INVOCATION_LIST_NT",		   		0, INFTY,	L4_NCAT, 0);
+	NodeType::new(INVOCATION_LIST_SAY_NT, I"INVOCATION_LIST_SAY_NT",		0, INFTY,	L4_NCAT, 0);
+	NodeType::new(INVOCATION_NT, I"INVOCATION_NT",		   					0, INFTY,	L4_NCAT, 0);
+	NodeType::new(VOID_CONTEXT_NT, I"VOID_CONTEXT_NT", 						0, INFTY,	L4_NCAT, 0);
+	NodeType::new(RVALUE_CONTEXT_NT, I"RVALUE_CONTEXT_NT", 					0, INFTY,	L4_NCAT, 0);
+	NodeType::new(LVALUE_CONTEXT_NT, I"LVALUE_CONTEXT_NT", 					0, INFTY,	L4_NCAT, 0);
+	NodeType::new(LVALUE_TR_CONTEXT_NT, I"LVALUE_TR_CONTEXT_NT", 			0, INFTY,	L4_NCAT, 0);
+	NodeType::new(SPECIFIC_RVALUE_CONTEXT_NT, I"SPECIFIC_RVALUE_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0);
+	NodeType::new(MATCHING_RVALUE_CONTEXT_NT, I"MATCHING_RVALUE_CONTEXT_NT",	0, INFTY,	L4_NCAT, 0);
+	NodeType::new(NEW_LOCAL_CONTEXT_NT, I"NEW_LOCAL_CONTEXT_NT",			0, INFTY,	L4_NCAT, 0);
+	NodeType::new(LVALUE_LOCAL_CONTEXT_NT, I"LVALUE_LOCAL_CONTEXT_NT",		0, INFTY,	L4_NCAT, 0);
+	NodeType::new(CONDITION_CONTEXT_NT, I"CONDITION_CONTEXT_NT",			0, INFTY,	L4_NCAT, 0);
 
 	/* now the specification nodes: */
+	NodeType::new(CONSTANT_NT, I"CONSTANT_NT", 								0, 0,		RVALUE_NCAT, 0);
+	NodeType::new(PHRASE_TO_DECIDE_VALUE_NT, I"PHRASE_TO_DECIDE_VALUE_NT",	1, 1,		RVALUE_NCAT, PHRASAL_NFLAG);
 
-	ParseTree::md(UNKNOWN_NT, "UNKNOWN_NT", 								0, 0,		UNKNOWN_NCAT, 0);
+	NodeType::new(LOCAL_VARIABLE_NT, I"LOCAL_VARIABLE_NT", 					0, 0,		LVALUE_NCAT, 0);
+	NodeType::new(NONLOCAL_VARIABLE_NT, I"NONLOCAL_VARIABLE_NT", 			0, 0,		LVALUE_NCAT, 0);
+	NodeType::new(PROPERTY_VALUE_NT, I"PROPERTY_VALUE_NT", 					2, 2,		LVALUE_NCAT, 0);
+	NodeType::new(TABLE_ENTRY_NT, I"TABLE_ENTRY_NT", 						1, 4,		LVALUE_NCAT, 0);
+	NodeType::new(LIST_ENTRY_NT, I"LIST_ENTRY_NT", 							2, 2,		LVALUE_NCAT, 0);
 
-	ParseTree::md(CONSTANT_NT, "CONSTANT_NT", 							0, 0,		RVALUE_NCAT, 0);
-	ParseTree::md(PHRASE_TO_DECIDE_VALUE_NT, "PHRASE_TO_DECIDE_VALUE_NT",	1, 1,		RVALUE_NCAT, PHRASAL_NFLAG);
-
-	ParseTree::md(LOCAL_VARIABLE_NT, "LOCAL_VARIABLE_NT", 				0, 0,		LVALUE_NCAT, 0);
-	ParseTree::md(NONLOCAL_VARIABLE_NT, "NONLOCAL_VARIABLE_NT", 			0, 0,		LVALUE_NCAT, 0);
-	ParseTree::md(PROPERTY_VALUE_NT, "PROPERTY_VALUE_NT", 				2, 2,		LVALUE_NCAT, 0);
-	ParseTree::md(TABLE_ENTRY_NT, "TABLE_ENTRY_NT", 						1, 4,		LVALUE_NCAT, 0);
-	ParseTree::md(LIST_ENTRY_NT, "LIST_ENTRY_NT", 						2, 2,		LVALUE_NCAT, 0);
-
-	ParseTree::md(LOGICAL_NOT_NT, "LOGICAL_NOT_NT", 						1, 1,		COND_NCAT, 0);
-	ParseTree::md(LOGICAL_TENSE_NT, "LOGICAL_TENSE_NT", 					1, 1,		COND_NCAT, 0);
-	ParseTree::md(LOGICAL_AND_NT, "LOGICAL_AND_NT", 						2, 2,		COND_NCAT, 0);
-	ParseTree::md(LOGICAL_OR_NT, "LOGICAL_OR_NT", 						2, 2,		COND_NCAT, 0);
-	ParseTree::md(TEST_PROPOSITION_NT, "TEST_PROPOSITION_NT", 			0, 0,		COND_NCAT, 0);
-	ParseTree::md(TEST_PHRASE_OPTION_NT, "TEST_PHRASE_OPTION_NT", 		0, 0, 		COND_NCAT, 0);
-	ParseTree::md(TEST_VALUE_NT, "TEST_VALUE_NT", 						1, 1,		COND_NCAT, 0);
+	NodeType::new(LOGICAL_NOT_NT, I"LOGICAL_NOT_NT", 						1, 1,		COND_NCAT, 0);
+	NodeType::new(LOGICAL_TENSE_NT, I"LOGICAL_TENSE_NT", 					1, 1,		COND_NCAT, 0);
+	NodeType::new(LOGICAL_AND_NT, I"LOGICAL_AND_NT", 						2, 2,		COND_NCAT, 0);
+	NodeType::new(LOGICAL_OR_NT, I"LOGICAL_OR_NT", 							2, 2,		COND_NCAT, 0);
+	NodeType::new(TEST_PROPOSITION_NT, I"TEST_PROPOSITION_NT", 				0, 0,		COND_NCAT, 0);
+	NodeType::new(TEST_PHRASE_OPTION_NT, I"TEST_PHRASE_OPTION_NT", 			0, 0, 		COND_NCAT, 0);
+	NodeType::new(TEST_VALUE_NT, I"TEST_VALUE_NT", 							1, 1,		COND_NCAT, 0);
 }
 
 @
 
-@d ANNOTATION_PERMISSIONS_WRITER ParseTreeUsage::write_permissions
+@d PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK ParseTreeUsage::write_parentage_permissions
 
 =
-void ParseTreeUsage::write_permissions(void) {
+void ParseTreeUsage::write_parentage_permissions(void) {
 	parentage_allowed[L2_NCAT][L3_NCAT] = TRUE;
 	parentage_allowed[L3_NCAT][L3_NCAT] = TRUE;
 	parentage_allowed[L2_NCAT][L4_NCAT] = TRUE;
@@ -180,164 +168,170 @@ void ParseTreeUsage::write_permissions(void) {
 	parentage_allowed[LVALUE_NCAT][COND_NCAT] = TRUE;
 	parentage_allowed[RVALUE_NCAT][COND_NCAT] = TRUE;
 	parentage_allowed[COND_NCAT][COND_NCAT] = TRUE;
-
-	ParseTree::allow_annotation_to_category(L1_NCAT, clears_pronouns_ANNOT);
-	ParseTree::allow_annotation(HEADING_NT, embodying_heading_ANNOT);
-	ParseTree::allow_annotation(HEADING_NT, inclusion_of_extension_ANNOT);
-	ParseTree::allow_annotation(HEADING_NT, interpretation_of_subject_ANNOT);
-	ParseTree::allow_annotation(HEADING_NT, suppress_heading_dependencies_ANNOT);
-	ParseTree::allow_annotation(HEADING_NT, implied_heading_ANNOT);
-	ParseTree::allow_annotation_to_category(L1_NCAT, module_ANNOT);
-
-	ParseTree::allow_annotation_to_category(L2_NCAT, clears_pronouns_ANNOT);
-	ParseTree::allow_annotation_to_category(L2_NCAT, interpretation_of_subject_ANNOT);
-	ParseTree::allow_annotation_to_category(L2_NCAT, sentence_unparsed_ANNOT);
-	ParseTree::allow_annotation_to_category(L2_NCAT, verb_problem_issued_ANNOT);
-	ParseTree::allow_annotation(ROUTINE_NT, indentation_level_ANNOT);
-	ParseTree::allow_annotation(SENTENCE_NT, implicit_in_creation_of_ANNOT);
-	ParseTree::allow_annotation(SENTENCE_NT, implicitness_count_ANNOT);
-	ParseTree::allow_annotation(SENTENCE_NT, you_can_ignore_ANNOT);
-	ParseTree::allow_annotation_to_category(L2_NCAT, module_ANNOT);
-	LOOP_OVER_NODE_TYPES(t)
-		if (ParseTree::test_flag(t, ASSERT_NFLAG))
-			ParseTree::allow_annotation(t, resolved_ANNOT);
-
-	ParseTree::allow_annotation_to_category(L3_NCAT, module_ANNOT);
-	ParseTree::allow_annotation_to_category(L3_NCAT, creation_proposition_ANNOT);
-	ParseTree::allow_annotation_to_category(L3_NCAT, evaluation_ANNOT);
-	ParseTree::allow_annotation_to_category(L3_NCAT, subject_ANNOT);
-	ParseTree::allow_annotation(ACTION_NT, action_meaning_ANNOT);
-	ParseTree::allow_annotation(ADJECTIVE_NT, aph_ANNOT);
-	ParseTree::allow_annotation(ADJECTIVE_NT, negated_boolean_ANNOT);
-	ParseTree::allow_annotation(ADJECTIVE_NT, nounphrase_article_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, log_inclusion_sense_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, verb_id_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, imperative_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, examine_for_ofs_ANNOT);
-	ParseTree::allow_annotation(AVERB_NT, listing_sense_ANNOT);
-	ParseTree::allow_annotation(COMMON_NOUN_NT, action_meaning_ANNOT);
-	ParseTree::allow_annotation(COMMON_NOUN_NT, creation_site_ANNOT);
-	ParseTree::allow_annotation(COMMON_NOUN_NT, implicitly_refers_to_ANNOT);
-	ParseTree::allow_annotation(COMMON_NOUN_NT, multiplicity_ANNOT);
-	ParseTree::allow_annotation(COMMON_NOUN_NT, quant_ANNOT);
-	ParseTree::allow_annotation(COMMON_NOUN_NT, quantification_parameter_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, aph_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, category_of_I6_translation_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, creation_site_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, defn_language_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, log_inclusion_sense_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, lpe_options_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, multiplicity_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, negated_boolean_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, new_relation_here_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, nowhere_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, quant_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, quantification_parameter_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, row_amendable_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, slash_dash_dash_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, table_cell_unspecified_ANNOT);
-	ParseTree::allow_annotation(PROPER_NOUN_NT, turned_already_ANNOT);
-	ParseTree::allow_annotation(PROPERTY_LIST_NT, nounphrase_article_ANNOT);
-	ParseTree::allow_annotation(RELATIONSHIP_NT, relationship_ANNOT);
-	ParseTree::allow_annotation(TOKEN_NT, grammar_token_literal_ANNOT);
-	ParseTree::allow_annotation(TOKEN_NT, grammar_token_relation_ANNOT);
-	ParseTree::allow_annotation(TOKEN_NT, grammar_value_ANNOT);
-	ParseTree::allow_annotation(TOKEN_NT, slash_class_ANNOT);
-
-	ParseTree::allow_annotation_to_category(L4_NCAT, colon_block_command_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, control_structure_used_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, end_control_structure_used_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, evaluation_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, indentation_level_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, kind_of_new_variable_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, kind_required_by_context_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, results_from_splitting_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, token_as_parsed_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, token_check_to_do_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, token_to_be_parsed_against_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, verb_problem_issued_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, problem_falls_under_ANNOT);
-	ParseTree::allow_annotation_to_category(L4_NCAT, module_ANNOT);
-	ParseTree::allow_annotation(CODE_BLOCK_NT, sentence_unparsed_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_LIST_NT, from_text_substitution_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_LIST_NT, sentence_unparsed_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_LIST_SAY_NT, sentence_unparsed_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_LIST_SAY_NT, suppress_newlines_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, epistemological_status_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, kind_resulting_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, kind_variable_declarations_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, modal_verb_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, phrase_invoked_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, phrase_options_invoked_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, say_adjective_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, say_verb_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, say_verb_negated_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, ssp_closing_segment_wn_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, ssp_segment_count_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, suppress_newlines_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, save_self_ANNOT);
-	ParseTree::allow_annotation(INVOCATION_NT, unproven_ANNOT);
-
-	ParseTreeUsage::allow_annotation_to_specification(converted_SN_ANNOT);
-	ParseTreeUsage::allow_annotation_to_specification(subject_term_ANNOT);
-	ParseTreeUsage::allow_annotation_to_specification(epistemological_status_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_action_name_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_action_pattern_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_activity_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_binary_predicate_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_constant_phrase_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_enumeration_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_equation_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_grammar_verb_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_instance_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_named_action_pattern_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_named_rulebook_outcome_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_number_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_property_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_rule_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_rulebook_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_scene_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_table_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_table_column_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_text_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_use_option_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, constant_verb_form_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, explicit_literal_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, explicit_vh_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, grammar_token_code_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, kind_of_value_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, nothing_object_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, property_name_used_as_noun_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, proposition_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, response_code_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, self_object_ANNOT);
-	ParseTree::allow_annotation(CONSTANT_NT, text_unescaped_ANNOT);
-	ParseTree::allow_annotation(LOCAL_VARIABLE_NT, constant_local_variable_ANNOT);
-	ParseTree::allow_annotation(LOCAL_VARIABLE_NT, kind_of_value_ANNOT);
-	ParseTree::allow_annotation(LOGICAL_TENSE_NT, condition_tense_ANNOT);
-	ParseTree::allow_annotation(NONLOCAL_VARIABLE_NT, constant_nonlocal_variable_ANNOT);
-	ParseTree::allow_annotation(NONLOCAL_VARIABLE_NT, kind_of_value_ANNOT);
-	ParseTree::allow_annotation(PROPERTY_VALUE_NT, record_as_self_ANNOT);
-	ParseTree::allow_annotation(TEST_PHRASE_OPTION_NT, phrase_option_ANNOT);
-	ParseTree::allow_annotation(TEST_PROPOSITION_NT, proposition_ANNOT);
-	ParseTree::allow_annotation(UNKNOWN_NT, prep_ANNOT);
-	ParseTree::allow_annotation(UNKNOWN_NT, vu_ANNOT);
-}
-void ParseTreeUsage::allow_annotation_to_specification(int annot) {
-	ParseTree::allow_annotation(UNKNOWN_NT, annot);
-	ParseTree::allow_annotation_to_category(LVALUE_NCAT, annot);
-	ParseTree::allow_annotation_to_category(RVALUE_NCAT, annot);
-	ParseTree::allow_annotation_to_category(COND_NCAT, annot);
 }
 
 @
 
-@d PARENTAGE_EXCEPTIONS ParseTreeUsage::parentage_exceptions
+@d ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK ParseTreeUsage::write_permissions
+
+=
+void ParseTreeUsage::write_permissions(void) {
+	Annotations::allow_for_category(L1_NCAT, clears_pronouns_ANNOT);
+	Annotations::allow(HEADING_NT, embodying_heading_ANNOT);
+	Annotations::allow(HEADING_NT, inclusion_of_extension_ANNOT);
+	Annotations::allow(HEADING_NT, interpretation_of_subject_ANNOT);
+	Annotations::allow(HEADING_NT, suppress_heading_dependencies_ANNOT);
+	Annotations::allow(HEADING_NT, implied_heading_ANNOT);
+	Annotations::allow_for_category(L1_NCAT, module_ANNOT);
+
+	Annotations::allow_for_category(L2_NCAT, clears_pronouns_ANNOT);
+	Annotations::allow_for_category(L2_NCAT, interpretation_of_subject_ANNOT);
+	Annotations::allow_for_category(L2_NCAT, sentence_unparsed_ANNOT);
+	Annotations::allow_for_category(L2_NCAT, verb_problem_issued_ANNOT);
+	Annotations::allow(ROUTINE_NT, indentation_level_ANNOT);
+	Annotations::allow(SENTENCE_NT, implicit_in_creation_of_ANNOT);
+	Annotations::allow(SENTENCE_NT, implicitness_count_ANNOT);
+	Annotations::allow(SENTENCE_NT, you_can_ignore_ANNOT);
+	Annotations::allow_for_category(L2_NCAT, module_ANNOT);
+	LOOP_OVER_ENUMERATED_NTS(t)
+		if (NodeType::has_flag(t, ASSERT_NFLAG))
+			Annotations::allow(t, resolved_ANNOT);
+
+	Annotations::allow_for_category(L3_NCAT, module_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, creation_proposition_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, evaluation_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, subject_ANNOT);
+	Annotations::allow(ACTION_NT, action_meaning_ANNOT);
+	Annotations::allow(ADJECTIVE_NT, aph_ANNOT);
+	Annotations::allow(ADJECTIVE_NT, negated_boolean_ANNOT);
+	Annotations::allow(ADJECTIVE_NT, nounphrase_article_ANNOT);
+	Annotations::allow(AVERB_NT, log_inclusion_sense_ANNOT);
+	Annotations::allow(AVERB_NT, verb_id_ANNOT);
+	Annotations::allow(AVERB_NT, imperative_ANNOT);
+	Annotations::allow(AVERB_NT, examine_for_ofs_ANNOT);
+	Annotations::allow(AVERB_NT, listing_sense_ANNOT);
+	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
+	Annotations::allow(COMMON_NOUN_NT, creation_site_ANNOT);
+	Annotations::allow(COMMON_NOUN_NT, implicitly_refers_to_ANNOT);
+	Annotations::allow(COMMON_NOUN_NT, multiplicity_ANNOT);
+	Annotations::allow(COMMON_NOUN_NT, quant_ANNOT);
+	Annotations::allow(COMMON_NOUN_NT, quantification_parameter_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, aph_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, category_of_I6_translation_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, creation_site_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, defn_language_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, log_inclusion_sense_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, lpe_options_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, multiplicity_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, negated_boolean_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, new_relation_here_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, nowhere_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, quant_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, quantification_parameter_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, row_amendable_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, slash_dash_dash_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, table_cell_unspecified_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, turned_already_ANNOT);
+	Annotations::allow(PROPERTY_LIST_NT, nounphrase_article_ANNOT);
+	Annotations::allow(RELATIONSHIP_NT, relationship_ANNOT);
+	Annotations::allow(TOKEN_NT, grammar_token_literal_ANNOT);
+	Annotations::allow(TOKEN_NT, grammar_token_relation_ANNOT);
+	Annotations::allow(TOKEN_NT, grammar_value_ANNOT);
+	Annotations::allow(TOKEN_NT, slash_class_ANNOT);
+
+	Annotations::allow_for_category(L4_NCAT, colon_block_command_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, control_structure_used_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, end_control_structure_used_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, evaluation_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, indentation_level_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, kind_of_new_variable_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, kind_required_by_context_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, results_from_splitting_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, token_as_parsed_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, token_check_to_do_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, token_to_be_parsed_against_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, verb_problem_issued_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, problem_falls_under_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, module_ANNOT);
+	Annotations::allow(CODE_BLOCK_NT, sentence_unparsed_ANNOT);
+	Annotations::allow(INVOCATION_LIST_NT, from_text_substitution_ANNOT);
+	Annotations::allow(INVOCATION_LIST_NT, sentence_unparsed_ANNOT);
+	Annotations::allow(INVOCATION_LIST_SAY_NT, sentence_unparsed_ANNOT);
+	Annotations::allow(INVOCATION_LIST_SAY_NT, suppress_newlines_ANNOT);
+	Annotations::allow(INVOCATION_NT, epistemological_status_ANNOT);
+	Annotations::allow(INVOCATION_NT, kind_resulting_ANNOT);
+	Annotations::allow(INVOCATION_NT, kind_variable_declarations_ANNOT);
+	Annotations::allow(INVOCATION_NT, modal_verb_ANNOT);
+	Annotations::allow(INVOCATION_NT, phrase_invoked_ANNOT);
+	Annotations::allow(INVOCATION_NT, phrase_options_invoked_ANNOT);
+	Annotations::allow(INVOCATION_NT, say_adjective_ANNOT);
+	Annotations::allow(INVOCATION_NT, say_verb_ANNOT);
+	Annotations::allow(INVOCATION_NT, say_verb_negated_ANNOT);
+	Annotations::allow(INVOCATION_NT, ssp_closing_segment_wn_ANNOT);
+	Annotations::allow(INVOCATION_NT, ssp_segment_count_ANNOT);
+	Annotations::allow(INVOCATION_NT, suppress_newlines_ANNOT);
+	Annotations::allow(INVOCATION_NT, save_self_ANNOT);
+	Annotations::allow(INVOCATION_NT, unproven_ANNOT);
+
+	ParseTreeUsage::allow_annotation_to_specification(converted_SN_ANNOT);
+	ParseTreeUsage::allow_annotation_to_specification(subject_term_ANNOT);
+	ParseTreeUsage::allow_annotation_to_specification(epistemological_status_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_action_name_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_action_pattern_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_activity_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_binary_predicate_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_constant_phrase_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_enumeration_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_equation_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_grammar_verb_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_instance_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_named_action_pattern_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_named_rulebook_outcome_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_number_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_property_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_rule_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_rulebook_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_scene_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_table_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_table_column_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_text_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_use_option_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_verb_form_ANNOT);
+	Annotations::allow(CONSTANT_NT, explicit_literal_ANNOT);
+	Annotations::allow(CONSTANT_NT, explicit_vh_ANNOT);
+	Annotations::allow(CONSTANT_NT, grammar_token_code_ANNOT);
+	Annotations::allow(CONSTANT_NT, kind_of_value_ANNOT);
+	Annotations::allow(CONSTANT_NT, nothing_object_ANNOT);
+	Annotations::allow(CONSTANT_NT, property_name_used_as_noun_ANNOT);
+	Annotations::allow(CONSTANT_NT, proposition_ANNOT);
+	Annotations::allow(CONSTANT_NT, response_code_ANNOT);
+	Annotations::allow(CONSTANT_NT, self_object_ANNOT);
+	Annotations::allow(CONSTANT_NT, text_unescaped_ANNOT);
+	Annotations::allow(LOCAL_VARIABLE_NT, constant_local_variable_ANNOT);
+	Annotations::allow(LOCAL_VARIABLE_NT, kind_of_value_ANNOT);
+	Annotations::allow(LOGICAL_TENSE_NT, condition_tense_ANNOT);
+	Annotations::allow(NONLOCAL_VARIABLE_NT, constant_nonlocal_variable_ANNOT);
+	Annotations::allow(NONLOCAL_VARIABLE_NT, kind_of_value_ANNOT);
+	Annotations::allow(PROPERTY_VALUE_NT, record_as_self_ANNOT);
+	Annotations::allow(TEST_PHRASE_OPTION_NT, phrase_option_ANNOT);
+	Annotations::allow(TEST_PROPOSITION_NT, proposition_ANNOT);
+	Annotations::allow(UNKNOWN_NT, prep_ANNOT);
+	Annotations::allow(UNKNOWN_NT, vu_ANNOT);
+}
+void ParseTreeUsage::allow_annotation_to_specification(int annot) {
+	Annotations::allow(UNKNOWN_NT, annot);
+	Annotations::allow_for_category(LVALUE_NCAT, annot);
+	Annotations::allow_for_category(RVALUE_NCAT, annot);
+	Annotations::allow_for_category(COND_NCAT, annot);
+}
+
+@
+
+@d PARENTAGE_EXCEPTIONS_SYNTAX_CALLBACK ParseTreeUsage::parentage_exceptions
 
 =
 int ParseTreeUsage::parentage_exceptions(node_type_t t_parent, int cat_parent,
 	node_type_t t_child, int cat_child) {
-	if ((t_parent == HEADING_NT) && (cat_child == L2_NCAT)) return TRUE;
 	if ((t_parent == PHRASE_TO_DECIDE_VALUE_NT) && (t_child == INVOCATION_LIST_NT)) return TRUE;
 	return FALSE;
 }
@@ -345,11 +339,11 @@ int ParseTreeUsage::parentage_exceptions(node_type_t t_parent, int cat_parent,
 @ Further classification:
 
 @d IMMUTABLE_NODE ParseTreeUsage::immutable
-@d SENTENCE_NODE ParseTreeUsage::second_level
+@d SENTENCE_NODE_SYNTAX_CALLBACK ParseTreeUsage::second_level
 
 =
 int ParseTreeUsage::second_level(node_type_t t) {
-	parse_tree_node_type *metadata = ParseTree::node_metadata(t);
+	node_type_metadata *metadata = NodeType::get_metadata(t);
 	if ((metadata) && (metadata->category == L2_NCAT)) return TRUE;
 	return FALSE;
 }
@@ -361,7 +355,7 @@ int ParseTreeUsage::immutable(node_type_t t) {
 
 int ParseTreeUsage::is_specification_node_type(node_type_t t) {
 	if (t == UNKNOWN_NT) return TRUE;
-	parse_tree_node_type *metadata = ParseTree::node_metadata(t);
+	node_type_metadata *metadata = NodeType::get_metadata(t);
 	if ((metadata) &&
 		((metadata->category == RVALUE_NCAT) ||
 		(metadata->category == LVALUE_NCAT) ||
@@ -370,19 +364,19 @@ int ParseTreeUsage::is_specification_node_type(node_type_t t) {
 }
 
 int ParseTreeUsage::is_lvalue(parse_node *pn) {
-	parse_tree_node_type *metadata = ParseTree::node_metadata(ParseTree::get_type(pn));
+	node_type_metadata *metadata = NodeType::get_metadata(Node::get_type(pn));
 	if ((metadata) && (metadata->category == LVALUE_NCAT)) return TRUE;
 	return FALSE;
 }
 
 int ParseTreeUsage::is_rvalue(parse_node *pn) {
-	parse_tree_node_type *metadata = ParseTree::node_metadata(ParseTree::get_type(pn));
+	node_type_metadata *metadata = NodeType::get_metadata(Node::get_type(pn));
 	if ((metadata) && (metadata->category == RVALUE_NCAT)) return TRUE;
 	return FALSE;
 }
 
 int ParseTreeUsage::is_value(parse_node *pn) {
-	parse_tree_node_type *metadata = ParseTree::node_metadata(ParseTree::get_type(pn));
+	node_type_metadata *metadata = NodeType::get_metadata(Node::get_type(pn));
 	if ((metadata) &&
 		((metadata->category == LVALUE_NCAT) || (metadata->category == RVALUE_NCAT)))
 		return TRUE;
@@ -390,13 +384,13 @@ int ParseTreeUsage::is_value(parse_node *pn) {
 }
 
 int ParseTreeUsage::is_condition(parse_node *pn) {
-	parse_tree_node_type *metadata = ParseTree::node_metadata(ParseTree::get_type(pn));
+	node_type_metadata *metadata = NodeType::get_metadata(Node::get_type(pn));
 	if ((metadata) && (metadata->category == COND_NCAT)) return TRUE;
 	return FALSE;
 }
 
 int ParseTreeUsage::is_phrasal(parse_node *pn) {
-	if (ParseTree::test_flag(ParseTree::get_type(pn), PHRASAL_NFLAG)) return TRUE;
+	if (NodeType::has_flag(Node::get_type(pn), PHRASAL_NFLAG)) return TRUE;
 	return FALSE;
 }
 
@@ -409,8 +403,8 @@ be such that their head nodes each pass this test:
 
 =
 int ParseTreeUsage::allow_in_assertions(parse_node *p) {
-	ParseTree::verify_structure(p);
-	if (ParseTree::test_flag(ParseTree::get_type(p), ASSERT_NFLAG)) return TRUE;
+	VerifyTree::verify_structure(p);
+	if (NodeType::has_flag(Node::get_type(p), ASSERT_NFLAG)) return TRUE;
 	return FALSE;
 }
 
@@ -420,9 +414,9 @@ int ParseTreeUsage::allow_in_assertions(parse_node *p) {
 
 =
 void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
-	if (ParseTree::get_meaning(pn)) WRITE("$M", ParseTree::get_meaning(pn));
+	if (Node::get_meaning(pn)) WRITE("$M", Node::get_meaning(pn));
 	else WRITE("$N", pn->node_type);
-	if (Wordings::nonempty(ParseTree::get_text(pn))) WRITE("'%W'", ParseTree::get_text(pn));
+	if (Wordings::nonempty(Node::get_text(pn))) WRITE("'%W'", Node::get_text(pn));
 
 	if ((pn->node_type >= UNKNOWN_NT) && (pn->node_type <= TEST_VALUE_NT))
 		@<Log annotations of specification nodes@>
@@ -431,22 +425,22 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 }
 
 @<Log annotations of specification nodes@> =
-	if (ParseTree::get_kind_of_value(pn)) WRITE("-$u", ParseTree::get_kind_of_value(pn));
+	if (Node::get_kind_of_value(pn)) WRITE("-$u", Node::get_kind_of_value(pn));
 	if (ParseTreeUsage::is_lvalue(pn)) Lvalues::log(pn);
 	else if (ParseTreeUsage::is_rvalue(pn)) Rvalues::log(pn);
 	else if (ParseTreeUsage::is_condition(pn)) Conditions::log(pn);
-	if (ParseTree::get_vu(pn)) { WRITE("-vu:"); NewVerbs::log(ParseTree::get_vu(pn)); }
-	if (ParseTree::get_prep(pn)) { WRITE("-prep:$p", ParseTree::get_prep(pn)); }
+	if (Node::get_vu(pn)) { WRITE("-vu:"); NewVerbs::log(Node::get_vu(pn)); }
+	if (Node::get_prep(pn)) { WRITE("-prep:$p", Node::get_prep(pn)); }
 
 @ We do not log every annotation: only the few which are most illuminating.
 
 @<Log annotations of structural nodes@> =
 	int show_eval = FALSE, show_refers = FALSE;
-	if (ParseTree::int_annotation(pn, creation_site_ANNOT))
+	if (Annotations::read_int(pn, creation_site_ANNOT))
 		WRITE(" (created here)");
 	switch(pn->node_type) {
 		case ADJECTIVE_NT: show_eval = TRUE; break;
-		case HEADING_NT: WRITE(" (level %d)", ParseTree::int_annotation(pn, heading_level_ANNOT)); break;
+		case HEADING_NT: WRITE(" (level %d)", Annotations::read_int(pn, heading_level_ANNOT)); break;
 		case COMMON_NOUN_NT: show_refers = TRUE; break;
 		case KIND_NT: show_refers = TRUE; break;
 		case RELATIONSHIP_NT:
@@ -454,49 +448,46 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 			break;
 		case PROPER_NOUN_NT:
 			Diagrams::log_node(OUT, pn);
-			if (ParseTree::int_annotation(pn, multiplicity_ANNOT))
-				WRITE(" (x%d)", ParseTree::int_annotation(pn, multiplicity_ANNOT));
+			if (Annotations::read_int(pn, multiplicity_ANNOT))
+				WRITE(" (x%d)", Annotations::read_int(pn, multiplicity_ANNOT));
 			show_refers = TRUE;
 			break;
 		case AVERB_NT:
-			WRITE(" ($V)", ParseTree::int_annotation(pn, verb_id_ANNOT));
+			WRITE(" ($V)", Annotations::read_int(pn, verb_id_ANNOT));
 			Diagrams::log_node(OUT, pn);
 			break;
-		case TOKEN_NT: WRITE(" [%d/%d]", ParseTree::int_annotation(pn, slash_class_ANNOT),
-			ParseTree::int_annotation(pn, slash_dash_dash_ANNOT)); break;
+		case TOKEN_NT: WRITE(" [%d/%d]", Annotations::read_int(pn, slash_class_ANNOT),
+			Annotations::read_int(pn, slash_dash_dash_ANNOT)); break;
 		case INVOCATION_LIST_NT:
 		case CODE_BLOCK_NT: {
-			control_structure_phrase *csp = ParseTree::get_control_structure_used(pn);
+			control_structure_phrase *csp = Node::get_control_structure_used(pn);
 			WRITE("  "); ControlStructures::log(csp); WRITE(" ");
 			if (pn->node_type == INVOCATION_LIST_NT)
-				WRITE("%d", ParseTree::int_annotation(pn, indentation_level_ANNOT));
+				WRITE("%d", Annotations::read_int(pn, indentation_level_ANNOT));
 			else WRITE(" ");
 			WRITE("  ");
 			break;
 		}
 	}
-	if (ParseTree::get_kind_required_by_context(pn))
-		WRITE(" requires:$u", ParseTree::get_kind_required_by_context(pn));
+	if (Node::get_kind_required_by_context(pn))
+		WRITE(" requires:$u", Node::get_kind_required_by_context(pn));
 
 	if (show_refers) {
-		if (ParseTree::get_subject(pn)) { WRITE(" refers:$j", ParseTree::get_subject(pn)); }
-		if (ParseTree::get_evaluation(pn)) { WRITE(" eval:$P", ParseTree::get_evaluation(pn)); }
-		if (ParseTree::int_annotation(pn, implicitly_refers_to_ANNOT)) WRITE(" (implicit)");
+		if (Node::get_subject(pn)) { WRITE(" refers:$j", Node::get_subject(pn)); }
+		if (Node::get_evaluation(pn)) { WRITE(" eval:$P", Node::get_evaluation(pn)); }
+		if (Annotations::read_int(pn, implicitly_refers_to_ANNOT)) WRITE(" (implicit)");
 	}
-	if ((show_eval) && (ParseTree::get_evaluation(pn))) {
-		WRITE(" eval:$P", ParseTree::get_evaluation(pn));
+	if ((show_eval) && (Node::get_evaluation(pn))) {
+		WRITE(" eval:$P", Node::get_evaluation(pn));
 	}
-	if (ParseTree::get_defn_language(pn))
-		WRITE(" language:%J", ParseTree::get_defn_language(pn));
-	if (ParseTree::get_creation_proposition(pn))
-		WRITE(" (creation $D)", ParseTree::get_creation_proposition(pn));
+	if (Node::get_defn_language(pn))
+		WRITE(" language:%J", Node::get_defn_language(pn));
+	if (Node::get_creation_proposition(pn))
+		WRITE(" (creation $D)", Node::get_creation_proposition(pn));
 
 @ =
-void ParseTreeUsage::write_to_file(void) {
-	ParseTree::write_to_file(Task::syntax_tree(), Task::parse_tree_file());
-}
 void ParseTreeUsage::verify(void) {
-	ParseTree::verify(Task::syntax_tree());
+	VerifyTree::verify_node(Task::syntax_tree());
 }
 
 @

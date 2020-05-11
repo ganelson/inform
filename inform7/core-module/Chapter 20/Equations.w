@@ -121,11 +121,11 @@ sentence_handler EQUATION_SH_handler = { EQUATION_NT, -1, 0, NULL };
 
 =
 void Equations::traverse_to_create(void) {
-	ParseTree::traverse(Task::syntax_tree(), Equations::visit_to_create);
+	SyntaxTree::traverse(Task::syntax_tree(), Equations::visit_to_create);
 }
 void Equations::visit_to_create(parse_node *p) {
-	if (ParseTree::get_type(p) == EQUATION_NT)
-		Equations::new(ParseTree::get_text(p), FALSE);
+	if (Node::get_type(p) == EQUATION_NT)
+		Equations::new(Node::get_text(p), FALSE);
 }
 
 @ Equation names follow the same conventions as table names.
@@ -846,7 +846,7 @@ capacity; and so is the number 0 itself.
 		return NULL;
 	}
 	/* this can only go wrong if there was an overflow, and a problem will have been issued for that: */
-	if (ParseTree::is(spec, CONSTANT_NT) == FALSE) return NULL;
+	if (Node::is(spec, CONSTANT_NT) == FALSE) return NULL;
 	token = Equations::enode_new_constant(spec);
 
 @<Copy the literal number into a C string, flanked by spaces@> =
@@ -1270,7 +1270,7 @@ int Equations::enode_typecheck(equation *eqn, equation_node *tok) {
 			case CONSTANT_EQN:
 				tok->gK_before =
 					Kinds::FloatingPoint::new_gk(
-						ParseTree::get_kind_of_value(tok->leaf_constant));
+						Node::get_kind_of_value(tok->leaf_constant));
 				if ((tok->enode_promotion) && (Kinds::RunTime::target_VM_supports(K_real_number)))
 					tok->gK_before =
 						Kinds::FloatingPoint::to_real(tok->gK_before);
@@ -2157,8 +2157,8 @@ void Equations::index(OUTPUT_STREAM) {
 		if (Wordings::last_wn(eqn->equation_name_text) > mw)
 			mw = Wordings::last_wn(eqn->equation_name_text);
 		if (mw >= 0) {
-			WRITE("%+W", Wordings::up_to(ParseTree::get_text(eqn->equation_created_at), mw));
-			Index::link(OUT, Wordings::first_wn(ParseTree::get_text(eqn->equation_created_at)));
+			WRITE("%+W", Wordings::up_to(Node::get_text(eqn->equation_created_at), mw));
+			Index::link(OUT, Wordings::first_wn(Node::get_text(eqn->equation_created_at)));
 			WRITE(" (%+W)", eqn->equation_text);
 			HTML_TAG("br");
 			N++;

@@ -48,7 +48,7 @@ just before noon.)
 
 =
 void Phrases::Usage::predeclare_name_in(parse_node *p) {
-	ph_usage_data phud = Phrases::Usage::new(ParseTree::get_text(p), TRUE);
+	ph_usage_data phud = Phrases::Usage::new(Node::get_text(p), TRUE);
 	if (Wordings::nonempty(phud.explicit_name))
 		Rules::new(phud.explicit_name, TRUE);
 }
@@ -78,7 +78,7 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 	if (R) @<Check that this isn't duplicating the name of a rule already made@>
 	else R = Rules::new(W, explicitly);
 	if (Wordings::empty(W))
-		Hierarchy::markup_wording(R->rule_package, RULE_NAME_HMD, ParseTree::get_text(ph->declaration_node));
+		Hierarchy::markup_wording(R->rule_package, RULE_NAME_HMD, Node::get_text(ph->declaration_node));
 
 	Rules::set_I7_definition(R, ph);
 	package_request *P = Rules::package(R);

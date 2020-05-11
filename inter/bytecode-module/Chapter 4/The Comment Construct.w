@@ -29,13 +29,13 @@ void Inter::Comment::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 }
 
 inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_t level, inter_error_location *eloc, inter_t comment_ID) {
-	inter_tree_node *P = Inter::Node::fill_0(IBM, COMMENT_IST, eloc, level);
-	Inter::Node::attach_comment(P, comment_ID);
+	inter_tree_node *P = Inode::fill_0(IBM, COMMENT_IST, eloc, level);
+	Inode::attach_comment(P, comment_ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
 void Inter::Comment::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
-	Inter::Node::attach_comment(P, grid[Inter::Node::get_comment(P)]);
+	Inode::attach_comment(P, grid[Inode::get_comment(P)]);
 }

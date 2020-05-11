@@ -78,7 +78,7 @@ by entering a pointer to it into one of the above tables:
 	if ((the_sh->sentence_node_type == SENTENCE_NT) && (the_sh->verb_type != -1))
 		how_to_handle_sentences[the_sh->verb_type] = the_sh;
 	else
-		how_to_handle_nodes[the_sh->sentence_node_type - BASE_OF_ENUMERATED_NTS] = the_sh;
+		how_to_handle_nodes[the_sh->sentence_node_type - ENUMERATED_NT_BASE] = the_sh;
 }
 
 @ The actual handlers are mostly not declared here (indeed, that's the
@@ -115,7 +115,7 @@ void Assertions::Traverse::traverse(int pass) {
 	if (sentence_handlers_initialised == FALSE) @<Initialise sentence handlers@>;
 
 	parse_node *last = NULL;
-	ParseTree::traverse_ppn(Task::syntax_tree(), Assertions::Traverse::visit, &last);
+	SyntaxTree::traverse_nodep(Task::syntax_tree(), Assertions::Traverse::visit, &last);
 
 	if (pass == 2) @<Extend the traverse to cover sentences needed when implicit kinds are set@>;
 }
@@ -145,7 +145,7 @@ artificially to run through those sentences.
 	current_sentence = last;
 	assembly_position = current_sentence;
 	Plugins::Call::complete_model(1);
-	ParseTree::traverse_from_ppn(last, Assertions::Traverse::visit, &last);
+	SyntaxTree::traverse_nodep_from(last, Assertions::Traverse::visit, &last);
 
 @ Let us go, and make our visit:
 
@@ -185,23 +185,23 @@ handlers until right at the end of the program. The routine which does so,
 @<Take a sceptical look at WITH nodes in the light of subsequent knowledge@> =
 	if ((p->down) && (p->down->next)) {
 		parse_node *apparent_subject = p->down->next;
-		if ((ParseTree::get_type(apparent_subject) == WITH_NT) &&
+		if ((Node::get_type(apparent_subject) == WITH_NT) &&
 			(apparent_subject->down) &&
 			(apparent_subject->down->next)) {
-			wording W = Wordings::up_to(ParseTree::get_text(apparent_subject->down),
-				Wordings::last_wn(ParseTree::get_text(apparent_subject->down->next)));
+			wording W = Wordings::up_to(Node::get_text(apparent_subject->down),
+				Wordings::last_wn(Node::get_text(apparent_subject->down->next)));
 			parse_node *ap = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
 			if (Rvalues::is_CONSTANT_of_kind(ap, K_action_name)) {
-				ParseTree::set_type_and_clear_annotations(apparent_subject, PROPER_NOUN_NT);
-				ParseTree::set_text(apparent_subject, W);
+				Node::set_type_and_clear_annotations(apparent_subject, PROPER_NOUN_NT);
+				Node::set_text(apparent_subject, W);
 				apparent_subject->down = NULL;
 			}
 		}
 	}
 
 @<Deal with an individual sentence@> =
-	if ((trace_sentences) && (ParseTree::get_type(p) != TRACE_NT))
-		LOG("\n[%W]\n", ParseTree::get_text(p));
+	if ((trace_sentences) && (Node::get_type(p) != TRACE_NT))
+		LOG("\n[%W]\n", Node::get_text(p));
 
 	@<If this sentence can be handled, then do so and continue@>;
 
@@ -212,12 +212,12 @@ handlers until right at the end of the program. The routine which does so,
 on either or both traverses, so the inner |if| can happily fail.
 
 @<If this sentence can be handled, then do so and continue@> =
-	if (ParseTree::get_type(p) == ROOT_NT) return;
+	if (Node::get_type(p) == ROOT_NT) return;
 	#ifndef IF_MODULE
-	if (ParseTree::get_type(p) == BIBLIOGRAPHIC_NT) return;
+	if (Node::get_type(p) == BIBLIOGRAPHIC_NT) return;
 	#endif
 
-	int n = (int) (ParseTree::get_type(p) - BASE_OF_ENUMERATED_NTS);
+	int n = (int) (Node::get_type(p) - ENUMERATED_NT_BASE);
 	if (((n >= 0) && (n < MAX_OF_NTS_AND_VBS)) && (how_to_handle_nodes[n])) {
 		int desired = how_to_handle_nodes[n]->handle_on_traverse;
 		if (((traverse == desired) || (desired == 0)) &&
@@ -238,10 +238,10 @@ sentence_handler TRACE_SH_handler =
 	{ TRACE_NT, -1, 0, Assertions::Traverse::switch_sentence_trace };
 
 void Assertions::Traverse::switch_sentence_trace(parse_node *PN) {
-	if (Wordings::length(ParseTree::get_text(PN)) > 1) {
+	if (Wordings::length(Node::get_text(PN)) > 1) {
 		int tr = telemetry_recording;
 		telemetry_recording = TRUE;
-		Telemetry::write_to_telemetry_file(Lexer::word_text(Wordings::last_wn(ParseTree::get_text(PN))));
+		Telemetry::write_to_telemetry_file(Lexer::word_text(Wordings::last_wn(Node::get_text(PN))));
 		telemetry_recording = FALSE;
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TelemetryAccepted),
 			"that's a message for the Author, not me",
@@ -265,12 +265,12 @@ sentence_handler SENTENCE_SH_handler =
 
 void Assertions::Traverse::handle_sentence_with_primary_verb(parse_node *p) {
 	prevailing_mood = UNKNOWN_CE;
-	if (ParseTree::int_annotation(p, language_element_ANNOT)) return;
-	if (ParseTree::int_annotation(p, you_can_ignore_ANNOT)) return;
+	if (Annotations::read_int(p, language_element_ANNOT)) return;
+	if (Annotations::read_int(p, you_can_ignore_ANNOT)) return;
 
 	if (p->down == NULL) @<Handle a sentence with no primary verb@>;
 	internal_error_if_node_type_wrong(Task::syntax_tree(), p->down, AVERB_NT);
-	prevailing_mood = ParseTree::int_annotation(p->down, verbal_certainty_ANNOT);
+	prevailing_mood = Annotations::read_int(p->down, verbal_certainty_ANNOT);
 	@<Issue problem message if either subject or object contains mismatched brackets@>;
 	@<Act on the primary verb in the sentence@>;
 }
@@ -281,12 +281,12 @@ the description or initial appearance of the most recent object, but in all
 other eventualities we must produce a "no such sentence" problem.
 
 @<Handle a sentence with no primary verb@> =
-	if ((Wordings::length(ParseTree::get_text(p)) == 1) &&
-		(Vocabulary::test_flags(Wordings::first_wn(ParseTree::get_text(p)), TEXT_MC+TEXTWITHSUBS_MC))) {
-		if (traverse == 2) Assertions::Traverse::set_appearance(Wordings::first_wn(ParseTree::get_text(p)));
+	if ((Wordings::length(Node::get_text(p)) == 1) &&
+		(Vocabulary::test_flags(Wordings::first_wn(Node::get_text(p)), TEXT_MC+TEXTWITHSUBS_MC))) {
+		if (traverse == 2) Assertions::Traverse::set_appearance(Wordings::first_wn(Node::get_text(p)));
 		return;
 	}
-	<no-verb-diagnosis>(ParseTree::get_text(p));
+	<no-verb-diagnosis>(Node::get_text(p));
 	return;
 
 @ We now use the other sentence-handler table, with almost the same code as
@@ -295,9 +295,9 @@ a valid verb number to have no handler: if so, we handle the verb by doing
 nothing on either traverse, of course.
 
 @<Act on the primary verb in the sentence@> =
-	int vn = ParseTree::int_annotation(p->down, verb_id_ANNOT);
+	int vn = Annotations::read_int(p->down, verb_id_ANNOT);
 	if ((vn < 0) || (vn >= MAX_OF_NTS_AND_VBS)) {
-		LOG("Unimplemented verb %d\n", ParseTree::int_annotation(p->down, verb_id_ANNOT));
+		LOG("Unimplemented verb %d\n", Annotations::read_int(p->down, verb_id_ANNOT));
 		internal_error_on_node_type(p->down);
 	}
 	if (how_to_handle_sentences[vn]) {
@@ -365,15 +365,15 @@ but the ability does exist, and we defend it a little here:
 
 @<Issue problem message if either subject or object contains mismatched brackets@> =
 	if ((p->down->next) && (p->down->next->next)) {
-		if ((Wordings::mismatched_brackets(ParseTree::get_text(p->down->next))) ||
-			(Wordings::mismatched_brackets(ParseTree::get_text(p->down->next->next)))) {
+		if ((Wordings::mismatched_brackets(Node::get_text(p->down->next))) ||
+			(Wordings::mismatched_brackets(Node::get_text(p->down->next->next)))) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2,
-				Wordings::one_word(Wordings::last_wn(ParseTree::get_text(p->down->next)) + 1));
-			Problems::quote_wording(3, ParseTree::get_text(p->down->next));
-			Problems::quote_wording(4, ParseTree::get_text(p->down->next->next));
+				Wordings::one_word(Wordings::last_wn(Node::get_text(p->down->next)) + 1));
+			Problems::quote_wording(3, Node::get_text(p->down->next));
+			Problems::quote_wording(4, Node::get_text(p->down->next->next));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-			if (Wordings::nonempty(ParseTree::get_text(p->down->next->next)))
+			if (Wordings::nonempty(Node::get_text(p->down->next->next)))
 				Problems::issue_problem_segment(
 					"I must be misreading the sentence %1. The verb "
 					"looks to me like '%2', but then the brackets don't "
@@ -506,10 +506,10 @@ void Assertions::Traverse::change_discussion_topic(inference_subject *infsx,
 	inference_subject *infsy, inference_subject *infsy_full) {
 	inference_subject *old_sub = subject_of_sentences, *old_obj = object_of_sentences;
 	subject_seems_to_be_plural = FALSE;
-	if (Wordings::length(ParseTree::get_text(current_sentence)) > 1) near_start_of_extension = 0;
-	ParseTree::set_interpretation_of_subject(current_sentence, subject_of_sentences);
+	if (Wordings::length(Node::get_text(current_sentence)) > 1) near_start_of_extension = 0;
+	Node::set_interpretation_of_subject(current_sentence, subject_of_sentences);
 
-	if (ParseTree::has_annotation(current_sentence, implicit_in_creation_of_ANNOT))
+	if (Annotations::node_has(current_sentence, implicit_in_creation_of_ANNOT))
 		return;
 	#ifdef IF_MODULE
 	if ((PL::Map::is_a_direction(infsx)) &&
@@ -544,8 +544,8 @@ void Assertions::Traverse::special_meaning(parse_node *pn) {
 }
 
 void Assertions::Traverse::try_special_meaning(int task, parse_node *pn) {
-	if (ParseTree::int_annotation(pn, verb_id_ANNOT) == SPECIAL_MEANING_VB) {
-		verb_meaning *vm = ParseTree::get_verb_meaning(pn);
+	if (Annotations::read_int(pn, verb_id_ANNOT) == SPECIAL_MEANING_VB) {
+		verb_meaning *vm = Node::get_verb_meaning(pn);
 		if (VerbMeanings::is_meaningless(vm)) return;
 
 		int rev = FALSE;

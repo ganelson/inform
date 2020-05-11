@@ -130,12 +130,12 @@ void Phrases::Timed::index(OUTPUT_STREAM) {
 			HTML_OPEN_WITH("p", "class=\"tightin2\"");
 			Phrases::Usage::index_preamble(OUT, &(ph->usage_data));
 			if ((ph->declaration_node) &&
-				(Wordings::nonempty(ParseTree::get_text(ph->declaration_node))))
-				Index::link(OUT, Wordings::first_wn(ParseTree::get_text(ph->declaration_node)));
+				(Wordings::nonempty(Node::get_text(ph->declaration_node))))
+				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
 			WRITE(" (where triggered: ");
 			use_as_event *uae;
 			for (uae = ph->usage_data.uses_as_event; uae; uae=uae->next)
-				Index::link(OUT, Wordings::first_wn(ParseTree::get_text(uae->where_triggered)));
+				Index::link(OUT, Wordings::first_wn(Node::get_text(uae->where_triggered)));
 			WRITE(")");
 			HTML_CLOSE("p");
 		}
@@ -155,8 +155,8 @@ void Phrases::Timed::index(OUTPUT_STREAM) {
 			HTML_OPEN_WITH("p", "class=\"in2\"");
 			Phrases::Usage::index_preamble(OUT, &(ph->usage_data));
 			if ((ph->declaration_node) &&
-				(Wordings::nonempty(ParseTree::get_text(ph->declaration_node))))
-				Index::link(OUT, Wordings::first_wn(ParseTree::get_text(ph->declaration_node)));
+				(Wordings::nonempty(Node::get_text(ph->declaration_node))))
+				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
 			HTML_CLOSE("p");
 		}
 	}

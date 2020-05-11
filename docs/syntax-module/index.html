@@ -57,6 +57,17 @@
 		<div class="contentspage">
 			<ul class="chapterlist">
 				<li>
+					<p class="chapterentry"><a name="P"></a>
+						<span class="chaptertitle">Preliminaries</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="P-wtmd.html">
+								<spon class="sectiontitle">What This Module Does</span></a> -
+							<span class="sectionpurpose">An overview of the syntax module's role and abilities.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
 					<p class="chapterentry"><a name="1"></a>
 						<span class="chaptertitle">Chapter 1: Setting Up</span></p>
 					<p class="chapterpurpose">Loading this module.</p>
@@ -73,12 +84,38 @@
 						<span class="chaptertitle">Chapter 2: The Parse Tree</span></p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="2-pt.html">
-								<spon class="sectiontitle">Parse Tree</span></a> -
+							<p class="sectionentry"><a href="2-st.html">
+								<spon class="sectiontitle">Syntax Trees</span></a> -
 							<span class="sectionpurpose">To parse trees which decompose the meaning of excerpts of text, and which allow annotations to be made at each node.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-snt.html">
+							<p class="sectionentry"><a href="2-nt.html">
+								<spon class="sectiontitle">Node Tyoes</span></a> -
+							<span class="sectionpurpose">Each node in a syntax tree has a type, which informs whether it can have child nodes, and what in general terms it means.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-pn.html">
+								<spon class="sectiontitle">Parse Nodes</span></a> -
+							<span class="sectionpurpose">To represent atomic pieces of meaning; or, less pretentiously, to provide the nodes of which syntax trees are made up.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-na.html">
+								<spon class="sectiontitle">Node Annotations</span></a> -
+							<span class="sectionpurpose">Attaching general-purpose data to nodes in the syntax tree.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-tv.html">
+								<spon class="sectiontitle">Tree Verification</span></a> -
+							<span class="sectionpurpose">Did we go wrong anywhere? This section is purely defensive, and tests whether Inform contains bugs of a kind which lead to malformed syntax trees: that should never happen even if the source text being compiled is a dumpster fire.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="3"></a>
+						<span class="chaptertitle">Chapter 3: Breaking into Sentences</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="3-snt.html">
 								<spon class="sectiontitle">Sentences</span></a> -
 							<span class="sectionpurpose">To break up the stream of words produced by the lexer into English sentences, and join each to the parse tree.</span></p>
 						</li>

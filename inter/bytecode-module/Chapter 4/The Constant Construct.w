@@ -59,7 +59,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) op = CONSTANT_QUOTIENT_LIST;
 	if (op != 0) {
 		inter_tree_node *P =
-			Inter::Node::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), op, eloc, (inter_t) ilp->indent_level);
+			Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), op, eloc, (inter_t) ilp->indent_level);
 		*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
@@ -89,7 +89,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) form = CONSTANT_QUOTIENT_LIST;
 			if (form != 0) {
 				inter_tree_node *P =
-					Inter::Node::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), form, eloc, (inter_t) ilp->indent_level);
+					Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), form, eloc, (inter_t) ilp->indent_level);
 				*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 				if (*E) return;
 				text_stream *conts = mr2.exp[0];
@@ -113,7 +113,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		match_results mr2 = Regexp::create_mr();
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_tree_node *P =
-				 Inter::Node::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_STRUCT, eloc, (inter_t) ilp->indent_level);
+				 Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_STRUCT, eloc, (inter_t) ilp->indent_level);
 			int arity = Inter::Kind::arity(con_kind);
 			int counter = 0;
 			text_stream *conts = mr2.exp[0];
@@ -141,7 +141,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		match_results mr2 = Regexp::create_mr();
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_tree_node *P =
-				Inter::Node::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_t) ilp->indent_level);
+				Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_t) ilp->indent_level);
 			*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 			if (*E) return;
 			text_stream *conts = mr2.exp[0];
@@ -234,7 +234,7 @@ void Inter::Constant::write_text(OUTPUT_STREAM, text_stream *S) {
 }
 
 inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t val1, inter_t val2, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Node::fill_5(IBM,
+	inter_tree_node *P = Inode::fill_5(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_DIRECT, val1, val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
@@ -242,7 +242,7 @@ inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_t
 }
 
 inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t TID, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Node::fill_4(IBM,
+	inter_tree_node *P = Inode::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_TEXT, TID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
@@ -251,7 +251,7 @@ inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_t S
 
 inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_package *block, inter_t level, inter_error_location *eloc) {
 	inter_t BID = block->index_n;
-	inter_tree_node *P = Inter::Node::fill_4(IBM,
+	inter_tree_node *P = Inode::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_ROUTINE, BID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
@@ -275,7 +275,7 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 		*E = Inter::Types::read(line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), conts_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 		if (*E) return FALSE;
 	}
-	if (Inter::Node::extend(P, 2) == FALSE) { *E = Inter::Errors::quoted(I"list too long", S, eloc); return FALSE; }
+	if (Inode::extend(P, 2) == FALSE) { *E = Inter::Errors::quoted(I"list too long", S, eloc); return FALSE; }
 	P->W.data[P->W.extent-2] = con_val1;
 	P->W.data[P->W.extent-1] = con_val2;
 	return TRUE;
@@ -311,24 +311,24 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	inter_symbol *con_kind = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[KIND_CONST_IFLD]);
 	switch (P->W.data[FORMAT_CONST_IFLD]) {
 		case CONSTANT_DIRECT:
-			if (P->W.extent != DATA_CONST_IFLD + 2) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+			if (P->W.extent != DATA_CONST_IFLD + 2) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			*E = Inter::Verify::value(owner, P, DATA_CONST_IFLD, con_kind); if (*E) return;
 			break;
 		case CONSTANT_SUM_LIST:
 		case CONSTANT_PRODUCT_LIST:
 		case CONSTANT_DIFFERENCE_LIST:
 		case CONSTANT_QUOTIENT_LIST:
-			if ((P->W.extent % 2) != 1) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				*E = Inter::Verify::value(owner, P, i, con_kind); if (*E) return;
 			}
 			break;
 		case CONSTANT_INDIRECT_LIST: {
-			if ((P->W.extent % 2) != 1) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			inter_data_type *idt = Inter::Kind::data_type(con_kind);
 			if ((idt) && ((idt->type_ID == LIST_IDT) || (idt->type_ID == COLUMN_IDT))) {
 				inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, 0);
-				if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inter::Node::error(P, I"not a kind", (conts_kind)?(conts_kind->symbol_name):NULL); return; }
+				if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inode::error(P, I"not a kind", (conts_kind)?(conts_kind->symbol_name):NULL); return; }
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					*E = Inter::Verify::value(owner, P, i, conts_kind); if (*E) return;
 				}
@@ -337,41 +337,41 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 					inter_t V1 = P->W.data[i];
 					inter_t V2 = P->W.data[i+1];
 					inter_symbol *K = Inter::Types::value_to_constant_symbol_kind(Inter::Packages::scope(owner), V1, V2);
-					if (Inter::Kind::constructor(K) != COLUMN_ICON) { *E = Inter::Node::error(P, I"not a table column constant", NULL); return; }
+					if (Inter::Kind::constructor(K) != COLUMN_ICON) { *E = Inode::error(P, I"not a table column constant", NULL); return; }
 				}
 			} else {
-				{ *E = Inter::Node::error(P, I"not a list", con_kind->symbol_name); return; }
+				{ *E = Inode::error(P, I"not a list", con_kind->symbol_name); return; }
 			}
 			break;
 		}
 		case CONSTANT_STRUCT: {
-			if ((P->W.extent % 2) != 1) { *E = Inter::Node::error(P, I"extent odd", NULL); return; }
+			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent odd", NULL); return; }
 			inter_data_type *idt = Inter::Kind::data_type(con_kind);
 			if ((idt) && (idt->type_ID == STRUCT_IDT)) {
 				int arity = Inter::Kind::arity(con_kind);
 				int given = (P->W.extent - DATA_CONST_IFLD)/2;
-				if (arity != given) { *E = Inter::Node::error(P, I"extent not same size as struct definition", NULL); return; }
+				if (arity != given) { *E = Inode::error(P, I"extent not same size as struct definition", NULL); return; }
 				for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
 					inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
-					if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inter::Node::error(P, I"not a kind", (conts_kind)?(conts_kind->symbol_name):NULL); return; }
+					if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inode::error(P, I"not a kind", (conts_kind)?(conts_kind->symbol_name):NULL); return; }
 					*E = Inter::Verify::value(owner, P, i, conts_kind); if (*E) return;
 				}
 			} else {
-				{ *E = Inter::Node::error(P, I"not a struct", NULL); return; }
+				{ *E = Inode::error(P, I"not a struct", NULL); return; }
 			}
 			break;
 		}
 		case CONSTANT_INDIRECT_TEXT:
-			if (P->W.extent != DATA_CONST_IFLD + 1) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+			if (P->W.extent != DATA_CONST_IFLD + 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			inter_t ID = P->W.data[DATA_CONST_IFLD];
-			text_stream *S = Inter::Node::ID_to_text(P, ID);
-			if (S == NULL) { *E = Inter::Node::error(P, I"no text in comment", NULL); return; }
+			text_stream *S = Inode::ID_to_text(P, ID);
+			if (S == NULL) { *E = Inode::error(P, I"no text in comment", NULL); return; }
 			LOOP_THROUGH_TEXT(pos, S)
 				if (Inter::Constant::char_acceptable(Str::get(pos)) == FALSE)
-					{ *E = Inter::Node::error(P, I"bad character in text", NULL); return; }
+					{ *E = Inode::error(P, I"bad character in text", NULL); return; }
 			break;
 		case CONSTANT_ROUTINE:
-			if (P->W.extent != DATA_CONST_IFLD + 1) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+			if (P->W.extent != DATA_CONST_IFLD + 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			break;
 	}
 }
@@ -421,19 +421,19 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 			case CONSTANT_INDIRECT_TEXT:
 				WRITE("\"");
 				inter_t ID = P->W.data[DATA_CONST_IFLD];
-				text_stream *S = Inter::Node::ID_to_text(P, ID);
+				text_stream *S = Inode::ID_to_text(P, ID);
 				Inter::Constant::write_text(OUT, S);
 				WRITE("\"");
 				break;
 			case CONSTANT_ROUTINE: {
-				inter_package *block = Inter::Node::ID_to_package(P, P->W.data[DATA_CONST_IFLD]);
+				inter_package *block = Inode::ID_to_package(P, P->W.data[DATA_CONST_IFLD]);
 				WRITE("%S", Inter::Packages::name(block));
 				break;
 			}
 		}
 		Inter::Symbols::write_annotations(OUT, P, con_name);
 	} else {
-		*E = Inter::Node::error(P, I"constant can't be written", NULL);
+		*E = Inode::error(P, I"constant can't be written", NULL);
 		return;
 	}
 }
@@ -452,7 +452,7 @@ inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {
 	if (D == NULL) return NULL;
 	if (D->W.data[ID_IFLD] != CONSTANT_IST) return NULL;
 	if (D->W.data[FORMAT_CONST_IFLD] != CONSTANT_ROUTINE) return NULL;
-	return Inter::Node::ID_to_package(D, D->W.data[DATA_CONST_IFLD]);
+	return Inode::ID_to_package(D, D->W.data[DATA_CONST_IFLD]);
 }
 
 int Inter::Constant::is_routine(inter_symbol *con_symbol) {

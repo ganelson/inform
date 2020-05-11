@@ -248,11 +248,11 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, inform_extension *f
 	LOOP_OVER(E, inform_extension) {
 		inform_extension *owner = NULL;
 		parse_node *N = Extensions::get_inclusion_sentence(from);
-		if (Wordings::nonempty(ParseTree::get_text(N))) {
-			source_location sl = Wordings::location(ParseTree::get_text(N));
+		if (Wordings::nonempty(Node::get_text(N))) {
+			source_location sl = Wordings::location(Node::get_text(N));
 			if (sl.file_of_origin == NULL) owner = NULL;
 			else owner = Extensions::corresponding_to(
-				Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(N))));
+				Lexer::file_of_origin(Wordings::first_wn(Node::get_text(N))));
 		}
 		if (owner != from) continue;
 		if (show_head) {
@@ -294,7 +294,7 @@ void Extensions::Files::index_extensions_from(OUTPUT_STREAM, inform_extension *f
 		HTML_CLOSE("span");
 		HTML_OPEN("span");
 		WRITE("%d words", TextFromFiles::total_word_count(E->read_into_file));
-		if (from == NULL) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(Extensions::get_inclusion_sentence(E))));
+		if (from == NULL) Index::link(OUT, Wordings::first_wn(Node::get_text(Extensions::get_inclusion_sentence(E))));
 		HTML_CLOSE("span");
 		HTML_CLOSE("li");
 		HTML_CLOSE("ul");
@@ -338,7 +338,7 @@ void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 	LOOP_OVER_BASE_KINDS(K) {
 		parse_node *S = Kinds::Behaviour::get_creating_sentence(K);
 		if (S) {
-			if (Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(S))) == E->read_into_file) {
+			if (Lexer::file_of_origin(Wordings::first_wn(Node::get_text(S))) == E->read_into_file) {
 				wording W = Kinds::Behaviour::get_name(K, FALSE);
 				kc = Extensions::Files::document_headword(OUT, kc, E, "Kinds", I"kind", W);
 				kind *S = Kinds::Compare::super(K);
@@ -360,7 +360,7 @@ void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 		wording OW = Instances::get_name(I, FALSE);
 		if ((Instances::get_creating_sentence(I)) && (Wordings::nonempty(OW))) {
 			if (Lexer::file_of_origin(
-				Wordings::first_wn(ParseTree::get_text(Instances::get_creating_sentence(I))))
+				Wordings::first_wn(Node::get_text(Instances::get_creating_sentence(I))))
 					== E->read_into_file) {
 				TEMPORARY_TEXT(name_of_its_kind);
 				kind *k = Instances::to_kind(I);

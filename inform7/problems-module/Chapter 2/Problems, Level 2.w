@@ -24,25 +24,27 @@ code order.
 @default NO_HEADING_LEVELS 10
 
 =
-void Problems::find_headings_at(parse_node_tree *T, parse_node *sentence, parse_node **problem_headings) {
+void Problems::find_headings_at(parse_node_tree *T, parse_node *sentence,
+	parse_node **problem_headings) {
 	for (int i=0; i<NO_HEADING_LEVELS; i++) problem_headings[i] = NULL;
 	if (sentence == NULL) return;
-	ParseTree::traverse_ppn_nocs(T, Problems::visit_for_headings, &sentence);
-	parse_node *p = ParseTree::get_problem_falls_under(sentence);
+	SyntaxTree::traverse_to_find(T, Problems::visit_for_headings, &sentence);
+	parse_node *p = Node::get_problem_falls_under(sentence);
 	while (p) {
-		int L = ParseTree::int_annotation(p, heading_level_ANNOT);
+		int L = Annotations::read_int(p, heading_level_ANNOT);
 		problem_headings[L] = p;
-		p = ParseTree::get_problem_falls_under(p);
+		p = Node::get_problem_falls_under(p);
 	}
 }
 
-int Problems::visit_for_headings(parse_node *p, parse_node *from, parse_node **sentence) {
+int Problems::visit_for_headings(parse_node *p, parse_node *from,
+	parse_node **sentence) {
 	if (p == *sentence) {
-		ParseTree::set_problem_falls_under(p, from);
+		Node::set_problem_falls_under(p, from);
 		return TRUE;
 	}
-	if (ParseTree::get_type(p) == HEADING_NT) {
-		ParseTree::set_problem_falls_under(p, from);
+	if (Node::get_type(p) == HEADING_NT) {
+		Node::set_problem_falls_under(p, from);
 	}
 	return FALSE;
 }
@@ -103,7 +105,7 @@ which they differ.
 	WRITE_TO(PBUFF, "In");
 	for (f=FALSE; i<NO_HEADING_LEVELS; i++)
 		if (problem_headings[i] != NULL) {
-			wording W = ParseTree::get_text(problem_headings[i]);
+			wording W = Node::get_text(problem_headings[i]);
 			#ifdef SUPERVISOR_MODULE
 			W = Headings::get_text(Headings::from_node(problem_headings[i]));
 			#endif
@@ -183,12 +185,12 @@ in the parse tree, or with a literal word range.
 =
 void Problems::quote_source(int t, parse_node *p) {
 	if (p == NULL) Problems::problem_quote_textual(t, 'S', EMPTY_WORDING);
-	else Problems::quote_wording_as_source(t, ParseTree::get_text(p));
+	else Problems::quote_wording_as_source(t, Node::get_text(p));
 }
 void Problems::quote_source_eliding_begin(int t, parse_node *p) {
 	if (p == NULL) Problems::problem_quote_textual(t, 'S', EMPTY_WORDING);
 	else {
-		wording W = ParseTree::get_text(p);
+		wording W = Node::get_text(p);
 		#ifdef CORE_MODULE
 		if (<phrase-beginning-block>(W)) W = GET_RW(<phrase-beginning-block>, 1);
 		#endif

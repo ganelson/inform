@@ -530,9 +530,9 @@ void Emit::array_end(packaging_state save) {
 		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, unchecked_interk);
 	}
 	inter_tree_node *array_in_progress =
-		Inter::Node::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), CID, current_A->array_form, NULL, Produce::baseline(IBM));
+		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), CID, current_A->array_form, NULL, Produce::baseline(IBM));
 	int pos = array_in_progress->W.extent;
-	if (Inter::Node::extend(array_in_progress, (unsigned int) (2*current_A->no_entries)) == FALSE)
+	if (Inode::extend(array_in_progress, (unsigned int) (2*current_A->no_entries)) == FALSE)
 		internal_error("can't extend frame");
 	for (int i=0; i<current_A->no_entries; i++) {
 		array_in_progress->W.data[pos++] = current_A->entry_data1[i];

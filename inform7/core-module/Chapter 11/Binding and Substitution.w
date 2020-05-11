@@ -471,7 +471,7 @@ int Calculus::Variables::detect_local_in_spec(parse_node *spec, int locals_count
 		return ++locals_count;
 	}
 	if (Lvalues::get_storage_form(spec) == NONLOCAL_VARIABLE_NT) {
-		nonlocal_variable *nlv = ParseTree::get_constant_nonlocal_variable(spec);
+		nonlocal_variable *nlv = Node::get_constant_nonlocal_variable(spec);
 		if (NonlocalVariables::is_global(nlv) == FALSE) {
 			if ((example) && (*example == NULL)) *example = spec;
 			return ++locals_count;

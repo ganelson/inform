@@ -37,7 +37,7 @@ void Problems::Issue::contradiction_problem(SIGIL_ARGUMENTS, parse_node *A, pars
 	Problems::quote_text(4, message);
 	Problems::quote_text(5, explanation);
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
-	if (Wordings::eq(ParseTree::get_text(A), ParseTree::get_text(B)) == FALSE)
+	if (Wordings::eq(Node::get_text(A), Node::get_text(B)) == FALSE)
 		Problems::issue_problem_segment("You wrote %1, but in another sentence %2: ");
 	else
 		Problems::issue_problem_segment("You wrote %1: ");
@@ -54,7 +54,7 @@ void Problems::Issue::infs_contradiction_problem(SIGIL_ARGUMENTS, parse_node *A,
 	Problems::quote_text(4, message);
 	Problems::quote_text(5, explanation);
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
-	if (Wordings::eq(ParseTree::get_text(A), ParseTree::get_text(B)) == FALSE)
+	if (Wordings::eq(Node::get_text(A), Node::get_text(B)) == FALSE)
 		Problems::issue_problem_segment("You wrote %1, but in another sentence %2: ");
 	else Problems::issue_problem_segment("You wrote %1: ");
 	Problems::issue_problem_segment("%Sagain, %%%3 %4%|, %5");

@@ -142,7 +142,7 @@ not for //inbuild//, which isn't in the inventions business.
 =
 void SourceText::annotate_new_sentence(parse_node *new) {
 	if (bulk_of_source_loaded) {
-		ParseTree::annotate_int(new, sentence_unparsed_ANNOT, FALSE);
+		Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
 		#ifdef CORE_MODULE
 		Sentences::VPs::seek(new);
 		#endif
@@ -152,15 +152,13 @@ void SourceText::annotate_new_sentence(parse_node *new) {
 @ The next tweak to //syntax// is to give it some node metadata. //syntax//
 itself places nodes of a small number of basic types into the syntax tree;
 we want to expand on those. (And the //core// module will expand on them still
-further, so this still isn't everything. Note that we give our own version of
-|INVOCATION_LIST_NT| only if //inform7// is not the parent: that's because
-there's a slightly different version in //core: Parse Tree Usage//.)
+further, so this still isn't everything: see //core: Parse Tree Usage//.)
 
 The node types we're adding are for the "structural sentences" which we will
 look for below. (The asterisk notation for |TRACE_NT| isn't known to most
 Inform users: it increases output to the debugging log.)
 
-@d SYNTAX_TREE_METADATA_SETUP SourceText::node_metadata
+@d NODE_METADATA_SETUP_SYNTAX_CALLBACK SourceText::node_metadata
 
 @e BIBLIOGRAPHIC_NT    /* For the initial title sentence */
 @e ROUTINE_NT          /* "Instead of taking something, ..." */
@@ -175,15 +173,13 @@ Inform users: it increases output to the debugging log.)
 
 =
 void SourceText::node_metadata(void) {
-	ParseTree::md(BIBLIOGRAPHIC_NT, "BIBLIOGRAPHIC_NT",     0, 0,     L2_NCAT, 0);
-	ParseTree::md(ROUTINE_NT, "ROUTINE_NT",                 0, INFTY, L2_NCAT, 0);
-	ParseTree::md(INFORM6CODE_NT, "INFORM6CODE_NT",         0, 0,     L2_NCAT, 0);
-	ParseTree::md(TABLE_NT, "TABLE_NT",                     0, 0,     L2_NCAT, TABBED_NFLAG);
-	ParseTree::md(EQUATION_NT, "EQUATION_NT",               0, 0,     L2_NCAT, 0);
-	ParseTree::md(TRACE_NT, "TRACE_NT",                     0, 0,     L2_NCAT, 0);
-	#ifndef CORE_MODULE
-	ParseTree::md(INVOCATION_LIST_NT, "INVOCATION_LIST_NT", 0, INFTY, L2_NCAT, 0);
-	#endif
+	NodeType::new(BIBLIOGRAPHIC_NT, I"BIBLIOGRAPHIC_NT",     0, 0,     L2_NCAT, 0);
+	NodeType::new(ROUTINE_NT, I"ROUTINE_NT",                 0, INFTY, L2_NCAT, 0);
+	NodeType::new(INFORM6CODE_NT, I"INFORM6CODE_NT",         0, 0,     L2_NCAT, 0);
+	NodeType::new(TABLE_NT, I"TABLE_NT",                     0, 0,     L2_NCAT, TABBED_NFLAG);
+	NodeType::new(EQUATION_NT, I"EQUATION_NT",               0, 0,     L2_NCAT, 0);
+	NodeType::new(TRACE_NT, I"TRACE_NT",                     0, 0,     L2_NCAT, 0);
+	NodeType::new(INVOCATION_LIST_NT, I"INVOCATION_LIST_NT", 0, INFTY, L4_NCAT, 0);
 }
 
 @ Sentences in the source text are of five categories: dividing sentences,
@@ -272,8 +268,8 @@ of an extension.
 =
 void SourceText::new_beginend(parse_node *pn, inbuild_copy *C) {
 	inform_extension *E = ExtensionManager::from_copy(C);
-	if (ParseTree::get_type(pn) == BEGINHERE_NT) Inclusions::check_begins_here(pn, E);
-	if (ParseTree::get_type(pn) == ENDHERE_NT) Inclusions::check_ends_here(pn, E);
+	if (Node::get_type(pn) == BEGINHERE_NT) Inclusions::check_begins_here(pn, E);
+	if (Node::get_type(pn) == ENDHERE_NT) Inclusions::check_ends_here(pn, E);
 }
 
 @ Lastly, this callback is called by //syntax// when it hits a sentence like:

@@ -53,7 +53,7 @@ so ambiguous -- a bad decision in about 2003.)
 @<Make SV provided object is descriptive@> =
 	parse_node *op = RP[2];
 	parse_node *test = op->down;
-	if (ParseTree::is(test, AMBIGUITY_NT)) test = test->down;
+	if (Node::is(test, AMBIGUITY_NT)) test = test->down;
 	if (Specifications::is_description_like(test) == FALSE) return FAIL_NONTERMINAL;
 	*XP = ExParser::Subtrees::to_specification(TRUE, W, NULL, op);
 
@@ -95,9 +95,9 @@ removes it again.
 
 =
 parse_node *ExParser::Subtrees::verb_marker(verb_usage *vu, preposition_identity *prep, parse_node *np) {
-	parse_node *VP_part = ParseTree::new(UNKNOWN_NT);
-	ParseTree::set_vu(VP_part, vu);
-	ParseTree::set_prep(VP_part, prep);
+	parse_node *VP_part = Node::new(UNKNOWN_NT);
+	Node::set_vu(VP_part, vu);
+	Node::set_prep(VP_part, prep);
 	VP_part->down = np;
 	return VP_part;
 }
@@ -187,7 +187,7 @@ is orange" so that "orange" will be used not as a noun but as an adjective.
 		instance *I = Rvalues::to_instance(adjq);
 		if (Instances::get_adjectival_phrase(I)) {
 			adjective_usage *ale = AdjectiveUsages::new(Instances::get_adjectival_phrase(I), TRUE);
-			parse_node *spec = Descriptions::from_proposition(NULL, ParseTree::get_text(adjq));
+			parse_node *spec = Descriptions::from_proposition(NULL, Node::get_text(adjq));
 			Descriptions::add_to_adjective_list(ale, spec);
 			verb_phrase_subtree->down = spec;
 		}
@@ -258,13 +258,13 @@ pre-empting descriptions.)
 
 @<Construct a descriptive SN subtree@> =
 	parse_node *sn = RP[1];
-	if (ParseTree::int_annotation(sn, converted_SN_ANNOT)) {
+	if (Annotations::read_int(sn, converted_SN_ANNOT)) {
 		*XP = sn;
 	} else {
 		*XP = ExParser::Subtrees::to_specification(FALSE, W, RP[1], NULL);
 	}
 	parse_node *pn = *XP;
-	ParseTree::set_text(pn, W);
+	Node::set_text(pn, W);
 
 @h Junction.
 At this point we need to join two subtrees, called |A| and |B|. |A| is the
@@ -284,27 +284,27 @@ parse_node *ExParser::Subtrees::to_specification_inner(int SV_not_SN, wording W,
 	verb_usage *vu = NULL; preposition_identity *prep = NULL;
 	int verb_phrase_negated = FALSE;
 
-	if (ParseTree::is(A, AMBIGUITY_NT)) {
+	if (Node::is(A, AMBIGUITY_NT)) {
 		parse_node *amb = NULL;
 		for (parse_node *poss = A->down; poss; poss = poss->next_alternative) {
-			parse_node *one = ParseTree::duplicate(poss);
+			parse_node *one = Node::duplicate(poss);
 			one->next_alternative = NULL;
 			parse_node *new_poss = ExParser::Subtrees::to_specification(SV_not_SN, W, one, B);
-			if (!(ParseTree::is(new_poss, UNKNOWN_NT)))
-				amb = ParseTree::add_possible_reading(amb, new_poss, W);
+			if (!(Node::is(new_poss, UNKNOWN_NT)))
+				amb = Node::add_possible_reading(amb, new_poss, W);
 		}
 		if (amb == NULL) amb = Specifications::new_UNKNOWN(W);
 		return amb;
 	}
-	if ((B) && (B->down) && (ParseTree::is(B->down, AMBIGUITY_NT))) {
+	if ((B) && (B->down) && (Node::is(B->down, AMBIGUITY_NT))) {
 		parse_node *amb = NULL;
 		for (parse_node *poss = B->down->down; poss; poss = poss->next_alternative) {
-			parse_node *hmm = ParseTree::duplicate(B);
-			hmm->down = ParseTree::duplicate(poss);
+			parse_node *hmm = Node::duplicate(B);
+			hmm->down = Node::duplicate(poss);
 			hmm->down->next_alternative = NULL;
 			parse_node *new_poss = ExParser::Subtrees::to_specification(SV_not_SN, W, A, hmm);
-			if (!(ParseTree::is(new_poss, UNKNOWN_NT)))
-				amb = ParseTree::add_possible_reading(amb, new_poss, W);
+			if (!(Node::is(new_poss, UNKNOWN_NT)))
+				amb = Node::add_possible_reading(amb, new_poss, W);
 		}
 		if (amb == NULL) amb = Specifications::new_UNKNOWN(W);
 		return amb;
@@ -328,7 +328,7 @@ object, in practice) and the implied verb is "is", in the present tense.
 @<Reconstruct a bare description as a sentence with an implied absent subject@> =
 	if ((A) && (B == NULL)) {
 		B = ExParser::Subtrees::verb_marker(regular_to_be, NULL, A);
-		A = ParseTree::new(UNKNOWN_NT);
+		A = Node::new(UNKNOWN_NT);
 		SV_not_SN = TRUE;
 		ExParser::Subtrees::correct_for_adjectives(A, B);
 	}
@@ -342,13 +342,13 @@ has the standard form, but we check it anyway.
 
 	if (verb_phrase->down == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "VP childless");
 
-	if (ParseTree::get_type(verb_phrase) != UNKNOWN_NT)
+	if (Node::get_type(verb_phrase) != UNKNOWN_NT)
 		Problems::Issue::s_subtree_error(Task::syntax_tree(), "VP not a VP");
 
-	vu = ParseTree::get_vu(verb_phrase);
+	vu = Node::get_vu(verb_phrase);
 	if (vu == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "verb null");
 	verb_phrase_negated = (VerbUsages::is_used_negatively(vu))?TRUE:FALSE;
-	prep = ParseTree::get_prep(verb_phrase);
+	prep = Node::get_prep(verb_phrase);
 
 @ There's a delicate little manoeuvre here. We have to be careful because
 the tense and negation operators do not commute with each other: consider
@@ -377,8 +377,8 @@ using a tense other than the present, and all is well.
 	}
 	spec = Conditions::new_TEST_PROPOSITION(
 		Calculus::Propositions::FromSentences::S_subtree(TRUE, W, A, B, subj, pass));
-	ParseTree::set_subject_term(spec, subj);
-	if (Wordings::nonempty(W)) ParseTree::set_text(spec, W);
+	Node::set_subject_term(spec, subj);
+	if (Wordings::nonempty(W)) Node::set_text(spec, W);
 	if (VerbUsages::get_tense_used(vu) != IS_TENSE) {
 		if (Calculus::Variables::detect_locals(Specifications::to_proposition(spec), NULL) > 0)
 			@<Issue a problem for referring to temporary values at a time when they did not exist@>;
@@ -403,8 +403,8 @@ using a tense other than the present, and all is well.
 @<Convert an SN subtree@> =
 	spec = Descriptions::from_proposition(
 		Calculus::Propositions::FromSentences::S_subtree(FALSE, W, A, B, subj, verb_phrase_negated), W);
-	ParseTree::set_subject_term(spec, subj);
-	ParseTree::annotate_int(spec, converted_SN_ANNOT, TRUE);
+	Node::set_subject_term(spec, subj);
+	Annotations::write_int(spec, converted_SN_ANNOT, TRUE);
 	if (A) @<Veto certain cases where text was misunderstood as a description@>;
 	if (VerbUsages::get_tense_used(vu) != IS_TENSE) ExParser::Subtrees::throw_past_problem(TRUE);
 
@@ -413,7 +413,7 @@ south in the Home" which might be read otherwise as "going south" (an action
 pattern) plus "in the Home" (a description).
 
 @<Veto certain cases where text was misunderstood as a description@> =
-	if (!((ParseTree::is(A, CONSTANT_NT)) ||
+	if (!((Node::is(A, CONSTANT_NT)) ||
 		(Specifications::is_description(A)) ||
 		(Lvalues::get_storage_form(A) == LOCAL_VARIABLE_NT) ||
 		(Lvalues::get_storage_form(A) == NONLOCAL_VARIABLE_NT)))

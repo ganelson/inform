@@ -29,10 +29,10 @@ property *Properties::Conditions::new(inference_subject *infs, wording NW, parse
 		wording CKW = EMPTY_WORDING, NKW = EMPTY_WORDING;
 		for (parse_node *option = set; option; option = (option->down)?(option->down->next):NULL) {
 			wording PW = EMPTY_WORDING;
-			if (ParseTree::get_type(option) == AND_NT)
-				PW = ParseTree::get_text(option->down);
+			if (Node::get_type(option) == AND_NT)
+				PW = Node::get_text(option->down);
 			else
-				PW = ParseTree::get_text(option);
+				PW = Node::get_text(option);
 			if (<adjective-name>(PW)) {
 				adjectival_phrase *aph = <<rp>>;
 				instance *I = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);

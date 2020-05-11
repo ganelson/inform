@@ -36,7 +36,7 @@ is to store them and sit on them.
 =
 void Assertions::Implications::new(parse_node *px, parse_node *py) {
 	if (prevailing_mood == CERTAIN_CE) @<Reject implications given with certainty@>;
-	if (ParseTree::get_type(py) == AND_NT) {
+	if (Node::get_type(py) == AND_NT) {
 		Assertions::Implications::new(px, py->down);
 		Assertions::Implications::new(px, py->down->next);
 		return;
@@ -74,9 +74,9 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 
 @<Find the premiss kind and specification@> =
 	parse_node *loc = px;
-	if (ParseTree::get_type(loc) == WITH_NT) loc = loc->down;
-	premiss_kind = ParseTree::get_subject(loc);
-	premiss = ParseTree::get_creation_proposition(loc);
+	if (Node::get_type(loc) == WITH_NT) loc = loc->down;
+	premiss_kind = Node::get_subject(loc);
+	premiss = Node::get_creation_proposition(loc);
 	#ifdef IF_MODULE
 	if (premiss_kind == NULL) premiss_kind = Kinds::Knowledge::as_subject(K_thing);
 	#endif
@@ -96,7 +96,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 	}
 
 @<Check that the conclusion involves only a single either/or property@> =
-	property *prn = Adjectives::Meanings::has_EORP_meaning(ParseTree::get_aph(py), NULL);
+	property *prn = Adjectives::Meanings::has_EORP_meaning(Node::get_aph(py), NULL);
 	if (prn == NULL) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ImplicationValueProperty),
 			"that's an implication where the outcome is an adjective other than "
@@ -214,13 +214,13 @@ int Assertions::Implications::check_implications_of(inference_subject *domain, i
 
 @<Consider this individual implication as it applies to the candidate@> =
 	int conclusion_state = TRUE;
-	if (ParseTree::int_annotation(imp->then_pn, negated_boolean_ANNOT)) conclusion_state = FALSE;
+	if (Annotations::read_int(imp->then_pn, negated_boolean_ANNOT)) conclusion_state = FALSE;
 	if (imp->implied_likelihood < 0) conclusion_state = (conclusion_state)?FALSE:TRUE;
 
 	LOGIF(IMPLICATIONS, "$D => $T (certainty %d; changed state %d)\n",
 		imp->if_spec, imp->then_pn, imp->implied_likelihood, conclusion_state);
 
-	property *conclusion_prop = Adjectives::Meanings::has_EORP_meaning(ParseTree::get_aph(imp->then_pn), NULL);
+	property *conclusion_prop = Adjectives::Meanings::has_EORP_meaning(Node::get_aph(imp->then_pn), NULL);
 	@<Check that the conclusion is not impossible@>;
 
 	possession_marker *pom = Properties::get_possession_marker(conclusion_prop);

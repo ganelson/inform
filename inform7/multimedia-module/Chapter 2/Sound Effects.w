@@ -81,7 +81,7 @@ int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Sound... is the file..." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-sound>(SW)) && (<new-sound-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -92,8 +92,8 @@ int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 		case TRAVERSE1_SMFT:
 			if (Plugins::Manage::plugged_in(sounds_plugin) == FALSE)
 				internal_error("Sounds plugin inactive");
-			PL::Sounds::register_sound(ParseTree::get_text(V->next),
-				ParseTree::get_text(V->next->next));
+			PL::Sounds::register_sound(Node::get_text(V->next),
+				Node::get_text(V->next->next));
 			break;
 	}
 	return FALSE;

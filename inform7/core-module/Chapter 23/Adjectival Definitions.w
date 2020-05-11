@@ -98,12 +98,12 @@ the doubled use of colons is unfortunate.)
 
 =
 void Phrases::Adjectives::traverse(void) {
-	ParseTree::traverse(Task::syntax_tree(), Phrases::Adjectives::look_for_headers);
+	SyntaxTree::traverse(Task::syntax_tree(), Phrases::Adjectives::look_for_headers);
 }
 
 void Phrases::Adjectives::look_for_headers(parse_node *p) {
-	if (ParseTree::get_type(p) == ROUTINE_NT)
-		if (<definition-header>(ParseTree::get_text(p))) {
+	if (Node::get_type(p) == ROUTINE_NT)
+		if (<definition-header>(Node::get_text(p))) {
 			compilation_module *cm = Modules::current();
 			Modules::set_current(p);
 			parse_node *q = (p->down)?(p->down->down):NULL;
@@ -131,7 +131,7 @@ is defined by routine or not.
 
 @<Futz with the parse tree, trying right not down@> =
 	if ((p->next == NULL) ||
-		(ParseTree::get_type(p->next) != ROUTINE_NT)) {
+		(Node::get_type(p->next) != ROUTINE_NT)) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"don't leave me in suspense",
 			"write a definition after 'Definition:'!");
@@ -140,7 +140,7 @@ is defined by routine or not.
 	q = p->next; p->next = q->next; p->down = q->down; q->next = NULL;
 
 @<Parse the Q-node as an adjective definition@> =
-	if (<adjective-definition>(ParseTree::get_text(q))) {
+	if (<adjective-definition>(Node::get_text(q))) {
 		the_format = <<r>>;
 		DNW = GET_RW(<adjective-domain>, 1);
 		if (<<calling>>) CALLW = GET_RW(<adjective-domain>, 2);

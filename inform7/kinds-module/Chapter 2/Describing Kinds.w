@@ -118,7 +118,7 @@ make two further checks:
 		if (<definite-article>(Wordings::first_word(W))) return FALSE;
 		parse_node *p = ExParser::parse_excerpt(KIND_SLOW_MC, W);
 		if (p) {
-			excerpt_meaning *em = ParseTree::get_meaning(p);
+			excerpt_meaning *em = Node::get_meaning(p);
 			K = Kinds::base_construction(
 				RETRIEVE_POINTER_kind_constructor(ExcerptMeanings::data(em)));
 		} else {

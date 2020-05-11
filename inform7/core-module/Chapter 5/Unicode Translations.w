@@ -8,11 +8,11 @@ a new name and its meaning to be.
 
 =
 void UnicodeTranslations::unicode_translates(parse_node *pn) {
-	if (<translates-into-unicode-sentence-object>(ParseTree::get_text(pn->next->next)) == FALSE) return;
+	if (<translates-into-unicode-sentence-object>(Node::get_text(pn->next->next)) == FALSE) return;
 	int cc = <<r>>;
 	if (UnicodeTranslations::char_in_range(cc) == FALSE) return;
 
-	<translates-into-unicode-sentence-subject>(ParseTree::get_text(pn->next));
+	<translates-into-unicode-sentence-subject>(Node::get_text(pn->next));
 	if ((<<r>> != -1) && (<<r>> != cc)) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeAlready),
 			"this Unicode character name has already been translated",
@@ -20,10 +20,10 @@ void UnicodeTranslations::unicode_translates(parse_node *pn) {
 		return;
 	}
 
-	Nouns::new_proper_noun(ParseTree::get_text(pn->next), NEUTER_GENDER,
+	Nouns::new_proper_noun(Node::get_text(pn->next), NEUTER_GENDER,
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		MISCELLANEOUS_MC,
-		NounPhrases::new_raw(ParseTree::get_text(pn->next->next)));
+		NounPhrases::new_raw(Node::get_text(pn->next->next)));
 }
 
 @ The following parses the subject noun phrase of sentences like
@@ -73,8 +73,8 @@ the player types either of these:
 
 <unicode-character-name> internal {
 	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
-	if ((p) && (ParseTree::get_type(p) == PROPER_NOUN_NT)) {
-		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(ParseTree::get_text(p))));
+	if ((p) && (Node::get_type(p) == PROPER_NOUN_NT)) {
+		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(Node::get_text(p))));
 		return TRUE;
 	}
 	return FALSE;

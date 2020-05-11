@@ -71,7 +71,7 @@ int UseOptions::use_translates_as_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Use American dialect means ..." */
 		case ACCEPT_SMFT:
 			if (<use-translates-as-sentence-subject>(SW)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				V->next = <<rp>>;
 				<nounphrase>(OW);
 				V->next->next = <<rp>>;
@@ -87,8 +87,8 @@ int UseOptions::use_translates_as_SMF(int task, parse_node *V, wording *NPs) {
 
 
 void UseOptions::new_use_option(parse_node *p) {
-	if ((<use-translates-as-sentence-object>(ParseTree::get_text(p->next->next))) &&
-		(<use-sentence-object>(ParseTree::get_text(p->next)))) {
+	if ((<use-translates-as-sentence-object>(Node::get_text(p->next->next))) &&
+		(<use-sentence-object>(Node::get_text(p->next)))) {
 		wording OW = GET_RW(<use-sentence-object>, 1);
 		use_option *uo = CREATE(use_option);
 		uo->name = OW;
@@ -210,7 +210,7 @@ int UseOptions::use_SMF(int task, parse_node *V, wording *NPs) {
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "Use American dialect." */
 		case ACCEPT_SMFT:
-			ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<nounphrase-articled-list>(OW);
 			V->next = <<rp>>;
 			return TRUE;
@@ -227,15 +227,15 @@ void UseOptions::handle_set_use_option(parse_node *p) {
 }
 
 void UseOptions::set_use_options(parse_node *p) {
-	if (ParseTree::get_type(p) == AND_NT) {
+	if (Node::get_type(p) == AND_NT) {
 		UseOptions::set_use_options(p->down);
 		UseOptions::set_use_options(p->down->next);
 		return;
 	}
-	if (<use-inter-pipeline>(ParseTree::get_text(p))) @<Set the chain given in this word range@>
-	else if (<use-sentence-object>(ParseTree::get_text(p))) @<Set the option given in this word range@>;
+	if (<use-inter-pipeline>(Node::get_text(p))) @<Set the chain given in this word range@>
+	else if (<use-sentence-object>(Node::get_text(p))) @<Set the option given in this word range@>;
 	if (traverse == 1) return;
-	LOG("Used: %W\n", ParseTree::get_text(p));
+	LOG("Used: %W\n", Node::get_text(p));
 	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUseOption),
 		"that isn't a 'Use' option known to me",
 		"and needs to be one of the ones listed in the documentation.");
@@ -288,7 +288,7 @@ void UseOptions::set_use_options(parse_node *p) {
 	}
 
 @<Deal with the case of an I6 memory setting@> =
-	int n = -<<r>>, w1 = Wordings::first_wn(ParseTree::get_text(p));
+	int n = -<<r>>, w1 = Wordings::first_wn(Node::get_text(p));
 	TEMPORARY_TEXT(new_identifier);
 	WRITE_TO(new_identifier, "%+W", Wordings::one_word(w1));
 	if (Str::len(new_identifier) > 63) {
@@ -395,7 +395,7 @@ pragma is set:
 
 =
 int UseOptions::uo_set_from(use_option *uo, int category, inform_extension *E) {
-	source_file *sf = (uo->where_used)?(Lexer::file_of_origin(Wordings::first_wn(ParseTree::get_text(uo->where_used)))):NULL;
+	source_file *sf = (uo->where_used)?(Lexer::file_of_origin(Wordings::first_wn(Node::get_text(uo->where_used)))):NULL;
 	inform_extension *efo = (sf)?(Extensions::corresponding_to(sf)):NULL;
 	switch (category) {
 		case 1: if ((sf) && (efo == NULL)) return TRUE; break;
@@ -419,7 +419,7 @@ void UseOptions::compile(void) {
 		if ((uo->option_used) || (uo->minimum_setting_value >= 0)) {
 			text_stream *UO = Str::new();
 			I6T::interpret_i6t(UO,
-				Lexer::word_raw_text(Wordings::first_wn(ParseTree::get_text(uo->option_expansion)) + 1),
+				Lexer::word_raw_text(Wordings::first_wn(Node::get_text(uo->option_expansion)) + 1),
 				uo->minimum_setting_value);
 			WRITE_TO(UO, "\n");
 			Emit::intervention(EARLY_LINK_STAGE, NULL, NULL, UO, NULL);
@@ -533,7 +533,7 @@ void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, inform
 	HTML::open_indented_p(OUT, 3, "tight");
 	WRITE("Use %+W", uo->name);
 	if (uo->minimum_setting_value >= 0) WRITE(" of at least %d", uo->minimum_setting_value);
-	if (uo->where_used) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(uo->where_used)));
+	if (uo->where_used) Index::link(OUT, Wordings::first_wn(Node::get_text(uo->where_used)));
 	if (uo->minimum_setting_value >= 0) {
 		WRITE("&nbsp;");
 		TEMPORARY_TEXT(TEMP);

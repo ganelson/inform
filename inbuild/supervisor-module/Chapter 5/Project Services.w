@@ -53,7 +53,7 @@ void Projects::scan(inbuild_copy *C) {
 	proj->fix_rng = 0;
 	proj->compile_for_release = FALSE;
 	proj->compile_only = FALSE;
-	proj->syntax_tree = ParseTree::new_tree();
+	proj->syntax_tree = SyntaxTree::new();
 	pathname *P = Projects::path(proj), *M;
 	if (proj->as_copy->location_if_path)
 		M = Projects::materialise_pathname(
@@ -716,10 +716,10 @@ like Basic Inform or Standard Rules; and also any sentences in the
 |Options.txt| file, if the user has one.
 
 @<First an implied super-heading for implied inclusions and the Options@> =
-	inclusions_heading = ParseTree::new(HEADING_NT);
-	ParseTree::set_text(inclusions_heading,
+	inclusions_heading = Node::new(HEADING_NT);
+	Node::set_text(inclusions_heading,
 		Feeds::feed_text_expanding_strings(L"Implied inclusions"));
-	ParseTree::insert_sentence(proj->syntax_tree, inclusions_heading);
+	SyntaxTree::graft_sentence(proj->syntax_tree, inclusions_heading);
 	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading);
 
 	int wc = lexer_wordcount;
@@ -732,9 +732,9 @@ like Basic Inform or Standard Rules; and also any sentences in the
 		Filenames::in(ext->location, I"Options.txt"));
 	wording early_W = Wordings::new(wc, lexer_wordcount-1);
 	
-	int l = ParseTree::push_attachment_point(proj->syntax_tree, inclusions_heading);
+	int l = SyntaxTree::push_bud(proj->syntax_tree, inclusions_heading);
 	Sentences::break_into_project_copy(proj->syntax_tree, early_W, proj->as_copy, proj);
-	ParseTree::pop_attachment_point(proj->syntax_tree, l);
+	SyntaxTree::pop_bud(proj->syntax_tree, l);
 
 @ We don't need to make an implied heading here, because the sentence-breaker
 in the //syntax// module does that automatically whenever it detects source
@@ -759,10 +759,10 @@ it comes.
 		N->as_source_file =
 			SourceText::read_file(proj->as_copy, F, N->source_source, FALSE, TRUE);
 	}
-	int l = ParseTree::push_attachment_point(proj->syntax_tree, proj->syntax_tree->root_node);
+	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);
 	Sentences::break_into_project_copy(
 		proj->syntax_tree, Wordings::new(wc, lexer_wordcount-1), proj->as_copy, proj);
-	ParseTree::pop_attachment_point(proj->syntax_tree, l);
+	SyntaxTree::pop_bud(proj->syntax_tree, l);
 
 @ Inventions are when the //inform7// compiler makes up extra sentences, not
 in the source text as such. They all go under the following implied heading.
@@ -770,14 +770,14 @@ Note that we leave the tree with its attachment point under this heading,
 ready for those inventions (if in fact there are any).
 
 @<Lastly an implied heading for any inventions by the compiler@> =
-	int l = ParseTree::push_attachment_point(proj->syntax_tree, proj->syntax_tree->root_node);
-	implicit_heading = ParseTree::new(HEADING_NT);
-	ParseTree::set_text(implicit_heading,
+	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);
+	implicit_heading = Node::new(HEADING_NT);
+	Node::set_text(implicit_heading,
 		Feeds::feed_text_expanding_strings(L"Invented sentences"));
-	ParseTree::insert_sentence(proj->syntax_tree, implicit_heading);
+	SyntaxTree::graft_sentence(proj->syntax_tree, implicit_heading);
 	Headings::place_implied_level_0(proj->syntax_tree, implicit_heading);
-	ParseTree::pop_attachment_point(proj->syntax_tree, l);
-	ParseTree::push_attachment_point(proj->syntax_tree, implicit_heading); /* never popped */
+	SyntaxTree::pop_bud(proj->syntax_tree, l);
+	SyntaxTree::push_bud(proj->syntax_tree, implicit_heading); /* never popped */
 
 @ The ordering here is, as so often in this section of code, important. We
 have to know which language elements are in use before we can safely look

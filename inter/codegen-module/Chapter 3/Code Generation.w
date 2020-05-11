@@ -182,7 +182,7 @@ void CodeGen::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_symbol *target_symbol = Inter::SymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_symbol == NULL) internal_error("bad pragma");
 	inter_t ID = P->W.data[TEXT_PRAGMA_IFLD];
-	text_stream *S = Inter::Node::ID_to_text(P, ID);
+	text_stream *S = Inode::ID_to_text(P, ID);
 	CodeGen::Targets::offer_pragma(gen, P, target_symbol->symbol_name, S);
 }
 

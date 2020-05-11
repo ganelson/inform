@@ -238,7 +238,7 @@ in any case, so it doesn't matter that we wouldn't know what text to use in them
 
 @<Typecheck the proposition, in case this has not already been done@> =
 	wording W = EMPTY_WORDING;
-	if (current_sentence) W = ParseTree::get_text(current_sentence);
+	if (current_sentence) W = Node::get_text(current_sentence);
 	if (Calculus::Propositions::Checker::type_check(prop,
 			Calculus::Propositions::Checker::tc_problem_reporting(W, "be asserting something"))
 		!= ALWAYS_MATCH)
@@ -458,7 +458,7 @@ success flag.
 		try = InferenceSubjects::narrowest_broader_subject(try);
 	}
 	if (domain_of_definition == NULL)
-		domain_of_definition = ParseTree::get_kind_of_value(ots);
+		domain_of_definition = Node::get_kind_of_value(ots);
 
 	if (ox) found = Adjectives::Meanings::assert(aph, domain_of_definition, ox, NULL, parity);
 	else found = Adjectives::Meanings::assert(aph, domain_of_definition, NULL, ots, parity);
@@ -651,7 +651,7 @@ inference_subject *Calculus::Propositions::Assert::subject_of_term(pcalc_term pt
 
 	parse_node *spec = pt.constant;
 
-	if (ParseTree::is(spec, CONSTANT_NT))
+	if (Node::is(spec, CONSTANT_NT))
 		return InferenceSubjects::from_specification(spec);
 
 	if (Specifications::is_description(spec)) {
@@ -661,9 +661,9 @@ inference_subject *Calculus::Propositions::Assert::subject_of_term(pcalc_term pt
 			return Kinds::Knowledge::as_subject(Specifications::to_kind(spec));
 	}
 
-	if (ParseTree::is(spec, NONLOCAL_VARIABLE_NT)) {
+	if (Node::is(spec, NONLOCAL_VARIABLE_NT)) {
 		inference_subject *diversion =
-			NonlocalVariables::get_alias(ParseTree::get_constant_nonlocal_variable(spec));
+			NonlocalVariables::get_alias(Node::get_constant_nonlocal_variable(spec));
 		if (diversion) return diversion;
 	}
 

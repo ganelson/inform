@@ -40,7 +40,7 @@ typedef struct csi_state {
 int Invocations::Inline::csi_inline_outer(value_holster *VH,
 	parse_node *inv, source_location *where_from, tokens_packet *tokens) {
 
-	phrase *ph = ParseTree::get_phrase_invoked(inv);
+	phrase *ph = Node::get_phrase_invoked(inv);
 
 	local_variable *my_vars[10]; /* the "my" variables 0 to 9 */
 	@<Start with all of the implicit my-variables unused@>;
@@ -87,13 +87,13 @@ checker has already done all of the work to decide what kind it has.)
 	}
 
 @<Create a local at this token@> =
-	local_variable *lvar = LocalVariables::new(ParseTree::get_text(val), K);
+	local_variable *lvar = LocalVariables::new(Node::get_text(val), K);
 	if (Phrases::TypeData::block_follows(ph) == LOOP_BODY_BLOCK_FOLLOWS)
 		Frames::Blocks::set_scope_to_block_about_to_open(lvar);
 	else
 		Frames::Blocks::set_variable_scope(lvar);
 	tokens->args[i] =
-		Lvalues::new_LOCAL_VARIABLE(ParseTree::get_text(val), lvar);
+		Lvalues::new_LOCAL_VARIABLE(Node::get_text(val), lvar);
 	if (Kinds::Behaviour::uses_pointer_values(K)) {
 		inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -281,7 +281,7 @@ the presence of annotations can change what we do.
 @<Work out values for the kind variables in this context@> =
 	kind_vars_inline[0] = NULL;
 	for (int i=1; i<=26; i++) kind_vars_inline[i] = Frames::get_kind_variable(i);
-	kind_variable_declaration *kvd = ParseTree::get_kind_variable_declarations(inv);
+	kind_variable_declaration *kvd = Node::get_kind_variable_declarations(inv);
 	for (; kvd; kvd=kvd->next) kind_vars_inline[kvd->kv_number] = kvd->kv_value;
 
 @<If the token has to be an lvalue, reject it if it isn't@> =
@@ -371,7 +371,7 @@ we compile code which creates a new value stored on the heap. This comes into
 its own when kind variables are in play.
 
 @<Inline command "new"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
+	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	if (Kinds::Behaviour::uses_pointer_values(K)) Frames::emit_allocation(K);
 	else if (K == NULL) @<Issue an inline no-such-kind problem@>
 	else if (Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING, NULL) == FALSE)
@@ -397,30 +397,30 @@ local variables (as it well may); instead we must construe D as a deferred
 proposition.
 
 @<Inline command "new-list-of"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
+	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	Calculus::Deferrals::emit_list_of_S(tokens->args[0], K);
 	return;
 
 @<Inline command "next-routine"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
+	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_inc_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "previous-routine"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
+	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_dec_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "printing-routine"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
+	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "ranger-routine"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
+	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	if ((Kinds::Compare::eq(K, K_number)) ||
 		(Kinds::Compare::eq(K, K_time)))
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
@@ -429,13 +429,13 @@ proposition.
 	return;
 
 @<Inline command "strong-kind"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
+	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	if (K) Kinds::RunTime::emit_strong_id_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "weak-kind"@> =
-	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, ParseTree::get_kind_variable_declarations(inv));
+	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	if (K) Kinds::RunTime::emit_weak_id_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
 	return;
@@ -776,7 +776,7 @@ the problem messages are phrased differently if something goes wrong.
 
 @<Inline annotation "try-action"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
-		action_pattern *ap = ParseTree::get_constant_action_pattern(supplied);
+		action_pattern *ap = Node::get_constant_action_pattern(supplied);
 		PL::Actions::Patterns::emit_try(ap, FALSE);
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
@@ -789,7 +789,7 @@ the problem messages are phrased differently if something goes wrong.
 
 @<Inline annotation "try-action-silently"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
-		action_pattern *ap = ParseTree::get_constant_action_pattern(supplied);
+		action_pattern *ap = Node::get_constant_action_pattern(supplied);
 		Produce::inv_primitive(Emit::tree(), PUSH_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(KEEP_SILENT_HL));
@@ -873,7 +873,7 @@ rule), and also makes a note for indexing purposes.
 		if (ph) Phrases::Timed::note_usage(ph, current_sentence);
 	} else {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(supplied));
+		Problems::quote_wording(2, Node::get_text(supplied));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonconstantEvent));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' isn't the name of any timed event that "
@@ -1001,7 +1001,7 @@ or when a block value is needed, or where we need to match against descriptions
 	kind *K = NULL;
 	if (Str::len(sche->operand2) > 0)
 		K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand2,
-			ParseTree::get_kind_variable_declarations(inv));
+			Node::get_kind_variable_declarations(inv));
 	if (K == NULL) K = K_object;
 	LocalVariables::set_kind(lvar, K);
 
@@ -1051,7 +1051,7 @@ default values when created, so they are always typesafe anyway.
 	local_variable *lvar = Lvalues::get_local_variable_if_any(V);
 	kind *K = NULL;
 	if (Str::len(sche->operand2) > 0)
-		K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand2, ParseTree::get_kind_variable_declarations(inv));
+		K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand2, Node::get_kind_variable_declarations(inv));
 	else
 		K = Specifications::to_kind(V);
 
@@ -1061,7 +1061,7 @@ default values when created, so they are always typesafe anyway.
 			Produce::down(Emit::tree());
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 				Produce::val_symbol(Emit::tree(), K_value, lvar_s);
-				Kinds::RunTime::emit_default_value_as_val(K, ParseTree::get_text(V), "value");
+				Kinds::RunTime::emit_default_value_as_val(K, Node::get_text(V), "value");
 			Produce::up(Emit::tree());
 		}
 	} else {
@@ -1070,7 +1070,7 @@ default values when created, so they are always typesafe anyway.
 		Produce::down(Emit::tree());
 			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
-			rv = Kinds::RunTime::emit_default_value_as_val(K, ParseTree::get_text(V), "value");
+			rv = Kinds::RunTime::emit_default_value_as_val(K, Node::get_text(V), "value");
 		Produce::up(Emit::tree());
 
 		if (rv == FALSE) {
@@ -1290,7 +1290,7 @@ result would be the same without the optimisation.
 		return;
 	}
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand2,
-		ParseTree::get_kind_variable_declarations(inv));
+		Node::get_kind_variable_declarations(inv));
 
 	if (Kinds::Compare::eq(K, K_text)) @<Inline say text@>;
 	if (Kinds::Compare::eq(K, K_number)) @<Inline say number@>;
@@ -1307,7 +1307,7 @@ result would be the same without the optimisation.
 	return;
 
 @<Inline say text@> =
-	wording SW = ParseTree::get_text(to_say);
+	wording SW = Node::get_text(to_say);
 	if ((Rvalues::is_CONSTANT_of_kind(to_say, K_text)) &&
 		(Wordings::length(SW) == 1) &&
 		(Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC) == FALSE)) {
@@ -1405,15 +1405,15 @@ very special circumstances.
 "say" phrases.
 
 @<Inline command "segment-count"@> =
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ParseTree::int_annotation(inv, ssp_segment_count_ANNOT));
+	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) Annotations::read_int(inv, ssp_segment_count_ANNOT));
 	return;
 
 @<Inline command "final-segment-marker"@> =
-	if (ParseTree::int_annotation(inv, ssp_closing_segment_wn_ANNOT) == -1) {
+	if (Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT) == -1) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(NULL_HL));
 	} else {
 		TEMPORARY_TEXT(T);
-		WRITE_TO(T, "%~W", Wordings::one_word(ParseTree::int_annotation(inv, ssp_closing_segment_wn_ANNOT)));
+		WRITE_TO(T, "%~W", Wordings::one_word(Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT)));
 		inter_symbol *T_s = EmitInterSchemas::find_identifier_text(Emit::tree(), T, NULL, NULL);
 		Produce::val_symbol(Emit::tree(), K_value, T_s);
 		DISCARD_TEXT(T);
@@ -1508,8 +1508,8 @@ has the inline definition:
 		wchar_t *what = L"";
 		if (tokens->tokens_count > 0) {
 			parse_node *aspect = tokens->args[0];
-			if (Wordings::nonempty(ParseTree::get_text(aspect))) {
-				int aw1 = Wordings::first_wn(ParseTree::get_text(aspect));
+			if (Wordings::nonempty(Node::get_text(aspect))) {
+				int aw1 = Wordings::first_wn(Node::get_text(aspect));
 				Word::dequote(aw1);
 				what = Lexer::word_text(aw1);
 			}
@@ -1558,7 +1558,7 @@ has the inline definition:
 
 @<Primitive "solve-equation"@> =
 	if (Rvalues::is_CONSTANT_of_kind(tokens->args[1], K_equation)) {
-		Equations::emit_solution(ParseTree::get_text(tokens->args[0]),
+		Equations::emit_solution(Node::get_text(tokens->args[0]),
 			Rvalues::to_equation(tokens->args[1]));
 	} else {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SolvedNameless),

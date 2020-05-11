@@ -50,7 +50,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 			if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
 				inter_t ID = P->W.data[DATA_CONST_IFLD];
 				text_stream *S = CodeGen::CL::literal_text_at(gen,
-					Inter::Node::ID_to_text(P, ID));
+					Inode::ID_to_text(P, ID));
 				CodeGen::select_temporary(gen, S);
 				CodeGen::CL::constant(gen, P);
 				CodeGen::deselect_temporary(gen);
@@ -269,7 +269,7 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 		}
 		case INVOKED_OPCODE: {
 			inter_t ID = P->W.data[INVOKEE_INV_IFLD];
-			text_stream *S = Inter::Node::ID_to_text(P, ID);
+			text_stream *S = Inode::ID_to_text(P, ID);
 			WRITE("%S", S);
 			negate_label_mode = FALSE;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {

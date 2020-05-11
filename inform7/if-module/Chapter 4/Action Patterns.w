@@ -351,7 +351,7 @@ void PL::Actions::Patterns::categorise_as(action_pattern *ap, wording W) {
 
 parse_node *PL::Actions::Patterns::nullify_nonspecific_references(parse_node *spec) {
 	if (spec == NULL) return spec;
-	if (ParseTree::is(spec, UNKNOWN_NT)) return NULL;
+	if (Node::is(spec, UNKNOWN_NT)) return NULL;
 	return spec;
 }
 
@@ -382,7 +382,7 @@ int PL::Actions::Patterns::check_going(parse_node *spec, char *keyword,
 		return TRUE;
 	}
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(spec));
+	Problems::quote_wording(2, Node::get_text(spec));
 	Problems::quote_text(3, keyword);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GoingWithoutObject));
 	Problems::issue_problem_segment(
@@ -414,7 +414,7 @@ parse_node *PL::Actions::Patterns::parse_action_parameter(wording W) {
 
 parse_node *PL::Actions::Patterns::parse_verified_action_parameter(wording W) {
 	parse_node *spec = PL::Actions::Patterns::parse_action_parameter(W);
-	if (ParseTree::is(spec, UNKNOWN_NT)) {
+	if (Node::is(spec, UNKNOWN_NT)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadOptionalAPClause));
@@ -581,7 +581,7 @@ would match as an abbreviated form of the name of "angry waiting man".
 					if (Instances::full_name_includes(I, Lexer::word(i))) continue;
 					if ((Lvalues::get_storage_form(try_stem) == LOCAL_VARIABLE_NT) ||
 						(Lvalues::get_storage_form(try_stem) == NONLOCAL_VARIABLE_NT) ||
-						(ParseTree::is(try_stem, CONSTANT_NT)) ||
+						(Node::is(try_stem, CONSTANT_NT)) ||
 						(Specifications::is_description(try_stem))) {
 						*XP = try_stem;
 						return i-1;
@@ -1037,7 +1037,7 @@ description.
 				&& (Kinds::Compare::eq(PL::Actions::get_data_type_of_second_noun(entry->action_listed), K_understanding))
 				&& (<understanding-action-irregular-operand>(entry->parameter[1]))) {
 				trial_ap.second_spec = Rvalues::from_grammar_verb(NULL); /* Why no GV here? */
-				ParseTree::set_text(trial_ap.second_spec, entry->parameter[1]);
+				Node::set_text(trial_ap.second_spec, entry->parameter[1]);
 			} else {
 				PL::Actions::Patterns::put_action_object_into_ap(&trial_ap, 2, entry->parameter[1]);
 			}
@@ -1349,8 +1349,8 @@ void PL::Actions::Patterns::put_action_object_into_ap(action_pattern *ap, int po
 	}
 	if (spec == NULL) spec = Specifications::new_UNKNOWN(W);
 	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_text)))
-		ParseTree::set_kind_of_value(spec, K_understanding);
-	ParseTree::set_text(spec, W);
+		Node::set_kind_of_value(spec, K_understanding);
+	Node::set_text(spec, W);
 	LOGIF(ACTION_PATTERN_PARSING, "PAOIA (position %d) %W = $P\n", pos, W, spec);
 	switch(pos) {
 		case 1: ap->noun_spec = spec; ap->noun_any = any_flag; break;
@@ -1368,11 +1368,11 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 	parse_node *spec2 = ap->actor_spec; /* the actor */
 
 	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec0, K_understanding)) &&
-		(<nominative-pronoun>(ParseTree::get_text(spec0)) == FALSE))
-		spec0 = Rvalues::from_wording(ParseTree::get_text(spec0));
+		(<nominative-pronoun>(Node::get_text(spec0)) == FALSE))
+		spec0 = Rvalues::from_wording(Node::get_text(spec0));
 	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec1, K_understanding)) &&
-		(<nominative-pronoun>(ParseTree::get_text(spec1)) == FALSE))
-		spec1 = Rvalues::from_wording(ParseTree::get_text(spec1));
+		(<nominative-pronoun>(Node::get_text(spec1)) == FALSE))
+		spec1 = Rvalues::from_wording(Node::get_text(spec1));
 
 	action_name_list *anl = ap->action;
 	action_name *an = PL::Actions::Lists::get_singleton_action(anl);
@@ -1515,14 +1515,14 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 
 	force_proposition = TRUE;
 
-	if (ParseTree::is(spec, UNKNOWN_NT)) {
+	if (Node::is(spec, UNKNOWN_NT)) {
 		if (problem_count == 0) internal_error("MPE found unknown SP");
 		force_proposition = FALSE;
 	}
 	else if (ParseTreeUsage::is_lvalue(spec)) {
 		force_proposition = TRUE;
-		if (ParseTree::is(spec, TABLE_ENTRY_NT)) {
-			if (ParseTree::no_children(spec) != 2) internal_error("MPE with bad no of args");
+		if (Node::is(spec, TABLE_ENTRY_NT)) {
+			if (Node::no_children(spec) != 2) internal_error("MPE with bad no of args");
 			LocalVariables::add_table_lookup();
 
 			local_variable *ct_0_lv = LocalVariables::by_name(I"ct_0");
@@ -1552,7 +1552,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 		}
 	else if (ParseTreeUsage::is_rvalue(spec)) {
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_understanding))) {
-			if ((<understanding-action-irregular-operand>(ParseTree::get_text(spec))) &&
+			if ((<understanding-action-irregular-operand>(Node::get_text(spec))) &&
 				(<<r>> == TRUE)) {
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 			} else {
@@ -1648,7 +1648,7 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ap->noun_spec, K_understanding))) {
 			request_bits = request_bits | 16;
 			TEMPORARY_TEXT(BC);
-			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, FALSE, ParseTree::get_text(ap->noun_spec));
+			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, FALSE, Node::get_text(ap->noun_spec));
 			Emit::array_iname_entry(lt->lt_sba_iname);
 			DISCARD_TEXT(BC);
 		} else Specifications::Compiler::emit(ap->noun_spec);
@@ -1658,7 +1658,7 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 	if (ap->second_spec) {
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ap->second_spec, K_understanding))) {
 			request_bits = request_bits | 32;
-			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, ParseTree::get_text(ap->second_spec));
+			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, Node::get_text(ap->second_spec));
 			Emit::array_iname_entry(lt->lt_sba_iname);
 		} else Specifications::Compiler::emit(ap->second_spec);
 	} else {
@@ -2280,7 +2280,7 @@ int PL::Actions::Patterns::is_an_action_variable(parse_node *spec) {
 	nonlocal_variable *nlv;
 	if (spec == NULL) return FALSE;
 	if (Lvalues::get_storage_form(spec) != NONLOCAL_VARIABLE_NT) return FALSE;
-	nlv = ParseTree::get_constant_nonlocal_variable(spec);
+	nlv = Node::get_constant_nonlocal_variable(spec);
 	if (nlv == I6_noun_VAR) return TRUE;
 	if (nlv == I6_second_VAR) return TRUE;
 	if (nlv == I6_actor_VAR) return TRUE;

@@ -106,7 +106,7 @@ int Relations::new_relation_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Knowledge relates various people to various things." */
 		case ACCEPT_SMFT:
 			if (<new-relation-sentence-object>(OW)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<nounphrase>(SW);
 				V->next = <<rp>>;
@@ -145,13 +145,13 @@ text of the subject mustn't be an existing relation name.
 
 @ =
 void Relations::parse_new(parse_node *PN) {
-	<relates-sentence-subject>(ParseTree::get_text(PN->next));
+	<relates-sentence-subject>(Node::get_text(PN->next));
 	if (<<r>>) {
-		wording W = ParseTree::get_text(PN->next);
+		wording W = Node::get_text(PN->next);
 		W = Wordings::truncate(W, 31);
 		binary_predicate *bp = BinaryPredicates::make_pair_sketchily(
 			WordAssemblages::from_wording(W), Relation_OtoO);
-		ParseTree::set_new_relation_here(PN->next, bp);
+		Node::set_new_relation_here(PN->next, bp);
 	}
 }
 
@@ -168,11 +168,11 @@ splitting into cases.
 
 =
 void Relations::parse_new_relation_further(parse_node *PN) {
-	wording RW = ParseTree::get_text(PN->next); /* relation name */
-	wording FW = ParseTree::get_text(PN->next->next); /* left term declaration, before "to" */
-	wording SW = ParseTree::get_text(PN->next->next->next); /* right term declaration, after "to" */
+	wording RW = Node::get_text(PN->next); /* relation name */
+	wording FW = Node::get_text(PN->next->next); /* left term declaration, before "to" */
+	wording SW = Node::get_text(PN->next->next->next); /* right term declaration, after "to" */
 
-	binary_predicate *bp = ParseTree::get_new_relation_here(PN->next);
+	binary_predicate *bp = Node::get_new_relation_here(PN->next);
 	if (bp == NULL) return; /* to recover from problem */
 	binary_predicate *bpr = bp->reversal;
 
@@ -1083,7 +1083,7 @@ void Relations::compile_relation_records(void) {
 	TEMPORARY_TEXT(DF);
 	if (bp->form_of_relation == Relation_Implicit)
 		WRITE_TO(DF, "%S", BinaryPredicates::get_log_name(bp));
-	else CompiledText::from_text(DF, ParseTree::get_text(bp->bp_created_at));
+	else CompiledText::from_text(DF, Node::get_text(bp->bp_created_at));
 	Emit::array_text_entry(DF);
 	DISCARD_TEXT(DF);
 
@@ -2654,7 +2654,7 @@ void Relations::index_table(OUTPUT_STREAM) {
 			if ((type == NULL) || (WordAssemblages::nonempty(bp->relation_name) == FALSE)) continue;
 			HTML::first_html_column(OUT, 0);
 			WordAssemblages::index(OUT, &(bp->relation_name));
-			if (bp->bp_created_at) Index::link(OUT, Wordings::first_wn(ParseTree::get_text(bp->bp_created_at)));
+			if (bp->bp_created_at) Index::link(OUT, Wordings::first_wn(Node::get_text(bp->bp_created_at)));
 			HTML::next_html_column(OUT, 0);
 			if (type) WRITE("%s", type); else WRITE("--");
 			HTML::next_html_column(OUT, 0);

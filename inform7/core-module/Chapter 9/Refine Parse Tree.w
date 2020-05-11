@@ -17,7 +17,7 @@ nodes, thus decomposing the NP into smaller clauses which are refined in turn.
 =
 void Assertions::Refiner::noun_from_infs(parse_node *p, inference_subject *infs) {
 	Assertions::Refiner::pn_make_COMMON_or_PROPER(p, infs);
-	ParseTree::set_evaluation(p, InferenceSubjects::as_constant(infs));
+	Node::set_evaluation(p, InferenceSubjects::as_constant(infs));
 }
 
 void Assertions::Refiner::noun_from_value(parse_node *p, parse_node *spec) {
@@ -34,7 +34,7 @@ void Assertions::Refiner::noun_from_value(parse_node *p, parse_node *spec) {
 		Assertions::Refiner::pn_noun_details_from_spec(p, spec);
 	} else infs = InferenceSubjects::from_specification(spec);
 	Assertions::Refiner::pn_make_COMMON_or_PROPER(p, infs);
-	ParseTree::set_evaluation(p, spec);
+	Node::set_evaluation(p, spec);
 }
 
 @ Furthermore:
@@ -48,9 +48,9 @@ in a |creation_proposition| field.
 =
 void Assertions::Refiner::pn_noun_details_from_spec(parse_node *p, parse_node *spec) {
 	pcalc_prop *prop = Descriptions::get_quantified_prop(spec);
-	ParseTree::set_creation_proposition(p, Calculus::Propositions::copy(prop));
+	Node::set_creation_proposition(p, Calculus::Propositions::copy(prop));
 	int N = Descriptions::get_quantification_parameter(spec);
-	if (N > 0) ParseTree::annotate_int(p, multiplicity_ANNOT, N);
+	if (N > 0) Annotations::write_int(p, multiplicity_ANNOT, N);
 }
 
 @ And lastly:
@@ -66,9 +66,9 @@ cases in the assertion-maker.
 
 =
 void Assertions::Refiner::pn_make_COMMON_or_PROPER(parse_node *p, inference_subject *infs) {
-	if ((infs) && (InferenceSubjects::domain(infs))) ParseTree::set_type(p, COMMON_NOUN_NT);
-	else ParseTree::set_type(p, PROPER_NOUN_NT);
-	ParseTree::set_subject(p, infs);
+	if ((infs) && (InferenceSubjects::domain(infs))) Node::set_type(p, COMMON_NOUN_NT);
+	else Node::set_type(p, PROPER_NOUN_NT);
+	Node::set_subject(p, infs);
 }
 
 @ It's useful to have a safe way of transferring the complete noun details
@@ -78,13 +78,13 @@ it probably never needs to be copied, but we do so for safety's sake.)
 
 =
 void Assertions::Refiner::copy_noun_details(parse_node *to, parse_node *from) {
-	ParseTree::set_type(to, ParseTree::get_type(from));
-	ParseTree::set_evaluation(to, ParseTree::get_evaluation(from));
-	ParseTree::set_creation_proposition(to, ParseTree::get_creation_proposition(from));
-	ParseTree::set_subject(to, ParseTree::get_subject(from));
-	ParseTree::annotate_int(to, multiplicity_ANNOT, ParseTree::int_annotation(from, multiplicity_ANNOT));
-	ParseTree::annotate_int(to, nowhere_ANNOT, ParseTree::int_annotation(from, nowhere_ANNOT));
-	ParseTree::annotate_int(to, creation_site_ANNOT, ParseTree::int_annotation(from, creation_site_ANNOT));
+	Node::set_type(to, Node::get_type(from));
+	Node::set_evaluation(to, Node::get_evaluation(from));
+	Node::set_creation_proposition(to, Node::get_creation_proposition(from));
+	Node::set_subject(to, Node::get_subject(from));
+	Annotations::write_int(to, multiplicity_ANNOT, Annotations::read_int(from, multiplicity_ANNOT));
+	Annotations::write_int(to, nowhere_ANNOT, Annotations::read_int(from, nowhere_ANNOT));
+	Annotations::write_int(to, creation_site_ANNOT, Annotations::read_int(from, creation_site_ANNOT));
 }
 
 @h Representation of single adjectives.
@@ -101,12 +101,12 @@ compare "clothing" and "clothes", which has no adequate singular.)
 =
 void Assertions::Refiner::pn_make_adjective(parse_node *p, adjective_usage *ale, parse_node *spec) {
 	adjectival_phrase *aph = AdjectiveUsages::get_aph(ale);
-	ParseTree::set_type(p, ADJECTIVE_NT);
-	ParseTree::set_aph(p, aph);
-	ParseTree::set_evaluation(p, NULL);
+	Node::set_type(p, ADJECTIVE_NT);
+	Node::set_aph(p, aph);
+	Node::set_evaluation(p, NULL);
 	Assertions::Refiner::pn_noun_details_from_spec(p, spec);
-	if (AdjectiveUsages::get_parity(ale)) ParseTree::annotate_int(p, negated_boolean_ANNOT, FALSE);
-	else ParseTree::annotate_int(p, negated_boolean_ANNOT, TRUE);
+	if (AdjectiveUsages::get_parity(ale)) Annotations::write_int(p, negated_boolean_ANNOT, FALSE);
+	else Annotations::write_int(p, negated_boolean_ANNOT, TRUE);
 }
 
 @ A different reason why adjective and nouns overlap is due to words like
@@ -114,8 +114,8 @@ void Assertions::Refiner::pn_make_adjective(parse_node *p, adjective_usage *ale,
 
 =
 void Assertions::Refiner::coerce_adjectival_usage_to_noun(parse_node *leaf) {
-	if ((leaf) && (ParseTree::get_type(leaf) == ADJECTIVE_NT)) {
-		instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(ParseTree::get_aph(leaf));
+	if ((leaf) && (Node::get_type(leaf) == ADJECTIVE_NT)) {
+		instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(Node::get_aph(leaf));
 		if (q) Assertions::Refiner::noun_from_value(leaf, Rvalues::from_instance(q));
 	}
 }
@@ -134,8 +134,8 @@ int forbid_nowhere = FALSE;
 void Assertions::Refiner::refine(parse_node *p, int creation_rule) {
 	if (p == NULL) internal_error("Refine parse tree on null pn");
 
-	if (ParseTree::int_annotation(p, resolved_ANNOT)) return;
-	ParseTree::annotate_int(p, resolved_ANNOT, TRUE);
+	if (Annotations::read_int(p, resolved_ANNOT)) return;
+	Annotations::write_int(p, resolved_ANNOT, TRUE);
 
 	LOGIF(NOUN_RESOLUTION, "Refine subtree (%s creation):\n$T",
 		((creation_rule == FORBID_CREATION)?"forbid":
@@ -152,7 +152,7 @@ void Assertions::Refiner::refine(parse_node *p, int creation_rule) {
 
 =
 void Assertions::Refiner::refine_parse_tree_inner(parse_node *p, int creation_rule) {
-	switch(ParseTree::get_type(p)) {
+	switch(Node::get_type(p)) {
 		case X_OF_Y_NT: @<Refine an X-of-Y subtree@>; return;
 		case WITH_NT: @<Refine an X-with-Y subtree@>; return;
 		case AND_NT: @<Refine an X-and-Y subtree@>; return;
@@ -181,25 +181,25 @@ pattern; if it works, that reading is allowed to stand.
 @<Refine an X-with-Y subtree@> =
 	Assertions::Refiner::refine(p->down, creation_rule);
 	Assertions::Refiner::perform_with_surgery(p);
-	if (ParseTree::get_type(p) == WITH_NT) {
+	if (Node::get_type(p) == WITH_NT) {
 		#ifdef IF_MODULE
-		wording W = Wordings::new(Wordings::first_wn(ParseTree::get_text(p->down)),
-			Wordings::last_wn(ParseTree::get_text(p->down->next)));
+		wording W = Wordings::new(Wordings::first_wn(Node::get_text(p->down)),
+			Wordings::last_wn(Node::get_text(p->down->next)));
 		if (Wordings::nonempty(W)) {
 			if (<action-pattern>(W)) {
-				ParseTree::set_type(p, ACTION_NT);
-				ParseTree::set_action_meaning(p, <<rp>>);
-				ParseTree::set_text(p, W); p->down = NULL;
+				Node::set_type(p, ACTION_NT);
+				Node::set_action_meaning(p, <<rp>>);
+				Node::set_text(p, W); p->down = NULL;
 			}
 		}
 		#endif
 	}
-	if (ParseTree::int_annotation(p, resolved_ANNOT) == FALSE) @<Start the refinement over@>;
+	if (Annotations::read_int(p, resolved_ANNOT) == FALSE) @<Start the refinement over@>;
 
 @ After surgery on the tree, it's usually best to start over again:
 
 @<Start the refinement over@> =
-	ParseTree::annotate_int(p, resolved_ANNOT, FALSE);
+	Annotations::write_int(p, resolved_ANNOT, FALSE);
 	Assertions::Refiner::refine(p, creation_rule);
 	return;
 
@@ -221,12 +221,12 @@ of Y and the kind of X. In this way, all |CALLED_NT| nodes are removed
 from the tree.
 
 @<Refine a calling subtree@> =
-	if ((ParseTree::get_type(p->down) == RELATIONSHIP_NT) && (p->down->down)) {
+	if ((Node::get_type(p->down) == RELATIONSHIP_NT) && (p->down->down)) {
 		Assertions::Refiner::perform_called_surgery(p);
 		@<Start the refinement over@>;
 	}
 	Assertions::Refiner::refine(p->down, FORBID_CREATION);
-	if (ParseTree::int_annotation(p->down, multiplicity_ANNOT) > 1) {
+	if (Annotations::read_int(p->down, multiplicity_ANNOT) > 1) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleCalled),
 			"I can only make a single 'called' thing at a time",
 			"or rather, the 'called' is only allowed to apply to one thing "
@@ -249,12 +249,12 @@ has the marble and the box as its children, the relationship being containment.
 
 @<Refine a relationship subtree@> =
 	Assertions::Refiner::perform_location_surgery(p);
-	if (ParseTree::get_type(p) == AND_NT) @<Start the refinement over@>;
+	if (Node::get_type(p) == AND_NT) @<Start the refinement over@>;
 
 	if (p->down) {
 		Assertions::Refiner::refine(p->down, creation_rule);
 		#ifdef IF_MODULE
-		binary_predicate *bp = ParseTree::get_relationship(p);
+		binary_predicate *bp = Node::get_relationship(p);
 		if ((bp) && (Plugins::Manage::plugged_in(map_plugin))) {
 			instance *dir = PL::MapDirections::get_mapping_direction(BinaryPredicates::get_reversal(bp));
 			if (dir == NULL) dir = PL::MapDirections::get_mapping_direction(bp);
@@ -272,11 +272,11 @@ direction object for "north".
 @<Make the relation one which refers to a map direction@> =
 	LOGIF(NOUN_RESOLUTION, "Directional predicate with BP %S ($O)\n",
 		BinaryPredicates::get_log_name(bp), dir);
-	ParseTree::annotate_int(p, relationship_node_type_ANNOT, DIRECTION_RELN);
+	Annotations::write_int(p, relationship_node_type_ANNOT, DIRECTION_RELN);
 	wording DW = Instances::get_name(dir, FALSE);
 	p->down->next = NounPhrases::new_raw(DW);
 	Assertions::Refiner::noun_from_infs(p->down->next, Instances::as_subject(dir));
-	ParseTree::annotate_int(p->down->next, resolved_ANNOT, TRUE);
+	Annotations::write_int(p->down->next, resolved_ANNOT, TRUE);
 
 @ A |KIND_NT| node may have no children, and if so it represents the bare
 word "kind": the reference must be to the kind "kind" itself.
@@ -289,7 +289,7 @@ inference subject representing the domain to which any new kind would belong.
 	if (p->down) {
 		parse_node *what = p->down;
 		Assertions::Refiner::refine(what, FORBID_CREATION);
-		kind_of_what = ParseTree::get_subject(what);
+		kind_of_what = Node::get_subject(what);
 	}
 	if ((kind_of_what == NULL) || (InferenceSubjects::domain(kind_of_what) == NULL))
 		@<Issue a problem message for a kind of instance@>;
@@ -297,7 +297,7 @@ inference subject representing the domain to which any new kind would belong.
 		(kind_of_what != Kinds::Knowledge::as_subject(K_value)) &&
 		(kind_of_what != Kinds::Knowledge::as_subject(K_object)))
 			@<Issue a problem message for a disallowed subkind@>;
-	ParseTree::set_subject(p, kind_of_what);
+	Node::set_subject(p, kind_of_what);
 
 @<Issue a problem message for a kind of instance@> =
 	if ((InferenceSubjects::is_an_object(kind_of_what)) ||
@@ -340,8 +340,8 @@ complicated description is as follows:
 	if (creation_rule != MANDATE_CREATION)
 		@<Interpret this as an existing noun if possible@>;
 
-	if (creation_rule != FORBID_CREATION) ParseTree::set_type(p, CREATED_NT);
-	else ParseTree::set_subject(p, NULL);
+	if (creation_rule != FORBID_CREATION) Node::set_type(p, CREATED_NT);
+	else Node::set_subject(p, NULL);
 
 @ There's just one case where an empty word range can be used as a noun
 phrase -- when it represents an implicit noun, as here, where the person
@@ -350,12 +350,12 @@ doing the carrying is implicit:
 >> The black box is carried.
 
 @<Act on the special no-words word range which implies the player@> =
-	if (ParseTree::int_annotation(p, implicitly_refers_to_ANNOT)) {
+	if (Annotations::read_int(p, implicitly_refers_to_ANNOT)) {
 		Plugins::Call::refine_implicit_noun(p);
 		return;
 	}
 
-	if (Wordings::empty(ParseTree::get_text(p))) {
+	if (Wordings::empty(Node::get_text(p))) {
 		LOG("$T", current_sentence);
 		internal_error("Tried to resolve malformed noun-phrase");
 	}
@@ -379,7 +379,7 @@ property of something.
 @<Act on a newly-discovered property of something@> =
 	property *prn = NULL;
 	wording PW = EMPTY_WORDING, OW = EMPTY_WORDING;
-	if (<newfound-property-of>(ParseTree::get_text(p))) {
+	if (<newfound-property-of>(Node::get_text(p))) {
 		prn = <<rp>>;
 		PW = GET_RW(<newfound-property-of>, 1);
 		OW = GET_RW(<newfound-property-of>, 2);
@@ -387,12 +387,12 @@ property of something.
 	if ((prn) && (Properties::is_value_property(prn)) /* &&
 		(Properties::Valued::coincides_with_kind(prn)) */) {
 		LOGIF(NOUN_RESOLUTION, "Resolving new-property of: $Y\n", prn);
-		ParseTree::set_type(p, X_OF_Y_NT);
+		Node::set_type(p, X_OF_Y_NT);
 		<nounphrase-articled>(OW);
 		p->down = <<rp>>;
 		<nounphrase-as-object>(PW);
 		p->down->next = <<rp>>;
-		ParseTree::annotate_int(p, resolved_ANNOT, FALSE);
+		Annotations::write_int(p, resolved_ANNOT, FALSE);
 		LOGIF(NOUN_RESOLUTION, "Resolved new-property to:\n$T\n", p);
 		Assertions::Refiner::refine(p, creation_rule);
 		return;
@@ -402,8 +402,8 @@ property of something.
 thing. (If we had more and better pronouns, they would go here.)
 
 @<Act on the special noun phrases "it" and "they"@> =
-	if (ParseTree::int_annotation(p, nounphrase_article_ANNOT) == IT_ART) {
-		if ((<nominative-pronoun>(ParseTree::get_text(p))) &&
+	if (Annotations::read_int(p, nounphrase_article_ANNOT) == IT_ART) {
+		if ((<nominative-pronoun>(Node::get_text(p))) &&
 			(<<r>> == 2) &&
 			(Assertions::Traverse::get_current_subject_plurality())) {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticThey),
@@ -438,8 +438,8 @@ is active, and "nowhere" if the spatial one is.
 	parse_node *spec = NULL;
 	@<Parse the noun phrase as a value property name@>;
 	if (spec == NULL) @<Parse the noun phrase as a value@>;
-	if ((ParseTree::is(spec, NONLOCAL_VARIABLE_NT)) ||
-		(ParseTree::is(spec, CONSTANT_NT))) {
+	if ((Node::is(spec, NONLOCAL_VARIABLE_NT)) ||
+		(Node::is(spec, CONSTANT_NT))) {
 		Assertions::Refiner::noun_from_value(p, spec);
 		return;
 	}
@@ -454,7 +454,7 @@ without obvious reference to any owner: we convert it to a noun node.
 property name meaning, not as the name of a kind of value.)
 
 @<Parse the noun phrase as a value property name@> =
-	if (<value-property-name>(ParseTree::get_text(p)))
+	if (<value-property-name>(Node::get_text(p)))
 		spec = Rvalues::from_property(<<rp>>);
 
 @<Issue PM_VagueVariable problem@> =
@@ -482,15 +482,15 @@ a noun instead of a condition testing the current action.
 	<s-global-variable>							==> TRUE; *XP = RP[1]
 
 @<Parse the noun phrase as a value@> =
-	if (<assertion-np-as-value>(ParseTree::get_text(p))) {
+	if (<assertion-np-as-value>(Node::get_text(p))) {
 		if (<<r>> == FALSE) return;
 		spec = <<rp>>;
 	} else {
-		spec = Specifications::new_UNKNOWN(ParseTree::get_text(p));
+		spec = Specifications::new_UNKNOWN(Node::get_text(p));
 	}
 	if (Descriptions::get_quantifier(spec))
 		@<Check that this noun phrase is allowed a quantifier@>;
-	LOGIF(NOUN_RESOLUTION, "Noun phrase %W parsed as value: $P\n", ParseTree::get_text(p), spec);
+	LOGIF(NOUN_RESOLUTION, "Noun phrase %W parsed as value: $P\n", Node::get_text(p), spec);
 
 @<Issue a problem for a variable described without a kind@> =
 	return;
@@ -511,8 +511,8 @@ a noun instead of a condition testing the current action.
 		if ((K) &&
 			(Descriptions::to_instance(spec) == NULL) &&
 			(Descriptions::number_of_adjectives_applied_to(spec) == 0)) {
-			ParseTree::set_subject(p, Kinds::Knowledge::as_subject(K));
-			ParseTree::set_type(p, EVERY_NT);
+			Node::set_subject(p, Kinds::Knowledge::as_subject(K));
+			Node::set_type(p, EVERY_NT);
 			return;
 		}
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ComplexEvery),
@@ -539,10 +539,10 @@ here, given that we know we are looking for a noun.
 
 @<Act on an action pattern used as a noun phrase@> =
 	#ifdef IF_MODULE
-	if (ParseTree::int_annotation(p, nounphrase_article_ANNOT) == NO_ART) {
-		if (<action-pattern>(ParseTree::get_text(p))) {
-			ParseTree::set_type(p, ACTION_NT);
-			ParseTree::set_action_meaning(p, <<rp>>);
+	if (Annotations::read_int(p, nounphrase_article_ANNOT) == NO_ART) {
+		if (<action-pattern>(Node::get_text(p))) {
+			Node::set_type(p, ACTION_NT);
+			Node::set_action_meaning(p, <<rp>>);
 			return;
 		}
 	}
@@ -556,7 +556,7 @@ to-the-point problem messages for badly constructed sentences.
 Oddly, it's not the complicated descriptions which give trouble...
 
 @<Act on a description used as a noun phrase@> =
-	ParseTree::set_subject(p, NULL);
+	Node::set_subject(p, NULL);
 	if (Descriptions::is_complex(spec)) {
 		Assertions::Refiner::noun_from_value(p, spec);
 		return;
@@ -594,7 +594,7 @@ sentence.
 @<Act on a simple description@> =
 	if (!((Descriptions::to_instance(spec)) &&
 		((Descriptions::number_of_adjectives_applied_to(spec) > 0) ||
-			(ParseTree::int_annotation(p, nounphrase_article_ANNOT) != DEF_ART)))) {
+			(Annotations::read_int(p, nounphrase_article_ANNOT) != DEF_ART)))) {
 		Assertions::Refiner::refine_from_simple_description(p, spec);
 		return;
 	}
@@ -639,7 +639,7 @@ set for it.
 		kind *K = Specifications::to_kind(spec);
 		head = Kinds::Knowledge::as_subject(K);
 		Assertions::Refiner::noun_from_infs(p, head);
-		ParseTree::set_evaluation(p, Specifications::from_kind(K));
+		Node::set_evaluation(p, Specifications::from_kind(K));
 		Assertions::Refiner::pn_noun_details_from_spec(p, spec);
 	}
 
@@ -648,11 +648,11 @@ content to its first child, and making its second child the new attachment
 position -- so that that is where the adjectives subtree will go.
 
 @<Insert a WITH node joining adjective tree to headword@> =
-	parse_node *lower_copy = ParseTree::new(PROPER_NOUN_NT);
-	ParseTree::copy(lower_copy, p);
-	ParseTree::set_type(p, WITH_NT);
+	parse_node *lower_copy = Node::new(PROPER_NOUN_NT);
+	Node::copy(lower_copy, p);
+	Node::set_type(p, WITH_NT);
 	p->down = lower_copy;
-	lower_copy->next = ParseTree::new(PROPER_NOUN_NT);
+	lower_copy->next = Node::new(PROPER_NOUN_NT);
 	p = lower_copy->next;
 
 @ When there are two or more adjectives, they must occur as leaves of a
@@ -666,19 +666,19 @@ or memory.
 		Assertions::Refiner::pn_make_adjective(p,
 			Descriptions::first_adjective_usage(spec), spec);
 	} else {
-		ParseTree::set_type_and_clear_annotations(p, AND_NT);
+		Node::set_type_and_clear_annotations(p, AND_NT);
 		adjective_usage *ale;
 		int i = 0;
 		parse_node *AND_p = p;
 		pcalc_prop *ale_prop = NULL;
 		LOOP_THROUGH_ADJECTIVE_LIST(ale, ale_prop, spec) {
 			i++;
-			parse_node *p3 = ParseTree::new(ADJECTIVE_NT);
+			parse_node *p3 = Node::new(ADJECTIVE_NT);
 			Assertions::Refiner::pn_make_adjective(p3, ale, spec);
 			if (i < no_adjectives) {
 				AND_p->down = p3;
 				if (i+1 < no_adjectives) {
-					p3->next = ParseTree::new(AND_NT);
+					p3->next = Node::new(AND_NT);
 					AND_p = p3->next;
 				}
 			} else {
@@ -737,15 +737,15 @@ on the back of an envelope. Change at your peril.
 =
 void Assertions::Refiner::perform_and_surgery(parse_node *p) {
 	parse_node *x, *a_p, *w_p, *p1_p, *p2_p, *i_p;
-	if ((ParseTree::get_type(p->down) == ADJECTIVE_NT)
-		&& (ParseTree::get_type(p->down->next) == WITH_NT)) {
+	if ((Node::get_type(p->down) == ADJECTIVE_NT)
+		&& (Node::get_type(p->down->next) == WITH_NT)) {
 		a_p = p; p1_p = p->down; w_p = p->down->next;
 		i_p = w_p->down; p2_p = i_p->next;
 
-		ParseTree::set_type(a_p, WITH_NT);
-		ParseTree::set_type_and_clear_annotations(w_p, AND_NT);
-		ParseTree::set_subject(a_p, ParseTree::get_subject(w_p));
-		ParseTree::set_subject(w_p, NULL);
+		Node::set_type(a_p, WITH_NT);
+		Node::set_type_and_clear_annotations(w_p, AND_NT);
+		Node::set_subject(a_p, Node::get_subject(w_p));
+		Node::set_subject(w_p, NULL);
 		x = a_p; a_p = w_p; w_p = x;
 
 		w_p->down = i_p;
@@ -785,12 +785,12 @@ is reconstructed as:
 =
 void Assertions::Refiner::perform_with_surgery(parse_node *p) {
 	parse_node *inst, *prop_1, *prop_2;
-	if ((ParseTree::get_type(p) == WITH_NT) && (ParseTree::get_type(p->down) == WITH_NT)) {
+	if ((Node::get_type(p) == WITH_NT) && (Node::get_type(p->down) == WITH_NT)) {
 		inst = p->down->down;
 		prop_1 = p->down->down->next;
 		prop_2 = p->down->next;
 		p->down = inst;
-		p->down->next = ParseTree::new(AND_NT);
+		p->down->next = Node::new(AND_NT);
 		p->down->next->down = prop_1;
 		p->down->next->down->next = prop_2;
 	}
@@ -820,16 +820,16 @@ into:
 =
 void Assertions::Refiner::perform_location_surgery(parse_node *p) {
 	parse_node *old_and, *old_np1, *old_loc2;
-	if ((ParseTree::get_type(p) == RELATIONSHIP_NT) &&
-		(p->down) && (ParseTree::get_type(p->down) == AND_NT) &&
+	if ((Node::get_type(p) == RELATIONSHIP_NT) &&
+		(p->down) && (Node::get_type(p->down) == AND_NT) &&
 		(p->down->down) && (p->down->down->next) &&
-		(ParseTree::get_type(p->down->down->next) == RELATIONSHIP_NT)) {
-		ParseTree::annotate_int(p, resolved_ANNOT, FALSE); /* otherwise this will be wrongly copied */
+		(Node::get_type(p->down->down->next) == RELATIONSHIP_NT)) {
+		Annotations::write_int(p, resolved_ANNOT, FALSE); /* otherwise this will be wrongly copied */
 		old_and = p->down;
 		old_np1 = old_and->down;
 		old_loc2 = old_and->down->next;
-		ParseTree::copy(old_and, p); /* making this the new first location node */
-		ParseTree::set_type_and_clear_annotations(p, AND_NT); /* and this is new AND */
+		Node::copy(old_and, p); /* making this the new first location node */
+		Node::set_type_and_clear_annotations(p, AND_NT); /* and this is new AND */
 		p->down = old_and;
 		old_and->down = old_np1;
 		old_and->next = old_loc2;
@@ -861,10 +861,10 @@ into:
 void Assertions::Refiner::perform_called_surgery(parse_node *p) {
 	parse_node *x_pn = p->down->down->next; /* "north" in the example */
 	parse_node *name_pn = p->down->next; /* "hot and cold room" in the example */
-	ParseTree::set_type(p, RELATIONSHIP_NT);
-	ParseTree::annotate_int(p, relationship_node_type_ANNOT,
-		ParseTree::int_annotation(p->down, relationship_node_type_ANNOT));
-	ParseTree::set_type(p->down, CALLED_NT);
+	Node::set_type(p, RELATIONSHIP_NT);
+	Annotations::write_int(p, relationship_node_type_ANNOT,
+		Annotations::read_int(p->down, relationship_node_type_ANNOT));
+	Node::set_type(p->down, CALLED_NT);
 	p->down->next = x_pn;
 	p->down->down->next = name_pn;
 }
@@ -881,14 +881,14 @@ can set up aliases of variable names to constants like this.
 
 =
 int Assertions::Refiner::turn_player_to_yourself(parse_node *pn) {
-	if ((Wordings::nonempty(ParseTree::get_text(pn))) &&
-		(ParseTree::get_type(pn) == PROPER_NOUN_NT) &&
-		(ParseTree::int_annotation(pn, turned_already_ANNOT) == FALSE)) {
-		nonlocal_variable *q = NonlocalVariables::parse(ParseTree::get_text(pn));
+	if ((Wordings::nonempty(Node::get_text(pn))) &&
+		(Node::get_type(pn) == PROPER_NOUN_NT) &&
+		(Annotations::read_int(pn, turned_already_ANNOT) == FALSE)) {
+		nonlocal_variable *q = NonlocalVariables::parse(Node::get_text(pn));
 		inference_subject *diversion = NonlocalVariables::get_alias(q);
 		if (diversion) {
 			Assertions::Refiner::noun_from_infs(pn, diversion);
-			ParseTree::annotate_int(pn, turned_already_ANNOT, TRUE);
+			Annotations::write_int(pn, turned_already_ANNOT, TRUE);
 			return TRUE;
 		}
 	}

@@ -198,7 +198,7 @@ inter_t Inter::Packages::to_PID(inter_package *P) {
 
 inter_package *Inter::Packages::container(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	inter_package *pack = Inter::Node::get_package(P);
+	inter_package *pack = Inode::get_package(P);
 	if (Inter::Packages::is_rootlike(pack)) return NULL;
 	return pack;
 }
@@ -211,7 +211,7 @@ inter_symbols_table *Inter::Packages::scope(inter_package *pack) {
 inter_symbols_table *Inter::Packages::scope_of(inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	if (pack) return pack->package_scope;
-	return Inter::Node::globals(P);
+	return Inode::globals(P);
 }
 
 inter_symbol *Inter::Packages::type(inter_package *P) {

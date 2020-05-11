@@ -60,17 +60,17 @@ void IdentifierTranslations::as(parse_node *pn) {
 	parse_node *p2 = pn->next->next;
 	parse_node *responses_list = NULL;
 	int category = INVALID_I6TR;
-	<translates-into-i6-sentence-subject>(ParseTree::get_text(p1));
+	<translates-into-i6-sentence-subject>(Node::get_text(p1));
 	category = <<r>>;
 	if (category == INVALID_I6TR) return;
 	wording W = GET_RW(<translates-into-i6-sentence-subject>, 1);
 
 	if (traverse == 1) {
-		ParseTree::annotate_int(pn, category_of_I6_translation_ANNOT, INVALID_I6TR);
+		Annotations::write_int(pn, category_of_I6_translation_ANNOT, INVALID_I6TR);
 		@<Ensure that we are translating to a quoted I6 identifier@>;
-		ParseTree::annotate_int(pn, category_of_I6_translation_ANNOT, category);
-		if (responses_list) ParseTree::graft(Task::syntax_tree(), responses_list, p2);
-	} else category = ParseTree::int_annotation(pn, category_of_I6_translation_ANNOT);
+		Annotations::write_int(pn, category_of_I6_translation_ANNOT, category);
+		if (responses_list) SyntaxTree::graft(Task::syntax_tree(), responses_list, p2);
+	} else category = Annotations::read_int(pn, category_of_I6_translation_ANNOT);
 
 	@<Take immediate action on the translation where possible@>;
 }
@@ -82,7 +82,7 @@ traversing the parse tree to look for translation sentences of the right sort.
 	switch(category) {
 		case PROPERTY_I6TR:
 			Properties::translates(W, p2);
-			ParseTree::annotate_int(pn, category_of_I6_translation_ANNOT, INVALID_I6TR); break;
+			Annotations::write_int(pn, category_of_I6_translation_ANNOT, INVALID_I6TR); break;
 		case NOUN_I6TR: break;
 		case RULE_I6TR:
 			if (traverse == 1) Rules::Placement::declare_I6_written_rule(W, p2);
@@ -98,7 +98,7 @@ traversing the parse tree to look for translation sentences of the right sort.
 
 @<Ensure that we are translating to a quoted I6 identifier@> =
 	int valid = TRUE;
-	if (<translates-into-i6-sentence-object>(ParseTree::get_text(p2)) == FALSE) valid = FALSE;
+	if (<translates-into-i6-sentence-object>(Node::get_text(p2)) == FALSE) valid = FALSE;
 	else responses_list = <<rp>>;
 	if (valid) @<Dequote it and see if it's valid@>;
 	if (valid == FALSE) {
@@ -113,8 +113,8 @@ traversing the parse tree to look for translation sentences of the right sort.
 @ If it turns out not to be, we simply set |valid| to false.
 
 @<Dequote it and see if it's valid@> =
-	int wn = Wordings::first_wn(ParseTree::get_text(p2));
-	ParseTree::set_text(p2, Wordings::one_word(wn));
+	int wn = Wordings::first_wn(Node::get_text(p2));
+	Node::set_text(p2, Wordings::one_word(wn));
 	Word::dequote(wn);
 	if (valid) valid = Identifiers::valid(Lexer::word_text(wn));
 
@@ -126,14 +126,14 @@ traversing the parse tree to look for translation sentences of the right sort.
 
 @ =
 void IdentifierTranslations::plus_responses(parse_node *p, rule *R) {
-	if (ParseTree::get_type(p) == AND_NT) {
+	if (Node::get_type(p) == AND_NT) {
 		IdentifierTranslations::plus_responses(p->down, R);
 		IdentifierTranslations::plus_responses(p->down->next, R);
 	} else {
-		if (<extra-response>(ParseTree::get_text(p))) {
+		if (<extra-response>(Node::get_text(p))) {
 			int code = <<r>>;
 			response_message *resp = Strings::response_cue(NULL, R,
-				code, ParseTree::get_text(p), NULL, TRUE);
+				code, Node::get_text(p), NULL, TRUE);
 			Rules::now_rule_defines_response(R, code, resp);
 		} else {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_I6ResponsesAwry),

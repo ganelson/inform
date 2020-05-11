@@ -33,9 +33,9 @@ The following macro is useful in the grammar below:
 
 =
 parse_node *NounPhrases::new_raw(wording W) {
-	parse_node *PN = ParseTree::new(PROPER_NOUN_NT);
-	ParseTree::annotate_int(PN, nounphrase_article_ANNOT, NO_ART);
-	ParseTree::set_text(PN, W);
+	parse_node *PN = Node::new(PROPER_NOUN_NT);
+	Annotations::write_int(PN, nounphrase_article_ANNOT, NO_ART);
+	Node::set_text(PN, W);
 	return PN;
 }
 
@@ -45,23 +45,23 @@ lookahead mode; this prevents needless memory allocation.
 =
 parse_node *NounPhrases::PN_void(node_type_t t, wording W) {
 	if (preform_lookahead_mode) return NULL;
-	parse_node *P = ParseTree::new(t);
-	ParseTree::set_text(P, W);
+	parse_node *P = Node::new(t);
+	Node::set_text(P, W);
 	return P;
 }
 
 parse_node *NounPhrases::PN_single(node_type_t t, wording W, parse_node *A) {
 	if (preform_lookahead_mode) return NULL;
-	parse_node *P = ParseTree::new(t);
-	ParseTree::set_text(P, W);
+	parse_node *P = Node::new(t);
+	Node::set_text(P, W);
 	P->down = A;
 	return P;
 }
 
 parse_node *NounPhrases::PN_pair(node_type_t t, wording W, parse_node *A, parse_node *B) {
 	if (preform_lookahead_mode) return NULL;
-	parse_node *P = ParseTree::new(t);
-	ParseTree::set_text(P, W);
+	parse_node *P = Node::new(t);
+	Node::set_text(P, W);
 	P->down = A; P->down->next = B;
 	return P;
 }
@@ -98,14 +98,14 @@ leave the text empty.
 	<nounphrase>															==> 0; *XP = RP[1]
 
 @<Annotate node by article@> =
-	ParseTree::annotate_int(*XP, nounphrase_article_ANNOT, INDEF_ART);
-	ParseTree::annotate_int(*XP, plural_reference_ANNOT, (R[2] >= 3)?TRUE:FALSE);
-	ParseTree::annotate_int(*XP, gender_reference_ANNOT, (R[2] % 3) + 1);
+	Annotations::write_int(*XP, nounphrase_article_ANNOT, INDEF_ART);
+	Annotations::write_int(*XP, plural_reference_ANNOT, (R[2] >= 3)?TRUE:FALSE);
+	Annotations::write_int(*XP, gender_reference_ANNOT, (R[2] % 3) + 1);
 
 @<Annotate node by definite article@> =
-	ParseTree::annotate_int(*XP, nounphrase_article_ANNOT, DEF_ART);
-	ParseTree::annotate_int(*XP, plural_reference_ANNOT, (R[2] >= 3)?TRUE:FALSE);
-	ParseTree::annotate_int(*XP, gender_reference_ANNOT, (R[2] % 3) + 1);
+	Annotations::write_int(*XP, nounphrase_article_ANNOT, DEF_ART);
+	Annotations::write_int(*XP, plural_reference_ANNOT, (R[2] >= 3)?TRUE:FALSE);
+	Annotations::write_int(*XP, gender_reference_ANNOT, (R[2] % 3) + 1);
 
 @ Sometimes we want to look at the article (if any) used in a raw NP, and
 absorb that into annotations, removing it from the wording. For instance, in
@@ -119,13 +119,13 @@ spuriously make a subtree with |RELATIONSHIP_NT| in thanks to the apparent
 
 =
 parse_node *NounPhrases::annotate_by_articles(parse_node *RAW_NP) {
-	<nounphrase-articled>(ParseTree::get_text(RAW_NP));
+	<nounphrase-articled>(Node::get_text(RAW_NP));
 	parse_node *MODEL = <<rp>>;
-	ParseTree::set_text(RAW_NP, ParseTree::get_text(MODEL));
-	ParseTree::annotate_int(RAW_NP, nounphrase_article_ANNOT,
-		ParseTree::int_annotation(MODEL, nounphrase_article_ANNOT));
-	ParseTree::annotate_int(RAW_NP, plural_reference_ANNOT,
-		ParseTree::int_annotation(MODEL, plural_reference_ANNOT));
+	Node::set_text(RAW_NP, Node::get_text(MODEL));
+	Annotations::write_int(RAW_NP, nounphrase_article_ANNOT,
+		Annotations::read_int(MODEL, nounphrase_article_ANNOT));
+	Annotations::write_int(RAW_NP, plural_reference_ANNOT,
+		Annotations::read_int(MODEL, plural_reference_ANNOT));
 	return RAW_NP;
 }
 
@@ -363,7 +363,7 @@ speed optimisation, and doesn't affect the language's definition.
 	<np-inner> <np-with-or-having-tail> |    ==> 0; *XP = NounPhrases::PN_pair(WITH_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-inner> <np-and-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-kind-phrase> |    ==> 0; *XP = RP[1]
-	<nominative-pronoun> |    ==> GENERATE_RAW_NP; ParseTree::annotate_int(*XP, nounphrase_article_ANNOT, IT_ART);
+	<nominative-pronoun> |    ==> GENERATE_RAW_NP; Annotations::write_int(*XP, nounphrase_article_ANNOT, IT_ART);
 	<np-articled-balanced>							==> 0; *XP = RP[1]
 
 @ The tail of with-or-having parses for instance "with carrying capacity 5"
@@ -431,17 +431,17 @@ A modest utility routine to construct and annotation RELATIONSHIP nodes.
 =
 parse_node *NounPhrases::PN_rel(wording W, VERB_MEANING_TYPE *R, int reln_type, parse_node *referent) {
 	if (preform_lookahead_mode) return NULL;
-	parse_node *P = ParseTree::new(RELATIONSHIP_NT);
-	ParseTree::set_text(P, W);
+	parse_node *P = Node::new(RELATIONSHIP_NT);
+	Node::set_text(P, W);
 	#ifdef CORE_MODULE
-	if (R) ParseTree::set_relationship(P, R);
+	if (R) Node::set_relationship(P, R);
 	else if (reln_type >= 0)
-		ParseTree::annotate_int(P, relationship_node_type_ANNOT, reln_type);
+		Annotations::write_int(P, relationship_node_type_ANNOT, reln_type);
 	else internal_error("undefined relationship node");
 	#endif
 	if (referent == NULL) {
 		referent = NounPhrases::new_raw(W);
-		ParseTree::annotate_int(referent, implicitly_refers_to_ANNOT, TRUE);
+		Annotations::write_int(referent, implicitly_refers_to_ANNOT, TRUE);
 	}
 	P->down = referent;
 	return P;

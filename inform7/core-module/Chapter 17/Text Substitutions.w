@@ -312,13 +312,13 @@ a request for a new text substitution to be compiled later...
 		Produce::up(Emit::tree());
 	}
 
-	parse_node *ts_code_block = ParseTree::new(ROUTINE_NT);
-	ParseTree::set_module(ts_code_block, ts->belongs_to_module);
+	parse_node *ts_code_block = Node::new(ROUTINE_NT);
+	Node::set_module(ts_code_block, ts->belongs_to_module);
 	compilation_module *cm = Modules::current();
 	Modules::set_current_to(ts->belongs_to_module);
-	ts_code_block->down = ParseTree::new(INVOCATION_LIST_NT);
-	ParseTree::set_text(ts_code_block->down, ts->unsubstituted_text);
-	ParseTree::annotate_int(ts_code_block->down, from_text_substitution_ANNOT, TRUE);
+	ts_code_block->down = Node::new(INVOCATION_LIST_NT);
+	Node::set_text(ts_code_block->down, ts->unsubstituted_text);
+	Annotations::write_int(ts_code_block->down, from_text_substitution_ANNOT, TRUE);
 	Sentences::RuleSubtrees::parse_routine_structure(ts_code_block);
 
 	Routines::Compile::code_block_outer(0, ts_code_block->down);

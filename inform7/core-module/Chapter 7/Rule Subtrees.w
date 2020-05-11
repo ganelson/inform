@@ -23,17 +23,17 @@ on childless nodes, it cannot ever act on the same node twice.
 =
 void Sentences::RuleSubtrees::register_recently_lexed_phrases(void) {
 	if (problem_count > 0) return; /* for then the tree is perhaps broken anyway */
-	ParseTree::traverse(Task::syntax_tree(), Sentences::RuleSubtrees::demote_command_nodes);
-	ParseTree::traverse(Task::syntax_tree(), Sentences::RuleSubtrees::detect_loose_command_nodes);
+	SyntaxTree::traverse(Task::syntax_tree(), Sentences::RuleSubtrees::demote_command_nodes);
+	SyntaxTree::traverse(Task::syntax_tree(), Sentences::RuleSubtrees::detect_loose_command_nodes);
 }
 
 @ Command nodes are demoted to be children of routine nodes:
 
 =
 void Sentences::RuleSubtrees::demote_command_nodes(parse_node *p) {
-	if ((ParseTree::get_type(p) == ROUTINE_NT) && (p->down == NULL)) {
+	if ((Node::get_type(p) == ROUTINE_NT) && (p->down == NULL)) {
 		parse_node *end_def = p;
-		while ((end_def->next) && (ParseTree::get_type(end_def->next) == INVOCATION_LIST_NT))
+		while ((end_def->next) && (Node::get_type(end_def->next) == INVOCATION_LIST_NT))
 			end_def = end_def->next;
 		if (p == end_def) return; /* |ROUTINE_NT| not followed by any |INVOCATION_LIST_NT|s */
 		/* splice so that |p->next| to |end_def| become the children of |p|: */
@@ -48,7 +48,7 @@ void Sentences::RuleSubtrees::demote_command_nodes(parse_node *p) {
 
 =
 void Sentences::RuleSubtrees::detect_loose_command_nodes(parse_node *p) {
-	if (ParseTree::get_type(p) == INVOCATION_LIST_NT)
+	if (Node::get_type(p) == INVOCATION_LIST_NT)
 		internal_error("loose COMMAND node outside of rule definition");
 }
 
@@ -115,13 +115,13 @@ void Sentences::RuleSubtrees::parse_routine_structure(parse_node *routine_node) 
 	parse_node *p;
 	for (p = routine_node->down; p; p = p->next) {
 		control_structure_phrase *csp =
-			ControlStructures::detect(ParseTree::get_text(p));
+			ControlStructures::detect(Node::get_text(p));
 		if (csp) {
-			int syntax_used = ParseTree::int_annotation(p, colon_block_command_ANNOT);
+			int syntax_used = Annotations::read_int(p, colon_block_command_ANNOT);
 			if (syntax_used == FALSE) { /* i.e., doesn't end with a colon */
 				/* don't count "if x is 1, let y be 2" -- with no block -- as deciding it */
 				if ((csp->subordinate_to == NULL) &&
-					(!(<phrase-beginning-block>(ParseTree::get_text(p)))))
+					(!(<phrase-beginning-block>(Node::get_text(p)))))
 					syntax_used = NOT_APPLICABLE;
 			}
 			if (syntax_used != NOT_APPLICABLE) {
@@ -134,7 +134,7 @@ void Sentences::RuleSubtrees::parse_routine_structure(parse_node *routine_node) 
 			if ((csp->requires_new_syntax) && (requires_colon_syntax == NULL))
 				requires_colon_syntax = p;
 		}
-		if (ControlStructures::detect_end(ParseTree::get_text(p))) {
+		if (ControlStructures::detect_end(Node::get_text(p))) {
 			if (uses_begin_end_syntax == NULL)
 				uses_begin_end_syntax = p;
 		}
@@ -144,7 +144,7 @@ void Sentences::RuleSubtrees::parse_routine_structure(parse_node *routine_node) 
 
 @<Note what looks like a begin-end piece of syntax@> =
 	if ((uses_begin_end_syntax == NULL) && (mispunctuates_begin_end_syntax == NULL)) {
-		if (<phrase-beginning-block>(ParseTree::get_text(p)))
+		if (<phrase-beginning-block>(Node::get_text(p)))
 			uses_begin_end_syntax = p;
 		else
 			mispunctuates_begin_end_syntax = p;
@@ -208,12 +208,12 @@ indentation of a phrase tells us where it belongs in the structure, so
 we mark up the tree with that information.
 
 @<(b.1) Annotate the parse tree with indentation levels@> =
-	ParseTree::annotate_int(routine_node, indentation_level_ANNOT,
-		Lexer::indentation_level(Wordings::first_wn(ParseTree::get_text(routine_node))));
+	Annotations::write_int(routine_node, indentation_level_ANNOT,
+		Lexer::indentation_level(Wordings::first_wn(Node::get_text(routine_node))));
 	parse_node *p;
 	for (p = routine_node->down; p; p = p->next) {
-		int I = Lexer::indentation_level(Wordings::first_wn(ParseTree::get_text(p)));
-		ParseTree::annotate_int(p, indentation_level_ANNOT, I);
+		int I = Lexer::indentation_level(Wordings::first_wn(Node::get_text(p)));
+		Annotations::write_int(p, indentation_level_ANNOT, I);
 	}
 
 @ Note that we are a little cautious about recognising phrases which will
@@ -225,24 +225,24 @@ more certainly, and similarly for "end X" phrases.
 @<(b.2) Annotate the parse tree with control structure usage@> =
 	for (parse_node *p = routine_node->down; p; p = p->next) {
 		control_structure_phrase *csp;
-		csp = ControlStructures::detect(ParseTree::get_text(p));
+		csp = ControlStructures::detect(Node::get_text(p));
 		if (csp) {
-			if ((ParseTree::int_annotation(p, colon_block_command_ANNOT)) ||
-				(<phrase-beginning-block>(ParseTree::get_text(p))) ||
+			if ((Annotations::read_int(p, colon_block_command_ANNOT)) ||
+				(<phrase-beginning-block>(Node::get_text(p))) ||
 				(csp->subordinate_to)) {
-				ParseTree::set_control_structure_used(p, csp);
+				Node::set_control_structure_used(p, csp);
 				if (csp == case_CSP) @<Trim a switch case to just the case value@>;
 			}
 		}
-		csp = ControlStructures::detect_end(ParseTree::get_text(p));
-		if (csp) ParseTree::set_end_control_structure_used(p, csp);
+		csp = ControlStructures::detect_end(Node::get_text(p));
+		if (csp) Node::set_end_control_structure_used(p, csp);
 	}
 
 @ At this point anything at all can be a case value: it won't be parsed
 or type-checked until compilation.
 
 @<Trim a switch case to just the case value@> =
-	ParseTree::set_text(p, GET_RW(<control-structure-phrase>, 1));
+	Node::set_text(p, GET_RW(<control-structure-phrase>, 1));
 
 @ "Comma notation" is when a comma is used in an "if" statement to divide
 off only a single consequential phrase, as in
@@ -254,10 +254,10 @@ to break this up.
 
 @<(c) Expand comma notation for blocks@> =
 	for (parse_node *p = routine_node->down; p; p = p->next)
-		if (ParseTree::get_control_structure_used(p) == NULL) {
+		if (Node::get_control_structure_used(p) == NULL) {
 			control_structure_phrase *csp;
-			csp = ControlStructures::detect(ParseTree::get_text(p));
-			if ((csp == if_CSP) && (<phrase-with-comma-notation>(ParseTree::get_text(p))))
+			csp = ControlStructures::detect(Node::get_text(p));
+			if ((csp == if_CSP) && (<phrase-with-comma-notation>(Node::get_text(p))))
 				@<Effect a comma expansion@>;
 		}
 
@@ -266,16 +266,16 @@ to break this up.
 	wording ACW = GET_RW(<phrase-with-comma-notation>, 2); /* text after the comma */
 
 	/* First trim and annotate the "if ..." part */
-	ParseTree::annotate_int(p, colon_block_command_ANNOT, TRUE); /* it previously had no colon... */
-	ParseTree::set_control_structure_used(p, csp); /* ...and therefore didn't have its CSP set */
-	ParseTree::set_text(p, BCW);
+	Annotations::write_int(p, colon_block_command_ANNOT, TRUE); /* it previously had no colon... */
+	Node::set_control_structure_used(p, csp); /* ...and therefore didn't have its CSP set */
+	Node::set_text(p, BCW);
 
 	/* Now make a new node for the "then" part, indenting it one step inward */
-	parse_node *then_node = ParseTree::new(INVOCATION_LIST_NT);
-	ParseTree::annotate_int(then_node, results_from_splitting_ANNOT, TRUE);
-	ParseTree::annotate_int(then_node, indentation_level_ANNOT,
-		ParseTree::int_annotation(p, indentation_level_ANNOT) + 1);
-	ParseTree::set_text(then_node, ACW);
+	parse_node *then_node = Node::new(INVOCATION_LIST_NT);
+	Annotations::write_int(then_node, results_from_splitting_ANNOT, TRUE);
+	Annotations::write_int(then_node, indentation_level_ANNOT,
+		Annotations::read_int(p, indentation_level_ANNOT) + 1);
+	Node::set_text(then_node, ACW);
 
 	parse_node *last_node_of_if_construction = then_node, *rest_of_routine = p->next;
 
@@ -294,11 +294,11 @@ to break this up.
 @<Deal with an immediately following otherwise node, if there is one@> =
 	if (rest_of_routine)
 		if ((uses_colon_syntax == FALSE) ||
-			(ParseTree::int_annotation(p, indentation_level_ANNOT) ==
-				ParseTree::int_annotation(rest_of_routine, indentation_level_ANNOT))) {
-			if (ParseTree::get_control_structure_used(rest_of_routine) == otherwise_CSP)
+			(Annotations::read_int(p, indentation_level_ANNOT) ==
+				Annotations::read_int(rest_of_routine, indentation_level_ANNOT))) {
+			if (Node::get_control_structure_used(rest_of_routine) == otherwise_CSP)
 				@<Deal with an immediately following otherwise@>
-			else if (ControlStructures::abbreviated_otherwise(ParseTree::get_text(rest_of_routine)))
+			else if (ControlStructures::abbreviated_otherwise(Node::get_text(rest_of_routine)))
 				@<Deal with an abbreviated otherwise node@>;
 		}
 
@@ -316,22 +316,22 @@ to break this up.
 and we want to split this, too, into distinct nodes.
 
 @<Deal with an abbreviated otherwise node@> =
-	parse_node *otherwise_node = ParseTree::new(CODE_BLOCK_NT);
-	ParseTree::annotate_int(otherwise_node, results_from_splitting_ANNOT, TRUE);
-	ParseTree::annotate_int(otherwise_node, indentation_level_ANNOT,
-		ParseTree::int_annotation(p, indentation_level_ANNOT));
-	ParseTree::set_text(otherwise_node,
-		Wordings::one_word(Wordings::first_wn(ParseTree::get_text(rest_of_routine)))); /* extract just the word "otherwise" */
-	ParseTree::set_control_structure_used(otherwise_node, otherwise_CSP);
+	parse_node *otherwise_node = Node::new(CODE_BLOCK_NT);
+	Annotations::write_int(otherwise_node, results_from_splitting_ANNOT, TRUE);
+	Annotations::write_int(otherwise_node, indentation_level_ANNOT,
+		Annotations::read_int(p, indentation_level_ANNOT));
+	Node::set_text(otherwise_node,
+		Wordings::one_word(Wordings::first_wn(Node::get_text(rest_of_routine)))); /* extract just the word "otherwise" */
+	Node::set_control_structure_used(otherwise_node, otherwise_CSP);
 
 	then_node->next = otherwise_node;
 	otherwise_node->next = rest_of_routine;
 
-	ParseTree::set_text(rest_of_routine,
-		Wordings::trim_first_word(ParseTree::get_text(rest_of_routine))); /* to remove the "otherwise" */
+	Node::set_text(rest_of_routine,
+		Wordings::trim_first_word(Node::get_text(rest_of_routine))); /* to remove the "otherwise" */
 
-	ParseTree::annotate_int(rest_of_routine, indentation_level_ANNOT,
-		ParseTree::int_annotation(rest_of_routine, indentation_level_ANNOT) + 1);
+	Annotations::write_int(rest_of_routine, indentation_level_ANNOT,
+		Annotations::read_int(rest_of_routine, indentation_level_ANNOT) + 1);
 
 	last_node_of_if_construction = rest_of_routine;
 	rest_of_routine = rest_of_routine->next;
@@ -355,11 +355,11 @@ report more or less helpfully.
 	int blstack_stage[GROSS_AMOUNT_OF_INDENTATION+1];
 	int blo_sp = 0, suppress_further_problems = FALSE;
 
-	if (ParseTree::int_annotation(routine_node, indentation_level_ANNOT) != 0)
+	if (Annotations::read_int(routine_node, indentation_level_ANNOT) != 0)
 		@<Issue problem message for failing to start flush on the left margin@>;
 
 	for (prev = NULL, p = routine_node->down, k=1; p; prev = p, p = p->next, k++) {
-		control_structure_phrase *csp = ParseTree::get_control_structure_used(p);
+		control_structure_phrase *csp = Node::get_control_structure_used(p);
 		@<Determine actual indentation of this phrase@>;
 		@<Compare actual indentation to what we expect from structure so far@>;
 		@<Insert begin marker and increase expected indentation if a block begins here@>;
@@ -394,18 +394,18 @@ the lines often look silly and short).
 
 @<Determine actual indentation of this phrase@> =
 	indent = expected_indent;
-	if (ParseTree::int_annotation(p, indentation_level_ANNOT) > 0)
-		indent = ParseTree::int_annotation(p, indentation_level_ANNOT);
-	else if (Wordings::nonempty(ParseTree::get_text(p))) {
-		switch (Lexer::break_before(Wordings::first_wn(ParseTree::get_text(p)))) {
+	if (Annotations::read_int(p, indentation_level_ANNOT) > 0)
+		indent = Annotations::read_int(p, indentation_level_ANNOT);
+	else if (Wordings::nonempty(Node::get_text(p))) {
+		switch (Lexer::break_before(Wordings::first_wn(Node::get_text(p)))) {
 			case '\n': indent = 0; break;
 			case '\t': indent = 1; break;
 			default:
 				if ((prev) && (csp == NULL)) {
-					control_structure_phrase *pcsp = ParseTree::get_control_structure_used(prev);
+					control_structure_phrase *pcsp = Node::get_control_structure_used(prev);
 					if ((pcsp) && (pcsp->allow_run_on)) break;
 				}
-				if ((ParseTree::int_annotation(p, results_from_splitting_ANNOT) == FALSE) &&
+				if ((Annotations::read_int(p, results_from_splitting_ANNOT) == FALSE) &&
 					(run_on_at == NULL)) run_on_at = p;
 				break;
 		}
@@ -474,7 +474,7 @@ colon syntax, then it is followed by a word which is the colon: thus if |p|
 reads "if x is 2" then the word following the "2" will be ":".
 
 @<Insert begin marker and increase expected indentation if a block begins here@> =
-	if ((csp) && (csp->subordinate_to == NULL) && (ParseTree::int_annotation(p, colon_block_command_ANNOT))) {
+	if ((csp) && (csp->subordinate_to == NULL) && (Annotations::read_int(p, colon_block_command_ANNOT))) {
 		expected_indent++;
 		if (csp->indent_subblocks) expected_indent++;
 		blstack_construct[blo_sp] = csp;
@@ -676,7 +676,7 @@ whichever syntax is used. We finally make a meaningful tree out of it.
 
 @<(e) Structure the parse tree to match the use of control structures@> =
 	parse_node *routine_list = routine_node->down;
-	parse_node *top_level = ParseTree::new(CODE_BLOCK_NT);
+	parse_node *top_level = Node::new(CODE_BLOCK_NT);
 
 	routine_node->down = top_level;
 
@@ -705,15 +705,15 @@ whichever syntax is used. We finally make a meaningful tree out of it.
 
 @<Attach the node to the routine's growing parse tree@> =
 	int go_up = FALSE, go_down = FALSE;
-	control_structure_phrase *csp = ParseTree::get_end_control_structure_used(pn);
+	control_structure_phrase *csp = Node::get_end_control_structure_used(pn);
 	if (csp) go_up = TRUE;
 	else {
-		csp = ParseTree::get_control_structure_used(pn);
+		csp = Node::get_control_structure_used(pn);
 		if (csp) {
 			go_down = TRUE;
 			if (ControlStructures::opens_block(csp) == FALSE) {
 				go_up = TRUE;
-				ParseTree::set_type(pn, CODE_BLOCK_NT);
+				Node::set_type(pn, CODE_BLOCK_NT);
 			}
 		}
 	}
@@ -730,12 +730,12 @@ whichever syntax is used. We finally make a meaningful tree out of it.
 	parse_node *to = attach_points[attach_point_sp-1];
 	if ((go_up) && (go_down) && (attach_owners[attach_point_sp-1]))
 		to = attach_owners[attach_point_sp-1];
-	ParseTree::graft(Task::syntax_tree(), pn, to);
+	SyntaxTree::graft(Task::syntax_tree(), pn, to);
 
 @<Move the attachment point down in the tree@> =
 	parse_node *next_attach_point = pn;
 	if (go_up == FALSE) {
-		pn->down = ParseTree::new(CODE_BLOCK_NT);
+		pn->down = Node::new(CODE_BLOCK_NT);
 		next_attach_point = pn->down;
 	}
 	@<Push the CSP stack@>;
@@ -776,18 +776,18 @@ void Sentences::RuleSubtrees::police_code_block(parse_node *block, control_struc
 		current_sentence = p;
 
 		control_structure_phrase *prior =
-			(prev_p)?ParseTree::get_control_structure_used(prev_p):NULL;
-		control_structure_phrase *csp = ParseTree::get_end_control_structure_used(p);
+			(prev_p)?Node::get_control_structure_used(prev_p):NULL;
+		control_structure_phrase *csp = Node::get_end_control_structure_used(p);
 		if ((csp) && (csp != prior)) {
 			if (prior == NULL) @<Issue problem for end without begin@>
 			else @<Issue problem for wrong sort of end@>;
 		}
 
-		csp = ParseTree::get_control_structure_used(p);
+		csp = Node::get_control_structure_used(p);
 		if (csp) {
 			if (ControlStructures::opens_block(csp)) {
 				if ((p->next == NULL) ||
-					(ParseTree::get_end_control_structure_used(p->next) == NULL))
+					(Node::get_end_control_structure_used(p->next) == NULL))
 					@<Issue problem for begin without end@>;
 			} else {
 				if (context == NULL)
@@ -874,11 +874,11 @@ of old-format source text, and for refuseniks.
 @<Choose a problem for otherwise not occurring last@> =
 	int doubled = FALSE, oi = FALSE;
 	for (parse_node *p2 = p->next; p2; p2 = p2->next) {
-		if (ParseTree::get_control_structure_used(p2) == otherwise_CSP) {
+		if (Node::get_control_structure_used(p2) == otherwise_CSP) {
 			current_sentence = p2;
 			doubled = TRUE;
 		}
-		if (ParseTree::get_control_structure_used(p2) == otherwise_if_CSP)
+		if (Node::get_control_structure_used(p2) == otherwise_if_CSP)
 			oi = TRUE;
 	}
 	if (doubled)
@@ -924,26 +924,26 @@ to issue good problem messages for failures to use "otherwise if" correctly.
 =
 void Sentences::RuleSubtrees::purge_otherwise_if(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
-		if (ParseTree::get_control_structure_used(p) == otherwise_if_CSP) {
+		if (Node::get_control_structure_used(p) == otherwise_if_CSP) {
 			parse_node *former_contents = p->down;
 			parse_node *former_successors = p->next;
 
 			/* put an otherwise node in the position previously occupied by p */
-			parse_node *otherwise_node = ParseTree::new(CODE_BLOCK_NT);
-			ParseTree::set_control_structure_used(otherwise_node, otherwise_CSP);
+			parse_node *otherwise_node = Node::new(CODE_BLOCK_NT);
+			Node::set_control_structure_used(otherwise_node, otherwise_CSP);
 			/* extract just the word "otherwise" */
-			ParseTree::set_text(otherwise_node, Wordings::one_word(Wordings::first_wn(ParseTree::get_text(p))));
+			Node::set_text(otherwise_node, Wordings::one_word(Wordings::first_wn(Node::get_text(p))));
 			if (prev_p) prev_p->next = otherwise_node; else block->down = otherwise_node;
 
 			/* move p to below the otherwise node */
 			otherwise_node->down = p;
-			ParseTree::set_type(p, INVOCATION_LIST_NT);
-			ParseTree::set_control_structure_used(p, if_CSP);
+			Node::set_type(p, INVOCATION_LIST_NT);
+			Node::set_control_structure_used(p, if_CSP);
 			p->next = NULL;
-			ParseTree::set_text(p, Wordings::trim_first_word(ParseTree::get_text(p)));
+			Node::set_text(p, Wordings::trim_first_word(Node::get_text(p)));
 
 			/* put the code previously under p under a new code block node under p */
-			p->down = ParseTree::new(CODE_BLOCK_NT);
+			p->down = Node::new(CODE_BLOCK_NT);
 			p->down->down = former_contents;
 
 			/* any further "otherwise if" or "otherwise" nodes after p follow */
@@ -964,7 +964,7 @@ We remove them.
 @ =
 void Sentences::RuleSubtrees::purge_end_markers(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
-		if (ParseTree::get_end_control_structure_used(p)) {
+		if (Node::get_end_control_structure_used(p)) {
 			if (prev_p) prev_p->next = p->next; else block->down = p->next;
 		}
 		if (p->down) Sentences::RuleSubtrees::purge_end_markers(p);
@@ -980,9 +980,9 @@ can now be removed, too.
 @ =
 void Sentences::RuleSubtrees::purge_begin_markers(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
-		if (ParseTree::get_control_structure_used(p))
-			if (<phrase-beginning-block>(ParseTree::get_text(p)))
-				ParseTree::set_text(p, GET_RW(<phrase-beginning-block>, 1));
+		if (Node::get_control_structure_used(p))
+			if (<phrase-beginning-block>(Node::get_text(p)))
+				Node::set_text(p, GET_RW(<phrase-beginning-block>, 1));
 		if (p->down) Sentences::RuleSubtrees::purge_begin_markers(p);
 	}
 }
@@ -1000,11 +1000,11 @@ annotations to them.
 @ =
 void Sentences::RuleSubtrees::insert_cb_nodes(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
-		if (ControlStructures::opens_block(ParseTree::get_control_structure_used(p))) {
-			parse_node *blank_cb_node = ParseTree::new(CODE_BLOCK_NT);
-			ParseTree::set_control_structure_used(blank_cb_node,
-				ParseTree::get_control_structure_used(p));
-			ParseTree::set_control_structure_used(p, NULL);
+		if (ControlStructures::opens_block(Node::get_control_structure_used(p))) {
+			parse_node *blank_cb_node = Node::new(CODE_BLOCK_NT);
+			Node::set_control_structure_used(blank_cb_node,
+				Node::get_control_structure_used(p));
+			Node::set_control_structure_used(p, NULL);
 			blank_cb_node->down = p;
 			blank_cb_node->next = p->next;
 			p->next = p->down;
@@ -1024,10 +1024,10 @@ void Sentences::RuleSubtrees::insert_cb_nodes(parse_node *block) {
 @ =
 void Sentences::RuleSubtrees::read_instead_markers(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
-		if (<instead-keyword>(ParseTree::get_text(p))) {
-			ParseTree::set_text(p, GET_RW(<instead-keyword>, 1));
-			parse_node *instead_node = ParseTree::new(CODE_BLOCK_NT);
-			ParseTree::set_control_structure_used(instead_node, instead_CSP);
+		if (<instead-keyword>(Node::get_text(p))) {
+			Node::set_text(p, GET_RW(<instead-keyword>, 1));
+			parse_node *instead_node = Node::new(CODE_BLOCK_NT);
+			Node::set_control_structure_used(instead_node, instead_CSP);
 			instead_node->next = p->next;
 			p->next = instead_node;
 		}
@@ -1044,17 +1044,17 @@ void Sentences::RuleSubtrees::read_instead_markers(parse_node *block) {
 void Sentences::RuleSubtrees::break_up_says(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
 		int sf = NO_SIGF;
-		wording W = ParseTree::get_text(p);
-		if (ParseTree::int_annotation(p, from_text_substitution_ANNOT)) sf = SAY_SIGF;
+		wording W = Node::get_text(p);
+		if (Annotations::read_int(p, from_text_substitution_ANNOT)) sf = SAY_SIGF;
 		else if (<other-significant-phrase>(W)) {
 			sf = <<r>>; W = GET_RW(<other-significant-phrase>, 1);
 		}
 		switch (sf) {
 			case SAY_SIGF: {
-				parse_node *blank_cb_node = ParseTree::new(CODE_BLOCK_NT);
-				ParseTree::set_control_structure_used(blank_cb_node, say_CSP);
+				parse_node *blank_cb_node = Node::new(CODE_BLOCK_NT);
+				Node::set_control_structure_used(blank_cb_node, say_CSP);
 				blank_cb_node->next = p->next;
-				ParseTree::set_text(blank_cb_node, ParseTree::get_text(p));
+				Node::set_text(blank_cb_node, Node::get_text(p));
 				p->next = NULL;
 				if (prev_p) prev_p->next = blank_cb_node; else block->down = blank_cb_node;
 
@@ -1064,9 +1064,9 @@ void Sentences::RuleSubtrees::break_up_says(parse_node *block) {
 				break;
 			}
 			case NOW_SIGF: {
-				ParseTree::set_control_structure_used(p, now_CSP);
-				parse_node *cond_node = ParseTree::new(CONDITION_CONTEXT_NT);
-				ParseTree::set_text(cond_node, W);
+				Node::set_control_structure_used(p, now_CSP);
+				parse_node *cond_node = Node::new(CONDITION_CONTEXT_NT);
+				Node::set_text(cond_node, W);
 				p->down = cond_node;
 				break;
 			}
@@ -1095,9 +1095,9 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 			if (<verify-expanded-text-substitution>(A))
 				Sentences::RuleSubtrees::unroll_says(cb_node, A, depth+1);
 		} else {
-			parse_node *say_term_node = ParseTree::new(INVOCATION_LIST_SAY_NT);
-			ParseTree::set_text(say_term_node, W);
-			ParseTree::graft(Task::syntax_tree(), say_term_node, cb_node);
+			parse_node *say_term_node = Node::new(INVOCATION_LIST_SAY_NT);
+			Node::set_text(say_term_node, W);
+			SyntaxTree::graft(Task::syntax_tree(), say_term_node, cb_node);
 		}
 	}
 
@@ -1221,10 +1221,10 @@ match a given begin node.
 
 =
 parse_node *Sentences::RuleSubtrees::end_node(parse_node *opening) {
-	parse_node *implicit_end = ParseTree::new(INVOCATION_LIST_NT);
-	ParseTree::set_end_control_structure_used(implicit_end,
-		ParseTree::get_control_structure_used(opening));
-	ParseTree::annotate_int(implicit_end, indentation_level_ANNOT,
-		ParseTree::int_annotation(opening, indentation_level_ANNOT));
+	parse_node *implicit_end = Node::new(INVOCATION_LIST_NT);
+	Node::set_end_control_structure_used(implicit_end,
+		Node::get_control_structure_used(opening));
+	Annotations::write_int(implicit_end, indentation_level_ANNOT,
+		Annotations::read_int(opening, indentation_level_ANNOT));
 	return implicit_end;
 }

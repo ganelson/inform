@@ -334,12 +334,12 @@ void Calculus::Schemas::sch_emit_parameter(pcalc_term *pt,
 			Kinds::RunTime::emit_cast_call(pt->term_checked_as_kind, cast_to, &down);
 			pcalc_term cpt = *pt;
 			if ((dereference_property) &&
-				(ParseTree::is(cpt.constant, CONSTANT_NT))) {
+				(Node::is(cpt.constant, CONSTANT_NT))) {
 				kind *K = Specifications::to_kind(cpt.constant);
 				if (Kinds::get_construct(K) == CON_property)
 					cpt = Calculus::Terms::new_constant(
 						Lvalues::new_PROPERTY_VALUE(
-							ParseTree::duplicate(cpt.constant),
+							Node::duplicate(cpt.constant),
 							Rvalues::new_self_object_constant()));
 			}
 			Calculus::Terms::emit(cpt);

@@ -51,17 +51,17 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 }
 
 inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_name, inter_symbol *var_kind, inter_t ID, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inter::Node::fill_3(IBM, LOCAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_name), var_kind?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_kind)):0, eloc, level);
-	Inter::Node::attach_comment(P, ID);
+	inter_tree_node *P = Inode::fill_3(IBM, LOCAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_name), var_kind?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, var_kind)):0, eloc, level);
+	Inode::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
 void Inter::Local::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_LOCAL_IFR) { *E = Inter::Node::error(P, I"extent wrong", NULL); return; }
+	if (P->W.extent != EXTENT_LOCAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbols_table *locals = Inter::Packages::scope(owner);
-	if (locals == NULL) { *E = Inter::Node::error(P, I"no symbols table in function", NULL); return; }
+	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::local_defn(P, DEFN_LOCAL_IFLD, locals); if (*E) return;
 	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_LOCAL_IFLD], KIND_IST); if (*E) return;
 }
@@ -73,7 +73,7 @@ void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 	if (var_name) {
 		WRITE("local %S %S", var_name->symbol_name, var_kind->symbol_name);
 		Inter::Symbols::write_annotations(OUT, P, var_name);
-	} else { *E = Inter::Node::error(P, I"cannot write local", NULL); return; }
+	} else { *E = Inode::error(P, I"cannot write local", NULL); return; }
 }
 
 inter_symbol *Inter::Local::kind_of(inter_symbol *con_symbol) {

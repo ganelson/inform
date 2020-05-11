@@ -99,7 +99,7 @@ void PL::Bibliographic::bibliographic_data(parse_node *PN) {
 		if (<s-value>(TW)) the_title = <<rp>>;
 		else the_title = Specifications::new_UNKNOWN(TW);
 		Assertions::PropertyKnowledge::initialise_global_variable(story_title_VAR, the_title);
-		Strings::TextLiterals::suppress_quote_expansion(ParseTree::get_text(the_title));
+		Strings::TextLiterals::suppress_quote_expansion(Node::get_text(the_title));
 
 		if (Str::len(edn->work->author_name) > 0) {
 			parse_node *the_author;
@@ -120,10 +120,10 @@ int PL::Bibliographic::story_author_is(text_stream *p) {
 	if ((story_author_VAR) &&
 		(NonlocalVariables::has_initial_value_set(story_author_VAR))) {
 		parse_node *spec = NonlocalVariables::get_initial_value(story_author_VAR);
-		ParseTree::set_kind_of_value(spec, K_text);
+		Node::set_kind_of_value(spec, K_text);
 		int result = FALSE;
 		TEMPORARY_TEXT(TEMP);
-		wording W = ParseTree::get_text(spec);
+		wording W = Node::get_text(spec);
 		int w1 = Wordings::first_wn(W);
 		PL::Bibliographic::compile_bibliographic_text(TEMP, Lexer::word_text(w1));
 		if (Str::eq(TEMP, p)) result = TRUE;
@@ -173,7 +173,7 @@ int PL::Bibliographic::episode_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The story is episode 2 of ..." */
 		case ACCEPT_SMFT:
 			if ((<episode-sentence-subject>(SW)) && (<episode-sentence-object>(OW))) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				if (<<r>> >= 0) {
 					episode_number = <<r>>;
 					Word::dequote(<<series>>);

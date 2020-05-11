@@ -35,7 +35,7 @@ relationship as well as the noun).
 sentence_handler ASSERT_SH_handler = { SENTENCE_NT, ASSERT_VB, 0, Assertions::Copular::assertion };
 
 void Assertions::Copular::assertion(parse_node *pv) {
-	if (ParseTree::int_annotation(pv->down, possessive_verb_ANNOT))
+	if (Annotations::read_int(pv->down, possessive_verb_ANNOT))
 		Assertions::Copular::to_have(pv);
 	else
 		Assertions::Copular::to_be(pv);
@@ -44,9 +44,9 @@ void Assertions::Copular::assertion(parse_node *pv) {
 void Assertions::Copular::to_be(parse_node *pv) {
 	parse_node *px = pv->down->next;
 	parse_node *py = pv->down->next->next;
-	if ((Wordings::length(ParseTree::get_text(px)) > 1)
+	if ((Wordings::length(Node::get_text(px)) > 1)
 		&& (Vocabulary::test_flags(
-			Wordings::first_wn(ParseTree::get_text(px)), TEXT_MC+TEXTWITHSUBS_MC))) {
+			Wordings::first_wn(Node::get_text(px)), TEXT_MC+TEXTWITHSUBS_MC))) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TextNotClosing),
 			"it looks as if perhaps you did not intend that to read as a "
 			"single sentence",
@@ -81,19 +81,19 @@ void Assertions::Copular::to_have(parse_node *pv) {
 
 	@<Reject two ungrammatical forms of "to have"@>;
 
-	if (ParseTree::get_type(py) == CALLED_NT)
+	if (Node::get_type(py) == CALLED_NT)
 		@<Handle "X has an A called B"@>
-	else if (<k-kind>(ParseTree::get_text(py)))
+	else if (<k-kind>(Node::get_text(py)))
 		@<Handle "X has a V" where V is a kind of value which is also a property@>
 	else
 		@<Handle "X has P" where P is a list of properties@>;
 
-	ParseTree::annotate_int(pv->down, possessive_verb_ANNOT, FALSE);
+	Annotations::write_int(pv->down, possessive_verb_ANNOT, FALSE);
 	Assertions::Copular::to_be(pv); /* and start again as if it had never been possessive */
 }
 
 @<Reject two ungrammatical forms of "to have"@> =
-	if (ParseTree::get_type(py) == X_OF_Y_NT) {
+	if (Node::get_type(py) == X_OF_Y_NT) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousOf),
 			"the 'of' here appears superfluous",
 			"assuming the sentence aims to give a property value of something. "
@@ -103,7 +103,7 @@ void Assertions::Copular::to_have(parse_node *pv) {
 			"of 10'.)");
 		return;
 	}
-	if (ParseTree::get_type(py) == WITH_NT) {
+	if (Node::get_type(py) == WITH_NT) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousWith),
 			"the 'has ... with' here appears to be a mixture of two ways to "
 			"give something properties",
@@ -116,7 +116,7 @@ void Assertions::Copular::to_have(parse_node *pv) {
 as a |PROPERTYCALLED_NT| subtree and hang beneath an |ALLOWED_NT| node.
 
 @<Handle "X has an A called B"@> =
-	if (Wordings::match(ParseTree::get_text(py->down->next), ParseTree::get_text(py->down))) {
+	if (Wordings::match(Node::get_text(py->down->next), Node::get_text(py->down))) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousCalled),
 			"'called' should be used only when the name is different from the kind",
 			"so this sentence should be simplified. For example, 'A door has a "
@@ -125,21 +125,21 @@ as a |PROPERTYCALLED_NT| subtree and hang beneath an |ALLOWED_NT| node.
 			"a number called the street number'.");
 		return;
 	} else {
-		ParseTree::set_type(py, PROPERTYCALLED_NT);
-		if (ParseTree::get_type(py->down) == AND_NT) {
-			int L = ParseTree::left_edge_of(py->down),
-				R = ParseTree::right_edge_of(py->down);
+		Node::set_type(py, PROPERTYCALLED_NT);
+		if (Node::get_type(py->down) == AND_NT) {
+			int L = Node::left_edge_of(py->down),
+				R = Node::right_edge_of(py->down);
 			<nounphrase-articled>(Wordings::new(L, R));
 			parse_node *pn = <<rp>>;
 			pn->next = py->down->next;
 			py->down = pn;
 			LOG("Thus $T", py);
 		}
-		px->next = ParseTree::new(ALLOWED_NT);
+		px->next = Node::new(ALLOWED_NT);
 		px->next->down = py;
-		int prohibited = <prohibited-property-owners>(ParseTree::get_text(px));
+		int prohibited = <prohibited-property-owners>(Node::get_text(px));
 		if (!prohibited) {
-			<nounphrase-articled-list>(ParseTree::get_text(py->down->next));
+			<nounphrase-articled-list>(Node::get_text(py->down->next));
 			py->down->next = <<rp>>;
 		}
 	}
@@ -153,7 +153,7 @@ node. This is for something like
 where "colour" is the name of both a kind of value and (soon) a property.
 
 @<Handle "X has a V" where V is a kind of value which is also a property@> =
-	px->next = ParseTree::new(ALLOWED_NT);
+	px->next = Node::new(ALLOWED_NT);
 	px->next->down = py;
 	py = px->next;
 
@@ -161,7 +161,7 @@ where "colour" is the name of both a kind of value and (soon) a property.
 be "The player has carrying capacity 7."
 
 @<Handle "X has P" where P is a list of properties@> =
-	ParseTree::set_type(py, PROPERTY_LIST_NT);
+	Node::set_type(py, PROPERTY_LIST_NT);
 
 @ In either case, then, we end up going through |Assertions::Copular::to_be| and then to the
 following routine, which asserts that subtree |px| "is" |py|.
@@ -185,7 +185,7 @@ In traverse 2, only (c) takes place; (a) and (b) are one-time events.
 void Assertions::Copular::make_assertion(parse_node *px, parse_node *py) {
 	if (traverse == 1) {
 		int pc = problem_count;
-		if (!(<s-existential-np>(ParseTree::get_text(px))))
+		if (!(<s-existential-np>(Node::get_text(px))))
 			Assertions::Refiner::refine(px, ALLOW_CREATION);
 		Assertions::Refiner::refine(py, ALLOW_CREATION);
 		if (problem_count > pc) return;
@@ -193,7 +193,7 @@ void Assertions::Copular::make_assertion(parse_node *px, parse_node *py) {
 	}
 
 	if (trace_sentences) LOG("$T", current_sentence);
-	if (<s-existential-np>(ParseTree::get_text(px))) {
+	if (<s-existential-np>(Node::get_text(px))) {
 		if (traverse == 1) Assertions::Copular::make_existential_assertion(py);
 		px = py;
 	} else {
@@ -220,38 +220,38 @@ conclusion we would have reached.
 	inference_subject *infsx = NULL, *infsy = NULL, *infsy_full = NULL;
 	infsx = Assertions::Copular::discussed_at_node(px);
 	infsy_full = Assertions::Copular::discussed_at_node(py);
-	if (ParseTree::get_type(py) != KIND_NT) infsy = ParseTree::get_subject(py);
+	if (Node::get_type(py) != KIND_NT) infsy = Node::get_subject(py);
 	Assertions::Traverse::change_discussion_topic(infsx, infsy, infsy_full);
-	if (ParseTree::get_type(px) == AND_NT) Assertions::Traverse::subject_of_discussion_a_list();
-	if (ParseTree::int_annotation(current_sentence, clears_pronouns_ANNOT))
+	if (Node::get_type(px) == AND_NT) Assertions::Traverse::subject_of_discussion_a_list();
+	if (Annotations::read_int(current_sentence, clears_pronouns_ANNOT))
 		Assertions::Traverse::new_discussion();
 
 @ =
 inference_subject *Assertions::Copular::discussed_at_node(parse_node *pn) {
 	inference_subject *infs = NULL;
-	if (ParseTree::get_type(pn) != KIND_NT) infs = ParseTree::get_subject(pn);
-	if ((ParseTree::get_type(pn) == RELATIONSHIP_NT) && (pn->down) &&
-		(ParseTree::get_type(pn->down) == PROPER_NOUN_NT))
-		infs = ParseTree::get_subject(pn->down);
-	if ((ParseTree::get_type(pn) == WITH_NT) && (pn->down) &&
-		(ParseTree::get_type(pn->down) == PROPER_NOUN_NT))
-		infs = ParseTree::get_subject(pn->down);
+	if (Node::get_type(pn) != KIND_NT) infs = Node::get_subject(pn);
+	if ((Node::get_type(pn) == RELATIONSHIP_NT) && (pn->down) &&
+		(Node::get_type(pn->down) == PROPER_NOUN_NT))
+		infs = Node::get_subject(pn->down);
+	if ((Node::get_type(pn) == WITH_NT) && (pn->down) &&
+		(Node::get_type(pn->down) == PROPER_NOUN_NT))
+		infs = Node::get_subject(pn->down);
 	return infs;
 }
 
 @ =
 void Assertions::Copular::make_existential_assertion(parse_node *py) {
-	if (ParseTree::get_type(py) == WITH_NT) {
+	if (Node::get_type(py) == WITH_NT) {
 		Assertions::Copular::make_existential_assertion(py->down); return;
 	}
-	if (ParseTree::get_type(py) == AND_NT) {
+	if (Node::get_type(py) == AND_NT) {
 		Assertions::Copular::make_existential_assertion(py->down);
 		Assertions::Copular::make_existential_assertion(py->down->next);
 		return;
 	}
-	if (ParseTree::get_type(py) == COMMON_NOUN_NT) {
-		if ((InferenceSubjects::is_a_kind_of_object(ParseTree::get_subject(py))) ||
-			(Kinds::Compare::eq(K_object, InferenceSubjects::as_kind(ParseTree::get_subject(py)))))
+	if (Node::get_type(py) == COMMON_NOUN_NT) {
+		if ((InferenceSubjects::is_a_kind_of_object(Node::get_subject(py))) ||
+			(Kinds::Compare::eq(K_object, InferenceSubjects::as_kind(Node::get_subject(py)))))
 			Assertions::Creator::convert_instance_to_nounphrase(py, NULL);
 		else
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ThereIsVague),

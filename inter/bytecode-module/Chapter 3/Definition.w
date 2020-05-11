@@ -147,7 +147,7 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_anno
 	if (IA.annot_value != 0) {
 		if (IA.annot->textual_flag) {
 			WRITE("=\"");
-			Inter::Constant::write_text(OUT, Inter::Node::ID_to_text(F, IA.annot_value));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, IA.annot_value));
 			WRITE("\"");
 		} else {
 			WRITE("=%d", IA.annot_value);
@@ -185,11 +185,11 @@ inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inte
 }
 
 inter_error_message *Inter::Defn::get_construct(inter_tree_node *P, inter_construct **to) {
-	if (P == NULL) return Inter::Node::error(P, I"invalid frame", NULL);
+	if (P == NULL) return Inode::error(P, I"invalid frame", NULL);
 	if ((P->W.data[ID_IFLD] == INVALID_IST) || (P->W.data[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
-		return Inter::Node::error(P, I"no such construct", NULL);
+		return Inode::error(P, I"no such construct", NULL);
 	inter_construct *IC = IC_lookup[P->W.data[ID_IFLD]];
-	if (IC == NULL) return Inter::Node::error(P, I"bad construct", NULL);
+	if (IC == NULL) return Inode::error(P, I"bad construct", NULL);
 	if (to) *to = IC;
 	return NULL;
 }
@@ -205,10 +205,10 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 	if (E) return E;
 	for (inter_t L=0; L<P->W.data[LEVEL_IFLD]; L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
-	inter_t ID = Inter::Node::get_comment(P);
+	inter_t ID = Inode::get_comment(P);
 	if (ID != 0) {
 		if (P->W.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
-		WRITE("# %S", Inter::Node::ID_to_text(P, ID));
+		WRITE("# %S", Inode::ID_to_text(P, ID));
 	}
 	WRITE("\n");
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) Inter::Package::write_symbols(OUT, P);
@@ -325,7 +325,7 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", Inter::Packages::name(pack)); break;
 			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", Inter::Packages::name(pack)); break;
 		}
-		return Inter::Node::error(P, M, NULL);
+		return Inode::error(P, M, NULL);
 	}
 	E = NULL;
 	VOID_METHOD_CALL(IC, VERIFY_INTER_CHILDREN_MTID, P, &E);

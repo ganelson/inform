@@ -173,7 +173,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 
 @ =
 void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spec) {
-	time_period duration = *(ParseTree::get_condition_tense(spec));
+	time_period duration = *(Node::get_condition_tense(spec));
 	spec = spec->down;
 
 	LOGIF(TIME_PERIODS,
@@ -184,7 +184,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 
 	#ifdef IF_MODULE
 	action_pattern *ap = NULL;
-	if (ParseTree::is(spec, TEST_VALUE_NT)) ap = Rvalues::to_action_pattern(spec->down);
+	if (Node::is(spec, TEST_VALUE_NT)) ap = Rvalues::to_action_pattern(spec->down);
 	if ((ap) && (duration.tense != IS_TENSE)) {
 		if ((duration.units == TIMES_UNIT) && (duration.length >= 2)) {
 			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NoMoreRonNewcombMoment),

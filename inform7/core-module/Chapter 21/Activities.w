@@ -95,7 +95,7 @@ int Activities::new_activity_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Description is an activity." */
 		case ACCEPT_SMFT:
 			if (<bare-activity-sentence-object>(OW)) {
-				ParseTree::annotate_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
+				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<nounphrase>(SW);
 				V->next = <<rp>>;
 				<nounphrase>(OW);
@@ -105,7 +105,7 @@ int Activities::new_activity_SMF(int task, parse_node *V, wording *NPs) {
 			break;
 		case TRAVERSE1_SMFT:
 			Activities::new(Kinds::unary_construction(CON_activity, K_nil),
-				ParseTree::get_text(V->next));
+				Node::get_text(V->next));
 			break;
 	}
 	return FALSE;
@@ -198,7 +198,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 
 	if (<s-value>(av->name)) spec = <<rp>>;
 	else spec = Specifications::new_UNKNOWN(av->name);
-	if (!(ParseTree::is(spec, UNKNOWN_NT)) && (!(ParseTree::is(spec, PROPERTY_VALUE_NT)))) {
+	if (!(Node::is(spec, UNKNOWN_NT)) && (!(Node::is(spec, PROPERTY_VALUE_NT)))) {
 		LOG("%W means $P\n", av->name, spec);
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadActivityName),
 			"this already has a meaning",
@@ -280,13 +280,13 @@ Any new activity variable name is vetted by being run through this:
 @ =
 void Activities::add_variable(activity *av, parse_node *cnode) {
 	parse_node *spec;
-	if ((ParseTree::get_type(cnode) != PROPERTYCALLED_NT) &&
-		(ParseTree::get_type(cnode) != PROPER_NOUN_NT)) {
+	if ((Node::get_type(cnode) != PROPERTYCALLED_NT) &&
+		(Node::get_type(cnode) != PROPER_NOUN_NT)) {
 		LOG("Tree: $T\n", cnode);
 		internal_error("ac_add_variable on a node of unknown type");
 	}
 
-	if (ParseTree::get_type(cnode) == PROPER_NOUN_NT) {
+	if (Node::get_type(cnode) == PROPER_NOUN_NT) {
 		Problems::quote_source(1, current_sentence);
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVariableNameless));
 		Problems::issue_problem_segment(
@@ -301,9 +301,9 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 	}
 
 	spec = NULL;
-	if (<s-type-expression>(ParseTree::get_text(cnode->down))) spec = <<rp>>;
+	if (<s-type-expression>(Node::get_text(cnode->down))) spec = <<rp>>;
 
-	if (<activity-variable-name>(ParseTree::get_text(cnode->down->next))) {
+	if (<activity-variable-name>(Node::get_text(cnode->down->next))) {
 		if (<<r>> == NOT_APPLICABLE) return;
 	}
 
@@ -313,7 +313,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 
 		} else {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+			Problems::quote_wording(2, Node::get_text(cnode->down));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarOverspecific));
 			Problems::issue_problem_segment(
 				"You wrote %1, which I am reading as a request to make "
@@ -331,7 +331,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 	if (!(Specifications::is_kind_like(spec))) {
 		LOG("Offending SP: $T", spec);
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+		Problems::quote_wording(2, Node::get_text(cnode->down));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarUnknownKOV));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' is not the name of a kind of "
@@ -341,7 +341,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 	}
 	if (Kinds::Compare::eq(Specifications::to_kind(spec), K_value)) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, ParseTree::get_text(cnode->down));
+		Problems::quote_wording(2, Node::get_text(cnode->down));
 		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarValue));
 		Problems::issue_problem_segment(
 			"You wrote %1, but saying that a variable is a 'value' "
@@ -352,7 +352,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 		Problems::issue_problem_end();
 		return;
 	}
-	StackedVariables::add_empty(av->owned_by_av, ParseTree::get_text(cnode->down->next),
+	StackedVariables::add_empty(av->owned_by_av, Node::get_text(cnode->down->next),
 		Specifications::to_kind(spec));
 }
 
@@ -682,10 +682,10 @@ void Activities::index_cross_references(OUTPUT_STREAM, activity *av) {
 	activity_crossref *acr;
 	for (acr = av->cross_references; acr; acr = acr->next) {
 		phrase *ph = acr->rule_dependent;
-		if ((ph->declaration_node) && (Wordings::nonempty(ParseTree::get_text(ph->declaration_node)))) {
+		if ((ph->declaration_node) && (Wordings::nonempty(Node::get_text(ph->declaration_node)))) {
 			HTML::open_indented_p(OUT, 2, "tight");
-			WRITE("NB: %W", ParseTree::get_text(ph->declaration_node));
-			Index::link(OUT, Wordings::first_wn(ParseTree::get_text(ph->declaration_node)));
+			WRITE("NB: %W", Node::get_text(ph->declaration_node));
+			Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
 			HTML_CLOSE("p");
 		}
 	}

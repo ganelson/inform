@@ -128,7 +128,7 @@ with it.
 pcalc_prop *Calculus::Propositions::Abstract::from_property_list(parse_node *p, kind *K) {
 	pcalc_prop *prop = NULL;
 	if (p) {
-		switch(ParseTree::get_type(p)) {
+		switch(Node::get_type(p)) {
 			case AND_NT:
 				for (p = p->down; p; p = p->next)
 					prop = Calculus::Propositions::conjoin(prop, Calculus::Propositions::Abstract::from_property_list(p, NULL));
@@ -164,7 +164,7 @@ parse the text to find what which property is referred to.
 	if (Wordings::nonempty(VW)) { /* a value is supplied... */
 		if (Properties::is_either_or(prn)) {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(p));
+			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_property(3, prn);
 			Problems::quote_wording(4, VW);
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_WithEitherOrValue));
@@ -184,7 +184,7 @@ parse the text to find what which property is referred to.
 	} else { /* no value is supplied... */
 		if (Properties::is_either_or(prn) == FALSE) {
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, ParseTree::get_text(p));
+			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_property(3, prn);
 			Problems::quote_kind(4, Properties::Valued::kind(prn));
 			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_WithValuelessValue));
@@ -211,7 +211,7 @@ that the rest is property name; and otherwise
 (iii) we assume the property name is one word only.
 
 @<Divide the property list entry into property name and value text@> =
-	wording W = Articles::remove_the(ParseTree::get_text(p));
+	wording W = Articles::remove_the(Node::get_text(p));
 	if (Wordings::empty(W)) {
 		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this looked to me as if it might be trying to create something "
@@ -252,12 +252,12 @@ which is by now inside the "creation proposition".
 
 @<Conjoin atoms to assert from an adjective node@> =
 	int negate_me = FALSE;
-	if (ParseTree::int_annotation(p, negated_boolean_ANNOT)) negate_me = TRUE;
-	if (ParseTree::get_aph(p) == NULL)
+	if (Annotations::read_int(p, negated_boolean_ANNOT)) negate_me = TRUE;
+	if (Node::get_aph(p) == NULL)
 		internal_error("Bogus adjective at Calculus::Propositions::Abstract::from_property_list");
 
-	if (ParseTree::get_creation_proposition(p))
-		prop = Calculus::Propositions::conjoin(prop, ParseTree::get_creation_proposition(p));
+	if (Node::get_creation_proposition(p))
+		prop = Calculus::Propositions::conjoin(prop, Node::get_creation_proposition(p));
 	if (negate_me) prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::new(NEGATION_OPEN_ATOM));
-	prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::unary_PREDICATE_from_aph(ParseTree::get_aph(p), FALSE));
+	prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::unary_PREDICATE_from_aph(Node::get_aph(p), FALSE));
 	if (negate_me) prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::new(NEGATION_CLOSE_ATOM));

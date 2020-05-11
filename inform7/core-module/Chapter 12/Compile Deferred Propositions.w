@@ -123,7 +123,7 @@ proposition would be wasteful of space in the Z-machine.
 @<Compile the constant origin text for run-time problem use@> =
 	TEMPORARY_TEXT(COTT);
 	if (pdef->deferred_from)
-		WRITE_TO(COTT, "%~W", ParseTree::get_text(pdef->deferred_from));
+		WRITE_TO(COTT, "%~W", Node::get_text(pdef->deferred_from));
 	else
 		WRITE_TO(COTT, "not sure where this came from");
 	Emit::named_string_constant(pdef->rtp_iname, COTT);

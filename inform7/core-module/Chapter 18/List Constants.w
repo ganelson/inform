@@ -135,7 +135,7 @@ kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
 	llist_entry *lle;
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry) {
 		parse_node *spec = lle->llist_entry_value;
-		if (!ParseTree::is(spec, UNKNOWN_NT)) {
+		if (!Node::is(spec, UNKNOWN_NT)) {
 			if (Conditions::is_TEST_ACTION(spec))
 				Dash::check_value_silently(spec, K_stored_action);
 			else
@@ -154,11 +154,11 @@ kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
 }
 
 @<Work out the entry kind E@> =
-	if (ParseTree::is(spec, UNKNOWN_NT)) {
+	if (Node::is(spec, UNKNOWN_NT)) {
 		if (issue_problems) @<Issue a bad list entry problem@>;
 		ll->kinds_known_to_be_inconsistent = TRUE;
 		E = K;
-	} else if ((ParseTree::is(spec, CONSTANT_NT) == FALSE) &&
+	} else if ((Node::is(spec, CONSTANT_NT) == FALSE) &&
 		(Lvalues::is_constant_NONLOCAL_VARIABLE(spec) == FALSE)) {
 		if (issue_problems) @<Issue a nonconstant list entry problem@>;
 		ll->kinds_known_to_be_inconsistent = TRUE;
@@ -187,7 +187,7 @@ incomparable, and "thing" being the max of "person" and "door").
 
 @<Issue a bad list entry problem@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(spec));
+	Problems::quote_wording(2, Node::get_text(spec));
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadConstantListEntry));
 	Problems::issue_problem_segment(
 		"The constant list %1 contains an entry '%2' which isn't any "
@@ -199,7 +199,7 @@ incomparable, and "thing" being the max of "person" and "door").
 
 @<Issue a nonconstant list entry problem@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(spec));
+	Problems::quote_wording(2, Node::get_text(spec));
 	Problems::quote_spec(3, spec);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonconstantConstantListEntry));
 	Problems::issue_problem_segment(
@@ -210,7 +210,7 @@ incomparable, and "thing" being the max of "person" and "door").
 
 @<Issue a list entry kind mismatch problem@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, ParseTree::get_text(spec));
+	Problems::quote_wording(2, Node::get_text(spec));
 	Problems::quote_kind(3, E);
 	Problems::quote_kind(4, previous_K);
 	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_IncompatibleConstantListEntry));

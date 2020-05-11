@@ -146,17 +146,17 @@ used to define new kinds; in this case it doesn't matter what we write, but
 
 @<Write a cell value for the initial contents of this cell@> =
 	current_sentence = cell;
-	if (ParseTree::int_annotation(cell, table_cell_unspecified_ANNOT)) {
+	if (Annotations::read_int(cell, table_cell_unspecified_ANNOT)) {
 		@<Write a cell value for a blank cell@>;
 	} else {
 		#ifdef IF_MODULE
 		if (bits & TB_COLUMN_TOPIC) {
 			inter_t v1 = 0, v2 = 0;
-			PL::Parsing::compile_understanding(&v1, &v2, ParseTree::get_text(cell), TRUE);
+			PL::Parsing::compile_understanding(&v1, &v2, Node::get_text(cell), TRUE);
 			Emit::array_generic_entry(v1, v2);
 		} else {
 		#endif
-			parse_node *val = ParseTree::get_evaluation(cell);
+			parse_node *val = Node::get_evaluation(cell);
 			if (Specifications::is_kind_like(val)) Emit::array_numeric_entry(0);
 			else if (val == NULL) internal_error("Valueless cell");
 			else Specifications::Compiler::emit_constant_to_kind(val, K);
@@ -215,7 +215,7 @@ case.)
 @<Compile blank bits for entries from the source text@> =
 	parse_node *cell;
 	for (cell = t->columns[j].entries->down; cell; cell = cell->next) {
-		if ((ParseTree::int_annotation(cell, table_cell_unspecified_ANNOT))
+		if ((Annotations::read_int(cell, table_cell_unspecified_ANNOT))
 			&& (t->fill_in_blanks == FALSE))
 			byte_so_far += current_bit;
 		current_bit = current_bit*2;
@@ -289,7 +289,7 @@ void Tables::Support::compile_print_table_names(void) {
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
 						TEMPORARY_TEXT(S);
-						WRITE_TO(S, "%+W", ParseTree::get_text(t->headline_fragment));
+						WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
 						Produce::val_text(Emit::tree(), S);
 						DISCARD_TEXT(S);
 					Produce::up(Emit::tree());

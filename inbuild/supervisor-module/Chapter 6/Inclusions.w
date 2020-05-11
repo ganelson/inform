@@ -26,14 +26,14 @@ void Inclusions::traverse(inbuild_copy *C, parse_node_tree *T) {
 	do {
 		includes_cleared = TRUE;
 		if (LinkedLists::len(C->errors_reading_source_text) > no_copy_errors) break;
-		ParseTree::traverse_ppni(T, Inclusions::visit, &includes_cleared);
+		SyntaxTree::traverse_headingwise(T, Inclusions::visit, &includes_cleared);
 	} while (includes_cleared == FALSE);
 	inclusions_errors_to = NULL;
 }
 
 build_vertex *Inclusions::spawned_from_vertex(parse_node *H0) {
 	if (H0) {
-		inform_extension *ext = ParseTree::get_inclusion_of_extension(H0);
+		inform_extension *ext = Node::get_inclusion_of_extension(H0);
 		if (ext) return ext->as_copy->vertex;
 	}
 	if (inclusions_errors_to == NULL) internal_error("no H0 ext or inclusion");
@@ -42,7 +42,7 @@ build_vertex *Inclusions::spawned_from_vertex(parse_node *H0) {
 
 void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
 	int *includes_cleared) {
-	if (ParseTree::get_type(pn) == INCLUDE_NT) {
+	if (Node::get_type(pn) == INCLUDE_NT) {
 		@<Replace INCLUDE node with sentence nodes for any extensions required@>;
 		*includes_cleared = FALSE;
 	}
@@ -51,21 +51,21 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
 @ The INCLUDE node becomes an INCLUSION, which in turn contains the extension's code.
 
 @<Replace INCLUDE node with sentence nodes for any extensions required@> =
-	if (!(<structural-sentence>(ParseTree::get_text(pn))))
+	if (!(<structural-sentence>(Node::get_text(pn))))
 		internal_error("malformed INCLUDE");
 	wording title = GET_RW(<structural-sentence>, 1);
 	wording author = GET_RW(<structural-sentence>, 2);
-	ParseTree::set_type(pn, INCLUSION_NT); pn->down = NULL;
-	int l = ParseTree::push_attachment_point(T, pn);
+	Node::set_type(pn, INCLUSION_NT); pn->down = NULL;
+	int l = SyntaxTree::push_bud(T, pn);
 	inform_extension *E = Inclusions::fulfill_request_to_include_extension(last_H0,
 		title, author, inclusions_for_project);
-	ParseTree::pop_attachment_point(T, l);
+	SyntaxTree::pop_bud(T, l);
 	if (E) {
 		for (parse_node *c = pn->down; c; c = c->next)
-			if (ParseTree::get_type(c) == HEADING_NT)
-				ParseTree::set_inclusion_of_extension(c, E);
+			if (Node::get_type(c) == HEADING_NT)
+				Node::set_inclusion_of_extension(c, E);
 		if ((last_H0) &&
-			(ParseTree::int_annotation(last_H0, implied_heading_ANNOT) != TRUE)) {
+			(Annotations::read_int(last_H0, implied_heading_ANNOT) != TRUE)) {
 			build_vertex *V = Inclusions::spawned_from_vertex(last_H0);
 			build_vertex *EV = E->as_copy->vertex;
 			if (V->as_copy->edition->work->genre == extension_genre)
@@ -295,7 +295,7 @@ use an extension which is marked as not working on the current VM.
 void Inclusions::check_begins_here(parse_node *PN, inform_extension *E) {
 	inbuild_copy *S = inclusions_errors_to;
 	inclusions_errors_to = E->as_copy;
-	<begins-here-sentence-subject>(ParseTree::get_text(PN));
+	<begins-here-sentence-subject>(Node::get_text(PN));
 	inclusions_errors_to = S;
 }
 
@@ -310,13 +310,13 @@ the "begins here".
 void Inclusions::check_ends_here(parse_node *PN, inform_extension *E) {
 	inbuild_copy *S = inclusions_errors_to;
 	inclusions_errors_to = E->as_copy;
-	wording W = ParseTree::get_text(PN);
+	wording W = Node::get_text(PN);
 	if (<the-prefix-for-extensions>(W)) W = GET_RW(<the-prefix-for-extensions>, 1);
 	wording T = Feeds::feed_stream(E->as_copy->edition->work->title);
 	if (Wordings::match(T, W) == FALSE) {
 		copy_error *CE = CopyErrors::new(SYNTAX_CE, ExtMisidentifiedEnds_SYNERROR);
 		CopyErrors::supply_node(CE, PN);
-		CopyErrors::supply_wording(CE, ParseTree::get_text(PN));
+		CopyErrors::supply_wording(CE, Node::get_text(PN));
 		Copies::attach_error(inclusions_errors_to, CE);
 	}
 	inclusions_errors_to = S;
