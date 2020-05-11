@@ -2,16 +2,13 @@
 
 Setting up the use of this module.
 
-@ This section simoly sets up the module in ways expected by //foundation//, and
-contains no code of interest. The following constant exists only in tools
+@ This section simoly sets up the module in ways expected by //foundation//,
+and contains no code of interest. The following constant exists only in tools
 which use this module:
 
 @d WORDS_MODULE TRUE
 
 @ This module defines the following classes:
-
-@e LEXER_TEXT_MREASON
-@e LEXER_WORDS_MREASON
 
 @e source_file_CLASS
 @e vocabulary_entry_CLASS
@@ -30,39 +27,32 @@ DECLARE_CLASS(ptoken)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
-=
-void WordsModule::start(void) {
-	Memory::reason_name(LEXER_TEXT_MREASON, "source text");
-	Memory::reason_name(LEXER_WORDS_MREASON, "source text details");
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
-	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
-	Lexer::start();
-	Vocabulary::create_punctuation();
-	Preform::begin();
-}
-void WordsModule::end(void) {
-}
-
-@<Register this module's memory allocation reasons@> =
-	;
-
-@<Register this module's stream writers@> =
-	Writers::register_writer('A', &WordAssemblages::writer);
-	Writers::register_writer_I('N', &Lexer::writer);
-	Writers::register_writer('V', &Vocabulary::writer);
-	Writers::register_writer_W('W', &Wordings::writer);
-
-@
+@e LEXER_TEXT_MREASON
+@e LEXER_WORDS_MREASON
 
 @e LEXICAL_OUTPUT_DA
 @e VOCABULARY_DA
 
-@<Register this module's debugging log aspects@> =
+=
+void WordsModule::start(void) {
+	Memory::reason_name(LEXER_TEXT_MREASON, "source text"); /* ho hum */
+	Memory::reason_name(LEXER_WORDS_MREASON, "source text details");
+
+	Writers::register_writer('A', &WordAssemblages::writer); /* |%A| = write word assemblage */
+	Writers::register_writer_I('N', &Lexer::writer);         /* |%N| = write word with this number */
+	Writers::register_writer('V', &Vocabulary::writer);      /* |%V| = write vocabulary entry */
+	Writers::register_writer_W('W', &Wordings::writer);      /* |%W| = write wording */
+
 	Log::declare_aspect(LEXICAL_OUTPUT_DA, L"lexical output", FALSE, FALSE);
 	Log::declare_aspect(VOCABULARY_DA, L"vocabulary", FALSE, FALSE);
 
-@<Register this module's debugging log writers@> =
-	Writers::register_logger('f', WordAssemblages::log);
-	Writers::register_logger('v', Vocabulary::log);
+	Writers::register_logger('f', WordAssemblages::log); /* |$f| = log word assemblage */
+	Writers::register_logger('v', Vocabulary::log);      /* |$v| = log vocabulary entry */
+
+	Lexer::start();
+	Vocabulary::create_punctuation();
+	Preform::begin();
+}
+
+void WordsModule::end(void) {
+}

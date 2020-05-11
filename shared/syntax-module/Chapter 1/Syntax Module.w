@@ -28,7 +28,7 @@ void SyntaxModule::start(void) {
 	NodeType::metadata_setup();
 	Annotations::make_annotation_allowed_table();
 	Writers::register_logger('m', Node::log_tree);    /* |$m| = log syntax tree from node */
-	Writers::register_logger_I('N', NodeType::log);  /* |$N| = log individual node type */
+	Writers::register_logger_I('N', NodeType::log);   /* |$N| = log individual node type */
 	Writers::register_logger('P', Node::log_node);    /* |$P| = log individual parse node */
 	Writers::register_logger('T', Node::log_subtree); /* |$T| = log tree under node */
 }
