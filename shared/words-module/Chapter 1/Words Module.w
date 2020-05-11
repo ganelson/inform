@@ -35,7 +35,7 @@ DECLARE_CLASS(ptoken)
 
 =
 void WordsModule::start(void) {
-	Memory::reason_name(LEXER_TEXT_MREASON, "source text"); /* ho hum */
+	Memory::reason_name(LEXER_TEXT_MREASON, "source text");
 	Memory::reason_name(LEXER_WORDS_MREASON, "source text details");
 
 	Writers::register_writer('A', &WordAssemblages::writer); /* |%A| = write word assemblage */
