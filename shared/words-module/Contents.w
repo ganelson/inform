@@ -4,6 +4,10 @@ Purpose: A library of code for reading natural language into a stream of words.
 Language: InC
 Licence: Artistic License 2.0
 
+Preliminaries
+	What This Module Does
+	How To Include This Module
+
 Chapter 1: Setting Up
 "Building on the foundation module."
 	Words Module
