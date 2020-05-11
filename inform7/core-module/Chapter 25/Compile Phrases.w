@@ -79,9 +79,9 @@ void Routines::Compile::routine(phrase *ph,
 	current_sentence = ph->declaration_node;
 	if (Phrases::Context::compile_test_head(ph, acl) == FALSE) {
 		if (ph->declaration_node) {
-			VerifyTree::verify_structure(ph->declaration_node);
+			VerifyTree::verify_structure_from(ph->declaration_node);
 			Routines::Compile::code_block_outer(1, ph->declaration_node->down);
-			VerifyTree::verify_structure(ph->declaration_node);
+			VerifyTree::verify_structure_from(ph->declaration_node);
 		}
 		current_sentence = ph->declaration_node;
 		Phrases::Context::compile_test_tail(ph, acl);

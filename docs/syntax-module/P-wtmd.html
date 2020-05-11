@@ -58,7 +58,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Shared Modules</a></li><li><a href="index.html">syntax</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the syntax module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Syntax trees</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Syntax trees</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Nodes</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Fussy, defensive, pedantry</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The syntax module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -93,20 +93,7 @@ manages extensions, it may generate one <a href="2-st.html#SP2" class="internal"
 extension whose text it reads. Still &mdash; there are few trees.
 </p>
 
-<p class="commentary">But there are many nodes. Syntax trees are made up of <a href="2-pn.html#SP1" class="internal">parse_node</a> structures.
-While these are in principle individual nodes, they effectively represent
-subtrees, because they carry with them links to the nodes below. A <a href="2-pn.html#SP1" class="internal">parse_node</a>
-object can therefore equally represent "orange", "the orange envelope", or
-"now the card is in the orange envelope".
-</p>
-
-<p class="commentary">Meaning is an ambiguous thing, and so the tree needs to be capable of
-representing multiple interpretations of the same wording. So nodes have not
-only <span class="extract"><span class="extract-syntax">next</span></span> and <span class="extract"><span class="extract-syntax">down</span></span> links to other nodes, but also <span class="extract"><span class="extract-syntax">next_alternative</span></span> links,
-which &mdash; if used &mdash; fork the syntax tree into different possible readings.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The main trunk of the tree can be grown in any sequence: call <a href="2-st.html#SP3" class="internal">SyntaxTree::push_bud</a>
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The trunk of the tree can be grown in any sequence: call <a href="2-st.html#SP3" class="internal">SyntaxTree::push_bud</a>
 to begin "budding" from a particular branch, and <a href="2-st.html#SP3" class="internal">SyntaxTree::pop_bud</a> to go back
 to where you were. These are also used automatically to ensure that sentences
 arriving at <a href="2-st.html#SP4" class="internal">SyntaxTree::graft_sentence</a> are grafted under the headings to
@@ -136,12 +123,67 @@ each other using <a href="2-st.html#SP7" class="internal">SyntaxTree::graft</a>,
 at all.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>An extensive suite of functions is provided to make it easy to traverse
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Meaning is an ambiguous thing, and so the tree needs to be capable of
+representing multiple interpretations of the same wording. So nodes have not
+only <span class="extract"><span class="extract-syntax">next</span></span> and <span class="extract"><span class="extract-syntax">down</span></span> links to other nodes, but also <span class="extract"><span class="extract-syntax">next_alternative</span></span> links,
+which &mdash; if used &mdash; fork the syntax tree into different possible readings.
+</p>
+
+<p class="commentary">These are not added to the tree by grafting: that's only done for definite
+meanings. Instead, multiple ambiguous readings mostly lie beneath <span class="extract"><span class="extract-syntax">AMBIGUITY_NT</span></span>
+nodes &mdash; see <a href="2-st.html#SP24" class="internal">SyntaxTree::add_reading</a>. For example, we might have:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    sun is orange</span>
+<span class="plain-syntax">        sun</span>
+<span class="plain-syntax">        AMBIGUITY</span>
+<span class="plain-syntax">            orange (read as being a fruit)</span>
+<span class="plain-syntax">            orange (read as being a colour)</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>An extensive suite of functions is provided to make it easy to traverse
 a syntax tree, calling a visitor function on each node: see <a href="2-st.html#SP11" class="internal">SyntaxTree::traverse</a>.
 </p>
 
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Nodes. </b>Syntax trees are made up of <a href="2-pn.html#SP1" class="internal">parse_node</a> structures. While these are in
+principle individual nodes, they effectively represent subtrees, because they
+carry with them links to the nodes below. A <a href="2-pn.html#SP1" class="internal">parse_node</a> object can
+therefore equally represent "orange", "the orange envelope", or "now the card
+is in the orange envelope".
+</p>
+
+<p class="commentary">Each node carries three essential pieces of information with it:
+</p>
+
+<ul class="items"><li>(1) The text giving rise to it (say, "Section Five - Fruit").
+</li><li>(2) A node type ID, which in broad terms says what kind of reference is being
+made (say, <span class="extract"><span class="extract-syntax">HEADING_NT</span></span>). The possible node types are stored in the C type
+<span class="extract"><span class="extract-syntax">node_type_t</span></span>, which corresponds to some metadata in a <a href="2-nt.html#SP3" class="internal">node_type_metadata</a>
+object: see <a href="2-pn.html#SP5" class="internal">Node::get_type</a> and <a href="2-nt.html#SP7" class="internal">NodeType::get_metadata</a>.
+</li><li>(3) A list of optional annotations, which are either integer or object-valued,
+and which give specifics about the meaning (say, the level number in the
+hierarchy of headings). See <a href="2-na.html" class="internal">Node Annotations</a>.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Fussy, defensive, pedantry. </b>Safe to say that Inform includes bugs: the more defensive coding we can do,
+the better. That means not only extensive logging (see <a href="2-pn.html#SP15" class="internal">Node::log_tree</a>)
+but also strict verification tests on every tree made (see <a href="2-tv.html" class="internal">Tree Verification</a>).
+</p>
+
+<ul class="items"><li>(a) The only nodes allowed to exist are those for node types declared
+by <a href="2-nt.html#SP9" class="internal">NodeType::new</a>: more generally, see <a href="2-nt.html" class="internal">Node Types</a> on metadata associated
+with these.
+</li><li>(b) A node of type <span class="extract"><span class="extract-syntax">A</span></span> can only be a child of a node of type <span class="extract"><span class="extract-syntax">B</span></span> if
+<a href="2-nt.html#SP13" class="internal">NodeType::parentage_allowed</a> says so, and this is (mostly) a matter
+of calling <a href="2-nt.html#SP5" class="internal">NodeType::allow_parentage_for_categories</a> &mdash; parentage depends
+not on the type per se, but on the category of the type, which groups types
+together.
+</li><li>(c) A node of type <span class="extract"><span class="extract-syntax">A</span></span> can only have an annotation with ID <span class="extract"><span class="extract-syntax">I</span></span> if
+<a href="2-na.html#SP14" class="internal">Annotations::is_allowed</a> says so. To declare an annotation legal,
+call <span class="extract"><span class="extract-syntax">Annotations::allow(A, I)</span></span>, or <span class="extract"><span class="extract-syntax">Annotations::allow_for_category(C, I)</span></span>
+for the category <span class="extract"><span class="extract-syntax">C</span></span> of <span class="extract"><span class="extract-syntax">A</span></span>.
+</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-st.html">2</a></li><li class="progresschapter"><a href="3-snt.html">3</a></li><li class="progressnext"><a href="1-sm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-st.html">2</a></li><li class="progresschapter"><a href="3-snt.html">3</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

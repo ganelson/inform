@@ -101,9 +101,9 @@ verbs were added to the grammar. Still, it was a pity.
 
 =
 <sentence> internal {
-	if (trace_sentences) { LOG("Parsing the sentence: %W\n", W); LOG_INDENT; }
+	if (VerbPhrases::tracing()) { LOG("Parsing the sentence: %W\n", W); LOG_INDENT; }
 	int rv = VerbPhrases::seek(W, X, XP, 0);
-	if (trace_sentences) {
+	if (VerbPhrases::tracing()) {
 		LOG_OUTDENT;
 		if (rv) {
 			LOG("Passed\n"); LOG_INDENT;
@@ -137,7 +137,7 @@ which word positions might be the beginning of verb phrases.
 int VerbPhrases::seek(wording W, int *X, void **XP, int existential_OP_edge) {
 	int viable[VIABILITY_MAP_SIZE];
 	@<Calculate the viability map@>;
-	if (trace_sentences) @<Log the viability map@>;
+	if (VerbPhrases::tracing()) @<Log the viability map@>;
 	@<Seek verb usages@>;
 	return FALSE;
 }
@@ -330,7 +330,7 @@ certainty are removed from these.
 	}
 	certainty = pre_certainty;
 	if (certainty == UNKNOWN_CE) certainty = post_certainty;
-	if (trace_sentences) LOG("Found usage, pass %d tier %d: (%W) $w (%W)\n",
+	if (VerbPhrases::tracing()) LOG("Found usage, pass %d tier %d: (%W) $w (%W)\n",
 		pass, tier->priority, ISW, vi, IOW);
 
 @  If the verb form is, say, "place in ... with ...", and we have detected the
@@ -352,7 +352,8 @@ who is in the Dining Room" (note the additional "is"), it would.
 	if (existential_OP_edge > 0) { /* i.e., if we are looking for "(S which) verbs (O)" */
 		if (<pre-verb-rc-marker>(SW)) { /* there is indeed a "which" at the end of |SW| */
 			SW = GET_RW(<pre-verb-rc-marker>, 1); /* so trim it off */
-			if (trace_sentences) LOG("Trimmed to: (%W) $w (%W)\n", SW, vi, OW);
+			if (VerbPhrases::tracing())
+				LOG("Trimmed to: (%W) $w (%W)\n", SW, vi, OW);
 		}
 	}
 
@@ -396,7 +397,7 @@ who is in the Dining Room" (note the additional "is"), it would.
 				usage_succeeds = TRUE;
 			}
 		if (usage_succeeds == FALSE) {
-			if (trace_sentences) LOG("$w + $p + $p : failed for lack of $p\n",
+			if (VerbPhrases::tracing()) LOG("$w + $p + $p : failed for lack of $p\n",
 				vi, prep, second_prep, prep);
 			continue;
 		}
@@ -419,7 +420,7 @@ who is in the Dining Room" (note the additional "is"), it would.
 			usage_succeeds = TRUE;
 		}
 		if (usage_succeeds == FALSE) {
-			if (trace_sentences) LOG("$w + $p + $p : failed for lack of $p\n",
+			if (VerbPhrases::tracing()) LOG("$w + $p + $p : failed for lack of $p\n",
 				vi, prep, second_prep, second_prep);
 			continue;
 		}
@@ -450,10 +451,12 @@ representing the verb.
 	VP_PN = VerbPhrases::accept(vf, VP_PN, SW, OW, O2W);
 	if (VP_PN) {
 		*XP = VP_PN;
-		if (trace_sentences) LOG("Accepted as $w + $p + $p\n", vi, prep, second_prep);
+		if (VerbPhrases::tracing())
+			LOG("Accepted as $w + $p + $p\n", vi, prep, second_prep);
 		return TRUE;
 	} else {
-		if (trace_sentences) LOG("Rejected as $w + $p + $p\n", vi, prep, second_prep);
+		if (VerbPhrases::tracing())
+			LOG("Rejected as $w + $p + $p\n", vi, prep, second_prep);
 	}
 
 @ This routine completes the sentence diagram by adding further nodes to
@@ -547,3 +550,15 @@ the exactly equivalent idea of the hat being worn by Darcy.
 		V->next->next = NounPhrases::PN_rel(
 			Node::get_text(V), VerbMeanings::reverse_VMT(meaning), STANDARD_RELN, O_PN);
 	}
+
+@
+
+=
+int VerbPhrases::tracing(void) {
+	#ifdef TRACING_LINGUISTICS_CALLBACK
+	return TRACING_LINGUISTICS_CALLBACK();
+	#endif
+	#ifndef TRACING_LINGUISTICS_CALLBACK
+	return FALSE;
+	#endif
+}

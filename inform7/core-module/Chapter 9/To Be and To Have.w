@@ -192,7 +192,7 @@ void Assertions::Copular::make_assertion(parse_node *px, parse_node *py) {
 		if (Assertions::Creator::consult_the_creator(px, py) == FALSE) return;
 	}
 
-	if (trace_sentences) LOG("$T", current_sentence);
+	if (SyntaxTree::is_trace_set(Task::syntax_tree())) LOG("$T", current_sentence);
 	if (<s-existential-np>(Node::get_text(px))) {
 		if (traverse == 1) Assertions::Copular::make_existential_assertion(py);
 		px = py;

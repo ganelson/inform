@@ -291,7 +291,7 @@ parse_node *ExParser::Subtrees::to_specification_inner(int SV_not_SN, wording W,
 			one->next_alternative = NULL;
 			parse_node *new_poss = ExParser::Subtrees::to_specification(SV_not_SN, W, one, B);
 			if (!(Node::is(new_poss, UNKNOWN_NT)))
-				amb = Node::add_possible_reading(amb, new_poss, W);
+				amb = SyntaxTree::add_reading(amb, new_poss, W);
 		}
 		if (amb == NULL) amb = Specifications::new_UNKNOWN(W);
 		return amb;
@@ -304,7 +304,7 @@ parse_node *ExParser::Subtrees::to_specification_inner(int SV_not_SN, wording W,
 			hmm->down->next_alternative = NULL;
 			parse_node *new_poss = ExParser::Subtrees::to_specification(SV_not_SN, W, A, hmm);
 			if (!(Node::is(new_poss, UNKNOWN_NT)))
-				amb = Node::add_possible_reading(amb, new_poss, W);
+				amb = SyntaxTree::add_reading(amb, new_poss, W);
 		}
 		if (amb == NULL) amb = Specifications::new_UNKNOWN(W);
 		return amb;

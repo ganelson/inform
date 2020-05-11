@@ -52,7 +52,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../units.html">Unit Test Tools</a></li><li><a href="index.html">linguistics-test</a></li><li><a href="index.html#1">Chapter 1: Scaffolding</a></li><li><b>Unit Tests</b></li></ul></div>
 <p class="purpose">How we shall test it.</p>
 
-<ul class="toc"><li><a href="1-ut.html#SP2">&#167;2. What verb usages we allow</a></li><li><a href="1-ut.html#SP3">&#167;3. </a></li><li><a href="1-ut.html#SP5">&#167;5. Syntax tree</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="1-ut.html#SP2">&#167;2. What verb usages we allow</a></li><li><a href="1-ut.html#SP3">&#167;3. Minimal Preform grammar</a></li><li><a href="1-ut.html#SP6">&#167;6. Syntax tree</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b></p>
 
@@ -75,24 +75,33 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Minimal Preform grammar. </b>Only <span class="extract"><span class="extract-syntax">&lt;dividing-sentence&gt;</span></span> can ever match, since the others are wired to match
+any text but then fail.
+</p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;dividing-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">chapter</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 1</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">section</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">				</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 2</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">chapter</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 1</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">section</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 2</span>
 
 <span class="Preform-function-syntax">&lt;structural-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">						</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; return FAIL_NONTERMINAL;</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; return FAIL_NONTERMINAL;</span>
 
 <span class="Preform-function-syntax">&lt;language-modifying-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">						</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; return FAIL_NONTERMINAL;</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; return FAIL_NONTERMINAL;</span>
 
-<span class="Preform-function-syntax">&lt;unexceptional-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;sentence&gt;</span><span class="Preform-plain-syntax">				</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="1-ut.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Report any error</span><span class="named-paragraph-number">3.1</span></a></span>
+<span class="Preform-function-syntax">&lt;comma-divisible-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; return FAIL_NONTERMINAL;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report any error</span><span class="named-paragraph-number">3.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;unexceptional-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;sentence&gt;</span><span class="Preform-plain-syntax">				</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="1-ut.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Report any error</span><span class="named-paragraph-number">4.1</span></a></span>
+</pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report any error</span><span class="named-paragraph-number">4.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -101,25 +110,21 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><a href="../../../inweb/docs/foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::nowhere</span></a><span class="plain-syntax">(</span><span class="string-syntax">"two certainties"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">XP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VP_PN</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-ut.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<ul class="endnotetexts"><li>This code is used in <a href="1-ut.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;stock&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">verb</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), English_language);</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Syntax tree. </b></p>
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Syntax tree. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">my_first_verb</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::start_diagrams</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Unit::start_diagrams</span></span>:<br/>Program Control - <a href="1-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">trace_sentences</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
 <span class="reserved-syntax">parse_node_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_diagrams</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Unit::test_diagrams</span></span>:<br/>Program Control - <a href="1-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_diagrams</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Unit::test_diagrams</span></span>:<br/>Program Control - <a href="1-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-str.html#SP20" class="function-link"><span class="function-syntax">Streams::enable_debugging</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">feed_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">FD</span><span class="plain-syntax"> = </span><a href="../words-module/3-fds.html#SP3" class="function-link"><span class="function-syntax">Feeds::begin</span></a><span class="plain-syntax">();</span>
@@ -133,14 +138,15 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">save_DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-str.html#SP20" class="function-link"><span class="function-syntax">Streams::enable_debugging</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../syntax-module/2-st.html#SP11" class="function-link"><span class="function-syntax">SyntaxTree::traverse</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax">, </span><a href="1-ut.html#SP5" class="function-link"><span class="function-syntax">Unit::diagram</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../syntax-module/2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::log_tree</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">root_node</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../syntax-module/2-st.html#SP23" class="function-link"><span class="function-syntax">SyntaxTree::clear_trace</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../syntax-module/2-st.html#SP11" class="function-link"><span class="function-syntax">SyntaxTree::traverse</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax">, </span><a href="1-ut.html#SP6" class="function-link"><span class="function-syntax">Unit::diagram</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../syntax-module/2-pn.html#SP15" class="function-link"><span class="function-syntax">Node::log_tree</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">syntax_tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">root_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">save_DL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::diagram</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../syntax-module/2-pn.html#SP6" class="function-link"><span class="function-syntax">Node::get_type</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="constant-syntax">SENTENCE_NT</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="../syntax-module/2-pn.html#SP5" class="function-link"><span class="function-syntax">Node::get_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../syntax-module/2-pn.html#SP5" class="function-link"><span class="function-syntax">Node::get_type</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="constant-syntax">SENTENCE_NT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="../syntax-module/2-pn.html#SP4" class="function-link"><span class="function-syntax">Node::get_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;stock&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vc</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cop</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>

@@ -169,7 +169,7 @@ parse_node *Conditions::attach_historic_requirement(parse_node *cond, time_perio
 			reading->next_alternative = NULL;
 			reading = Conditions::attach_historic_requirement(reading, tp);
 			if (Node::is(reading, UNKNOWN_NT) == FALSE)
-				amb = Node::add_possible_reading(amb,
+				amb = SyntaxTree::add_reading(amb,
 					reading, Node::get_text(cond));
 		}
 		return amb;

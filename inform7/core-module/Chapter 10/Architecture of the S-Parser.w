@@ -232,7 +232,7 @@ parse_node *ExParser::parse_with_cache(wording W, int context, nonterminal *nt) 
 	preform_lookahead_mode = plm;
 
 	@<Write the newly discovered specification to the cache for future use@>;
-	VerifyTree::verify_structure(spec);
+	VerifyTree::verify_structure_from(spec);
 
 	return spec;
 }

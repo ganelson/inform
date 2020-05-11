@@ -110,7 +110,7 @@ void Assertions::Traverse::traverse2(void) {
 void Assertions::Traverse::traverse(int pass) {
 	Assertions::Traverse::new_discussion(); /* clear memory of what the subject and object of discussion are */
 	traverse = pass;
-	trace_sentences = FALSE;
+	SyntaxTree::clear_trace(Task::syntax_tree());
 
 	if (sentence_handlers_initialised == FALSE) @<Initialise sentence handlers@>;
 
@@ -200,7 +200,7 @@ handlers until right at the end of the program. The routine which does so,
 	}
 
 @<Deal with an individual sentence@> =
-	if ((trace_sentences) && (Node::get_type(p) != TRACE_NT))
+	if ((SyntaxTree::is_trace_set(Task::syntax_tree())) && (Node::get_type(p) != TRACE_NT))
 		LOG("\n[%W]\n", Node::get_text(p));
 
 	@<If this sentence can be handled, then do so and continue@>;
@@ -248,9 +248,9 @@ void Assertions::Traverse::switch_sentence_trace(parse_node *PN) {
 			"so I'll note it down in the Telemetry file (if you're keeping one.)");
 		 telemetry_recording = tr;
 	} else {
-		trace_sentences = 1 - trace_sentences;
-		if (traverse == 1) Log::tracing_on(trace_sentences, I"Pass 1");
-		else Log::tracing_on(trace_sentences, I"Pass 2");
+		SyntaxTree::toggle_trace(Task::syntax_tree());
+		if (traverse == 1) Log::tracing_on(SyntaxTree::is_trace_set(Task::syntax_tree()), I"Pass 1");
+		else Log::tracing_on(SyntaxTree::is_trace_set(Task::syntax_tree()), I"Pass 2");
 	}
 }
 

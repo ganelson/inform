@@ -33,10 +33,16 @@ in Preform grammar functions.
 @default PROBLEM_REF_SYNTAX_TYPE void
 @default PROJECT_REF_SYNTAX_TYPE void
 
+@e NO_EXTENSION_POS from 0
+@e BEFORE_BEGINS_EXTENSION_POS
+@e MIDDLE_EXTENSION_POS
+@e AFTER_ENDS_EXTENSION_POS
+@e PAST_CARING_EXTENSION_POS
+
 =
 typedef struct syntax_fsm_state {
 	source_file *sf; /* reading from this source file */
-	int ext_pos; /* 0: not extension; 1: before "begins here"; 2: before "ends here"; 3: after */
+	int ext_pos; /* one of the |*_EXTENSION_POS| values: where we are in an extension */
 	int skipping_material_at_level;
 	int main_source_start_wn;
 	node_type_t nt;
@@ -66,7 +72,8 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 	sfsm->skipping_material_at_level = -1;
 	sfsm->ref = ref;
 	sfsm->project_ref = project_ref;
-	if (is_extension) sfsm->ext_pos = 1; else sfsm->ext_pos = 0;
+	if (is_extension) sfsm->ext_pos = BEFORE_BEGINS_EXTENSION_POS;
+	else sfsm->ext_pos = NO_EXTENSION_POS;
 }
 
 @ These are the syntax errors we will generate.
@@ -311,7 +318,8 @@ or until reaching the end of the text: whichever comes first.
 
 =
 void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
-	int heading_level = 0, begins_or_ends = 0;
+	int heading_level = 0;
+	int begins_or_ends = 0; /* 1 for "begins here", -1 for "ends here" */
 	parse_node *new;
 
 	if (Wordings::empty(W)) internal_error("empty sentence generated");
@@ -357,9 +365,9 @@ is declared as if it were a super-heading in the text.
 	sfsm->sf = Lexer::file_of_origin(Wordings::first_wn(W));
 
 @<Reject if we have run on past the end of an extension@> =
-	if ((sfsm->ext_pos == 3) && (begins_or_ends == 0)) {
+	if ((sfsm->ext_pos == AFTER_ENDS_EXTENSION_POS) && (begins_or_ends == 0)) {
 		Sentences::syntax_problem(ExtSpuriouslyContinues_SYNERROR, W, sfsm->ref, 0);
-		sfsm->ext_pos = 4; /* to avoid multiply issuing this */
+		sfsm->ext_pos = PAST_CARING_EXTENSION_POS; /* to avoid multiply issuing this */
 	}
 
 @ The client must define a Preform nonterminal called |<dividing-sentence>|
@@ -370,8 +378,8 @@ important), or |-1| to mean that the sentence begins an extension, or
 @<Detect a dividing sentence@> =
 	if (<dividing-sentence>(W)) {
 		switch (<<r>>) {
-			case -1: if (sfsm->ext_pos > 0) begins_or_ends = 1; break;
-			case -2: if (sfsm->ext_pos > 0) begins_or_ends = -1; break;
+			case -1: if (sfsm->ext_pos != NO_EXTENSION_POS) begins_or_ends = 1; break;
+			case -2: if (sfsm->ext_pos != NO_EXTENSION_POS) begins_or_ends = -1; break;
 			default: heading_level = <<r>>; break;
 		}
 	}
@@ -403,7 +411,8 @@ newlines automatically added at the end of the feed of any source file.
 	if (Lexer::break_before(Wordings::last_wn(W)+1) != '\n') {
 		int k;
 		for (k = Wordings::last_wn(W)+1;
-			(k<=Wordings::last_wn(W)+8) && (k<lexer_wordcount) && (Lexer::break_before(k) != '\n');
+			(k<=Wordings::last_wn(W)+8) &&
+				(k<lexer_wordcount) && (Lexer::break_before(k) != '\n');
 			k++) ;
 		Sentences::syntax_problem(HeadingStopsBeforeEndOfLine_SYNERROR, W, sfsm->ref, k);
 	}
@@ -427,9 +436,10 @@ from an extension, we need to make sure we saw both beginning and end:
 
 @<Issue a problem message if we are missing the begin and end here sentences@> =
 	switch (sfsm->ext_pos) {
-		case 1: Sentences::syntax_problem(ExtNoBeginsHere_SYNERROR, W, sfsm->ref, 0); break;
-		case 2: Sentences::syntax_problem(ExtNoEndsHere_SYNERROR, W, sfsm->ref, 0); break;
-		case 3: break;
+		case BEFORE_BEGINS_EXTENSION_POS: 
+			Sentences::syntax_problem(ExtNoBeginsHere_SYNERROR, W, sfsm->ref, 0); break;
+		case MIDDLE_EXTENSION_POS:
+			Sentences::syntax_problem(ExtNoEndsHere_SYNERROR, W, sfsm->ref, 0); break;
 	}
 
 @h Unskipped material which is not a heading.
@@ -482,7 +492,7 @@ sentences and options-file sentences may have been read already.)
 
 	@<Convert a rule preamble to a ROUTINE node and enter rule mode@>;
 	if (sfsm->inside_rule_mode)
-		@<Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands@>
+		@<Convert to a COMMAND node and exit rule mode unless a semicolon implies more@>
 	else if (stop_character == ';') {
 		Sentences::syntax_problem(UnexpectedSemicolon_SYNERROR, W, sfsm->ref, 0);
 		stop_character = '.';
@@ -509,25 +519,9 @@ sentences and options-file sentences may have been read already.)
 
 	/* none of that happened, so we have a SENTENCE node for certain */
 	Annotations::write_int(new, sentence_unparsed_ANNOT, TRUE);
-	#ifdef SENTENCE_ANNOTATION_SYNTAX_CALLBACK
-	SENTENCE_ANNOTATION_SYNTAX_CALLBACK(new);
+	#ifdef NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK
+	NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK(new);
 	#endif
-
-@ Rules are ordinarily detected by their colon, which divides the header from the
-rest: colons are not otherwise legal in Inform. But there's an exception. If the
-sentence consists of text matching the following grammar, followed by comma,
-followed by more text, then the comma is read as if it's a colon and the
-sentence becomes a rule. For example:
-
->> Instead of going north, try entering the cage
-
-=
-<comma-divisible-sentence> ::=
-	instead of ... |
-	every turn *** |
-	before ... |
-	after ... |
-	when ...
 
 @ We make an exception to the exception for the serial comma used in a list of
 alternatives: thus the comma in "Aeschylus, Sophocles, or Euripides" does
@@ -639,7 +633,7 @@ instead of a semicolon. We may lament this, but it is so.)
 @ Subsequent commands are divided by semicolons, and any failure of a
 semicolon to appear indicates an end of the rule.
 
-@<Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands@> =
+@<Convert to a COMMAND node and exit rule mode unless a semicolon implies more@> =
 	#ifdef list_node_type
 	Node::set_type(new, list_entry_node_type);
 	#endif

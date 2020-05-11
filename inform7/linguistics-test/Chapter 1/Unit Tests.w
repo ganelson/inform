@@ -23,19 +23,27 @@ int Unit::allow_generally(verb_conjugation *vc, int tense, int sense, int person
 	return TRUE;
 }
 
-@h
+@h Minimal Preform grammar.
+Only |<dividing-sentence>| can ever match, since the others are wired to match
+any text but then fail.
 
 =
 <dividing-sentence> ::=
-	chapter ... |    ==> 1
-	section ...				==> 2
+	chapter ... |  ==> 1
+	section ...    ==> 2
 
 <structural-sentence> ::=
-	...						==> TRUE; return FAIL_NONTERMINAL;
+	... ==> TRUE; return FAIL_NONTERMINAL;
 
 <language-modifying-sentence> ::=
-	...						==> TRUE; return FAIL_NONTERMINAL;
+	... ==> TRUE; return FAIL_NONTERMINAL;
 
+<comma-divisible-sentence> ::=
+	... ==> TRUE; return FAIL_NONTERMINAL;
+
+@
+
+=
 <unexceptional-sentence> ::=
 	<sentence>				==> @<Report any error@>
 
@@ -54,10 +62,6 @@ int Unit::allow_generally(verb_conjugation *vc, int tense, int sense, int person
 =
 int my_first_verb = TRUE;
 
-void Unit::start_diagrams(void) {
-	trace_sentences = TRUE;
-}
-
 parse_node_tree *syntax_tree = NULL;
 void Unit::test_diagrams(text_stream *arg) {
 	Streams::enable_debugging(STDOUT);
@@ -73,6 +77,7 @@ void Unit::test_diagrams(text_stream *arg) {
 	text_stream *save_DL = DL;
 	DL = STDOUT;
 	Streams::enable_debugging(DL);
+	SyntaxTree::clear_trace(syntax_tree);
 	SyntaxTree::traverse(syntax_tree, Unit::diagram);
 	Node::log_tree(DL, syntax_tree->root_node);
 	DL = save_DL;

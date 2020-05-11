@@ -5,6 +5,8 @@ Inform contains bugs of a kind which lead to malformed syntax trees: that
 should never happen even if the source text being compiled is a dumpster fire.
 
 @h Verify integrity.
+We can perform two different checks.
+
 The first duty of a tree is to contain no loops, and the following checks
 that (rejecting even undirected loops). In addition, it checks that each
 node has an enumerated node type, rather than a meaning code.
@@ -12,33 +14,30 @@ node has an enumerated node type, rather than a meaning code.
 =
 int tree_stats_size = 0, tree_stats_depth = 0, tree_stats_width = 0;
 
-void VerifyTree::verify_integrity(parse_node *p, int worth_logging) {
+void VerifyTree::verify_integrity(parse_node_tree *T) {
 	tree_stats_size = 0; tree_stats_depth = 0; tree_stats_width = 1;
-	VerifyTree::verify_tree_integrity_recursively(p->down, p, "down", 0, ++pn_log_token);
+	VerifyTree::verify_integrity_below(T->root_node);
+}
+
+void VerifyTree::verify_integrity_below(parse_node *p) {
+	VerifyTree::verify_integrity_r(p->down, p, "down", 0,
+		SyntaxTree::new_traverse_token());
 }
 
 @ The verification traverse is a very cautious manoeuvre: we step through
-the tree, testing each branch with our outstretched foot in case it might
-be illusory or broken. At the first sign of trouble we panic.
+the tree, testing each branch with our outstretched foot. At the first sign
+of trouble we panic.
 
 =
-void VerifyTree::verify_tree_integrity_recursively(parse_node *p,
-	parse_node *from, char *way, int depth, int ltime) {
-	int width;
-	pointer_sized_int probably_an_address = (pointer_sized_int) p;
-	depth++; if (depth > tree_stats_depth) tree_stats_depth = depth;
-	for (width = 0; p; p = p->next, width++) {
-		if ((probably_an_address == 0) || (probably_an_address == -1)) {
-			LOG("Link %s broken from:\n$P", way, from);
-			Errors::set_internal_handler(NULL);
-			internal_error("Link broken in parse tree");
-		}
-		if (p->log_time == ltime) {
+void VerifyTree::verify_integrity_r(parse_node *p,
+	parse_node *from, char *way, int depth, int traverse_token) {
+	for (int width = 0; p; p = p->next, width++) {
+		if (p->last_seen_on_traverse == traverse_token) {
 			LOG("Cycle found in parse tree, found %s from:\n$P", way, from);
 			Errors::set_internal_handler(NULL);
 			internal_error("Cycle found in parse tree");
 		}
-		p->log_time = ltime;
+		p->last_seen_on_traverse = traverse_token;
 		node_type_t t = Node::get_type(p);
 		if (NodeType::is_enumerated(t)) tree_stats_size++;
 		else {
@@ -47,50 +46,45 @@ void VerifyTree::verify_tree_integrity_recursively(parse_node *p,
 			internal_error("Link broken in parse tree");
 		}
 		if (p->next_alternative)
-			VerifyTree::verify_tree_integrity_recursively(p->next_alternative, p, "alt", depth, ltime);
+			VerifyTree::verify_integrity_r(p->next_alternative,
+				p, "alt", depth, traverse_token);
 		if (p->down)
-			VerifyTree::verify_tree_integrity_recursively(p->down, p, "down", depth, ltime);
+			VerifyTree::verify_integrity_r(p->down,
+				p, "down", depth+1, traverse_token);
+		if (width > tree_stats_width) tree_stats_width = width;
 	}
-	if (width > tree_stats_width) tree_stats_width = width;
+	if (depth > tree_stats_depth) tree_stats_depth = depth;
 }
 
 @h Verify structure.
 The parse tree is a complicated structure, arbitrarily wide and deep, and
 containing many different node types, each subject to its own rules of usage.
-(For instance, a |SENTENCE_NT| node cannot legally be beneath a
-|PROPER_NOUN_NT| one.) This is both good and bad: bad because complexity is
-always the enemy of program correctness, good because it gives us an
-independent opportunity to test a great deal of what earlier code has done.
-If, given every test case, we always construct a well-formed tree, we must be
-doing something right.
+In this second check, we ensure that nodes have acceptable parentage and
+annotations -- that is, parentage and annotations which fall within the
+permissions set up when their node types were created.
 
-The collection of rules like this which the tree must satisfy is called its
-"invariant", and is expressed by the code below. Note that this is
-verification, not an attempt to correct matters. If any test fails, Inform
-will stop with an internal error. (If there are multiple failures, we
-itemise them to the debugging log, and only produce a single internal error
-at the end.)
+If any test fails, Inform will stop with an internal error. (If there are
+multiple failures, we itemise them to the debugging log, and only produce
+a single internal error at the end.)
 
 We protect ourselves by first checking that the tree is intact as a
 structure: once we know the tree is safe to climb over, we can wander
-about counting children with impunity.
+about counting branches with impunity.
 
 =
-void VerifyTree::verify_node(parse_node_tree *T) {
+void VerifyTree::verify_structure(parse_node_tree *T) {
 	if (T->root_node == NULL) {
 		Errors::set_internal_handler(NULL);
 		internal_error("Root of parse tree NULL");
 	}
-	VerifyTree::verify_structure(T->root_node);
+	VerifyTree::verify_structure_from(T->root_node);
 }
 
-int node_errors = 0;
-void VerifyTree::verify_structure(parse_node *p) {
-	VerifyTree::verify_integrity(p, FALSE);
-	node_errors = 0;
-	VerifyTree::verify_structure_recursively(p, NULL);
-	if (node_errors > 0) {
-		LOG("[Verification failed: %d node errors]\n", node_errors);
+void VerifyTree::verify_structure_from(parse_node *p) {
+	VerifyTree::verify_integrity_below(p);
+	int errors_found = VerifyTree::verify_structure_r(p, NULL, 0);
+	if (errors_found > 0) {
+		LOG("[Verification failed: %d node errors]\n", errors_found);
 		Errors::set_internal_handler(NULL);
 		internal_error("Parse tree broken");
 	}
@@ -102,7 +96,7 @@ parse node and (ii) either |p| is the tree root, in which case |parent| is
 among its children.
 
 =
-void VerifyTree::verify_structure_recursively(parse_node *p, parse_node *parent) {
+int VerifyTree::verify_structure_r(parse_node *p, parse_node *parent, int ec) {
 	node_type_t t = Node::get_type(p);
 	node_type_metadata *metadata = NodeType::get_metadata(t);
 	if (metadata == NULL) internal_error("broken tree should have been reported");
@@ -113,19 +107,21 @@ void VerifyTree::verify_structure_recursively(parse_node *p, parse_node *parent)
 
 	int children_count = 0;
 	for (parse_node *q=p->down; q; q=q->next, children_count++)
-		VerifyTree::verify_structure_recursively(q, p);
+		ec += VerifyTree::verify_structure_r(q, p, ec);
 
 	@<Check rule (4) of the invariant@>;
 
 	if (p->next_alternative)
-		VerifyTree::verify_structure_recursively(p->next_alternative, parent);
+		ec += VerifyTree::verify_structure_r(p->next_alternative, parent, ec);
+	return ec;
 }
 
 @ Rule (1): no INVALID nodes.
 
 @<Check rule (1) of the invariant@> =
 	if (t == INVALID_NT) {
-		LOG("N%d is $N, which is not allowed except temporarily\n", p->allocation_id, t);
+		LOG("N%d is $N, which is not allowed except temporarily\n",
+			p->allocation_id, t);
 		@<Log this invariant failure@>
 	}
 
@@ -146,7 +142,8 @@ void VerifyTree::verify_structure_recursively(parse_node *p, parse_node *parent)
 	node_type_t t_parent = Node::get_type(parent);
 
 	if (!(NodeType::parentage_allowed(t_parent, t))) {
-		LOG("N%d is $N: should not be a child of $N\n", p->allocation_id, t, t_parent);
+		LOG("N%d is $N: should not be a child of $N\n",
+			p->allocation_id, t, t_parent);
 		@<Log this invariant failure@>
 	}
 
@@ -164,7 +161,9 @@ void VerifyTree::verify_structure_recursively(parse_node *p, parse_node *parent)
 		@<Log this invariant failure@>
 	}
 
+@ (Logging the root node produces an absolutely enormous output.)
+
 @<Log this invariant failure@> =
 	if (Node::is(parent, ROOT_NT)) LOG("Failing subtree:\n$T", p);
 	else LOG("Failing subtree:\n$T", parent);
-	node_errors++;
+	ec++;

@@ -61,7 +61,7 @@ void Sentences::Rearrangement::further_material(void) {
 }
 
 void Sentences::Rearrangement::tidy_up_ofs_and_froms(void) {
-	VerifyTree::verify_integrity(Task::syntax_tree()->root_node, FALSE);
+	VerifyTree::verify_integrity(Task::syntax_tree());
 	SyntaxTree::traverse_wfirst(Task::syntax_tree(), Sentences::Rearrangement::traverse_for_property_names);
 	SyntaxTree::traverse(Task::syntax_tree(), Sentences::Rearrangement::traverse_for_nonbreaking_ofs);
 }

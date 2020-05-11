@@ -98,8 +98,8 @@ void Sentences::VPs::traverse(void) {
 }
 void Sentences::VPs::visit(parse_node *p) {
 	if (Node::get_type(p) == TRACE_NT) {
-		trace_sentences = 1 - trace_sentences;
-		Log::tracing_on(trace_sentences, I"Diagramming");
+		SyntaxTree::toggle_trace(Task::syntax_tree());
+		Log::tracing_on(SyntaxTree::is_trace_set(Task::syntax_tree()), I"Diagramming");
 	}
 	if ((Node::get_type(p) == SENTENCE_NT) &&
 		(Annotations::read_int(p, sentence_unparsed_ANNOT))) {
@@ -331,7 +331,7 @@ action declarations continue with usually extensive further text:
 		Annotations::write_int(VP_PN, verb_id_ANNOT, ASSERT_VB);
 	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
 
-	if (trace_sentences) {
+	if (SyntaxTree::is_trace_set(Task::syntax_tree())) {
 		LOG("$T\n", nss_tree_head); STREAM_FLUSH(DL);
 	}
 	*X = 0;

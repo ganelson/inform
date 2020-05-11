@@ -7,16 +7,25 @@ How we shall test it.
 =
 parse_node_tree *syntax_tree = NULL;
 
+@h Minimal Preform grammar.
+Only |<dividing-sentence>| can ever match, since the others are wired to match
+any text but then fail.
+
+=
 <dividing-sentence> ::=
-	chapter ... |    ==> 1
-	section ...				==> 2
+	chapter ... |  ==> 1
+	section ...    ==> 2
 
 <structural-sentence> ::=
-	...						==> TRUE; return FAIL_NONTERMINAL;
+	... ==> TRUE; return FAIL_NONTERMINAL;
 
 <language-modifying-sentence> ::=
-	...						==> TRUE; return FAIL_NONTERMINAL;
+	... ==> TRUE; return FAIL_NONTERMINAL;
 
+<comma-divisible-sentence> ::=
+	... ==> TRUE; return FAIL_NONTERMINAL;
+
+@ =
 <scan-individual-phrase> ::=
 	... banana ...			==> @<Issue PM_UnexpectedFruit problem@>;
 

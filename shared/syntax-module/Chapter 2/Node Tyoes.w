@@ -1,4 +1,4 @@
-[NodeType::] Node Tyoes.
+[NodeType::] Node Types.
 
 Each node in a syntax tree has a type, which informs whether it can have
 child nodes, and what in general terms it means.
@@ -67,10 +67,24 @@ void NodeType::make_parentage_allowed_table(void) {
 	for (int i = 0; i < NO_DEFINED_NCAT_VALUES; i++)
 		for (int j = 0; j < NO_DEFINED_NCAT_VALUES; j++)
 			parentage_allowed[i][j] = FALSE;
-	parentage_allowed[L1_NCAT][L1_NCAT] = TRUE;
+	NodeType::allow_parentage_for_categories(L1_NCAT, L1_NCAT);
 	#ifdef PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK
 	PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK();
 	#endif
+	#ifdef MORE_PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK
+	MORE_PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK();
+	#endif
+	#ifdef EVEN_MORE_PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK
+	EVEN_MORE_PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK();
+	#endif
+}
+
+@ The callback function |PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK| should
+call this as needed to fill in more permissions:
+
+=
+void NodeType::allow_parentage_for_categories(int A, int B) {
+	parentage_allowed[A][B] = TRUE;
 }
 
 @ The bitmap of node flags currently contains only two:
@@ -164,10 +178,10 @@ text_stream *NodeType::get_name(node_type_t t) {
 
 =
 int NodeType::is_sentence(node_type_t t) {
-	#ifdef SENTENCE_NODE_SYNTAX_CALLBACK
-	return SENTENCE_NODE_SYNTAX_CALLBACK(t);
+	#ifdef IS_SENTENCE_NODE_SYNTAX_CALLBACK
+	return IS_SENTENCE_NODE_SYNTAX_CALLBACK(t);
 	#endif
-	#ifndef SENTENCE_NODE_SYNTAX_CALLBACK
+	#ifndef IS_SENTENCE_NODE_SYNTAX_CALLBACK
 	return FALSE;
 	#endif
 }

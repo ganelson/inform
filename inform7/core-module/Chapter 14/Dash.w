@@ -3511,3 +3511,33 @@ void Dash::experiment(wording W, int full) {
 		LOG("$m\n", test_tree);
 	}
 }
+
+@
+
+@d AMBIGUITY_JOIN_SYNTAX_CALLBACK Dash::ambiguity_join
+
+=
+parse_node *Dash::ambiguity_join(parse_node *existing, parse_node *reading) {
+	if ((ParseTreeUsage::is_phrasal(reading)) &&
+		(Node::get_type(reading) == Node::get_type(existing))) {
+		Dash::add_pr_inv(existing, reading);
+		return existing;
+	}
+	return NULL;
+}
+
+void Dash::add_pr_inv(parse_node *E, parse_node *reading) {
+	for (parse_node *N = reading->down->down, *next_N = (N)?(N->next_alternative):NULL; N;
+		N = next_N, next_N = (N)?(N->next_alternative):NULL)
+		Dash::add_single_pr_inv(E, N);
+}
+
+void Dash::add_single_pr_inv(parse_node *E, parse_node *N) {
+	E = E->down->down;
+	if (Invocations::eq(E, N)) return;
+	while ((E) && (E->next_alternative)) {
+		E = E->next_alternative;
+		if (Invocations::eq(E, N)) return;
+	}
+	E->next_alternative = N; N->next_alternative = NULL;
+}

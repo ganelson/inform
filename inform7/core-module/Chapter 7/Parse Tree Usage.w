@@ -146,28 +146,28 @@ void ParseTreeUsage::md(void) {
 
 =
 void ParseTreeUsage::write_parentage_permissions(void) {
-	parentage_allowed[L2_NCAT][L3_NCAT] = TRUE;
-	parentage_allowed[L3_NCAT][L3_NCAT] = TRUE;
-	parentage_allowed[L2_NCAT][L4_NCAT] = TRUE;
-	parentage_allowed[L4_NCAT][L4_NCAT] = TRUE;
-	parentage_allowed[L4_NCAT][UNKNOWN_NCAT] = TRUE;
+	NodeType::allow_parentage_for_categories(L2_NCAT, L3_NCAT);
+	NodeType::allow_parentage_for_categories(L3_NCAT, L3_NCAT);
+	NodeType::allow_parentage_for_categories(L2_NCAT, L4_NCAT);
+	NodeType::allow_parentage_for_categories(L4_NCAT, L4_NCAT);
+	NodeType::allow_parentage_for_categories(L4_NCAT, UNKNOWN_NCAT);
 
-	parentage_allowed[L4_NCAT][LVALUE_NCAT] = TRUE;
-	parentage_allowed[L4_NCAT][RVALUE_NCAT] = TRUE;
-	parentage_allowed[L4_NCAT][COND_NCAT] = TRUE;
+	NodeType::allow_parentage_for_categories(L4_NCAT, LVALUE_NCAT);
+	NodeType::allow_parentage_for_categories(L4_NCAT, RVALUE_NCAT);
+	NodeType::allow_parentage_for_categories(L4_NCAT, COND_NCAT);
 
-	parentage_allowed[LVALUE_NCAT][UNKNOWN_NCAT] = TRUE;
-	parentage_allowed[RVALUE_NCAT][UNKNOWN_NCAT] = TRUE;
-	parentage_allowed[COND_NCAT][UNKNOWN_NCAT] = TRUE;
-	parentage_allowed[LVALUE_NCAT][LVALUE_NCAT] = TRUE;
-	parentage_allowed[RVALUE_NCAT][LVALUE_NCAT] = TRUE;
-	parentage_allowed[COND_NCAT][LVALUE_NCAT] = TRUE;
-	parentage_allowed[LVALUE_NCAT][RVALUE_NCAT] = TRUE;
-	parentage_allowed[RVALUE_NCAT][RVALUE_NCAT] = TRUE;
-	parentage_allowed[COND_NCAT][RVALUE_NCAT] = TRUE;
-	parentage_allowed[LVALUE_NCAT][COND_NCAT] = TRUE;
-	parentage_allowed[RVALUE_NCAT][COND_NCAT] = TRUE;
-	parentage_allowed[COND_NCAT][COND_NCAT] = TRUE;
+	NodeType::allow_parentage_for_categories(LVALUE_NCAT, UNKNOWN_NCAT);
+	NodeType::allow_parentage_for_categories(RVALUE_NCAT, UNKNOWN_NCAT);
+	NodeType::allow_parentage_for_categories(COND_NCAT, UNKNOWN_NCAT);
+	NodeType::allow_parentage_for_categories(LVALUE_NCAT, LVALUE_NCAT);
+	NodeType::allow_parentage_for_categories(RVALUE_NCAT, LVALUE_NCAT);
+	NodeType::allow_parentage_for_categories(COND_NCAT, LVALUE_NCAT);
+	NodeType::allow_parentage_for_categories(LVALUE_NCAT, RVALUE_NCAT);
+	NodeType::allow_parentage_for_categories(RVALUE_NCAT, RVALUE_NCAT);
+	NodeType::allow_parentage_for_categories(COND_NCAT, RVALUE_NCAT);
+	NodeType::allow_parentage_for_categories(LVALUE_NCAT, COND_NCAT);
+	NodeType::allow_parentage_for_categories(RVALUE_NCAT, COND_NCAT);
+	NodeType::allow_parentage_for_categories(COND_NCAT, COND_NCAT);
 }
 
 @
@@ -339,7 +339,7 @@ int ParseTreeUsage::parentage_exceptions(node_type_t t_parent, int cat_parent,
 @ Further classification:
 
 @d IMMUTABLE_NODE ParseTreeUsage::immutable
-@d SENTENCE_NODE_SYNTAX_CALLBACK ParseTreeUsage::second_level
+@d IS_SENTENCE_NODE_SYNTAX_CALLBACK ParseTreeUsage::second_level
 
 =
 int ParseTreeUsage::second_level(node_type_t t) {
@@ -403,7 +403,7 @@ be such that their head nodes each pass this test:
 
 =
 int ParseTreeUsage::allow_in_assertions(parse_node *p) {
-	VerifyTree::verify_structure(p);
+	VerifyTree::verify_structure_from(p);
 	if (NodeType::has_flag(Node::get_type(p), ASSERT_NFLAG)) return TRUE;
 	return FALSE;
 }
@@ -487,7 +487,8 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 
 @ =
 void ParseTreeUsage::verify(void) {
-	VerifyTree::verify_node(Task::syntax_tree());
+	VerifyTree::verify_integrity(Task::syntax_tree());
+	VerifyTree::verify_structure(Task::syntax_tree());
 }
 
 @

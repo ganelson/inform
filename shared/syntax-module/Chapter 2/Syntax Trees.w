@@ -30,6 +30,7 @@ typedef struct parse_node_tree {
 	struct parse_node *bud_parent_stack[MAX_BUD_STACK_SIZE];
 	struct parse_node *last_sentence; /* cached position in tree */
 	int allow_last_sentence_cacheing;
+	int trace_sentences;
 	HEADING_TREE_SYNTAX_TYPE *headings;
 	CLASS_DEFINITION
 } parse_node_tree;
@@ -40,6 +41,7 @@ parse_node_tree *SyntaxTree::new(void) {
 	T->bud_parent_sp = 0;
 	T->last_sentence = NULL;
 	T->allow_last_sentence_cacheing = FALSE;
+	T->trace_sentences = FALSE;
 	SyntaxTree::push_bud(T, T->root_node);
 	#ifdef NEW_HEADING_TREE_SYNTAX_CALLBACK
 	T->headings = NEW_HEADING_TREE_SYNTAX_CALLBACK(T);
@@ -439,4 +441,97 @@ void SyntaxTree::traverse_wfirst_from(parse_node *pn, void (*visitor)(parse_node
 		(*visitor)(pn);
 	}
 	current_sentence = SCS;
+}
+
+@h Cautious traverses.
+When logging or verifying the tree, we cannot use the carefree functions
+above: the tree might be malformed. As a way to detect cycles, we call for
+a new "traverse token" -- just a unique integer value -- and mark all nodes
+visited with that value.
+
+=
+int pn_log_token = 0;
+
+int SyntaxTree::new_traverse_token(void) {
+	return ++pn_log_token;
+}
+
+@h Toggling log output.
+Various modules conventionally use this global setting to toggle debugging
+log output:
+
+=
+int SyntaxTree::is_trace_set(parse_node_tree *T) {
+	return T->trace_sentences;
+}
+
+void SyntaxTree::set_trace(parse_node_tree *T) {
+	T->trace_sentences = TRUE;
+}
+
+void SyntaxTree::clear_trace(parse_node_tree *T) {
+	T->trace_sentences = FALSE;
+}
+
+void SyntaxTree::toggle_trace(parse_node_tree *T) {
+	T->trace_sentences = (T->trace_sentences)?FALSE:TRUE;
+}
+
+@h Ambiguity subtrees.
+The following function adds a new |reading| to an |existing| interpretation
+of some wording |W|, and return the node now representing. For example,
+suppose the text "orange" can be read as a noun for fruit, a noun for colour,
+or an adjective, resulting in nodes |fruit_node| and |colour_node| and |adj_node|.
+Then:
+(a) |SyntaxTree::add_reading(NULL, fruit_node, W)| returns |noun_node|,
+(b) but |SyntaxTree::add_reading(fruit_node, colour_node, W)| returns this subtree:
+= (text)
+	AMBIGUITY_NT A
+	    fruit_node
+		colour_node
+=
+(c) and |SyntaxTree::add_reading(A, adj_node, W)| returns the subtree:
+= (text)
+	AMBIGUITY_NT A
+	    fruit_node
+		colour_node
+		adj_node
+=
+Thus it accumulates possible readings of a given text.
+
+A complication is that the following callback function is offered the chance
+to amend this process in individual cases; it's called whenever |reading|
+is about to become one of the alternatives to some existing |E|. If it returns
+a non-null node, that's the answer, and otherwise we carry on as normal.
+
+(//inform7// uses this to handle ambiguous phrase invocations to be sorted
+out in type-checking: see //core: Dash//.)
+
+=
+parse_node *SyntaxTree::add_reading(parse_node *existing, parse_node *reading, wording W) {
+	if (existing == NULL) return reading;
+	if (Node::is(reading, UNKNOWN_NT)) return existing;
+	if (Node::is(reading, AMBIGUITY_NT)) reading = reading->down;
+	if (Node::is(existing, AMBIGUITY_NT)) {
+		#ifdef AMBIGUITY_JOIN_SYNTAX_CALLBACK
+		for (parse_node *E = existing->down; E; E = E->next_alternative) {
+			parse_node *pn = AMBIGUITY_JOIN_SYNTAX_CALLBACK(E, reading);
+			if (pn) return pn;
+		}
+		#endif
+		parse_node *L = existing->down;
+		while ((L) && (L->next_alternative)) L = L->next_alternative;
+		L->next_alternative = reading;
+		return existing;
+	}
+
+	#ifdef AMBIGUITY_JOIN_SYNTAX_CALLBACK
+	parse_node *pn = AMBIGUITY_JOIN_SYNTAX_CALLBACK(existing, reading);
+	if (pn) return pn;
+	#endif
+
+	parse_node *A = Node::new_with_words(AMBIGUITY_NT, W);
+	A->down = existing;
+	A->down->next_alternative = reading;
+	return A;
 }

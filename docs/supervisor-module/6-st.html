@@ -219,7 +219,7 @@ finished loading the bulk in, it calls:
 not for <a href="../inbuild/index.html" class="internal">inbuild</a>, which isn't in the inventions business.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">SENTENCE_ANNOTATION_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP7" class="function-link"><span class="function-syntax">SourceText::annotate_new_sentence</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP7" class="function-link"><span class="function-syntax">SourceText::annotate_new_sentence</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SourceText::annotate_new_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new</span><span class="plain-syntax">) {</span>
@@ -360,7 +360,27 @@ never accidentally match in the main source text.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">include</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">(-</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                 </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; sfsm-&gt;nt = INFORM6CODE_NT;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Properly speaking, despite the definition above, language modifying sentences
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Rules are ordinarily detected by their colon, which divides the header from the
+rest: colons are not otherwise legal in Inform. But there's an exception. If the
+sentence consists of text matching the following grammar, followed by comma,
+followed by more text, then the comma is read as if it's a colon and the
+sentence becomes a rule. For example:
+</p>
+
+<blockquote>
+    <p>Instead of going north, try entering the cage</p>
+</blockquote>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;comma-divisible-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">instead</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">every</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">turn</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">before</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">after</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">when</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
+</pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Properly speaking, despite the definition above, language modifying sentences
 are nonstructural. So what are they doing here? The answer is that we need to
 read them early on, because they affect the way that they parse all other
 sentences. Whereas other nonstructural sentences can wait, these can't.
@@ -372,12 +392,12 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">use</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">language</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">element/elements</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> -1</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The following callback function is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it breaks a
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The following callback function is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it breaks a
 sentence of type <span class="extract"><span class="Preform-extract-syntax">BEGINHERE_NT</span></span> or <span class="extract"><span class="Preform-extract-syntax">ENDHERE_NT</span></span> &mdash; i.e., the beginning or end
 of an extension.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">BEGIN_OR_END_HERE_SYNTAX_CALLBACK</span><span class="Preform-plain-syntax"> </span><a href="6-st.html#SP12" class="function-link"><span class="Preform-function-syntax">SourceText::new_beginend</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">BEGIN_OR_END_HERE_SYNTAX_CALLBACK</span><span class="Preform-plain-syntax"> </span><a href="6-st.html#SP13" class="function-link"><span class="Preform-function-syntax">SourceText::new_beginend</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SourceText::new_beginend</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>
@@ -386,7 +406,7 @@ of an extension.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) == </span><span class="identifier-syntax">ENDHERE_NT</span><span class="plain-syntax">) </span><a href="6-inc.html#SP10" class="function-link"><span class="function-syntax">Inclusions::check_ends_here</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Lastly, this callback is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it hits a sentence like:
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Lastly, this callback is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it hits a sentence like:
 </p>
 
 <blockquote>
@@ -397,7 +417,7 @@ of an extension.
 stack into the new world of kits), so we issue a syntax error.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LANGUAGE_ELEMENT_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP13" class="function-link"><span class="function-syntax">SourceText::new_language</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LANGUAGE_ELEMENT_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP14" class="function-link"><span class="function-syntax">SourceText::new_language</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SourceText::new_language</span><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>

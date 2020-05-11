@@ -137,7 +137,7 @@ void SourceText::bulk_of_source_loaded(void) {
 @ And here is the callback function. It's only ever needed for //inform7//,
 not for //inbuild//, which isn't in the inventions business.
 
-@d SENTENCE_ANNOTATION_SYNTAX_CALLBACK SourceText::annotate_new_sentence
+@d NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK SourceText::annotate_new_sentence
 
 =
 void SourceText::annotate_new_sentence(parse_node *new) {
@@ -248,6 +248,22 @@ never accidentally match in the main source text.
 	include the ... by ... |                       ==> 0; sfsm->nt = INCLUDE_NT;
 	include ... by ... |                           ==> 0; sfsm->nt = INCLUDE_NT;
 	include (- ...                                 ==> 0; sfsm->nt = INFORM6CODE_NT;
+
+@ Rules are ordinarily detected by their colon, which divides the header from the
+rest: colons are not otherwise legal in Inform. But there's an exception. If the
+sentence consists of text matching the following grammar, followed by comma,
+followed by more text, then the comma is read as if it's a colon and the
+sentence becomes a rule. For example:
+
+>> Instead of going north, try entering the cage
+
+=
+<comma-divisible-sentence> ::=
+	instead of ... |
+	every turn *** |
+	before ... |
+	after ... |
+	when ...
 
 @ Properly speaking, despite the definition above, language modifying sentences
 are nonstructural. So what are they doing here? The answer is that we need to

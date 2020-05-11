@@ -1,7 +1,7 @@
 [Node::] Parse Nodes.
 
-To represent atomic pieces of meaning; or, less pretentiously, to provide
-the nodes of which syntax trees are made up.
+Syntax trees are made of single nodes, each representing one way to understand
+a given piece of text.
 
 @h Nodes themselves.
 Each node is an instance of this:
@@ -9,25 +9,17 @@ Each node is an instance of this:
 =
 typedef struct parse_node {
 	struct wording text_parsed; /* the text being interpreted by this node */
-
 	node_type_t node_type; /* what the node basically represents */
 	struct parse_node_annotation *annotations; /* see //Node Annotations// */
 
 	struct parse_node *down; /* pointers within the current interpretation */
 	struct parse_node *next;
-
-	int score; /* used to choose most likely interpretation */
 	struct parse_node *next_alternative; /* fork to alternative interpretation */
 
-	int log_time; /* used purely as a defensive measure when writing debugging log */
+	int score; /* scratch storage for choosing between interpretations */
+	int last_seen_on_traverse; /* scratch storage for detecting accidental loops */
 	CLASS_DEFINITION
 } parse_node;
-
-@ Various modules conventionally use this global setting to toggle debugging
-log output:
-
-=
-int trace_sentences = FALSE;
 
 @h Creation.
 
@@ -38,7 +30,7 @@ parse_node *Node::new(node_type_t t) {
 	Node::set_text(pn, EMPTY_WORDING);
 	Annotations::clear(pn);
 	pn->down = NULL; pn->next = NULL; pn->next_alternative = NULL;
-	pn->log_time = 0;
+	pn->last_seen_on_traverse = 0;
 	Node::set_score(pn, 0);
 	return pn;
 }
@@ -236,12 +228,10 @@ that we're logging a badly-formed tree; this should never happen, but since
 logging is a diagnostic tool, we want it to work even when Inform is sick.
 
 =
-int pn_log_token = 0;
-
 void Node::log_tree(OUTPUT_STREAM, void *vpn) {
 	parse_node *pn = (parse_node *) vpn;
 	if (pn == NULL) { WRITE("<null-meaning-list>\n"); return; }
-	Node::log_subtree_recursively(OUT, pn, 0, 0, 1, ++pn_log_token);
+	Node::log_subtree_recursively(OUT, pn, 0, 0, 1, SyntaxTree::new_traverse_token());
 }
 
 void Node::log_subtree(OUTPUT_STREAM, void *vpn) {
@@ -260,12 +250,13 @@ to pursue |next| links, since otherwise a source text with more than 100,000
 sentences or so will exceed the typical stack size Inform has to run in.
 
 =
-void Node::log_subtree_recursively(OUTPUT_STREAM, parse_node *pn, int num, int of, int gen, int ltime) {
+void Node::log_subtree_recursively(OUTPUT_STREAM, parse_node *pn, int num,
+	int of, int gen, int traverse_token) {
 	while (pn) {
-		if (pn->log_time == ltime) {
+		if (pn->last_seen_on_traverse == traverse_token) {
 			WRITE("*** Not a tree: %W ***\n", Node::get_text(pn)); return;
 		}
-		pn->log_time = ltime;
+		pn->last_seen_on_traverse = traverse_token;
 		@<Calculate num and of such that this is [num/of] if they aren't already supplied@>;
 
 		if (pn == NULL) { WRITE("<null-parse-node>\n"); return; }
@@ -276,10 +267,11 @@ void Node::log_subtree_recursively(OUTPUT_STREAM, parse_node *pn, int num, int o
 		WRITE("$P\n", pn);
 		if (pn->down) {
 			LOG_INDENT;
-			Node::log_subtree_recursively(OUT, pn->down, 0, 0, gen+1, ltime);
+			Node::log_subtree_recursively(OUT, pn->down, 0, 0, gen+1, traverse_token);
 			LOG_OUTDENT;
 		}
-		if (pn->next_alternative) Node::log_subtree_recursively(OUT, pn->next_alternative, num+1, of, gen+1, ltime);
+		if (pn->next_alternative) Node::log_subtree_recursively(OUT,
+			pn->next_alternative, num+1, of, gen+1, traverse_token);
 
 		pn = pn->next; num = 0; of = 0; gen++;
 	}
@@ -315,7 +307,8 @@ void Node::log_node(OUTPUT_STREAM, void *vpn) {
 	Diagrams::log_node(OUT, pn);
 	#endif
 	switch(pn->node_type) {
-		case HEADING_NT: WRITE(" (level %d)", Annotations::read_int(pn, heading_level_ANNOT)); break;
+		case HEADING_NT: WRITE(" (level %d)", Annotations::read_int(pn,
+			heading_level_ANNOT)); break;
 	}
 	#endif
 	int a = 0;
@@ -332,60 +325,3 @@ void Node::log_with_annotations(parse_node *pn) {
 		LOG("-%d", pna->annotation_id);
 	LOG("\n");
 }
-
-@h Ambiguity subtrees.
-
-=
-parse_node *Node::add_possible_reading(parse_node *existing, parse_node *reading, wording W) {
-	if (existing == NULL) return reading;
-#ifdef CORE_MODULE
-	if (Node::is(reading, UNKNOWN_NT)) return existing;
-#endif
-	if (Node::is(reading, AMBIGUITY_NT)) reading = reading->down;
-
-	if (Node::is(existing, AMBIGUITY_NT)) {
-		#ifdef CORE_MODULE
-		if (ParseTreeUsage::is_phrasal(reading))
-			for (parse_node *E = existing->down; E; E = E->next_alternative)
-				if (Node::get_type(reading) == Node::get_type(E)) {
-					Node::add_pr_inv(E, reading);
-					return existing;
-				}
-		#endif
-		parse_node *L = existing->down;
-		while ((L) && (L->next_alternative)) L = L->next_alternative;
-		L->next_alternative = reading;
-		return existing;
-	}
-
-	#ifdef CORE_MODULE
-	if ((ParseTreeUsage::is_phrasal(reading)) &&
-		(Node::get_type(reading) == Node::get_type(existing))) {
-		Node::add_pr_inv(existing, reading);
-		return existing;
-	}
-	#endif
-
-	parse_node *A = Node::new_with_words(AMBIGUITY_NT, W);
-	A->down = existing;
-	A->down->next_alternative = reading;
-	return A;
-}
-
-#ifdef CORE_MODULE
-void Node::add_pr_inv(parse_node *E, parse_node *reading) {
-	for (parse_node *N = reading->down->down, *next_N = (N)?(N->next_alternative):NULL; N;
-		N = next_N, next_N = (N)?(N->next_alternative):NULL)
-		Node::add_single_pr_inv(E, N);
-}
-
-void Node::add_single_pr_inv(parse_node *E, parse_node *N) {
-	E = E->down->down;
-	if (Invocations::eq(E, N)) return;
-	while ((E) && (E->next_alternative)) {
-		E = E->next_alternative;
-		if (Invocations::eq(E, N)) return;
-	}
-	E->next_alternative = N; N->next_alternative = NULL;
-}
-#endif

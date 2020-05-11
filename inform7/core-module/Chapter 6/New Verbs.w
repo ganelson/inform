@@ -1202,3 +1202,12 @@ void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
 		}
 }
 
+@
+
+@d TRACING_LINGUISTICS_CALLBACK NewVerbs::trace_parsing
+
+=
+int NewVerbs::trace_parsing(void) {
+	if (SyntaxTree::is_trace_set(Task::syntax_tree())) return TRUE;
+	return FALSE;
+}

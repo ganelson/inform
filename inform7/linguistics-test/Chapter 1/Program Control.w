@@ -19,8 +19,6 @@ int main(int argc, char **argv) {
 	SyntaxModule::start();
 	LinguisticsModule::start();
 
-	Unit::start_diagrams();
-
 	CommandLine::declare_heading(L"linguistics-test: a tool for testing the linguistics module\n");
 
 	CommandLine::declare_switch(TEST_DIAGRAMS_CLSW, L"test-diagrams", 2,
