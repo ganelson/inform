@@ -11,7 +11,7 @@ wording Kinds::Behaviour::get_name(kind *K, int plural_form) {
 	return Kinds::Constructors::get_name(K->construct, plural_form);
 }
 
-wording Kinds::Behaviour::get_name_in_play(kind *K, int plural_form, PREFORM_LANGUAGE_TYPE *nl) {
+wording Kinds::Behaviour::get_name_in_play(kind *K, int plural_form, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (K == NULL) return EMPTY_WORDING;
 	return Kinds::Constructors::get_name_in_play(K->construct, plural_form, nl);
 }

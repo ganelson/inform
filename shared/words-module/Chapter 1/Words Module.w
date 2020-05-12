@@ -51,7 +51,7 @@ void WordsModule::start(void) {
 
 	Lexer::start();
 	Vocabulary::create_punctuation();
-	Preform::begin();
+	LoadPreform::begin();
 }
 
 void WordsModule::end(void) {

@@ -73,7 +73,7 @@ noun *Nouns::new_common_noun(wording W, int gender, int options,
 }
 
 noun *Nouns::new_inner(wording W, general_pointer owner, int p, int options,
-	unsigned int mc, PREFORM_LANGUAGE_TYPE *foreign_language, int gender) {
+	unsigned int mc, NATURAL_LANGUAGE_WORDS_TYPE *foreign_language, int gender) {
 	noun *t = CREATE(noun);
 	t->tagged_to = owner;
 	t->registration_to = owner;
@@ -111,7 +111,7 @@ we add a new one.
 
 =
 individual_name *Nouns::add_to_noun_and_reg(noun *t,
-	wording W, PREFORM_LANGUAGE_TYPE *foreign_language, int gender, int number, int options) {
+	wording W, NATURAL_LANGUAGE_WORDS_TYPE *foreign_language, int gender, int number, int options) {
 	individual_name *in = Clusters::add(t->names, W, foreign_language, gender, number,
 		(options & REGISTER_PLURAL_NTOPT)?TRUE:FALSE);
 	for (; in; in = in->next)
@@ -156,12 +156,16 @@ wording Nouns::get_name(noun *t, int plural_flag) {
 	return Clusters::get_name(t->names, plural_flag);
 }
 
-wording Nouns::get_name_in_play(noun *t, int plural_flag, PREFORM_LANGUAGE_TYPE *lang) {
+wording Nouns::get_name_in_play(noun *t, int plural_flag, NATURAL_LANGUAGE_WORDS_TYPE *lang) {
 	return Clusters::get_name_in_play(t->names, plural_flag, lang);
 }
 
 void Nouns::set_plural_name(noun *t, wording W) {
-	Clusters::set_plural_name(t->names, W, language_of_source_text);
+	NATURAL_LANGUAGE_WORDS_TYPE *L = NULL;
+	#ifdef CORE_LANGUAGE
+	L = Task::language_of_syntax();
+	#endif
+	Clusters::set_plural_name(t->names, W, L);
 }
 
 int Nouns::full_name_includes(noun *t, vocabulary_entry *wd) {

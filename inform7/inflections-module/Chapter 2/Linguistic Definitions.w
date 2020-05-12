@@ -74,4 +74,4 @@ The following is in effect also a constant; Inform sets it to English early
 in its run.
 
 =
-PREFORM_LANGUAGE_TYPE *English_language = NULL; /* until created, early in run */
+NATURAL_LANGUAGE_WORDS_TYPE *English_language = NULL; /* until created, early in run */

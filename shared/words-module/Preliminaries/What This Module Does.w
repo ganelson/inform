@@ -35,13 +35,13 @@ unquoted[1] vocabulary of only about 2000 different words. Inform generates
 a //vocabulary_entry// object for each of these distinct words, and //Lexer::word//
 returns the VE for a given word number. In the above example,
 = (text as InC)
-	Lexer::word(17) == Lexer::word(25)   /* both uses of "Mary" */
-	Lexer::word(21) == Lexer::word(29)   /* both uses of "lamb" */
+	Lexer::word(17) == Lexer::word(25)   /* both are uses of "Mary" */
+	Lexer::word(21) == Lexer::word(29)   /* both are uses of "lamb" */
 	Lexer::word(20) != Lexer::word(24)   /* one is "little", the other "that" */
 =
 The important point is that words at two positions can be tested for textual
 equality in an essentially instant process, by comparing |vocabulary_entry *|
-pointers.
+pointers. (See //Numbered Words// for just this sort of comparison.)
 
 Nothing in life is free, and building the vocabulary efficiently is itself a
 challenge: see //Vocabulary::hash_code_from_word//. The key function is
@@ -59,6 +59,9 @@ think it means. In our example,
 = (text as InC)
 	Lexer::word(27) == COMMA_V   /* the comma between "went" and "the" */
 =
+See //Vocabulary::create_punctuation//, and also //LoadPreform::begin//, where
+further punctuation marks are created in order to parse Preform syntax --
+there are exotica such as |COLONCOLONEQUALS_V| there, for "::=".
 
 @ Lexical errors occur if words are too long, or quoted text continues without
 a close quote right to the end of a file, and so on. These are sent to the

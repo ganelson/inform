@@ -62,8 +62,8 @@ would be
 The syntax module has many callbacks, but they are all optional. The following
 alphabetical list has references to fuller explanations:
 
-(*) |AMBIGUITY_JOIN_SYNTAX_CALLBACK| can divert ambiguous readings and prevent
-them from being added to a syntax tree: see //SyntaxTree::add_reading//.
+(*) |AMBIGUITY_JOIN_SYNTAX_CALLBACK| can rearrange ambiguous readings as
+added to a syntax tree: see //SyntaxTree::add_reading//.
 
 (*) |ANNOTATION_COPY_SYNTAX_CALLBACK| can perform deep rather than shallow
 copies of node annotations when these are essential: see //Annotations::copy//.

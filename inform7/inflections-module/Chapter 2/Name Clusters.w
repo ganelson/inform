@@ -23,7 +23,7 @@ typedef struct individual_name {
 	struct declension name; /* text of name */
 	int name_number; /* 1 for singular, 2 for plural */
 	int name_gender; /* 1 is neuter, 2 is masculine, 3 is feminine */
-	PREFORM_LANGUAGE_TYPE *name_language; /* always non-null */
+	NATURAL_LANGUAGE_WORDS_TYPE *name_language; /* always non-null */
 	struct individual_name *next; /* within its cluster */
 	CLASS_DEFINITION
 } individual_name;
@@ -41,7 +41,7 @@ name_cluster *Clusters::new(void) {
 
 =
 individual_name *Clusters::add(name_cluster *names, wording W,
-	PREFORM_LANGUAGE_TYPE *nl, int gender, int number, int pluralise) {
+	NATURAL_LANGUAGE_WORDS_TYPE *nl, int gender, int number, int pluralise) {
 	if (nl == NULL) nl = English_language;
 	individual_name *in = CREATE(individual_name);
 	in->principal_meaning = NULL_GENERAL_POINTER;
@@ -91,7 +91,7 @@ At run time, it's an integer from 0 to 11 which encodes all possible
 combinations. Here we only work through six, ignoring animation:
 
 =
-void Clusters::add_with_agreements(name_cluster *cl, wording W, PREFORM_LANGUAGE_TYPE *nl) {
+void Clusters::add_with_agreements(name_cluster *cl, wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (nl == NULL) nl = English_language;
 	if (nl == English_language) {
 		Clusters::add(cl, W, nl, NEUTER_GENDER, 1, FALSE);
@@ -148,7 +148,7 @@ only when the built-in kinds are being given plural names; some of these
 and wouldn't pass through the pluralising tries intact.
 
 =
-void Clusters::set_plural_name(name_cluster *cl, wording W, PREFORM_LANGUAGE_TYPE *nl) {
+void Clusters::set_plural_name(name_cluster *cl, wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	individual_name *in;
 	for (in = cl->first_name; in; in = in->next)
 		if (in->name_number == 2) {
@@ -180,7 +180,7 @@ wording Clusters::get_name(name_cluster *cl, int plural_flag) {
 falling back on English if there's none registered:
 
 =
-wording Clusters::get_name_in_play(name_cluster *cl, int plural_flag, PREFORM_LANGUAGE_TYPE *nl) {
+wording Clusters::get_name_in_play(name_cluster *cl, int plural_flag, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	int number_sought = 1;
 	if (plural_flag) number_sought = 2;
 	individual_name *in;
@@ -195,7 +195,7 @@ wording Clusters::get_name_in_play(name_cluster *cl, int plural_flag, PREFORM_LA
 
 =
 wording Clusters::get_name_general(name_cluster *cl,
-	PREFORM_LANGUAGE_TYPE *nl, int number_sought, int gender_sought) {
+	NATURAL_LANGUAGE_WORDS_TYPE *nl, int number_sought, int gender_sought) {
 	individual_name *in;
 	for (in = cl->first_name; in; in = in->next)
 		if (((number_sought == -1) || (number_sought == in->name_number)) &&

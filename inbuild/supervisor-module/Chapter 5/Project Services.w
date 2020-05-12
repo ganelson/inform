@@ -697,6 +697,7 @@ for the extensions they refer to, in a post-processing phase.
 =
 void Projects::read_source_text_for(inform_project *proj) {
 	Languages::read_Preform_definition(proj->language_of_syntax, proj->search_list);
+	LoadPreform::set_language_of_syntax(proj->language_of_syntax);
 	Sentences::set_start_of_source(sfsm, -1);
 
 	parse_node *inclusions_heading, *implicit_heading;

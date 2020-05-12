@@ -64,16 +64,6 @@ int Word::perhaps_ill_formed_text_routine(wchar_t *fw) {
 	return FALSE;
 }
 
-@ Not to be done lightly: the output can be enormous.
-
-=
-void Word::log_lexer_output(void) {
-	LOG("Entire lexer output to date:\n");
-	for (int i=0; i<lexer_wordcount; i++)
-		LOG("%d: <%+N> <%N> <%02x>\n", i, i, i, Lexer::break_before(i));
-	LOG("------\n");
-}
-
 @h Casing and sentence division.
 Casing is only sometimes informative in English: for the first word in
 a sentence, we expect to find an upper-case letter, so that there is no

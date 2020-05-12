@@ -52,3 +52,10 @@ following alphabetical list has references to fuller explanations:
 (*) |PROBLEM_WORDS_CALLBACK| is called when a lexical error is found, and can
 prevent this from being issued to the terminal as an error message: see
 //Lexer::lexer_problem_handler//.
+
+@ If the selection of a natural language is a meaningful thing to the parent,
+it can define |NATURAL_LANGUAGE_WORDS_TYPE| to tell the Preform parser how
+to refer to these. For example, the //supervisor// module has:
+= (text as Inweb)
+	@d NATURAL_LANGUAGE_WORDS_TYPE struct inform_language
+=

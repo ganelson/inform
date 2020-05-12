@@ -874,7 +874,7 @@ void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_comm
 				int i;
 				for (i=0; i<length; i++) {
 					Vocabulary::set_flags(array[i], KIND_SLOW_MC);
-					Preform::mark_vocabulary(array[i], <k-kind>);
+					Optimiser::mark_vocabulary(array[i], <k-kind>);
 				}
 				if (con->group != PROPER_CONSTRUCTOR_GRP) {
 					vocabulary_entry *ve = WordAssemblages::hyphenated(&(stc.vocabulary_argument));

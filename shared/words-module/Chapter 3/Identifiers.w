@@ -1,7 +1,7 @@
 [Identifiers::] Identifiers.
 
-To represent snippets of natural language in identifier form, which
-a typical C-like compiler would accept.
+To summarise wordings into alphanumeric identifiers of the kind used by
+standard programming languages.
 
 @h Validity of identifiers.
 In code compiled by I7, a valid identifier is a sequence of 1 to 31 characters,

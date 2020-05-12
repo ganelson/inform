@@ -50,8 +50,8 @@ numbers.
 
 =
 void Cardinals::preform_optimiser(void) {
-	Preform::mark_nt_as_requiring_itself_conj(<cardinal-number>);
-	Preform::mark_nt_as_requiring_itself_conj(<ordinal-number>);
+	Optimiser::mark_nt_as_requiring_itself_conj(<cardinal-number>);
+	Optimiser::mark_nt_as_requiring_itself_conj(<ordinal-number>);
 	for (int wn = 0; wn < lexer_wordcount; wn++) {
 		if (Vocabulary::test_flags(wn, NUMBER_MC))
 			Cardinals::mark_as_cardinal(Lexer::word(wn));
@@ -61,16 +61,16 @@ void Cardinals::preform_optimiser(void) {
 }
 
 void Cardinals::mark_as_cardinal(vocabulary_entry *ve) {
-	Preform::set_nt_incidence(ve, <cardinal-number>);
+	Optimiser::set_nt_incidence(ve, <cardinal-number>);
 }
 
 void Cardinals::mark_as_ordinal(vocabulary_entry *ve) {
-	Preform::set_nt_incidence(ve, <ordinal-number>);
+	Optimiser::set_nt_incidence(ve, <ordinal-number>);
 }
 
 void Cardinals::enable_in_word_form(void) {
-	Preform::assign_bitmap_bit(<cardinal-number>, 0);
-	Preform::assign_bitmap_bit(<ordinal-number>, 1);
+	Optimiser::assign_bitmap_bit(<cardinal-number>, 0);
+	Optimiser::assign_bitmap_bit(<ordinal-number>, 1);
 
 	<cardinal-number-in-words>->number_words_by_production = TRUE;
 	<cardinal-number-in-words>->flag_words_in_production = NUMBER_MC;

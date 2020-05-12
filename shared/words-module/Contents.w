@@ -16,6 +16,7 @@ Chapter 2: Words in Isolation
 "Recognising different words, and storing phrases made of them."
 	Vocabulary
 	Word Assemblages
+	Numbered Words
 
 Chapter 3: Words in Sequence
 "Reading in arbitrary text and breaking it into a numbered sequence of words."
@@ -26,6 +27,8 @@ Chapter 3: Words in Sequence
 	Identifiers
 
 Chapter 4: Parsing
-	Numbered Words
+	About Preform
+	Loading Preform
+	The Optimiser
 	Preform
 	Basic Nonterminals

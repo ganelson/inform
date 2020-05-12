@@ -127,7 +127,7 @@ is never treated as a participle.
 
 =
 void Articles::mark_for_preform(void) {
-	Preform::assign_bitmap_bit(<article>, 2);
-	Preform::assign_bitmap_bit(<definite-article>, 2);
-	Preform::assign_bitmap_bit(<indefinite-article>, 2);
+	Optimiser::assign_bitmap_bit(<article>, 2);
+	Optimiser::assign_bitmap_bit(<definite-article>, 2);
+	Optimiser::assign_bitmap_bit(<indefinite-article>, 2);
 }

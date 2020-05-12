@@ -183,7 +183,7 @@ since non-zero-ness in the viability map is used only to speed up parsing.
 		if ((Lexer::word(pos) == CLOSEBRACKET_V) || (Lexer::word(pos) == CLOSEBRACE_V)) bl--;
 		int i = pos - Wordings::first_wn(W);
 		if (i >= VIABILITY_MAP_SIZE) break;
-		if (Preform::test_nt_incidence(Lexer::word(pos), <meaningful-nonimperative-verb>) == FALSE) viable[i] = 0;
+		if (Optimiser::test_nt_incidence(Lexer::word(pos), <meaningful-nonimperative-verb>) == FALSE) viable[i] = 0;
 		else {
 			if (bl == 0) viable[i] = 1; else viable[i] = 2;
 			int pos_to = -(<negated-noncopular-verb-present>(Wordings::from(W, pos)));

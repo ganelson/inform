@@ -147,7 +147,7 @@ But we are going to need to use these avinues frequently, so we cache them once
 created.
 
 =
-match_avinue *Preform::Nonparsing::define_trie(nonterminal *nt, int end, PREFORM_LANGUAGE_TYPE *nl) {
+match_avinue *Preform::Nonparsing::define_trie(nonterminal *nt, int end, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (nl == NULL) nl = English_language;
 	match_avinue *ave = NULL;
 	production_list *pl;
@@ -174,7 +174,7 @@ single avinue.
 		if (first == NULL) continue;
 		ptoken *second = first->next_ptoken;
 		if ((second) && (second->next_ptoken)) {
-			Preform::log_production(pr, FALSE);
+			LoadPreform::log_production(pr, FALSE);
 			Conjugation::trie_definition_error(nt, pr, "trie line with more than 2 words");
 		}
 		@<Consider the one- or two-token production in this nonterminal@>;

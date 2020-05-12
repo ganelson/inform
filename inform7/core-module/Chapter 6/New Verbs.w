@@ -1120,7 +1120,7 @@ int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
 void NewVerbs::declare_meaningless_adjective(parse_node *p) {
 	wording W = Node::get_text(p->next);
 	<adjective-definition-subject>(W);
-	PREFORM_LANGUAGE_TYPE *nl = <<rp>>;
+	NATURAL_LANGUAGE_WORDS_TYPE *nl = <<rp>>;
 	W = GET_RW(<adjective-definition-subject>, 1);
 	if (!(<adaptive-adjective>(W)))
 		Adjectives::declare(W, nl);

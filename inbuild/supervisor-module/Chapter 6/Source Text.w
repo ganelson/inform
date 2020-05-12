@@ -6,7 +6,7 @@ Using the lexer and syntax analysis modules to read in Inform 7 source text.
 Lexing is the business of the //words// module, and we need to tell it what
 data type to use when referencing natural languages.
 
-@d PREFORM_LANGUAGE_TYPE struct inform_language
+@d NATURAL_LANGUAGE_WORDS_TYPE struct inform_language
 
 @ Lexical errors -- overly long words, half-open quotations, and such -- are
 converted into copy errors and attached to the copy currently being worked on.

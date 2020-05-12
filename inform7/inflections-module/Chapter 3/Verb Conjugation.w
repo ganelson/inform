@@ -15,7 +15,7 @@ typedef struct verb_conjugation {
 	struct word_assemblage past_participle;
 	struct word_assemblage present_participle;
 	struct verb_tabulation tabulations[NO_KNOWN_MOODS];
-	PREFORM_LANGUAGE_TYPE *defined_in;
+	NATURAL_LANGUAGE_WORDS_TYPE *defined_in;
 	#ifdef LINGUISTICS_MODULE
 	struct verb_identity *vc_conjugates;
 	#endif
@@ -48,12 +48,12 @@ conjugation to another.
 
 =
 verb_conjugation *Conjugation::conjugate(word_assemblage base_text,
-	PREFORM_LANGUAGE_TYPE *nl) {
+	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	return Conjugation::conjugate_with_overrides(base_text, NULL, 0, nl);
 }
 
 verb_conjugation *Conjugation::conjugate_with_overrides(word_assemblage base_text,
-	word_assemblage *overrides, int no_overrides, PREFORM_LANGUAGE_TYPE *nl) {
+	word_assemblage *overrides, int no_overrides, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (nl == NULL) nl = English_language;
 	if (WordAssemblages::nonempty(base_text) == FALSE)
 		internal_error("No base text for verb conjugation");
@@ -237,7 +237,7 @@ participles and then chooses the tabulation |<to-do-tabulation>|.
 
 =
 nonterminal *Conjugation::follow_instructions(word_assemblage *verb_forms, int *highest_form_written,
-	int *aux_len, int *avo_flag, int *niv_flag, PREFORM_LANGUAGE_TYPE *nl) {
+	int *aux_len, int *avo_flag, int *niv_flag, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	nonterminal *instructions_nt = <verb-conjugation-instructions>;
 	nonterminal *tabulation_nt = NULL, *conjugation_nt = NULL;
 	*highest_form_written = 1;
@@ -410,7 +410,7 @@ There are other complications, too. See "English Inflections" for more.
 =
 word_assemblage Conjugation::merge(ptoken *row,
 	int sense, int tense, int person, int num_ingredients, word_assemblage *ingredients,
-	PREFORM_LANGUAGE_TYPE *nl, int *modal_following) {
+	NATURAL_LANGUAGE_WORDS_TYPE *nl, int *modal_following) {
 	if (modal_following) { *modal_following = 0; }
 	word_assemblage wa = WordAssemblages::lit_0();
 	int verb_form_to_lift = -1;
@@ -745,7 +745,7 @@ void Conjugation::basic_problem_handler(word_assemblage base_text, nonterminal *
 	#ifndef INFLECTIONS_ERROR_HANDLER
 	if (pr) {
 		LOG("The production at fault is:\n");
-		Preform::log_production(pr, FALSE); LOG("\n");
+		LoadPreform::log_production(pr, FALSE); LOG("\n");
 	}
 	TEMPORARY_TEXT(ERM);
 	if (nt == NULL)
@@ -760,7 +760,7 @@ void Conjugation::basic_problem_handler(word_assemblage base_text, nonterminal *
 	if (pr) {
 		TEMPORARY_TEXT(TEMP);
 		for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
-			Preform::write_ptoken(TEMP, pt);
+			LoadPreform::write_ptoken(TEMP, pt);
 			if (pt->next_ptoken) WRITE_TO(TEMP, " ");
 		}
 		WRITE_TO(ERM, "line %d ('%S'): ", pr->match_number, TEMP);
@@ -779,7 +779,7 @@ conjugations:
 >> Test verb (internal) with appuyer.
 
 =
-void Conjugation::test(OUTPUT_STREAM, wording W, PREFORM_LANGUAGE_TYPE *nl) {
+void Conjugation::test(OUTPUT_STREAM, wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	verb_conjugation *vc = Conjugation::conjugate(
 		WordAssemblages::from_wording(W), nl);
 	if (vc == NULL) { WRITE("Failed test\n"); return; }

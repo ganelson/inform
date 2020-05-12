@@ -116,10 +116,18 @@ following alphabetical list has references to fuller explanations:
 
 <ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_WORDS_CALLBACK</span></span> is called when a lexical error is found, and can
 prevent this from being issued to the terminal as an error message: see
-<a href="3-lxr.html#SP29" class="internal">Lexer::lexer_problem_handler</a>.
+<a href="3-lxr.html#SP31" class="internal">Lexer::lexer_problem_handler</a>.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>If the selection of a natural language is a meaningful thing to the parent,
+it can define <span class="extract"><span class="extract-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span></span> to tell the Preform parser how
+to refer to these. For example, the <a href="../supervisor-module/index.html" class="internal">supervisor</a> module has:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> NATURAL_LANGUAGE_WORDS_TYPE struct inform_language</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresschapter"><a href="4-nw.html">4</a></li><li class="progressnext"><a href="1-wm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresschapter"><a href="4-ap.html">4</a></li><li class="progressnext"><a href="1-wm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

@@ -12,7 +12,7 @@ The following does the suffixing:
 	... than
 
 @ =
-wording Grading::make_comparative(wording W, PREFORM_LANGUAGE_TYPE *nl) {
+wording Grading::make_comparative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	TEMPORARY_TEXT(comprised);
 	TEMPORARY_TEXT(transformed);
 	if (*(Lexer::word_text(Wordings::first_wn(W))) == '\"')
@@ -34,7 +34,7 @@ wording Grading::make_comparative(wording W, PREFORM_LANGUAGE_TYPE *nl) {
 	return PW;
 }
 
-wording Grading::make_superlative(wording W, PREFORM_LANGUAGE_TYPE *nl) {
+wording Grading::make_superlative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	TEMPORARY_TEXT(comprised);
 	TEMPORARY_TEXT(transformed);
 	if (*(Lexer::word_text(Wordings::first_wn(W))) == '\"')
@@ -58,7 +58,7 @@ comparison: for instance, "tallness" for "tall", or "steeliness" for
 "steely".
 
 =
-wording Grading::make_quiddity(wording W, PREFORM_LANGUAGE_TYPE *nl) {
+wording Grading::make_quiddity(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	TEMPORARY_TEXT(comprised);
 	TEMPORARY_TEXT(transformed);
 	if (*(Lexer::word_text(Wordings::first_wn(W))) == '\"')

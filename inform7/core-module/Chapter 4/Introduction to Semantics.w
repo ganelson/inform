@@ -209,31 +209,31 @@ whole thing into a |specification| for the rest of Inform to use.
 void Semantics::read_preform(inform_language *L) {
 	@<Mark certain nonterminals to have their vocabularies numbered and flagged@>;
 	wording W = NaturalLanguages::load_preform(L);
-	int nonterminals_declared = Preform::parse_preform(W, FALSE);
+	int nonterminals_declared = LoadPreform::parse(W, FALSE);
 
 	LOG("%d declarations read (%d words)\n", nonterminals_declared, Wordings::length(W));
 }
 
 @<Mark certain nonterminals to have their vocabularies numbered and flagged@> =
-	Preform::assign_bitmap_bit(<s-adjective>, 3);
-	Preform::assign_bitmap_bit(<s-instance-name>, 5);
-	Preform::assign_bitmap_bit(<k-kind>, 5);
-	Preform::assign_bitmap_bit(<k-kind-of-kind>, 5);
-	Preform::assign_bitmap_bit(<k-base-kind>, 5);
-	Preform::assign_bitmap_bit(<k-kind-construction>, 5);
-	Preform::assign_bitmap_bit(<k-kind-variable-texts>, 5);
-	Preform::assign_bitmap_bit(<k-kind-variable>, 5);
-	Preform::assign_bitmap_bit(<k-formal-kind-variable>, 5);
-	Preform::assign_bitmap_bit(<k-irregular-kind-construction>, 5);
-	Preform::assign_bitmap_bit(<k-variable-definition>, 5);
-	Preform::assign_bitmap_bit(<k-single-material>, 5);
-	Preform::assign_bitmap_bit(<k-optional-material>, 5);
-	Preform::assign_bitmap_bit(<k-tupled-material>, 5);
-	Preform::assign_bitmap_bit(<k-tuple-list>, 5);
+	Optimiser::assign_bitmap_bit(<s-adjective>, 3);
+	Optimiser::assign_bitmap_bit(<s-instance-name>, 5);
+	Optimiser::assign_bitmap_bit(<k-kind>, 5);
+	Optimiser::assign_bitmap_bit(<k-kind-of-kind>, 5);
+	Optimiser::assign_bitmap_bit(<k-base-kind>, 5);
+	Optimiser::assign_bitmap_bit(<k-kind-construction>, 5);
+	Optimiser::assign_bitmap_bit(<k-kind-variable-texts>, 5);
+	Optimiser::assign_bitmap_bit(<k-kind-variable>, 5);
+	Optimiser::assign_bitmap_bit(<k-formal-kind-variable>, 5);
+	Optimiser::assign_bitmap_bit(<k-irregular-kind-construction>, 5);
+	Optimiser::assign_bitmap_bit(<k-variable-definition>, 5);
+	Optimiser::assign_bitmap_bit(<k-single-material>, 5);
+	Optimiser::assign_bitmap_bit(<k-optional-material>, 5);
+	Optimiser::assign_bitmap_bit(<k-tupled-material>, 5);
+	Optimiser::assign_bitmap_bit(<k-tuple-list>, 5);
 
 @ =
 void Semantics::mark_preform_requirements(void) {
-	Preform::mark_nt_as_requiring_itself_conj(<s-adjective>);
+	Optimiser::mark_nt_as_requiring_itself_conj(<s-adjective>);
 	Semantics::mark_nt_as_requiring_itself_articled(<s-instance-name>);
 	Semantics::mark_nt_as_requiring_itself_articled(<k-kind-variable>);
 	Semantics::mark_nt_as_requiring_itself_articled(<k-formal-kind-variable>);
@@ -247,5 +247,5 @@ void Semantics::break_preform_circularities(nonterminal *nt) {
 }
 
 void Semantics::mark_nt_as_requiring_itself_articled(nonterminal *nt) {
-	Preform::mark_nt_as_requiring_itself_augmented(nt, Preform::nt_bitmap_bit(<article>));
+	Optimiser::mark_nt_as_requiring_itself_augmented(nt, Optimiser::nt_bitmap_bit(<article>));
 }

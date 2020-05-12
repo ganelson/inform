@@ -502,9 +502,10 @@ Thus it accumulates possible readings of a given text.
 A complication is that the following callback function is offered the chance
 to amend this process in individual cases; it's called whenever |reading|
 is about to become one of the alternatives to some existing |E|. If it returns
-a non-null node, that's the answer, and otherwise we carry on as normal.
+|TRUE|, we assume it has done something of its own already, and do nothing
+further.
 
-(//inform7// uses this to handle ambiguous phrase invocations to be sorted
+(//inform7// uses this to rearrange ambiguous phrase invocations to be sorted
 out in type-checking: see //core: Dash//.)
 
 =
@@ -514,10 +515,9 @@ parse_node *SyntaxTree::add_reading(parse_node *existing, parse_node *reading, w
 	if (Node::is(reading, AMBIGUITY_NT)) reading = reading->down;
 	if (Node::is(existing, AMBIGUITY_NT)) {
 		#ifdef AMBIGUITY_JOIN_SYNTAX_CALLBACK
-		for (parse_node *E = existing->down; E; E = E->next_alternative) {
-			parse_node *pn = AMBIGUITY_JOIN_SYNTAX_CALLBACK(E, reading);
-			if (pn) return pn;
-		}
+		for (parse_node *E = existing->down; E; E = E->next_alternative)
+			if (AMBIGUITY_JOIN_SYNTAX_CALLBACK(E, reading))
+				return existing;
 		#endif
 		parse_node *L = existing->down;
 		while ((L) && (L->next_alternative)) L = L->next_alternative;
@@ -526,8 +526,7 @@ parse_node *SyntaxTree::add_reading(parse_node *existing, parse_node *reading, w
 	}
 
 	#ifdef AMBIGUITY_JOIN_SYNTAX_CALLBACK
-	parse_node *pn = AMBIGUITY_JOIN_SYNTAX_CALLBACK(existing, reading);
-	if (pn) return pn;
+	if (AMBIGUITY_JOIN_SYNTAX_CALLBACK(existing, reading)) return existing;
 	#endif
 
 	parse_node *A = Node::new_with_words(AMBIGUITY_NT, W);

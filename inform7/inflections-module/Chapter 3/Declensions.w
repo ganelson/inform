@@ -7,19 +7,19 @@ according to grammatical case.
 
 =
 typedef struct declension {
-	PREFORM_LANGUAGE_TYPE *within_language;
+	NATURAL_LANGUAGE_WORDS_TYPE *within_language;
 	struct wording name_cased[MAX_GRAMMATICAL_CASES];
 } declension;
 
 @ =
-declension Declensions::decline(wording W, PREFORM_LANGUAGE_TYPE *nl, int gen, int num) {
+declension Declensions::decline(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl, int gen, int num) {
 	if (nl == NULL) nl = English_language;
 	declension D = Declensions::decline_inner(W, nl, gen, num, <noun-declension>);
 	@<Fix the origin@>;
 	return D;
 }
 
-declension Declensions::decline_article(wording W, PREFORM_LANGUAGE_TYPE *nl, int gen, int num) {
+declension Declensions::decline_article(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl, int gen, int num) {
 	if (nl == NULL) nl = English_language;
 	declension D = Declensions::decline_inner(W, nl, gen, num, <article-declension>);
 	@<Fix the origin@>;
@@ -35,7 +35,7 @@ declension Declensions::decline_article(wording W, PREFORM_LANGUAGE_TYPE *nl, in
 					Wordings::first_wn(W)));
 
 @ =
-declension Declensions::decline_inner(wording W, PREFORM_LANGUAGE_TYPE *nl, int gen, int num, nonterminal *nt) {
+declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl, int gen, int num, nonterminal *nt) {
 	if (nl == NULL) nl = English_language;
 	declension D;
 	D.within_language = nl;
@@ -73,7 +73,7 @@ declension Declensions::decline_inner(wording W, PREFORM_LANGUAGE_TYPE *nl, int 
 	return D;
 }
 
-declension Declensions::decline_from_irregulars(wording W, PREFORM_LANGUAGE_TYPE *nl,
+declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
 	nonterminal *gnt, int num, int *found) {
 	*found = FALSE;
 	declension D;
@@ -109,7 +109,7 @@ declension Declensions::decline_from_irregulars(wording W, PREFORM_LANGUAGE_TYPE
 	return D;
 }
 
-declension Declensions::decline_from_groups(wording W, PREFORM_LANGUAGE_TYPE *nl,
+declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
 	nonterminal *gnt, nonterminal *nt, int num, int *found) {
 	declension D;
 	D.within_language = nl;
@@ -142,7 +142,7 @@ declension Declensions::decline_from_groups(wording W, PREFORM_LANGUAGE_TYPE *nl
 	return D;
 }
 
-declension Declensions::decline_from(wording W, PREFORM_LANGUAGE_TYPE *nl, nonterminal *nt, int num) {
+declension Declensions::decline_from(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl, nonterminal *nt, int num) {
 	int c = 0, nc = Declensions::no_cases(nl);
 	declension D;
 	D.within_language = nl;
@@ -179,7 +179,7 @@ wording Declensions::in_case(declension *D, int c) {
 	return D->name_cased[c];
 }
 
-int Declensions::no_cases(PREFORM_LANGUAGE_TYPE *nl) {
+int Declensions::no_cases(NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	nonterminal *nt = <grammatical-case-names>;
 	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
 		if ((pl->definition_language == NULL) || (pl->definition_language == nl)) {

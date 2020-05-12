@@ -170,8 +170,8 @@ for use.
 void Main::load_preform(inform_language *L) {
 	pathname *P = Pathnames::down(path_to_inbuild, I"Tangled");
 	filename *S = Filenames::in(P, I"Syntax.preform");
-	wording W = Preform::load_from_file(S);
-	Preform::parse_preform(W, FALSE);
+	wording W = LoadPreform::load(S);
+	LoadPreform::parse(W, FALSE);
 }
 
 @h Target list.

@@ -609,7 +609,7 @@ blind eye to singular vs plural.
 	int which_N = -1; quantifier *quantifier_used = NULL;
 	int x1 = Quantifiers::parse_against_text(W, &which_N, &quantifier_used);
 	if (x1 >= 0) {
-		if ((x1<Wordings::last_wn(W)) && (Preform::test_word(x1, <article>))) x1++;
+		if ((x1<Wordings::last_wn(W)) && (Optimiser::test_word(x1, <article>))) x1++;
 		parse_node *qp = Specifications::new_UNKNOWN(Wordings::up_to(W, x1-1));
 		Node::set_quant(qp, quantifier_used);
 		Annotations::write_int(qp, quantification_parameter_ANNOT, which_N);

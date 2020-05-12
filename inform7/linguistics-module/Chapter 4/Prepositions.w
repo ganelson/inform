@@ -160,14 +160,14 @@ void Prepositions::mark_for_preform(void) {
 }
 
 void Prepositions::preform_optimiser(void) {
-	Preform::mark_nt_as_requiring_itself(<preposition>);
-	Preform::mark_nt_as_requiring_itself(<copular-preposition>);
-	Preform::mark_nt_as_requiring_itself(<permitted-preposition>);
+	Optimiser::mark_nt_as_requiring_itself(<preposition>);
+	Optimiser::mark_nt_as_requiring_itself(<copular-preposition>);
+	Optimiser::mark_nt_as_requiring_itself(<permitted-preposition>);
 }
 
 void Prepositions::mark_as_preposition(vocabulary_entry *ve) {
 	Vocabulary::set_flags(ve, PREPOSITION_MC);
-	Preform::set_nt_incidence(ve, <preposition>);
-	Preform::set_nt_incidence(ve, <copular-preposition>);
-	Preform::set_nt_incidence(ve, <permitted-preposition>);
+	Optimiser::set_nt_incidence(ve, <preposition>);
+	Optimiser::set_nt_incidence(ve, <copular-preposition>);
+	Optimiser::set_nt_incidence(ve, <permitted-preposition>);
 }

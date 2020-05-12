@@ -332,7 +332,8 @@ can't normally be unravelled at compile time.
 	mdef->mdef_iname = Hierarchy::make_iname_in(MEASUREMENT_FN_HL, P);
 
 @<Create the superlative form@> =
-	mdef->superlative = Grading::make_superlative(mdef->headword, language_of_source_text);
+	mdef->superlative =
+		Grading::make_superlative(mdef->headword, Task::language_of_syntax());
 	@<Feed the preamble for the superlative phrase into the lexer@>;
 	@<Feed the body of the superlative phrase into the lexer@>;
 	Sentences::RuleSubtrees::register_recently_lexed_phrases();
@@ -447,9 +448,11 @@ void Properties::Measurement::create_comparatives(void) {
 		Properties::Measurement::validate(mdef);
 		if ((Properties::Measurement::is_valid(mdef)) && (mdef->region_shape != MEASURE_T_EXACTLY)) {
 			wording H = mdef->headword; /* word number of, e.g., "tall" */
-			wording comparative_form = Grading::make_comparative(H, language_of_source_text); /* "taller than" */
+			wording comparative_form = Grading::make_comparative(H,
+				Task::language_of_syntax()); /* "taller than" */
 			vocabulary_entry *quiddity =
-				Lexer::word(Wordings::first_wn(Grading::make_quiddity(H, language_of_source_text))); /* "tallness" */
+				Lexer::word(Wordings::first_wn(
+					Grading::make_quiddity(H, Task::language_of_syntax()))); /* "tallness" */
 			i6_schema *schema_to_compare_property_values;
 
 			@<Work out property comparison schema@>;

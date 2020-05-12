@@ -348,7 +348,7 @@ wording Kinds::Constructors::get_name(kind_constructor *con, int plural_form) {
 }
 
 wording Kinds::Constructors::get_name_in_play(kind_constructor *con, int plural_form,
-	PREFORM_LANGUAGE_TYPE *nl) {
+	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (con->dt_tag) {
 		noun *nt = con->dt_tag;
 		if (nt) return Nouns::get_name_in_play(nt, plural_form, nl);

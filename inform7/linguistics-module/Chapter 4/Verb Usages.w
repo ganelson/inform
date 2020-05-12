@@ -600,27 +600,27 @@ or "the verb to be able to see" use these.
 
 =
 void VerbUsages::mark_as_verb(vocabulary_entry *ve) {
-	Preform::set_nt_incidence(ve, <meaningful-nonimperative-verb>);
-	Preform::set_nt_incidence(ve, <copular-verb>);
-	Preform::set_nt_incidence(ve, <negated-noncopular-verb-present>);
-	Preform::set_nt_incidence(ve, <universal-verb>);
-	Preform::set_nt_incidence(ve, <negated-verb>);
-	Preform::set_nt_incidence(ve, <past-tense-verb>);
+	Optimiser::set_nt_incidence(ve, <meaningful-nonimperative-verb>);
+	Optimiser::set_nt_incidence(ve, <copular-verb>);
+	Optimiser::set_nt_incidence(ve, <negated-noncopular-verb-present>);
+	Optimiser::set_nt_incidence(ve, <universal-verb>);
+	Optimiser::set_nt_incidence(ve, <negated-verb>);
+	Optimiser::set_nt_incidence(ve, <past-tense-verb>);
 }
 
 void VerbUsages::preform_optimiser(void) {
-	Preform::mark_nt_as_requiring_itself_first(<meaningful-nonimperative-verb>);
-	Preform::mark_nt_as_requiring_itself_first(<copular-verb>);
-	Preform::mark_nt_as_requiring_itself_first(<negated-noncopular-verb-present>);
-	Preform::mark_nt_as_requiring_itself_first(<universal-verb>);
-	Preform::mark_nt_as_requiring_itself_first(<negated-verb>);
-	Preform::mark_nt_as_requiring_itself_first(<past-tense-verb>);
+	Optimiser::mark_nt_as_requiring_itself_first(<meaningful-nonimperative-verb>);
+	Optimiser::mark_nt_as_requiring_itself_first(<copular-verb>);
+	Optimiser::mark_nt_as_requiring_itself_first(<negated-noncopular-verb-present>);
+	Optimiser::mark_nt_as_requiring_itself_first(<universal-verb>);
+	Optimiser::mark_nt_as_requiring_itself_first(<negated-verb>);
+	Optimiser::mark_nt_as_requiring_itself_first(<past-tense-verb>);
 }
 
 @h Adaptive person.
 
 =
-int VerbUsages::adaptive_person(PREFORM_LANGUAGE_TYPE *X) {
+int VerbUsages::adaptive_person(NATURAL_LANGUAGE_WORDS_TYPE *X) {
 	#ifdef PREFORM_ADAPTIVE_PERSON
 	return PREFORM_ADAPTIVE_PERSON(X);
 	#endif

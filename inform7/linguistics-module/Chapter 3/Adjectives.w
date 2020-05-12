@@ -44,7 +44,7 @@ typedef struct adjectival_phrase {
 @ The following declares a new adjective, creating it only if necessary:
 
 =
-adjectival_phrase *Adjectives::declare(wording W, PREFORM_LANGUAGE_TYPE *nl) {
+adjectival_phrase *Adjectives::declare(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
 		wording C = Clusters::get_name_in_play(aph->adjective_names, FALSE, nl);
@@ -56,7 +56,7 @@ adjectival_phrase *Adjectives::declare(wording W, PREFORM_LANGUAGE_TYPE *nl) {
 @ Whereas this simply creates it:
 
 =
-adjectival_phrase *Adjectives::from_word_range(wording W, PREFORM_LANGUAGE_TYPE *nl) {
+adjectival_phrase *Adjectives::from_word_range(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	adjectival_phrase *aph = NULL;
 	if (Wordings::nonempty(W)) aph = Adjectives::parse(W);
 	if (aph) return aph;
@@ -78,7 +78,7 @@ adjectival_phrase *Adjectives::from_word_range(wording W, PREFORM_LANGUAGE_TYPE 
 			ExcerptMeanings::register(ADJECTIVE_MC,
 				W, STORE_POINTER_adjectival_phrase(aph));
 			LOOP_THROUGH_WORDING(n, W)
-				Preform::mark_word(n, <adjective-name>);
+				Optimiser::mark_word(n, <adjective-name>);
 		#ifdef ADJECTIVE_NAME_VETTING
 		}
 		#endif

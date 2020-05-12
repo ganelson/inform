@@ -12,7 +12,7 @@ to be hoped that few works of IF will contain both at once.)
 
 =
 typedef struct plural_dictionary_entry {
-	PREFORM_LANGUAGE_TYPE *defined_in;
+	NATURAL_LANGUAGE_WORDS_TYPE *defined_in;
 	struct wording singular_form; /* words of singular form */
 	struct wording plural_form; /* words of plural form */
 	CLASS_DEFINITION
@@ -23,7 +23,7 @@ which already has a plural in the dictionary, even for the same language,
 which is why we do not trouble to search the existing dictionary here.
 
 =
-void Pluralisation::register(wording S, wording P, PREFORM_LANGUAGE_TYPE *nl) {
+void Pluralisation::register(wording S, wording P, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	plural_dictionary_entry *pde = CREATE(plural_dictionary_entry);
 	pde->singular_form = S;
 	pde->plural_form = P;
@@ -41,7 +41,7 @@ one not found in the dictionary).
 
 =
 plural_dictionary_entry *Pluralisation::make(wording W, wording *PW,
-	plural_dictionary_entry *search_from, PREFORM_LANGUAGE_TYPE *nl) {
+	plural_dictionary_entry *search_from, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (nl == NULL) nl = English_language;
 
 	plural_dictionary_entry *pde;
@@ -94,7 +94,7 @@ The following takes a single word, assumes it to be a noun which meaningfully
 has a plural, and modifies it to the plural form.
 
 =
-int Pluralisation::regular(OUTPUT_STREAM, text_stream *from, PREFORM_LANGUAGE_TYPE *nl) {
+int Pluralisation::regular(OUTPUT_STREAM, text_stream *from, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (nl == NULL) nl = English_language;
 	match_avinue *plural_trie =
 		Preform::Nonparsing::define_trie(<singular-noun-to-its-plural>, TRIE_END, nl);

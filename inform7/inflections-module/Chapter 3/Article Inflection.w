@@ -11,7 +11,7 @@ trickier than they look).
 match_avinue *indef_trie = NULL;
 
 void ArticleInflection::preface_by_article(OUTPUT_STREAM, text_stream *initial_text,
-	PREFORM_LANGUAGE_TYPE *nl) {
+	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (indef_trie == NULL)
 		indef_trie =
 			Preform::Nonparsing::define_trie(

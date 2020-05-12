@@ -37,6 +37,19 @@ typedef struct source_location {
 	int line_number; /* counting upwards from 1 within file (if any) */
 } source_location;
 
+@ When words are being invented by the compiler, we use:
+
+=
+source_location Lexer::as_if_from_nowhere(void) {
+	source_location as_if_from_nowhere;
+    as_if_from_nowhere.file_of_origin = NULL;
+    as_if_from_nowhere.line_number = 1;
+    return as_if_from_nowhere;
+}
+
+@ And while lexing, we maintain:
+
+=
 source_location lexer_position;
 
 @ A word can be an English word such as |bedspread|, or a piece of punctuation
@@ -1104,9 +1117,9 @@ texts in HTML. So the client is allowed to define |PROBLEM_WORDS_CALLBACK|
 to some routine of her own, gazumping this one.
 
 =
-void Lexer::lexer_problem_handler(int err, text_stream *problem_source_description, wchar_t *word) {
+void Lexer::lexer_problem_handler(int err, text_stream *details, wchar_t *word) {
 	#ifdef PROBLEM_WORDS_CALLBACK
-	PROBLEM_WORDS_CALLBACK(err, problem_source_description, word);
+	PROBLEM_WORDS_CALLBACK(err, details, word);
 	#endif
 	#ifndef PROBLEM_WORDS_CALLBACK
 	if (err == MEMORY_OUT_LEXERERROR)
@@ -1124,17 +1137,28 @@ void Lexer::lexer_problem_handler(int err, text_stream *problem_source_descripti
 			Errors::with_text("I6 inclusion too long: %S", word_t);
 			break;
 		case STRING_NEVER_ENDS_LEXERERROR:
-			Errors::with_text("Quoted text never ends: %S", problem_source_description);
+			Errors::with_text("Quoted text never ends: %S", details);
 			break;
 		case COMMENT_NEVER_ENDS_LEXERERROR:
-			Errors::with_text("Square-bracketed text never ends: %S", problem_source_description);
+			Errors::with_text("Square-bracketed text never ends: %S", details);
 			break;
 		case I6_NEVER_ENDS_LEXERERROR:
-			Errors::with_text("I6 inclusion text never ends: %S", problem_source_description);
+			Errors::with_text("I6 inclusion text never ends: %S", details);
 			break;
 		default:
 			internal_error("unknown lexer error");
     }
 	DISCARD_TEXT(word_t);
 	#endif
+}
+
+@h Logging absolutely everything.
+This is not to be done lightly: the output can be enormous.
+
+=
+void Lexer::log_lexer_output(void) {
+	LOG("Entire lexer output to date:\n");
+	for (int i=0; i<lexer_wordcount; i++)
+		LOG("%d: <%+N> <%N> <%02x>\n", i, i, i, Lexer::break_before(i));
+	LOG("------\n");
 }

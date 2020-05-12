@@ -146,6 +146,10 @@ parse_node_tree *Task::syntax_tree(void) {
 	return latest_syntax_tree;
 }
 
+inform_language *Task::language_of_syntax(void) {
+	return Projects::get_language_of_syntax(Task::project());
+}
+
 @ Resources in a Blorb file have unique ID numbers which are positive integers,
 but these are not required to start from 1, nor to be contiguous. For Inform,
 ID number 1 is reserved for the cover image (whether or not any cover image
