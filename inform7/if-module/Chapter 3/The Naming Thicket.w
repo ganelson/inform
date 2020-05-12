@@ -116,7 +116,7 @@ We cache the text literal "the" rather than create it over and over.
 parse_node *text_of_word_the = NULL;
 void PL::Naming::object_takes_definite_article(inference_subject *subj) {
 	if (text_of_word_the == NULL)
-		text_of_word_the = Rvalues::from_wording(Feeds::feed_text(L"\"the\""));
+		text_of_word_the = Rvalues::from_wording(Feeds::feed_C_string(L"\"the\""));
 	Properties::Valued::assert(P_article, subj, text_of_word_the, LIKELY_CE);
 }
 
@@ -255,7 +255,7 @@ a comma, and that's caught here:
 			Rvalues::from_iname(faux), CERTAIN_CE);
 	else
 		Properties::Valued::assert(P_printed_name, subj,
-			Rvalues::from_unescaped_wording(Feeds::feed_stream(PROP)), CERTAIN_CE);
+			Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
 
 @ The I6 |cap_short_name| has no corresponding property in I7. Note that it's
 only needed if the object is named after something else which might need it,
@@ -286,7 +286,7 @@ actually means it's rarely needed.)
 				Rvalues::from_iname(faux), CERTAIN_CE);
 		else
 			Properties::Valued::assert(P_cap_short_name, subj,
-				Rvalues::from_unescaped_wording(Feeds::feed_stream(PROP)), CERTAIN_CE);
+				Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
 	}
 
 @ Note that it is important here to preserve the cases of the original
@@ -339,7 +339,7 @@ together in lists.
 			text_stream *PROP = Str::new();
 			PL::Naming::compose_words_to_I6_naming_text(PROP, PW, FALSE, TRUE);
 			Properties::Valued::assert(P_printed_plural_name, subj,
-				Rvalues::from_unescaped_wording(Feeds::feed_stream(PROP)), CERTAIN_CE);
+				Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
 		}
 	}
 

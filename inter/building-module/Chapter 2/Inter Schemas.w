@@ -995,7 +995,7 @@ optional, operand in |operand2|.
 		}
 		#ifdef CORE_MODULE
 		if (t->extremal_property_sign != MEASURE_T_EXACTLY) {
-			wording W = Feeds::feed_stream(pname);
+			wording W = Feeds::feed_text(pname);
 			if (<property-name>(W)) t->extremal_property = <<rp>>;
 		}
 		#endif

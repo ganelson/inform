@@ -23,7 +23,7 @@ wording Grading::make_comparative(wording W, PREFORM_LANGUAGE_TYPE *nl) {
 	match_avinue *comp_trie =
 		Preform::Nonparsing::define_trie(<adjective-to-comparative>, TRIE_END, nl);
 	Inflections::suffix_inflection(transformed, comp_trie, comprised);
-	wording PW = Feeds::feed_stream(transformed);
+	wording PW = Feeds::feed_text(transformed);
 	word_assemblage merged =
 		Preform::Nonparsing::merge(<comparative-construction>, 0,
 			WordAssemblages::from_wording(PW));
@@ -45,7 +45,7 @@ wording Grading::make_superlative(wording W, PREFORM_LANGUAGE_TYPE *nl) {
 	match_avinue *comp_trie =
 		Preform::Nonparsing::define_trie(<adjective-to-superlative>, TRIE_END, nl);
 	Inflections::suffix_inflection(transformed, comp_trie, comprised);
-	wording PW = Feeds::feed_stream(transformed);
+	wording PW = Feeds::feed_text(transformed);
 	LOGIF(CONSTRUCTED_PLURALS, "[Superlative of %W is %W]\n", W, PW);
 	DISCARD_TEXT(transformed);
 	DISCARD_TEXT(comprised);
@@ -69,7 +69,7 @@ wording Grading::make_quiddity(wording W, PREFORM_LANGUAGE_TYPE *nl) {
 	match_avinue *comp_trie =
 		Preform::Nonparsing::define_trie(<adjective-to-quiddity>, TRIE_END, nl);
 	Inflections::suffix_inflection(transformed, comp_trie, comprised);
-	wording PW = Feeds::feed_stream(transformed);
+	wording PW = Feeds::feed_text(transformed);
 	LOGIF(CONSTRUCTED_PLURALS, "[Quiddity of %W is %W]\n", W, PW);
 	DISCARD_TEXT(transformed);
 	DISCARD_TEXT(comprised);

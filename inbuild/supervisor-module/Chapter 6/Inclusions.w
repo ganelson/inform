@@ -312,7 +312,7 @@ void Inclusions::check_ends_here(parse_node *PN, inform_extension *E) {
 	inclusions_errors_to = E->as_copy;
 	wording W = Node::get_text(PN);
 	if (<the-prefix-for-extensions>(W)) W = GET_RW(<the-prefix-for-extensions>, 1);
-	wording T = Feeds::feed_stream(E->as_copy->edition->work->title);
+	wording T = Feeds::feed_text(E->as_copy->edition->work->title);
 	if (Wordings::match(T, W) == FALSE) {
 		copy_error *CE = CopyErrors::new(SYNTAX_CE, ExtMisidentifiedEnds_SYNERROR);
 		CopyErrors::supply_node(CE, PN);

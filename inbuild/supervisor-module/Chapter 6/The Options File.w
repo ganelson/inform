@@ -42,7 +42,7 @@ void OptionsFile::read(filename *F) {
 void OptionsFile::read_helper(text_stream *line,
 	text_file_position *tfp, void *unused_state) {
 	WRITE_TO(line, "\n");
-	wording W = Feeds::feed_stream(line);
+	wording W = Feeds::feed_text(line);
 	if (<use-option-sentence-shape>(W)) {
 		#ifdef CORE_MODULE
 		UseOptions::set_immediate_option_flags(W, NULL);

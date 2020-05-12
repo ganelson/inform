@@ -4,9 +4,8 @@ To classify the words in the lexical stream, where two different
 words are considered equivalent if they are unquoted and have the same text,
 taken case insensitively.
 
-@h Definitions.
-
-@ The following structure is created for each different word found in the
+@h Vocabulary Entries.
+A //vocabulary_entry// object is created for each different word found in the
 source. (Recall that these are not necessarily words in the usual English
 sense: for instance, |17| is a word here.)
 
@@ -131,7 +130,8 @@ void Vocabulary::change_text_of_word(int wn, wchar_t *new) {
 creator, and a debugging logger:
 
 =
-vocabulary_entry *Vocabulary::vocab_entry_new(wchar_t *text, int hash_code, unsigned int flags, int val) {
+vocabulary_entry *Vocabulary::vocab_entry_new(wchar_t *text, int hash_code,
+	unsigned int flags, int val) {
 	vocabulary_entry *ve = CREATE(vocabulary_entry);
 	ve->exemplar = text; ve->raw_exemplar = text;
 	ve->next_in_vocab_hash = NULL;
@@ -283,7 +283,7 @@ for instance, would each produce the number 4.
 
 Instead we use a standard method to derive a number traditionally called
 a "hash code". This is the algorithm called "X 30011" in Aho, Sethi and
-Ullman's standard reference "Compilers: Principles, Techniques and Tools" (1986).
+Ullman's standard "Compilers: Principles, Techniques and Tools" (1986).
 Because it is derived from constantly overflowing integer arithmetic,
 it will produce different codes on different architectures (say, where
 |int| is 64 bits long rather than 32, or where |char| is unsigned).
@@ -441,7 +441,7 @@ vocabulary_entry *Vocabulary::entry_for_partial_text(wchar_t *str, int from, int
 	TEMPORARY_TEXT(TEMP);
 	for (int i=from; i<=to; i++) PUT_TO(TEMP, str[i]);
 	PUT_TO(TEMP, 0);
-	wording W = Feeds::feed_stream(TEMP);
+	wording W = Feeds::feed_text(TEMP);
 	DISCARD_TEXT(TEMP);
 	if (Wordings::empty(W)) return NULL;
 	return Lexer::word(Wordings::first_wn(W));

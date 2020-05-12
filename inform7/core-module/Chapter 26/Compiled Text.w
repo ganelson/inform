@@ -320,7 +320,7 @@ int CompiledText::expand_unisub(OUTPUT_STREAM, wchar_t *p, int i) {
 		while ((p[j]) && (p[j] != ']'))
 			PUT_TO(substitution_buffer, p[j++]);
 		if (p[j] == ']') {
-			wording XW = Feeds::feed_stream(substitution_buffer);
+			wording XW = Feeds::feed_text(substitution_buffer);
 			if (<s-unicode-character>(XW) == FALSE) return -1;
 			PUT(Rvalues::to_Unicode_point(<<rp>>));
 			return j;
@@ -336,7 +336,7 @@ int CompiledText::expand_unisub_S(OUTPUT_STREAM, text_stream *p, int i) {
 		while ((Str::get_at(p, j)) && (Str::get_at(p, j) != ']'))
 			PUT_TO(substitution_buffer, Str::get_at(p, j++));
 		if (Str::get_at(p, j) == ']') {
-			wording XW = Feeds::feed_stream(substitution_buffer);
+			wording XW = Feeds::feed_text(substitution_buffer);
 			if (<s-unicode-character>(XW) == FALSE) return -1;
 			PUT(Rvalues::to_Unicode_point(<<rp>>));
 			return j;

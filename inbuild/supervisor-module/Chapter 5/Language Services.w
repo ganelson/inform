@@ -30,7 +30,7 @@ void Languages::scan(inbuild_copy *C) {
 
 	TEMPORARY_TEXT(sentence_format);
 	WRITE_TO(sentence_format, "%S language", C->edition->work->title);
-	L->instance_name = Feeds::feed_stream(sentence_format);
+	L->instance_name = Feeds::feed_text(sentence_format);
 	DISCARD_TEXT(sentence_format);
 	L->nl_instance = NULL;
 	L->Preform_loaded = FALSE;
@@ -72,7 +72,7 @@ extends for the rest of the line.
 void Languages::read_metadata(text_stream *item_name,
 	text_file_position *tfp, void *vnl) {
 	inform_language *L = (inform_language *) vnl;
-	wording W = Feeds::feed_stream(item_name);
+	wording W = Feeds::feed_text(item_name);
 	if (Wordings::nonempty(W)) {
 		vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 		int field = -1;

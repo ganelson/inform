@@ -118,12 +118,12 @@ nameless subjects.)
 	feed_t id = Feeds::begin();
 	wording W2 = InferenceSubjects::get_name_text(infs);
 	if (Wordings::nonempty(W2)) Feeds::feed_wording(W2);
-	else Feeds::feed_text(L" nameless ");
-	Feeds::feed_text(L" condition ");
+	else Feeds::feed_C_string(L" nameless ");
+	Feeds::feed_C_string(L" condition ");
 	if (ct > 0) {
 		TEMPORARY_TEXT(numb);
 		WRITE_TO(numb, " %d ", ct+1);
-		Feeds::feed_stream(numb);
+		Feeds::feed_text(numb);
 		DISCARD_TEXT(numb);
 	}
 	W = Feeds::end(id);

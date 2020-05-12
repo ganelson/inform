@@ -955,7 +955,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 		}
 		if ((Wordings::nonempty(OW)) && (Wordings::nonempty(NW)) && (Wordings::empty(CW))) {
 			feed_t id = Feeds::begin();
-			Feeds::feed_text_expanding_strings(L" its ");
+			Feeds::feed_C_string_expanding_strings(L" its ");
 			Feeds::feed_wording(NW);
 			CW = Feeds::end(id);
 		}
@@ -986,7 +986,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 			WRITE_TO(genitive_form, "%+W's ", Wordings::one_word(Wordings::last_wn(OW)));
 		}
 	}
-	Feeds::feed_stream_expanding_strings(genitive_form);
+	Feeds::feed_text_expanding_strings(genitive_form);
 	DISCARD_TEXT(genitive_form);
 
 @<Insert the appropriate name@> =
@@ -1002,7 +1002,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 		WRITE_TO(textual_count, " %d ", ++name_stubs_count);
 		feed_t id = Feeds::begin();
 		Feeds::feed_wording(SW);
-		Feeds::feed_stream_expanding_strings(textual_count);
+		Feeds::feed_text_expanding_strings(textual_count);
 		NW = Feeds::end(id);
 		DISCARD_TEXT(textual_count);
 	}

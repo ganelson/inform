@@ -59,7 +59,7 @@ Core Inform creates no such properties, but many of the plugins do.
 
 =
 property *Properties::Valued::new_nameless(text_stream *I6_form, kind *K) {
-	wording W = Feeds::feed_stream(I6_form);
+	wording W = Feeds::feed_text(I6_form);
 	if (K == NULL) internal_error("new nameless property without kind");
 	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
 	Hierarchy::markup(R, PROPERTY_NAME_HMD, I6_form);

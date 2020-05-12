@@ -54,7 +54,7 @@ void Unit::test_declensions(text_stream *arg) {
 	source_file *sf = TextFromFiles::feed_into_lexer(F, NULL_GENERAL_POINTER);
 	if (sf == NULL) PRINT("File has failed to open\n");
 	else {
-		wording PW = Feeds::feed_stream(I"der");
+		wording PW = Feeds::feed_text(I"der");
 		int gen = NEUTER_GENDER;
 		LOOP_THROUGH_WORDING(i, sf->text_read) {
 			if (Lexer::word(i) == PARBREAK_V) continue;

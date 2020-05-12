@@ -752,7 +752,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 		return;
 	}
 
-	XW = Feeds::feed_text_full(Lexer::word_text(Wordings::first_wn(W)), TRUE, GRAMMAR_PUNCTUATION_MARKS);
+	XW = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(W)), TRUE, GRAMMAR_PUNCTUATION_MARKS);
 	to_pn = NounPhrases::new_raw(W);
 	PL::Parsing::Tokens::break_into_tokens(to_pn, XW);
 	if (to_pn->down == NULL) {
@@ -823,7 +823,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 
 	switch(gv_is) {
 		case GV_IS_TOKEN:
-			XW = Feeds::feed_text_full(Lexer::word_text(Wordings::first_wn(ur->reference_text)), TRUE, GRAMMAR_PUNCTUATION_MARKS);
+			XW = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(ur->reference_text)), TRUE, GRAMMAR_PUNCTUATION_MARKS);
 			LOGIF(GRAMMAR_CONSTRUCTION, "GV_IS_TOKEN as words: %W\n", XW);
 			if (PL::Parsing::valid_new_token_name(XW) == FALSE) {
 				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsCompoundText),

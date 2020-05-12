@@ -202,7 +202,7 @@ For example, in
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) { </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello!"</span><span class="plain-syntax">; }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) { </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello</span><span class="comment-syntax">; }</span>
 </pre>
 <p class="commentary">the print statement occurs inside a complete block, which will eventually
 be represented as a <span class="extract"><span class="extract-syntax">CODE_ISNT</span></span>. But some inline phrase definitions leave
@@ -1151,7 +1151,7 @@ optional, operand in <span class="extract"><span class="extract-syntax">operand2
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">extremal_property_sign</span><span class="plain-syntax"> != </span><span class="identifier-syntax">MEASURE_T_EXACTLY</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::feed_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::feed_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;property-name&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">extremal_property</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>

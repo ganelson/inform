@@ -12,7 +12,8 @@ character must not be a 0:
 int Identifiers::valid(wchar_t *p) {
 	if ((Wide::len(p) == 0) || (Wide::len(p) > 31)) return FALSE;
 	for (int i=0; p[i]; i++)
-		if ((Characters::isdigit(p[i]) == 0) && (Characters::isalpha(p[i]) == 0) && (p[i] != '_'))
+		if ((Characters::isdigit(p[i]) == 0) && (Characters::isalpha(p[i]) == 0)
+			&& (p[i] != '_'))
 			return FALSE;
 	if (Characters::isdigit(p[0])) return FALSE;
 	return TRUE;
@@ -51,7 +52,8 @@ We truncate to 28 characters in length so that other routines can
 concatenate our identifier with up to 3 further characters, if they choose.
 
 =
-void Identifiers::compose(text_stream *identifier, int nature_character, int id_number, wording W) {
+void Identifiers::compose(text_stream *identifier, int nature_character,
+	int id_number, wording W) {
 	Str::clear(identifier);
 	WRITE_TO(identifier, "%c%d", nature_character, id_number);
 	if (Wordings::nonempty(W)) {
@@ -67,7 +69,8 @@ void Identifiers::compose(text_stream *identifier, int nature_character, int id_
 	Identifiers::purify(identifier);
 }
 
-void Identifiers::compose_numberless(text_stream *identifier, text_stream *prefix, wording W) {
+void Identifiers::compose_numberless(text_stream *identifier, text_stream *prefix,
+	wording W) {
 	Str::copy(identifier, prefix);
 	if (Wordings::nonempty(W)) {
 		LOOP_THROUGH_WORDING(j, W) {

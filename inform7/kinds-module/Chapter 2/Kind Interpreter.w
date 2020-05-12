@@ -362,7 +362,7 @@ so we neglect it.
 @<Parse a vocabulary argument for a kind command@> =
 	stc.vocabulary_argument = WordAssemblages::lit_0();
 	feed_t id = Feeds::begin();
-	Feeds::feed_stream(argument);
+	Feeds::feed_text(argument);
 	wording W = Feeds::end(id);
 	if (Wordings::length(W) >= 30)
 		Kinds::Interpreter::kind_command_error(command, "too many words in kind command");
@@ -517,7 +517,7 @@ void Kinds::Interpreter::transcribe_kind_template(parse_node_tree *T,
 		int terminator = 0;
 		@<Transcribe one line of the template into the line buffer@>;
 		if (Str::len(template_line_buffer) > 0) {
-			wording XW = Feeds::feed_stream(template_line_buffer);
+			wording XW = Feeds::feed_text(template_line_buffer);
 			if (terminator != 0) Sentences::make_node(T, XW, terminator);
 		}
 		DISCARD_TEXT(template_line_buffer);
@@ -883,7 +883,7 @@ void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_comm
 			}
 			feed_t id = Feeds::begin();
 			for (int i=0; i<length; i++)
-				Feeds::feed_text(Vocabulary::get_exemplar(array[i], FALSE));
+				Feeds::feed_C_string(Vocabulary::get_exemplar(array[i], FALSE));
 			wording LW = Feeds::end(id);
 			if (tcc == singular_KCC) {
 				int ro = 0;

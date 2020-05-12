@@ -718,14 +718,14 @@ like Basic Inform or Standard Rules; and also any sentences in the
 @<First an implied super-heading for implied inclusions and the Options@> =
 	inclusions_heading = Node::new(HEADING_NT);
 	Node::set_text(inclusions_heading,
-		Feeds::feed_text_expanding_strings(L"Implied inclusions"));
+		Feeds::feed_C_string_expanding_strings(L"Implied inclusions"));
 	SyntaxTree::graft_sentence(proj->syntax_tree, inclusions_heading);
 	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading);
 
 	int wc = lexer_wordcount;
 	TEMPORARY_TEXT(early);
 	Projects::early_source_text(early, proj);
-	if (Str::len(early) > 0) Feeds::feed_stream(early);
+	if (Str::len(early) > 0) Feeds::feed_text(early);
 	DISCARD_TEXT(early);
 	inbuild_nest *ext = Supervisor::external();
 	if (ext) OptionsFile::read(
@@ -773,7 +773,7 @@ ready for those inventions (if in fact there are any).
 	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);
 	implicit_heading = Node::new(HEADING_NT);
 	Node::set_text(implicit_heading,
-		Feeds::feed_text_expanding_strings(L"Invented sentences"));
+		Feeds::feed_C_string_expanding_strings(L"Invented sentences"));
 	SyntaxTree::graft_sentence(proj->syntax_tree, implicit_heading);
 	Headings::place_implied_level_0(proj->syntax_tree, implicit_heading);
 	SyntaxTree::pop_bud(proj->syntax_tree, l);

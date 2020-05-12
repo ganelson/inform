@@ -217,7 +217,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	}
 
 	feed_t id = Feeds::begin();
-	Feeds::feed_text_expanding_strings(L"before");
+	Feeds::feed_C_string_expanding_strings(L"before");
 	Feeds::feed_wording(av->name);
 	wording SW = Feeds::end(id);
 	package_request *BR = Hierarchy::make_package_in(BEFORE_RB_HL, av->av_package);
@@ -225,7 +225,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
 			NO_OUTCOME, FALSE, future_action_flag, TRUE, BR);
 	id = Feeds::begin();
-	Feeds::feed_text_expanding_strings(L"for");
+	Feeds::feed_C_string_expanding_strings(L"for");
 	Feeds::feed_wording(av->name);
 	SW = Feeds::end(id);
 	package_request *FR = Hierarchy::make_package_in(FOR_RB_HL, av->av_package);
@@ -233,7 +233,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
 			SUCCESS_OUTCOME, FALSE, future_action_flag, TRUE, FR);
 	id = Feeds::begin();
-	Feeds::feed_text_expanding_strings(L"after");
+	Feeds::feed_C_string_expanding_strings(L"after");
 	Feeds::feed_wording(av->name);
 	SW = Feeds::end(id);
 	package_request *AR = Hierarchy::make_package_in(AFTER_RB_HL, av->av_package);

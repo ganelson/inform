@@ -85,7 +85,7 @@ relies on adjectival meanings.
 
 =
 property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
-	wording W = Feeds::feed_text(I6_form);
+	wording W = Feeds::feed_C_string(I6_form);
 	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
 	inter_name *iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
 	property *prn = Properties::create(EMPTY_WORDING, R, iname);

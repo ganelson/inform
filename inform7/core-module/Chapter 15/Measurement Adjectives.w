@@ -342,7 +342,7 @@ can't normally be unravelled at compile time.
 	WRITE_TO(TEMP, " To decide which object is %N ( S - description of objects ) ",
 		Wordings::first_wn(mdef->superlative));
 	Sentences::make_node(Task::syntax_tree(),
-		Feeds::feed_stream(TEMP),
+		Feeds::feed_text(TEMP),
 		':');
 	DISCARD_TEXT(TEMP);
 
@@ -351,7 +351,7 @@ can't normally be unravelled at compile time.
 	WRITE_TO(TEMP, " (- {-primitive-definition:extremal%s%W}  -) ",
 		Properties::Measurement::strict_comparison(mdef->region_shape),
 		mdef->name_of_property_to_compare);
-	Sentences::make_node(Task::syntax_tree(), Feeds::feed_stream(TEMP), '.');
+	Sentences::make_node(Task::syntax_tree(), Feeds::feed_text(TEMP), '.');
 	DISCARD_TEXT(TEMP);
 
 @<Create the adjectival meaning arising from this measurement@> =

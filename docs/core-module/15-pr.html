@@ -233,7 +233,7 @@ either/or property where a valued property is wanted, or vice versa.
 <span class="plain-syntax">            </span><span class="string-syntax">"you wanted. Maybe the punctuation is wrong?"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">unfortunate</span><span class="plain-syntax">) </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::feed_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"problem recovery name"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">unfortunate</span><span class="plain-syntax">) </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::feed_C_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"problem recovery name"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="15-pr.html#SP5">&#167;5</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b>Name clashes between properties and other constructs are surprisingly often

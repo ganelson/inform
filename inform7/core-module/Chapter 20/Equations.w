@@ -565,7 +565,7 @@ declarations will trump them.
 void Equations::eqn_declare_standard_symbols(void) {
 	if (standard_equation_symbols) return;
 
-	wording TCW = Feeds::feed_text(L"e pi");
+	wording TCW = Feeds::feed_C_string(L"e pi");
 	LOOP_THROUGH_WORDING(i, TCW) {
 		wording V = Wordings::one_word(i);
 		if (<s-type-expression>(V)) {
@@ -834,7 +834,7 @@ capacity; and so is the number 0 itself.
 	TEMPORARY_TEXT(text_of_number);
 	@<Copy the literal number into a C string, flanked by spaces@>;
 	/* now sneakily add this to the word stream, and let the S-parser read it: */
-	wording NW = Feeds::feed_stream(text_of_number);
+	wording NW = Feeds::feed_text(text_of_number);
 	DISCARD_TEXT(text_of_number);
 
 	parse_node *spec = NULL;

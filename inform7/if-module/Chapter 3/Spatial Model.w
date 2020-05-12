@@ -1158,7 +1158,7 @@ as a value for |description| from the room class.
 			TEMPORARY_TEXT(val);
 			WRITE_TO(val, "\"\"");
 			Properties::Valued::assert(P_description, Kinds::Knowledge::as_subject(K_room),
-				Rvalues::from_unescaped_wording(Feeds::feed_stream(val)), LIKELY_CE);
+				Rvalues::from_unescaped_wording(Feeds::feed_text(val)), LIKELY_CE);
 			DISCARD_TEXT(val);
 		}
 	}

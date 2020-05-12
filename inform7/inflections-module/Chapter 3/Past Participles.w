@@ -16,7 +16,7 @@ wording PastParticiples::pasturise_wording(wording W) {
 		else {
 			if (PastParticiples::pasturise_text(pasturised, from)) {
 				if (i > Wordings::first_wn(W)) Feeds::feed_wording(Wordings::up_to(W, i-1));
-				Feeds::feed_stream(pasturised);
+				Feeds::feed_text(pasturised);
 				if (i < Wordings::last_wn(W)) Feeds::feed_wording(Wordings::from(W, i+1));
 				break;
 			}

@@ -81,7 +81,7 @@ wording WordAssemblages::to_wording(word_assemblage *wa) {
 	for (int i=0; i<wa->no_indiv_words; i++) {
 		TEMPORARY_TEXT(str);
 		WRITE_TO(str, " %V ", wa->indiv_words[i]);
-		Feeds::feed_stream(str);
+		Feeds::feed_text(str);
 		DISCARD_TEXT(str);
 	}
 	return Feeds::end(id);
@@ -131,7 +131,7 @@ vocabulary_entry *WordAssemblages::hyphenated(word_assemblage *wa) {
 		WRITE_TO(str, "%V", wa->indiv_words[i]);
 	}
 	WRITE_TO(str, " ");
-	wording W = Feeds::feed_stream(str);
+	wording W = Feeds::feed_text(str);
 	DISCARD_TEXT(str);
 	return Lexer::word(Wordings::first_wn(W));
 }

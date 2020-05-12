@@ -514,7 +514,7 @@ int Preform::parse_preform(wording W, int break_first) {
 	if (break_first) {
 		TEMPORARY_TEXT(wd);
 		WRITE_TO(wd, "%+W", Wordings::one_word(Wordings::first_wn(W)));
-		W = Feeds::feed_stream_punctuated(wd, PREFORM_PUNCTUATION_MARKS);
+		W = Feeds::feed_text_punctuated(wd, PREFORM_PUNCTUATION_MARKS);
 		DISCARD_TEXT(wd);
 	}
 	int nonterminals_declared = 0;
@@ -795,7 +795,7 @@ ptoken *Preform::parse_slashed_chain(nonterminal *nt, production *pr, int wn, in
 			if ((k > 0) && (p[k] == '/'))
 				breakme = TRUE;
 	}
-	if (breakme) AW = Feeds::feed_text_full(p, FALSE, L"/"); /* break only at slashes */
+	if (breakme) AW = Feeds::feed_C_string_full(p, FALSE, L"/"); /* break only at slashes */
 
 @<Parse the word range into a linked list of alternative ptokens@> =
 	ptoken *alt = NULL;
@@ -2067,5 +2067,5 @@ wording Preform::load_from_file(filename *F) {
 void Preform::preform_helper(text_stream *item_name,
 	text_file_position *tfp, void *vnl) {
 	WRITE_TO(item_name, "\n");
-	Feeds::feed_stream_punctuated(item_name, PREFORM_PUNCTUATION_MARKS);
+	Feeds::feed_text_punctuated(item_name, PREFORM_PUNCTUATION_MARKS);
 }

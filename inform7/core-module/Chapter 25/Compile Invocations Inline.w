@@ -169,7 +169,7 @@ void Invocations::Inline::csi_inline_inner_inner(value_holster *VH,
 		@<Expand a bracing containing a miscellaneous command@>;
 	}
 
-	wording BRW = Feeds::feed_stream(sche->bracing);
+	wording BRW = Feeds::feed_text(sche->bracing);
 	@<Expand a bracing containing natural language text@>;
 }
 
@@ -1591,7 +1591,7 @@ parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream
 	if ((Str::get_at(operand, 1) == 0) && (Str::get_at(operand, 0) >= '0') && (Str::get_at(operand, 0) <= '9'))
 		lvar = my_vars[Str::get_at(operand, 0) - '0'];
 	else {
-		wording LW = Feeds::feed_stream(operand);
+		wording LW = Feeds::feed_text(operand);
 		lvar = LocalVariables::parse(&(ph->stack_frame), LW);
 		if (lvar) {
 			int tok = LocalVariables::get_parameter_number(lvar);
@@ -1628,7 +1628,7 @@ kind *Invocations::Inline::parse_bracing_operand_as_kind(text_stream *operand, k
 	for (int i=0; i<27; i++) kind_vars_inline[i] = NULL;
 	for (; kvd; kvd=kvd->next) kind_vars_inline[kvd->kv_number] = kvd->kv_value;
 	kind **saved = Frames::temporarily_set_kvs(kind_vars_inline);
-	wording KW = Feeds::feed_stream(operand);
+	wording KW = Feeds::feed_text(operand);
 
 	parse_node *spec = NULL;
 	if (<s-type-expression>(KW)) spec = <<rp>>;
@@ -1659,7 +1659,7 @@ void Invocations::Inline::compile_I7_expression_from_text(value_holster *VH, tex
 }
 
 void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *VH, text_stream *OUT, text_stream *p) {
-	wording LW = Feeds::feed_stream(p);
+	wording LW = Feeds::feed_text(p);
 
 	if (<property-name>(LW)) {
 		if (VH)

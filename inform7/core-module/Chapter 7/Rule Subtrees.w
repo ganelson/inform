@@ -1091,7 +1091,7 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 		if ((Wordings::length(W) == 1) && (Vocabulary::test_flags(Wordings::first_wn(W), TEXTWITHSUBS_MC)) && (depth == 0)) {
 			wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 			@<Check that substitution does not contain suspicious punctuation@>;
-			wording A = Feeds::feed_text_expanding_strings(p);
+			wording A = Feeds::feed_C_string_expanding_strings(p);
 			if (<verify-expanded-text-substitution>(A))
 				Sentences::RuleSubtrees::unroll_says(cb_node, A, depth+1);
 		} else {

@@ -89,7 +89,7 @@ void PL::Parsing::Tokens::break_into_tokens(parse_node *pn, wording W) {
 		case TRUE:
 			Word::dequote(Wordings::first_wn(W));
 			if (*(Lexer::word_text(Wordings::first_wn(W))) == 0) return;
-			W = Feeds::feed_text_full(Lexer::word_text(Wordings::first_wn(W)), FALSE, GRAMMAR_PUNCTUATION_MARKS);
+			W = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(W)), FALSE, GRAMMAR_PUNCTUATION_MARKS);
 			LOOP_THROUGH_WORDING(i, W) {
 				parse_node *newpn = NounPhrases::new_raw(Wordings::one_word(i));
 				Node::set_type(newpn, TOKEN_NT);

@@ -159,7 +159,7 @@ property *Properties::create(wording W, package_request *using_package, inter_na
 			"you wanted. Maybe the punctuation is wrong?");
 		Problems::issue_problem_end();
 	}
-	if (unfortunate) W = Feeds::feed_text(L"problem recovery name");
+	if (unfortunate) W = Feeds::feed_C_string(L"problem recovery name");
 
 @ Name clashes between properties and other constructs are surprisingly often
 unproblematic, so we won't reject a name just because it already means

@@ -270,7 +270,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		an->use_verb_routine_in_I6_library = FALSE;
 
 		feed_t id = Feeds::begin();
-		Feeds::feed_text_expanding_strings(L"check");
+		Feeds::feed_C_string_expanding_strings(L"check");
 		Feeds::feed_wording(an->present_name);
 		wording W = Feeds::end(id);
 		package_request *CR = Hierarchy::make_package_in(CHECK_RB_HL, an->an_package);
@@ -280,7 +280,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		Rulebooks::fragment_by_actions(an->check_rules, 1);
 
 		id = Feeds::begin();
-		Feeds::feed_text_expanding_strings(L"carry out");
+		Feeds::feed_C_string_expanding_strings(L"carry out");
 		Feeds::feed_wording(an->present_name);
 		W = Feeds::end(id);
 		package_request *OR = Hierarchy::make_package_in(CARRY_OUT_RB_HL, an->an_package);
@@ -290,7 +290,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		Rulebooks::fragment_by_actions(an->carry_out_rules, 2);
 
 		id = Feeds::begin();
-		Feeds::feed_text_expanding_strings(L"report");
+		Feeds::feed_C_string_expanding_strings(L"report");
 		Feeds::feed_wording(an->present_name);
 		W = Feeds::end(id);
 		package_request *RR = Hierarchy::make_package_in(REPORT_RB_HL, an->an_package);
@@ -610,7 +610,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 			MW = GET_RW(<action-variable>, 1);
 			int wn = Wordings::first_wn(MW);
 			Word::dequote(wn);
-			MW = Feeds::feed_text(Lexer::word_text(wn));
+			MW = Feeds::feed_C_string(Lexer::word_text(wn));
 			if (Wordings::length(MW) > 1) {
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_wording(2, MW);

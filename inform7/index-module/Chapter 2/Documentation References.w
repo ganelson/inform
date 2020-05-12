@@ -55,7 +55,7 @@ void Index::DocReferences::read_xrefs(void) {
 void Index::DocReferences::read_xrefs_helper(text_stream *line,
 	text_file_position *tfp, void *unused_state) {
 	WRITE_TO(line, "\n");
-	wording W = Feeds::feed_stream(line);
+	wording W = Feeds::feed_text(line);
 	if (Wordings::length(W) < 2) return;
 
 	int from = -1;

@@ -89,8 +89,8 @@ void PL::Bibliographic::bibliographic_data(parse_node *PN) {
 	TEMPORARY_TEXT(A);
 	WRITE_TO(T, "\"%S\" ", edn->work->title);
 	WRITE_TO(A, "\"%S\" ", edn->work->author_name);
-	wording TW = Feeds::feed_stream(T);
-	wording AW = Feeds::feed_stream(A);
+	wording TW = Feeds::feed_text(T);
+	wording AW = Feeds::feed_text(A);
 	DISCARD_TEXT(T);
 	DISCARD_TEXT(A);
 

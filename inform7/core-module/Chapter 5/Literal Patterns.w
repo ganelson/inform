@@ -537,7 +537,7 @@ infinities to represent arbitrarily large numbers.
 			PUT_TO(real_buffer, wd[wpos++]);
 		}
 	}
-	wording W = Feeds::feed_stream(real_buffer);
+	wording W = Feeds::feed_text(real_buffer);
 	DISCARD_TEXT(real_buffer);
 	if ((point_at == -1) && (mult_at == -1)) {
 		if (<cardinal-number>(Wordings::first_word(W)) == FALSE) return NULL;
@@ -3004,9 +3004,9 @@ the LPs under each named possibility.
 	Kinds::Textual::write(TEMP, K);
 
 	feed_t id = Feeds::begin();
-	Feeds::feed_text(L"To say ( val - ");
-	Feeds::feed_stream(TEMP);
-	Feeds::feed_text(L" ) ");
+	Feeds::feed_C_string(L"To say ( val - ");
+	Feeds::feed_text(TEMP);
+	Feeds::feed_C_string(L" ) ");
 	Feeds::feed_wording(lpn->notation_name);
 	wording XW = Feeds::end(id);
 	Sentences::make_node(Task::syntax_tree(), XW, ':');
@@ -3015,7 +3015,7 @@ the LPs under each named possibility.
 	TEMPORARY_TEXT(print_rule_buff);
 	WRITE_TO(print_rule_buff, " (- {-printing-routine:%S", TEMP);
 	WRITE_TO(print_rule_buff, "}({val}, %d); -) ", lpn->allocation_id + 1);
-	Feeds::feed_stream(print_rule_buff);
+	Feeds::feed_text(print_rule_buff);
 	DISCARD_TEXT(print_rule_buff);
 	XW = Feeds::end(id);
 	Sentences::make_node(Task::syntax_tree(), XW, '.');
@@ -3058,11 +3058,11 @@ automatically generates:
 		literal_pattern_element *lpe = &(lp->lp_elements[i]);
 
 		feed_t id = Feeds::begin();
-		Feeds::feed_text(L"To decide which number is ");
+		Feeds::feed_C_string(L"To decide which number is ");
 		Feeds::feed_wording(lpe->element_name);
-		Feeds::feed_text(L" part of ( full - ");
-		Feeds::feed_stream(TEMP);
-		Feeds::feed_text(L" ) ");
+		Feeds::feed_C_string(L" part of ( full - ");
+		Feeds::feed_text(TEMP);
+		Feeds::feed_C_string(L" ) ");
 		wording XW = Feeds::end(id);
 		Sentences::make_node(Task::syntax_tree(), XW, ':');
 
@@ -3075,7 +3075,7 @@ automatically generates:
 				lpe->element_multiplier, lpe->element_range);
 		else
 			WRITE_TO(print_rule_buff, " (- ({full}%%%d) -) ", lpe->element_range);
-		Feeds::feed_stream(print_rule_buff);
+		Feeds::feed_text(print_rule_buff);
 		XW = Feeds::end(id);
 		if (Wordings::phrasual_length(XW) >= MAX_WORDS_PER_PHRASE + 5)
 			@<Issue a problem for overly long part names@>
@@ -3094,18 +3094,18 @@ For instance, the dollars-and-cents example compiles:
 	if (lp->no_lp_elements > 0) {
 		feed_t id = Feeds::begin();
 		TEMPORARY_TEXT(print_rule_buff);
-		Feeds::feed_text(L"To decide which ");
-		Feeds::feed_stream(TEMP);
-		Feeds::feed_text(L" is ");
-		Feeds::feed_stream(TEMP);
-		Feeds::feed_text(L" with ");
+		Feeds::feed_C_string(L"To decide which ");
+		Feeds::feed_text(TEMP);
+		Feeds::feed_C_string(L" is ");
+		Feeds::feed_text(TEMP);
+		Feeds::feed_C_string(L" with ");
 		for (int i=0; i<lp->no_lp_elements; i++) {
 			literal_pattern_element *lpe = &(lp->lp_elements[i]);
 			WRITE_TO(print_rule_buff, " part%d ", i);
 			Feeds::feed_wording(lpe->element_name);
-			Feeds::feed_text(L" part ( ");
-			Feeds::feed_stream(print_rule_buff);
-			Feeds::feed_text(L" - a number ) ");
+			Feeds::feed_C_string(L" part ( ");
+			Feeds::feed_text(print_rule_buff);
+			Feeds::feed_C_string(L" - a number ) ");
 		}
 		wording XW = Feeds::end(id);
 		if (Wordings::phrasual_length(XW) >= MAX_WORDS_PER_PHRASE + 5)
@@ -3123,7 +3123,7 @@ For instance, the dollars-and-cents example compiles:
 				WRITE_TO(print_rule_buff, "{part%d}", i);
 			}
 			WRITE_TO(print_rule_buff, ") -) ");
-			Feeds::feed_stream(print_rule_buff);
+			Feeds::feed_text(print_rule_buff);
 			XW = Feeds::end(id);
 			Sentences::make_node(Task::syntax_tree(), XW, '.');
 		}

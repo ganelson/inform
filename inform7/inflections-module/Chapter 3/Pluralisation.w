@@ -83,7 +83,7 @@ it can be rebuilt quickly whenever needed again.
 	WRITE_TO(original, "%+W", Wordings::one_word(last_wn));
 	if (*(Lexer::word_text(last_wn)) == '\"') WRITE_TO(pluralised, "some-long-text");
 	else Pluralisation::regular(pluralised, original, nl);
-	Feeds::feed_stream(pluralised);
+	Feeds::feed_text(pluralised);
 	*PW = Feeds::end(id);
 	DISCARD_TEXT(original);
 	DISCARD_TEXT(pluralised);

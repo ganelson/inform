@@ -597,7 +597,7 @@ void Headings::satisfy_individual_heading_dependency(inform_project *proj,
 			if (<quoted-text>(h->in_place_of_text)) {
 				Word::dequote(Wordings::first_wn(S));
 				wchar_t *text = Lexer::word_text(Wordings::first_wn(S));
-				S = Feeds::feed_text(text);
+				S = Feeds::feed_C_string(text);
 			}
 			if (loaded == FALSE) @<Can't replace heading in an unincluded extension@>
 			else {

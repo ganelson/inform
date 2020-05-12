@@ -594,7 +594,7 @@ compile under Inform 6.
 	package_request *PR = Kinds::Behaviour::package(K);
 	TEMPORARY_TEXT(TEMP);
 	Kinds::Textual::write(TEMP, K);
-	wording W = Feeds::feed_stream(TEMP);
+	wording W = Feeds::feed_text(TEMP);
 	rks->rks_iname = Hierarchy::make_iname_with_memo(KIND_HL, PR, W);
 	DISCARD_TEXT(TEMP);
 	rks->rks_dv_iname = Hierarchy::make_iname_in(DEFAULT_VALUE_HL, PR);
@@ -1018,7 +1018,7 @@ inter_name *Kinds::RunTime::constructed_kind_name(kind *K) {
 	package_request *R2 = Kinds::Behaviour::package(K);
 	TEMPORARY_TEXT(KT);
 	Kinds::Textual::write(KT, K);
-	wording W = Feeds::feed_stream(KT);
+	wording W = Feeds::feed_text(KT);
 	DISCARD_TEXT(KT);
 	int v = -2;
 	if (Kinds::Compare::lt(K, K_object)) v = Kinds::RunTime::I6_classnumber(K);

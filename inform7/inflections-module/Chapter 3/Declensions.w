@@ -95,7 +95,7 @@ declension Declensions::decline_from_irregulars(wording W, PREFORM_LANGUAGE_TYPE
 								WRITE_TO(stem, "%W", W);
 								Inflections::follow_suffix_instruction(result, stem,
 									Vocabulary::get_exemplar(pt->ve_pt, TRUE));
-								D.name_cased[c%nc] = Feeds::feed_stream(result);
+								D.name_cased[c%nc] = Feeds::feed_text(result);
 								DISCARD_TEXT(stem);
 								DISCARD_TEXT(result);
 							}
@@ -159,7 +159,7 @@ declension Declensions::decline_from(wording W, PREFORM_LANGUAGE_TYPE *nl, nonte
 					WRITE_TO(stem, "%+W", W);
 					Inflections::follow_suffix_instruction(result, stem,
 						Vocabulary::get_exemplar(pr->first_ptoken->ve_pt, TRUE));
-					D.name_cased[c%nc] = Feeds::feed_stream(result);
+					D.name_cased[c%nc] = Feeds::feed_text(result);
 					DISCARD_TEXT(stem);
 					DISCARD_TEXT(result);
 				}

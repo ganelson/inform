@@ -37,24 +37,24 @@ Within a feed session, we can pass two sorts of text into the lexer: first,
 raw strings.
 
 =
-wording Feeds::feed_text(wchar_t *text) {
+wording Feeds::feed_C_string(wchar_t *text) {
+	return Feeds::feed_C_string_full(text, FALSE, NULL);
+}
+
+wording Feeds::feed_text(text_stream *text) {
 	return Feeds::feed_text_full(text, FALSE, NULL);
 }
 
-wording Feeds::feed_stream(text_stream *text) {
-	return Feeds::feed_stream_full(text, FALSE, NULL);
+wording Feeds::feed_C_string_expanding_strings(wchar_t *text) {
+	return Feeds::feed_C_string_full(text, TRUE, NULL);
 }
 
-wording Feeds::feed_text_expanding_strings(wchar_t *text) {
+wording Feeds::feed_text_expanding_strings(text_stream *text) {
 	return Feeds::feed_text_full(text, TRUE, NULL);
 }
 
-wording Feeds::feed_stream_expanding_strings(text_stream *text) {
-	return Feeds::feed_stream_full(text, TRUE, NULL);
-}
-
-wording Feeds::feed_stream_punctuated(text_stream *text, wchar_t *pmarks) {
-	wording W = Feeds::feed_stream_full(text, FALSE, pmarks);
+wording Feeds::feed_text_punctuated(text_stream *text, wchar_t *pmarks) {
+	wording W = Feeds::feed_text_full(text, FALSE, pmarks);
 	return W;
 }
 
@@ -62,7 +62,7 @@ wording Feeds::feed_stream_punctuated(text_stream *text, wchar_t *pmarks) {
 running long after the initial vocabulary identification phase of Inform.
 
 =
-wording Feeds::feed_text_full(wchar_t *text, int expand_strings, wchar_t *nonstandard) {
+wording Feeds::feed_C_string_full(wchar_t *text, int expand_strings, wchar_t *nonstandard) {
 	source_location as_if_from_nowhere;
 	as_if_from_nowhere.file_of_origin = NULL;
 	as_if_from_nowhere.line_number = 1;
@@ -90,7 +90,7 @@ wording Feeds::feed_text_full(wchar_t *text, int expand_strings, wchar_t *nonsta
 	return LEXW;
 }
 
-wording Feeds::feed_stream_full(text_stream *text, int expand_strings, wchar_t *nonstandard) {
+wording Feeds::feed_text_full(text_stream *text, int expand_strings, wchar_t *nonstandard) {
 	source_location as_if_from_nowhere;
 	as_if_from_nowhere.file_of_origin = NULL;
 	as_if_from_nowhere.line_number = 1;

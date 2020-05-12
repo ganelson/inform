@@ -194,13 +194,13 @@ word, though.)
 @<Splice up the A and B forms of the whole phrase wording@> =
 	feed_t id = Feeds::begin();
 	if (i > Wordings::first_wn(W)) Feeds::feed_wording(Wordings::up_to(W, i-1));
-	if (Str::len(a_form) > 0) Feeds::feed_stream_expanding_strings(a_form);
+	if (Str::len(a_form) > 0) Feeds::feed_text_expanding_strings(a_form);
 	if (i < Wordings::last_wn(W)) Feeds::feed_wording(Wordings::from(W, i+1));
 	AW = Feeds::end(id);
 
 	id = Feeds::begin();
 	if (i > Wordings::first_wn(W)) Feeds::feed_wording(Wordings::up_to(W, i-1));
-	if (Str::len(b_form) > 0) Feeds::feed_stream_expanding_strings(b_form);
+	if (Str::len(b_form) > 0) Feeds::feed_text_expanding_strings(b_form);
 	if (i < Wordings::last_wn(W)) Feeds::feed_wording(Wordings::from(W, i+1));
 	BW = Feeds::end(id);
 

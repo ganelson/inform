@@ -84,7 +84,7 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 	WRITE_TO(i7_name, "same-%<W-as", prn->name);
 	LOOP_THROUGH_TEXT(pos, i7_name)
 		if (Str::get(pos) == ' ') Str::put(pos, '-');
-	wording I7W = Feeds::feed_stream_expanding_strings(i7_name);
+	wording I7W = Feeds::feed_text_expanding_strings(i7_name);
 	rel_name = Lexer::word(Wordings::first_wn(I7W));
 	DISCARD_TEXT(i7_name);
 

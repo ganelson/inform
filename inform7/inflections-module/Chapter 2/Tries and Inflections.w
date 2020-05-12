@@ -64,7 +64,7 @@ word_assemblage Inflections::apply_trie_to_wa(word_assemblage wa, match_avinue *
 			if (Str::get(pos) == '+') PUT_TO(suffixed, ' ');
 			else PUT_TO(suffixed, Str::get(pos));
 	}
-	wording W = Feeds::feed_stream(suffixed);
+	wording W = Feeds::feed_text(suffixed);
 	WordAssemblages::truncate(&wa, 1);
 	DISCARD_TEXT(suffixed);
 	DISCARD_TEXT(unsuffixed);

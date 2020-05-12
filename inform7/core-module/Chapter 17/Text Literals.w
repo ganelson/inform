@@ -251,7 +251,7 @@ int Strings::TextLiterals::CCOUNT_QUOTATIONS(void) {
 
 =
 void Strings::TextLiterals::compile_literal_from_text(inter_name *context, inter_t *v1, inter_t *v2, wchar_t *p) {
-	literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, Feeds::feed_text(p));
+	literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, Feeds::feed_C_string(p));
 	Emit::to_ival_in_context(context, v1, v2, lt->lt_sba_iname);
 }
 

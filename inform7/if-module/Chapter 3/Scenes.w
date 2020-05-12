@@ -239,17 +239,17 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 	wording NW = Instances::get_name(sc->as_instance, FALSE);
 
 	feed_t id = Feeds::begin();
-	Feeds::feed_text_expanding_strings(L"when");
+	Feeds::feed_C_string_expanding_strings(L"when");
 	Feeds::feed_wording(NW);
-	Feeds::feed_text_expanding_strings((end==0)?L"begins":L"ends");
+	Feeds::feed_C_string_expanding_strings((end==0)?L"begins":L"ends");
 	if (end >= 2) Feeds::feed_wording(sc->end_names[end]);
 	RW = Feeds::end(id);
 
 	id = Feeds::begin();
-	Feeds::feed_text_expanding_strings(L"when the");
+	Feeds::feed_C_string_expanding_strings(L"when the");
 	NW = Instances::get_name(sc->as_instance, FALSE);
 	Feeds::feed_wording(NW);
-	Feeds::feed_text_expanding_strings((end==0)?L"begins":L"ends");
+	Feeds::feed_C_string_expanding_strings((end==0)?L"begins":L"ends");
 	if (end >= 2) Feeds::feed_wording(sc->end_names[end]);
 	AW = Feeds::end(id);
 
@@ -258,9 +258,9 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 
 	TEMPORARY_TEXT(i6_code);
 	feed_t id = Feeds::begin();
-	Feeds::feed_text_expanding_strings(L"To decide if (S - ");
+	Feeds::feed_C_string_expanding_strings(L"To decide if (S - ");
 	Feeds::feed_wording(NW);
-	Feeds::feed_text_expanding_strings(L") ended ");
+	Feeds::feed_C_string_expanding_strings(L") ended ");
 	Feeds::feed_wording(sc->end_names[end]);
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), ':');
 
@@ -268,13 +268,13 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 	Str::clear(i6_code);
 	WRITE_TO(i6_code, " (- (scene_latest_ending-->%d == %d) -) ",
 		sc->allocation_id, end);
-	Feeds::feed_stream_expanding_strings(i6_code);
+	Feeds::feed_text_expanding_strings(i6_code);
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), '.');
 
 	id = Feeds::begin();
-	Feeds::feed_text_expanding_strings(L"To decide if (S - ");
+	Feeds::feed_C_string_expanding_strings(L"To decide if (S - ");
 	Feeds::feed_wording(NW);
-	Feeds::feed_text_expanding_strings(L") did not end ");
+	Feeds::feed_C_string_expanding_strings(L") did not end ");
 	Feeds::feed_wording(sc->end_names[end]);
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), ':');
 
@@ -282,7 +282,7 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 	Str::clear(i6_code);
 	WRITE_TO(i6_code, " (- (scene_latest_ending-->%d ~= 0 or %d) -) ",
 		sc->allocation_id, end);
-	Feeds::feed_stream_expanding_strings(i6_code);
+	Feeds::feed_text_expanding_strings(i6_code);
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), '.');
 	Sentences::RuleSubtrees::register_recently_lexed_phrases();
 	DISCARD_TEXT(i6_code);

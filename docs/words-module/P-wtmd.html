@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -58,7 +63,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Shared Modules</a></li><li><a href="index.html">words</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the words module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Words, words, words</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Meaning codes</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Contiguous runs of words</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Hypothetical words</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Rock, paper, scissors</a></li><li><a href="P-wtmd.html#SP9">&#167;9. Traditional identifiers</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The words module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -74,6 +79,164 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Words, words, words. </b>Natural language text for use with Inform begins as text files written by
+human users, which are fed into the "lexer" (i.e., lexical analyser).
+The function <a href="3-tff.html#SP2" class="internal">TextFromFiles::feed_open_file_into_lexer</a> reads such a file,
+converting it to a numbered stream of words. For indexing and error reporting
+purposes, we must not forget where these words came from: the function returns
+a <a href="3-tff.html#SP1" class="internal">source_file</a> object representing the file as an origin, and the lexer
+assigns each word a <a href="3-lxr.html#SP3" class="internal">source_location</a> which is simply its SF together with
+a line number. <a href="3-lxr.html#SP18" class="internal">Lexer::word_location</a> returns this for a given word number.
+</p>
+
+<p class="commentary">Word numbers count upwards from 1 and are contiguous: for example &mdash;
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    Mary had a  little lamb .   Everywhere that Mary went ,  the lamb</span>
+<span class="plain-syntax">    17   18  19 20     21   22  23         24   25   26   27 28  29</span>
+</pre>
+<p class="commentary">Repetitions are frequent: a typical source text of 50,000 words has an
+unquoted<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> vocabulary of only about 2000 different words. Inform generates
+a <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> object for each of these distinct words, and <a href="3-lxr.html#SP18" class="internal">Lexer::word</a>
+returns the VE for a given word number. In the above example,
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="function-syntax">Lexer::word</span><span class="plain-syntax">(17) == </span><span class="function-syntax">Lexer::word</span><span class="plain-syntax">(25)   </span><span class="comment-syntax"> both uses of "Mary"</span>
+<span class="plain-syntax">    </span><span class="function-syntax">Lexer::word</span><span class="plain-syntax">(21) == </span><span class="function-syntax">Lexer::word</span><span class="plain-syntax">(29)   </span><span class="comment-syntax"> both uses of "lamb"</span>
+<span class="plain-syntax">    </span><span class="function-syntax">Lexer::word</span><span class="plain-syntax">(20) != </span><span class="function-syntax">Lexer::word</span><span class="plain-syntax">(24)   </span><span class="comment-syntax"> one is "little", the other "that"</span>
+</pre>
+<p class="commentary">The important point is that words at two positions can be tested for textual
+equality in an essentially instant process, by comparing <span class="extract"><span class="extract-syntax">vocabulary_entry *</span></span>
+pointers.
+</p>
+
+<p class="commentary">Nothing in life is free, and building the vocabulary efficiently is itself a
+challenge: see <a href="2-vcb.html#SP13" class="internal">Vocabulary::hash_code_from_word</a>. The key function is
+<a href="2-vcb.html#SP15" class="internal">Vocabulary::entry_for_text</a>, which takes a wide C string for a word and
+returns its <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a>. There are also issues with casing: in
+general we want "Lamb" and "lamb" to match, but not always.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> A piece of text in double-quotes is treated as a single word by the lexer,
+although <a href="../inform7/index.html" class="internal">inform7</a> may later unroll text substitutions in it, calling the
+lexer again to do that.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>A few <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> objects are hardwired into <a href="index.html" class="internal">words</a>, but only
+for punctuation. These have names like <span class="extract"><span class="extract-syntax">COMMA_V</span></span>, which means just what you
+think it means. In our example,
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="function-syntax">Lexer::word</span><span class="plain-syntax">(27) == </span><span class="identifier-syntax">COMMA_V</span><span class="plain-syntax">   </span><span class="comment-syntax"> the comma between "went" and "the"</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Lexical errors occur if words are too long, or quoted text continues without
+a close quote right to the end of a file, and so on. These are sent to the
+function <a href="3-lxr.html#SP29" class="internal">Lexer::lexer_problem_handler</a>, but can be intercepted by the
+user (see <a href="P-htitm.html" class="internal">How To Include This Module</a>).
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Meaning codes. </b>Each <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> has a bitmap of <span class="extract"><span class="extract-syntax">*_MC</span></span> meaning codes assigned to it.
+(And <a href="2-vcb.html#SP10" class="internal">Vocabulary::test_flags</a> tests whether the Nth word has a given bit.)
+For example, <span class="extract"><span class="extract-syntax">ORDINAL_MC</span></span> is applied to ordinal numbers like "sixth" or "15th"
+&mdash; see <a href="2-vcb.html#SP17" class="internal">Vocabulary::an_ordinal_number</a>, and <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span> to cardinals. The
+<a href="index.html" class="internal">words</a> module uses only a few bits in this map, but the <a href="../linguistics-module/index.html" class="internal">linguistics</a>
+module develops the idea much further: for example, any word which can be used
+in a particular semantic category &mdash; say, in a variable name &mdash; is marked
+with a bit representing that &mdash; say, <span class="extract"><span class="extract-syntax">VARIABLE_MC</span></span>. The <a href="../core-module/index.html" class="internal">core</a> module
+uses this for 15 or so of the most commonly used semantic categories in the
+Inform language. See <a href="../linguistics-module/P-wtmd.html" class="internal">What This Module Does (in linguistics)</a> to pick up the story.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Contiguous runs of words. </b>Natural languages are fundamentally unlike programming languages because a noun
+referring to, say, a variable is rarely a single lexical token. In C, a variable
+name like <span class="extract"><span class="extract-syntax">selected_lamb</span></span> is one lexical unit. For us, though, "a little lamb"
+is three words.
+</p>
+
+<p class="commentary">However, multi-word snippets of text which have a joint meaning are almost
+always contiguous. The text "a little lamb" is word numbers 19, 20, 21. We
+deal with this using the <a href="3-wrd.html#SP2" class="internal">wording</a> type: it's essentially a pair of integers,
+<span class="extract"><span class="extract-syntax">(19, 21)</span></span>, and thus is very quick to form, compare, copy and pass as a
+parameter. <a href="3-wrd.html" class="internal">Wordings</a> provides an extensive API for this.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Hypothetical words. </b>Sometimes Inform needs to make hypothetical passages of text. For example,
+suppose there is a kind called "paint colour" in the source text; Inform may
+then want to create a variable called "paint colour understood". But this text
+may not occur as such anywhere in the source.
+</p>
+
+<p class="commentary">If all the words needed are in the source somewhere, but not together, the user
+of the <a href="index.html" class="internal">words</a> module has two options:
+</p>
+
+<ul class="items"><li>&#9679; Create a <a href="2-wa.html#SP2" class="internal">word_assemblage</a> object. This can represent any discontiguous
+list of word numbers: thus, the text "lamb went everywhere" could be a WA
+of numbers (21, 26, 23) in our example above.
+</li><li>&#9679; Use <a href="3-lxr.html#SP28" class="internal">Lexer::splice_words</a> to create duplicate snippets of text in the
+word stream, with new numbers. For example, call this on "lamb", then "went",
+then "everywhere"; the three new word numbers will then be contiguous, and
+can be represented by a <a href="3-wrd.html#SP2" class="internal">wording</a>:
+</li></ul>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    Mary had a  little lamb .   Everywhere that Mary went ,  the lamb lamb went everywhere</span>
+<span class="plain-syntax">    17   18  19 20     21   22  23         24   25   26   27 28  29   30   31   32</span>
+</pre>
+<p class="commentary">If however we want to make "lamb tian with haricot beans", we need to use the
+Lexer's ability to read text internally as well as from external files. This
+is called a "feed": see <a href="3-fds.html" class="internal">Feeds</a>. In particular, <a href="3-fds.html#SP4" class="internal">Feeds::feed_text</a> will
+take the text <span class="extract"><span class="extract-syntax">I"tian with haricot beans"</span></span>, treat this as fresh text for
+lexing so that we now have
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    ... ,  the lamb lamb went everywhere tian with haricot beans</span>
+<span class="plain-syntax">    ... 27 28  29   30   31   32         34   35   36      37</span>
+</pre>
+<p class="commentary">and now the word assemblage (21, 34, 35, 36, 37) would indeed represent "lamb
+tian with haricot beans". The return value of <a href="3-fds.html#SP4" class="internal">Feeds::feed_text</a> is the
+<a href="3-wrd.html#SP2" class="internal">wording</a> (34, 37).
+</p>
+
+<p class="commentary">These new words do not originate in a file; their <a href="3-lxr.html#SP3" class="internal">source_location</a> therefore
+has a null <a href="3-tff.html#SP1" class="internal">source_file</a>. Words which have been spliced, however, and thus
+duplicated in the word stream (like "lamb went everywhere", 30-32), retain
+their original origins.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Rock, paper, scissors. </b>We now have three ways to represent text which may contain multiple words:
+as a <span class="extract"><span class="extract-syntax">text_stream</span></span>, as a <span class="extract"><span class="extract-syntax">wording</span></span>, as a <span class="extract"><span class="extract-syntax">word_assemblage</span></span>. Each can be
+converted into the other two:
+</p>
+
+<ul class="items"><li>&#9679; Use <a href="3-fds.html#SP4" class="internal">Feeds::feed_text</a> to turn a <span class="extract"><span class="extract-syntax">text_stream</span></span> to a <span class="extract"><span class="extract-syntax">wording</span></span>.
+</li><li>&#9679; Use <a href="2-wa.html#SP4" class="internal">WordAssemblages::from_wording</a> to turn a <span class="extract"><span class="extract-syntax">wording</span></span> to a <span class="extract"><span class="extract-syntax">word_assemblage</span></span>.
+</li><li>&#9679; Use <a href="2-wa.html#SP7" class="internal">WordAssemblages::to_wording</a> to turn a <span class="extract"><span class="extract-syntax">word_assemblage</span></span> to a <span class="extract"><span class="extract-syntax">wording</span></span>.
+</li><li>&#9679; Use <a href="3-wrd.html#SP22" class="internal">Wordings::writer</a> or use the formatted <span class="extract"><span class="extract-syntax">WRITE</span></span> escape <span class="extract"><span class="extract-syntax">%W</span></span> to
+write a <span class="extract"><span class="extract-syntax">wording</span></span> into a <span class="extract"><span class="extract-syntax">text_stream</span></span>.
+</li><li>&#9679; Use <a href="2-wa.html#SP9" class="internal">WordAssemblages::writer</a> or use the formatted <span class="extract"><span class="extract-syntax">WRITE</span></span> escape <span class="extract"><span class="extract-syntax">%A</span></span> to
+write a <span class="extract"><span class="extract-syntax">word_assemblage</span></span> into a <span class="extract"><span class="extract-syntax">text_stream</span></span>.
+</li></ul>
+<p class="commentary">As a general design goal, all Inform code uses <a href="3-wrd.html#SP2" class="internal">wording</a> to identify names
+of things: this is fastest and most efficient on memory.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Traditional identifiers. </b>Imagine you're a compiler turning natural language into some sort of computer
+code, just hypothetically: then you probably want "a little lamb" to come out
+as a named location in memory, or object, or something like that: and this name
+must be a valid identifier for some other compiler or assembler &mdash; alphanumeric,
+not too long, and so on. Calling it "a little lamb" is not an option.
+</p>
+
+<p class="commentary">You could of course name it <span class="extract"><span class="extract-syntax">ref_15A40F</span></span>, or some such, because the user will
+never see it anyway, so why have a helpful name? But that won't make debugging
+your output easy. The function <a href="3-idn.html#SP3" class="internal">Identifiers::compose</a> therefore takes a
+wording and a unique ID number and makes something sensible: <span class="extract"><span class="extract-syntax">I15_a_little_lamb</span></span>,
+say.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresschapter"><a href="4-nw.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

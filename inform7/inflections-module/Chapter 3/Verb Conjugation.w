@@ -557,7 +557,7 @@ word_assemblage Conjugation::expand_with_endings(vocabulary_entry *ve, word_asse
 			WRITE_TO(TEMP, "%A", &front_wa);
 			if (p[i] == '~') PUT_TO(TEMP, ' ');
 			WRITE_TO(TEMP, "%A", &back_wa);
-			wording W = Feeds::feed_stream(TEMP);
+			wording W = Feeds::feed_text(TEMP);
 			DISCARD_TEXT(TEMP);
 			return WordAssemblages::from_wording(W);
 		}
@@ -608,7 +608,7 @@ word_assemblage Conjugation::shorten_with_contractions(word_assemblage wa) {
 				int k;
 				for (k=0; k<j-1; k++) { WRITE_TO(TEMP, "%c", p[k]); }
 				WRITE_TO(TEMP, "'%w", q);
-				wording W = Feeds::feed_stream(TEMP);
+				wording W = Feeds::feed_text(TEMP);
 				words[i] = Lexer::word(Wordings::first_wn(W));
 				for (k=i+1; k<word_count; k++) words[k] = words[k+1];
 				word_count--;
@@ -616,7 +616,7 @@ word_assemblage Conjugation::shorten_with_contractions(word_assemblage wa) {
 			} else {
 				int k;
 				for (k=0; k<j; k++) { WRITE_TO(TEMP, "%c", p[k]); }
-				wording W = Feeds::feed_stream(TEMP);
+				wording W = Feeds::feed_text(TEMP);
 				words[i] = Lexer::word(Wordings::first_wn(W));
 			}
 			DISCARD_TEXT(TEMP);

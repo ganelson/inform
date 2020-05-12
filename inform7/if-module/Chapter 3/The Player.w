@@ -265,7 +265,7 @@ int PL::Player::player_complete_model(int stage) {
 	if ((stage == 3) && (I_yourself)) {
 		P_saved_short_name = Properties::Valued::new_nameless(I"saved_short_name", K_text);
 		Properties::Valued::assert(P_saved_short_name, Instances::as_subject(I_yourself),
-			Rvalues::from_unescaped_wording(Feeds::feed_stream(I"yourself")), CERTAIN_CE);
+			Rvalues::from_unescaped_wording(Feeds::feed_text(I"yourself")), CERTAIN_CE);
 	}
 	if (stage == 4) {
 		@<Set the start room to the earliest room defined in the source text@>;
