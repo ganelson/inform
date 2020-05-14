@@ -159,3 +159,50 @@ never see it anyway, so why have a helpful name? But that won't make debugging
 your output easy. The function //Identifiers::compose// therefore takes a
 wording and a unique ID number and makes something sensible: |I15_a_little_lamb|,
 say.
+
+@h Preform.
+Prefor is a meta-language for writing a simple grammar: it's in some sense
+pre-Inform, because it defines the Inform language itself. See //About Preform//.
+
+Compilers are a little like the human body, in that most of their organs can
+be located in a single spot: there is just one lexical analyser, and it is
+entirely contained in the section //Lexer//. But just a few organs -- the
+nervous system, or the blood vessels -- are present almost everywhere in the
+body, and the Inform syntax analyser is like that. While the basic code which
+drives this is in //Preform// and in the //syntax// module, the actual
+syntax being read can be found all over Inform. This has a notation like so:
+= (text as Preform)
+	<competitor> ::=
+		<ordinal-number> runner |    ==> TRUE
+		runner no <cardinal-number>  ==> FALSE
+=
+And such notation is mixed in with regular C code in many sections of the
+//core// and other modules.
+
+This apparent dispersal is in some ways misleading, though, because //inweb//,
+when pre-processing Inform modules for compilation, gathers all of that
+syntax into one single definition file -- |Syntax.preform|. This is read in
+at run-time, and can therefore be replaced with alternatives if the user
+prefers. See //About Preform// for more, and see //Loading Preform// for
+how it is read in.
+
+@ Inform parses Preform using a hand-built algorithm highly optimised for
+the unusual structure of natural language -- unusual, that is, compared
+to most programming languages. The parser occupies the whole //Preform//
+section, but //The Optimiser// is also needed to make it acceptably fast.
+It follows that Inform doesn't use parser-generators such as |yacc|, or
+|antlr|, and for that matter does not use the elegant theory of LALR parsing.
+This is for three reasons:
+(a) I am sceptical that formal grammars specify natural language all that well
+-- which is ironic, considering that the relevant computer science, dating
+from the 1950s and 1960s, was strongly influenced by Noam Chomsky's generative
+linguistics.The classical use case for |yacc| is to manage hierarchies of
+associative operators: but natural language doesn't have those.
+(b) If we used a generator like |yacc|, Preform grammar would not be extensible
+at run-time, and there would be little hope of translating it to, say, French
+or German.
+(c) Folk wisdom has it that |yacc| parsers are about half as fast as a shrewdly
+hand-coded equivalent, and I tend to believe this. I note that the |gcc| C
+compiler abandoned the use of |bison| for exactly this reason, despite the
+loyalty of |gcc|'s authors to the cause of interdependent standard Unix tools.
+Sometimes performance is better than ideology.
