@@ -3,28 +3,28 @@
 To read in structural definitions of natural language written in the
 meta-language Preform.
 
-@h Introduction.
+@h Reading Preform syntax from a file or text.
 The parser reads source text against a specific language only, if
-|language_of_source_text| is set; or, if it isn't, from any language.
+|primary_Preform_language| is set; or, if it isn't, from any language.
 
 @default NATURAL_LANGUAGE_WORDS_TYPE void
 
 =
-NATURAL_LANGUAGE_WORDS_TYPE *language_of_source_text = NULL;
+NATURAL_LANGUAGE_WORDS_TYPE *primary_Preform_language = NULL;
 
-void LoadPreform::set_language_of_syntax(NATURAL_LANGUAGE_WORDS_TYPE *L) {
-	language_of_source_text = L;
+int LoadPreform::load(filename *F, NATURAL_LANGUAGE_WORDS_TYPE *L) {
+	primary_Preform_language = L;
+	return LoadPreform::parse(LoadPreform::feed_from_Preform_file(F), L);
 }
 
-@h Reading Preform syntax from a file.
+@ We simply feed the lines one at a time. Preform is parsed with the same
+lexer as is used for Inform itself, but using the following set of characters
+as word-breaking punctuation marks:
+
+@d PREFORM_PUNCTUATION_MARKS L"{}[]_^?&\\"
 
 =
-wording LoadPreform::load_for_language(filename *F, NATURAL_LANGUAGE_WORDS_TYPE *L) {
-	LoadPreform::set_language_to_parse(L);
-	return LoadPreform::load(F);
-}
-
-wording LoadPreform::load(filename *F) {
+wording LoadPreform::feed_from_Preform_file(filename *F) {
 	feed_t id = Feeds::begin();
 	if (TextFiles::read(F, FALSE,
 		NULL, FALSE, LoadPreform::load_helper, NULL, NULL) == FALSE)
@@ -32,101 +32,186 @@ wording LoadPreform::load(filename *F) {
 	return Feeds::end(id);
 }
 
-@ We simply feed the lines one at a time. Preform is parsed with the regular
-lexer, using the following set of characters as word-breaking punctuation marks:
-
-@d PREFORM_PUNCTUATION_MARKS L"{}[]_^?&\\"
-
-=
-void LoadPreform::load_helper(text_stream *item_name,
-	text_file_position *tfp, void *vnl) {
+void LoadPreform::load_helper(text_stream *item_name, text_file_position *tfp,
+	void *unused_state) {
 	WRITE_TO(item_name, "\n");
 	Feeds::feed_text_punctuated(item_name, PREFORM_PUNCTUATION_MARKS);
 }
 
-@h Implementation.
-We must first clarify how word ranges, once matched in the parser, will be
-stored. Within each production, word ranges are numbered upwards from 1. Thus:
-= (text as InC)
-	man with ... on his ...
+@ It is also possible to load additional Preform declarations from source
+text in Inform, and when that happens, the following is called:
+
 =
-would, if it matched successfully, generate two word ranges, numbered 1 and 2.
-These are stored in memory belonging to the nonterminal; they are usually, but
-not always, then retrieved by whatever part of Inform requested the parse,
-using the |GET_RW| macro rather than a function call for speed. It's rare,
-but a few internal nonterminals also generate word ranges: they use the
-corresponding |PUT_RW| macro to do so. Lastly, we can pass word ranges up
-from one nonterminal to another, with |INHERIT_RANGES|.
-
-This form of storage incurs very little time or space overhead, and is possible
-only because the parser never backtracks. But it also follows that word ranges
-are overwritten if a nonterminal calls itself directly or indirectly: that is,
-the inner one's results are wiped out by the outer one. But this is no problem,
-since we never extract word-ranges from grammar which is recursive.
-
-Word range 0 is reserved in case we ever need it for the entire text matched
-by the nonterminal, but at present we don't need that.
-
-@d MAX_RANGES_PER_PRODUCTION 5 /* in fact, one less than this, since range 0 is reserved */
-@d GET_RW(nt, N) (nt->range_result[N])
-@d PUT_RW(nt, N, W) { nt->range_result[N] = W; }
-@d INHERIT_RANGES(from, to) {
-	for (int i=1; i<MAX_RANGES_PER_PRODUCTION; i++) /* not copying range 0 */
-		to->range_result[i] = from->range_result[i];
-}
-@d CLEAR_RW(from) {
-	for (int i=0; i<MAX_RANGES_PER_PRODUCTION; i++) /* including range 0 */
-		from->range_result[i] = EMPTY_WORDING;
+int LoadPreform::parse_text(text_stream *wd) {
+	wording W = Feeds::feed_text_punctuated(wd, PREFORM_PUNCTUATION_MARKS);
+	return LoadPreform::parse(W, primary_Preform_language);
 }
 
-@ So here's the nonterminal structure. There are a few further complications
-for speed reasons:
+@ Either way, then, all that remains is to write //LoadPreform::parse//. But
+before we can get to that, we have to create the...
 
-(a) The minimum and maximum number of words which could ever be a match are
-precalculated. For example, if Preform can tell that N will only a run of
-between 3 and 7 words inclusive, then it can quickly reject any run of words
-outside that range. |INFINITE_WORD_COUNT| is taken as the maximum if N
-could in principle match text of any length. (However: note that a maximum of
-0 means that the maximum and minimum word counts are disregarded.)
+@h Reserved words in Preform.
+The ideal tool with which to parse Preform definitions would be Preform, but
+then how would we define the grammar required? So we will have to do this
+by hand, and in particular, we have to define Preform's syntactic punctuation
+marks explicitly. These are, in effect, the reserved words of the Preform
+notational language. (Note the absence of the |==>| marker: that's stripped
+out by //inweb// and never reaches the |Syntax.preform| file.)
 
-(b) A few internal nonterminals are "voracious". These are given the entire
-word range for their productions to eat, and encouraged to eat as much as
-they like, returning a word number to show how far they got. While this
-effect could be duplicated with suitable grammar and non-voracious nonterminals,
-it would be quite a bit slower, since it would have to test every possible
-word range.
+The bare letters K and L are snuck in here for convenience. They aren't
+actually used by anything in //words//, but are used for kind variables in
+//kinds//.
+
+=
+vocabulary_entry *AMPERSAND_V;
+vocabulary_entry *BACKSLASH_V;
+vocabulary_entry *CARET_V;
+vocabulary_entry *COLONCOLONEQUALS_V;
+vocabulary_entry *QUESTIONMARK_V;
+vocabulary_entry *QUOTEQUOTE_V;
+vocabulary_entry *SIXDOTS_V;
+vocabulary_entry *THREEASTERISKS_V;
+vocabulary_entry *THREEDOTS_V;
+vocabulary_entry *THREEHASHES_V;
+vocabulary_entry *UNDERSCORE_V;
+vocabulary_entry *language_V;
+vocabulary_entry *internal_V;
+
+vocabulary_entry *CAPITAL_K_V;
+vocabulary_entry *CAPITAL_L_V;
+
+@ =
+void LoadPreform::create_punctuation(void) {
+	AMPERSAND_V        = Vocabulary::entry_for_text(L"&");
+	BACKSLASH_V        = Vocabulary::entry_for_text(L"\\");
+	CARET_V            = Vocabulary::entry_for_text(L"^");
+	COLONCOLONEQUALS_V = Vocabulary::entry_for_text(L":" ":=");
+	QUESTIONMARK_V     = Vocabulary::entry_for_text(L"?");
+	QUOTEQUOTE_V       = Vocabulary::entry_for_text(L"\"\"");
+	SIXDOTS_V          = Vocabulary::entry_for_text(L"......");
+	THREEASTERISKS_V   = Vocabulary::entry_for_text(L"***");
+	THREEDOTS_V        = Vocabulary::entry_for_text(L"...");
+	THREEHASHES_V      = Vocabulary::entry_for_text(L"###");
+	UNDERSCORE_V       = Vocabulary::entry_for_text(L"_");
+	language_V         = Vocabulary::entry_for_text(L"language");
+    internal_V         = Vocabulary::entry_for_text(L"internal");
+
+	CAPITAL_K_V        = Vocabulary::entry_for_text(L"k");
+	CAPITAL_L_V        = Vocabulary::entry_for_text(L"l");
+}
+
+@h Parsing Preform.
+The syntax of the |Syntax.preform| is, fortunately, very simple. At any given
+time, we are parsing definitions for a given natural language |L|: for example,
+English.
+
+Note that Preform can contain comments in square brackets; but that the Lexer
+has already removed any such.
+
+=
+int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
+	NATURAL_LANGUAGE_WORDS_TYPE *current_natural_language = L;
+	int nonterminals_declared = 0;
+	LOOP_THROUGH_WORDING(wn, W) {
+		if (Lexer::word(wn) == PARBREAK_V) continue;
+		if ((Wordings::last_wn(W) >= wn+1) && (Lexer::word(wn) == language_V))
+			@<Parse a definition language switch@>
+		else if ((Wordings::last_wn(W) >= wn+1) && (Lexer::word(wn+1) == internal_V))
+			@<Parse an internal nonterminal declaration@>
+		else if ((Wordings::last_wn(W) >= wn+2) && (Lexer::word(wn+1) == COLONCOLONEQUALS_V))
+			@<Parse a regular nonterminal declaration@>
+		else
+			internal_error("syntax error in Preform declarations");
+	}
+	Optimiser::optimise_counts();
+	return nonterminals_declared;
+}
+
+@ We either switch to an existing natural language, or create a new one.
+
+@<Parse a definition language switch@> =
+	TEMPORARY_TEXT(lname);
+	WRITE_TO(lname, "%W", Wordings::one_word(wn+1));
+	NATURAL_LANGUAGE_WORDS_TYPE *nl = NULL;
+	#ifdef PREFORM_LANGUAGE_FROM_NAME_WORDS_CALLBACK
+	nl = PREFORM_LANGUAGE_FROM_NAME_WORDS_CALLBACK(lname);
+	#endif
+	if (nl == NULL) {
+		LOG("Missing: %S\n", lname);
+		internal_error("tried to define for missing language");
+	}
+	DISCARD_TEXT(lname);
+	current_natural_language = nl;
+	wn++;
+
+@ Internal declarations appear as single lines in |Syntax.preform|.
+
+@<Parse an internal nonterminal declaration@> =
+	nonterminal *nt = Nonterminals::find(Lexer::word(wn));
+	if (nt->first_production_list) internal_error("internal is defined");
+	nt->marked_internal = TRUE;
+	wn++;
+	nonterminals_declared++;
+
+@ Regular declarations are much longer and continue until the end of the text,
+or until we reach a paragraph break. The body of such a declaration is a list
+of productions divided by stroke symbols.
+
+@<Parse a regular nonterminal declaration@> =
+	nonterminal *nt = Nonterminals::find(Lexer::word(wn));
+	production_list *pl;
+	@<Find or create the production list for this language@>;
+	wn += 2;
+	int pc = 0;
+	while (TRUE) {
+		int x = wn;
+		while ((x <= Wordings::last_wn(W)) && (Lexer::word(x) != STROKE_V) &&
+			(Lexer::word(x) != PARBREAK_V)) x++;
+		if (wn < x) {
+			production *pr = LoadPreform::new_production(Wordings::new(wn, x-1), nt, pc++);
+			wn = x;
+			@<Place the new production within the production list@>;
+		}
+		if ((wn > Wordings::last_wn(W)) || (Lexer::word(x) == PARBREAK_V)) break; /* reached end */
+		wn++; /* advance past the stroke and continue */
+	}
+	wn--;
+	nonterminals_declared++;
+
+@<Find or create the production list for this language@> =
+	for (pl = nt->first_production_list; pl; pl = pl->next_production_list)
+		if (pl->definition_language == current_natural_language)
+			break;
+	if (pl == NULL)	{
+		pl = CREATE(production_list);
+		pl->definition_language = current_natural_language;
+		pl->first_production = NULL;
+		pl->as_avinue = NULL;
+		@<Place the new production list within the nonterminal@>;
+	}
+
+@<Place the new production list within the nonterminal@> =
+	if (nt->first_production_list == NULL) nt->first_production_list = pl;
+	else {
+		production_list *p = nt->first_production_list;
+		while ((p) && (p->next_production_list)) p = p->next_production_list;
+		p->next_production_list = pl;
+	}
+
+@<Place the new production within the production list@> =
+	if (pl->first_production == NULL) pl->first_production = pr;
+	else {
+		production *p = pl->first_production;
+		while ((p) && (p->next_production)) p = p->next_production;
+		p->next_production = pr;
+	}
+
+
+
+
+@
 
 @d MAX_RESULTS_PER_PRODUCTION 10
-@d INFINITE_WORD_COUNT 1000000000
-
-=
-typedef struct nonterminal {
-	struct vocabulary_entry *nonterminal_id; /* e.g. |"<cardinal-number>"| */
-	int voracious; /* if true, scans whole rest of word range */
-	int multiplicitous;
-
-	int marked_internal; /* has, or will be given, an internal definition... */
-	int (*internal_definition)(wording W, int *result, void **result_p); /* ...this one */
-
-	struct production_list *first_production_list; /* if not internal, this defines it */
-
-	int (*result_compositor)(int *r, void **rp, int *inters, void **inter_ps, wording *interW, wording W);
-
-	struct wording range_result[MAX_RANGES_PER_PRODUCTION]; /* storage for word ranges matched */
-
-	int optimised_in_this_pass; /* have the following been worked out yet? */
-	int min_nt_words, max_nt_words; /* for speed */
-	struct range_requirement nonterminal_req;
-	int nt_req_bit; /* which hashing category the words belong to, or $-1$ if none */
-
-	int number_words_by_production;
-	unsigned int flag_words_in_production;
-
-	int watched; /* watch goings-on to the debugging log */
-	int nonterminal_tries; /* used only in instrumented mode */
-	int nonterminal_matches; /* ditto */
-	CLASS_DEFINITION
-} nonterminal;
 
 @ Each (external) nonterminal is then defined by lists of productions:
 potentially one for each language, though only English is required to define
@@ -262,20 +347,6 @@ typedef struct ptoken {
 	CLASS_DEFINITION
 } ptoken;
 
-@ The parser records the result of the most recently matched nonterminal in the
-following global variables:
-
-=
-int most_recent_result = 0; /* this is the variable which |inweb| writes |<<r>>| */
-void *most_recent_result_p = NULL; /* this is the variable which |inweb| writes |<<rp>>| */
-
-@ Preform's aim is to purge the Inform source code of all English vocabulary,
-but we do still the letters "K" and "L", to define the wording of kind constructors.
-
-=
-vocabulary_entry *CAPITAL_K_V;
-vocabulary_entry *CAPITAL_L_V;
-
 @ Preform can run in an instrumented mode, which collects statistics on the
 usage of syntax it sees, but there's a performance hit for this. So it's
 enabled only if the constant |INSTRUMENTED_PREFORM| defined to |TRUE|: here's
@@ -295,332 +366,7 @@ typedef struct range_requirement {
 
 int no_req_bits = 0;
 
-@h Logging.
-Descending these wheels within wheels:
 
-=
-void LoadPreform::log(void) {
-	int detailed = FALSE;
-	nonterminal *nt;
-	LOOP_OVER(nt, nonterminal) {
-		#ifdef INSTRUMENTED_PREFORM
-		LOG("%d/%d: ", nt->nonterminal_matches, nt->nonterminal_tries);
-		#endif
-		LOG("%V: ", nt->nonterminal_id);
-		Optimiser::log_range_requirement(&(nt->nonterminal_req));
-		LOG("\n");
-		if (nt->internal_definition) LOG("  (internal)\n");
-		else {
-			production_list *pl;
-			for (pl = nt->first_production_list; pl; pl = pl->next_production_list) {
-				LOG("  $J:\n", pl->definition_language);
-				production *pr;
-				for (pr = pl->first_production; pr; pr = pr->next_production) {
-					LOG("   "); LoadPreform::log_production(pr, detailed);
-					#ifdef INSTRUMENTED_PREFORM
-					LOG("      %d/%d: ", pr->production_matches, pr->production_tries);
-					if (Wordings::nonempty(pr->sample_text)) LOG("<%W>", pr->sample_text);
-					#endif
-					LOG(" ==> ");
-					Optimiser::log_range_requirement(&(pr->production_req));
-					LOG("\n");
-				}
-			}
-		}
-		LOG("  min %d, max %d\n\n", nt->min_nt_words, nt->max_nt_words);
-	}
-	LOG("%d req bits.\n", no_req_bits);
-}
-
-@ =
-void LoadPreform::log_production(production *pr, int detailed) {
-	if (pr->first_ptoken == NULL) LOG("<empty-production>");
-	ptoken *pt;
-	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
-		LoadPreform::log_ptoken(pt, detailed);
-		LOG(" ");
-	}
-}
-
-@ =
-void LoadPreform::log_ptoken(ptoken *pt, int detailed) {
-	if ((detailed) && (pt->ptoken_position != 0)) LOG("(@%d)", pt->ptoken_position);
-	if ((detailed) && (pt->strut_number >= 0)) LOG("(S%d)", pt->strut_number);
-	if (pt->disallow_unexpected_upper) LOG("_");
-	if (pt->negated_ptoken) LOG("^");
-	if (pt->range_starts >= 0) { LOG("{"); if (detailed) LOG("%d:", pt->range_starts); }
-	ptoken *alt;
-	for (alt = pt; alt; alt = alt->alternative_ptoken) {
-		if (alt->nt_pt) {
-			LOG("%V", alt->nt_pt->nonterminal_id);
-			if (detailed) LOG("=%d", alt->result_index);
-		} else {
-			LOG("%V", alt->ve_pt);
-		}
-		if (alt->alternative_ptoken) LOG("/");
-	}
-	if (pt->range_ends >= 0) { if (detailed) LOG(":%d", pt->range_ends); LOG("}"); }
-}
-
-@ A less detailed form used in linguistic problem messages:
-
-=
-void LoadPreform::write_ptoken(OUTPUT_STREAM, ptoken *pt) {
-	if (pt->disallow_unexpected_upper) WRITE("_");
-	if (pt->negated_ptoken) WRITE("^");
-	if (pt->range_starts >= 0) WRITE("{");
-	ptoken *alt;
-	for (alt = pt; alt; alt = alt->alternative_ptoken) {
-		if (alt->nt_pt) {
-			WRITE("%V", alt->nt_pt->nonterminal_id);
-		} else {
-			WRITE("%V", alt->ve_pt);
-		}
-		if (alt->alternative_ptoken) WRITE("/");
-	}
-	if (pt->range_ends >= 0) WRITE("}");
-}
-
-@ This is a typical internal nonterminal being defined. It's used only to parse
-inclusion requests for the debugging log. Note that we use the "1" to signal
-that a correct match must have exactly one word.
-
-=
-<preform-nonterminal> internal 1 {
-	nonterminal *nt = LoadPreform::detect_nonterminal(Lexer::word(Wordings::first_wn(W)));
-	if (nt) { *XP = nt; return TRUE; }
-	return FALSE;
-}
-
-@ To use which, the debugging log code needs:
-
-=
-void LoadPreform::watch(nonterminal *nt, int state) {
-	nt->watched = state;
-}
-
-@h Building grammar.
-So, to begin. Since we can't use Preform to parse Preform, we have to define
-its syntactic tokens by hand:
-
-=
-vocabulary_entry *AMPERSAND_V;
-vocabulary_entry *BACKSLASH_V;
-vocabulary_entry *CARET_V;
-vocabulary_entry *COLONCOLONEQUALS_V;
-vocabulary_entry *QUESTIONMARK_V;
-vocabulary_entry *QUOTEQUOTE_V;
-vocabulary_entry *SIXDOTS_V;
-vocabulary_entry *THREEASTERISKS_V;
-vocabulary_entry *THREEDOTS_V;
-vocabulary_entry *THREEHASHES_V;
-vocabulary_entry *UNDERSCORE_V;
-vocabulary_entry *language_V;
-vocabulary_entry *internal_V;
-
-@ And off we go.
-
-=
-void LoadPreform::begin(void) {
-	CAPITAL_K_V      = Vocabulary::entry_for_text(L"k");
-	CAPITAL_L_V      = Vocabulary::entry_for_text(L"l");
-	AMPERSAND_V      = Vocabulary::entry_for_text(L"&");
-	BACKSLASH_V      = Vocabulary::entry_for_text(L"\\");
-	CARET_V          = Vocabulary::entry_for_text(L"^");
-	COLONCOLONEQUALS_V = Vocabulary::entry_for_text(L":" ":=");
-	QUESTIONMARK_V     = Vocabulary::entry_for_text(L"?");
-	QUOTEQUOTE_V     = Vocabulary::entry_for_text(L"\"\"");
-	SIXDOTS_V        = Vocabulary::entry_for_text(L"......");
-	THREEASTERISKS_V = Vocabulary::entry_for_text(L"***");
-	THREEDOTS_V      = Vocabulary::entry_for_text(L"...");
-	THREEHASHES_V    = Vocabulary::entry_for_text(L"###");
-	UNDERSCORE_V     = Vocabulary::entry_for_text(L"_");
-	language_V         = Vocabulary::entry_for_text(L"language");
-    internal_V         = Vocabulary::entry_for_text(L"internal");
-
-	@<Register the internal and source-code-referred-to nonterminals@>;
-}
-
-@ The tangler of |inweb| replaces the |[[nonterminals]]| below with
-invocations of the |REGISTER_NONTERMINAL| and |INTERNAL_NONTERMINAL| macros.
-
-@<Register the internal and source-code-referred-to nonterminals@> =
-	[[nonterminals]];
-	nonterminal *nt;
-	LOOP_OVER(nt, nonterminal)
-		if ((nt->marked_internal) && (nt->internal_definition == NULL))
-			internal_error("internal undefined");
-
-@ These macros connect nonterminals with their mentions in the Inform source
-code, and with the compositor routines compiled for them by |inweb|. It invokes
-|REGISTER_NONTERMINAL| if it has compiled Preform productions for a nonterminal,
-and compiled a compositor routine; the name of which is the nonterminal's name
-with a |C| suffix. If it found an internal nonterminal, it invokes
-|INTERNAL_NONTERMINAL|, and compiles a routine whose name has the suffix |R|
-as the definition.
-
-@d REGISTER_NONTERMINAL(quotedname, identifier)
-	identifier = LoadPreform::find_nonterminal(Vocabulary::entry_for_text(quotedname));
-	identifier->result_compositor = identifier##C;
-
-@d INTERNAL_NONTERMINAL(quotedname, identifier, min, max)
-	identifier = LoadPreform::find_nonterminal(Vocabulary::entry_for_text(quotedname));
-	identifier->min_nt_words = min; identifier->max_nt_words = max;
-	identifier->internal_definition = identifier##R;
-	identifier->marked_internal = TRUE;
-
-@ Parsing Preform is exactly what Preform would do elegantly, but of course,
-for chicken-and-egg reasons, we need to do the job by hand. Fortunately the
-syntax is very simple.
-
-=
-NATURAL_LANGUAGE_WORDS_TYPE *language_being_read_by_Preform = NULL;
-void LoadPreform::set_language_to_parse(NATURAL_LANGUAGE_WORDS_TYPE *L) {
-	language_being_read_by_Preform = L;
-}
-
-int LoadPreform::parse(wording W, int break_first) {
-	if (break_first) {
-		TEMPORARY_TEXT(wd);
-		WRITE_TO(wd, "%+W", Wordings::one_word(Wordings::first_wn(W)));
-		W = Feeds::feed_text_punctuated(wd, PREFORM_PUNCTUATION_MARKS);
-		DISCARD_TEXT(wd);
-	}
-	int nonterminals_declared = 0;
-	LOOP_THROUGH_WORDING(wn, W) {
-		if (Lexer::word(wn) == PARBREAK_V) continue;
-		#ifdef PREFORM_LANGUAGE_FROM_NAME
-		if ((Wordings::last_wn(W) >= wn+1) && (Lexer::word(wn) == language_V)) {
-			@<Parse a definition language switch@>;
-			continue;
-		}
-		#endif
-		if ((Wordings::last_wn(W) >= wn+1) && (Lexer::word(wn+1) == internal_V)) {
-			@<Parse an internal nonterminal declaration@>;
-			nonterminals_declared++;
-			continue;
-		}
-		if ((Wordings::last_wn(W) >= wn+2) && (Lexer::word(wn+1) == COLONCOLONEQUALS_V)) {
-			@<Parse an external nonterminal declaration@>;
-			nonterminals_declared++;
-			continue;
-		}
-		internal_error("language definition failed");
-	}
-	Optimiser::optimise_counts();
-	return nonterminals_declared;
-}
-
-@ We either switch to an existing natural language, or create a new one.
-
-@<Parse a definition language switch@> =
-	TEMPORARY_TEXT(lname);
-	WRITE_TO(lname, "%W", Wordings::one_word(wn+1));
-	NATURAL_LANGUAGE_WORDS_TYPE *nl = PREFORM_LANGUAGE_FROM_NAME(lname);
-	if (nl == NULL) {
-		LOG("Missing: %S\n", lname);
-		internal_error("tried to define for missing language");
-	}
-	DISCARD_TEXT(lname);
-	language_being_read_by_Preform = nl;
-	wn++;
-
-@<Parse an internal nonterminal declaration@> =
-	nonterminal *nt = LoadPreform::find_nonterminal(Lexer::word(wn));
-	if (nt->first_production_list) internal_error("internal is defined");
-	nt->marked_internal = TRUE;
-	wn++;
-
-@ The declaration continues until the end of the text, or until we reach a
-paragraph break. Internally, it's a list of productions divided by stroke symbols.
-
-@<Parse an external nonterminal declaration@> =
-	nonterminal *nt = LoadPreform::find_nonterminal(Lexer::word(wn));
-	production_list *pl;
-	@<Find or create the production list for this language@>;
-	wn += 2;
-	int pc = 0;
-	while (TRUE) {
-		int x = wn;
-		while ((x <= Wordings::last_wn(W)) && (Lexer::word(x) != STROKE_V) && (Lexer::word(x) != PARBREAK_V)) x++;
-		if (wn < x) {
-			production *pr = LoadPreform::new_production(Wordings::new(wn, x-1), nt, pc++);
-			wn = x;
-			@<Place the new production within the production list@>;
-		}
-		if ((wn > Wordings::last_wn(W)) || (Lexer::word(x) == PARBREAK_V)) break; /* reached end */
-		wn++; /* advance past the stroke and continue */
-	}
-	wn--;
-
-@<Find or create the production list for this language@> =
-	for (pl = nt->first_production_list; pl; pl = pl->next_production_list)
-		if (pl->definition_language == language_being_read_by_Preform)
-			break;
-	if (pl == NULL)	{
-		pl = CREATE(production_list);
-		pl->definition_language = language_being_read_by_Preform;
-		pl->first_production = NULL;
-		pl->as_avinue = NULL;
-		@<Place the new production list within the nonterminal@>;
-	}
-
-@<Place the new production list within the nonterminal@> =
-	if (nt->first_production_list == NULL) nt->first_production_list = pl;
-	else {
-		production_list *p = nt->first_production_list;
-		while ((p) && (p->next_production_list)) p = p->next_production_list;
-		p->next_production_list = pl;
-	}
-
-@<Place the new production within the production list@> =
-	if (pl->first_production == NULL) pl->first_production = pr;
-	else {
-		production *p = pl->first_production;
-		while ((p) && (p->next_production)) p = p->next_production;
-		p->next_production = pr;
-	}
-
-@ Nonterminals are identified by their name-words:
-
-=
-nonterminal *LoadPreform::detect_nonterminal(vocabulary_entry *ve) {
-	nonterminal *nt;
-	LOOP_OVER(nt, nonterminal)
-		if (ve == nt->nonterminal_id)
-			return nt;
-	return NULL;
-}
-
-nonterminal *LoadPreform::find_nonterminal(vocabulary_entry *ve) {
-	nonterminal *nt = LoadPreform::detect_nonterminal(ve);
-	if (nt) return nt;
-
-	nt = CREATE(nonterminal);
-	nt->nonterminal_id = ve;
-
-	nt->voracious = FALSE;
-	nt->multiplicitous = FALSE;
-
-	nt->optimised_in_this_pass = FALSE;
-	nt->min_nt_words = 1; nt->max_nt_words = INFINITE_WORD_COUNT;
-	nt->nt_req_bit = -1;
-
-	nt->first_production_list = NULL;
-	nt->marked_internal = FALSE;
-	nt->internal_definition = NULL;
-	nt->result_compositor = NULL;
-
-	nt->number_words_by_production = FALSE;
-	nt->flag_words_in_production = 0;
-
-	for (int i=0; i<MAX_RANGES_PER_PRODUCTION; i++)
-		nt->range_result[i] = EMPTY_WORDING;
-
-	nt->watched = FALSE;
-	nt->nonterminal_tries = 0; nt->nonterminal_matches = 0;
-	return nt;
-}
 
 @ We now descend to the creation of productions for (external) nonterminals.
 
@@ -806,7 +552,7 @@ ptoken *LoadPreform::new_ptoken(vocabulary_entry *ve, int unescaped, nonterminal
 
 	wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
 	if ((unescaped) && (p) && (p[0] == '<') && (p[Wide::len(p)-1] == '>')) {
-		pt->nt_pt = LoadPreform::find_nonterminal(ve);
+		pt->nt_pt = Nonterminals::find(ve);
 		pt->ptoken_category = NONTERMINAL_PTC;
 	} else {
 		pt->ve_pt = ve;
@@ -828,4 +574,97 @@ ptoken *LoadPreform::new_ptoken(vocabulary_entry *ve, int unescaped, nonterminal
 	}
 
 	return pt;
+}
+
+@h Logging.
+Descending these wheels within wheels:
+
+=
+void LoadPreform::log(void) {
+	int detailed = FALSE;
+	nonterminal *nt;
+	LOOP_OVER(nt, nonterminal) {
+		#ifdef INSTRUMENTED_PREFORM
+		LOG("%d/%d: ", nt->nonterminal_matches, nt->nonterminal_tries);
+		#endif
+		LOG("%V: ", nt->nonterminal_id);
+		Optimiser::log_range_requirement(&(nt->nonterminal_req));
+		LOG("\n");
+		if (nt->internal_definition) LOG("  (internal)\n");
+		else {
+			production_list *pl;
+			for (pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+				LOG("  $J:\n", pl->definition_language);
+				production *pr;
+				for (pr = pl->first_production; pr; pr = pr->next_production) {
+					LOG("   "); LoadPreform::log_production(pr, detailed);
+					#ifdef INSTRUMENTED_PREFORM
+					LOG("      %d/%d: ", pr->production_matches, pr->production_tries);
+					if (Wordings::nonempty(pr->sample_text)) LOG("<%W>", pr->sample_text);
+					#endif
+					LOG(" ==> ");
+					Optimiser::log_range_requirement(&(pr->production_req));
+					LOG("\n");
+				}
+			}
+		}
+		LOG("  min %d, max %d\n\n", nt->min_nt_words, nt->max_nt_words);
+	}
+	LOG("%d req bits.\n", no_req_bits);
+}
+
+@ =
+void LoadPreform::log_production(production *pr, int detailed) {
+	if (pr->first_ptoken == NULL) LOG("<empty-production>");
+	ptoken *pt;
+	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
+		LoadPreform::log_ptoken(pt, detailed);
+		LOG(" ");
+	}
+}
+
+@ =
+void LoadPreform::log_ptoken(ptoken *pt, int detailed) {
+	if ((detailed) && (pt->ptoken_position != 0)) LOG("(@%d)", pt->ptoken_position);
+	if ((detailed) && (pt->strut_number >= 0)) LOG("(S%d)", pt->strut_number);
+	if (pt->disallow_unexpected_upper) LOG("_");
+	if (pt->negated_ptoken) LOG("^");
+	if (pt->range_starts >= 0) { LOG("{"); if (detailed) LOG("%d:", pt->range_starts); }
+	ptoken *alt;
+	for (alt = pt; alt; alt = alt->alternative_ptoken) {
+		if (alt->nt_pt) {
+			LOG("%V", alt->nt_pt->nonterminal_id);
+			if (detailed) LOG("=%d", alt->result_index);
+		} else {
+			LOG("%V", alt->ve_pt);
+		}
+		if (alt->alternative_ptoken) LOG("/");
+	}
+	if (pt->range_ends >= 0) { if (detailed) LOG(":%d", pt->range_ends); LOG("}"); }
+}
+
+@ A less detailed form used in linguistic problem messages:
+
+=
+void LoadPreform::write_ptoken(OUTPUT_STREAM, ptoken *pt) {
+	if (pt->disallow_unexpected_upper) WRITE("_");
+	if (pt->negated_ptoken) WRITE("^");
+	if (pt->range_starts >= 0) WRITE("{");
+	ptoken *alt;
+	for (alt = pt; alt; alt = alt->alternative_ptoken) {
+		if (alt->nt_pt) {
+			WRITE("%V", alt->nt_pt->nonterminal_id);
+		} else {
+			WRITE("%V", alt->ve_pt);
+		}
+		if (alt->alternative_ptoken) WRITE("/");
+	}
+	if (pt->range_ends >= 0) WRITE("}");
+}
+
+@ To use which, the debugging log code needs:
+
+=
+void LoadPreform::watch(nonterminal *nt, int state) {
+	nt->watched = state;
 }

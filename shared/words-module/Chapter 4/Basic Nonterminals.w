@@ -2,6 +2,22 @@
 
 A handful of bare minimum Preform syntax.
 
+@h Nonterminal names.
+This is a typical internal nonterminal being defined, though it's a bit more
+meta than most -- it's a nonterminal which matches against the name of any
+nonterminal. (This is used only to parse inclusion requests for the debugging
+log.)
+
+Note that we use the |internal 1| to signal that a correct match must have
+exactly one word.
+
+=
+<preform-nonterminal> internal 1 {
+	nonterminal *nt = Nonterminals::detect(Lexer::word(Wordings::first_wn(W)));
+	if (nt) { *XP = nt; return TRUE; }
+	return FALSE;
+}
+
 @h Text positions.
 A useful nonterminal which matches no text, but detects the position:
 
@@ -22,8 +38,8 @@ A useful nonterminal which matches no text, but detects the position:
 }
 
 @h Balancing.
-The following matches any text in which braces and brackets are correctly
-paired.
+The following regular (not internal!) nonterminal matches any text in which
+braces and brackets are correctly paired.
 
 =
 <balanced-text> ::=
@@ -60,21 +76,24 @@ for interpolations called "text substitutions".
 
 =
 <quoted-text> internal 1 {
-	if ((Wordings::nonempty(W)) && (Vocabulary::test_flags(Wordings::first_wn(W), TEXT_MC+TEXTWITHSUBS_MC))) {
+	if ((Wordings::nonempty(W)) &&
+		(Vocabulary::test_flags(Wordings::first_wn(W), TEXT_MC+TEXTWITHSUBS_MC))) {
 		*X = Wordings::first_wn(W); return TRUE;
 	}
 	return FALSE;
 }
 
 <quoted-text-with-subs> internal 1 {
-	if ((Wordings::nonempty(W)) && (Vocabulary::test_flags(Wordings::first_wn(W), TEXTWITHSUBS_MC))) {
+	if ((Wordings::nonempty(W)) &&
+		(Vocabulary::test_flags(Wordings::first_wn(W), TEXTWITHSUBS_MC))) {
 		*X = Wordings::first_wn(W); return TRUE;
 	}
 	return FALSE;
 }
 
 <quoted-text-without-subs> internal 1 {
-	if ((Wordings::nonempty(W)) && (Vocabulary::test_flags(Wordings::first_wn(W), TEXT_MC))) {
+	if ((Wordings::nonempty(W)) &&
+		(Vocabulary::test_flags(Wordings::first_wn(W), TEXT_MC))) {
 		*X = Wordings::first_wn(W); return TRUE;
 	}
 	return FALSE;
@@ -85,7 +104,8 @@ of text |""| is to provide a nonterminal matching it:
 
 =
 <empty-text> internal 1 {
-	if ((Wordings::nonempty(W)) && (Word::compare_by_strcmp(Wordings::first_wn(W), L"\"\""))) {
+	if ((Wordings::nonempty(W)) &&
+		(Word::compare_by_strcmp(Wordings::first_wn(W), L"\"\""))) {
 		*X = Wordings::first_wn(W); return TRUE;
 	}
 	return FALSE;

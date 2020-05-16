@@ -52,8 +52,7 @@ void Unit::test_preform(text_stream *arg) {
 	P = Pathnames::down(P, I"words-test");
 	P = Pathnames::down(P, I"Tangled");
 	filename *S = Filenames::in(P, I"Syntax.preform");
-	wording W = LoadPreform::load(S);
-	LoadPreform::parse(W, FALSE);
+	LoadPreform::load(S, NULL);
 
 	filename *F = Filenames::from_text(arg);
 	source_file *sf = TextFromFiles::feed_into_lexer(F, NULL_GENERAL_POINTER);

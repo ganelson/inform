@@ -146,7 +146,7 @@ void Languages::read_Preform_definition(inform_language *L, linked_list *S) {
 
 @ This function is called only from Preform...
 
-@d PREFORM_LANGUAGE_FROM_NAME Languages::Preform_find
+@d PREFORM_LANGUAGE_FROM_NAME_WORDS_CALLBACK Languages::Preform_find
 
 =
 inform_language *Languages::Preform_find(text_stream *name) {

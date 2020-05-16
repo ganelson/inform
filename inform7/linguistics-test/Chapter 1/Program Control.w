@@ -45,8 +45,7 @@ void Main::load(text_stream *leaf) {
 	P = Pathnames::down(P, I"linguistics-test");
 	P = Pathnames::down(P, I"Tangled");
 	filename *S = Filenames::in(P, leaf);
-	wording W = LoadPreform::load(S);
-	LoadPreform::parse(W, FALSE);
+	LoadPreform::load(S, NULL);
 }
 
 void Main::ignore(int id, text_stream *arg, void *state) {

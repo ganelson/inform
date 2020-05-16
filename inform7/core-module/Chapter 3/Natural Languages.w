@@ -87,10 +87,11 @@ int NaturalLanguages::adaptive_person(inform_language *L) {
 At present we do this only for English, but some day...
 
 =
-wording NaturalLanguages::load_preform(inform_language *L) {
+int NaturalLanguages::load_preform(inform_language *L) {
 	if (L == NULL) internal_error("can't load preform from null language");
-	filename *preform_file = Filenames::in(Languages::path_to_bundle(L), I"Syntax.preform");
-	return LoadPreform::load_for_language(preform_file, L);
+	filename *preform_file =
+		Filenames::in(Languages::path_to_bundle(L), I"Syntax.preform");
+	return LoadPreform::load(preform_file, L);
 }
 
 @ Preform errors are handled here:

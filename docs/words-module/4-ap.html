@@ -108,7 +108,7 @@ by the Inform compiler modules; all of the rest are defined rather like
 </p>
 
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Preform grammar is stored in a text file which is read by Inform early in
-its run: see <a href="4-lp.html#SP2" class="internal">LoadPreform::load</a>. In principle, different natural language
+its run: see <a href="4-lp.html#SP1" class="internal">LoadPreform::load</a>. In principle, different natural language
 definitions can be made: thus, French translators could supply a French-localised
 Preform grammar. In practice this whole area of Inform needs more work before
 it can really advance. Still, the principle is that the user can therefore
@@ -185,8 +185,62 @@ with result 2.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;race-jersey&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">yellow</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">polkadot</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">green</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">white</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>So far, the only ingredients of Preform syntax have been nonterminals and
+fixed words, but Preform also has "wildcards". For example, in
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">man</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">with</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">on</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">his</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
+</pre>
+<p class="commentary">would match, for example, "man with number 17 on his back", or "man with a
+chip on his shoulder". <span class="extract"><span class="Preform-extract-syntax">...</span></span> matches any non-empty wording, and the text
+actually matched is recorded for any successful match. Wordings like this
+are numbered upwards from 1 to a maximum of 4, and are usually retrieved by
+whatever part of Inform requested the parse, using the <span class="extract"><span class="Preform-extract-syntax">GET_RW</span></span> macro. For
+example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">TEXT                              GET_RW(&lt;competitor&gt;, 1)   GET_RW(&lt;competitor&gt;, 2)</span>
+<span class="plain-syntax">man with number 17 on his back    number 17                 back</span>
+<span class="plain-syntax">man with a chip on his shoulder   a chip                    shoulder</span>
+</pre>
+<p class="commentary">A few internal nonterminals also generate word ranges, using <span class="extract"><span class="extract-syntax">PUT_RW</span></span> to do so,
+and word ranges can also be inherited up from one nonterminal to another with
+<span class="extract"><span class="extract-syntax">INHERIT_RANGES</span></span>: see <a href="4-lp.html" class="internal">Loading Preform</a> for definitions of these macros.
+</p>
+
+<p class="commentary">There are in fact several different wildcards:
+</p>
+
+<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">...</span></span> matches any non-empty text, as shown above.
+</li><li>(b) <span class="extract"><span class="extract-syntax">***</span></span> matches any text, including possibly the empty text.
+</li><li>(c) <span class="extract"><span class="extract-syntax">......</span></span> matches any non-empty text in which brackets are used in a
+balanced way &mdash; thus they would match "alpha beta gamma" or "alpha (the
+Greek letter)", but not "alpha (the" or "Greek letter)".
+</li><li>(d) <span class="extract"><span class="extract-syntax">###</span></span> matches any single word, counting words as the lexer does.
+</li></ul>
+<p class="commentary">It is also possible to use braces to widen ranges. For example,
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">man</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">with</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">on</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">his</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">...}</span>
+</pre>
+<p class="commentary">groups together anything matching <span class="extract"><span class="Preform-extract-syntax">... on his ...</span></span> into a single range. There
+need not even be a wildcard inside the braces:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">{man}</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">with</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">on</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">his</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">...}</span>
+</pre>
+<p class="commentary">works fine, and makes two ranges, the first of which is always just "man".
+</p>
+
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-idn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">ap</li><li class="progresssection"><a href="4-lp.html">lp</a></li><li class="progresssection"><a href="4-to.html">to</a></li><li class="progresssection"><a href="4-prf.html">prf</a></li><li class="progresssection"><a href="4-bn.html">bn</a></li><li class="progressnext"><a href="4-lp.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-idn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">ap</li><li class="progresssection"><a href="4-nnt.html">nnt</a></li><li class="progresssection"><a href="4-lp.html">lp</a></li><li class="progresssection"><a href="4-to.html">to</a></li><li class="progresssection"><a href="4-prf.html">prf</a></li><li class="progresssection"><a href="4-bn.html">bn</a></li><li class="progressnext"><a href="4-nnt.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

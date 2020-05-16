@@ -93,7 +93,7 @@ an internal NT, or try all possible productions for an external one.
 			production_list *pl;
 			for (pl = nt->first_production_list; pl; pl = pl->next_production_list) {
 				NATURAL_LANGUAGE_WORDS_TYPE *nl = pl->definition_language;
-				if ((language_of_source_text == NULL) || (language_of_source_text == nl)) {
+				if ((primary_Preform_language == NULL) || (primary_Preform_language == nl)) {
 					production *pr;
 					int last_v = FALSE;
 					for (pr = pl->first_production; pr; pr = pr->next_production) {

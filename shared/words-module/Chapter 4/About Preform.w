@@ -106,3 +106,47 @@ with result 2.
 	<race-jersey> ::=
 		yellow | polkadot | green | white
 =
+
+@ So far, the only ingredients of Preform syntax have been nonterminals and
+fixed words, but Preform also has "wildcards". For example, in
+= (text as Preform)
+	<competitor> ::=
+	    man with ... on his ...
+=
+would match, for example, "man with number 17 on his back", or "man with a
+chip on his shoulder". |...| matches any non-empty wording, and the text
+actually matched is recorded for any successful match. Wordings like this
+are numbered upwards from 1 to a maximum of 4, and are usually retrieved by
+whatever part of Inform requested the parse, using the |GET_RW| macro. For
+example:
+= (text)
+TEXT                              GET_RW(<competitor>, 1)   GET_RW(<competitor>, 2)
+man with number 17 on his back    number 17                 back
+man with a chip on his shoulder   a chip                    shoulder
+=
+A few internal nonterminals also generate word ranges, using |PUT_RW| to do so,
+and word ranges can also be inherited up from one nonterminal to another with
+|INHERIT_RANGES|: see //Loading Preform// for definitions of these macros.
+
+There are in fact several different wildcards:
+(a) |...| matches any non-empty text, as shown above.
+(b) |***| matches any text, including possibly the empty text.
+(c) |......| matches any non-empty text in which brackets are used in a
+balanced way -- thus they would match "alpha beta gamma" or "alpha (the
+Greek letter)", but not "alpha (the" or "Greek letter)".
+(d) |###| matches any single word, counting words as the lexer does.
+
+It is also possible to use braces to widen ranges. For example,
+= (text as Preform)
+	<competitor> ::=
+	    man with {... on his ...}
+=
+groups together anything matching |... on his ...| into a single range. There
+need not even be a wildcard inside the braces:
+= (text as Preform)
+	<competitor> ::=
+	    {man} with {... on his ...}
+=
+works fine, and makes two ranges, the first of which is always just "man".
+
+

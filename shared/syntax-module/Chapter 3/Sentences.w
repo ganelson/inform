@@ -677,7 +677,11 @@ it would be too late.
 
 @<Detect a Preform grammar inclusion and sneakily act upon it@> =
 	current_sentence = new;
-	LoadPreform::parse(GET_RW(<language-modifying-sentence>, 1), TRUE);
+	wording W = GET_RW(<language-modifying-sentence>, 1);
+	TEMPORARY_TEXT(wd);
+	WRITE_TO(wd, "%+W", Wordings::one_word(Wordings::first_wn(W)));
+	LoadPreform::parse_text(wd);
+	DISCARD_TEXT(wd);
 	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
 
 @ Some tools using this module will want to push simple error messages out to

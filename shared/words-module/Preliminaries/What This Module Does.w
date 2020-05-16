@@ -59,8 +59,8 @@ think it means. In our example,
 = (text as InC)
 	Lexer::word(27) == COMMA_V   /* the comma between "went" and "the" */
 =
-See //Vocabulary::create_punctuation//, and also //LoadPreform::begin//, where
-further punctuation marks are created in order to parse Preform syntax --
+See //Vocabulary::create_punctuation//, and also //LoadPreform::create_punctuation//,
+where further punctuation marks are created in order to parse Preform syntax --
 there are exotica such as |COLONCOLONEQUALS_V| there, for "::=".
 
 @ Lexical errors occur if words are too long, or quoted text continues without
