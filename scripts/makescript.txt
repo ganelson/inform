@@ -417,6 +417,7 @@ docs/units.html: docs-src/units.inweb docs-src/navu.html
 .PHONY: forceprepages
 forceprepages:
 	rm -f docs/*.html
+	$(INTESTX) inform7 GenerateDiagnostics-G
 	$(INWEBX) -colony $(COLONY) -member overview -weave
 	$(INWEBX) -colony $(COLONY) -member compiler -weave
 	$(INWEBX) -colony $(COLONY) -member extensions -weave

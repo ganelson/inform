@@ -42,6 +42,7 @@ compile_task_data *inform7_task = NULL;
 parse_node_tree *latest_syntax_tree = NULL;
 
 int Task::carry_out(build_step *S) {
+	Time::stop_stopwatch(supervisor_timer);
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
 	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");

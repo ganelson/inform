@@ -28,6 +28,7 @@ Import: index
 Manual
 	Command-Line Usage
 	Reference Card
+	Performance Metrics
 
 Chapter 1: Delegation
 	Main

@@ -454,7 +454,7 @@ as it will be seen by the reader.
 void Indexes::write_general_index(void) {
 	text_stream *OUT = IndexUtilities::open_page(I"General Index", indoc_settings->definitions_index_leafname);
 	index_lemma **lemma_list =
-		Memory::calloc(NUMBER_CREATED(index_lemma), sizeof(index_lemma *), CLS_SORTING_MREASON);
+		Memory::calloc(NUMBER_CREATED(index_lemma), sizeof(index_lemma *), ARRAY_SORTING_MREASON);
 	index_lemma *il;
 	LOOP_OVER(il, index_lemma) lemma_list[il->allocation_id] = il;
 	@<Construct sorting keys for the lemmas@>;
@@ -462,7 +462,7 @@ void Indexes::write_general_index(void) {
 		Indexes::sort_comparison);
 	@<Render the index in sorted order@>;
 	@<Give feedback in index testing mode@>;
-	Memory::I7_free(lemma_list, CLS_SORTING_MREASON,
+	Memory::I7_free(lemma_list, ARRAY_SORTING_MREASON,
 		NUMBER_CREATED(index_lemma)*((int) sizeof(index_lemma *)));
 	IndexUtilities::close_page(OUT);
 }

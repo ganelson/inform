@@ -38,7 +38,8 @@ is active.
 int compiler_booted_up = FALSE;
 
 int Sequence::carry_out(int debugging) {
-	clock_t start = clock();
+	stopwatch_timer *sequence_timer =
+		Time::start_stopwatch(inform7_timer, I"compilation to Inter");
 	Task::advance_stage_to(STARTED_CSEQ, I"Starting", -1);
 
 	if (compiler_booted_up == FALSE) {
@@ -54,8 +55,7 @@ int Sequence::carry_out(int debugging) {
 	@<Generate index and bibliographic file@>;
 
 	Task::advance_stage_to(FINISHED_CSEQ, I"Ccmplete", -1);
-	clock_t end = clock();
-	int cpu_time_used = ((int) (end - start)) / (CLOCKS_PER_SEC/100);
+	int cpu_time_used = Time::stop_stopwatch(sequence_timer);
 	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
 	if (problem_count > 0) return FALSE;
 	return TRUE;
@@ -77,18 +77,36 @@ as possible.
 
 @d BENCH(routine) {
 	if (problem_count == 0) {
-		clock_t now = clock();
+		TEMPORARY_TEXT(name);
+		WRITE_TO(name, "//");
+		WRITE_TO(name, #routine);
+		WRITE_TO(name, "//");
+		for (int i=0; i<Str::len(name)-1; i++)
+			if ((Str::get_at(name, i) == '_') && (Str::get_at(name, i+1) == '_')) {
+				Str::put_at(name, i, ':'); Str::put_at(name, i+1, ':');
+			}
+		stopwatch_timer *st = Time::start_stopwatch(sequence_timer, name);
+		DISCARD_TEXT(name);
 		routine();
-		int cs = ((int) (clock() - now)) / (CLOCKS_PER_SEC/100);
+		int cs = Time::stop_stopwatch(st);
 		if (cs > 0) LOG(".... " #routine "() took %dcs\n", cs);
 	}
 }
 
 @d BENCH_IF(plugin, routine) {
 	if ((problem_count == 0) && (Plugins::Manage::plugged_in(plugin))) {
-		clock_t now = clock();
+		TEMPORARY_TEXT(name);
+		WRITE_TO(name, "//");
+		WRITE_TO(name, #routine);
+		WRITE_TO(name, "//");
+		for (int i=0; i<Str::len(name)-1; i++)
+			if ((Str::get_at(name, i) == '_') && (Str::get_at(name, i+1) == '_')) {
+				Str::put_at(name, i, ':'); Str::put_at(name, i+1, ':');
+			}
+		stopwatch_timer *st = Time::start_stopwatch(sequence_timer, name);
+		DISCARD_TEXT(name);
 		routine();
-		int cs = ((int) (clock() - now)) / (CLOCKS_PER_SEC/100);
+		int cs = Time::stop_stopwatch(st);
 		if (cs > 0) LOG(".... " #routine "() took %dcs\n", cs);
 	}
 }

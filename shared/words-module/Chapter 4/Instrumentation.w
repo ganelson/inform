@@ -18,10 +18,11 @@ log its every parse.
 =
 typedef struct nonterminal_instrumentation_data {
 	int watched; /* watch goings-on to the debugging log */
-	int nonterminal_tries; /* for statistics collected in instrumented mode */
-	int nonterminal_matches; /* ditto */
+	int nonterminal_tries;
+	int nonterminal_matches;
 } nonterminal_instrumentation_data;
 
+@ =
 void Instrumentation::initialise_nonterminal_data(nonterminal_instrumentation_data *ins) {
 	ins->watched = FALSE;
 	ins->nonterminal_tries = 0; ins->nonterminal_matches = 0;
@@ -31,6 +32,9 @@ void Instrumentation::watch(nonterminal *nt, int state) {
 	nt->ins.watched = state;
 }
 
+@ These are called after each hit or miss.
+
+=
 void Instrumentation::note_nonterminal_match(nonterminal *nt, wording W) {
 	nt->ins.nonterminal_tries++;
 	nt->ins.nonterminal_matches++;
@@ -46,16 +50,20 @@ matches it.)
 
 =
 typedef struct production_instrumentation_data {
-	int production_tries; /* for statistics collected in instrumented mode */
-	int production_matches; /* ditto */
-	struct wording sample_text; /* ditto */
+	int production_tries;
+	int production_matches;
+	struct wording sample_text;
 } production_instrumentation_data;
 
+@ =
 void Instrumentation::initialise_production_data(production_instrumentation_data *ins) {
 	ins->production_tries = 0; ins->production_matches = 0;
 	ins->sample_text = EMPTY_WORDING;
 }
 
+@ These are called after each hit or miss.
+
+=
 void Instrumentation::note_production_match(production *pr, wording W) {
 	pr->ins.production_tries++;
 	pr->ins.production_matches++;
@@ -102,7 +110,7 @@ void Instrumentation::log(void) {
 
 @ =
 void Instrumentation::log_production_list(production_list *pl, int detailed) {
-	LOG("  $J:\n", pl->definition_language);
+	LOG("  %J:\n", pl->definition_language);
 	production *pr;
 	for (pr = pl->first_production; pr; pr = pr->next_production) {
 		LOG("   "); Instrumentation::log_production(pr, detailed);
@@ -126,11 +134,15 @@ void Instrumentation::log_production(production *pr, int detailed) {
 
 @ =
 void Instrumentation::log_ptoken(ptoken *pt, int detailed) {
-	if ((detailed) && (pt->opt.ptoken_position != 0)) LOG("(@%d)", pt->opt.ptoken_position);
-	if ((detailed) && (pt->opt.strut_number >= 0)) LOG("(S%d)", pt->opt.strut_number);
+	if ((detailed) && (pt->opt.ptoken_position != 0))
+		LOG("(@%d)", pt->opt.ptoken_position);
+	if ((detailed) && (pt->opt.strut_number >= 0))
+		LOG("(S%d)", pt->opt.strut_number);
 	if (pt->disallow_unexpected_upper) LOG("_");
 	if (pt->negated_ptoken) LOG("^");
-	if (pt->range_starts >= 0) { LOG("{"); if (detailed) LOG("%d:", pt->range_starts); }
+	if (pt->range_starts >= 0) {
+		LOG("{"); if (detailed) LOG("%d:", pt->range_starts);
+	}
 	ptoken *alt;
 	for (alt = pt; alt; alt = alt->alternative_ptoken) {
 		if (alt->nt_pt) {
@@ -141,7 +153,9 @@ void Instrumentation::log_ptoken(ptoken *pt, int detailed) {
 		}
 		if (alt->alternative_ptoken) LOG("/");
 	}
-	if (pt->range_ends >= 0) { if (detailed) LOG(":%d", pt->range_ends); LOG("}"); }
+	if (pt->range_ends >= 0) {
+		if (detailed) LOG(":%d", pt->range_ends); LOG("}");
+	}
 }
 
 @ A less detailed form used in linguistic problem messages:

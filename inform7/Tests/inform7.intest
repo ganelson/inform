@@ -4,6 +4,7 @@
 -set extensions_testing_area     	'inform7/Tests/Test Extensions'
 -set hash_cache						'inform7/Tests/hashes.intest'
 
+-case			[Diagnostics] 'inform7/Tests/GenerateDiagnostics-G.txt'
 -cases			[Main] 'inform7/Tests/Test Cases'
 -if osx -cases	[Index] 'inform7/Tests/Test Index'
 -if osx -cases	[Map] 'inform7/Tests/Test Maps'
@@ -441,4 +442,55 @@
 
 	pass: 'passed'
 
+-end
+
+-recipe [Diagnostics]
+	set: $I7 = inform7/Tangled/inform7
+	set: $INTERNAL = inform7/Internal
+	set: $WORKSPACE = intest/Workspace
+
+	! First we decide whether to compile it for the Z-machine or Glulx.
+
+	set: $VM = Z
+	if: $CASE %c*-G
+		set: $VM = G
+	endif
+	if: $CASE %c*Metric%c*Units%c*
+		set: $VM = G
+	endif
+
+	! On the basis of which:
+
+	if: $VM G
+		set: $FORMAT 		= ulx
+	else
+		set: $FORMAT		= z8
+	endif
+	set: $I7OPTIONS = -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+
+	! Now we extract the source text from whatever file originated the test
+	! case: this is a non-trivial operation when the file is an Extension or
+	! an example, but is a simple copy operation otherwise.
+
+	extract: $WORK/Example.inform/Source/story.ni $VM
+
+	mkdir: $WORK/Transient
+	step: find $WORK/Transient -mindepth 1 -delete
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+
+	if: $VM G
+		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-32d.interb
+	else
+		set: $TCACHE = inform7/Internal/I6T/standard_rules/arch-16d.interb
+	endif
+	set: $PIPELINE = test
+	set: $DIAGS = inform7/Figures
+	
+	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE -diagnostics $DIAGS -crash-all
+	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable *template=$TCACHE -pipeline $PIPELINE -diagnostics $DIAGS >$I7CONSOLE 2>&1
+	or: 'failed with Problem message(s)' $I7CONSOLE
+	show: $I7CONSOLE
 -end

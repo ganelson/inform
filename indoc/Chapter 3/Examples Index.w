@@ -100,7 +100,7 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 	HTML_OPEN_WITH("table", "class=\"indextable\"");
 
 	example_index_data **eid_list =
-		Memory::calloc(NUMBER_CREATED(example_index_data), sizeof(example_index_data *), CLS_SORTING_MREASON);
+		Memory::calloc(NUMBER_CREATED(example_index_data), sizeof(example_index_data *), ARRAY_SORTING_MREASON);
 	example_index_data *eid;
 	LOOP_OVER(eid, example_index_data) eid_list[eid->allocation_id] = eid;
 	qsort(eid_list, (size_t) NUMBER_CREATED(example_index_data), sizeof(example_index_data *),
@@ -125,7 +125,7 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 	HTML_OPEN("p"); HTML_CLOSE("p");
 	IndexUtilities::alphabet_row(OUT, 2);
 	IndexUtilities::close_page(OUT);
-	Memory::I7_free(eid_list, CLS_SORTING_MREASON,
+	Memory::I7_free(eid_list, ARRAY_SORTING_MREASON,
 		NUMBER_CREATED(example_index_data)*((int) sizeof(example_index_data *)));
 }
 

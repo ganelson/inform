@@ -20,6 +20,8 @@ equivalent of unlocking the doors and turning the lights on in the morning.
 
 =
 pathname *path_to_inform7 = NULL;
+pathname *diagnostics_path = NULL;
+stopwatch_timer *inform7_timer = NULL, *supervisor_timer = NULL;
 
 int CoreMain::main(int argc, char *argv[]) {
 	@<Banner and startup@>;
@@ -31,8 +33,6 @@ int CoreMain::main(int argc, char *argv[]) {
 		@<Name the telemetry@>;
 		@<Build the project@>;
 	}
-
-	// Node::log_tree(DL, Task::syntax_tree()->root_node);
 
 	@<Post mortem logging@>;
 	if (proceed) @<Shutdown and rennab@>;
@@ -49,6 +49,8 @@ plain text error written to |stderr|. See the |problems| module for more.
 	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
 	PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
 	Plugins::Manage::start();
+	inform7_timer = Time::start_stopwatch(NULL, I"inform7 run");
+	supervisor_timer = Time::start_stopwatch(inform7_timer, I"supervisor");
 
 @ The //supervisor// would happily send us instructions to compile multiple
 projects, but we can only accept one; and in fact the //inform7// command line
@@ -120,21 +122,32 @@ something, after all.
 
 @<Build the project@> =
 	Supervisor::go_operational();
-	if (project)
+	if (project) {
 		Copies::build(STDOUT, project->as_copy,
 			BuildMethodology::stay_in_current_process());
+		Time::stop_stopwatch(inform7_timer);
+	}
 
-@ The options commented out here are very rarely useful, and some generate
-gargantuan debugging logs if enabled.
+@ Diagnostics files fall into the category of "be careful what you wish for";
+they can be rather lengthy.
 
-=
 @<Post mortem logging@> =
 	if (problem_count == 0) {
 		TemplateReader::report_unacted_upon_interventions();
-		//	Memory::log_statistics();
-		//	Instrumentation::log();
-		//	Index::DocReferences::log_statistics();
-		//	NewVerbs::log_all();
+		if (diagnostics_path) {
+			CoreMain::write_diagnostics(
+				I"timings-diagnostics.txt", &CoreMain::log_stopwatch);
+			CoreMain::write_diagnostics(
+				I"memory-diagnostics.txt", &Memory::log_statistics);
+			CoreMain::write_diagnostics(
+				I"syntax-diagnostics.txt", &CoreMain::log_task_syntax_tree);
+			CoreMain::write_diagnostics(
+				I"preform-diagnostics.txt", &Instrumentation::log);
+			CoreMain::write_diagnostics(
+				I"documentation-diagnostics.txt", &Index::DocReferences::log_statistics);
+			CoreMain::write_diagnostics(
+				I"verbs-diagnostics.txt", &NewVerbs::log_all);
+		}
 	}
 
 @<Shutdown and rennab@> =
@@ -142,6 +155,28 @@ gargantuan debugging logs if enabled.
 	LOG("Total of %d files written as streams.\n", total_file_writes);
 	Writers::log_escape_usage();
 	WRITE_TO(STDOUT, "Inform 7 has finished.\n");
+
+@ =
+void CoreMain::write_diagnostics(text_stream *leafname, void (*write_fn)(void)) {
+	filename *F = Filenames::in(diagnostics_path, leafname);
+	text_stream diagnostics_file;
+	if (STREAM_OPEN_TO_FILE(&diagnostics_file, F, ISO_ENC) == FALSE)
+		internal_error("can't open diagnostics file");
+	text_stream *save_DL = DL;
+	DL = &diagnostics_file;
+	Streams::enable_debugging(DL);
+	(*write_fn)();
+	DL = save_DL;
+	STREAM_CLOSE(&diagnostics_file);
+}
+
+void CoreMain::log_task_syntax_tree(void) {
+	Node::log_tree(DL, Task::syntax_tree()->root_node);
+}
+
+void CoreMain::log_stopwatch(void) {
+	Time::log_timing(inform7_timer, inform7_timer->time_taken);
+}
 
 @h Command line processing.
 The bulk of the command-line options are both registered and processed by
@@ -170,6 +205,7 @@ compiler via Delia scripts in |intest|.
 @e INFORM_TESTING_CLSG
 
 @e CRASHALL_CLSW
+@e DIAGNOSTICS_CLSW
 @e INDEX_CLSW
 @e PROGRESS_CLSW
 @e REQUIRE_PROBLEM_CLSW
@@ -185,6 +221,8 @@ compiler via Delia scripts in |intest|.
 		L"display progress percentages", TRUE);
 	CommandLine::declare_boolean_switch(SIGILS_CLSW, L"sigils", 1,
 		L"print Problem message sigils", FALSE);
+	CommandLine::declare_boolean_switch(DIAGNOSTICS_CLSW, L"diagnostics", 2,
+		L"if no problems occur, write diagnostics files to directory X", FALSE);
 	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, L"require-problem", 2,
 		L"return 0 unless exactly this Problem message is generated");
 	CommandLine::end_group();
@@ -203,6 +241,7 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case PROGRESS_CLSW: show_progress_indicator = val; break;
 		case SIGILS_CLSW: echo_problem_message_sigils = val; break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
+		case DIAGNOSTICS_CLSW: diagnostics_path = Pathnames::from_text(arg); break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

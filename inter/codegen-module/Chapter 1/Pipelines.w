@@ -238,36 +238,48 @@ void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_tree *I) {
 void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 	linked_list *requirements_list) {
 	if (S == NULL) return;
-	clock_t start = clock();
+	stopwatch_timer *within = NULL;
+	#ifdef CORE_MODULE
+	within = inform7_timer;
+	#endif
+	stopwatch_timer *pipeline_timer =
+		Time::start_stopwatch(within, I"running Inter pipeline");
 
 	int step_count = 0, step_total = 0;
 	pipeline_step *step;
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps) step_total++;
 
 	int active = TRUE;
+	stopwatch_timer *prep_timer = NULL;
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
 		if (active) {
+			if (prep_timer == NULL)
+				prep_timer = Time::start_stopwatch(pipeline_timer, I"step preparation");
+			else
+				Time::resume_stopwatch(prep_timer);
 			if (S->repositories[step->repository_argument] == NULL)
 				S->repositories[step->repository_argument] = Inter::Tree::new();
 			inter_tree *I = S->repositories[step->repository_argument];
 			if (I == NULL) internal_error("no repository");
 			CodeGen::Pipeline::prepare_to_run(I);
-			CodeGen::Pipeline::lint(I);
+			// CodeGen::Pipeline::lint(I);
 
 			CodeGen::Pipeline::clean_step(step);
 			step->the_PP = PP;
 			step->repository = I;
 			step->pipeline = S;
 			step->requirements_list = requirements_list;
-
-			TEMPORARY_TEXT(STAGE_NAME);
-			WRITE_TO(STAGE_NAME, "inter step %d/%d (at %dcs): ", ++step_count, step_total,
-				((int) (clock() - start)) / (CLOCKS_PER_SEC/100));
-			CodeGen::Pipeline::write_step(STAGE_NAME, step);
-			Log::new_stage(STAGE_NAME);
-			DISCARD_TEXT(STAGE_NAME);
+			Time::stop_stopwatch(prep_timer);
 
 			int skip_step = FALSE;
+			TEMPORARY_TEXT(STAGE_NAME);
+			WRITE_TO(STAGE_NAME, "inter step %d/%d: ", ++step_count, step_total);
+			CodeGen::Pipeline::write_step(STAGE_NAME, step);
+			Log::new_stage(STAGE_NAME);
+			stopwatch_timer *step_timer =
+				Time::start_stopwatch(pipeline_timer, STAGE_NAME);
+			DISCARD_TEXT(STAGE_NAME);
+
 
 			if ((step->step_stage->stage_arg == FILE_STAGE_ARG) ||
 				(step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
@@ -314,7 +326,9 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 				(step->to_debugging_log == FALSE)) {
 				STREAM_CLOSE(T);
 			}
+			Time::stop_stopwatch(step_timer);
 		}
+	Time::stop_stopwatch(pipeline_timer);
 }
 
 @h Following.

@@ -1,0 +1,1902 @@
+The current S-grammar has the following verb and preposition usages:
+VU: < IS_TENSE
+VU: > IS_TENSE
+VU: <= IS_TENSE
+VU: >= IS_TENSE
+VU: has not been (negated) HASBEEN_TENSE
+VU: have not been (negated) HASBEEN_TENSE
+VU: had not been (negated) HADBEEN_TENSE
+VU: had not been (negated) HADBEEN_TENSE
+VU: has been HASBEEN_TENSE
+VU: have been HASBEEN_TENSE
+VU: had been HADBEEN_TENSE
+VU: had been HADBEEN_TENSE
+VU: is not (negated) IS_TENSE
+VU: are not (negated) IS_TENSE
+VU: was not (negated) WAS_TENSE
+VU: were not (negated) WAS_TENSE
+VU: is IS_TENSE
+VU: are IS_TENSE
+VU: was WAS_TENSE
+VU: were WAS_TENSE
+VU: has not meant (negated) HASBEEN_TENSE
+VU: have not meant (negated) HASBEEN_TENSE
+VU: had not meant (negated) HADBEEN_TENSE
+VU: had not meant (negated) HADBEEN_TENSE
+VU: has meant HASBEEN_TENSE
+VU: have meant HASBEEN_TENSE
+VU: had meant HADBEEN_TENSE
+VU: had meant HADBEEN_TENSE
+VU: does not mean (negated) IS_TENSE
+VU: do not mean (negated) IS_TENSE
+VU: did not mean (negated) WAS_TENSE
+VU: did not mean (negated) WAS_TENSE
+VU: means IS_TENSE
+VU: mean IS_TENSE
+VU: meant WAS_TENSE
+VU: meant WAS_TENSE
+VU: has not implied (negated) HASBEEN_TENSE
+VU: have not implied (negated) HASBEEN_TENSE
+VU: had not implied (negated) HADBEEN_TENSE
+VU: had not implied (negated) HADBEEN_TENSE
+VU: has implied HASBEEN_TENSE
+VU: have implied HASBEEN_TENSE
+VU: had implied HADBEEN_TENSE
+VU: had implied HADBEEN_TENSE
+VU: does not imply (negated) IS_TENSE
+VU: do not imply (negated) IS_TENSE
+VU: did not imply (negated) WAS_TENSE
+VU: did not imply (negated) WAS_TENSE
+VU: implies IS_TENSE
+VU: imply IS_TENSE
+VU: implied WAS_TENSE
+VU: implied WAS_TENSE
+VU: has not been able to be (negated) HASBEEN_TENSE
+VU: have not been able to be (negated) HASBEEN_TENSE
+VU: had not been able to be (negated) HADBEEN_TENSE
+VU: had not been able to be (negated) HADBEEN_TENSE
+VU: has been able to be HASBEEN_TENSE
+VU: have been able to be HASBEEN_TENSE
+VU: had been able to be HADBEEN_TENSE
+VU: had been able to be HADBEEN_TENSE
+VU: cannot be (negated) IS_TENSE
+VU: cannot be (negated) IS_TENSE
+VU: could not be (negated) WAS_TENSE
+VU: could not be (negated) WAS_TENSE
+VU: can be IS_TENSE
+VU: can be IS_TENSE
+VU: could be WAS_TENSE
+VU: could be WAS_TENSE
+VU: has not been able to be been by (negated) HASBEEN_TENSE
+VU: have not been able to be been by (negated) HASBEEN_TENSE
+VU: had not been able to be been by (negated) HADBEEN_TENSE
+VU: had not been able to be been by (negated) HADBEEN_TENSE
+VU: has been able to be been by HASBEEN_TENSE
+VU: have been able to be been by HASBEEN_TENSE
+VU: had been able to be been by HADBEEN_TENSE
+VU: had been able to be been by HADBEEN_TENSE
+VU: cannot be been by (negated) IS_TENSE
+VU: cannot be been by (negated) IS_TENSE
+VU: could not be been by (negated) WAS_TENSE
+VU: could not be been by (negated) WAS_TENSE
+VU: can be been by IS_TENSE
+VU: can be been by IS_TENSE
+VU: could be been by WAS_TENSE
+VU: could be been by WAS_TENSE
+VU: has not had (negated) HASBEEN_TENSE
+VU: have not had (negated) HASBEEN_TENSE
+VU: had not had (negated) HADBEEN_TENSE
+VU: had not had (negated) HADBEEN_TENSE
+VU: has had HASBEEN_TENSE
+VU: have had HASBEEN_TENSE
+VU: had had HADBEEN_TENSE
+VU: had had HADBEEN_TENSE
+VU: does not have (negated) IS_TENSE
+VU: do not have (negated) IS_TENSE
+VU: did not have (negated) WAS_TENSE
+VU: did not have (negated) WAS_TENSE
+VU: has IS_TENSE
+VU: have IS_TENSE
+VU: had WAS_TENSE
+VU: had WAS_TENSE
+VU: has not specified (negated) HASBEEN_TENSE
+VU: have not specified (negated) HASBEEN_TENSE
+VU: had not specified (negated) HADBEEN_TENSE
+VU: had not specified (negated) HADBEEN_TENSE
+VU: has specified HASBEEN_TENSE
+VU: have specified HASBEEN_TENSE
+VU: had specified HADBEEN_TENSE
+VU: had specified HADBEEN_TENSE
+VU: does not specify (negated) IS_TENSE
+VU: do not specify (negated) IS_TENSE
+VU: did not specify (negated) WAS_TENSE
+VU: did not specify (negated) WAS_TENSE
+VU: specifies IS_TENSE
+VU: specify IS_TENSE
+VU: specified WAS_TENSE
+VU: specified WAS_TENSE
+VU: has not related (negated) HASBEEN_TENSE
+VU: have not related (negated) HASBEEN_TENSE
+VU: had not related (negated) HADBEEN_TENSE
+VU: had not related (negated) HADBEEN_TENSE
+VU: has related HASBEEN_TENSE
+VU: have related HASBEEN_TENSE
+VU: had related HADBEEN_TENSE
+VU: had related HADBEEN_TENSE
+VU: does not relate (negated) IS_TENSE
+VU: do not relate (negated) IS_TENSE
+VU: did not relate (negated) WAS_TENSE
+VU: did not relate (negated) WAS_TENSE
+VU: relates IS_TENSE
+VU: relate IS_TENSE
+VU: related WAS_TENSE
+VU: related WAS_TENSE
+VU: has not substituted (negated) HASBEEN_TENSE
+VU: have not substituted (negated) HASBEEN_TENSE
+VU: had not substituted (negated) HADBEEN_TENSE
+VU: had not substituted (negated) HADBEEN_TENSE
+VU: has substituted HASBEEN_TENSE
+VU: have substituted HASBEEN_TENSE
+VU: had substituted HADBEEN_TENSE
+VU: had substituted HADBEEN_TENSE
+VU: does not substitute (negated) IS_TENSE
+VU: do not substitute (negated) IS_TENSE
+VU: did not substitute (negated) WAS_TENSE
+VU: did not substitute (negated) WAS_TENSE
+VU: substitutes IS_TENSE
+VU: substitute IS_TENSE
+VU: substituted WAS_TENSE
+VU: substituted WAS_TENSE
+VU: has not done (negated) HASBEEN_TENSE
+VU: have not done (negated) HASBEEN_TENSE
+VU: had not done (negated) HADBEEN_TENSE
+VU: had not done (negated) HADBEEN_TENSE
+VU: has done HASBEEN_TENSE
+VU: have done HASBEEN_TENSE
+VU: had done HADBEEN_TENSE
+VU: had done HADBEEN_TENSE
+VU: does not (negated) IS_TENSE
+VU: do not (negated) IS_TENSE
+VU: did not (negated) WAS_TENSE
+VU: did not (negated) WAS_TENSE
+VU: does IS_TENSE
+VU: do IS_TENSE
+VU: did WAS_TENSE
+VU: did WAS_TENSE
+VU: has not translated (negated) HASBEEN_TENSE
+VU: have not translated (negated) HASBEEN_TENSE
+VU: had not translated (negated) HADBEEN_TENSE
+VU: had not translated (negated) HADBEEN_TENSE
+VU: has translated HASBEEN_TENSE
+VU: have translated HASBEEN_TENSE
+VU: had translated HADBEEN_TENSE
+VU: had translated HADBEEN_TENSE
+VU: does not translate (negated) IS_TENSE
+VU: do not translate (negated) IS_TENSE
+VU: did not translate (negated) WAS_TENSE
+VU: did not translate (negated) WAS_TENSE
+VU: translates IS_TENSE
+VU: translate IS_TENSE
+VU: translated WAS_TENSE
+VU: translated WAS_TENSE
+VU: has not provided (negated) HASBEEN_TENSE
+VU: have not provided (negated) HASBEEN_TENSE
+VU: had not provided (negated) HADBEEN_TENSE
+VU: had not provided (negated) HADBEEN_TENSE
+VU: has provided HASBEEN_TENSE
+VU: have provided HASBEEN_TENSE
+VU: had provided HADBEEN_TENSE
+VU: had provided HADBEEN_TENSE
+VU: does not provide (negated) IS_TENSE
+VU: do not provide (negated) IS_TENSE
+VU: did not provide (negated) WAS_TENSE
+VU: did not provide (negated) WAS_TENSE
+VU: provides IS_TENSE
+VU: provide IS_TENSE
+VU: provided WAS_TENSE
+VU: provided WAS_TENSE
+VU: has not used (negated) HASBEEN_TENSE
+VU: have not used (negated) HASBEEN_TENSE
+VU: had not used (negated) HADBEEN_TENSE
+VU: had not used (negated) HADBEEN_TENSE
+VU: has used HASBEEN_TENSE
+VU: have used HASBEEN_TENSE
+VU: had used HADBEEN_TENSE
+VU: had used HADBEEN_TENSE
+VU: does not use (negated) IS_TENSE
+VU: do not use (negated) IS_TENSE
+VU: did not use (negated) WAS_TENSE
+VU: did not use (negated) WAS_TENSE
+VU: uses IS_TENSE
+VU: use IS_TENSE
+VU: used WAS_TENSE
+VU: used WAS_TENSE
+VU: has not included (negated) HASBEEN_TENSE
+VU: have not included (negated) HASBEEN_TENSE
+VU: had not included (negated) HADBEEN_TENSE
+VU: had not included (negated) HADBEEN_TENSE
+VU: has included HASBEEN_TENSE
+VU: have included HASBEEN_TENSE
+VU: had included HADBEEN_TENSE
+VU: had included HADBEEN_TENSE
+VU: does not include (negated) IS_TENSE
+VU: do not include (negated) IS_TENSE
+VU: did not include (negated) WAS_TENSE
+VU: did not include (negated) WAS_TENSE
+VU: includes IS_TENSE
+VU: include IS_TENSE
+VU: included WAS_TENSE
+VU: included WAS_TENSE
+VU: has not omitted (negated) HASBEEN_TENSE
+VU: have not omitted (negated) HASBEEN_TENSE
+VU: had not omitted (negated) HADBEEN_TENSE
+VU: had not omitted (negated) HADBEEN_TENSE
+VU: has omitted HASBEEN_TENSE
+VU: have omitted HASBEEN_TENSE
+VU: had omitted HADBEEN_TENSE
+VU: had omitted HADBEEN_TENSE
+VU: does not omit (negated) IS_TENSE
+VU: do not omit (negated) IS_TENSE
+VU: did not omit (negated) WAS_TENSE
+VU: did not omit (negated) WAS_TENSE
+VU: omits IS_TENSE
+VU: omit IS_TENSE
+VU: omitted WAS_TENSE
+VU: omitted WAS_TENSE
+VU: has not been able to (negated) HASBEEN_TENSE
+VU: have not been able to (negated) HASBEEN_TENSE
+VU: had not been able to (negated) HADBEEN_TENSE
+VU: had not been able to (negated) HADBEEN_TENSE
+VU: has been able to HASBEEN_TENSE
+VU: have been able to HASBEEN_TENSE
+VU: had been able to HADBEEN_TENSE
+VU: had been able to HADBEEN_TENSE
+VU: cannot (negated) IS_TENSE
+VU: cannot (negated) IS_TENSE
+VU: could not (negated) WAS_TENSE
+VU: could not (negated) WAS_TENSE
+VU: can IS_TENSE
+VU: can IS_TENSE
+VU: could WAS_TENSE
+VU: could WAS_TENSE
+VU: could not have (negated) HASBEEN_TENSE
+VU: could not have (negated) HASBEEN_TENSE
+VU: could not have (negated) HADBEEN_TENSE
+VU: could not have (negated) HADBEEN_TENSE
+VU: could have HASBEEN_TENSE
+VU: could have HASBEEN_TENSE
+VU: could have HADBEEN_TENSE
+VU: could have HADBEEN_TENSE
+VU: could not (negated) IS_TENSE
+VU: could not (negated) IS_TENSE
+VU: could not have (negated) WAS_TENSE
+VU: could not have (negated) WAS_TENSE
+VU: could IS_TENSE
+VU: could IS_TENSE
+VU: could have WAS_TENSE
+VU: could have WAS_TENSE
+VU: may not have (negated) HASBEEN_TENSE
+VU: may not have (negated) HASBEEN_TENSE
+VU: may not have (negated) HADBEEN_TENSE
+VU: may not have (negated) HADBEEN_TENSE
+VU: may have HASBEEN_TENSE
+VU: may have HASBEEN_TENSE
+VU: may have HADBEEN_TENSE
+VU: may have HADBEEN_TENSE
+VU: may not (negated) IS_TENSE
+VU: may not (negated) IS_TENSE
+VU: may not have (negated) WAS_TENSE
+VU: may not have (negated) WAS_TENSE
+VU: may IS_TENSE
+VU: may IS_TENSE
+VU: may have WAS_TENSE
+VU: may have WAS_TENSE
+VU: might not have (negated) HASBEEN_TENSE
+VU: might not have (negated) HASBEEN_TENSE
+VU: might not have (negated) HADBEEN_TENSE
+VU: might not have (negated) HADBEEN_TENSE
+VU: might have HASBEEN_TENSE
+VU: might have HASBEEN_TENSE
+VU: might have HADBEEN_TENSE
+VU: might have HADBEEN_TENSE
+VU: might not (negated) IS_TENSE
+VU: might not (negated) IS_TENSE
+VU: might not have (negated) WAS_TENSE
+VU: might not have (negated) WAS_TENSE
+VU: might IS_TENSE
+VU: might IS_TENSE
+VU: might have WAS_TENSE
+VU: might have WAS_TENSE
+VU: must not have (negated) HASBEEN_TENSE
+VU: must not have (negated) HASBEEN_TENSE
+VU: must not have (negated) HADBEEN_TENSE
+VU: must not have (negated) HADBEEN_TENSE
+VU: must have HASBEEN_TENSE
+VU: must have HASBEEN_TENSE
+VU: must have HADBEEN_TENSE
+VU: must have HADBEEN_TENSE
+VU: must not (negated) IS_TENSE
+VU: must not (negated) IS_TENSE
+VU: must not have (negated) WAS_TENSE
+VU: must not have (negated) WAS_TENSE
+VU: must IS_TENSE
+VU: must IS_TENSE
+VU: must have WAS_TENSE
+VU: must have WAS_TENSE
+VU: should not have (negated) HASBEEN_TENSE
+VU: should not have (negated) HASBEEN_TENSE
+VU: should not have (negated) HADBEEN_TENSE
+VU: should not have (negated) HADBEEN_TENSE
+VU: should have HASBEEN_TENSE
+VU: should have HASBEEN_TENSE
+VU: should have HADBEEN_TENSE
+VU: should have HADBEEN_TENSE
+VU: should not (negated) IS_TENSE
+VU: should not (negated) IS_TENSE
+VU: should not have (negated) WAS_TENSE
+VU: should not have (negated) WAS_TENSE
+VU: should IS_TENSE
+VU: should IS_TENSE
+VU: should have WAS_TENSE
+VU: should have WAS_TENSE
+VU: would not have (negated) HASBEEN_TENSE
+VU: would not have (negated) HASBEEN_TENSE
+VU: would not have (negated) HADBEEN_TENSE
+VU: would not have (negated) HADBEEN_TENSE
+VU: would have HASBEEN_TENSE
+VU: would have HASBEEN_TENSE
+VU: would have HADBEEN_TENSE
+VU: would have HADBEEN_TENSE
+VU: would not (negated) IS_TENSE
+VU: would not (negated) IS_TENSE
+VU: would not have (negated) WAS_TENSE
+VU: would not have (negated) WAS_TENSE
+VU: would IS_TENSE
+VU: would IS_TENSE
+VU: would have WAS_TENSE
+VU: would have WAS_TENSE
+VU: 's not been (negated) HASBEEN_TENSE
+VU: 've not been (negated) HASBEEN_TENSE
+VU: 'd not been (negated) HADBEEN_TENSE
+VU: 'd not been (negated) HADBEEN_TENSE
+VU: 's been HASBEEN_TENSE
+VU: 've been HASBEEN_TENSE
+VU: 'd been HADBEEN_TENSE
+VU: 'd been HADBEEN_TENSE
+VU: 's not (negated) IS_TENSE
+VU: 're not (negated) IS_TENSE
+VU: wasn't (negated) WAS_TENSE
+VU: weren't (negated) WAS_TENSE
+VU: 's IS_TENSE
+VU: 're IS_TENSE
+VU: was WAS_TENSE
+VU: were WAS_TENSE
+VU: 's not had (negated) HASBEEN_TENSE
+VU: 've not had (negated) HASBEEN_TENSE
+VU: 'd not had (negated) HADBEEN_TENSE
+VU: 'd not had (negated) HADBEEN_TENSE
+VU: 's had HASBEEN_TENSE
+VU: 've had HASBEEN_TENSE
+VU: 'd had HADBEEN_TENSE
+VU: 'd had HADBEEN_TENSE
+VU: 's not (negated) IS_TENSE
+VU: 've not (negated) IS_TENSE
+VU: hadn't (negated) WAS_TENSE
+VU: hadn't (negated) WAS_TENSE
+VU: 's IS_TENSE
+VU: 've IS_TENSE
+VU: had WAS_TENSE
+VU: had WAS_TENSE
+VU: hasn't been HASBEEN_TENSE
+VU: haven't been HASBEEN_TENSE
+VU: hadn't been HADBEEN_TENSE
+VU: hadn't been HADBEEN_TENSE
+VU: isn't IS_TENSE
+VU: aren't IS_TENSE
+VU: wasn't WAS_TENSE
+VU: weren't WAS_TENSE
+VU: hasn't been able to HASBEEN_TENSE
+VU: haven't been able to HASBEEN_TENSE
+VU: hadn't been able to HADBEEN_TENSE
+VU: hadn't been able to HADBEEN_TENSE
+VU: can't IS_TENSE
+VU: can't IS_TENSE
+VU: couldn't WAS_TENSE
+VU: couldn't WAS_TENSE
+VU: didn't HASBEEN_TENSE
+VU: didn't HASBEEN_TENSE
+VU: didn't HADBEEN_TENSE
+VU: didn't HADBEEN_TENSE
+VU: doesn't IS_TENSE
+VU: don't IS_TENSE
+VU: didn't WAS_TENSE
+VU: didn't WAS_TENSE
+VU: hadn't HASBEEN_TENSE
+VU: hadn't HASBEEN_TENSE
+VU: hadn't HADBEEN_TENSE
+VU: hadn't HADBEEN_TENSE
+VU: hasn't IS_TENSE
+VU: haven't IS_TENSE
+VU: hadn't WAS_TENSE
+VU: hadn't WAS_TENSE
+VU: mustn't have HASBEEN_TENSE
+VU: mustn't have HASBEEN_TENSE
+VU: mustn't have HADBEEN_TENSE
+VU: mustn't have HADBEEN_TENSE
+VU: mustn't IS_TENSE
+VU: mustn't IS_TENSE
+VU: mustn't have WAS_TENSE
+VU: mustn't have WAS_TENSE
+VU: mightn't have HASBEEN_TENSE
+VU: mightn't have HASBEEN_TENSE
+VU: mightn't have HADBEEN_TENSE
+VU: mightn't have HADBEEN_TENSE
+VU: mightn't IS_TENSE
+VU: mightn't IS_TENSE
+VU: mightn't have WAS_TENSE
+VU: mightn't have WAS_TENSE
+VU: mayn't have HASBEEN_TENSE
+VU: mayn't have HASBEEN_TENSE
+VU: mayn't have HADBEEN_TENSE
+VU: mayn't have HADBEEN_TENSE
+VU: mayn't IS_TENSE
+VU: mayn't IS_TENSE
+VU: mayn't have WAS_TENSE
+VU: mayn't have WAS_TENSE
+VU: wouldn't have HASBEEN_TENSE
+VU: wouldn't have HASBEEN_TENSE
+VU: wouldn't have HADBEEN_TENSE
+VU: wouldn't have HADBEEN_TENSE
+VU: wouldn't IS_TENSE
+VU: wouldn't IS_TENSE
+VU: wouldn't have WAS_TENSE
+VU: wouldn't have WAS_TENSE
+VU: couldn't have HASBEEN_TENSE
+VU: couldn't have HASBEEN_TENSE
+VU: couldn't have HADBEEN_TENSE
+VU: couldn't have HADBEEN_TENSE
+VU: couldn't IS_TENSE
+VU: couldn't IS_TENSE
+VU: couldn't have WAS_TENSE
+VU: couldn't have WAS_TENSE
+VU: shouldn't have HASBEEN_TENSE
+VU: shouldn't have HASBEEN_TENSE
+VU: shouldn't have HADBEEN_TENSE
+VU: shouldn't have HADBEEN_TENSE
+VU: shouldn't IS_TENSE
+VU: shouldn't IS_TENSE
+VU: shouldn't have WAS_TENSE
+VU: shouldn't have WAS_TENSE
+VU: wouldn't HASBEEN_TENSE
+VU: wouldn't HASBEEN_TENSE
+VU: wouldn't HADBEEN_TENSE
+VU: wouldn't HADBEEN_TENSE
+VU: won't IS_TENSE
+VU: won't IS_TENSE
+VU: wouldn't WAS_TENSE
+VU: wouldn't WAS_TENSE
+VU: has not begun (negated) HASBEEN_TENSE
+VU: have not begun (negated) HASBEEN_TENSE
+VU: had not begun (negated) HADBEEN_TENSE
+VU: had not begun (negated) HADBEEN_TENSE
+VU: has begun HASBEEN_TENSE
+VU: have begun HASBEEN_TENSE
+VU: had begun HADBEEN_TENSE
+VU: had begun HADBEEN_TENSE
+VU: does not begin (negated) IS_TENSE
+VU: do not begin (negated) IS_TENSE
+VU: did not begin (negated) WAS_TENSE
+VU: did not begin (negated) WAS_TENSE
+VU: begins IS_TENSE
+VU: begin IS_TENSE
+VU: began WAS_TENSE
+VU: began WAS_TENSE
+VU: has not ended (negated) HASBEEN_TENSE
+VU: have not ended (negated) HASBEEN_TENSE
+VU: had not ended (negated) HADBEEN_TENSE
+VU: had not ended (negated) HADBEEN_TENSE
+VU: has ended HASBEEN_TENSE
+VU: have ended HASBEEN_TENSE
+VU: had ended HADBEEN_TENSE
+VU: had ended HADBEEN_TENSE
+VU: does not end (negated) IS_TENSE
+VU: do not end (negated) IS_TENSE
+VU: did not end (negated) WAS_TENSE
+VU: did not end (negated) WAS_TENSE
+VU: ends IS_TENSE
+VU: end IS_TENSE
+VU: ended WAS_TENSE
+VU: ended WAS_TENSE
+VU: has not tested (negated) HASBEEN_TENSE
+VU: have not tested (negated) HASBEEN_TENSE
+VU: had not tested (negated) HADBEEN_TENSE
+VU: had not tested (negated) HADBEEN_TENSE
+VU: has tested HASBEEN_TENSE
+VU: have tested HASBEEN_TENSE
+VU: had tested HADBEEN_TENSE
+VU: had tested HADBEEN_TENSE
+VU: does not test (negated) IS_TENSE
+VU: do not test (negated) IS_TENSE
+VU: did not test (negated) WAS_TENSE
+VU: did not test (negated) WAS_TENSE
+VU: tests IS_TENSE
+VU: test IS_TENSE
+VU: tested WAS_TENSE
+VU: tested WAS_TENSE
+VU: has not understood (negated) HASBEEN_TENSE
+VU: have not understood (negated) HASBEEN_TENSE
+VU: had not understood (negated) HADBEEN_TENSE
+VU: had not understood (negated) HADBEEN_TENSE
+VU: has understood HASBEEN_TENSE
+VU: have understood HASBEEN_TENSE
+VU: had understood HADBEEN_TENSE
+VU: had understood HADBEEN_TENSE
+VU: does not understand (negated) IS_TENSE
+VU: do not understand (negated) IS_TENSE
+VU: did not understand (negated) WAS_TENSE
+VU: did not understand (negated) WAS_TENSE
+VU: understands IS_TENSE
+VU: understand IS_TENSE
+VU: understood WAS_TENSE
+VU: understood WAS_TENSE
+VU: has not released (negated) HASBEEN_TENSE
+VU: have not released (negated) HASBEEN_TENSE
+VU: had not released (negated) HADBEEN_TENSE
+VU: had not released (negated) HADBEEN_TENSE
+VU: has released HASBEEN_TENSE
+VU: have released HASBEEN_TENSE
+VU: had released HADBEEN_TENSE
+VU: had released HADBEEN_TENSE
+VU: does not release (negated) IS_TENSE
+VU: do not release (negated) IS_TENSE
+VU: did not release (negated) WAS_TENSE
+VU: did not release (negated) WAS_TENSE
+VU: releases IS_TENSE
+VU: release IS_TENSE
+VU: released WAS_TENSE
+VU: released WAS_TENSE
+VU: has not indexed (negated) HASBEEN_TENSE
+VU: have not indexed (negated) HASBEEN_TENSE
+VU: had not indexed (negated) HADBEEN_TENSE
+VU: had not indexed (negated) HADBEEN_TENSE
+VU: has indexed HASBEEN_TENSE
+VU: have indexed HASBEEN_TENSE
+VU: had indexed HADBEEN_TENSE
+VU: had indexed HADBEEN_TENSE
+VU: does not index (negated) IS_TENSE
+VU: do not index (negated) IS_TENSE
+VU: did not index (negated) WAS_TENSE
+VU: did not index (negated) WAS_TENSE
+VU: indexes IS_TENSE
+VU: index IS_TENSE
+VU: indexed WAS_TENSE
+VU: indexed WAS_TENSE
+VU: has not contained (negated) HASBEEN_TENSE
+VU: have not contained (negated) HASBEEN_TENSE
+VU: had not contained (negated) HADBEEN_TENSE
+VU: had not contained (negated) HADBEEN_TENSE
+VU: has contained HASBEEN_TENSE
+VU: have contained HASBEEN_TENSE
+VU: had contained HADBEEN_TENSE
+VU: had contained HADBEEN_TENSE
+VU: does not contain (negated) IS_TENSE
+VU: do not contain (negated) IS_TENSE
+VU: did not contain (negated) WAS_TENSE
+VU: did not contain (negated) WAS_TENSE
+VU: contains IS_TENSE
+VU: contain IS_TENSE
+VU: contained WAS_TENSE
+VU: contained WAS_TENSE
+VU: has not supported (negated) HASBEEN_TENSE
+VU: have not supported (negated) HASBEEN_TENSE
+VU: had not supported (negated) HADBEEN_TENSE
+VU: had not supported (negated) HADBEEN_TENSE
+VU: has supported HASBEEN_TENSE
+VU: have supported HASBEEN_TENSE
+VU: had supported HADBEEN_TENSE
+VU: had supported HADBEEN_TENSE
+VU: does not support (negated) IS_TENSE
+VU: do not support (negated) IS_TENSE
+VU: did not support (negated) WAS_TENSE
+VU: did not support (negated) WAS_TENSE
+VU: supports IS_TENSE
+VU: support IS_TENSE
+VU: supported WAS_TENSE
+VU: supported WAS_TENSE
+VU: has not incorporated (negated) HASBEEN_TENSE
+VU: have not incorporated (negated) HASBEEN_TENSE
+VU: had not incorporated (negated) HADBEEN_TENSE
+VU: had not incorporated (negated) HADBEEN_TENSE
+VU: has incorporated HASBEEN_TENSE
+VU: have incorporated HASBEEN_TENSE
+VU: had incorporated HADBEEN_TENSE
+VU: had incorporated HADBEEN_TENSE
+VU: does not incorporate (negated) IS_TENSE
+VU: do not incorporate (negated) IS_TENSE
+VU: did not incorporate (negated) WAS_TENSE
+VU: did not incorporate (negated) WAS_TENSE
+VU: incorporates IS_TENSE
+VU: incorporate IS_TENSE
+VU: incorporated WAS_TENSE
+VU: incorporated WAS_TENSE
+VU: has not enclosed (negated) HASBEEN_TENSE
+VU: have not enclosed (negated) HASBEEN_TENSE
+VU: had not enclosed (negated) HADBEEN_TENSE
+VU: had not enclosed (negated) HADBEEN_TENSE
+VU: has enclosed HASBEEN_TENSE
+VU: have enclosed HASBEEN_TENSE
+VU: had enclosed HADBEEN_TENSE
+VU: had enclosed HADBEEN_TENSE
+VU: does not enclose (negated) IS_TENSE
+VU: do not enclose (negated) IS_TENSE
+VU: did not enclose (negated) WAS_TENSE
+VU: did not enclose (negated) WAS_TENSE
+VU: encloses IS_TENSE
+VU: enclose IS_TENSE
+VU: enclosed WAS_TENSE
+VU: enclosed WAS_TENSE
+VU: has not carried (negated) HASBEEN_TENSE
+VU: have not carried (negated) HASBEEN_TENSE
+VU: had not carried (negated) HADBEEN_TENSE
+VU: had not carried (negated) HADBEEN_TENSE
+VU: has carried HASBEEN_TENSE
+VU: have carried HASBEEN_TENSE
+VU: had carried HADBEEN_TENSE
+VU: had carried HADBEEN_TENSE
+VU: does not carry (negated) IS_TENSE
+VU: do not carry (negated) IS_TENSE
+VU: did not carry (negated) WAS_TENSE
+VU: did not carry (negated) WAS_TENSE
+VU: carries IS_TENSE
+VU: carry IS_TENSE
+VU: carried WAS_TENSE
+VU: carried WAS_TENSE
+VU: has not held (negated) HASBEEN_TENSE
+VU: have not held (negated) HASBEEN_TENSE
+VU: had not held (negated) HADBEEN_TENSE
+VU: had not held (negated) HADBEEN_TENSE
+VU: has held HASBEEN_TENSE
+VU: have held HASBEEN_TENSE
+VU: had held HADBEEN_TENSE
+VU: had held HADBEEN_TENSE
+VU: does not hold (negated) IS_TENSE
+VU: do not hold (negated) IS_TENSE
+VU: did not hold (negated) WAS_TENSE
+VU: did not hold (negated) WAS_TENSE
+VU: holds IS_TENSE
+VU: hold IS_TENSE
+VU: held WAS_TENSE
+VU: held WAS_TENSE
+VU: has not worn (negated) HASBEEN_TENSE
+VU: have not worn (negated) HASBEEN_TENSE
+VU: had not worn (negated) HADBEEN_TENSE
+VU: had not worn (negated) HADBEEN_TENSE
+VU: has worn HASBEEN_TENSE
+VU: have worn HASBEEN_TENSE
+VU: had worn HADBEEN_TENSE
+VU: had worn HADBEEN_TENSE
+VU: does not wear (negated) IS_TENSE
+VU: do not wear (negated) IS_TENSE
+VU: did not wear (negated) WAS_TENSE
+VU: did not wear (negated) WAS_TENSE
+VU: wears IS_TENSE
+VU: wear IS_TENSE
+VU: wore WAS_TENSE
+VU: wore WAS_TENSE
+VU: has not been able to see (negated) HASBEEN_TENSE
+VU: have not been able to see (negated) HASBEEN_TENSE
+VU: had not been able to see (negated) HADBEEN_TENSE
+VU: had not been able to see (negated) HADBEEN_TENSE
+VU: has been able to see HASBEEN_TENSE
+VU: have been able to see HASBEEN_TENSE
+VU: had been able to see HADBEEN_TENSE
+VU: had been able to see HADBEEN_TENSE
+VU: cannot see (negated) IS_TENSE
+VU: cannot see (negated) IS_TENSE
+VU: could not see (negated) WAS_TENSE
+VU: could not see (negated) WAS_TENSE
+VU: can see IS_TENSE
+VU: can see IS_TENSE
+VU: could see WAS_TENSE
+VU: could see WAS_TENSE
+VU: has not been able to be seen by (negated) HASBEEN_TENSE
+VU: have not been able to be seen by (negated) HASBEEN_TENSE
+VU: had not been able to be seen by (negated) HADBEEN_TENSE
+VU: had not been able to be seen by (negated) HADBEEN_TENSE
+VU: has been able to be seen by HASBEEN_TENSE
+VU: have been able to be seen by HASBEEN_TENSE
+VU: had been able to be seen by HADBEEN_TENSE
+VU: had been able to be seen by HADBEEN_TENSE
+VU: cannot be seen by (negated) IS_TENSE
+VU: cannot be seen by (negated) IS_TENSE
+VU: could not be seen by (negated) WAS_TENSE
+VU: could not be seen by (negated) WAS_TENSE
+VU: can be seen by IS_TENSE
+VU: can be seen by IS_TENSE
+VU: could be seen by WAS_TENSE
+VU: could be seen by WAS_TENSE
+VU: has not been able to touch (negated) HASBEEN_TENSE
+VU: have not been able to touch (negated) HASBEEN_TENSE
+VU: had not been able to touch (negated) HADBEEN_TENSE
+VU: had not been able to touch (negated) HADBEEN_TENSE
+VU: has been able to touch HASBEEN_TENSE
+VU: have been able to touch HASBEEN_TENSE
+VU: had been able to touch HADBEEN_TENSE
+VU: had been able to touch HADBEEN_TENSE
+VU: cannot touch (negated) IS_TENSE
+VU: cannot touch (negated) IS_TENSE
+VU: could not touch (negated) WAS_TENSE
+VU: could not touch (negated) WAS_TENSE
+VU: can touch IS_TENSE
+VU: can touch IS_TENSE
+VU: could touch WAS_TENSE
+VU: could touch WAS_TENSE
+VU: has not been able to be touched by (negated) HASBEEN_TENSE
+VU: have not been able to be touched by (negated) HASBEEN_TENSE
+VU: had not been able to be touched by (negated) HADBEEN_TENSE
+VU: had not been able to be touched by (negated) HADBEEN_TENSE
+VU: has been able to be touched by HASBEEN_TENSE
+VU: have been able to be touched by HASBEEN_TENSE
+VU: had been able to be touched by HADBEEN_TENSE
+VU: had been able to be touched by HADBEEN_TENSE
+VU: cannot be touched by (negated) IS_TENSE
+VU: cannot be touched by (negated) IS_TENSE
+VU: could not be touched by (negated) WAS_TENSE
+VU: could not be touched by (negated) WAS_TENSE
+VU: can be touched by IS_TENSE
+VU: can be touched by IS_TENSE
+VU: could be touched by WAS_TENSE
+VU: could be touched by WAS_TENSE
+VU: has not concealed (negated) HASBEEN_TENSE
+VU: have not concealed (negated) HASBEEN_TENSE
+VU: had not concealed (negated) HADBEEN_TENSE
+VU: had not concealed (negated) HADBEEN_TENSE
+VU: has concealed HASBEEN_TENSE
+VU: have concealed HASBEEN_TENSE
+VU: had concealed HADBEEN_TENSE
+VU: had concealed HADBEEN_TENSE
+VU: does not conceal (negated) IS_TENSE
+VU: do not conceal (negated) IS_TENSE
+VU: did not conceal (negated) WAS_TENSE
+VU: did not conceal (negated) WAS_TENSE
+VU: conceals IS_TENSE
+VU: conceal IS_TENSE
+VU: concealed WAS_TENSE
+VU: concealed WAS_TENSE
+VU: has not unlocked (negated) HASBEEN_TENSE
+VU: have not unlocked (negated) HASBEEN_TENSE
+VU: had not unlocked (negated) HADBEEN_TENSE
+VU: had not unlocked (negated) HADBEEN_TENSE
+VU: has unlocked HASBEEN_TENSE
+VU: have unlocked HASBEEN_TENSE
+VU: had unlocked HADBEEN_TENSE
+VU: had unlocked HADBEEN_TENSE
+VU: does not unlock (negated) IS_TENSE
+VU: do not unlock (negated) IS_TENSE
+VU: did not unlock (negated) WAS_TENSE
+VU: did not unlock (negated) WAS_TENSE
+VU: unlocks IS_TENSE
+VU: unlock IS_TENSE
+VU: unlocked WAS_TENSE
+VU: unlocked WAS_TENSE
+VU: has not achieved (negated) HASBEEN_TENSE
+VU: have not achieved (negated) HASBEEN_TENSE
+VU: had not achieved (negated) HADBEEN_TENSE
+VU: had not achieved (negated) HADBEEN_TENSE
+VU: has achieved HASBEEN_TENSE
+VU: have achieved HASBEEN_TENSE
+VU: had achieved HADBEEN_TENSE
+VU: had achieved HADBEEN_TENSE
+VU: does not achieve (negated) IS_TENSE
+VU: do not achieve (negated) IS_TENSE
+VU: did not achieve (negated) WAS_TENSE
+VU: did not achieve (negated) WAS_TENSE
+VU: achieves IS_TENSE
+VU: achieve IS_TENSE
+VU: achieved WAS_TENSE
+VU: achieved WAS_TENSE
+VU: has not appreciated (negated) HASBEEN_TENSE
+VU: have not appreciated (negated) HASBEEN_TENSE
+VU: had not appreciated (negated) HADBEEN_TENSE
+VU: had not appreciated (negated) HADBEEN_TENSE
+VU: has appreciated HASBEEN_TENSE
+VU: have appreciated HASBEEN_TENSE
+VU: had appreciated HADBEEN_TENSE
+VU: had appreciated HADBEEN_TENSE
+VU: does not appreciate (negated) IS_TENSE
+VU: do not appreciate (negated) IS_TENSE
+VU: did not appreciate (negated) WAS_TENSE
+VU: did not appreciate (negated) WAS_TENSE
+VU: appreciates IS_TENSE
+VU: appreciate IS_TENSE
+VU: appreciated WAS_TENSE
+VU: appreciated WAS_TENSE
+VU: has not arrived (negated) HASBEEN_TENSE
+VU: have not arrived (negated) HASBEEN_TENSE
+VU: had not arrived (negated) HADBEEN_TENSE
+VU: had not arrived (negated) HADBEEN_TENSE
+VU: has arrived HASBEEN_TENSE
+VU: have arrived HASBEEN_TENSE
+VU: had arrived HADBEEN_TENSE
+VU: had arrived HADBEEN_TENSE
+VU: does not arrive (negated) IS_TENSE
+VU: do not arrive (negated) IS_TENSE
+VU: did not arrive (negated) WAS_TENSE
+VU: did not arrive (negated) WAS_TENSE
+VU: arrives IS_TENSE
+VU: arrive IS_TENSE
+VU: arrived WAS_TENSE
+VU: arrived WAS_TENSE
+VU: has not cared (negated) HASBEEN_TENSE
+VU: have not cared (negated) HASBEEN_TENSE
+VU: had not cared (negated) HADBEEN_TENSE
+VU: had not cared (negated) HADBEEN_TENSE
+VU: has cared HASBEEN_TENSE
+VU: have cared HASBEEN_TENSE
+VU: had cared HADBEEN_TENSE
+VU: had cared HADBEEN_TENSE
+VU: does not care (negated) IS_TENSE
+VU: do not care (negated) IS_TENSE
+VU: did not care (negated) WAS_TENSE
+VU: did not care (negated) WAS_TENSE
+VU: cares IS_TENSE
+VU: care IS_TENSE
+VU: cared WAS_TENSE
+VU: cared WAS_TENSE
+VU: has not closed (negated) HASBEEN_TENSE
+VU: have not closed (negated) HASBEEN_TENSE
+VU: had not closed (negated) HADBEEN_TENSE
+VU: had not closed (negated) HADBEEN_TENSE
+VU: has closed HASBEEN_TENSE
+VU: have closed HASBEEN_TENSE
+VU: had closed HADBEEN_TENSE
+VU: had closed HADBEEN_TENSE
+VU: does not close (negated) IS_TENSE
+VU: do not close (negated) IS_TENSE
+VU: did not close (negated) WAS_TENSE
+VU: did not close (negated) WAS_TENSE
+VU: closes IS_TENSE
+VU: close IS_TENSE
+VU: closed WAS_TENSE
+VU: closed WAS_TENSE
+VU: has not died (negated) HASBEEN_TENSE
+VU: have not died (negated) HASBEEN_TENSE
+VU: had not died (negated) HADBEEN_TENSE
+VU: had not died (negated) HADBEEN_TENSE
+VU: has died HASBEEN_TENSE
+VU: have died HASBEEN_TENSE
+VU: had died HADBEEN_TENSE
+VU: had died HADBEEN_TENSE
+VU: does not die (negated) IS_TENSE
+VU: do not die (negated) IS_TENSE
+VU: did not die (negated) WAS_TENSE
+VU: did not die (negated) WAS_TENSE
+VU: dies IS_TENSE
+VU: die IS_TENSE
+VU: died WAS_TENSE
+VU: died WAS_TENSE
+VU: has not discovered (negated) HASBEEN_TENSE
+VU: have not discovered (negated) HASBEEN_TENSE
+VU: had not discovered (negated) HADBEEN_TENSE
+VU: had not discovered (negated) HADBEEN_TENSE
+VU: has discovered HASBEEN_TENSE
+VU: have discovered HASBEEN_TENSE
+VU: had discovered HADBEEN_TENSE
+VU: had discovered HADBEEN_TENSE
+VU: does not discover (negated) IS_TENSE
+VU: do not discover (negated) IS_TENSE
+VU: did not discover (negated) WAS_TENSE
+VU: did not discover (negated) WAS_TENSE
+VU: discovers IS_TENSE
+VU: discover IS_TENSE
+VU: discovered WAS_TENSE
+VU: discovered WAS_TENSE
+VU: has not dropped (negated) HASBEEN_TENSE
+VU: have not dropped (negated) HASBEEN_TENSE
+VU: had not dropped (negated) HADBEEN_TENSE
+VU: had not dropped (negated) HADBEEN_TENSE
+VU: has dropped HASBEEN_TENSE
+VU: have dropped HASBEEN_TENSE
+VU: had dropped HADBEEN_TENSE
+VU: had dropped HADBEEN_TENSE
+VU: does not drop (negated) IS_TENSE
+VU: do not drop (negated) IS_TENSE
+VU: did not drop (negated) WAS_TENSE
+VU: did not drop (negated) WAS_TENSE
+VU: drops IS_TENSE
+VU: drop IS_TENSE
+VU: dropped WAS_TENSE
+VU: dropped WAS_TENSE
+VU: has not eaten (negated) HASBEEN_TENSE
+VU: have not eaten (negated) HASBEEN_TENSE
+VU: had not eaten (negated) HADBEEN_TENSE
+VU: had not eaten (negated) HADBEEN_TENSE
+VU: has eaten HASBEEN_TENSE
+VU: have eaten HASBEEN_TENSE
+VU: had eaten HADBEEN_TENSE
+VU: had eaten HADBEEN_TENSE
+VU: does not eat (negated) IS_TENSE
+VU: do not eat (negated) IS_TENSE
+VU: did not eat (negated) WAS_TENSE
+VU: did not eat (negated) WAS_TENSE
+VU: eats IS_TENSE
+VU: eat IS_TENSE
+VU: ate WAS_TENSE
+VU: ate WAS_TENSE
+VU: has not felt (negated) HASBEEN_TENSE
+VU: have not felt (negated) HASBEEN_TENSE
+VU: had not felt (negated) HADBEEN_TENSE
+VU: had not felt (negated) HADBEEN_TENSE
+VU: has felt HASBEEN_TENSE
+VU: have felt HASBEEN_TENSE
+VU: had felt HADBEEN_TENSE
+VU: had felt HADBEEN_TENSE
+VU: does not feel (negated) IS_TENSE
+VU: do not feel (negated) IS_TENSE
+VU: did not feel (negated) WAS_TENSE
+VU: did not feel (negated) WAS_TENSE
+VU: feels IS_TENSE
+VU: feel IS_TENSE
+VU: felt WAS_TENSE
+VU: felt WAS_TENSE
+VU: has not found (negated) HASBEEN_TENSE
+VU: have not found (negated) HASBEEN_TENSE
+VU: had not found (negated) HADBEEN_TENSE
+VU: had not found (negated) HADBEEN_TENSE
+VU: has found HASBEEN_TENSE
+VU: have found HASBEEN_TENSE
+VU: had found HADBEEN_TENSE
+VU: had found HADBEEN_TENSE
+VU: does not find (negated) IS_TENSE
+VU: do not find (negated) IS_TENSE
+VU: did not find (negated) WAS_TENSE
+VU: did not find (negated) WAS_TENSE
+VU: finds IS_TENSE
+VU: find IS_TENSE
+VU: found WAS_TENSE
+VU: found WAS_TENSE
+VU: has not got (negated) HASBEEN_TENSE
+VU: have not got (negated) HASBEEN_TENSE
+VU: had not got (negated) HADBEEN_TENSE
+VU: had not got (negated) HADBEEN_TENSE
+VU: has got HASBEEN_TENSE
+VU: have got HASBEEN_TENSE
+VU: had got HADBEEN_TENSE
+VU: had got HADBEEN_TENSE
+VU: does not get (negated) IS_TENSE
+VU: do not get (negated) IS_TENSE
+VU: did not get (negated) WAS_TENSE
+VU: did not get (negated) WAS_TENSE
+VU: gets IS_TENSE
+VU: get IS_TENSE
+VU: got WAS_TENSE
+VU: got WAS_TENSE
+VU: has not given (negated) HASBEEN_TENSE
+VU: have not given (negated) HASBEEN_TENSE
+VU: had not given (negated) HADBEEN_TENSE
+VU: had not given (negated) HADBEEN_TENSE
+VU: has given HASBEEN_TENSE
+VU: have given HASBEEN_TENSE
+VU: had given HADBEEN_TENSE
+VU: had given HADBEEN_TENSE
+VU: does not give (negated) IS_TENSE
+VU: do not give (negated) IS_TENSE
+VU: did not give (negated) WAS_TENSE
+VU: did not give (negated) WAS_TENSE
+VU: gives IS_TENSE
+VU: give IS_TENSE
+VU: gave WAS_TENSE
+VU: gave WAS_TENSE
+VU: has not gone (negated) HASBEEN_TENSE
+VU: have not gone (negated) HASBEEN_TENSE
+VU: had not gone (negated) HADBEEN_TENSE
+VU: had not gone (negated) HADBEEN_TENSE
+VU: has gone HASBEEN_TENSE
+VU: have gone HASBEEN_TENSE
+VU: had gone HADBEEN_TENSE
+VU: had gone HADBEEN_TENSE
+VU: does not go (negated) IS_TENSE
+VU: do not go (negated) IS_TENSE
+VU: did not go (negated) WAS_TENSE
+VU: did not go (negated) WAS_TENSE
+VU: goes IS_TENSE
+VU: go IS_TENSE
+VU: went WAS_TENSE
+VU: went WAS_TENSE
+VU: has not happened (negated) HASBEEN_TENSE
+VU: have not happened (negated) HASBEEN_TENSE
+VU: had not happened (negated) HADBEEN_TENSE
+VU: had not happened (negated) HADBEEN_TENSE
+VU: has happened HASBEEN_TENSE
+VU: have happened HASBEEN_TENSE
+VU: had happened HADBEEN_TENSE
+VU: had happened HADBEEN_TENSE
+VU: does not happen (negated) IS_TENSE
+VU: do not happen (negated) IS_TENSE
+VU: did not happen (negated) WAS_TENSE
+VU: did not happen (negated) WAS_TENSE
+VU: happens IS_TENSE
+VU: happen IS_TENSE
+VU: happened WAS_TENSE
+VU: happened WAS_TENSE
+VU: has not heard (negated) HASBEEN_TENSE
+VU: have not heard (negated) HASBEEN_TENSE
+VU: had not heard (negated) HADBEEN_TENSE
+VU: had not heard (negated) HADBEEN_TENSE
+VU: has heard HASBEEN_TENSE
+VU: have heard HASBEEN_TENSE
+VU: had heard HADBEEN_TENSE
+VU: had heard HADBEEN_TENSE
+VU: does not hear (negated) IS_TENSE
+VU: do not hear (negated) IS_TENSE
+VU: did not hear (negated) WAS_TENSE
+VU: did not hear (negated) WAS_TENSE
+VU: hears IS_TENSE
+VU: hear IS_TENSE
+VU: heard WAS_TENSE
+VU: heard WAS_TENSE
+VU: has not jumped (negated) HASBEEN_TENSE
+VU: have not jumped (negated) HASBEEN_TENSE
+VU: had not jumped (negated) HADBEEN_TENSE
+VU: had not jumped (negated) HADBEEN_TENSE
+VU: has jumped HASBEEN_TENSE
+VU: have jumped HASBEEN_TENSE
+VU: had jumped HADBEEN_TENSE
+VU: had jumped HADBEEN_TENSE
+VU: does not jump (negated) IS_TENSE
+VU: do not jump (negated) IS_TENSE
+VU: did not jump (negated) WAS_TENSE
+VU: did not jump (negated) WAS_TENSE
+VU: jumps IS_TENSE
+VU: jump IS_TENSE
+VU: jumped WAS_TENSE
+VU: jumped WAS_TENSE
+VU: has not lacked (negated) HASBEEN_TENSE
+VU: have not lacked (negated) HASBEEN_TENSE
+VU: had not lacked (negated) HADBEEN_TENSE
+VU: had not lacked (negated) HADBEEN_TENSE
+VU: has lacked HASBEEN_TENSE
+VU: have lacked HASBEEN_TENSE
+VU: had lacked HADBEEN_TENSE
+VU: had lacked HADBEEN_TENSE
+VU: does not lack (negated) IS_TENSE
+VU: do not lack (negated) IS_TENSE
+VU: did not lack (negated) WAS_TENSE
+VU: did not lack (negated) WAS_TENSE
+VU: lacks IS_TENSE
+VU: lack IS_TENSE
+VU: lacked WAS_TENSE
+VU: lacked WAS_TENSE
+VU: has not led (negated) HASBEEN_TENSE
+VU: have not led (negated) HASBEEN_TENSE
+VU: had not led (negated) HADBEEN_TENSE
+VU: had not led (negated) HADBEEN_TENSE
+VU: has led HASBEEN_TENSE
+VU: have led HASBEEN_TENSE
+VU: had led HADBEEN_TENSE
+VU: had led HADBEEN_TENSE
+VU: does not lead (negated) IS_TENSE
+VU: do not lead (negated) IS_TENSE
+VU: did not lead (negated) WAS_TENSE
+VU: did not lead (negated) WAS_TENSE
+VU: leads IS_TENSE
+VU: lead IS_TENSE
+VU: led WAS_TENSE
+VU: led WAS_TENSE
+VU: has not liked (negated) HASBEEN_TENSE
+VU: have not liked (negated) HASBEEN_TENSE
+VU: had not liked (negated) HADBEEN_TENSE
+VU: had not liked (negated) HADBEEN_TENSE
+VU: has liked HASBEEN_TENSE
+VU: have liked HASBEEN_TENSE
+VU: had liked HADBEEN_TENSE
+VU: had liked HADBEEN_TENSE
+VU: does not like (negated) IS_TENSE
+VU: do not like (negated) IS_TENSE
+VU: did not like (negated) WAS_TENSE
+VU: did not like (negated) WAS_TENSE
+VU: likes IS_TENSE
+VU: like IS_TENSE
+VU: liked WAS_TENSE
+VU: liked WAS_TENSE
+VU: has not listened (negated) HASBEEN_TENSE
+VU: have not listened (negated) HASBEEN_TENSE
+VU: had not listened (negated) HADBEEN_TENSE
+VU: had not listened (negated) HADBEEN_TENSE
+VU: has listened HASBEEN_TENSE
+VU: have listened HASBEEN_TENSE
+VU: had listened HADBEEN_TENSE
+VU: had listened HADBEEN_TENSE
+VU: does not listen (negated) IS_TENSE
+VU: do not listen (negated) IS_TENSE
+VU: did not listen (negated) WAS_TENSE
+VU: did not listen (negated) WAS_TENSE
+VU: listens IS_TENSE
+VU: listen IS_TENSE
+VU: listened WAS_TENSE
+VU: listened WAS_TENSE
+VU: has not locked (negated) HASBEEN_TENSE
+VU: have not locked (negated) HASBEEN_TENSE
+VU: had not locked (negated) HADBEEN_TENSE
+VU: had not locked (negated) HADBEEN_TENSE
+VU: has locked HASBEEN_TENSE
+VU: have locked HASBEEN_TENSE
+VU: had locked HADBEEN_TENSE
+VU: had locked HADBEEN_TENSE
+VU: does not lock (negated) IS_TENSE
+VU: do not lock (negated) IS_TENSE
+VU: did not lock (negated) WAS_TENSE
+VU: did not lock (negated) WAS_TENSE
+VU: locks IS_TENSE
+VU: lock IS_TENSE
+VU: locked WAS_TENSE
+VU: locked WAS_TENSE
+VU: has not looked (negated) HASBEEN_TENSE
+VU: have not looked (negated) HASBEEN_TENSE
+VU: had not looked (negated) HADBEEN_TENSE
+VU: had not looked (negated) HADBEEN_TENSE
+VU: has looked HASBEEN_TENSE
+VU: have looked HASBEEN_TENSE
+VU: had looked HADBEEN_TENSE
+VU: had looked HADBEEN_TENSE
+VU: does not look (negated) IS_TENSE
+VU: do not look (negated) IS_TENSE
+VU: did not look (negated) WAS_TENSE
+VU: did not look (negated) WAS_TENSE
+VU: looks IS_TENSE
+VU: look IS_TENSE
+VU: looked WAS_TENSE
+VU: looked WAS_TENSE
+VU: has not needed (negated) HASBEEN_TENSE
+VU: have not needed (negated) HASBEEN_TENSE
+VU: had not needed (negated) HADBEEN_TENSE
+VU: had not needed (negated) HADBEEN_TENSE
+VU: has needed HASBEEN_TENSE
+VU: have needed HASBEEN_TENSE
+VU: had needed HADBEEN_TENSE
+VU: had needed HADBEEN_TENSE
+VU: does not need (negated) IS_TENSE
+VU: do not need (negated) IS_TENSE
+VU: did not need (negated) WAS_TENSE
+VU: did not need (negated) WAS_TENSE
+VU: needs IS_TENSE
+VU: need IS_TENSE
+VU: needed WAS_TENSE
+VU: needed WAS_TENSE
+VU: has not opened (negated) HASBEEN_TENSE
+VU: have not opened (negated) HASBEEN_TENSE
+VU: had not opened (negated) HADBEEN_TENSE
+VU: had not opened (negated) HADBEEN_TENSE
+VU: has opened HASBEEN_TENSE
+VU: have opened HASBEEN_TENSE
+VU: had opened HADBEEN_TENSE
+VU: had opened HADBEEN_TENSE
+VU: does not open (negated) IS_TENSE
+VU: do not open (negated) IS_TENSE
+VU: did not open (negated) WAS_TENSE
+VU: did not open (negated) WAS_TENSE
+VU: opens IS_TENSE
+VU: open IS_TENSE
+VU: opened WAS_TENSE
+VU: opened WAS_TENSE
+VU: has not passed (negated) HASBEEN_TENSE
+VU: have not passed (negated) HASBEEN_TENSE
+VU: had not passed (negated) HADBEEN_TENSE
+VU: had not passed (negated) HADBEEN_TENSE
+VU: has passed HASBEEN_TENSE
+VU: have passed HASBEEN_TENSE
+VU: had passed HADBEEN_TENSE
+VU: had passed HADBEEN_TENSE
+VU: does not pass (negated) IS_TENSE
+VU: do not pass (negated) IS_TENSE
+VU: did not pass (negated) WAS_TENSE
+VU: did not pass (negated) WAS_TENSE
+VU: passes IS_TENSE
+VU: pass IS_TENSE
+VU: passed WAS_TENSE
+VU: passed WAS_TENSE
+VU: has not picked (negated) HASBEEN_TENSE
+VU: have not picked (negated) HASBEEN_TENSE
+VU: had not picked (negated) HADBEEN_TENSE
+VU: had not picked (negated) HADBEEN_TENSE
+VU: has picked HASBEEN_TENSE
+VU: have picked HASBEEN_TENSE
+VU: had picked HADBEEN_TENSE
+VU: had picked HADBEEN_TENSE
+VU: does not pick (negated) IS_TENSE
+VU: do not pick (negated) IS_TENSE
+VU: did not pick (negated) WAS_TENSE
+VU: did not pick (negated) WAS_TENSE
+VU: picks IS_TENSE
+VU: pick IS_TENSE
+VU: picked WAS_TENSE
+VU: picked WAS_TENSE
+VU: has not provoked (negated) HASBEEN_TENSE
+VU: have not provoked (negated) HASBEEN_TENSE
+VU: had not provoked (negated) HADBEEN_TENSE
+VU: had not provoked (negated) HADBEEN_TENSE
+VU: has provoked HASBEEN_TENSE
+VU: have provoked HASBEEN_TENSE
+VU: had provoked HADBEEN_TENSE
+VU: had provoked HADBEEN_TENSE
+VU: does not provoke (negated) IS_TENSE
+VU: do not provoke (negated) IS_TENSE
+VU: did not provoke (negated) WAS_TENSE
+VU: did not provoke (negated) WAS_TENSE
+VU: provokes IS_TENSE
+VU: provoke IS_TENSE
+VU: provoked WAS_TENSE
+VU: provoked WAS_TENSE
+VU: has not pulled (negated) HASBEEN_TENSE
+VU: have not pulled (negated) HASBEEN_TENSE
+VU: had not pulled (negated) HADBEEN_TENSE
+VU: had not pulled (negated) HADBEEN_TENSE
+VU: has pulled HASBEEN_TENSE
+VU: have pulled HASBEEN_TENSE
+VU: had pulled HADBEEN_TENSE
+VU: had pulled HADBEEN_TENSE
+VU: does not pull (negated) IS_TENSE
+VU: do not pull (negated) IS_TENSE
+VU: did not pull (negated) WAS_TENSE
+VU: did not pull (negated) WAS_TENSE
+VU: pulls IS_TENSE
+VU: pull IS_TENSE
+VU: pulled WAS_TENSE
+VU: pulled WAS_TENSE
+VU: has not pushed (negated) HASBEEN_TENSE
+VU: have not pushed (negated) HASBEEN_TENSE
+VU: had not pushed (negated) HADBEEN_TENSE
+VU: had not pushed (negated) HADBEEN_TENSE
+VU: has pushed HASBEEN_TENSE
+VU: have pushed HASBEEN_TENSE
+VU: had pushed HADBEEN_TENSE
+VU: had pushed HADBEEN_TENSE
+VU: does not push (negated) IS_TENSE
+VU: do not push (negated) IS_TENSE
+VU: did not push (negated) WAS_TENSE
+VU: did not push (negated) WAS_TENSE
+VU: pushes IS_TENSE
+VU: push IS_TENSE
+VU: pushed WAS_TENSE
+VU: pushed WAS_TENSE
+VU: has not put (negated) HASBEEN_TENSE
+VU: have not put (negated) HASBEEN_TENSE
+VU: had not put (negated) HADBEEN_TENSE
+VU: had not put (negated) HADBEEN_TENSE
+VU: has put HASBEEN_TENSE
+VU: have put HASBEEN_TENSE
+VU: had put HADBEEN_TENSE
+VU: had put HADBEEN_TENSE
+VU: does not put (negated) IS_TENSE
+VU: do not put (negated) IS_TENSE
+VU: did not put (negated) WAS_TENSE
+VU: did not put (negated) WAS_TENSE
+VU: puts IS_TENSE
+VU: put IS_TENSE
+VU: put WAS_TENSE
+VU: put WAS_TENSE
+VU: has not rubbed (negated) HASBEEN_TENSE
+VU: have not rubbed (negated) HASBEEN_TENSE
+VU: had not rubbed (negated) HADBEEN_TENSE
+VU: had not rubbed (negated) HADBEEN_TENSE
+VU: has rubbed HASBEEN_TENSE
+VU: have rubbed HASBEEN_TENSE
+VU: had rubbed HADBEEN_TENSE
+VU: had rubbed HADBEEN_TENSE
+VU: does not rub (negated) IS_TENSE
+VU: do not rub (negated) IS_TENSE
+VU: did not rub (negated) WAS_TENSE
+VU: did not rub (negated) WAS_TENSE
+VU: rubs IS_TENSE
+VU: rub IS_TENSE
+VU: rubbed WAS_TENSE
+VU: rubbed WAS_TENSE
+VU: has not said (negated) HASBEEN_TENSE
+VU: have not said (negated) HASBEEN_TENSE
+VU: had not said (negated) HADBEEN_TENSE
+VU: had not said (negated) HADBEEN_TENSE
+VU: has said HASBEEN_TENSE
+VU: have said HASBEEN_TENSE
+VU: had said HADBEEN_TENSE
+VU: had said HADBEEN_TENSE
+VU: does not say (negated) IS_TENSE
+VU: do not say (negated) IS_TENSE
+VU: did not say (negated) WAS_TENSE
+VU: did not say (negated) WAS_TENSE
+VU: says IS_TENSE
+VU: say IS_TENSE
+VU: said WAS_TENSE
+VU: said WAS_TENSE
+VU: has not searched (negated) HASBEEN_TENSE
+VU: have not searched (negated) HASBEEN_TENSE
+VU: had not searched (negated) HADBEEN_TENSE
+VU: had not searched (negated) HADBEEN_TENSE
+VU: has searched HASBEEN_TENSE
+VU: have searched HASBEEN_TENSE
+VU: had searched HADBEEN_TENSE
+VU: had searched HADBEEN_TENSE
+VU: does not search (negated) IS_TENSE
+VU: do not search (negated) IS_TENSE
+VU: did not search (negated) WAS_TENSE
+VU: did not search (negated) WAS_TENSE
+VU: searches IS_TENSE
+VU: search IS_TENSE
+VU: searched WAS_TENSE
+VU: searched WAS_TENSE
+VU: has not seen (negated) HASBEEN_TENSE
+VU: have not seen (negated) HASBEEN_TENSE
+VU: had not seen (negated) HADBEEN_TENSE
+VU: had not seen (negated) HADBEEN_TENSE
+VU: has seen HASBEEN_TENSE
+VU: have seen HASBEEN_TENSE
+VU: had seen HADBEEN_TENSE
+VU: had seen HADBEEN_TENSE
+VU: does not see (negated) IS_TENSE
+VU: do not see (negated) IS_TENSE
+VU: did not see (negated) WAS_TENSE
+VU: did not see (negated) WAS_TENSE
+VU: sees IS_TENSE
+VU: see IS_TENSE
+VU: saw WAS_TENSE
+VU: saw WAS_TENSE
+VU: has not seemed (negated) HASBEEN_TENSE
+VU: have not seemed (negated) HASBEEN_TENSE
+VU: had not seemed (negated) HADBEEN_TENSE
+VU: had not seemed (negated) HADBEEN_TENSE
+VU: has seemed HASBEEN_TENSE
+VU: have seemed HASBEEN_TENSE
+VU: had seemed HADBEEN_TENSE
+VU: had seemed HADBEEN_TENSE
+VU: does not seem (negated) IS_TENSE
+VU: do not seem (negated) IS_TENSE
+VU: did not seem (negated) WAS_TENSE
+VU: did not seem (negated) WAS_TENSE
+VU: seems IS_TENSE
+VU: seem IS_TENSE
+VU: seemed WAS_TENSE
+VU: seemed WAS_TENSE
+VU: has not set (negated) HASBEEN_TENSE
+VU: have not set (negated) HASBEEN_TENSE
+VU: had not set (negated) HADBEEN_TENSE
+VU: had not set (negated) HADBEEN_TENSE
+VU: has set HASBEEN_TENSE
+VU: have set HASBEEN_TENSE
+VU: had set HADBEEN_TENSE
+VU: had set HADBEEN_TENSE
+VU: does not set (negated) IS_TENSE
+VU: do not set (negated) IS_TENSE
+VU: did not set (negated) WAS_TENSE
+VU: did not set (negated) WAS_TENSE
+VU: sets IS_TENSE
+VU: set IS_TENSE
+VU: set WAS_TENSE
+VU: set WAS_TENSE
+VU: has not smelled (negated) HASBEEN_TENSE
+VU: have not smelled (negated) HASBEEN_TENSE
+VU: had not smelled (negated) HADBEEN_TENSE
+VU: had not smelled (negated) HADBEEN_TENSE
+VU: has smelled HASBEEN_TENSE
+VU: have smelled HASBEEN_TENSE
+VU: had smelled HADBEEN_TENSE
+VU: had smelled HADBEEN_TENSE
+VU: does not smell (negated) IS_TENSE
+VU: do not smell (negated) IS_TENSE
+VU: did not smell (negated) WAS_TENSE
+VU: did not smell (negated) WAS_TENSE
+VU: smells IS_TENSE
+VU: smell IS_TENSE
+VU: smelled WAS_TENSE
+VU: smelled WAS_TENSE
+VU: has not sniffed (negated) HASBEEN_TENSE
+VU: have not sniffed (negated) HASBEEN_TENSE
+VU: had not sniffed (negated) HADBEEN_TENSE
+VU: had not sniffed (negated) HADBEEN_TENSE
+VU: has sniffed HASBEEN_TENSE
+VU: have sniffed HASBEEN_TENSE
+VU: had sniffed HADBEEN_TENSE
+VU: had sniffed HADBEEN_TENSE
+VU: does not sniff (negated) IS_TENSE
+VU: do not sniff (negated) IS_TENSE
+VU: did not sniff (negated) WAS_TENSE
+VU: did not sniff (negated) WAS_TENSE
+VU: sniffs IS_TENSE
+VU: sniff IS_TENSE
+VU: sniffed WAS_TENSE
+VU: sniffed WAS_TENSE
+VU: has not squeezed (negated) HASBEEN_TENSE
+VU: have not squeezed (negated) HASBEEN_TENSE
+VU: had not squeezed (negated) HADBEEN_TENSE
+VU: had not squeezed (negated) HADBEEN_TENSE
+VU: has squeezed HASBEEN_TENSE
+VU: have squeezed HASBEEN_TENSE
+VU: had squeezed HADBEEN_TENSE
+VU: had squeezed HADBEEN_TENSE
+VU: does not squeeze (negated) IS_TENSE
+VU: do not squeeze (negated) IS_TENSE
+VU: did not squeeze (negated) WAS_TENSE
+VU: did not squeeze (negated) WAS_TENSE
+VU: squeezes IS_TENSE
+VU: squeeze IS_TENSE
+VU: squeezed WAS_TENSE
+VU: squeezed WAS_TENSE
+VU: has not switched (negated) HASBEEN_TENSE
+VU: have not switched (negated) HASBEEN_TENSE
+VU: had not switched (negated) HADBEEN_TENSE
+VU: had not switched (negated) HADBEEN_TENSE
+VU: has switched HASBEEN_TENSE
+VU: have switched HASBEEN_TENSE
+VU: had switched HADBEEN_TENSE
+VU: had switched HADBEEN_TENSE
+VU: does not switch (negated) IS_TENSE
+VU: do not switch (negated) IS_TENSE
+VU: did not switch (negated) WAS_TENSE
+VU: did not switch (negated) WAS_TENSE
+VU: switches IS_TENSE
+VU: switch IS_TENSE
+VU: switched WAS_TENSE
+VU: switched WAS_TENSE
+VU: has not taken (negated) HASBEEN_TENSE
+VU: have not taken (negated) HASBEEN_TENSE
+VU: had not taken (negated) HADBEEN_TENSE
+VU: had not taken (negated) HADBEEN_TENSE
+VU: has taken HASBEEN_TENSE
+VU: have taken HASBEEN_TENSE
+VU: had taken HADBEEN_TENSE
+VU: had taken HADBEEN_TENSE
+VU: does not take (negated) IS_TENSE
+VU: do not take (negated) IS_TENSE
+VU: did not take (negated) WAS_TENSE
+VU: did not take (negated) WAS_TENSE
+VU: takes IS_TENSE
+VU: take IS_TENSE
+VU: took WAS_TENSE
+VU: took WAS_TENSE
+VU: has not talked (negated) HASBEEN_TENSE
+VU: have not talked (negated) HASBEEN_TENSE
+VU: had not talked (negated) HADBEEN_TENSE
+VU: had not talked (negated) HADBEEN_TENSE
+VU: has talked HASBEEN_TENSE
+VU: have talked HASBEEN_TENSE
+VU: had talked HADBEEN_TENSE
+VU: had talked HADBEEN_TENSE
+VU: does not talk (negated) IS_TENSE
+VU: do not talk (negated) IS_TENSE
+VU: did not talk (negated) WAS_TENSE
+VU: did not talk (negated) WAS_TENSE
+VU: talks IS_TENSE
+VU: talk IS_TENSE
+VU: talked WAS_TENSE
+VU: talked WAS_TENSE
+VU: has not tasted (negated) HASBEEN_TENSE
+VU: have not tasted (negated) HASBEEN_TENSE
+VU: had not tasted (negated) HADBEEN_TENSE
+VU: had not tasted (negated) HADBEEN_TENSE
+VU: has tasted HASBEEN_TENSE
+VU: have tasted HASBEEN_TENSE
+VU: had tasted HADBEEN_TENSE
+VU: had tasted HADBEEN_TENSE
+VU: does not taste (negated) IS_TENSE
+VU: do not taste (negated) IS_TENSE
+VU: did not taste (negated) WAS_TENSE
+VU: did not taste (negated) WAS_TENSE
+VU: tastes IS_TENSE
+VU: taste IS_TENSE
+VU: tasted WAS_TENSE
+VU: tasted WAS_TENSE
+VU: has not touched (negated) HASBEEN_TENSE
+VU: have not touched (negated) HASBEEN_TENSE
+VU: had not touched (negated) HADBEEN_TENSE
+VU: had not touched (negated) HADBEEN_TENSE
+VU: has touched HASBEEN_TENSE
+VU: have touched HASBEEN_TENSE
+VU: had touched HADBEEN_TENSE
+VU: had touched HADBEEN_TENSE
+VU: does not touch (negated) IS_TENSE
+VU: do not touch (negated) IS_TENSE
+VU: did not touch (negated) WAS_TENSE
+VU: did not touch (negated) WAS_TENSE
+VU: touches IS_TENSE
+VU: touch IS_TENSE
+VU: touched WAS_TENSE
+VU: touched WAS_TENSE
+VU: has not turned (negated) HASBEEN_TENSE
+VU: have not turned (negated) HASBEEN_TENSE
+VU: had not turned (negated) HADBEEN_TENSE
+VU: had not turned (negated) HADBEEN_TENSE
+VU: has turned HASBEEN_TENSE
+VU: have turned HASBEEN_TENSE
+VU: had turned HADBEEN_TENSE
+VU: had turned HADBEEN_TENSE
+VU: does not turn (negated) IS_TENSE
+VU: do not turn (negated) IS_TENSE
+VU: did not turn (negated) WAS_TENSE
+VU: did not turn (negated) WAS_TENSE
+VU: turns IS_TENSE
+VU: turn IS_TENSE
+VU: turned WAS_TENSE
+VU: turned WAS_TENSE
+VU: has not waited (negated) HASBEEN_TENSE
+VU: have not waited (negated) HASBEEN_TENSE
+VU: had not waited (negated) HADBEEN_TENSE
+VU: had not waited (negated) HADBEEN_TENSE
+VU: has waited HASBEEN_TENSE
+VU: have waited HASBEEN_TENSE
+VU: had waited HADBEEN_TENSE
+VU: had waited HADBEEN_TENSE
+VU: does not wait (negated) IS_TENSE
+VU: do not wait (negated) IS_TENSE
+VU: did not wait (negated) WAS_TENSE
+VU: did not wait (negated) WAS_TENSE
+VU: waits IS_TENSE
+VU: wait IS_TENSE
+VU: waited WAS_TENSE
+VU: waited WAS_TENSE
+VU: has not waved (negated) HASBEEN_TENSE
+VU: have not waved (negated) HASBEEN_TENSE
+VU: had not waved (negated) HADBEEN_TENSE
+VU: had not waved (negated) HADBEEN_TENSE
+VU: has waved HASBEEN_TENSE
+VU: have waved HASBEEN_TENSE
+VU: had waved HADBEEN_TENSE
+VU: had waved HADBEEN_TENSE
+VU: does not wave (negated) IS_TENSE
+VU: do not wave (negated) IS_TENSE
+VU: did not wave (negated) WAS_TENSE
+VU: did not wave (negated) WAS_TENSE
+VU: waves IS_TENSE
+VU: wave IS_TENSE
+VU: waved WAS_TENSE
+VU: waved WAS_TENSE
+VU: has not won (negated) HASBEEN_TENSE
+VU: have not won (negated) HASBEEN_TENSE
+VU: had not won (negated) HADBEEN_TENSE
+VU: had not won (negated) HADBEEN_TENSE
+VU: has won HASBEEN_TENSE
+VU: have won HASBEEN_TENSE
+VU: had won HADBEEN_TENSE
+VU: had won HADBEEN_TENSE
+VU: does not win (negated) IS_TENSE
+VU: do not win (negated) IS_TENSE
+VU: did not win (negated) WAS_TENSE
+VU: did not win (negated) WAS_TENSE
+VU: wins IS_TENSE
+VU: win IS_TENSE
+VU: won WAS_TENSE
+VU: won WAS_TENSE
+VU: has not protected (negated) HASBEEN_TENSE
+VU: have not protected (negated) HASBEEN_TENSE
+VU: had not protected (negated) HADBEEN_TENSE
+VU: had not protected (negated) HADBEEN_TENSE
+VU: has protected HASBEEN_TENSE
+VU: have protected HASBEEN_TENSE
+VU: had protected HADBEEN_TENSE
+VU: had protected HADBEEN_TENSE
+VU: does not protect (negated) IS_TENSE
+VU: do not protect (negated) IS_TENSE
+VU: did not protect (negated) WAS_TENSE
+VU: did not protect (negated) WAS_TENSE
+VU: protects IS_TENSE
+VU: protect IS_TENSE
+VU: protected WAS_TENSE
+VU: protected WAS_TENSE
+VU: has not owned (negated) HASBEEN_TENSE
+VU: have not owned (negated) HASBEEN_TENSE
+VU: had not owned (negated) HADBEEN_TENSE
+VU: had not owned (negated) HADBEEN_TENSE
+VU: has owned HASBEEN_TENSE
+VU: have owned HASBEEN_TENSE
+VU: had owned HADBEEN_TENSE
+VU: had owned HADBEEN_TENSE
+VU: does not own (negated) IS_TENSE
+VU: do not own (negated) IS_TENSE
+VU: did not own (negated) WAS_TENSE
+VU: did not own (negated) WAS_TENSE
+VU: owns IS_TENSE
+VU: own IS_TENSE
+VU: owned WAS_TENSE
+VU: owned WAS_TENSE
+VU: has not fitted (negated) HASBEEN_TENSE
+VU: have not fitted (negated) HASBEEN_TENSE
+VU: had not fitted (negated) HADBEEN_TENSE
+VU: had not fitted (negated) HADBEEN_TENSE
+VU: has fitted HASBEEN_TENSE
+VU: have fitted HASBEEN_TENSE
+VU: had fitted HADBEEN_TENSE
+VU: had fitted HADBEEN_TENSE
+VU: does not fit (negated) IS_TENSE
+VU: do not fit (negated) IS_TENSE
+VU: did not fit (negated) WAS_TENSE
+VU: did not fit (negated) WAS_TENSE
+VU: fits IS_TENSE
+VU: fit IS_TENSE
+VU: fitted WAS_TENSE
+VU: fitted WAS_TENSE
+VU: has not unbolted (negated) HASBEEN_TENSE
+VU: have not unbolted (negated) HASBEEN_TENSE
+VU: had not unbolted (negated) HADBEEN_TENSE
+VU: had not unbolted (negated) HADBEEN_TENSE
+VU: has unbolted HASBEEN_TENSE
+VU: have unbolted HASBEEN_TENSE
+VU: had unbolted HADBEEN_TENSE
+VU: had unbolted HADBEEN_TENSE
+VU: does not unbolt (negated) IS_TENSE
+VU: do not unbolt (negated) IS_TENSE
+VU: did not unbolt (negated) WAS_TENSE
+VU: did not unbolt (negated) WAS_TENSE
+VU: unbolts IS_TENSE
+VU: unbolt IS_TENSE
+VU: unbolted WAS_TENSE
+VU: unbolted WAS_TENSE
+p=meant by
+p=meaning
+p=implied by
+p=implying
+p=being able to be
+p=had by
+p=having
+p=specified by
+p=specifying
+p=related by
+p=relating
+p=substituted by
+p=substituting
+p=for
+p=done by
+p=doing
+p=if
+p=when
+p=unless
+p=translated by
+p=translating
+p=into
+p=as
+p=provided by
+p=providing
+p=used by
+p=using
+p=included by
+p=including
+p=in
+p=omitted by
+p=omitting
+p=from
+p=greater than
+p=less than
+p=at least
+p=at most
+p=being able to
+p=coulding
+p=maying
+p=mighting
+p=musting
+p=shoulding
+p=woulding
+p=being
+p=aren'ting
+p=can'ting
+p=don'ting
+p=haven'ting
+p=mustn'ting
+p=mightn'ting
+p=mayn'ting
+p=wouldn'ting
+p=couldn'ting
+p=shouldn'ting
+p=won'ting
+p=begun by
+p=beginning
+p=ended by
+p=ending
+p=tested by
+p=testing
+p=with
+p=understood by
+p=understanding
+p=released by
+p=releasing
+p=along with
+p=indexed by
+p=indexing
+p=map with
+p=inside
+p=within
+p=held in
+p=held inside
+p=contained by
+p=containing
+p=contained in
+p=on top of
+p=on
+p=supported by
+p=supporting
+p=supported on
+p=incorporated by
+p=incorporating
+p=part of
+p=a part of
+p=parts of
+p=enclosed by
+p=enclosing
+p=carried by
+p=carrying
+p=held by
+p=holding
+p=worn by
+p=wearing
+p=being able to see
+p=being able to touch
+p=concealed by
+p=concealing
+p=adjacent to
+p=regionally in
+p=mapped north of
+p=north of
+p=north from
+p=mapped northeast of
+p=northeast of
+p=northeast from
+p=mapped northwest of
+p=northwest of
+p=northwest from
+p=mapped south of
+p=south of
+p=south from
+p=mapped southeast of
+p=southeast of
+p=southeast from
+p=mapped southwest of
+p=southwest of
+p=southwest from
+p=mapped east of
+p=east of
+p=east from
+p=mapped west of
+p=west of
+p=west from
+p=mapped up of
+p=up of
+p=up from
+p=mapped down of
+p=down of
+p=down from
+p=mapped inside
+p=inside of
+p=inside from
+p=mapped outside
+p=outside of
+p=outside from
+p=above
+p=mapped above
+p=below
+p=mapped below
+p=through
+p=unlocked by
+p=unlocking
+p=achieved by
+p=achieving
+p=appreciated by
+p=appreciating
+p=arrived by
+p=arriving
+p=cared by
+p=caring
+p=closed by
+p=closing
+p=died by
+p=dying
+p=discovered by
+p=discovering
+p=dropped by
+p=dropping
+p=eaten by
+p=eating
+p=felt by
+p=feeling
+p=found by
+p=finding
+p=got by
+p=getting
+p=given by
+p=giving
+p=gone by
+p=going
+p=happened by
+p=happening
+p=heard by
+p=hearing
+p=jumped by
+p=jumping
+p=lacked by
+p=lacking
+p=led by
+p=leading
+p=liked by
+p=liking
+p=listened by
+p=listening
+p=locked by
+p=locking
+p=looked by
+p=looking
+p=needed by
+p=needing
+p=opened by
+p=opening
+p=passed by
+p=passing
+p=picked by
+p=picking
+p=provoked by
+p=provoking
+p=pulled by
+p=pulling
+p=pushed by
+p=pushing
+p=put by
+p=putting
+p=rubbed by
+p=rubbing
+p=said by
+p=saying
+p=searched by
+p=searching
+p=seen by
+p=seeing
+p=seemed by
+p=seeming
+p=set by
+p=setting
+p=smelled by
+p=smelling
+p=sniffed by
+p=sniffing
+p=squeezed by
+p=squeezing
+p=switched by
+p=switching
+p=taken by
+p=taking
+p=talked by
+p=talking
+p=tasted by
+p=tasting
+p=touched by
+p=touching
+p=turned by
+p=turning
+p=waited by
+p=waiting
+p=waved by
+p=waving
+p=won by
+p=winning
+p=protected by
+p=protecting
+p=owned by
+p=owning
+p=fitted by
+p=fitting
+p=unbolted by
+p=unbolting
+p=the same variable initial value as
+p=the same specification as
+p=the same indefinite appearance text as
+p=the same printed name as
+p=the same printed plural name as
+p=the same indefinite article as
+p=the same adaptive text viewpoint as
+p=the same description as
+p=the same map region as
+p=the same initial appearance as
+p=the same opposite as
+p=the same other side as
+p=the same carrying capacity as
+p=the same matching key as
+p=the same list grouping key as
+p=the same destination as
+p=the same conversation as
+p=the same walk style as
+p=the same last opener as
+p=the same ownership relation storage as
+p=the same infection color as
+p=the same unbolting relation storage as
