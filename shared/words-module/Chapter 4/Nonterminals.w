@@ -68,12 +68,12 @@ compositor function:
 
 @d REGISTER_NONTERMINAL(quotedname, identifier)
 	identifier = Nonterminals::find(Vocabulary::entry_for_text(quotedname));
-	identifier->result_compositor = identifier##C;
+	identifier->compositor_fn = identifier##C;
 
 @ For example, this might expand to:
 = (text as C)
 	competitor_NTM = Nonterminals::find(Vocabulary::entry_for_text(L"<competitor>"));
-	competitor_NTM->result_compositor = competitor_NTMC;
+	competitor_NTM->compositor_fn = competitor_NTMC;
 =
 Note that it is absolutely necessary that |Nonterminals::find| does
 return a nonterminal. But we can be sure that it does, since the function creates
@@ -116,7 +116,7 @@ typedef struct nonterminal {
 
 	/* For regular nonterminals */
 	struct production_list *first_production_list; /* if not internal, this defines it */
-	int (*result_compositor)(int *r, void **rp, int *inters, void **inter_ps, wording *interW, wording W);
+	int (*compositor_fn)(int *r, void **rp, int *i_s, void **i_ps, wording *i_W, wording W);
 	int multiplicitous; /* if true, matches are alternative syntax tree readings */
 
 	/* Storage for most recent correct match */
@@ -193,7 +193,7 @@ nonterminal *Nonterminals::find(vocabulary_entry *name_word) {
 			nt->range_result[i] = EMPTY_WORDING;
 
 		nt->first_production_list = NULL;
-		nt->result_compositor = NULL;
+		nt->compositor_fn = NULL;
 		nt->multiplicitous = FALSE;
 		nt->optimised_in_this_pass = FALSE;
 		nt->min_nt_words = 1; nt->max_nt_words = INFINITE_WORD_COUNT;
@@ -246,3 +246,12 @@ any single NT.
 =
 int most_recent_result = 0; /* the variable which |inweb| writes |<<r>>| */
 void *most_recent_result_p = NULL; /* the variable which |inweb| writes |<<rp>>| */
+
+@h Watching.
+A "watched" nonterminal is one which the Preform parser logs its usage of;
+this is helpful when debugging.
+
+=
+void Nonterminals::watch(nonterminal *nt, int state) {
+	nt->watched = state;
+}

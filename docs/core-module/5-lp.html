@@ -2827,7 +2827,7 @@ of alternatives each of which matches the following:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> IN_LPN; *XP = LiteralPatterns::new_lpn(W, NULL);</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax">										</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-lp.html#SP35_3" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadLPNameOption problem</span><span class="named-paragraph-number">35.3</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP35_1"></a><b>&#167;35.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compose LPG lists</span><span class="named-paragraph-number">35.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -2909,7 +2909,7 @@ can't set both scaling and an equivalent, for instance.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">scaled</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> SCALING_LPC; LP_scaling = LP_SCALED_AT; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">scaled</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-literal-real-number&gt;</span><span class="Preform-plain-syntax">			</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> SCALING_LPC; LP_scaling = LP_SCALED_AT; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP36_1"></a><b>&#167;36.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_LPNotKOV problem</span><span class="named-paragraph-number">36.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -2958,7 +2958,7 @@ by a bracketed list of up to three options in any order.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">without</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">leading</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">zeros</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> WITHOUT_LEADING_ZEROS_LSO</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax">										</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-lp.html#SP37_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadLPPartOption problem</span><span class="named-paragraph-number">37.1</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP37_1"></a><b>&#167;37.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadLPPartOption problem</span><span class="named-paragraph-number">37.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -3354,7 +3354,7 @@ seen before.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP39"></a><b>&#167;39.  </b>And this is the routine which does the creation. The text will actually be
 empty where there's an existing literal pattern name. (For instance, each
 time we see a literal pattern given as "in Imperial units", we create a

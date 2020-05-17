@@ -110,7 +110,7 @@ optionally be used.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>This handles the special meaning "X is listed in...".
 </p>
 
@@ -119,7 +119,7 @@ optionally be used.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">listed</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; *XP = RP[1];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">listed</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase&gt;</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE; *XP = RP[1];</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -166,7 +166,7 @@ following won't pick up many false positives.
 <span class="Preform-function-syntax">&lt;nounphrase-rule&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">rule</span><span class="Preform-plain-syntax">										</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> GENERATE_RAW_NP</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This handles the special meaning "X substitutes for Y".
 </p>
 
@@ -176,7 +176,7 @@ following won't pick up many false positives.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;nounphrase-rule&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">if/when</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; *XP = RP[1]; ((parse_node *) RP[1])-&gt;next = RP[2];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;nounphrase-rule&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">unless</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase&gt;</span><span class="Preform-plain-syntax">		</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE; *XP = RP[1]; ((parse_node *) RP[1])-&gt;next = RP[2];</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -231,7 +231,7 @@ subject and object NPs.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;rule-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; *XP = RP[1];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">														</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="21-rps.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NoSuchRuleExists problem</span><span class="named-paragraph-number">8.1</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NoSuchRuleExists problem</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -285,7 +285,7 @@ eventually match &lt;spec-condition&gt;.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;rule-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; *XP = RP[1];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">														</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="21-rps.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NoSuchRuleExists problem</span><span class="named-paragraph-number">8.1</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -401,7 +401,7 @@ a given rule appears in, and (within limits) where. A simple example:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;rule-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; *XP = RP[1];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">											</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE; </span><span class="named-paragraph-container code-font"><a href="21-rps.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NoSuchRuleExists problem</span><span class="named-paragraph-number">8.1</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>The object NP is more flexible:
 </p>
 
@@ -429,7 +429,7 @@ a given rule appears in, and (within limits) where. A simple example:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;rulebook-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">											</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="21-rps.html#SP17_3" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NoSuchRulebookPlacement problem</span><span class="named-paragraph-number">17.3</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP17_1"></a><b>&#167;17.1.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">ANY_RULE_PLACEMENT</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1000001</span>

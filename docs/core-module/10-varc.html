@@ -114,7 +114,7 @@ placeholder to stand for a missing noun phrase:
 <span class="Preform-function-syntax">&lt;s-existential-verb-tail&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;copular-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-noun-phrase-nounless&gt;</span><span class="Preform-plain-syntax">			</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2])</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make SV</span><span class="named-paragraph-number">4.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -182,7 +182,7 @@ handle its extra object: see below.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;meaningful-nonimperative-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;permitted-preposition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-noun-phrase&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ExParser::Subtrees::verb_marker(RP[1], RP[2], RP[3])</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;meaningful-nonimperative-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-noun-phrase&gt;</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2])</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The verb marker is a temporary node used just to store the verb or preposition
 usage; it's attached to the tree only briefly before sentence conversion
 removes it again.
@@ -215,7 +215,7 @@ works.
 <span class="Preform-function-syntax">&lt;s-universal-relation-term&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-noun-phrase&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-noun-phrase&gt;</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ExParser::val(Rvalues::from_pair(RP[1], RP[2]), W)</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The following parses a noun phrase with a relative clause, which is
 syntactically very similar to the case of a sentence. Sometimes the verb is
 explicit, as here:
@@ -256,7 +256,7 @@ relevant noun subtree with a representation of the player-object for those.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;relative-clause-marker&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;meaningful-nonimperative-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;permitted-preposition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-noun-phrase&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ExParser::Subtrees::verb_marker(RP[2], RP[3], RP[4])</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;relative-clause-marker&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;meaningful-nonimperative-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-noun-phrase&gt;</span><span class="Preform-plain-syntax"> 							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3])</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make SN</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -340,7 +340,7 @@ stack, we simply give &lt;s-noun-phrase&gt; a global mode of operation.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The upshot of this is that &lt;s-noun-phrase&gt; is only ever called in "purely
 physical mode" when it will later be called outside that mode in any event,
 and that therefore the set of excerpts matched by &lt;s-noun-phrase&gt; genuinely
@@ -358,7 +358,7 @@ is the same as that matched by &lt;s-value&gt;.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;if-forced-physical&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-description-nounless&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[2]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">^&lt;if-forced-physical&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-value-uncached&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[2]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Finally, the following is needed for conditions ("if fixed in place
 scenery, ...") where the object referred to is understood from context.
 </p>
@@ -370,7 +370,7 @@ scenery, ...") where the object referred to is understood from context.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-description&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="10-varc.html#SP12_2" class="named-paragraph-link"><span class="named-paragraph">Construct a descriptive SN subtree</span><span class="named-paragraph-number">12.2</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-adjective-list-as-desc&gt;</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="10-varc.html#SP12_2" class="named-paragraph-link"><span class="named-paragraph">Construct a descriptive SN subtree</span><span class="named-paragraph-number">12.2</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12_1"></a><b>&#167;12.1.  </b>The reason a literal number is explicitly not allowed to be a condition is
 that if something is created called (say) "Room 62" then "62" might be read
 by &lt;s-description&gt; as an abbreviated reference to that room. (This doesn't

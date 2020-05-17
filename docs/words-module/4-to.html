@@ -35,6 +35,7 @@ MathJax = {
 </script>
 
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -80,7 +81,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Shared Modules</a></li><li><a href="index.html">words</a></li><li><a href="index.html#4">Chapter 4: Parsing</a></li><li><b>The Optimiser</b></li></ul></div>
 <p class="purpose">To precalculate data which enables rapid parsing of source text against a Preform grammar.</p>
 
-<ul class="toc"><li><a href="4-to.html#SP1">&#167;1. Optimisation calculations</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="4-to.html#SP1">&#167;1. Optimisation calculations</a></li><li><a href="4-to.html#SP19">&#167;19. Flagging and numbering</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Optimisation calculations. </b>After each round of fresh Preform grammar, we need to recalculate the various
 maximum and minimum lengths, struts, and so on, because those all depend on
@@ -90,6 +91,20 @@ changed that.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first_round_of_nt_optimisation_made</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_requirements</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ditto_flag</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">DW_req</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">DS_req</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">CW_req</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">CS_req</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">FW_req</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">FS_req</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_req_bits</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::optimise_counts</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Optimiser::optimise_counts</span></span>:<br/>Loading Preform - <a href="4-lp.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
@@ -115,7 +130,7 @@ changed that.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax">) </span><a href="4-to.html#SP2" class="function-link"><span class="function-syntax">Optimiser::optimise_nt_reqs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::optimise_nt</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Optimiser::optimise_nt</span></span>:<br/><a href="4-to.html#SP1_6">&#167;1.6</a>, <a href="4-to.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::optimise_nt</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Optimiser::optimise_nt</span></span>:<br/><a href="4-to.html#SP1_7">&#167;1.7</a>, <a href="4-to.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">optimised_in_this_pass</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">optimised_in_this_pass</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Compute the minimum and maximum match lengths</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
@@ -127,13 +142,14 @@ changed that.
 <span class="plain-syntax">            </span><span class="reserved-syntax">ptoken</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> this will point to the last ptoken in the production</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Compute front-end ptoken positions</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Compute back-end ptoken positions</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_4" class="named-paragraph-link"><span class="named-paragraph">Compute struts within the production</span><span class="named-paragraph-number">1.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">Work out which ptokens are fast</span><span class="named-paragraph-number">1.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">Compute struts within the production</span><span class="named-paragraph-number">1.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_6" class="named-paragraph-link"><span class="named-paragraph">Work out which ptokens are fast</span><span class="named-paragraph-number">1.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_6" class="named-paragraph-link"><span class="named-paragraph">Mark the vocabulary's incidence list with this nonterminal</span><span class="named-paragraph-number">1.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-to.html#SP1_7" class="named-paragraph-link"><span class="named-paragraph">Mark the vocabulary's incidence list with this nonterminal</span><span class="named-paragraph-number">1.7</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
+<ul class="endnotetexts"><li>The structure range_requirement is accessed in 4/prf and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b>The minimum matched text length for a nonterminal is the smallest of the
 minima for its possible productions; for a production, it's the sum of the
 minimum match lengths of its tokens.
@@ -235,12 +251,41 @@ production, but this is never larger than about 10.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-to.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_4"></a><b>&#167;1.4.  </b>By definition, a strut is a maximal sequence of one or more inelastic ptokens
+<p class="commentary firstcommentary"><a id="SP1_4"></a><b>&#167;1.4.  </b>There's a new idea here as well, though: struts. A "strut" is a run of
+ptokens in the interior of the production whose position relative to the
+ends is not known. For example, if we match:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">frogs</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">like</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">but</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">eat</span>
+</pre>
+<p class="commentary">then we know that in a successful match, "frogs" and "like" must be the
+first two words in the text matched, and "eat" and "to" the last two.
+They are said to have positions 1, 2, -1 and -2 respectively: a positive
+number is relative to the start of the range, a negative relative to the end,
+so that position 1 is always the first word and position -1 is the last.
+</p>
+
+<p class="commentary">But we don't know where "but not" will occur; it could be anywhere in the
+middle of the text. So the ptokens for these words have position 0. A run of
+such ptokens, not counting wildcards like <span class="extract"><span class="Preform-extract-syntax">...</span></span>, is called a strut. We can
+think of it as a partition which can slide backwards and forwards. Many
+productions have no struts at all; the above example has just one. It has
+length 2, not because it contains two ptokens, but because it is always
+two words wide.
+</p>
+
+<p class="commentary">Finding struts when Preform grammar is read in means that we don't have to
+do so much work devising search patterns at parsing time, when speed is
+critical.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP1_5"></a><b>&#167;1.5.  </b>So, then, a strut is a maximal sequence of one or more inelastic ptokens
 each of which has no known position. (Clearly if one of them has a known
 position then all of them have, but we're in no hurry so we don't exploit that.)
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compute struts within the production</span><span class="named-paragraph-number">1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compute struts within the production</span><span class="named-paragraph-number">1.5</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -262,7 +307,7 @@ position then all of them have, but we're in no hurry so we don't exploit that.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-to.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_5"></a><b>&#167;1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out which ptokens are fast</span><span class="named-paragraph-number">1.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_6"></a><b>&#167;1.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out which ptokens are fast</span><span class="named-paragraph-number">1.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -273,11 +318,11 @@ position then all of them have, but we're in no hurry so we don't exploit that.)
 <span class="plain-syntax">            </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ptoken_is_fast</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-to.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_6"></a><b>&#167;1.6.  </b>Weak requirement: one word in range must match one of these bits
+<p class="commentary firstcommentary"><a id="SP1_7"></a><b>&#167;1.7.  </b>Weak requirement: one word in range must match one of these bits
 Strong ": all bits in this range must be matched by one word
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Mark the vocabulary's incidence list with this nonterminal</span><span class="named-paragraph-number">1.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Mark the vocabulary's incidence list with this nonterminal</span><span class="named-paragraph-number">1.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -426,7 +471,7 @@ combination of the meaning codes found in an adjective list.
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nonterminal_req</span><span class="plain-syntax">.</span><span class="element-syntax">FW_req</span><span class="plain-syntax"> |= (</span><a href="4-to.html#SP4" class="function-link"><span class="function-syntax">Optimiser::nt_bitmap_bit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) + </span><span class="identifier-syntax">x</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::set_nt_incidence</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Optimiser::set_nt_incidence</span></span>:<br/><a href="4-to.html#SP1_6">&#167;1.6</a>, <a href="4-to.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::set_nt_incidence</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Optimiser::set_nt_incidence</span></span>:<br/><a href="4-to.html#SP1_7">&#167;1.7</a>, <a href="4-to.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><a href="2-vcb.html#SP12" class="function-link"><span class="function-syntax">Vocabulary::get_ntb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ve</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R</span><span class="plain-syntax"> |= (</span><a href="4-to.html#SP4" class="function-link"><span class="function-syntax">Optimiser::nt_bitmap_bit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><a href="2-vcb.html#SP12" class="function-link"><span class="function-syntax">Vocabulary::set_ntb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
@@ -559,7 +604,7 @@ match some words against X, then some more against Y.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::concatenate_rreq</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Optimiser::concatenate_rreq</span></span>:<br/><a href="4-to.html#SP1_6">&#167;1.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">with</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::concatenate_rreq</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Optimiser::concatenate_rreq</span></span>:<br/><a href="4-to.html#SP1_7">&#167;1.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">with</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DS_req</span><span class="plain-syntax"> = </span><a href="4-to.html#SP7" class="function-link"><span class="function-syntax">Optimiser::concatenate_ds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DS_req</span><span class="plain-syntax">, </span><span class="identifier-syntax">with</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DS_req</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DW_req</span><span class="plain-syntax"> = </span><a href="4-to.html#SP9" class="function-link"><span class="function-syntax">Optimiser::concatenate_dw</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DW_req</span><span class="plain-syntax">, </span><span class="identifier-syntax">with</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DW_req</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CS_req</span><span class="plain-syntax"> = </span><a href="4-to.html#SP8" class="function-link"><span class="function-syntax">Optimiser::concatenate_cs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CS_req</span><span class="plain-syntax">, </span><span class="identifier-syntax">with</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CS_req</span><span class="plain-syntax">);</span>
@@ -633,7 +678,7 @@ form of de Morgan's laws.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::disjoin_rreq</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Optimiser::disjoin_rreq</span></span>:<br/><a href="4-to.html#SP1_6">&#167;1.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">with</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::disjoin_rreq</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Optimiser::disjoin_rreq</span></span>:<br/><a href="4-to.html#SP1_7">&#167;1.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">with</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DS_req</span><span class="plain-syntax"> = </span><a href="4-to.html#SP13" class="function-link"><span class="function-syntax">Optimiser::disjoin_ds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DS_req</span><span class="plain-syntax">, </span><span class="identifier-syntax">with</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DS_req</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DW_req</span><span class="plain-syntax"> = </span><a href="4-to.html#SP15" class="function-link"><span class="function-syntax">Optimiser::disjoin_dw</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DW_req</span><span class="plain-syntax">, </span><span class="identifier-syntax">with</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DW_req</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CS_req</span><span class="plain-syntax"> = </span><a href="4-to.html#SP14" class="function-link"><span class="function-syntax">Optimiser::disjoin_cs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CS_req</span><span class="plain-syntax">, </span><span class="identifier-syntax">with</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CS_req</span><span class="plain-syntax">);</span>
@@ -693,13 +738,13 @@ must be found in X/Y, so:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-to.html#SP14" class="function-link"><span class="function-syntax">Optimiser::disjoin_cs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">m1</span><span class="plain-syntax">, </span><span class="identifier-syntax">m2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::clear_rreq</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">Optimiser::clear_rreq</span></span>:<br/><a href="4-to.html#SP1">&#167;1</a>, <a href="4-to.html#SP1_6">&#167;1.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::clear_rreq</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">Optimiser::clear_rreq</span></span>:<br/><a href="4-to.html#SP1">&#167;1</a>, <a href="4-to.html#SP1_7">&#167;1.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DS_req</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DW_req</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CS_req</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CW_req</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">FS_req</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">FW_req</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::atomic_rreq</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">Optimiser::atomic_rreq</span></span>:<br/><a href="4-to.html#SP1_6">&#167;1.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::atomic_rreq</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">Optimiser::atomic_rreq</span></span>:<br/><a href="4-to.html#SP1_7">&#167;1.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax"> = </span><a href="4-to.html#SP4" class="function-link"><span class="function-syntax">Optimiser::nt_bitmap_bit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DS_req</span><span class="plain-syntax"> = </span><span class="identifier-syntax">b</span><span class="plain-syntax">; </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DW_req</span><span class="plain-syntax"> = </span><span class="identifier-syntax">b</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CS_req</span><span class="plain-syntax"> = </span><span class="identifier-syntax">b</span><span class="plain-syntax">; </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CW_req</span><span class="plain-syntax"> = </span><span class="identifier-syntax">b</span><span class="plain-syntax">;</span>
@@ -721,7 +766,7 @@ must be found in X/Y, so:
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PTOKEN_ELASTIC</span><span class="plain-syntax"> -1</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::ptoken_width</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">Optimiser::ptoken_width</span></span>:<br/><a href="4-to.html#SP1_2">&#167;1.2</a>, <a href="4-to.html#SP1_3">&#167;1.3</a>, <a href="4-to.html#SP1_4">&#167;1.4</a><br/>Preform - <a href="4-prf.html#SP1_2_1_2_3_3_3_1">&#167;1.2.1.2.3.3.3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ptoken</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::ptoken_width</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">Optimiser::ptoken_width</span></span>:<br/><a href="4-to.html#SP1_2">&#167;1.2</a>, <a href="4-to.html#SP1_3">&#167;1.3</a>, <a href="4-to.html#SP1_5">&#167;1.5</a><br/>Preform - <a href="4-prf.html#SP1_2_1_2_3_3_3_1">&#167;1.2.1.2.3.3.3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ptoken</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">min</span><span class="plain-syntax">, </span><span class="identifier-syntax">max</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="4-to.html#SP18" class="function-link"><span class="function-syntax">Optimiser::ptoken_extrema</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">min</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">max</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">min</span><span class="plain-syntax"> != </span><span class="identifier-syntax">max</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">PTOKEN_ELASTIC</span><span class="plain-syntax">;</span>
@@ -756,6 +801,16 @@ infinity.
 <span class="plain-syntax">            *</span><span class="identifier-syntax">max_t</span><span class="plain-syntax"> = </span><span class="constant-syntax">INFINITE_WORD_COUNT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Flagging and numbering. </b>The following is called when a word <span class="extract"><span class="extract-syntax">ve</span></span> is read as part of a production
+with match number <span class="extract"><span class="extract-syntax">pc</span></span> for the nonterminal <span class="extract"><span class="extract-syntax">nt</span></span>:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Optimiser::flag_words</span><button class="popup" onclick="togglePopup('usagePopup26')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup26">Usage of <span class="code-font"><span class="function-syntax">Optimiser::flag_words</span></span>:<br/>Loading Preform - <a href="4-lp.html#SP16_3">&#167;16.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pc</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">flags</span><span class="plain-syntax"> |= (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">flag_words_in_production</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number_words_by_production</span><span class="plain-syntax">) </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">literal_number_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

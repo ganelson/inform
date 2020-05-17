@@ -87,7 +87,7 @@ permanent structure, whereas &lt;s-plain-text&gt; makes an S-node.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>And here is a curious variation, which is needed because equations are
 parsed with completely different spacing rules, and don't respect words. It
 matches any non-empty text where one of the words contains an equals sign
@@ -118,7 +118,7 @@ as one of its characters: thus
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Top-level nonterminals. </b>These five nonterminals are the most useful and powerful, so they're the
 main junction between the S-parser and the rest of Inform.
 </p>
@@ -140,7 +140,7 @@ variable or other storage object, or a phrase to decide a value.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>&lt;s-condition&gt; looks for a condition &mdash; anything legal after an
 "if", in short. This includes sentence-like excerpts such as "six
 animals have been in the Stables".
@@ -155,7 +155,7 @@ animals have been in the Stables".
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>&lt;s-non-action-condition&gt; is the same, but disallowing action patterns
 as conditions, so for example "taking something" would not match.
 </p>
@@ -175,7 +175,7 @@ as conditions, so for example "taking something" would not match.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>&lt;s-type-expression&gt; is for where we expect to find the "type" of something
 &mdash; for instance, the kind of value to be stored in a variable, or the
 specification of a phrase argument.
@@ -189,7 +189,7 @@ specification of a phrase argument.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>&lt;s-descriptive-type-expression&gt; is the same thing, with one difference: it
 allows nounless descriptions, such as "open opaque fixed in place", and to
 this end it treats bare adjective names as descriptions rather than values. If
@@ -207,7 +207,7 @@ and &lt;s-value&gt; as a constant value of the kind "colour".
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The following internal is just a shell for &lt;s-descriptive-type-expression&gt;,
 but it temporarily changes the parsing mode to phrase token parsing, so that
 kind variables will be read as formal prototypes.
@@ -223,7 +223,7 @@ kind variables will be read as formal prototypes.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">t</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>That's it for the cached nonterminals, but we will also define a convenient
 super-nonterminal which matches almost any meaningful reference to data, so
 it's frequently used as a way of finding out whether a new name will clash
@@ -235,7 +235,7 @@ with some existing meaning.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-type-expression&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-value&gt;</span><span class="Preform-plain-syntax">				</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>One further convenience is for text which describes an explicit action in
 a noun-like way.
 </p>
@@ -282,7 +282,7 @@ a noun-like way.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. The cache. </b>The above nonterminals are called pretty frequently on overlapping or
 coinciding runs of text. Inform runs substantially faster if the results of
 parsing the most recent expressions are cached; so, for instance, if Inform

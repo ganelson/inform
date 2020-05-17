@@ -12,6 +12,20 @@ changed that.
 =
 int first_round_of_nt_optimisation_made = FALSE;
 
+typedef struct range_requirement {
+	int no_requirements;
+	int ditto_flag;
+	int DW_req;
+	int DS_req;
+	int CW_req;
+	int CS_req;
+	int FW_req;
+	int FS_req;
+} range_requirement;
+
+int no_req_bits = 0;
+
+
 void Optimiser::optimise_counts(void) {
 	nonterminal *nt;
 	LOOP_OVER(nt, nonterminal) {
@@ -139,7 +153,31 @@ production, but this is never larger than about 10.
 		pt = prevt;
 	}
 
-@ By definition, a strut is a maximal sequence of one or more inelastic ptokens
+@ There's a new idea here as well, though: struts. A "strut" is a run of
+ptokens in the interior of the production whose position relative to the
+ends is not known. For example, if we match:
+= (text as Preform)
+	frogs like ... but not ... to eat
+=
+then we know that in a successful match, "frogs" and "like" must be the
+first two words in the text matched, and "eat" and "to" the last two.
+They are said to have positions 1, 2, -1 and -2 respectively: a positive
+number is relative to the start of the range, a negative relative to the end,
+so that position 1 is always the first word and position -1 is the last.
+
+But we don't know where "but not" will occur; it could be anywhere in the
+middle of the text. So the ptokens for these words have position 0. A run of
+such ptokens, not counting wildcards like |...|, is called a strut. We can
+think of it as a partition which can slide backwards and forwards. Many
+productions have no struts at all; the above example has just one. It has
+length 2, not because it contains two ptokens, but because it is always
+two words wide.
+
+Finding struts when Preform grammar is read in means that we don't have to
+do so much work devising search patterns at parsing time, when speed is
+critical.
+
+@ So, then, a strut is a maximal sequence of one or more inelastic ptokens
 each of which has no known position. (Clearly if one of them has a known
 position then all of them have, but we're in no hurry so we don't exploit that.)
 
@@ -629,3 +667,14 @@ void Optimiser::ptoken_extrema(ptoken *pt, int *min_t, int *max_t) {
 			break;
 	}
 }
+
+@h Flagging and numbering.
+The following is called when a word |ve| is read as part of a production
+with match number |pc| for the nonterminal |nt|:
+
+=
+void Optimiser::flag_words(vocabulary_entry *ve, nonterminal *nt, int pc) {
+	ve->flags |= (nt->flag_words_in_production);
+	if (nt->number_words_by_production) ve->literal_number_value = pc;
+}
+

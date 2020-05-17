@@ -606,7 +606,7 @@ word "to".
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">--</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> IN_ANN</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">											</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax">	NO_ANN</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The definition remaining after the preamble is removed is then vetted.
 This is a possibly controversial point, in fact, because the check in question
 is to make sure the phrase definition doesn't mask off a relationship, which
@@ -618,7 +618,7 @@ messages.
 <span class="Preform-function-syntax">&lt;phrase-vetting&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;copular-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{&lt;copular-preposition&gt;}</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> &lt;&lt;rel1&gt;&gt; = Wordings::first_wn(WR[2]); &lt;&lt;rel2&gt;&gt; = Wordings::last_wn(WR[2]); &lt;&lt;preposition_identity:prep&gt;&gt; = RP[2]; </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_MasksRelation problem</span><span class="named-paragraph-number">13.1</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_MasksRelation problem</span><span class="named-paragraph-number">13.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -659,7 +659,7 @@ the exception being the primordial phrase for saying text.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{say</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">...}</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">--</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ending</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> END_SANN</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{say</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">...}</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> NO_SANN</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The following is used on the same text as &lt;to-preamble&gt;, but later on,
 for timing reasons.
 </p>
@@ -691,7 +691,7 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-kind-for-template&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">												</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP15_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_UnknownValueToDecide problem</span><span class="named-paragraph-number">15.1</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnknownValueToDecide problem</span><span class="named-paragraph-number">15.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -831,7 +831,7 @@ give problems for misuse of brackets.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP18_4" class="named-paragraph-link"><span class="named-paragraph">Issue PM_TokenWithoutOpenBracket problem</span><span class="named-paragraph-number">18.4</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18_1"></a><b>&#167;18.1.  </b>Phrase token declarations allow a variety of non-standard constructs.
 </p>
 
@@ -867,7 +867,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-kind-as-name-token&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE; *XP = RP[1]; &lt;&lt;token-construct&gt;&gt; = KIND_NAME_PT_CONSTRUCT</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax">																</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP18_1_3" class="named-paragraph-link"><span class="named-paragraph">Issue PM_TokenMisunderstood problem</span><span class="named-paragraph-number">18.1.3</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18_2"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithEmptyBrackets problem</span><span class="named-paragraph-number">18.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -967,7 +967,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>At this final stage of parsing, all annotations to do with inline or say
 behaviour have been stripped away, and what's left is the text which will
 form the word and token sequences:

@@ -195,6 +195,9 @@ the slow scan next looks for all occurrences of "to the", the single strut
 for this production; and only then does it test the two slow nonterminals
 on the intervening words, if there are any.
 
+@d MAX_RESULTS_PER_PRODUCTION 10
+@d MAX_PTOKENS_PER_PRODUCTION 32
+
 @<Actually parse the given production, going to Fail if we can't@> =
 	int checked[MAX_PTOKENS_PER_PRODUCTION];
 	int intermediates[MAX_RESULTS_PER_PRODUCTION];
@@ -224,9 +227,9 @@ and the pointer result is null.
 @d FAIL_NONTERMINAL_TO FAIL_NONTERMINAL+1000
 
 @<Compose and store the result@> =
-	if (nt->result_compositor) {
+	if (nt->compositor_fn) {
 		intermediates[0] = pr->match_number;
-		int f = (*(nt->result_compositor))(&Q, &QP, intermediates, intermediate_ps, nt->range_result, W);
+		int f = (*(nt->compositor_fn))(&Q, &QP, intermediates, intermediate_ps, nt->range_result, W);
 		if (f == FALSE) goto Fail;
 		if (nt->multiplicitous) {
 			#ifdef CORE_MODULE

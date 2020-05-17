@@ -316,7 +316,7 @@ this to any other language).
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">indefinite</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">appearance</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">text</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">variable</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">initial</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">value</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5_6"></a><b>&#167;5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Note the significance of this property, if it needs compiler support</span><span class="named-paragraph-number">5.6</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -358,7 +358,7 @@ name in both forms. The following grammar is used to construct this prefix.
 <span class="Preform-function-syntax">&lt;property-name-construction&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">property</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5_8"></a><b>&#167;5.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register the property name as a noun</span><span class="named-paragraph-number">5.8</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -409,7 +409,7 @@ article:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>With two variants:
 </p>
 
@@ -438,7 +438,7 @@ article:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>For tiresome internal reasons, we also need a version which is voracious
 (and doesn't accept the definite article):
 </p>
@@ -454,7 +454,7 @@ article:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>We call a property name "ambiguous" if, syntactically, it looks like a
 reference to a property of something. For example, "point of view" could
 be mistaken for the "point" property of something called "view". Formally,
@@ -465,7 +465,7 @@ it's ambiguous if it matches the following:
 <span class="Preform-function-syntax">&lt;name-looking-like-property-test&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>And this internal is exactly like &lt;property-name&gt; except that it only
 matches ambiguous cases.
 </p>
@@ -483,7 +483,7 @@ matches ambiguous cases.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>But the following slow routine, not used very often, is also convenient for
 finding the length of the longest property name at the start of an excerpt.
 (The assertion parser uses this to break text like "carrying capacity 20".)

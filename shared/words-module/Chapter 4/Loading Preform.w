@@ -111,7 +111,7 @@ has already removed any such.
 =
 int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 	NATURAL_LANGUAGE_WORDS_TYPE *current_natural_language = L;
-	int nonterminals_declared = 0;
+	int declarations = 0;
 	LOOP_THROUGH_WORDING(wn, W) {
 		if (Lexer::word(wn) == PARBREAK_V) continue;
 		if ((Wordings::last_wn(W) >= wn+1) && (Lexer::word(wn) == language_V))
@@ -124,7 +124,7 @@ int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 			internal_error("syntax error in Preform declarations");
 	}
 	Optimiser::optimise_counts();
-	return nonterminals_declared;
+	return declarations;
 }
 
 @ We either switch to an existing natural language, or create a new one.
@@ -148,47 +148,77 @@ int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 
 @<Parse an internal nonterminal declaration@> =
 	nonterminal *nt = Nonterminals::find(Lexer::word(wn));
-	if (nt->first_production_list) internal_error("internal is defined");
+	if (nt->first_production_list)
+		internal_error("nonterminal internal in one definition and regular in another");
 	nt->marked_internal = TRUE;
 	wn++;
-	nonterminals_declared++;
+	declarations++;
 
 @ Regular declarations are much longer and continue until the end of the text,
 or until we reach a paragraph break. The body of such a declaration is a list
 of productions divided by stroke symbols.
 
+Note that an empty production is not recorded: e.g., if there are two consecutive
+strokes, the gap between them will not be considered as a production, and the
+second stroke will simply be ignored. I suppose this is arguably a syntax error
+and could be rejected as such, but it does no harm.
+
 @<Parse a regular nonterminal declaration@> =
 	nonterminal *nt = Nonterminals::find(Lexer::word(wn));
-	production_list *pl;
-	@<Find or create the production list for this language@>;
-	wn += 2;
+	if (nt->marked_internal)
+		internal_error("nonterminal internal in one definition and regular in another");
+	production_list *pl = LoadPreform::find_list_for_language(nt, current_natural_language);
+	wn += 2; /* advance past the ID word and the |::=| word */
 	int pc = 0;
 	while (TRUE) {
 		int x = wn;
 		while ((x <= Wordings::last_wn(W)) && (Lexer::word(x) != STROKE_V) &&
 			(Lexer::word(x) != PARBREAK_V)) x++;
 		if (wn < x) {
-			production *pr = LoadPreform::new_production(Wordings::new(wn, x-1), nt, pc++);
-			wn = x;
-			@<Place the new production within the production list@>;
+			wording PW = Wordings::new(wn, x-1); wn = x;
+			LoadPreform::add_production(LoadPreform::new_production(PW, nt, pc++), pl);
 		}
 		if ((wn > Wordings::last_wn(W)) || (Lexer::word(x) == PARBREAK_V)) break; /* reached end */
 		wn++; /* advance past the stroke and continue */
 	}
 	wn--;
-	nonterminals_declared++;
+	declarations++;
 
-@<Find or create the production list for this language@> =
+@h Production lists.
+Regular nonterminals are defined by a list of alternative possibilities
+divided by vertical stroke characters; these are called "productions", for
+reasons going back to computer science history.
+
+However, the same nonterminal can have multiple lists, one for each language
+where it's defined: for example, <competitor> could have one English and
+one French definition both in memory at the same time. Each would be an
+independent //production_list// object.
+
+=
+typedef struct production_list {
+	NATURAL_LANGUAGE_WORDS_TYPE *definition_language;
+	struct production_list *next_production_list; /* in the list of PLs for a NT */
+	struct production *first_production; /* start of linked list of productions */
+	struct match_avinue *as_avinue; /* when compiled to a trie rather than for Preform */
+	CLASS_DEFINITION
+} production_list;
+
+@ =
+production_list *LoadPreform::find_list_for_language(nonterminal *nt,
+	NATURAL_LANGUAGE_WORDS_TYPE *L) {
+	production_list *pl;
 	for (pl = nt->first_production_list; pl; pl = pl->next_production_list)
-		if (pl->definition_language == current_natural_language)
+		if (pl->definition_language == L)
 			break;
 	if (pl == NULL)	{
 		pl = CREATE(production_list);
-		pl->definition_language = current_natural_language;
+		pl->definition_language = L;
 		pl->first_production = NULL;
 		pl->as_avinue = NULL;
 		@<Place the new production list within the nonterminal@>;
 	}
+	return pl;
+}
 
 @<Place the new production list within the nonterminal@> =
 	if (nt->first_production_list == NULL) nt->first_production_list = pl;
@@ -198,88 +228,56 @@ of productions divided by stroke symbols.
 		p->next_production_list = pl;
 	}
 
-@<Place the new production within the production list@> =
+@ It is undeniably clumsy that the linked list of PLs, and also of productions
+within each PL, is managed by hand rather than by using //foundation//. But
+speed is critical when parsing Inform text from these productions, and we want
+to minimise overhead.
+
+=
+void LoadPreform::add_production(production *pr, production_list *pl) {
 	if (pl->first_production == NULL) pl->first_production = pr;
 	else {
 		production *p = pl->first_production;
 		while ((p) && (p->next_production)) p = p->next_production;
 		p->next_production = pr;
 	}
+}
 
-
-
-
-@
-
-@d MAX_RESULTS_PER_PRODUCTION 10
-
-@ Each (external) nonterminal is then defined by lists of productions:
-potentially one for each language, though only English is required to define
-all of them, and English will always be the first in the list of lists.
-
-=
-typedef struct production_list {
-	NATURAL_LANGUAGE_WORDS_TYPE *definition_language;
-	struct production *first_production;
-	struct production_list *next_production_list;
-	struct match_avinue *as_avinue; /* when compiled to a trie rather than for Preform */
-	CLASS_DEFINITION
-} production_list;
-
-@ So now we reach the production, which encodes a typical "row" of grammar;
-see the examples above. A production is another list, of "ptokens" (the
-"p" is silent). For example, the production
-= (text as InC)
+@h Productions and ptokens.
+So now we reach the production, which encodes a typical "row" of grammar:
+for example,
+= (text as Preform)
 	runner no <cardinal-number>
 =
-contains three ptokens. (Note that the stroke sign and the defined-by sign are
-not ptokens; they divide up productions, but aren't part of them.)
+is a production. This is implemented as still another list, of "ptokens" (the
+"p" is silent): that example has three ptokens. Note that the stroke sign and
+the defined-by sign are not ptokens; they divide up productions, but aren't
+part of them.
 
-Like nonterminals, productions also count the minimum and maximum words
-matched: in the above example, both are 3.
-
-There's a new idea here as well, though: struts. A "strut" is a run of
-ptokens in the interior of the production whose position relative to the
-ends is not known. For example, if we match:
-= (text as InC)
-	frogs like ... but not ... to eat
-=
-then we know that in a successful match, "frogs" and "like" must be the
-first two words in the text matched, and "eat" and "to" the last two.
-They are said to have positions 1, 2, $-1$ and $-2$ respectively: a positive
-number is relative to the start of the range, a negative relative to the end,
-so that position 1 is always the first word and position $-1$ is the last.
-
-But we don't know where "but not" will occur; it could be anywhere in the
-middle of the text. So the ptokens for these words have position 0. A run of
-such ptokens, not counting wildcards like |...|, is called a strut. We can
-think of it as a partition which can slide backwards and forwards. Many
-productions have no struts at all; the above example has just one. It has
-length 2, not because it contains two ptokens, but because it is always
-two words wide.
-
-Finding struts when Preform grammar is read in means that we don't have to
-do so much work devising search patterns at parsing time, when speed is
-critical.
+//The Optimiser// calculates data on productions just as it does on nonterminals.
+For example, it can see that the above can only match a text if it has exactly
+3 words, so it sets both |min_pr_words| and |max_pr_words| to 3. For the meaning
+of the remaining data, and for what "struts" are, see //The Optimiser//: it
+only confuses the picture here.
 
 @d MAX_STRUTS_PER_PRODUCTION 10
-@d MAX_PTOKENS_PER_PRODUCTION 16
 
 =
 typedef struct production {
 	struct ptoken *first_ptoken; /* the linked list of ptokens */
-	int match_number; /* 0 for |/a/|, 1 for |/b/| and so on */
+	int match_number; /* 0 for |/a/|, 1 for |/b/| and so on: see //About Preform// */
 
 	int no_ranges; /* actually one more, since range 0 is reserved (see above) */
 
-	int min_pr_words, max_pr_words; /* for speed */
+	/* Optimiser data */
+	int min_pr_words, max_pr_words;
 	struct range_requirement production_req;
-
 	int no_struts; /* the actual number, this time */
 	struct ptoken *struts[MAX_STRUTS_PER_PRODUCTION]; /* first ptoken in strut */
 	int strut_lengths[MAX_STRUTS_PER_PRODUCTION]; /* length of the strut in words */
 
-	int production_tries; /* used only in instrumented mode */
+	/* For debugging only */
+	int production_tries; /* for statistics collected in instrumented mode */
 	int production_matches; /* ditto */
 	struct wording sample_text; /* ditto */
 
@@ -290,21 +288,6 @@ typedef struct production {
 @ And at the bottom of the chain, the lowly ptoken. Even this can spawn another
 list, though: the token |fried/green/tomatoes| is a list of three ptokens joined
 by the |alternative_ptoken| links.
-
-There are two modifiers left to represent: the effects of |^| (negation) and
-|_| (casing), and they each have flags. If the ptoken is at the head of a list
-of alternatives, they apply to all of the alternatives, even though set only
-for the headword.
-
-Each ptoken has a |range_starts| and |range_ends| number. This is either $-1$,
-or marks that the ptoken occurs as the first or last in a range (or both). For
-example, in the production
-= (text as InC)
-	make ... from {rice ... onions} and peppers
-=
-the first |...| ptoken has start and end set to 1; |rice| has start 2; |onions|
-has end 2. Note that the second |...|, inside the braces, doesn't start or
-end anything; it normally would, but the wider range consumes it.
 
 There are really only three kinds of ptoken, wildcards, fixed words, and
 nonterminals, but it's fractionally quicker to differentiate the sorts of
@@ -320,66 +303,54 @@ the |balanced_wildcard| flag set.
 
 =
 typedef struct ptoken {
+	/* How to parse text against this ptoken */
 	int ptoken_category; /* one of the |*_PTC| values */
-
+	int balanced_wildcard; /* for |MULTIPLE_WILDCARD_PTC| ptokens: brackets balanced? */
 	int negated_ptoken; /* the |^| modifier applies */
 	int disallow_unexpected_upper; /* the |_| modifier applies */
-
 	struct nonterminal *nt_pt; /* for |NONTERMINAL_PTC| ptokens */
-
 	struct vocabulary_entry *ve_pt; /* for |FIXED_WORD_PTC| ptokens */
 	struct ptoken *alternative_ptoken; /* linked list of other vocabulary ptokens */
 
-	int balanced_wildcard; /* for |MULTIPLE_WILDCARD_PTC| ptokens: brackets balanced? */
-
+	/* What results from a successful match against this ptoken */
 	int result_index; /* for |NONTERMINAL_PTC| ptokens: what result number, counting from 1? */
 	int range_starts; /* 1, 2, 3, ... if word range 1, 2, 3, ... starts with this */
 	int range_ends; /* 1, 2, 3, ... if word range 1, 2, 3, ... ends with this */
 
-	int ptoken_position; /* fixed position in range: 1, 2, ... for left, $-1$, $-2$, ... for right */
-	int strut_number; /* if this is part of a strut, what number? or $-1$ if not */
-
+	/* Optimiser data */
+	int ptoken_position; /* fixed position in range: 1, 2, ... for left, -1, -2, ... for right */
+	int strut_number; /* if this is part of a strut, what number? or -1 if not */
 	int ptoken_is_fast; /* can be checked in the fast pass of the parser */
-
 	struct range_requirement token_req;
 
 	struct ptoken *next_ptoken; /* within its production list */
 	CLASS_DEFINITION
 } ptoken;
 
-@ Preform can run in an instrumented mode, which collects statistics on the
-usage of syntax it sees, but there's a performance hit for this. So it's
-enabled only if the constant |INSTRUMENTED_PREFORM| defined to |TRUE|: here's
-where to do it.
+@ Each ptoken has a |range_starts| and |range_ends| number. This is either -1,
+or marks that the ptoken occurs as the first or last in a range (or both). For
+example, in the production
+= (text as InC)
+	make ... from {rice ... onions} and peppers
+=
+the first |...| ptoken has start and end set to 1; |rice| has start 2; |onions|
+has end 2. Note that the second |...|, inside the braces, doesn't start or
+end anything; it normally would, but the wider range consumes it.
 
-@ =
-typedef struct range_requirement {
-	int no_requirements;
-	int ditto_flag;
-	int DW_req;
-	int DS_req;
-	int CW_req;
-	int CS_req;
-	int FW_req;
-	int FS_req;
-} range_requirement;
-
-int no_req_bits = 0;
-
-
-
-@ We now descend to the creation of productions for (external) nonterminals.
+@h Reading productions.
+We read the wording |W| of a production for the nonterminal |nt|, with |pc|
+or "production count" being 0 for the first one defined, 1 for the second,
+and so on.
 
 =
 production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 	production *pr = CREATE(production);
-	pr->match_number = pc;
+	pr->match_number = pc; /* "production count": 0 for first in defn, and so on */
 	pr->next_production = NULL;
 
 	pr->no_ranges = 1; /* so that they count from 1; range 0 is unused */
 
 	pr->no_struts = 0; /* they will be detected later */
-
 	pr->min_pr_words = 1; pr->max_pr_words = INFINITE_WORD_COUNT;
 
 	pr->production_tries = 0; pr->production_matches = 0;
@@ -391,7 +362,16 @@ production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 	return pr;
 }
 
-@
+@ So, then, we have to turn a wording like:
+= (text as Preform)
+	make ... from {rice ... onions/shallots} and peppers
+=
+into a sequence of ptokens, setting |head| to the first and |tail| to the last.
+This particular example will produce two word ranges: one for the initial |...|,
+one for the matter in the braces. Because of that, we need to keep track of
+whether we're in braces or not. (Braces cannot be nested.)
+
+The alternative |onions/shallots| is called a "slashed chain" in the code below.
 
 @d OUTSIDE_PTBRACE 0
 @d ABOUT_TO_OPEN_PTBRACE 1
@@ -403,20 +383,15 @@ production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 	int unescaped = TRUE;
 	int bracing_mode = OUTSIDE_PTBRACE;
 	ptoken *bracing_begins_at = NULL;
-	int tc = 0;
+	int token_count = 0;
 	LOOP_THROUGH_WORDING(i, W) {
 		if (unescaped) @<Parse the token modifier symbols@>;
 
 		ptoken *pt = LoadPreform::parse_slashed_chain(nt, pr, i, unescaped);
-		if (pt == NULL) continue; /* we have set the production match number instead */
-
-		if (pt->ptoken_category == NONTERMINAL_PTC) @<Assign the ptoken a result number@>;
-
-		@<Modify the new token according to the current token modifier settings@>;
-
-		if (tc++ < MAX_PTOKENS_PER_PRODUCTION) {
-			if (head == NULL) head = pt; else tail->next_ptoken = pt;
-			tail = pt;
+		if (pt) {
+			if (pt->ptoken_category == NONTERMINAL_PTC) @<Assign a result number@>;
+			@<Modify the new ptoken according to the current modifier settings@>;
+			@<Add the new ptoken to the production@>;
 		}
 	}
 
@@ -432,22 +407,28 @@ production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 			break;
 		case INSIDE_PTBRACE:
 			if (Lexer::word(i) == CLOSEBRACE_V) {
-				if (bracing_begins_at) {
-					int rnum = pr->no_ranges++;
-					if ((i+2 <= Wordings::last_wn(W)) && (Lexer::word(i+1) == QUESTIONMARK_V) &&
-						(Vocabulary::test_flags(i+2, NUMBER_MC))) {
-						rnum = Vocabulary::get_literal_number_value(Lexer::word(i+2));
-						i += 2;
-					}
-					bracing_begins_at->range_starts = rnum;
-					tail->range_ends = rnum;
-				}
+				if (bracing_begins_at) @<Set a word range to end here@>;
 				bracing_mode = OUTSIDE_PTBRACE; bracing_begins_at = NULL; continue;
 			}
 			break;
 	}
 
-@<Modify the new token according to the current token modifier settings@> =
+@ A bracing can be followed by |? N| to make it have the number |N|, rather
+than the next number counting upwards; see //About Preform//.
+
+@<Set a word range to end here@> =
+	int rnum = pr->no_ranges++;
+	if ((i+2 <= Wordings::last_wn(W)) && (Lexer::word(i+1) == QUESTIONMARK_V) &&
+		(Vocabulary::test_flags(i+2, NUMBER_MC))) {
+		rnum = Vocabulary::get_literal_number_value(Lexer::word(i+2));
+		i += 2;
+	}
+	if ((rnum < 1) || (rnum >= MAX_RANGES_PER_PRODUCTION))
+		internal_error("range number out of range");
+	bracing_begins_at->range_starts = rnum;
+	tail->range_ends = rnum;
+
+@<Modify the new ptoken according to the current modifier settings@> =
 	if (negation_modifier) pt->negated_ptoken = TRUE;
 	if (lower_case_modifier) pt->disallow_unexpected_upper = TRUE;
 
@@ -457,36 +438,52 @@ production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 
 	switch (bracing_mode) {
 		case OUTSIDE_PTBRACE:
-			if (((pt->ptoken_category == SINGLE_WILDCARD_PTC) ||
+			if ((pt->ptoken_category == SINGLE_WILDCARD_PTC) ||
 				(pt->ptoken_category == MULTIPLE_WILDCARD_PTC) ||
-				(pt->ptoken_category == POSSIBLY_EMPTY_WILDCARD_PTC))
-				&& (pr->no_ranges < MAX_RANGES_PER_PRODUCTION)) {
+				(pt->ptoken_category == POSSIBLY_EMPTY_WILDCARD_PTC)) {
 				int rnum = pr->no_ranges++;
+				if ((rnum < 1) || (rnum >= MAX_RANGES_PER_PRODUCTION))
+					internal_error("range number out of range");
 				pt->range_starts = rnum;
 				pt->range_ends = rnum;
 			}
 			break;
 		case ABOUT_TO_OPEN_PTBRACE:
-			if (pr->no_ranges < MAX_RANGES_PER_PRODUCTION)
-				bracing_begins_at = pt;
+			bracing_begins_at = pt;
 			bracing_mode = INSIDE_PTBRACE;
 			break;
 	}
 
-@<Assign the ptoken a result number@> =
+@ A nonterminal can be followed by |? N| to make it have result number |N|,
+rather than the next number counting upwards; see //About Preform//.
+
+@<Assign a result number@> =
 	if (result_count < MAX_RESULTS_PER_PRODUCTION) {
 		if ((i+2 <= Wordings::last_wn(W)) && (Lexer::word(i+1) == QUESTIONMARK_V) &&
 			(Vocabulary::test_flags(i+2, NUMBER_MC))) {
 			pt->result_index = Vocabulary::get_literal_number_value(Lexer::word(i+2));
+			if ((pt->result_index < 0) || (pt->result_index >= MAX_RESULTS_PER_PRODUCTION))
+				internal_error("result number out of range");
 			i += 2;
 		} else {
 			pt->result_index = result_count;
 		}
 		result_count++;
-	}
+	} else internal_error("too many nonterminals for one production to hold");
 
-@ =
-ptoken *LoadPreform::parse_slashed_chain(nonterminal *nt, production *pr, int wn, int unescaped) {
+@<Add the new ptoken to the production@> =
+	if (token_count++ < MAX_PTOKENS_PER_PRODUCTION) {
+		if (head == NULL) head = pt; else tail->next_ptoken = pt;
+		tail = pt;
+	} else internal_error("too many tokens on production for nonterminal");
+
+@ Here we porse what is, to the Lexer, a single word (at word number |wn|),
+but which might actually be a row of possibilities divided by slashes:
+for example, |onions/shallots|.
+
+=
+ptoken *LoadPreform::parse_slashed_chain(nonterminal *nt, production *pr, int wn,
+	int unescaped) {
 	wording AW = Wordings::one_word(wn);
 	@<Expand the word range if the token text is slashed@>;
 	ptoken *pt = NULL;
@@ -494,23 +491,38 @@ ptoken *LoadPreform::parse_slashed_chain(nonterminal *nt, production *pr, int wn
 	return pt;
 }
 
+@ Should we detect a slash used to indicate alternatives, we have to ask the
+Lexer to have another try, but with |/| as a word-breaking character this time.
+So, for example, |AW| might then end up as |onions|, |/|, |shallots|.
+
 @<Expand the word range if the token text is slashed@> =
 	wchar_t *p = Lexer::word_raw_text(wn);
 	int k, breakme = FALSE;
 	if (unescaped) {
-		if ((p[0] == '/') && (islower(p[1])) && (p[2] == '/') && (p[3] == 0)) {
-			pr->match_number = p[1] - 'a';
-			return NULL;
-		}
-		if ((p[0] == '/') && (islower(p[1])) && (p[2] == p[1]) && (p[3] == '/') && (p[4] == 0)) {
-			pr->match_number = p[1] - 'a' + 26;
-			return NULL;
-		}
+		@<Look out for production match numbers@>;
 		for (k=0; (p[k]) && (p[k+1]); k++)
 			if ((k > 0) && (p[k] == '/'))
 				breakme = TRUE;
 	}
 	if (breakme) AW = Feeds::feed_C_string_full(p, FALSE, L"/"); /* break only at slashes */
+
+@ Intercept |/a/| to |/z/| and |/aa/| to |/zz/|, which don't make ptokens at
+all, but simply change the production's match number.
+
+@<Look out for production match numbers@> =
+	if ((p[0] == '/') && (Characters::islower(p[1])) &&
+		(p[2] == '/') && (p[3] == 0)) {
+		pr->match_number = p[1] - 'a';
+		return NULL; /* i.e., contribute no token */
+	}
+	if ((p[0] == '/') && (Characters::islower(p[1])) && (p[2] == p[1]) &&
+		(p[3] == '/') && (p[4] == 0)) {
+		pr->match_number = p[1] - 'a' + 26;
+		return NULL; /* i.e., contribute no token */
+	}
+
+@ And then we string together the ptokens made into a linked list with links
+provided by |->alternative_ptoken|, and return the head of this list.
 
 @<Parse the word range into a linked list of alternative ptokens@> =
 	ptoken *alt = NULL;
@@ -518,63 +530,71 @@ ptoken *LoadPreform::parse_slashed_chain(nonterminal *nt, production *pr, int wn
 		if (Lexer::word(Wordings::first_wn(AW)) != FORWARDSLASH_V) {
 			int mode = unescaped;
 			if (Wordings::length(AW) > 1) mode = FALSE;
-			ptoken *latest = LoadPreform::new_ptoken(Lexer::word(Wordings::first_wn(AW)), mode, nt, pr->match_number);
-			if (alt == NULL) pt = latest;
+			ptoken *latest =
+				LoadPreform::new_ptoken(Lexer::word(Wordings::first_wn(AW)),
+					mode, nt, pr->match_number);
+			if (alt == NULL) pt = latest; /* thus making |pt| the head */
 			else alt->alternative_ptoken = latest;
 			alt = latest;
 		}
 
-@ So we come to the end of the trail: the code to create a single ptoken.
+@ Finally, then, the bottom-most function here parses what is definitely a
+single word into what will definitely be a single ptoken.
+
 In "escaped" mode, where a backslash has made the text literal, it just
 becomes a fixed word; otherwise it could be any of the five categories.
-
-If the text refers to a nonterminal which doesn't yet exist, then this
-creates it; that's how we deal with forward references.
 
 =
 ptoken *LoadPreform::new_ptoken(vocabulary_entry *ve, int unescaped, nonterminal *nt, int pc) {
 	ptoken *pt = CREATE(ptoken);
+	@<Begin with a blank ptoken@>;
+
+	wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
+	if ((unescaped) && (p) && (p[0] == '<') && (p[Wide::len(p)-1] == '>'))
+		@<This word is a nonterminal name@>
+	else
+		@<This word is not a nonterminal name@>;
+	return pt;
+}
+
+@<Begin with a blank ptoken@> =
 	pt->next_ptoken = NULL;
-	pt->alternative_ptoken = NULL;
+
+	pt->ptoken_category = FIXED_WORD_PTC;
+	pt->balanced_wildcard = FALSE;
 	pt->negated_ptoken = FALSE;
 	pt->disallow_unexpected_upper = FALSE;
+	pt->ve_pt = NULL;
+	pt->nt_pt = NULL;
+	pt->alternative_ptoken = NULL;
 
 	pt->result_index = 1;
 	pt->range_starts = -1; pt->range_ends = -1;
 
 	pt->ptoken_position = 0;
 	pt->strut_number = -1;
-
-	pt->ve_pt = NULL;
-	pt->nt_pt = NULL;
-	pt->balanced_wildcard = FALSE;
 	pt->ptoken_is_fast = FALSE;
 
-	wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
-	if ((unescaped) && (p) && (p[0] == '<') && (p[Wide::len(p)-1] == '>')) {
-		pt->nt_pt = Nonterminals::find(ve);
-		pt->ptoken_category = NONTERMINAL_PTC;
-	} else {
-		pt->ve_pt = ve;
-		pt->ptoken_category = FIXED_WORD_PTC;
-		if (unescaped) {
-			if (ve == SIXDOTS_V) {
-				pt->ptoken_category = MULTIPLE_WILDCARD_PTC;
-				pt->balanced_wildcard = TRUE;
-			}
-			if (ve == THREEDOTS_V) pt->ptoken_category = MULTIPLE_WILDCARD_PTC;
-			if (ve == THREEHASHES_V) pt->ptoken_category = SINGLE_WILDCARD_PTC;
-			if (ve == THREEASTERISKS_V) pt->ptoken_category = POSSIBLY_EMPTY_WILDCARD_PTC;
+@ If the text refers to a nonterminal which doesn't yet exist, then this
+creates it; that's how we deal with forward references. //Nonterminals::find//
+never returns |NULL|.
+
+@<This word is a nonterminal name@> =
+	pt->nt_pt = Nonterminals::find(ve);
+	pt->ptoken_category = NONTERMINAL_PTC;
+
+@<This word is not a nonterminal name@> =
+	pt->ve_pt = ve;
+	if (unescaped) {
+		if (ve == SIXDOTS_V) {
+			pt->ptoken_category = MULTIPLE_WILDCARD_PTC;
+			pt->balanced_wildcard = TRUE;
 		}
+		if (ve == THREEDOTS_V) pt->ptoken_category = MULTIPLE_WILDCARD_PTC;
+		if (ve == THREEHASHES_V) pt->ptoken_category = SINGLE_WILDCARD_PTC;
+		if (ve == THREEASTERISKS_V) pt->ptoken_category = POSSIBLY_EMPTY_WILDCARD_PTC;
 	}
-
-	if (pt->ptoken_category == FIXED_WORD_PTC) {
-		ve->flags |= (nt->flag_words_in_production);
-		if (nt->number_words_by_production) ve->literal_number_value = pc;
-	}
-
-	return pt;
-}
+	if (pt->ptoken_category == FIXED_WORD_PTC) Optimiser::flag_words(ve, nt, pc);
 
 @h Logging.
 Descending these wheels within wheels:
@@ -610,7 +630,6 @@ void LoadPreform::log(void) {
 		}
 		LOG("  min %d, max %d\n\n", nt->min_nt_words, nt->max_nt_words);
 	}
-	LOG("%d req bits.\n", no_req_bits);
 }
 
 @ =
@@ -660,11 +679,4 @@ void LoadPreform::write_ptoken(OUTPUT_STREAM, ptoken *pt) {
 		if (alt->alternative_ptoken) WRITE("/");
 	}
 	if (pt->range_ends >= 0) WRITE("}");
-}
-
-@ To use which, the debugging log code needs:
-
-=
-void LoadPreform::watch(nonterminal *nt, int state) {
-	nt->watched = state;
 }
