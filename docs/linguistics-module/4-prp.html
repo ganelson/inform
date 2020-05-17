@@ -186,7 +186,7 @@ preposition, but note that it does so by testing in creation order.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>It's often useful to look for prepositions which can be combined with the
 copular verb "to be". These are tested in order of the list of possible
 verb forms for "to be', which is constructed with longer prepositions first.
@@ -210,7 +210,7 @@ So it will find the longest match.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>This is exactly similar, except that it looks for prepositions combined
 with a given "permitted verb".
 </p>
@@ -232,12 +232,12 @@ with a given "permitted verb".
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Prepositions::mark_for_preform</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Prepositions::mark_for_preform</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="function-syntax">&lt;relative-clause-marker&gt;-&gt;</span><span class="identifier-syntax">flag_words_in_production</span><span class="plain-syntax"> = </span><span class="constant-syntax">PREPOSITION_MC</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="function-syntax">&lt;relative-clause-marker&gt;-&gt;</span><span class="identifier-syntax">opt</span><span class="plain-syntax">.</span><span class="identifier-syntax">flag_words_in_production</span><span class="plain-syntax"> = </span><span class="constant-syntax">PREPOSITION_MC</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Prepositions::preform_optimiser</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Prepositions::preform_optimiser</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>

@@ -12,6 +12,53 @@ changed that.
 =
 int first_round_of_nt_optimisation_made = FALSE;
 
+typedef struct nonterminal_optimisation_data {
+	int optimised_in_this_pass; /* have the following been worked out yet? */
+	int min_nt_words, max_nt_words; /* for speed */
+	struct range_requirement nonterminal_req;
+	int nt_req_bit; /* which hashing category the words belong to, or $-1$ if none */
+	int number_words_by_production;
+	unsigned int flag_words_in_production;
+} nonterminal_optimisation_data;
+
+
+void Optimiser::initialise_nonterminal_data(nonterminal_optimisation_data *opt) {
+	opt->optimised_in_this_pass = FALSE;
+	opt->min_nt_words = 1; opt->max_nt_words = INFINITE_WORD_COUNT;
+	opt->nt_req_bit = -1;
+	opt->number_words_by_production = FALSE;
+	opt->flag_words_in_production = 0;
+	Optimiser::clear_rreq(&(opt->nonterminal_req));
+}
+
+typedef struct ptoken_optimisation_data {
+	int ptoken_position; /* fixed position in range: 1, 2, ... for left, -1, -2, ... for right */
+	int strut_number; /* if this is part of a strut, what number? or -1 if not */
+	int ptoken_is_fast; /* can be checked in the fast pass of the parser */
+	struct range_requirement token_req;
+} ptoken_optimisation_data;
+
+void Optimiser::initialise_ptoken_data(ptoken_optimisation_data *opt) {
+	opt->ptoken_position = 0;
+	opt->strut_number = -1;
+	opt->ptoken_is_fast = FALSE;
+	Optimiser::clear_rreq(&(opt->token_req));
+}
+
+typedef struct production_optimisation_data {
+	int min_pr_words, max_pr_words;
+	struct range_requirement production_req;
+	int no_struts;
+	struct ptoken *struts[MAX_STRUTS_PER_PRODUCTION]; /* first ptoken in strut */
+	int strut_lengths[MAX_STRUTS_PER_PRODUCTION]; /* length of the strut in words */
+} production_optimisation_data;
+
+void Optimiser::initialise_production_data(production_optimisation_data *opt) {
+	opt->no_struts = 0;
+	opt->min_pr_words = 1; opt->max_pr_words = INFINITE_WORD_COUNT;
+	Optimiser::clear_rreq(&(opt->production_req));
+}
+
 typedef struct range_requirement {
 	int no_requirements;
 	int ditto_flag;
@@ -29,12 +76,12 @@ int no_req_bits = 0;
 void Optimiser::optimise_counts(void) {
 	nonterminal *nt;
 	LOOP_OVER(nt, nonterminal) {
-		Optimiser::clear_rreq(&(nt->nonterminal_req));
+		Optimiser::clear_rreq(&(nt->opt.nonterminal_req));
 		if (nt->marked_internal) {
-			nt->optimised_in_this_pass = TRUE;
+			nt->opt.optimised_in_this_pass = TRUE;
 		} else {
-			nt->optimised_in_this_pass = FALSE;
-			nt->min_nt_words = 1; nt->max_nt_words = INFINITE_WORD_COUNT;
+			nt->opt.optimised_in_this_pass = FALSE;
+			nt->opt.min_nt_words = 1; nt->opt.max_nt_words = INFINITE_WORD_COUNT;
 		}
 	}
 	if (first_round_of_nt_optimisation_made == FALSE) {
@@ -51,8 +98,8 @@ void Optimiser::optimise_counts(void) {
 }
 
 void Optimiser::optimise_nt(nonterminal *nt) {
-	if (nt->optimised_in_this_pass) return;
-	nt->optimised_in_this_pass = TRUE;
+	if (nt->opt.optimised_in_this_pass) return;
+	nt->opt.optimised_in_this_pass = TRUE;
 	@<Compute the minimum and maximum match lengths@>;
 
 	production_list *pl;
@@ -88,7 +135,7 @@ minimum match lengths of its tokens.
 				if (min_p > INFINITE_WORD_COUNT) min_p = INFINITE_WORD_COUNT;
 				if (max_p > INFINITE_WORD_COUNT) max_p = INFINITE_WORD_COUNT;
 			}
-			pr->min_pr_words = min_p; pr->max_pr_words = max_p;
+			pr->opt.min_pr_words = min_p; pr->opt.max_pr_words = max_p;
 			if ((min == -1) && (max == -1)) { min = min_p; max = max_p; }
 			else {
 				if (min_p < min) min = min_p;
@@ -97,7 +144,7 @@ minimum match lengths of its tokens.
 		}
 	}
 	if (min >= 1) {
-		nt->min_nt_words = min; nt->max_nt_words = max;
+		nt->opt.min_nt_words = min; nt->opt.max_nt_words = max;
 	}
 
 @ A token is "elastic" if it can match text of differing lengths, and
@@ -120,10 +167,10 @@ starts and finishes; it's not enough just to know where it starts.
 		last = pt;
 		int L = Optimiser::ptoken_width(pt);
 		if ((posn != 0) && (L != PTOKEN_ELASTIC)) {
-			pt->ptoken_position = posn;
+			pt->opt.ptoken_position = posn;
 			posn += L;
 		} else {
-			pt->ptoken_position = 0; /* thus clearing any expired positions from earlier */
+			pt->opt.ptoken_position = 0; /* thus clearing any expired positions from earlier */
 			posn = 0;
 		}
 	}
@@ -139,10 +186,10 @@ production, but this is never larger than about 10.
 	int posn = -1;
 	ptoken *pt;
 	for (pt = last; pt; ) {
-		if (pt->ptoken_position != 0) break; /* don't use a back-end position if there's a front one */
+		if (pt->opt.ptoken_position != 0) break; /* don't use a back-end position if there's a front one */
 		int L = Optimiser::ptoken_width(pt);
 		if ((posn != 0) && (L != PTOKEN_ELASTIC)) {
-			pt->ptoken_position = posn;
+			pt->opt.ptoken_position = posn;
 			posn -= L;
 		} else break;
 
@@ -182,36 +229,38 @@ each of which has no known position. (Clearly if one of them has a known
 position then all of them have, but we're in no hurry so we don't exploit that.)
 
 @<Compute struts within the production@> =
-	pr->no_struts = 0;
+	pr->opt.no_struts = 0;
 	ptoken *pt;
 	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
-		if ((pt->ptoken_position == 0) && (Optimiser::ptoken_width(pt) != PTOKEN_ELASTIC)) {
-			if (pr->no_struts >= MAX_STRUTS_PER_PRODUCTION) continue;
-			pr->struts[pr->no_struts] = pt;
-			pr->strut_lengths[pr->no_struts] = 0;
-			while ((pt->ptoken_position == 0) && (Optimiser::ptoken_width(pt) != PTOKEN_ELASTIC)) {
-				pt->strut_number = pr->no_struts;
-				pr->strut_lengths[pr->no_struts] += Optimiser::ptoken_width(pt);
+		if ((pt->opt.ptoken_position == 0) &&
+			(Optimiser::ptoken_width(pt) != PTOKEN_ELASTIC)) {
+			if (pr->opt.no_struts >= MAX_STRUTS_PER_PRODUCTION) continue;
+			pr->opt.struts[pr->opt.no_struts] = pt;
+			pr->opt.strut_lengths[pr->opt.no_struts] = 0;
+			while ((pt->opt.ptoken_position == 0) &&
+				(Optimiser::ptoken_width(pt) != PTOKEN_ELASTIC)) {
+				pt->opt.strut_number = pr->opt.no_struts;
+				pr->opt.strut_lengths[pr->opt.no_struts] += Optimiser::ptoken_width(pt);
 				if (pt->next_ptoken == NULL) break; /* should be impossible */
 				pt = pt->next_ptoken;
 			}
-			pr->no_struts++;
+			pr->opt.no_struts++;
 		}
 	}
 
 @<Work out which ptokens are fast@> =
 	ptoken *pt;
 	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken)
-		if ((pt->ptoken_category == FIXED_WORD_PTC) && (pt->ptoken_position != 0)
+		if ((pt->ptoken_category == FIXED_WORD_PTC) && (pt->opt.ptoken_position != 0)
 			&& (pt->range_starts < 0) && (pt->range_ends < 0))
-			pt->ptoken_is_fast = TRUE;
+			pt->opt.ptoken_is_fast = TRUE;
 
 @ Weak requirement: one word in range must match one of these bits
 Strong ": all bits in this range must be matched by one word
 
 @<Mark the vocabulary's incidence list with this nonterminal@> =
 	int first_production = TRUE;
-	Optimiser::clear_rreq(&(nt->nonterminal_req));
+	Optimiser::clear_rreq(&(nt->opt.nonterminal_req));
 	#ifdef PREFORM_CIRCULARITY_BREAKER
 	PREFORM_CIRCULARITY_BREAKER(nt);
 	#endif
@@ -238,27 +287,27 @@ Strong ": all bits in this range must be matched by one word
 			int all = TRUE, first = TRUE;
 			ptoken *pt;
 			for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
-				Optimiser::clear_rreq(&(pt->token_req));
+				Optimiser::clear_rreq(&(pt->opt.token_req));
 				if ((pt->ptoken_category == FIXED_WORD_PTC) && (pt->negated_ptoken == FALSE)) {
 					ptoken *alt;
 					for (alt = pt; alt; alt = alt->alternative_ptoken)
 						Optimiser::set_nt_incidence(alt->ve_pt, nt);
-					Optimiser::atomic_rreq(&(pt->token_req), nt);
+					Optimiser::atomic_rreq(&(pt->opt.token_req), nt);
 				} else all = FALSE;
 				int self_referential = FALSE, empty = FALSE;
 				if ((pt->ptoken_category == NONTERMINAL_PTC) &&
-					(pt->nt_pt->min_nt_words == 0) && (pt->nt_pt->max_nt_words == 0))
+					(pt->nt_pt->opt.min_nt_words == 0) && (pt->nt_pt->opt.max_nt_words == 0))
 					empty = TRUE; /* even if negated, notice */
 				if ((pt->ptoken_category == NONTERMINAL_PTC) && (pt->negated_ptoken == FALSE)) {
 					/* if (pt->nt_pt == nt) self_referential = TRUE; */
 					Optimiser::optimise_nt(pt->nt_pt);
-					pt->token_req = pt->nt_pt->nonterminal_req;
+					pt->opt.token_req = pt->nt_pt->opt.nonterminal_req;
 				}
 				if ((self_referential == FALSE) && (empty == FALSE)) {
 					if (first) {
-						prt = pt->token_req;
+						prt = pt->opt.token_req;
 					} else {
-						Optimiser::concatenate_rreq(&prt, &(pt->token_req));
+						Optimiser::concatenate_rreq(&prt, &(pt->opt.token_req));
 					}
 					first = FALSE;
 				}
@@ -269,10 +318,10 @@ Strong ": all bits in this range must be matched by one word
 				Optimiser::disjoin_rreq(&nnt, &prt);
 			}
 			first_production = FALSE;
-			pr->production_req = prt;
+			pr->opt.production_req = prt;
 		}
 	}
-	nt->nonterminal_req = nnt;
+	nt->opt.nonterminal_req = nnt;
 	#ifdef PREFORM_CIRCULARITY_BREAKER
 	PREFORM_CIRCULARITY_BREAKER(nt);
 	#endif
@@ -290,11 +339,11 @@ void Optimiser::optimise_nt_reqs(nonterminal *nt) {
 		production *pr;
 		range_requirement *prev_req = NULL;
 		for (pr = pl->first_production; pr; pr = pr->next_production) {
-			Optimiser::optimise_req(&(pr->production_req), prev_req);
-			prev_req = &(pr->production_req);
+			Optimiser::optimise_req(&(pr->opt.production_req), prev_req);
+			prev_req = &(pr->opt.production_req);
 		}
 	}
-	Optimiser::optimise_req(&(nt->nonterminal_req), NULL);
+	Optimiser::optimise_req(&(nt->opt.nonterminal_req), NULL);
 }
 
 void Optimiser::optimise_req(range_requirement *req, range_requirement *prev) {
@@ -324,31 +373,31 @@ void Optimiser::optimise_req(range_requirement *req, range_requirement *prev) {
 
 @ =
 void Optimiser::mark_nt_as_requiring_itself(nonterminal *nt) {
-	nt->nonterminal_req.DS_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.DW_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.DS_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.DW_req |= (Optimiser::nt_bitmap_bit(nt));
 }
 
 void Optimiser::mark_nt_as_requiring_itself_first(nonterminal *nt) {
-	nt->nonterminal_req.DS_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.DW_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.FS_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.FW_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.DS_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.DW_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.FS_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.FW_req |= (Optimiser::nt_bitmap_bit(nt));
 }
 
 void Optimiser::mark_nt_as_requiring_itself_conj(nonterminal *nt) {
-	nt->nonterminal_req.DS_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.DW_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.CS_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.CW_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.FS_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.FW_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.DS_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.DW_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.CS_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.CW_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.FS_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.FW_req |= (Optimiser::nt_bitmap_bit(nt));
 }
 
 void Optimiser::mark_nt_as_requiring_itself_augmented(nonterminal *nt, int x) {
-	nt->nonterminal_req.DS_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.DW_req |= (Optimiser::nt_bitmap_bit(nt));
-	nt->nonterminal_req.CW_req |= (Optimiser::nt_bitmap_bit(nt) + x);
-	nt->nonterminal_req.FW_req |= (Optimiser::nt_bitmap_bit(nt) + x);
+	nt->opt.nonterminal_req.DS_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.DW_req |= (Optimiser::nt_bitmap_bit(nt));
+	nt->opt.nonterminal_req.CW_req |= (Optimiser::nt_bitmap_bit(nt) + x);
+	nt->opt.nonterminal_req.FW_req |= (Optimiser::nt_bitmap_bit(nt) + x);
 }
 
 void Optimiser::set_nt_incidence(vocabulary_entry *ve, nonterminal *nt) {
@@ -369,16 +418,16 @@ int Optimiser::test_nt_incidence(vocabulary_entry *ve, nonterminal *nt) {
 
 =
 int Optimiser::nt_bitmap_bit(nonterminal *nt) {
-	if (nt->nt_req_bit == -1) {
+	if (nt->opt.nt_req_bit == -1) {
 		int b = RESERVED_NT_BITS + ((no_req_bits++)%(32-RESERVED_NT_BITS));
-		nt->nt_req_bit = (1 << b);
+		nt->opt.nt_req_bit = (1 << b);
 	}
-	return nt->nt_req_bit;
+	return nt->opt.nt_req_bit;
 }
 
 void Optimiser::assign_bitmap_bit(nonterminal *nt, int b) {
 	if (nt == NULL) internal_error("null NT");
-	nt->nt_req_bit = (1 << b);
+	nt->opt.nt_req_bit = (1 << b);
 }
 
 int Optimiser::test_word(int wn, nonterminal *nt) {
@@ -655,8 +704,8 @@ void Optimiser::ptoken_extrema(ptoken *pt, int *min_t, int *max_t) {
 	switch (pt->ptoken_category) {
 		case NONTERMINAL_PTC:
 			Optimiser::optimise_nt(pt->nt_pt); /* recurse as needed to find its extrema */
-			*min_t = pt->nt_pt->min_nt_words;
-			*max_t = pt->nt_pt->max_nt_words;
+			*min_t = pt->nt_pt->opt.min_nt_words;
+			*max_t = pt->nt_pt->opt.max_nt_words;
 			break;
 		case MULTIPLE_WILDCARD_PTC:
 			*max_t = INFINITE_WORD_COUNT;
@@ -674,7 +723,7 @@ with match number |pc| for the nonterminal |nt|:
 
 =
 void Optimiser::flag_words(vocabulary_entry *ve, nonterminal *nt, int pc) {
-	ve->flags |= (nt->flag_words_in_production);
-	if (nt->number_words_by_production) ve->literal_number_value = pc;
+	ve->flags |= (nt->opt.flag_words_in_production);
+	if (nt->opt.number_words_by_production) ve->literal_number_value = pc;
 }
 

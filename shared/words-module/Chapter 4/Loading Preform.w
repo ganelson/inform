@@ -267,27 +267,18 @@ typedef struct production {
 	struct ptoken *first_ptoken; /* the linked list of ptokens */
 	int match_number; /* 0 for |/a/|, 1 for |/b/| and so on: see //About Preform// */
 
-	int no_ranges; /* actually one more, since range 0 is reserved (see above) */
+	int no_ranges; /* actually one more, since range 0 is reserved */
 
-	/* Optimiser data */
-	int min_pr_words, max_pr_words;
-	struct range_requirement production_req;
-	int no_struts; /* the actual number, this time */
-	struct ptoken *struts[MAX_STRUTS_PER_PRODUCTION]; /* first ptoken in strut */
-	int strut_lengths[MAX_STRUTS_PER_PRODUCTION]; /* length of the strut in words */
-
-	/* For debugging only */
-	int production_tries; /* for statistics collected in instrumented mode */
-	int production_matches; /* ditto */
-	struct wording sample_text; /* ditto */
+	struct production_optimisation_data opt; /* see //The Optimiser// */
+	struct production_instrumentation_data ins; /* see //Instrumentation// */
 
 	struct production *next_production; /* within its production list */
 	CLASS_DEFINITION
 } production;
 
-@ And at the bottom of the chain, the lowly ptoken. Even this can spawn another
-list, though: the token |fried/green/tomatoes| is a list of three ptokens joined
-by the |alternative_ptoken| links.
+@ And at the bottom of God's great chain, the lowly ptoken. Even this can spawn
+another list, though: the token |fried/green/tomatoes| is a list of three ptokens
+joined by the |alternative_ptoken| links.
 
 There are really only three kinds of ptoken, wildcards, fixed words, and
 nonterminals, but it's fractionally quicker to differentiate the sorts of
@@ -317,11 +308,8 @@ typedef struct ptoken {
 	int range_starts; /* 1, 2, 3, ... if word range 1, 2, 3, ... starts with this */
 	int range_ends; /* 1, 2, 3, ... if word range 1, 2, 3, ... ends with this */
 
-	/* Optimiser data */
-	int ptoken_position; /* fixed position in range: 1, 2, ... for left, -1, -2, ... for right */
-	int strut_number; /* if this is part of a strut, what number? or -1 if not */
-	int ptoken_is_fast; /* can be checked in the fast pass of the parser */
-	struct range_requirement token_req;
+	struct ptoken_optimisation_data opt; /* see //The Optimiser// */
+	struct ptoken_instrumentation_data ins; /* see //Instrumentation// */
 
 	struct ptoken *next_ptoken; /* within its production list */
 	CLASS_DEFINITION
@@ -350,11 +338,8 @@ production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 
 	pr->no_ranges = 1; /* so that they count from 1; range 0 is unused */
 
-	pr->no_struts = 0; /* they will be detected later */
-	pr->min_pr_words = 1; pr->max_pr_words = INFINITE_WORD_COUNT;
-
-	pr->production_tries = 0; pr->production_matches = 0;
-	pr->sample_text = EMPTY_WORDING;
+	Optimiser::initialise_production_data(&(pr->opt));
+	Instrumentation::initialise_production_data(&(pr->ins));
 
 	ptoken *head = NULL, *tail = NULL;
 	@<Parse the row of production tokens into a linked list of ptokens@>;
@@ -571,9 +556,8 @@ ptoken *LoadPreform::new_ptoken(vocabulary_entry *ve, int unescaped, nonterminal
 	pt->result_index = 1;
 	pt->range_starts = -1; pt->range_ends = -1;
 
-	pt->ptoken_position = 0;
-	pt->strut_number = -1;
-	pt->ptoken_is_fast = FALSE;
+	Optimiser::initialise_ptoken_data(&(pt->opt));
+	Instrumentation::initialise_ptoken_data(&(pt->ins));
 
 @ If the text refers to a nonterminal which doesn't yet exist, then this
 creates it; that's how we deal with forward references. //Nonterminals::find//
@@ -595,88 +579,3 @@ never returns |NULL|.
 		if (ve == THREEASTERISKS_V) pt->ptoken_category = POSSIBLY_EMPTY_WILDCARD_PTC;
 	}
 	if (pt->ptoken_category == FIXED_WORD_PTC) Optimiser::flag_words(ve, nt, pc);
-
-@h Logging.
-Descending these wheels within wheels:
-
-=
-void LoadPreform::log(void) {
-	int detailed = FALSE;
-	nonterminal *nt;
-	LOOP_OVER(nt, nonterminal) {
-		#ifdef INSTRUMENTED_PREFORM
-		LOG("%d/%d: ", nt->nonterminal_matches, nt->nonterminal_tries);
-		#endif
-		LOG("%V: ", nt->nonterminal_id);
-		Optimiser::log_range_requirement(&(nt->nonterminal_req));
-		LOG("\n");
-		if (nt->internal_definition) LOG("  (internal)\n");
-		else {
-			production_list *pl;
-			for (pl = nt->first_production_list; pl; pl = pl->next_production_list) {
-				LOG("  $J:\n", pl->definition_language);
-				production *pr;
-				for (pr = pl->first_production; pr; pr = pr->next_production) {
-					LOG("   "); LoadPreform::log_production(pr, detailed);
-					#ifdef INSTRUMENTED_PREFORM
-					LOG("      %d/%d: ", pr->production_matches, pr->production_tries);
-					if (Wordings::nonempty(pr->sample_text)) LOG("<%W>", pr->sample_text);
-					#endif
-					LOG(" ==> ");
-					Optimiser::log_range_requirement(&(pr->production_req));
-					LOG("\n");
-				}
-			}
-		}
-		LOG("  min %d, max %d\n\n", nt->min_nt_words, nt->max_nt_words);
-	}
-}
-
-@ =
-void LoadPreform::log_production(production *pr, int detailed) {
-	if (pr->first_ptoken == NULL) LOG("<empty-production>");
-	ptoken *pt;
-	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
-		LoadPreform::log_ptoken(pt, detailed);
-		LOG(" ");
-	}
-}
-
-@ =
-void LoadPreform::log_ptoken(ptoken *pt, int detailed) {
-	if ((detailed) && (pt->ptoken_position != 0)) LOG("(@%d)", pt->ptoken_position);
-	if ((detailed) && (pt->strut_number >= 0)) LOG("(S%d)", pt->strut_number);
-	if (pt->disallow_unexpected_upper) LOG("_");
-	if (pt->negated_ptoken) LOG("^");
-	if (pt->range_starts >= 0) { LOG("{"); if (detailed) LOG("%d:", pt->range_starts); }
-	ptoken *alt;
-	for (alt = pt; alt; alt = alt->alternative_ptoken) {
-		if (alt->nt_pt) {
-			LOG("%V", alt->nt_pt->nonterminal_id);
-			if (detailed) LOG("=%d", alt->result_index);
-		} else {
-			LOG("%V", alt->ve_pt);
-		}
-		if (alt->alternative_ptoken) LOG("/");
-	}
-	if (pt->range_ends >= 0) { if (detailed) LOG(":%d", pt->range_ends); LOG("}"); }
-}
-
-@ A less detailed form used in linguistic problem messages:
-
-=
-void LoadPreform::write_ptoken(OUTPUT_STREAM, ptoken *pt) {
-	if (pt->disallow_unexpected_upper) WRITE("_");
-	if (pt->negated_ptoken) WRITE("^");
-	if (pt->range_starts >= 0) WRITE("{");
-	ptoken *alt;
-	for (alt = pt; alt; alt = alt->alternative_ptoken) {
-		if (alt->nt_pt) {
-			WRITE("%V", alt->nt_pt->nonterminal_id);
-		} else {
-			WRITE("%V", alt->ve_pt);
-		}
-		if (alt->alternative_ptoken) WRITE("/");
-	}
-	if (pt->range_ends >= 0) WRITE("}");
-}

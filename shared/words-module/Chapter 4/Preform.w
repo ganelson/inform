@@ -17,14 +17,12 @@ int Preform::parse_nt_against_word_range(nonterminal *nt, wording W, int *result
 	void **result_p) {
 	time_t start_of_nt = time(0);
 	if (nt == NULL) internal_error("can't parse a null nonterminal");
-	#ifdef INSTRUMENTED_PREFORM
-	nt->nonterminal_tries++;
-	#endif
+	nt->ins.nonterminal_tries++;
 	int success_rval = TRUE; /* what to return in the event of a successful match */
 	fail_nonterminal_quantum = 0;
 
 	int teppic = ptraci; /* Teppic saves Ptraci */
-	ptraci = nt->watched;
+	ptraci = nt->ins.watched;
 
 	if (ptraci) {
 		if (preform_lookahead_mode) ptraci = FALSE;
@@ -32,10 +30,9 @@ int Preform::parse_nt_against_word_range(nonterminal *nt, wording W, int *result
 	}
 
 	int input_length = Wordings::length(W);
-	if ((nt->max_nt_words == 0) ||
-		((input_length >= nt->min_nt_words) && (input_length <= nt->max_nt_words))) {
+	if ((nt->opt.max_nt_words == 0) ||
+		((input_length >= nt->opt.min_nt_words) && (input_length <= nt->opt.max_nt_words)))
 		@<Try to match the input text to the nonterminal@>;
-	}
 
 	@<The nonterminal has failed to parse@>;
 }
@@ -43,6 +40,7 @@ int Preform::parse_nt_against_word_range(nonterminal *nt, wording W, int *result
 @ The routine ends here...
 
 @<The nonterminal has failed to parse@> =
+	Instrumentation::note_nonterminal_fail(nt);
 	if (ptraci) LOG("Failed %V (time %d)\n", nt->nonterminal_id, time(0)-start_of_nt);
 	ptraci = teppic;
 	return FALSE;
@@ -51,11 +49,9 @@ int Preform::parse_nt_against_word_range(nonterminal *nt, wording W, int *result
 and |QP| will hold the results of the match.
 
 @<The nonterminal has successfully parsed@> =
+	Instrumentation::note_nonterminal_match(nt, W);
 	if (result) *result = Q; if (result_p) *result_p = QP;
 	most_recent_result = Q; most_recent_result_p = QP;
-	#ifdef INSTRUMENTED_PREFORM
-	nt->nonterminal_matches++;
-	#endif
 	ptraci = teppic;
 	return success_rval;
 
@@ -71,7 +67,7 @@ an internal NT, or try all possible productions for an external one.
 		unoptimised = TRUE;
 	if (nt->internal_definition) {
 		if (nt->voracious) unoptimised = TRUE;
-		if ((unoptimised) || (Optimiser::nt_bitmap_violates(W, &(nt->nonterminal_req)) == FALSE)) {
+		if ((unoptimised) || (Optimiser::nt_bitmap_violates(W, &(nt->opt.nonterminal_req)) == FALSE)) {
 			int r, Q; void *QP = NULL;
 			if (Wordings::first_wn(W) >= 0) r = (*(nt->internal_definition))(W, &Q, &QP);
 			else { r = FALSE; Q = 0; }
@@ -83,12 +79,12 @@ an internal NT, or try all possible productions for an external one.
 		} else {
 			if (ptraci) {
 				LOG("%V: <%W> violates ", nt->nonterminal_id, W);
-				Optimiser::log_range_requirement(&(nt->nonterminal_req));
+				Optimiser::log_range_requirement(&(nt->opt.nonterminal_req));
 				LOG("\n");
 			}
 		}
 	} else {
-		if ((unoptimised) || (Optimiser::nt_bitmap_violates(W, &(nt->nonterminal_req)) == FALSE)) {
+		if ((unoptimised) || (Optimiser::nt_bitmap_violates(W, &(nt->opt.nonterminal_req)) == FALSE)) {
 			void *acc_result = NULL;
 			production_list *pl;
 			for (pl = nt->first_production_list; pl; pl = pl->next_production_list) {
@@ -99,8 +95,8 @@ an internal NT, or try all possible productions for an external one.
 					for (pr = pl->first_production; pr; pr = pr->next_production) {
 						int violates = FALSE;
 						if (unoptimised == FALSE) {
-							if (pr->production_req.ditto_flag) violates = last_v;
-							else violates = Optimiser::nt_bitmap_violates(W, &(pr->production_req));
+							if (pr->opt.production_req.ditto_flag) violates = last_v;
+							else violates = Optimiser::nt_bitmap_violates(W, &(pr->opt.production_req));
 							last_v = violates;
 						}
 						if (violates == FALSE) {
@@ -108,9 +104,9 @@ an internal NT, or try all possible productions for an external one.
 						} else {
 							if (ptraci) {
 								LOG("production in %V: ", nt->nonterminal_id);
-								LoadPreform::log_production(pr, FALSE);
+								Instrumentation::log_production(pr, FALSE);
 								LOG(": <%W> violates ", W);
-								Optimiser::log_range_requirement(&(pr->production_req));
+								Optimiser::log_range_requirement(&(pr->opt.production_req));
 								LOG("\n");
 							}
 						}
@@ -124,7 +120,7 @@ an internal NT, or try all possible productions for an external one.
 		} else {
 			if (ptraci) {
 				LOG("%V: <%W> violates ", nt->nonterminal_id, W);
-				Optimiser::log_range_requirement(&(nt->nonterminal_req));
+				Optimiser::log_range_requirement(&(nt->opt.nonterminal_req));
 				LOG("\n");
 			}
 		}
@@ -137,25 +133,16 @@ text against a production.
 	if (ptraci) {
 		LOG_INDENT;
 		@<Log the production match number@>;
-		LoadPreform::log_production(pr, FALSE); LOG("\n");
+		Instrumentation::log_production(pr, FALSE); LOG("\n");
 	}
-	#ifdef INSTRUMENTED_PREFORM
-	pr->production_tries++;
-	#endif
-
 	int slow_scan_needed = FALSE;
 	#ifdef CORE_MODULE
 	parse_node *added_to_result = NULL;
 	#endif
-	if ((input_length >= pr->min_pr_words) && (input_length <= pr->max_pr_words)) {
+	if ((input_length >= pr->opt.min_pr_words) && (input_length <= pr->opt.max_pr_words)) {
 		int Q; void *QP = NULL;
 		@<Actually parse the given production, going to Fail if we can't@>;
-
-		#ifdef INSTRUMENTED_PREFORM /* record the sentence containing the longest example */
-		pr->production_matches++;
-		if (Wordings::length(pr->sample_text) < Wordings::length(W)) pr->sample_text = W;
-		#endif
-
+		Instrumentation::note_production_match(pr, W);
 		if (ptraci) {
 			@<Log the production match number@>;
 			LOG("succeeded (%s): ", (slow_scan_needed)?"slowly":"quickly");
@@ -165,6 +152,7 @@ text against a production.
 	}
 
 	Fail:
+	Instrumentation::note_production_fail(pr);
 	if (ptraci) {
 		@<Log the production match number@>;
 		#ifdef CORE_MODULE
@@ -253,8 +241,8 @@ are in those positions.
 	ptoken *pt;
 	int wn = -1, tc;
 	for (pt = pr->first_ptoken, tc = 0; pt; pt = pt->next_ptoken, tc++) {
-		if (pt->ptoken_is_fast) {
-			int p = pt->ptoken_position;
+		if (pt->opt.ptoken_is_fast) {
+			int p = pt->opt.ptoken_position;
 			if (p > 0) wn = Wordings::first_wn(W)+p-1;
 			else if (p < 0) wn = Wordings::last_wn(W)+p+1;
 			if (Preform::parse_fixed_word_ptoken(wn, pt) == FALSE) {
@@ -278,7 +266,7 @@ and that for each $i$ the $i$-th strut matches the text beginning at $s_i$.
 
 @<Try a slow scan through the production@> =
 	int spos[MAX_STRUTS_PER_PRODUCTION]; /* word numbers for where we are trying the struts */
-	int NS = pr->no_struts;
+	int NS = pr->opt.no_struts;
 	@<Start from the lexicographically earliest strut position@>;
 	ptoken *backtrack_token = NULL;
 	int backtrack_index = -1, backtrack_to = -1, backtrack_tc = -1;
@@ -301,14 +289,14 @@ handling the popular case of one strut separately.
 
 @<Start from the lexicographically earliest strut position@> =
 	if (NS == 1) {
-		spos[0] = Preform::next_strut_posn_after(W, pr->struts[0], pr->strut_lengths[0], Wordings::first_wn(W));
+		spos[0] = Preform::next_strut_posn_after(W, pr->opt.struts[0], pr->opt.strut_lengths[0], Wordings::first_wn(W));
 		if (spos[0] == -1) goto Fail;
 	} else if (NS > 1) {
 		int s, from = Wordings::first_wn(W);
 		for (s=0; s<NS; s++) {
-			spos[s] = Preform::next_strut_posn_after(W, pr->struts[s], pr->strut_lengths[s], from);
+			spos[s] = Preform::next_strut_posn_after(W, pr->opt.struts[s], pr->opt.strut_lengths[s], from);
 			if (spos[s] == -1) goto Fail;
-			from = spos[s] + pr->strut_lengths[s] + 1;
+			from = spos[s] + pr->opt.strut_lengths[s] + 1;
 		}
 	}
 
@@ -320,20 +308,20 @@ being unable to move forwards, at which point, we've lost.
 @<Move on to the next strut position@> =
 	if (NS == 0) goto Fail;
 	else if (NS == 1) {
-		spos[0] = Preform::next_strut_posn_after(W, pr->struts[0], pr->strut_lengths[0], spos[0]+1);
+		spos[0] = Preform::next_strut_posn_after(W, pr->opt.struts[0], pr->opt.strut_lengths[0], spos[0]+1);
 		if (spos[0] == -1) goto Fail;
 	} else if (NS > 1) {
 		int s;
 		for (s=NS-1; s>=0; s--) {
-			int n = Preform::next_strut_posn_after(W, pr->struts[s], pr->strut_lengths[s], spos[s]+1);
+			int n = Preform::next_strut_posn_after(W, pr->opt.struts[s], pr->opt.strut_lengths[s], spos[s]+1);
 			if (n != -1) { spos[s] = n; break; }
 		}
 		if (s == -1) goto Fail;
 		int from = spos[s] + 1; s++;
 		for (; s<NS; s++) {
-			spos[s] = Preform::next_strut_posn_after(W, pr->struts[s], pr->strut_lengths[s], from);
+			spos[s] = Preform::next_strut_posn_after(W, pr->opt.struts[s], pr->opt.strut_lengths[s], from);
 			if (spos[s] == -1) goto Fail;
-			from = spos[s] + pr->strut_lengths[s] + 1;
+			from = spos[s] + pr->opt.strut_lengths[s] + 1;
 		}
 	}
 
@@ -411,11 +399,11 @@ we rely on the recursive call to |Preform::parse_nt_against_word_range| returnin
 quick no.
 
 @<Match a nonterminal ptoken@> =
-	if ((wn > Wordings::last_wn(W)) && (pt->nt_pt->min_nt_words > 0)) goto FailThisStrutPosition;
+	if ((wn > Wordings::last_wn(W)) && (pt->nt_pt->opt.min_nt_words > 0)) goto FailThisStrutPosition;
 	int wt;
 	if (pt->nt_pt->voracious) wt = Wordings::last_wn(W);
-	else if ((pt->nt_pt->min_nt_words > 0) && (pt->nt_pt->min_nt_words == pt->nt_pt->max_nt_words))
-		wt = wn + pt->nt_pt->min_nt_words - 1;
+	else if ((pt->nt_pt->opt.min_nt_words > 0) && (pt->nt_pt->opt.min_nt_words == pt->nt_pt->opt.max_nt_words))
+		wt = wn + pt->nt_pt->opt.min_nt_words - 1;
 	else @<Calculate how much to stretch this elastic ptoken@>;
 
 	if (pt == backtrack_token) {
@@ -441,7 +429,7 @@ quick no.
 	}
 	if (pt->negated_ptoken) q = q?FALSE:TRUE;
 	if (q == FALSE) goto FailThisStrutPosition;
-	if (pt->nt_pt->max_nt_words > 0) wn = wt+1;
+	if (pt->nt_pt->opt.max_nt_words > 0) wn = wt+1;
 
 @ How much text from the input should this ptoken match? We feed it as much
 as possible, and to calculate that, we must either be at the end of the run,
@@ -463,10 +451,10 @@ probably gives the wrong answer.)
 	ptoken *lookahead = nextpt;
 	if (lookahead == NULL) wt = Wordings::last_wn(W);
 	else {
-		int p = lookahead->ptoken_position;
+		int p = lookahead->opt.ptoken_position;
 		if (p > 0) wt = Wordings::first_wn(W)+p-2;
 		else if (p < 0) wt = Wordings::last_wn(W)+p;
-		else if (lookahead->strut_number >= 0) wt = spos[lookahead->strut_number]-1;
+		else if (lookahead->opt.strut_number >= 0) wt = spos[lookahead->opt.strut_number]-1;
 		else if ((lookahead->nt_pt)
 			&& (pt->negated_ptoken == FALSE)
 			&& (Optimiser::ptoken_width(pt) == PTOKEN_ELASTIC)) {
@@ -511,10 +499,10 @@ int Preform::next_strut_posn_after(wording W, ptoken *start, int len, int from) 
 				else break;
 			} else {
 				int q = Preform::parse_nt_against_word_range(pt->nt_pt,
-					Wordings::new(pos, pos+pt->nt_pt->max_nt_words-1),
+					Wordings::new(pos, pos+pt->nt_pt->opt.max_nt_words-1),
 					NULL, NULL);
 				if (pt->negated_ptoken) q = q?FALSE:TRUE;
-				if (q) pos += pt->nt_pt->max_nt_words;
+				if (q) pos += pt->nt_pt->opt.max_nt_words;
 				else break;
 			}
 			if (pos-from >= len) return from;

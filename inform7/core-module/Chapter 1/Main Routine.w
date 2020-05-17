@@ -132,7 +132,7 @@ gargantuan debugging logs if enabled.
 	if (problem_count == 0) {
 		TemplateReader::report_unacted_upon_interventions();
 		//	Memory::log_statistics();
-		//	LoadPreform::log();
+		//	Instrumentation::log();
 		//	Index::DocReferences::log_statistics();
 		//	NewVerbs::log_all();
 	}

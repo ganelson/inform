@@ -174,7 +174,7 @@ single avinue.
 		if (first == NULL) continue;
 		ptoken *second = first->next_ptoken;
 		if ((second) && (second->next_ptoken)) {
-			LoadPreform::log_production(pr, FALSE);
+			Instrumentation::log_production(pr, FALSE);
 			Conjugation::trie_definition_error(nt, pr, "trie line with more than 2 words");
 		}
 		@<Consider the one- or two-token production in this nonterminal@>;

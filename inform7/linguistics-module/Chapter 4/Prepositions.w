@@ -156,7 +156,7 @@ with a given "permitted verb".
 
 @ =
 void Prepositions::mark_for_preform(void) {
-	<relative-clause-marker>->flag_words_in_production = PREPOSITION_MC;
+	<relative-clause-marker>->opt.flag_words_in_production = PREPOSITION_MC;
 }
 
 void Prepositions::preform_optimiser(void) {

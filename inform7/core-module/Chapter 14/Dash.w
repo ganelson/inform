@@ -3474,7 +3474,7 @@ void Dash::experiment(wording W, int full) {
 	LOG("Beginning Dashperiment:\n");
 	parse_node *test_tree = NULL, *last_alt = NULL;
 	<s-value-uncached>->multiplicitous = TRUE;
-	<s-value-uncached>->watched = TRUE;
+	<s-value-uncached>->ins.watched = TRUE;
 	int n = 0;
 	while (Wordings::nonempty(W)) {
 		wording T = W;
@@ -3492,7 +3492,7 @@ void Dash::experiment(wording W, int full) {
 		} else LOG("Failed to parse: %W\n", T);
 	}
 	<s-value-uncached>->multiplicitous = FALSE;
-	<s-value-uncached>->watched = FALSE;
+	<s-value-uncached>->ins.watched = FALSE;
 	if (n > 1) {
 		parse_node *holder = Node::new(AMBIGUITY_NT);
 		holder->down = test_tree;

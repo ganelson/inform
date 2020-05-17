@@ -161,22 +161,23 @@ wording and a unique ID number and makes something sensible: |I15_a_little_lamb|
 say.
 
 @h Preform.
-Prefor is a meta-language for writing a simple grammar: it's in some sense
+Preform is a meta-language for writing a simple grammar: it's in some sense
 pre-Inform, because it defines the Inform language itself. See //About Preform//.
 
 Compilers are a little like the human body, in that most of their organs can
-be located in a single spot: there is just one lexical analyser, and it is
-entirely contained in the section //Lexer//. But just a few organs -- the
-nervous system, or the blood vessels -- are present almost everywhere in the
+be located in a single spot: the heart, for example, or the gall bladder.
+Or in the case of Inform, the //Lexer//. But a few organs of the body -- like
+the nervous system, or blood vessels -- are found almost everywhere in the
 body, and the Inform syntax analyser is like that. While the basic code which
 drives this is in //Preform// and in the //syntax// module, the actual
-syntax being read can be found all over Inform. This has a notation like so:
+syntax being read is in many, many different places. Such syntax has a notation
+like so:
 = (text as Preform)
 	<competitor> ::=
 		<ordinal-number> runner |    ==> TRUE
 		runner no <cardinal-number>  ==> FALSE
 =
-And such notation is mixed in with regular C code in many sections of the
+This notation is mixed in with regular C code in many sections of the
 //core// and other modules.
 
 This apparent dispersal is in some ways misleading, though, because //inweb//,

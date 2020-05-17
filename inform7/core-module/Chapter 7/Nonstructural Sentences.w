@@ -248,7 +248,7 @@ and we also understand "only R" and "everything" and "nothing".
 		wording RQW = GET_RW(<debugging-log-request>, 1);
 		@<See if this is a simple request for debugging information@>;
 	}
-	if (<<r>> & PREFORM_DLR) { Nonterminals::watch(<<rp>>, new_state); return; }
+	if (<<r>> & PREFORM_DLR) { Instrumentation::watch(<<rp>>, new_state); return; }
 
 @ Otherwise a request must be the name of a single debugging aspect.
 

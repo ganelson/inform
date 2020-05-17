@@ -243,17 +243,18 @@ wording and a unique ID number and makes something sensible: <span class="extrac
 say.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Preform. </b>Prefor is a meta-language for writing a simple grammar: it's in some sense
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Preform. </b>Preform is a meta-language for writing a simple grammar: it's in some sense
 pre-Inform, because it defines the Inform language itself. See <a href="4-ap.html" class="internal">About Preform</a>.
 </p>
 
 <p class="commentary">Compilers are a little like the human body, in that most of their organs can
-be located in a single spot: there is just one lexical analyser, and it is
-entirely contained in the section <a href="3-lxr.html" class="internal">Lexer</a>. But just a few organs &mdash; the
-nervous system, or the blood vessels &mdash; are present almost everywhere in the
+be located in a single spot: the heart, for example, or the gall bladder.
+Or in the case of Inform, the <a href="3-lxr.html" class="internal">Lexer</a>. But a few organs of the body &mdash; like
+the nervous system, or blood vessels &mdash; are found almost everywhere in the
 body, and the Inform syntax analyser is like that. While the basic code which
 drives this is in <a href="4-prf.html" class="internal">Preform</a> and in the <a href="../syntax-module/index.html" class="internal">syntax</a> module, the actual
-syntax being read can be found all over Inform. This has a notation like so:
+syntax being read is in many, many different places. Such syntax has a notation
+like so:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -261,7 +262,7 @@ syntax being read can be found all over Inform. This has a notation like so:
 <span class="Preform-plain-syntax">        </span><span class="Preform-function-syntax">&lt;ordinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE</span>
 </pre>
-<p class="commentary">And such notation is mixed in with regular C code in many sections of the
+<p class="commentary">This notation is mixed in with regular C code in many sections of the
 <a href="../core-module/index.html" class="internal">core</a> and other modules.
 </p>
 

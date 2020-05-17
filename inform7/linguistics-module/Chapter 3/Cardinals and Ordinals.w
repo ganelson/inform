@@ -72,11 +72,11 @@ void Cardinals::enable_in_word_form(void) {
 	Optimiser::assign_bitmap_bit(<cardinal-number>, 0);
 	Optimiser::assign_bitmap_bit(<ordinal-number>, 1);
 
-	<cardinal-number-in-words>->number_words_by_production = TRUE;
-	<cardinal-number-in-words>->flag_words_in_production = NUMBER_MC;
+	<cardinal-number-in-words>->opt.number_words_by_production = TRUE;
+	<cardinal-number-in-words>->opt.flag_words_in_production = NUMBER_MC;
 
-	<ordinal-number-in-words>->number_words_by_production = TRUE;
-	<ordinal-number-in-words>->flag_words_in_production = ORDINAL_MC;
+	<ordinal-number-in-words>->opt.number_words_by_production = TRUE;
+	<ordinal-number-in-words>->opt.flag_words_in_production = ORDINAL_MC;
 }
 
 @ Actual parsing is done here. We look at a single word to see if it's a

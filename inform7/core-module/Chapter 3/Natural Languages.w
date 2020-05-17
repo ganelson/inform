@@ -101,7 +101,7 @@ void NaturalLanguages::preform_error(word_assemblage base_text, nonterminal *nt,
 	production *pr, char *message) {
 	if (pr) {
 		LOG("The production at fault is:\n");
-		LoadPreform::log_production(pr, FALSE); LOG("\n");
+		Instrumentation::log_production(pr, FALSE); LOG("\n");
 	}
 	if (nt == NULL)
 		Problems::quote_text(1, "(no nonterminal)");
@@ -120,7 +120,7 @@ void NaturalLanguages::preform_error(word_assemblage base_text, nonterminal *nt,
 		Problems::quote_number(3, &(pr->match_number));
 		ptoken *pt;
 		for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
-			LoadPreform::write_ptoken(TEMP, pt);
+			Instrumentation::write_ptoken(TEMP, pt);
 			if (pt->next_ptoken) WRITE_TO(TEMP, " ");
 		}
 		Problems::quote_stream(4, TEMP);

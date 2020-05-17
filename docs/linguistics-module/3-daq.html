@@ -509,7 +509,7 @@ no text appears in front of the number "three".
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">greater</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">than</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">other</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">than</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Parsing the determiner at the head of a noun phrase. </b>We run through the possible determiners in reverse creation order, choosing the
 first which matches. The following returns \(-1\) if nothing was found, or
 else the first word number after the determiner words, and in that case
@@ -568,7 +568,7 @@ names like "three of clubs", meaning a single playing card.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; return FAIL_NONTERMINAL</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>English has an awkward ambiguity here: what does this mean?
 </p>
 
@@ -590,7 +590,7 @@ from determiner parsing:
 <span class="Preform-function-syntax">&lt;excluded-from-determiners&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">one</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>We attempt to see if the word range begins with (or consists of) text which
 refers to the given determiner, returning the first word past this text and
 also (where appropriate) setting the number specified. For instance, for

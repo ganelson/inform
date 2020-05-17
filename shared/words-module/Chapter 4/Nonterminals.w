@@ -96,7 +96,7 @@ use the constant |INFINITE_WORD_COUNT| for it.
 
 @d INTERNAL_NONTERMINAL(quotedname, identifier, min, max)
 	identifier = Nonterminals::find(Vocabulary::entry_for_text(quotedname));
-	identifier->min_nt_words = min; identifier->max_nt_words = max;
+	identifier->opt.min_nt_words = min; identifier->opt.max_nt_words = max;
 	identifier->internal_definition = identifier##R;
 	identifier->marked_internal = TRUE;
 
@@ -122,18 +122,9 @@ typedef struct nonterminal {
 	/* Storage for most recent correct match */
 	struct wording range_result[MAX_RANGES_PER_PRODUCTION]; /* storage for word ranges matched */
 
-	/* Optimiser data */
-	int optimised_in_this_pass; /* have the following been worked out yet? */
-	int min_nt_words, max_nt_words; /* for speed */
-	struct range_requirement nonterminal_req;
-	int nt_req_bit; /* which hashing category the words belong to, or $-1$ if none */
-	int number_words_by_production;
-	unsigned int flag_words_in_production;
+	struct nonterminal_optimisation_data opt; /* see //The Optimiser// */
+	struct nonterminal_instrumentation_data ins; /* see //Instrumentation// */
 
-	/* For debugging only */
-	int watched; /* watch goings-on to the debugging log */
-	int nonterminal_tries; /* for statistics collected in instrumented mode */
-	int nonterminal_matches; /* ditto */
 	CLASS_DEFINITION
 } nonterminal;
 
@@ -189,20 +180,15 @@ nonterminal *Nonterminals::find(vocabulary_entry *name_word) {
 		nt->internal_definition = NULL;
 		nt->voracious = FALSE;
 
-		for (int i=0; i<MAX_RANGES_PER_PRODUCTION; i++)
-			nt->range_result[i] = EMPTY_WORDING;
-
 		nt->first_production_list = NULL;
 		nt->compositor_fn = NULL;
 		nt->multiplicitous = FALSE;
-		nt->optimised_in_this_pass = FALSE;
-		nt->min_nt_words = 1; nt->max_nt_words = INFINITE_WORD_COUNT;
-		nt->nt_req_bit = -1;
-		nt->number_words_by_production = FALSE;
-		nt->flag_words_in_production = 0;
 
-		nt->watched = FALSE;
-		nt->nonterminal_tries = 0; nt->nonterminal_matches = 0;
+		for (int i=0; i<MAX_RANGES_PER_PRODUCTION; i++)
+			nt->range_result[i] = EMPTY_WORDING;
+
+		Optimiser::initialise_nonterminal_data(&(nt->opt));
+		Instrumentation::initialise_nonterminal_data(&(nt->ins));
 	}
 	return nt;
 }
@@ -246,12 +232,3 @@ any single NT.
 =
 int most_recent_result = 0; /* the variable which |inweb| writes |<<r>>| */
 void *most_recent_result_p = NULL; /* the variable which |inweb| writes |<<rp>>| */
-
-@h Watching.
-A "watched" nonterminal is one which the Preform parser logs its usage of;
-this is helpful when debugging.
-
-=
-void Nonterminals::watch(nonterminal *nt, int state) {
-	nt->watched = state;
-}

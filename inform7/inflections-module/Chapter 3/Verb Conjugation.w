@@ -745,7 +745,7 @@ void Conjugation::basic_problem_handler(word_assemblage base_text, nonterminal *
 	#ifndef INFLECTIONS_ERROR_HANDLER
 	if (pr) {
 		LOG("The production at fault is:\n");
-		LoadPreform::log_production(pr, FALSE); LOG("\n");
+		Instrumentation::log_production(pr, FALSE); LOG("\n");
 	}
 	TEMPORARY_TEXT(ERM);
 	if (nt == NULL)
@@ -760,7 +760,7 @@ void Conjugation::basic_problem_handler(word_assemblage base_text, nonterminal *
 	if (pr) {
 		TEMPORARY_TEXT(TEMP);
 		for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
-			LoadPreform::write_ptoken(TEMP, pt);
+			Instrumentation::write_ptoken(TEMP, pt);
 			if (pt->next_ptoken) WRITE_TO(TEMP, " ");
 		}
 		WRITE_TO(ERM, "line %d ('%S'): ", pr->match_number, TEMP);

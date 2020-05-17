@@ -157,7 +157,7 @@ lookahead mode; this prevents needless memory allocation.
 <span class="Preform-function-syntax">&lt;nounphrase&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> GENERATE_RAW_NP</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Articled nounphrases (NP2). </b>Although, again, any text is acceptable, now we now take note of the definite
 or indefinite article, and also of whether it's used in the singular or the
 plural.
@@ -186,7 +186,7 @@ leave the text empty.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;if-not-deliberately-capitalised&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;definite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[3]; </span><span class="named-paragraph-container code-font"><a href="5-np.html#SP5_2" class="named-paragraph-link"><span class="named-paragraph">Annotate node by definite article</span><span class="named-paragraph-number">5.2</span></a></span><span class="Preform-constant-syntax">;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;nounphrase&gt;</span><span class="Preform-plain-syntax">															</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Annotate node by article</span><span class="named-paragraph-number">5.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -244,7 +244,7 @@ a correctly paired way; otherwise they are the same.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">^&lt;balanced-text&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; return FAIL_NONTERMINAL;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;nounphrase-articled&gt;</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. List-divided nounphrases (NP3). </b>An "articled list" matches text like
 </p>
 
@@ -265,7 +265,7 @@ a correctly paired way; otherwise they are the same.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{_and}</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase-articled-list&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Wordings::first_wn(W); *XP= RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{_,/and}</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase-articled-list&gt;</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Wordings::first_wn(W); *XP= RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>That builds into a lopsided binary tree: thus "the lion, a witch,
 and some wardrobes" becomes
 </p>
@@ -302,7 +302,7 @@ in the <span class="extract"><span class="extract-syntax">AND_NT</span></span> n
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{_or}</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase-alternative-list&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Wordings::first_wn(W); *XP= RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{_,/or}</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase-alternative-list&gt;</span><span class="Preform-plain-syntax">			</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Wordings::first_wn(W); *XP= RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Worldly nounphrases (NP4). </b>That just leaves the big one. It comes in two versions, for the object and
 subject NPs of a regular sentence, but they are almost exactly the same. They
 differ slightly, as we'll see, in the handling of relative phrases; when
@@ -335,7 +335,7 @@ accusative.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;if-not-deliberately-capitalised&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-relative-phrase-unlimited&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[2]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;np-inner-without-rp&gt;</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>So here we go with relative phrases. We've already seen that our two general
 forms of NP differ only in the range of RPs allowed at the top level: here we
 see, furthermore, that the only limitation is that in the subject of an
@@ -390,7 +390,7 @@ in the case of a participle like "holding".
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;np-relative-phrase-implicit&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;np-relative-phrase-explicit&gt;</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Finally, we define what we mean by implicit and explicit relative phrases.
 As examples, the right-hand sides of:
 </p>
@@ -420,7 +420,7 @@ directions, in particular, a little better.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;permitted-preposition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">_,/and</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; return FAIL_NONTERMINAL;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;permitted-preposition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-inner-without-rp&gt;</span><span class="Preform-plain-syntax">		</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; </span><span class="named-paragraph-container code-font"><a href="5-np.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Work out a meaning</span><span class="named-paragraph-number">13.1</span></a></span><span class="Preform-constant-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out a meaning</span><span class="named-paragraph-number">13.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -528,7 +528,7 @@ speed optimisation, and doesn't affect the language's definition.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;nominative-pronoun&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> GENERATE_RAW_NP; Annotations::write_int(*XP, nounphrase_article_ANNOT, IT_ART);</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;np-articled-balanced&gt;</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The tail of with-or-having parses for instance "with carrying capacity 5"
 in the NP
 </p>
@@ -565,7 +565,7 @@ bogus object called "locking it".)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{_and}</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-new-property-list&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Wordings::first_wn(W); *XP= RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{_,/and}</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-new-property-list&gt;</span><span class="Preform-plain-syntax">				</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Wordings::first_wn(W); *XP= RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>The "and" tail is much easier:
 </p>
 
@@ -574,7 +574,7 @@ bogus object called "locking it".)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{_and}</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-inner&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Wordings::first_wn(W); *XP= RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{_,/and}</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-inner&gt;</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Wordings::first_wn(W); *XP= RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Kind phrases are easier:
 </p>
 
@@ -595,7 +595,7 @@ but definite articles are not.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">kind/kinds</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = NounPhrases::PN_void(KIND_NT, W)</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">kind/kinds</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-inner&gt;</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = NounPhrases::PN_single(KIND_NT, W, RP[1])</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Relationship nodes. </b>A modest utility routine to construct and annotation RELATIONSHIP nodes.
 </p>
 

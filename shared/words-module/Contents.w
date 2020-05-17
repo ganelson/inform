@@ -33,3 +33,4 @@ Chapter 4: Parsing
 	The Optimiser
 	Preform
 	Basic Nonterminals
+	Instrumentation

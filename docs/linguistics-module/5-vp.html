@@ -145,7 +145,7 @@ verb, such as:
 <span class="Preform-function-syntax">&lt;s-existential-np&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">there</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Node::new(UNKNOWN_NT);</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>We will want to spot adverbs of certainty adjacent to the verb itself;
 English allows these either side, so "A man is usually happy" and "Peter
 certainly is happy" are both possible. Note that these adverbs can divide
@@ -160,7 +160,7 @@ the plain", where "mainly" divides "lies" from "in".
 <span class="Preform-function-syntax">&lt;post-verb-certainty&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;certainty&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Relative clauses ("a woman who is on the stage") are detected by the presence
 of a marker word before the verb (in this example, "who"). Of course, such
 a word doesn't always mean we have a relative clause, so we will need to be a
@@ -174,7 +174,7 @@ little careful using this nonterminal.
 <span class="Preform-function-syntax">&lt;pre-verb-rc-marker&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;relative-clause-marker&gt;</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>For purely pragmatic reasons, we'll want to avoid reading prepositions (and
 thus implicit relative clauses, such as "the cat in the hat") where they occur
 after the word "called" in a sentence. For example, "a cat called Puss in
@@ -185,7 +185,7 @@ Boots" must not be thought to be in Boots.
 <span class="Preform-function-syntax">&lt;phrase-with-calling&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">called</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Main nonterminal. </b>And so this nonterminal turns a sentence into a small parse tree. Between 2010
 and early 2016, this was implemented in straight Preform rather than as an
 internal, but that became simply too complicated to maintain once imperative
@@ -207,7 +207,7 @@ verbs were added to the grammar. Still, it was a pity.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">rv</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The following routine is only very slightly recursive. It's used either
 as above, to parse a whole sentence like "The coral snake is in the green
 bucket", or else is called (once) from within itself to parse just the
