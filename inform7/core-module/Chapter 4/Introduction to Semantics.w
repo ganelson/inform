@@ -201,7 +201,7 @@ whole thing into a |specification| for the rest of Inform to use.
 @
 
 @d PREFORM_ADAPTIVE_PERSON NaturalLanguages::adaptive_person
-@d PREFORM_OPTIMISER Semantics::mark_preform_requirements
+@d PREFORM_OPTIMISER_WORDS_CALLBACK Semantics::mark_preform_requirements
 @d PREFORM_CIRCULARITY_BREAKER Semantics::break_preform_circularities
 @d INFLECTIONS_ERROR_HANDLER NaturalLanguages::preform_error
 
@@ -213,21 +213,21 @@ void Semantics::read_preform(inform_language *L) {
 }
 
 @<Mark certain nonterminals to have their vocabularies numbered and flagged@> =
-	Optimiser::assign_bitmap_bit(<s-adjective>, 3);
-	Optimiser::assign_bitmap_bit(<s-instance-name>, 5);
-	Optimiser::assign_bitmap_bit(<k-kind>, 5);
-	Optimiser::assign_bitmap_bit(<k-kind-of-kind>, 5);
-	Optimiser::assign_bitmap_bit(<k-base-kind>, 5);
-	Optimiser::assign_bitmap_bit(<k-kind-construction>, 5);
-	Optimiser::assign_bitmap_bit(<k-kind-variable-texts>, 5);
-	Optimiser::assign_bitmap_bit(<k-kind-variable>, 5);
-	Optimiser::assign_bitmap_bit(<k-formal-kind-variable>, 5);
-	Optimiser::assign_bitmap_bit(<k-irregular-kind-construction>, 5);
-	Optimiser::assign_bitmap_bit(<k-variable-definition>, 5);
-	Optimiser::assign_bitmap_bit(<k-single-material>, 5);
-	Optimiser::assign_bitmap_bit(<k-optional-material>, 5);
-	Optimiser::assign_bitmap_bit(<k-tupled-material>, 5);
-	Optimiser::assign_bitmap_bit(<k-tuple-list>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<s-adjective>, 3);
+	Optimiser::give_nt_reserved_incidence_bit(<s-instance-name>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-kind>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-kind-of-kind>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-base-kind>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-kind-construction>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-kind-variable-texts>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-kind-variable>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-formal-kind-variable>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-irregular-kind-construction>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-variable-definition>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-single-material>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-optional-material>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-tupled-material>, 5);
+	Optimiser::give_nt_reserved_incidence_bit(<k-tuple-list>, 5);
 
 @ =
 void Semantics::mark_preform_requirements(void) {
@@ -245,5 +245,5 @@ void Semantics::break_preform_circularities(nonterminal *nt) {
 }
 
 void Semantics::mark_nt_as_requiring_itself_articled(nonterminal *nt) {
-	Optimiser::mark_nt_as_requiring_itself_augmented(nt, Optimiser::nt_bitmap_bit(<article>));
+	Optimiser::mark_nt_as_requiring_itself_augmented(nt, Optimiser::nt_incidence_bit(<article>));
 }

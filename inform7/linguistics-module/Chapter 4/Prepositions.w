@@ -167,7 +167,7 @@ void Prepositions::preform_optimiser(void) {
 
 void Prepositions::mark_as_preposition(vocabulary_entry *ve) {
 	Vocabulary::set_flags(ve, PREPOSITION_MC);
-	Optimiser::set_nt_incidence(ve, <preposition>);
-	Optimiser::set_nt_incidence(ve, <copular-preposition>);
-	Optimiser::set_nt_incidence(ve, <permitted-preposition>);
+	Optimiser::mark_vocabulary(ve, <preposition>);
+	Optimiser::mark_vocabulary(ve, <copular-preposition>);
+	Optimiser::mark_vocabulary(ve, <permitted-preposition>);
 }

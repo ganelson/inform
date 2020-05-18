@@ -49,6 +49,10 @@ would be
 The words module has only a few callbacks, and they are all optional. The
 following alphabetical list has references to fuller explanations:
 
+(*) |PREFORM_OPTIMISER_WORDS_CALLBACK| and |FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK|
+have the opportunity to flag certain Preform nonterminals in ways which will
+help //The Optimiser//.
+
 (*) |PROBLEM_WORDS_CALLBACK| is called when a lexical error is found, and can
 prevent this from being issued to the terminal as an error message: see
 //Lexer::lexer_problem_handler//.

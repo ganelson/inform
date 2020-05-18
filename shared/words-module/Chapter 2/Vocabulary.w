@@ -258,13 +258,14 @@ unsigned int Vocabulary::disjunction_of_flags(wording W) {
 	return d;
 }
 
-@ Also:
+@ We also leave space for a bitmap used by //The Optimiser//: in particular,
+see //Optimiser::mark_vocabulary//.
 
 =
-void Vocabulary::set_ntb(vocabulary_entry *ve, int R) {
+void Vocabulary::set_nti(vocabulary_entry *ve, int R) {
 	ve->nt_incidence = R;
 }
-int Vocabulary::get_ntb(vocabulary_entry *ve) {
+int Vocabulary::get_nti(vocabulary_entry *ve) {
 	return ve->nt_incidence;
 }
 

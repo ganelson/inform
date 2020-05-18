@@ -600,12 +600,12 @@ or "the verb to be able to see" use these.
 
 =
 void VerbUsages::mark_as_verb(vocabulary_entry *ve) {
-	Optimiser::set_nt_incidence(ve, <meaningful-nonimperative-verb>);
-	Optimiser::set_nt_incidence(ve, <copular-verb>);
-	Optimiser::set_nt_incidence(ve, <negated-noncopular-verb-present>);
-	Optimiser::set_nt_incidence(ve, <universal-verb>);
-	Optimiser::set_nt_incidence(ve, <negated-verb>);
-	Optimiser::set_nt_incidence(ve, <past-tense-verb>);
+	Optimiser::mark_vocabulary(ve, <meaningful-nonimperative-verb>);
+	Optimiser::mark_vocabulary(ve, <copular-verb>);
+	Optimiser::mark_vocabulary(ve, <negated-noncopular-verb-present>);
+	Optimiser::mark_vocabulary(ve, <universal-verb>);
+	Optimiser::mark_vocabulary(ve, <negated-verb>);
+	Optimiser::mark_vocabulary(ve, <past-tense-verb>);
 }
 
 void VerbUsages::preform_optimiser(void) {

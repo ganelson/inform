@@ -61,16 +61,16 @@ void Cardinals::preform_optimiser(void) {
 }
 
 void Cardinals::mark_as_cardinal(vocabulary_entry *ve) {
-	Optimiser::set_nt_incidence(ve, <cardinal-number>);
+	Optimiser::mark_vocabulary(ve, <cardinal-number>);
 }
 
 void Cardinals::mark_as_ordinal(vocabulary_entry *ve) {
-	Optimiser::set_nt_incidence(ve, <ordinal-number>);
+	Optimiser::mark_vocabulary(ve, <ordinal-number>);
 }
 
 void Cardinals::enable_in_word_form(void) {
-	Optimiser::assign_bitmap_bit(<cardinal-number>, 0);
-	Optimiser::assign_bitmap_bit(<ordinal-number>, 1);
+	Optimiser::give_nt_reserved_incidence_bit(<cardinal-number>, 0);
+	Optimiser::give_nt_reserved_incidence_bit(<ordinal-number>, 1);
 
 	<cardinal-number-in-words>->opt.number_words_by_production = TRUE;
 	<cardinal-number-in-words>->opt.flag_words_in_production = NUMBER_MC;
