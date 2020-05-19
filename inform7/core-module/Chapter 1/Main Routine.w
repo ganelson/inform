@@ -142,7 +142,11 @@ they can be rather lengthy.
 			CoreMain::write_diagnostics(
 				I"syntax-diagnostics.txt", &CoreMain::log_task_syntax_tree);
 			CoreMain::write_diagnostics(
+				I"syntax-summary.txt", &CoreMain::log_task_syntax_summary);
+			CoreMain::write_diagnostics(
 				I"preform-diagnostics.txt", &Instrumentation::log);
+			CoreMain::write_diagnostics(
+				I"preform-summary.txt", &CoreMain::log_preform_summary);
 			CoreMain::write_diagnostics(
 				I"documentation-diagnostics.txt", &Index::DocReferences::log_statistics);
 			CoreMain::write_diagnostics(
@@ -172,6 +176,14 @@ void CoreMain::write_diagnostics(text_stream *leafname, void (*write_fn)(void)) 
 
 void CoreMain::log_task_syntax_tree(void) {
 	Node::log_tree(DL, Task::syntax_tree()->root_node);
+}
+
+void CoreMain::log_preform_summary(void) {
+	Instrumentation::log_nt(<s-literal>, TRUE);
+}
+
+void CoreMain::log_task_syntax_summary(void) {
+	Node::summarise_tree(DL, Task::syntax_tree()->root_node);
 }
 
 void CoreMain::log_stopwatch(void) {

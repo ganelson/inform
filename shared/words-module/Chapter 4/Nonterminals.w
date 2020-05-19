@@ -92,11 +92,9 @@ are needed because the Preform optimiser can't see inside |any_integer_NTMR| to
 calculate those bounds for itself. |max| can be infinity, in which case we
 use the constant |INFINITE_WORD_COUNT| for it.
 
-@d INFINITE_WORD_COUNT 1000000000
-
 @d INTERNAL_NONTERMINAL(quotedname, identifier, min, max)
 	identifier = Nonterminals::find(Vocabulary::entry_for_text(quotedname));
-	identifier->opt.min_nt_words = min; identifier->opt.max_nt_words = max;
+	identifier->opt.nt_extremes = LengthExtremes::new(min, max);
 	identifier->internal_definition = identifier##R;
 	identifier->marked_internal = TRUE;
 
@@ -118,6 +116,8 @@ typedef struct nonterminal {
 	struct production_list *first_production_list; /* if not internal, this defines it */
 	int (*compositor_fn)(int *r, void **rp, int *i_s, void **i_ps, wording *i_W, wording W);
 	int multiplicitous; /* if true, matches are alternative syntax tree readings */
+	int number_words_by_production; /* this parses names for numbers, like "huit" or "zwei" */
+	unsigned int flag_words_in_production; /* all words in the production should get these flags */
 
 	/* Storage for most recent correct match */
 	struct wording range_result[MAX_RANGES_PER_PRODUCTION]; /* storage for word ranges matched */
@@ -147,7 +147,10 @@ result of parsing text against a nonterminal is that the first grammar line
 matching that text determines the meaning, but for a multiplicitous nonterminal,
 every line matching the text determines one of perhaps many possible meanings.
 
-(d) The optimisation data helps the parser to reject non-matching text quickly.
+(d) For numbering and flagging on regular NTs, see //Nonterminals::make_numbering//
+below.
+
+(e) The optimisation data helps the parser to reject non-matching text quickly.
 For example, if the optimiser can determine that <competitor> only ever matches
 texts of between 3 and 7 words in length, it can quickly reject any run of
 words outside that range. (However: note that a maximum of 0 means that the
@@ -183,6 +186,8 @@ nonterminal *Nonterminals::find(vocabulary_entry *name_word) {
 		nt->first_production_list = NULL;
 		nt->compositor_fn = NULL;
 		nt->multiplicitous = FALSE;
+		nt->number_words_by_production = FALSE; /* i.e., don't */
+		nt->flag_words_in_production = 0; /* i.e., apply no flags */
 
 		for (int i=0; i<MAX_RANGES_PER_PRODUCTION; i++)
 			nt->range_result[i] = EMPTY_WORDING;
@@ -232,3 +237,39 @@ any single NT.
 =
 int most_recent_result = 0; /* the variable which |inweb| writes |<<r>>| */
 void *most_recent_result_p = NULL; /* the variable which |inweb| writes |<<rp>>| */
+
+@h Flagging and numbering.
+The following mechanism arranges for words used in the grammar for a NT to
+be given properties just because of that -- either flags or numerical values.
+For example, if we wanted the numbers from Stoppard's play "Dogg's Hamlet",
+we might have:
+= (text as Preform)
+	<dogg-numbers> ::=
+		sun | dock | trog | slack | pan
+=
+And if <dogg-numbers> were made a "numbering" NT, the effect would be that
+these five words would pick up the numerical values 1, 2, 3, 4, 5, because
+they occur in production number 1, 2, 3, 4, 5 for the NT.
+
+=
+void Nonterminals::make_numbering(nonterminal *nt) {
+	nt->number_words_by_production = TRUE;
+}
+
+@ Similarly, we could flag this NT with |NUMBER_MC|, and then the five words
+sun, dock, trog, slack, pan would all pick up the |NUMBER_MC| flag
+automatically.
+
+=
+void Nonterminals::flag_words_with(nonterminal *nt, unsigned int flags) {
+	nt->flag_words_in_production = flags;
+}
+
+@ This is all done by the following function, which is called when a word |ve|
+is read as part of a production with match number |pc| for the nonterminal |nt|:
+
+=
+void Nonterminals::note_word(vocabulary_entry *ve, nonterminal *nt, int pc) {
+	ve->flags |= (nt->flag_words_in_production);
+	if (nt->number_words_by_production) ve->literal_number_value = pc;
+}

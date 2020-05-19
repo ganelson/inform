@@ -91,26 +91,6 @@ pop the bud stack until we're beneath a heading node superior to Parts.
 				T->bud_parent_sp = i;
 		}
 
-@ In earlier times Inform had a mechanism for dumping whole syntax trees to a
-file, for testing purposes. This is no longer used, but the code remains in
-this function in case ever needed again. (We go through a shabby trick to make
-that file temporarily the debugging log stream |DL|.)
-
-=
-void SyntaxTree::write_to_file(parse_node_tree *T, filename *F) {
-	text_stream parse_tree_file;
-	if (STREAM_OPEN_TO_FILE(&parse_tree_file, F, ISO_ENC) == FALSE)
-		internal_error("can't open file to write parse tree");
-
-	text_stream *save_DL = DL;
-	DL = &parse_tree_file;
-	Streams::enable_debugging(DL);
-	Node::log_tree(DL, T->root_node);
-	DL = save_DL;
-
-	STREAM_CLOSE(&parse_tree_file);
-}
-
 @ Syntax trees for Inform source text have a tendency to be wide. If a source
 text is basically a list of 5000 sentences, then there may be a node with 5000
 children, even though the maximum depth of the tree might be as low as 10.

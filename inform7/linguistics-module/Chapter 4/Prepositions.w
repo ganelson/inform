@@ -156,18 +156,18 @@ with a given "permitted verb".
 
 @ =
 void Prepositions::mark_for_preform(void) {
-	<relative-clause-marker>->opt.flag_words_in_production = PREPOSITION_MC;
+	Nonterminals::flag_words_with(<relative-clause-marker>, PREPOSITION_MC);
 }
 
 void Prepositions::preform_optimiser(void) {
-	Optimiser::mark_nt_as_requiring_itself(<preposition>);
-	Optimiser::mark_nt_as_requiring_itself(<copular-preposition>);
-	Optimiser::mark_nt_as_requiring_itself(<permitted-preposition>);
+	NTI::one_word_in_match_must_have_my_NTI_bit(<preposition>);
+	NTI::one_word_in_match_must_have_my_NTI_bit(<copular-preposition>);
+	NTI::one_word_in_match_must_have_my_NTI_bit(<permitted-preposition>);
 }
 
 void Prepositions::mark_as_preposition(vocabulary_entry *ve) {
 	Vocabulary::set_flags(ve, PREPOSITION_MC);
-	Optimiser::mark_vocabulary(ve, <preposition>);
-	Optimiser::mark_vocabulary(ve, <copular-preposition>);
-	Optimiser::mark_vocabulary(ve, <permitted-preposition>);
+	NTI::mark_vocabulary(ve, <preposition>);
+	NTI::mark_vocabulary(ve, <copular-preposition>);
+	NTI::mark_vocabulary(ve, <permitted-preposition>);
 }

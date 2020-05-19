@@ -418,6 +418,10 @@ docs/units.html: docs-src/units.inweb docs-src/navu.html
 forceprepages:
 	rm -f docs/*.html
 	$(INTESTX) inform7 GenerateDiagnostics-G
+	cp -f inform7/Figures/syntax-diagnostics.txt inform7/Downloads/syntax-diagnostics.txt
+	rm -f inform7/Figures/syntax-diagnostics.txt
+	cp -f inform7/Figures/preform-diagnostics.txt inform7/Downloads/preform-diagnostics.txt
+	rm -f inform7/Figures/preform-diagnostics.txt
 	$(INWEBX) -colony $(COLONY) -member overview -weave
 	$(INWEBX) -colony $(COLONY) -member compiler -weave
 	$(INWEBX) -colony $(COLONY) -member extensions -weave

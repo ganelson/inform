@@ -78,7 +78,7 @@ adjectival_phrase *Adjectives::from_word_range(wording W, NATURAL_LANGUAGE_WORDS
 			ExcerptMeanings::register(ADJECTIVE_MC,
 				W, STORE_POINTER_adjectival_phrase(aph));
 			LOOP_THROUGH_WORDING(n, W)
-				Optimiser::mark_word(n, <adjective-name>);
+				NTI::mark_word(n, <adjective-name>);
 		#ifdef ADJECTIVE_NAME_VETTING
 		}
 		#endif

@@ -213,25 +213,25 @@ void Semantics::read_preform(inform_language *L) {
 }
 
 @<Mark certain nonterminals to have their vocabularies numbered and flagged@> =
-	Optimiser::give_nt_reserved_incidence_bit(<s-adjective>, 3);
-	Optimiser::give_nt_reserved_incidence_bit(<s-instance-name>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-kind>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-kind-of-kind>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-base-kind>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-kind-construction>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-kind-variable-texts>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-kind-variable>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-formal-kind-variable>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-irregular-kind-construction>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-variable-definition>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-single-material>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-optional-material>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-tupled-material>, 5);
-	Optimiser::give_nt_reserved_incidence_bit(<k-tuple-list>, 5);
+	NTI::give_nt_reserved_incidence_bit(<s-adjective>, ADJECTIVE_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<s-instance-name>, PROPER_NOUN_RES_NT_BIT /* COMMON_NOUN_RES_NT_BIT */ );
+	NTI::give_nt_reserved_incidence_bit(<k-kind>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-kind-of-kind>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-base-kind>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-kind-construction>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-kind-variable-texts>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-kind-variable>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-formal-kind-variable>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-irregular-kind-construction>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-variable-definition>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-single-material>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-optional-material>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-tupled-material>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-tuple-list>, COMMON_NOUN_RES_NT_BIT);
 
 @ =
 void Semantics::mark_preform_requirements(void) {
-	Optimiser::mark_nt_as_requiring_itself_conj(<s-adjective>);
+	NTI::every_word_in_match_must_have_my_NTI_bit(<s-adjective>);
 	Semantics::mark_nt_as_requiring_itself_articled(<s-instance-name>);
 	Semantics::mark_nt_as_requiring_itself_articled(<k-kind-variable>);
 	Semantics::mark_nt_as_requiring_itself_articled(<k-formal-kind-variable>);
@@ -245,5 +245,6 @@ void Semantics::break_preform_circularities(nonterminal *nt) {
 }
 
 void Semantics::mark_nt_as_requiring_itself_articled(nonterminal *nt) {
-	Optimiser::mark_nt_as_requiring_itself_augmented(nt, Optimiser::nt_incidence_bit(<article>));
+	NTI::every_word_in_match_must_have_my_NTI_bit_or_this_one(nt,
+		NTI::nt_incidence_bit(<article>));
 }

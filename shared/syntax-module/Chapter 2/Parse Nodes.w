@@ -231,7 +231,15 @@ logging is a diagnostic tool, we want it to work even when Inform is sick.
 void Node::log_tree(OUTPUT_STREAM, void *vpn) {
 	parse_node *pn = (parse_node *) vpn;
 	if (pn == NULL) { WRITE("<null-meaning-list>\n"); return; }
-	Node::log_subtree_recursively(OUT, pn, 0, 0, 1, SyntaxTree::new_traverse_token());
+	Node::log_subtree_recursively(OUT, pn, 0, 0, 1, FALSE,
+		SyntaxTree::new_traverse_token());
+}
+
+void Node::summarise_tree(OUTPUT_STREAM, void *vpn) {
+	parse_node *pn = (parse_node *) vpn;
+	if (pn == NULL) { WRITE("<null-meaning-list>\n"); return; }
+	Node::log_subtree_recursively(OUT, pn, 0, 0, 1, TRUE,
+		SyntaxTree::new_traverse_token());
 }
 
 void Node::log_subtree(OUTPUT_STREAM, void *vpn) {
@@ -240,7 +248,8 @@ void Node::log_subtree(OUTPUT_STREAM, void *vpn) {
 	WRITE("$P\n", pn);
 	if (pn->down) {
 		LOG_INDENT;
-		Node::log_subtree_recursively(OUT, pn->down, 0, 0, 1, ++pn_log_token);
+		Node::log_subtree_recursively(OUT, pn->down, 0, 0, 1, FALSE,
+			SyntaxTree::new_traverse_token());
 		LOG_OUTDENT;
 	}
 }
@@ -251,7 +260,8 @@ sentences or so will exceed the typical stack size Inform has to run in.
 
 =
 void Node::log_subtree_recursively(OUTPUT_STREAM, parse_node *pn, int num,
-	int of, int gen, int traverse_token) {
+	int of, int gen, int summarise, int traverse_token) {
+	int active = TRUE;
 	while (pn) {
 		if (pn->last_seen_on_traverse == traverse_token) {
 			WRITE("*** Not a tree: %W ***\n", Node::get_text(pn)); return;
@@ -260,18 +270,33 @@ void Node::log_subtree_recursively(OUTPUT_STREAM, parse_node *pn, int num,
 		@<Calculate num and of such that this is [num/of] if they aren't already supplied@>;
 
 		if (pn == NULL) { WRITE("<null-parse-node>\n"); return; }
-		if (of > 1) {
-			WRITE("[%d/%d] ", num, of);
-			if (Node::get_score(pn) != 0) WRITE("(score %d) ", Node::get_score(pn));
+		if (summarise) {
+			if (Node::is(pn, ENDHERE_NT)) active = TRUE;
 		}
-		WRITE("$P\n", pn);
-		if (pn->down) {
-			LOG_INDENT;
-			Node::log_subtree_recursively(OUT, pn->down, 0, 0, gen+1, traverse_token);
-			LOG_OUTDENT;
+		if (active) {
+			if (of > 1) {
+				WRITE("[%d/%d] ", num, of);
+				if (Node::get_score(pn) != 0) WRITE("(score %d) ", Node::get_score(pn));
+			}
+			WRITE("$P\n", pn);
+			if (pn->down) {
+				LOG_INDENT;
+				int recurse = TRUE;
+				if ((summarise) && (Node::is(pn, ROUTINE_NT))) recurse = FALSE;
+				if (recurse)
+					Node::log_subtree_recursively(OUT,
+						pn->down, 0, 0, gen+1, summarise, traverse_token);
+				LOG_OUTDENT;
+			}
+			if (pn->next_alternative) Node::log_subtree_recursively(OUT,
+				pn->next_alternative, num+1, of, gen+1, summarise, traverse_token);
 		}
-		if (pn->next_alternative) Node::log_subtree_recursively(OUT,
-			pn->next_alternative, num+1, of, gen+1, traverse_token);
+		if (summarise) {
+			if (Node::is(pn, BEGINHERE_NT)) {
+				active = FALSE;
+				LOG("...\n");
+			}
+		}
 
 		pn = pn->next; num = 0; of = 0; gen++;
 	}
@@ -298,11 +323,17 @@ text in the debugging log.
 void Node::log_node(OUTPUT_STREAM, void *vpn) {
 	parse_node *pn = (parse_node *) vpn;
 	if (pn == NULL) { WRITE("<null-parse-node>\n"); return; }
-	#ifdef PARSE_TREE_LOGGER
-	PARSE_TREE_LOGGER(OUT, pn);
+	#ifdef PARSE_TREE_LOGGER_SYNTAX_CALLBACK
+	PARSE_TREE_LOGGER_SYNTAX_CALLBACK(OUT, pn);
 	#else
 	NodeType::log(OUT, (int) pn->node_type);
-	if (Wordings::nonempty(Node::get_text(pn))) WRITE("'%W'", Node::get_text(pn));
+	if (Wordings::nonempty(Node::get_text(pn))) {
+		TEMPORARY_TEXT(text);
+		WRITE_TO(text, "%W", Node::get_text(pn));
+		Str::truncate(text, 60);
+		WRITE("'%S'", text);
+		DISCARD_TEXT(text);
+	}
 	#ifdef LINGUISTICS_MODULE
 	Diagrams::log_node(OUT, pn);
 	#endif

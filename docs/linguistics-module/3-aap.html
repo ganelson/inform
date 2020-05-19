@@ -202,13 +202,11 @@ is never treated as a participle.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Marking for Preform efficiency. </b></p>
-
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::mark_for_preform</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Articles::mark_for_preform</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Optimiser::assign_bitmap_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;article&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Optimiser::assign_bitmap_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;definite-article&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Optimiser::assign_bitmap_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;indefinite-article&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;definite-article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;indefinite-article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

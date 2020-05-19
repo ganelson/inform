@@ -259,7 +259,7 @@ unsigned int Vocabulary::disjunction_of_flags(wording W) {
 }
 
 @ We also leave space for a bitmap used by //The Optimiser//: in particular,
-see //Optimiser::mark_vocabulary//.
+see //NTI::mark_vocabulary//.
 
 =
 void Vocabulary::set_nti(vocabulary_entry *ve, int R) {

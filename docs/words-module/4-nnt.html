@@ -67,7 +67,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Shared Modules</a></li><li><a href="index.html">words</a></li><li><a href="index.html#4">Chapter 4: Parsing</a></li><li><b>Nonterminals</b></li></ul></div>
 <p class="purpose">The angle-bracketed terms appearing in Preform grammar.</p>
 
-<ul class="toc"><li><a href="4-nnt.html#SP1">&#167;1. How nonterminals are stored</a></li><li><a href="4-nnt.html#SP9">&#167;9. Word ranges in a nonterminal</a></li><li><a href="4-nnt.html#SP10">&#167;10. Other results</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="4-nnt.html#SP1">&#167;1. How nonterminals are stored</a></li><li><a href="4-nnt.html#SP9">&#167;9. Word ranges in a nonterminal</a></li><li><a href="4-nnt.html#SP10">&#167;10. Other results</a></li><li><a href="4-nnt.html#SP11">&#167;11. Flagging and numbering</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. How nonterminals are stored. </b>Each different nonterminal defined in the <span class="extract"><span class="extract-syntax">Syntax.preform</span></span> code read in,
 such as &lt;any-integer&gt;, is going to correspond to a global variable in the
@@ -177,10 +177,9 @@ calculate those bounds for itself. <span class="extract"><span class="extract-sy
 use the constant <span class="extract"><span class="extract-syntax">INFINITE_WORD_COUNT</span></span> for it.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">INFINITE_WORD_COUNT</span><span class="plain-syntax"> </span><span class="constant-syntax">1000000000</span>
-<span class="definition-keyword">define</span> <span class="identifier-syntax">INTERNAL_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">quotedname</span><span class="plain-syntax">, </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">min</span><span class="plain-syntax">, </span><span class="identifier-syntax">max</span><span class="plain-syntax">)</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">INTERNAL_NONTERMINAL</span><span class="plain-syntax">(</span><span class="identifier-syntax">quotedname</span><span class="plain-syntax">, </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">min</span><span class="plain-syntax">, </span><span class="identifier-syntax">max</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax"> = </span><a href="4-nnt.html#SP8" class="function-link"><span class="function-syntax">Nonterminals::find</span></a><span class="plain-syntax">(</span><a href="2-vcb.html#SP15" class="function-link"><span class="function-syntax">Vocabulary::entry_for_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">quotedname</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="element-syntax">min_nt_words</span><span class="plain-syntax"> = </span><span class="identifier-syntax">min</span><span class="plain-syntax">; </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="identifier-syntax">max_nt_words</span><span class="plain-syntax"> = </span><span class="identifier-syntax">max</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="element-syntax">nt_extremes</span><span class="plain-syntax"> = </span><a href="4-le.html#SP3" class="function-link"><span class="function-syntax">LengthExtremes::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">min</span><span class="plain-syntax">, </span><span class="identifier-syntax">max</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">internal_definition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">##</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">marked_internal</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
@@ -203,6 +202,8 @@ textual name is referred to as an "ID".
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">production_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_production_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> if not internal, this defines it</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">compositor_fn</span><span class="plain-syntax">)(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">r</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">rp</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i_s</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">i_ps</span><span class="plain-syntax">, </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i_W</span><span class="plain-syntax">, </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiplicitous</span><span class="plain-syntax">; </span><span class="comment-syntax"> if true, matches are alternative syntax tree readings</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number_words_by_production</span><span class="plain-syntax">; </span><span class="comment-syntax"> this parses names for numbers, like "huit" or "zwei"</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">flag_words_in_production</span><span class="plain-syntax">; </span><span class="comment-syntax"> all words in the production should get these flags</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> Storage for most recent correct match</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">range_result</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_RANGES_PER_PRODUCTION</span><span class="plain-syntax">]; </span><span class="comment-syntax"> storage for word ranges matched</span>
@@ -213,7 +214,7 @@ textual name is referred to as an "ID".
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure nonterminal is accessed in 4/lp, 4/to, 4/prf, 4/ins and here.</li></ul>
+<ul class="endnotetexts"><li>The structure nonterminal is accessed in 4/lp, 4/to, 4/le, 4/ni, 4/prf, 4/ins and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>A few notes on this are in order:
 </p>
 
@@ -231,7 +232,9 @@ them up as alternative possible readings of the same text. Ordinarily, the
 result of parsing text against a nonterminal is that the first grammar line
 matching that text determines the meaning, but for a multiplicitous nonterminal,
 every line matching the text determines one of perhaps many possible meanings.
-</li><li>(d) The optimisation data helps the parser to reject non-matching text quickly.
+</li><li>(d) For numbering and flagging on regular NTs, see <a href="4-nnt.html#SP11" class="internal">Nonterminals::make_numbering</a>
+below.
+</li><li>(e) The optimisation data helps the parser to reject non-matching text quickly.
 For example, if the optimiser can determine that &lt;competitor&gt; only ever matches
 texts of between 3 and 7 words in length, it can quickly reject any run of
 words outside that range. (However: note that a maximum of 0 means that the
@@ -269,11 +272,13 @@ when Preform grammar is parsed, not when Inform text is parsed.
 <span class="plain-syntax">        </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_production_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compositor_fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">multiplicitous</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number_words_by_production</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax"> i.e., don't</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">flag_words_in_production</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> i.e., apply no flags</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">MAX_RANGES_PER_PRODUCTION</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">range_result</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="constant-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">        </span><a href="4-to.html#SP1" class="function-link"><span class="function-syntax">Optimiser::initialise_nonterminal_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><a href="4-to.html#SP2" class="function-link"><span class="function-syntax">Optimiser::initialise_nonterminal_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><a href="4-ins.html#SP2" class="function-link"><span class="function-syntax">Instrumentation::initialise_nonterminal_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ins</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
@@ -322,8 +327,48 @@ any single NT.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">most_recent_result</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> the variable which </span><span class="extract"><span class="extract-syntax">inweb</span></span><span class="comment-syntax"> writes </span><span class="extract"><span class="extract-syntax">&lt;&lt;r&gt;&gt;</span></span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">most_recent_result_p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> the variable which </span><span class="extract"><span class="extract-syntax">inweb</span></span><span class="comment-syntax"> writes </span><span class="extract"><span class="extract-syntax">&lt;&lt;rp&gt;&gt;</span></span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Flagging and numbering. </b>The following mechanism arranges for words used in the grammar for a NT to
+be given properties just because of that &mdash; either flags or numerical values.
+For example, if we wanted the numbers from Stoppard's play "Dogg's Hamlet",
+we might have:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;dogg-numbers&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">sun</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dock</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">trog</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">slack</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pan</span>
+</pre>
+<p class="commentary">And if &lt;dogg-numbers&gt; were made a "numbering" NT, the effect would be that
+these five words would pick up the numerical values 1, 2, 3, 4, 5, because
+they occur in production number 1, 2, 3, 4, 5 for the NT.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nonterminals::make_numbering</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number_words_by_production</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Similarly, we could flag this NT with <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span>, and then the five words
+sun, dock, trog, slack, pan would all pick up the <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span> flag
+automatically.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nonterminals::flag_words_with</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">flags</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">flag_words_in_production</span><span class="plain-syntax"> = </span><span class="identifier-syntax">flags</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>This is all done by the following function, which is called when a word <span class="extract"><span class="extract-syntax">ve</span></span>
+is read as part of a production with match number <span class="extract"><span class="extract-syntax">pc</span></span> for the nonterminal <span class="extract"><span class="extract-syntax">nt</span></span>:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nonterminals::note_word</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Nonterminals::note_word</span></span>:<br/>Loading Preform - <a href="4-lp.html#SP16_3">&#167;16.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pc</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">flags</span><span class="plain-syntax"> |= (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">flag_words_in_production</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number_words_by_production</span><span class="plain-syntax">) </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">literal_number_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pc</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="4-ap.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-ap.html">ap</a></li><li class="progresscurrent">nnt</li><li class="progresssection"><a href="4-lp.html">lp</a></li><li class="progresssection"><a href="4-to.html">to</a></li><li class="progresssection"><a href="4-prf.html">prf</a></li><li class="progresssection"><a href="4-bn.html">bn</a></li><li class="progresssection"><a href="4-ins.html">ins</a></li><li class="progressnext"><a href="4-lp.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="4-ap.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-ap.html">ap</a></li><li class="progresscurrent">nnt</li><li class="progresssection"><a href="4-lp.html">lp</a></li><li class="progresssection"><a href="4-to.html">to</a></li><li class="progresssection"><a href="4-le.html">le</a></li><li class="progresssection"><a href="4-ni.html">ni</a></li><li class="progresssection"><a href="4-prf.html">prf</a></li><li class="progresssection"><a href="4-bn.html">bn</a></li><li class="progresssection"><a href="4-ins.html">ins</a></li><li class="progressnext"><a href="4-lp.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

@@ -196,7 +196,7 @@ has already removed any such.
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"syntax error in Preform declarations"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="4-to.html#SP1" class="function-link"><span class="function-syntax">Optimiser::optimise_counts</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="4-to.html#SP7" class="function-link"><span class="function-syntax">Optimiser::optimise_counts</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">declarations</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -293,7 +293,7 @@ independent <a href="4-lp.html#SP8" class="internal">production_list</a> object.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">production_list</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure production_list is accessed in 4/to, 4/prf, 4/ins and here.</li></ul>
+<ul class="endnotetexts"><li>The structure production_list is accessed in 4/to, 4/le, 4/ni, 4/prf, 4/ins and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -356,7 +356,7 @@ part of them.
 
 <p class="commentary"><a href="4-to.html" class="internal">The Optimiser</a> calculates data on productions just as it does on nonterminals.
 For example, it can see that the above can only match a text if it has exactly
-3 words, so it sets both <span class="extract"><span class="Preform-extract-syntax">min_pr_words</span></span> and <span class="extract"><span class="Preform-extract-syntax">max_pr_words</span></span> to 3. For the meaning
+3 words, so it sets both <span class="extract"><span class="Preform-extract-syntax">pr_extremes.min_words</span></span> and <span class="extract"><span class="Preform-extract-syntax">pr_extremes.max_words</span></span> to 3. For the meaning
 of the remaining data, and for what "struts" are, see <a href="4-to.html" class="internal">The Optimiser</a>: it
 only confuses the picture here.
 </p>
@@ -377,7 +377,7 @@ only confuses the picture here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">production</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure production is accessed in 4/nnt, 4/to, 4/prf, 4/ins and here.</li></ul>
+<ul class="endnotetexts"><li>The structure production is accessed in 4/nnt, 4/to, 4/le, 4/ni, 4/prf, 4/ins and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>And at the bottom of God's great chain, the lowly ptoken. Even this can spawn
 another list, though: the token <span class="extract"><span class="extract-syntax">fried/green/tomatoes</span></span> is a list of three ptokens
 joined by the <span class="extract"><span class="extract-syntax">alternative_ptoken</span></span> links.
@@ -419,7 +419,7 @@ the <span class="extract"><span class="extract-syntax">balanced_wildcard</span><
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ptoken</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ptoken is accessed in 4/nnt, 4/to, 4/prf, 4/ins and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ptoken is accessed in 4/nnt, 4/to, 4/le, 4/ni, 4/prf, 4/ins and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Each ptoken has a <span class="extract"><span class="extract-syntax">range_starts</span></span> and <span class="extract"><span class="extract-syntax">range_ends</span></span> number. This is either -1,
 or marks that the ptoken occurs as the first or last in a range (or both). For
 example, in the production
@@ -446,7 +446,7 @@ and so on.
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">pr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_ranges</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax"> so that they count from 1; range 0 is unused</span>
 
-<span class="plain-syntax">    </span><a href="4-to.html#SP1" class="function-link"><span class="function-syntax">Optimiser::initialise_production_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">pr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><a href="4-to.html#SP4" class="function-link"><span class="function-syntax">Optimiser::initialise_production_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">pr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><a href="4-ins.html#SP5" class="function-link"><span class="function-syntax">Instrumentation::initialise_production_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">pr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ins</span><span class="plain-syntax">));</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">ptoken</span><span class="plain-syntax"> *</span><span class="identifier-syntax">head</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">tail</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -715,7 +715,7 @@ becomes a fixed word; otherwise it could be any of the five categories.
 <span class="plain-syntax">    </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">result_index</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">range_starts</span><span class="plain-syntax"> = -1; </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">range_ends</span><span class="plain-syntax"> = -1;</span>
 
-<span class="plain-syntax">    </span><a href="4-to.html#SP1" class="function-link"><span class="function-syntax">Optimiser::initialise_ptoken_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><a href="4-to.html#SP6" class="function-link"><span class="function-syntax">Optimiser::initialise_ptoken_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><a href="4-ins.html#SP7" class="function-link"><span class="function-syntax">Instrumentation::initialise_ptoken_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ins</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-lp.html#SP16">&#167;16</a>.</li></ul>
@@ -746,11 +746,11 @@ never returns <span class="extract"><span class="extract-syntax">NULL</span></sp
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ve</span><span class="plain-syntax"> == </span><span class="identifier-syntax">THREEHASHES_V</span><span class="plain-syntax">) </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ptoken_category</span><span class="plain-syntax"> = </span><span class="constant-syntax">SINGLE_WILDCARD_PTC</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ve</span><span class="plain-syntax"> == </span><span class="identifier-syntax">THREEASTERISKS_V</span><span class="plain-syntax">) </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ptoken_category</span><span class="plain-syntax"> = </span><span class="constant-syntax">POSSIBLY_EMPTY_WILDCARD_PTC</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ptoken_category</span><span class="plain-syntax"> == </span><span class="constant-syntax">FIXED_WORD_PTC</span><span class="plain-syntax">) </span><a href="4-to.html#SP19" class="function-link"><span class="function-syntax">Optimiser::flag_words</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="identifier-syntax">pc</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ptoken_category</span><span class="plain-syntax"> == </span><span class="constant-syntax">FIXED_WORD_PTC</span><span class="plain-syntax">) </span><a href="4-nnt.html#SP13" class="function-link"><span class="function-syntax">Nonterminals::note_word</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ve</span><span class="plain-syntax">, </span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="identifier-syntax">pc</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-lp.html#SP16">&#167;16</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="4-nnt.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-ap.html">ap</a></li><li class="progresssection"><a href="4-nnt.html">nnt</a></li><li class="progresscurrent">lp</li><li class="progresssection"><a href="4-to.html">to</a></li><li class="progresssection"><a href="4-prf.html">prf</a></li><li class="progresssection"><a href="4-bn.html">bn</a></li><li class="progresssection"><a href="4-ins.html">ins</a></li><li class="progressnext"><a href="4-to.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="4-nnt.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-ap.html">ap</a></li><li class="progresssection"><a href="4-nnt.html">nnt</a></li><li class="progresscurrent">lp</li><li class="progresssection"><a href="4-to.html">to</a></li><li class="progresssection"><a href="4-le.html">le</a></li><li class="progresssection"><a href="4-ni.html">ni</a></li><li class="progresssection"><a href="4-prf.html">prf</a></li><li class="progresssection"><a href="4-bn.html">bn</a></li><li class="progresssection"><a href="4-ins.html">ins</a></li><li class="progressnext"><a href="4-to.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

@@ -790,7 +790,7 @@ kind *Kinds::read_kind_marking_from_vocabulary(vocabulary_entry *ve) {
 void Kinds::mark_vocabulary_as_kind(vocabulary_entry *ve, kind *K) {
 	ve->means.one_word_kind = K;
 	Vocabulary::set_flags(ve, KIND_FAST_MC);
-	Optimiser::mark_vocabulary(ve, <k-kind>);
+	NTI::mark_vocabulary(ve, <k-kind>);
 }
 
 @h From context.

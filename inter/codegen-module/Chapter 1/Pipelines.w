@@ -262,7 +262,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			inter_tree *I = S->repositories[step->repository_argument];
 			if (I == NULL) internal_error("no repository");
 			CodeGen::Pipeline::prepare_to_run(I);
-			// CodeGen::Pipeline::lint(I);
+			CodeGen::Pipeline::lint(I);
 
 			CodeGen::Pipeline::clean_step(step);
 			step->the_PP = PP;

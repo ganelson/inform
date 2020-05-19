@@ -124,9 +124,13 @@ initialises, it calls the following routine to improve its performance.
 @d FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK LinguisticsModule::preform_optimiser
 
 =
+int first_round_of_nt_optimisation_made = FALSE;
 void LinguisticsModule::preform_optimiser(void) {
 	Cardinals::preform_optimiser();
 	VerbUsages::preform_optimiser();
 	Prepositions::preform_optimiser();
-	Quantifiers::make_built_in();
+	if (first_round_of_nt_optimisation_made == FALSE) {
+		first_round_of_nt_optimisation_made = TRUE;
+		Quantifiers::make_built_in();
+	}
 }

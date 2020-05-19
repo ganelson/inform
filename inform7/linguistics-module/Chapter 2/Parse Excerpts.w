@@ -431,7 +431,7 @@ abbreviated form of an object name like "Chamber 11".
 	LOOP_THROUGH_WORDING(i, W) {
 		vocabulary_entry *v = Lexer::word(i);
 		if (v == NULL) internal_error("Unidentified word when parsing");
-		if (Optimiser::test_vocabulary(v, <article>)) continue;
+		if (NTI::test_vocabulary(v, <article>)) continue;
 		if (v->means.subset_list_length == 0) goto SubsetFailed;
 		if (v->means.subset_list_length > j) { j = v->means.subset_list_length; k = i; }
 	}

@@ -209,7 +209,7 @@ int Phrases::Adjectives::vet_name(wording W) {
 		return FALSE;
 	}
 	LOOP_THROUGH_WORDING(n, W)
-		Optimiser::mark_word(n, <s-adjective>);
+		NTI::mark_word(n, <s-adjective>);
 	return TRUE;
 }
 

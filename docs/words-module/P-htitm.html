@@ -114,7 +114,10 @@ would be
 following alphabetical list has references to fuller explanations:
 </p>
 
-<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_WORDS_CALLBACK</span></span> is called when a lexical error is found, and can
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">PREFORM_OPTIMISER_WORDS_CALLBACK</span></span> and <span class="extract"><span class="extract-syntax">FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK</span></span>
+have the opportunity to flag certain Preform nonterminals in ways which will
+help <a href="4-to.html" class="internal">The Optimiser</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_WORDS_CALLBACK</span></span> is called when a lexical error is found, and can
 prevent this from being issued to the terminal as an error message: see
 <a href="3-lxr.html#SP31" class="internal">Lexer::lexer_problem_handler</a>.
 </li></ul>

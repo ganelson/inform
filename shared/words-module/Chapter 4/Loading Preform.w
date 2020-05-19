@@ -256,7 +256,7 @@ part of them.
 
 //The Optimiser// calculates data on productions just as it does on nonterminals.
 For example, it can see that the above can only match a text if it has exactly
-3 words, so it sets both |min_pr_words| and |max_pr_words| to 3. For the meaning
+3 words, so it sets both |pr_extremes.min_words| and |pr_extremes.max_words| to 3. For the meaning
 of the remaining data, and for what "struts" are, see //The Optimiser//: it
 only confuses the picture here.
 
@@ -578,4 +578,4 @@ never returns |NULL|.
 		if (ve == THREEHASHES_V) pt->ptoken_category = SINGLE_WILDCARD_PTC;
 		if (ve == THREEASTERISKS_V) pt->ptoken_category = POSSIBLY_EMPTY_WILDCARD_PTC;
 	}
-	if (pt->ptoken_category == FIXED_WORD_PTC) Optimiser::flag_words(ve, nt, pc);
+	if (pt->ptoken_category == FIXED_WORD_PTC) Nonterminals::note_word(ve, nt, pc);

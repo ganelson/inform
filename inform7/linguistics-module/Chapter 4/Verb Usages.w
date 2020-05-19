@@ -600,21 +600,21 @@ or "the verb to be able to see" use these.
 
 =
 void VerbUsages::mark_as_verb(vocabulary_entry *ve) {
-	Optimiser::mark_vocabulary(ve, <meaningful-nonimperative-verb>);
-	Optimiser::mark_vocabulary(ve, <copular-verb>);
-	Optimiser::mark_vocabulary(ve, <negated-noncopular-verb-present>);
-	Optimiser::mark_vocabulary(ve, <universal-verb>);
-	Optimiser::mark_vocabulary(ve, <negated-verb>);
-	Optimiser::mark_vocabulary(ve, <past-tense-verb>);
+	NTI::mark_vocabulary(ve, <meaningful-nonimperative-verb>);
+	NTI::mark_vocabulary(ve, <copular-verb>);
+	NTI::mark_vocabulary(ve, <negated-noncopular-verb-present>);
+	NTI::mark_vocabulary(ve, <universal-verb>);
+	NTI::mark_vocabulary(ve, <negated-verb>);
+	NTI::mark_vocabulary(ve, <past-tense-verb>);
 }
 
 void VerbUsages::preform_optimiser(void) {
-	Optimiser::mark_nt_as_requiring_itself_first(<meaningful-nonimperative-verb>);
-	Optimiser::mark_nt_as_requiring_itself_first(<copular-verb>);
-	Optimiser::mark_nt_as_requiring_itself_first(<negated-noncopular-verb-present>);
-	Optimiser::mark_nt_as_requiring_itself_first(<universal-verb>);
-	Optimiser::mark_nt_as_requiring_itself_first(<negated-verb>);
-	Optimiser::mark_nt_as_requiring_itself_first(<past-tense-verb>);
+	NTI::first_word_in_match_must_have_my_NTI_bit(<meaningful-nonimperative-verb>);
+	NTI::first_word_in_match_must_have_my_NTI_bit(<copular-verb>);
+	NTI::first_word_in_match_must_have_my_NTI_bit(<negated-noncopular-verb-present>);
+	NTI::first_word_in_match_must_have_my_NTI_bit(<universal-verb>);
+	NTI::first_word_in_match_must_have_my_NTI_bit(<negated-verb>);
+	NTI::first_word_in_match_must_have_my_NTI_bit(<past-tense-verb>);
 }
 
 @h Adaptive person.

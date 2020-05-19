@@ -120,7 +120,7 @@ only be allowed if K already existed.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And the following internal is in fact only &lt;k-kind&gt; but inside phrase
 token parsing mode; it's used when parsing the kind to be decided by a
 phrase (which, like phrase tokens, can involve the variables).
@@ -136,7 +136,7 @@ phrase (which, like phrase tokens, can involve the variables).
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>And here is that "name of kind..." construction, which is valid only in
 phrase tokens.
 </p>
@@ -154,7 +154,7 @@ phrase tokens.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-kind-of-kind&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;k-formal-kind-variable&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Kinds::variable_construction(R[2], RP[1])</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-kind&gt;</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>So now we can begin properly. Every valid kind matches &lt;k-kind&gt;:
 </p>
 
@@ -167,7 +167,7 @@ phrase tokens.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-irregular-kind-construction&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-kind-construction&gt;</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And, as a convenient shorthand:
 </p>
 
@@ -176,7 +176,7 @@ phrase tokens.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;indefinite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;k-kind&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[2]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-kind&gt;</span><span class="Preform-plain-syntax">												</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>In phrase-token mode, kind variables are treated as formal symbols, not as
 the kinds which are their current values:
 </p>
@@ -186,7 +186,7 @@ the kinds which are their current values:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-formal-kind-variable&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-kind-of-kind&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">kind</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;k-formal-kind-variable&gt;</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Kinds::variable_construction(R[2], RP[1])</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Some base kinds with one-word names have that word flagged with a direct
 pointer to the kind, for speed of parsing. Names of base kinds, such as
 "number" or "vehicle", can be registered in two different ways (according
@@ -219,7 +219,7 @@ make two further checks:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>"Object based rulebook" has been on a voyage of unhyphenation: in the
 early public beta of Inform 7, it was "object-based-rulebook" (at that
 time, built-in kinds had to have one-word names); then it became "object-based
@@ -246,7 +246,7 @@ And similarly for the others here, except "either/or property", which is a
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">action-based</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">rule</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Kinds::binary_construction(CON_rule, K_action_name, K_nil); if (K_action_name == NULL) return FALSE;</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">either-or</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">property</span><span class="Preform-plain-syntax">			</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Kinds::unary_construction(CON_property, K_truth_state)</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>This loop looks a little slow, but there are only about 10 proper constructors.
 </p>
 
@@ -263,7 +263,7 @@ And similarly for the others here, except "either/or property", which is a
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12_1"></a><b>&#167;12.1.  </b>So at this point we have a match of the fixed words in the constructor.
 For example, we might have "list of ...", where the X excerpt represents
 the "..." and the Y excerpt is empty; or "... based rule producing ...",
@@ -356,7 +356,7 @@ be more varied.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-single-material&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;k-tuple-list&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], RP[2])</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-single-material&gt;</span><span class="Preform-plain-syntax">						</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_nil)</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The following looks at a word range and tries to find text making a kind
 construction: if it does, it adjusts the word ranges to the kind(s) being
 constructed on, and returns <span class="extract"><span class="Preform-extract-syntax">TRUE</span></span>; if it fails, it returns <span class="extract"><span class="Preform-extract-syntax">FALSE</span></span>. For
@@ -450,7 +450,7 @@ or "list of texts" will fail.
 <span class="Preform-function-syntax">&lt;k-kind-of-kind&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-kind&gt;</span><span class="Preform-plain-syntax">		</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RP[1]; if (Kinds::Behaviour::is_kind_of_kind(RP[1]) == FALSE) return FALSE;</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Parsing kind variables. </b>As a small detour, here's how we deal with the pleasingly simple names A to Z
 for kind variables, converting them to and from the numbers 1 to 26:
 </p>
@@ -505,7 +505,7 @@ parsed almost all of the time.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>But we can also formally parse A to Z as their own abstract identities;
 now they always parse, regardless of what might be stored in them, and
 they aren't replaced with their values (which they may not even have).
@@ -520,7 +520,7 @@ they aren't replaced with their values (which they may not even have).
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>And it's also convenient to have:
 </p>
 
@@ -533,7 +533,7 @@ they aren't replaced with their values (which they may not even have).
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>For efficiency's sake, we don't actually parse directly using this
 nonterminal, but it's needed all the same because of Preform's optimisations.
 </p>
@@ -567,7 +567,7 @@ nonterminal, but it's needed all the same because of Preform's optimisations.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">y/ys</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">z/zs</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Textual descriptions. </b>The following pretty-printer is inverse to the code which parses text and
 turns it into a <span class="extract"><span class="Preform-extract-syntax">kind</span></span> structure, or very nearly so. We use common
 code to handle all of the reasons why we might want to spell out a kind

@@ -410,13 +410,19 @@ int ParseTreeUsage::allow_in_assertions(parse_node *p) {
 
 @
 
-@d PARSE_TREE_LOGGER ParseTreeUsage::log_node
+@d PARSE_TREE_LOGGER_SYNTAX_CALLBACK ParseTreeUsage::log_node
 
 =
 void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 	if (Node::get_meaning(pn)) WRITE("$M", Node::get_meaning(pn));
 	else WRITE("$N", pn->node_type);
-	if (Wordings::nonempty(Node::get_text(pn))) WRITE("'%W'", Node::get_text(pn));
+	if (Wordings::nonempty(Node::get_text(pn))) {
+		TEMPORARY_TEXT(text);
+		WRITE_TO(text, "%W", Node::get_text(pn));
+		Str::truncate(text, 60);
+		WRITE("'%S'", text);
+		DISCARD_TEXT(text);
+	}
 
 	if ((pn->node_type >= UNKNOWN_NT) && (pn->node_type <= TEST_VALUE_NT))
 		@<Log annotations of specification nodes@>

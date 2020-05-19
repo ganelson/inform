@@ -31,6 +31,8 @@ Chapter 4: Parsing
 	Nonterminals
 	Loading Preform
 	The Optimiser
+	Length Extremes
+	Nonterminal Incidences
 	Preform
 	Basic Nonterminals
 	Instrumentation

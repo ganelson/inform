@@ -125,9 +125,10 @@ is never treated as a participle.
 
 @h Marking for Preform efficiency.
 
+
 =
 void Articles::mark_for_preform(void) {
-	Optimiser::give_nt_reserved_incidence_bit(<article>, 2);
-	Optimiser::give_nt_reserved_incidence_bit(<definite-article>, 2);
-	Optimiser::give_nt_reserved_incidence_bit(<indefinite-article>, 2);
+	NTI::give_nt_reserved_incidence_bit(<article>, ARTICLE_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<definite-article>, ARTICLE_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<indefinite-article>, ARTICLE_RES_NT_BIT);
 }

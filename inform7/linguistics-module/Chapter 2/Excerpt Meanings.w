@@ -375,7 +375,7 @@ object "Gregory the Great".
 			LOG("Logging meaning: $M with hash %08x\n", em, em->excerpt_hash);
 			internal_error("# in registration of subset meaning");
 		}
-		if (Optimiser::test_vocabulary(v, <article>)) continue;
+		if (NTI::test_vocabulary(v, <article>)) continue;
 		parse_node *p = ExcerptMeanings::new_em_pnode(em);
 		p->next_alternative = v->means.subset_list;
 		v->means.subset_list = p;
@@ -437,10 +437,10 @@ excerpt_meaning *ExcerptMeanings::register(
 	#ifdef CORE_MODULE
 	if (meaning_code == NOUN_MC)
 		LOOP_THROUGH_WORDING(i, W)
-			Optimiser::mark_word(i, <s-instance-name>);
+			NTI::mark_word(i, <s-instance-name>);
 	if (meaning_code == KIND_SLOW_MC)
 		LOOP_THROUGH_WORDING(i, W)
-			Optimiser::mark_word(i, <k-kind>);
+			NTI::mark_word(i, <k-kind>);
 	#endif
 
 	excerpt_meaning *em = ExcerptMeanings::new(meaning_code, data);
@@ -469,7 +469,7 @@ text substitutions need to distinguish (for instance) "say [the X]" from
 
 @<Unless this is parametrised, skip any initial article@> =
 	if ((meaning_code & PARAMETRISED_PARSING_BITMAP) == 0)
-		if (Optimiser::test_word(Wordings::first_wn(W), <article>)) {
+		if (NTI::test_word(Wordings::first_wn(W), <article>)) {
 			W = Wordings::trim_first_word(W);
 			if (Wordings::empty(W))
 				internal_error("registered a meaning which was only an article");

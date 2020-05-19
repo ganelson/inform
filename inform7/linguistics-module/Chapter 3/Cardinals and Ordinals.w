@@ -50,8 +50,8 @@ numbers.
 
 =
 void Cardinals::preform_optimiser(void) {
-	Optimiser::mark_nt_as_requiring_itself_conj(<cardinal-number>);
-	Optimiser::mark_nt_as_requiring_itself_conj(<ordinal-number>);
+	NTI::every_word_in_match_must_have_my_NTI_bit(<cardinal-number>);
+	NTI::every_word_in_match_must_have_my_NTI_bit(<ordinal-number>);
 	for (int wn = 0; wn < lexer_wordcount; wn++) {
 		if (Vocabulary::test_flags(wn, NUMBER_MC))
 			Cardinals::mark_as_cardinal(Lexer::word(wn));
@@ -61,22 +61,22 @@ void Cardinals::preform_optimiser(void) {
 }
 
 void Cardinals::mark_as_cardinal(vocabulary_entry *ve) {
-	Optimiser::mark_vocabulary(ve, <cardinal-number>);
+	NTI::mark_vocabulary(ve, <cardinal-number>);
 }
 
 void Cardinals::mark_as_ordinal(vocabulary_entry *ve) {
-	Optimiser::mark_vocabulary(ve, <ordinal-number>);
+	NTI::mark_vocabulary(ve, <ordinal-number>);
 }
 
 void Cardinals::enable_in_word_form(void) {
-	Optimiser::give_nt_reserved_incidence_bit(<cardinal-number>, 0);
-	Optimiser::give_nt_reserved_incidence_bit(<ordinal-number>, 1);
+	NTI::give_nt_reserved_incidence_bit(<cardinal-number>, CARDINAL_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<ordinal-number>, ORDINAL_RES_NT_BIT);
 
-	<cardinal-number-in-words>->opt.number_words_by_production = TRUE;
-	<cardinal-number-in-words>->opt.flag_words_in_production = NUMBER_MC;
+	Nonterminals::make_numbering(<cardinal-number-in-words>);
+	Nonterminals::flag_words_with(<cardinal-number-in-words>, NUMBER_MC);
 
-	<ordinal-number-in-words>->opt.number_words_by_production = TRUE;
-	<ordinal-number-in-words>->opt.flag_words_in_production = ORDINAL_MC;
+	Nonterminals::make_numbering(<ordinal-number-in-words>);
+	Nonterminals::flag_words_with(<ordinal-number-in-words>, ORDINAL_MC);
 }
 
 @ Actual parsing is done here. We look at a single word to see if it's a

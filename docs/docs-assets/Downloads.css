@@ -1,0 +1,16 @@
+div.download-container p {
+	text-align: center;
+}
+
+div.download-container button.download-button {
+	background-color: DodgerBlue;
+	border: none;
+	color: white;
+	padding: 10px 24px;
+	cursor: pointer;
+	font-size: 18px;
+}
+
+div.download-container button.download-button:hover {
+	background-color: RoyalBlue;
+}

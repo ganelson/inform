@@ -94,39 +94,92 @@ void Instrumentation::log(void) {
 	int detailed = FALSE;
 	nonterminal *nt;
 	LOOP_OVER(nt, nonterminal) {
-		LOG("%d/%d: ", nt->ins.nonterminal_matches, nt->ins.nonterminal_tries);
-		LOG("%V: ", nt->nonterminal_id);
-		Optimiser::log_range_requirement(&(nt->opt.nonterminal_req));
+		Instrumentation::log_nt(nt, detailed);
 		LOG("\n");
-		if (nt->internal_definition)
-			LOG("  (internal)\n");
-		else
-			for (production_list *pl = nt->first_production_list; pl;
-				pl = pl->next_production_list)
-				Instrumentation::log_production_list(pl, detailed);
-		LOG("  min %d, max %d\n\n", nt->opt.min_nt_words, nt->opt.max_nt_words);
 	}
+}
+
+void Instrumentation::log_nt(nonterminal *nt, int detailed) {
+	LOG("%V ", nt->nonterminal_id);
+	if (nt->marked_internal) LOG("internal ");
+	if (nt->ins.nonterminal_tries > 0)
+		LOG("hits %d/%d ", nt->ins.nonterminal_matches, nt->ins.nonterminal_tries);
+	LOG("nti "); Instrumentation::log_bit(NTI::nt_incidence_bit(nt));
+	LOG(" constraint "); Instrumentation::log_ntic(&(nt->opt.nt_ntic));
+	LOG(" extremes ");
+	Instrumentation::log_extremes(&(nt->opt.nt_extremes));
+	LOG("\n");
+	LOG_INDENT;
+	for (production_list *pl = nt->first_production_list; pl;
+		pl = pl->next_production_list)
+		Instrumentation::log_production_list(pl, detailed);
+	LOG_OUTDENT;
+}
+
+@ =
+void Instrumentation::log_ntic(nti_constraint *ntic) {
+	int c = 0;
+	if (ntic->DW_req) { if (c++ > 0) LOG(" & "); LOG("DW = "); Instrumentation::log_bitmap(ntic->DW_req); }
+	if (ntic->DS_req) { if (c++ > 0) LOG(" & "); LOG("DS = "); Instrumentation::log_bitmap(ntic->DS_req); }
+	if (ntic->CW_req) { if (c++ > 0) LOG(" & "); LOG("CW = "); Instrumentation::log_bitmap(ntic->CW_req); }
+	if (ntic->CS_req) { if (c++ > 0) LOG(" & "); LOG("CS = "); Instrumentation::log_bitmap(ntic->CS_req); }
+	if (ntic->FW_req) { if (c++ > 0) LOG(" & "); LOG("FW = "); Instrumentation::log_bitmap(ntic->FW_req); }
+	if (ntic->FS_req) { if (c++ > 0) LOG(" & "); LOG("FS = "); Instrumentation::log_bitmap(ntic->FS_req); }
+	if (c == 0) LOG("(none)");
+}
+
+void Instrumentation::log_bitmap(int bm) {
+	LOG("{");
+	int c = 0;
+	for (int i=0; i<32; i++) {
+		int b = 1 << i;
+		if (bm & b) {
+			if (c++ > 0) LOG(", ");
+			Instrumentation::log_bit(b);
+		}
+	}
+	LOG("}");
+}
+
+void Instrumentation::log_bit(int b) {
+	for (int i=0; i<32; i++) if (b == (1 << i)) {
+		if (i < RESERVED_NT_BITS) LOG("r");
+		LOG("%d", i);
+	}
+}
+
+void Instrumentation::log_extremes(length_extremes *E) {
+	LOG("[%d, ", E->min_words);
+	if (E->max_words == INFINITE_WORD_COUNT) LOG("infinity)");
+	else LOG("%d]", E->max_words);
 }
 
 @ =
 void Instrumentation::log_production_list(production_list *pl, int detailed) {
-	LOG("  %J:\n", pl->definition_language);
-	production *pr;
-	for (pr = pl->first_production; pr; pr = pr->next_production) {
-		LOG("   "); Instrumentation::log_production(pr, detailed);
-		LOG("      %d/%d: ", pr->ins.production_matches, pr->ins.production_tries);
-		if (Wordings::nonempty(pr->ins.sample_text)) LOG("<%W>", pr->ins.sample_text);
-		LOG(" ==> ");
-		Optimiser::log_range_requirement(&(pr->opt.production_req));
+	LOG("%J:\n", pl->definition_language);
+	LOG_INDENT;
+	for (production *pr = pl->first_production; pr; pr = pr->next_production) {
+		Instrumentation::log_production(pr, detailed);
+		LOG("\n  ");
+		if (pr->ins.production_tries > 0)
+			LOG("(hits %d/%d) ", pr->ins.production_matches, pr->ins.production_tries);
+		if (Wordings::nonempty(pr->ins.sample_text)) {
+			if (Wordings::length(pr->ins.sample_text) > 8) LOG("(matched long text) ");
+			else LOG("(matched: '%W') ", pr->ins.sample_text);
+		}
+		LOG("constraint ");
+		Instrumentation::log_ntic(&(pr->opt.pr_ntic));
+		LOG(" extremes ");
+		Instrumentation::log_extremes(&(pr->opt.pr_extremes));
 		LOG("\n");
 	}
+	LOG_OUTDENT;
 }
 
 @ =
 void Instrumentation::log_production(production *pr, int detailed) {
 	if (pr->first_ptoken == NULL) LOG("<empty-production>");
-	ptoken *pt;
-	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
+	for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
 		Instrumentation::log_ptoken(pt, detailed);
 		LOG(" ");
 	}
@@ -143,8 +196,7 @@ void Instrumentation::log_ptoken(ptoken *pt, int detailed) {
 	if (pt->range_starts >= 0) {
 		LOG("{"); if (detailed) LOG("%d:", pt->range_starts);
 	}
-	ptoken *alt;
-	for (alt = pt; alt; alt = alt->alternative_ptoken) {
+	for (ptoken *alt = pt; alt; alt = alt->alternative_ptoken) {
 		if (alt->nt_pt) {
 			LOG("%V", alt->nt_pt->nonterminal_id);
 			if (detailed) LOG("=%d", alt->result_index);
@@ -165,8 +217,7 @@ void Instrumentation::write_ptoken(OUTPUT_STREAM, ptoken *pt) {
 	if (pt->disallow_unexpected_upper) WRITE("_");
 	if (pt->negated_ptoken) WRITE("^");
 	if (pt->range_starts >= 0) WRITE("{");
-	ptoken *alt;
-	for (alt = pt; alt; alt = alt->alternative_ptoken) {
+	for (ptoken *alt = pt; alt; alt = alt->alternative_ptoken) {
 		if (alt->nt_pt) {
 			WRITE("%V", alt->nt_pt->nonterminal_id);
 		} else {
