@@ -41,22 +41,22 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../inflections-module/index.html">inflections</a></li>
-<li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">if</span></a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
-<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../index-module/index.html">index</a></li>
 </ul><h2>Inter Modules</h2><ul>
 <li><a href="../bytecode-module/index.html">bytecode</a></li>
 <li><a href="../building-module/index.html">building</a></li>
 <li><a href="../codegen-module/index.html">codegen</a></li>
-</ul><h2>Shared Modules</h2><ul>
+</ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
 <li><a href="../syntax-module/index.html">syntax</a></li>
 <li><a href="../words-module/index.html">words</a></li>
 <li><a href="../html-module/index.html">html</a></li>
+<li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../linguistics-module/index.html">linguistics</a></li>
+<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -297,7 +297,7 @@ need to translate this to other languages.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">waiting</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">going</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>When we want to refer to an action name as a noun, we can use this to
 make that explicit: for instance, "taking" becomes "the taking action".
 </p>
@@ -306,7 +306,7 @@ make that explicit: for instance, "taking" becomes "the taking action".
 <span class="Preform-function-syntax">&lt;action-name-construction&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">action</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -436,7 +436,7 @@ will do: it doesn't have to be "it".)
 <span class="Preform-function-syntax">&lt;action-pronoun&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;accusative-pronoun&gt;</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -482,7 +482,7 @@ phrases: "unlocking the door with" won't match the unlocking action; only
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>However, &lt;action-name&gt; can also be made to match an action name without
 a final preposition, if that preposition is on the following list. For
 example, it allows "listening" to match the listening to action; this is
@@ -496,7 +496,7 @@ then that's what "listening" will match.)
 <span class="Preform-function-syntax">&lt;action-optional-trailing-prepositions&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -649,7 +649,7 @@ action patterns. For example, the Standard Rules define:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-variable-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-act.html#SP23_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadMatchingSyntax problem</span><span class="named-paragraph-number">23.2</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-variable-name&gt;</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP23_1"></a><b>&#167;23.1.  </b>And the new action variable name is vetted by being run through this:
 </p>
 
@@ -658,7 +658,7 @@ action patterns. For example, the Standard Rules define:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;unfortunate-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-act.html#SP23_1_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ActionVarAnd problem</span><span class="named-paragraph-number">23.1.1</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">														</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP23_2"></a><b>&#167;23.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadMatchingSyntax problem</span><span class="named-paragraph-number">23.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -843,7 +843,7 @@ action patterns. For example, the Standard Rules define:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">action</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase-actionable&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; *XP = RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">action</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-act.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadActionDeclaration problem</span><span class="named-paragraph-number">25.1</span></a></span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP25_1"></a><b>&#167;25.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadActionDeclaration problem</span><span class="named-paragraph-number">25.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -912,7 +912,7 @@ action to be created.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-act.html#SP28_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ActionAlreadyExists problem</span><span class="named-paragraph-number">28.1</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = PL::Actions::act_new(W, TRUE);</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP28_1"></a><b>&#167;28.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ActionAlreadyExists problem</span><span class="named-paragraph-number">28.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -971,7 +971,7 @@ It's convenient to define a single action clause first:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">touchable</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> REQUIRES_ACCESS</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">carried</span><span class="Preform-plain-syntax">				</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> REQUIRES_POSSESSION</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>We are now able to define this peculiar form of list of action clauses:
 </p>
 
@@ -991,7 +991,7 @@ It's convenient to define a single action clause first:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-clause&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-clause&gt;</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP30_1"></a><b>&#167;30.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ActionClauseUnknown problem</span><span class="named-paragraph-number">30.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 

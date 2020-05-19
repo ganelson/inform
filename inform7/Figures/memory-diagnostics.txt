@@ -1,9 +1,9 @@
-Total memory consumption was 253145K = 247 MB
+Total memory consumption was 253147K = 247 MB
 
-61.9% was used for 1324040 objects, in 262769 frames in 196 x 800K = 156800K = 153 MB:
+61.9% was used for 1324142 objects, in 262772 frames in 196 x 800K = 156800K = 153 MB:
 
     10.0%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
-     5.6%  text_stream_array                        2587 x 100 = 258700 objects, 14569984 bytes
+     5.6%  text_stream_array                        2588 x 100 = 258800 objects, 14575616 bytes
      4.0%  parse_node                               130338 objects, 10427040 bytes
      2.8%  verb_conjugation                         160 objects, 7425280 bytes
      2.7%  parse_node_annotation_array              445 x 500 = 222500 objects, 7134240 bytes
@@ -115,11 +115,11 @@ Total memory consumption was 253145K = 247 MB
      ----  activity                                 35 objects, 3920 bytes
      ----  inbuild_edition                          54 objects, 3888 bytes
      ----  inbuild_copy                             35 objects, 3640 bytes
+     ----  command_line_switch                      41 objects, 3280 bytes
      ----  kind_constructor_comparison_schema_array 1 x 100 objects, 3232 bytes
      ----  instance_usage_array                     1 x 200 objects, 3232 bytes
      ----  compatibility_specification              66 objects, 3168 bytes
      ----  definition                               44 objects, 3168 bytes
-     ----  command_line_switch                      39 objects, 3120 bytes
      ----  inform_extension                         19 objects, 3040 bytes
      ----  property_of_value_storage                93 objects, 2976 bytes
      ----  submodule_request                        71 objects, 2840 bytes
@@ -204,7 +204,7 @@ Total memory consumption was 253145K = 247 MB
 
 38.0% was used for memory not allocated for objects:
 
-    16.2%  text stream storage                      42036068 bytes in 265095 claims
+    16.2%  text stream storage                      42037656 bytes in 265104 claims
      3.5%  dictionary storage                       9265152 bytes in 16345 claims
      ----  sorting                                  1112 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
@@ -219,5 +219,5 @@ Total memory consumption was 253145K = 247 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.1% was overhead - 52143352 bytes = 50921K = 49 MB
+20.1% was overhead - 52137560 bytes = 50915K = 49 MB
 

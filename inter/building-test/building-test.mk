@@ -27,7 +27,7 @@ INTEST = /Users/gnelson/Natural\ Inform/intest/Tangled/intest
 MYNAME = building-test
 ME = inter/building-test
 
-$(ME)/Tangled/$(MYNAME): inter/building-test/*.w /Users/gnelson/Natural\ Inform/inweb/foundation-module/Chapter*/*.w inter/building-test/../building-module/Chapter*/*.w inter/building-test/../bytecode-module/Chapter*/*.w inter/building-test/../../shared/words-module/Chapter*/*.w inter/building-test/Chapter*/*.w
+$(ME)/Tangled/$(MYNAME): inter/building-test/*.w /Users/gnelson/Natural\ Inform/inweb/foundation-module/Preliminaries/*.w /Users/gnelson/Natural\ Inform/inweb/foundation-module/Chapter*/*.w inter/building-test/../building-module/Chapter*/*.w inter/building-test/../bytecode-module/Preliminaries/*.w inter/building-test/../bytecode-module/Chapter*/*.w inter/building-test/../../services/words-module/Preliminaries/*.w inter/building-test/../../services/words-module/Chapter*/*.w inter/building-test/Chapter*/*.w
 	$(call make-me)
 
 .PHONY: force

@@ -219,6 +219,7 @@ compiler via Delia scripts in |intest|.
 @e CRASHALL_CLSW
 @e DIAGNOSTICS_CLSW
 @e INDEX_CLSW
+@e CENSUS_UPDATE_CLSW
 @e PROGRESS_CLSW
 @e REQUIRE_PROBLEM_CLSW
 @e SIGILS_CLSW
@@ -229,6 +230,8 @@ compiler via Delia scripts in |intest|.
 		L"intentionally crash on Problem messages, for backtracing", FALSE);
 	CommandLine::declare_boolean_switch(INDEX_CLSW, L"index", 1,
 		L"produce an Index", TRUE);
+	CommandLine::declare_boolean_switch(CENSUS_UPDATE_CLSW, L"census-update", 1,
+		L"update the extensions census", TRUE);
 	CommandLine::declare_boolean_switch(PROGRESS_CLSW, L"progress", 1,
 		L"display progress percentages", TRUE);
 	CommandLine::declare_boolean_switch(SIGILS_CLSW, L"sigils", 1,
@@ -244,12 +247,14 @@ rather than |core|.
 
 =
 int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
-int do_not_generate_index = FALSE; /* Set by the |-noindex| command line option */
+int do_not_generate_index = FALSE; /* Set by the |-no-index| command line option */
+int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line option */
 
 void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case CRASHALL_CLSW: debugger_mode = val; crash_on_all_errors = val; break;
 		case INDEX_CLSW: do_not_generate_index = val?FALSE:TRUE; break;
+		case CENSUS_UPDATE_CLSW: do_not_update_census = val?FALSE:TRUE; break;
 		case PROGRESS_CLSW: show_progress_indicator = val; break;
 		case SIGILS_CLSW: echo_problem_message_sigils = val; break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;

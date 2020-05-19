@@ -46,15 +46,15 @@ INBUILDX = inbuild/Tangled/inbuild
 # root of the core Inform distribution.
 # In the eventual makefile, the symbol NAMEWEB is defined as its location.
 
-{module} WORDS words shared/words-module modules
-{module} SYNTAX syntax shared/syntax-module modules
-{module} HTML html shared/html-module modules
-{module} ARCH arch shared/arch-module modules
+{module} WORDS words services/words-module modules
+{module} SYNTAX syntax services/syntax-module modules
+{module} HTML html services/html-module modules
+{module} ARCH arch services/arch-module modules
+{module} INFLECTIONS inflections services/inflections-module modules
+{module} LINGUISTICS linguistics services/linguistics-module modules
+{module} PROBLEMS problems services/problems-module modules
 
-{module} INFLECTIONS inflections inform7/inflections-module modules
-{module} LINGUISTICS linguistics inform7/linguistics-module modules
 {module} KINDS kinds inform7/kinds-module modules
-{module} PROBLEMS problems inform7/problems-module modules
 {module} CORE core inform7/core-module modules
 {module} IF if inform7/if-module modules
 {module} INDEX index inform7/index-module modules
@@ -86,13 +86,12 @@ INFORM6X = inform6/Tangled/inform6
 
 # While these are also executables, they only provide unit tests for modules:
 
-{tool} SYNTAXTEST syntax-test shared/syntax-test utools
-{tool} WORDSTEST words-test shared/words-test utools
-{tool} ARCHTEST arch-test shared/arch-test utools
-
-{tool} INFLECTIONSTEST inflections-test inform7/inflections-test utools
-{tool} LINGUISTICSTEST linguistics-test inform7/linguistics-test utools
-{tool} PROBLEMSTEST problems-test inform7/problems-test utools
+{tool} SYNTAXTEST syntax-test services/syntax-test utools
+{tool} WORDSTEST words-test services/words-test utools
+{tool} ARCHTEST arch-test services/arch-test utools
+{tool} INFLECTIONSTEST inflections-test services/inflections-test utools
+{tool} LINGUISTICSTEST linguistics-test services/linguistics-test utools
+{tool} PROBLEMSTEST problems-test services/problems-test utools
 
 {tool} BUILDINGTEST building-test inter/building-test utools
 

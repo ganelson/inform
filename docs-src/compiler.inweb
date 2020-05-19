@@ -15,8 +15,6 @@ and //inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference
 
 Each tool has its own CLI (or "command-line interface") but is otherwise
 divided up into "modules", many shared between two or even all three tools.
-//inform7// contains every module, and is thus the entire compiler, whereas
-the other tools are subsets of it:
 = (hyperlinked text as BoxArt)
         INBUILD                  INFORM7                   INTER     
     +-------------+          +-------------+          +-------------+    
@@ -28,9 +26,6 @@ the other tools are subsets of it:
     |             |          |             |          |             |
     |             |      +---+.............+---+      |             |
     |             |      |     //core//-module     |      |             |
-    |             |      | //inflections//-module  |      |             |
-    |             |      | //linguistics//-module  |      |             |
-    |             |      |   //problems//-module   |      |             |
     |             |      |    //kinds//-module     |      |             |
     |             |      |      //if//-module      |      |             |
     |             |      |  //multimedia//-module  |      |             |
@@ -43,7 +38,10 @@ the other tools are subsets of it:
     |             |      |                            //codegen//-module    |
     +-------------+      +----------------------------------------------+
 +-----------------------------------------------------------------------+
-|  SHARED                  shared //syntax//-module                         |
+|  SERVICES              shared //linguistics//-module                      |
+|                        shared //inflections//-module                      |
+|                         shared //problems//-module                        |
+|                          shared //syntax//-module                         |
 |                          shared //words//-module                          |
 |                           shared //arch//-module                          |
 |                           shared //html//-module                          |
@@ -54,15 +52,14 @@ the other tools are subsets of it:
 |                           (standard C library)                        |
 +-----------------------------------------------------------------------+
 =
-The three tools each use a "shared" library, made up of four modules
-providing services useful for natural language-based programs. At one time
-this was going to be called "Second Foundation" (or possibly "Foundation
-and Empire"), because there is also //foundation// underneath, a C library
-of utility functions provided by the //inweb// project.
+The three tools each use a "services" library, made up of seven modules
+providing services useful for natural language-based programs (though only
+//inform7// needs them all). At one time this was going to be called "Second
+Foundation" or possibly "Foundation and Empire", because there is also
+//foundation// underneath, a library of utility functions provided by //inweb//.
 
-@ That's a lot: for code-spelunkers, the Inform compilers are like a
-limestone hillside riddled with points of entry. For first-time cavers,
-here are some suggested entrances.
+@ That's a lot: for code-spelunkers, this is a veritable limestone hillside
+of points of entry. Where to begin? Here are some suggested entrances:
 (a) See //supervisor: What This Module Does// for an overview of the
 build-management process.
 (b) Or take that on trust, and see //core: What This Module Does// for

@@ -55,22 +55,22 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../inflections-module/index.html">inflections</a></li>
-<li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
-<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../index-module/index.html">index</a></li>
 </ul><h2>Inter Modules</h2><ul>
 <li><a href="../bytecode-module/index.html">bytecode</a></li>
 <li><a href="../building-module/index.html">building</a></li>
 <li><a href="../codegen-module/index.html">codegen</a></li>
-</ul><h2>Shared Modules</h2><ul>
+</ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
 <li><a href="../syntax-module/index.html">syntax</a></li>
 <li><a href="../words-module/index.html">words</a></li>
 <li><a href="index.html"><span class="selectedlink">html</span></a></li>
+<li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../linguistics-module/index.html">linguistics</a></li>
+<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -150,7 +150,7 @@ to see if it might be a heading. For instance, a paragraph consisting of
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">chapter</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">:</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 1</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">section</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">:</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 2</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -196,7 +196,7 @@ text of three asterisks in a row.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">\***</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 3</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">****</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 4</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -341,7 +341,7 @@ far as the user is concerned it opens the example and goes there.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">, </span><span class="string-syntax">"\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">link</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::begin_colour</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"000000"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">+</span><span class="identifier-syntax">example_count</span><span class="plain-syntax">-1); /* </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">letter</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">Z</span><span class="plain-syntax"> */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="character-syntax">'A'</span><span class="plain-syntax">+</span><span class="identifier-syntax">example_count</span><span class="plain-syntax">-1); </span><span class="comment-syntax"> the letter A to Z</span>
 <span class="plain-syntax">    </span><a href="2-dr.html#SP9" class="function-link"><span class="function-syntax">DocumentationRenderer::set_body_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NW</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">EDOC_FRAGMENT_ONLY</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::end_colour</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
@@ -354,7 +354,7 @@ far as the user is concerned it opens the example and goes there.
 <span class="Preform-function-syntax">&lt;table-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;if-start-of-paragraph&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">table</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Setting the body text. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">EDOC_ALL_EXAMPLES_CLOSED</span><span class="Preform-plain-syntax"> -1 </span><span class="Preform-comment-syntax"> do not change this without also changing Extensions</span>
@@ -459,7 +459,7 @@ asterisk and colon:
 <span class="Preform-function-syntax">&lt;extension-documentation-paste-marker&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">:</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9_4"></a><b>&#167;9.4.  </b>Two lower-level sorts of breaks can also occur in the middle of a paragraph:
 line breaks, indicated by newlines plus some tabs, and column breaks inside
 I7 source tables, indicated by tabs. We have to deal with those before we

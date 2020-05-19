@@ -8,13 +8,13 @@ Preform Language: English
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: shared/words
-Import: shared/syntax
-Import: shared/html
-Import: shared/arch
-Import: inflections
-Import: problems
-Import: linguistics
+Import: services/words
+Import: services/syntax
+Import: services/html
+Import: services/arch
+Import: services/problems
+Import: services/inflections
+Import: services/linguistics
 Import: kinds
 Import: inter/bytecode
 Import: inbuild/supervisor

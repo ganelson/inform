@@ -32,7 +32,7 @@ retrospective/makefile
 
 inbuild/*-test/Tests/Test Cases/_Results_Actual/
 inform7/*-test/Tests/Test Cases/_Results_Actual/
-shared/*-test/Tests/Test Cases/_Results_Actual/
-shared/*-test/*.mk
+services/*-test/Tests/Test Cases/_Results_Actual/
+services/*-test/*.mk
 rsync.log
 

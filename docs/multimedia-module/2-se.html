@@ -41,22 +41,22 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../inflections-module/index.html">inflections</a></li>
-<li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="index.html"><span class="selectedlink">multimedia</span></a></li>
-<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../index-module/index.html">index</a></li>
 </ul><h2>Inter Modules</h2><ul>
 <li><a href="../bytecode-module/index.html">bytecode</a></li>
 <li><a href="../building-module/index.html">building</a></li>
 <li><a href="../codegen-module/index.html">codegen</a></li>
-</ul><h2>Shared Modules</h2><ul>
+</ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
 <li><a href="../syntax-module/index.html">syntax</a></li>
 <li><a href="../words-module/index.html">words</a></li>
 <li><a href="../html-module/index.html">html</a></li>
+<li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../linguistics-module/index.html">linguistics</a></li>
+<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -147,7 +147,7 @@ within the application.
 <span class="Preform-function-syntax">&lt;new-sound-sentence-object-unarticled&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">file</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase&gt;</span><span class="Preform-plain-syntax">												</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; *XP = RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -187,7 +187,7 @@ within the application.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;quoted-text&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">						</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-se.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_SoundNotTextual problem</span><span class="named-paragraph-number">8.1</span></a></span><span class="Preform-constant-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SoundNotTextual problem</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -408,8 +408,8 @@ manifest file created from <span class="extract"><span class="extract-syntax">Fi
 <span class="plain-syntax">            </span><span class="identifier-syntax">HTML_TAG_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"img"</span><span class="plain-syntax">, </span><span class="string-syntax">"border=\"0\" src=\"inform:/doc_images/image_problem.png\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">preview</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"embed"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"src=\"file://%f\" width=\"%d\" height=\"64\" "</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"autostart=\"false\" volume=\"50%%\" mastersound"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"src=\"file:</span><span class="comment-syntax">%f\" width=\"%d\" height=\"64\" "</span>
+<span class="string-syntax">                "</span><span class="identifier-syntax">autostart</span><span class="plain-syntax">=\</span><span class="string-syntax">"false\" volume=\"50%%\" mastersound"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">bs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">filename_of_sound_file</span><span class="plain-syntax">, </span><span class="constant-syntax">THUMBNAIL_WIDTH</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"embed"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>

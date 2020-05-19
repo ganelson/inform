@@ -41,22 +41,22 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../inflections-module/index.html">inflections</a></li>
-<li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">if</span></a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
-<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../index-module/index.html">index</a></li>
 </ul><h2>Inter Modules</h2><ul>
 <li><a href="../bytecode-module/index.html">bytecode</a></li>
 <li><a href="../building-module/index.html">building</a></li>
 <li><a href="../codegen-module/index.html">codegen</a></li>
-</ul><h2>Shared Modules</h2><ul>
+</ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
 <li><a href="../syntax-module/index.html">syntax</a></li>
 <li><a href="../words-module/index.html">words</a></li>
 <li><a href="../html-module/index.html">html</a></li>
+<li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../linguistics-module/index.html">linguistics</a></li>
+<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -321,7 +321,7 @@ Rules. (So there is no need to translate this to other languages.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">person</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">player's</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">holdall</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -438,7 +438,7 @@ special with it at all.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">fixed</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">place</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">matching</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">key</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -523,7 +523,7 @@ an object" pseudo-value).
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">_nobody/no-one</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; &lt;&lt;kind:k&gt;&gt; = K_person; &lt;&lt;quantifier:q&gt;&gt; = not_exists_quantifier</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">_no</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">_one</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; &lt;&lt;kind:k&gt;&gt; = K_person; &lt;&lt;quantifier:q&gt;&gt; = not_exists_quantifier</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>Words like "something" or "everywhere" combine a common noun &mdash; thing,
 and implicitly room &mdash; with a determiner &mdash; one thing, all rooms. When we
 detect them, we set both <span class="extract"><span class="Preform-extract-syntax">quantifier_used</span></span> and <span class="extract"><span class="Preform-extract-syntax">some_kind</span></span> appropriately.
@@ -562,7 +562,7 @@ node using this wording in order to produce better problem messages if need be.
 <span class="Preform-function-syntax">&lt;notable-spatial-noun-phrases&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">nowhere</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">

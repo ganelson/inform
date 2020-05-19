@@ -7,8 +7,8 @@ Version Number: 1
 Version Name: Axion
 
 Import: foundation
-Import: shared/words
-Import: shared/arch
+Import: services/words
+Import: services/arch
 Import: bytecode
 Import: building
 Import: codegen

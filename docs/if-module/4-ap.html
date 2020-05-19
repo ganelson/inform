@@ -55,22 +55,22 @@ MathJax = {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../inflections-module/index.html">inflections</a></li>
-<li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">if</span></a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
-<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../index-module/index.html">index</a></li>
 </ul><h2>Inter Modules</h2><ul>
 <li><a href="../bytecode-module/index.html">bytecode</a></li>
 <li><a href="../building-module/index.html">building</a></li>
 <li><a href="../codegen-module/index.html">codegen</a></li>
-</ul><h2>Shared Modules</h2><ul>
+</ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
 <li><a href="../syntax-module/index.html">syntax</a></li>
 <li><a href="../words-module/index.html">words</a></li>
 <li><a href="../html-module/index.html">html</a></li>
+<li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../linguistics-module/index.html">linguistics</a></li>
+<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -586,7 +586,7 @@ These are always present tense, and can't be negated.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">trying</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;action-pattern-core&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-pattern-core-actor&gt;</span><span class="Preform-plain-syntax">															</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ACTOR_IMPLICITLY_PLAYER; *XP = RP[1];</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The second version is for contexts where the AP occurs as a condition: e.g.,
 in a sentence like "if we have taken a jewel". Since these can occur in
 both tenses and can be negated ("if we are not taking a jewel"), there are
@@ -632,7 +632,7 @@ four combinations:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">we</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">tried</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;action-pattern-core&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">we</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;action-pattern-past-core&gt;</span><span class="Preform-plain-syntax">												</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ACTOR_EXPLICITLY_PLAYER; *XP = RP[1];</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>There is one more tweak at this top level. Inform allows an ambiguous but
 shorter and more natural syntax in which the actor's name simply appears at
 the front of the AP:
@@ -654,7 +654,7 @@ actorless possibility can always be written.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-pattern-core&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ACTOR_IMPLICITLY_PLAYER; *XP = RP[1];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;actor-description&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;action-pattern-core&gt;</span><span class="Preform-plain-syntax"> 				</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> ACTOR_NAMED; *XP = RP[2]; action_pattern *ap = *XP; ap-&gt;request = FALSE; ap-&gt;actor_spec = RP[1];</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>And this voracious token matches the actor's name as an initial excerpt,
 which is much faster than exhaustive searching. It tries to break just before
 any "-ing" word (i.e., participle) which is not inside parentheses; but only
@@ -707,7 +707,7 @@ would match as an abbreviated form of the name of "angry waiting man".
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -760,7 +760,7 @@ trimmed away;
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>"Doing it" is not the happiest of syntaxes. The idea is for this to be
 a sort of pronoun for actions, allowing for anaphora, but to parse such things
 naturally in all cases is wishful thinking. It enables us to write, e.g.:
@@ -778,7 +778,7 @@ possibility for confusion is too great; perhaps we should just cut this idea.
 <span class="Preform-function-syntax">&lt;action-pronominal&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">doing</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">it</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -834,7 +834,7 @@ a condition attached with "when":
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">when/while</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;condition-in-ap&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; pap_failure_reason = WHENOKAY_PAPF; return FALSE; </span><span class="Preform-comment-syntax"> used only to diagnose problems</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">when/while</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">										</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF; return FALSE; </span><span class="Preform-comment-syntax"> used only to diagnose problems</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>&lt;condition-in-ap&gt; is really just &lt;spec-condition&gt; in disguise &mdash; i.e.,
 it matches a standard Inform condition &mdash; but it's implemented as an internal
 to enable Inform to set up a stack frame if there isn't one already, and so on.
@@ -864,7 +864,7 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>Level 4 now. The optional "in the presence of":
 </p>
 
@@ -873,7 +873,7 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;ap-common-core-inner-inner&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">presence</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;action-parameter&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]; action_pattern *ap = *XP; ap-&gt;presence_spec = RP[2];</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;ap-common-core-inner-inner&gt;</span><span class="Preform-plain-syntax">											</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1];</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>Level 5 now. The initial "in" clause, e.g., "in the Pantry", requires
 special handling to prevent it from clashing with other interpretations of
 "in" elsewhere in the grammar. It's perhaps unexpected that "in the Pantry"
@@ -886,7 +886,7 @@ is valid as an AP, but this enables many natural-looking rules to be written
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;action-parameter&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-ap.html#SP22_1" class="named-paragraph-link"><span class="named-paragraph">Make an actionless action pattern, specifying room only</span><span class="named-paragraph-number">22.1</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;ap-common-core-inner-inner-inner&gt;</span><span class="Preform-plain-syntax">						</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1];</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP22_1"></a><b>&#167;22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an actionless action pattern, specifying room only</span><span class="named-paragraph-number">22.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -933,7 +933,7 @@ box" makes no sense since only one is transitive).
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>The "operands" of an action pattern are the nouns to which it applies: for
 example, in "Kevin taking or dropping something", the operand is "something".
 We treat words like "something" specially to avoid them being read as
@@ -954,7 +954,7 @@ We treat words like "something" specially to avoid them being read as
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">something/anything</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">it</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>Finally, then, &lt;action-parameter&gt;. Almost anything syntactically matches
 here &mdash; a constant, a description, a table entry, a variable, and so on.
 </p>
@@ -971,7 +971,7 @@ here &mdash; a constant, a description, a table entry, a variable, and so on.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">permit_nonconstant_action_parameters</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>We can't put it off any longer. Here goes.
 </p>
 

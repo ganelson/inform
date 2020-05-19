@@ -55,22 +55,22 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../inflections-module/index.html">inflections</a></li>
-<li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">if</span></a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
-<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../index-module/index.html">index</a></li>
 </ul><h2>Inter Modules</h2><ul>
 <li><a href="../bytecode-module/index.html">bytecode</a></li>
 <li><a href="../building-module/index.html">building</a></li>
 <li><a href="../codegen-module/index.html">codegen</a></li>
-</ul><h2>Shared Modules</h2><ul>
+</ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
 <li><a href="../syntax-module/index.html">syntax</a></li>
 <li><a href="../words-module/index.html">words</a></li>
 <li><a href="../html-module/index.html">html</a></li>
+<li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../linguistics-module/index.html">linguistics</a></li>
+<li><a href="../problems-module/index.html">problems</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -431,7 +431,7 @@ If all are null, then the global scope is used.
 <span class="Preform-function-syntax">&lt;direction-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;instance-of-object&gt;</span><span class="Preform-plain-syntax">		</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; *XP = RP[1]; if (Instances::of_kind(RP[1], K_direction) == FALSE) return FALSE;</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>The subject noun phrase of sentences like this:
 </p>
 
@@ -462,7 +462,7 @@ itself.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">above</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;instance-of-object&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; &lt;&lt;instance:dir&gt;&gt; = I_up; *XP = RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">below</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;instance-of-object&gt;</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE; &lt;&lt;instance:dir&gt;&gt; = I_down; *XP = RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP17_1"></a><b>&#167;17.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_MapDirectionClue problem</span><span class="named-paragraph-number">17.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -555,7 +555,7 @@ itself.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;k-kind&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> KIND_MAP_SCOPE; &lt;&lt;kind:kscope&gt;&gt; = RP[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;instance-of-object&gt;</span><span class="Preform-plain-syntax">		</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> INSTANCE_MAP_SCOPE; &lt;&lt;instance:iscope&gt;&gt; = RP[1]</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18_1"></a><b>&#167;18.1.  </b>The map parameters all have one-word, sometimes hyphenated, names, such
 as the following:
 </p>
@@ -580,7 +580,7 @@ as the following:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP18_2"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_MapSettingUnknown problem</span><span class="named-paragraph-number">18.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -612,7 +612,7 @@ Never mind.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">on</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">off</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> FALSE</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>Map offsets have a cutesy notation: <span class="extract"><span class="Preform-extract-syntax">10&amp;-30</span></span>, for example, written as a
 single word. The following nonterminal actually matches any single word
 (so that problems can be caught later, not now), returning either a valid
@@ -625,7 +625,7 @@ offset or else the <span class="extract"><span class="Preform-extract-syntax">ER
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>The one part of the grammar not explicitly spelled out above was what to do
 with the optional text which follows a rubric. This is a sequence of any of
 the following:
@@ -639,7 +639,7 @@ the following:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;map-offset&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">from</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RUBRIC_OFFSET; &lt;&lt;roff&gt;&gt; = R[1]; &lt;&lt;edge&gt;&gt; = Wordings::first_wn(WR[1])</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;map-offset&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> RUBRIC_POSITION; &lt;&lt;roff&gt;&gt; = R[1]; &lt;&lt;edge&gt;&gt; = Wordings::first_wn(WR[1])</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">NO_IMW</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span>

@@ -7,7 +7,7 @@ Licence: Artistic License 2.0
 Import: foundation
 Import: ../building
 Import: ../bytecode
-Import: ../../shared/words
+Import: ../../services/words
 
 Chapter 1: Scaffolding
 	Program Control

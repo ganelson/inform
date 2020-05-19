@@ -7,10 +7,10 @@ Version Number: 1
 Version Name: Avignon
 
 Import: foundation
-Import: shared/words
-Import: shared/syntax
-Import: shared/html
-Import: shared/arch
+Import: services/words
+Import: services/syntax
+Import: services/html
+Import: services/arch
 Import: supervisor
 
 Manual

@@ -1,0 +1,35 @@
+Read 70 words
+ROOT_NT
+    HEADING_NT'chapter 1' (level 0)
+        HEADING_NT'chapter 1' (level 1)
+            SENTENCE_NT'verb 2 be'
+            SENTENCE_NT'verb 1 have'
+            SENTENCE_NT'verb 3 carry'
+            SENTENCE_NT'verb 3 mean'
+        HEADING_NT'chapter 2' (level 1)
+            SENTENCE_NT'jane is a woman'
+                VERB_NT'is' (relation)
+                PROPER_NOUN_NT'jane'
+                PROPER_NOUN_NT'woman' (indefinite)
+            SENTENCE_NT'peter carries the torch'
+                VERB_NT'carries' (relation)
+                PROPER_NOUN_NT'peter'
+                RELATIONSHIP_NT'carries'
+                    PROPER_NOUN_NT'torch' (definite)
+            SENTENCE_NT'there is a door'
+                VERB_NT'is' (existential) (relation)
+                PROPER_NOUN_NT'there'
+                PROPER_NOUN_NT'door' (indefinite)
+            SENTENCE_NT'the sailors carry a cask of rum'
+                VERB_NT'carry' (relation)
+                PROPER_NOUN_NT'sailors' (definite)
+                RELATIONSHIP_NT'carry'
+                    PROPER_NOUN_NT'cask of rum' (indefinite)
+            SENTENCE_NT'the shovel has a handle'
+                VERB_NT'has' (possessive) (relation)
+                PROPER_NOUN_NT'shovel' (definite)
+                PROPER_NOUN_NT'handle' (indefinite)
+            SENTENCE_NT'the does the player mean rules is a rulebook'
+                VERB_NT'is' (relation)
+                PROPER_NOUN_NT'does the player mean rules' (definite)
+                PROPER_NOUN_NT'rulebook' (indefinite)
