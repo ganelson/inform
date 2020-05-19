@@ -312,7 +312,7 @@ a request for a new text substitution to be compiled later...
 		Produce::up(Emit::tree());
 	}
 
-	parse_node *ts_code_block = Node::new(ROUTINE_NT);
+	parse_node *ts_code_block = Node::new(RULE_NT);
 	Node::set_module(ts_code_block, ts->belongs_to_module);
 	compilation_module *cm = Modules::current();
 	Modules::set_current_to(ts->belongs_to_module);

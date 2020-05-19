@@ -476,16 +476,8 @@ We now have all the apparatus we need, so:
 
 =
 void NTI::calculate_constraint(nonterminal *nt) {
-	#ifdef PREFORM_CIRCULARITY_BREAKER
-	PREFORM_CIRCULARITY_BREAKER(nt);
-	#endif
-
 	@<Mark up fixed wording in the grammar for NT with the NT's incidence bit@>;
 	@<Calculate requirement for NT@>;
-
-	#ifdef PREFORM_CIRCULARITY_BREAKER
-	PREFORM_CIRCULARITY_BREAKER(nt);
-	#endif
 }
 
 @<Mark up fixed wording in the grammar for NT with the NT's incidence bit@> =
@@ -559,22 +551,18 @@ word "mistral", and that tells us nothing about the bits that it has.
 @h Customisation.
 The above algorithm calculates sensible constraints for regular nonterminals,
 but since it can't look inside the workings of internal nonterminals, those
-currently have no constraints. Because of that, //words// provides for up to
-two callback functions which have the opportunity to tweak the process:
+currently have no constraints.
 
-=
-void NTI::ask_parent_to_tweak(void) {
-	#ifdef FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK
-	FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK();
-	#endif
-	#ifdef PREFORM_OPTIMISER_WORDS_CALLBACK
-	PREFORM_OPTIMISER_WORDS_CALLBACK();
-	#endif
-}
+So the parent (i.e., the tool using //words//) may want to intervene. It does
+that at two points:
 
-@ Those callbacks should consist of calls to the following functions.
+(a) When it starts up, it can call //NTI::give_nt_reserved_incidence_bit// --
+see below -- or //Nonterminals::make_numbering// or //Nonterminals::flag_words_with//.
 
-As we've seen, each NT is assigned an NTI bit, and in general they are handed
+(b) When //The Optimiser// runs, it calls two callback functions which have
+a chance to add NTI constraints to nonterminals.
+
+@ To take (a) first: as we've seen, each NT is assigned an NTI bit, handed
 out more or less at random, dividing the stock of NTs into about 26 roughly
 equal subsets. But it turns out to be efficient to fix the NTI bits for some
 internal NTs so that they are in common: for example, in Inform, making sure
@@ -599,9 +587,21 @@ void NTI::give_nt_reserved_incidence_bit(nonterminal *nt, int b) {
 	nt->opt.nt_incidence_bit = (1 << b);
 }
 
-@ The other thing which the parent can do is to add constraints of its own
-on specific nonterminals. This is especially useful for internals, because
-those would otherwise have no constraints.
+@ Now for opportunity (b). //words// provides for up to two callback functions
+which have the opportunity to add constraints:
+
+=
+void NTI::ask_parent_to_add_constraints(void) {
+	#ifdef PREFORM_OPTIMISER_WORDS_CALLBACK
+	PREFORM_OPTIMISER_WORDS_CALLBACK();
+	#endif
+	#ifdef MORE_PREFORM_OPTIMISER_WORDS_CALLBACK
+	MORE_PREFORM_OPTIMISER_WORDS_CALLBACK();
+	#endif
+}
+
+@ Those callback functions, if supplied, should consist of calls to the
+following functions.
 
 =
 void NTI::one_word_in_match_must_have_my_NTI_bit(nonterminal *nt) {

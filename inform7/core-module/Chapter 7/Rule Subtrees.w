@@ -1,22 +1,22 @@
 [Sentences::RuleSubtrees::] Rule Subtrees.
 
 To tidy up |INVOCATION_LIST_NT| nodes into a list of children under the
-relevant |ROUTINE_NT| node, and so turn each rule definition into a single
+relevant |RULE_NT| node, and so turn each rule definition into a single
 subtree.
 
 @h Definitions.
 
-@ Initially, the phrases (|INVOCATION_LIST_NT|) making up a rule (|ROUTINE_NT|) are
+@ Initially, the phrases (|INVOCATION_LIST_NT|) making up a rule (|RULE_NT|) are
 simply listed after it in the parse tree, but we want them to become its
 children: this is the only thing the $A$-grammar does with rules, which
 otherwise wait until later to be dealt with.
 
 The code in this section accomplishes the regrouping: after it runs, every
-|INVOCATION_LIST_NT| is a child of the |ROUTINE_NT| header to which it belongs.
+|INVOCATION_LIST_NT| is a child of the |RULE_NT| header to which it belongs.
 
 @ This routine is used whenever new material is added. Whenever it finds a
-childless |ROUTINE_NT| followed by a sequence of |INVOCATION_LIST_NT| nodes, it
-joins these in sequence as children of the |ROUTINE_NT|. Since it always
+childless |RULE_NT| followed by a sequence of |INVOCATION_LIST_NT| nodes, it
+joins these in sequence as children of the |RULE_NT|. Since it always
 acts so as to leave a non-zero number of children, and since it acts only
 on childless nodes, it cannot ever act on the same node twice.
 
@@ -31,11 +31,11 @@ void Sentences::RuleSubtrees::register_recently_lexed_phrases(void) {
 
 =
 void Sentences::RuleSubtrees::demote_command_nodes(parse_node *p) {
-	if ((Node::get_type(p) == ROUTINE_NT) && (p->down == NULL)) {
+	if ((Node::get_type(p) == RULE_NT) && (p->down == NULL)) {
 		parse_node *end_def = p;
 		while ((end_def->next) && (Node::get_type(end_def->next) == INVOCATION_LIST_NT))
 			end_def = end_def->next;
-		if (p == end_def) return; /* |ROUTINE_NT| not followed by any |INVOCATION_LIST_NT|s */
+		if (p == end_def) return; /* |RULE_NT| not followed by any |INVOCATION_LIST_NT|s */
 		/* splice so that |p->next| to |end_def| become the children of |p|: */
 		p->down = p->next;
 		p->next = end_def->next;

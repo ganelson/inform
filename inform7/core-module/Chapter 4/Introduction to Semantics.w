@@ -201,8 +201,7 @@ whole thing into a |specification| for the rest of Inform to use.
 @
 
 @d PREFORM_ADAPTIVE_PERSON NaturalLanguages::adaptive_person
-@d PREFORM_OPTIMISER_WORDS_CALLBACK Semantics::mark_preform_requirements
-@d PREFORM_CIRCULARITY_BREAKER Semantics::break_preform_circularities
+@d MORE_PREFORM_OPTIMISER_WORDS_CALLBACK Semantics::mark_preform_requirements
 @d INFLECTIONS_ERROR_HANDLER NaturalLanguages::preform_error
 
 =
@@ -237,11 +236,8 @@ void Semantics::mark_preform_requirements(void) {
 	Semantics::mark_nt_as_requiring_itself_articled(<k-formal-kind-variable>);
 	Semantics::mark_nt_as_requiring_itself_articled(<k-base-kind>);
 	Semantics::mark_nt_as_requiring_itself_articled(<k-kind-construction>);
-}
-
-void Semantics::break_preform_circularities(nonterminal *nt) {
-	if (nt == <k-kind>) Semantics::mark_nt_as_requiring_itself_articled(nt);
-	if (nt == <k-kind-of-kind>) Semantics::mark_nt_as_requiring_itself_articled(nt);
+	Semantics::mark_nt_as_requiring_itself_articled(<k-kind>);
+	Semantics::mark_nt_as_requiring_itself_articled(<k-kind-of-kind>);
 }
 
 void Semantics::mark_nt_as_requiring_itself_articled(nonterminal *nt) {

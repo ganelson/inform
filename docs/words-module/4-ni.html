@@ -95,7 +95,7 @@ sizes, in the same sort of way that keys are divided up in hash tables.
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_req_bits</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NTI::nt_incidence_bit</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">NTI::nt_incidence_bit</span></span>:<br/><a href="4-ni.html#SP3">&#167;3</a>, <a href="4-ni.html#SP10">&#167;10</a>, <a href="4-ni.html#SP28">&#167;28</a><br/>Instrumentation - <a href="4-ins.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NTI::nt_incidence_bit</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">NTI::nt_incidence_bit</span></span>:<br/><a href="4-ni.html#SP3">&#167;3</a>, <a href="4-ni.html#SP10">&#167;10</a>, <a href="4-ni.html#SP29">&#167;29</a><br/>Instrumentation - <a href="4-ins.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="element-syntax">nt_incidence_bit</span><span class="plain-syntax"> == -1) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax"> = </span><span class="constant-syntax">RESERVED_NT_BITS</span><span class="plain-syntax"> + ((</span><span class="identifier-syntax">no_req_bits</span><span class="plain-syntax">++)%(32-</span><span class="constant-syntax">RESERVED_NT_BITS</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="element-syntax">nt_incidence_bit</span><span class="plain-syntax"> = (1 &lt;&lt; </span><span class="identifier-syntax">b</span><span class="plain-syntax">);</span>
@@ -239,7 +239,7 @@ that a return value of <span class="extract"><span class="extract-syntax">TRUE</
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NTI::nt_bitmap_violates</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">NTI::nt_bitmap_violates</span></span>:<br/>Preform - <a href="4-prf.html#SP1_2">&#167;1.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">nti_constraint</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntic</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NTI::nt_bitmap_violates</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">NTI::nt_bitmap_violates</span></span>:<br/>Preform - <a href="4-prf.html#SP1_3_1">&#167;1.3.1</a>, <a href="4-prf.html#SP1_3_2">&#167;1.3.2</a>, <a href="4-prf.html#SP1_3_2_1">&#167;1.3.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">nti_constraint</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntic</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ntic</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">there_are_no_requirements</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-wrd.html#SP8" class="function-link"><span class="function-syntax">Wordings::length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="4-ni.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Perform C, D and F tests on a single word</span><span class="named-paragraph-number">8.1</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -612,16 +612,8 @@ So we give <span class="extract"><span class="extract-syntax">ntic</span></span>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">NTI::calculate_constraint</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">NTI::calculate_constraint</span></span>:<br/>The Optimiser - <a href="4-to.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREFORM_CIRCULARITY_BREAKER</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PREFORM_CIRCULARITY_BREAKER</span><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-ni.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Mark up fixed wording in the grammar for NT with the NT's incidence bit</span><span class="named-paragraph-number">25.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-ni.html#SP25_2" class="named-paragraph-link"><span class="named-paragraph">Calculate requirement for NT</span><span class="named-paragraph-number">25.2</span></a></span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREFORM_CIRCULARITY_BREAKER</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PREFORM_CIRCULARITY_BREAKER</span><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP25_1"></a><b>&#167;25.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Mark up fixed wording in the grammar for NT with the NT's incidence bit</span><span class="named-paragraph-number">25.1</span></span><span class="comment-syntax"> =</span>
@@ -714,24 +706,19 @@ word "mistral", and that tells us nothing about the bits that it has.
 <ul class="endnotetexts"><li>This code is used in <a href="4-ni.html#SP25_2_1">&#167;25.2.1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Customisation. </b>The above algorithm calculates sensible constraints for regular nonterminals,
 but since it can't look inside the workings of internal nonterminals, those
-currently have no constraints. Because of that, <a href="index.html" class="internal">words</a> provides for up to
-two callback functions which have the opportunity to tweak the process:
+currently have no constraints.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">NTI::ask_parent_to_tweak</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">NTI::ask_parent_to_tweak</span></span>:<br/>The Optimiser - <a href="4-to.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREFORM_OPTIMISER_WORDS_CALLBACK</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PREFORM_OPTIMISER_WORDS_CALLBACK</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>Those callbacks should consist of calls to the following functions.
+<p class="commentary">So the parent (i.e., the tool using <a href="index.html" class="internal">words</a>) may want to intervene. It does
+that at two points:
 </p>
 
-<p class="commentary">As we've seen, each NT is assigned an NTI bit, and in general they are handed
+<ul class="items"><li>(a) When it starts up, it can call <a href="4-ni.html#SP27" class="internal">NTI::give_nt_reserved_incidence_bit</a> &mdash;
+see below &mdash; or <a href="4-nnt.html#SP11" class="internal">Nonterminals::make_numbering</a> or <a href="4-nnt.html#SP12" class="internal">Nonterminals::flag_words_with</a>.
+</li><li>(b) When <a href="4-to.html" class="internal">The Optimiser</a> runs, it calls two callback functions which have
+a chance to add NTI constraints to nonterminals.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>To take (a) first: as we've seen, each NT is assigned an NTI bit, handed
 out more or less at random, dividing the stock of NTs into about 26 roughly
 equal subsets. But it turns out to be efficient to fix the NTI bits for some
 internal NTs so that they are in common: for example, in Inform, making sure
@@ -758,9 +745,22 @@ basic linguistic categories.
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="element-syntax">nt_incidence_bit</span><span class="plain-syntax"> = (1 &lt;&lt; </span><span class="identifier-syntax">b</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b>The other thing which the parent can do is to add constraints of its own
-on specific nonterminals. This is especially useful for internals, because
-those would otherwise have no constraints.
+<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b>Now for opportunity (b). <a href="index.html" class="internal">words</a> provides for up to two callback functions
+which have the opportunity to add constraints:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">NTI::ask_parent_to_add_constraints</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">NTI::ask_parent_to_add_constraints</span></span>:<br/>The Optimiser - <a href="4-to.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREFORM_OPTIMISER_WORDS_CALLBACK</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PREFORM_OPTIMISER_WORDS_CALLBACK</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">MORE_PREFORM_OPTIMISER_WORDS_CALLBACK</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">MORE_PREFORM_OPTIMISER_WORDS_CALLBACK</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>Those callback functions, if supplied, should consist of calls to the
+following functions.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

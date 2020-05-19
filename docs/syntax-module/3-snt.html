@@ -189,7 +189,7 @@ which was used to end it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sentence_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-st.html#SP6" class="function-link"><span class="function-syntax">SyntaxTree::enable_last_sentence_cache</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-st.html#SP5" class="function-link"><span class="function-syntax">SyntaxTree::enable_last_sentence_cache</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><a href="3-snt.html#SP3" class="function-link"><span class="function-syntax">Sentences::reset</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sfsm</span><span class="plain-syntax">, </span><span class="identifier-syntax">is_extension</span><span class="plain-syntax">, </span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="identifier-syntax">project_ref</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-snt.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph">Go into table sentence mode if necessary</span><span class="named-paragraph-number">5.1</span></a></span><span class="plain-syntax">;</span>
@@ -215,7 +215,7 @@ which was used to end it.
 <span class="plain-syntax">        </span><a href="3-snt.html#SP6" class="function-link"><span class="function-syntax">Sentences::make_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::from</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">sentence_start</span><span class="plain-syntax">), </span><span class="character-syntax">'.'</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><a href="2-st.html#SP6" class="function-link"><span class="function-syntax">SyntaxTree::disable_last_sentence_cache</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-st.html#SP5" class="function-link"><span class="function-syntax">SyntaxTree::disable_last_sentence_cache</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">is_extension</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-snt.html#SP5_4" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message if we are missing the begin and end here sentences</span><span class="named-paragraph-number">5.4</span></a></span><span class="plain-syntax">;</span>
@@ -625,7 +625,7 @@ work, have node type <span class="extract"><span class="extract-syntax">SENTENCE
 Anything we cannot place into categories (b) or (c) below will go here.
 </li><li>(b) "Sentences making up rules". These are sequences of sentences in which
 a preamble (ending with a colon, or in certain cases a comma) of node type
-<span class="extract"><span class="extract-syntax">ROUTINE_NT</span></span> is followed by a sequence of phrases (ending with semicolons until
+<span class="extract"><span class="extract-syntax">RULE_NT</span></span> is followed by a sequence of phrases (ending with semicolons until
 the last, which ends with a full stop or paragraph break), each of node type
 <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span>. For instance, the following produces three nodes:
 </li></ul>
@@ -723,7 +723,7 @@ which divides rule from preamble:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">_or</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">_or</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">......</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-prf.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6_9_2"></a><b>&#167;6.9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Convert comma-divided rule into two sentences, if this is allowed</span><span class="named-paragraph-number">6.9.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
@@ -735,7 +735,7 @@ which divides rule from preamble:
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-snt.html#SP6_9">&#167;6.9</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6_9_2_1"></a><b>&#167;6.9.2.1.  </b>In such sentences a comma is read as if it were a colon. (The text up to the
-comma will then be given a <span class="extract"><span class="extract-syntax">ROUTINE_NT</span></span> node and the text beyond the comma
+comma will then be given a <span class="extract"><span class="extract-syntax">RULE_NT</span></span> node and the text beyond the comma
 will make a <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> node.)
 </p>
 
@@ -792,7 +792,7 @@ its terminating colon. For instance:
 </blockquote>
 
 <p class="commentary">(which arrives at this routine as three separate "sentences") will produce
-nodes with type <span class="extract"><span class="extract-syntax">ROUTINE_NT</span></span>, <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> and <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> respectively.
+nodes with type <span class="extract"><span class="extract-syntax">RULE_NT</span></span>, <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> and <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> respectively.
 </p>
 
 <p class="commentary">This paragraph of code might look as if it should only be used in assertion
@@ -805,7 +805,7 @@ officially sanctioned way to make a definition with a complex phrase:
     <p>Definition: a supporter is wobbly: if the player is on it, decide yes; decide no.</p>
 </blockquote>
 
-<p class="commentary">This produces four nodes: <span class="extract"><span class="extract-syntax">ROUTINE_NT</span></span>, <span class="extract"><span class="extract-syntax">ROUTINE_NT</span></span>, <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> and
+<p class="commentary">This produces four nodes: <span class="extract"><span class="extract-syntax">RULE_NT</span></span>, <span class="extract"><span class="extract-syntax">RULE_NT</span></span>, <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> and
 <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> respectively.
 </p>
 

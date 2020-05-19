@@ -188,7 +188,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow_for_category(L2_NCAT, interpretation_of_subject_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, sentence_unparsed_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, verb_problem_issued_ANNOT);
-	Annotations::allow(ROUTINE_NT, indentation_level_ANNOT);
+	Annotations::allow(RULE_NT, indentation_level_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicit_in_creation_of_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicitness_count_ANNOT);
 	Annotations::allow(SENTENCE_NT, you_can_ignore_ANNOT);
@@ -205,11 +205,11 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(ADJECTIVE_NT, aph_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, negated_boolean_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, nounphrase_article_ANNOT);
-	Annotations::allow(AVERB_NT, log_inclusion_sense_ANNOT);
-	Annotations::allow(AVERB_NT, verb_id_ANNOT);
-	Annotations::allow(AVERB_NT, imperative_ANNOT);
-	Annotations::allow(AVERB_NT, examine_for_ofs_ANNOT);
-	Annotations::allow(AVERB_NT, listing_sense_ANNOT);
+	Annotations::allow(VERB_NT, log_inclusion_sense_ANNOT);
+	Annotations::allow(VERB_NT, verb_id_ANNOT);
+	Annotations::allow(VERB_NT, imperative_ANNOT);
+	Annotations::allow(VERB_NT, examine_for_ofs_ANNOT);
+	Annotations::allow(VERB_NT, listing_sense_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, creation_site_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, implicitly_refers_to_ANNOT);
@@ -458,7 +458,7 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 				WRITE(" (x%d)", Annotations::read_int(pn, multiplicity_ANNOT));
 			show_refers = TRUE;
 			break;
-		case AVERB_NT:
+		case VERB_NT:
 			WRITE(" ($V)", Annotations::read_int(pn, verb_id_ANNOT));
 			Diagrams::log_node(OUT, pn);
 			break;

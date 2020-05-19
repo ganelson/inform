@@ -102,7 +102,7 @@ void Phrases::Adjectives::traverse(void) {
 }
 
 void Phrases::Adjectives::look_for_headers(parse_node *p) {
-	if (Node::get_type(p) == ROUTINE_NT)
+	if (Node::get_type(p) == RULE_NT)
 		if (<definition-header>(Node::get_text(p))) {
 			compilation_module *cm = Modules::current();
 			Modules::set_current(p);
@@ -131,7 +131,7 @@ is defined by routine or not.
 
 @<Futz with the parse tree, trying right not down@> =
 	if ((p->next == NULL) ||
-		(Node::get_type(p->next) != ROUTINE_NT)) {
+		(Node::get_type(p->next) != RULE_NT)) {
 		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"don't leave me in suspense",
 			"write a definition after 'Definition:'!");

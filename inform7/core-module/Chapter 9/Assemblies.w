@@ -316,7 +316,7 @@ void Assertions::Assemblies::satisfies_generalisation(inference_subject *infs, g
 	Assertions::Refiner::noun_from_infs(g->substitute_at, infs);
 
 	/* make the new sentence an assertion: */
-	new_sentence->down = Node::new(AVERB_NT);
+	new_sentence->down = Node::new(VERB_NT);
 	Annotations::write_int(new_sentence->down, verb_id_ANNOT, ASSERT_VB);
 	new_sentence->down->next = Node::new(CREATED_NT);
 	Node::copy_subtree(g->look_for, new_sentence->down->next, 0);

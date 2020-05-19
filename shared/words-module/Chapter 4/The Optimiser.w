@@ -98,7 +98,7 @@ Two callback functions have a one-time opportunity to tweak the process.
 void Optimiser::optimise_counts(void) {
 	nonterminal *nt;
 	LOOP_OVER(nt, nonterminal) Optimiser::clear_requirement_and_extremes(nt);
-	NTI::ask_parent_to_tweak();
+	NTI::ask_parent_to_add_constraints();
 	LOOP_OVER(nt, nonterminal) Optimiser::optimise_nonterminal(nt);
 	LOOP_OVER(nt, nonterminal) NTI::simplify_nt(nt);
 }

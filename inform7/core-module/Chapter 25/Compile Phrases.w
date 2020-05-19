@@ -30,7 +30,7 @@ void Routines::Compile::routine(phrase *ph,
 	applicability_condition *acl) {
 
 	if ((ph->declaration_node == NULL) ||
-		(Node::get_type(ph->declaration_node) != ROUTINE_NT) ||
+		(Node::get_type(ph->declaration_node) != RULE_NT) ||
 		(Wordings::empty(Node::get_text(ph->declaration_node))))
 		internal_error("tried to compile phrase with bad ROUTINE node");
 	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", ph->declaration_node);

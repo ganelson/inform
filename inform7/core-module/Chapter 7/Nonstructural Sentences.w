@@ -27,7 +27,7 @@ which is a child of the root, but no sentence has any child nodes of its own.
 (a) Structural sentences -- headings, extension requests, extension bookends.
 All these have now been dealt with.
 
-(b) Sentences inside rules: rule preambles (|ROUTINE_NT| nodes)
+(b) Sentences inside rules: rule preambles (|RULE_NT| nodes)
 and phrases (|INVOCATION_LIST_NT|). These will not even be looked at until the
 second phase of compilation, after the model world has been created.
 
@@ -351,7 +351,7 @@ gives the sentence node three children: verb phrase, subject noun phrase,
 object noun phrase.
 = (text)
 	SENTENCE_NT "Railway Departure begins when the player is in the train"
-	    AVERB_NT "begins when"
+	    VERB_NT "begins when"
 	    PROPER_NOUN_NT "Railway Departure"
 	    PROPER_NOUN_NT "the player is in the train"
 =
@@ -359,7 +359,7 @@ This is made by |Sentences::VPs::nss_tree2|, but there are variants for one noun
 
 =
 int Sentences::VPs::nss_tree1(int t, wording VW, parse_node *np1) {
-	parse_node *VP_PN = Node::new(AVERB_NT);
+	parse_node *VP_PN = Node::new(VERB_NT);
 	Node::set_text(VP_PN, VW);
 	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
 	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
@@ -368,7 +368,7 @@ int Sentences::VPs::nss_tree1(int t, wording VW, parse_node *np1) {
 }
 
 int Sentences::VPs::nss_tree2(int t, wording VW, parse_node *np1, parse_node *np2) {
-	parse_node *VP_PN = Node::new(AVERB_NT);
+	parse_node *VP_PN = Node::new(VERB_NT);
 	Node::set_text(VP_PN, VW);
 	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
 	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
@@ -378,7 +378,7 @@ int Sentences::VPs::nss_tree2(int t, wording VW, parse_node *np1, parse_node *np
 }
 
 int Sentences::VPs::nss_tree3(int t, wording VW, parse_node *np1, parse_node *np2, parse_node *np3) {
-	parse_node *VP_PN = Node::new(AVERB_NT);
+	parse_node *VP_PN = Node::new(VERB_NT);
 	Node::set_text(VP_PN, VW);
 	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
 	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);

@@ -119,7 +119,7 @@ which they belong. Thus, the sentences
 <span class="plain-syntax">            The ball of yarn is here.           Chapter 20 &gt; Section 2</span>
 </pre>
 <p class="commentary">But it is also possible to graft smaller (not-whole-sentence) cuttings onto
-each other using <a href="2-st.html#SP7" class="internal">SyntaxTree::graft</a>, which doesn't involve the bud stack
+each other using <a href="2-st.html#SP6" class="internal">SyntaxTree::graft</a>, which doesn't involve the bud stack
 at all.
 </p>
 
@@ -131,7 +131,7 @@ which &mdash; if used &mdash; fork the syntax tree into different possible readi
 
 <p class="commentary">These are not added to the tree by grafting: that's only done for definite
 meanings. Instead, multiple ambiguous readings mostly lie beneath <span class="extract"><span class="extract-syntax">AMBIGUITY_NT</span></span>
-nodes &mdash; see <a href="2-st.html#SP24" class="internal">SyntaxTree::add_reading</a>. For example, we might have:
+nodes &mdash; see <a href="2-st.html#SP23" class="internal">SyntaxTree::add_reading</a>. For example, we might have:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -142,7 +142,7 @@ nodes &mdash; see <a href="2-st.html#SP24" class="internal">SyntaxTree::add_read
 <span class="plain-syntax">            orange (read as being a colour)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>An extensive suite of functions is provided to make it easy to traverse
-a syntax tree, calling a visitor function on each node: see <a href="2-st.html#SP11" class="internal">SyntaxTree::traverse</a>.
+a syntax tree, calling a visitor function on each node: see <a href="2-st.html#SP10" class="internal">SyntaxTree::traverse</a>.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Nodes. </b>Syntax trees are made up of <a href="2-pn.html#SP1" class="internal">parse_node</a> structures. While these are in

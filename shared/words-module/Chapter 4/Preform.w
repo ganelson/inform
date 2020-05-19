@@ -2,10 +2,25 @@
 
 To parse the word stream against a general grammar defined by Preform.
 
-@h Parsing.
-Speed is important in the following
-code, but not critical: I optimised it until profiling showed that Inform spent
-only about 6\% of its time here.
+@h Top level.
+The purpose of this section is to write //Preform::parse_nt_against_word_range//,
+the function which is called whenever Preform grammar is matched against a
+wording: the //inweb// preprocessor converts code like:
+= (text as InC)
+	if (<aquarium-name>(W)) ...
+=
+into
+= (text as C)
+	if (Preform::parse_nt_against_word_range(aquarium_name_NTM, W, NULL, NULL)) ...
+=
+Those last two parameters, |result| and |result_p|, are set only when we are
+recursively calling the function from inside itself. Recall that a match against
+a NT either succeeds or fails, and that produces the return value of this
+function, |TRUE| or |FALSE|; but if it succeeds it also produces both an integer
+and a pointer result, though in any given situation either or both may be
+irrelevant. When |result| and |result_p| are set, those results are copied
+into the variables these pointers point to. In all cases, they are also
+written to the global variables |most_recent_result| and |most_recent_result_p|.
 
 =
 int ptraci = FALSE; /* in this mode, we trace parsing to the debugging log */
@@ -20,15 +35,9 @@ int Preform::parse_nt_against_word_range(nonterminal *nt, wording W, int *result
 	nt->ins.nonterminal_tries++;
 	int success_rval = TRUE; /* what to return in the event of a successful match */
 	fail_nonterminal_quantum = 0;
-
 	int teppic = ptraci; /* Teppic saves Ptraci */
-	ptraci = nt->ins.watched;
 
-	if (ptraci) {
-		if (preform_lookahead_mode) ptraci = FALSE;
-		else LOG("%V: <%W>\n", nt->nonterminal_id, W);
-	}
-
+	@<Trace watched nonterminals, but not in lookahead mode@>;
 	int input_length = Wordings::length(W);
 	if ((nt->opt.nt_extremes.max_words == 0) ||
 		(LengthExtremes::in_bounds(input_length, nt->opt.nt_extremes)))
@@ -37,7 +46,14 @@ int Preform::parse_nt_against_word_range(nonterminal *nt, wording W, int *result
 	@<The nonterminal has failed to parse@>;
 }
 
-@ The routine ends here...
+@<Trace watched nonterminals, but not in lookahead mode@> =
+	ptraci = nt->ins.watched;
+	if (ptraci) {
+		if (preform_lookahead_mode) ptraci = FALSE;
+		else LOG("%V: <%W>\n", nt->nonterminal_id, W);
+	}
+
+@ The function ends here...
 
 @<The nonterminal has failed to parse@> =
 	Instrumentation::note_nonterminal_fail(nt);
@@ -57,7 +73,7 @@ and |QP| will hold the results of the match.
 
 @ Here we see that a successful voracious NT returns the word number it got
 to, rather than |TRUE|. Otherwise this is straightforward: we delegate to
-an internal NT, or try all possible productions for an external one.
+an internal NT, or try all possible productions for a regular one.
 
 @d RANGE_OPTIMISATION_LENGTH 10
 
@@ -65,94 +81,166 @@ an internal NT, or try all possible productions for an external one.
 	int unoptimised = FALSE;
 	if ((Wordings::empty(W)) || (input_length >= RANGE_OPTIMISATION_LENGTH))
 		unoptimised = TRUE;
-	if (nt->internal_definition) {
-		if (nt->voracious) unoptimised = TRUE;
-		if ((unoptimised) || (NTI::nt_bitmap_violates(W, &(nt->opt.nt_ntic)) == FALSE)) {
-			int r, Q; void *QP = NULL;
-			if (Wordings::first_wn(W) >= 0) r = (*(nt->internal_definition))(W, &Q, &QP);
-			else { r = FALSE; Q = 0; }
-			if (r) {
-				if (nt->voracious) success_rval = r;
-				if (ptraci) LOG("Succeeded %d\n", time(0)-start_of_nt);
-				@<The nonterminal has successfully parsed@>;
-			}
-		} else {
-			if (ptraci) {
-				LOG("%V: <%W> violates ", nt->nonterminal_id, W);
-				Instrumentation::log_ntic(&(nt->opt.nt_ntic));
-				LOG("\n");
+	if (nt->voracious) unoptimised = TRUE;
+	if (nt->internal_definition) @<Try to match to an internal NT@>
+	else @<Try to match to a regular NT@>;
+
+@<Try to match to an internal NT@> =
+	if ((unoptimised) || (NTI::nt_bitmap_violates(W, &(nt->opt.nt_ntic)) == FALSE)) {
+		int r, Q; void *QP = NULL;
+		if (Wordings::first_wn(W) >= 0) r = (*(nt->internal_definition))(W, &Q, &QP);
+		else { r = FALSE; Q = 0; }
+		if (r) {
+			if (nt->voracious) success_rval = r;
+			if (ptraci) LOG("Succeeded %d\n", time(0)-start_of_nt);
+			@<The nonterminal has successfully parsed@>;
+		}
+	} else @<Log an NTIC violation@>;
+
+@<Try to match to a regular NT@> =
+	if ((unoptimised) || (NTI::nt_bitmap_violates(W, &(nt->opt.nt_ntic)) == FALSE)) {
+		void *acc_result = NULL;
+		for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+			NATURAL_LANGUAGE_WORDS_TYPE *nl = pl->definition_language;
+			if ((primary_Preform_language == NULL) || (primary_Preform_language == nl)) {
+				int ditto_result = FALSE;
+				for (production *pr = pl->first_production; pr; pr = pr->next_production)
+					@<Try to match to a production@>;
 			}
 		}
-	} else {
-		if ((unoptimised) || (NTI::nt_bitmap_violates(W, &(nt->opt.nt_ntic)) == FALSE)) {
-			void *acc_result = NULL;
-			production_list *pl;
-			for (pl = nt->first_production_list; pl; pl = pl->next_production_list) {
-				NATURAL_LANGUAGE_WORDS_TYPE *nl = pl->definition_language;
-				if ((primary_Preform_language == NULL) || (primary_Preform_language == nl)) {
-					production *pr;
-					int last_v = FALSE;
-					for (pr = pl->first_production; pr; pr = pr->next_production) {
-						int violates = FALSE;
-						if (unoptimised == FALSE) {
-							if (pr->opt.pr_ntic.ditto_flag) violates = last_v;
-							else violates = NTI::nt_bitmap_violates(W, &(pr->opt.pr_ntic));
-							last_v = violates;
-						}
-						if (violates == FALSE) {
-							@<Parse the given production@>;
-						} else {
-							if (ptraci) {
-								LOG("production in %V: ", nt->nonterminal_id);
-								Instrumentation::log_production(pr, FALSE);
-								LOG(": <%W> violates ", W);
-								Instrumentation::log_ntic(&(pr->opt.pr_ntic));
-								LOG("\n");
-							}
-						}
-					}
-				}
-			}
-			if ((nt->multiplicitous) && (acc_result)) {
-				int Q = TRUE; void *QP = acc_result;
-				@<The nonterminal has successfully parsed@>;
-			}
-		} else {
-			if (ptraci) {
-				LOG("%V: <%W> violates ", nt->nonterminal_id, W);
-				Instrumentation::log_ntic(&(nt->opt.nt_ntic));
-				LOG("\n");
-			}
+		if ((nt->multiplicitous) && (acc_result)) {
+			int Q = TRUE; void *QP = acc_result;
+			@<The nonterminal has successfully parsed@>;
 		}
+	} else @<Log an NTIC violation@>;
+
+@<Log an NTIC violation@> =
+	if (ptraci) {
+		LOG("%V: <%W> violates ", nt->nonterminal_id, W);
+		Instrumentation::log_ntic(&(nt->opt.nt_ntic));
+		LOG("\n");
 	}
 
-@ So from here on we look only at the external case, where we're parsing the
-text against a production.
+@h Middle level.
+So from here on down we look only at the regular case, where we're parsing the
+text against a production. Recall that a production's NTIC has the "ditto flag"
+if it is the same constraint as the previous productions's NTIC; in which
+case we have no need to recompute |violates|.
 
-@<Parse the given production@> =
+@<Try to match to a production@> =
+	int violates = FALSE;
+	if (unoptimised == FALSE) {
+		if (pr->opt.pr_ntic.ditto_flag) violates = ditto_result;
+		else violates = NTI::nt_bitmap_violates(W, &(pr->opt.pr_ntic));
+		ditto_result = violates;
+	}
+	if (violates == FALSE) {
+		if (LengthExtremes::in_bounds(input_length, pr->opt.pr_extremes)) {
+			@<Log that the production is entering full parsing@>;
+			@<Enter full parsing of production@>;
+		} else @<Log a production length violation@>;
+	} else @<Log a production NTIC violation@>;
+
+@<Log that the production is entering full parsing@> =
 	if (ptraci) {
 		LOG_INDENT;
 		@<Log the production match number@>;
 		Instrumentation::log_production(pr, FALSE); LOG("\n");
 	}
+
+@<Log a production length violation@> =
+	if (ptraci) {
+		LOG("production in %V: ", nt->nonterminal_id);
+		Instrumentation::log_production(pr, FALSE);
+		LOG(": <%W> violates length ", W);
+		Instrumentation::log_extremes(&(pr->opt.pr_extremes));
+		LOG("\n");
+	}
+
+@<Log a production NTIC violation@> =
+	if (ptraci) {
+		LOG("production in %V: ", nt->nonterminal_id);
+		Instrumentation::log_production(pr, FALSE);
+		LOG(": <%W> violates ", W);
+		Instrumentation::log_ntic(&(pr->opt.pr_ntic));
+		LOG("\n");
+	}
+
+@
+
+@d MAX_RESULTS_PER_PRODUCTION 10
+@d MAX_PTOKENS_PER_PRODUCTION 32
+
+@<Enter full parsing of production@> =
+	int checked[MAX_PTOKENS_PER_PRODUCTION];
+	int intermediates[MAX_RESULTS_PER_PRODUCTION];
+	void *intermediate_ps[MAX_RESULTS_PER_PRODUCTION];
+	int parsed_open_pos = -1, parsed_close_pos = -1;
 	int slow_scan_needed = FALSE;
 	#ifdef CORE_MODULE
 	parse_node *added_to_result = NULL;
 	#endif
-	if (LengthExtremes::in_bounds(input_length, pr->opt.pr_extremes)) {
-		int Q; void *QP = NULL;
-		@<Actually parse the given production, going to Fail if we can't@>;
-		Instrumentation::note_production_match(pr, W);
-		if (ptraci) {
-			@<Log the production match number@>;
-			LOG("succeeded (%s): ", (slow_scan_needed)?"slowly":"quickly");
-			LOG("result: %d\n", Q); LOG_OUTDENT;
-		}
-		@<The nonterminal has successfully parsed@>;
-	}
+
+	@<Actually parse the given production, going to Fail if we can't@>;
+
+	/* Succeed: */
+	int Q; void *QP = NULL;
+	@<Compose and store the result@>;
+	Instrumentation::note_production_match(pr, W);
+	@<Log the success of the production@>;
+	@<The nonterminal has successfully parsed@>;
 
 	Fail:
 	Instrumentation::note_production_fail(pr);
+	@<Log the failure of the production@>;
+
+@ Once we have successfully matched the line, we need to compose the
+intermediate results into a final result. If //inweb// has compiled a compositor
+function for the nonterminal, we call it.
+
+If there's no compositor then the integer result is the production's number,
+and the pointer result is null.
+
+This is the range of fail nonterminal values -- |FAIL_NONTERMINAL| to one
+less than |FAIL_NONTERMINAL_TO|:
+
+@d FAIL_NONTERMINAL -100000
+@d FAIL_NONTERMINAL_TO FAIL_NONTERMINAL+1000
+
+@<Compose and store the result@> =
+	if (nt->compositor_fn) {
+		intermediates[0] = pr->match_number;
+		int f = (*(nt->compositor_fn))(&Q, &QP,
+			intermediates, intermediate_ps, nt->range_result, W);
+		if (f == FALSE) goto Fail;
+		if ((f >= FAIL_NONTERMINAL) && (f < FAIL_NONTERMINAL_TO)) {
+			fail_nonterminal_quantum = f - FAIL_NONTERMINAL;
+			@<The nonterminal has failed to parse@>;
+		}
+		if (nt->multiplicitous) @<Handle multiplicitous nonterminals directly@>;
+	} else {
+		Q = pr->match_number; QP = NULL;
+	}
+
+@ Multiplicitous NTs exist only in //core//, and differ from other regular NTs
+because they accumulate their results from successful productions but do not
+stop parsing on a successful match.
+
+@<Handle multiplicitous nonterminals directly@> =
+	#ifdef CORE_MODULE
+	added_to_result = QP;
+	acc_result = (void *) SyntaxTree::add_reading((parse_node *) acc_result, QP, W);
+	#endif
+	goto Fail;
+
+@<Log the success of the production@> =
+	if (ptraci) {
+		@<Log the production match number@>;
+		LOG("succeeded (%s): ", (slow_scan_needed)?"slowly":"quickly");
+		LOG("result: %d\n", Q); LOG_OUTDENT;
+	}
+
+@<Log the failure of the production@> =
 	if (ptraci) {
 		@<Log the production match number@>;
 		#ifdef CORE_MODULE
@@ -171,11 +259,16 @@ text against a production.
 		LOG("production /%c/: ", 'a'+pr->match_number);
 	}
 
-@ Okay. So, the strategy is: a fast scan checking the easy things; if that's
-not sufficient, a slow scan checking the rest; then making sure brackets
-match, if there were any, and last composing the intermediate results into
-the final ones. For example, if the production is
-= (text as InC)
+@h Bottom level.
+Okay: so now we have exhausted all the optimisations avoiding the need to
+parse our text against the production, so we are forced to do some work.
+The strategy is:
+(*) first, a fast scan checking the easy things;
+(*) then a slow scan checking the rest;
+(*) then making sure brackets match, if there were any.
+
+For example, if the production is
+= (text as Preform)
 	adjust the <achingly-slow> to the <exhaustive> at once
 =
 then the fast scan verifies the presence of "adjust the" and "at once";
@@ -183,64 +276,21 @@ the slow scan next looks for all occurrences of "to the", the single strut
 for this production; and only then does it test the two slow nonterminals
 on the intervening words, if there are any.
 
-@d MAX_RESULTS_PER_PRODUCTION 10
-@d MAX_PTOKENS_PER_PRODUCTION 32
-
 @<Actually parse the given production, going to Fail if we can't@> =
-	int checked[MAX_PTOKENS_PER_PRODUCTION];
-	int intermediates[MAX_RESULTS_PER_PRODUCTION];
-	void *intermediate_ps[MAX_RESULTS_PER_PRODUCTION];
-	int parsed_open_pos = -1, parsed_close_pos = -1;
-
 	@<Try a fast scan through the production@>;
 	if (slow_scan_needed) @<Try a slow scan through the production@>;
 
 	if ((parsed_open_pos >= 0) && (parsed_close_pos >= 0))
-		if (Wordings::paired_brackets(Wordings::new(parsed_open_pos, parsed_close_pos)) == FALSE)
-			goto Fail;
-	@<Compose and store the result@>;
-
-@ Once we have successfully matched the line, we need to compose the
-intermediate results into a final result. If |inweb| has compiled a compositor
-routine for the nonterminal, we call it: note that it can then return |FALSE|
-to fail the production after all, and can even return |FAIL_NONTERMINAL| to
-abandon not just this production, but all of the productions. (This is quite
-useful as a way to put exceptional syntaxes into the grammar, since it can
-make subsequent productions only available in some cases.)
-
-If there's no compositor then the integer result is the production's number,
-and the pointer result is null.
-
-@d FAIL_NONTERMINAL -100000
-@d FAIL_NONTERMINAL_TO FAIL_NONTERMINAL+1000
-
-@<Compose and store the result@> =
-	if (nt->compositor_fn) {
-		intermediates[0] = pr->match_number;
-		int f = (*(nt->compositor_fn))(&Q, &QP, intermediates, intermediate_ps, nt->range_result, W);
-		if (f == FALSE) goto Fail;
-		if (nt->multiplicitous) {
-			#ifdef CORE_MODULE
-			added_to_result = QP;
-			acc_result = (void *) SyntaxTree::add_reading((parse_node *) acc_result, QP, W);
-			#endif
-			goto Fail;
-		}
-		if ((f >= FAIL_NONTERMINAL) && (f < FAIL_NONTERMINAL_TO)) {
-			fail_nonterminal_quantum = f - FAIL_NONTERMINAL;
-			@<The nonterminal has failed to parse@>;
-		}
-	} else {
-		Q = pr->match_number; QP = NULL;
-	}
+		if (Wordings::paired_brackets(
+			Wordings::new(parsed_open_pos, parsed_close_pos)) == FALSE)
+				goto Fail;
 
 @ In the fast scan, we check that all fixed words with known positions
 are in those positions.
 
 @<Try a fast scan through the production@> =
-	ptoken *pt;
-	int wn = -1, tc;
-	for (pt = pr->first_ptoken, tc = 0; pt; pt = pt->next_ptoken, tc++) {
+	int wn = -1, tc = 0;
+	for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken, tc++) {
 		if (pt->opt.ptoken_is_fast) {
 			int p = pt->opt.ptoken_position;
 			if (p > 0) wn = Wordings::first_wn(W)+p-1;
@@ -257,15 +307,16 @@ are in those positions.
 			checked[tc] = -1;
 		}
 	}
-	if ((slow_scan_needed == FALSE) && (wn != Wordings::last_wn(W))) goto Fail; /* input text goes on further */
+	if ((slow_scan_needed == FALSE) && (wn != Wordings::last_wn(W)))
+		goto Fail; /* text goes on further */
 
 @ The slow scan is more challenging. We want to loop through all possible
 strut positions, where by "possible" we mean that
-$$ s_i+\ell_i <= s_{i+1}, \quad i = 0, 1, ..., s $$
+$$ s_i+\ell_i \leq s_{i+1}, \quad i = 0, 1, ..., s $$
 and that for each $i$ the $i$-th strut matches the text beginning at $s_i$.
 
 @<Try a slow scan through the production@> =
-	int spos[MAX_STRUTS_PER_PRODUCTION]; /* word numbers for where we are trying the struts */
+	int spos[MAX_STRUTS_PER_PRODUCTION]; /* word numbers for where we try the struts */
 	int NS = pr->opt.no_struts;
 	@<Start from the lexicographically earliest strut position@>;
 	ptoken *backtrack_token = NULL;
@@ -289,12 +340,14 @@ handling the popular case of one strut separately.
 
 @<Start from the lexicographically earliest strut position@> =
 	if (NS == 1) {
-		spos[0] = Preform::next_strut_posn_after(W, pr->opt.struts[0], pr->opt.strut_lengths[0], Wordings::first_wn(W));
+		spos[0] = Preform::next_strut_posn_after(W,
+			pr->opt.struts[0], pr->opt.strut_lengths[0], Wordings::first_wn(W));
 		if (spos[0] == -1) goto Fail;
 	} else if (NS > 1) {
 		int s, from = Wordings::first_wn(W);
 		for (s=0; s<NS; s++) {
-			spos[s] = Preform::next_strut_posn_after(W, pr->opt.struts[s], pr->opt.strut_lengths[s], from);
+			spos[s] = Preform::next_strut_posn_after(W,
+				pr->opt.struts[s], pr->opt.strut_lengths[s], from);
 			if (spos[s] == -1) goto Fail;
 			from = spos[s] + pr->opt.strut_lengths[s] + 1;
 		}
@@ -308,18 +361,21 @@ being unable to move forwards, at which point, we've lost.
 @<Move on to the next strut position@> =
 	if (NS == 0) goto Fail;
 	else if (NS == 1) {
-		spos[0] = Preform::next_strut_posn_after(W, pr->opt.struts[0], pr->opt.strut_lengths[0], spos[0]+1);
+		spos[0] = Preform::next_strut_posn_after(W,
+			pr->opt.struts[0], pr->opt.strut_lengths[0], spos[0]+1);
 		if (spos[0] == -1) goto Fail;
 	} else if (NS > 1) {
 		int s;
 		for (s=NS-1; s>=0; s--) {
-			int n = Preform::next_strut_posn_after(W, pr->opt.struts[s], pr->opt.strut_lengths[s], spos[s]+1);
+			int n = Preform::next_strut_posn_after(W,
+				pr->opt.struts[s], pr->opt.strut_lengths[s], spos[s]+1);
 			if (n != -1) { spos[s] = n; break; }
 		}
 		if (s == -1) goto Fail;
 		int from = spos[s] + 1; s++;
 		for (; s<NS; s++) {
-			spos[s] = Preform::next_strut_posn_after(W, pr->opt.struts[s], pr->opt.strut_lengths[s], from);
+			spos[s] = Preform::next_strut_posn_after(W,
+				pr->opt.struts[s], pr->opt.strut_lengths[s], from);
 			if (spos[s] == -1) goto Fail;
 			from = spos[s] + pr->opt.strut_lengths[s] + 1;
 		}
@@ -342,22 +398,28 @@ ptokens.
 		Reenter: ;
 		int known_pos = checked[tc];
 		if (known_pos >= 0) {
-			if (wn > known_pos) goto Fail; /* a theoretical possibility if strut lookahead overreaches */
+			if (wn > known_pos)
+				goto Fail; /* a theoretical possibility if strut lookahead overreaches */
 			wn = known_pos+1;
 		} else {
-			if (pt->range_starts >= 0) nt->range_result[pt->range_starts] = Wordings::one_word(wn);
-			switch (pt->ptoken_category) {
-				case FIXED_WORD_PTC: @<Match a fixed word ptoken@>; break;
-				case SINGLE_WILDCARD_PTC: @<Match a single wildcard ptoken@>; break;
-				case MULTIPLE_WILDCARD_PTC: @<Match a multiple wildcard ptoken@>; break;
-				case POSSIBLY_EMPTY_WILDCARD_PTC: @<Match a possibly empty wildcard ptoken@>; break;
-				case NONTERMINAL_PTC: @<Match a nonterminal ptoken@>; break;
-			}
+			if (pt->range_starts >= 0)
+				nt->range_result[pt->range_starts] = Wordings::one_word(wn);
+			@<Match a ptoken@>;
 			if (pt->range_ends >= 0)
-				nt->range_result[pt->range_ends] = Wordings::up_to(nt->range_result[pt->range_ends], wn-1);
+				nt->range_result[pt->range_ends] =
+					Wordings::up_to(nt->range_result[pt->range_ends], wn-1);
 		}
 	}
 	if (wn != Wordings::last_wn(W)+1) goto FailThisStrutPosition;
+
+@<Match a ptoken@> =
+	switch (pt->ptoken_category) {
+		case FIXED_WORD_PTC: @<Match a fixed word ptoken@>; break;
+		case SINGLE_WILDCARD_PTC: @<Match a single wildcard ptoken@>; break;
+		case MULTIPLE_WILDCARD_PTC: @<Match a multiple wildcard ptoken@>; break;
+		case POSSIBLY_EMPTY_WILDCARD_PTC: @<Match a possibly empty wildcard ptoken@>; break;
+		case NONTERMINAL_PTC: @<Match a nonterminal ptoken@>; break;
+	}
 
 @<Match a fixed word ptoken@> =
 	int q = Preform::parse_fixed_word_ptoken(wn, pt);
@@ -395,14 +457,16 @@ ptokens.
 @ A voracious nonterminal is offered the entire rest of the word range, and
 returns how much it ate. Otherwise, we offer the maximum amount of space
 available: if, for word-count reasons, that's never going to match, then
-we rely on the recursive call to |Preform::parse_nt_against_word_range| returning a
+we rely on the recursive call to //Preform::parse_nt_against_word_range// returning a
 quick no.
 
 @<Match a nonterminal ptoken@> =
-	if ((wn > Wordings::last_wn(W)) && (pt->nt_pt->opt.nt_extremes.min_words > 0)) goto FailThisStrutPosition;
+	if ((wn > Wordings::last_wn(W)) && (pt->nt_pt->opt.nt_extremes.min_words > 0))
+		goto FailThisStrutPosition;
 	int wt;
 	if (pt->nt_pt->voracious) wt = Wordings::last_wn(W);
-	else if ((pt->nt_pt->opt.nt_extremes.min_words > 0) && (pt->nt_pt->opt.nt_extremes.min_words == pt->nt_pt->opt.nt_extremes.max_words))
+	else if ((pt->nt_pt->opt.nt_extremes.min_words > 0) &&
+		(pt->nt_pt->opt.nt_extremes.min_words == pt->nt_pt->opt.nt_extremes.max_words))
 		wt = wn + pt->nt_pt->opt.nt_extremes.min_words - 1;
 	else @<Calculate how much to stretch this elastic ptoken@>;
 
@@ -437,7 +501,7 @@ or else know exactly where the next ptoken starts: because its position is
 known, or because it's a strut.
 
 This is why two elastic nonterminals in a row won't parse correctly:
-= (text as InC)
+= (text as Preform)
 	frog <amphibian> <pond-preference> toad
 =
 Preform is unable to work out where the central boundary will occur. In theory
@@ -463,9 +527,11 @@ probably gives the wrong answer.)
 		 	int save_preform_lookahead_mode = preform_lookahead_mode;
 		 	preform_lookahead_mode = TRUE;
 			for (int j = wn+1; j <= Wordings::last_wn(W); j++) {
-				if (Preform::parse_nt_against_word_range(target, Wordings::new(j, Wordings::last_wn(W)), NULL, NULL)) {
+				if (Preform::parse_nt_against_word_range(target,
+					Wordings::new(j, Wordings::last_wn(W)), NULL, NULL)) {
 					if ((pt->nt_pt == NULL) ||
-						(Preform::parse_nt_against_word_range(pt->nt_pt, Wordings::new(wn, j-1), NULL, NULL))) {
+						(Preform::parse_nt_against_word_range(pt->nt_pt,
+							Wordings::new(wn, j-1), NULL, NULL))) {
 						wt = j-1; break;
 					}
 				} else {
@@ -480,7 +546,7 @@ probably gives the wrong answer.)
 @ Here we find the next possible match position for the strut beginning |start|
 and of width |len| in words, which begins at word |from| or after. Note that
 the strut might run up right to the end of the input text: for example, in
-= (text as InC)
+= (text as Preform)
 	neckties ... tied ***
 =
 the word "tied" is a strut, because the |***| makes its position uncertain,

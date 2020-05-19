@@ -282,7 +282,9 @@ void Node::log_subtree_recursively(OUTPUT_STREAM, parse_node *pn, int num,
 			if (pn->down) {
 				LOG_INDENT;
 				int recurse = TRUE;
-				if ((summarise) && (Node::is(pn, ROUTINE_NT))) recurse = FALSE;
+				#ifdef RULE_NT
+				if ((summarise) && (Node::is(pn, RULE_NT))) recurse = FALSE;
+				#endif
 				if (recurse)
 					Node::log_subtree_recursively(OUT,
 						pn->down, 0, 0, gen+1, summarise, traverse_token);

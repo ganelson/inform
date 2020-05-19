@@ -8,8 +8,9 @@ Inform with the |-diagnostics| switch set, so that the compiler writes some
 statistics out to a set of text files. Those are used to generate the current
 page, so what you're looking at is likely to be an up-to-date measurement of
 how //inform7// spends its time. The source text being compiled is the
-"Patient Zero" example from the Inform documentation, which is fairly
-representative of smallish source texts.
+"Patient Zero" example from the Inform documentation, a distressing tale
+about ice cream, but which is fairly representative of smallish source texts.
+Performance scales roughly linearly with the size of the source text.
 
 @h Running time.
 The following tabulates all main stages of compilation (see //core: How To Compile//)
@@ -41,7 +42,8 @@ The unabridged grammar is here:
 A full printout of the syntax tree (see //syntax: What This Module Does//)
 is a roughly 20,000-line text file, and again is too long to quote in full.
 This is a summary, showing just the portion of tree from the main source text,
-that is, with extensions and with the content of |ROUTINE_NT| nodes omitted:
+that is, with the content of extensions excluded, and with the content of
+|RULE_NT| also cut. It still makes for a lengthy read:
 
 = (undisplayed text from Figures/syntax-summary.txt)
 

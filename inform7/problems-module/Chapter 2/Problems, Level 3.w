@@ -453,7 +453,7 @@ void Problems::Issue::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS, cha
 	wording RTW = EMPTY_WORDING; /* "rather than" text */
 	ACT_ON_SIGIL
 	if ((current_sentence == NULL) || (current_sentence->down == NULL) ||
-		(Node::get_type(current_sentence->down) != AVERB_NT)) {
+		(Node::get_type(current_sentence->down) != VERB_NT)) {
 		LOG("(Assertion error reverting to sentence error.)\n");
 		Problems::Issue::sentence_problem(T, PASS_SIGIL, message, explanation);
 		return;

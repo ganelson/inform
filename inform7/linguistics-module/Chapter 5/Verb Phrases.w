@@ -435,7 +435,7 @@ representing the verb.
 	int possessive = FALSE;
 	if (VerbMeanings::get_relational_meaning(vm) == VERB_MEANING_POSSESSION)
 		possessive = TRUE;
-	parse_node *VP_PN = Node::new(AVERB_NT);
+	parse_node *VP_PN = Node::new(VERB_NT);
 	if (certainty != UNKNOWN_CE)
 		Annotations::write_int(VP_PN, verbal_certainty_ANNOT, certainty);
 	if (vu) Node::set_verb(VP_PN, vu);
@@ -532,7 +532,7 @@ int VerbPhrases::default_verb(int task, parse_node *V, wording *NPs) {
 need to record that in the parse tree. This code does the following:
 = (text)
 	SENTENCE_NT "Darcy wears the hat"  --->  SENTENCE_NT "Darcy wears the hat"
-	    AVERB_NT "wears"                         AVERB_NT "wears"
+	    VERB_NT "wears"                         VERB_NT "wears"
 	    PROPER_NOUN_NT "Darcy"                   PROPER_NOUN_NT "Darcy"
 	    PROPER_NOUN_NT "hat"                     RELATIONSHIP_NT "wears" = is-worn-by
 	                                                 PROPER_NOUN_NT "hat"

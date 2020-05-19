@@ -86,7 +86,7 @@ roof, since it might need to recurse thousands of function calls deep.
 
 =
 void Sentences::Rearrangement::traverse_for_property_names(parse_node *pn) {
-	if (Node::get_type(pn) == AVERB_NT)
+	if (Node::get_type(pn) == VERB_NT)
 		@<See if this assertion creates property names with "... has ... called ..."@>;
 }
 
@@ -97,7 +97,7 @@ void Sentences::Rearrangement::check_sentence_for_direction_creation(parse_node 
 	#ifdef IF_MODULE
 	if (Node::get_type(pn) != SENTENCE_NT) return;
 	if ((pn->down == NULL) || (pn->down->next == NULL) || (pn->down->next->next == NULL)) return;
-	if (Node::get_type(pn->down) != AVERB_NT) return;
+	if (Node::get_type(pn->down) != VERB_NT) return;
 	if (Node::get_type(pn->down->next) != PROPER_NOUN_NT) return;
 	if (Node::get_type(pn->down->next->next) != PROPER_NOUN_NT) return;
 	current_sentence = pn;
@@ -131,7 +131,7 @@ form without being property declarations -- with one exception: see below.
 We therefore look for this subtree structure:
 = (text)
 	SENTENCE_NT "A container has a number called volume"
-	    AVERB_NT "has"
+	    VERB_NT "has"
 	    PROPER_NOUN_NT "container" article:indefinite
 	    CALLED_NT "called"
 	        PROPER_NOUN_NT "number" article:indefinite
@@ -278,7 +278,7 @@ wastes only a negligible amount of memory.
 =
 void Sentences::Rearrangement::traverse_for_nonbreaking_ofs(parse_node *pn) {
 	if ((Node::get_type(pn) == SENTENCE_NT) &&
-		(pn->down) && (Node::get_type(pn->down) == AVERB_NT)) {
+		(pn->down) && (Node::get_type(pn->down) == VERB_NT)) {
 		int vn = Annotations::read_int(pn->down, verb_id_ANNOT);
 		if (((vn == ASSERT_VB) || (Annotations::read_int(pn->down, examine_for_ofs_ANNOT))) &&
 			(<sentence-needing-second-look>(Node::get_text(pn)))) {

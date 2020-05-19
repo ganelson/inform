@@ -694,6 +694,8 @@ But then we can make a syntax tree for the project. The large-scale structure is
 Once this is made, any Include... sentences are expanded into syntax trees
 for the extensions they refer to, in a post-processing phase.
 
+For a real-world example of the result, see //inform7: Performance Metrics//.
+
 =
 void Projects::read_source_text_for(inform_project *proj) {
 	Languages::read_Preform_definition(proj->language_of_syntax, proj->search_list);

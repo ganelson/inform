@@ -48,7 +48,7 @@ would just be a method in the class for sentences.
 
 Properly speaking, there can be sentence handlers for any node type at the
 children-of-root level of the parse tree, although we mostly use this for
-|SENTENCE_NT| nodes (and then we look further at the verb type in the |AVERB_NT|
+|SENTENCE_NT| nodes (and then we look further at the verb type in the |VERB_NT|
 first child). The main traverse is a two-pass operation, and we can supply
 a routine to do something with the node on either of the passes (or neither,
 or even both).
@@ -256,7 +256,7 @@ void Assertions::Traverse::switch_sentence_trace(parse_node *PN) {
 
 @h The SENTENCE sentence handler.
 The other special case is the handler for |SENTENCE_NT| itself, which is
-special because it looks at the |AVERB_NT| child of the sentence and then
+special because it looks at the |VERB_NT| child of the sentence and then
 refers on to other sentence handlers accordingly:
 
 =
@@ -269,7 +269,7 @@ void Assertions::Traverse::handle_sentence_with_primary_verb(parse_node *p) {
 	if (Annotations::read_int(p, you_can_ignore_ANNOT)) return;
 
 	if (p->down == NULL) @<Handle a sentence with no primary verb@>;
-	internal_error_if_node_type_wrong(Task::syntax_tree(), p->down, AVERB_NT);
+	internal_error_if_node_type_wrong(Task::syntax_tree(), p->down, VERB_NT);
 	prevailing_mood = Annotations::read_int(p->down, verbal_certainty_ANNOT);
 	@<Issue problem message if either subject or object contains mismatched brackets@>;
 	@<Act on the primary verb in the sentence@>;

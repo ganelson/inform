@@ -120,7 +120,7 @@ would just be a method in the class for sentences.
 
 <p class="commentary">Properly speaking, there can be sentence handlers for any node type at the
 children-of-root level of the parse tree, although we mostly use this for
-<span class="extract"><span class="extract-syntax">SENTENCE_NT</span></span> nodes (and then we look further at the verb type in the <span class="extract"><span class="extract-syntax">AVERB_NT</span></span>
+<span class="extract"><span class="extract-syntax">SENTENCE_NT</span></span> nodes (and then we look further at the verb type in the <span class="extract"><span class="extract-syntax">VERB_NT</span></span>
 first child). The main traverse is a two-pass operation, and we can supply
 a routine to do something with the node on either of the passes (or neither,
 or even both).
@@ -369,7 +369,7 @@ for the telemetry file.
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. The SENTENCE sentence handler. </b>The other special case is the handler for <span class="extract"><span class="extract-syntax">SENTENCE_NT</span></span> itself, which is
-special because it looks at the <span class="extract"><span class="extract-syntax">AVERB_NT</span></span> child of the sentence and then
+special because it looks at the <span class="extract"><span class="extract-syntax">VERB_NT</span></span> child of the sentence and then
 refers on to other sentence handlers accordingly:
 </p>
 
@@ -383,7 +383,7 @@ refers on to other sentence handlers accordingly:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="constant-syntax">you_can_ignore_ANNOT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="9-tfa.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Handle a sentence with no primary verb</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">internal_error_if_node_type_wrong</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">AVERB_NT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">internal_error_if_node_type_wrong</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">VERB_NT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">prevailing_mood</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">verbal_certainty_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="9-tfa.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">Issue problem message if either subject or object contains mismatched brackets</span><span class="named-paragraph-number">9.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="9-tfa.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Act on the primary verb in the sentence</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>

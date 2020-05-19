@@ -49,7 +49,7 @@ would be
 The words module has only a few callbacks, and they are all optional. The
 following alphabetical list has references to fuller explanations:
 
-(*) |PREFORM_OPTIMISER_WORDS_CALLBACK| and |FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK|
+(*) |MORE_PREFORM_OPTIMISER_WORDS_CALLBACK| and |PREFORM_OPTIMISER_WORDS_CALLBACK|
 have the opportunity to flag certain Preform nonterminals in ways which will
 help //The Optimiser//.
 

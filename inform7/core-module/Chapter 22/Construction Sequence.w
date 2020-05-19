@@ -59,7 +59,7 @@ void Phrases::Manager::traverse_for_names(void) {
 }
 
 void Phrases::Manager::visit_for_names(parse_node *p) {
-	if (Node::get_type(p) == ROUTINE_NT)
+	if (Node::get_type(p) == RULE_NT)
 		Phrases::Usage::predeclare_name_in(p);
 }
 
@@ -78,7 +78,7 @@ to do anything when the assertion traverse reaches nodes of these types:
 
 =
 sentence_handler COMMAND_SH_handler = { INVOCATION_LIST_NT, -1, 0, NULL };
-sentence_handler ROUTINE_SH_handler = { ROUTINE_NT, -1, 0, NULL };
+sentence_handler ROUTINE_SH_handler = { RULE_NT, -1, 0, NULL };
 
 @h Late morning.
 With the assertions read, all the values have their names, and that means
@@ -142,7 +142,7 @@ void Phrases::Manager::visit_to_create(parse_node *p, int *progress_target, int 
 		ProgressBar::update(3,
 			((float) (*progress_made))/((float) (*progress_target)));
 
-	if (Node::get_type(p) == ROUTINE_NT) {
+	if (Node::get_type(p) == RULE_NT) {
 		Phrases::create_from_preamble(p);
 	}
 }
@@ -235,7 +235,7 @@ void Phrases::Manager::parse_rule_placements(void) {
 void Phrases::Manager::visit_to_parse_placements(parse_node *p) {
 	if ((Node::get_type(p) == SENTENCE_NT) &&
 		(p->down) &&
-		(Node::get_type(p->down) == AVERB_NT)) {
+		(Node::get_type(p->down) == VERB_NT)) {
 		prevailing_mood =
 			Annotations::read_int(p->down, verbal_certainty_ANNOT);
 		if (Annotations::read_int(p->down, verb_id_ANNOT) == SPECIAL_MEANING_VB)

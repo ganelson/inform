@@ -121,7 +121,7 @@ MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
 @ This module requires |words|, which contains the Preform parser. When that
 initialises, it calls the following routine to improve its performance.
 
-@d FURTHER_PREFORM_OPTIMISER_WORDS_CALLBACK LinguisticsModule::preform_optimiser
+@d PREFORM_OPTIMISER_WORDS_CALLBACK LinguisticsModule::preform_optimiser
 
 =
 int first_round_of_nt_optimisation_made = FALSE;

@@ -4,7 +4,7 @@ To construct standard verb-phrase nodes in the parse tree.
 
 @h Node types.
 
-@e AVERB_NT             			/* "is" */
+@e VERB_NT             			/* "is" */
 @e PROPER_NOUN_NT       			/* "the red handkerchief" */
 
 @e RELATIONSHIP_NT      			/* "on" */
@@ -23,7 +23,7 @@ To construct standard verb-phrase nodes in the parse tree.
 
 =
 void Diagrams::setup(void) {
-	NodeType::new(AVERB_NT, I"AVERB_NT",                 0, 0,     L3_NCAT, 0);
+	NodeType::new(VERB_NT, I"VERB_NT",                 0, 0,     L3_NCAT, 0);
 	NodeType::new(RELATIONSHIP_NT, I"RELATIONSHIP_NT",   0, 2,	  L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(CALLED_NT, I"CALLED_NT",               2, 2,	  L3_NCAT, 0);
 	NodeType::new(WITH_NT, I"WITH_NT",                   2, 2,	  L3_NCAT, ASSERT_NFLAG);
@@ -34,14 +34,14 @@ void Diagrams::setup(void) {
 }
 
 void Diagrams::permissions(void) {
-	Annotations::allow(AVERB_NT, verbal_certainty_ANNOT);
-	Annotations::allow(AVERB_NT, sentence_is_existential_ANNOT);
-	Annotations::allow(AVERB_NT, possessive_verb_ANNOT);
-	Annotations::allow(AVERB_NT, inverted_verb_ANNOT);
-	Annotations::allow(AVERB_NT, verb_ANNOT);
-	Annotations::allow(AVERB_NT, preposition_ANNOT);
-	Annotations::allow(AVERB_NT, second_preposition_ANNOT);
-	Annotations::allow(AVERB_NT, verb_meaning_ANNOT);
+	Annotations::allow(VERB_NT, verbal_certainty_ANNOT);
+	Annotations::allow(VERB_NT, sentence_is_existential_ANNOT);
+	Annotations::allow(VERB_NT, possessive_verb_ANNOT);
+	Annotations::allow(VERB_NT, inverted_verb_ANNOT);
+	Annotations::allow(VERB_NT, verb_ANNOT);
+	Annotations::allow(VERB_NT, preposition_ANNOT);
+	Annotations::allow(VERB_NT, second_preposition_ANNOT);
+	Annotations::allow(VERB_NT, verb_meaning_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, preposition_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, relationship_node_type_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, linguistic_error_here_ANNOT);
@@ -57,7 +57,7 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 		case TwoLikelihoods_LINERROR: WRITE(" (*** TwoLikelihoods_LINERROR ***)"); break;
 	}
 	switch(pn->node_type) {
-		case AVERB_NT:
+		case VERB_NT:
 			if (Annotations::read_int(pn, sentence_is_existential_ANNOT))
 				WRITE(" (existential)");
 			if (Annotations::read_int(pn, possessive_verb_ANNOT))

@@ -32,7 +32,7 @@ at the end of sentence-breaking.
 	REGISTER_SENTENCE_HANDLER(HEADING_SH);
 	REGISTER_SENTENCE_HANDLER(SENTENCE_SH);
 
-@ And here are all of the verb types found in |AVERB_NT| nodes which are
+@ And here are all of the verb types found in |VERB_NT| nodes which are
 first children of |SENTENCE_NT| nodes.
 
 @<Add sentence handlers for the SENTENCE/VERB node types@> =
