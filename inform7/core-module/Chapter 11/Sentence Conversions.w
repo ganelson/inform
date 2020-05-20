@@ -55,7 +55,7 @@ pcalc_prop *Calculus::Propositions::FromSentences::S_subtree(int SV_not_SN, word
 }
 
 @<Check the tree position makes sense, and tell the debugging log@> =
-	if (A) Problems::Issue::s_subtree_error_set_position(Task::syntax_tree(), A);
+	if (A) StandardProblems::s_subtree_error_set_position(Task::syntax_tree(), A);
 	if (conv_log_depth == 0) LOGIF(PREDICATE_CALCULUS, "-----------\n");
 	conv_log_depth++;
 	LOGIF(PREDICATE_CALCULUS, "[%d] Starting fs on: <%W>\n", conv_log_depth, W);
@@ -97,14 +97,14 @@ it can be applied.
 
 @<Find meaning of the VP as a relation and a parity@> =
 	subject_phrase_subtree = A;
-	if (subject_phrase_subtree == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "SP subtree null");
+	if (subject_phrase_subtree == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "SP subtree null");
 	parse_node *verb_phrase_subtree = B;
-	if (verb_phrase_subtree == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "VP subtree null");
-	if (verb_phrase_subtree->down == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "VP subtree broken");
+	if (verb_phrase_subtree == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "VP subtree null");
+	if (verb_phrase_subtree->down == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "VP subtree broken");
 	object_phrase_subtree = verb_phrase_subtree->down;
 
 	verb_usage *vu = Node::get_vu(verb_phrase_subtree);
-	if (vu == NULL) Problems::Issue::s_subtree_error(Task::syntax_tree(), "verb null");
+	if (vu == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "verb null");
 	if ((SV_not_SN == FALSE) && (VerbUsages::get_tense_used(vu) != IS_TENSE))
 		@<Disallow the past tenses in relative clauses@>;
 

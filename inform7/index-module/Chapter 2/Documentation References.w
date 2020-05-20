@@ -33,7 +33,27 @@ typedef struct documentation_ref {
 
 @
 
-@d DOCUMENTATION_REFERENCES_PRESENT
+@d DOCUMENTATION_REFERENCE_PROBLEMS_CALLBACK Index::DocReferences::show_xref_in_problem
+
+=
+void Index::DocReferences::show_xref_in_problem(text_stream *OUT, text_stream *sigil) {
+	wchar_t *chap = NULL, *sec = NULL;
+	wchar_t *leaf = Index::DocReferences::link_if_possible_once(
+		sigil, &chap, &sec);
+	if (leaf) {
+		HTML::open_indented_p(OUT, 2, "tight");
+		HTML_OPEN_WITH("a", "href=inform:/%w.html", leaf);
+		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/help.png");
+		HTML_CLOSE("a");
+		WRITE("&nbsp;");
+		if ((chap) && (sec)) {
+			WRITE("<i>See the manual: %w &gt; %w</i>", chap, sec);
+		} else {
+			WRITE("<i>See the manual.</i>");
+		}
+		HTML_CLOSE("p");
+	}
+}
 
 @ The blue query icons link to pages in the documentation, as described above.
 Documentation references are used to match the documentation text against

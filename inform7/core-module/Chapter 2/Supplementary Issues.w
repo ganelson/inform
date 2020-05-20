@@ -1,4 +1,4 @@
-[Problems::Issue::] Supplementary Issues.
+[StandardProblems::] Supplementary Issues.
 
 Some supplementary general sorts of problem message.
 
@@ -7,11 +7,11 @@ As soon as we combine information from two sentences, we are at risk of a
 contradiction of some kind:
 
 =
-void Problems::Issue::two_sentences_problem(SIGIL_ARGUMENTS, parse_node *other_sentence,
+void StandardProblems::two_sentences_problem(SIGIL_ARGUMENTS, parse_node *other_sentence,
 	char *message, char *explanation) {
 	ACT_ON_SIGIL
 	if (current_sentence == other_sentence) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), PASS_SIGIL, message, explanation);
+		StandardProblems::sentence_problem(Task::syntax_tree(), PASS_SIGIL, message, explanation);
 		return;
 	}
 	Problems::quote_source(1, current_sentence);
@@ -20,7 +20,7 @@ void Problems::Issue::two_sentences_problem(SIGIL_ARGUMENTS, parse_node *other_s
 	Problems::quote_text(4, explanation);
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment(
-		"You wrote %1, but in another sentence %2: %Sagain, %%%Lbut %%%3%|, %4");
+		"You wrote %1, but in another sentence %2: %Sagain, %3.%Lbut %3, %4");
 	Problems::issue_problem_end();
 }
 
@@ -28,7 +28,7 @@ void Problems::Issue::two_sentences_problem(SIGIL_ARGUMENTS, parse_node *other_s
 parse tree, and concerning an instance:
 
 =
-void Problems::Issue::contradiction_problem(SIGIL_ARGUMENTS, parse_node *A, parse_node *B,
+void StandardProblems::contradiction_problem(SIGIL_ARGUMENTS, parse_node *A, parse_node *B,
 		instance *I, char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, A);
@@ -41,11 +41,11 @@ void Problems::Issue::contradiction_problem(SIGIL_ARGUMENTS, parse_node *A, pars
 		Problems::issue_problem_segment("You wrote %1, but in another sentence %2: ");
 	else
 		Problems::issue_problem_segment("You wrote %1: ");
-	Problems::issue_problem_segment("%Sagain, %%%3 %4%|, %5");
+	Problems::issue_problem_segment("%Sagain, %3 %4.%L%3 %4, %5");
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::infs_contradiction_problem(SIGIL_ARGUMENTS, parse_node *A, parse_node *B,
+void StandardProblems::infs_contradiction_problem(SIGIL_ARGUMENTS, parse_node *A, parse_node *B,
 		inference_subject *infs, char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, A);
@@ -57,7 +57,7 @@ void Problems::Issue::infs_contradiction_problem(SIGIL_ARGUMENTS, parse_node *A,
 	if (Wordings::eq(Node::get_text(A), Node::get_text(B)) == FALSE)
 		Problems::issue_problem_segment("You wrote %1, but in another sentence %2: ");
 	else Problems::issue_problem_segment("You wrote %1: ");
-	Problems::issue_problem_segment("%Sagain, %%%3 %4%|, %5");
+	Problems::issue_problem_segment("%Sagain, %3 %4.%L%3 %4, %5");
 	Problems::issue_problem_end();
 }
 
@@ -67,7 +67,7 @@ for a table can be enormous: so we need something which can show which
 table we are in, yet still only cite a small part of it --
 
 =
-void Problems::Issue::table_problem(SIGIL_ARGUMENTS, table *t, table_column *tc, parse_node *data,
+void StandardProblems::table_problem(SIGIL_ARGUMENTS, table *t, table_column *tc, parse_node *data,
 	char *message) {
 	ACT_ON_SIGIL
 	current_sentence = t->headline_fragment;
@@ -83,7 +83,7 @@ void Problems::Issue::table_problem(SIGIL_ARGUMENTS, table *t, table_column *tc,
 So this is where hopes are generically dashed about equations:
 
 =
-void Problems::Issue::equation_problem(SIGIL_ARGUMENTS, equation *eqn, char *p, char *text) {
+void StandardProblems::equation_problem(SIGIL_ARGUMENTS, equation *eqn, char *p, char *text) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, eqn->equation_text);
@@ -94,7 +94,7 @@ void Problems::Issue::equation_problem(SIGIL_ARGUMENTS, equation *eqn, char *p, 
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::equation_problem_S(SIGIL_ARGUMENTS, equation *eqn, text_stream *p, char *text) {
+void StandardProblems::equation_problem_S(SIGIL_ARGUMENTS, equation *eqn, text_stream *p, char *text) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, eqn->equation_text);
@@ -105,7 +105,7 @@ void Problems::Issue::equation_problem_S(SIGIL_ARGUMENTS, equation *eqn, text_st
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::equation_symbol_problem(SIGIL_ARGUMENTS, equation *eqn, wording W, char *text) {
+void StandardProblems::equation_symbol_problem(SIGIL_ARGUMENTS, equation *eqn, wording W, char *text) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
@@ -119,7 +119,7 @@ void Problems::Issue::equation_symbol_problem(SIGIL_ARGUMENTS, equation *eqn, wo
 @h Inline definition problems.
 
 =
-void Problems::Issue::inline_problem(SIGIL_ARGUMENTS, phrase *ph, text_stream *definition,
+void StandardProblems::inline_problem(SIGIL_ARGUMENTS, phrase *ph, text_stream *definition,
 	char *message) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
@@ -140,7 +140,7 @@ void Problems::Issue::inline_problem(SIGIL_ARGUMENTS, phrase *ph, text_stream *d
 Are mostly issued thus:
 
 =
-void Problems::Issue::tcp_problem(SIGIL_ARGUMENTS, tc_problem_kit *tck, char *prototype) {
+void StandardProblems::tcp_problem(SIGIL_ARGUMENTS, tc_problem_kit *tck, char *prototype) {
 	if (tck->issue_error) {
 		ACT_ON_SIGIL
 		Problems::quote_source(1, current_sentence);
@@ -162,18 +162,18 @@ from information in sentences far distant, so we can't always locate
 these problems at any particular sentence.
 
 =
-void Problems::Issue::object_problem(SIGIL_ARGUMENTS, instance *I,
+void StandardProblems::object_problem(SIGIL_ARGUMENTS, instance *I,
 		char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_object(1, I);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
-	Problems::issue_problem_segment("The %1 %2%|, %3");
+	Problems::issue_problem_segment("The %1 %2%S.%L, %3");
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::object_problem_at_sentence(SIGIL_ARGUMENTS, instance *I,
+void StandardProblems::object_problem_at_sentence(SIGIL_ARGUMENTS, instance *I,
 		char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
@@ -181,11 +181,11 @@ void Problems::Issue::object_problem_at_sentence(SIGIL_ARGUMENTS, instance *I,
 	Problems::quote_text(3, explanation);
 	Problems::quote_object(4, I);
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
-	Problems::issue_problem_segment("You wrote %1, but the %4 %2%|, %3");
+	Problems::issue_problem_segment("You wrote %1, but the %4 %2%S.%L, %3");
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::subject_problem_at_sentence(SIGIL_ARGUMENTS, inference_subject *infs,
+void StandardProblems::subject_problem_at_sentence(SIGIL_ARGUMENTS, inference_subject *infs,
 		char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
@@ -193,7 +193,7 @@ void Problems::Issue::subject_problem_at_sentence(SIGIL_ARGUMENTS, inference_sub
 	Problems::quote_text(3, explanation);
 	Problems::quote_subject(4, infs);
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
-	Problems::issue_problem_segment("You wrote %1, but the %4 %2%|, %3");
+	Problems::issue_problem_segment("You wrote %1, but the %4 %2%S.%L, %3");
 	Problems::issue_problem_end();
 }
 
@@ -203,7 +203,7 @@ more tact (and in particular, we don't assert very confidently that what
 we are dealing with is genuinely an object).
 
 =
-void Problems::Issue::subject_creation_problem(SIGIL_ARGUMENTS, inference_subject *subj,
+void StandardProblems::subject_creation_problem(SIGIL_ARGUMENTS, inference_subject *subj,
 		char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_subject(1, subj);
@@ -214,12 +214,12 @@ void Problems::Issue::subject_creation_problem(SIGIL_ARGUMENTS, inference_subjec
 		Problems::quote_source(4, NounPhrases::new_raw(W));
 		Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 		Problems::issue_problem_segment(
-			"I've made something called %4 but it %2%|, %3");
+			"I've made something called %4 but it %2%S.%L, %3");
 		Problems::issue_problem_end();
 	} else {
 		Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 		Problems::issue_problem_segment(
-			"I've made something called '%1' but it %2%|, %3");
+			"I've made something called '%1' but it %2%S.%L, %3");
 		Problems::issue_problem_end();
 	}
 }
@@ -231,7 +231,7 @@ are implied which necessarily make no sense, rather than merely contingently
 making no sense.
 
 =
-void Problems::Issue::inference_problem(SIGIL_ARGUMENTS, inference_subject *infs, inference *inf,
+void StandardProblems::inference_problem(SIGIL_ARGUMENTS, inference_subject *infs, inference *inf,
 		char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_subject(1, infs);
@@ -241,7 +241,7 @@ void Problems::Issue::inference_problem(SIGIL_ARGUMENTS, inference_subject *infs
 	Problems::quote_property(5, World::Inferences::get_property(inf));
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment(
-		"You wrote %2: but the property %5 for the %1 %3%|, %4");
+		"You wrote %2: but the property %5 for the %1 %3%S.%L, %4");
 	Problems::issue_problem_end();
 }
 
@@ -250,13 +250,13 @@ Just occasionally there is a problem with the definition of a property in the
 abstract, rather than with the actual property of some specific object.
 
 =
-void Problems::Issue::property_problem(SIGIL_ARGUMENTS, property *prn, char *message, char *explanation) {
+void StandardProblems::property_problem(SIGIL_ARGUMENTS, property *prn, char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_property(1, prn);
 	Problems::quote_text(2, message);
 	Problems::quote_text(3, explanation);
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
-	Problems::issue_problem_segment("The %1 %2%|, %3");
+	Problems::issue_problem_segment("The %1 %2%S.%L, %3");
 	Problems::issue_problem_end();
 }
 
@@ -264,7 +264,7 @@ void Problems::Issue::property_problem(SIGIL_ARGUMENTS, property *prn, char *mes
 These are generated when the user tries to employ a malformed extension.
 
 =
-void Problems::Issue::extension_problem(SIGIL_ARGUMENTS, inform_extension *E, char *message) {
+void StandardProblems::extension_problem(SIGIL_ARGUMENTS, inform_extension *E, char *message) {
 	ACT_ON_SIGIL
 	Problems::quote_extension(1, E);
 	Problems::quote_text(2, message);
@@ -280,7 +280,7 @@ possible to pin down an exact place where the difficulty occurs, but
 sometimes not.
 
 =
-void Problems::Issue::release_problem(SIGIL_ARGUMENTS, char *message, filename *name) {
+void StandardProblems::release_problem(SIGIL_ARGUMENTS, char *message, filename *name) {
 	ACT_ON_SIGIL
 	Problems::quote_text(1, message);
 	TEMPORARY_TEXT(fn);
@@ -293,7 +293,7 @@ void Problems::Issue::release_problem(SIGIL_ARGUMENTS, char *message, filename *
 	DISCARD_TEXT(fn);
 }
 
-void Problems::Issue::release_problem_path(SIGIL_ARGUMENTS, char *message, pathname *path) {
+void StandardProblems::release_problem_path(SIGIL_ARGUMENTS, char *message, pathname *path) {
 	ACT_ON_SIGIL
 	Problems::quote_text(1, message);
 	TEMPORARY_TEXT(pn);
@@ -306,7 +306,7 @@ void Problems::Issue::release_problem_path(SIGIL_ARGUMENTS, char *message, pathn
 	DISCARD_TEXT(pn);
 }
 
-void Problems::Issue::release_problem_at_sentence(SIGIL_ARGUMENTS, char *message, filename *name) {
+void StandardProblems::release_problem_at_sentence(SIGIL_ARGUMENTS, char *message, filename *name) {
 	ACT_ON_SIGIL
 	Problems::quote_text(1, message);
 	TEMPORARY_TEXT(fn);
@@ -325,7 +325,7 @@ The map-maker used for the World index and also the EPS-file output has its
 own quaint syntax, and where there is syntax, there are error messages:
 
 =
-void Problems::Issue::map_problem(SIGIL_ARGUMENTS, parse_node *q, char *message) {
+void StandardProblems::map_problem(SIGIL_ARGUMENTS, parse_node *q, char *message) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, q);
 	Problems::quote_text(2, message);
@@ -334,7 +334,7 @@ void Problems::Issue::map_problem(SIGIL_ARGUMENTS, parse_node *q, char *message)
 	Problems::issue_problem_end();
 }
 
-void Problems::Issue::map_problem_wanted_but(SIGIL_ARGUMENTS, parse_node *q, char *i_wanted_a, int vw1) {
+void StandardProblems::map_problem_wanted_but(SIGIL_ARGUMENTS, parse_node *q, char *i_wanted_a, int vw1) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, q);
 	Problems::quote_text(2, i_wanted_a);

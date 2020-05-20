@@ -57,7 +57,7 @@ property *Properties::Conditions::new(inference_subject *infs, wording NW, parse
 				Problems::quote_kind(2, common_kind);
 				Problems::quote_wording(3, CKW);
 				Problems::quote_wording(4, NKW);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MixedExistingConstants));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MixedExistingConstants));
 				Problems::issue_problem_segment(
 					"In %1, one of the values you supply as a possibility is '%3', "
 					"but this already has a meaning (as %2). This might be okay if "
@@ -66,7 +66,7 @@ property *Properties::Conditions::new(inference_subject *infs, wording NW, parse
 			} else if (prn == NULL) {
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_kind(2, common_kind);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* because it won't parse */
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* because it won't parse */
 				Problems::issue_problem_segment(
 					"In %1, every value you supply as a possibility is %2. "
 					"That would be okay if it were a property which is a condition "

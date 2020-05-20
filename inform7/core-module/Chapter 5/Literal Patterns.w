@@ -261,7 +261,7 @@ equivalent to an exact value.
 	if ((TargetVMs::is_16_bit(Task::vm())) && (PM_ZMachineOverflow2_issued == FALSE))
 		for (lp = list_head; lp; lp = lp->next_for_this_kind)
 			if (Kinds::Scalings::quantum(lp->scaling) > 32767) {
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ZMachineOverflow2),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ZMachineOverflow2),
 					"you've set up literal specifications needing a range of "
 					"values too broad to be stored at run-time",
 					"at least with the Settings for this project as they currently are. "
@@ -572,7 +572,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 	if (Kinds::FloatingPoint::uses_floating_point(lp->kind_specified) == FALSE) {
 		if (sign_used_at->element_index != 0) {
 			ISSUING_LP_PROBLEM;
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NegationInternal),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NegationInternal),
 				"a negative number can't be used in the middle of a constant",
 				"and the minus sign makes it look as if that's what you are "
 				"trying here.");
@@ -580,7 +580,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 		}
 		if (lp->number_signed == FALSE) {
 			ISSUING_LP_PROBLEM;
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NegationForbidden),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NegationForbidden),
 				"the minus sign is not allowed here",
 				"since this is a kind of value which only allows positive "
 				"values to be written.");
@@ -593,7 +593,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 @<Check that the value found lies within the range which the VM can hold@> =
 	if (overflow_32_bit_flag) {
 		ISSUING_LP_PROBLEM;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EvenOverflow-G),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EvenOverflow-G),
 			"you use a literal specification to make a value which is too large",
 			"even for a story file compiled with the Glulx setting. (You can "
 			"see the size limits for each way of writing a value on the Kinds "
@@ -602,7 +602,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 	}
 	if ((overflow_16_bit_flag) && (TargetVMs::is_16_bit(Task::vm()))) {
 		ISSUING_LP_PROBLEM;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ZMachineOverflow),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ZMachineOverflow),
 			"you use a literal specification to make a value which is too large",
 			"at least with the Settings for this project as they currently are. "
 			"(Change to Glulx to be allowed to use much larger numbers; "
@@ -632,7 +632,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 		case 9: Problems::quote_text(5, "tenth"); break;
 		default: Problems::quote_text(5, "eventual"); break;
 	}
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ElementOverflow));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ElementOverflow));
 	Problems::issue_problem_segment(
 		"In the sentence %1, you use the notation '%2' to write a constant value. "
 		"But the notation was specified as '%3', which means that the %5 numerical "
@@ -644,7 +644,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	Problems::quote_wording(3, lp->prototype_text);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LPTooLittleAccuracy));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LPTooLittleAccuracy));
 	Problems::issue_problem_segment(
 		"In the sentence %1, you use the notation '%2' to write a constant value. "
 		"But to store that, I would need greater accuracy than this kind of "
@@ -2523,7 +2523,7 @@ of alternatives each of which matches the following:
 @<Issue PM_MultiplyingNonKOVs problem@> =
 	*X = ABANDON_LPN; *XP = NULL;
 	if (preform_lookahead_mode == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MultiplyingNonKOVs),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultiplyingNonKOVs),
 			"only kinds of value can be multiplied here",
 			"and only in a sentence like 'A length times a length specifies an area.'");
 	}
@@ -2533,7 +2533,7 @@ of alternatives each of which matches the following:
 	if (preform_lookahead_mode == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadLPNameOption));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadLPNameOption));
 		Problems::issue_problem_segment(
 			"In the specification %1, I was expecting that '%2' would be an optional "
 			"note about one of the notations: it should have been one of 'singular', "
@@ -2581,7 +2581,7 @@ can't set both scaling and an equivalent, for instance.
 
 @<Issue PM_LPNotKOV problem@> =
 	if (preform_lookahead_mode == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPNotKOV),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPNotKOV),
 			"you can only specify ways to write kinds of value",
 			"as created with sentences like 'A weight is a kind of value.'");
 	}
@@ -2624,7 +2624,7 @@ by a bracketed list of up to three options in any order.
 	if (preform_lookahead_mode == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadLPPartOption));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadLPPartOption));
 		Problems::issue_problem_segment(
 			"In the specification %1, I was expecting that '%2' would be an optional "
 			"note about one of the parts: it should have been one of 'optional', "
@@ -2639,7 +2639,7 @@ by a bracketed list of up to three options in any order.
 		if (Rvalues::is_CONSTANT_of_kind(LP_equivalent_value, K)) {
 			scaled_dir = LP_SCALED_UP; scaled = Rvalues::to_encoded_notation(LP_equivalent_value);
 		} else {
-			Problems::Issue::sentence_problem_with_note(Task::syntax_tree(), _p_(PM_BadLPEquivalent),
+			StandardProblems::sentence_problem_with_note(Task::syntax_tree(), _p_(PM_BadLPEquivalent),
 				"the equivalent value needs to be a constant of the same kind "
 				"of value as you are specifying",
 				"and this seems not to be.",
@@ -2652,7 +2652,7 @@ by a bracketed list of up to three options in any order.
 		if (Rvalues::is_CONSTANT_of_kind(LP_offset_value, K)) {
 			offset = Rvalues::to_encoded_notation(LP_offset_value);
 		} else {
-			Problems::Issue::sentence_problem_with_note(Task::syntax_tree(), _p_(PM_BadLPOffset),
+			StandardProblems::sentence_problem_with_note(Task::syntax_tree(), _p_(PM_BadLPOffset),
 				"the offset value needs to be a constant of the same kind "
 				"of value as you are specifying",
 				"and this seems not to be.",
@@ -2681,7 +2681,7 @@ does not throw a problem message as being a bar which is out of range
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
 		Problems::quote_wording(3, SPW);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_DuplicateUnitSpec));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_DuplicateUnitSpec));
 		Problems::issue_problem_segment(
 			"In the sentence %1, it looks as if you intend to give a new meaning "
 			"to expressions like '%3', but this is already something I "
@@ -2694,7 +2694,7 @@ does not throw a problem message as being a bar which is out of range
 @<Issue problem message warning that real arithmetic is needed@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_kind(2, K);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LPNeedsReal));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LPNeedsReal));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend to give a real "
 		"number as a scale factor for values of %2. However, as you've "
@@ -2719,21 +2719,21 @@ after itself.
 @<Check that the kind is acceptable as the owner of a LP@> =
 	if (Kinds::Behaviour::is_built_in(K)) {
 		if (Kinds::Behaviour::get_index_priority(K) == 0)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPBuiltInKOVHidden),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPBuiltInKOVHidden),
 				"you can only specify ways to write new kinds of value",
 				"as created with sentences like 'A weight is a kind of value.', "
 				"and not the built-in ones like 'number' or 'time'. (This one is "
 				"a kind used behind the scenes by Inform, so it's reserved "
 				"for Inform's own use, and you can't do much else with it.)");
 		else
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPBuiltInKOV),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPBuiltInKOV),
 				"you can only specify ways to write new kinds of value",
 				"as created with sentences like 'A weight is a kind of value.', "
 				"and not the built-in ones like 'number' or 'time'.");
 		return owner;
 	}
 	if (Kinds::Behaviour::convert_to_unit(Task::syntax_tree(), K) == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPEnumeration),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPEnumeration),
 			"this is a kind of value which already has named values",
 			"so it can't have a basically numerical form as well.");
 		return owner;
@@ -2745,7 +2745,7 @@ after itself.
 	lp = LiteralPatterns::lp_new(K, SPW);
 	if (LP_equivalent_value) LP_real_scaling_amount = LP_real_equivalent;
 	if (scaled <= 0) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPNonpositiveScaling),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPNonpositiveScaling),
 			"you can only scale by a positive multiple",
 			"so something like 'scaled up by -1' is not allowed.");
 		scaled = 1;
@@ -2784,7 +2784,7 @@ alphabetic vs numeric pieces of a word:
 	lp->no_lp_tokens = tc;
 	lp->no_lp_elements = ec;
 	if (lp->no_lp_elements == 0) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPWithoutElement),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPWithoutElement),
 			"a way to specify a kind of value must involve numbers",
 			"so '10kg specifies a weight' is allowed, but not 'tonne "
 			"specifies a weight'.");
@@ -2805,7 +2805,7 @@ hold -- so we need not fool around with long long ints.
 		while (Characters::isdigit(text_of_word[j++])) {
 			digit_found = TRUE;
 			if (tot > 999999999) {
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPElementTooLarge),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPElementTooLarge),
 					"that specification contains numbers that are too large",
 					"and would construct values which could not sensibly "
 					"be stored at run-time.");
@@ -2820,7 +2820,7 @@ hold -- so we need not fool around with long long ints.
 		if (digit_found) {
 			literal_pattern_element new_element = LiteralPatterns::lpe_new(ec, tot+1, sgn);
 			if (ec >= MAX_ELEMENTS_PER_LITERAL) {
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooManyElements),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooManyElements),
 					"that specification contains too many numerical elements",
 					"and is too complicated for Inform to handle.");
 				return owner;
@@ -2848,7 +2848,7 @@ not really distort matters.
 
 @<Add new token to LP@> =
 	if (tc >= MAX_TOKENS_PER_LITERAL) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooComplicated),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooComplicated),
 			"that specification is too complicated",
 			"and will have to be shortened.");
 		return owner;
@@ -2888,20 +2888,20 @@ this is deferred until all elements exist, at which point we --
 		}
 		if (O & WITHOUT_LEADING_ZEROS_LSO) lpe->without_leading_zeros = TRUE;
 		if ((i == lp->no_lp_elements - 1) && (p->next)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooManyPartNames),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPTooManyPartNames),
 				"this gives names for too many parts",
 				"that is, for more parts than there are in the pattern.");
 			return owner;
 		}
 		for (int j = 0; j<i; j++)
 			if (Wordings::match(lp->lp_elements[i].element_name, lp->lp_elements[j].element_name))
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPRepeatedPartNames),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPRepeatedPartNames),
 					"this repeats a part name",
 					"that is, it uses the same name for two different parts "
 					"of the pattern.");
 	}
 	if ((i > 0) && (i != lp->no_lp_elements)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPNotAllNamed),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPNotAllNamed),
 			"you must supply names for all the parts",
 			"if for any");
 		return owner;
@@ -2915,14 +2915,14 @@ optional, and it must not be the first.
 	for (i=0; i<lp->no_lp_elements; i++) if (lp->lp_elements[i].element_optional) {
 		opt_count++;
 		if (i == 0) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPFirstOptional),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPFirstOptional),
 				"the first part is not allowed to be optional",
 				"since it is needed to identify the value.");
 			return owner;
 		}
 	}
 	if (opt_count >= 2) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPMultipleOptional),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPMultipleOptional),
 			"only one part can be called optional",
 			"since if any part is omitted then so are all subsequent parts.");
 		return owner;
@@ -3131,7 +3131,7 @@ For instance, the dollars-and-cents example compiles:
 	}
 
 @<Issue a problem for overly long part names@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LPPartNamesTooLong),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPPartNamesTooLong),
 		"the names for these parts are too long",
 		"and will have to be cut down.");
 

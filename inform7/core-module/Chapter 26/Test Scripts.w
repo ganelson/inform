@@ -155,31 +155,31 @@ test_scenario *ts_being_parsed = NULL;
 		ts_being_parsed->possessions[ts_being_parsed->no_possessions++] = RP[1];
 
 @<Issue PM_TestBadRequirements problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TestBadRequirements),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestBadRequirements),
 		"I didn't recognise the requirements for this test scenario",
 		"which should be 'test ... with ... in ...' or '... "
 		"holding ...'");
 
 @<Issue PM_TestQuoted problem@> =
 	*X = FALSE;
-   	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TestQuoted),
+   	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestQuoted),
 		"test scenarios must have unquoted names",
 		"so 'test garden with ...' is allowed but not 'test \"garden\" with...'");
 
 @<Issue PM_TestMultiWord problem@> =
 	*X = FALSE;
-   	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TestMultiWord),
+   	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestMultiWord),
 		"test scenarios must have single-word names",
 		"so 'test garden with ...' is allowed but not 'test garden gate with...'");
 
 @<Issue PM_UnknownInternalTest problem@> =
 	*X = NO_INTT;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownInternalTest),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownInternalTest),
 		"that's an internal test case which I don't know",
 		"so I am taking no action.");
 
 @<Issue PM_TestDoubleWith problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TestDoubleWith),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestDoubleWith),
 		"the second 'with' should be 'holding'",
 		"as in 'test frogs with \"get frogs\" holding net' rather than "
 		"'test frogs with \"get frogs\" with net'.");
@@ -222,7 +222,7 @@ void PL::Parsing::TestScripts::new_test_text(parse_node *PN) {
     	if (Wordings::match(XW, test->name)) {
     		Problems::quote_source(1, test->sentence_test_declared_at);
     		Problems::quote_source(2, current_sentence);
-    		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TestDuplicate));
+    		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TestDuplicate));
 			Problems::issue_problem_segment(
 				"Two test scripts have been set up with the same name: "
 				"%1 and %2.");
@@ -247,7 +247,7 @@ void PL::Parsing::TestScripts::new_test_text(parse_node *PN) {
 @ =
 void PL::Parsing::TestScripts::check_test_command(text_stream *p) {
 	if (Str::eq_wide_string(p, L"undo")) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TestContainsUndo),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestContainsUndo),
 			"this test script contains an UNDO command",
 			"which the story file has no way to automate the running of. "
 			"(An UNDO is such a complete reversion to the previous state "
@@ -256,7 +256,7 @@ void PL::Parsing::TestScripts::check_test_command(text_stream *p) {
 		return;
 	}
 	if (Str::len(p) > MAX_LENGTH_OF_COMMAND) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TestCommandTooLong),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestCommandTooLong),
 			"this test script contains a command which is too long",
 			"and cannot be fed into Inform for automatic testing. "
 			"(The format for a test script is a sequence of commands, "

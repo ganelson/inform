@@ -58,7 +58,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">problems</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>How To Include This Module</b></li></ul></div>
 <p class="purpose">What to do to make use of the problems module in a new command-line tool.</p>
 
-<ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li><li><a href="P-htitm.html#SP3">&#167;3. Using callbacks</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Status. </b>The problems module provided as one of the "services" suite of modules, which means
 that it was built with a view to potential incorporation in multiple tools.
@@ -88,6 +88,61 @@ module:
 <span class="extract"><span class="extract-syntax">ProblemsModule::end()</span></span> just before it shuts down. (But just after, and just
 before, the corresponding calls to <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.)
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Using callbacks. </b>Shared modules like this one are tweaked in behaviour by defining "callback
+functions". This means that the parent might provide a function of its own
+which would answer a question put to it by the module, or take some action
+on behalf of the module: it's a callback in the sense that the parent is
+normally calling the module, but then the module calls the parent back to
+ask for data or action.
+</p>
+
+<p class="commentary">The problems module has only a few callbacks, and they are all optional. The
+following alphabetical list has references to fuller explanations:
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b><span class="extract"><span class="extract-syntax">DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK</span></span> can change the description of a
+file used in problem messages; Inform uses this to say "the source text" or
+"Standard Rules" rather than citing filenames. See <a href="2-pl1.html#SP4" class="internal">ProblemBuffer::copy_source_reference</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b><span class="extract"><span class="extract-syntax">DOCUMENTATION_REFERENCE_PROBLEMS_CALLBACK</span></span> is invited to add a clickable
+link to in-app documentation; if no callback function is provided, no
+such links appear. See <a href="2-pl2.html#SP10" class="internal">Problems::problem_documentation_links</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b><span class="extract"><span class="extract-syntax">ENDING_MESSAGE_PROBLEMS_CALLBACK</span></span> is called just before a problem message
+is about to end, and can be used to append some extra wording. See
+<a href="2-pl2.html#SP9" class="internal">Problems::issue_problem_end</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b><span class="extract"><span class="extract-syntax">FIRST_PROBLEMS_CALLBACK</span></span> is called before the first problem in a run is
+issued, and takes as an argument the <span class="extract"><span class="extract-syntax">text_stream *</span></span> to which problems are
+being written. See <a href="2-pl2.html#SP3" class="internal">Problems::show_problem_location</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b><span class="extract"><span class="extract-syntax">GLOSS_EXTENSION_SOURCE_FILE_PROBLEMS_CALLBACK</span></span> is called to add a note
+like "in the extension Locksmith by Emily Short"; see <a href="2-pl2.html#SP3" class="internal">Problems::show_problem_location</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK</span></span> is called just before a problems
+report closes, to give it a chance to add informational messages. (<a href="../core-module/index.html" class="internal">core</a>
+uses this mechanism to append text such as "There were 3 rooms and 27 things.")
+Such addenda are not problems, and do not affect the program's exit code.
+See <a href="2-pl1.html#SP7" class="internal">ProblemBuffer::write_reports</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b><span class="extract"><span class="extract-syntax">START_PROBLEM_FILE_PROBLEMS_CALLBACK</span></span> is called when <a href="index.html" class="internal">problems</a> wants
+to open some kind of file for problem messages, with two arguments: the
+filename <span class="extract"><span class="extract-syntax">F</span></span> and the stream <span class="extract"><span class="extract-syntax">P</span></span> to open to it. If the callback function wants
+this to come to anything, it must perform the file-open, and write any header
+material it would like. See <a href="2-pl3.html#SP19" class="internal">StandardProblems::start_problems_report</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b><span class="extract"><span class="extract-syntax">WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK</span></span> is called to ask what wording
+should be used to describe a heading in problem messages. See
+<a href="2-pl2.html#SP3" class="internal">Problems::show_problem_location</a>.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-pm.html">1</a></li><li class="progresschapter"><a href="2-pl0.html">2</a></li><li class="progressnext"><a href="1-pm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

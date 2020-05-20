@@ -110,7 +110,7 @@ void Tables::check_tables_for_kind_clashes(void) {
 			(Kinds::Compare::lt(<<rp>>, K_object))) {
 			Problems::quote_table(1, t);
 			Problems::quote_wording(2, t->table_name_text);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableCoincidesWithKind));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableCoincidesWithKind));
 			Problems::issue_problem_segment(
 				"The name %1 will have to be disallowed because '%2' is also the "
 				"name of a kind, or of the plural of a kind. (For instance, writing "
@@ -261,7 +261,7 @@ two forms in any case.
 
 @<Issue PM_TableMisnamed problem@> =
 	*X = TABLE_HAS_ONLY_NAME; /* for recovery */
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableMisnamed),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableMisnamed),
 		"this isn't allowed as the name of a Table",
 		"since a table is required either to have a number, or to be a table 'of' "
 		"something (or both). For example: 'Table 5', 'Table of Blue Meanies', and "
@@ -333,7 +333,7 @@ void Tables::create_table(parse_node *PN) {
 @ Changes to the lexer mean that this shouldn't happen, but just in case:
 
 @<Reject this lexically malformed table declaration@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 		"this table does not strictly speaking start a paragraph",
 		"and I'm afraid we need to speak strictly here. Even a comment coming before "
 		"the start of the table is too much.");
@@ -362,7 +362,7 @@ void Tables::create_table(parse_node *PN) {
 @<Require the table name not to tread on some other value@> =
 	if (<s-type-expression-or-value>(t->table_name_text)) {
 		Problems::quote_wording_as_source(1, t->table_name_text);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableNameAmbiguous));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableNameAmbiguous));
 		Problems::issue_problem_segment(
 			"The table name %1 will have to be disallowed as it is text which "
 			"already has a meaning to Inform. For instance, creating the 'Table "
@@ -414,7 +414,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 @<Require the previous table to exist@> =
 	if (existing_table_with_same_name == NULL) {
 		Problems::quote_table(1, t);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableNotContinuation));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableNotContinuation));
 		Problems::issue_problem_segment(
 			"It looks as if %1 is meant to be related to an existing table, "
 			"but I can't find one if it is. %P"
@@ -430,7 +430,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 		Problems::quote_table(1, t);
 		Problems::quote_table(2, existing_table_with_same_name);
 		Problems::quote_wording(3, HW);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableNameDuplicate));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableNameDuplicate));
 		Problems::issue_problem_segment(
 			"I can't create %1 because its name overlaps with one that already "
 			"exists: %2. %P"
@@ -497,7 +497,7 @@ node for each column.
 		row_count++;
 	}
 	if ((row_count < 2) && (t->blank_rows == 0)) {
-		Problems::Issue::table_problem(_p_(PM_TableWithoutRows),
+		StandardProblems::table_problem(_p_(PM_TableWithoutRows),
 			t, NULL, PN, "%1 has no rows.");
 		return;
 	}
@@ -512,7 +512,7 @@ a node in the parse tree representing the column's use within this table.
 		parse_node *overflow = NounPhrases::new_raw(CW);
 		int limit = MAX_COLUMNS_PER_TABLE;
 		Problems::quote_number(4, &limit);
-		Problems::Issue::table_problem(_p_(PM_TableTooManyColumns),
+		StandardProblems::table_problem(_p_(PM_TableTooManyColumns),
 			t, NULL, overflow,
 			"There are %4 columns in %1 already, and that's the absolute limit, "
 			"so the column %3 can't be added.");
@@ -535,7 +535,7 @@ a node in the parse tree representing the column's use within this table.
 		int given_col = col_count + 1; /* i.e., counting from 1 rather than 0 */
 		Problems::quote_number(5, &(given_col));
 		Problems::quote_number(6, &(t->no_columns));
-		Problems::Issue::table_problem(_p_(PM_TableRowFull),
+		StandardProblems::table_problem(_p_(PM_TableRowFull),
 			t, NULL, cell,
 			"In row %4 of the table %1, the entry %3 won't fit, because its row "
 			"is already full. (This entry would be in column %5 and the table has "
@@ -634,7 +634,7 @@ wants a row for each man, and the continuation wants a row for each woman.
 			Problems::quote_table(2, old_t);
 			Problems::quote_wording(3, old_t->blank_rows_for_each_text);
 			Problems::quote_wording(4, t->blank_rows_for_each_text);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableContinuationContradicts));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableContinuationContradicts));
 			Problems::issue_problem_segment(
 				"The table %1 says that it should have a blank row for each "
 				"%4, but the original %2 already says it has a blank for each "
@@ -695,7 +695,7 @@ used in continuation rows for columns not mentioned.)
 		Problems::quote_table(2, old_t);
 		if (missing == 1) Problems::quote_text(3, "a column");
 		else Problems::quote_text(3, "columns");
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableContinuationAddsCols));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableContinuationAddsCols));
 		Problems::issue_problem_segment(
 			"The table %1 won't work as a continuation, because it contains "
 			"%3 not found in the original %2.");
@@ -720,7 +720,7 @@ be "wider" than the old one.)
 		Problems::quote_table(2, old_t);
 		if (missing == 1) Problems::quote_text(3, "a column");
 		else Problems::quote_text(3, "columns");
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableReplacementMissesCols));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableReplacementMissesCols));
 		Problems::issue_problem_segment(
 			"The table %1 won't work as a replacement, because it's missing "
 			"%3 found in the original %2.");
@@ -744,7 +744,7 @@ columns and in the same order.
 		current_sentence = t->table_created_at->source_table;
 		Problems::quote_table(1, t);
 		Problems::quote_table(2, old_t);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableAmendmentMisfit));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableAmendmentMisfit));
 		Problems::issue_problem_segment(
 			"Columns in %1 do not exactly match the original %2. I can only "
 			"make changes to rows in an existing table if the amended versions "
@@ -900,7 +900,7 @@ us issue more contextual problem messages.
 	Problems::quote_wording(5,
 		Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
 	Problems::quote_number(6, &table_cell_row);
-	Problems::Issue::table_problem(_p_(PM_NonconstantActionInTable),
+	StandardProblems::table_problem(_p_(PM_NonconstantActionInTable),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, I'm reading the text %3 in column %4 (%5) of row %6, but this is "
 		"an action involving a variable, that is, a value that might vary in play. "
@@ -925,7 +925,7 @@ people -- it needs to be "yourself" instead, since "player" is a variable.
 			Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
 		Problems::quote_number(6, &table_cell_row);
 		Problems::quote_subject(7, infs);
-		Problems::Issue::table_problem(_p_(PM_TablePlayerEntry),
+		StandardProblems::table_problem(_p_(PM_TablePlayerEntry),
 			table_being_examined, NULL, table_cell_node,
 			"In %1, the entry %3 in column %4 (%5) of row %6 is the name of a value "
 			"which varies, not a constant, and can't be stored as a table entry. %P"
@@ -937,7 +937,7 @@ people -- it needs to be "yourself" instead, since "player" is a variable.
 		Problems::quote_wording(5,
 			Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
 		Problems::quote_number(6, &table_cell_row);
-		Problems::Issue::table_problem(_p_(PM_TableVariableEntry),
+		StandardProblems::table_problem(_p_(PM_TableVariableEntry),
 			table_being_examined, NULL, table_cell_node,
 			"In %1, the entry %3 in column %4 (%5) of row %6 is the name of a value "
 			"which varies, not a constant, so it can't be stored as a table entry.");
@@ -955,7 +955,7 @@ people -- it needs to be "yourself" instead, since "player" is a variable.
 	Problems::quote_wording(5,
 		Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
 	Problems::quote_number(6, &table_cell_row);
-	Problems::Issue::table_problem(_p_(PM_TableUnknownEntry),
+	StandardProblems::table_problem(_p_(PM_TableUnknownEntry),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, I'm reading the text %3 in column %4 (%5) of row %6, but I don't "
 		"know what this means. %PThis should usually be a value, like a number "
@@ -1024,7 +1024,7 @@ void Tables::stock_table_cell(table *t, parse_node *cell, int row_count, int col
 		Problems::quote_wording(5,
 			Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
 		Problems::quote_number(6, &table_cell_row);
-		Problems::Issue::table_problem(_p_(PM_TableDescriptionEntry),
+		StandardProblems::table_problem(_p_(PM_TableDescriptionEntry),
 			t, NULL, cell,
 			"In %1, the entry %3 in column %4 (%5) of row %6 is a general description "
 			"of things with no definite value, and can't be stored as a table entry.");
@@ -1068,7 +1068,7 @@ void Tables::complete(void) {
 				if (N >= 0) t->blank_rows = N;
 				else {
 					Problems::quote_wording(4, t->blank_rows_text);
-					Problems::Issue::table_problem(_p_(PM_TableUnknownBlanks),
+					StandardProblems::table_problem(_p_(PM_TableUnknownBlanks),
 						t, NULL, current_sentence,
 						"%1 asked to have '%4' extra blank rows, but that would "
 						"only make sense for a literal number like '15' or a "
@@ -1090,7 +1090,7 @@ void Tables::complete(void) {
 					t->blank_rows += Instances::count(K);
 				} else {
 					Problems::quote_wording(4, t->blank_rows_for_each_text);
-					Problems::Issue::table_problem(_p_(PM_TableKindlessBlanks),
+					StandardProblems::table_problem(_p_(PM_TableKindlessBlanks),
 						t, NULL, current_sentence,
 						"%1 asked to have extra blank rows for each '%4', but that "
 						"isn't a kind, so I can't see how many blank rows to make.");
@@ -1269,7 +1269,7 @@ time to find a clear wording for:
 		current_sentence = amendments->table_created_at->source_table;
 		Problems::quote_table(1, main_table);
 		Problems::quote_table(2, amendments);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableAmendmentMismatch));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableAmendmentMismatch));
 		Problems::issue_problem_segment(
 			"I'm currently trying to amend rows in %1 according to the instructions "
 			"in %2. To do that, I have to match each amendment row in turn, which "

@@ -308,7 +308,7 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 				(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
 				if (STREAM_OPEN_TO_FILE(T, step->parsed_filename, ISO_ENC) == FALSE) {
 					#ifdef PROBLEMS_MODULE
-					Problems::Fatal::filename_related("Can't open output file", step->parsed_filename);
+					Problems::fatal_on_file("Can't open output file", step->parsed_filename);
 					#endif
 					#ifndef PROBLEMS_MODULE
 					Errors::fatal_with_file("Can't open output file", step->parsed_filename);

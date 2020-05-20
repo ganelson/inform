@@ -71,7 +71,7 @@ text_stream *Index::open_file(text_stream *index_leaf, text_stream *title, int s
 	filename *F = Task::index_file(index_leaf, sub);
 	if (ifl) Index::close_index_file();
 	if (STREAM_OPEN_TO_FILE(&index_file_struct, F, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open index file", F);
+		Problems::fatal_on_file("Can't open index file", F);
 	ifl = &index_file_struct;
 	text_stream *OUT = ifl;
 

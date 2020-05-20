@@ -308,7 +308,7 @@ void World::Inferences::verify_prop_states(inference_subject *infs) {
 			Problems::quote_property(2, prn);
 			Problems::quote_kind(3, VK);
 			Problems::quote_kind(4, PK);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LateInferenceProblem));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LateInferenceProblem));
 			Problems::issue_problem_segment(
 				"You wrote %1, but that tries to set the value of the '%2' "
 				"property to %3 - which must be wrong because this property "
@@ -752,7 +752,7 @@ and so clashed are impossible.)
 		(Plugins::Call::explain_contradiction(list, i, d, infs))) return;
 	if (i->inference_type == PROPERTY_INF) {
 		if (i->inferred_property == P_variable_initial_value)
-		Problems::Issue::two_sentences_problem(_p_(PM_VariableContradiction),
+		StandardProblems::two_sentences_problem(_p_(PM_VariableContradiction),
 			list->inferred_from,
 			"this looks like a contradiction",
 			"because the initial value of this variable seems to be being set "
@@ -768,7 +768,7 @@ and so clashed are impossible.)
 						Problems::quote_subject(4, infs);
 						Problems::quote_spec(5, i->inferred_property_value);
 						Problems::quote_spec(6, list->inferred_property_value);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RelationContradiction2));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelationContradiction2));
 						Problems::issue_problem_segment(
 							"I'm finding a contradiction at the sentence %1, "
 							"because it means I can't set up %3. "
@@ -783,7 +783,7 @@ and so clashed are impossible.)
 						Problems::quote_subject(4, infs);
 						Problems::quote_spec(5, i->inferred_property_value);
 						Problems::quote_spec(6, list->inferred_property_value);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RelationContradiction));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelationContradiction));
 						Problems::issue_problem_segment(
 							"I'm finding a contradiction at the sentences %1 and %2, "
 							"because between them they set up rival versions of %3. "
@@ -795,7 +795,7 @@ and so clashed are impossible.)
 					return;
 				}
 			}
-			Problems::Issue::two_sentences_problem(_p_(PM_PropertyContradiction),
+			StandardProblems::two_sentences_problem(_p_(PM_PropertyContradiction),
 				list->inferred_from,
 				"this looks like a contradiction",
 				"because the same property seems to be being set in each of these sentences, "
@@ -804,14 +804,14 @@ and so clashed are impossible.)
 	} else
 		#ifdef IF_MODULE
 		if (i->inference_type == IS_ROOM_INF) {
-		Problems::Issue::two_sentences_problem(_p_(PM_WhenIsARoomNotARoom),
+		StandardProblems::two_sentences_problem(_p_(PM_WhenIsARoomNotARoom),
 			list->inferred_from,
 			"this looks like a contradiction",
 			"because apparently something would have to be both a room and not a "
 			"room at the same time.");
 	} else
 		#endif
-		Problems::Issue::two_sentences_problem(_p_(PM_Contradiction),
+		StandardProblems::two_sentences_problem(_p_(PM_Contradiction),
 			list->inferred_from,
 			"this looks like a contradiction",
 			"which might be because I have misunderstood what was meant to be the subject "

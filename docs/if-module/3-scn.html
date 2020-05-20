@@ -306,7 +306,7 @@ to translate this to other languages.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesWithTooManyEnds</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesWithTooManyEnds</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"this scene now has too many different ways to end"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"and will need to be simplified. (We can have up to 15 ends to a scene "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"if the project format is for the Z-machine, and 31 for Glulx: see the "</span>
@@ -494,7 +494,7 @@ have to be worded as one.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesOnly</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesOnly</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"'begins when' and 'ends when' can only be applied to scenes"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which have already been defined with a sentence like 'The final "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"confrontation is a scene.'"</span><span class="plain-syntax">);</span>
@@ -531,7 +531,7 @@ in a different context, for instance, and could still be valid in that case.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = -1;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesDisallowCalled</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesDisallowCalled</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"'(called ...)' is not allowed within conditions for a scene to begin or end"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"since calling gives only a temporary name to something, for the purpose "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"of further instructions which immediately follow in. Here there is no room "</span>
@@ -544,7 +544,7 @@ in a different context, for instance, and could still be valid in that case.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = -1;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesNotPlay</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesNotPlay</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"'play' is not really a scene"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"so although you can write '... when play begins' you cannot write '... "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"when play ends'. But there's no need to do so, anyway. When play ends, "</span>
@@ -556,7 +556,7 @@ in a different context, for instance, and could still be valid in that case.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = -1;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesUnknownEnd</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesUnknownEnd</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"that's not one of the known ends for that scene"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which must be declared with something like 'Confrontation ends happily "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"when...' or 'Confrontation ends tragically when...'."</span><span class="plain-syntax">);</span>
@@ -640,7 +640,7 @@ ends" the other end.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">phase</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP24_5" class="named-paragraph-link"><span class="named-paragraph">Parse which form of anchor we have</span><span class="named-paragraph-number">24.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">this_scene</span><span class="plain-syntax"> == </span><span class="identifier-syntax">SC_entire_game</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">external_condition</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_EntireGameHardwired</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_EntireGameHardwired</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"the special 'Entire Game' scene cannot have its start or end modified"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"because it is a built-in scene designed to be going on whenever there "</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"is play going on in the story."</span><span class="plain-syntax">);</span>
@@ -666,7 +666,7 @@ ends" the other end.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this_scene</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">anchor_condition</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">])</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesOversetEnd</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesOversetEnd</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"you have already told me a condition for when that happens"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"and although a scene can be linked to the beginning or ending "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"of any number of other scenes, it can only have a single "</span>
@@ -894,7 +894,7 @@ below.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Condition: $P\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesBadCondition</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesBadCondition</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"'begins when' and 'ends when' must be followed by a condition"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"which this does not seem to be, or else 'when play begins', "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"'when play ends', 'when S begins', or 'when S ends', where "</span>
@@ -1404,7 +1404,7 @@ actually running:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stuck</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_truth_state</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesBadDuring</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ScenesBadDuring</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"'during' must be followed by the name of a scene or of a "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"description which applies to a single scene"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"such as 'during Station Arrival' or 'during a recurring scene'."</span><span class="plain-syntax">);</span>

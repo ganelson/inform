@@ -38,7 +38,7 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 		case UNARY_MINUS_OPERATION: @<Emit unary minus@>; break;
 		case IMPLICIT_APPLICATION_OPERATION: @<Emit function application@>; break;
 		default:
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"this doesn't seem to be an arithmetic operation",
 				"suggesting a problem with some inline definition.");
 			break;

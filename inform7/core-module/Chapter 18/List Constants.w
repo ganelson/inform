@@ -188,7 +188,7 @@ incomparable, and "thing" being the max of "person" and "door").
 @<Issue a bad list entry problem@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(spec));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadConstantListEntry));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadConstantListEntry));
 	Problems::issue_problem_segment(
 		"The constant list %1 contains an entry '%2' which isn't any "
 		"form of constant I'm able to read.");
@@ -201,7 +201,7 @@ incomparable, and "thing" being the max of "person" and "door").
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(spec));
 	Problems::quote_spec(3, spec);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonconstantConstantListEntry));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonconstantConstantListEntry));
 	Problems::issue_problem_segment(
 		"The constant list %1 contains an entry '%2' which does make sense, "
 		"but isn't a constant (it's %3). Only constants can appear as entries in "
@@ -213,7 +213,7 @@ incomparable, and "thing" being the max of "person" and "door").
 	Problems::quote_wording(2, Node::get_text(spec));
 	Problems::quote_kind(3, E);
 	Problems::quote_kind(4, previous_K);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_IncompatibleConstantListEntry));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_IncompatibleConstantListEntry));
 	Problems::issue_problem_segment(
 		"The constant list %1 contains an entry '%2' whose kind is '%3', but "
 		"that's not compatible with the kind I had established from looking at "

@@ -70,7 +70,7 @@ int Routines::ToPhrases::compare(phrase *ph1, phrase *ph2) {
 	if (r == CONFLICTED_PH) {
 		Problems::quote_source(1, Phrases::declaration_node(ph1));
 		Problems::quote_source(2, Phrases::declaration_node(ph2));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ConflictedReturnKinds));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ConflictedReturnKinds));
 		Problems::issue_problem_segment(
 			"The two phrase definitions %1 and %2 make the same wording "
 			"produce two different kinds of value, which is not allowed.");
@@ -188,7 +188,7 @@ list is a list of. The result would be:
 
 @<Issue a problem message for undetermined kinds@> =
 	Problems::quote_source(1, Phrases::declaration_node(ph));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UndeterminedKind));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UndeterminedKind));
 	if (Wordings::empty(W)) {
 		Problems::issue_problem_segment(
 			"The phrase %1 needs to be used in such a way that I know "
@@ -224,7 +224,7 @@ inter_name *Routines::ToPhrases::make_iname(phrase *ph, kind *req_kind) {
 			current_sentence = Phrases::declaration_node(ph);
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_phrase(2, ph);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseNamedI6Failed));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseNamedI6Failed));
 			Problems::issue_problem_segment(
 				"You wrote %1, defining the phrase '%2' with a piece of Inform 6 "
 				"code, but also giving it a name as a function to be used in an "

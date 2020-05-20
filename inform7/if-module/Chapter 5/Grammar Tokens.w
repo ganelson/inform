@@ -262,7 +262,7 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 	*X = RELATED_GTC; *XP = NULL;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarBadRelation));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarBadRelation));
 	Problems::issue_problem_segment(
 		"The grammar token '%2' in the sentence %1 "
 		"invites me to understand names of related things, "
@@ -273,7 +273,7 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 	*X = TOPIC_TOKEN_GTC;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UseTextNotTopic));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UseTextNotTopic));
 	Problems::issue_problem_segment(
 		"The grammar token '%2' in the sentence %1 would in some "
 		"ways be the right logical way to suggest 'any words at "
@@ -290,7 +290,7 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 	*X = MULTI_TOKEN_GTC;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UseThingNotObject));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UseThingNotObject));
 	Problems::issue_problem_segment(
 		"The grammar token '%2' in the sentence %1 would in some "
 		"ways be the right logical way to suggest 'any object at "
@@ -318,11 +318,11 @@ void PL::Parsing::Tokens::incompatible_change_problem(char *token_tried, char *t
 	Problems::quote_text(2, token_tried);
 	Problems::quote_text(3, token_instead);
 	Problems::quote_text(4, token_better);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ObsoleteHeldTokens));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ObsoleteHeldTokens));
 	Problems::issue_problem_segment(
 		"In the sentence %1, you used the '[%2]' as a token, which was "
 		"allowed in the early Public Beta versions of Inform 7, but became "
-		"out of date in August 2006%|. A change was then made so that if an "
+		"out of date in August 2006.%L A change was then made so that if an "
 		"action needed to apply to something which was carried, this would "
 		"now be specified when the action is created - not in the Understand "
 		"line for it. For instance, one might say 'Dismantling is an action "
@@ -344,7 +344,7 @@ void PL::Parsing::Tokens::incompatible_change_problem(char *token_tried, char *t
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	Problems::quote_kind_of(3, RP[1]);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BizarreToken));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BizarreToken));
 	Problems::issue_problem_segment(
 		"The grammar token '%2' in the sentence %1 looked to me as "
 		"if it might be %3, but this isn't something allowed in "
@@ -356,7 +356,7 @@ void PL::Parsing::Tokens::incompatible_change_problem(char *token_tried, char *t
 	LOG("$T", current_sentence);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownToken));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownToken));
 	Problems::issue_problem_segment(
 		"I was unable to understand what you meant by the grammar token '%2' "
 		"in the sentence %1.");
@@ -431,7 +431,7 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 			(Kinds::Behaviour::request_I6_GPR(K) == FALSE)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(pn));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnparsableKind));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnparsableKind));
 			Problems::issue_problem_segment(
 				"The grammar token '%2' in the sentence %1 "
 				"invites me to understand values typed by the player during "
@@ -715,7 +715,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		} else if (bp == R_equality) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_source(2, pn);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RelatedByEquality));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelatedByEquality));
 			Problems::issue_problem_segment(
 				"The grammar you give in %1 contains a token %2 which would "
 				"create a circularity. To follow this, I'd have to compute "
@@ -864,7 +864,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				} else {
 					Problems::quote_source(1, current_sentence);
 					Problems::quote_source(2, pn);
-					Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarValueRelation));
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarValueRelation));
 					Problems::issue_problem_segment(
 						"The grammar you give in %1 contains a token "
 						"which relates things to values - %2. At present, "
@@ -914,7 +914,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Problems::quote_source(1, current_sentence);
 							Problems::quote_source(2, pn);
 							Problems::quote_kind(3, K);
-							Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarValueRelation2));
+							StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarValueRelation2));
 							Problems::issue_problem_segment(
 								"The grammar you give in %1 contains a token "
 								"which relates things to values - %2. (It would "
@@ -959,7 +959,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					LOG("Whose reversal is: $2\n", BinaryPredicates::get_reversal(bp));
 					Problems::quote_source(1, current_sentence);
 					Problems::quote_source(2, pn);
-					Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarTokenCowardice));
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarTokenCowardice));
 					Problems::issue_problem_segment(
 						"The grammar you give in %1 contains a token "
 						"which uses a relation I'm unable to test - %2.");
@@ -1095,7 +1095,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 	if (Descriptions::is_complex(spec)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_source(2, pn);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_OverComplexToken));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_OverComplexToken));
 		Problems::issue_problem_segment(
 			"The grammar you give in %1 contains a token "
 			"which is just too complicated - %2. %PFor instance, a "
@@ -1111,7 +1111,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			K = PL::Parsing::Tokens::kind_for_special_token(gtc);
 			if (code_mode) {
 				if ((consult_mode) && (gtc == TOPIC_TOKEN_GTC)) {
-					Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TextTokenRestricted),
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextTokenRestricted),
 						"the '[text]' token is not allowed with 'matches' "
 						"or in table columns",
 						"as it is just too complicated to sort out: a "

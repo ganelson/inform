@@ -107,7 +107,7 @@ can be what rulebook does if it none of its rules cause an outcome.
 
 @<Make this the rulebook's new default@> =
 	if (outcomes_being_parsed->default_outcome_declared) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultOutcomeTwice),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultOutcomeTwice),
 			"the default outcome for this rulebook has already been declared",
 			"and this is something which can only be done once.");
 	} else {
@@ -116,7 +116,7 @@ can be what rulebook does if it none of its rules cause an outcome.
 	}
 
 @<Issue PM_BadDefaultOutcome problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadDefaultOutcome),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadDefaultOutcome),
 		"the default outcome given for the rulebook isn't what I expected",
 		"which would be one of 'default success', 'default failure' or "
 		"'default no outcome'.");
@@ -161,7 +161,7 @@ The following parses a declaration of named outcomes. For example:
 
 @<Issue PM_BadOutcomeClarification problem@> =
 	*X = UNRECOGNISED_OUTCOME;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadOutcomeClarification),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadOutcomeClarification),
 		"the bracketed clarification isn't what I expected",
 		"which would be one of '(success)', '(failure)' or '(no outcome)'.");
 
@@ -170,7 +170,7 @@ The following parses a declaration of named outcomes. For example:
 	int def = FALSE;
 	if (default_rbno_flag) {
 		if (outcomes_being_parsed->default_named_outcome) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultNamedOutcomeTwice),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultNamedOutcomeTwice),
 				"at most one of the named outcomes from a rulebook "
 				"can be the default",
 				"and here we seem to have two.");
@@ -178,7 +178,7 @@ The following parses a declaration of named outcomes. For example:
 		}
 		def = TRUE;
 		if (outcomes_being_parsed->default_outcome_declared) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultOutcomeAlready),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultOutcomeAlready),
 				"the default outcome for this rulebook has already "
 				"been declared",
 				"and this is something which can only be done once.");
@@ -196,7 +196,7 @@ The following parses a declaration of named outcomes. For example:
 			last = ro;
 		}
 		if (dup) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DuplicateOutcome),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DuplicateOutcome),
 				"this duplicates a previous assignment of the same outcome",
 				"and to the same rulebook.");
 		} else {
@@ -474,7 +474,7 @@ void Rulebooks::Outcomes::initialise_focus(focus *foc, kind *parameter_kind) {
 	int parametrisation = PARAMETER_FOCUS;
 	if (Kinds::Compare::eq(parameter_kind, K_action_name)) parametrisation = ACTION_FOCUS;
 	else if (Kinds::Behaviour::definite(parameter_kind) == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RulebookIndefinite),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RulebookIndefinite),
 			"this is a rulebook for values of a kind which isn't definite",
 			"and doesn't tell me enough about what sort of value the rulebook "
 			"should work on. For example, 'The mystery rules are a number based "

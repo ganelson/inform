@@ -367,7 +367,7 @@ of it:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_Undefined</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_Undefined</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"there doesn't seem to be any definition here"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"so I can't see what this rule or phrase would do."</span><span class="plain-syntax">);</span>
 </pre>
@@ -380,7 +380,7 @@ of it:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Inline definition: &lt;%s&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">inline_defn</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_InlineTooLong</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_InlineTooLong</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"the inline definition of this 'to...' phrase is too long"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"using a quantity of Inform 6 code which exceeds the fairly small limit "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"allowed. You will need either to write the phrase definition in Inform 7, "</span>
@@ -392,7 +392,7 @@ of it:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_InlineRule</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_InlineRule</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"only 'to...' phrases can be given inline Inform 6 definitions"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"and in particular rules and adjective definitions can't."</span><span class="plain-syntax">);</span>
 </pre>
@@ -421,7 +421,7 @@ what number is...", for instance.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="constant-syntax">DONT_KNOW_MOR</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TailAfterInline</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TailAfterInline</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"some unexpected text appears after the tail of an inline definition"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"placed within '(-' and '-)' markers to indicate that it is written in "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"Inform 6. Here, there seems to be something extra after the '-)'."</span><span class="plain-syntax">);</span>
@@ -557,13 +557,13 @@ response to "requests". All other phrases are compiled just once.
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ph</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">to_begin</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">n</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...),</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...),</span>
 <span class="plain-syntax">                        </span><span class="string-syntax">"there seem to be multiple 'to begin' phrases"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                        </span><span class="string-syntax">"and in Basic mode, Inform expects to see exactly one of "</span>
 <span class="plain-syntax">                        </span><span class="string-syntax">"these, specifying where execution should begin."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="22-ph.html#SP11" class="function-link"><span class="function-syntax">Phrases::compiled_inline</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ph</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...),</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...),</span>
 <span class="plain-syntax">                            </span><span class="string-syntax">"the 'to begin' phrase seems to be defined inline"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                            </span><span class="string-syntax">"which in Basic mode is not allowed."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -578,7 +578,7 @@ response to "requests". All other phrases are compiled just once.
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"there seems not to be a 'to begin' phrase"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"and in Basic mode, Inform expects to see exactly one of "</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"these, specifying where execution should begin."</span><span class="plain-syntax">);</span>

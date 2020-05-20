@@ -236,7 +236,7 @@ void Strings::TextLiterals::compile_quotation(value_holster *VH, wording W) {
 	literal_text *lt = Strings::TextLiterals::compile_literal(VH, TRUE, W);
 	if (lt) lt->as_boxed_quotation = TRUE;
 	else
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EmptyQuotationBox),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EmptyQuotationBox),
 			"a boxed quotation can't be empty",
 			"though I suppose you could make it consist of just a few spaces "
 			"to get a similar effect if you really needed to.");

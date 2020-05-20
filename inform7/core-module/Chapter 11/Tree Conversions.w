@@ -167,7 +167,7 @@ parse the text to find what which property is referred to.
 			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_property(3, prn);
 			Problems::quote_wording(4, VW);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_WithEitherOrValue));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_WithEitherOrValue));
 			Problems::issue_problem_segment(
 				"The sentence '%1' seems to be trying to create something which "
 				"has '%2', where the %3 property is being set equal to %4. But "
@@ -187,7 +187,7 @@ parse the text to find what which property is referred to.
 			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_property(3, prn);
 			Problems::quote_kind(4, Properties::Valued::kind(prn));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_WithValuelessValue));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_WithValuelessValue));
 			Problems::issue_problem_segment(
 				"The sentence '%1' seems to be trying to create something which "
 				"has '%2', where the %3 property is being set in some way. But "
@@ -213,7 +213,7 @@ that the rest is property name; and otherwise
 @<Divide the property list entry into property name and value text@> =
 	wording W = Articles::remove_the(Node::get_text(p));
 	if (Wordings::empty(W)) {
-		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this looked to me as if it might be trying to create something "
 			"which has certain properties",
 			"and that made no sense on investigation. This sometimes happens "
@@ -230,7 +230,7 @@ that the rest is property name; and otherwise
 
 @<Issue a problem message for no-such-property@> =
 	LOG("Failed property list: pname = <%W>; pval = <%W>\n", PW, VW);
-	Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_BadPropertyList),
+	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadPropertyList),
 		"this looked to me as if it might be trying to create something "
 		"which has certain properties",
 		"and that made no sense on investigation. This sometimes happens "

@@ -105,7 +105,7 @@ A nameless property added in Stages II and III does not need permission.
 		property *prn = World::Inferences::get_property(inf);
 		if (Wordings::nonempty(prn->name))
 			if (World::Permissions::find(infs, prn, TRUE) == NULL)
-				Problems::Issue::inference_problem(_p_(PM_PropertyNotPermitted),
+				StandardProblems::inference_problem(_p_(PM_PropertyNotPermitted),
 					infs, inf, "is not allowed to exist",
 					"because you haven't said it is. What properties something can "
 					"have depends on what kind of thing it is: see the Index for "
@@ -179,7 +179,7 @@ about the Portal, to stand.
 @<Issue a problem message for clash with wider inference@> =
 	LOG("Checking infs $j compatible with infs $j for property $Y:\n  $I\n  $I\n",
 		infs, boss, prn, narrow, wide);
-	Problems::Issue::infs_contradiction_problem(_p_(PM_InstanceContradiction),
+	StandardProblems::infs_contradiction_problem(_p_(PM_InstanceContradiction),
 		World::Inferences::where_inferred(narrow), World::Inferences::where_inferred(wide), infs,
 		"therefore has to have two contradictory states of the same property at once",
 		"which is impossible. When a kind's definition says that something is 'always' "

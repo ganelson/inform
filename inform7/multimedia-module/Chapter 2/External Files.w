@@ -51,7 +51,7 @@ int PL::Files::files_new_named_instance_notify(instance *nc) {
 	kind *K = Instances::to_kind(nc);
 	if (Kinds::Compare::eq(K, K_external_file)) {
 		if (allow_exf_creations == FALSE)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BackdoorFileCreation),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BackdoorFileCreation),
 				"this is not the way to create a new external file",
 				"which should be done with a special 'The File ... is called ...' "
 				"sentence.");
@@ -92,7 +92,7 @@ Here is the subject:
 
 @<Issue PM_BadFileOwner problem@> =
 	*X = NOT_APPLICABLE;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadFileOwner),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadFileOwner),
 		"the owner of this file is wrongly specified",
 		"since it is not one of the three possibilities - "
 		"(1) Specify nothing: making the file belong to this "
@@ -115,7 +115,7 @@ letters or digits, with the first being a letter.
 
 @<Issue PM_FilenameNotTextual problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_FilenameNotTextual),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FilenameNotTextual),
 		"a file can only be called with a single quoted piece of text",
 		"as in: 'The File of Wisdom is called \"wisdom\".'");
 
@@ -173,7 +173,7 @@ void PL::Files::register_file(wording F, wording FN) {
 	}
 	if (bad_filename) {
 		LOG("Filename: %s\n", p);
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_FilenameUnsafe),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FilenameUnsafe),
 			"filenames must be very conservatively chosen",
 			"in order to be viable on a wide range of computers. They must "
 			"consist of 3 to 23 English letters or digits, with the first being "
@@ -202,7 +202,7 @@ void PL::Files::register_file(wording F, wording FN) {
 			LOG("Objected to character %c\n", p[j]);
 		}
 		if ((invalid) || (j==47)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadFileIFID),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadFileIFID),
 				"the owner of the file should be specified "
 				"using a valid double-quoted IFID",
 				"as in: 'The File of Wisdom (owned by project "
@@ -219,7 +219,7 @@ void PL::Files::register_file(wording F, wording FN) {
 
 	if ((<s-value>(F)) &&
 		(Rvalues::is_CONSTANT_of_kind(<<rp>>, K_external_file))) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_FilenameDuplicate),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FilenameDuplicate),
 			"this is already the name of a file",
 			"so there must be some duplication somewhere.");
 		return;

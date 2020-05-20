@@ -56,7 +56,7 @@ int Calculus::Equality::REL_typecheck(binary_predicate *bp,
 	if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[0], K_understanding)) &&
 			(Kinds::Compare::eq(kinds_of_terms[1], K_text))) {
 			LOGIF(MATCHING, "No!\n");
-		Problems::Issue::tcp_problem(_p_(PM_TextIsNotTopic), tck,
+		StandardProblems::tcp_problem(_p_(PM_TextIsNotTopic), tck,
 			"though they look the same, because both are written in double "
 			"quotes, text values can't in fact be used as topics, so it's "
 			"impossible to store this piece of text in that location.");
@@ -92,7 +92,7 @@ for a fairly common mistake:
 		if (tck->log_to_I6_text)
 			LOG("Comparison of object with $u value\n", kinds_of_terms[1]);
 		Problems::quote_kind(4, kinds_of_terms[1]);
-		Problems::Issue::tcp_problem(_p_(PM_NonPropertyCompared), tck,
+		StandardProblems::tcp_problem(_p_(PM_NonPropertyCompared), tck,
 			"taken literally that says that an object is the same as a "
 			"value. Maybe you intended to say that the object "
 			"has a property - but right now %4 is not yet a property; if you "
@@ -144,7 +144,7 @@ int Calculus::Equality::REL_assert(binary_predicate *bp,
 		if ((NonlocalVariables::is_constant(q)) && (prevailing_mood == CERTAIN_CE))
 			allowed = TRUE;
 		if (allowed == FALSE)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantQualifyVariableValues),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantQualifyVariableValues),
 				"a variable can only be given its value straightforwardly or "
 				"qualified by 'usually'",
 				"not with 'always', 'seldom' or 'never'.");
@@ -206,7 +206,7 @@ int Calculus::Equality::REL_compile(int task, binary_predicate *bp, annotated_i6
 					Kinds::RunTime::interpret_test_equality(st[0], st[1]));
 			else if (problem_count == 0) {
 				LOG("$0 and $0; $u and $u\n", &(asch->pt0), &(asch->pt1), st[0], st[1]);
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantCompareValues),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCompareValues),
 					"that would involve comparing things which don't mean "
 					"anything to me",
 					"so I'm lost.");
@@ -265,7 +265,7 @@ lantern is bright".
 @<Handle the case of setting a response separately@> =
 	switch (task) {
 		case TEST_ATOM_TASK:
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseComparisonUnsafe),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseComparisonUnsafe),
 				"for complicated internal reasons this comparison isn't safe to perform",
 				"and might give you a falsely negative result. To avoid what might "
 				"be misleading, you aren't allowed to compare a response to text.");
@@ -302,7 +302,7 @@ lantern is bright".
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind(2, st[1]);
 			Problems::quote_kind(3, st[0]);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 			Problems::issue_problem_segment(
 				"In the line %1, you seem to be asking me to put %2 into %3, "
 				"which can't safely be done.");
@@ -318,12 +318,12 @@ one that's more helpfully specific and return |TRUE|.
 @<Issue problem message for being unable to set equal@> =
 	if (Rvalues::to_instance(asch->pt0.constant)) {
 		if (Kinds::Compare::le(Specifications::to_kind(asch->pt0.constant), K_object))
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantEquateValues),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantEquateValues),
 				"equality is not something I can change",
 				"so either those are already the same or are different, and I "
 				"can't alter matters.");
 		else
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeNamedConstant),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeNamedConstant),
 				"I can't change that",
 				"because it is a name for a constant value. Some named values, "
 				"like 'the score', can be changed, because they were defined "

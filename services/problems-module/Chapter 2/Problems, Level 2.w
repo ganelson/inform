@@ -77,8 +77,8 @@ void Problems::show_problem_location(parse_node_tree *T) {
 	parse_node *problem_headings[NO_HEADING_LEVELS];
 	int i, f = FALSE;
 	if (problem_count == 0) {
-		#ifdef FIRST_PROBLEM_CALLBACK
-		FIRST_PROBLEM_CALLBACK(problems_file);
+		#ifdef FIRST_PROBLEMS_CALLBACK
+		FIRST_PROBLEMS_CALLBACK(problems_file);
 		#endif
 		for (i=0; i<NO_HEADING_LEVELS; i++) last_problem_headings[i] = NULL;
 	}
@@ -100,49 +100,37 @@ which they differ.
 
 @<Print the heading position@> =
 	source_file *pos = NULL;
-	Problems::Buffer::clear();
+	ProblemBuffer::clear();
 	if (problem_count > 0) WRITE_TO(PBUFF, ">---> ");
 	WRITE_TO(PBUFF, "In");
 	for (f=FALSE; i<NO_HEADING_LEVELS; i++)
 		if (problem_headings[i] != NULL) {
 			wording W = Node::get_text(problem_headings[i]);
-			#ifdef SUPERVISOR_MODULE
-			W = Headings::get_text(Headings::from_node(problem_headings[i]));
+			#ifdef WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK
+			W = WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK(problem_headings[i]);
 			#endif
 			pos = Lexer::file_of_origin(Wordings::first_wn(W));
 			if (f) WRITE_TO(PBUFF, ", ");
 			else WRITE_TO(PBUFF, " ");
 			f = TRUE;
-			Problems::Buffer::copy_text_into_problem_buffer(W);
+			ProblemBuffer::copy_text(W);
 		}
 	if (f == FALSE) WRITE_TO(PBUFF, " the main source text");
 	if (pos) {
-		#ifdef SUPERVISOR_MODULE
-		inform_extension *E = Extensions::corresponding_to(pos);
-		if (E) WRITE_TO(PBUFF, " in the extension %X", E->as_copy->edition->work);
+		#ifdef GLOSS_EXTENSION_SOURCE_FILE_PROBLEMS_CALLBACK
+		GLOSS_EXTENSION_SOURCE_FILE_PROBLEMS_CALLBACK(PBUFF, pos);
 		#endif
 	}
 	WRITE_TO(PBUFF, ":");
-	Problems::Buffer::output_problem_buffer(0);
-	Problems::Buffer::clear();
+	ProblemBuffer::output_problem_buffer(0);
+	ProblemBuffer::clear();
 
 @h Problem quotations.
-Problem messages are printed using a printf-like formatting system.
-Unlike printf, though, where |%s| means a string and |%d| a number, here
-the escape codes do not indicate the type of the data: they are simply
-|%1|, |%2|, |%3|, ..., |%9|. This is to prevent horrendous crashes when
-type mismatches occur: using a pointer to a phrase when trying to print a
-source code reference, for instance.
-
 The texts to be substituted in place of |%1|, |%2|, ..., are called the
 "quotations". The value is either a range of words in the source text, or
-else a pointer to some data structure, depending on the type. The type is a
+else a pointer to some object, depending on the type. The type is a
 single character code. (This coding system is used only here, and could
 easily be changed, but there seems no reason to.)
-
-The type codes are S(ource), W(ords), B(inary predicate), E(xtension),
-(p)H(rase), I(nvocation), N(umber), O(bject), P(roperty name), T(ext),
-(t)Y(pe specification).
 
 =
 typedef struct problem_quotation {
@@ -189,19 +177,20 @@ void Problems::quote_source(int t, parse_node *p) {
 }
 void Problems::quote_source_eliding_begin(int t, parse_node *p) {
 	if (p == NULL) Problems::problem_quote_textual(t, 'S', EMPTY_WORDING);
-	else {
-		wording W = Node::get_text(p);
-		#ifdef CORE_MODULE
-		if (<phrase-beginning-block>(W)) W = GET_RW(<phrase-beginning-block>, 1);
-		#endif
-		Problems::problem_quote_textual(t, 'S', W);
-	}
+	else Problems::problem_quote_textual(t, 'S', Node::get_text(p));
 }
-void Problems::quote_wording(int t, wording W) { Problems::problem_quote_textual(t, 'W', W); }
-void Problems::quote_wording_tinted_green(int t, wording W) { Problems::problem_quote_textual(t, 'g', W); }
-void Problems::quote_wording_tinted_red(int t, wording W) { Problems::problem_quote_textual(t, 'r', W); }
-void Problems::quote_wording_as_source(int t, wording W) { Problems::problem_quote_textual(t, 'S', W); }
-
+void Problems::quote_wording(int t, wording W) {
+	Problems::problem_quote_textual(t, 'W', W);
+}
+void Problems::quote_wording_tinted_green(int t, wording W) {
+	Problems::problem_quote_textual(t, 'g', W);
+}
+void Problems::quote_wording_tinted_red(int t, wording W) {
+	Problems::problem_quote_textual(t, 'r', W);
+}
+void Problems::quote_wording_as_source(int t, wording W) {
+	Problems::problem_quote_textual(t, 'S', W);
+}
 void Problems::quote_text(int t, char *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_text);
 }
@@ -246,10 +235,13 @@ Some of the text is common to both versions, but other parts are specific
 to either one or the other, and variables record the status of our current
 position in scanning and transcribing the problem message.
 
+@d ANY_USE_OF_PROBLEM 1
+@d FIRST_USE_OF_PROBLEM 2
+@d SUBSEQUENT_USE_OF_PROBLEM 3
+
 =
-int shorten_problem_message; /* give short form of this previously-seen problem */
-int reading_text_specific_to_short_version; /* modes during problem message writing */
-int reading_text_specific_to_long_version;
+int this_is_a_subsequent_use_of_problem; /* give short form of this previously-seen problem */
+int scanning_problem_for = ANY_USE_OF_PROBLEM;
 
 @ We do not want to keep wittering on with the same old explanations,
 so we remember which ones we've given before (i.e., in previous problem
@@ -263,9 +255,8 @@ char *explanations[PATIENCE_EXHAUSTION_POINT];
 int no_explanations = 0;
 
 int Problems::explained_before(char *explanation) {
-	int i;
 	if (no_explanations == PATIENCE_EXHAUSTION_POINT) return TRUE;
-	for (i=0; i<no_explanations; i++)
+	for (int i=0; i<no_explanations; i++)
 		if (explanation == explanations[i]) return TRUE;
 	explanations[no_explanations++] = explanation;
 	return FALSE;
@@ -276,43 +267,57 @@ During the construction of a problem message, we will be running through a
 standard text, and at any point might be considering matter which should
 appear only in the long form, or only in the short form.
 
-If the text of a message begins with an asterisk, then it is a
-continuation of a message already partly issued. Otherwise we can
-sensibly find out whether this is one we've seen before. Either way, we
-set |shorten_problem_message| to remember whether to use the short or long
-form.
+If the text of a message begins with an asterisk, then it is a continuation of
+a message already partly issued. Otherwise we can sensibly find out whether
+this is one we've seen before. Either way, we set |this_is_a_subsequent_use_of_problem|
+to remember whether to use the short or long form.
 
 =
 void Problems::issue_problem_begin(parse_node_tree *T, char *message) {
-	Problems::Buffer::clear();
+	ProblemBuffer::clear();
 	if (strcmp(message, "*") == 0) {
 		WRITE_TO(PBUFF, ">++>");
-		shorten_problem_message = FALSE;
+		this_is_a_subsequent_use_of_problem = FALSE;
 	} else if (strcmp(message, "****") == 0) {
 		WRITE_TO(PBUFF, ">++++>");
-		shorten_problem_message = FALSE;
+		this_is_a_subsequent_use_of_problem = FALSE;
 	} else if (strcmp(message, "***") == 0) {
 		WRITE_TO(PBUFF, ">+++>");
-		shorten_problem_message = FALSE;
+		this_is_a_subsequent_use_of_problem = FALSE;
 	} else if (strcmp(message, "**") == 0) {
-		shorten_problem_message = FALSE;
+		this_is_a_subsequent_use_of_problem = FALSE;
 	} else {
 		if (T) Problems::show_problem_location(T);
 		problem_count++;
 		WRITE_TO(PBUFF, ">--> ");
-		shorten_problem_message = Problems::explained_before(message);
+		this_is_a_subsequent_use_of_problem =
+			Problems::explained_before(message);
 	}
-	reading_text_specific_to_short_version = FALSE;
-	reading_text_specific_to_long_version = FALSE;
+	scanning_problem_for = ANY_USE_OF_PROBLEM;
 }
 
 void Problems::issue_problem_end(void) {
-	#ifdef CORE_MODULE
-	if (compiling_text_routines_mode) Strings::TextSubstitutions::append_text_substitution_proviso();
+	#ifdef ENDING_MESSAGE_PROBLEMS_CALLBACK
+	ENDING_MESSAGE_PROBLEMS_CALLBACK();
 	#endif
-	Problems::Buffer::output_problem_buffer(1);
-	Problems::Issue::problem_documentation_links(problems_file);
-	if (crash_on_all_problems) Problems::Fatal::force_crash();
+	ProblemBuffer::output_problem_buffer(1);
+	Problems::problem_documentation_links(problems_file);
+	if (crash_on_all_problems) ProblemSigils::force_crash();
+}
+
+@ Documentation links:
+
+=
+void Problems::problem_documentation_links(OUTPUT_STREAM) {
+	if (Str::len(sigil_of_latest_unlinked_problem) == 0) return;
+	#ifdef DOCUMENTATION_REFERENCE_PROBLEMS_CALLBACK
+	DOCUMENTATION_REFERENCE_PROBLEMS_CALLBACK(OUT, sigil_of_latest_unlinked_problem);
+	#endif
+	Str::clear(sigil_of_latest_unlinked_problem);
+}
+
+text_stream *Problems::latest_sigil(void) {
+	return sigil_of_latest_problem;
 }
 
 @h Appending source.
@@ -324,47 +329,29 @@ void Problems::append_source(wording W) {
 }
 void Problems::transcribe_appended_source(void) {
 	if (Wordings::nonempty(appended_source))
-		Problems::Buffer::copy_source_reference_into_problem_buffer(appended_source);
+		ProblemBuffer::copy_source_reference(appended_source);
 }
 
 @h Issuing a segment of a problem message.
-Here is the routine which performs the substitution of quotations into
-problem messages and sends them on their way: which is called
-|Problems::issue_problem_segment| since it only appends a further piece of text, and may
-be used several times to build up complicated messages.
-
-We have seen that, within problem message texts, the escapes |%1| to |%9|
-are to produce quotations. Four further escape codes switch between problem
-message versions, as follows: we have |%L|, which indicates that the text
-which follows should only be used in the long form of the error message;
-|%S|, the same for the short form; |%%|, which cancels either of these
-settings and restores the text to appearing in both forms, which is the
-default. A percentage sign followed by a vertical stroke acts more simply
-as a divider between the brief message and the explanation text in many
-simple problem messages which do not use the elaborations of the other
-three escapes.
+This function performs the substitution of quotations into problem messages and
+sends them on their way: which is called //Problems::issue_problem_segment//
+since it only appends a further piece of text, and may be used several times
+to build up complicated messages.
 
 =
 void Problems::issue_problem_segment(char *message) {
 	for (int i=0; message[i]; i++) {
 		if (message[i] == '%') {
 			switch (message[i+1]) {
-				case 'L': reading_text_specific_to_long_version = TRUE; i++; continue;
-				case 'S': reading_text_specific_to_short_version = TRUE; i++; continue;
-				case '%': reading_text_specific_to_short_version = FALSE;
-					reading_text_specific_to_long_version = FALSE; i++; continue;
-				case '|': reading_text_specific_to_short_version = FALSE;
-					reading_text_specific_to_long_version = TRUE;
-					if (shorten_problem_message) WRITE_TO(PBUFF, ".");
-					i++; continue;
+				case 'A': scanning_problem_for = ANY_USE_OF_PROBLEM; i++; continue;
+				case 'L': scanning_problem_for = FIRST_USE_OF_PROBLEM; i++; continue;
+				case 'S': scanning_problem_for = SUBSEQUENT_USE_OF_PROBLEM; i++; continue;
 			}
 		}
-
-		if ((reading_text_specific_to_short_version) &&
-			(shorten_problem_message == FALSE)) continue;
-		if ((reading_text_specific_to_long_version) &&
-			(shorten_problem_message == TRUE)) continue;
-
+		if ((scanning_problem_for == SUBSEQUENT_USE_OF_PROBLEM) &&
+			(this_is_a_subsequent_use_of_problem == FALSE)) continue;
+		if ((scanning_problem_for == FIRST_USE_OF_PROBLEM) &&
+			(this_is_a_subsequent_use_of_problem == TRUE)) continue;
 		@<Act on the problem message text, since it is now contextually allowed@>;
 	}
 }
@@ -379,8 +366,8 @@ on when the shortened form is the one being issued).
 @<Act on the problem message text, since it is now contextually allowed@> =
 	if (message[i] == '%') {
 		switch (message[i+1]) {
-			case 'P': PUT_TO(PBUFF, FORCE_NEW_PARA_CHAR);
-				i++; continue;
+			case 'P': PUT_TO(PBUFF, FORCE_NEW_PARA_CHAR); i++; continue;
+			case '%': PUT_TO(PBUFF, '%'); i++; continue;
 		}
 		if (Characters::isdigit(message[i+1])) {
 			int t = ((int) (message[i+1]))-((int) '0'); i++;
@@ -401,10 +388,10 @@ its type, stored internally as a single character.
 @<Expand wording-based escape@> =
 	switch(problem_quotations[t].quotation_type) {
 		/* Monochrome wording */
-		case 'S': Problems::Buffer::copy_source_reference_into_problem_buffer(
+		case 'S': ProblemBuffer::copy_source_reference(
 				problem_quotations[t].text_quoted);
 			break;
-		case 'W': Problems::Buffer::copy_text_into_problem_buffer(
+		case 'W': ProblemBuffer::copy_text(
 				problem_quotations[t].text_quoted);
 			break;
 
@@ -462,26 +449,21 @@ void Problems::issue_problem_segment_from_stream(text_stream *message) {
 	WRITE_TO(PBUFF, "%S", message);
 }
 
-@h Problems report and index.
-That gives us enough infrastructure to produce the final report. Note the use
-of error redirection to in order to put pseudo-problem messages -- actually
-informational -- into the report. In the case where the run was successful and
-there we no Problem messages, we have to be careful to reset |problem_count|
--- it will have been increased by the issuing of these pseudo-problems, and we
-need it to remain 0 so that |main()| can finally return back to the operating
-system without an error code.
+@h Fatalities.
 
 =
-int tail_of_report_written = FALSE;
-void Problems::write_reports(int disaster_struck) {
-	if (tail_of_report_written) return;
-	tail_of_report_written = TRUE;
+void Problems::fatal(char *message) {
+	WRITE_TO(STDERR, message);
+	WRITE_TO(STDERR, "\n");
+	STREAM_FLUSH(STDERR);
+	if (crash_on_all_problems) ProblemSigils::force_crash();
+	ProblemSigils::exit(2);
+}
 
-	crash_on_all_problems = FALSE;
-	#ifdef PROBLEMS_FINAL_REPORTER
-	int pc = problem_count;
-	PROBLEMS_FINAL_REPORTER(disaster_struck, problem_count);
-	problem_count = pc;
-	#endif
-	HTML::end_body(problems_file);
+void Problems::fatal_on_file(char *message, filename *F) {
+	WRITE_TO(STDERR, message);
+	WRITE_TO(STDERR, "\nOffending filename: <%f>\n", F);
+	STREAM_FLUSH(STDERR);
+	if (crash_on_all_problems) ProblemSigils::force_crash();
+	ProblemSigils::exit(2);
 }

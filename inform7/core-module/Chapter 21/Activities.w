@@ -145,7 +145,7 @@ noun for it; for example, the "announcing activity".
 
 @<Issue PM_ActivityNoteUnknown problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityNoteUnknown),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityNoteUnknown),
 		"one of the notes about this activity makes no sense",
 		"and should be either 'documented at SYMBOL' or 'future action'.");
 
@@ -159,7 +159,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	if ((Kinds::Behaviour::definite(creation_kind) == FALSE) &&
 		(Kinds::Compare::eq(creation_kind, K_nil) == FALSE)) {
 		LOG("I'm reading the kind as: $u\n", creation_kind);
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityIndefinite),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityIndefinite),
 			"this is an activity on a kind which isn't definite",
 			"and doesn't tell me enough about what sort of value the activity "
 			"should work on. For example, 'Divining is an activity on numbers' "
@@ -177,7 +177,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 		if (Kinds::Compare::eq(creation_kind, K_nil)) creation_kind = K_object;
 	} else {
 		if (Kinds::Compare::eq(creation_kind, K_nil) == FALSE) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityMisnamed),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityMisnamed),
 				"the name of this activity implies that it acts on nothing",
 				"which doesn't fit with what you say about it. For example, "
 				"'Painting is an activity on brushes' isn't allowed because "
@@ -200,7 +200,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	else spec = Specifications::new_UNKNOWN(av->name);
 	if (!(Node::is(spec, UNKNOWN_NT)) && (!(Node::is(spec, PROPERTY_VALUE_NT)))) {
 		LOG("%W means $P\n", av->name, spec);
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadActivityName),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadActivityName),
 			"this already has a meaning",
 			"and so cannot be the name of a newly created activity.");
 	} else {
@@ -268,7 +268,7 @@ Any new activity variable name is vetted by being run through this:
 	*X = NOT_APPLICABLE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarAnd));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarAnd));
 	Problems::issue_problem_segment(
 		"You wrote %1, which I am reading as a request to make "
 		"a new named variable for an activity - a value associated "
@@ -288,7 +288,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 
 	if (Node::get_type(cnode) == PROPER_NOUN_NT) {
 		Problems::quote_source(1, current_sentence);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVariableNameless));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVariableNameless));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make "
 			"a new named variable for an activity - a value associated "
@@ -314,7 +314,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 		} else {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(cnode->down));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarOverspecific));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarOverspecific));
 			Problems::issue_problem_segment(
 				"You wrote %1, which I am reading as a request to make "
 				"a new named variable for an activity - a value associated "
@@ -332,7 +332,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 		LOG("Offending SP: $T", spec);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(cnode->down));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarUnknownKOV));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarUnknownKOV));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' is not the name of a kind of "
 			"value which I know (such as 'number' or 'text').");
@@ -342,7 +342,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 	if (Kinds::Compare::eq(Specifications::to_kind(spec), K_value)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(cnode->down));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarValue));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarValue));
 		Problems::issue_problem_segment(
 			"You wrote %1, but saying that a variable is a 'value' "
 			"does not give me a clear enough idea what it will hold. "

@@ -139,7 +139,7 @@ text of the subject mustn't be an existing relation name.
 
 @<Issue PM_RelationExists problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RelationExists),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationExists),
 		"that relation already exists",
 		"and cannot have its definition amended now.");
 
@@ -196,7 +196,7 @@ void Relations::parse_new_relation_further(parse_node *PN) {
 	if (bp == NULL) internal_error("BP in relation not initially parsed");
 
 	if (Wordings::length(RW) > MAX_WORDS_IN_ASSEMBLAGE-4) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RelationNameTooLong),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationNameTooLong),
 			"this is too long a name for a single relation to have",
 			"and would become unwieldy.");
 		RW = Wordings::truncate(RW, MAX_WORDS_IN_ASSEMBLAGE-4);
@@ -416,7 +416,7 @@ these are clipped away, and also look at the multiplicities.
 	if (right_bitmap & FRF_RBIT) frf = TRUE;
 
 	if (frf && (left_unique != FALSE) && (right_unique != FALSE)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_FRFUnavailable),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FRFUnavailable),
 			"fast route-finding is only possible with various-to-various "
 			"relations",
 			"though this doesn't matter because with other relations the "
@@ -433,7 +433,7 @@ change. So we reject any such misleading syntax.
 @<Detect use of a condition for a test-only relation@> =
 	if (right_bitmap & WHEN_RBIT) {
 		if ((left_unique != NOT_APPLICABLE) || (right_unique != NOT_APPLICABLE)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OneOrVariousWithWhen),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OneOrVariousWithWhen),
 				"this relation is a mixture of different syntaxes",
 				"and must be simplified. If it is going to specify 'one' or "
 				"'various' then it cannot also say 'when' the relation holds.");
@@ -467,7 +467,7 @@ that $R(x, y)$ is true if and only if $R(y, x)$ is true.
 		symmetric = TRUE; left_unique = FALSE; right_unique = FALSE; equivalence = TRUE;
 	}
 	if ((specified_one == TRUE) && (left_unique == FALSE)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BothOneAndMany),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BothOneAndMany),
 			"the left-hand term in this relation seems to be both 'one' thing "
 			"and also many things",
 			"given the mention of 'each other'. Try removing the 'one'.");
@@ -493,19 +493,19 @@ at this moment, and have no currency beyond that context.
 @<Vet the use of callings for the terms of the relation@> =
 	if (Wordings::empty(CONW)) {
 		if ((left_unique == FALSE) && (Wordings::nonempty(LCALLW))) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallLeft),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallLeft),
 				"the left-hand term of this relation is not unique",
 				"so you cannot assign a name to it using 'called'.");
 			return;
 		}
 		if ((right_unique == FALSE) && (Wordings::nonempty(RCALLW))) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallRight),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallRight),
 				"the right-hand term of this relation is not unique",
 				"so you cannot assign a name to it using 'called'.");
 			return;
 		}
 		if ((Wordings::nonempty(LCALLW)) && (Wordings::nonempty(RCALLW))) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallBoth),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallBoth),
 				"the terms of the relation can't be named on both sides at once",
 				"and because of that it's best to use a single even-handed name: "
 				"for instance, 'Marriage relates one person to another (called "
@@ -514,7 +514,7 @@ at this moment, and have no currency beyond that context.
 			return;
 		}
 		if ((symmetric == FALSE) && (left_unique) && (right_unique) && (Wordings::nonempty(RCALLW))) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OneToOneMiscalled),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OneToOneMiscalled),
 				"with a one-to-one relation which is not symmetrical "
 				"only the left-hand item can be given a name using 'called'",
 				"so this needs rephrasing to name the left in terms of the right "
@@ -594,7 +594,7 @@ omitted from the index.
 		Properties::Valued::now_used_for_non_typesafe_relation(prn);
 
 @<Issue a problem message since this won't be stored in a property@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RelNotStoredInProperty),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelNotStoredInProperty),
 		"a '(called ...)' name can't be used for this relation",
 		"because of the kinds involved in it. (Names for terms in a relation "
 		"only work if it's possible to store the relation using properties, "
@@ -795,7 +795,7 @@ int Relations::parse_relation_term_type(wording W, kind **set_K, char *side) {
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	Problems::quote_text(3, side);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RelatedKindsUnknown));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelatedKindsUnknown));
 	Problems::issue_problem_segment(
 		"In the relation definition %1, I am unable to understand the %3-hand "
 		"side -- I was expecting that %2 would be either the name of a kind, "
@@ -812,7 +812,7 @@ int Relations::check_finite_range(kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
 	if (K == NULL) return TRUE; /* to recover from earlier problems */
 	if ((Kinds::Compare::le(K, K_object)) || (Kinds::Behaviour::definite(K) == FALSE))
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RangeOverlyBroad),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RangeOverlyBroad),
 			"relations aren't allowed to range over all 'objects' or all 'values'",
 			"as these are too broad. A relation has to be between two kinds of "
 			"object, or kinds of value. So 'Taming relates various people to "
@@ -2194,7 +2194,7 @@ void Relations::check_OtoO_relation(binary_predicate *bp) {
 				}
 				if (leftc == 1) inf1 = inf;
 				if (leftc == 2) {
-					Problems::Issue::infs_contradiction_problem(_p_(BelievedImpossible),
+					StandardProblems::infs_contradiction_problem(_p_(BelievedImpossible),
 						World::Inferences::where_inferred(inf1), World::Inferences::where_inferred(inf),
 						infs, "can only relate to one other thing in this way",
 						"since the relation in question is one-to-one.");
@@ -2204,7 +2204,7 @@ void Relations::check_OtoO_relation(binary_predicate *bp) {
 	}
 	LOOP_OVER(infs, inference_subject) {
 		if (right_counts[infs->allocation_id] >= 2) {
-			Problems::Issue::infs_contradiction_problem(_p_(PM_Relation1to1Right),
+			StandardProblems::infs_contradiction_problem(_p_(PM_Relation1to1Right),
 				World::Inferences::where_inferred(right_first[infs->allocation_id]),
 				World::Inferences::where_inferred(right_second[infs->allocation_id]),
 				infs, "can only relate to one other thing in this way",
@@ -2261,7 +2261,7 @@ void Relations::check_OtoV_relation(binary_predicate *bp) {
 	if (bp->form_of_relation == Relation_VtoO) {
 		LOOP_OVER(infs, inference_subject) {
 			if (left_counts[infs->allocation_id] >= 2) {
-				Problems::Issue::infs_contradiction_problem(_p_(PM_RelationVtoOContradiction),
+				StandardProblems::infs_contradiction_problem(_p_(PM_RelationVtoOContradiction),
 					World::Inferences::where_inferred(left_first[infs->allocation_id]),
 					World::Inferences::where_inferred(left_second[infs->allocation_id]),
 					infs, "can only relate to one other thing in this way",
@@ -2271,7 +2271,7 @@ void Relations::check_OtoV_relation(binary_predicate *bp) {
 	} else {
 		LOOP_OVER(infs, inference_subject) {
 			if (right_counts[infs->allocation_id] >= 2) {
-				Problems::Issue::infs_contradiction_problem(_p_(PM_RelationOtoVContradiction),
+				StandardProblems::infs_contradiction_problem(_p_(PM_RelationOtoVContradiction),
 					World::Inferences::where_inferred(right_first[infs->allocation_id]),
 					World::Inferences::where_inferred(right_second[infs->allocation_id]),
 					infs, "can only be related to by one other thing in this way",
@@ -2602,7 +2602,7 @@ void Relations::compile_routine_to_decide(inter_name *rname,
 	parse_node *spec = NULL;
 	if (<s-condition>(W)) spec = <<rp>>;
 	if ((spec == NULL) || (Dash::validate_conditional_clause(spec) == FALSE)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadRelationCondition),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadRelationCondition),
 			"the condition defining this relation makes no sense to me",
 			"although the definition was properly formed - it is only "
 			"the part after 'when' which I can't follow.");

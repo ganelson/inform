@@ -243,7 +243,7 @@ void Assertions::Traverse::switch_sentence_trace(parse_node *PN) {
 		telemetry_recording = TRUE;
 		Telemetry::write_to_telemetry_file(Lexer::word_text(Wordings::last_wn(Node::get_text(PN))));
 		telemetry_recording = FALSE;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TelemetryAccepted),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TelemetryAccepted),
 			"that's a message for the Author, not me",
 			"so I'll note it down in the Telemetry file (if you're keeping one.)");
 		 telemetry_recording = tr;
@@ -320,7 +320,7 @@ to bite.
 	...														 ==> @<Issue PM_NoSuchVerb problem@>
 
 @<Issue PM_RuleWithoutColon problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RuleWithoutColon),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RuleWithoutColon),
 		"I can't find a verb that I know how to deal with, so can't do anything "
 		"with this sentence. It looks as if it might be a rule definition",
 		"but if so then it is lacking the necessary colon (or comma). "
@@ -329,7 +329,7 @@ to bite.
 		"of the colon?");
 
 @<Issue PM_IfOutsidePhrase problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_IfOutsidePhrase),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_IfOutsidePhrase),
 		"I can't find a verb that I know how to deal with. This looks like an 'if' "
 		"phrase which has slipped its moorings",
 		"so I am ignoring it. ('If' phrases, like all other such "
@@ -340,7 +340,7 @@ to bite.
 
 @<Issue PM_NoSuchVerbComma problem@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchVerbComma));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchVerbComma));
 	Problems::issue_problem_segment(
 		"In the sentence %1, I can't find a verb that I know how to deal with. "
 		"(I notice there's a comma here, which is sometimes used to abbreviate "
@@ -355,7 +355,7 @@ to bite.
 @<Issue PM_NoSuchVerb problem@> =
 	LOG("$T\n", current_sentence);
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchVerb));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchVerb));
 	Problems::issue_problem_segment(
 		"In the sentence %1, I can't find a verb that I know how to deal with.");
 	Problems::issue_problem_end();
@@ -372,7 +372,7 @@ but the ability does exist, and we defend it a little here:
 				Wordings::one_word(Wordings::last_wn(Node::get_text(p->down->next)) + 1));
 			Problems::quote_wording(3, Node::get_text(p->down->next));
 			Problems::quote_wording(4, Node::get_text(p->down->next->next));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 			if (Wordings::nonempty(Node::get_text(p->down->next->next)))
 				Problems::issue_problem_segment(
 					"I must be misreading the sentence %1. The verb "
@@ -431,7 +431,7 @@ is the rubric, the second the credit line.
 	return;
 
 @<Issue a problem for appearance without object@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TextWithoutSubject),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextWithoutSubject),
 		"I'm not sure what you're referring to",
 		"that is, I can't decide to what room or thing you intend that text to belong. "
 		"Perhaps you could rephrase this more explicitly? ('The description of the Inner "

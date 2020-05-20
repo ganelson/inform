@@ -35,7 +35,7 @@ void Properties::Appearance::infer(inference_subject *infs, parse_node *spec) {
 ambiguously.
 
 @<Issue a problem for a second appearance@> =
-	Problems::Issue::infs_contradiction_problem(_p_(PM_TwoAppearances),
+	StandardProblems::infs_contradiction_problem(_p_(PM_TwoAppearances),
 		World::Inferences::where_inferred(inf), current_sentence, infs,
 		"seems to have two different descriptions",
 		"perhaps because you intended the second description to apply to something "
@@ -68,7 +68,7 @@ void Properties::Appearance::reallocate(inference_subject *infs) {
 				if ((P_description) &&
 					(World::Permissions::find(infs, P_description, TRUE))) {
 					Properties::Valued::assert(P_description, infs, txt, CERTAIN_CE);
-				} else Problems::Issue::inference_problem(_p_(PM_IndefiniteTextMeaningless),
+				} else StandardProblems::inference_problem(_p_(PM_IndefiniteTextMeaningless),
 					infs, inf, "is not allowed",
 					"i.e., you can't write a double-quoted piece of text as a "
 					"sentence all by itself here. Some kinds or kinds of value "

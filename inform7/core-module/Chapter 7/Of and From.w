@@ -105,7 +105,7 @@ void Sentences::Rearrangement::check_sentence_for_direction_creation(parse_node 
 	if (!((<notable-map-kinds>(Node::get_text(pn->next)))
 			&& (<<r>> == 0))) return;
 	if (no_directions_noticed >= MAX_DIRECTIONS) {
-		Problems::Issue::limit_problem(Task::syntax_tree(), _p_(PM_TooManyDirections),
+		StandardProblems::limit_problem(Task::syntax_tree(), _p_(PM_TooManyDirections),
 			"different directions", MAX_DIRECTIONS);
 		return;
 	}
@@ -227,13 +227,13 @@ property names before they can do any damage.)
 	*** <quoted-text> ***							==> @<Issue PM_PropertyNameForbidden problem@>
 
 @<Issue PM_PropertyCalledArticle problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyCalledArticle),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyCalledArticle),
 		"a property name cannot consist only of an article",
 		"which this one seems to. It would lead to awful ambiguities. "
 		"More likely, the end of the sentence has been lost somehow?");
 
 @<Issue PM_PropertyCalledPresence problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyCalledPresence),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyCalledPresence),
 		"a property name cannot consist only of the word 'presence'",
 		"because this would lead to ambiguities with the rule clause "
 		"'...in the presence of...' (For instance, when writing something "
@@ -242,7 +242,7 @@ property names before they can do any damage.)
 		"two to the property name: 'stage presence', say, would be fine.");
 
 @<Issue PM_PropertyNameForbidden problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyNameForbidden),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyNameForbidden),
 		"a property name cannot contain quoted text or a comma",
 		"which this one seems to. I think I must be misunderstanding: "
 		"possibly you've added a subordinate clause which I can't "

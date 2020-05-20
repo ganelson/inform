@@ -81,11 +81,11 @@ void Calculus::Atoms::Compile::compile(value_holster *VH, int task, pcalc_prop *
 @<Issue a fallback problem message, since the schema-maker evidently didn't@> =
 	LOG("Failed on task: $o\n", pl);
 	if (task == TEST_ATOM_TASK)
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is not a condition I am able to test",
 			"or at any rate not during play.");
 	else
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceRelation),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceRelation),
 			"this is not something I can make true with 'now'",
 			"because it is too vague about the underlying cause which would "
 			"need to be arranged.");
@@ -97,7 +97,7 @@ void Calculus::Atoms::Compile::compile(value_holster *VH, int task, pcalc_prop *
 		(Frames::used_for_past_tense()) &&
 		(suppress_C14ActionVarsPastTense == FALSE)) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ActionVarsPastTense),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionVarsPastTense),
 				"it is misleading to talk about the noun, the second noun "
 				"or the person asked to do something in past tenses",
 				"because in the past, those were different things and "
@@ -196,7 +196,7 @@ the I6 |ofclass| operator.
 				if ((Kinds::get_construct(pl->assert_kind) == CON_list_of) && (problem_count == 0)) {
 					Problems::quote_source(1, current_sentence);
 					Problems::quote_kind(2, pl->assert_kind);
-					Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantCheckListContents));
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantCheckListContents));
 					Problems::issue_problem_segment(
 						"In %1, you use a list which might or might not match a "
 						"definition requiring %2. But there's no efficient way to "
@@ -212,7 +212,7 @@ the I6 |ofclass| operator.
 		case NOW_ATOM_TRUE_TASK:
 		case NOW_ATOM_FALSE_TASK:
 			if (suppress_C14CantChangeKind == FALSE) {
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeKind),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeKind),
 					"the kind of something is fixed",
 					"and cannot be changed during play with a 'now'.");
 				asch.schema = NULL;
@@ -233,7 +233,7 @@ to all backdrops which are currently everywhere.
 			Calculus::Schemas::modify(sch, "MoveObject(*1, FoundEverywhere); MoveFloatingObjects();");
 			return asch;
 		case NOW_ATOM_FALSE_TASK:
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeEverywhere),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeEverywhere),
 				"not being 'everywhere' is not something which can be changed "
 				"during play using 'now'",
 				"because it's not exact enough about what needs to be done.");
@@ -265,7 +265,7 @@ propositions to be compiled, so this code is never used.)
 			return asch;
 		case NOW_ATOM_TRUE_TASK:
 		case NOW_ATOM_FALSE_TASK:
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"being 'here' is not something which can be changed during play",
 				"so it cannot be brought about or cancelled out with 'now'.");
 			asch.schema = NULL; return asch;

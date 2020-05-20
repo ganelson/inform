@@ -89,7 +89,7 @@ that the resulting routine will be called |Prop_n|.
 inter_name *Calculus::Deferrals::compile_deferred_description_test(parse_node *spec) {
 	pcalc_prop *prop = Specifications::to_proposition(spec);
 	if (Calculus::Propositions::contains_callings(prop)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallDeferredDescs),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallDeferredDescs),
 			"'called' can't be used when testing a description",
 			"since it would make a name for something which existed only "
 			"so temporarily that it couldn't be used anywhere else.");
@@ -476,7 +476,7 @@ does not have run-time object or value creation.
 		switch(pl->element) {
 			case QUANTIFIER_ATOM:
 				if (Calculus::Atoms::is_existence_quantifier(pl)) {
-					Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceExistence),
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceExistence),
 						"this is not explicit enough",
 						"and should set out definite relationships between specific "
 						"things, like 'now the cat is in the bag', not something "
@@ -485,7 +485,7 @@ does not have run-time object or value creation.
 					return;
 				}
 				if (Calculus::Atoms::is_now_assertable_quantifier(pl) == FALSE) {
-					Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceGeneralised),
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceGeneralised),
 						"this can't be made true with 'now'",
 						"because it is too vague about what it applies to. It's fine "
 						"to say 'now all the doors are open' or 'now none of the doors "
@@ -497,7 +497,7 @@ does not have run-time object or value creation.
 				quantifier_count++;
 				break;
 			case CALLED_ATOM:
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceCalling),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceCalling),
 					"a 'now' is not allowed to call names",
 					"and it wouldn't really make sense to do so anyway. 'if "
 					"a person (called the victim) is in the Trap Room' makes "
@@ -544,7 +544,7 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 	else if ((q) && (q != for_all_quantifier)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_spec(2, spec);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"In %1 you wrote the description '%2' in the context of a value, "
 			"but descriptions used that way are not allowed to talk about "
@@ -566,7 +566,7 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 		LOG("Offending proposition: $D\n", prop);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(example));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LocalInDescription));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LocalInDescription));
 		Problems::issue_problem_segment(
 			"You wrote %1, but descriptions used as values are not allowed to "
 			"contain references to temporary values (defined by 'let', or by loops, "
@@ -721,7 +721,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 }
 
 @<Issue random impossible problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RandomImpossible),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RandomImpossible),
 		"this asks to find a random choice from a range which is too "
 		"large or impractical",
 		"so can't be done. For instance, 'a random person' is fine - "
@@ -960,13 +960,13 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 }
 
 @<Issue called in repeat problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CalledInRepeat),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CalledInRepeat),
 		"this tries to use '(called ...)' to give names to values "
 		"arising in the course of working out what to repeat through",
 		"but this is not allowed. (Sorry: it's too hard to get right.)");
 
 @<Issue bad repeat domain problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadRepeatDomain),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadRepeatDomain),
 		"this describes a collection of values which can't be repeated through",
 		"because the possible range is too large (or has no sensible ordering). "
 		"For instance, you can 'repeat with D running through doors' because "
@@ -1228,7 +1228,7 @@ void Calculus::Deferrals::prop_verify_descriptive(pcalc_prop *prop, char *billin
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_text(2, billing);
 		Problems::quote_wording(3, EW);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"In %1, you are asking for %2, but this should range over a "
 			"simpler description than '%3', please - it should not include any "
@@ -1243,7 +1243,7 @@ void Calculus::Deferrals::prop_verify_descriptive(pcalc_prop *prop, char *billin
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_text(2, billing);
 		Problems::quote_wording(3, EW);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"In %1, you are asking for %2, but '%3' looks as if it ranges "
 			"over only a single specific object, not a whole collection of "

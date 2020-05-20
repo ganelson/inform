@@ -124,7 +124,7 @@ void Sentences::VPs::visit(parse_node *p) {
 		if (soa == PL::Bibliographic::Release::release_along_with_SMF) err = FALSE;
 		#endif
 		if (err)
-			Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* not usefully testable, anyway */
+			StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* not usefully testable, anyway */
 				"The options file placed in this installation of Inform's folder "
 				"is incorrect, making use of a sentence form which isn't allowed "
 				"in that situation. The options file is only allowed to contain "
@@ -223,7 +223,7 @@ void Sentences::VPs::set_aspect_from_text(wording W, int new_state) {
 
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownDA));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownDA));
 	Problems::issue_problem_segment(
 		"In the sentence %1, you asked to include '%2' in the "
 		"debugging log, but there is no such debugging log topic.");
@@ -337,7 +337,7 @@ action declarations continue with usually extensive further text:
 	*X = 0;
 
 @<Issue two likelihoods problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TwoLikelihoods),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoLikelihoods),
 		"this sentence seems to have a likelihood qualification on both "
 		"sides of the verb",
 		"which is not allowed. 'The black door certainly is usually open' "
@@ -519,7 +519,7 @@ Problem message than the one they will otherwise receive later on.
 @<Issue PM_NonPresentTense problem@> =
 	if (Annotations::read_int(current_sentence, verb_problem_issued_ANNOT) == FALSE) {
 		Annotations::write_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonPresentTense),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NonPresentTense),
 			"assertions about the initial state of play must be given in the "
 			"present tense",
 			"so 'The cat is in the basket' is fine but not 'The cat has been in "
@@ -532,7 +532,7 @@ Problem message than the one they will otherwise receive later on.
 @<Issue PM_NegatedVerb1 problem@> =
 	if (Annotations::read_int(current_sentence, verb_problem_issued_ANNOT) == FALSE) {
 		Annotations::write_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
-		Problems::Issue::negative_sentence_problem(Task::syntax_tree(), _p_(PM_NegatedVerb1));
+		StandardProblems::negative_sentence_problem(Task::syntax_tree(), _p_(PM_NegatedVerb1));
 	}
 
 @h Logging verb numbers.

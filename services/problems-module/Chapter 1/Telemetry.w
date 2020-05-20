@@ -28,7 +28,7 @@ void Telemetry::ensure_telemetry_file(void) {
 	if (telmy) return;
 	if (attempts_to_open_telemetry++ > 0) return;
 	if (STREAM_OPEN_TO_FILE_APPEND(telemetry_file, spool_telemetry_to, ISO_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open telemetry file", spool_telemetry_to);
+		Problems::fatal_on_file("Can't open telemetry file", spool_telemetry_to);
 	telmy = telemetry_file;
 	WRITE_TO(telmy, "\n-- -- -- -- -- -- -- --\n%B (build %B): telemetry.\n",
 		FALSE, TRUE);

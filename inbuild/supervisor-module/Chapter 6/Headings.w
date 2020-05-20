@@ -555,6 +555,15 @@ wording Headings::get_text(heading *h) {
 	return h->heading_text;
 }
 
+@ Whence:
+
+@d WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK Headings::wording_for_heading_node
+
+=
+wording Headings::wording_for_heading_node(parse_node *p) {
+	return Headings::get_text(Headings::from_node(p));
+}
+
 @h Headings with extension dependencies.
 If the content under a heading depended on a VM not in use, or was marked
 not for release in a release run, we were able to exclude it just by

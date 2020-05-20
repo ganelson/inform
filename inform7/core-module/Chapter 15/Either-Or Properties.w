@@ -54,7 +54,7 @@ This is how the either/or properties declared by the source text are made.
 =
 property *Properties::EitherOr::obtain(wording W, inference_subject *infs) {
 	if (<k-kind>(W)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_KindAdjectiveClash),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_KindAdjectiveClash),
 			"this tries to create a new either/or adjective with the same name "
 			"as an existing kind",
 			"which isn't allowed. For example, 'A hopper can be a container.' is "
@@ -131,7 +131,7 @@ void Properties::EitherOr::make_negations(property *prn, property *neg) {
 				Problems::quote_property(4, neg);
 				Problems::quote_property(5, neg->negation);
 			}
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BrokenNegationPair));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BrokenNegationPair));
 			Problems::issue_problem_segment(
 				"In %1, you proposed to set up the properties '%2' and '%3' as "
 				"opposites of each other. But I can't allow that, because '%4' "

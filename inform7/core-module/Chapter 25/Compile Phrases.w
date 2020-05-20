@@ -101,7 +101,7 @@ to us, so we end our routine with code which certainly performs a return.
 	if (K) {
 		if (Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING,
 			"value decided by this phrase") != TRUE) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultDecideFails),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultDecideFails),
 				"it's not possible to decide such a value",
 				"so this can't be allowed.");
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
@@ -251,7 +251,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(cs));
 	if (Node::is(cs, TEST_VALUE_NT)) {
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow1));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow1));
 		Problems::issue_problem_segment(
 			"You wrote %1, but although '%2' is a condition which it is legal "
 			"to test with 'if', 'when', and so forth, it is not something I "
@@ -260,14 +260,14 @@ henceforth to be true, so we simply compile empty code in that case.
 			"need to adjust those circumstances.");
 		Problems::issue_problem_end();
 	} else if (Node::is(cs, LOGICAL_AND_NT)) {
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow2));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow2));
 		Problems::issue_problem_segment(
 			"You wrote %1, but 'now' does not work with the condition '%2' "
 			"because it can only make one wish come true at a time: so it "
 			"doesn't like the 'and'. Try rewriting as two 'now's in a row?");
 		Problems::issue_problem_end();
 	} else {
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow3));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow3));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2'	isn't the sort of condition which can be "
 			"made to be true, in the way that 'the ball is on the table' can be "
@@ -279,7 +279,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	LOG("$T\n", current_sentence);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(cs));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2'	isn't a condition, so I can't see how to "
 		"make it true from here on.");
@@ -288,7 +288,7 @@ henceforth to be true, so we simply compile empty code in that case.
 @<Issue a problem message for an unrecognised action@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(cs));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2'	isn't an action, so I can't see how to try it.");
 	Problems::issue_problem_end();
@@ -302,7 +302,7 @@ henceforth to be true, so we simply compile empty code in that case.
 			(ram != RULE_NOT_IN_RULEBOOK_EFF)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(to_compile));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome2));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome2));
 			Problems::issue_problem_segment(
 				"You wrote %1, but this is a rulebook outcome which can only be used "
 				"within rulebooks which recognise it. You've used it in a definition "
@@ -315,7 +315,7 @@ henceforth to be true, so we simply compile empty code in that case.
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(to_compile));
 		Problems::quote_wording(3, rb->primary_name);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome));
 		Problems::issue_problem_segment(
 			"You wrote %1, but this is a rulebook outcome which can only be used "
 			"within rulebooks which recognise it. You've used it in a rule which "
@@ -402,7 +402,7 @@ henceforth to be true, so we simply compile empty code in that case.
 							if ((Node::get_kind_of_value(case_spec) == NULL) && (I == NULL)) {
 								Problems::quote_source(1, current_sentence);
 								Problems::quote_kind(2, switch_kind);
-								Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueNonConstant));
+								StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueNonConstant));
 								Problems::issue_problem_segment(
 									"The case %1 is required to be a constant value, rather than "
 									"something which has different values at different times: "
@@ -413,7 +413,7 @@ henceforth to be true, so we simply compile empty code in that case.
 								Problems::quote_source(1, current_sentence);
 								Problems::quote_kind(2, case_kind);
 								Problems::quote_kind(3, switch_kind);
-								Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueMismatch));
+								StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueMismatch));
 								Problems::issue_problem_segment(
 									"The case %1 has the wrong kind of value for the possibilities "
 									"being chosen from: %2 instead of %3.");
@@ -448,7 +448,7 @@ henceforth to be true, so we simply compile empty code in that case.
 				current_sentence = A;
 				Problems::quote_source(1, A);
 				Problems::quote_spec(2, Node::get_evaluation(A));
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueDuplicated));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CaseValueDuplicated));
 				Problems::issue_problem_segment(
 					"The case %1 occurs more than once in this 'if' switch.");
 				Problems::issue_problem_end();
@@ -522,7 +522,7 @@ the ceaseless repetition of the keyword "case". Thus, |15:| does what
 	;
 
 @<Issue problem message for unknown case value@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CaseValueUnknown),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CaseValueUnknown),
 		"I don't recognise this case value",
 		"that is, the value written after the '--'.");
 
@@ -659,7 +659,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Check that say control structures have been used in a correct sequence@> =
 	int it_was_not_worth_adding = it_is_not_worth_adding;
-	it_is_not_worth_adding = TRUE;
+	Strings::TextSubstitutions::it_is_not_worth_adding();
 
 	int SSP_sp = 0;
 	int SSP_stack[MAX_COMPLEX_SAY_DEPTH];
@@ -763,7 +763,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(inv));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure));
 		Problems::issue_problem_segment(
 			"In the text at %1, the text substitution '[%2]' ought to occur as the "
 			"middle part of its construction, but it appears to be on its own.");
@@ -776,7 +776,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(inv));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure2));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure2));
 		Problems::issue_problem_segment(
 			"In the text at %1, the text substitution '[%2]' ought to occur as the "
 			"ending part of its construction, but it appears to be on its own.");
@@ -787,7 +787,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Issue a problem message for nested say if@> =
 	if (problem_issued == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SayIfNested),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SayIfNested),
 			"a second '[if ...]' text substitution occurs inside an existing one",
 			"which makes this text too complicated. While a single text can contain "
 			"more than one '[if ...]', this can only happen if the old if is finished "
@@ -800,7 +800,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Issue a problem message for an overcomplex SSP@> =
 	if (problem_issued == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SayOverComplex),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SayOverComplex),
 			"this is too complex a text substitution",
 			"and needs to be simplified. You might find it helful to define "
 			"a new text substitution of your own ('To say fiddly details: "
@@ -810,7 +810,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Issue a problem message for say otherwise without say if@> =
 	if (problem_issued == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SayOtherwiseWithoutIf),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SayOtherwiseWithoutIf),
 			"an '[otherwise]' text substitution occurs where there appears to be no "
 			"[if ...]",
 			"which doesn't make sense - there is nothing for it to be otherwise to.");
@@ -821,7 +821,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(inv));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure5));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure5));
 		Problems::issue_problem_segment(
 			"In the text at %1, the '[%2]' ought to occur inside an [if ...], but "
 			"is cut off because it has been interleaved with a complicated say "
@@ -833,7 +833,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Issue a problem message for two say otherwises@> =
 	if (problem_issued == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TwoSayOtherwises),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoSayOtherwises),
 			"there's already an (unconditional) \"[otherwise]\" or \"[else]\" "
 			"in this text substitution",
 			"so it doesn't make sense to follow that with a further one.");
@@ -842,7 +842,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 
 @<Issue a problem message for say end if without say if@> =
 	if (problem_issued == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SayEndIfWithoutSayIf),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SayEndIfWithoutSayIf),
 			"an '[end if]' text substitution occurs where there appears to be no "
 			"[if ...]",
 			"which doesn't make sense - there is nothing for it to end.");
@@ -853,7 +853,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 	if (problem_issued == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(inv));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure4));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure4));
 		Problems::issue_problem_segment(
 			"In the text at %1, the '[%2]' is cut off from its [if ...], because "
 			"it has been interleaved with a complicated say construction.");
@@ -874,7 +874,7 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 		if (stinv) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(stinv));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure3));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ComplicatedSayStructure3));
 			Problems::issue_problem_segment(
 				"In the text at %1, the text substitution '[%2]' seems to start a "
 				"complicated say construction, but it doesn't have a matching end.");

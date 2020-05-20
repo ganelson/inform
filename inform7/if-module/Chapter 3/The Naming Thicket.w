@@ -201,7 +201,7 @@ a comma, and that's caught here:
 @<Issue problem message if the name contains a comma@> =
 	LOOP_THROUGH_WORDING(j, W) {
 		if (Lexer::word(j) == COMMA_V) {
-			Problems::Issue::subject_creation_problem(_p_(PM_CommaInName),
+			StandardProblems::subject_creation_problem(_p_(PM_CommaInName),
 				subj,
 				"has a comma in its name",
 				"which is forbidden. Perhaps you used a comma in "
@@ -211,7 +211,7 @@ a comma, and that's caught here:
 			break;
 		}
 		if (Vocabulary::test_flags(j, TEXT_MC+TEXTWITHSUBS_MC)) {
-			Problems::Issue::subject_creation_problem(_p_(BelievedImpossible),
+			StandardProblems::subject_creation_problem(_p_(BelievedImpossible),
 				subj,
 				"has some double-quoted text in its name",
 				"which is forbidden. Perhaps something odd happened "

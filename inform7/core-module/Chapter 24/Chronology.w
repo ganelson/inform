@@ -50,7 +50,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 	LOGIF(TIME_PERIODS,
 		"Chronology::compile_past_action_pattern on: $A\nat: $t\n", &ap, &duration);
 	if (PL::Actions::Patterns::makes_callings(&ap)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PTAPMakesCallings),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PTAPMakesCallings),
 			"a description of an action cannot both refer to past history "
 			"and also use '(called ...)'",
 			"because that would require Inform in general to remember "
@@ -187,7 +187,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 	if (Node::is(spec, TEST_VALUE_NT)) ap = Rvalues::to_action_pattern(spec->down);
 	if ((ap) && (duration.tense != IS_TENSE)) {
 		if ((duration.units == TIMES_UNIT) && (duration.length >= 2)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NoMoreRonNewcombMoment),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NoMoreRonNewcombMoment),
 				"a condition like 'we have X', where X is an action, has either "
 				"happened for one spell or never happened at all",
 				"so it can't make sense to ask if it has happened two or more "
@@ -244,7 +244,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 	}
 
 	if (no_past_tenses >= 1024) { /* limit imposed by the Z-machine implementation */
-		Problems::Issue::limit_problem(Task::syntax_tree(), _p_(Untestable), /* well, not conveniently */
+		StandardProblems::limit_problem(Task::syntax_tree(), _p_(Untestable), /* well, not conveniently */
 			"conditions written in the past tense", 1024);
 		return;
 	}
@@ -322,7 +322,7 @@ void Chronology::past_actions_i6_routines(void) {
 
 		if ((LocalVariables::are_we_using_table_lookup()) && (once_only)) {
 			once_only = FALSE;
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PastTableLookup),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastTableLookup),
 				"it's not safe to look up table entries in a way referring "
 				"to past history",
 				"because it leads to dangerous ambiguities. For instance, "
@@ -531,7 +531,7 @@ void Chronology::past_tenses_i6_escape(void) {
 						END_COMPILATION_MODE;
 						if ((LocalVariables::are_we_using_table_lookup()) && (once_only)) {
 							once_only = FALSE;
-							Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PastTableEntries),
+							StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastTableEntries),
 								"it's not safe to look up table entries in a way referring "
 								"to past history",
 								"because it leads to dangerous ambiguities. For instance, "
@@ -647,7 +647,7 @@ a file stream, thus allowing rewinding:
 		LOGIF(TIME_PERIODS, "Number %d: proposition $D\n",
 			ptc->allocation_id, Specifications::to_proposition(spec));
 		if (Calculus::Propositions::contains_callings(Specifications::to_proposition(spec))) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PastCallings),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastCallings),
 				"it's not safe to use '(called ...)' in a way referring "
 				"to past history",
 				"because this would make a temporary value to hold the "

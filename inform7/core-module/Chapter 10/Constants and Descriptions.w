@@ -521,7 +521,7 @@ except that the noun is optional. The only difference is right at the bottom.
 	if (Node::is(p, CONSTANT_NT)) {
 		if (PM_SpecificCalling_issued_at != current_sentence) {
 			PM_SpecificCalling_issued_at = current_sentence;
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SpecificCalling),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SpecificCalling),
 				"a 'called' name can only be given to something "
 				"which is described vaguely",
 				"and can't be given to a definite object or value. "
@@ -565,7 +565,7 @@ context of a proper noun, as in "some tea", because it may be confusion of
 		PM_DefiniteCommonNoun_issued_at = current_sentence;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_DefiniteCommonNoun));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_DefiniteCommonNoun));
 		Problems::issue_problem_segment(
 			"In %1, I'm not able to understand what specific thing is meant "
 			"by the phrase '%2'. You use the definite article 'the', which "

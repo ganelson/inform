@@ -269,9 +269,9 @@ then it will be the "random ..." phrase which is backtraced, and not the
 	if (problem_count > backtraced_problem_count) {
 		if ((p) && (p->down) &&
 			(Node::get_type(p) == INVOCATION_LIST_NT)) {
-			it_is_not_worth_adding = TRUE;
+			Strings::TextSubstitutions::it_is_not_worth_adding();
 			@<Backtrace what phrase definitions the type-checker was looking at@>;
-			it_is_not_worth_adding = FALSE;
+			Strings::TextSubstitutions::it_is_worth_adding();
 			backtraced_problem_count = problem_count;
 		}
 	}
@@ -293,7 +293,7 @@ from a text substitution.)
 	}
 
 	int announce = TRUE;
-	text_stream *latest = Problems::Issue::latest_sigil();
+	text_stream *latest = Problems::latest_sigil();
 	if (Str::eq_wide_string(latest, L"PM_AllInvsFailed")) announce = FALSE;
 
 	if (announce) @<Produce the I was trying... banner@>;
@@ -615,7 +615,7 @@ extension, which made use of the old undocumented |phrase| token.
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(p->down));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ValueAsStorageItem));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ValueAsStorageItem));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2' is a value, not a place where a value is "
 		"stored. "
@@ -631,7 +631,7 @@ extension, which made use of the old undocumented |phrase| token.
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(p->down));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ValueAsTableReference));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ValueAsTableReference));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2' is a value, not a reference to an entry "
 		"in a table.");
@@ -647,7 +647,7 @@ extension, which made use of the old undocumented |phrase| token.
 			Problems::quote_text(3, "a kind of value");
 		else
 			Problems::quote_kind_of(3, p->down);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExistingVarNotFound));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExistingVarNotFound));
 		Problems::issue_problem_segment(
 			"In the sentence %1, I was expecting that '%2' would be the "
 			"name of a temporary value, but it turned out to be %3.");
@@ -661,7 +661,7 @@ extension, which made use of the old undocumented |phrase| token.
 	Problems::quote_wording(2, Node::get_text(p->down));
 	Problems::quote_spec(3, p->down);
 	Problems::quote_spec(4, val);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NotExactValueWanted));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NotExactValueWanted));
 	Problems::issue_problem_segment(
 		"In the sentence %1, I was expecting that '%2' would be the specific "
 		"value '%4'.");
@@ -672,7 +672,7 @@ extension, which made use of the old undocumented |phrase| token.
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(p->down));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"In the sentence %1, I was expecting that '%2' would be a phrase.");
 	Problems::issue_problem_end();
@@ -723,7 +723,7 @@ species; and then to misuse that phrase.
 	else
 		Problems::quote_kind_of(3, p->down);
 	Problems::quote_kind(4, K);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_KindOfVariable));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_KindOfVariable));
 	Problems::issue_problem_segment(
 		"In the sentence %1, I was expecting that '%2' would be a new "
 		"variable name (to hold %4), but it turned out to be %3.");
@@ -956,7 +956,7 @@ no way safely to adjudicate that at run-time.
 @<Issue the number ambiguity problem message@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnequalValueAmbiguity));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnequalValueAmbiguity));
 	Problems::issue_problem_segment(
 		"The phrase %1 is ambiguous in a way that I can't disentangle. "
 		"It has more than one plausible interpretation, such that it "
@@ -1073,7 +1073,7 @@ Room" is a number, because the kind of the property "carrying capacity" is
 			Node::set_kind_resulting(inv, Properties::Valued::kind(prn));
 		else {
 			THIS_IS_AN_INTERESTING_PROBLEM {
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TotalEitherOr),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TotalEitherOr),
 					"this seems to be an attempt to total up an either/or property",
 					"and by definition such a property has nothing to total.");
 			}
@@ -1088,7 +1088,7 @@ with it.)
 	LOG_DASH("(4I.a.1) failed as nonproperty");
 	if (Kinds::get_construct(Node::get_kind_of_value(P)) == CON_table_column) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TotalTableColumn),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TotalTableColumn),
 				"this seems to be an attempt to total up the column of a table",
 				"whereas it's only legal to use 'total' for properties.");
 		}
@@ -1151,7 +1151,7 @@ L and R are more definite.
 				case REMAINDER_OPERATION: Problems::quote_text(6, "dividing"); Problems::quote_text(7, "by"); break;
 				case APPROXIMATION_OPERATION: Problems::quote_text(6, "rounding"); Problems::quote_text(7, "to"); break;
 			}
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadArithmetic));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadArithmetic));
 			Problems::issue_problem_segment(
 				"You wrote %1, but that seems to involve %6 %4 ('%2') %7 %5 ('%3'), "
 				"which is not good arithmetic.");
@@ -1215,7 +1215,7 @@ instance, if |inv| is an invocation of this phrase:
 			if ((Routines::Compile::disallow_let()) && (Phrases::TypeData::is_a_let_assignment(ph))) {
 				THIS_IS_AN_INTERESTING_PROBLEM {
 					Problems::quote_source(1, current_sentence);
-					Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LetCreatedInIf));
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LetCreatedInIf));
 					Problems::issue_problem_segment(
 						"You wrote %1, but when a temporary value is created "
 						"inside an 'if ..., ...' or an 'otherwise ...', it only "
@@ -1299,7 +1299,7 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 						Problems::quote_source(1, current_sentence);
 						Problems::quote_wording(2, W);
 						Problems::quote_kind(3, ikind);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NameOfKindMismatch));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NameOfKindMismatch));
 						Problems::issue_problem_segment(
 							"You wrote %1, but although '%2' is the name of a kind, "
 							"it isn't the name of a kind of %3, which this phrase needs.");
@@ -1312,7 +1312,7 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 					Problems::quote_source(1, current_sentence);
 					Problems::quote_wording(2, W);
 					Problems::quote_kind(3, ikind);
-					Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadLocalKOV));
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadLocalKOV));
 					Problems::issue_problem_segment(
 						"You wrote %1, but although '%2' is the name of a kind, "
 						"it isn't a definite kind and is instead a general "
@@ -1330,7 +1330,7 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 		THIS_IS_AN_ORDINARY_PROBLEM {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(ith_token));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NameOfKindIsnt));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NameOfKindIsnt));
 			Problems::issue_problem_segment(
 				"You wrote %1, but although '%2' does have a meaning, "
 				"it isn't the name of a kind, which this phrase needs.");
@@ -1415,7 +1415,7 @@ against a definition like:
 	THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(p));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"In the line %1, you seem to be using '%2' to produce a value, but "
 		"it's not clear what kind of value this will be. It seems to use "
@@ -1559,7 +1559,7 @@ this case in the type-checker is never exercised.
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(target));
 			Problems::quote_wording(3, Node::get_text(new_value));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* the parser seems not to allow these */
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* the parser seems not to allow these */
 			Problems::issue_problem_segment(
 				"You wrote %1, asking to change the object '%2'. This would "
 				"make sense if '%3' were an either/or property like 'open' "
@@ -1574,7 +1574,7 @@ this case in the type-checker is never exercised.
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(target));
 			Problems::quote_property(3, prn);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is not allowed to have the property '%3'.");
 			Problems::issue_problem_end();
@@ -1618,7 +1618,7 @@ literal can mean are too generous.)
 			Problems::quote_kind(3, Specifications::to_kind(target));
 			Problems::quote_wording(4, Node::get_text(new_value));
 			Problems::quote_kind(5, Specifications::to_kind(new_value));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ChangeToWrongValue));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ChangeToWrongValue));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is supposed to be "
 				"%6 %3, so it cannot be set equal to %4, whose kind is %5.");
@@ -1706,7 +1706,7 @@ And here is where we check that "break" is indeed used only in a loop.
 				if (Frames::Blocks::inside_a_loop_body() == FALSE) {
 					THIS_IS_AN_INTERESTING_PROBLEM {
 						Problems::quote_source(1, current_sentence);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantUseOutsideLoop));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantUseOutsideLoop));
 						Problems::issue_problem_segment(
 							"%1 makes sense only inside a 'while' or 'repeat' loop.");
 						Problems::issue_problem_end();
@@ -1720,7 +1720,7 @@ And here is where we check that "break" is indeed used only in a loop.
 					THIS_IS_AN_INTERESTING_PROBLEM {
 						Problems::quote_source(1, current_sentence);
 						Problems::quote_wide_text(2, required);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantUseOutsideStructure));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantUseOutsideStructure));
 						Problems::issue_problem_segment(
 							"%1 makes sense only inside a '%2' block.");
 						Problems::issue_problem_end();
@@ -1736,7 +1736,7 @@ And here is where we check that "break" is indeed used only in a loop.
 		if ((ph) && (ph->type_data.now_deprecated)) {
 			THIS_IS_AN_INTERESTING_PROBLEM {
 				Problems::quote_source(1, current_sentence);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* too moving a target to test */
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* too moving a target to test */
 				Problems::issue_problem_segment(
 					"'%1' uses a phrase which is now deprecated: you should rephrase "
 					"to avoid the need for it. I'd normally allow this, but you have "
@@ -1814,7 +1814,7 @@ and allowed only in phrases using the |table-reference| token.
 		(kind_needed) &&
 		(!(Node::is(context, LVALUE_TR_CONTEXT_NT)))) {
 		THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_InexplicitTableEntryAsValue),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_InexplicitTableEntryAsValue),
 			"this form of table entry can only be used in certain special phrases",
 			"because it doesn't explicitly refer to a single value. (You can see "
 			"which phrases in the Phrasebook index: it's allowed wherever a 'table "
@@ -1830,14 +1830,14 @@ and allowed only in phrases using the |table-reference| token.
 	kind *K2 = Specifications::to_kind(p->down->next);
 	if (Kinds::unary_construction_material(K1) == NULL) {
 		THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EntryOfNonList),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EntryOfNonList),
 			"that doesn't make sense to me as a list entry",
 			"since the entry is taken from something which isn't a list.");
 		return NEVER_MATCH;
 	}
 	if (Kinds::Compare::eq(K2, K_number) == FALSE) {
 		THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NonNumericListEntry),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NonNumericListEntry),
 			"that doesn't make sense to me as a list entry",
 			"because the indication of which entry is not a number. "
 			"For instance, 'entry 3 of L' is allowed, but not 'entry "
@@ -1883,7 +1883,7 @@ a property when recovering from other problems.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(p));
 	Problems::quote_wording(3, Node::get_text(the_property));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend '%2' to be a property "
 		"of something, but there is no such property as '%3'.");
@@ -1894,7 +1894,7 @@ a property when recovering from other problems.
 	THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(p));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EitherOrAsValue));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EitherOrAsValue));
 	Problems::issue_problem_segment(
 		"In the sentence %1, it looks as if you intend '%2' to be the value "
 		"of a property of something, but that property has no value: it's "
@@ -1914,7 +1914,7 @@ a property when recovering from other problems.
 		Problems::quote_wording(3, Node::get_text(the_owner));
 	else owner_quoted = FALSE;
 	LOG("Owner tree is $T\n", the_owner);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyOfKind2));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyOfKind2));
 	if (owner_quoted) {
 		if (Wordings::nonempty(Node::get_text(p)))
 			Problems::issue_problem_segment(
@@ -1950,7 +1950,7 @@ a property when recovering from other problems.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, prn->name);
 	Problems::quote_subject(3, owning_subject);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LookedUpForbiddenProperty));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LookedUpForbiddenProperty));
 	Problems::issue_problem_segment(
 		"In the sentence %1, you seem to be looking up the '%2' property, "
 		"but '%3' is not allowed to have that property. ");
@@ -1970,7 +1970,7 @@ a property when recovering from other problems.
 		if ((Kinds::get_construct(col_kind) != CON_table_column) ||
 			(col_contents_kind == NULL)) {
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"that doesn't make sense to me as a table entry",
 				"since the entry is taken from something which isn't a table.");
 			return NEVER_MATCH;
@@ -1980,7 +1980,7 @@ a property when recovering from other problems.
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind(2, col_contents_kind);
 			Problems::quote_kind(3, key_kind);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableCorrFruitless));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableCorrFruitless));
 			Problems::issue_problem_segment(
 				"In the sentence %1, you seem to be looking up a corresponding "
 				"entry in a table: but it's fruitless to go looking for %3 "
@@ -1994,13 +1994,13 @@ a property when recovering from other problems.
 	THIS_IS_A_GROSS_PROBLEM;
 	if (<structural-phrase-problem-diagnosis>(Node::get_text(p)) == FALSE) {
 		if (Wordings::mismatched_brackets(Node::get_text(p))) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnpairedBrackets),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnpairedBrackets),
 				"this is a phrase which I don't recognise",
 				"perhaps because it uses brackets '(' and ')' or braces '{' and '}' "
 				"in a way that doesn't make sense to me. Each open '(' or '{' has "
 				"to have a matching ')' or '}'.");
 		} else {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownPhrase),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownPhrase),
 				"this is a phrase which I don't recognise",
 				"possibly because it is one you meant to define but never got round "
 				"to, or because the wording is wrong (see the Phrasebook section of "
@@ -2020,7 +2020,7 @@ up on misuse of structural phrases.
 	continue								==> @<Issue PM_WrongContinue problem@>
 
 @<Issue PM_WrongContinue problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_WrongContinue),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_WrongContinue),
 		"this is a phrase which I don't recognise",
 		"and which isn't defined. Perhaps you wanted the phrase which "
 		"would skip to the next repetition of a loop, since that's "
@@ -2159,7 +2159,7 @@ of a relation.
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(initial_value));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"The phrase %1 tries to use 'let' to give a temporary name to a value, "
 		"but the value ('%2') is one that I can't understand.");
@@ -2176,7 +2176,7 @@ relevant code to issue a better problem message if it can.
 	Lists::check_one(Node::get_text(initial_value));
 	if (pc == problem_count) {
 		Problems::quote_source(1, current_sentence);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CantLetEmptyList));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantLetEmptyList));
 		Problems::issue_problem_segment(
 			"The phrase %1 tries to use 'let' to give a temporary name to the "
 			"empty list '{ }', but because it's empty, I can't tell what kind of "
@@ -2190,7 +2190,7 @@ relevant code to issue a better problem message if it can.
 
 @<Fail: the initial value can't be stored@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 		"this isn't a definite kind",
 		"and is instead a general description which might apply to many "
 		"different kinds, so I can't see how to create this named value. "
@@ -2314,7 +2314,7 @@ int Dash::failed(parse_node **list_of_possible_readings, int no_of_possible_read
 				Problems::quote_wording(2, PW);
 				Problems::quote_kind(3, K);
 				Problems::quote_kind(4, W);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadIntermediateKind));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadIntermediateKind));
 				Problems::issue_problem_segment(
 					"In %1, the phrase '%2' doesn't seem to fit: I was hoping it would "
 					"be %4, but in fact it's %3.");
@@ -2331,14 +2331,14 @@ int Dash::failed(parse_node **list_of_possible_readings, int no_of_possible_read
 			END_DASH_MODE;
 		}
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"the ingredients in this phrase do not fit it",
 				"and I am confused enough by this that I can't give a very helpful "
 				"problem message. Sorry about that.");
 	}
 
 @<Issue a problem for a regular phrase with multiple failed possibilities@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_AllInvsFailed));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AllInvsFailed));
 	Problems::quote_source(1, current_sentence);
 	Problems::issue_problem_segment(
 		"You wrote %1, which I tried to match against several possible phrase "
@@ -2354,7 +2354,7 @@ unrecognised.
 	...									==> @<Issue last-resort failed ts problem@>
 
 @<Issue PM_SayAList problem@> =
-	Problems::Issue::sentence_in_detail_problem(Task::syntax_tree(), _p_(PM_SayAList), W,
+	StandardProblems::sentence_in_detail_problem(Task::syntax_tree(), _p_(PM_SayAList), W,
 		"this asked to say 'a list of...'",
 		"which I read as being a general description applying to some "
 		"lists and not others, so it's not something which can be said. "
@@ -2362,7 +2362,7 @@ unrecognised.
 		"a definite list of whatever matches the '...' part.)");
 
 @<Issue last-resort failed ts problem@> =
-	Problems::Issue::sentence_in_detail_problem(Task::syntax_tree(), _p_(BelievedImpossible), W,
+	StandardProblems::sentence_in_detail_problem(Task::syntax_tree(), _p_(BelievedImpossible), W,
 		"this asked to say something which I do not recognise",
 		"either as a value or as one of the possible text substitutions.");
 
@@ -2469,7 +2469,7 @@ us with the air of having just made a great discovery; well, you can't have
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(p));
 	Problems::quote_kind(3, kind_expected);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NothingForSomething));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NothingForSomething));
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2' is literally no thing, and it consequently does "
 		"not count as %3.");
@@ -2533,7 +2533,7 @@ helpful about what exactly is wrong.
 	Dash::clear_validation_case();
 	<action-pattern>(Node::get_text(p));
 	if (Dash::get_validation_case(&spec, &K, &K2)) {
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownTryAction1));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownTryAction1));
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(p));
 		Problems::quote_wording(3, Node::get_text(spec));
@@ -2546,7 +2546,7 @@ helpful about what exactly is wrong.
 			"made sense, but it turned out to be %5.");
 		Problems::issue_problem_end();
 	} else {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownTryAction2),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownTryAction2),
 			"this is not an action I recognise",
 			"or else is malformed in a way I can't see how to sort out.");
 	}
@@ -2570,7 +2570,7 @@ substitution or not.
 	...					==> @<Issue PM_SayUnknown problem@>
 
 @<Issue PM_SayComma problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SayComma));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SayComma));
 	Problems::issue_problem_segment(
 		"In the line %1, I was expecting that '%2' would be something to "
 		"'say', but unexpectedly it began with a comma. The usual form is "
@@ -2579,7 +2579,7 @@ substitution or not.
 	Problems::issue_problem_end();
 
 @<Issue PM_SayUnicode problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SayUnicode));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SayUnicode));
 	Problems::issue_problem_segment(
 		"In the line %1, I was expecting that '%2' would be something to "
 		"'say', but it didn't look like any form of 'say' that I know. "
@@ -2595,7 +2595,7 @@ substitution or not.
 	Problems::issue_problem_end();
 
 @<Issue PM_SayElseMisplaced problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SayElseMisplaced));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SayElseMisplaced));
 	Problems::issue_problem_segment(
 		"In the line %1, I was expecting that '%2' would be something to "
 		"'say', but unexpectedly I found an 'otherwise' (or 'else'). That "
@@ -2604,7 +2604,7 @@ substitution or not.
 	Problems::issue_problem_end();
 
 @<Issue PM_SayUnknownCondition problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SayUnknownCondition));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SayUnknownCondition));
 	Problems::issue_problem_segment(
 		"In the line %1, I was expecting that '%2' would be something to "
 		"'say', but it didn't look like any form of 'say' that I know. So "
@@ -2627,7 +2627,7 @@ substitution or not.
 	Problems::issue_problem_end();
 
 @<Issue PM_SayUnknown problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SayUnknown));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SayUnknown));
 	Problems::issue_problem_segment(
 		"In the line %1, I was expecting that '%2' would be something to "
 		"'say', but it didn't look like any form of 'say' that I know. So "
@@ -2650,7 +2650,7 @@ the clauses, summing up their status in turn:
 @d WHENWHILE_CP_BIT 2
 
 @<Issue a problem message for a compound condition which has gone bad@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_CompoundConditionFailed));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CompoundConditionFailed));
 	Problems::issue_problem_segment(
 		"In the sentence %1, I was expecting that '%2' would be a condition. "
 		"It didn't make sense as one long phrase, but because it was divided up by "
@@ -2702,7 +2702,7 @@ common misunderstanding.
 	...								==> @<Issue PM_Unknown problem@>
 
 @<Issue PM_NumberOfTurns problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NumberOfTurns));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NumberOfTurns));
 	@<Issue the generic unknown wording message@>;
 	Problems::issue_problem_segment(
 		"%PPerhaps by 'turns' you meant the number of turns of play to date? "
@@ -2710,7 +2710,7 @@ common misunderstanding.
 	Problems::issue_problem_end();
 
 @<Issue PM_OutOfPlay problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_OutOfPlay));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_OutOfPlay));
 	@<Issue the generic unknown wording message@>;
 	Problems::issue_problem_segment(
 		"%PPeople sometimes say that things or people removed from all "
@@ -2722,7 +2722,7 @@ common misunderstanding.
 	Problems::issue_problem_end();
 
 @<Issue PM_OptionlessOption problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_OptionlessOption));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_OptionlessOption));
 	@<Issue the generic unknown wording message@>;
 	Problems::issue_problem_segment(
 		"%PThe names of use options, on the rare occasions when they "
@@ -2733,7 +2733,7 @@ common misunderstanding.
 	Problems::issue_problem_end();
 
 @<Issue PM_ActivityOf problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityOf));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityOf));
 	@<Issue the generic unknown wording message@>;
 	Problems::issue_problem_segment(
 		"%PActivity names rarely end with 'of': for instance, when we talk "
@@ -2742,7 +2742,7 @@ common misunderstanding.
 	Problems::issue_problem_end();
 
 @<Issue PM_MidTextUnicode problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MidTextUnicode));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MidTextUnicode));
 	@<Issue the generic unknown wording message@>;
 	Problems::issue_problem_segment(
 		"%PMaybe you intended this to produce a Unicode character? "
@@ -2756,7 +2756,7 @@ common misunderstanding.
 	Problems::issue_problem_end();
 
 @<Issue PM_UnknownCondition problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownCondition));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownCondition));
 	@<Issue the generic unknown wording message@>;
 	Problems::issue_problem_segment(
 		"%PNames which end in 'condition' often represent the current "
@@ -2769,7 +2769,7 @@ common misunderstanding.
 	Problems::issue_problem_end();
 
 @<Issue PM_ActivityWithFor problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityWithFor));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityWithFor));
 	@<Issue the generic unknown wording message@>;
 	Problems::issue_problem_segment(
 		"%PWere you by any chance meaning to refer to an activity by name, "
@@ -2778,7 +2778,7 @@ common misunderstanding.
 	Problems::issue_problem_end();
 
 @<Issue PM_Unknown problem@> =
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_Unknown));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_Unknown));
 	@<Issue the generic unknown wording message@>;
 	Problems::issue_problem_end();
 
@@ -2919,7 +2919,7 @@ action value, which is a specific action.
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(p));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionNotSpecific));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionNotSpecific));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is too vague to describe a specific action. "
 				"%PIt has to be an exact instruction about what is being done, and "
@@ -2932,7 +2932,7 @@ action value, which is a specific action.
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(p));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionTooSpecific));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionTooSpecific));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' imposes too many restrictions on the "
 				"action to be carried out, by saying something about the "
@@ -3017,7 +3017,7 @@ it to a constant value, using the "description of..." constructor.
 	THIS_IS_AN_INTERESTING_PROBLEM {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(p));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadQuantifierInDescription));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadQuantifierInDescription));
 		Problems::issue_problem_segment(
 			"In %1 you wrote the description '%2' in the context of a value, "
 			"but descriptions used that way are not allowed to talk about "
@@ -3039,7 +3039,7 @@ defined a phrase for only one case:
 		Problems::quote_wording(2, Node::get_text(p));
 		Problems::quote_kind(3, K);
 		Problems::quote_kind(4, domain);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"In the line %1, the text '%2' seems to be a description of %3, but "
 			"a description of %4 was required.");
@@ -3056,7 +3056,7 @@ any universal quantifier ("all", etc.) is removed.
 	THIS_IS_AN_ORDINARY_PROBLEM;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(p));
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"In the line %1, the text '%2' is given where a description of a collection "
 		"of things or values was required. For instance, 'rooms which contain "
@@ -3078,7 +3078,7 @@ have made an understandable confusion.
 			THIS_IS_AN_ORDINARY_PROBLEM;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(p));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* screened out at definition time */
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* screened out at definition time */
 			Problems::issue_problem_segment(
 				"In the line %1, '%2' ought to be a value, but isn't - there must be "
 				"something fishy about the way it was created. %P"
@@ -3154,14 +3154,14 @@ it says the value has the wrong kind.
 	if (Node::is(p, LOCAL_VARIABLE_NT)) {
 		local_variable *lvar = Node::get_constant_local_variable(p);
 		Problems::quote_kind(4, LocalVariables::kind(lvar));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LocalMismatch));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LocalMismatch));
 		Problems::issue_problem_segment(
 			"You wrote %1, but '%2' is a temporary name for %4 (created by 'let' "
 			"or 'repeat'), whereas I was expecting to find %3 there.");
 		Problems::issue_problem_end();
 	} else if (Kinds::Compare::eq(kind_expected, K_sayable_value)) {
 		Problems::quote_kind(4, Specifications::to_kind(p));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_AllSayInvsFailed));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AllSayInvsFailed));
 		if (Wordings::empty(Node::get_text(p)))
 			Problems::issue_problem_segment(
 				"You wrote %1, but that only works for sayable values, that is, "
@@ -3177,7 +3177,7 @@ it says the value has the wrong kind.
 		LOG("Found: $u; Expected: $u\n", Specifications::to_kind(p),
 			kind_expected);
 		Problems::quote_kind(4, Specifications::to_kind(p));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TypeMismatch));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TypeMismatch));
 		if (Wordings::empty(Node::get_text(p)))
 			Problems::issue_problem_segment(
 				"You wrote %1, but that has the wrong kind of value: %4 rather than %3.");
@@ -3213,7 +3213,7 @@ same species as well.
 			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_kind(3, kind_expected);
 			Problems::quote_kind_of(4, p);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GenericDescription));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GenericDescription));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is used in a context where I'd expect to see "
 				"a (single) specific example of %3. Although what you wrote did "
@@ -3227,7 +3227,7 @@ same species as well.
 			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_kind(3, kind_expected);
 			Problems::quote_kind_of(4, p);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_LiteralDescriptionAsValue));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LiteralDescriptionAsValue));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is used in a context where I'd expect to see "
 				"a (single) specific example of %3, not a description.");
@@ -3252,7 +3252,7 @@ resorts when it has nothing more specific to say.
 	Problems::quote_wording(2, Node::get_text(p));
 	Problems::quote_kind(3, kind_expected);
 	Problems::quote_kind_of(4, p);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* at any rate I haven't seen it lately */
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* at any rate I haven't seen it lately */
 	Problems::issue_problem_segment(
 		"You wrote %1, but '%2' seems to be %4, whereas I was expecting to "
 		"find %3 there.");

@@ -1,4 +1,4 @@
-[Problems::Buffer::] Problems, Level 1.
+[ProblemBuffer::] Problems, Level 1.
 
 To render problem messages either as plain text or HTML, and write
 them out to files.
@@ -10,7 +10,7 @@ it in a single text stream:
 =
 text_stream *PBUFF = NULL;
 
-void Problems::Buffer::clear(void) {
+void ProblemBuffer::clear(void) {
 	if (PBUFF == NULL) PBUFF = Str::new();
 	else Str::clear(PBUFF);
 }
@@ -29,7 +29,7 @@ any sentence in one go:
 @d QUOTATION_TOLERANCE_LIMIT 100
 
 =
-void Problems::Buffer::copy_text_into_problem_buffer(wording W) {
+void ProblemBuffer::copy_text(wording W) {
 	W = Wordings::truncate(W, QUOTATION_TOLERANCE_LIMIT);
 	WRITE_TO(PBUFF, "%<W", W);
 }
@@ -39,7 +39,8 @@ void Problems::Buffer::copy_text_into_problem_buffer(wording W) {
 =
 parse_node *redirected_sentence = NULL;
 parse_node *redirected_to_A = NULL, *redirected_to_B = NULL;
-void Problems::Buffer::redirect_problem_sentence(parse_node *from, parse_node *A, parse_node *B) {
+void ProblemBuffer::redirect_problem_sentence(parse_node *from,
+	parse_node *A, parse_node *B) {
 	redirected_sentence = from; redirected_to_A = A; redirected_to_B = B;
 }
 
@@ -50,13 +51,12 @@ mask out angle brackets which we don't want to interpret as HTML:
 @d PROTECTED_GT_CHAR L'\x02'
 
 =
-void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
+void ProblemBuffer::copy_source_reference(wording W) {
 	if (Wordings::empty(W)) { WRITE_TO(PBUFF, "<no text>"); return; }
 	source_file *referred = Lexer::file_of_origin(Wordings::first_wn(W));
 	TEMPORARY_TEXT(file);
 	if (referred) {
 		WRITE_TO(file, "%f", TextFromFiles::get_filename(referred));
-		#ifdef HTML_MODULE
 		pathname *proj = HTML::get_link_abbreviation_path();
 		if (proj) {
 			TEMPORARY_TEXT(project_prefix);
@@ -64,25 +64,14 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 			if (Str::prefix_eq(file, project_prefix, Str::len(project_prefix)))
 				Str::delete_n_characters(file, Str::len(project_prefix));
 		}
-		#endif
 	} else {
 		WRITE_TO(file, "(no file)");
 	}
 	WRITE_TO(PBUFF, "'");
-	Problems::Buffer::copy_text_into_problem_buffer(W);
+	ProblemBuffer::copy_text(W);
 	text_stream *paraphrase = file;
-	#ifdef SUPERVISOR_MODULE
-	paraphrase = I"source text";
-	inform_extension *E = Extensions::corresponding_to(referred);
-	if (E) {
-		inbuild_work *work = E->as_copy->edition->work;
-		if ((work) && (Works::is_standard_rules(work)))
-			paraphrase = I"the Standard Rules";
-		else if ((work) && (Works::is_basic_inform(work)))
-			paraphrase = I"Basic Inform";
-		else
-			paraphrase = file;
-	}
+	#ifdef DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK
+	paraphrase = DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK(paraphrase, referred, file);
 	#endif
 	WRITE_TO(PBUFF, "' %c%S%c%S%c%d%c",
 		SOURCE_REF_CHAR, paraphrase,
@@ -94,10 +83,10 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 		(redirected_to_B) &&
 		(Wordings::eq(Node::get_text(redirected_sentence), W))) {
 		WRITE_TO(PBUFF, " (which asserts that ");
-		Problems::Buffer::copy_source_reference_into_problem_buffer(
+		ProblemBuffer::copy_source_reference(
 			Node::get_text(redirected_to_A));
 		WRITE_TO(PBUFF, " is/are ");
-		Problems::Buffer::copy_source_reference_into_problem_buffer(
+		ProblemBuffer::copy_source_reference(
 			Node::get_text(redirected_to_B));
 		WRITE_TO(PBUFF, ")");
 	}
@@ -106,7 +95,7 @@ void Problems::Buffer::copy_source_reference_into_problem_buffer(wording W) {
 
 @ Once the error message is fully constructed, we will want to output it
 to a file: in fact, by default it will go in three directions, to
-|stderr|, to the debugging log and of course to the error log. The main
+|stderr|, to the debugging log and of course to the problems file. The main
 thing is to word-wrap it, since it is likely to be a paragraph-sized
 chunk of text, not a single line. The unprintable |SOURCE_REF_CHAR| and
 |FORCE_NEW_PARA_CHAR| are simply filtered out for plain text output: for
@@ -115,18 +104,13 @@ HTML, they are dealt with elsewhere.
 =
 int problem_count_at_last_in = 1;
 text_stream problems_file_struct; /* The actual report of Problems file */
-text_stream *problems_file = &problems_file_struct; /* The actual report of Problems file */
-
-text_stream *probl = NULL; /* Current destination of problem message text */
-
-int it_is_not_worth_adding = FALSE; /* To suppress the "It may be worth adding..." */
-
+text_stream *problems_file = &problems_file_struct; /* As a |text_sream *| */
 
 #ifndef PROBLEMS_HTML_EMITTER
 #define PROBLEMS_HTML_EMITTER PUT_TO
 #endif
 
-void Problems::Buffer::output_problem_buffer_to(OUTPUT_STREAM, int indentation) {
+void ProblemBuffer::output_problem_buffer_to(OUTPUT_STREAM, int indentation) {
 	int line_width = 0, html_flag = FALSE;
 	if (OUT == problems_file) html_flag = TRUE;
 	for (int k=0; k<indentation; k++) { WRITE("  "); line_width+=2; }
@@ -231,10 +215,12 @@ and Windows caused by the slashes going the wrong way, and so on.
 
 @<Issue plain text paraphrase of source reference@> =
 	WRITE("("); line_width++;
-	while (Str::get_at(PBUFF, ++i) != SOURCE_REF_CHAR) @<Output single character of problem message@>;
+	while (Str::get_at(PBUFF, ++i) != SOURCE_REF_CHAR)
+		@<Output single character of problem message@>;
 	while (Str::get_at(PBUFF, ++i) != SOURCE_REF_CHAR) ;
 	WRITE(", line "); line_width += 7;
-	while (Str::get_at(PBUFF, ++i) != SOURCE_REF_CHAR) @<Output single character of problem message@>;
+	while (Str::get_at(PBUFF, ++i) != SOURCE_REF_CHAR)
+		@<Output single character of problem message@>;
 	WRITE(")"); line_width++;
 
 @<Output single character of problem message@> =
@@ -270,31 +256,54 @@ after the sequence of whitespace.
 		WRITE(" "); line_width++;
 	}
 
-@ The following handles the three-way distribution of problems, but also
-allows us to route individual messages to only one output of our choice by
-temporarily setting the |probl| variable: which is a convenience for
-informational messages such as appear in index files, for instance.
+@ The following allows us to route individual messages to only one output of
+our choice.
 
 =
-void Problems::Buffer::redirect_problem_stream(text_stream *S) {
-	probl = S;
+text_stream *redirected_problem_text = NULL; /* Current destination of problem message text */
+void ProblemBuffer::redirect_problem_stream(text_stream *S) {
+	redirected_problem_text = S;
 }
 
 int telemetry_recording = FALSE;
 
-void Problems::Buffer::output_problem_buffer(int indentation) {
-	if (probl == NULL) {
-		Problems::Buffer::output_problem_buffer_to(problems_file, indentation);
+void ProblemBuffer::output_problem_buffer(int indentation) {
+	if (redirected_problem_text == NULL) {
+		ProblemBuffer::output_problem_buffer_to(problems_file, indentation);
 		WRITE_TO(problems_file, "\n");
-		Problems::Buffer::output_problem_buffer_to(STDERR, indentation);
+		ProblemBuffer::output_problem_buffer_to(STDERR, indentation);
 		STREAM_FLUSH(STDERR);
 		WRITE_TO(DL, "\n");
-		Problems::Buffer::output_problem_buffer_to(DL, indentation);
+		ProblemBuffer::output_problem_buffer_to(DL, indentation);
 		WRITE_TO(DL, "\n");
 		if (telemetry_recording) {
 			WRITE_TO(telmy, "\n");
-			Problems::Buffer::output_problem_buffer_to(telmy, indentation);
+			ProblemBuffer::output_problem_buffer_to(telmy, indentation);
 			WRITE_TO(telmy, "\n");
 		}
-	} else Problems::Buffer::output_problem_buffer_to(probl, indentation);
+	} else ProblemBuffer::output_problem_buffer_to(redirected_problem_text, indentation);
+}
+
+@h Problems report and index.
+That gives us enough infrastructure to produce the final report. Note the use
+of error redirection to in order to put pseudo-problem messages -- actually
+informational -- into the report. In the case where the run was successful and
+there we no Problem messages, we have to be careful to reset |problem_count|
+-- it will have been increased by the issuing of these pseudo-problems, and we
+need it to remain 0 so that |main()| can finally return back to the operating
+system without an error code.
+
+=
+int tail_of_report_written = FALSE;
+void ProblemBuffer::write_reports(int disaster_struck) {
+	if (tail_of_report_written) return;
+	tail_of_report_written = TRUE;
+
+	crash_on_all_problems = FALSE;
+	#ifdef INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK
+	int pc = problem_count;
+	INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK(disaster_struck, problem_count);
+	problem_count = pc;
+	#endif
+	HTML::end_body(problems_file);
 }

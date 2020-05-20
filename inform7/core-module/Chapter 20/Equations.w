@@ -193,7 +193,7 @@ We know that this begins with the word "equation", or we wouldn't be here
 
 @<Issue PM_EquationMisnumbered problem@> =
 	*X = 0;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EquationMisnumbered),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EquationMisnumbered),
 		"the top line of this equation declaration seems not to be a "
 		"legal equation number or name",
 		"and should read something like 'Equation 6', or 'Equation - "
@@ -239,7 +239,7 @@ could be referred to elsewhere in the text by any of three names:
 	if (Wordings::nonempty(NA)) {
 		if (<s-type-expression-or-value>(NA)) {
 			Problems::quote_wording_as_source(1, NA);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationMisnamed));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EquationMisnamed));
 			Problems::issue_problem_segment(
 				"The equation name %1 will have to be disallowed as it is text "
 				"which already has a meaning to Inform. For instance, creating "
@@ -326,7 +326,7 @@ int Equations::eqn_declare_symbols(equation *eqn) {
 		for (equation_symbol *ev = eqn->symbol_list; ev; ev = ev->next)
 			if (ev->var_kind == NULL) {
 				if (ev->next == NULL) {
-					Problems::Issue::equation_symbol_problem(_p_(BelievedImpossible),
+					StandardProblems::equation_symbol_problem(_p_(BelievedImpossible),
 						eqn, eqn->where_text,
 						"each symbol in a equation has to be declared with a kind of "
 						"value or else an actual value. So '...where N = 1701.' or "
@@ -402,14 +402,14 @@ mass, too.
 @<Issue PM_EquationSymbolNonValue problem@> =
 	*X = EQW_IDENTIFIES_PROBLEM;
 	if (!preform_lookahead_mode)
-	Problems::Issue::equation_symbol_problem(_p_(PM_EquationSymbolNonValue),
+	StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolNonValue),
 		equation_being_declared, Wordings::one_word(R[1]),
 		"this has neither a kind of value nor an actual value.");
 
 @<Issue PM_EquationSymbolEqualsKOV problem@> =
 	*X = EQW_IDENTIFIES_PROBLEM;
 	if (!preform_lookahead_mode)
-	Problems::Issue::equation_symbol_problem(_p_(PM_EquationSymbolEqualsKOV),
+	StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolEqualsKOV),
 		equation_being_declared, Wordings::one_word(R[1]),
 		"'is' should be used, not '=', for a kind of value rather "
 		"than an actual value.");
@@ -417,7 +417,7 @@ mass, too.
 @<Issue PM_EquationSymbolMalformed problem@> =
 	*X = -1;
 	if (!preform_lookahead_mode)
-	Problems::Issue::equation_symbol_problem(_p_(PM_EquationSymbolMalformed),
+	StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolMalformed),
 		equation_being_declared, W,
 		"a symbol in a equation has to be a sequence of one to ten "
 		"letters optionally followed by a number from 0 to 99, so "
@@ -427,7 +427,7 @@ mass, too.
 @<Issue PM_EquationSymbolMisdeclared problem@> =
 	*X = -1;
 	if (!preform_lookahead_mode)
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EquationSymbolMisdeclared),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EquationSymbolMisdeclared),
 		"the symbols here are not declared properly",
 		"and should each be declared with a kind of value or else an "
 		"actual value.");
@@ -480,7 +480,7 @@ still using it in equations:
 	if (X == EQW_IDENTIFIES_KIND) {
 		K = XP;
 		if (temp) {
-			Problems::Issue::equation_symbol_problem(_p_(PM_EquationSymbolVague), eqn, W,
+			StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolVague), eqn, W,
 				"when an equation is named for use in a 'let' "
 				"phrase, any variables listed under 'where...' have "
 				"to be given definite values, not just vaguely said "
@@ -494,7 +494,7 @@ still using it in equations:
 		K = Specifications::to_kind(spec);
 	}
 	if ((K) && (Kinds::Behaviour::is_quasinumerical(K) == FALSE)) {
-		Problems::Issue::equation_symbol_problem(_p_(PM_EquationSymbolNonNumeric), eqn, W,
+		StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolNonNumeric), eqn, W,
 			"this has a kind of value on which arithmetic cannot be done, "
 			"so it can have no place in an equation.");
 		return FALSE;
@@ -508,7 +508,7 @@ of the symbols:
 	for (equation_symbol *ev = eqn->symbol_list; ev; ev = ev->next)
 		if (Wordings::match_cs(W, ev->name)) {
 			if (Kinds::Compare::eq(K, ev->var_kind) == FALSE) {
-				Problems::Issue::equation_symbol_problem(_p_(PM_EquationSymbolBadSub), eqn, W,
+				StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolBadSub), eqn, W,
 					"you're using 'where' to substitute something into this "
 					"symbol which has the wrong kind of value.");
 			}
@@ -516,7 +516,7 @@ of the symbols:
 			ev->var_const = spec;
 			return TRUE;
 		}
-	Problems::Issue::equation_symbol_problem(_p_(PM_EquationSymbolSpurious), eqn, W,
+	StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolSpurious), eqn, W,
 		"when 'where' is used to supply values to plug into a "
 		"named equation as part of a 'let' phrase, you can only "
 		"supply values for symbols actually used in that equation. "
@@ -764,7 +764,7 @@ equation_node *Equations::eqn_parse(equation *eqn) {
 		@<Equation fails in the shift-reduce parser@>;
 	equation_node *result = Equations::enode_sr_result();
 	if (bl != 0) {
-		Problems::Issue::equation_problem(_p_(BelievedImpossible), eqn, "",
+		StandardProblems::equation_problem(_p_(BelievedImpossible), eqn, "",
 			"this seems to use brackets in a mismatched way, since there "
 			"are different numbers of left and right brackets '(' and ')'.");
 		return NULL;
@@ -804,7 +804,7 @@ allow implicit multiplication.)
 				@<Look for this symbol name@>;
 		}
 	if (token == NULL) {
-		Problems::Issue::equation_problem_S(_p_(PM_EquationTokenUnrecognised), eqn, text_of_symbol,
+		StandardProblems::equation_problem_S(_p_(PM_EquationTokenUnrecognised), eqn, text_of_symbol,
 			"the symbol '%3' is one that I don't recognise. It doesn't "
 			"seem to be declared after the equation - for instance, "
 			"by adding 'where %3 is a number'.");
@@ -825,7 +825,7 @@ capacity; and so is the number 0 itself.
 
 @<Break off a numeric constant as a token@> =
 	if ((p[i] == '0') && (Characters::isdigit(p[i+1]))) {
-		Problems::Issue::equation_problem(_p_(PM_EquationLeadingZero), eqn, "",
+		StandardProblems::equation_problem(_p_(PM_EquationLeadingZero), eqn, "",
 			"a number in an equation isn't allowed to begin with a "
 			"'0' digit, so an equation like 'M = 007+Q' is against the rules.");
 		return NULL;
@@ -840,7 +840,7 @@ capacity; and so is the number 0 itself.
 	parse_node *spec = NULL;
 	if (<s-type-expression>(NW)) spec = <<rp>>;
 	else {
-		Problems::Issue::equation_problem(_p_(BelievedImpossible), eqn, "",
+		StandardProblems::equation_problem(_p_(BelievedImpossible), eqn, "",
 			"there's a literal number in that equation which doesn't make "
 			"sense to me.");
 		return NULL;
@@ -885,7 +885,7 @@ capacity; and so is the number 0 itself.
 		default: {
 			TEMPORARY_TEXT(symbol);
 			PUT_TO(symbol, c);
-			Problems::Issue::equation_problem_S(_p_(PM_EquationOperatorUnrecognised), eqn, symbol,
+			StandardProblems::equation_problem_S(_p_(PM_EquationOperatorUnrecognised), eqn, symbol,
 				"the symbol '%3' is one that I don't recognise. I was "
 				"expecting an arithmetic sign, '+', '-', '*','/', or '^', "
 				"or else '=' or a bracket '(' or ')'.");
@@ -915,7 +915,7 @@ between; and in |log pi| we issue an |IMPLICIT_APPLICATION_OPERATION|.
 		@<Equation fails in the shift-reduce parser@>;
 	enode_count++;
 	if (enode_count >= MAX_ENODES_IN_EXPRESSION - 2) {
-		Problems::Issue::equation_problem(_p_(PM_EquationTooComplex), eqn, "",
+		StandardProblems::equation_problem(_p_(PM_EquationTooComplex), eqn, "",
 			"this is too long and complex an equation.");
 		return NULL;
 	}
@@ -925,7 +925,7 @@ messages and recover well when an operator-precedence grammar fails to match in
 a parser like this, so we'll fall back on this:
 
 @<Equation fails in the shift-reduce parser@> =
-	Problems::Issue::equation_problem(_p_(PM_EquationMispunctuated), eqn, "",
+	StandardProblems::equation_problem(_p_(PM_EquationMispunctuated), eqn, "",
 		"this seems to be wrongly punctuated, and doesn't make sense as a "
 		"mathematical formula.");
 	return NULL;
@@ -1201,13 +1201,13 @@ out first: we want the top node in the tree to be the unique |=| operator.
 int Equations::eqn_typecheck(equation *eqn) {
 	switch (Equations::enode_count_equals(eqn->parsed_equation)) {
 		case 0:
-			Problems::Issue::equation_problem(_p_(PM_EquationDoesntEquate), eqn, "",
+			StandardProblems::equation_problem(_p_(PM_EquationDoesntEquate), eqn, "",
 				"this equation doesn't seem to contain an equals sign, and "
 				"without '=' there is no equating anything with anything.");
 			return FALSE;
 		case 1:
 			if (Equations::enode_is_equals(eqn->parsed_equation) == FALSE) {
-				Problems::Issue::equation_problem(_p_(PM_EquationEquatesBadly), eqn, "",
+				StandardProblems::equation_problem(_p_(PM_EquationEquatesBadly), eqn, "",
 					"the equals sign '=' here seems to be buried inside the "
 					"formula, not at the surface. For instance, 'F = ma' is "
 					"fine, but 'F(m=a)' would not make sense - the '=' would "
@@ -1216,7 +1216,7 @@ int Equations::eqn_typecheck(equation *eqn) {
 			}
 			break;
 		default:
-			Problems::Issue::equation_problem(_p_(PM_EquationEquatesMultiply), eqn, "",
+			StandardProblems::equation_problem(_p_(PM_EquationEquatesMultiply), eqn, "",
 				"this equation seems to contain more than one equals "
 				"sign '='.");
 			return FALSE;
@@ -1307,7 +1307,7 @@ integers to reals.
 	if (Kinds::Compare::eq(L, R) == FALSE) {
 		result = FALSE;
 		LOG("Tried to equate $u and $u\n", L, R);
-		Problems::Issue::equation_problem(_p_(PM_EquationIncomparable), eqn, "",
+		StandardProblems::equation_problem(_p_(PM_EquationIncomparable), eqn, "",
 			"this equation tries to set two values equal which have "
 			"different kinds from each other.");
 	}
@@ -1347,7 +1347,7 @@ we're unable to see what equations $h^n$ can appear in.
 			kind *OPK = Kinds::FloatingPoint::underlying(tok->enode_operands[1]->gK_after);
 			RK = Kinds::Dimensions::arithmetic_on_kinds(OPK, NULL, REALROOT_OPERATION);
 			if (RK == NULL) {
-				Problems::Issue::equation_problem(_p_(PM_EquationCantRoot-G), eqn, "",
+				StandardProblems::equation_problem(_p_(PM_EquationCantRoot-G), eqn, "",
 					"the square root function 'root' can only be used on quantities "
 					"whose dimensions are themselves a square - for example, the "
 					"root of the area 100 sq m makes sense (it's 10m), but the root "
@@ -1379,7 +1379,7 @@ of dimensions; if $n=0$ then we have a dimensionless value, and choose
 		n = power->rational_n; m = power->rational_m;
 		if ((m > 1) && (real == FALSE)) {
 			result = FALSE;
-			Problems::Issue::equation_problem(_p_(PM_EquationCantPower2-G), eqn, "",
+			StandardProblems::equation_problem(_p_(PM_EquationCantPower2-G), eqn, "",
 				"except for the special cases of squaring and cubing, the '^' "
 				"raise-to-power symbol can only be used to power a value using "
 				"real rather than integer arithmetic.");
@@ -1387,7 +1387,7 @@ of dimensions; if $n=0$ then we have a dimensionless value, and choose
 	} else if ((Kinds::Compare::eq(Kinds::FloatingPoint::underlying(power->gK_after), K_number) == FALSE) ||
 		(power->eqn_type != CONSTANT_EQN)) {
 		result = FALSE;
-		Problems::Issue::equation_problem(_p_(PM_EquationDimensionPower), eqn, "",
+		StandardProblems::equation_problem(_p_(PM_EquationDimensionPower), eqn, "",
 			"the '^' raise-to-power symbol can only be used to raise a value "
 			"with dimensions to a specific number. So 'mv^2' is fine, but not "
 			"'mv^n' or 'mv^(1+n)'. (This is because I would need to work out what "
@@ -1399,7 +1399,7 @@ of dimensions; if $n=0$ then we have a dimensionless value, and choose
 	if (n >= 1) {
 		kind *K = Kinds::Dimensions::to_rational_power(F, n, m);
 		if (K == NULL)  {
-			Problems::Issue::equation_problem(_p_(BelievedImpossible), eqn, "",
+			StandardProblems::equation_problem(_p_(BelievedImpossible), eqn, "",
 				"this would involve taking a fractional power of an amount whose "
 				"dimensions are not of that power form - for example, the square "
 				"root of the area 100 sq m makes sense (it's 10m), but the square "
@@ -1477,7 +1477,7 @@ section:
 			Problems::quote_text(6, "taking the cube root of");
 			break;
 	}
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"You wrote %1, but that equation seems to involve %6 %4, which is not "
 		"good arithmetic.");
@@ -1508,7 +1508,7 @@ section:
 			Problems::quote_text(6, "combining"); Problems::quote_text(7, "with");
 			break;
 	}
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationBadArithmetic));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EquationBadArithmetic));
 	Problems::issue_problem_segment(
 		"You wrote %1, but that equation seems to involve "
 		"%6 %4 %7 %5, which is not good arithmetic.");
@@ -1610,7 +1610,7 @@ void Equations::emit_solution_inner(wording W, equation *eqn) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_wording(3, eqn->equation_text);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationBadTarget));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EquationBadTarget));
 		Problems::issue_problem_segment(
 			"In %1, you asked to let %2 be given by the equation '%3', "
 			"but '%2' isn't a symbol in that equation.");
@@ -1623,7 +1623,7 @@ void Equations::emit_solution_inner(wording W, equation *eqn) {
 		Problems::quote_wording(2, W);
 		Problems::quote_wording(3, eqn->equation_text);
 		Problems::quote_spec(4, to_solve->var_const);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationConstantTarget));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EquationConstantTarget));
 		Problems::issue_problem_segment(
 			"In %1, you asked to let %2 be given by the equation '%3', "
 			"but '%2' isn't something which can vary freely in that equation - "
@@ -1645,7 +1645,7 @@ potentially incorrect. Re-typechecking will recalculate these.
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_wording(3, eqn->equation_text);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationInsoluble));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EquationInsoluble));
 		Problems::issue_problem_segment(
 			"In %1, you asked to let %2 be given by the equation '%3', "
 			"but I am unable to rearrange the equation in any simple way "
@@ -1690,7 +1690,7 @@ need to exist as local variables in the current stack frame.
 	Problems::quote_wording(2, W);
 	Problems::quote_wording(3, eqn->equation_text);
 	Problems::quote_wording(4, ev->name);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationSymbolMissing));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EquationSymbolMissing));
 	Problems::issue_problem_segment(
 		"In %1, you asked to let %2 be given by the equation '%3', "
 		"but I can't see what to use for '%4'. The usual idea is "
@@ -1727,7 +1727,7 @@ casting between quasinumerical kinds, we'll have to return to this.)
 		Problems::quote_wording(4, ev->name);
 		Problems::quote_kind(5, K);
 		Problems::quote_kind(6, ev->var_kind);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_EquationSymbolWrongKOV));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_EquationSymbolWrongKOV));
 		Problems::issue_problem_segment(
 			"In %1, you asked to let %2 be given by the equation '%3', "
 			"but in that equation '%4' is supposedly %6 - whereas right "
@@ -1797,7 +1797,7 @@ void Equations::enode_compile_by_emission(equation *eqn, equation_node *tok) {
 void Equations::enode_compilation_error(equation *eqn, equation_node *tok) {
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, eqn->equation_text);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HardIntegerRoot));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HardIntegerRoot));
 	Problems::issue_problem_segment(
 		"In %1, you asked me to solve the equation '%2', but that would have "
 		"involved taking a tricky root of a whole number. Using real numbers "

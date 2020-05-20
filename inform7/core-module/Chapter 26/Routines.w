@@ -182,7 +182,7 @@ after the call parameters, and is used only as a scratch variable.
 	Produce::up(Emit::tree());
 
 @<Issue a problem for too many locals@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyLocals),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyLocals),
 		"there are too many temporarily-named values in this phrase",
 		"which may be a sign that it is complicated enough to need breaking up "
 		"into smaller phrases making use of each other. "

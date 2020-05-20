@@ -41,7 +41,7 @@ property *Properties::Valued::obtain_within_kind(wording W, kind *K) {
 }
 
 @<Issue an incompatible property kind message@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadKOVForRelationProperty),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadKOVForRelationProperty),
 		"that property already exists and contains a kind of value incompatible with "
 		"what we need here",
 		"so you will need to give it a different name.");
@@ -122,7 +122,7 @@ void Properties::Valued::set_kind(property *prn, kind *K) {
 	if ((Kinds::Behaviour::definite(K) == FALSE) && (prn->do_not_compile == FALSE)) {
 		Problems::quote_wording(1, prn->name);
 		Problems::quote_kind(2, K);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyIndefinite));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyIndefinite));
 		if (current_sentence) {
 			Problems::quote_source(3, current_sentence);
 			Problems::issue_problem_segment(
@@ -241,7 +241,7 @@ void Properties::Valued::compile_default_value(value_holster *VH, property *prn)
 	current_sentence = NULL;
 	if (Kinds::RunTime::compile_default_value_vh(VH, K, prn->name, "property") == FALSE) {
 		Problems::quote_wording(1, prn->name);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyUninitialisable));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyUninitialisable));
 		Problems::issue_problem_segment(
 			"I am unable to put any value into the property '%1', because "
 			"it seems to have a kind of value which has no actual values.");

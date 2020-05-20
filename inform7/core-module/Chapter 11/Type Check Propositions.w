@@ -190,7 +190,7 @@ but it's a very subtle one, and we want to use it only when everything else
 				LOG("Rejecting as unarticled\n");
 			if (tck->issue_error == FALSE) return NEVER_MATCH;
 			Problems::quote_source(1, current_sentence);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BareKindVariable));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BareKindVariable));
 			Problems::issue_problem_segment(
 				"The sentence %1 seems to use a kind variable by its letter "
 				"alone in the context of a noun, which Inform doesn't allow. "
@@ -232,7 +232,7 @@ problem message has already been issued, but just in case not...
 		if (tck->issue_error == FALSE) return NEVER_MATCH;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(spec));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"The sentence %1 seems to contain a value '%2' which I can't make "
 			"any sense of.");
@@ -316,7 +316,7 @@ would work instead. If it would, we make the change within the proposition.
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is $u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
-		Problems::Issue::tcp_problem(_p_(PM_EverywhereMisapplied), tck,
+		StandardProblems::tcp_problem(_p_(PM_EverywhereMisapplied), tck,
 			"that seems to say that a value - specifically, %4 - is everywhere. "
 			"To Inform, everywhere means 'in every room', and only objects "
 			"can be everywhere - in fact not even all of those, as it's a "
@@ -331,7 +331,7 @@ would work instead. If it would, we make the change within the proposition.
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is $u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
-		Problems::Issue::tcp_problem(_p_(PM_NowhereMisapplied), tck,
+		StandardProblems::tcp_problem(_p_(PM_NowhereMisapplied), tck,
 			"that seems to say that a value - specifically, %4 - is nowhere. "
 			"To Inform, nowhere means 'in no room', and only things can be "
 			"nowhere. (For instance, 'Godot is nowhere.' is allowed - it means "
@@ -348,7 +348,7 @@ apply |HERE| incorrectly, but just in case:
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is $u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
-		Problems::Issue::tcp_problem(_p_(BelievedImpossible), tck,
+		StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
 			"that seems to say that a value - specifically, %4 - is here. "
 			"To Inform, here means 'in the room we're talking about', so only "
 			"objects can be 'here'.");
@@ -447,7 +447,7 @@ int Calculus::Propositions::Checker::type_check_unary_predicate(pcalc_prop *pl, 
 			LOG("Adjective '%W' undefined on $u\n", W, K);
 		Problems::quote_wording(4, W);
 		Problems::quote_kind(5, K);
-		Problems::Issue::tcp_problem(_p_(PM_AdjectiveMisapplied), tck,
+		StandardProblems::tcp_problem(_p_(PM_AdjectiveMisapplied), tck,
 			"that seems to involve applying the adjective '%4' to %5 - and I "
 			"have no definition of it which would apply in that situation. "
 			"(Try looking it up in the Lexicon part of the Phrasebook index "
@@ -501,7 +501,7 @@ int Calculus::Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl,
 				LOG("($u, $u) failed in $2\n", kinds_of_terms[0], kinds_of_terms[1], bp);
 				Problems::quote_kind(4, kinds_of_terms[0]);
 				Problems::quote_kind(5, kinds_of_terms[1]);
-				Problems::Issue::tcp_problem(_p_(PM_ComparisonFailed), tck,
+				StandardProblems::tcp_problem(_p_(PM_ComparisonFailed), tck,
 					"that would mean comparing two kinds of value which cannot mix - "
 					"%4 and %5 - so this must be incorrect.");
 			}
@@ -534,7 +534,7 @@ produce a |kinds_required| which is |NULL|.
 @<Adapt to the universal relation@> =
 	if (Kinds::get_construct(kinds_of_terms[0]) != CON_relation) {
 		Problems::quote_kind(4, kinds_of_terms[0]);
-		Problems::Issue::tcp_problem(_p_(PM_BadUniversal1), tck,
+		StandardProblems::tcp_problem(_p_(PM_BadUniversal1), tck,
 			"that asks whether something relates something, and in Inform 'to relate' "
 			"means that a particular relation applies between two things. Here, though, "
 			"we have %4 rather than the name of a relation.");
@@ -542,7 +542,7 @@ produce a |kinds_required| which is |NULL|.
 	}
 	if (Kinds::get_construct(kinds_of_terms[1]) != CON_combination) {
 		Problems::quote_kind(4, kinds_of_terms[1]);
-		Problems::Issue::tcp_problem(_p_(BelievedImpossible), tck,
+		StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
 			"that asks whether something relates something, and in Inform 'to relate' "
 			"means that a particular relation applies between two things. Here, though, "
 			"we have %4 rather than the combination of the two things.");
@@ -582,7 +582,7 @@ void Calculus::Propositions::Checker::issue_bp_typecheck_error(binary_predicate 
 	Problems::quote_kind(4, t0);
 	Problems::quote_kind(5, t1);
 	Problems::quote_relation(6, bp);
-	Problems::Issue::tcp_problem(_p_(PM_TypeCheckBP2), tck,
+	StandardProblems::tcp_problem(_p_(PM_TypeCheckBP2), tck,
 		"that would mean applying %6 to kinds of value which do not "
 		"fit - %4 and %5 - so this must be incorrect.");
 }
@@ -596,10 +596,10 @@ void Calculus::Propositions::Checker::issue_kind_typecheck_error(kind *actually_
 	Problems::quote_kind(5, need_to_find);
 	if (bp) {
 		Problems::quote_relation(6, bp);
-		Problems::Issue::tcp_problem(_p_(PM_TypeCheckBP2a), tck,
+		StandardProblems::tcp_problem(_p_(PM_TypeCheckBP2a), tck,
 			"that doesn't work because you use %6 with %4 instead of %5.");
 	} else {
-		Problems::Issue::tcp_problem(_p_(PM_TypeCheckKind), tck,
+		StandardProblems::tcp_problem(_p_(PM_TypeCheckKind), tck,
 			"%4 cannot be %5, so this must be incorrect.");
 	}
 }

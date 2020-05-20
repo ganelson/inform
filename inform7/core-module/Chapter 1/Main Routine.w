@@ -36,7 +36,7 @@ int CoreMain::main(int argc, char *argv[]) {
 
 	@<Post mortem logging@>;
 	if (proceed) @<Shutdown and rennab@>;
-	if (problem_count > 0) Problems::Fatal::exit(1);
+	if (problem_count > 0) ProblemSigils::exit(1);
 	return 0;
 }
 
@@ -46,7 +46,7 @@ problems report) rather than simply causing an abrupt exit with only a
 plain text error written to |stderr|. See the |problems| module for more.
 
 @<Banner and startup@> =
-	Errors::set_internal_handler(&Problems::Issue::internal_error_fn);
+	Errors::set_internal_handler(&StandardProblems::internal_error_fn);
 	PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
 	Plugins::Manage::start();
 	inform7_timer = Time::start_stopwatch(NULL, I"inform7 run");
@@ -60,7 +60,7 @@ isn't set up to allow more, so this error is not easy to generate.
 	inform_project *proj;
 	LOOP_OVER(proj, inform_project) {
 		if (project) 
-			Problems::Fatal::issue(
+			Problems::fatal(
 				"Multiple projects given on the command line");
 		project = proj;
 	}
@@ -74,7 +74,7 @@ but we won't assume that. Remember, //supervisor// knows best.
 @<Open the debugging log and the problems report@> =
 	pathname *build_folder = Projects::build_path(project);
 	if (Pathnames::create_in_file_system(build_folder) == 0)
-		Problems::Fatal::issue(
+		Problems::fatal(
 			"Unable to create Build folder for project: is it read-only?");
 
 	filename *DF = Filenames::in(build_folder, I"Debug log.txt");
@@ -86,7 +86,7 @@ but we won't assume that. Remember, //supervisor// knows best.
 	CommandLine::play_back_log();
 
 	filename *PF = Filenames::in(build_folder, I"Problems.html");
-	Problems::Issue::start_problems_report(PF);
+	StandardProblems::start_problems_report(PF);
 
 	HTML::set_link_abbreviation_path(Projects::path(project));
 
@@ -155,7 +155,7 @@ they can be rather lengthy.
 	}
 
 @<Shutdown and rennab@> =
-	Problems::write_reports(FALSE);
+	ProblemBuffer::write_reports(FALSE);
 	LOG("Total of %d files written as streams.\n", total_file_writes);
 	Writers::log_escape_usage();
 	WRITE_TO(STDOUT, "Inform 7 has finished.\n");
@@ -253,12 +253,12 @@ int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line
 void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case CRASHALL_CLSW: debugger_mode = val;
-			Problems::Fatal::crash_on_problems(val); break;
+			ProblemSigils::crash_on_problems(val); break;
 		case INDEX_CLSW: do_not_generate_index = val?FALSE:TRUE; break;
 		case CENSUS_UPDATE_CLSW: do_not_update_census = val?FALSE:TRUE; break;
 		case PROGRESS_CLSW: show_progress_indicator = val; break;
-		case SIGILS_CLSW: Problems::Fatal::echo_sigils(val); break;
-		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
+		case SIGILS_CLSW: ProblemSigils::echo_sigils(val); break;
+		case REQUIRE_PROBLEM_CLSW: ProblemSigils::require(arg); break;
 		case DIAGNOSTICS_CLSW: diagnostics_path = Pathnames::from_text(arg); break;
 	}
 	Supervisor::option(id, val, arg, state);

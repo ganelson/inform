@@ -196,12 +196,12 @@ int PL::Backdrops::backdrops_intervene_in_assertion(parse_node *px, parse_node *
 		(<notable-backdrops-noun-phrases>(Node::get_text(py)))) {
 		inference_subject *left_subject = Node::get_subject(px);
 		if (left_subject == NULL)
-			Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_ValueEverywhere),
+			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ValueEverywhere),
 				"'everywhere' can only be used to place individual backdrops",
 				"so although 'The mist is a backdrop. The mist is everywhere.' "
 				"would be fine, 'Corruption is everywhere.' would not.");
 		else if (InferenceSubjects::domain(left_subject))
-			Problems::Issue::subject_problem_at_sentence(_p_(PM_KindOfBackdropEverywhere),
+			StandardProblems::subject_problem_at_sentence(_p_(PM_KindOfBackdropEverywhere),
 				left_subject,
 				"seems to be said to be 'everywhere' in some way",
 				"which doesn't make sense. An individual backdrop can be 'everywhere', "
@@ -220,7 +220,7 @@ been asserted true:
 =
 void PL::Backdrops::infer_presence_everywhere(instance *I) {
 	if ((I == NULL) || (Instances::of_kind(I, K_backdrop) == FALSE)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EverywhereNonBackdrop),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EverywhereNonBackdrop),
 			"only a backdrop can be everywhere",
 			"and no other kind of object will do. For instance, 'The sky is "
 			"a backdrop which is everywhere.' is allowed, but 'The travelator "

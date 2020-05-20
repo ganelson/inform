@@ -119,7 +119,7 @@ void Tables::Columns::set_kind(table_column *tc, table *t, kind *K) {
 	Problems::quote_kind(4, K);
 	Problems::quote_kind(5, K);
 	Problems::quote_table(6, t);
-	Problems::Issue::table_problem(_p_(PM_TableColumnDescription),
+	StandardProblems::table_problem(_p_(PM_TableColumnDescription),
 		t, tc, NULL,
 		"In %1, you've written the heading of the column '%2' to say that each entry "
 		"should be %4. But descriptions aren't allowed as table entries - tables "
@@ -192,7 +192,7 @@ table_column_usage Tables::Columns::add_to_table(wording W, table *t) {
 	for (int i=0; i<t->no_columns; i++)
 		if (t->columns[i].column_identity == tc) {
 			Problems::quote_wording(4, W);
-			Problems::Issue::table_problem(_p_(PM_DuplicateColumnName),
+			StandardProblems::table_problem(_p_(PM_DuplicateColumnName),
 				t, NULL, NULL,
 				"In %1, the column name %4 cannot be used, because there's already "
 				"a column of the same name. (You can't have two columns with the "
@@ -247,7 +247,7 @@ what looks like text into grammar for parsing.
 @<Issue PM_TableColumnArticle problem@> =
 	*X = NEW_TC_PROBLEM;
 	Problems::quote_wording(4, W);
-	Problems::Issue::table_problem(_p_(PM_TableColumnArticle),
+	StandardProblems::table_problem(_p_(PM_TableColumnArticle),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because there would be too "
 		"much ambiguity arising from its ordinary meaning as an article. (It "
@@ -255,14 +255,14 @@ what looks like text into grammar for parsing.
 
 @<Issue PM_TableColumnAlready problem@> =
 	*X = NEW_TC_PROBLEM;
-	Problems::Issue::table_problem(_p_(PM_TableColumnAlready),
+	StandardProblems::table_problem(_p_(PM_TableColumnAlready),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because it already means "
 		"something else.");
 
 @<Issue PM_TableColumnBracketed problem@> =
 	*X = NEW_TC_PROBLEM;
-	Problems::Issue::table_problem(_p_(PM_TableColumnBracketed),
+	StandardProblems::table_problem(_p_(PM_TableColumnBracketed),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because it is in brackets. "
 		"(Perhaps you intended to use the brackets to give the kind of the "
@@ -347,7 +347,7 @@ void Tables::Columns::check_explicit_headings(table *t, int i, table_column_usag
 	Problems::quote_kind(4, EK);
 	Problems::quote_kind(5, K);
 	Problems::quote_table(6, tcu->column_identity->table_from_which_kind_inferred);
-	Problems::Issue::table_problem(_p_(PM_TableColumnInconsistent),
+	StandardProblems::table_problem(_p_(PM_TableColumnInconsistent),
 		t, tcu->column_identity, tcu->entries,
 		"In %1, you've written the heading of the column %3 to say that each entry "
 		"should be %4. But a column with the same name also appears in %6, and each "
@@ -355,7 +355,7 @@ void Tables::Columns::check_explicit_headings(table *t, int i, table_column_usag
 		"has to have the same kind of entry, whichever tables it appears in.");
 
 @<Issue a problem message for an incomprehensible column heading@> =
-	Problems::Issue::table_problem(_p_(PM_TableColumnBrackets),
+	StandardProblems::table_problem(_p_(PM_TableColumnBrackets),
 		t, tcu->column_identity, tcu->entries,
 		"In %1, I can't use the column heading %3. Brackets are only allowed in "
 		"table column names when giving the kind of value which will be stored in "
@@ -422,7 +422,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 	Problems::quote_number(4, &quoted_col);
 	Problems::quote_number(5, &table_cell_row);
 	Problems::quote_source(6, tcu->observed_constant_cell);
-	Problems::Issue::table_problem(_p_(PM_TableKindBelowValue),
+	StandardProblems::table_problem(_p_(PM_TableKindBelowValue),
 		t, tcu->column_identity, cell,
 		"In %1, column %4 (%2), the entry %3 (row %5) is the name of a kind. "
 		"This isn't a specific value. You're allowed to write in the name "
@@ -438,7 +438,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 	Problems::quote_number(4, &quoted_col);
 	Problems::quote_number(5, &table_cell_row);
 	Problems::quote_source(6, tcu->observed_kind_cell);
-	Problems::Issue::table_problem(_p_(PM_TableKindTwice),
+	StandardProblems::table_problem(_p_(PM_TableKindTwice),
 		t, tcu->column_identity, cell,
 		"In %1, column %4 (%2), the entry %3 (row %5) is the name of a kind. "
 		"This isn't a specific value. You're allowed to write in the name "
@@ -451,7 +451,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 	Problems::quote_number(4, &quoted_col);
 	Problems::quote_number(5, &table_cell_row);
 	Problems::quote_source(6, tcu->observed_kind_cell);
-	Problems::Issue::table_problem(_p_(PM_TableValueBelowKind),
+	StandardProblems::table_problem(_p_(PM_TableValueBelowKind),
 		t, tcu->column_identity, cell,
 		"In %1, column %4 (%2), the entry %3 (row %5) is a genuine, non-blank "
 		"entry: it's a specific value. That's fine, of course - the whole "
@@ -467,7 +467,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 	int quoted_col = i + 1; /* i.e., counting from 1 */
 	Problems::quote_number(6, &quoted_col);
 	Problems::quote_number(7, &table_cell_row);
-	Problems::Issue::table_problem(_p_(PM_TableIncompatibleEntry),
+	StandardProblems::table_problem(_p_(PM_TableIncompatibleEntry),
 		t, tcu->column_identity, cell,
 		"In %1, column %6 (%2), the entry %3 (row %7) doesn't fit what I know "
 		"about '%2' - it's %4, whereas I think every entry ought to be %5.");
@@ -478,7 +478,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 	Problems::quote_wording(7, Nouns::nominative(tcu->column_identity->name));
 	Problems::quote_number(8, &quoted_col);
 	Problems::quote_number(9, &table_cell_row);
-	Problems::Issue::table_problem(_p_(PM_TableIncompatibleEntry2),
+	StandardProblems::table_problem(_p_(PM_TableIncompatibleEntry2),
 		t, tcu->column_identity, cell,
 		"In %1, column %8 (%2), the entry %3 (row %9) has the wrong kind to be in "
 		"the '%2' column - it's %4, whereas I think every entry ought to be %5. %P"
@@ -495,7 +495,7 @@ happens:
 	Problems::quote_wording(7, Nouns::nominative(tcu->column_identity->name));
 	Problems::quote_kind(4, K);
 	Problems::quote_kind(5, CK);
-	Problems::Issue::table_problem(_p_(PM_TableColumnIncompatible),
+	StandardProblems::table_problem(_p_(PM_TableColumnIncompatible),
 		t, tcu->column_identity, cell,
 		"In %1, the column '%2' is declared as holding %4, but when the same "
 		"column appeared in table %6, the contents were said there to be %5. %P"
@@ -512,7 +512,7 @@ void Tables::Columns::approve_kind(table *t, int i, table_column_usage *tcu) {
 		i, Nouns::nominative(tcu->column_identity->name), K, tcu->entries);
 	if ((Kinds::get_construct(K) == CON_list_of) &&
 		(Kinds::Compare::eq(Kinds::unary_construction_material(K), K_value))) {
-		Problems::Issue::table_problem(_p_(PM_TableColumnEmptyLists),
+		StandardProblems::table_problem(_p_(PM_TableColumnEmptyLists),
 			t, NULL, tcu->entries,
 			"In %1, the column %3 seems to consist only of empty lists. "
 			"This means that I can't tell what kind of value it should hold - "
@@ -526,10 +526,10 @@ void Tables::Columns::approve_kind(table *t, int i, table_column_usage *tcu) {
 	if (K == NULL) {
 		int quoted_col = i + 1; /* i.e., counting from 1 */
 		Problems::quote_number(4, &quoted_col);
-		Problems::Issue::table_problem(_p_(PM_TableKindlessColumn),
+		StandardProblems::table_problem(_p_(PM_TableKindlessColumn),
 			t, tcu->column_identity, NULL,
 			"Column %4 (%2) of %1 contains no values and doesn't tell me "
-			"anything about its kind%|, "
+			"anything about its kind%S.%L, "
 			"which means that I don't know how to deal with it. You should "
 			"either put a value into the column somewhere, or else write "
 			"the kind in as part of the heading: '%2 (a number)', say.");

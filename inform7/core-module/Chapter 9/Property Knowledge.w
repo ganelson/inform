@@ -66,14 +66,14 @@ For both these reasons, then, we perform a simple type-check here.
 	Problems::quote_kind(5, constant_kind);
 	if ((Kinds::Compare::lt(kind_as_declared, K_object)) &&
 		(Rvalues::is_nothing_object_constant(val))) {
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_QuantityKindNothing));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_QuantityKindNothing));
 		Problems::issue_problem_segment(
 			"The sentence %1 tells me that '%2', which should be %4 that varies, is to "
 			"have the initial value 'nothing'. This is allowed as an 'object which varies', "
 			"but the rules are stricter for %4.");
 		Problems::issue_problem_end();
 	} else {
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GlobalKindWrong));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GlobalKindWrong));
 		Problems::issue_problem_segment(
 			"The sentence %1 tells me that '%2', which is %4 that varies, "
 			"should start out with the value '%3', but this is %5 and not %4.");
@@ -84,7 +84,7 @@ For both these reasons, then, we perform a simple type-check here.
 				"I often assume that it's meant to be a new object. So it may "
 				"be that you intended '%3' to be something quite different, "
 				"but I just didn't get it.");
-		Problems::Issue::diagnose_further();
+		Problems::Using::diagnose_further();
 		Problems::issue_problem_end();
 	}
 	return;
@@ -150,7 +150,7 @@ are typechecked at run-time rather than compile-time in that domain.)
 			(Calculus::Propositions::contains_adjective(Specifications::to_proposition(owner_spec)))) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_spec(2, owner_spec);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_RelationAPL));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelationAPL));
 			Problems::issue_problem_segment(
 				"The sentence %1 looked to me as if it might be trying to assign certain "
 				"properties to something described in a way (%2) which involved a clause "
@@ -163,7 +163,7 @@ are typechecked at run-time rather than compile-time in that domain.)
 
 @<Issue a problem for an unrecognised property owner@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropForBadKOV));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropForBadKOV));
 	Problems::issue_problem_segment(
 		"The sentence %1 looked to me as if it might be trying to assign certain properties "
 		"to something which is not allowed to have them.");
@@ -200,7 +200,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 @<Issue a problem, as this uses a bare adjective as if a value-property@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_property(3, prn);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HasBareAdjective));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HasBareAdjective));
 	Problems::issue_problem_segment(
 		"In %1 you write about the %3 property as if it were some kind of value "
 		"or possession, but %3 is an either/or property - something is either "
@@ -213,7 +213,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(py));
 	Problems::quote_property(3, prn);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 	Problems::issue_problem_segment(
 		"In %1 you give a value of the %3 property as '%2', but %3 is an either/or "
 		"property - something is either %3 or not, so there is no value involved.");
@@ -229,7 +229,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_wording(2, Node::get_text(py));
 				Problems::quote_property(3, prn);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyValueUnknown));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyValueUnknown));
 				Problems::issue_problem_segment(
 					"You wrote %1, but that seems to set a property %3 to the "
 					"value '%2', which I don't recognise as meaning anything.");
@@ -238,7 +238,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 			}
 			break; /* (this is fine -- there's a well-expressed value) */
 		case COMMON_NOUN_NT:
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyInstance),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyInstance),
 				"this property value makes no sense to me",
 				"since it looks as if it contains a relative clause. Sometimes this "
 				"happens if a clause follows directly on, and I have misunderstood to "
@@ -248,13 +248,13 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 				"applying to the door.");
 			return NULL;
 		case X_OF_Y_NT:
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"something grammatically odd has happened here",
 				"possibly to do with the unexpected 'of' in what seems to be a list of "
 				"property values?");
 			return NULL;
 		case WITH_NT:
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MisplacedFrom),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MisplacedFrom),
 				"something grammatically odd has happened here",
 				"possibly to do with the unexpected 'with' in what seems "
 				"to be a list of property values? Maybe there is some punctuation missing.");
@@ -263,7 +263,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(py));
 			Problems::quote_property(3, prn);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PeculiarPropertyValue));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PeculiarPropertyValue));
 			Problems::issue_problem_segment(
 				"You wrote %1, but that seems to set a property %3 to the "
 				"value '%2', which really doesn't make sense.");
@@ -276,7 +276,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 	Problems::quote_wording(2, Node::get_text(py));
 	Problems::quote_kind(3, property_kind);
 	Problems::quote_property(4, prn);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyNonConstant));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyNonConstant));
 	Problems::issue_problem_segment(
 		"In %1 you give a value of the %4 property as '%2', "
 		"and while this does make sense as %3, it is a value which "

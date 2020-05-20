@@ -14,7 +14,7 @@ void UnicodeTranslations::unicode_translates(parse_node *pn) {
 
 	<translates-into-unicode-sentence-subject>(Node::get_text(pn->next));
 	if ((<<r>> != -1) && (<<r>> != cc)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeAlready),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeAlready),
 			"this Unicode character name has already been translated",
 			"so there must be some duplication somewhere.");
 		return;
@@ -51,7 +51,7 @@ the built-in extensions anyway; Inform authors never type them.
 	...									==> @<Issue PM_UnicodeNonLiteral problem@>
 
 @<Issue PM_UnicodeNonLiteral problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeNonLiteral),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeNonLiteral),
 		"a Unicode character name must be translated into a literal decimal "
 		"number written out in digits",
 		"which this seems not to be.");
@@ -85,7 +85,7 @@ the player types either of these:
 =
 int UnicodeTranslations::char_in_range(int cc) {
 	if ((cc < 0) || (cc >= 0x10000)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeOutOfRange),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeOutOfRange),
 			"Inform can only handle Unicode characters in the 16-bit range",
 			"from 0 to 65535.");
 		return FALSE;

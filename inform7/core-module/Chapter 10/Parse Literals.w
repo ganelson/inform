@@ -164,7 +164,7 @@ Still:
 		e_notation_problem_issued = TRUE;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_WantonEngineering));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_WantonEngineering));
 		Problems::issue_problem_segment(
 			"In %1, you write '%2', which looks to me like the engineering "
 			"notation for a real number - I'm guessing that the 'e' means "

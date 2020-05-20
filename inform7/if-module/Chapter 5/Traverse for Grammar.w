@@ -148,7 +148,7 @@ As examples:
 
 @<Issue PM_OldVerbUsage problem@> =
 	*X = NO_UNDERSTAND_FORM;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OldVerbUsage),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OldVerbUsage),
 		"this is an outdated form of words",
 		"and Inform now prefers 'Understand the command ...' "
 		"rather than 'Understand the verb ...'. (Since this "
@@ -190,7 +190,7 @@ formal way (with "property").
 
 @<Issue PM_UnknownUnderstandProperty problem@> =
 	if (!preform_lookahead_mode)
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUnderstandProperty),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUnderstandProperty),
 		"I don't understand what property that refers to",
 		"but it doesn't seem to be a property I know. An example of "
 		"correct usage is 'understand the transparent property as "
@@ -306,7 +306,7 @@ It's not widely known, but the object phrase here can be a list.
 
 @<Issue PM_TextlessMistake problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TextlessMistake),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextlessMistake),
 		"when 'understand' results in a mistake it can only be "
 		"followed by a textual message in brackets",
 		"so for instance 'understand \"take\" as a mistake "
@@ -315,7 +315,7 @@ It's not widely known, but the object phrase here can be a list.
 @<Issue PM_UnderstandVariable problem@> =
 	*X = -1;
 	LOG("Offending pseudo-meaning is: %W\n", W);
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandVariable),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandVariable),
 		"this meaning is a value that varies",
 		"whereas I need something fixed. "
 		"(The most common case of this is saying that something should be "
@@ -329,7 +329,7 @@ It's not widely known, but the object phrase here can be a list.
 	@<Actually issue PM_UnderstandVague problem@>;
 
 @<Actually issue PM_UnderstandVague problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandVague),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandVague),
 		"'understand ... as ...' should be followed "
 		"by a meaning",
 		"which might be an action (e.g., "
@@ -357,7 +357,7 @@ Here the grammar is very simple, and the object can't be a list.
 
 @<Issue PM_UnderstandCommandWhen problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandCommandWhen),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandCommandWhen),
 		"'understand the command ... as ...' is not allowed to have a "
 		"'... when ...' clause",
 		"for the moment at any rate.");
@@ -395,7 +395,7 @@ to or described can be of any kind, but in fact we restrict to kinds of object.
 
 @<Issue PM_BadUnderstandProperty problem@> =
 	*X = 0;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadUnderstandProperty),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadUnderstandProperty),
 		"'understand the ... property as ...' is only allowed if "
 		"followed by 'describing ...' or 'referring to ...'",
 		"so for instance 'understand the transparent property as "
@@ -403,7 +403,7 @@ to or described can be of any kind, but in fact we restrict to kinds of object.
 
 @<Issue PM_BadUnderstandPropertyAs problem@> =
 	*XP = NULL;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadUnderstandPropertyAs),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadUnderstandPropertyAs),
 		"I don't understand what single thing or kind of thing that refers to",
 		"but it does need to be an object (or kind of object) and not "
 		"some other sort of value. For instance, 'understand the transparent "
@@ -487,7 +487,7 @@ void PL::Parsing::understand_the_command(wording W, wording ASW) {
 	wchar_t *p = Lexer::word_text(Wordings::first_wn(W));
 	for (int i=0; p[i]; i++)
 		if (p[i] == ' ') {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SpacyCommand),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SpacyCommand),
 				"'understand the command ... as ...' is only allowed when "
 				"the old command is a single word",
 				"so for instance 'understand the command \"capture\" as \"get\"' "
@@ -505,7 +505,7 @@ void PL::Parsing::understand_the_command(wording W, wording ASW) {
 				DESTROY(gv, grammar_verb);
 				gv = NULL;
 			} else {
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NotNewCommand),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NotNewCommand),
 					"'understand the command ... as ...' is only allowed when "
 					"the new command has no meaning already",
 					"so for instance 'understand \"drop\" as \"throw\"' is not "
@@ -524,7 +524,7 @@ void PL::Parsing::understand_the_command(wording W, wording ASW) {
 }
 
 @<Actually issue PM_NotOldCommand problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NotOldCommand),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NotOldCommand),
 		"'understand the command ... as ...' should end with a command "
 		"already defined",
 		"as in 'understand the command \"steal\" as \"take\"'. (This "
@@ -544,7 +544,7 @@ void PL::Parsing::understand_property_block(property *pr, int level, inference_s
 		(Str::len(Kinds::Behaviour::get_recognition_only_GPR(Properties::Valued::kind(pr))) == 0) &&
 		((Kinds::Compare::le(Properties::Valued::kind(pr), K_object)) ||
 			(Kinds::Behaviour::request_I6_GPR(Properties::Valued::kind(pr)) == FALSE))) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadReferringProperty),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadReferringProperty),
 			"that property is of a kind which I can't recognise in "
 			"typed commands",
 			"so that it cannot be understand as describing or referring to "
@@ -554,7 +554,7 @@ void PL::Parsing::understand_property_block(property *pr, int level, inference_s
 			"(like snippet or rulebook, for instance) I can't use.");
 	}
 	if (PL::Parsing::Visibility::seek(pr, subj, level, WHENW) == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUnpermittedProperty),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUnpermittedProperty),
 			"that property is not allowed for the thing or kind in question",
 			"just as (ordinarily) 'understand the open property as describing a "
 			"device' would not be allowed because it makes no sense to call a "
@@ -566,11 +566,11 @@ void PL::Parsing::understand_property_block(property *pr, int level, inference_s
 @ =
 void PL::Parsing::understand_nothing(understanding_reference *ur, wording WHENW) {
 	if ((ur == NULL) || (ur->gv_result != GV_IS_OBJECT) || (ur->an_reference == NULL)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandNothingNonAction),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandNothingNonAction),
 			"'Understand nothing as ...' must be followed by an action",
 			"such as 'Understand nothing as taking.'");
 	} else if (Wordings::nonempty(WHENW)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandNothingWhen),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandNothingWhen),
 			"'Understand nothing as ...' must be unconditional",
 			"so your 'when' or 'while' condition will have to go.");
 	} else {
@@ -601,22 +601,22 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 	if (problem_count > base_problem_count) return;
 	if (<quoted-text>(W) == FALSE) {
 		if (table_entry)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"a table entry in a 'topic' column must be a single double-quoted "
 				"text",
 				"such as \"eternity\" or \"peruvian skies\".");
 		else if (TEST_COMPILATION_MODE(SPECIFICATIONS_CMODE))
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NontextualUnderstandInAP),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NontextualUnderstandInAP),
 				"the topic here should be in the form of a textual description",
 				"as in 'asking about \"[something]\"'.");
 		else
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NontextualUnderstand),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NontextualUnderstand),
 				"'understand' should be followed by a textual description",
 				"as in 'understand \"take [something]\" as taking the noun'.");
 		return;
 	}
 	if (Word::well_formed_text_routine(Lexer::word_text(Wordings::first_wn(W))) == FALSE) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandMismatch),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandMismatch),
 			"'understand' should be followed by text in which brackets "
 			"'[' and ']' match",
 			"so for instance 'understand \"take [something]\" as taking the noun' "
@@ -645,7 +645,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 					gv_is = GV_IS_OBJECT;
 					if (Descriptions::is_qualified(spec)) {
 						LOG("Offending description: $T", spec);
-						Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsQualified),
+						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsQualified),
 							"I cannot understand text as meaning an object "
 							"qualified by relative clauses or properties",
 							"only a specific thing, a specific value or a kind. "
@@ -670,7 +670,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 							gv_is = GV_IS_VALUE;
 						} else {
 							if (Kinds::get_construct(K) == CON_activity)
-							Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsActivity),
+							StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsActivity),
 								"this 'understand ... as ...' gives text "
 								"meaning an activity",
 								"rather than an action. Since activities "
@@ -678,7 +678,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 								"happen, not in response to typed commands, "
 								"this doesn't make sense.");
 							else
-							Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsBadValue),
+							StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsBadValue),
 								"'understand ... as ...' gives text "
 								"meaning a value whose kind is not allowed",
 								"and should be a value such as 100.");
@@ -725,7 +725,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 	}
 
 	if ((pluralised) && (gv_is != GV_IS_OBJECT)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandPluralValue),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandPluralValue),
 			"'understand' as a plural can only apply to things, rooms or kinds "
 			"of things or rooms",
 			"so 'Understand \"paperwork\" as the plural of a document.' is "
@@ -744,7 +744,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 			literal_punct = TRUE;
 	}
 	if (literal_punct) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_LiteralPunctuation),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LiteralPunctuation),
 			"'understand' text cannot contain literal punctuation",
 			"or more specifically cannot contain any of these: . , ! ? : ; "
 			"since they are already used in various ways by the parser, and "
@@ -756,7 +756,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 	to_pn = NounPhrases::new_raw(W);
 	PL::Parsing::Tokens::break_into_tokens(to_pn, XW);
 	if (to_pn->down == NULL) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandEmptyText),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandEmptyText),
 			"'understand' should be followed by text which contains at least "
 			"one word or square-bracketed token",
 			"so for instance 'understand \"take [something]\" as taking' "
@@ -771,7 +771,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 		LOOP_THROUGH_WORDING(i, XW)
 			if (i < Wordings::last_wn(XW))
 				if ((compare_word(i, COMMA_V)) && (compare_word(i+1, COMMA_V))) {
-					Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandCommaCommand),
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandCommaCommand),
 						"'understand' as an action cannot involve a comma",
 						"since a command leading to an action never does. "
 						"(Although Inform understands commands like 'PETE, LOOK' "
@@ -796,7 +796,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 	if (Wordings::nonempty(WHENW)) {
 		PL::Parsing::Lines::set_understand_when(gl, WHENW);
 		if (gv_is == GV_IS_CONSULT) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* at present, I7 syntax prevents this anyway */
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* at present, I7 syntax prevents this anyway */
 				"'when' cannot be used with this kind of 'Understand'",
 				"for the time being at least.");
 			return;
@@ -805,7 +805,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 	if (Wordings::nonempty(WHENW)) {
 		PL::Parsing::Lines::set_understand_when(gl, WHENW);
 		if (gv_is == GV_IS_CONSULT) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* at present, I7 syntax prevents this anyway */
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* at present, I7 syntax prevents this anyway */
 				"'when' cannot be used with this kind of 'Understand'",
 				"for the time being at least.");
 			return;
@@ -814,7 +814,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 	if (u_prop) {
 		PL::Parsing::Lines::set_understand_prop(gl, u_prop);
 		if (gv_is == GV_IS_CONSULT) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* at present, I7 syntax prevents this anyway */
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* at present, I7 syntax prevents this anyway */
 				"'when' cannot be used with this kind of 'Understand'",
 				"for the time being at least.");
 			return;
@@ -826,7 +826,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 			XW = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(ur->reference_text)), TRUE, GRAMMAR_PUNCTUATION_MARKS);
 			LOGIF(GRAMMAR_CONSTRUCTION, "GV_IS_TOKEN as words: %W\n", XW);
 			if (PL::Parsing::valid_new_token_name(XW) == FALSE) {
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsCompoundText),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsCompoundText),
 					"if 'understand ... as ...' gives the meaning as text "
 					"then it must describe a single new token",
 					"so that 'Understand \"group four/five/six\" as "

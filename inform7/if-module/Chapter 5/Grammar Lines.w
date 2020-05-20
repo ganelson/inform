@@ -184,13 +184,13 @@ known what the action will be.
 	...								==> @<Issue PM_BadWhen problem@>;
 
 @<Issue PM_WhenAction problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_WhenAction),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_WhenAction),
 		"the condition after 'when' involves the current action",
 		"but this can never work, because when Inform is still trying to "
 		"understand a command, the current action isn't yet decided on.");
 
 @<Issue PM_BadWhen problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadWhen),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadWhen),
 		"the condition after 'when' makes no sense to me",
 		"although otherwise this worked - it is only the part after 'when' "
 		"which I can't follow.");
@@ -555,7 +555,7 @@ void PL::Parsing::Lines::slash_grammar_line(grammar_line *gl) {
 	for (pn = gl->tokens->down; pn; pn = pn->next)
 		if ((Annotations::read_int(pn, slash_class_ANNOT) > 0) &&
 			(Annotations::read_int(pn, grammar_token_literal_ANNOT) == FALSE)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_OverAmbitiousSlash),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OverAmbitiousSlash),
 				"the slash '/' can only be used between single literal words",
 				"so 'underneath/under/beneath' is allowed but "
 				"'beneath/[florid ways to say under]/under' isn't.");
@@ -621,7 +621,7 @@ parse_node *PL::Parsing::Lines::line_list_determine(grammar_line *list_head,
 		if (PL::Parsing::Verbs::allow_mixed_lines(gv)) continue;
 
 		current_sentence = gl->where_grammar_specified;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MixedOutcome),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MixedOutcome),
 			"grammar tokens must have the same outcome whatever the way they are "
 			"reached",
 			"so writing a line like 'Understand \"within\" or \"next to "
@@ -685,7 +685,7 @@ parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
 	}
 
 	if (multiples > 1)
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleMultiples),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleMultiples),
 			"there can be at most one token in any line which can match "
 			"multiple things",
 			"so you'll have to remove one of the 'things' tokens and "
@@ -696,7 +696,7 @@ parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
 	if (gv_is == GV_IS_COMMAND) spec = NULL;
 	else {
 		if (nrv < 2) spec = PL::Parsing::Tokens::Types::get_single_type(&(gl->gl_type));
-		else Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TwoValuedToken),
+		else StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoValuedToken),
 			"there can be at most one varying part in the definition of a "
 			"named token",
 			"so 'Understand \"button [a number]\" as \"[button indication]\"' "
@@ -1047,7 +1047,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 	pn = gl->tokens->down;
 	if ((genuinely_verbal) && (pn)) {
 		if (Annotations::read_int(pn, slash_class_ANNOT) != 0) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SlashedCommand),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SlashedCommand),
 				"at present you're not allowed to use a / between command "
 				"words at the start of a line",
 				"so 'put/interpose/insert [something]' is out.");
@@ -1081,7 +1081,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 
 			if (gl->reversed) {
 				if (token_values < 2) {
-					Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_CantReverseOne),
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantReverseOne),
 						"you can't use a 'reversed' action when you supply fewer "
 						"than two values for it to apply to",
 						"since reversal is the process of exchanging them.");
@@ -1196,7 +1196,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 	for (; pn; pn = pn->next) {
 		if ((PL::Parsing::Tokens::is_text(pn)) && (pn->next) &&
 			(PL::Parsing::Tokens::is_literal(pn->next) == FALSE)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TextFollowedBy),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextFollowedBy),
 				"a '[text]' token must either match the end of some text, or "
 				"be followed by definitely known wording",
 				"since otherwise the run-time parser isn't good enough to "
@@ -1204,7 +1204,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 		}
 
 		if ((Node::get_grammar_token_relation(pn)) && (gv_is != GV_IS_OBJECT)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarObjectlessRelation),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarObjectlessRelation),
 				"a grammar token in an 'Understand...' can only be based "
 				"on a relation if it is to understand the name of a room or thing",
 				"since otherwise there is nothing for the relation to be with.");

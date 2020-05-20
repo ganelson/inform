@@ -130,7 +130,7 @@ since it isn't a phrase to decide anything. This is where that's checked:
 			Phrases::TypeData::describe_manner_of_return(manner_expected,
 				&(phrase_being_compiled->type_data), &K));
 		if (K) Problems::quote_kind(4, K);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_WrongEndToPhrase));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_WrongEndToPhrase));
 		if (K)
 			Problems::issue_problem_segment(
 				"The line %1 seems to be a way that the phrase you're defining can come "

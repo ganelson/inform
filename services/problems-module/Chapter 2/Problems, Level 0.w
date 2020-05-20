@@ -1,4 +1,4 @@
-[Problems::Fatal::] Problems, Level 0.
+[ProblemSigils::] Problems, Level 0.
 
 To handle fatal errors and establish how problem sigils work.
 
@@ -18,16 +18,35 @@ int sigil_of_required_problem_found = FALSE;
 int echo_problem_message_sigils = FALSE;
 int crash_on_all_problems = FALSE;
 
-void Problems::Fatal::exit(int code) {
+void ProblemSigils::exit(int code) {
 	if ((sigil_of_required_problem) && (sigil_of_required_problem_found == FALSE))
 		exit(0); /* so that the problem test case will fail in |intest| */
 	exit(code);
 }
 
-@ Inform calls this in response to its |-require-problem| command line switch:
+@ The following function has had an amusing evolution over the years. It does
+something nobody is ever supposed to do: deliberately crashes the process.
+At one time it executed |int x = 1/0;|, but compilers got wise to that, or
+else would detect that such an expression had no side effects and was not used.
+What we now do is to dereference a null pointer, while apparently trying to make
+use of the result.
 
 =
-void Problems::Fatal::require(text_stream *sigil) {
+void ProblemSigils::force_crash(void) {
+	STREAM_FLUSH(STDOUT);
+	STREAM_FLUSH(DL);
+	WRITE_TO(STDERR,
+		"*** Intentionally crashing to force stack backtrace to console logs ***\n");
+	STREAM_FLUSH(STDERR);
+	parse_node *PN = NULL; LOG("$T", PN->next);
+	ProblemSigils::exit(1); /* should never in fact be reached */
+}
+
+@h Configuration.
+Inform calls this in response to its |-require-problem| command line switch:
+
+=
+void ProblemSigils::require(text_stream *sigil) {
 	sigil_of_required_problem = Str::duplicate(sigil);
 }
 
@@ -35,7 +54,7 @@ void Problems::Fatal::require(text_stream *sigil) {
 be echoed to standard output (i.e., printed). Again, this is useful in testing.
 
 =
-void Problems::Fatal::echo_sigils(int state) {
+void ProblemSigils::echo_sigils(int state) {
 	echo_problem_message_sigils = state;
 }
 
@@ -43,7 +62,7 @@ void Problems::Fatal::echo_sigils(int state) {
 Inform in the debugger.
 
 =
-void Problems::Fatal::crash_on_problems(int state) {
+void ProblemSigils::crash_on_problems(int state) {
 	crash_on_all_problems = state;
 }
 
@@ -98,40 +117,3 @@ text_stream *sigil_of_latest_unlinked_problem = NULL;
 		sigil_of_required_problem_found = TRUE;
 	if (echo_problem_message_sigils)
 		WRITE_TO(STDERR, "Problem__ %S\n", sigil_of_latest_problem);
-
-@h Further fatalities.
-
-=
-void Problems::Fatal::issue(char *message) {
-	WRITE_TO(STDERR, message);
-	WRITE_TO(STDERR, "\n");
-	STREAM_FLUSH(STDERR);
-	if (crash_on_all_problems) Problems::Fatal::force_crash();
-	Problems::Fatal::exit(2);
-}
-
-void Problems::Fatal::filename_related(char *message, filename *F) {
-	WRITE_TO(STDERR, message);
-	WRITE_TO(STDERR, "\nOffending filename: <%f>\n", F);
-	STREAM_FLUSH(STDERR);
-	if (crash_on_all_problems) Problems::Fatal::force_crash();
-	Problems::Fatal::exit(2);
-}
-
-@ The following function has had an amusing evolution over the years. It does
-something nobody is ever supposed to do: deliberately crashes the process.
-At one time it executed |int x = 1/0;|, but compilers got wise to that, or
-else would detect that such an expression had no side effects and was not used.
-What we now do is to dereference a null pointer, while apparently trying to make
-use of the result.
-
-=
-void Problems::Fatal::force_crash(void) {
-	STREAM_FLUSH(STDOUT);
-	STREAM_FLUSH(DL);
-	WRITE_TO(STDERR,
-		"*** Intentionally crashing to force stack backtrace to console logs ***\n");
-	STREAM_FLUSH(STDERR);
-	parse_node *PN = NULL; LOG("$T", PN->next);
-	Problems::Fatal::exit(1); /* should never in fact be reached */
-}

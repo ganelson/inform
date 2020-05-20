@@ -147,7 +147,7 @@ void Phrases::Options::phod_add_phrase_option(ph_options_data *phod, wording W) 
 	LOGIF(PHRASE_CREATIONS, "Adding phrase option <%W>\n", W);
 	if (phod->no_options_permitted >= MAX_OPTIONS_PER_PHRASE) {
 		if (too_many_POs_error == FALSE)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyPhraseOptions),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyPhraseOptions),
 				"a phrase is only allowed to have 16 different options",
 				"so either some of these will need to go, or you may want to "
 				"consider breaking up the phrase into simpler ones whose usage "
@@ -225,7 +225,7 @@ this residue is zero.
 			Problems::quote_wording(2, W);
 			Problems::quote_phrase(3, ph);
 			Problems::quote_wording(4, phod_being_parsed->options_declaration);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseOptionsExclusive));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseOptionsExclusive));
 			Problems::issue_problem_segment(
 				"You wrote %1, supplying the options '%2' to the phrase '%3', but "
 				"the options listed for this phrase ('%4') are mutually exclusive.");
@@ -258,13 +258,13 @@ by "and":
 		Problems::quote_phrase(3, ph_being_parsed);
 		Problems::quote_wording(4, phod_being_parsed->options_declaration);
 		if (phod_being_parsed->no_options_permitted > 1) {
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NotAPhraseOption));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NotAPhraseOption));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is not one of the options allowed on "
 				"the end of the phrase '%3'. (The options allowed are: '%4'.)");
 			Problems::issue_problem_end();
 		} else {
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NotTheOnlyPhraseOption));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NotTheOnlyPhraseOption));
 			Problems::issue_problem_segment(
 				"You wrote %1, but the only option allowed on the end of the "
 				"phrase '%3' is '%4', so '%2' is not something I know how to "

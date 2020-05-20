@@ -78,7 +78,7 @@ int UseExcerptMeanings::ignore_definite_article(unsigned int mc) {
 void UseExcerptMeanings::linguistics_problem_handler(int err_no, wording W, void *ref, int k) {
 	switch (err_no) {
 		case TooLongName_LINERROR:
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TooLongName),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooLongName),
 				"that seems to involve far too long a name",
 				"since in general names are limited to a maximum of 32 words.");
 			break;

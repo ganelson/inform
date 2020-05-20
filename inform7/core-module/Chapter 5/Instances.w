@@ -452,7 +452,7 @@ void Instances::set_kind(instance *I, kind *new) {
 		Problems::quote_source(2, I->instance_of_set_at);
 		Problems::quote_kind(3, new);
 		Problems::quote_kind(4, existing);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_KindsIncompatible));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_KindsIncompatible));
 		Problems::issue_problem_segment(
 			"You wrote %1, but that seems to contradict %2, as %3 and %4 "
 			"are incompatible. (If %3 were a kind of %4 or vice versa "
@@ -463,7 +463,7 @@ void Instances::set_kind(instance *I, kind *new) {
 		Problems::quote_object(2, I);
 		Problems::quote_kind(3, new);
 		Problems::quote_kind(4, existing);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
 		Problems::issue_problem_segment(
 			"You wrote %1, which made me think the kind of %2 was %4, "
 			"but for other reasons I now think it ought to be %3, and those "

@@ -184,7 +184,7 @@ connect this existing one to the phrase.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ph_found</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">ph_found</span><span class="plain-syntax"> != </span><span class="identifier-syntax">ph</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_DuplicateRuleName</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_DuplicateRuleName</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"You wrote %1, but this would give a name ('%2') to a "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"new rule which already belongs to an existing one."</span><span class="plain-syntax">);</span>
@@ -243,7 +243,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NamelessRule</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NamelessRule</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"there are many rules in Inform"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"so you need to give a name: 'this is the abolish dancing rule', say, "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"not just 'this is the rule'."</span><span class="plain-syntax">);</span>
@@ -253,7 +253,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_UnarticledRule</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_UnarticledRule</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"a rule must be given a definite name"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which begins with 'the', just to emphasise that it is the only one "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"with this name: 'this is the promote dancing rule', say, not just "</span>
@@ -264,7 +264,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_PluralisedRule</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_PluralisedRule</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"a rule must be given a definite name ending in 'rule' not 'rules'"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"since the plural is only used for rulebooks, which can of course "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"contain many rules at once."</span><span class="plain-syntax">);</span>
@@ -274,7 +274,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BareTo</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BareTo</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"'to' what? No name is given"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which means that this would not define a new phrase."</span><span class="plain-syntax">);</span>
 </pre>
@@ -283,7 +283,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_DontCallPhrasesWithCalled</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_DontCallPhrasesWithCalled</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"phrases aren't named using 'called'"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"and instead use 'this is...'. For example, 'To salute (called saluting)' "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"isn't allowed, but 'To salute (this is saluting)' is."</span><span class="plain-syntax">);</span>
@@ -412,7 +412,7 @@ effects &mdash; see below.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;named&gt;&gt;</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="22-pu.html#SP11_2_1" class="named-paragraph-link"><span class="named-paragraph">The preamble parses to a named To phrase</span><span class="named-paragraph-number">11.2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;now-phrase-preamble&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">coarse_mode</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">no_now_phrases</span><span class="plain-syntax">++ == </span><span class="constant-syntax">1</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_RedefinedNow</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_RedefinedNow</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"creating new variants on 'now' is not allowed"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"because 'now' plays a special role in the language. "</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"It has a wide-ranging ability to make a condition "</span>
@@ -439,7 +439,7 @@ mode, we can get that value back again if we look it up by name.
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">coarse_mode</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-type-expression&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">NW</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_PhraseNameDuplicated</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_PhraseNameDuplicated</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"that name for this new phrase is not allowed"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"because it already has a meaning."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
@@ -454,7 +454,7 @@ mode, we can get that value back again if we look it up by name.
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ph</span><span class="plain-syntax">) </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><a href="22-ph.html#SP11" class="function-link"><span class="function-syntax">Phrases::declaration_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ph</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">NounPhrases::new_raw</span><span class="plain-syntax">(</span><span class="identifier-syntax">Nouns::nominative</span><span class="plain-syntax">(</span><span class="identifier-syntax">cphr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">Nouns::nominative</span><span class="plain-syntax">(</span><span class="identifier-syntax">cphr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NamedGeneric</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NamedGeneric</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"I can't allow %1, because the phrase it gives a name to "</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"is generic, that is, it has a kind which is too vague. "</span>
@@ -611,7 +611,7 @@ of the stem, so we have to be very careful:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadRulePreambleWhen</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadRulePreambleWhen</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"The punctuation makes me think %1 should be a definition "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"of a phrase or a rule, but it doesn't begin as it should, "</span>
@@ -637,7 +637,7 @@ of the stem, so we have to be very careful:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadRulePreamble</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadRulePreamble</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"the punctuation here ':' makes me think this should be a definition "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"of a phrase and it doesn't begin as it should"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"with either 'To' (e.g. 'To flood the riverplain:'), 'Definition:', "</span>
@@ -654,7 +654,7 @@ of the stem, so we have to be very careful:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">parsed_rm</span><span class="plain-syntax">.</span><span class="element-syntax">article_used</span><span class="plain-syntax"> == </span><span class="identifier-syntax">DEF_ART</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">parsed_rm</span><span class="plain-syntax">.</span><span class="element-syntax">placement_requested</span><span class="plain-syntax"> == </span><span class="constant-syntax">MIDDLE_PLACEMENT</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_RuleWithDefiniteArticle</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_RuleWithDefiniteArticle</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"a rulebook can contain any number of rules"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"so (e.g.) 'the before rule: ...' is disallowed; you should "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"write 'a before rule: ...' instead."</span><span class="plain-syntax">);</span>
@@ -949,7 +949,7 @@ parser, recording how it most recently failed.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APWithDisjunction</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APWithDisjunction</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, which seems to introduce a rule, but the "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"circumstances ('%2') seem to be too general for me to "</span>
@@ -968,7 +968,7 @@ parser, recording how it most recently failed.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APWithNoParticiple</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APWithNoParticiple</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, which seems to introduce a rule taking effect "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"only '%2'. But this does not look like an action, since "</span>
@@ -982,7 +982,7 @@ parser, recording how it most recently failed.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APWithImmiscible</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APWithImmiscible</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, which seems to introduce a rule taking effect "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"only '%2'. But this is a combination of actions which cannot "</span>
@@ -999,7 +999,7 @@ parser, recording how it most recently failed.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APWithBadWhen</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APWithBadWhen</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax"> = </span><span class="identifier-syntax">phud</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rule_parameter</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">diagnosis</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;action-when-diagnosis&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Q</span><span class="plain-syntax">)) {</span>
@@ -1043,7 +1043,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_text</span><span class="plain-syntax">(3,</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"The part after 'when' (or 'while') was fine, but the earlier words"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">Problems::quote_text</span><span class="plain-syntax">(3, </span><span class="string-syntax">"But that"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APUnknown</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_APUnknown</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, which seems to introduce a rule taking effect only if the "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"action is '%2'. %3 did not make sense as a description of an action."</span><span class="plain-syntax">);</span>
@@ -1158,7 +1158,7 @@ is used to choose a problem message if the value makes no sense.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_WhenThePlay</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_WhenThePlay</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"there's no scene called 'the play'"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"so I think you need to remove 'the' - Inform has two "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"special rulebooks, 'When play begins' and 'When play ends', "</span>
@@ -1169,7 +1169,7 @@ is used to choose a problem message if the value makes no sense.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadParameter</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadParameter</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, but the description of the thing(s) to which the rule "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"applies ('%2') did not make sense. This is %3 based rulebook, so "</span>
@@ -1191,7 +1191,7 @@ but the action isn't one we recognise.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonActionInPresenceOf</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonActionInPresenceOf</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, but 'in the presence of...' is a clause which can "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"only be used to talk about an action: so, for instance, 'waiting "</span>
@@ -1209,7 +1209,7 @@ but the action isn't one we recognise.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Issue::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonActionIn</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonActionIn</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, but 'in...' used in this way should really belong "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"to an action: for instance, 'Before waiting in the Library'. "</span>

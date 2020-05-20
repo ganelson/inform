@@ -145,7 +145,7 @@ void Properties::Measurement::validate(measurement_definition *mdef) {
 		mdef->prop = NULL;
 		LOG("Validating mdef with headword %W... <%W>\n",
 			mdef->headword, mdef->name_of_property_to_compare);
-		Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_GradingUnknownProperty),
+		StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingUnknownProperty),
 			mdef->measurement_node,
 			"that definition involves an unknown property",
 			"assuming it was meant to be a definition in the form 'Definition: "
@@ -164,7 +164,7 @@ and issue a problem.
 		mdef->region_threshold = Rvalues::to_encoded_notation(<<rp>>);
 		if ((Kinds::Behaviour::is_quasinumerical(mdef->region_kind) == FALSE) &&
 			(mdef->region_shape != MEASURE_T_EXACTLY)) {
-			Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_GradingNonarithmeticKOV),
+			StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingNonarithmeticKOV),
 				mdef->measurement_node,
 				"the property value given here has a kind which can't be "
 				"subject to numerical comparisons",
@@ -175,7 +175,7 @@ and issue a problem.
 		}
 		if (Kinds::Compare::compatible(mdef->region_kind,
 			Properties::Valued::kind(mdef->prop)) != ALWAYS_MATCH) {
-			Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_GradingWrongKOV),
+			StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingWrongKOV),
 				mdef->measurement_node,
 				"the property value given here is the wrong kind",
 				"and does not match the property being looked at.");
@@ -184,7 +184,7 @@ and issue a problem.
 		}
 	} else {
 		LOG("Can't get literal from <%W>\n", mdef->region_threshold_text);
-		Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_GradingNonLiteral),
+		StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingNonLiteral),
 			mdef->measurement_node,
 			"that definition is wrongly phrased",
 			"assuming it was meant to be a grading adjective like 'Definition: a "
@@ -228,7 +228,7 @@ always to match <property-name>, and the text in the range must match
 	...					==> MEASURE_T_EXACTLY
 
 @<Issue PM_GradingMisphrased problem@> =
-	Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_GradingMisphrased),
+	StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingMisphrased),
 		NounPhrases::new_raw(W),
 		"that definition is wrongly phrased",
 		"assuming it was meant to be a grading adjective like 'Definition: a "
@@ -259,7 +259,7 @@ adjective_meaning *Properties::Measurement::ADJ_parse(parse_node *q,
 @<Reject some overly elaborate attempts to define overly elaborate measurements@> =
 	if (Wordings::length(AW) > 1) {
 		if (shape != MEASURE_T_EXACTLY)
-			Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_MultiwordGrading),
+			StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_MultiwordGrading),
 				q, "a grading adjective must be a single word",
 				"as in 'Definition: a container is large if its carrying capacity is "
 				"10 or more.': 'fairly large' would not be allowed because it would "
@@ -269,7 +269,7 @@ adjective_meaning *Properties::Measurement::ADJ_parse(parse_node *q,
 
 	if (Wordings::nonempty(CALLW)) {
 		if (shape != MEASURE_T_EXACTLY)
-			Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_GradingCalled),
+			StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingCalled),
 				q, "callings are not allowed when defining grading adjectives",
 				"so 'Definition: a container is large if its carrying capacity is 10 "
 				"or more.' is fine, but so 'Definition: a container (called the bag) "
@@ -280,7 +280,7 @@ adjective_meaning *Properties::Measurement::ADJ_parse(parse_node *q,
 
 	if (sense != 1) {
 		if (shape != MEASURE_T_EXACTLY)
-			Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_GradingUnless),
+			StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingUnless),
 				q, "'unless' is not allowed when defining grading adjectives",
 				"so 'Definition: a container is large if its carrying capacity is 10 "
 				"or more.' is fine, but so 'Definition: a container is modest unless "

@@ -208,7 +208,7 @@ int PL::Scenes::parse_scene_end_name(scene *sc, wording EW, int create) {
 }
 
 @<Issue a too-many-ends problem message@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesWithTooManyEnds),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesWithTooManyEnds),
 		"this scene now has too many different ways to end",
 		"and will need to be simplified. (We can have up to 15 ends to a scene "
 		"if the project format is for the Z-machine, and 31 for Glulx: see the "
@@ -371,7 +371,7 @@ The subject is simple: it has to be a scene name.
 
 @<Issue PM_ScenesOnly problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesOnly),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesOnly),
 		"'begins when' and 'ends when' can only be applied to scenes",
 		"which have already been defined with a sentence like 'The final "
 		"confrontation is a scene.'");
@@ -400,7 +400,7 @@ in a different context, for instance, and could still be valid in that case.
 
 @<Issue PM_ScenesDisallowCalled problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesDisallowCalled),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesDisallowCalled),
 		"'(called ...)' is not allowed within conditions for a scene to begin or end",
 		"since calling gives only a temporary name to something, for the purpose "
 		"of further instructions which immediately follow in. Here there is no room "
@@ -409,7 +409,7 @@ in a different context, for instance, and could still be valid in that case.
 
 @<Issue PM_ScenesNotPlay problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesNotPlay),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesNotPlay),
 		"'play' is not really a scene",
 		"so although you can write '... when play begins' you cannot write '... "
 		"when play ends'. But there's no need to do so, anyway. When play ends, "
@@ -417,7 +417,7 @@ in a different context, for instance, and could still be valid in that case.
 
 @<Issue PM_ScenesUnknownEnd problem@> =
 	*X = -1;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesUnknownEnd),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesUnknownEnd),
 		"that's not one of the known ends for that scene",
 		"which must be declared with something like 'Confrontation ends happily "
 		"when...' or 'Confrontation ends tragically when...'.");
@@ -488,7 +488,7 @@ void PL::Scenes::new_scene_anchor(parse_node *p, int phase, int given_end) {
 	if (phase == 2) {
 		@<Parse which form of anchor we have@>;
 		if ((this_scene == SC_entire_game) && (external_condition == NULL)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_EntireGameHardwired),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EntireGameHardwired),
 				"the special 'Entire Game' scene cannot have its start or end modified",
 				"because it is a built-in scene designed to be going on whenever there "
 				"is play going on in the story.");
@@ -507,7 +507,7 @@ void PL::Scenes::new_scene_anchor(parse_node *p, int phase, int given_end) {
 
 @<Make this an external scene end condition@> =
 	if (this_scene->anchor_condition[end])
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesOversetEnd),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesOversetEnd),
 			"you have already told me a condition for when that happens",
 			"and although a scene can be linked to the beginning or ending "
 			"of any number of other scenes, it can only have a single "
@@ -707,7 +707,7 @@ void PL::Scenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s, inter_sy
 	}
 	if (Node::is(S, UNKNOWN_NT)) {
 		LOG("Condition: $P\n", S);
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesBadCondition),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesBadCondition),
 			"'begins when' and 'ends when' must be followed by a condition",
 			"which this does not seem to be, or else 'when play begins', "
 			"'when play ends', 'when S begins', or 'when S ends', where "
@@ -1164,7 +1164,7 @@ void PL::Scenes::emit_during_clause(parse_node *spec) {
 	}
 	if (stuck) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesBadDuring),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesBadDuring),
 			"'during' must be followed by the name of a scene or of a "
 			"description which applies to a single scene",
 			"such as 'during Station Arrival' or 'during a recurring scene'.");

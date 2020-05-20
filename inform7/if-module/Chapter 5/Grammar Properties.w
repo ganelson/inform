@@ -317,7 +317,7 @@ parse_node *PL::Parsing::Visibility::get_condition(property_permission *pp) {
 	if (Dash::validate_conditional_clause(spec) == FALSE) {
 		LOG("$T", spec);
 		current_sentence = PLUGIN_PP(parsing, pp)->visibility_sentence;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadVisibilityWhen),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadVisibilityWhen),
 			"the condition after 'when' makes no sense to me",
 			"although otherwise this worked - it is only the part after 'when' "
 			"which I can't follow.");

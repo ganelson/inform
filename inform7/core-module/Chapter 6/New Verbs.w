@@ -147,7 +147,7 @@ now absolutely any non-empty word range is accepted as the property name.
 
 @<Issue PM_VerbRelationUnknown problem@> =
 	*X = NONE_VERBM;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_VerbRelationUnknown),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_VerbRelationUnknown),
 		"new verbs can only be defined in terms of existing relations",
 		"all of which have names ending 'relation': thus '...implies the "
 		"possession relation' is an example of a valid definition, this "
@@ -155,14 +155,14 @@ now absolutely any non-empty word range is accepted as the property name.
 
 @<Issue PM_VerbRelationVague problem@> =
 	*X = NONE_VERBM;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_VerbRelationVague),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_VerbRelationVague),
 		"that's too vague",
 		"calling a relation simply 'relation'.");
 
 
 @<Issue PM_VerbUnknownMeaning problem@> =
 	*X = NONE_VERBM;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_VerbUnknownMeaning),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_VerbUnknownMeaning),
 		"I don't see what the meaning of this verb ought to be",
 		"because it doesn't take any of the three forms I know: a relation "
 		"name ('...means the wearing relation'), a property name ('...means "
@@ -176,7 +176,7 @@ now absolutely any non-empty word range is accepted as the property name.
 		*XP = vm;
 	} else {
 		*X = NONE_VERBM;
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"that's another verb which has no meaning at present",
 			"so this doesn't help me.");
 	}
@@ -285,7 +285,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 		}
 		if ((Wordings::length(P) > MAX_WORDS_IN_PREPOSITION) ||
 			(Wordings::length(SP) > MAX_WORDS_IN_PREPOSITION)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PrepositionLong),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PrepositionLong),
 				"prepositions can be very long indeed in today's Inform",
 				"but not as long as this.");
 			return;
@@ -344,7 +344,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 				inform_extension *loc = Extensions::corresponding_to(pos);
 				if (Extensions::is_standard(loc)) return;
 				#endif
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_NoSuchBuiltInMeaning),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NoSuchBuiltInMeaning),
 					"that's not one of the built-in meanings I know",
 					"and should be one of the ones used in the Preamble to the "
 					"Standard Rules.");
@@ -491,7 +491,7 @@ infinitive for that -- the two are the same in most regular English verbs
 		} else {
 			if (number == 2) {
 				if (WordAssemblages::nonempty(present_plural)) {
-					Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PresentPluralTwice),
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PresentPluralTwice),
 						"the present plural has been given twice",
 						"since two of the principal parts of this verb begin "
 						"with 'they'.");
@@ -509,7 +509,7 @@ infinitive for that -- the two are the same in most regular English verbs
 @ A catch-all problem message:
 
 @<Give up on verb definition as malformed@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_VerbMalformed),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_VerbMalformed),
 		"this verb's definition is malformed",
 		"and should have its principal parts supplied like so: 'The verb "
 		"to sport (he sports, they sport, he sported, it is sported, "
@@ -524,7 +524,7 @@ perfectly valid if a verb were being defined.
 
 @<Reject with a problem message if preposition is conjugated@> =
 	if (Wordings::nonempty(PW)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_PrepositionConjugated),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PrepositionConjugated),
 			"the principal parts of 'to be' are known already",
 			"so should not be spelled out again as part of the instructions "
 			"for this new preposition.");
@@ -533,12 +533,12 @@ perfectly valid if a verb were being defined.
 
 @<Issue the actual problem message@> =
 	if (where)
-		Problems::Issue::two_sentences_problem(_p_(PM_DuplicateVerbs1),
+		StandardProblems::two_sentences_problem(_p_(PM_DuplicateVerbs1),
 			where,
 			"this gives us two definitions of what appears to be the same verb",
 			"or at least has the same infinitive form.");
 	else
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this verb definition appears to clash with a built-in verb",
 			"a table of which can be seen on the Phrasebook index.");
 

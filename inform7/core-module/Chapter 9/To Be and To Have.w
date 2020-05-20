@@ -47,7 +47,7 @@ void Assertions::Copular::to_be(parse_node *pv) {
 	if ((Wordings::length(Node::get_text(px)) > 1)
 		&& (Vocabulary::test_flags(
 			Wordings::first_wn(Node::get_text(px)), TEXT_MC+TEXTWITHSUBS_MC))) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TextNotClosing),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextNotClosing),
 			"it looks as if perhaps you did not intend that to read as a "
 			"single sentence",
 			"and possibly the text in quotes was supposed to stand as "
@@ -94,7 +94,7 @@ void Assertions::Copular::to_have(parse_node *pv) {
 
 @<Reject two ungrammatical forms of "to have"@> =
 	if (Node::get_type(py) == X_OF_Y_NT) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousOf),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousOf),
 			"the 'of' here appears superfluous",
 			"assuming the sentence aims to give a property value of something. "
 			"(For instance, if we want to declare the carrying capacity of "
@@ -104,7 +104,7 @@ void Assertions::Copular::to_have(parse_node *pv) {
 		return;
 	}
 	if (Node::get_type(py) == WITH_NT) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousWith),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousWith),
 			"the 'has ... with' here appears to be a mixture of two ways to "
 			"give something properties",
 			"that is, 'The box is a container with capacity 10.' and 'The box "
@@ -117,7 +117,7 @@ as a |PROPERTYCALLED_NT| subtree and hang beneath an |ALLOWED_NT| node.
 
 @<Handle "X has an A called B"@> =
 	if (Wordings::match(Node::get_text(py->down->next), Node::get_text(py->down))) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousCalled),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousCalled),
 			"'called' should be used only when the name is different from the kind",
 			"so this sentence should be simplified. For example, 'A door has a "
 			"colour called colour' should be written more simply as 'A door has "
@@ -254,7 +254,7 @@ void Assertions::Copular::make_existential_assertion(parse_node *py) {
 			(Kinds::Compare::eq(K_object, InferenceSubjects::as_kind(Node::get_subject(py)))))
 			Assertions::Creator::convert_instance_to_nounphrase(py, NULL);
 		else
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ThereIsVague),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ThereIsVague),
 				"'there is...' can only be used to create objects",
 				"and not instances of other kinds.'");
 	}

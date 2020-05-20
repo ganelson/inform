@@ -57,7 +57,7 @@ int Properties::ComparativeRelations::REL_typecheck(binary_predicate *bp,
 			LOG("Comparative misapplied to $Y not $Y\n", prn, bp->comparative_property);
 		Problems::quote_property(4, bp->comparative_property);
 		Problems::quote_property(5, prn);
-		Problems::Issue::tcp_problem(_p_(PM_ComparativeMisapplied), tck,
+		StandardProblems::tcp_problem(_p_(PM_ComparativeMisapplied), tck,
 			"that ought to make a comparison of %4 not %5.");
 		return NEVER_MATCH;
 	}

@@ -46,7 +46,7 @@ int Properties::ProvisionRelation::REL_typecheck(binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	if (Kinds::get_construct(kinds_of_terms[1]) == CON_property) return ALWAYS_MATCH;
 	Problems::quote_kind(4, kinds_of_terms[1]);
-	Problems::Issue::tcp_problem(_p_(PM_BadProvides), tck,
+	StandardProblems::tcp_problem(_p_(PM_BadProvides), tck,
 		"that asks whether something provides something, and in Inform 'to provide' "
 		"means that an object (or value) has a property attached - for instance, "
 		"containers provide the property 'carrying capacity'. Here, though, we have "

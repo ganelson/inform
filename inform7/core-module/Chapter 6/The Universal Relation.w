@@ -44,7 +44,7 @@ int Relations::Universal::REL_typecheck(binary_predicate *bp,
 	if (bp == R_meaning) {
 		if (Kinds::Compare::eq(kinds_of_terms[0], K_verb) == FALSE) {
 			Problems::quote_kind(4, kinds_of_terms[0]);
-			Problems::Issue::tcp_problem(_p_(...), tck,
+			StandardProblems::tcp_problem(_p_(...), tck,
 				"that asks whether something means something, and in Inform 'to mean' "
 				"means that a particular relation is the meaning of a given verb. "
 				"Here, though, we have %4 rather than the name of a verb.");
@@ -52,7 +52,7 @@ int Relations::Universal::REL_typecheck(binary_predicate *bp,
 		}
 		if (Kinds::get_construct(kinds_of_terms[1]) != CON_relation) {
 			Problems::quote_kind(4, kinds_of_terms[1]);
-			Problems::Issue::tcp_problem(_p_(...), tck,
+			StandardProblems::tcp_problem(_p_(...), tck,
 				"that asks whether something means something, and in Inform 'to mean' "
 				"means that a particular relation is the meaning of a given verb. "
 				"Here, though, we have %4 rather than the name of a relation.");
@@ -61,7 +61,7 @@ int Relations::Universal::REL_typecheck(binary_predicate *bp,
 	} else {
 		if (Kinds::get_construct(kinds_of_terms[0]) != CON_relation) {
 			Problems::quote_kind(4, kinds_of_terms[0]);
-			Problems::Issue::tcp_problem(_p_(BelievedImpossible), tck,
+			StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
 				"that asks whether something relates something, and in Inform 'to relate' "
 				"means that a particular relation applies between two things. Here, though, "
 				"we have %4 rather than the name of a relation.");
@@ -69,7 +69,7 @@ int Relations::Universal::REL_typecheck(binary_predicate *bp,
 		}
 		if (Kinds::get_construct(kinds_of_terms[1]) != CON_combination) {
 			Problems::quote_kind(4, kinds_of_terms[1]);
-			Problems::Issue::tcp_problem(_p_(BelievedImpossible), tck,
+			StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
 				"that asks whether something relates something, and in Inform 'to relate' "
 				"means that a particular relation applies between two things. Here, though, "
 				"we have %4 rather than the combination of the two things.");
@@ -82,7 +82,7 @@ int Relations::Universal::REL_typecheck(binary_predicate *bp,
 		if (Kinds::Compare::compatible(cleft, rleft) == NEVER_MATCH) {
 			Problems::quote_kind(5, kinds_of_terms[0]);
 			Problems::quote_kind(4, cleft);
-			Problems::Issue::tcp_problem(_p_(BelievedImpossible), tck,
+			StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
 				"that applies a relation to values of the wrong kinds: we have %5, but "
 				"the left-hand value here is %4.");
 			return NEVER_MATCH;
@@ -90,7 +90,7 @@ int Relations::Universal::REL_typecheck(binary_predicate *bp,
 		if (Kinds::Compare::compatible(cright, rright) == NEVER_MATCH) {
 			Problems::quote_kind(5, kinds_of_terms[0]);
 			Problems::quote_kind(4, cright);
-			Problems::Issue::tcp_problem(_p_(BelievedImpossible), tck,
+			StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
 				"that applies a relation to values of the wrong kinds: we have %5, but "
 				"the right-hand value here is %4.");
 			return NEVER_MATCH;

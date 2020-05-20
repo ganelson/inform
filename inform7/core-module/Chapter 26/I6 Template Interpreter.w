@@ -130,14 +130,14 @@ file.
 	if (Str::len(segment_name) > 0) {
 		Input_File = NULL;
 		WRITE_TO(STDERR, "inform: Unable to open segment <%S>\n", segment_name);
-		Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or anyway not usefully testable */
+		StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or anyway not usefully testable */
 			"I couldn't open a requested I6T segment: see the console "
 			"output for details.");
 	} else if (index_structure) {
 		Input_File = Filenames::fopen(index_structure, "r");
 		if (Input_File == NULL) {
 			LOG("Filename was %f\n", index_structure);
-			Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or anyway not usefully testable */
+			StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or anyway not usefully testable */
 				"I couldn't open the template file for the index.");
 		}
 	}
@@ -223,7 +223,7 @@ At one time there were very many commands avalable here, but no longer.
 
 	LOG("command: <%S> argument: <%S>\n", command, argument);
 	Problems::quote_stream(1, command);
-	Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(PM_TemplateError),
+	StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(PM_TemplateError),
 		"In an explicit Inform 6 code insertion, I recognise a few special "
 		"notations in the form '{-command}'. This time, though, the unknown notation "
 		"{-%1} has been used, and this is an error. (It seems very unlikely indeed "
@@ -292,7 +292,7 @@ using template-hacking there are a handful of cases that can't be avoided, so...
 =
 void I6T::error(char *message) {
 	Problems::quote_text(1, message);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(...));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
 		"I ran into a mistake in a template file command: %1. The I6 "
 		"template files (or .i6t files) are a very low-level part of Inform, "

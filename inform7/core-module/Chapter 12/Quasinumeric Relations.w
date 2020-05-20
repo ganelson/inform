@@ -77,7 +77,7 @@ int Calculus::QuasinumericRelations::REL_typecheck(binary_predicate *bp,
 			LOG("Unable to apply inequality of $u and $u\n", kinds_of_terms[0], kinds_of_terms[1]);
 		Problems::quote_kind(4, kinds_of_terms[0]);
 		Problems::quote_kind(5, kinds_of_terms[1]);
-		Problems::Issue::tcp_problem(_p_(PM_InequalityFailed), tck,
+		StandardProblems::tcp_problem(_p_(PM_InequalityFailed), tck,
 			"that would mean comparing two kinds of value which cannot mix - "
 			"%4 and %5 - so this must be incorrect.");
 		return NEVER_MATCH;

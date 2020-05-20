@@ -75,6 +75,39 @@ applications.
 	STREAM_FLUSH(STDOUT);
 	LOG(message, synopsis, wc);
 
+@h Bridge to the problems system.
+These are both used when issuing problem messages on content in the relevant
+source files.
+
+@d DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK SourceText::describe_source_file
+
+=
+text_stream *SourceText::describe_source_file(text_stream *paraphrase,
+	source_file *referred, text_stream *file) {
+	paraphrase = I"source text";
+	inform_extension *E = Extensions::corresponding_to(referred);
+	if (E) {
+		inbuild_work *work = E->as_copy->edition->work;
+		if ((work) && (Works::is_standard_rules(work)))
+			paraphrase = I"the Standard Rules";
+		else if ((work) && (Works::is_basic_inform(work)))
+			paraphrase = I"Basic Inform";
+		else
+			paraphrase = file;
+	}
+	return paraphrase;
+}
+
+@
+
+@d GLOSS_EXTENSION_SOURCE_FILE_PROBLEMS_CALLBACK SourceText::gloss_extension
+
+=
+void SourceText::gloss_extension(text_stream *OUT, source_file *referred) {
+	inform_extension *E = Extensions::corresponding_to(referred);
+	if (E) WRITE(" in the extension %X", E->as_copy->edition->work);
+}
+
 @h Bridge to the syntax analyser.
 Similarly, //supervisor// sits on top of the //syntax// module, which forms
 up the stream of words from the lexer into syntax trees. This too produces

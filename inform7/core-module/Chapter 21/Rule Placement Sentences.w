@@ -150,7 +150,7 @@ subject and object NPs.
 	*X = FALSE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchRuleExists));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchRuleExists));
 	Problems::issue_problem_segment(
 		"In %1, you gave '%2' where a rule was required.");
 	Problems::issue_problem_end();
@@ -321,7 +321,7 @@ The subject noun phrase is an articled list, each entry of which must match:
 @<Issue PM_UnspecifiedRulebookPlacement problem@> =
 	*X = BAD_RULE_PLACEMENT;
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnspecifiedRulebookPlacement));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnspecifiedRulebookPlacement));
 	Problems::issue_problem_segment(
 		"In %1, you didn't specify in which rulebook the rule was to "
 		"be listed, only which existing rule it should go before or "
@@ -334,7 +334,7 @@ The subject noun phrase is an articled list, each entry of which must match:
 
 @<Actually issue PM_ImproperRulePlacement problem@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ImproperRulePlacement));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ImproperRulePlacement));
 	Problems::issue_problem_segment(
 		"In %1, you used the special verb 'to be listed' - which specifies "
 		"how rules are listed in rulebooks - in a way I didn't recognise. "
@@ -345,7 +345,7 @@ The subject noun phrase is an articled list, each entry of which must match:
 @<Issue PM_NoSuchRulebookPlacement problem@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchRulebookPlacement));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchRulebookPlacement));
 	Problems::issue_problem_segment(
 		"In %1, you gave '%2' where a rulebook was required.");
 	Problems::issue_problem_end();
@@ -381,7 +381,7 @@ void Rules::Placement::place_in_rulebook(parse_node *p1, parse_node *p2, int sen
 	if ((sense == FALSE) &&
 		((new_rule_placement != MIDDLE_PLACEMENT) || (side != IN_SIDE))) {
 		Problems::quote_source(1, current_sentence);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePlacementNegation));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePlacementNegation));
 		Problems::issue_problem_segment(
 			"In %1, you used the special verb 'to be listed' - which specifies "
 			"how rules are listed in rulebooks - in a way too complicated to "
@@ -417,7 +417,7 @@ void Rules::Placement::place_in_rulebook(parse_node *p1, parse_node *p2, int sen
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, the_rulebook->primary_name);
 			Problems::quote_wording(3, relative_to_which->name);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_PlaceWithMissingRule));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PlaceWithMissingRule));
 			Problems::issue_problem_segment(
 				"In %1, you talk about the position of the rule '%3' "
 				"in the rulebook '%2', but in fact that rule isn't in this "

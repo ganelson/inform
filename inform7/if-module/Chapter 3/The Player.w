@@ -288,7 +288,7 @@ int PL::Player::player_complete_model(int stage) {
 
 @<If the start room is still null, there's no room, so issue a problem@> =
 	if ((start_room == NULL) && (Task::wraps_existing_storyfile() == FALSE)) {
-		Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(PM_NoStartRoom),
+		StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(PM_NoStartRoom),
 			"There doesn't seem to be any location in this story, so there's "
 			"nowhere for the player to begin. This may be because I have "
 			"misunderstood what was meant to be a room and what wasn't: I "
@@ -311,7 +311,7 @@ will do. But otherwise:
 			while ((start_room) && (PL::Spatial::progenitor(start_room)))
 				start_room = PL::Spatial::progenitor(start_room);
 			if ((start_room) && (PL::Spatial::object_is_a_room(start_room) == FALSE)) {
-				Problems::Issue::object_problem(_p_(PM_StartsOutsideRooms),
+				StandardProblems::object_problem(_p_(PM_StartsOutsideRooms),
 					start_object,
 					"seems to be where the player is supposed to begin",
 					"but (so far as I know) it is not a room, nor is it ultimately "
@@ -320,7 +320,7 @@ will do. But otherwise:
 			inference *inf;
 			POSITIVE_KNOWLEDGE_LOOP(inf,
 				Instances::as_subject(player_character_object), PART_OF_INF) {
-				Problems::Issue::object_problem(_p_(PM_PlayerIsPart),
+				StandardProblems::object_problem(_p_(PM_PlayerIsPart),
 					start_object,
 					"seems to have the player attached as a component part",
 					"which is not allowed. The player can be in a room, or "

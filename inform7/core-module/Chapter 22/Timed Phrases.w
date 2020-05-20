@@ -95,7 +95,7 @@ void Phrases::Timed::check_for_unused(void) {
 		if (Phrases::Usage::get_timing_of_event(&(ph->usage_data)) == NO_FIXED_TIME) {
 			if (ph->usage_data.uses_as_event == NULL) {
 				current_sentence = ph->declaration_node;
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnusedTimedEvent),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnusedTimedEvent),
 					"this sets up a timed event which is never used",
 					"since you never use any of the phrases which could cause it. "
 					"(A timed event is just a name, and it needs other instructions "

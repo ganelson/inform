@@ -31,7 +31,7 @@ any text but then fail.
 
 @<Issue PM_UnexpectedFruit problem@> =
 	Problems::quote_wording(1, W);
-	Problems::Issue::handmade_problem(syntax_tree, _p_(PM_UnexpectedFruit));
+	StandardProblems::handmade_problem(syntax_tree, _p_(PM_UnexpectedFruit));
 	Problems::issue_problem_segment(
 		"The sentence '%1' contained an unexpected fruit item, and now supper "
 		"will be ruined.");

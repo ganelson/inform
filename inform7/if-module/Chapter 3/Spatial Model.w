@@ -210,7 +210,7 @@ int PL::Spatial::spatial_explain_contradiction(inference *A, inference *B, int s
 		Problems::quote_subject(3, subj);
 		Problems::quote_object(4, World::Inferences::get_reference_as_object(A));
 		Problems::quote_object(5, World::Inferences::get_reference_as_object(B));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SpatialContradiction));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SpatialContradiction));
 		Problems::issue_problem_segment(
 			"You wrote %1, but also %2: that seems to be saying that the same "
 			"object (%3) must be in two different places (%4 and %5). This "
@@ -280,7 +280,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
 int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
 	if ((sub == K_thing) && (super != K_object)) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ThingAdrift),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ThingAdrift),
 				"'thing' is not allowed to be a kind of anything (other than "
 				"'object')",
 				"because it's too fundamental to the way Inform uses rooms "
@@ -289,7 +289,7 @@ int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
 	}
 	if ((sub == K_room) && (super != K_object)) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RoomAdrift),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RoomAdrift),
 				"'room' is not allowed to be a kind of anything (other than "
 				"'object')",
 				"because it's too fundamental to the way Inform uses rooms "
@@ -299,7 +299,7 @@ int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
 	if (((sub == K_container) && (super == K_supporter)) ||
 		((sub == K_supporter) && (super == K_container))) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ContainerAdrift),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ContainerAdrift),
 				"'container' and 'supporter' are not allowed to be kinds "
 				"of each other",
 				"because they're too fundamental to the way Inform models the "
@@ -399,7 +399,7 @@ just decided whether |I| is a room or not. We therefore draw the necessary
 inference.
 
 @<Produce a problem for doubly described scenery@> =
-	Problems::Issue::object_problem(_p_(PM_SceneryDoublyDescribed),
+	StandardProblems::object_problem(_p_(PM_SceneryDoublyDescribed),
 		I,
 		"is scenery, which means that it cannot sensibly have any 'initial "
 		"appearance' property - being scenery, it isn't announced when the "
@@ -481,7 +481,7 @@ int PL::Spatial::spatial_intervene_in_assertion(parse_node *px, parse_node *py) 
 		inference_subject *left_subject = Node::get_subject(px);
 		if (left_subject) {
 			if (InferenceSubjects::domain(left_subject))
-				Problems::Issue::subject_problem_at_sentence(_p_(PM_KindNowhere),
+				StandardProblems::subject_problem_at_sentence(_p_(PM_KindNowhere),
 					left_subject,
 					"seems to be said to be 'nowhere' in some way",
 					"which doesn't make sense. An individual thing can be 'nowhere', "
@@ -515,7 +515,7 @@ void PL::Spatial::infer_presence_here(instance *I) {
 	inference_subject *infs = Instances::as_subject(I);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, infs, PARENTAGE_HERE_INF) {
-		Problems::Issue::contradiction_problem(_p_(PM_DuplicateHere),
+		StandardProblems::contradiction_problem(_p_(PM_DuplicateHere),
 			World::Inferences::where_inferred(inf),
 			current_sentence,
 			I,
@@ -690,7 +690,7 @@ when it's legitimately a door.
 		@<Issue a more generic problem message for irreconcilable kinds@>;
 
 @<Issue a problem message for implied containment by a person@> =
-	Problems::Issue::contradiction_problem(_p_(PM_PersonContaining),
+	StandardProblems::contradiction_problem(_p_(PM_PersonContaining),
 		sentence_setting_kind,
 		World::Inferences::where_inferred(geography_inference), I,
 		"cannot contain or support things like something inanimate",
@@ -702,7 +702,7 @@ when it's legitimately a door.
 Inform spatial model:
 
 @<Issue a problem message for simultaneous containment and support@> =
-	Problems::Issue::contradiction_problem(_p_(PM_CantContainAndSupport),
+	StandardProblems::contradiction_problem(_p_(PM_CantContainAndSupport),
 		decider, World::Inferences::where_inferred(geography_inference), I,
 		"cannot both contain things and support things",
 		"which is what you're implying here. If you need both, the easiest way is "
@@ -712,7 +712,7 @@ Inform spatial model:
 		"stapler.'");
 
 @<Issue a more generic problem message for irreconcilable kinds@> =
-	Problems::Issue::contradiction_problem(_p_(PM_BothRoomAndSupporter),
+	StandardProblems::contradiction_problem(_p_(PM_BothRoomAndSupporter),
 		decider,
 		World::Inferences::where_inferred(geography_inference), I,
 		"would need to have two different and incompatible kinds to make both "
@@ -794,7 +794,7 @@ int PL::Spatial::spatial_stage_II(void) {
 			Problems::quote_object(2, I);
 			Problems::quote_object(3, PL::Spatial::progenitor(I));
 			Problems::quote_kind(4, Instances::to_kind(I));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NonThingInModel));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonThingInModel));
 			Problems::issue_problem_segment(
 				"In the sentence %1, you create an object '%2' which you then seem "
 				"to place in or on or as part of '%3', but the kind of '%2' is %4. "
@@ -834,7 +834,7 @@ object under investigation.
 
 @<Make this the determining inference@> =
 	if (parent_setting_inference) {
-		Problems::Issue::contradiction_problem(_p_(PM_DuplicateParentage),
+		StandardProblems::contradiction_problem(_p_(PM_DuplicateParentage),
 			World::Inferences::where_inferred(parent_setting_inference),
 			World::Inferences::where_inferred(inf),
 			I,
@@ -851,7 +851,7 @@ object under investigation.
 		@<Set the whereabouts to the last discussed room prior to this inference being drawn@>;
 		if (whereabouts == NULL) {
 			current_sentence = here_sentence;
-			Problems::Issue::object_problem_at_sentence(_p_(PM_NoHere),
+			StandardProblems::object_problem_at_sentence(_p_(PM_NoHere),
 				I,
 				"was described as being 'here', and there doesn't seem to be any "
 				"location being talked about at this point in the source text",
@@ -871,7 +871,7 @@ when it finishes this will be set to the most recently mentioned.
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PART_OF_INF) {
 		if ((PL::Spatial::object_is_a_room(I)) || (PL::Map::object_is_a_door(I))) {
-			Problems::Issue::object_problem(_p_(PM_RoomOrDoorAsPart),
+			StandardProblems::object_problem(_p_(PM_RoomOrDoorAsPart),
 				I,
 				"was set up as being part of something else, which doors and rooms "
 				"are not allowed to be",
@@ -1069,7 +1069,7 @@ changed progenitors at Stage II.)
 
 @<Diagnose the ill-foundedness with a problem message@> =
 	Problems::quote_object(1, I);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_IllFounded));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_IllFounded));
 	Problems::issue_problem_segment("The %1 seems to be containing itself: ");
 	instance *I3 = I;
 	while (TRUE) {
@@ -1277,7 +1277,7 @@ int PL::Spatial::spatial_stage_IV(void) {
 		instance *I;
 		LOOP_OVER_OBJECT_INSTANCES(I)
 			if (PL::Spatial::object_is_a_room(I)) {
-				Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(PM_RoomInIgnoredSource),
+				StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(PM_RoomInIgnoredSource),
 					"This is supposed to be a source text which only contains "
 					"release instructions to bind up an existing story file "
 					"(for instance, one produced using Inform 6). That's because "

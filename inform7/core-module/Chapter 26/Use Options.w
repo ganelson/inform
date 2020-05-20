@@ -117,7 +117,7 @@ void UseOptions::new_use_option(parse_node *p) {
 
 @<Issue PM_UseTranslatesNotI6 problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UseTranslatesNotI6),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UseTranslatesNotI6),
 		"that translates into something which isn't a simple I6 inclusion",
 		"placed in '(-' and '-)' markers.");
 
@@ -236,7 +236,7 @@ void UseOptions::set_use_options(parse_node *p) {
 	else if (<use-sentence-object>(Node::get_text(p))) @<Set the option given in this word range@>;
 	if (traverse == 1) return;
 	LOG("Used: %W\n", Node::get_text(p));
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUseOption),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUseOption),
 		"that isn't a 'Use' option known to me",
 		"and needs to be one of the ones listed in the documentation.");
 }
@@ -279,7 +279,7 @@ void UseOptions::set_use_options(parse_node *p) {
 @<Adjust the minimum setting@> =
 	if (uo->minimum_setting_value == -1) {
 		if (min_setting != -1)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_UONotNumerical),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UONotNumerical),
 				"that 'Use' option does not have a numerical setting",
 				"but is either used or not used.");
 	} else {
@@ -292,7 +292,7 @@ void UseOptions::set_use_options(parse_node *p) {
 	TEMPORARY_TEXT(new_identifier);
 	WRITE_TO(new_identifier, "%+W", Wordings::one_word(w1));
 	if (Str::len(new_identifier) > 63) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadICLIdentifier),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadICLIdentifier),
 			"that is too long to be an ICL identifier",
 			"so can't be the name of any I6 memory setting.");
 	}

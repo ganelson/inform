@@ -493,14 +493,14 @@ void PL::Actions::translates(wording W, parse_node *p2) {
 	if (<action-name>(W)) an = <<rp>>;
 	else {
 		LOG("Tried action name %W\n", W);
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatesNonAction),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatesNonAction),
 			"this does not appear to be the name of an action",
 			"so cannot be translated into I6 at all.");
 		return;
 	}
 	if (an->translated) {
 		LOG("Tried action name %W = %n\n", W, PL::Actions::base_iname(an));
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatesActionAlready),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatesActionAlready),
 			"this action has already been translated",
 			"so there must be some duplication somewhere.");
 		return;
@@ -547,7 +547,7 @@ and this allows "exiting from the cage", say, as an action pattern.
 	*X = NOT_APPLICABLE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BadMatchingSyntax));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadMatchingSyntax));
 	Problems::issue_problem_segment(
 		"You wrote %1, which I am reading as a request to make "
 		"a new named variable for an action - a value associated "
@@ -559,7 +559,7 @@ and this allows "exiting from the cage", say, as an action pattern.
 @<Issue PM_ActionVarAnd problem@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarAnd));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarAnd));
 	Problems::issue_problem_segment(
 		"You wrote %1, which I am reading as a request to make "
 		"a new named variable for an action - a value associated "
@@ -575,7 +575,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 
 	if (Node::get_type(cnode) != PROPERTYCALLED_NT) {
 		Problems::quote_source(1, current_sentence);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarUncalled));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarUncalled));
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make "
 			"a new named variable for an action - a value associated "
@@ -590,7 +590,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 	if (an->owned_by_an == NULL) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(cnode->down->next));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(Untestable)); /* since we no longer define such actions */
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable)); /* since we no longer define such actions */
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make "
 			"a new named variable for an action - a value associated "
@@ -614,7 +614,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 			if (Wordings::length(MW) > 1) {
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_wording(2, MW);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_MatchedAsTooLong));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MatchedAsTooLong));
 				Problems::issue_problem_segment(
 					"You wrote %1, which I am reading as a request to make "
 					"a new named variable for an action - a value associated "
@@ -636,7 +636,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 		if (Specifications::is_description(spec)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(cnode->down));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarOverspecific));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarOverspecific));
 			Problems::issue_problem_segment(
 				"You wrote %1, which I am reading as a request to make "
 				"a new named variable for an action - a value associated "
@@ -651,7 +651,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 			LOG("Offending SP: $T", spec);
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(cnode->down));
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarUnknownKOV));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarUnknownKOV));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is not the name of a kind of "
 				"value which I know (such as 'number' or 'text').");
@@ -663,7 +663,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 	if (Kinds::Compare::eq(K, K_value)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(cnode->down));
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarValue));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarValue));
 		Problems::issue_problem_segment(
 			"You wrote %1, but saying that a variable is a 'value' "
 			"does not give me a clear enough idea what it will hold. "
@@ -718,7 +718,7 @@ void PL::Actions::compile_action_name_var_creators(void) {
 
 @<Issue PM_BadActionDeclaration problem@> =
 	*X = FALSE; *XP = NULL;
-	Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_BadActionDeclaration),
+	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadActionDeclaration),
 		"it is not sufficient to say that something is an 'action'",
 		"without giving the necessary details: for example, 'Unclamping "
 		"is an action applying to one thing.'");
@@ -773,7 +773,7 @@ action to be created.
 
 @<Issue PM_ActionAlreadyExists problem@> =
 	*XP = NULL;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ActionAlreadyExists),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionAlreadyExists),
 		"that seems to be an action already existing",
 		"so it cannot be redefined now. If you would like to reconfigure "
 		"an action in the standard set - for instance if you prefer "
@@ -840,7 +840,7 @@ It's convenient to define a single action clause first:
 	<action-clause>								==> R[1]
 
 @<Issue PM_ActionClauseUnknown problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ActionClauseUnknown),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionClauseUnknown),
 		"the action definition contained text I couldn't follow",
 		"and may be too complicated.");
 
@@ -851,7 +851,7 @@ It's convenient to define a single action clause first:
 		case PP_ACT_CLAUSE: {
 			wording C = GET_RW(<action-clause>, 1);
 			if (Wordings::length(C) != 1)
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_MultiwordPastParticiple),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultiwordPastParticiple),
 					"a past participle must be given as a single word",
 					"even if the action name itself is longer than that. "
 					"(For instance, the action name 'hanging around until' "
@@ -892,7 +892,7 @@ It's convenient to define a single action clause first:
 
 @<Issue PM_ActionMisapplied problem@> =
 	*X = REQUIRES_ACCESS; *XP = K_thing;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ActionMisapplied),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionMisapplied),
 		"an action can only apply to things or to kinds of value",
 		"for instance: 'photographing is an action applying to "
 		"one visible thing'.");
@@ -928,7 +928,7 @@ void PL::Actions::act_parse_definition(parse_node *p) {
 	if (an->max_parameters >= 2) {
 		if ((Kinds::Compare::le(an->noun_kind, K_object) == FALSE) &&
 			(Kinds::Compare::le(an->second_kind, K_object) == FALSE)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ActionBothValues),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionBothValues),
 				"this action definition asks to have a single action apply "
 				"to two different things which are not objects",
 				"and unfortunately a fundamental restriction is that an "
@@ -1130,7 +1130,7 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 			Problems::quote_wording(2, Node::get_text(an->designers_specification));
 		Problems::quote_wording(3, an->present_name);
 		Problems::quote_text(4, failed_on);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarMismatchesAction));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarMismatchesAction));
 		Problems::issue_problem_segment("The grammar you give in %1 is not compatible "
 			"with the %3 action (defined as '%2') - %4.");
 		Problems::issue_problem_end();

@@ -509,7 +509,7 @@ void Sentences::Headings::write_as_xml(void) {
 	text_stream xf_struct; text_stream *xf = &xf_struct;
 	filename *F = Task::xml_headings_file();
 	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open headings file", F);
+		Problems::fatal_on_file("Can't open headings file", F);
 	Sentences::Headings::write_headings_as_xml_inner(xf);
 	STREAM_CLOSE(xf);
 }

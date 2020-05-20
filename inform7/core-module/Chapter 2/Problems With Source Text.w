@@ -15,7 +15,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 		switch (CE->error_category) {
 			case OPEN_FAILED_CE:
 				Problems::quote_stream(1, Filenames::get_leafname(CE->details_file));
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 				Problems::issue_problem_segment(
 					"I can't open the file '%1' of source text. %P"
 					"If you are using the 'Source' subfolder of Materials to "
@@ -26,7 +26,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 			case EXT_MISWORDED_CE:
 				Problems::quote_work(1, CE->copy->found_by->work);
 				Problems::quote_stream(2, CE->details);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMiswordedBeginsHere));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMiswordedBeginsHere));
 				Problems::issue_problem_segment(
 					"The extension %1, which your source text makes use of, seems to be "
 					"damaged or incorrect: its identifying opening line is wrong. "
@@ -36,7 +36,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 			case KIT_MISWORDED_CE:
 				Problems::quote_work(1, CE->copy->found_by->work);
 				Problems::quote_stream(2, CE->details);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
 				Problems::issue_problem_segment(
 					"The kit %1, which your source text makes use of, seems to be "
 					"damaged or incorrect: its identifying opening line is wrong. "
@@ -49,7 +49,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				Problems::quote_work(1, CE->copy->found_by->work);
 				Problems::quote_number(2, &max);
 				Problems::quote_number(3, &overage);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtTitleTooLong));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtTitleTooLong));
 				Problems::issue_problem_segment(
 					"The extension %1, which your source text makes use of, has a "
 					"title which is too long, exceeding the maximum allowed "
@@ -63,7 +63,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				Problems::quote_work(1, CE->copy->found_by->work);
 				Problems::quote_number(2, &max);
 				Problems::quote_number(3, &overage);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtAuthorTooLong));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtAuthorTooLong));
 				Problems::issue_problem_segment(
 					"The extension %1, which your source text makes use of, has an "
 					"author name which is too long, exceeding the maximum allowed "
@@ -74,14 +74,14 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 			case LEXER_CE:
 				switch (CE->error_subcategory) {
 					case STRING_TOO_LONG_LEXERERROR:
-						Problems::Issue::lexical_problem(Task::syntax_tree(), _p_(PM_TooMuchQuotedText),
+						StandardProblems::lexical_problem(Task::syntax_tree(), _p_(PM_TooMuchQuotedText),
 							"Too much text in quotation marks", CE->details_word,
 							"...\" The maximum length is very high, so this is more "
 							"likely to be because a close quotation mark was "
 							"forgotten.");
 						break;
 					case WORD_TOO_LONG_LEXERERROR:
-						  Problems::Issue::lexical_problem(Task::syntax_tree(), _p_(PM_WordTooLong),
+						  StandardProblems::lexical_problem(Task::syntax_tree(), _p_(PM_WordTooLong),
 							"Word too long", CE->details_word,
 							"(Individual words of unquoted text can run up to "
 							"128 letters long, which ought to be plenty. The longest "
@@ -96,7 +96,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"words are fine.)");
 						break;
 					case I6_TOO_LONG_LEXERERROR:
-						Problems::Issue::lexical_problem(Task::syntax_tree(), _p_(Untestable), /* well, not at all conveniently */
+						StandardProblems::lexical_problem(Task::syntax_tree(), _p_(Untestable), /* well, not at all conveniently */
 							"Verbatim Inform 6 extract too long", CE->details_word,
 							"... -). The maximum length is quite high, so this "
 							"may be because a '-)' was forgotten. Still, if "
@@ -104,7 +104,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"using several verbatim inclusions in a row.");
 						break;
 					case STRING_NEVER_ENDS_LEXERERROR:
-						Problems::Issue::lexical_problem_S(Task::syntax_tree(), _p_(PM_UnendingQuote),
+						StandardProblems::lexical_problem_S(Task::syntax_tree(), _p_(PM_UnendingQuote),
 							"Some source text ended in the middle of quoted text",
 							CE->details,
 							"This probably means that a quotation mark is missing "
@@ -116,7 +116,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"me to lose track.)");
 						break;
 					case COMMENT_NEVER_ENDS_LEXERERROR:
-						Problems::Issue::lexical_problem_S(Task::syntax_tree(), _p_(PM_UnendingComment),
+						StandardProblems::lexical_problem_S(Task::syntax_tree(), _p_(PM_UnendingComment),
 							"Some source text ended in the middle of a comment",
 							CE->details,
 							"This probably means that a ']' is missing somewhere. "
@@ -130,7 +130,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"the comment.");
 						break;
 					case I6_NEVER_ENDS_LEXERERROR:
-						Problems::Issue::lexical_problem_S(Task::syntax_tree(), _p_(PM_UnendingI6),
+						StandardProblems::lexical_problem_S(Task::syntax_tree(), _p_(PM_UnendingI6),
 							"Some source text ended in the middle of a verbatim passage "
 							"of Inform 6 code",
 							CE->details,
@@ -144,7 +144,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				switch (CE->error_subcategory) {
 					case UnexpectedSemicolon_SYNERROR:
 						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_UnexpectedSemicolon));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnexpectedSemicolon));
 						Problems::issue_problem_segment(
 							"The text %1 is followed by a semicolon ';', which only makes "
 							"sense to me inside a rule or phrase (where there's a heading, "
@@ -154,7 +154,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case ParaEndsInColon_SYNERROR:
 						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ParaEndsInColon));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ParaEndsInColon));
 						Problems::issue_problem_segment(
 							"The text %1 seems to end a paragraph with a colon. (Rule declarations "
 							"can end a sentence with a colon, so maybe there's accidentally a "
@@ -163,7 +163,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case SentenceEndsInColon_SYNERROR:
 						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SentenceEndsInColon));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SentenceEndsInColon));
 						Problems::issue_problem_segment(
 							"The text %1 seems to have a colon followed by a full stop, which is "
 							"punctuation I don't understand.");
@@ -171,7 +171,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case SentenceEndsInSemicolon_SYNERROR:
 						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SentenceEndsInSemicolon));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SentenceEndsInSemicolon));
 						Problems::issue_problem_segment(
 							"The text %1 seems to have a semicolon followed by a full stop, which is "
 							"punctuation I don't understand.");
@@ -179,7 +179,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case SemicolonAfterColon_SYNERROR:
 						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SemicolonAfterColon));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SemicolonAfterColon));
 						Problems::issue_problem_segment(
 							"The text %1 seems to have a semicolon following a colon, which is "
 							"punctuation I don't understand.");
@@ -187,7 +187,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case SemicolonAfterStop_SYNERROR:
 						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_SemicolonAfterStop));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SemicolonAfterStop));
 						Problems::issue_problem_segment(
 							"The text %1 seems to have a semicolon following a full stop, which is "
 							"punctuation I don't understand.");
@@ -197,7 +197,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
 						Problems::quote_source(2, NounPhrases::new_raw(Wordings::up_to(CE->details_W, CE->details_N-1)));
 						Problems::quote_source(3, NounPhrases::new_raw(Wordings::from(CE->details_W, CE->details_N)));
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingOverLine));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingOverLine));
 						Problems::issue_problem_segment(
 							"The text %1 seems to be a heading, but contains a "
 							"line break, which is not allowed: so I am reading it "
@@ -211,7 +211,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
 						Problems::quote_source(2,
 							NounPhrases::new_raw(Wordings::new(Wordings::last_wn(CE->details_W)+1, CE->details_N-1)));
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingStopsBeforeEndOfLine));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingStopsBeforeEndOfLine));
 						Problems::issue_problem_segment(
 							"The text %1 seems to be a heading, but does not occupy "
 							"the whole of its line of source text, which continues %2. "
@@ -226,49 +226,49 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 
 					case ExtNoBeginsHere_SYNERROR:
-						Problems::Issue::extension_problem(_p_(PM_ExtNoBeginsHere),
+						StandardProblems::extension_problem(_p_(PM_ExtNoBeginsHere),
 							ExtensionManager::from_copy(C),
 							"has no 'begins here' sentence");
 						break;
 					case ExtNoEndsHere_SYNERROR:
-						Problems::Issue::extension_problem(_p_(PM_ExtNoEndsHere),
+						StandardProblems::extension_problem(_p_(PM_ExtNoEndsHere),
 							ExtensionManager::from_copy(C),
 							"has no 'ends here' sentence");
 						break;
 					case ExtSpuriouslyContinues_SYNERROR:
-						Problems::Issue::extension_problem(_p_(PM_ExtSpuriouslyContinues),
+						StandardProblems::extension_problem(_p_(PM_ExtSpuriouslyContinues),
 							ExtensionManager::from_copy(C),
 							"continues after the 'ends here' sentence");
 						break;
 					case ExtMultipleEndsHere_SYNERROR:
-						Problems::Issue::extension_problem(_p_(PM_ExtMultipleEndsHere),
+						StandardProblems::extension_problem(_p_(PM_ExtMultipleEndsHere),
 							ExtensionManager::from_copy(C),
 							"has more than one 'ends here' sentence");
 						break;
 					case ExtMultipleBeginsHere_SYNERROR:
-						Problems::Issue::extension_problem(_p_(PM_ExtMultipleBeginsHere),
+						StandardProblems::extension_problem(_p_(PM_ExtMultipleBeginsHere),
 							ExtensionManager::from_copy(C),
 							"has more than one 'begins here' sentence");
 						break;
 					case ExtBeginsAfterEndsHere_SYNERROR:
-						Problems::Issue::extension_problem(_p_(PM_ExtBeginsAfterEndsHere),
+						StandardProblems::extension_problem(_p_(PM_ExtBeginsAfterEndsHere),
 							ExtensionManager::from_copy(C),
 							"has a further 'begins here' after an 'ends here'");
 						break;
 					case ExtEndsWithoutBegins_SYNERROR:
-						Problems::Issue::extension_problem(_p_(BelievedImpossible),
+						StandardProblems::extension_problem(_p_(BelievedImpossible),
 							ExtensionManager::from_copy(C),
 							"has an 'ends here' with nothing having begun");
 						break;
 					case BadTitleSentence_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_BadTitleSentence),
+						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadTitleSentence),
 							"the initial bibliographic sentence can only be a title in double-quotes",
 							"possibly followed with 'by' and the name of the author.");
 						break;
 					case UnknownLanguageElement_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::Issue::sentence_problem(
+						StandardProblems::sentence_problem(
 							Task::syntax_tree(), _p_(PM_UnknownLanguageElement),
 							"this heading contains a stipulation about the current "
 							"Inform language definition which I can't understand",
@@ -277,7 +277,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case UnknownVirtualMachine_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::Issue::sentence_problem(
+						StandardProblems::sentence_problem(
 							Task::syntax_tree(), _p_(PM_UnknownVirtualMachine),
 							"this heading contains a stipulation about the Setting "
 							"for story file format which I can't understand",
@@ -286,7 +286,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case UseElementWithdrawn_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::Issue::sentence_problem(
+						StandardProblems::sentence_problem(
 							Task::syntax_tree(), _p_(PM_UseElementWithdrawn),
 							"the ability to activate or deactivate compiler elements "
 							"in source text has been withdrawn",
@@ -294,7 +294,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case IncludeExtQuoted_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::Issue::sentence_problem(
+						StandardProblems::sentence_problem(
 							Task::syntax_tree(), _p_(PM_IncludeExtQuoted),
 							"the name of an included extension should be given without double "
 							"quotes in an Include sentence",
@@ -304,7 +304,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 					case BogusExtension_SYNERROR:
 						current_sentence = CE->details_node;
 						Problems::quote_source(1, current_sentence);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_BogusExtension));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BogusExtension));
 						Problems::issue_problem_segment(
 							"I can't find the extension requested by: %1. %P"
 							"You can get hold of extensions which people have made public at "
@@ -316,7 +316,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						current_sentence = CE->details_node;
 						Problems::quote_source(1, current_sentence);
 						Problems::quote_stream(2, CE->details);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtVersionTooLow));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtVersionTooLow));
 						Problems::issue_problem_segment(
 							"I can't find the right version of the extension requested by %1 - "
 							"I can only find %2. %P"
@@ -327,7 +327,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case ExtVersionMalformed_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::Issue::sentence_problem(
+						StandardProblems::sentence_problem(
 							Task::syntax_tree(), _p_(PM_ExtVersionMalformed),
 							"a version number must have the form N/DDDDDD",
 							"as in the example '2/040426' for release 2 made on 26 April 2004. "
@@ -338,7 +338,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						current_sentence = CE->details_node;
 						Problems::quote_source(1, current_sentence);
 						Problems::quote_stream(2, CE->details);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtInadequateVM));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtInadequateVM));
 						Problems::issue_problem_segment(
 							"You wrote %1: but my copy of that extension stipulates that it "
 							"is '%2'. That means it can only be used with certain of "
@@ -351,7 +351,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						current_sentence = CE->details_node;
 						Problems::quote_extension(1, ExtensionManager::from_copy(C));
 						Problems::quote_wording(2, CE->details_W);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMisidentifiedEnds));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtMisidentifiedEnds));
 						Problems::issue_problem_segment(
 							"The extension %1, which your source text makes use of, seems to be "
 							"malformed: its 'begins here' sentence correctly identifies it, but "
@@ -365,7 +365,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						current_sentence = CE->details_node;
 						Problems::quote_source(1, current_sentence);
 						Problems::quote_extension_id(2, CE->details_work);
-						Problems::Issue::handmade_problem(
+						StandardProblems::handmade_problem(
 							Task::syntax_tree(), _p_(PM_HeadingInPlaceOfUnincluded));
 						Problems::issue_problem_segment(
 							"In the sentence %1, it looks as if you intend to replace a section "
@@ -376,7 +376,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case UnequalHeadingInPlaceOf_SYNERROR:
 						current_sentence = CE->details_node;
-						Problems::Issue::sentence_problem(
+						StandardProblems::sentence_problem(
 							Task::syntax_tree(), _p_(PM_UnequalHeadingInPlaceOf),
 							"these headings are not of the same level",
 							"so it is not possible to make the replacement. (Level here means "
@@ -389,7 +389,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::quote_extension_id(2, CE->details_work);
 						Problems::quote_source(3, CE->details_node2);
 						Problems::quote_extension_id(4, CE->details_work2);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfSubordinate));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfSubordinate));
 						Problems::issue_problem_segment(
 							"In the sentence %1, it looks as if you intend to replace a section "
 							"of source text from the extension '%2', but that doesn't really make "
@@ -403,7 +403,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::quote_extension_id(2, CE->details_work);
 						Problems::quote_wording(3, CE->details_W);
 						Problems::quote_stream(4, CE->details);
-						Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfUnknown));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingInPlaceOfUnknown));
 						Problems::issue_problem_segment(
 							"In the sentence %1, it looks as if you intend to replace a section "
 							"of source text from the extension '%2', but that extension does "

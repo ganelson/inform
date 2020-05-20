@@ -178,9 +178,23 @@ since it often confuses newcomers:
 
 =
 text_substitution *current_ts_being_compiled = NULL;
+int it_is_not_worth_adding = FALSE; /* To suppress the "It may be worth adding..." */
 
+void Strings::TextSubstitutions::it_is_worth_adding(void) {
+	it_is_not_worth_adding = FALSE;
+}
+void Strings::TextSubstitutions::it_is_not_worth_adding(void) {
+	it_is_not_worth_adding = TRUE;
+}
+
+@
+
+@d ENDING_MESSAGE_PROBLEMS_CALLBACK Strings::TextSubstitutions::append_text_substitution_proviso
+
+=
 void Strings::TextSubstitutions::append_text_substitution_proviso(void) {
 	if (it_is_not_worth_adding) return;
+	if (compiling_text_routines_mode == FALSE) return;
 	if ((current_ts_being_compiled) &&
 		(current_ts_being_compiled->local_names_existed_at_usage_time)) {
 		Frames::log(Frames::current_stack_frame());

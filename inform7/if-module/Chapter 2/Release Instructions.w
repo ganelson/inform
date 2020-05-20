@@ -80,7 +80,7 @@ The object noun phrase is an articled list, and each entry must match this.
 @<Issue PM_NoSuchPublicRelease problem@> =
 	*X = BOOKLET_PAYLOAD; /* to recover harmlessly */
 	Problems::quote_wording_as_source(1, W);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchPublicRelease));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchPublicRelease));
 	Problems::issue_problem_segment(
 		"I don't know how to release along with %1: the only features of "
 		"a release which can be marked as public or private are the 'source "
@@ -198,7 +198,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 		case EXISTING_STORY_FILE_PAYLOAD:
 		case NAMED_EXISTING_STORY_FILE_PAYLOAD:
 			if (TargetVMs::is_16_bit(Task::vm()) == FALSE) {
-				Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* not usefully testable */
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* not usefully testable */
 					"existing story files can only be used with the Z-machine",
 					"not with the Glulx setting.");
 				return;
@@ -289,7 +289,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 
 @<Issue a bad release instruction problem message@> =
 	Problems::quote_source(1, p);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ReleaseAlong));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ReleaseAlong));
 	Problems::issue_problem_segment(
 		"I don't know how to release along with %1: the only forms I can "
 		"accept are - 'Release along with cover art', '...a website', "
@@ -355,7 +355,7 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 @<Create the Materials folder if not already present@> =
 	if (Pathnames::create_in_file_system(
 		Projects::materials_path(Task::project())) == FALSE) {
-		Problems::Issue::release_problem_path(_p_(Untestable),
+		StandardProblems::release_problem_path(_p_(Untestable),
 			"In order to release the story file along with other "
 			"resources, I tried to create a folder alongside this "
 			"Inform project, but was unable to do so. The folder "
@@ -366,7 +366,7 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 
 @<Create the Release subfolder if not already present@> =
 	if (Pathnames::create_in_file_system(Task::release_path()) == FALSE) {
-		Problems::Issue::release_problem_path(_p_(Untestable),
+		StandardProblems::release_problem_path(_p_(Untestable),
 			"In order to release the story file along with other "
 			"resources, I tried to create a folder alongside this "
 			"Inform project, but was unable to do so. The folder "
@@ -377,7 +377,7 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 	auxiliary_file *af;
 	LOOP_OVER(af, auxiliary_file)
 		if (Pathnames::create_in_file_system(af->folder_to_release_to) == FALSE) {
-			Problems::Issue::release_problem_path(_p_(Untestable),
+			StandardProblems::release_problem_path(_p_(Untestable),
 				"In order to release the story file along with other "
 				"resources, I tried to create a folder alongside this "
 				"Inform project, but was unable to do so. The folder "
@@ -388,7 +388,7 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 
 @<Create the Interpreter subfolder if not already present@> =
 	if (Pathnames::create_in_file_system(Task::released_interpreter_path()) == FALSE) {
-		Problems::Issue::release_problem_path(_p_(Untestable),
+		StandardProblems::release_problem_path(_p_(Untestable),
 			"In order to release the story file along with an "
 			"interpreter, I tried to create a folder alongside this "
 			"Inform project, but was unable to do so. The folder "
@@ -421,7 +421,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	int rv = ImageFiles::get_JPEG_dimensions(COVER_FILE, &width, &height);
 	fclose(COVER_FILE);
 	if (rv == FALSE) {
-		Problems::Issue::release_problem(_p_(Untestable),
+		StandardProblems::release_problem(_p_(Untestable),
 			"The cover image seems not to be a JPEG despite the name",
 			cover_filename);
 		return;
@@ -432,14 +432,14 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	int rv = ImageFiles::get_PNG_dimensions(COVER_FILE, &width, &height);
 	fclose(COVER_FILE);
 	if (rv == FALSE) {
-		Problems::Issue::release_problem(_p_(Untestable),
+		StandardProblems::release_problem(_p_(Untestable),
 			"The cover image seems not to be a PNG despite the name",
 			cover_filename);
 		return;
 	}
 
 @<There seems to be no cover at all@> =
-	Problems::Issue::release_problem_at_sentence(_p_(Untestable),
+	StandardProblems::release_problem_at_sentence(_p_(Untestable),
 		"The release instructions said that there is a cover image "
 		"to attach to the story file, but I was unable to find it, "
 		"having looked for both 'Cover.png' and 'Cover.jpg' in the "
@@ -448,14 +448,14 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 
 @<Check that the pixel height and width are sensible@> =
 	if ((width < 120) || (width > 1200) || (height < 120) || (height > 1200)) {
-		Problems::Issue::release_problem(_p_(Untestable),
+		StandardProblems::release_problem(_p_(Untestable),
 			"The height and width of the cover image, in pixels, must be "
 			"between 120 and 1024 inclusive",
 			cover_filename);
 		return;
 	}
 	if ((width > 2*height) || (height > 2*width)) {
-		Problems::Issue::release_problem(_p_(Untestable),
+		StandardProblems::release_problem(_p_(Untestable),
 			"We recommend a square cover image, but at any rate it is "
 			"required to be no more rectangular than twice as wide as it "
 			"is high (or vice versa)",
@@ -468,7 +468,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 		@<Issue a problem if this isn't a Release run@>;
 	FILE *STORYF = Filenames::fopen(Task::existing_storyfile_file(), "rb");
 	if (STORYF == NULL) {
-		Problems::Issue::unlocated_problem_on_file(Task::syntax_tree(), 
+		StandardProblems::unlocated_problem_on_file(Task::syntax_tree(), 
 			_p_(BelievedImpossible), /* i.e., not testable by intest */
 			"The instruction 'Release along with an existing story file' "
 			"means that I need to bind up a story file called '%1', in "
@@ -485,7 +485,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	fclose(STORYF);
 
 @<Issue a problem if this isn't a Release run@> =
-	Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(PM_UnreleasedRelease),
+	StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(PM_UnreleasedRelease),
 		"This is supposed to be a source text which only contains "
 		"release instructions to bind up an existing story file "
 		"(for instance, one produced using Inform 6). That's because "
@@ -509,7 +509,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	text_stream xf_struct; text_stream *xf = &xf_struct;
 	filename *F = Task::ifiction_record_file();
 	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open metadata file", F);
+		Problems::fatal_on_file("Can't open metadata file", F);
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
 	PL::Bibliographic::Release::write_ifiction_record(xf, header, cover_picture_number, cover_art_format, height, width);
@@ -520,7 +520,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	filename *F = Task::blurb_file();
 	text_stream xf_struct; text_stream *xf = &xf_struct;
 	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open blurb file", F);
+		Problems::fatal_on_file("Can't open blurb file", F);
 	PL::Bibliographic::Release::write_release_blurb(xf, cover_picture_number, cover_art_format);
 	STREAM_CLOSE(xf);
 
@@ -528,7 +528,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	filename *F = Task::manifest_file();
 	text_stream xf_struct; text_stream *xf = &xf_struct;
 	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open manifest file", F);
+		Problems::fatal_on_file("Can't open manifest file", F);
 	PL::Figures::write_picture_manifest(xf, release_cover, cover_art_format);
 	STREAM_CLOSE(xf);
 

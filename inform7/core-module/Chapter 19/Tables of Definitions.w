@@ -37,7 +37,7 @@ The subject must match:
 @ (We're going to need this twice.)
 
 @<Actually issue PM_TableDefiningTheImpossible problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableDefiningTheImpossible),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableDefiningTheImpossible),
 		"you can only use 'defined by' to set up values and things",
 		"as created with sentences like 'The tree species are defined by Table 1.' "
 		"or 'Some men are defined by the Table of Eligible Bachelors.'");
@@ -56,7 +56,7 @@ The subject must match:
 
 @<Issue PM_TableUndefined problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableUndefined),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableUndefined),
 	"you can only use 'defined by' in terms of a table",
 	"which lists the value names in the first column.");
 
@@ -169,7 +169,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		return;
 	}
 	if ((t) && (t->has_been_amended) && (Kinds::Compare::le(K, K_object))) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableCantDefineAndAmend),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableCantDefineAndAmend),
 			"you can't use 'defined by' to define objects using a table "
 			"which is amended by another table",
 			"since that could too easily lead to ambiguities about what "
@@ -180,7 +180,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 	t->where_used_to_define = pn->next;
 
 @<Issue PM_TableDefiningObject problem@> =
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableDefiningObject),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableDefiningObject),
 		"you can only use 'defined by' to set up values and things",
 		"as created with sentences like 'The tree species are defined by Table 1.' "
 		"or 'Some men are defined by the Table of Eligible Bachelors.' - trying to "
@@ -192,7 +192,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		LOG("K is $u\n", K);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfBuiltInKind));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfBuiltInKind));
 		Problems::issue_problem_segment(
 			"You wrote %1, but this would mean making each of the names in "
 			"the first column %2 that's new. This is a kind which can't have "
@@ -204,7 +204,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		(Kinds::Behaviour::is_uncertainly_defined(K) == FALSE)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
-		Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfExistingKind));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfExistingKind));
 		Problems::issue_problem_segment(
 			"You wrote %1, but this would mean making each of the names in "
 			"the first column %2 that's new. That looks reasonable, since this is a "
@@ -219,7 +219,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 @<Check that this is a description which in principle can be asserted@> =
 	if (Calculus::Propositions::contains_quantifier(
 		Specifications::to_proposition(what))) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_TableOfQuantifiedKind),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableOfQuantifiedKind),
 			"you can't use 'defined by' a table while also talking about the "
 			"number of things to be defined",
 			"since that could too easily lead to contradictions. (So 'Six doors are "
@@ -271,9 +271,9 @@ have occurred, but if it does then the creation has worked.
 
 		Assertions::Creator::tabular_definitions(t);
 		NounPhrases::annotate_by_articles(name_entry);
-		Problems::Buffer::redirect_problem_sentence(current_sentence, name_entry, pn->next);
+		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, pn->next);
 		Assertions::Copular::make_assertion(name_entry, pn->next);
-		Problems::Buffer::redirect_problem_sentence(NULL, NULL, NULL);
+		ProblemBuffer::redirect_problem_sentence(NULL, NULL, NULL);
 		Node::set_text(name_entry, NW);
 		evaluation = NULL;
 		if (<k-kind>(NW))
@@ -294,7 +294,7 @@ lots of rows, so we issue the problem just once.
 @<Issue a problem for trying to create a blank name@> =
 	if (blank_objections == 0) {
 		Problems::quote_number(4, &row_count);
-		Problems::Issue::table_problem(_p_(PM_TableWithBlankNames),
+		StandardProblems::table_problem(_p_(PM_TableWithBlankNames),
 			t, NULL, name_entry,
 			"%1 is being used to create values, so that the first column needs "
 			"to contain names for these new things. It's not allowed to contain "
@@ -309,7 +309,7 @@ of the contents.)
 
 @<Issue a problem for trying to create an existing kind as a new instance@> =
 	Problems::quote_number(4, &row_count);
-	Problems::Issue::table_problem(_p_(PM_TableEntryGeneric),
+	StandardProblems::table_problem(_p_(PM_TableEntryGeneric),
 		t, NULL, name_entry,
 		"In row %4 of %1, the entry %3 is the name of a kind of value, "
 		"so it can't be the name of a new object.");
@@ -322,7 +322,7 @@ of the contents.)
 	Problems::quote_kind_of(3, evaluation);
 	Problems::quote_kind(4, K);
 	Problems::quote_number(5, &row_count);
-	Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_TableCreatedClash));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableCreatedClash));
 	Problems::issue_problem_segment(
 		"You wrote %1, and row %5 of the first column of that table is %2, which "
 		"I ought to create as a new value of %4. But I can't do that: it already "
@@ -334,7 +334,7 @@ of the contents.)
 	LOG("Eval is $P\n", evaluation);
 	Problems::quote_source(4, name_entry);
 	Problems::quote_number(5, &row_count);
-	Problems::Issue::table_problem(_p_(PM_TableDefiningNothing),
+	StandardProblems::table_problem(_p_(PM_TableDefiningNothing),
 		t, NULL, name_entry,
 		"In row %5 of %1, the entry %4 seems not to have defined "
 		"a thing there, so perhaps the first column did not consist "
@@ -397,7 +397,7 @@ some misleading names we don't want to allow for these properties.
 @<Issue PM_TableColumnLocation problem@> =
 	*X = NEW_TC_PROBLEM;
 	Problems::quote_wording(3, W);
-	Problems::Issue::table_problem(_p_(PM_TableColumnLocation),
+	StandardProblems::table_problem(_p_(PM_TableColumnLocation),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because there would be too "
 		"much ambiguity arising from its ordinary meaning referring to the "
@@ -427,10 +427,10 @@ assertion handler, simulating sentences like "The P of X is Y".
 		name_entry && data_entry;
 		name_entry = name_entry->next,
 			data_entry = data_entry->next) {
-		Problems::Buffer::redirect_problem_sentence(current_sentence, name_entry, data_entry);
+		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, data_entry);
 		@<Make an assertion that this name has that property@>;
 	}
-	Problems::Buffer::redirect_problem_sentence(current_sentence, NULL, NULL);
+	ProblemBuffer::redirect_problem_sentence(current_sentence, NULL, NULL);
 
 @ Note that a blank means "don't assert this property", it doesn't mean
 "assert a default value for this property". The difference is very small,

@@ -68,7 +68,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inbuild Modules</a></li><li><a href="index.html">supervisor</a></li><li><a href="index.html#6">Chapter 6: Inform Source Text</a></li><li><b>Source Text</b></li></ul></div>
 <p class="purpose">Using the lexer and syntax analysis modules to read in Inform 7 source text.</p>
 
-<ul class="toc"><li><a href="6-st.html#SP1">&#167;1. Bridge to the Lexer</a></li><li><a href="6-st.html#SP4">&#167;4. Bridge to the syntax analyser</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="6-st.html#SP1">&#167;1. Bridge to the Lexer</a></li><li><a href="6-st.html#SP4">&#167;4. Bridge to the problems system</a></li><li><a href="6-st.html#SP6">&#167;6. Bridge to the syntax analyser</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Bridge to the Lexer. </b>Lexing is the business of the <a href="../words-module/index.html" class="internal">words</a> module, and we need to tell it what
 data type to use when referencing natural languages.
@@ -153,7 +153,40 @@ applications.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">synopsis</span><span class="plain-syntax">, </span><span class="identifier-syntax">wc</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-st.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Bridge to the syntax analyser. </b>Similarly, <a href="index.html" class="internal">supervisor</a> sits on top of the <a href="../syntax-module/index.html" class="internal">syntax</a> module, which forms
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Bridge to the problems system. </b>These are both used when issuing problem messages on content in the relevant
+source files.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">DESCRIBE_SOURCE_FILE_PROBLEMS_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP4" class="function-link"><span class="function-syntax">SourceText::describe_source_file</span></a>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">SourceText::describe_source_file</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">paraphrase</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">referred</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">file</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">paraphrase</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"source text"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><a href="5-es.html#SP8" class="function-link"><span class="function-syntax">Extensions::corresponding_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">referred</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">inbuild_work</span><span class="plain-syntax"> *</span><span class="identifier-syntax">work</span><span class="plain-syntax"> = </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">work</span><span class="plain-syntax">) &amp;&amp; (</span><a href="2-wrk.html#SP10" class="function-link"><span class="function-syntax">Works::is_standard_rules</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">work</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">paraphrase</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"the Standard Rules"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">work</span><span class="plain-syntax">) &amp;&amp; (</span><a href="2-wrk.html#SP10" class="function-link"><span class="function-syntax">Works::is_basic_inform</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">work</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">paraphrase</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"Basic Inform"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">paraphrase</span><span class="plain-syntax"> = </span><span class="identifier-syntax">file</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">paraphrase</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">GLOSS_EXTENSION_SOURCE_FILE_PROBLEMS_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP5" class="function-link"><span class="function-syntax">SourceText::gloss_extension</span></a>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SourceText::gloss_extension</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">referred</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><a href="5-es.html#SP8" class="function-link"><span class="function-syntax">Extensions::corresponding_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">referred</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" in the extension %X"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Bridge to the syntax analyser. </b>Similarly, <a href="index.html" class="internal">supervisor</a> sits on top of the <a href="../syntax-module/index.html" class="internal">syntax</a> module, which forms
 up the stream of words from the lexer into syntax trees. This too produces
 potential errors, and these will also convert into copy errors, but now we
 have a more elegant way to keep track of the copy; <a href="../syntax-module/index.html" class="internal">syntax</a> can be passed
@@ -162,7 +195,7 @@ a sort of "your ref" pointer to it.
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEM_REF_SYNTAX_TYPE</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> </span><span class="comment-syntax"> the "your ref" is a pointer to this type</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PROJECT_REF_SYNTAX_TYPE</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">inform_project</span><span class="plain-syntax"> </span><span class="comment-syntax"> similarly but for the "project ref"</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEM_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP4" class="function-link"><span class="function-syntax">SourceText::syntax_problem_handler</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEM_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP6" class="function-link"><span class="function-syntax">SourceText::syntax_problem_handler</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SourceText::syntax_problem_handler</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">err_no</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
@@ -172,7 +205,7 @@ a sort of "your ref" pointer to it.
 <span class="plain-syntax">    </span><a href="2-cps.html#SP5" class="function-link"><span class="function-syntax">Copies::attach_error</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And in fact we will be producing a number of syntax errors of our own, to
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>And in fact we will be producing a number of syntax errors of our own, to
 add to those generated in <a href="../syntax-module/index.html" class="internal">syntax</a>.
 </p>
 
@@ -194,7 +227,7 @@ add to those generated in <a href="../syntax-module/index.html" class="internal"
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ExtInadequateVM_SYNERROR</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ExtMisidentifiedEnds_SYNERROR</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The <a href="../inform7/index.html" class="internal">inform7</a> compiler will eventually make a much more detailed syntax
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The <a href="../inform7/index.html" class="internal">inform7</a> compiler will eventually make a much more detailed syntax
 tree, extending the one we make here: but we will basically just break the
 text into sentences, arrange those under headings, and take action on just a
 few so-called "structural sentences" which have to be dealt with early on.
@@ -215,11 +248,11 @@ finished loading the bulk in, it calls:
 <span class="plain-syntax">    </span><span class="identifier-syntax">bulk_of_source_loaded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>And here is the callback function. It's only ever needed for <a href="../inform7/index.html" class="internal">inform7</a>,
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>And here is the callback function. It's only ever needed for <a href="../inform7/index.html" class="internal">inform7</a>,
 not for <a href="../inbuild/index.html" class="internal">inbuild</a>, which isn't in the inventions business.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP7" class="function-link"><span class="function-syntax">SourceText::annotate_new_sentence</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP9" class="function-link"><span class="function-syntax">SourceText::annotate_new_sentence</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SourceText::annotate_new_sentence</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new</span><span class="plain-syntax">) {</span>
@@ -231,7 +264,7 @@ not for <a href="../inbuild/index.html" class="internal">inbuild</a>, which isn'
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The next tweak to <a href="../syntax-module/index.html" class="internal">syntax</a> is to give it some node metadata. <a href="../syntax-module/index.html" class="internal">syntax</a>
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The next tweak to <a href="../syntax-module/index.html" class="internal">syntax</a> is to give it some node metadata. <a href="../syntax-module/index.html" class="internal">syntax</a>
 itself places nodes of a small number of basic types into the syntax tree;
 we want to expand on those. (And the <a href="../core-module/index.html" class="internal">core</a> module will expand on them still
 further, so this still isn't everything: see <a href="../core-module/7-ptu.html" class="internal">Parse Tree Usage (in core)</a>.)
@@ -242,7 +275,7 @@ look for below. (The asterisk notation for <span class="extract"><span class="ex
 Inform users: it increases output to the debugging log.)
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NODE_METADATA_SETUP_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP8" class="function-link"><span class="function-syntax">SourceText::node_metadata</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NODE_METADATA_SETUP_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP10" class="function-link"><span class="function-syntax">SourceText::node_metadata</span></a>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">BIBLIOGRAPHIC_NT</span><span class="plain-syntax">    </span><span class="comment-syntax"> For the initial title sentence</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">RULE_NT</span><span class="plain-syntax">          </span><span class="comment-syntax"> "Instead of taking something, ..."</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">INFORM6CODE_NT</span><span class="plain-syntax">      </span><span class="comment-syntax"> "Include (- ... -)</span>
@@ -264,7 +297,7 @@ Inform users: it increases output to the debugging log.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">NodeType::new</span><span class="plain-syntax">(</span><span class="constant-syntax">INVOCATION_LIST_NT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"INVOCATION_LIST_NT"</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">INFTY</span><span class="plain-syntax">, </span><span class="identifier-syntax">L4_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Sentences in the source text are of five categories: dividing sentences,
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Sentences in the source text are of five categories: dividing sentences,
 which divide up the source into segments; structural sentences, which split
 the source into different forms (standard text, tables, equations, I6 matter,
 and so on); nonstructural sentences, which make grammatical definitions and
@@ -313,15 +346,15 @@ and here goes:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">section</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 5</span>
 
 <span class="Preform-function-syntax">&lt;extension-end-marker-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">begin/begins</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">here</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> -1; </span><span class="named-paragraph-container code-font"><a href="6-st.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Check we can begin an extension here</span><span class="named-paragraph-number">9.1</span></a></span><span class="Preform-constant-syntax">;</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">end/ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">here</span><span class="Preform-plain-syntax">                   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> -2; </span><span class="named-paragraph-container code-font"><a href="6-st.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Check we can end an extension here</span><span class="named-paragraph-number">9.2</span></a></span><span class="Preform-constant-syntax">;</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">begin/begins</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">here</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> -1; </span><span class="named-paragraph-container code-font"><a href="6-st.html#SP11_1" class="named-paragraph-link"><span class="named-paragraph">Check we can begin an extension here</span><span class="named-paragraph-number">11.1</span></a></span><span class="Preform-constant-syntax">;</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">end/ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">here</span><span class="Preform-plain-syntax">                   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> -2; </span><span class="named-paragraph-container code-font"><a href="6-st.html#SP11_2" class="named-paragraph-link"><span class="named-paragraph">Check we can end an extension here</span><span class="named-paragraph-number">11.2</span></a></span><span class="Preform-constant-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b>Note that the extension end markers are only read in extensions, so they can
+<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b>Note that the extension end markers are only read in extensions, so they can
 never accidentally match in the main source text.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check we can begin an extension here</span><span class="named-paragraph-number">9.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check we can begin an extension here</span><span class="named-paragraph-number">11.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -331,8 +364,8 @@ never accidentally match in the main source text.
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">: </span><span class="constant-syntax">PROBLEM_SYNTAX_CALLBACK</span><span class="plain-syntax">(</span><span class="constant-syntax">ExtBeginsAfterEndsHere_SYNERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">sfsm</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="6-st.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check we can end an extension here</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="6-st.html#SP11">&#167;11</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_2"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check we can end an extension here</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -342,8 +375,8 @@ never accidentally match in the main source text.
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">: </span><span class="constant-syntax">PROBLEM_SYNTAX_CALLBACK</span><span class="plain-syntax">(</span><span class="constant-syntax">ExtMultipleEndsHere_SYNERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">sfsm</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="6-st.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b><a href="../syntax-module/index.html" class="internal">syntax</a> also requires this definition:
+<ul class="endnotetexts"><li>This code is used in <a href="6-st.html#SP11">&#167;11</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b><a href="../syntax-module/index.html" class="internal">syntax</a> also requires this definition:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -360,7 +393,7 @@ never accidentally match in the main source text.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">include</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">(-</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                 </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; sfsm-&gt;nt = INFORM6CODE_NT;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Rules are ordinarily detected by their colon, which divides the header from the
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Rules are ordinarily detected by their colon, which divides the header from the
 rest: colons are not otherwise legal in Inform. But there's an exception. If the
 sentence consists of text matching the following grammar, followed by comma,
 followed by more text, then the comma is read as if it's a colon and the
@@ -380,7 +413,7 @@ sentence becomes a rule. For example:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">when</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Properly speaking, despite the definition above, language modifying sentences
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Properly speaking, despite the definition above, language modifying sentences
 are nonstructural. So what are they doing here? The answer is that we need to
 read them early on, because they affect the way that they parse all other
 sentences. Whereas other nonstructural sentences can wait, these can't.
@@ -392,12 +425,12 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">use</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">language</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">element/elements</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> -1</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The following callback function is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it breaks a
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The following callback function is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it breaks a
 sentence of type <span class="extract"><span class="Preform-extract-syntax">BEGINHERE_NT</span></span> or <span class="extract"><span class="Preform-extract-syntax">ENDHERE_NT</span></span> &mdash; i.e., the beginning or end
 of an extension.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">BEGIN_OR_END_HERE_SYNTAX_CALLBACK</span><span class="Preform-plain-syntax"> </span><a href="6-st.html#SP13" class="function-link"><span class="Preform-function-syntax">SourceText::new_beginend</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">BEGIN_OR_END_HERE_SYNTAX_CALLBACK</span><span class="Preform-plain-syntax"> </span><a href="6-st.html#SP15" class="function-link"><span class="Preform-function-syntax">SourceText::new_beginend</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SourceText::new_beginend</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>
@@ -406,7 +439,7 @@ of an extension.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) == </span><span class="identifier-syntax">ENDHERE_NT</span><span class="plain-syntax">) </span><a href="6-inc.html#SP10" class="function-link"><span class="function-syntax">Inclusions::check_ends_here</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Lastly, this callback is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it hits a sentence like:
+<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>Lastly, this callback is called by <a href="../syntax-module/index.html" class="internal">syntax</a> when it hits a sentence like:
 </p>
 
 <blockquote>
@@ -417,7 +450,7 @@ of an extension.
 stack into the new world of kits), so we issue a syntax error.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LANGUAGE_ELEMENT_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP14" class="function-link"><span class="function-syntax">SourceText::new_language</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LANGUAGE_ELEMENT_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-st.html#SP16" class="function-link"><span class="function-syntax">SourceText::new_language</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SourceText::new_language</span><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>

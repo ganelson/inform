@@ -132,7 +132,7 @@ is defined by routine or not.
 @<Futz with the parse tree, trying right not down@> =
 	if ((p->next == NULL) ||
 		(Node::get_type(p->next) != RULE_NT)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"don't leave me in suspense",
 			"write a definition after 'Definition:'!");
 		return;
@@ -154,7 +154,7 @@ is defined by routine or not.
 	if ((the_format == DEFINED_IN_SOME_WAY_NOT_YET_KNOWN) ||
 		((the_format == DEFINED_PHRASALLY) && (q->down == NULL))) {
 		LOG("Definition tree (%d):\n$T\n", the_format, q);
-		Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_DefinitionWithoutCondition),
+		StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_DefinitionWithoutCondition),
 			q, "a definition must take the form 'Definition: a ... is ... if/unless "
 			"...' or else 'Definition: a ... is ...: ...'",
 			"but I can't make this fit either shape.");
@@ -163,7 +163,7 @@ is defined by routine or not.
 	if ((Wordings::mismatched_brackets(AW)) ||
 		((Wordings::nonempty(NW)) && (Wordings::mismatched_brackets(NW)))) {
 		LOG("Definition tree:\n$T\n", p);
-		Problems::Issue::definition_problem(Task::syntax_tree(), _p_(PM_BracketedAdjective),
+		StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_BracketedAdjective),
 			q, "this definition seems to involve unexpected brackets in the name of "
 			"the adjective being defined",
 			"so I think I must be misreading it.");
@@ -189,7 +189,7 @@ offer the new adjective around and see if anybody claims it.
 =
 int Phrases::Adjectives::vet_name(wording W) {
 	if (<article>(W)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_ArticleAsAdjective),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ArticleAsAdjective),
 			"a defined adjective cannot consist only of an article such as "
 			"'a' or 'the'",
 			"since this will lead to parsing ambiguities.");
@@ -199,7 +199,7 @@ int Phrases::Adjectives::vet_name(wording W) {
 		if (problem_count == 0) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, W);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_AdjectivePunctuated));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AdjectivePunctuated));
 			Problems::issue_problem_segment(
 				"The sentence %1 seems to create an adjective with the name "
 				"'%2', but adjectives have to be contain only unpunctuated "

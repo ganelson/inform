@@ -76,13 +76,13 @@ void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
 
 @<Issue PM_RelationWithEitherOrProperty problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithEitherOrProperty),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithEitherOrProperty),
 		"verbs can only set properties with values",
 		"not either/or properties like this one.");
 
 @<Issue PM_RelationWithBadProperty problem@> =
 	*X = FALSE;
-	Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithBadProperty),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithBadProperty),
 		"that doesn't seem to be a property",
 		"perhaps because you haven't defined it yet?");
 
@@ -178,17 +178,17 @@ be caught later on Inform's run.
 		Problems::quote_kind(4, kinds_of_terms[1]);
 		Problems::quote_kind(5, val_kind);
 		if (Kinds::get_construct(kinds_of_terms[1]) == CON_property)
-			Problems::Issue::tcp_problem(_p_(PM_PropertiesEquated), tck,
+			StandardProblems::tcp_problem(_p_(PM_PropertiesEquated), tck,
 				"that seems to say that two different properties are the same - "
 				"like saying 'The indefinite article is the printed name': that "
 				"might be true for some things, some of the time, but it makes no "
 				"sense in a general statement like this one.");
 		else if (prn == NULL)
-			Problems::Issue::tcp_problem(_p_(PM_UnknownPropertyType), tck,
+			StandardProblems::tcp_problem(_p_(PM_UnknownPropertyType), tck,
 				"that tries to set the value of an unknown property to %4.");
 		else {
 			Problems::quote_property(6, prn);
-			Problems::Issue::tcp_problem(_p_(PM_PropertyType), tck,
+			StandardProblems::tcp_problem(_p_(PM_PropertyType), tck,
 				"that tries to set the value of the '%6' property to %4 - which "
 				"must be wrong because this property has to be %5.");
 		}
@@ -200,7 +200,7 @@ be caught later on Inform's run.
 		LOG("Property value for impossible domain $u\n", kinds_of_terms[0]);
 		Problems::quote_kind(4, kinds_of_terms[0]);
 		Problems::quote_property(5, prn);
-		Problems::Issue::tcp_problem(_p_(BelievedImpossible), tck,
+		StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
 			"that tries to set the property '%5' for %4. Values of that kind "
 			"are not allowed to have properties. (Some kinds of value are, "
 			"some aren't - see the Kinds index for details. It's a matter "

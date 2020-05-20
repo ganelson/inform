@@ -9,14 +9,14 @@ Interface to the Problems module.
 @ Inform tops and tails its output of problem messages, and it also prints
 non-problem messages when everything was fine. That all happens here:
 
-@d PROBLEMS_INITIAL_REPORTER Problems::Using::start_problems_report
-@d PROBLEMS_FINAL_REPORTER Problems::Using::final_report
+@d START_PROBLEM_FILE_PROBLEMS_CALLBACK Problems::Using::start_problems_report
+@d INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK Problems::Using::final_report
 
 =
-void Problems::Using::start_problems_report(filename *F) {
-	if (STREAM_OPEN_TO_FILE(problems_file, F, UTF8_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open problem log", F);
-	HTML::header(problems_file, I"Translating the Source",
+void Problems::Using::start_problems_report(filename *F, text_stream *P) {
+	if (STREAM_OPEN_TO_FILE(P, F, UTF8_ENC) == FALSE)
+		Problems::fatal_on_file("Can't open problem log", F);
+	HTML::header(P, I"Translating the Source",
 		Supervisor::file_from_installation(CSS_FOR_STANDARD_PAGES_IRES),
 		Supervisor::file_from_installation(JAVASCRIPT_FOR_STANDARD_PAGES_IRES));
 }
@@ -25,12 +25,12 @@ void Problems::Using::final_report(int disaster_struck, int problems_count) {
 	int total_words = 0;
 
 	if (problem_count > 0) {
-		Problems::Buffer::redirect_problem_stream(problems_file);
+		ProblemBuffer::redirect_problem_stream(problems_file);
 		Problems::issue_problem_begin(Task::syntax_tree(), "*");
 		if (disaster_struck) @<Issue problem summary for an internal error@>
 		else @<Issue problem summary for a run with problem messages@>;
 		Problems::issue_problem_end();
-		Problems::Buffer::redirect_problem_stream(NULL);
+		ProblemBuffer::redirect_problem_stream(NULL);
 	} else {
 		int rooms = 0, things = 0;
 		Problems::Using::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
@@ -102,7 +102,7 @@ might well not be running in the Inform application, but only on the
 command line -- deserves the truth.
 
 @<Issue problem summaries for a run without problems@> =
-	Problems::Buffer::redirect_problem_stream(problems_file);
+	ProblemBuffer::redirect_problem_stream(problems_file);
 	text_stream *OUT = problems_file;
 	HTML_OPEN("p");
 	Problems::issue_problem_begin(Task::syntax_tree(), "**");
@@ -115,7 +115,7 @@ command line -- deserves the truth.
 
 	if (telemetry_recording) {
 		Telemetry::ensure_telemetry_file();
-		Problems::Buffer::redirect_problem_stream(telmy);
+		ProblemBuffer::redirect_problem_stream(telmy);
 		Problems::issue_problem_begin(Task::syntax_tree(), "**");
 		Problems::issue_problem_segment(
 			"The %5-word source text has successfully been translated "
@@ -124,7 +124,7 @@ command line -- deserves the truth.
 		Problems::issue_problem_end();
 		WRITE_TO(telmy, "\n");
 	}
-	Problems::Buffer::redirect_problem_stream(STDOUT);
+	ProblemBuffer::redirect_problem_stream(STDOUT);
 	WRITE_TO(STDOUT, "\n");
 	Problems::issue_problem_begin(Task::syntax_tree(), "**");
 	Problems::issue_problem_segment(
@@ -133,7 +133,7 @@ command line -- deserves the truth.
 		"Inform 6 to complete compilation. There were %1 %2 and %3 %4.");
 	Problems::issue_problem_end();
 	STREAM_FLUSH(STDOUT);
-	Problems::Buffer::redirect_problem_stream(NULL);
+	ProblemBuffer::redirect_problem_stream(NULL);
 
 	ProgressBar::final_state_of_progress_bar();
 	text_stream *STATUS = ProgressBar::begin_outcome();
@@ -157,11 +157,11 @@ int outcome_image_style = SIDE_OUTCOME_IMAGE_STYLE;
 @ This callback function is called just as the //problems// module is about
 to issue its first problem of the run:
 
-@d FIRST_PROBLEM_CALLBACK Problems::Using::html_outcome_failed
+@d FIRST_PROBLEMS_CALLBACK Problems::Using::html_outcome_failed
 
 =
 void Problems::Using::html_outcome_failed(OUTPUT_STREAM) {
-	if (Problems::Issue::internal_errors_have_occurred())
+	if (StandardProblems::internal_errors_have_occurred())
 		Problems::Using::html_outcome_image(problems_file, "ni_failed_badly", "Failed");
 	else
 		Problems::Using::html_outcome_image(problems_file, "ni_failed", "Failed");
@@ -170,7 +170,7 @@ void Problems::Using::html_outcome_failed(OUTPUT_STREAM) {
 void Problems::Using::html_outcome_image(OUTPUT_STREAM, char *image, char *verdict) {
 	char *vn = "";
 	int be_festive = TRUE;
-	if (Problems::Issue::internal_errors_have_occurred() == FALSE) be_festive = FALSE;
+	if (StandardProblems::internal_errors_have_occurred() == FALSE) be_festive = FALSE;
 	if (be_festive) {
 		switch (Time::feast()) {
 			case CHRISTMAS_FEAST: vn = "_2"; break;
@@ -178,7 +178,7 @@ void Problems::Using::html_outcome_image(OUTPUT_STREAM, char *image, char *verdi
 		}
 		if (vn[0]) outcome_image_style = CENTRED_OUTCOME_IMAGE_STYLE;
 	}
-	Problems::Issue::issue_problems_banner(OUT, verdict);
+	StandardProblems::issue_problems_banner(OUT, verdict);
 	switch (outcome_image_style) {
 		case CENTRED_OUTCOME_IMAGE_STYLE:
 			HTML_OPEN("p");
@@ -210,4 +210,78 @@ void Problems::Using::outcome_image_tail(OUTPUT_STREAM) {
 		HTML::end_html_table(OUT);
 		HTML::comment(OUT, I"FOOTNOTE");
 	}
+}
+
+@ This is a more elaborate form of the standard |StandardProblems::sentence_problem|,
+used when an assertion sentence has gone wrong. Experience from the early
+builds of the Public Beta showed that many people tried syntaxes which
+Inform did not recognise, and which cause Inform to misread the primary
+verb of the sentence. It would then issue a Problem -- because the sentence
+would be peculiar -- but this problem report would itself be odd, and
+make little sense to the user. So we look to see if the current sentence
+is an assertion with a primary verb: and if it is, we hunt through it
+for alternative verbs which might have been intended, and try to produce
+a message which diagnoses the problem rather better.
+
+=
+void Problems::Using::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS,
+	char *message, char *explanation) {
+	wording RTW = EMPTY_WORDING; /* "rather than" text */
+	ACT_ON_SIGIL
+	if ((current_sentence == NULL) || (current_sentence->down == NULL) ||
+		(Node::get_type(current_sentence->down) != VERB_NT)) {
+		LOG("(Assertion error reverting to sentence error.)\n");
+		StandardProblems::sentence_problem(T, PASS_SIGIL, message, explanation);
+		return;
+	}
+
+	LOG("(Assertion error: looking for alternative verbs in <%W>.)\n",
+		Node::get_text(current_sentence));
+	wording AW = Wordings::trim_both_ends(Node::get_text(current_sentence));
+	LOOP_THROUGH_WORDING(i, AW)
+		if ((i != Wordings::first_wn(Node::get_text(current_sentence->down))) &&
+			(Word::unexpectedly_upper_case(i) == FALSE)) {
+			wording W = Wordings::from(Node::get_text(current_sentence), i);
+			int j = <meaningful-nonimperative-verb>(W);
+			if (j > 0) RTW = Wordings::new(i, j);
+		}
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_text(2, message);
+	Problems::quote_text(3, explanation);
+	Problems::issue_problem_begin(T, explanation);
+	Problems::issue_problem_segment("You wrote %1: %Sagain, %2.%Lbut %2, %3");
+	if (Wordings::nonempty(RTW)) {
+		Problems::quote_wording(4, Node::get_text(current_sentence->down));
+		Problems::quote_wording(5, RTW);
+		Problems::issue_problem_segment( /* see also PM_AmbiguousVerb */
+			" %P(It may help to know that I am reading the primary verb here "
+			"as '%4', not '%5'.)");
+	}
+	Problems::Using::diagnose_further();
+	Problems::issue_problem_end();
+}
+
+void Problems::Using::diagnose_further(void) {
+	if (current_sentence == NULL) return;
+	if (Wordings::empty(Node::get_text(current_sentence))) return;
+	int sqc = 0;
+	LOOP_THROUGH_WORDING(i, Node::get_text(current_sentence))
+		sqc += Word::singly_quoted(i);
+	if (sqc >= 2)
+		Problems::issue_problem_segment(
+			" %P(I notice what look like single quotation marks in this "
+			"sentence. If you meant to write some quoted text, it needs to "
+			"be in double quotes, \"like this\" and not 'like this'.)");
+
+	control_structure_phrase *csp =
+		ControlStructures::detect(Node::get_text(current_sentence));
+	if (csp)
+		Problems::issue_problem_segment(
+			" %P(The way this sentence starts makes me think it might have been "
+			"intended as part of a rule rather than being a statement about the "
+			"the way things are at the beginning of play. For example, 'If the "
+			"player is in the Penalty Zone, say \"An alarm sounds.\" is not "
+			"allowed: it has to be put in the form of a rule showing Inform "
+			"what circumstances apply - for example 'Every turn: if the player is "
+			"in the Penalty Zone, say \"An alarm sounds.\")");
 }

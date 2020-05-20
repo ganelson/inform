@@ -361,7 +361,7 @@ itself.
 @<Issue PM_MapDirectionClue problem@> =
 	*X = NO_IMW;
 	if (index_map_with_pass == 1) {
-		Problems::Issue::map_problem(_p_(PM_MapDirectionClue),
+		StandardProblems::map_problem(_p_(PM_MapDirectionClue),
 			index_map_with_p, "You can only say 'Index map with D mapped as E.' "
 			"when D and E are directions.");
 	}
@@ -369,7 +369,7 @@ itself.
 @<Issue PM_MapPlacement problem@> =
 	*X = NO_IMW;
 	if (index_map_with_pass == 1) {
-		Problems::Issue::map_problem(_p_(PM_MapPlacement),
+		StandardProblems::map_problem(_p_(PM_MapPlacement),
 			index_map_with_p, "The map placement hint should either have the form 'Index map with X "
 			"mapped east of Y' or 'Index map with X mapped above/below Y'.");
 	}
@@ -377,7 +377,7 @@ itself.
 @<Issue PM_MapSettingTooLong problem@> =
 	*X = NO_IMW;
 	if (index_map_with_pass == 1) {
-		Problems::Issue::map_problem(_p_(PM_MapSettingTooLong),
+		StandardProblems::map_problem(_p_(PM_MapSettingTooLong),
 			index_map_with_p, "The value supplied has to be a single item, a number, a word "
 			"or some text in double-quotes: this looks too long to be right.");
 	}
@@ -389,7 +389,7 @@ itself.
 @<Issue PM_MapHintUnknown problem@> =
 	*X = NO_IMW;
 	if (index_map_with_pass == 2) {
-		Problems::Issue::map_problem(_p_(PM_MapHintUnknown),
+		StandardProblems::map_problem(_p_(PM_MapHintUnknown),
 			index_map_with_p, "The general form for this is 'Index map with ...' and then a "
 			"list of clues, such as 'the Ballroom mapped east of the Terrace', "
 			"or 'room-size of the Ballroom set to 100'.");
@@ -441,7 +441,7 @@ For now, at least, these are all in English only.
 @<Issue PM_MapSettingUnknown problem@> =
 	*X = NO_IMW;
 	if (index_map_with_pass == 1) {
-		Problems::Issue::map_problem(_p_(PM_MapSettingUnknown),
+		StandardProblems::map_problem(_p_(PM_MapSettingUnknown),
 			index_map_with_p, "The parameter has to be one of the fixed named set given in "
 			"the documentation, like 'room-name'. All parameters are one "
 			"word, but many are hyphenated. (Also, note that 'colour' has the "
@@ -542,7 +542,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 
 @<Parse "Index map with Ballroom mapped north of the Hallway"-style sentences@> =
 	if (Instances::of_kind(<<instance:dir>>, K_direction) == FALSE) {
-		if (pass == 1) Problems::Issue::map_problem(_p_(PM_MapPlacementDirection),
+		if (pass == 1) StandardProblems::map_problem(_p_(PM_MapPlacementDirection),
 			p, "The direction given as a hint for map placement wasn't "
 			"one that I know of.");
 		return;
@@ -553,17 +553,17 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 	int exit = PF_I(map, <<instance:dir>>)->direction_index;
 
 	if ((I == NULL) || (PL::Spatial::object_is_a_room(I) == FALSE)) {
-		if (pass == 1) Problems::Issue::map_problem(_p_(PM_MapFromNonRoom),
+		if (pass == 1) StandardProblems::map_problem(_p_(PM_MapFromNonRoom),
 			p, "The first-named thing must be a room (beware ambiguities!).");
 		return;
 	}
 	if ((I2 == NULL) || (PL::Spatial::object_is_a_room(I2) == FALSE)) {
-		if (pass == 1) Problems::Issue::map_problem(_p_(PM_MapToNonRoom),
+		if (pass == 1) StandardProblems::map_problem(_p_(PM_MapToNonRoom),
 			p, "The second-named thing must be a room (beware ambiguities!).");
 		return;
 	}
 	if (PL::SpatialMap::direction_is_lateral(exit) == FALSE) {
-		if (pass == 1) Problems::Issue::map_problem(_p_(PM_MapNonLateral),
+		if (pass == 1) StandardProblems::map_problem(_p_(PM_MapNonLateral),
 			p, "The direction given as a hint for map placement must be "
 			"a lateral direction (not up, down, above, below, inside "
 			"or outside).");
@@ -601,7 +601,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 					@<Make a rubric offset setting@>; break;
 			}
 		} else {
-			Problems::Issue::map_problem(_p_(PM_MapBadRubric),
+			StandardProblems::map_problem(_p_(PM_MapBadRubric),
 				p, "Unfortunately the details of that rubric seem to be "
 				"in error (a lame message, but an accurate one).");
 			break;
@@ -612,14 +612,14 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 	Word::dequote(<<rcol>>);
 	wchar_t *thec = HTML::translate_colour_name(Lexer::word_text(<<rcol>>));
 	if (thec == NULL) {
-		Problems::Issue::map_problem(_p_(PM_MapUnknownColour), p, "There's no such map colour.");
+		StandardProblems::map_problem(_p_(PM_MapUnknownColour), p, "There's no such map colour.");
 		return;
 	}
 	rh->colour = thec;
 
 @<Make a rubric offset setting@> =
 	if (<<roff>> == ERRONEOUS_OFFSET_VALUE) {
-		Problems::Issue::map_problem(_p_(PM_MapUnknownOffset), p, "There's no such offset.");
+		StandardProblems::map_problem(_p_(PM_MapUnknownOffset), p, "There's no such offset.");
 		return;
 	}
 	rh->at_offset = <<roff>>;
@@ -628,7 +628,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 		instance *I = Instances::parse_object(Wordings::from(Node::get_text(p), i));
 		i = Wordings::last_wn(RESTW) + 1;
 		if (I == NULL) {
-			Problems::Issue::map_problem(_p_(PM_MapUnknownOffsetBase),
+			StandardProblems::map_problem(_p_(PM_MapUnknownOffsetBase),
 				p, "There's no such room to be offset from.");
 			return;
 		}
@@ -664,7 +664,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 					&& (eml->map_level - Room_position(benchmark_room).z == ln))
 					scope = &(eml->map_parameters);
 			if (scope == NULL) {
-				Problems::Issue::map_problem(_p_(PM_MapLevelMisnamed),
+				StandardProblems::map_problem(_p_(PM_MapLevelMisnamed),
 					p, "Layers of the map must be called 'level N', where "
 					"N is a number, and level 0 is the one which contains "
 					"the first room.");
@@ -700,7 +700,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 
 @<Actually issue PM_MapSettingOfUnknown problem@> =
 	if (index_map_with_pass == 1) {
-		Problems::Issue::map_problem(_p_(PM_MapSettingOfUnknown),
+		StandardProblems::map_problem(_p_(PM_MapSettingOfUnknown),
 			index_map_with_p, "The parameter has to be 'of' either 'the first room' "
 			"or a specific named room (beware ambiguities!) or "
 			"a level such as 'level 0' (the first room is by "
@@ -757,7 +757,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 			break;
 		default: internal_error("Unexpected map parameter data type");
 	}
-	if (pass == 1) Problems::Issue::map_problem_wanted_but(_p_(PM_MapSettingTypeFailed),
+	if (pass == 1) StandardProblems::map_problem_wanted_but(_p_(PM_MapSettingTypeFailed),
 		p, i_wanted_a, wn);
 
 @h Offset notation.
@@ -848,7 +848,7 @@ void PL::EPSMap::render_map_as_EPS(void) {
 	filename *F = Task::epsmap_file();
 	text_stream EPS_struct; text_stream *EPS = &EPS_struct;
 	if (STREAM_OPEN_TO_FILE(EPS, F, ISO_ENC) == FALSE)
-		Problems::Fatal::filename_related("Can't open EPS map file", F);
+		Problems::fatal_on_file("Can't open EPS map file", F);
 	PL::EPSMap::EPS_compile_map(EPS);
 	STREAM_CLOSE(EPS);
 

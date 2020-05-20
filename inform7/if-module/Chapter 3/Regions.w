@@ -92,7 +92,7 @@ int PL::Regions::regions_new_subject_notify(inference_subject *subj) {
 int PL::Regions::regions_set_subkind_notify(kind *sub, kind *super) {
 	if ((sub == K_region) && (super != K_object)) {
 		if (problem_count == 0)
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RegionAdrift),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionAdrift),
 				"'region' is not allowed to be a kind of anything (other than "
 				"'object')",
 				"because it's too fundamental to the way Inform maps out the "
@@ -167,7 +167,7 @@ int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) 
 			if ((left_object) &&
 				(current_sentence != Instances::get_creating_sentence(left_object)) &&
 				(Instances::of_kind(left_object, K_region) == FALSE)) {
-				Problems::Issue::subject_problem_at_sentence(_p_(PM_ExistingRegion),
+				StandardProblems::subject_problem_at_sentence(_p_(PM_ExistingRegion),
 					left_subject,
 					"(which I notice in another sentence) seems now to "
 					"be declared as a new region",
@@ -179,7 +179,7 @@ int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) 
 	}
 	if ((Node::get_type(px) == RELATIONSHIP_NT) &&
 		(Node::get_subject(py) == Kinds::Knowledge::as_subject(K_region))) {
-		Problems::Issue::assertion_problem(Task::syntax_tree(), _p_(PM_RegionRelated),
+		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_RegionRelated),
 			"a region cannot be given a specific location",
 			"since it contains what may be many rooms, which may not be "
 			"contiguous and could be scattered about all over. (Sometimes "
@@ -236,7 +236,7 @@ int PL::Regions::assert_relations(binary_predicate *relation,
 			if (I1_is_region) @<A region is being put inside a region@>
 			else @<A room is being put inside a region@>;
 		} else {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RegionRelation),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionRelation),
 				"regions can only contain rooms",
 				"and have no other relationships.");
 		}
@@ -245,7 +245,7 @@ int PL::Regions::assert_relations(binary_predicate *relation,
 		if ((relation == R_incorporation) ||
 			(relation == R_containment) ||
 			(relation == R_regional_containment)) {
-			Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RegionRelation2),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionRelation2),
 				"regions can only be contained in other regions",
 				"and not for example in rooms.");
 		}
@@ -257,7 +257,7 @@ int PL::Regions::assert_relations(binary_predicate *relation,
 @<You can only be declared as in one region@> =
 	if ((PF_I(regions, I1)->in_region) &&
 		(PF_I(regions, I1)->in_region != I0)) {
-		Problems::Issue::sentence_problem(Task::syntax_tree(), _p_(PM_RegionInTwoRegions),
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionInTwoRegions),
 			"each region can only be declared to be inside a single "
 			"other region",
 			"since although regions can be placed inside each other, "

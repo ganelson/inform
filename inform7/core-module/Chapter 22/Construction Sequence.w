@@ -327,7 +327,7 @@ points", say). This is where we do it:
 			(Phrases::TypeData::arithmetic_operation(ph) == -1)) {
 			current_sentence = Phrases::declaration_node(ph);
 			Problems::quote_source(1, current_sentence);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ReturnKindVague));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ReturnKindVague));
 			Problems::issue_problem_segment(
 				"The declaration %1 tries to set up a phrase which decides a "
 				"value which is too vaguely described. For example, 'To decide "
@@ -344,7 +344,7 @@ points", say). This is where we do it:
 				PUT_TO(var_letter, 'A'+k-1);
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_stream(2, var_letter);
-				Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_ReturnKindUndetermined));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ReturnKindUndetermined));
 				Problems::issue_problem_segment(
 					"The declaration %1 tries to set up a phrase which decides a "
 					"value which is too vaguely described, because it involves "
@@ -362,7 +362,7 @@ points", say). This is where we do it:
 			(Phrases::Usage::has_name_as_constant(&(ph->usage_data)))) {
 			current_sentence = Phrases::declaration_node(ph);
 			Problems::quote_source(1, current_sentence);
-			Problems::Issue::handmade_problem(Task::syntax_tree(), _p_(PM_NamedInline));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedInline));
 			Problems::issue_problem_segment(
 				"The declaration %1 tries to give a name to a phrase which is "
 				"defined using inline Inform 6 code in (- markers -). Such "
