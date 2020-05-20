@@ -252,11 +252,12 @@ int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line
 
 void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
-		case CRASHALL_CLSW: debugger_mode = val; crash_on_all_errors = val; break;
+		case CRASHALL_CLSW: debugger_mode = val;
+			Problems::Fatal::crash_on_problems(val); break;
 		case INDEX_CLSW: do_not_generate_index = val?FALSE:TRUE; break;
 		case CENSUS_UPDATE_CLSW: do_not_update_census = val?FALSE:TRUE; break;
 		case PROGRESS_CLSW: show_progress_indicator = val; break;
-		case SIGILS_CLSW: echo_problem_message_sigils = val; break;
+		case SIGILS_CLSW: Problems::Fatal::echo_sigils(val); break;
 		case REQUIRE_PROBLEM_CLSW: Problems::Fatal::require(arg); break;
 		case DIAGNOSTICS_CLSW: diagnostics_path = Pathnames::from_text(arg); break;
 	}

@@ -312,7 +312,7 @@ void Problems::issue_problem_end(void) {
 	#endif
 	Problems::Buffer::output_problem_buffer(1);
 	Problems::Issue::problem_documentation_links(problems_file);
-	if (crash_on_all_errors) Problems::Fatal::force_crash();
+	if (crash_on_all_problems) Problems::Fatal::force_crash();
 }
 
 @h Appending source.
@@ -477,7 +477,7 @@ void Problems::write_reports(int disaster_struck) {
 	if (tail_of_report_written) return;
 	tail_of_report_written = TRUE;
 
-	crash_on_all_errors = FALSE;
+	crash_on_all_problems = FALSE;
 	#ifdef PROBLEMS_FINAL_REPORTER
 	int pc = problem_count;
 	PROBLEMS_FINAL_REPORTER(disaster_struck, problem_count);

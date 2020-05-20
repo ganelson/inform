@@ -164,70 +164,6 @@ void Problems::Issue::s_subtree_error(parse_node_tree *T, char *mess) {
 	DISCARD_TEXT(internal_message);
 }
 
-@h Sigils.
-Every problem message in Inform is identified by a sigil, a short
-alphanumeric symbol. The |_p_| notation is used to write these;
-see almost every section in later chapters for examples. The naming rules
-for sigils are as follows:
-
-(a) A problem which is thought never to be generated has the sigil
-|BelievedImpossible|. Inform is quite defensively coded, so there are several
-dozen of these -- they are safety nets to catch cases we didn't think of.
-
-(b) A problem which either cannot be tested by |intest|, or is just impracticable
-to do so, has the sigil |Untestable|.
-
-(c) A problem which can be tested, but for which nobody has yet written a
-test case, has the sigil |...| (these are gradually declining in number, and
-eventually, of course, will disappear altogether).
-
-(d) Otherwise a problem should have a unique sigil beginning |C| and then the
-chapter number in which it is found: say, |PM_NoSuchHieroglyph|. The sigil
-should have the same name as an |intest| test case which demonstrates the
-problem.
-
-(e) A sigil which ends |-G| should be used for those few problems which appear
-only when the virtual machine is Glulx.
-
-It would be easy for all this to fall out of sync, or for us just to lose track
-of odd cases, since there are more than 750 problem messages; so a shell script
-called |listproblems.sh| exists to verify that the above rules have been
-adhered to.
-
-@ As can be seen, |_p_| is a macro expanding to the sigil's name in double
-quotes followed by the source section and line number at which it is generated.
-This provides three function arguments matching the |SIGIL_ARGUMENTS| prototype,
-which appears as a pseudo-argument in all of the problem routines below.
-
-Each such routine should either |ACT_ON_SIGIL| itself or else pass over to
-another problem routine, using |PASS_SIGIL| as the pseudo-argument.
-
-@d _p_(sigil) #sigil, __FILE__, __LINE__
-
-@d SIGIL_ARGUMENTS char *sigil, char *file, int line
-
-@d ACT_ON_SIGIL
-	LOG("Problem %s issued from %s, line %d\n", sigil, file, line);
-	if (telemetry_recording) {
-		Telemetry::ensure_telemetry_file();
-		WRITE_TO(telmy, "Problem %s issued from %s, line %d\n", sigil, file, line);
-	}
-	if (sigil_of_latest_unlinked_problem == NULL) sigil_of_latest_unlinked_problem = Str::new();
-	else Str::clear(sigil_of_latest_unlinked_problem);
-	if (sigil_of_latest_problem == NULL) sigil_of_latest_problem = Str::new();
-	else Str::clear(sigil_of_latest_problem);
-	WRITE_TO(sigil_of_latest_unlinked_problem, "%s", sigil);
-	WRITE_TO(sigil_of_latest_problem, "%s", sigil);
-	if (Str::eq(sigil_of_required_problem, sigil_of_latest_problem))
-		sigil_of_required_problem_found = TRUE;
-	if (echo_problem_message_sigils) WRITE_TO(STDERR, "Problem__ %S\n", sigil_of_latest_problem);
-
-@d PASS_SIGIL sigil, file, line
-
-=
-text_stream *sigil_of_latest_unlinked_problem = NULL;
-text_stream *sigil_of_latest_problem = NULL;
-
 void Problems::Issue::problem_documentation_links(OUTPUT_STREAM) {
 	if (Str::len(sigil_of_latest_unlinked_problem) == 0) return;
 	#ifdef DOCUMENTATION_REFERENCES_PRESENT
@@ -256,15 +192,6 @@ void Problems::Issue::problem_documentation_links(OUTPUT_STREAM) {
 text_stream *Problems::Issue::latest_sigil(void) {
 	return sigil_of_latest_problem;
 }
-
-@ The command-line switch |-sigils| causes the following flag to be set,
-which in turn causes the sigil of any problem to be echoed to standard output
-(i.e., printed). This is useful in testing, as it makes it easier to be sure
-that the test case |PM_NoSuchHieroglyph.txt| does indeed generate the
-problem |PM_NoSuchHieroglyph|, and so on.
-
-=
-int echo_problem_message_sigils = FALSE;
 
 @h Handmade problems.
 Those made without using the convenient shorthand forms below:

@@ -1,26 +1,22 @@
 [Problems::Fatal::] Problems, Level 0.
 
-To handle fatal errors.
+To handle fatal errors and establish how problem sigils work.
 
-@ In my beginning is my end: this lowest level of the error-handling system
-deals with systemic collapses.
+@h Sudden exits.
+In my beginning is my end: this lowest level of the error-handling system
+deals with systemic collapses, and it begins with the exit itself. Note that
+the exit code depends on whether the parent tool, perversely perhaps, actually
+wants to have issued a given problem -- this is used when testing Inform.
+
+By convention our exit codes are 0 for success, 1 for failure, and 2 for a
+filing-system-related failure.
 
 =
-text_stream problems_file_struct; /* The actual report of Problems file */
-text_stream *problems_file = &problems_file_struct; /* The actual report of Problems file */
-
-text_stream *probl = NULL; /* Current destination of problem message text */
-
-int it_is_not_worth_adding = FALSE; /* To suppress the "It may be worth adding..." */
-
-int crash_on_all_errors = FALSE;
-
 text_stream *sigil_of_required_problem = NULL;
-int sigil_of_required_problem_found = FALSE;
 
-void Problems::Fatal::require(text_stream *sigil) {
-	sigil_of_required_problem = Str::duplicate(sigil);
-}
+int sigil_of_required_problem_found = FALSE;
+int echo_problem_message_sigils = FALSE;
+int crash_on_all_problems = FALSE;
 
 void Problems::Fatal::exit(int code) {
 	if ((sigil_of_required_problem) && (sigil_of_required_problem_found == FALSE))
@@ -28,19 +24,89 @@ void Problems::Fatal::exit(int code) {
 	exit(code);
 }
 
+@ Inform calls this in response to its |-require-problem| command line switch:
+
+=
+void Problems::Fatal::require(text_stream *sigil) {
+	sigil_of_required_problem = Str::duplicate(sigil);
+}
+
+@ And this in response to |-sigils|, which causes the sigil of any problem to
+be echoed to standard output (i.e., printed). Again, this is useful in testing.
+
+=
+void Problems::Fatal::echo_sigils(int state) {
+	echo_problem_message_sigils = state;
+}
+
+@ And this in response to |-crash-all|, an ugly expedient for working with
+Inform in the debugger.
+
+=
+void Problems::Fatal::crash_on_problems(int state) {
+	crash_on_all_problems = state;
+}
+
+@h Sigils.
+Every problem message in Inform is identified by a sigil, a short alphanumeric
+symbol. The |_p_| notation is used to write these; this expands to the name in
+double quotes followed by the source section and line number at which it is
+generated.
+
+@d _p_(sigil) #sigil, __FILE__, __LINE__
+
+@ That means that when a |_p_| argument is given to a function, it is actually
+a list of three arguments, matching the |SIGIL_ARGUMENTS| prototype. |SIGIL_ARGUMENTS|
+appears as a pseudo-argument in the function prototypes of the many of the
+functions in this module as a result.
+
+Each such function should either |ACT_ON_SIGIL| itself or else pass over to
+another problem function, using |PASS_SIGIL| as the pseudo-argument.
+
+@d SIGIL_ARGUMENTS char *sigil, char *file, int line
+@d PASS_SIGIL sigil, file, line
+
+@ We will maintain the following variables. The distinction is that the
+"unlinked" one holds the sigil of a message which is next up to be hyperlinked
+to documentation; |sigil_of_latest_unlinked_problem| is then emptied when this
+is done, whereas |sigil_of_latest_problem| keeps its value until the next
+problem is issued.
+
+=
+text_stream *sigil_of_latest_problem = NULL;
+text_stream *sigil_of_latest_unlinked_problem = NULL;
+
+@ So, then, the following long macro is how a function "acts" on a sigil:
+
+@d ACT_ON_SIGIL
+	LOG("Problem %s issued from %s, line %d\n", sigil, file, line);
+	if (telemetry_recording) {
+		Telemetry::ensure_telemetry_file();
+		WRITE_TO(telmy, "Problem %s issued from %s, line %d\n", sigil, file, line);
+	}
+	if (sigil_of_latest_unlinked_problem == NULL)
+		sigil_of_latest_unlinked_problem = Str::new();
+	else
+		Str::clear(sigil_of_latest_unlinked_problem);
+	WRITE_TO(sigil_of_latest_unlinked_problem, "%s", sigil);
+	if (sigil_of_latest_problem == NULL)
+		sigil_of_latest_problem = Str::new();
+	else
+		Str::clear(sigil_of_latest_problem);
+	WRITE_TO(sigil_of_latest_problem, "%s", sigil);
+	if (Str::eq(sigil_of_required_problem, sigil_of_latest_problem))
+		sigil_of_required_problem_found = TRUE;
+	if (echo_problem_message_sigils)
+		WRITE_TO(STDERR, "Problem__ %S\n", sigil_of_latest_problem);
+
+@h Further fatalities.
+
+=
 void Problems::Fatal::issue(char *message) {
 	WRITE_TO(STDERR, message);
 	WRITE_TO(STDERR, "\n");
 	STREAM_FLUSH(STDERR);
-	if (crash_on_all_errors) Problems::Fatal::force_crash();
-	Problems::Fatal::exit(2);
-}
-
-void Problems::Fatal::issue_t(char *message, char *fn) {
-	WRITE_TO(STDERR, message);
-	WRITE_TO(STDERR, "\nOffending filename: <%s>\n", fn);
-	STREAM_FLUSH(STDERR);
-	if (crash_on_all_errors) Problems::Fatal::force_crash();
+	if (crash_on_all_problems) Problems::Fatal::force_crash();
 	Problems::Fatal::exit(2);
 }
 
@@ -48,16 +114,16 @@ void Problems::Fatal::filename_related(char *message, filename *F) {
 	WRITE_TO(STDERR, message);
 	WRITE_TO(STDERR, "\nOffending filename: <%f>\n", F);
 	STREAM_FLUSH(STDERR);
-	if (crash_on_all_errors) Problems::Fatal::force_crash();
+	if (crash_on_all_problems) Problems::Fatal::force_crash();
 	Problems::Fatal::exit(2);
 }
 
-@ Fatal errors are not necessarily a bad thing. When tracking down why
-Inform issues certain problem messages (especially internal errors) it can be
-useful to provoke a deliberate crash of the application, in order to
-get a stack backtrace into the GNU debugger |gdb| (and/or onto the system
-console logs). We can force this using the following variables (which main
-sets with the command-line switch "-gdb").
+@ The following function has had an amusing evolution over the years. It does
+something nobody is ever supposed to do: deliberately crashes the process.
+At one time it executed |int x = 1/0;|, but compilers got wise to that, or
+else would detect that such an expression had no side effects and was not used.
+What we now do is to dereference a null pointer, while apparently trying to make
+use of the result.
 
 =
 void Problems::Fatal::force_crash(void) {
@@ -67,5 +133,5 @@ void Problems::Fatal::force_crash(void) {
 		"*** Intentionally crashing to force stack backtrace to console logs ***\n");
 	STREAM_FLUSH(STDERR);
 	parse_node *PN = NULL; LOG("$T", PN->next);
-	Problems::Fatal::exit(1);
+	Problems::Fatal::exit(1); /* should never in fact be reached */
 }
