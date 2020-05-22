@@ -9,7 +9,6 @@ Chapter 1: Starting Up
 
 Chapter 2: Machinery
 	Linguistic Definitions
-	Non-Parsing Preform
 	Tries and Inflections
 	Name Clusters
 

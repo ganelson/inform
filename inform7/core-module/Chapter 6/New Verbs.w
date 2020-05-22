@@ -52,13 +52,13 @@ void NewVerbs::add_inequalities(void) {
 void NewVerbs::add_inequalities_inner(verb_meaning lt, verb_meaning gt, verb_meaning le, verb_meaning ge) {
 	set_where_created = NULL;
 	current_main_verb = NULL;
-	VerbUsages::register_single_usage(Preform::Nonparsing::wording(<inequality-conjugations>, 0),
+	VerbUsages::register_single_usage(PreformUtilities::wording(<inequality-conjugations>, 0),
 		FALSE, IS_TENSE, ACTIVE_MOOD, Verbs::new_operator_verb(lt), FALSE);
-	VerbUsages::register_single_usage(Preform::Nonparsing::wording(<inequality-conjugations>, 1),
+	VerbUsages::register_single_usage(PreformUtilities::wording(<inequality-conjugations>, 1),
 		FALSE, IS_TENSE, ACTIVE_MOOD, Verbs::new_operator_verb(gt), FALSE);
-	VerbUsages::register_single_usage(Preform::Nonparsing::wording(<inequality-conjugations>, 2),
+	VerbUsages::register_single_usage(PreformUtilities::wording(<inequality-conjugations>, 2),
 		FALSE, IS_TENSE, ACTIVE_MOOD, Verbs::new_operator_verb(le), FALSE);
-	VerbUsages::register_single_usage(Preform::Nonparsing::wording(<inequality-conjugations>, 3),
+	VerbUsages::register_single_usage(PreformUtilities::wording(<inequality-conjugations>, 3),
 		FALSE, IS_TENSE, ACTIVE_MOOD, Verbs::new_operator_verb(ge), FALSE);
 }
 
@@ -633,13 +633,13 @@ void NewVerbs::bootstrap(void) {
 	NewVerbs::declare_sm(Sentences::VPs::include_in_SMF,					I"include-in", 4);
 	NewVerbs::declare_sm(Sentences::VPs::omit_from_SMF,						I"omit-from", 4);
 
-	word_assemblage infinitive = Preform::Nonparsing::wording(<bootstrap-verb>, 0);
+	word_assemblage infinitive = PreformUtilities::wording(<bootstrap-verb>, 0);
 	verb_conjugation *vc = Conjugation::conjugate(infinitive, English_language);
 	verb_identity *vi = Verbs::new_verb(vc, TRUE);
 	vc->vc_conjugates = vi;
 	VerbUsages::register_all_usages_of_verb(vi, FALSE, 2);
 
-	infinitive = Preform::Nonparsing::wording(<bootstrap-verb>, 1);
+	infinitive = PreformUtilities::wording(<bootstrap-verb>, 1);
 	vc = Conjugation::conjugate(infinitive, English_language);
 	vi = Verbs::new_verb(vc, FALSE);
 	vc->vc_conjugates = vi;

@@ -475,7 +475,7 @@ binary_predicate *BinaryPredicates::make_equality(void) {
 	binary_predicate *bp = BinaryPredicates::make_single(EQUALITY_KBP,
 		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
 		I"is", NULL, NULL, NULL,
-		Preform::Nonparsing::wording(<relation-names>, EQUALITY_RELATION_NAME));
+		PreformUtilities::wording(<relation-names>, EQUALITY_RELATION_NAME));
 
 	bp->reversal = bp; bp->right_way_round = TRUE;
 	return bp;
@@ -514,7 +514,7 @@ binary_predicate *BinaryPredicates::make_pair(int family,
 
 	if (WordAssemblages::nonempty(source_name)) {
 		word_assemblage wa =
-			Preform::Nonparsing::merge(<relation-name-formal>, 0, source_name);
+			PreformUtilities::merge(<relation-name-formal>, 0, source_name);
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER,
 			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,

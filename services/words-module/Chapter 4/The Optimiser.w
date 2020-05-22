@@ -129,8 +129,8 @@ void Optimiser::optimise_nonterminal(nonterminal *nt) {
 	nt->opt.optimised_in_this_pass = TRUE;
 
 	nt->opt.nt_extremes = LengthExtremes::calculate_for_nt(nt);
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list)
-		for (production *pr = pl->first_production; pr; pr = pr->next_production)
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl)
+		for (production *pr = pl->first_pr; pr; pr = pr->next_pr)
 			Optimiser::optimise_production(pr);
 	NTI::calculate_constraint(nt);
 }
@@ -160,7 +160,7 @@ starts and finishes; it's not enough just to know where it starts.
 @<Compute front-end ptoken positions@> =
 	int posn = 1;
 	ptoken *pt;
-	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
+	for (pt = pr->first_pt; pt; pt = pt->next_pt) {
 		last = pt;
 		int L = Optimiser::ptoken_width(pt);
 		if ((posn != 0) && (L != PTOKEN_ELASTIC)) {
@@ -191,8 +191,8 @@ production, but this is never larger than about 10.
 		} else break;
 
 		ptoken *prevt = NULL;
-		for (prevt = pr->first_ptoken; prevt; prevt = prevt->next_ptoken)
-			if (prevt->next_ptoken == pt)
+		for (prevt = pr->first_pt; prevt; prevt = prevt->next_pt)
+			if (prevt->next_pt == pt)
 				break;
 		pt = prevt;
 	}
@@ -204,7 +204,7 @@ position then all of them have, but we're in no hurry so we don't exploit that.)
 @<Compute struts within the production@> =
 	pr->opt.no_struts = 0;
 	ptoken *pt;
-	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
+	for (pt = pr->first_pt; pt; pt = pt->next_pt) {
 		if ((pt->opt.ptoken_position == 0) &&
 			(Optimiser::ptoken_width(pt) != PTOKEN_ELASTIC)) {
 			if (pr->opt.no_struts >= MAX_STRUTS_PER_PRODUCTION) continue;
@@ -214,8 +214,8 @@ position then all of them have, but we're in no hurry so we don't exploit that.)
 				(Optimiser::ptoken_width(pt) != PTOKEN_ELASTIC)) {
 				pt->opt.strut_number = pr->opt.no_struts;
 				pr->opt.strut_lengths[pr->opt.no_struts] += Optimiser::ptoken_width(pt);
-				if (pt->next_ptoken == NULL) break; /* should be impossible */
-				pt = pt->next_ptoken;
+				if (pt->next_pt == NULL) break; /* should be impossible */
+				pt = pt->next_pt;
 			}
 			pr->opt.no_struts++;
 		}
@@ -223,7 +223,7 @@ position then all of them have, but we're in no hurry so we don't exploit that.)
 
 @<Work out which ptokens are fast@> =
 	ptoken *pt;
-	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken)
+	for (pt = pr->first_pt; pt; pt = pt->next_pt)
 		if ((pt->ptoken_category == FIXED_WORD_PTC) && (pt->opt.ptoken_position != 0)
 			&& (pt->range_starts < 0) && (pt->range_ends < 0))
 			pt->opt.ptoken_is_fast = TRUE;

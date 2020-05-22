@@ -445,7 +445,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 	if (Wordings::nonempty(t->table_no_text)) {
 		LOGIF(TABLES, "Registering table by number: table %W\n", t->table_no_text);
 
-		word_assemblage wa = Preform::Nonparsing::merge(<table-names-construction>, 0,
+		word_assemblage wa = PreformUtilities::merge(<table-names-construction>, 0,
 			WordAssemblages::from_wording(t->table_no_text));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER,
@@ -455,7 +455,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 	if (Wordings::nonempty(t->table_name_text)) {
 		LOGIF(TABLES, "Registering table by name: table of %W\n", t->table_name_text);
 
-		word_assemblage wa = Preform::Nonparsing::merge(<table-names-construction>, 1,
+		word_assemblage wa = PreformUtilities::merge(<table-names-construction>, 1,
 				WordAssemblages::from_wording(t->table_name_text));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER,

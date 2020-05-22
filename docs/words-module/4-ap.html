@@ -12,11 +12,6 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-
-<script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -64,9 +59,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">words</a></li><li><a href="index.html#4">Chapter 4: Parsing</a></li><li><b>About Preform</b></li></ul></div>
 <p class="purpose">A brief guide to Preform and how to use it.</p>
 
-<ul class="toc"><li><a href="4-ap.html#SP1">&#167;1. A Manual for Preform</a></li><li><a href="4-ap.html#SP10">&#167;10. Implementation notes</a></li></ul><hr class="tocbar">
-
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. A Manual for Preform. </b>Preform is a meta-language for writing a simple grammar: it's in some sense
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Preform is a meta-language for writing a simple grammar: it's in some sense
 pre-Inform, because it defines the Inform language itself, and has to be read
 by the <a href="index.html" class="internal">words</a> module (on behalf of Inform) before Inform can parse anything.
 For example,
@@ -200,54 +193,7 @@ with result 2.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;race-jersey&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">yellow</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">polkadot</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">green</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">white</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The material to the right of the <span class="extract"><span class="Preform-extract-syntax">==&gt;</span></span> is actually regular C code, and can
-do more than simply evaluate one expression. For example, it can also set
-the pointer result of the nonterminal; here, let's suppose, that will be a
-pointer to a <span class="extract"><span class="Preform-extract-syntax">text_stream</span></span>.
-</p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pacemaker</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 1; *XP = I"unnumbered";</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-function-syntax">&lt;ordinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]; *XP = I"numbered";</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]; *XP = I"numbered";</span>
-</pre>
-<p class="commentary">It can also, if it wants to, kill off a line:
-</p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pacemaker</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 1</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-function-syntax">&lt;ordinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; return FALSE;</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
-</pre>
-<p class="commentary">Here a match against <span class="extract"><span class="Preform-extract-syntax">&lt;ordinal-number&gt; runner</span></span> is forced to fail at the last
-hurdle, just as it was about the succeed; it's as if the second row wasn't
-there. (This is not useful unconditionally, but with an <span class="extract"><span class="Preform-extract-syntax">if</span></span> statement,
-it can be.) More extremely:
-</p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;competitor&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">pacemaker</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 1</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-function-syntax">&lt;ordinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> 0; return FAIL_NONTERMINAL;</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
-</pre>
-<p class="commentary">causes any successful match against <span class="extract"><span class="Preform-extract-syntax">&lt;ordinal-number&gt; runner</span></span> not only to be
-failed, but to prevent any tries against the rows below it. (This is useful
-when issuing problem messages, or to put exceptional syntaxes into the grammar,
-since it can make subsequent productions only available in some cases.)
-</p>
-
-<p class="commentary">Finally, returning <span class="extract"><span class="Preform-extract-syntax">FAIL_NONTERMINAL + Q</span></span>, where <span class="extract"><span class="Preform-extract-syntax">Q</span></span> is a number between 1
-and, currently, 999, performs a fail but applies a "quantum" to the lookahead
-going on when Preform is trying to work out what's happening in a difficult
-production using the one being referred to. This allows us to nudge past
-potential ambiguities; it's not done much in Inform, but see for example
-<a href="../if-module/4-anl.html" class="internal">Action Name Lists (in if)</a>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>As a convenient abbreviation, a slash character can be used to divide
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>As a convenient abbreviation, a slash character can be used to divide
 alternative possibilities for a single word. For example:
 </p>
 
@@ -292,7 +238,7 @@ any word which is neither "cat" nor "dog".
 be used to escape them. Thus <span class="extract"><span class="Preform-extract-syntax">\_green</span></span> actually matches <span class="extract"><span class="Preform-extract-syntax">_green</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>So far, the only ingredients of Preform syntax have been nonterminals and
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>So far, the only ingredients of Preform syntax have been nonterminals and
 fixed words, but Preform also has "wildcards". For example, in
 </p>
 
@@ -349,7 +295,7 @@ need not even be a wildcard inside the braces:
 <p class="commentary">Once again, literal brace characters can be achieved using the <span class="extract"><span class="Preform-extract-syntax">\</span></span> escape.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The alternative lines (or "productions", as they're called) in a regular
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The alternative lines (or "productions", as they're called) in a regular
 definition are normally given the internal numbers 0, 1, 2, 3... in the
 order in which they appear. For example, in
 </p>
@@ -420,7 +366,7 @@ labelling runs <span class="extract"><span class="Preform-extract-syntax">/a/</s
 ..., <span class="extract"><span class="Preform-extract-syntax">/zz/</span></span>, thus allowing for up to 52 productions to be remapped in this way.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>A similar form if remapping is allowed with word ranges, using a special
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>A similar form if remapping is allowed with word ranges, using a special
 notation. Suppose the Inform source contained:
 </p>
 
@@ -446,132 +392,24 @@ notation. Suppose the Inform source contained:
 colour.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Implementation notes. </b>Most organs of the human body are located in a single place &mdash; the heart, the
-appendix, the brain &mdash; but others, like the blood vessels or the nervous
-system, are distributed throughout. So also with compilers, but Inform is
-unusual in having its syntax analyser be one of these distributed organs.
-This was a choice, and it was made in the interests of clarity of the
-Inform source code to readers.
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Preform turns out to be a useful notation for patterns of wording, and can
+be put to other uses besides parsing source text. For these other uses, see
+<a href="4-pu.html" class="internal">Preform Utilities</a>. Specifically, and in rough order of complexity:
 </p>
 
-<p class="commentary">In any case, it is only the Preform grammar and the connections to it &mdash;
-compositor functions, calls to single named nonterminals, and so on &mdash; which
-are dispersed throughout the body of Inform. The code to manage, internally
-store and parse against Preform is all here in <a href="index.html" class="internal">words</a>, and the code to
-represent the meaning of the result makes up <a href="../syntax-module/index.html" class="internal">syntax</a>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The Preform parser which occupies the entire <a href="4-prf.html" class="internal">Preform</a> section is a
-complex or even ingenious algorithm, which is always suspect. The main points
-of difficulty are:
-</p>
-
-<ul class="items"><li>(a) The grammar must not be hard-coded since users need to change it, for
-translation or other purposes, so it has to be read in from a file. But it
-must also be explicitly referred to in the Inform source code. This is achieved
-with a sort of symbiotic relationship between the Inform source code and the
-pre-processor for it in <a href="../../../inweb/docs/index.html" class="internal">inweb</a>, which takes action at compile time to
-build the syntax file <span class="extract"><span class="Preform-extract-syntax">Syntax.preform</span></span> read in, by default, at run time. The
-arrangement works well in practice, but needs careful explanation. See
-<a href="4-lp.html" class="internal">Loading Preform</a> for how <span class="extract"><span class="Preform-extract-syntax">Syntax.preform</span></span> is read in.
-</li><li>(b) The Preform parser has two design goals: to avoid unpredictable spikes on
-time or memory when given very long texts to match, and to be as simple as it
-can be, consistent with consuming, in aggregate, no more than 5-10% of the
-compiler's running time. It is a non-goal to be a fully general natural
-language parser &mdash; if it can cope with Inform's needs, then that is enough.
+<ul class="items"><li>&#9679; Specifying text being generated by Inform &mdash; see <a href="4-pu.html#SP1" class="internal">PreformUtilities::merge</a>.
+</li><li>&#9679; Specifying replacements of one set of words by another &mdash; see
+<a href="4-pu.html#SP4" class="internal">PreformUtilities::find_corresponding_word</a>.
+</li><li>&#9679; Specifying miscellaneous entries for the lexicon in the Inform index &mdash; see
+<a href="4-pu.html#SP5" class="internal">PreformUtilities::enter_lexicon</a>.
+</li><li>&#9679; Saying how to build a trie which will detect patterns in a single word and
+then modify it &mdash; see <a href="4-pu.html#SP6" class="internal">PreformUtilities::define_trie</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>So, then, <a href="4-lp.html#SP1" class="internal">LoadPreform::load</a> loads the Preform grammar for a given
-natural language from a file. This becomes a collection of <a href="4-nnt.html#SP5" class="internal">nonterminal</a>
-objects, each of which is either "internal" or "regular". Regular NTs have
-a list of <a href="4-lp.html#SP8" class="internal">production_list</a> objects, one for each natural language in
-which they are defined. (The same NT can have one definition in English and
-another in, say, French.)
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Finally, syntax errors in Preform are reported by <a href="4-pu.html#SP8" class="internal">PreformUtilities::production_error</a>.
 </p>
 
-<p class="commentary">What production lists list is <a href="4-lp.html#SP11" class="internal">production</a> objects, and each of those is
-in turn a list of <a href="4-lp.html#SP12" class="internal">ptoken</a> objects.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> These can also be marked as
-negated or can have alternatives supplied. Ptokens come in three varieties:
-fixed words, uses of other nonterminals, and wildcards.
-</p>
-
-<p class="commentary">For example,
-</p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;product-specification&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">weight</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">kg</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">height</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">cm</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">colour/color</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
-</pre>
-<p class="commentary">would be read into objects in memory as follows:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">nonterminal</span><span class="plain-syntax">                 </span><span class="function-syntax">REGULAR</span>
-<span class="plain-syntax">      -&gt; </span><span class="element-syntax">production_list</span><span class="plain-syntax">                       </span><span class="element-syntax">for</span><span class="plain-syntax"> </span><span class="element-syntax">its</span><span class="plain-syntax"> </span><span class="element-syntax">English</span><span class="plain-syntax"> </span><span class="element-syntax">definition</span>
-<span class="plain-syntax">        -&gt; </span><span class="element-syntax">production</span>
-<span class="plain-syntax">          -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">             </span><span class="function-syntax">FIXED</span><span class="plain-syntax"> </span><span class="function-syntax">WORD</span><span class="plain-syntax">     </span><span class="element-syntax">weight</span>
-<span class="plain-syntax">          -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">             </span><span class="function-syntax">USAGE</span><span class="plain-syntax">          &lt;</span><span class="element-syntax">cardinal</span><span class="plain-syntax">-</span><span class="element-syntax">number</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">          -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">             </span><span class="function-syntax">FIXED</span><span class="plain-syntax"> </span><span class="function-syntax">WORD</span><span class="plain-syntax">     </span><span class="element-syntax">kg</span>
-<span class="plain-syntax">        -&gt; </span><span class="element-syntax">production</span>
-<span class="plain-syntax">          -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">             </span><span class="function-syntax">FIXED</span><span class="plain-syntax"> </span><span class="function-syntax">WORD</span><span class="plain-syntax">     </span><span class="element-syntax">height</span>
-<span class="plain-syntax">          -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">             </span><span class="function-syntax">USAGE</span><span class="plain-syntax">          &lt;</span><span class="element-syntax">cardinal</span><span class="plain-syntax">-</span><span class="element-syntax">number</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">          -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">             </span><span class="function-syntax">FIXED</span><span class="plain-syntax"> </span><span class="function-syntax">WORD</span><span class="plain-syntax">     </span><span class="element-syntax">cm</span>
-<span class="plain-syntax">        -&gt; </span><span class="element-syntax">production</span>
-<span class="plain-syntax">          -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">             </span><span class="function-syntax">FIXED</span><span class="plain-syntax"> </span><span class="function-syntax">WORD</span><span class="plain-syntax">     </span><span class="element-syntax">colour</span>
-<span class="plain-syntax">            -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">           </span><span class="function-syntax">FIXED</span><span class="plain-syntax"> </span><span class="function-syntax">WORD</span><span class="plain-syntax">     </span><span class="element-syntax">color</span>
-<span class="plain-syntax">          -&gt; </span><span class="element-syntax">ptoken</span><span class="plain-syntax">             </span><span class="function-syntax">WILDCARD</span><span class="plain-syntax">       ...</span>
-</pre>
-<p class="commentary">The above grammar fell under the English production list because that was
-the current language when it was read in. The current language can be
-changed, e.g.,
-</p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">language</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">French</span>
-
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;product-specification&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">poids</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">kg</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">hauteur</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">cm</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">couleur</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
-
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">language</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">English</span>
-</pre>
-<p class="commentary">changes the language to French, supplies a French version, then changes back
-to English. There would then be two production lists for &lt;product-specification&gt;.
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> The "p" is silent.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The most technically difficult code occurs in <a href="4-to.html" class="internal">The Optimiser</a>, which
-precomputes &mdash;
-</p>
-
-<ul class="items"><li>&#9679; <a href="4-le.html" class="internal">Length Extremes</a> to constrain the number of words in any match;
-</li><li>&#9679; <a href="4-ni.html" class="internal">Nonterminal Incidences</a> to constrain the type of words in any match;
-</li><li>&#9679; "positions" of tokens and "struts" (runs of dividing words) inside productions.
-</li></ul>
-<p class="commentary">These are all devices to enable non-matching text to be rejected quickly.
-For example, "fox" cannot match <span class="extract"><span class="Preform-extract-syntax">&lt;s-literal&gt; &lt;s-instance-name&gt;</span></span> because it
-is too short (such a match would need at least two words), and "the fox"
-cannot match <span class="extract"><span class="Preform-extract-syntax">&lt;s-adjective&gt; &lt;s-nounphrase&gt;</span></span> because it does not contain any
-words which are in some contexts adjectives.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>It will be evident that Inform doesn't use parser-generators such as <span class="extract"><span class="Preform-extract-syntax">yacc</span></span>,
-<span class="extract"><span class="Preform-extract-syntax">bison</span></span> or <span class="extract"><span class="Preform-extract-syntax">antlr</span></span>. One reason is that they need the grammar to be fixed and
-known at (the compiler's) compile time. Then, too, folk wisdom has it that
-<span class="extract"><span class="Preform-extract-syntax">yacc</span></span> parsers are typically half as fast as a shrewdly hand-coded equivalent.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
-In any case the elegant theory of LALR parsing, though ideal for token-based
-programming languages, does not specify natural language well.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> The <span class="extract"><span class="Preform-extract-syntax">gcc</span></span> C compiler abandoned the use of <span class="extract"><span class="Preform-extract-syntax">bison</span></span> for exactly this reason.
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Which is perhaps ironic, considering that the relevant computer science
-was strongly influenced by generative linguistics.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-idn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">ap</li><li class="progresssection"><a href="4-nnt.html">nnt</a></li><li class="progresssection"><a href="4-lp.html">lp</a></li><li class="progresssection"><a href="4-to.html">to</a></li><li class="progresssection"><a href="4-le.html">le</a></li><li class="progresssection"><a href="4-ni.html">ni</a></li><li class="progresssection"><a href="4-prf.html">prf</a></li><li class="progresssection"><a href="4-bn.html">bn</a></li><li class="progresssection"><a href="4-ins.html">ins</a></li><li class="progressnext"><a href="4-nnt.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-idn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-wm.html">1</a></li><li class="progresschapter"><a href="2-vcb.html">2</a></li><li class="progresschapter"><a href="3-lxr.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">ap</li><li class="progresssection"><a href="4-nnt.html">nnt</a></li><li class="progresssection"><a href="4-lp.html">lp</a></li><li class="progresssection"><a href="4-to.html">to</a></li><li class="progresssection"><a href="4-le.html">le</a></li><li class="progresssection"><a href="4-ni.html">ni</a></li><li class="progresssection"><a href="4-prf.html">prf</a></li><li class="progresssection"><a href="4-bn.html">bn</a></li><li class="progresssection"><a href="4-ins.html">ins</a></li><li class="progresssection"><a href="4-pu.html">pu</a></li><li class="progressnext"><a href="4-nnt.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

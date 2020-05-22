@@ -500,7 +500,7 @@ void Properties::Measurement::register_comparative(wording W, binary_predicate *
 	set_where_created = current_sentence;
 	verb_meaning vm = VerbMeanings::new(root, NULL);
 	preposition_identity *prep =
-		Prepositions::make(Preform::Nonparsing::merge(<comparative-property-construction>, 0,
+		Prepositions::make(PreformUtilities::merge(<comparative-property-construction>, 0,
 			WordAssemblages::lit_1(Lexer::word(Wordings::first_wn(W)))), FALSE);
 	Verbs::add_form(copular_verb, prep, NULL, vm, SVO_FS_BIT);
 }

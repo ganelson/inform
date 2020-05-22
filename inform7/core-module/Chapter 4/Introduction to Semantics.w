@@ -202,7 +202,7 @@ whole thing into a |specification| for the rest of Inform to use.
 
 @d PREFORM_ADAPTIVE_PERSON NaturalLanguages::adaptive_person
 @d MORE_PREFORM_OPTIMISER_WORDS_CALLBACK Semantics::mark_preform_requirements
-@d INFLECTIONS_ERROR_HANDLER NaturalLanguages::preform_error
+@d PREFORM_ERROR_WORDS_CALLBACK NaturalLanguages::preform_error
 
 =
 void Semantics::read_preform(inform_language *L) {

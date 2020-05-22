@@ -568,7 +568,7 @@ omitted from the index.
 		if (prn == NULL) return;
 	} else {
 		word_assemblage pw_wa =
-			Preform::Nonparsing::merge(<relation-storage-construction>, 0,
+			PreformUtilities::merge(<relation-storage-construction>, 0,
 				WordAssemblages::from_wording(RW));
 		wording PW = WordAssemblages::to_wording(&pw_wa);
 		prn = Properties::Valued::obtain_within_kind(PW, K_object);

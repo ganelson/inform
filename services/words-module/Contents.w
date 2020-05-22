@@ -36,3 +36,4 @@ Chapter 4: Parsing
 	Preform
 	Basic Nonterminals
 	Instrumentation
+	Preform Utilities

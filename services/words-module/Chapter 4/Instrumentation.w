@@ -110,8 +110,8 @@ void Instrumentation::log_nt(nonterminal *nt, int detailed) {
 	Instrumentation::log_extremes(&(nt->opt.nt_extremes));
 	LOG("\n");
 	LOG_INDENT;
-	for (production_list *pl = nt->first_production_list; pl;
-		pl = pl->next_production_list)
+	for (production_list *pl = nt->first_pl; pl;
+		pl = pl->next_pl)
 		Instrumentation::log_production_list(pl, detailed);
 	LOG_OUTDENT;
 }
@@ -158,7 +158,7 @@ void Instrumentation::log_extremes(length_extremes *E) {
 void Instrumentation::log_production_list(production_list *pl, int detailed) {
 	LOG("%J:\n", pl->definition_language);
 	LOG_INDENT;
-	for (production *pr = pl->first_production; pr; pr = pr->next_production) {
+	for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
 		Instrumentation::log_production(pr, detailed);
 		LOG("\n  ");
 		if (pr->ins.production_tries > 0)
@@ -178,8 +178,8 @@ void Instrumentation::log_production_list(production_list *pl, int detailed) {
 
 @ =
 void Instrumentation::log_production(production *pr, int detailed) {
-	if (pr->first_ptoken == NULL) LOG("<empty-production>");
-	for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
+	if (pr->first_pt == NULL) LOG("<empty-production>");
+	for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt) {
 		Instrumentation::log_ptoken(pt, detailed);
 		LOG(" ");
 	}

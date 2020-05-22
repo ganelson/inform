@@ -33,22 +33,22 @@ void Calculus::QuasinumericRelations::REL_create_initial_stock(void) {
 		BinaryPredicates::make_pair(QUASINUMERIC_KBP,
 			number_term, number_term,
 			I"greater-than", NULL, NULL, NULL, Calculus::Schemas::new("*1 > *2"),
-			Preform::Nonparsing::wording(<relation-names>, GT_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, GT_RELATION_NAME));
 	R_numerically_less_than =
 		BinaryPredicates::make_pair(QUASINUMERIC_KBP,
 			number_term, number_term,
 			I"less-than", NULL, NULL, NULL, Calculus::Schemas::new("*1 < *2"),
-			Preform::Nonparsing::wording(<relation-names>, LT_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, LT_RELATION_NAME));
 	R_numerically_greater_than_or_equal_to =
 		BinaryPredicates::make_pair(QUASINUMERIC_KBP,
 			number_term, number_term,
 			I"at-least", NULL, NULL, NULL, Calculus::Schemas::new("*1 >= *2"),
-			Preform::Nonparsing::wording(<relation-names>, GE_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, GE_RELATION_NAME));
 	R_numerically_less_than_or_equal_to =
 		BinaryPredicates::make_pair(QUASINUMERIC_KBP,
 			number_term, number_term,
 			I"at-most", NULL, NULL, NULL, Calculus::Schemas::new("*1 <= *2"),
-			Preform::Nonparsing::wording(<relation-names>, LE_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, LE_RELATION_NAME));
 	BinaryPredicates::set_index_details(R_numerically_greater_than,
 		"arithmetic value", "arithmetic value");
 	BinaryPredicates::set_index_details(R_numerically_less_than,

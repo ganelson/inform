@@ -20,12 +20,12 @@ void Relations::Universal::REL_create_initial_stock(void) {
 		BinaryPredicates::make_pair(UNIVERSAL_KBP,
 			BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
 			I"relates", NULL, NULL, NULL, NULL,
-			Preform::Nonparsing::wording(<relation-names>, UNIVERSAL_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, UNIVERSAL_RELATION_NAME));
 	R_meaning =
 		BinaryPredicates::make_pair(UNIVERSAL_KBP,
 			BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
 			I"means", NULL, NULL, NULL, NULL,
-			Preform::Nonparsing::wording(<relation-names>, MEANING_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, MEANING_RELATION_NAME));
 }
 
 @h Second stock.

@@ -119,9 +119,9 @@ void NaturalLanguages::preform_error(word_assemblage base_text, nonterminal *nt,
 	if (pr) {
 		Problems::quote_number(3, &(pr->match_number));
 		ptoken *pt;
-		for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
+		for (pt = pr->first_pt; pt; pt = pt->next_pt) {
 			Instrumentation::write_ptoken(TEMP, pt);
-			if (pt->next_ptoken) WRITE_TO(TEMP, " ");
+			if (pt->next_pt) WRITE_TO(TEMP, " ");
 		}
 		Problems::quote_stream(4, TEMP);
 		Problems::issue_problem_segment(

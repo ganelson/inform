@@ -228,7 +228,7 @@ could be referred to elsewhere in the text by any of three names:
 
 @<Register any names for this equation@> =
 	if (Wordings::nonempty(NO)) {
-		word_assemblage wa = Preform::Nonparsing::merge(<equation-names-construction>, 0,
+		word_assemblage wa = PreformUtilities::merge(<equation-names-construction>, 0,
 			WordAssemblages::from_wording(NO));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER,
@@ -251,7 +251,7 @@ could be referred to elsewhere in the text by any of three names:
 				REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 				EQUATION_MC, Rvalues::from_equation(eqn));
 			word_assemblage wa =
-				Preform::Nonparsing::merge(<equation-names-construction>, 0,
+				PreformUtilities::merge(<equation-names-construction>, 0,
 					WordAssemblages::from_wording(NA));
 			wording AW = WordAssemblages::to_wording(&wa);
 			Nouns::new_proper_noun(AW, NEUTER_GENDER,

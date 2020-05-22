@@ -75,3 +75,8 @@ in its run.
 
 =
 NATURAL_LANGUAGE_WORDS_TYPE *English_language = NULL; /* until created, early in run */
+
+NATURAL_LANGUAGE_WORDS_TYPE *Linguistics::default_nl(NATURAL_LANGUAGE_WORDS_TYPE *nl) {
+	if (nl) return nl;
+	return English_language;
+}

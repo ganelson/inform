@@ -66,7 +66,7 @@ table_column *Tables::Columns::new_table_column(wording W) {
 			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 			TABLE_COLUMN_MC, Rvalues::from_table_column(tc));
 		word_assemblage wa =
-			Preform::Nonparsing::merge(<table-column-name-construction>, 0,
+			PreformUtilities::merge(<table-column-name-construction>, 0,
 				WordAssemblages::from_wording(W));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER,

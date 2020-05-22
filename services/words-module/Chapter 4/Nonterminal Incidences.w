@@ -461,9 +461,9 @@ void NTI::simplify_pair(nti_constraint *ntic, nti_constraint *prev) {
 
 =
 void NTI::simplify_nt(nonterminal *nt) {
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
 		nti_constraint *prev_req = NULL;
-		for (production *pr = pl->first_production; pr; pr = pr->next_production) {
+		for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
 			NTI::simplify_pair(&(pr->opt.pr_ntic), prev_req);
 			prev_req = &(pr->opt.pr_ntic);
 		}
@@ -481,9 +481,9 @@ void NTI::calculate_constraint(nonterminal *nt) {
 }
 
 @<Mark up fixed wording in the grammar for NT with the NT's incidence bit@> =
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list)
-		for (production *pr = pl->first_production; pr; pr = pr->next_production)
-			for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken)
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl)
+		for (production *pr = pl->first_pr; pr; pr = pr->next_pr)
+			for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt)
 				if ((pt->ptoken_category == FIXED_WORD_PTC) && (pt->negated_ptoken == FALSE))
 					for (ptoken *alt = pt; alt; alt = alt->alternative_ptoken)
 						NTI::mark_vocabulary(alt->ve_pt, nt);
@@ -492,13 +492,13 @@ void NTI::calculate_constraint(nonterminal *nt) {
 
 @<Calculate requirement for NT@> =
 	nti_constraint nnt = nt->opt.nt_ntic;
-	int first_production = TRUE;
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
-		for (production *pr = pl->first_production; pr; pr = pr->next_production) {
+	int first_pr = TRUE;
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
+		for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
 			@<Calculate requirement for production@>;
-			if (first_production) nnt = pr->opt.pr_ntic;
+			if (first_pr) nnt = pr->opt.pr_ntic;
 			else NTI::disjoin_rreq(&nnt, &(pr->opt.pr_ntic));
-			first_production = FALSE;
+			first_pr = FALSE;
 		}
 	}
 	nt->opt.nt_ntic = nnt;
@@ -509,7 +509,7 @@ ptokens.
 @<Calculate requirement for production@> =
 	nti_constraint prt = NTI::unconstrained();
 	int first = TRUE;
-	for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
+	for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt) {
 		int empty = FALSE;
 		nti_constraint tok_ntic = NTI::unconstrained();
 		@<Calculate requirement for ptoken@>;

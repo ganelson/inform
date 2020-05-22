@@ -14,8 +14,9 @@ void ArticleInflection::preface_by_article(OUTPUT_STREAM, text_stream *initial_t
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (indef_trie == NULL)
 		indef_trie =
-			Preform::Nonparsing::define_trie(
-				<singular-noun-to-its-indefinite-article>, TRIE_START, NULL);
+			PreformUtilities::define_trie(
+				<singular-noun-to-its-indefinite-article>, TRIE_START,
+				Linguistics::default_nl(NULL));
 	wchar_t *result = Tries::search_avinue(indef_trie, initial_text);
 	if (result == NULL) result = L"a";
 	WRITE("%w %S", result, initial_text);

@@ -120,8 +120,8 @@ int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 			@<Parse an internal nonterminal declaration@>
 		else if ((Wordings::last_wn(W) >= wn+2) && (Lexer::word(wn+1) == COLONCOLONEQUALS_V))
 			@<Parse a regular nonterminal declaration@>
-		else
-			internal_error("syntax error in Preform declarations");
+		else PreformUtilities::production_error(NULL, NULL,
+			"syntax error in Preform declarations");
 	}
 	Optimiser::optimise_counts();
 	return declarations;
@@ -138,7 +138,8 @@ int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 	#endif
 	if (nl == NULL) {
 		LOG("Missing: %S\n", lname);
-		internal_error("tried to define for missing language");
+		PreformUtilities::production_error(NULL, NULL,
+			"tried to define for missing language");
 	}
 	DISCARD_TEXT(lname);
 	current_natural_language = nl;
@@ -148,8 +149,9 @@ int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 
 @<Parse an internal nonterminal declaration@> =
 	nonterminal *nt = Nonterminals::find(Lexer::word(wn));
-	if (nt->first_production_list)
-		internal_error("nonterminal internal in one definition and regular in another");
+	if (nt->first_pl)
+		PreformUtilities::production_error(nt, NULL,
+			"nonterminal internal in one definition and regular in another");
 	nt->marked_internal = TRUE;
 	wn++;
 	declarations++;
@@ -166,7 +168,8 @@ and could be rejected as such, but it does no harm.
 @<Parse a regular nonterminal declaration@> =
 	nonterminal *nt = Nonterminals::find(Lexer::word(wn));
 	if (nt->marked_internal)
-		internal_error("nonterminal internal in one definition and regular in another");
+		PreformUtilities::production_error(nt, NULL,
+			"nonterminal internal in one definition and regular in another");
 	production_list *pl = LoadPreform::find_list_for_language(nt, current_natural_language);
 	wn += 2; /* advance past the ID word and the |::=| word */
 	int pc = 0;
@@ -197,8 +200,8 @@ independent //production_list// object.
 =
 typedef struct production_list {
 	NATURAL_LANGUAGE_WORDS_TYPE *definition_language;
-	struct production_list *next_production_list; /* in the list of PLs for a NT */
-	struct production *first_production; /* start of linked list of productions */
+	struct production_list *next_pl; /* in the list of PLs for a NT */
+	struct production *first_pr; /* start of linked list of productions */
 	struct match_avinue *as_avinue; /* when compiled to a trie rather than for Preform */
 	CLASS_DEFINITION
 } production_list;
@@ -207,13 +210,13 @@ typedef struct production_list {
 production_list *LoadPreform::find_list_for_language(nonterminal *nt,
 	NATURAL_LANGUAGE_WORDS_TYPE *L) {
 	production_list *pl;
-	for (pl = nt->first_production_list; pl; pl = pl->next_production_list)
+	for (pl = nt->first_pl; pl; pl = pl->next_pl)
 		if (pl->definition_language == L)
 			break;
 	if (pl == NULL)	{
 		pl = CREATE(production_list);
 		pl->definition_language = L;
-		pl->first_production = NULL;
+		pl->first_pr = NULL;
 		pl->as_avinue = NULL;
 		@<Place the new production list within the nonterminal@>;
 	}
@@ -221,11 +224,11 @@ production_list *LoadPreform::find_list_for_language(nonterminal *nt,
 }
 
 @<Place the new production list within the nonterminal@> =
-	if (nt->first_production_list == NULL) nt->first_production_list = pl;
+	if (nt->first_pl == NULL) nt->first_pl = pl;
 	else {
-		production_list *p = nt->first_production_list;
-		while ((p) && (p->next_production_list)) p = p->next_production_list;
-		p->next_production_list = pl;
+		production_list *p = nt->first_pl;
+		while ((p) && (p->next_pl)) p = p->next_pl;
+		p->next_pl = pl;
 	}
 
 @ It is undeniably clumsy that the linked list of PLs, and also of productions
@@ -235,11 +238,11 @@ to minimise overhead.
 
 =
 void LoadPreform::add_production(production *pr, production_list *pl) {
-	if (pl->first_production == NULL) pl->first_production = pr;
+	if (pl->first_pr == NULL) pl->first_pr = pr;
 	else {
-		production *p = pl->first_production;
-		while ((p) && (p->next_production)) p = p->next_production;
-		p->next_production = pr;
+		production *p = pl->first_pr;
+		while ((p) && (p->next_pr)) p = p->next_pr;
+		p->next_pr = pr;
 	}
 }
 
@@ -264,7 +267,7 @@ only confuses the picture here.
 
 =
 typedef struct production {
-	struct ptoken *first_ptoken; /* the linked list of ptokens */
+	struct ptoken *first_pt; /* the linked list of ptokens */
 	int match_number; /* 0 for |/a/|, 1 for |/b/| and so on: see //About Preform// */
 
 	int no_ranges; /* actually one more, since range 0 is reserved */
@@ -272,7 +275,7 @@ typedef struct production {
 	struct production_optimisation_data opt; /* see //The Optimiser// */
 	struct production_instrumentation_data ins; /* see //Instrumentation// */
 
-	struct production *next_production; /* within its production list */
+	struct production *next_pr; /* within its production list */
 	CLASS_DEFINITION
 } production;
 
@@ -311,7 +314,7 @@ typedef struct ptoken {
 	struct ptoken_optimisation_data opt; /* see //The Optimiser// */
 	struct ptoken_instrumentation_data ins; /* see //Instrumentation// */
 
-	struct ptoken *next_ptoken; /* within its production list */
+	struct ptoken *next_pt; /* within its production list */
 	CLASS_DEFINITION
 } ptoken;
 
@@ -334,7 +337,7 @@ and so on.
 production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 	production *pr = CREATE(production);
 	pr->match_number = pc; /* "production count": 0 for first in defn, and so on */
-	pr->next_production = NULL;
+	pr->next_pr = NULL;
 
 	pr->no_ranges = 1; /* so that they count from 1; range 0 is unused */
 
@@ -343,7 +346,7 @@ production *LoadPreform::new_production(wording W, nonterminal *nt, int pc) {
 
 	ptoken *head = NULL, *tail = NULL;
 	@<Parse the row of production tokens into a linked list of ptokens@>;
-	pr->first_ptoken = head;
+	pr->first_pt = head;
 	return pr;
 }
 
@@ -408,8 +411,11 @@ than the next number counting upwards; see //About Preform//.
 		rnum = Vocabulary::get_literal_number_value(Lexer::word(i+2));
 		i += 2;
 	}
-	if ((rnum < 1) || (rnum >= MAX_RANGES_PER_PRODUCTION))
-		internal_error("range number out of range");
+	if ((rnum < 1) || (rnum >= MAX_RANGES_PER_PRODUCTION)) {
+		PreformUtilities::production_error(nt, pr,
+			"range number out of range");
+		rnum = 1;
+	}
 	bracing_begins_at->range_starts = rnum;
 	tail->range_ends = rnum;
 
@@ -427,8 +433,11 @@ than the next number counting upwards; see //About Preform//.
 				(pt->ptoken_category == MULTIPLE_WILDCARD_PTC) ||
 				(pt->ptoken_category == POSSIBLY_EMPTY_WILDCARD_PTC)) {
 				int rnum = pr->no_ranges++;
-				if ((rnum < 1) || (rnum >= MAX_RANGES_PER_PRODUCTION))
-					internal_error("range number out of range");
+				if ((rnum < 1) || (rnum >= MAX_RANGES_PER_PRODUCTION)) {
+					PreformUtilities::production_error(nt, pr,
+						"range number out of range");
+					rnum = 1;
+				}
 				pt->range_starts = rnum;
 				pt->range_ends = rnum;
 			}
@@ -447,20 +456,30 @@ rather than the next number counting upwards; see //About Preform//.
 		if ((i+2 <= Wordings::last_wn(W)) && (Lexer::word(i+1) == QUESTIONMARK_V) &&
 			(Vocabulary::test_flags(i+2, NUMBER_MC))) {
 			pt->result_index = Vocabulary::get_literal_number_value(Lexer::word(i+2));
-			if ((pt->result_index < 0) || (pt->result_index >= MAX_RESULTS_PER_PRODUCTION))
-				internal_error("result number out of range");
+			if ((pt->result_index < 0) ||
+				(pt->result_index >= MAX_RESULTS_PER_PRODUCTION)) {
+				PreformUtilities::production_error(nt, pr,
+					"result number out of range");
+				pt->result_index = 1;
+			}
 			i += 2;
 		} else {
 			pt->result_index = result_count;
 		}
 		result_count++;
-	} else internal_error("too many nonterminals for one production to hold");
+	} else {
+		PreformUtilities::production_error(nt, pr,
+			"too many nonterminals for one production to hold");
+	}
 
 @<Add the new ptoken to the production@> =
 	if (token_count++ < MAX_PTOKENS_PER_PRODUCTION) {
-		if (head == NULL) head = pt; else tail->next_ptoken = pt;
+		if (head == NULL) head = pt; else tail->next_pt = pt;
 		tail = pt;
-	} else internal_error("too many tokens on production for nonterminal");
+	} else {
+		PreformUtilities::production_error(nt, pr,
+			"too many tokens on production for nonterminal");
+	}
 
 @ Here we porse what is, to the Lexer, a single word (at word number |wn|),
 but which might actually be a row of possibilities divided by slashes:
@@ -543,7 +562,7 @@ ptoken *LoadPreform::new_ptoken(vocabulary_entry *ve, int unescaped, nonterminal
 }
 
 @<Begin with a blank ptoken@> =
-	pt->next_ptoken = NULL;
+	pt->next_pt = NULL;
 
 	pt->ptoken_category = FIXED_WORD_PTC;
 	pt->balanced_wildcard = FALSE;

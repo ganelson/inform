@@ -57,7 +57,7 @@ void Properties::SameRelations::register_same_property_as(binary_predicate *root
 	verb_meaning vm = VerbMeanings::new(root, NULL);
 	preposition_identity *prep =
 		Prepositions::make(
-			Preform::Nonparsing::merge(<same-property-as-construction>, 0,
+			PreformUtilities::merge(<same-property-as-construction>, 0,
 				WordAssemblages::from_wording(W)), FALSE);
 	Verbs::add_form(copular_verb, prep, NULL, vm, SVO_FS_BIT);
 }

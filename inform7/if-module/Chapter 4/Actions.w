@@ -253,7 +253,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	an->out_of_world = FALSE;
 	an->an_specification_text_word = -1;
 
-	word_assemblage wa = Preform::Nonparsing::merge(<action-name-construction>, 0,
+	word_assemblage wa = PreformUtilities::merge(<action-name-construction>, 0,
 		WordAssemblages::from_wording(W));
 	wording AW = WordAssemblages::to_wording(&wa);
 	an->name = Nouns::new_proper_noun(AW, NEUTER_GENDER,

@@ -413,7 +413,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	vocabulary_entry *suppression = word_to_suppress_in_phrases;
 	if (<property-of-shape>(W)) {
 		if (property_word_to_suppress == NULL)
-			property_word_to_suppress = Preform::Nonparsing::word(<property-of-shape>, 0);
+			property_word_to_suppress = PreformUtilities::word(<property-of-shape>, 0);
 		word_to_suppress_in_phrases = property_word_to_suppress;
 	}
 	parse_node *p = ExParser::parse_excerpt(VALUE_PHRASE_MC, W);

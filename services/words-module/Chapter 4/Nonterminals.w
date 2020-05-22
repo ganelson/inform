@@ -113,7 +113,7 @@ typedef struct nonterminal {
 	int voracious; /* if true, scans whole rest of word range */
 
 	/* For regular nonterminals */
-	struct production_list *first_production_list; /* if not internal, this defines it */
+	struct production_list *first_pl; /* if not internal, this defines it */
 	int (*compositor_fn)(int *r, void **rp, int *i_s, void **i_ps, wording *i_W, wording W);
 	int multiplicitous; /* if true, matches are alternative syntax tree readings */
 	int number_words_by_production; /* this parses names for numbers, like "huit" or "zwei" */
@@ -183,7 +183,7 @@ nonterminal *Nonterminals::find(vocabulary_entry *name_word) {
 		nt->internal_definition = NULL;
 		nt->voracious = FALSE;
 
-		nt->first_production_list = NULL;
+		nt->first_pl = NULL;
 		nt->compositor_fn = NULL;
 		nt->multiplicitous = FALSE;
 		nt->number_words_by_production = FALSE; /* i.e., don't */

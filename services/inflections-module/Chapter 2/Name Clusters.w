@@ -134,10 +134,10 @@ through one or two tries.
 	word_assemblage wa = WordAssemblages::from_wording(W);
 	if (step1)
 		wa = Inflections::apply_trie_to_wa(wa,
-			Preform::Nonparsing::define_trie(step1, TRIE_END, nl));
+			PreformUtilities::define_trie(step1, TRIE_END, Linguistics::default_nl(nl)));
 	if (step2)
 		wa = Inflections::apply_trie_to_wa(wa,
-			Preform::Nonparsing::define_trie(step2, TRIE_END, nl));
+			PreformUtilities::define_trie(step2, TRIE_END, Linguistics::default_nl(nl)));
 	FW = WordAssemblages::to_wording(&wa);
 
 @h Plural fixing.

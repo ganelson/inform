@@ -20,8 +20,8 @@ void Calculus::Equality::REL_create_initial_stock(void) {
 	R_equality = BinaryPredicates::make_equality();
 	BinaryPredicates::set_index_details(R_equality, "value", "value");
 
-	word_assemblage wa = Preform::Nonparsing::merge(<relation-name-formal>, 0,
-			Preform::Nonparsing::wording(<relation-names>, EQUALITY_RELATION_NAME));
+	word_assemblage wa = PreformUtilities::merge(<relation-name-formal>, 0,
+			PreformUtilities::wording(<relation-names>, EQUALITY_RELATION_NAME));
 	wording AW = WordAssemblages::to_wording(&wa);
 	Nouns::new_proper_noun(AW, NEUTER_GENDER,
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
@@ -34,7 +34,7 @@ void Calculus::Equality::REL_create_initial_stock(void) {
 			BinaryPredicates::new_term(NULL),
 			I"has", I"is-had-by",
 			NULL, NULL, NULL,
-			Preform::Nonparsing::wording(<relation-names>, POSSESSION_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, POSSESSION_RELATION_NAME));
 	#endif
 }
 

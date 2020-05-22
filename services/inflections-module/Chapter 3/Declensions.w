@@ -39,28 +39,28 @@ declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl
 	if (nl == NULL) nl = English_language;
 	declension D;
 	D.within_language = nl;
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
 		if ((pl->definition_language == NULL) || (pl->definition_language == nl)) {
-			for (production *pr = pl->first_production; pr; pr = pr->next_production) {
-				if ((pr->first_ptoken == NULL) ||
-					(pr->first_ptoken->ptoken_category != FIXED_WORD_PTC) ||
-					(pr->first_ptoken->next_ptoken == NULL) ||
-					(pr->first_ptoken->next_ptoken->ptoken_category != NONTERMINAL_PTC))
+			for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
+				if ((pr->first_pt == NULL) ||
+					(pr->first_pt->ptoken_category != FIXED_WORD_PTC) ||
+					(pr->first_pt->next_pt == NULL) ||
+					(pr->first_pt->next_pt->ptoken_category != NONTERMINAL_PTC))
 					internal_error("line in <noun-declension> malformed");
-				wchar_t *gender_letter = Vocabulary::get_exemplar(pr->first_ptoken->ve_pt, FALSE);
+				wchar_t *gender_letter = Vocabulary::get_exemplar(pr->first_pt->ve_pt, FALSE);
 				if ((gender_letter[0] == '*') ||
 					((gender_letter[0] == 'm') && (gen == MASCULINE_GENDER)) ||
 					((gender_letter[0] == 'f') && (gen == FEMININE_GENDER)) ||
 					((gender_letter[0] == 'n') && (gen == NEUTER_GENDER))) {
 					int found = FALSE;
-					nonterminal *gnt = pr->first_ptoken->next_ptoken->nt_pt;
-					if (pr->first_ptoken->next_ptoken->next_ptoken == NULL) {
+					nonterminal *gnt = pr->first_pt->next_pt->nt_pt;
+					if (pr->first_pt->next_pt->next_pt == NULL) {
 						D = Declensions::decline_from_irregulars(W, nl, gnt, num, &found);
 					} else {
-						if ((pr->first_ptoken->next_ptoken->next_ptoken->ptoken_category != NONTERMINAL_PTC) ||
-							(pr->first_ptoken->next_ptoken->next_ptoken->next_ptoken != NULL))
+						if ((pr->first_pt->next_pt->next_pt->ptoken_category != NONTERMINAL_PTC) ||
+							(pr->first_pt->next_pt->next_pt->next_pt != NULL))
 							internal_error("this line must end with two nonterminals");
-						nonterminal *tnt = pr->first_ptoken->next_ptoken->next_ptoken->nt_pt;
+						nonterminal *tnt = pr->first_pt->next_pt->next_pt->nt_pt;
 						D = Declensions::decline_from_groups(W, nl, gnt, tnt, num, &found);
 					}
 					if (found) return D;
@@ -79,14 +79,14 @@ declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORD
 	declension D;
 	D.within_language = nl;
 	if (Wordings::length(W) == 1)
-		for (production_list *pl = gnt->first_production_list; pl; pl = pl->next_production_list)
+		for (production_list *pl = gnt->first_pl; pl; pl = pl->next_pl)
 			if ((pl->definition_language == NULL) || (pl->definition_language == nl))
-				for (production *pr = pl->first_production; pr; pr = pr->next_production) {
-					vocabulary_entry *stem = pr->first_ptoken->ve_pt;
+				for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
+					vocabulary_entry *stem = pr->first_pt->ve_pt;
 					if (stem == Lexer::word(Wordings::first_wn(W))) {
 						*found = TRUE;
 						int c = 0, nc = Declensions::no_cases(nl);
-						for (ptoken *pt = pr->first_ptoken->next_ptoken; pt; pt = pt->next_ptoken) {
+						for (ptoken *pt = pr->first_pt->next_pt; pt; pt = pt->next_pt) {
 							if (pt->ptoken_category != FIXED_WORD_PTC)
 								internal_error("nonterminals are not allowed in irregular declensions");
 							if (((num == 1) && (c < nc)) || ((num == 2) && (c >= nc))) {
@@ -115,7 +115,7 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 	D.within_language = nl;
 	TEMPORARY_TEXT(from);
 	WRITE_TO(from, "%+W", W);
-	match_avinue *group_trie = Preform::Nonparsing::define_trie(gnt, TRIE_END, nl);
+	match_avinue *group_trie = PreformUtilities::define_trie(gnt, TRIE_END, Linguistics::default_nl(nl));
 	wchar_t *result = Tries::search_avinue(group_trie, from);
 	DISCARD_TEXT(from);
 	if (result == NULL) {
@@ -125,15 +125,15 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 		int group = result[0] - '0';
 		if ((group <= 0) || (group > 9))
 			internal_error("noun declension nonterminal result not a group number");
-		for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+		for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
 			if ((pl->definition_language == NULL) || (pl->definition_language == nl)) {
-				for (production *pr = pl->first_production; pr; pr = pr->next_production) {
-					if ((pr->first_ptoken == NULL) ||
-						(pr->first_ptoken->ptoken_category != NONTERMINAL_PTC) ||
-						(pr->first_ptoken->next_ptoken != NULL))
+				for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
+					if ((pr->first_pt == NULL) ||
+						(pr->first_pt->ptoken_category != NONTERMINAL_PTC) ||
+						(pr->first_pt->next_pt != NULL))
 						internal_error("noun declension nonterminal malformed");
 					if (--group == 0)
-						return Declensions::decline_from(W, nl, pr->first_ptoken->nt_pt, num);
+						return Declensions::decline_from(W, nl, pr->first_pt->nt_pt, num);
 				}
 			}
 		}
@@ -146,19 +146,19 @@ declension Declensions::decline_from(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
 	int c = 0, nc = Declensions::no_cases(nl);
 	declension D;
 	D.within_language = nl;
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
 		if ((pl->definition_language == NULL) || (pl->definition_language == nl)) {
-			for (production *pr = pl->first_production; pr; pr = pr->next_production) {
-				if ((pr->first_ptoken == NULL) ||
-					(pr->first_ptoken->ptoken_category != FIXED_WORD_PTC) ||
-					(pr->first_ptoken->next_ptoken != NULL))
+			for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
+				if ((pr->first_pt == NULL) ||
+					(pr->first_pt->ptoken_category != FIXED_WORD_PTC) ||
+					(pr->first_pt->next_pt != NULL))
 					internal_error("<noun-declension> too complex");
 				if (((c < nc) && (num == 1)) || ((c >= nc) && (num == 2))) {
 					TEMPORARY_TEXT(stem);
 					TEMPORARY_TEXT(result);
 					WRITE_TO(stem, "%+W", W);
 					Inflections::follow_suffix_instruction(result, stem,
-						Vocabulary::get_exemplar(pr->first_ptoken->ve_pt, TRUE));
+						Vocabulary::get_exemplar(pr->first_pt->ve_pt, TRUE));
 					D.name_cased[c%nc] = Feeds::feed_text(result);
 					DISCARD_TEXT(stem);
 					DISCARD_TEXT(result);
@@ -181,10 +181,10 @@ wording Declensions::in_case(declension *D, int c) {
 
 int Declensions::no_cases(NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	nonterminal *nt = <grammatical-case-names>;
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
 		if ((pl->definition_language == NULL) || (pl->definition_language == nl)) {
 			int c = 0;
-			for (production *pr = pl->first_production; pr; pr = pr->next_production) c++;
+			for (production *pr = pl->first_pr; pr; pr = pr->next_pr) c++;
 			if (c >= MAX_GRAMMATICAL_CASES)
 				internal_error("<grammatical-case-names> lists too many cases");
 			return c;
@@ -197,16 +197,16 @@ int Declensions::no_cases(NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 void Declensions::writer(OUTPUT_STREAM, declension *D, declension *AD) {
 	nonterminal *nt = <grammatical-case-names>;
 	int nc = Declensions::no_cases(D->within_language);
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
 		if ((pl->definition_language == NULL) || (pl->definition_language == D->within_language)) {
 			int c = 0;
-			for (production *pr = pl->first_production; pr; pr = pr->next_production) {
-				if ((pr->first_ptoken == NULL) ||
-					(pr->first_ptoken->ptoken_category != FIXED_WORD_PTC) ||
-					(pr->first_ptoken->next_ptoken != NULL))
+			for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
+				if ((pr->first_pt == NULL) ||
+					(pr->first_pt->ptoken_category != FIXED_WORD_PTC) ||
+					(pr->first_pt->next_pt != NULL))
 					internal_error("<grammatical-case-names> too complex");
 				if (c > 0) WRITE(", ");
-				WRITE("%w: %W %W", Vocabulary::get_exemplar(pr->first_ptoken->ve_pt, TRUE),
+				WRITE("%w: %W %W", Vocabulary::get_exemplar(pr->first_pt->ve_pt, TRUE),
 					AD->name_cased[c], D->name_cased[c]);
 				c++;
 				if (c >= nc) break;

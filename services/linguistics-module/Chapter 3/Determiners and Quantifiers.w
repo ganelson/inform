@@ -347,7 +347,7 @@ options open.
 determiner *Quantifiers::det_new(int not, int pr, int num, quantifier *quant, char *text) {
 	word_assemblage wa;
 	if (pr < 0) wa = WordAssemblages::lit_0();
-	else wa = Preform::Nonparsing::wording(<determiner-names>, pr);
+	else wa = PreformUtilities::wording(<determiner-names>, pr);
 	determiner *det = CREATE(determiner);
 	det->text_of_det = wa;
 	det->takes_number = num;

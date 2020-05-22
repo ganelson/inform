@@ -92,7 +92,7 @@ present.
 
 @ =
 word_assemblage Plugins::Manage::wording(int N) {
-	return Preform::Nonparsing::wording(<plugin-name>, N);
+	return PreformUtilities::wording(<plugin-name>, N);
 }
 
 @h Plugins.

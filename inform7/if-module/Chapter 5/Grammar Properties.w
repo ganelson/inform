@@ -197,7 +197,7 @@ for the kinds we inherit from.
 
 		LOOP_THROUGH_WORDING(j, W) {
 			vocabulary_entry *ve = Lexer::word(j);
-			ve = Preform::Nonparsing::replace_word(ve,
+			ve = PreformUtilities::find_corresponding_word(ve,
 				<possessive-second-person>,
 				<possessive-first-person>);
 			wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);

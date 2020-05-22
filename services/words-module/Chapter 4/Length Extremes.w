@@ -90,8 +90,8 @@ minimum match lengths of its tokens.
 length_extremes LengthExtremes::calculate_for_nt(nonterminal *nt) {
 	length_extremes E = LengthExtremes::no_words_at_all();
 	int first = TRUE;
-	for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list)
-		for (production *pr = pl->first_production; pr; pr = pr->next_production) {
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl)
+		for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
 			pr->opt.pr_extremes = LengthExtremes::calculate_for_pr(pr);
 			if (first) { E = pr->opt.pr_extremes; first = FALSE; }
 			else { E = LengthExtremes::union(E, pr->opt.pr_extremes); }
@@ -101,7 +101,7 @@ length_extremes LengthExtremes::calculate_for_nt(nonterminal *nt) {
 
 length_extremes LengthExtremes::calculate_for_pr(production *pr) {
 	length_extremes E = LengthExtremes::no_words_at_all();
-	for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken)
+	for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt)
 		E = LengthExtremes::concatenate(E, LengthExtremes::calculate_for_pt(pt));
 	return E;
 }

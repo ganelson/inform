@@ -208,7 +208,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 			ACTIVITY_MC, Rvalues::from_activity(av));
 		word_assemblage wa =
-			Preform::Nonparsing::merge(<activity-name-construction>, 0,
+			PreformUtilities::merge(<activity-name-construction>, 0,
 				WordAssemblages::from_wording(av->name));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER,

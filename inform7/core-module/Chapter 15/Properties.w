@@ -267,7 +267,7 @@ name in both forms. The following grammar is used to construct this prefix.
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		PROPERTY_MC, Rvalues::from_property(prn));
 	word_assemblage wa =
-		Preform::Nonparsing::merge(<property-name-construction>, 0,
+		PreformUtilities::merge(<property-name-construction>, 0,
 			WordAssemblages::from_wording(W));
 	wording AW = WordAssemblages::to_wording(&wa);
 	Nouns::new_proper_noun(AW, NEUTER_GENDER,

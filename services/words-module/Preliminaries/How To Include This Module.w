@@ -53,6 +53,10 @@ following alphabetical list has references to fuller explanations:
 have the opportunity to flag certain Preform nonterminals in ways which will
 help //The Optimiser//.
 
+(*) |PREFORM_ERROR_WORDS_CALLBACK| allows the parent to issue errors about
+Preform definitions in its own way; they will otherwise by default be standard
+command-line error message written to |STDERR|.
+
 (*) |PROBLEM_WORDS_CALLBACK| is called when a lexical error is found, and can
 prevent this from being issued to the terminal as an error message: see
 //Lexer::lexer_problem_handler//.

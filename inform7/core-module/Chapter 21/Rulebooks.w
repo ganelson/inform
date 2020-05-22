@@ -253,13 +253,13 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		RULEBOOK_MC, Rvalues::from_rulebook(rb));
 	word_assemblage wa =
-		Preform::Nonparsing::merge(<rulebook-name-construction>, 0,
+		PreformUtilities::merge(<rulebook-name-construction>, 0,
 			WordAssemblages::from_wording(rb->primary_name));
 	wording AW = WordAssemblages::to_wording(&wa);
 	Nouns::new_proper_noun(AW, NEUTER_GENDER,
 		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
 		RULEBOOK_MC, Rvalues::from_rulebook(rb));
-	wa = Preform::Nonparsing::merge(<rulebook-name-construction>, 1,
+	wa = PreformUtilities::merge(<rulebook-name-construction>, 1,
 			WordAssemblages::from_wording(rb->primary_name));
 	AW = WordAssemblages::to_wording(&wa);
 	Nouns::new_proper_noun(AW, NEUTER_GENDER,

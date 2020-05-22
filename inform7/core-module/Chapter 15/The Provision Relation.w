@@ -25,7 +25,7 @@ void Properties::ProvisionRelation::REL_create_initial_stock(void) {
 		BinaryPredicates::make_pair(PROVISION_KBP,
 			BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
 			I"provides", NULL, NULL, NULL, NULL,
-			Preform::Nonparsing::wording(<relation-names>, PROVISION_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, PROVISION_RELATION_NAME));
 	BinaryPredicates::set_index_details(R_provision, "value", "property");
 }
 

@@ -97,6 +97,6 @@ has a plural, and modifies it to the plural form.
 int Pluralisation::regular(OUTPUT_STREAM, text_stream *from, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (nl == NULL) nl = English_language;
 	match_avinue *plural_trie =
-		Preform::Nonparsing::define_trie(<singular-noun-to-its-plural>, TRIE_END, nl);
+		PreformUtilities::define_trie(<singular-noun-to-its-plural>, TRIE_END, Linguistics::default_nl(nl));
 	return Inflections::suffix_inflection(OUT, plural_trie, from);
 }

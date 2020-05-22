@@ -100,11 +100,11 @@ an internal NT, or try all possible productions for a regular one.
 @<Try to match to a regular NT@> =
 	if ((unoptimised) || (NTI::nt_bitmap_violates(W, &(nt->opt.nt_ntic)) == FALSE)) {
 		void *acc_result = NULL;
-		for (production_list *pl = nt->first_production_list; pl; pl = pl->next_production_list) {
+		for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
 			NATURAL_LANGUAGE_WORDS_TYPE *nl = pl->definition_language;
 			if ((primary_Preform_language == NULL) || (primary_Preform_language == nl)) {
 				int ditto_result = FALSE;
-				for (production *pr = pl->first_production; pr; pr = pr->next_production)
+				for (production *pr = pl->first_pr; pr; pr = pr->next_pr)
 					@<Try to match to a production@>;
 			}
 		}
@@ -290,7 +290,7 @@ are in those positions.
 
 @<Try a fast scan through the production@> =
 	int wn = -1, tc = 0;
-	for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken, tc++) {
+	for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt, tc++) {
 		if (pt->opt.ptoken_is_fast) {
 			int p = pt->opt.ptoken_position;
 			if (p > 0) wn = Wordings::first_wn(W)+p-1;
@@ -388,13 +388,13 @@ ptokens.
 	int wn = Wordings::first_wn(W), tc;
 	ptoken *pt, *nextpt;
 	if (backtrack_token) {
-		pt = backtrack_token; nextpt = backtrack_token->next_ptoken;
+		pt = backtrack_token; nextpt = backtrack_token->next_pt;
 		tc = backtrack_tc; wn = backtrack_to;
 		goto Reenter;
 	}
-	for (pt = pr->first_ptoken, nextpt = (pt)?(pt->next_ptoken):NULL, tc = 0;
+	for (pt = pr->first_pt, nextpt = (pt)?(pt->next_pt):NULL, tc = 0;
 		pt;
-		pt = nextpt, nextpt = (pt)?(pt->next_ptoken):NULL, tc++) {
+		pt = nextpt, nextpt = (pt)?(pt->next_pt):NULL, tc++) {
 		Reenter: ;
 		int known_pos = checked[tc];
 		if (known_pos >= 0) {
@@ -559,7 +559,7 @@ int Preform::next_strut_posn_after(wording W, ptoken *start, int len, int from) 
 	while (from <= last_legal_position) {
 		ptoken *pt;
 		int pos = from;
-		for (pt = start; pt; pt = pt->next_ptoken) {
+		for (pt = start; pt; pt = pt->next_pt) {
 			if (pt->ptoken_category == FIXED_WORD_PTC) {
 				if (Preform::parse_fixed_word_ptoken(pos, pt)) pos++;
 				else break;

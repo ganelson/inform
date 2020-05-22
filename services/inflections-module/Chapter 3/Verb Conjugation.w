@@ -135,12 +135,12 @@ rest. (The selector is always just a single token.)
 
 @<Work through the supplied tabulation, filling in slots as directed@> =
 	production_list *pl;
-	for (pl = tabulation->first_production_list; pl; pl = pl->next_production_list) {
+	for (pl = tabulation->first_pl; pl; pl = pl->next_pl) {
 		if (nl == pl->definition_language) {
 			production *pr;
-			for (pr = pl->first_production; pr; pr = pr->next_production) {
-				ptoken *selector = pr->first_ptoken;
-				ptoken *line = (selector)?(selector->next_ptoken):NULL;
+			for (pr = pl->first_pr; pr; pr = pr->next_pr) {
+				ptoken *selector = pr->first_pt;
+				ptoken *line = (selector)?(selector->next_pt):NULL;
 				if ((selector) && (selector->ptoken_category == FIXED_WORD_PTC) && (line)) {
 					@<Apply the given tabulation line to the slots selected@>;
 				} else Conjugation::error(base_text, tabulation, pr,
@@ -259,10 +259,10 @@ nonterminal *Conjugation::follow_instructions(word_assemblage *verb_forms, int *
 	WordAssemblages::as_array(&(verb_forms[BASE_FORM_TYPE]), &base_text_words, &base_text_word_count);
 
 	production_list *pl;
-	for (pl = instructions_nt->first_production_list; pl; pl = pl->next_production_list) {
+	for (pl = instructions_nt->first_pl; pl; pl = pl->next_pl) {
 		if (nl == pl->definition_language) {
 			production *pr;
-			for (pr = pl->first_production; pr; pr = pr->next_production) {
+			for (pr = pl->first_pr; pr; pr = pr->next_pr) {
 				@<Try to match the base text against this production@>;
 			}
 		}
@@ -287,7 +287,7 @@ infinitive" form is set to the part matched by |...|: for example,
 @<Try to match the base text against this production@> =
 	ptoken *pt, *last = NULL;
 	int len = 0, malformed = FALSE;
-	for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) { last = pt; len++; }
+	for (pt = pr->first_pt; pt; pt = pt->next_pt) { last = pt; len++; }
 	if ((len >= 1) && (last->ptoken_category == NONTERMINAL_PTC)) {
 		if (conjugation_nt == NULL) { /* i.e., if we have not yet chosen a conjugation */
 			int failed_to_match = FALSE, wildcard_from = -1;
@@ -307,7 +307,7 @@ infinitive" form is set to the part matched by |...|: for example,
 
 @<Try to match the base text against the pattern part of the production@> =
 	int word_count = 0;
-	for (pt = pr->first_ptoken; ((pt) && (pt != last)); pt = pt->next_ptoken) {
+	for (pt = pr->first_pt; ((pt) && (pt != last)); pt = pt->next_pt) {
 		if (pt->ptoken_category == FIXED_WORD_PTC) {
 			if ((word_count < base_text_word_count) &&
 				(Conjugation::compare_ve_with_tails(base_text_words[word_count], pt->ve_pt)))
@@ -330,22 +330,22 @@ tokens.
 
 @<Process the conjugation and determine the tabulation@> =
 	production_list *pl;
-	for (pl = conjugation_nt->first_production_list; pl; pl = pl->next_production_list) {
+	for (pl = conjugation_nt->first_pl; pl; pl = pl->next_pl) {
 		if (nl == pl->definition_language) {
 			production *pr;
-			for (pr = pl->first_production; pr; pr = pr->next_production) {
+			for (pr = pl->first_pr; pr; pr = pr->next_pr) {
 				ptoken *pt;
 				int len = 0, malformed = FALSE;
-				for (pt = pr->first_ptoken; pt; pt = pt->next_ptoken) len++;
+				for (pt = pr->first_pt; pt; pt = pt->next_pt) len++;
 				switch (len) {
 					case 1:
-						if (pr->first_ptoken->ptoken_category == NONTERMINAL_PTC) {
-							if (pr->first_ptoken->nt_pt == <auxiliary-verb-only>)
+						if (pr->first_pt->ptoken_category == NONTERMINAL_PTC) {
+							if (pr->first_pt->nt_pt == <auxiliary-verb-only>)
 								*avo_flag = TRUE;
-							else if (pr->first_ptoken->nt_pt == <not-instance-of-verb-at-run-time>)
+							else if (pr->first_pt->nt_pt == <not-instance-of-verb-at-run-time>)
 								*niv_flag = TRUE;
 							else
-								tabulation_nt = pr->first_ptoken->nt_pt;
+								tabulation_nt = pr->first_pt->nt_pt;
 						} else malformed = TRUE;
 						break;
 					case 2:
@@ -369,8 +369,8 @@ example:
 |3 <en-trie-past-participle>| run this trie on the base text and take the result
 
 @<Set a verb form from the conjugation line@> =
-	ptoken *number_token = pr->first_ptoken;
-	ptoken *content_token = number_token->next_ptoken;
+	ptoken *number_token = pr->first_pt;
+	ptoken *content_token = number_token->next_pt;
 	int n = Conjugation::ptoken_to_verb_form_number(number_token);
 	if (n >= 0) {
 		if (n > *highest_form_written) { *highest_form_written = n; }
@@ -378,7 +378,7 @@ example:
 			verb_forms[n] =
 				Inflections::apply_trie_to_wa(
 					verb_forms[BASE_FORM_TYPE],
-					Preform::Nonparsing::define_trie(content_token->nt_pt, TRIE_END, nl));
+					PreformUtilities::define_trie(content_token->nt_pt, TRIE_END, Linguistics::default_nl(nl)));
 		else if (content_token->ptoken_category == FIXED_WORD_PTC)
 			verb_forms[n] =
 				Conjugation::expand_with_endings(content_token->ve_pt, verb_forms);
@@ -415,7 +415,7 @@ word_assemblage Conjugation::merge(ptoken *row,
 	word_assemblage wa = WordAssemblages::lit_0();
 	int verb_form_to_lift = -1;
 	ptoken *chunk;
-	for (chunk = row; chunk; chunk = chunk->next_ptoken) {
+	for (chunk = row; chunk; chunk = chunk->next_pt) {
 		@<A plus-plus-digit indicates auxiliary modal usage@>;
 		@<A form number followed by a bracketed verb lifts the relevant form@>;
 		@<A bracketed verb becomes a lift@>;
@@ -446,13 +446,13 @@ make use of the same fancy features we're allowing here.
 @<A nonterminal is a table of persons@> =
 	if (chunk->ptoken_category == NONTERMINAL_PTC) {
 		production_list *pl;
-		for (pl = chunk->nt_pt->first_production_list; pl; pl = pl->next_production_list) {
+		for (pl = chunk->nt_pt->first_pl; pl; pl = pl->next_pl) {
 			int N = 0;
 			production *pr;
-			for (pr = pl->first_production; pr; pr = pr->next_production) {
+			for (pr = pl->first_pr; pr; pr = pr->next_pr) {
 				if (N == person)
 					wa = WordAssemblages::join(wa,
-						Conjugation::merge(pr->first_ptoken,
+						Conjugation::merge(pr->first_pt,
 							sense, tense, person, num_ingredients, ingredients, nl, NULL));
 				N++;
 			}
@@ -471,7 +471,7 @@ on the next iteration.
 
 @<A form number followed by a bracketed verb lifts the relevant form@> =
 	int X = Conjugation::ptoken_to_verb_form_number(chunk);
-	if ((X >= 0) && (Conjugation::ptoken_as_bracket(chunk->next_ptoken))) {
+	if ((X >= 0) && (Conjugation::ptoken_as_bracket(chunk->next_pt))) {
 		verb_form_to_lift = X;
 		continue;
 	}
@@ -492,12 +492,12 @@ of the numbered verb forms if we want it to.
 
 @<A bracketed verb becomes a lift@> =
 	if (Conjugation::ptoken_as_bracket(chunk) == 1) {
-		chunk = chunk->next_ptoken; /* move past open bracket */
+		chunk = chunk->next_pt; /* move past open bracket */
 
 		/* if there is a tense/sense indicator, use it, and move forward */
 		int S = -1;
 		int T = Conjugation::ptoken_to_tense_indicator(chunk, &S) - 1;
-		if (T >= 0) chunk = chunk->next_ptoken; else T = tense;
+		if (T >= 0) chunk = chunk->next_pt; else T = tense;
 		if (S == -1) S = sense;
 
 		/* extract the text of the infinitive */
@@ -505,7 +505,7 @@ of the numbered verb forms if we want it to.
 		while ((chunk) && (Conjugation::ptoken_as_bracket(chunk) != -1)) {
 			verb_lifted = WordAssemblages::join(verb_lifted,
 				Conjugation::expand_with_endings(chunk->ve_pt, ingredients));
-			chunk = chunk->next_ptoken;
+			chunk = chunk->next_pt;
 		}
 
 		verb_conjugation *aux = Conjugation::find_by_infinitive(verb_lifted);
@@ -712,64 +712,12 @@ int Conjugation::compare_ve_with_tails(vocabulary_entry *ve, vocabulary_entry *p
 }
 
 @h Errors.
-People are going to get their conjugations wrong; it's a very hard notation
-to learn. No end users of Inform will ever write them at all -- this is a
-low-level feature for translators only -- but translators need all the help
-they can get, so we'll try to provide good problem messages.
-
-=
-void Conjugation::trie_definition_error(nonterminal *nt, production *pr, char *message) {
-	Conjugation::basic_problem_handler(WordAssemblages::lit_0(), nt, pr, message);
-}
-
-@ And similarly:
 
 =
 void Conjugation::error(word_assemblage base_text, nonterminal *nt,
 	production *pr, char *message) {
-	Conjugation::basic_problem_handler(base_text, nt, pr, message);
+	PreformUtilities::error(base_text, nt, pr, message);
 	exit(1);
-}
-
-@ Some tools using this module will want to push simple error messages out to
-the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |PROBLEM_SYNTAX_CALLBACK|
-to some routine of her own, gazumping this one.
-
-=
-void Conjugation::basic_problem_handler(word_assemblage base_text, nonterminal *nt,
-	production *pr, char *message) {
-	#ifdef INFLECTIONS_ERROR_HANDLER
-	INFLECTIONS_ERROR_HANDLER(base_text, nt, pr, message);
-	#endif
-	#ifndef INFLECTIONS_ERROR_HANDLER
-	if (pr) {
-		LOG("The production at fault is:\n");
-		Instrumentation::log_production(pr, FALSE); LOG("\n");
-	}
-	TEMPORARY_TEXT(ERM);
-	if (nt == NULL)
-		WRITE_TO(ERM, "(no nonterminal)");
-	else
-		WRITE_TO(ERM, "nonterminal %w", Vocabulary::get_exemplar(nt->nonterminal_id, FALSE));
-	WRITE_TO(ERM, ": ");
-
-	if (WordAssemblages::nonempty(base_text))
-		WRITE_TO(ERM, "can't conjugate verb '%A': ", &base_text);
-
-	if (pr) {
-		TEMPORARY_TEXT(TEMP);
-		for (ptoken *pt = pr->first_ptoken; pt; pt = pt->next_ptoken) {
-			Instrumentation::write_ptoken(TEMP, pt);
-			if (pt->next_ptoken) WRITE_TO(TEMP, " ");
-		}
-		WRITE_TO(ERM, "line %d ('%S'): ", pr->match_number, TEMP);
-		DISCARD_TEXT(TEMP);
-	}
-	WRITE_TO(ERM, "%s", message);
-	Errors::with_text("Preform error: %S", ERM);
-	DISCARD_TEXT(ERM);
-	#endif
 }
 
 @h Testing.

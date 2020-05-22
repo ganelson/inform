@@ -27,7 +27,7 @@ void PL::MapDirections::create_relations(void) {
 			BinaryPredicates::new_term(infs_room),
 			I"adjacent-to", I"adjacent-from",
 			NULL, NULL, Calculus::Schemas::new("TestAdjacency(*1,*2)"),
-			Preform::Nonparsing::wording(<relation-names>, ADJACENCY_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, ADJACENCY_RELATION_NAME));
 
 }
 
@@ -126,22 +126,22 @@ this to other languages.)
 	bp_term_details room_term = BinaryPredicates::new_term(NULL);
 	bp = BinaryPredicates::make_pair(MAP_CONNECTING_KBP,
 		room_term, room_term, relname, NULL, NULL, NULL, NULL,
-		Preform::Nonparsing::merge(<mapping-relation-construction>, 0,
+		PreformUtilities::merge(<mapping-relation-construction>, 0,
 			WordAssemblages::from_wording(W)));
 
 	int mpc_form = 0;
 	if (<notable-directions>(W)) mpc_form = 1;
 
 	preposition_identity *prep1 = Prepositions::make(
-		Preform::Nonparsing::merge(<mapping-preposition-construction>, mpc_form,
+		PreformUtilities::merge(<mapping-preposition-construction>, mpc_form,
 			WordAssemblages::from_wording(W)),
 		FALSE);
 	preposition_identity *prep2 = Prepositions::make(
-		Preform::Nonparsing::merge(<mapping-preposition-construction>, 2,
+		PreformUtilities::merge(<mapping-preposition-construction>, 2,
 			WordAssemblages::from_wording(W)),
 		FALSE);
 	preposition_identity *prep3 = Prepositions::make(
-		Preform::Nonparsing::merge(<mapping-preposition-construction>, 3,
+		PreformUtilities::merge(<mapping-preposition-construction>, 3,
 			WordAssemblages::from_wording(W)),
 		FALSE);
 

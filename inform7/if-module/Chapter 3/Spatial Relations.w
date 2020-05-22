@@ -50,7 +50,7 @@ a union of the others, and therefore includes incorporation.)
 			BinaryPredicates::new_term(NULL),
 			I"contains", I"is-in",
 			NULL, Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
-			Preform::Nonparsing::wording(<relation-names>, CONTAINMENT_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, CONTAINMENT_RELATION_NAME));
 	R_containment->loop_parent_optimisation_proviso = "ContainerOf";
 	R_containment->loop_parent_optimisation_ranger = "TestContainmentRange";
 	BinaryPredicates::set_index_details(R_containment, "container/room", "thing");
@@ -60,7 +60,7 @@ a union of the others, and therefore includes incorporation.)
 			BinaryPredicates::new_term(infs_thing),
 			I"supports", I"is-on",
 			NULL, Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
-			Preform::Nonparsing::wording(<relation-names>, SUPPORT_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, SUPPORT_RELATION_NAME));
 	R_support->loop_parent_optimisation_proviso = "SupporterOf";
 	R_incorporation =
 		BinaryPredicates::make_pair(SPATIAL_KBP,
@@ -68,14 +68,14 @@ a union of the others, and therefore includes incorporation.)
 			BinaryPredicates::new_term(infs_thing),
 			I"incorporates", I"is-part-of",
 			NULL, Calculus::Schemas::new("MakePart(*2,*1)"), NULL,
-			Preform::Nonparsing::wording(<relation-names>, INCORPORATION_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, INCORPORATION_RELATION_NAME));
 	R_carrying =
 		BinaryPredicates::make_pair(SPATIAL_KBP,
 			BinaryPredicates::full_new_term(infs_person, NULL, EMPTY_WORDING, Calculus::Schemas::new("CarrierOf(*1)")),
 			BinaryPredicates::new_term(infs_thing),
 			I"carries", I"is-carried-by",
 			NULL, Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
-			Preform::Nonparsing::wording(<relation-names>, CARRYING_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, CARRYING_RELATION_NAME));
 	R_carrying->loop_parent_optimisation_proviso = "CarrierOf";
 	R_holding =
 		BinaryPredicates::make_pair(SPATIAL_KBP,
@@ -83,7 +83,7 @@ a union of the others, and therefore includes incorporation.)
 			BinaryPredicates::new_term(infs_thing),
 			I"holds", I"is-held-by",
 			NULL, Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
-			Preform::Nonparsing::wording(<relation-names>, HOLDING_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, HOLDING_RELATION_NAME));
 	/* can't be optimised, because parts are also held */
 	R_wearing =
 		BinaryPredicates::make_pair(SPATIAL_KBP,
@@ -91,7 +91,7 @@ a union of the others, and therefore includes incorporation.)
 			BinaryPredicates::new_term(infs_thing),
 			I"wears", I"is-worn-by",
 			NULL, Calculus::Schemas::new("WearObject(*2,*1)"), NULL,
-			Preform::Nonparsing::wording(<relation-names>, WEARING_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, WEARING_RELATION_NAME));
 	R_wearing->loop_parent_optimisation_proviso = "WearerOf";
 	a_has_b_predicate =
 		BinaryPredicates::make_pair(SPATIAL_KBP,
@@ -99,7 +99,7 @@ a union of the others, and therefore includes incorporation.)
 			BinaryPredicates::new_term(NULL),
 			I"has", I"is-had-by",
 			NULL, Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
-			Preform::Nonparsing::wording(<relation-names>, POSSESSION_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, POSSESSION_RELATION_NAME));
 	a_has_b_predicate->loop_parent_optimisation_proviso = "OwnerOf";
 	BinaryPredicates::set_index_details(a_has_b_predicate, "person", "thing");
 	room_containment_predicate =
@@ -108,7 +108,7 @@ a union of the others, and therefore includes incorporation.)
 			BinaryPredicates::new_term(infs_thing),
 			I"is-room-of", I"is-in-room",
 			NULL, Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
-			Preform::Nonparsing::wording(<relation-names>, ROOM_CONTAINMENT_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, ROOM_CONTAINMENT_RELATION_NAME));
 	room_containment_predicate->loop_parent_optimisation_proviso = "LocationOf";
 
 @ Visibility, touchability, concealment and enclosure: all relations which
@@ -121,28 +121,28 @@ can be tested at run-time, but which can't be asserted or made true or false.
 			BinaryPredicates::new_term(infs_thing),
 			I"can-see", I"can-be-seen-by",
 			NULL, NULL, Calculus::Schemas::new("TestVisibility(*1,*2)"),
-			Preform::Nonparsing::wording(<relation-names>, VISIBILITY_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, VISIBILITY_RELATION_NAME));
 	R_touchability =
 		BinaryPredicates::make_pair(SPATIAL_KBP,
 			BinaryPredicates::new_term(infs_thing),
 			BinaryPredicates::new_term(infs_thing),
 			I"can-touch", I"can-be-touched-by",
 			NULL, NULL, Calculus::Schemas::new("TestTouchability(*1,*2)"),
-			Preform::Nonparsing::wording(<relation-names>, TOUCHABILITY_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, TOUCHABILITY_RELATION_NAME));
 	R_concealment =
 		BinaryPredicates::make_pair(SPATIAL_KBP,
 			BinaryPredicates::new_term(infs_thing),
 			BinaryPredicates::new_term(infs_thing),
 			I"conceals", I"is-concealed-by",
 			NULL, NULL, Calculus::Schemas::new("TestConcealment(*1,*2)"),
-			Preform::Nonparsing::wording(<relation-names>, CONCEALMENT_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, CONCEALMENT_RELATION_NAME));
 	R_enclosure =
 		BinaryPredicates::make_pair(SPATIAL_KBP,
 			BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
 			BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
 			I"encloses", I"is-enclosed-by",
 			NULL, NULL, Calculus::Schemas::new("IndirectlyContains(*1,*2)"),
-			Preform::Nonparsing::wording(<relation-names>, ENCLOSURE_RELATION_NAME));
+			PreformUtilities::wording(<relation-names>, ENCLOSURE_RELATION_NAME));
 
 @h Second stock.
 There is none -- this is a family of relations which is all built in.
