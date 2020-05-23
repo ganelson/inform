@@ -2,8 +2,7 @@
 
 To inflect adjectives into comparative and superlative forms.
 
-@h Constructing comparatives.
-In English, the comparative of an adjective can generally be formed by
+@ In English, the comparative of an adjective can generally be formed by
 suffixing the inflected form with "than"; thus, "big" to "bigger than".
 The following does the suffixing:
 
@@ -11,7 +10,9 @@ The following does the suffixing:
 <comparative-construction> ::=
 	... than
 
-@ =
+@ This is essentially a wrapper function for the trie <adjective-to-comparative>.
+
+=
 wording Grading::make_comparative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	TEMPORARY_TEXT(comprised);
 	TEMPORARY_TEXT(transformed);
@@ -19,9 +20,10 @@ wording Grading::make_comparative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 		WRITE_TO(comprised, "some-long-text");
 	else
 		WRITE_TO(comprised, "%N", Wordings::first_wn(W));
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 	match_avinue *comp_trie =
-		PreformUtilities::define_trie(<adjective-to-comparative>, TRIE_END, Linguistics::default_nl(nl));
+		PreformUtilities::define_trie(<adjective-to-comparative>, TRIE_END,
+			InflectionDefns::default_nl(nl));
 	Inflections::suffix_inflection(transformed, comp_trie, comprised);
 	wording PW = Feeds::feed_text(transformed);
 	word_assemblage merged =
@@ -34,6 +36,9 @@ wording Grading::make_comparative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	return PW;
 }
 
+@ This is essentially a wrapper function for the trie <adjective-to-superlative>.
+
+=
 wording Grading::make_superlative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	TEMPORARY_TEXT(comprised);
 	TEMPORARY_TEXT(transformed);
@@ -41,9 +46,10 @@ wording Grading::make_superlative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 		WRITE_TO(comprised, "some-long-text");
 	else
 		WRITE_TO(comprised, "%N", Wordings::first_wn(W));
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 	match_avinue *comp_trie =
-		PreformUtilities::define_trie(<adjective-to-superlative>, TRIE_END, Linguistics::default_nl(nl));
+		PreformUtilities::define_trie(<adjective-to-superlative>, TRIE_END,
+			InflectionDefns::default_nl(nl));
 	Inflections::suffix_inflection(transformed, comp_trie, comprised);
 	wording PW = Feeds::feed_text(transformed);
 	LOGIF(CONSTRUCTED_PLURALS, "[Superlative of %W is %W]\n", W, PW);
@@ -52,10 +58,10 @@ wording Grading::make_superlative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	return PW;
 }
 
-@ There has to be a better term than "quiddity" for this grammatical construct,
+@ This is essentially a wrapper function for the trie <adjective-to-quiddity>.
+There has to be a better term than "quiddity" for this grammatical concept,
 but what I mean is the property for which the given adjective makes a
-comparison: for instance, "tallness" for "tall", or "steeliness" for
-"steely".
+comparison: for instance, "tallness" for "tall", or "steeliness" for "steely".
 
 =
 wording Grading::make_quiddity(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
@@ -65,9 +71,10 @@ wording Grading::make_quiddity(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 		WRITE_TO(comprised, "some-long-text");
 	else
 		WRITE_TO(comprised, "%N", Wordings::first_wn(W));
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 	match_avinue *comp_trie =
-		PreformUtilities::define_trie(<adjective-to-quiddity>, TRIE_END, Linguistics::default_nl(nl));
+		PreformUtilities::define_trie(<adjective-to-quiddity>, TRIE_END,
+			InflectionDefns::default_nl(nl));
 	Inflections::suffix_inflection(transformed, comp_trie, comprised);
 	wording PW = Feeds::feed_text(transformed);
 	LOGIF(CONSTRUCTED_PLURALS, "[Quiddity of %W is %W]\n", W, PW);

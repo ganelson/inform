@@ -54,7 +54,7 @@ verb_conjugation *Conjugation::conjugate(word_assemblage base_text,
 
 verb_conjugation *Conjugation::conjugate_with_overrides(word_assemblage base_text,
 	word_assemblage *overrides, int no_overrides, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 	if (WordAssemblages::nonempty(base_text) == FALSE)
 		internal_error("No base text for verb conjugation");
 
@@ -378,7 +378,7 @@ example:
 			verb_forms[n] =
 				Inflections::apply_trie_to_wa(
 					verb_forms[BASE_FORM_TYPE],
-					PreformUtilities::define_trie(content_token->nt_pt, TRIE_END, Linguistics::default_nl(nl)));
+					PreformUtilities::define_trie(content_token->nt_pt, TRIE_END, InflectionDefns::default_nl(nl)));
 		else if (content_token->ptoken_category == FIXED_WORD_PTC)
 			verb_forms[n] =
 				Conjugation::expand_with_endings(content_token->ve_pt, verb_forms);
@@ -804,7 +804,7 @@ from our dictionary of 14,000 or so present and past participles.
 =
 void Conjugation::test_participle(OUTPUT_STREAM, wording W) {
 	verb_conjugation *vc = Conjugation::conjugate(
-		WordAssemblages::from_wording(W), English_language);
+		WordAssemblages::from_wording(W), InflectionDefns::default_nl(NULL));
 	if (vc == NULL) { WRITE("Failed test\n"); return; }
 	Conjugation::write_participle(OUT, vc);
 	DESTROY(vc, verb_conjugation);

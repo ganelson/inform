@@ -112,9 +112,10 @@ we add a new one.
 =
 individual_name *Nouns::add_to_noun_and_reg(noun *t,
 	wording W, NATURAL_LANGUAGE_WORDS_TYPE *foreign_language, int gender, int number, int options) {
-	individual_name *in = Clusters::add(t->names, W, foreign_language, gender, number,
+	linked_list *L = Clusters::add(t->names, W, foreign_language, gender, number,
 		(options & REGISTER_PLURAL_NTOPT)?TRUE:FALSE);
-	for (; in; in = in->next)
+	individual_name *in;
+	LOOP_OVER_LINKED_LIST(in, individual_name, L)
 		if ((options & REGISTER_SINGULAR_NTOPT) && (t->registration_category != NOUN_HAS_NO_MC)) {
 			excerpt_meaning *em = ExcerptMeanings::register(
 				t->registration_category,

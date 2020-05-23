@@ -189,7 +189,7 @@ from sentences, and this can include I6 properties with no I7 analogue.
 				this_is_named_for_something_with_a_printed_name = TRUE;
 		@<Issue problem message if the name contains a comma@>;
 		if (this_has_a_printed_name == FALSE) @<Assert the printed name property@>;
-		if (Projects::get_language_of_play(Task::project()) != English_language)
+		if (Projects::get_language_of_play(Task::project()) != InflectionDefns::default_nl(NULL))
 			@<Assert male, female, neuter adjectives from grammatical gender@>;
 	}
 

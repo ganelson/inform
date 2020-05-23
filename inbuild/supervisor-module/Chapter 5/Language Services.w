@@ -107,7 +107,7 @@ detect the language of play for a story file without actually running it.
 =
 void Languages::write_ISO_code(OUTPUT_STREAM, inform_language *L) {
 	#ifdef CORE_MODULE
-	if (L == NULL) L = English_language;
+	if (L == NULL) L = InflectionDefns::default_nl(NULL);
 	#endif
 	if (Wordings::nonempty(L->language_field[ISO_639_CODE_LFIELD]))
 		WRITE("%+W", L->language_field[ISO_639_CODE_LFIELD]);

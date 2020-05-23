@@ -14,7 +14,7 @@ with lingistic roles. For example, the cluster of names for the common noun
 
 =
 typedef struct name_cluster {
-	struct individual_name *first_name;
+	struct linked_list *listed; /* of |individual_name| */
 	CLASS_DEFINITION
 } name_cluster;
 
@@ -23,8 +23,7 @@ typedef struct individual_name {
 	struct declension name; /* text of name */
 	int name_number; /* 1 for singular, 2 for plural */
 	int name_gender; /* 1 is neuter, 2 is masculine, 3 is feminine */
-	NATURAL_LANGUAGE_WORDS_TYPE *name_language; /* always non-null */
-	struct individual_name *next; /* within its cluster */
+	NATURAL_LANGUAGE_WORDS_TYPE *name_language;
 	CLASS_DEFINITION
 } individual_name;
 
@@ -33,32 +32,34 @@ typedef struct individual_name {
 =
 name_cluster *Clusters::new(void) {
 	name_cluster *names = CREATE(name_cluster);
-	names->first_name = NULL;
+	names->listed = NEW_LINKED_LIST(individual_name);
 	return names;
 }
 
 @ The following can add either a single name, or a name and its plural(s):
 
 =
-individual_name *Clusters::add(name_cluster *names, wording W,
-	NATURAL_LANGUAGE_WORDS_TYPE *nl, int gender, int number, int pluralise) {
-	if (nl == NULL) nl = English_language;
+individual_name *Clusters::add_one(name_cluster *names, wording W,
+	NATURAL_LANGUAGE_WORDS_TYPE *nl, int gender, int number) {
+	nl = InflectionDefns::default_nl(nl);
 	individual_name *in = CREATE(individual_name);
 	in->principal_meaning = NULL_GENERAL_POINTER;
 	in->name = Declensions::decline(W, nl, gender, number);
 	in->name_language = nl;
 	in->name_number = number;
 	in->name_gender = gender;
-	in->next = NULL;
-	if (names->first_name == NULL) names->first_name = in;
-	else {
-		individual_name *in2;
-		for (in2 = names->first_name; ((in2) && (in2->next)); in2 = in2->next) ;
-		in2->next = in;
-	}
+	ADD_TO_LINKED_LIST(in, individual_name, names->listed);
+	return in;
+}
+
+linked_list *Clusters::add(name_cluster *names, wording W,
+	NATURAL_LANGUAGE_WORDS_TYPE *nl, int gender, int number, int pluralise) {
+	linked_list *L = NEW_LINKED_LIST(individual_name);
+	individual_name *in = Clusters::add_one(names, W, nl, gender, number);
+	ADD_TO_LINKED_LIST(in, individual_name, L);
 	if ((pluralise) && (number == 1))
 		@<Add plural names as well@>;
-	return in;
+	return L;
 }
 
 @ The following makes all possible plurals and registers those too. (Note
@@ -75,9 +76,9 @@ so there may be any number of names registered: for instance, the kind
 		wording PW = EMPTY_WORDING;
 		pde = Pluralisation::make(W, &PW, pde, nl);
 		if (Wordings::nonempty(PW)) {
-			LOGIF(CONSTRUCTED_PLURALS, "(%d) Reading plural of <%W> as <%W>\n", k,
-				W, PW);
-			Clusters::add(names, PW, nl, gender, 2, FALSE);
+			LOGIF(CONSTRUCTED_PLURALS, "(%d) Plural of <%W>: <%W>\n", k, W, PW);
+			individual_name *in = Clusters::add_one(names, PW, nl, gender, 2);
+			ADD_TO_LINKED_LIST(in, individual_name, L);
 		}
 	} while (pde);
 
@@ -91,15 +92,14 @@ At run time, it's an integer from 0 to 11 which encodes all possible
 combinations. Here we only work through six, ignoring animation:
 
 =
-void Clusters::add_with_agreements(name_cluster *cl, wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	if (nl == NULL) nl = English_language;
-	if (nl == English_language) {
+void Clusters::add_with_agreements(name_cluster *cl, wording W,
+	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
+	nl = InflectionDefns::default_nl(nl);
+	if (nl == InflectionDefns::default_nl(NULL))
 		Clusters::add(cl, W, nl, NEUTER_GENDER, 1, FALSE);
-	} else {
-		int gna;
-		for (gna = 0; gna < 6; gna++)
+	else
+		for (int gna = 0; gna < 6; gna++)
 			@<Generate agreement form in this GNA and add to the declension@>;
-	}
 }
 
 @ We use tries to modify the base text, which is taken to be the neuter
@@ -134,10 +134,12 @@ through one or two tries.
 	word_assemblage wa = WordAssemblages::from_wording(W);
 	if (step1)
 		wa = Inflections::apply_trie_to_wa(wa,
-			PreformUtilities::define_trie(step1, TRIE_END, Linguistics::default_nl(nl)));
+			PreformUtilities::define_trie(step1, TRIE_END,
+				InflectionDefns::default_nl(nl)));
 	if (step2)
 		wa = Inflections::apply_trie_to_wa(wa,
-			PreformUtilities::define_trie(step2, TRIE_END, Linguistics::default_nl(nl)));
+			PreformUtilities::define_trie(step2, TRIE_END,
+				InflectionDefns::default_nl(nl)));
 	FW = WordAssemblages::to_wording(&wa);
 
 @h Plural fixing.
@@ -148,9 +150,10 @@ only when the built-in kinds are being given plural names; some of these
 and wouldn't pass through the pluralising tries intact.
 
 =
-void Clusters::set_plural_name(name_cluster *cl, wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
+void Clusters::set_plural_name(name_cluster *cl, wording W,
+	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	individual_name *in;
-	for (in = cl->first_name; in; in = in->next)
+	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
 		if (in->name_number == 2) {
 			in->name = Declensions::decline(W, nl, NEUTER_GENDER, 2);
 			return;
@@ -170,7 +173,7 @@ wording Clusters::get_name(name_cluster *cl, int plural_flag) {
 	int number_sought = 1;
 	if (plural_flag) number_sought = 2;
 	individual_name *in;
-	for (in = cl->first_name; in; in = in->next)
+	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
 		if (in->name_number == number_sought)
 			return Declensions::in_case(&(in->name), NOMINATIVE_CASE);
 	return EMPTY_WORDING;
@@ -180,11 +183,12 @@ wording Clusters::get_name(name_cluster *cl, int plural_flag) {
 falling back on English if there's none registered:
 
 =
-wording Clusters::get_name_in_play(name_cluster *cl, int plural_flag, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
+wording Clusters::get_name_in_play(name_cluster *cl, int plural_flag,
+	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	int number_sought = 1;
 	if (plural_flag) number_sought = 2;
 	individual_name *in;
-	for (in = cl->first_name; in; in = in->next)
+	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
 		if ((in->name_number == number_sought) &&
 			(in->name_language == nl))
 			return Declensions::in_case(&(in->name), NOMINATIVE_CASE);
@@ -197,7 +201,7 @@ wording Clusters::get_name_in_play(name_cluster *cl, int plural_flag, NATURAL_LA
 wording Clusters::get_name_general(name_cluster *cl,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl, int number_sought, int gender_sought) {
 	individual_name *in;
-	for (in = cl->first_name; in; in = in->next)
+	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
 		if (((number_sought == -1) || (number_sought == in->name_number)) &&
 			((gender_sought == -1) || (gender_sought == in->name_gender)) &&
 			(in->name_language == nl))
@@ -217,6 +221,8 @@ void Clusters::set_principal_meaning(individual_name *in, general_pointer meanin
 }
 
 general_pointer Clusters::get_principal_meaning(name_cluster *cl) {
-	if (cl->first_name == NULL) return NULL_GENERAL_POINTER;
-	return cl->first_name->principal_meaning;
+	individual_name *in;
+	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
+		return in->principal_meaning;
+	return NULL_GENERAL_POINTER;
 }

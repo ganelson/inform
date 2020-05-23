@@ -13,14 +13,14 @@ typedef struct declension {
 
 @ =
 declension Declensions::decline(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl, int gen, int num) {
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 	declension D = Declensions::decline_inner(W, nl, gen, num, <noun-declension>);
 	@<Fix the origin@>;
 	return D;
 }
 
 declension Declensions::decline_article(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl, int gen, int num) {
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 	declension D = Declensions::decline_inner(W, nl, gen, num, <article-declension>);
 	@<Fix the origin@>;
 	return D;
@@ -36,7 +36,7 @@ declension Declensions::decline_article(wording W, NATURAL_LANGUAGE_WORDS_TYPE *
 
 @ =
 declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl, int gen, int num, nonterminal *nt) {
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 	declension D;
 	D.within_language = nl;
 	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
@@ -115,7 +115,7 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 	D.within_language = nl;
 	TEMPORARY_TEXT(from);
 	WRITE_TO(from, "%+W", W);
-	match_avinue *group_trie = PreformUtilities::define_trie(gnt, TRIE_END, Linguistics::default_nl(nl));
+	match_avinue *group_trie = PreformUtilities::define_trie(gnt, TRIE_END, InflectionDefns::default_nl(nl));
 	wchar_t *result = Tries::search_avinue(group_trie, from);
 	DISCARD_TEXT(from);
 	if (result == NULL) {

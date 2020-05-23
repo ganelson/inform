@@ -1283,7 +1283,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 
 =
 <adaptive-adjective> internal {
-	if (Projects::get_language_of_play(Task::project()) == English_language) return FALSE;
+	if (Projects::get_language_of_play(Task::project()) == InflectionDefns::default_nl(NULL)) return FALSE;
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
 		wording AW = Clusters::get_name_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
@@ -1298,7 +1298,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 
 =
 void Adjectives::Meanings::agreements(void) {
-	if (Projects::get_language_of_play(Task::project()) == English_language) return;
+	if (Projects::get_language_of_play(Task::project()) == InflectionDefns::default_nl(NULL)) return;
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
 		wording PW = Clusters::get_name_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);

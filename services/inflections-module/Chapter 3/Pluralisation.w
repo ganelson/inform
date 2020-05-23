@@ -42,7 +42,7 @@ one not found in the dictionary).
 =
 plural_dictionary_entry *Pluralisation::make(wording W, wording *PW,
 	plural_dictionary_entry *search_from, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 
 	plural_dictionary_entry *pde;
 
@@ -95,8 +95,9 @@ has a plural, and modifies it to the plural form.
 
 =
 int Pluralisation::regular(OUTPUT_STREAM, text_stream *from, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	if (nl == NULL) nl = English_language;
+	nl = InflectionDefns::default_nl(nl);
 	match_avinue *plural_trie =
-		PreformUtilities::define_trie(<singular-noun-to-its-plural>, TRIE_END, Linguistics::default_nl(nl));
+		PreformUtilities::define_trie(<singular-noun-to-its-plural>, TRIE_END,
+			InflectionDefns::default_nl(nl));
 	return Inflections::suffix_inflection(OUT, plural_trie, from);
 }

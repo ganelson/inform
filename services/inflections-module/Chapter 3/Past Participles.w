@@ -38,6 +38,7 @@ above. It expects only a single word.
 =
 int PastParticiples::pasturise_text(OUTPUT_STREAM, text_stream *from) {
 	match_avinue *past_trie =
-		PreformUtilities::define_trie(<pasturise-participle>, TRIE_START, Linguistics::default_nl(NULL));
+		PreformUtilities::define_trie(<pasturise-participle>, TRIE_START,
+			InflectionDefns::default_nl(NULL));
 	return Inflections::suffix_inflection(OUT, past_trie, from);
 }

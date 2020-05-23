@@ -2,65 +2,6 @@
 
 To define how English nouns and verbs are inflected.
 
-@h Preface.
-Inflections are modifications of words -- usually word endings or beginnings --
-for different circumstances. English is often called an uninflected language,
-but this is an exaggeration. For example, we spell the word "tree" as
-"trees" if it refers to more than one of them. Inform sometimes needs
-to take text in one form and change it to another -- for example, to turn
-a singular noun into a plural one -- and ordinary Preform parsing isn't good
-enough to express this.
-
-Inform uses a data structure called a "trie" as an efficient way to match
-prefix and/or suffix patterns in words, and then to modify them. These tries
-are created using the same notation as for Preform grammar, which is
-convenient in many ways, but also a little misleading -- they are parsed quite
-differently. The rules are as follows:
-
-(a) A nonterminal in trie grammar can either be a list of other tries, or it
-can be a list of inflection rules. Mixtures of the two are not allowed. For
-example |<singular-noun-to-its-indefinite-article>| is a list of other tries, while
-|<en-trie-indef-a>| contains actual rules.
-
-(b) In a list of tries, each production consists only of a single nonterminal
-identifying the trie to make use of. One exception: writing |...| before the
-trie's name makes it work on the end of a word instead of the beginning.
-Inform attempts to find a match using each trie in turn, until a match is
-found.
-
-(c) In a list of inflection rules, each production consists of two words. The
-first word is what to match; the second gives instructions on what to turn
-it into. An asterisk is used to mean "any string of 0 or more letters";
-a digit in the replacement text means "truncate by this many letters and
-add...". (As a special case, the replacement text "0" means: make no
-change.) Some examples:
-
-|lead gold| turns "lead" into "gold"
-
-|codex codices| turns "codex" to "codices"
-
-|*mouse 5mice| turns "mouse" to "mice", or "fieldmouse" to "fieldmice"
-
-Designing a trie is not quite as easy as it looks. It looks as if this is a
-sequence of tests to perform in succession, but it's better to think of the
-rules all being performed at once. In general, if you need one inflection
-rule to take precedence over another, put it in an earlier trie, rather than
-putting it earlier in the same trie.
-
-@ Tries are highly language specific and should not be translated as such:
-instead, an appropriate version needs to be written for every language.
-
-Except at the very top level, translators are free to created new tries
-and name them as they please. For example, the Spanish implementation of
-= (text as InC)
-	<singular-noun-to-its-indefinite-article>
-=
-may look entirely unlike its English version, but at the top level it still
-has to have that name.
-
-Lower-level tries used in the implementation should have names beginning
-with a language code: hence the names "en-" used below.
-
 @h Noun inflections.
 The following trie looks at the start of a word, which we assume to be a
 noun, and decides whether to use the indefinite article "a" or "an".

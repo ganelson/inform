@@ -89,7 +89,7 @@ as the object.
 =
 <verb-implies-sentence-subject> ::=
 	in <natural-language> <infinitive-declaration> |    ==> R[2]; <<inform_language:nl>> = (inform_language *) (RP[1]);
-	<infinitive-declaration>							==> R[1]; <<inform_language:nl>> = English_language;
+	<infinitive-declaration>							==> R[1]; <<inform_language:nl>> = InflectionDefns::default_nl(NULL);
 
 <infinitive-declaration> ::=
 	to <infinitive-usage> ( ... ) |    ==> R[1]; <<giving-parts>> = TRUE
@@ -552,7 +552,7 @@ foreign verbs (4).
 	binary_predicate *bp = VerbMeanings::get_relational_meaning(&vm);
 	if (bp == a_has_b_predicate) p = 1;
 	if (bp == R_equality) p = 2;
-	if ((nl) && (nl != English_language)) p = 5;
+	if ((nl) && (nl != InflectionDefns::default_nl(NULL))) p = 5;
 	++new_verb_sequence_count;
 	vi = Verbs::new_verb(vc, FALSE);
 	vc->vc_conjugates = vi;
@@ -634,13 +634,13 @@ void NewVerbs::bootstrap(void) {
 	NewVerbs::declare_sm(Sentences::VPs::omit_from_SMF,						I"omit-from", 4);
 
 	word_assemblage infinitive = PreformUtilities::wording(<bootstrap-verb>, 0);
-	verb_conjugation *vc = Conjugation::conjugate(infinitive, English_language);
+	verb_conjugation *vc = Conjugation::conjugate(infinitive, InflectionDefns::default_nl(NULL));
 	verb_identity *vi = Verbs::new_verb(vc, TRUE);
 	vc->vc_conjugates = vi;
 	VerbUsages::register_all_usages_of_verb(vi, FALSE, 2);
 
 	infinitive = PreformUtilities::wording(<bootstrap-verb>, 1);
-	vc = Conjugation::conjugate(infinitive, English_language);
+	vc = Conjugation::conjugate(infinitive, InflectionDefns::default_nl(NULL));
 	vi = Verbs::new_verb(vc, FALSE);
 	vc->vc_conjugates = vi;
 	VerbUsages::register_all_usages_of_verb(vi, FALSE, 3);
@@ -1135,7 +1135,7 @@ void NewVerbs::log(verb_usage *vu) {
 	if (vu == NULL) { LOG("(null verb usage)"); return; }
 	LOG("VU: $f ", &(vu->vu_text));
 	if (vu->negated_form_of_verb) LOG("(negated) ");
-	Linguistics::log_tense_number(DL, vu->tensed);
+	InflectionDefns::log_tense_number(DL, vu->tensed);
 }
 
 void NewVerbs::log_all(void) {
