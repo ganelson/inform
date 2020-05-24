@@ -326,7 +326,7 @@ A usage is "foreign" if it belongs to a language other than English:
 int VerbUsages::is_foreign(verb_usage *vu) {
 	if ((vu->verb_used) &&
 		(vu->verb_used->conjugation->defined_in) &&
-		(vu->verb_used->conjugation->defined_in != InflectionDefns::default_nl(NULL))) {
+		(vu->verb_used->conjugation->defined_in != DefaultLanguage::get(NULL))) {
 		return TRUE;
 	}
 	return FALSE;

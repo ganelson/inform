@@ -1,4 +1,4 @@
-[Inflections::] English Inflections.
+[Inflect::] English Inflections.
 
 To define how English nouns and verbs are inflected.
 
@@ -21,138 +21,138 @@ dictionary and the "Official Scrabble Wordlist".
 
 =
 <en-trie-indef-a> ::=
-	oneir*			an |
-	onero*			an |
-	ukiyo-e			an | 		/* Japanese style of 17th-19th cent. printmaking */
-	urao*			an |
-	urial*			an |
-	uvarovite*		an 			/* a rare emerald-green garnet, Ca3Cr2(SiO4)3 */
+	oneir*          an |
+	onero*          an |
+	ukiyo-e         an |         /* Japanese style of 17th-19th cent. printmaking */
+	urao*           an |
+	urial*          an |
+	uvarovite*      an           /* a rare emerald-green garnet, Ca3Cr2(SiO4)3 */
 
 @ Then the exceptions:
 
 =
 <en-trie-indef-b> ::=
-	eu*				a | 		/* e.g., euphoria, eulogy */
-	ewe*			a | 		/* female sheep */
-	ewftes			a | 		/* Spens. form of an eft lizard */
-	ewghen			a | 		/* made of yew, i.e., yewen */
-	ewk				a |
-	houri			a |
-	once*			a | 		/* a Once and Future King */
-	one*			a | 		/* but still use an for oneir- and onero- */
-	onst			a | 		/* dialect form of once */
-	oui*			a | 		/* e.g., a Ouija board or a ouistiti (a marmoset) */
-	u				a | 		/* the letter U */
-	u-*				a | 		/* e.g., U-boats */
-	u'*				a | 		/* e.g., u's */
-	uakari			a | 		/* the South American monkey */
-	ub*				a | 		/* e.g., ubiquitous */
-	udal*			a |
-	udomet*			a |
-	uey				a | 		/* colloquial for "U-turn", as in "he pulled a uey" */
-	ueys			a |
-	ufo*			a |
-	uganda*			a | 		/* the county Uganda */
-	ugr*			a |
-	uint*			a |
-	uk*				a |
-	ulex			a | 		/* the genus of gorse */
-	uli*			a |
-	ulo*			a |
-	ulu*			a |
-	una				a | 		/* from "una corda", the musical term */
-	unabomb*		a | 		/* the so-called Unabomber */
-	unalist			a |
-	unanimit*		a |
-	unanimous*		a |
-	unesco			a | 		/* the United Nations cultural body */
-	unescos			a |
-	unia*			a |
-	unic*			a |
-	unif*			a |
-	unig*			a |
-	unil*			a |
-	unio*			a |
-	unip*			a |
-	uniq*			a |
-	unis*			a |
-	unit*			a |
-	univ*			a |
-	upas*			a |
-	ura*			a |
-	ure*			a |
-	uri*			a |
-	uru*			a |
-	usa*			a |
-	use*			a |
-	usi*			a |
-	usu*			a |
-	utas*			a |
-	ute*			a |
-	uti*			a |
-	uto*			a |
-	utr*			a |
-	uttoxeter*		a | 		/* the English town of Uttoxeter */
-	uva*			a |
-	uvu*			a
+	eu*             a |         /* e.g., euphoria, eulogy */
+	ewe*            a |         /* female sheep */
+	ewftes          a |         /* Spens. form of an eft lizard */
+	ewghen          a |         /* made of yew, i.e., yewen */
+	ewk             a |
+	houri           a |
+	once*           a |         /* a Once and Future King */
+	one*            a |         /* but still use an for oneir- and onero- */
+	onst            a |         /* dialect form of once */
+	oui*            a |         /* e.g., a Ouija board or a ouistiti (a marmoset) */
+	u               a |         /* the letter U */
+	u-*             a |         /* e.g., U-boats */
+	u'*             a |         /* e.g., u's */
+	uakari          a |         /* the South American monkey */
+	ub*             a |         /* e.g., ubiquitous */
+	udal*           a |
+	udomet*         a |
+	uey             a |         /* colloquial for "U-turn", as in "he pulled a uey" */
+	ueys            a |
+	ufo*            a |
+	uganda*         a |         /* the country Uganda */
+	ugr*            a |
+	uint*           a |
+	uk*             a |
+	ulex            a |         /* the genus of gorse */
+	uli*            a |
+	ulo*            a |
+	ulu*            a |
+	una             a |         /* from "una corda", the musical term */
+	unabomb*        a |         /* the so-called Unabomber */
+	unalist         a |
+	unanimit*       a |
+	unanimous*      a |
+	unesco          a |         /* the United Nations cultural body */
+	unescos         a |
+	unia*           a |
+	unic*           a |
+	unif*           a |
+	unig*           a |
+	unil*           a |
+	unio*           a |
+	unip*           a |
+	uniq*           a |
+	unis*           a |
+	unit*           a |
+	univ*           a |
+	upas*           a |
+	ura*            a |
+	ure*            a |
+	uri*            a |
+	uru*            a |
+	usa*            a |
+	use*            a |
+	usi*            a |
+	usu*            a |
+	utas*           a |
+	ute*            a |
+	uti*            a |
+	uto*            a |
+	utr*            a |
+	uttoxeter*      a |         /* the English town of Uttoxeter */
+	uva*            a |
+	uvu*            a
 
 @ And finally the basic rules:
 
 =
 <en-trie-indef-c> ::=
-	a*				an |
-	e*				an |
-	i*				an |
-	o*				an |
-	u*				an |
-	f				an |
-	f's				an |
-	f-*				an |
-	fbi				an |
-	fo				an |
-	frs				an |
-	h				an |
-	h's				an |
-	h-*				an | 		/* e.g., H-bomb */
-	haute*			an | 		/* e.g., haute cuisine, hauteur */
-	heir*			an |
-	hono*			an | 		/* e.g., honorific, honorary doctorate */
-	hour*			an |
-	l				an |
-	l's				an |
-	l-*				an | 		/* e.g., L-plate */
-	m				an |
-	m's				an |
-	m-*				an | 		/* e.g., M-ration */
-	n				an |
-	n's				an |
-	n-*				an | 		/* e.g., N-dimensional manifold */
-	r				an |
-	r's				an |
-	r-*				an |
-	rac				an | 		/* Royal Automobile Club */
-	raf				an | 		/* Royal Air Force */
-	rspca			an | 		/* Royal Society for the Prevention of Cruelty to Animals */
-	rsvp			an |
-	s				an |
-	s's				an |
-	s-*				an |
-	x				an |
-	x's				an |
-	x-*				an | 		/* e.g., X-ray */
-	xmas*			an |
-	yb*				an | 		/* these are mostly obs., Spens., and/or arch. */
-	yc*				an |
-	yd*				an |
-	yf*				an |
-	yg*				an |
-	ym*				an |
-	yn*				an |
-	yp*				an | 		/* e.g., ypsilon */
-	yr*				an |
-	ys*				an |
-	yt*				an | 		/* e.g., Ytterbium, Yttrium */
-	yw*				an
+	a*              an |
+	e*              an |
+	i*              an |
+	o*              an |
+	u*              an |
+	f               an |
+	f's             an |
+	f-*             an |
+	fbi             an |
+	fo              an |
+	frs             an |
+	h               an |
+	h's             an |
+	h-*             an |         /* e.g., H-bomb */
+	haute*          an |         /* e.g., haute cuisine, hauteur */
+	heir*           an |
+	hono*           an |         /* e.g., honorific, honorary doctorate */
+	hour*           an |
+	l               an |
+	l's             an |
+	l-*             an |         /* e.g., L-plate */
+	m               an |
+	m's             an |
+	m-*             an |         /* e.g., M-ration */
+	n               an |
+	n's             an |
+	n-*             an |         /* e.g., N-dimensional manifold */
+	r               an |
+	r's             an |
+	r-*             an |
+	rac             an |         /* Royal Automobile Club */
+	raf             an |         /* Royal Air Force */
+	rspca           an |         /* Royal Society for the Prevention of Cruelty to Animals */
+	rsvp            an |
+	s               an |
+	s's             an |
+	s-*             an |
+	x               an |
+	x's             an |
+	x-*             an |         /* e.g., X-ray */
+	xmas*           an |
+	yb*             an |         /* these are mostly obs., Spens., and/or arch. */
+	yc*             an |
+	yd*             an |
+	yf*             an |
+	yg*             an |
+	ym*             an |
+	yn*             an |
+	yp*             an |         /* e.g., ypsilon */
+	yr*             an |
+	ys*             an |
+	yt*             an |         /* e.g., Ytterbium, Yttrium */
+	yw*             an
 
 @h Plural inflections.
 The following takes a single word, assumes it to be a noun which meaningfully
@@ -201,102 +201,102 @@ have the same plural as singular form: for example, chamois, salmon, goldfish.
 
 =
 <en-trie-plural-uninflected> ::=
-	*fish			0 |
-	*ois			0 |
-	*sheep			0 |
-	*deer			0 |
-	*pox			0 |
-	*itis			0 |
-	bison			0 |
-	flounder		0 |
-	pliers			0 |
-	bream			0 |
-	gallows			0 |
-	proceedings		0 |
-	breeches		0 |
-	graffiti		0 |
-	rabies			0 |
-	britches		0 |
-	headquarters	0 |
-	salmon			0 |
-	carp			0 |
-	herpes			0 |
-	scissors		0 |
-	chassis			0 |
-	high-jinks		0 |
-	sea-bass		0 |
-	clippers		0 |
-	homework		0 |
-	series			0 |
-	cod				0 |
-	innings			0 |
-	shears			0 |
-	contretemps		0 |
-	jackanapes		0 |
-	species			0 |
-	corps			0 |
-	mackerel		0 |
-	swine			0 |
-	debris			0 |
-	measles			0 |
-	trout			0 |
-	diabetes		0 |
-	mews			0 |
-	tuna			0 |
-	djinn			0 |
-	mumps			0 |
-	whiting			0 |
-	eland			0 |
-	news			0 |
-	wildebeest		0 |
-	elk				0 |
-	pincers			0
+	*fish           0 |
+	*ois            0 |
+	*sheep          0 |
+	*deer           0 |
+	*pox            0 |
+	*itis           0 |
+	bison           0 |
+	flounder        0 |
+	pliers          0 |
+	bream           0 |
+	gallows         0 |
+	proceedings     0 |
+	breeches        0 |
+	graffiti        0 |
+	rabies          0 |
+	britches        0 |
+	headquarters    0 |
+	salmon          0 |
+	carp            0 |
+	herpes          0 |
+	scissors        0 |
+	chassis         0 |
+	high-jinks      0 |
+	sea-bass        0 |
+	clippers        0 |
+	homework        0 |
+	series          0 |
+	cod             0 |
+	innings         0 |
+	shears          0 |
+	contretemps     0 |
+	jackanapes      0 |
+	species         0 |
+	corps           0 |
+	mackerel        0 |
+	swine           0 |
+	debris          0 |
+	measles         0 |
+	trout           0 |
+	diabetes        0 |
+	mews            0 |
+	tuna            0 |
+	djinn           0 |
+	mumps           0 |
+	whiting         0 |
+	eland           0 |
+	news            0 |
+	wildebeest      0 |
+	elk             0 |
+	pincers         0
 
 @ We may as well pluralise pronouns while we're at it.
 
 =
 <en-trie-plural-pronouns> ::=
-	i				we |
-	you				you |
-	thou			you |
-	she				they |
-	he				they |
-	it				they |
-	they			they |
-	me				us |
-	you				you |
-	thee			you |
-	her				them |
-	him				them |
-	it				them |
-	them			them |
-	myself			ourselves |
-	yourself		yourself |
-	thyself			yourself |
-	herself			themselves |
-	himself			themselves |
-	itself			themselves |
-	themself		themselves |
-	oneself			oneselves
+	i               we |
+	you             you |
+	thou            you |
+	she             they |
+	he              they |
+	it              they |
+	they            they |
+	me              us |
+	you             you |
+	thee            you |
+	her             them |
+	him             them |
+	it              them |
+	them            them |
+	myself          ourselves |
+	yourself        yourself |
+	thyself         yourself |
+	herself         themselves |
+	himself         themselves |
+	itself          themselves |
+	themself        themselves |
+	oneself         oneselves
 
 @ We now reach Conway step 4. These are irregular plurals mostly coming
 from archaisms.
 
 =
 <en-trie-plural-irregular> ::=
-	beef			beefs |			/* we neglect the classical "beeves" */
-	brother			brothers |		/* and "brethren" */
-	child			children |
-	cow				cows |			/* and "kine" */
-	ephemeris		ephemerides |
-	genie			genies |		/* and "genii" */
-	money			moneys |		/* and "monies" */
-	mongoose		mongooses |
-	mythos			mythoi |
-	octopus			octopuses | 	/* and "octopodes" */
-	ox				oxen |
-	soliloquy		soliloquies |
-	trilby			trilbys
+	beef            beefs |            /* we neglect the classical "beeves" */
+	brother         brothers |      /* and "brethren" */
+	child           children |
+	cow             cows |            /* and "kine" */
+	ephemeris       ephemerides |
+	genie           genies |        /* and "genii" */
+	money           moneys |        /* and "monies" */
+	mongoose        mongooses |
+	mythos          mythoi |
+	octopus         octopuses |     /* and "octopodes" */
+	ox              oxen |
+	soliloquy       soliloquies |
+	trilby          trilbys
 
 @ Step 5. Now we reach a batch of irregular but fairly general inflected
 endings; for example, protozoon to protozoa, or metamorphosis to metamorphoses.
@@ -304,47 +304,47 @@ Note that we differ from Conway in pluralizing blouse as blouses, not blice.
 
 =
 <en-trie-plural-irregular-inflections> ::=
-	*man			3men |			/* Step 5 begins here */
-	*blouse			2ses |
-	*louse			5lice |
-	*mouse			5mice |
-	*tooth			5teeth |
-	*goose			5geese |
-	*foot			4feet |
-	*zoon			4zoa |
-	*cis			3ces |
-	*sis			3ses |
-	*xis			3xes
+	*man            3men |            /* Step 5 begins here */
+	*blouse         2ses |
+	*louse          5lice |
+	*mouse          5mice |
+	*tooth          5teeth |
+	*goose          5geese |
+	*foot           4feet |
+	*zoon           4zoa |
+	*cis            3ces |
+	*sis            3ses |
+	*xis            3xes
 
 @ Step 6. These are inflections from Latin and Greek which have survived
 into modern English:
 
 =
 <en-trie-plural-assimilated-classical-inflections> ::=
-	alumna			alumnae |			/* from table A.10 */
-	alga			algae |
-	vertebra		vertebrae |
-	codex			codices |			/* from table A.14 */
-	murex			murices |
-	silex			silices |
-	aphelion		aphelia |			/* from table A.19 */
-	hyperbaton		hyperbata |
-	perihelion		perihelia |
-	asyndeton		asyndeta |
-	noumenon		noumena |
-	phenomenon		phenomena |
-	criterion		criteria |
-	organon			organa |
-	prolegomenon	prolegomena |
-	agendum			agenda |			/* from table A.20 */
-	datum			data |
-	extremum		extrema |
-	bacterium		bacteria |
-	desideratum		desiderata |
-	stratum			strata |
-	candelabrum		candelabra |
-	erratum			errata |
-	ovum			ova
+	alumna          alumnae |            /* from table A.10 */
+	alga            algae |
+	vertebra        vertebrae |
+	codex           codices |            /* from table A.14 */
+	murex           murices |
+	silex           silices |
+	aphelion        aphelia |            /* from table A.19 */
+	hyperbaton      hyperbata |
+	perihelion      perihelia |
+	asyndeton       asyndeta |
+	noumenon        noumena |
+	phenomenon      phenomena |
+	criterion       criteria |
+	organon         organa |
+	prolegomenon    prolegomena |
+	agendum         agenda |            /* from table A.20 */
+	datum           data |
+	extremum        extrema |
+	bacterium       bacteria |
+	desideratum     desiderata |
+	stratum         strata |
+	candelabrum     candelabra |
+	erratum         errata |
+	ovum            ova
 
 @ Step 11a. (We're not implementing Conway's steps in sequence: see below.)
 These -o endings are mostly loan words from Romance languages whose original
@@ -352,129 +352,129 @@ inflections are assimilated.
 
 =
 <en-trie-plural-irregular-o-suffixes> ::=
-	albino			albinos |
-	alto			altos |
-	archipelago		archipelagos |
-	armadillo		armadillos |
-	basso			bassos |
-	canto			cantos |
-	commando		commandos |
-	contralto		contraltos |
-	crescendo		crescendos |
-	ditto			dittos |
-	dynamo			dynamos |
-	embryo			embryos |
-	fiasco			fiascos |
-	generalissimo	generalissimos |
-	ghetto			ghettos |
-	guano			guanos |
-	inferno			infernos |
-	jumbo			jumbos |
-	lingo			lingos |
-	lumbago			lumbagos |
-	magneto			magnetos |
-	manifesto		manifestos |
-	medico			medicos |
-	octavo			octavos |
-	photo			photos |
-	pro				pros |
-	quarto			quartos |
-	rhino			rhinos |
-	solo			solos |
-	soprano			sopranos |
-	stylo			stylos |
-	tempo			tempos
+	albino          albinos |
+	alto            altos |
+	archipelago     archipelagos |
+	armadillo       armadillos |
+	basso           bassos |
+	canto           cantos |
+	commando        commandos |
+	contralto       contraltos |
+	crescendo       crescendos |
+	ditto           dittos |
+	dynamo          dynamos |
+	embryo          embryos |
+	fiasco          fiascos |
+	generalissimo   generalissimos |
+	ghetto          ghettos |
+	guano           guanos |
+	inferno         infernos |
+	jumbo           jumbos |
+	lingo           lingos |
+	lumbago         lumbagos |
+	magneto         magnetos |
+	manifesto       manifestos |
+	medico          medicos |
+	octavo          octavos |
+	photo           photos |
+	pro             pros |
+	quarto          quartos |
+	rhino           rhinos |
+	solo            solos |
+	soprano         sopranos |
+	stylo           stylos |
+	tempo           tempos
 
 @ Conway steps 8 to 11. These are regular inflections depending only on
 word endings.
 
 =
 <en-trie-plural-regular-inflections> ::=
-	*ch				0es | 		/* Step 8: "church" to "churches" */
-	*sh				0es | 		/* "rush" to "rushes" */
-	*ss				0es | 		/* "dress" to "dresses" */
-	*alf			1ves | 		/* Step 9: "calf" to "calves" */
-	*elf			1ves | 		/* "self" to "selves" */
-	*olf			1ves | 		/* "wolf" to "wolves" */
-	*eaf			1ves | 		/* "sheaf" to "sheaves" */
-	*arf			1ves | 		/* "wharf" to "wharves" */
-	*nife			2ves | 		/* "knife" to "knives" */
-	*life			2ves | 		/* "life" to "lives" */
-	*wife			2ves | 		/* "wife" to "wives" */
-	*ax				0es | 		/* Sibilant additions: "fax" to "faxes" */
-	*ex				0es | 		/* "sex" to "sexes" */
-	*ix				0es | 		/* "Weetabix" to "Weetabixes" */
-	*ox				0es | 		/* "fox" to "foxes" */
-	*ux				0es | 		/* "flux" to "fluxes" */
-	*as				0es | 		/* "gas" to "gases" */
-	*es				0es |
-	*is				0es | 		/* "mantis" to "mantises" */
-	*os				0es | 		/* "thermos" to "thermoses" */
-	*us				0es | 		/* "abacus" to "abacuses" */
-	*az				0es |
-	*ez				0es | 		/* "fez" to "fezes" */
-	*iz				0es |
-	*oz				0es |
-	*uz				0es |
-	*ay				0s |			/* Step 10 begins here */
-	*by				1ies |
-	*cy				1ies |
-	*dy				1ies |
-	*ey				0s |
-	*fy				1ies |
-	*gy				1ies |
-	*hy				1ies |
-	*iy				0s |
-	*jy				1ies |
-	*ky				1ies |
-	*ly				1ies |
-	*my				1ies |
-	*ny				1ies |
-	*oy				0s |
-	*py				1ies |
-	*qy				1ies |
-	*ry				1ies |
-	*sy				1ies |
-	*ty				1ies |
-	*uy				0s |
-	*vy				1ies |
-	*wy				1ies |
-	*xy				1ies |
-	*yy				1ies |
-	*zy				1ies |
-	*ao				0s |			/* Step 11b begins here */
-	*bo				1oes |
-	*co				1oes |
-	*do				1oes |
-	*eo				0s |
-	*fo				1oes |
-	*go				1oes |
-	*ho				1oes |
-	*io				0s |
-	*jo				1oes |
-	*ko				1oes |
-	*lo				1oes |
-	*mo				1oes |
-	*no				1oes |
-	*oo				0s |
-	*po				1oes |
-	*qo				1oes |
-	*ro				1oes |
-	*so				0s |
-	*to				1oes |
-	*uo				0s |
-	*vo				1oes |
-	*wo				1oes |
-	*xo				0s |
-	*yo				1oes |
-	*zo				0s
+	*ch             0es |         /* Step 8: "church" to "churches" */
+	*sh             0es |         /* "rush" to "rushes" */
+	*ss             0es |         /* "dress" to "dresses" */
+	*alf            1ves |         /* Step 9: "calf" to "calves" */
+	*elf            1ves |         /* "self" to "selves" */
+	*olf            1ves |         /* "wolf" to "wolves" */
+	*eaf            1ves |         /* "sheaf" to "sheaves" */
+	*arf            1ves |         /* "wharf" to "wharves" */
+	*nife           2ves |         /* "knife" to "knives" */
+	*life           2ves |         /* "life" to "lives" */
+	*wife           2ves |         /* "wife" to "wives" */
+	*ax             0es |         /* Sibilant additions: "fax" to "faxes" */
+	*ex             0es |         /* "sex" to "sexes" */
+	*ix             0es |         /* "Weetabix" to "Weetabixes" */
+	*ox             0es |         /* "fox" to "foxes" */
+	*ux             0es |         /* "flux" to "fluxes" */
+	*as             0es |         /* "gas" to "gases" */
+	*es             0es |
+	*is             0es |         /* "mantis" to "mantises" */
+	*os             0es |         /* "thermos" to "thermoses" */
+	*us             0es |         /* "abacus" to "abacuses" */
+	*az             0es |
+	*ez             0es |         /* "fez" to "fezes" */
+	*iz             0es |
+	*oz             0es |
+	*uz             0es |
+	*ay             0s |            /* Step 10 begins here */
+	*by             1ies |
+	*cy             1ies |
+	*dy             1ies |
+	*ey             0s |
+	*fy             1ies |
+	*gy             1ies |
+	*hy             1ies |
+	*iy             0s |
+	*jy             1ies |
+	*ky             1ies |
+	*ly             1ies |
+	*my             1ies |
+	*ny             1ies |
+	*oy             0s |
+	*py             1ies |
+	*qy             1ies |
+	*ry             1ies |
+	*sy             1ies |
+	*ty             1ies |
+	*uy             0s |
+	*vy             1ies |
+	*wy             1ies |
+	*xy             1ies |
+	*yy             1ies |
+	*zy             1ies |
+	*ao             0s |            /* Step 11b begins here */
+	*bo             1oes |
+	*co             1oes |
+	*do             1oes |
+	*eo             0s |
+	*fo             1oes |
+	*go             1oes |
+	*ho             1oes |
+	*io             0s |
+	*jo             1oes |
+	*ko             1oes |
+	*lo             1oes |
+	*mo             1oes |
+	*no             1oes |
+	*oo             0s |
+	*po             1oes |
+	*qo             1oes |
+	*ro             1oes |
+	*so             0s |
+	*to             1oes |
+	*uo             0s |
+	*vo             1oes |
+	*wo             1oes |
+	*xo             0s |
+	*yo             1oes |
+	*zo             0s
 
 @ Lastly, the fallback if none of the above cases match: append an -s, of
 course.
 
 =
 <en-trie-plural-append-s> ::=
-	*				0s				/* Step 13 */
+	*               0s                /* Step 13 */
 
 @h Verb inflections.
 "Le verbe est l'âme d'une langue" (attributed to Georges Duhamel). And the
@@ -594,31 +594,31 @@ Inform assertion sentences, but are needed for text substitutions.)
 
 =
 <verb-conjugation-instructions> ::=
-	be 					<to-be-conjugation> |
-	be able to ... 		<to-be-able-to-auxiliary> |
-	be able to			<to-be-able-to-conjugation> |
-	could				<modal-conjugation> |
-	may					<modal-conjugation> |
-	might				<modal-conjugation> |
-	must				<modal-conjugation> |
-	should				<modal-conjugation> |
-	would				<modal-conjugation> |
-	auxiliary-have 		<to-have-conjugation> |
-	do 					<to-do-conjugation> |
-	're 				<contracted-to-be-conjugation> |
-	've 				<contracted-to-have-conjugation> |
-	aren't 				<arent-conjugation> |
-	can't 				<cant-modal-conjugation> |
-	don't 				<informal-negated-modal-conjugation> |
-	haven't 			<informal-negated-modal-conjugation> |
-	mayn't 				<informal-negated-modal-conjugation> |
-	mightn't 			<informal-negated-modal-conjugation> |
-	mustn't 			<informal-negated-modal-conjugation> |
-	wouldn't 			<informal-negated-modal-conjugation> |
-	couldn't 			<informal-negated-modal-conjugation> |
-	shouldn't 			<informal-negated-modal-conjugation> |
-	won't 				<informal-negated-modal-conjugation> |
-	... 				<regular-verb-conjugation>
+	be              <to-be-conjugation> |
+	be able to ...  <to-be-able-to-auxiliary> |
+	be able to      <to-be-able-to-conjugation> |
+	could           <modal-conjugation> |
+	may             <modal-conjugation> |
+	might           <modal-conjugation> |
+	must            <modal-conjugation> |
+	should          <modal-conjugation> |
+	would           <modal-conjugation> |
+	auxiliary-have  <to-have-conjugation> |
+	do              <to-do-conjugation> |
+	're             <contracted-to-be-conjugation> |
+	've             <contracted-to-have-conjugation> |
+	aren't          <arent-conjugation> |
+	can't           <cant-modal-conjugation> |
+	don't           <informal-negated-modal-conjugation> |
+	haven't         <informal-negated-modal-conjugation> |
+	mayn't          <informal-negated-modal-conjugation> |
+	mightn't        <informal-negated-modal-conjugation> |
+	mustn't         <informal-negated-modal-conjugation> |
+	wouldn't        <informal-negated-modal-conjugation> |
+	couldn't        <informal-negated-modal-conjugation> |
+	shouldn't       <informal-negated-modal-conjugation> |
+	won't           <informal-negated-modal-conjugation> |
+	...             <regular-verb-conjugation>
 
 @ We will start with two auxiliary verbs, that is, verbs used to construct
 forms of other verbs. The first is "to have"; as we'll see, English uses
@@ -753,10 +753,10 @@ A simple example, then, which uses only feature (d) of these exotica:
 
 =
 <to-have-tabulation> ::=
-	a1+		<to-have-present> |
-	a1-		<to-have-present> not |
-	a2+		had |
-	a2-		had not
+	a1+        <to-have-present> |
+	a1-        <to-have-present> not |
+	a2+        had |
+	a2-        had not
 
 @ And this is an example of splitting into cases for the six persons,
 1PS, 2PS, 3PS, 1PP, 2PP, 3PP. I have, you have, he has, we have, you have,
@@ -801,20 +801,20 @@ may have to revisit this for languages other than English.)
 
 =
 <to-do-conjugation> ::=
-	2 		doing |
-	3 		done |
+	2         doing |
+	3         done |
 	<to-do-tabulation>
 
 <to-do-tabulation> ::=
-	a1+		<to-do-present> |
-	a1-		<to-do-present> not |
-	a2+		did |
-	a2-		did not |
-	a3		( t1 auxiliary-have ) done |
-	a4		( t2 auxiliary-have ) done |
-	a5+		will do |
-	a5-		will not do |
-	p*		done by
+	a1+       <to-do-present> |
+	a1-       <to-do-present> not |
+	a2+       did |
+	a2-       did not |
+	a3        ( t1 auxiliary-have ) done |
+	a4        ( t2 auxiliary-have ) done |
+	a5+       will do |
+	a5-       will not do |
+	p*        done by
 
 <to-do-present> ::=
 	do | do | does | do | do | do
@@ -840,10 +840,10 @@ to "grabs onto", "grabbing onto" and so on.
 
 =
 <regular-verb-conjugation> ::=
-	2 		<en-trie-present-participle> |
-	3 		<en-trie-past-participle> |
-	5 		<en-trie-present-verb-form> |
-	6 		<en-trie-past> |
+	2         <en-trie-present-participle> |
+	3         <en-trie-past-participle> |
+	5         <en-trie-present-verb-form> |
+	6         <en-trie-past> |
 	<regular-verb-tabulation>
 
 @ Here we see our auxiliary verbs in use. For the negated present tense,
@@ -858,15 +858,15 @@ a bequest".)
 
 =
 <regular-verb-tabulation> ::=
-	a1+		<regular-verb-present> |
-	a1-		( do ) 1 |
-	a2+		6 |
-	a2-		( do ) 1 |
-	a3		( t1 auxiliary-have ) 3 |
-	a4		( t2 auxiliary-have ) 3 |
-	a5+		will 1 |
-	a5-		will not 1 |
-	p*		3 by
+	a1+       <regular-verb-present> |
+	a1-       ( do ) 1 |
+	a2+       6 |
+	a2-       ( do ) 1 |
+	a3        ( t1 auxiliary-have ) 3 |
+	a4        ( t2 auxiliary-have ) 3 |
+	a5+       will 1 |
+	a5-       will not 1 |
+	p*        3 by
 
 @ This looks odd, but what it says is that the present tense of a regular
 English verb is always the infinitive (I take, you take, we take, and so on)
@@ -887,14 +887,14 @@ as we'll see.)
 	<to-be-tabulation>
 
 <to-be-tabulation> ::=
-	a1+		<to-be-present> |
-	a1-		<to-be-present> not |
-	a2+		<to-be-past> |
-	a2-		<to-be-past> not |
-	a3		( t1 auxiliary-have ) been |
-	a4		( t2 auxiliary-have ) been |
-	a5+		will be |
-	a5-		will not be
+	a1+       <to-be-present> |
+	a1-       <to-be-present> not |
+	a2+       <to-be-past> |
+	a2-       <to-be-past> not |
+	a3        ( t1 auxiliary-have ) been |
+	a4        ( t2 auxiliary-have ) been |
+	a5+       will be |
+	a5-       will not be
 
 <to-be-present> ::=
 	am | are | is | are | are | are
@@ -922,19 +922,19 @@ to elide, so we always pronounce it that way and the spelling now follows.
 
 =
 <to-be-able-to-conjugation> ::=
-	2 		<en-trie-present-participle> |
-	3 		<en-trie-past-participle> |
+	2         <en-trie-present-participle> |
+	3         <en-trie-past-participle> |
 	<to-be-able-to-tabulation>
 
 <to-be-able-to-tabulation> ::=
-	a1+		can ++1 |
-	a1-		cannot ++1 |
-	a2+		could ++1 |
-	a2-		could not ++1 |
-	a3		( t1 auxiliary-have ) been able to ++1 |
-	a4		( t2 auxiliary-have ) been able to ++1 |
-	a5+		will be able to ++1 |
-	a5-		will not be able to ++1
+	a1+       can ++1 |
+	a1-       cannot ++1 |
+	a2+       could ++1 |
+	a2-       could not ++1 |
+	a3        ( t1 auxiliary-have ) been able to ++1 |
+	a4        ( t2 auxiliary-have ) been able to ++1 |
+	a5+       will be able to ++1 |
+	a5-       will not be able to ++1
 
 @ Inform has only a simple understanding of what "can" means, so it doesn't
 allow the source text to use "can" in combination with arbitrary verbs.
@@ -963,13 +963,13 @@ Jane".
 
 =
 <to-be-able-to-auxiliary> ::=
-	2 		<en-trie-present-participle> |
-	3 		<en-trie-past-participle> |
+	2        <en-trie-present-participle> |
+	3        <en-trie-past-participle> |
 	<to-be-able-to-auxiliary-tabulation>
 
 <to-be-able-to-auxiliary-tabulation> ::=
-	a		( be able to ) 4 |
-	p		( be able to ) be 3 ( 4 ) by
+	a        ( be able to ) 4 |
+	p        ( be able to ) be 3 ( 4 ) by
 
 @ The following handles the other English modal verbs ("might", "should"
 and so on) surprisingly easily. The notation |++1| means that the verb
@@ -978,21 +978,21 @@ being modified should appear in verb form 1, and so on: for example,
 
 =
 <modal-conjugation> ::=
-	2 		<en-trie-present-participle> |
-	3 		<en-trie-past-participle> |
+	2         <en-trie-present-participle> |
+	3         <en-trie-past-participle> |
 	<modal-tabulation>
 
 <modal-tabulation> ::=
-	a1+		4 ++1 |
-	a1-		4 not ++1 |
-	a2+		4 have ++2 |
-	a2-		4 not have ++2 |
-	a3+		4 have ++2 |
-	a3-		4 not have ++2 |
-	a4+		4 have ++2 |
-	a4-		4 not have ++2 |
-	a5+		4 ++1 |
-	a5-		4 not ++1
+	a1+       4 ++1 |
+	a1-       4 not ++1 |
+	a2+       4 have ++2 |
+	a2-       4 not have ++2 |
+	a3+       4 have ++2 |
+	a3-       4 not have ++2 |
+	a4+       4 have ++2 |
+	a4-       4 not have ++2 |
+	a5+       4 ++1 |
+	a5-       4 not ++1
 
 @ That completes our basic kit of verbs nicely. What's left is used only
 for generating text at run-time -- for printing adaptive messages, that is;
@@ -1028,16 +1028,16 @@ dialects -- and we aren't even going to try to cope with that.
 	<contracted-to-be-tabulation>
 
 <contracted-to-be-tabulation> ::=
-	a1+		<contracted-to-be-present> |
-	a1-		<contracted-to-be-present> not |
-	a2+		<contracted-to-be-past> |
-	a2-		<contracted-to-be-past-negated> |
-	a3+		<contracted-to-have-present> been |
-	a3-		<contracted-to-have-present> not been |
-	a4+		'd been |
-	a4-		'd not been |
-	a5+		'll be |
-	a5-		'll not be
+	a1+        <contracted-to-be-present> |
+	a1-        <contracted-to-be-present> not |
+	a2+        <contracted-to-be-past> |
+	a2-        <contracted-to-be-past-negated> |
+	a3+        <contracted-to-have-present> been |
+	a3-        <contracted-to-have-present> not been |
+	a4+        'd been |
+	a4-        'd not been |
+	a5+        'll be |
+	a5-        'll not be
 
 <contracted-to-be-present> ::=
 	'm | 're | 's | 're | 're | 're
@@ -1068,16 +1068,16 @@ go with those.
 	<contracted-to-have-tabulation>
 
 <contracted-to-have-tabulation> ::=
-	a1+		<contracted-to-have-present> |
-	a1-		<contracted-to-have-present> not |
-	a2+		had |
-	a2-		hadn't |
-	a3+		<contracted-to-have-present> had |
-	a3-		<contracted-to-have-present> not had |
-	a4+		'd had |
-	a4-		'd not had |
-	a5+		'll have |
-	a5-		'll not have
+	a1+        <contracted-to-have-present> |
+	a1-        <contracted-to-have-present> not |
+	a2+        had |
+	a2-        hadn't |
+	a3+        <contracted-to-have-present> had |
+	a3-        <contracted-to-have-present> not had |
+	a4+        'd had |
+	a4-        'd not had |
+	a5+        'll have |
+	a5-        'll not have
 
 <contracted-to-have-present> ::=
 	've | 've | 's | 've | 've | 've
@@ -1102,11 +1102,11 @@ that option here.)
 	<arent-tabulation>
 
 <arent-tabulation> ::=
-	a1+		<arent-present> |
-	a2+		<arent-past> |
-	a3+		<arent-perfect> |
-	a4+		hadn't been |
-	a5+		won't be
+	a1+        <arent-present> |
+	a2+        <arent-past> |
+	a3+        <arent-perfect> |
+	a4+        hadn't been |
+	a5+        won't be
 
 <arent-present> ::=
 	am not | aren't | isn't | aren't | aren't | aren't
@@ -1115,7 +1115,7 @@ that option here.)
 	wasn't | weren't | wasn't | weren't | weren't | weren't
 
 <arent-perfect> ::=
-	haven't been |	haven't been | hasn't been | haven't been | haven't been | haven't been
+	haven't been |    haven't been | hasn't been | haven't been | haven't been | haven't been
 
 @ And finally: the contracted informal negatives of various modal verbs which
 it's useful to be able to print, like the "can't" in
@@ -1127,20 +1127,20 @@ of "modal" itself arguable. This is the best we can do.
 
 =
 <informal-negated-modal-conjugation> ::=
-	2 		<en-trie-present-participle> |
-	3 		<en-trie-past-participle> |
-	5 		<en-trie-modal-contracted-past> |
-	6 		<en-trie-modal-contracted-future> |
-	7 		<en-trie-modal-contracted-present> |
+	2         <en-trie-present-participle> |
+	3         <en-trie-past-participle> |
+	5         <en-trie-modal-contracted-past> |
+	6         <en-trie-modal-contracted-future> |
+	7         <en-trie-modal-contracted-present> |
 	<not-instance-of-verb-at-run-time> |
 	<informal-negated-modal-tabulation>
 
 <informal-negated-modal-tabulation> ::=
-	a1+		<informal-negated-modal-present> ++1 |
-	a2+		5 ++2 |
-	a3+		5 ++2 |
-	a4+		5 ++2 |
-	a5+		6 ++1
+	a1+        <informal-negated-modal-present> ++1 |
+	a2+        5 ++2 |
+	a3+        5 ++2 |
+	a4+        5 ++2 |
+	a5+        6 ++1
 
 <informal-negated-modal-present> ::=
 	1 | 1 | 7 | 1 | 1 | 1
@@ -1149,17 +1149,17 @@ of "modal" itself arguable. This is the best we can do.
 
 =
 <cant-modal-conjugation> ::=
-	2 		<en-trie-present-participle> |
-	3 		<en-trie-past-participle> |
+	2         <en-trie-present-participle> |
+	3         <en-trie-past-participle> |
 	<not-instance-of-verb-at-run-time> |
 	<cant-modal-tabulation>
 
 <cant-modal-tabulation> ::=
-	a1+		can't ++1 |
-	a2+		couldn't ++1 |
-	a3+		( t1 haven't ) been able to ++1 |
-	a4+		( t2 haven't ) been able to ++1 |
-	a5+		won't be able to ++1
+	a1+        can't ++1 |
+	a2+        couldn't ++1 |
+	a3+        ( t1 haven't ) been able to ++1 |
+	a4+        ( t2 haven't ) been able to ++1 |
+	a5+        won't be able to ++1
 
 @ We have special tries just to list the forms of the cases we will
 deal with. Tries can do fancy things (see below), but here they act just as
@@ -1171,40 +1171,40 @@ signs can be used if we absolutely have to introduce spaces.
 
 =
 <en-trie-modal-contracted-present> ::=
-	can't		can't |
-	don't		doesn't |
-	haven't		hasn't |
-	won't		won't |
-	mayn't		mayn't |
-	mightn't	mightn't |
-	mustn't		mustn't |
-	wouldn't	wouldn't |
-	couldn't	couldn't |
-	shouldn't	shouldn't
+	can't       can't |
+	don't       doesn't |
+	haven't     hasn't |
+	won't       won't |
+	mayn't      mayn't |
+	mightn't    mightn't |
+	mustn't     mustn't |
+	wouldn't    wouldn't |
+	couldn't    couldn't |
+	shouldn't   shouldn't
 
 <en-trie-modal-contracted-past> ::=
-	can't		couldn't |
-	don't		didn't |
-	haven't		hadn't |
-	won't		wouldn't |
-	mayn't		mayn't+have |
-	mightn't	mightn't+have |
-	mustn't		mustn't+have |
-	wouldn't	wouldn't+have |
-	couldn't	couldn't+have |
-	shouldn't	shouldn't+have
+	can't       couldn't |
+	don't       didn't |
+	haven't     hadn't |
+	won't       wouldn't |
+	mayn't      mayn't+have |
+	mightn't    mightn't+have |
+	mustn't     mustn't+have |
+	wouldn't    wouldn't+have |
+	couldn't    couldn't+have |
+	shouldn't   shouldn't+have
 
 <en-trie-modal-contracted-future> ::=
-	can't		won't+be+able+to |
-	don't		won't |
-	haven't		won't+have |
-	won't		won't |
-	mayn't		mayn't |
-	mightn't	mightn't |
-	mustn't		mustn't |
-	wouldn't	wouldn't |
-	couldn't	couldn't |
-	shouldn't	shouldn't
+	can't       won't+be+able+to |
+	don't       won't |
+	haven't     won't+have |
+	won't       won't |
+	mayn't      mayn't |
+	mightn't    mightn't |
+	mustn't     mustn't |
+	wouldn't    wouldn't |
+	couldn't    couldn't |
+	shouldn't   shouldn't
 
 @ That's the end of the conjugations -- the easy part, it turns out. We now
 need to create the four tries to make verb forms out of the infinitive:
@@ -1280,10 +1280,10 @@ from the act of producing a song.
 	invalid   0ing   |
 	ref       0fing  |
 	stravaig  0ing   |
-	scoog  0ing   |
-	scoug  0ing   |
-	yak    0king  |
-	yok    0king  |
+	scoog     0ing   |
+	scoug     0ing   |
+	yak       0king  |
+	yok       0king  |
 	lek       0king  |
 	trek      0king  |
 	spaniel   0ling  |
@@ -1299,35 +1299,35 @@ from the act of producing a song.
 	chalan    0ing   |
 	challan   0ing   |
 	tyran     0ning  |
-	den   0ning  |
-	hen   0ning  |
-	ken   0ning  |
+	den       0ning  |
+	hen       0ning  |
+	ken       0ning  |
 	misken    0ning  |
 	pen       0ning  |
 	unpen     0ning  |
 	sten      0ning  |
-	in     0ning  |
-	gin   0ning  |
+	in        0ning  |
+	gin       0ning  |
 	begin     0ning  |
-	bin   0ning  |
-	sin   0ning  |
+	bin       0ning  |
+	sin       0ning  |
 	damaskin  0ing   |
 	trampolin 0ing   |
 	chagrin   0ing   |
 	satin     0ing   |
-	on     0ning  |
-	con   0ning  |
-	don   0ning  |
-	kon   0ning  |
+	on        0ning  |
+	con       0ning  |
+	don       0ning  |
+	kon       0ning  |
 	fillip    0ing   |
 	turnip    0ing   |
 	sip       0ping  |
 	cop       0ping  |
 	lop       0ping  |
-	clop 0ping  |
-	flop 0ping  |
-	plop 0ping  |
-	slop 0ping  |
+	clop      0ping  |
+	flop      0ping  |
+	plop      0ping  |
+	slop      0ping  |
 	galop     0ping  |
 	up        0ping  |
 	cup       0ping  |
@@ -1350,9 +1350,9 @@ from the act of producing a song.
 	ballat    0ing   |
 	curat     0ing   |
 	quadrat   0ing   |
-	bet    0ting  |
+	bet       0ting  |
 	abet      0ting  |
-	fet    0ting  |
+	fet       0ting  |
 	fidget    0ing   |
 	target    0ing   |
 	crochet   0ing   |
@@ -1370,8 +1370,8 @@ from the act of producing a song.
 	pet       0ting  |
 	spet      0ting  |
 	ret       0ting  |
-	aret   0ting  |
-	fret   0ting  |
+	aret      0ting  |
+	fret      0ting  |
 	regret    0ting  |
 	basset    0ing   |
 	closet    0ing   |
@@ -1393,13 +1393,13 @@ from the act of producing a song.
 	limit     0ing   |
 	delimit   0ing   |
 	vomit     0ing   |
-	rit 0ting  |
+	rit       0ting  |
 	frit      0ting  |
 	grit      0ting  |
-	bit 0ting  |
-	dit 0ting  |
-	kit 0ting  |
-	sit 0ting  |
+	bit       0ting  |
+	dit       0ting  |
+	kit       0ting  |
+	sit       0ting  |
 	besit     0ting  |
 	outsit    0ting  |
 	resit     0ting  |
@@ -1422,8 +1422,8 @@ from the act of producing a song.
 	facsimile 0ing   |
 	glace     0ing   |
 	jeelie    0ing   |
-	longe  0ing   |
-	lunge  0ing   |
+	longe     0ing   |
+	lunge     0ing   |
 	ouglie    0ing   |
 	peenge    0ing   |
 	pie       0ing   |
@@ -1439,7 +1439,7 @@ from the act of producing a song.
 	singe     0ing   |
 	sortie    0ing   |
 	stymie    0ing   |
-	winge    0ing    |
+	winge     0ing   |
 	swinge    0ing   |
 	tinge     0ing   |
 	unbe      0ing   |
@@ -1459,33 +1459,33 @@ from the act of producing a song.
 
 =
 <en-trie-irregular-compound-present-participle> ::=
-	*<gosyz>ie 0ing  |   /* e.g. boogieing */
-	*ae        0ing  |   /* e.g. spaeing */
-	*quit     0ting  |   /* acquitting, quitting, requitting */
-	*uret     0ting  |   /* carburetting, sulphuretting */
-	*budget   0ing   |   /* budgeting, underbudgeting */
-	*efer     0ring  |   /* deferring, preferring, referring */
-	*nfer     0ring  |   /* conferring, inferring */
-	*sfer     0ring  |   /* retransferring, transferring */
-	*bias     0sing  |   /* biassing, unbiassing */
-	*bishop   0ing   |   /* bishoping, unbishoping */
-	*woman    0ing   |   /* womaning, unwomaning */
-	*jambok   0king  |   /* jambokking, sjambokking */
-	*alog     0ing   |   /* dialoging, cataloging */
-	*daub     0ing       /* daubing, bedaubing */
+	*<gosyz>ie  0ing   |   /* e.g. boogieing */
+	*ae         0ing   |   /* e.g. spaeing */
+	*quit       0ting  |   /* acquitting, quitting, requitting */
+	*uret       0ting  |   /* carburetting, sulphuretting */
+	*budget     0ing   |   /* budgeting, underbudgeting */
+	*efer       0ring  |   /* deferring, preferring, referring */
+	*nfer       0ring  |   /* conferring, inferring */
+	*sfer       0ring  |   /* retransferring, transferring */
+	*bias       0sing  |   /* biassing, unbiassing */
+	*bishop     0ing   |   /* bishoping, unbishoping */
+	*woman      0ing   |   /* womaning, unwomaning */
+	*jambok     0king  |   /* jambokking, sjambokking */
+	*alog       0ing   |   /* dialoging, cataloging */
+	*daub       0ing       /* daubing, bedaubing */
 
 @ And now rules for consonant doubling:
 
 =
 <en-trie-regular-a-present-participle> ::=
-	*<aeiouy>b            0bing       |
-	*<dglmpw>ad           0ding       |
-	*<bhlnrtw>ed          0ding       |
-	*<bklr>id             0ding       |
-	*<cdghlnprst>od       0ding       |
-	*<bchmprtw>ud         0ding       |
-	*uf                   0fing       |
-	*<aeiouy>g             0ging       |
+	*<aeiouy>b             0bing      |
+	*<dglmpw>ad            0ding      |
+	*<bhlnrtw>ed           0ding      |
+	*<bklr>id              0ding      |
+	*<cdghlnprst>od        0ding      |
+	*<bchmprtw>ud          0ding      |
+	*uf                    0fing      |
+	*<aeiouy>g             0ging      |
 	*<bcdhiklmnprstuv>al   0ling      |
 	*<bcdfghkmnprstuvwz>el 0ling      |
 	*<cfmnrtv>il           0ling      |
@@ -1549,157 +1549,157 @@ removed.
 	<en-trie-past>
 
 <en-trie-irregular-past-participle> ::=
-	be			been |
-	have		had |
-	do			did |
-	arise		arisen |
-	awake		awoken |
-	bear		borne |
-	beat		beaten |
-	become		become |
-	befall		befallen |
-	beget		begotten |
-	begin		begun |
-	bespeak		bespoken |
-	bite		bitten |
-	blow		blown |
-	break		broken |
-	browbeat	browbeaten |
-	choose		chosen |
-	cleave		cloven |
-	come		come |
-	dive		dived |
-	draw		drawn |
-	drink		drunk |
-	drive		driven |
-	eat			eaten |
-	fall		fallen |
-	fly			flown |
-	forbear		forborne |
-	forbid		forbidden |
-	forego		foregone |
-	foreknow	foreknown |
-	forelie		forlain |
-	forerun		forerun |
-	foresee		foreseen |
-	forget		forgotten |
-	forgive		forgiven |
-	forgo		forgone |
-	forsake		forsaken |
-	forswear	forsworn |
-	freeze		frozen |
-	ghostwrite	ghostwritten |
-	give		given |
-	go			gone |
-	grow		grown |
-	hew			hewn |
-	hide		hidden |
-	interweave	interwoven |
-	know		known |
-	lade		laden |
-	misbecome	misbecome |
-	misbeget	misbegotten |
-	mischoose	mischosen |
-	misdo		misdone |
-	misget		misgotten |
-	misgive		misgiven |
-	misknow		misknown |
-	misshape	misshapen |
-	misspeak	misspoken |
-	mistake		mistaken |
-	miswrite	miswritten |
-	mow			mown |
-	outdo		outdone |
-	outgrow		outgrown |
-	outgrow		outgrown |
-	outrun		outrun |
-	outshine	outshone |
-	outswear	outsworn |
-	outthrow	outthrown |
-	overbear	overborne |
-	overblow	overblown |
-	overclothe	overclad |
-	overcome	overcome |
-	overdo		overdone |
-	overdraw	overdrawn |
-	overdrink	overdrunk |
-	overdrive	overdriven |
-	overeat		overeaten |
-	overfly		overflown |
-	overgrow	overgrown |
-	overlie		overlain |
-	override	overridden |
-	overrun		overrun |
-	oversee		overseen |
-	oversew		oversewn |
-	overshake	overshaken |
-	overstride	overstridden |
-	overtake	overtaken |
-	overwear	overworn |
-	overwrite	overwritten |
-	partake		partaken |
-	plead		pled |
-	redo		redone |
-	redraw		redrawn |
-	regrow		regrown |
-	rerun		rerun |
-	resing		resung |
-	retake		retaken |
-	retread		retrodden |
-	rewrite		rewritten |
-	ride		ridden |
-	ring		rung |
-	rise		risen |
-	rive		riven |
-	run			run |
-	saw			sawn |
-	see			seen |
-	sew			sewn |
-	shake		shaken |
-	shave		shaven |
-	shear		shorn |
-	shine		shone |
-	shoe		shodden |
-	show		shown |
-	shrink		shrunk |
-	shrive		shriven |
-	sing		sung |
-	sink		sunk |
-	slay		slain |
-	smite		smitten |
-	sow			sown |
-	speak		spoken |
-	spin		spun |
-	spit		spit |
-	spring		sprung |
-	steal		stolen |
-	stink		stunk |
-	stride		stridden |
-	bestride	bestridden |
-	strike		stricken |
-	strive		striven |
-	swear		sworn |
-	swell		swollen |
-	take		taken |
-	tear		torn |
-	thrive		thriven |
-	throw		thrown |
-	tread		trodden |
-	underbear	underborne |
-	underdo		underdone |
-	underdraw	underdrawn |
-	undergo		undergone |
-	undergrow	undergrown |
-	underrun	underrun |
-	undertake	undertaken |
-	underwrite	underwritten |
-	undo		undone |
-	wake		woken |
-	wear		worn |
-	weave		woven |
-	withdraw	withdrawn |
-	wring		wrung |
-	write		written
+	be          been |
+	have        had |
+	do          did |
+	arise       arisen |
+	awake       awoken |
+	bear        borne |
+	beat        beaten |
+	become      become |
+	befall      befallen |
+	beget       begotten |
+	begin       begun |
+	bespeak     bespoken |
+	bite        bitten |
+	blow        blown |
+	break       broken |
+	browbeat    browbeaten |
+	choose      chosen |
+	cleave      cloven |
+	come        come |
+	dive        dived |
+	draw        drawn |
+	drink       drunk |
+	drive       driven |
+	eat         eaten |
+	fall        fallen |
+	fly         flown |
+	forbear     forborne |
+	forbid      forbidden |
+	forego      foregone |
+	foreknow    foreknown |
+	forelie     forlain |
+	forerun     forerun |
+	foresee     foreseen |
+	forget      forgotten |
+	forgive     forgiven |
+	forgo       forgone |
+	forsake     forsaken |
+	forswear    forsworn |
+	freeze      frozen |
+	ghostwrite  ghostwritten |
+	give        given |
+	go          gone |
+	grow        grown |
+	hew         hewn |
+	hide        hidden |
+	interweave  interwoven |
+	know        known |
+	lade        laden |
+	misbecome   misbecome |
+	misbeget    misbegotten |
+	mischoose   mischosen |
+	misdo       misdone |
+	misget      misgotten |
+	misgive     misgiven |
+	misknow     misknown |
+	misshape    misshapen |
+	misspeak    misspoken |
+	mistake     mistaken |
+	miswrite    miswritten |
+	mow         mown |
+	outdo       outdone |
+	outgrow     outgrown |
+	outgrow     outgrown |
+	outrun      outrun |
+	outshine    outshone |
+	outswear    outsworn |
+	outthrow    outthrown |
+	overbear    overborne |
+	overblow    overblown |
+	overclothe  overclad |
+	overcome    overcome |
+	overdo      overdone |
+	overdraw    overdrawn |
+	overdrink   overdrunk |
+	overdrive   overdriven |
+	overeat     overeaten |
+	overfly     overflown |
+	overgrow    overgrown |
+	overlie     overlain |
+	override    overridden |
+	overrun     overrun |
+	oversee     overseen |
+	oversew     oversewn |
+	overshake   overshaken |
+	overstride  overstridden |
+	overtake    overtaken |
+	overwear    overworn |
+	overwrite   overwritten |
+	partake     partaken |
+	plead       pled |
+	redo        redone |
+	redraw      redrawn |
+	regrow      regrown |
+	rerun       rerun |
+	resing      resung |
+	retake      retaken |
+	retread     retrodden |
+	rewrite     rewritten |
+	ride        ridden |
+	ring        rung |
+	rise        risen |
+	rive        riven |
+	run         run |
+	saw         sawn |
+	see         seen |
+	sew         sewn |
+	shake       shaken |
+	shave       shaven |
+	shear       shorn |
+	shine       shone |
+	shoe        shodden |
+	show        shown |
+	shrink      shrunk |
+	shrive      shriven |
+	sing        sung |
+	sink        sunk |
+	slay        slain |
+	smite       smitten |
+	sow         sown |
+	speak       spoken |
+	spin        spun |
+	spit        spit |
+	spring      sprung |
+	steal       stolen |
+	stink       stunk |
+	stride      stridden |
+	bestride    bestridden |
+	strike      stricken |
+	strive      striven |
+	swear       sworn |
+	swell       swollen |
+	take        taken |
+	tear        torn |
+	thrive      thriven |
+	throw       thrown |
+	tread       trodden |
+	underbear   underborne |
+	underdo     underdone |
+	underdraw   underdrawn |
+	undergo     undergone |
+	undergrow   undergrown |
+	underrun    underrun |
+	undertake   undertaken |
+	underwrite  underwritten |
+	undo        undone |
+	wake        woken |
+	wear        worn |
+	weave       woven |
+	withdraw    withdrawn |
+	wring       wrung |
+	write       written
 
 @ That's the mandatory participles sorted out; so now we move on to the two
 additional verb forms used by English. First, the present form: a curiosity
@@ -1713,9 +1713,9 @@ of exceptions to this.
 	... <singular-noun-to-its-plural>
 
 <en-trie-irregular-third-person-present> ::=
-	be				is |
-	have			has |
-	do				does
+	be          is |
+	have        has |
+	do          does
 
 @ Second, the past. This is harder. Once again we have a catalogue of
 Anglo-Saxon past forms (e.g., he chose, not he chooses); and after those
@@ -1732,548 +1732,548 @@ when to double the consonant, which again depends on stress.
 	... <en-trie-regular-c-past>
 
 <en-trie-irregular-past> ::=
-	be	was |
-	do	did |
-	go	went |
-	in	0ned |
-	on	0ned |
-	up	0ped |
-	bet	bet |
-	abet	0ted |
-	bid	bid |
-	bin	0ned |
-	bit	0ted |
-	buy	bought |
-	con	0ned |
-	cop	0ped |
-	cup	0ped |
-	cut	cut |
-	den	0ned |
-	dig	dug |
-	dit	0ted |
-	div	0ed |
-	don	0ned |
-	eat	ate |
-	fet	0ted |
-	fit	fitted |
-	fly	flew |
-	fur	0red |
-	gar	0red |
-	get	got |
-	gin	0ned |
-	had	0ded |
-	hem	0med |
-	hen	0ned |
-	hit	hit |
-	ken	0ned |
-	kit	0ted |
-	kon	0ned |
-	lay	laid |
-	lek	0ked |
-	let	let |
-	let	0ted |
-	lop	0ped |
-	net	0ted |
-	ante	0ed |
-	nye	1ed |
-	pay	paid |
-	pen	penned |
-	pet	0ted |
-	pie	1ed |
-	put	put |
-	ref	0fed |
-	ret	0ted |
-	aret	0ted |
-	rid	rid |
-	rit	0ted |
-	run	ran |
-	say	said |
-	see	saw |
-	set	set |
-	sin	0ned |
-	sip	0ped |
-	sit	sat |
-	sus	0sed |
-	aver	0red |
-	vor	0red |
-	wed	wedded |
-	wet	wetted |
-	win	won |
-	yak	0ked |
-	yok	0ked |
-	baye	1ed |
-	bear	bore |
-	beat	beat |
-	bend	bent |
-	abhor	0red |
-	abide	abided |
-	bide	bided |
-	bind	bound |
-	bite	bit |
-	blet	0ted |
-	blow	blew |
-	boob	0ed |
-	brut	0ed |
-	burn	burnt |
-	cast	cast |
-	clop	0ped |
-	come	came |
-	deal	dealt |
-	dele	1ed |
-	dive	dove |
-	drag	dragged |
-	draw	drew |
-	duet	0ted |
-	fall	fell |
-	feed	fed |
-	feel	felt |
-	find	found |
-	flee	fled |
-	flop	0ped |
-	fret	0ted |
-	frit	0ted |
-	give	gave |
-	grit	0ted |
-	grow	grew |
-	hang	hung |
-	have	had |
-	hear	heard |
-	hide	hid |
-	hold	held |
-	hurt	hurt |
-	item	0ed |
-	keep	kept |
-	knit	knit |
-	know	knew |
-	lade	laded |
-	lead	led |
-	lend	lent |
-	aleye	1ed |
-	lose	lost |
-	make	made |
-	mean	meant |
-	meet	met |
-	plop	0ped |
-	quad	0ded |
-	quit	quit |
-	quod	0ded |
-	read	read |
-	redo	redid |
-	rend	rent |
-	ride	rode |
-	ring	rang |
-	arise	arose |
-	rise	rose |
-	rive	rove |
-	seek	sought |
-	sell	sold |
-	send	sent |
-	shed	shed |
-	shoe	shoed |
-	shut	shut |
-	sing	sang |
-	sink	sank |
-	sker	0red |
-	slip	slipped |
-	slit	slit |
-	slop	0ped |
-	smur	0red |
-	spet	0ted |
-	spin	span |
-	spit	spat |
-	sten	0ned |
-	stye	1ed |
-	swim	swam |
-	take	took |
-	tear	tore |
-	tell	told |
-	trek	0ked |
-	unbe	1ed |
-	undo	undid |
-	vise	1ed |
-	awake	awoke |
-	wake	woke |
-	wear	wore |
-	weep	wept |
-	whid	0ded |
-	wind	wound |
-	beget	begot |
-	begin	began |
-	benet	0ted |
-	beset	beset |
-	besit	0ted |
-	binge	1ed |
-	bleed	bled |
-	break	broke |
-	breed	bred |
-	bring	brought |
-	build	built |
-	burst	burst |
-	catch	caught |
-	cling	clung |
-	covet	0ed |
-	creep	crept |
-	curat	0ed |
-	debut	0ed |
-	demur	0red |
-	deter	0red |
-	drink	drank |
-	drive	drove |
-	fight	fought |
-	fling	flung |
-	forgo	forwent |
-	galop	0ped |
-	glace	0ed |
-	grind	ground |
-	herye	1ed |
-	hoise	hoist |
-	inlay	inlaid |
-	input	input |
-	inset	inset |
-	inter	0red |
-	kneel	knelt |
-	alarum	0ed |
-	leave	left |
-	light	lit |
-	limit	0ed |
-	longe	1ed |
-	lunge	1ed |
-	madam	0ed |
-	misdo	misdid |
-	outdo	outdid |
-	picot	0ed |
-	pilot	0ed |
-	prove	proved |
-	queue	1ed |
-	reave	reft |
-	recce	1ed |
-	recut	recut |
-	relet	0ted |
-	repay	repaid |
-	rerun	reran |
-	reset	reset |
-	resit	0ted |
-	roset	0ed |
-	route	1ed |
-	salad	0ed |
-	satin	0ed |
-	saute	0ed |
-	scoog	0ed |
-	scoug	0ed |
-	segue	1ed |
-	shake	shook |
-	shall	should |
-	shape	shaped |
-	shave	shaved |
-	shine	shined |
-	shoot	shot |
-	singe	1ed |
-	sleep	slept |
-	slide	slid |
-	sling	slung |
-	slink	slunk |
-	smite	smote |
-	speak	spoke |
-	speed	sped |
-	spell	spelt |
-	spend	spent |
-	split	split |
-	squid	0ded |
-	stand	stood |
-	steal	stole |
-	stick	stuck |
-	sting	stung |
-	stink	stank |
-	swear	swore |
-	sweep	swept |
-	swing	swung |
-	teach	taught |
-	think	thought |
-	throw	threw |
-	tinge	1ed |
-	tread	trod |
-	tyran	0ned |
-	unpen	0ned |
-	unset	unset |
-	upset	upset |
-	vogue	1ed |
-	vomit	0ed |
-	weave	wove |
-	winge	1ed |
-	worth	worth |
-	wring	wrang |
-	write	wrote |
-	ballad	0ed |
-	ballat	0ed |
-	ballot	0ed |
-	basset	0ed |
-	become	became |
-	befall	befell |
-	behold	beheld |
-	birdie	1ed |
-	caucus	0ed |
-	centre	1ed |
-	chalan	0ed |
-	chasse	1ed |
-	choose	chose |
-	cleave	clove |
-	closet	0ed |
-	clothe	clothed |
-	combat	0ed |
-	coquet	0ted |
-	corset	0ed |
-	cosset	0ed |
-	emblem	0ed |
-	fidget	0ed |
-	fillip	0ed |
-	forbid	forbade |
-	forego	forewent |
-	forget	forgot |
-	freeze	froze |
-	gusset	0ed |
-	jeelie	1ed |
-	misfit	misfitted |
-	misget	misgot |
-	mishit	mishit |
-	misken	0ned |
-	mislay	mislaid |
-	missay	missaid |
-	misset	misset |
-	mortar	0ed |
-	naysay	naysaid |
-	ouglie	1ed |
-	outbid	outbid |
-	output	output |
-	outrun	outran |
-	outsit	outsat |
-	overdo	overdid |
-	parrot	0ed |
-	peenge	1ed |
-	posset	0ed |
-	possum	0ed |
-	prepay	prepaid |
-	preset	preset |
-	profit	0ed |
-	quaere	1ed |
-	rallye	1ed |
-	recast	recast |
-	redraw	redrew |
-	regret	0ted |
-	regrow	regrew |
-	re-lay	re-laid |
-	remake	remade |
-	reread	reread |
-	resell	resold |
-	resend	resent |
-	resing	resang |
-	retake	retook |
-	retell	retold |
-	rewind	rewound |
-	russet	0ed |
-	shrink	shrank |
-	shrive	shrove |
-	slalom	0ed |
-	sortie	1ed |
-	spread	spread |
-	spring	sprang |
-	stride	strode |
-	strike	struck |
-	string	strung |
-	strive	strove |
-	stymie	1ed |
-	sublet	sublet |
-	sunset	sunset |
-	swinge	1ed |
-	target	0ed |
-	thrive	throve |
-	turnip	0ed |
-	unbend	unbent |
-	unbind	unbound |
-	unhear	unheard |
-	unmake	unmade |
-	unwind	unwound |
-	uphold	upheld |
-	velvet	0ed |
-	waylay	waylaid |
-	whinge	1ed |
-	writhe	writhed |
-	beseech	besought |
-	bespeak	bespoke |
-	briquet	0ted |
-	buckram	0ed |
-	chagrin	0ed |
-	challan	0ed |
-	crochet	0ed |
-	delimit	0ed |
-	epithet	0ed |
-	forbear	forbore |
-	forelay	forelaid |
-	forelie	forlay |
-	forerun	foreran |
-	foresee	foresaw |
-	forgive	forgave |
-	forsake	forsook |
-	gainsay	gainsaid |
-	inbreed	inbred |
-	invalid	0ed |
-	leaflet	0ted |
-	lipread	lipread |
-	miscast	miscast |
-	misdeal	misdealt |
-	misfeed	misfed |
-	misgive	misgave |
-	mishear	misheard |
-	mishold	misheld |
-	miskeep	miskept |
-	misknow	misknew |
-	mislead	misled |
-	misread	misread |
-	missend	missent |
-	mistake	mistook |
-	outgrow	outgrew |
-	outride	outrode |
-	outsell	outsold |
-	outswim	outswam |
-	outtell	outtold |
-	outwear	outwore |
-	overbid	overbid |
-	overbuy	overbought |
-	overeat	overate |
-	overfly	overflew |
-	overhit	overhit |
-	overlay	overlaid |
-	overlie	overlay |
-	overnet	0ted |
-	overpay	overpaid |
-	overrun	overran |
-	oversee	oversaw |
-	overset	overset |
-	parquet	0ted |
-	partake	partook |
-	podcast	podcast |
-	precast	precast |
-	quadrat	0ed |
-	ratchet	0ed |
-	rebuild	rebuilt |
-	reinter	0red |
-	reroute	1ed |
-	reshoot	reshot |
-	rethink	rethought |
-	retread	retrod |
-	rewrite	rewrote |
-	schappe	1ed |
-	spaniel	0led |
-	underdo	underdid |
-	undergo	underwent |
-	unrivet	0ed |
-	vermeil	0led |
-	webcast	webcast |
-	backbite	backbit |
-	bespread	bespread |
-	bestride	bestrode |
-	browbeat	browbeat |
-	cicerone	1ed |
-	crosscut	crosscut |
-	damaskin	0ed |
-	disinter	0red |
-	ensilage	1ed |
-	forecast	forecast |
-	foreknow	foreknew |
-	foretell	foretold |
-	forswear	forswore |
-	intercut	intercut |
-	misbeget	misbegot |
-	misshape	misshaped |
-	misshoot	misshot |
-	misspeak	misspoke |
-	misspell	misspelt |
-	misspend	misspent |
-	miswrite	miswrote |
-	outdrink	outdrunk |
-	outfight	outfought |
-	outshine	outshone |
-	outspend	outspent |
-	outswear	outswore |
-	outthink	outthought |
-	outthrow	outthrew |
-	overbear	overbore |
-	overbend	overbent |
-	overblow	overblew |
-	overcast	overcast |
-	overcome	overcame |
-	overdraw	overdrew |
-	overfeed	overfed |
-	overgrow	overgrew |
-	overhang	overhung |
-	overhear	overheard |
-	overlend	overlent |
-	override	overrode |
-	oversell	oversold |
-	overslip	overslipped |
-	overtake	overtook |
-	overwear	overwore |
-	sightsee	sightsaw |
-	stravaig	0ed |
-	telecast	telecast |
-	unclothe	unclothed |
-	underbid	underbid |
-	underbuy	underbought |
-	undercut	undercut |
-	underdig	underdug |
-	underlay	underlaid |
-	underlet	0ted |
-	underlie	underlaid |
-	underpay	underpaid |
-	underrun	underran |
-	unfreeze	unfroze |
-	withdraw	withdrew |
-	withhold	withheld |
-	broadcast	broadcast |
-	discomfit	0ed |
-	facsimile	1ed |
-	misbecome	misbecame |
-	mischoose	mischose |
-	outthrust	outthrust |
-	overbreed	overbred |
-	overbuild	overbuilt |
-	overdrink	overdrank |
-	overdrive	overdrove |
-	overshake	overshook |
-	overshine	overshone |
-	overshoot	overshot |
-	oversleep	overslept |
-	overslide	overslid |
-	overspend	overspent |
-	overswing	overswung |
-	overwrite	overwrote |
-	proofread	proofread |
-	reaedifye	1ed |
-	restringe	1ed |
-	simulcast	simulcast |
-	trampolin	0ed |
-	underbear	underbore |
-	underbind	underbound |
-	undercast	undercast |
-	underdraw	underdrew |
-	underfeed	underfed |
-	undergrow	undergrew |
-	underhang	underhung |
-	undersaye	1ed |
-	undersell	undersold |
-	undertake	undertook |
-	withstand	withstood |
-	ghostwrite	ghostwrote |
-	interbreed	interbred |
-	interweave	interwove |
-	overclothe	overclothed |
-	overstride	overstrode |
-	underbuild	underbuilt |
-	undershoot	undershot |
-	underspend	underspent |
-	understand	understood |
-	underwrite	underwrote |
-	underclothe	underclothed |
-	misunderstand	misunderstood
+	be     was |
+	do     did |
+	go     went |
+	in     0ned |
+	on     0ned |
+	up     0ped |
+	bet    bet |
+	abet   0ted |
+	bid    bid |
+	bin    0ned |
+	bit    0ted |
+	buy    bought |
+	con    0ned |
+	cop    0ped |
+	cup    0ped |
+	cut    cut |
+	den    0ned |
+	dig    dug |
+	dit    0ted |
+	div    0ed |
+	don    0ned |
+	eat    ate |
+	fet    0ted |
+	fit    fitted |
+	fly    flew |
+	fur    0red |
+	gar    0red |
+	get    got |
+	gin    0ned |
+	had    0ded |
+	hem    0med |
+	hen    0ned |
+	hit    hit |
+	ken    0ned |
+	kit    0ted |
+	kon    0ned |
+	lay    laid |
+	lek    0ked |
+	let    let |
+	let    0ted |
+	lop    0ped |
+	net    0ted |
+	ante   0ed |
+	nye    1ed |
+	pay    paid |
+	pen    penned |
+	pet    0ted |
+	pie    1ed |
+	put    put |
+	ref    0fed |
+	ret    0ted |
+	aret   0ted |
+	rid    rid |
+	rit    0ted |
+	run    ran |
+	say    said |
+	see    saw |
+	set    set |
+	sin    0ned |
+	sip    0ped |
+	sit    sat |
+	sus    0sed |
+	aver   0red |
+	vor    0red |
+	wed    wedded |
+	wet    wetted |
+	win    won |
+	yak    0ked |
+	yok    0ked |
+	baye   1ed |
+	bear   bore |
+	beat   beat |
+	bend   bent |
+	abhor  0red |
+	abide  abided |
+	bide    bided |
+	bind    bound |
+	bite    bit |
+	blet    0ted |
+	blow    blew |
+	boob    0ed |
+	brut    0ed |
+	burn    burnt |
+	cast    cast |
+	clop    0ped |
+	come    came |
+	deal    dealt |
+	dele    1ed |
+	dive    dove |
+	drag    dragged |
+	draw    drew |
+	duet    0ted |
+	fall    fell |
+	feed    fed |
+	feel    felt |
+	find    found |
+	flee    fled |
+	flop    0ped |
+	fret    0ted |
+	frit    0ted |
+	give    gave |
+	grit    0ted |
+	grow    grew |
+	hang    hung |
+	have    had |
+	hear    heard |
+	hide    hid |
+	hold    held |
+	hurt    hurt |
+	item    0ed |
+	keep    kept |
+	knit    knit |
+	know    knew |
+	lade    laded |
+	lead    led |
+	lend    lent |
+	aleye   1ed |
+	lose    lost |
+	make    made |
+	mean    meant |
+	meet    met |
+	plop    0ped |
+	quad    0ded |
+	quit    quit |
+	quod    0ded |
+	read    read |
+	redo    redid |
+	rend    rent |
+	ride    rode |
+	ring    rang |
+	arise   arose |
+	rise    rose |
+	rive    rove |
+	seek    sought |
+	sell    sold |
+	send    sent |
+	shed    shed |
+	shoe    shoed |
+	shut    shut |
+	sing    sang |
+	sink    sank |
+	sker    0red |
+	slip    slipped |
+	slit    slit |
+	slop    0ped |
+	smur    0red |
+	spet    0ted |
+	spin    span |
+	spit    spat |
+	sten    0ned |
+	stye    1ed |
+	swim    swam |
+	take    took |
+	tear    tore |
+	tell    told |
+	trek    0ked |
+	unbe    1ed |
+	undo    undid |
+	vise    1ed |
+	awake   awoke |
+	wake    woke |
+	wear    wore |
+	weep    wept |
+	whid    0ded |
+	wind    wound |
+	beget    begot |
+	begin    began |
+	benet    0ted |
+	beset    beset |
+	besit    0ted |
+	binge    1ed |
+	bleed    bled |
+	break    broke |
+	breed    bred |
+	bring    brought |
+	build    built |
+	burst    burst |
+	catch    caught |
+	cling    clung |
+	covet    0ed |
+	creep    crept |
+	curat    0ed |
+	debut    0ed |
+	demur    0red |
+	deter    0red |
+	drink    drank |
+	drive    drove |
+	fight    fought |
+	fling    flung |
+	forgo    forwent |
+	galop    0ped |
+	glace    0ed |
+	grind    ground |
+	herye    1ed |
+	hoise    hoist |
+	inlay    inlaid |
+	input    input |
+	inset    inset |
+	inter    0red |
+	kneel    knelt |
+	alarum   0ed |
+	leave    left |
+	light    lit |
+	limit    0ed |
+	longe    1ed |
+	lunge    1ed |
+	madam    0ed |
+	misdo    misdid |
+	outdo    outdid |
+	picot    0ed |
+	pilot    0ed |
+	prove    proved |
+	queue    1ed |
+	reave    reft |
+	recce    1ed |
+	recut    recut |
+	relet    0ted |
+	repay    repaid |
+	rerun    reran |
+	reset    reset |
+	resit    0ted |
+	roset    0ed |
+	route    1ed |
+	salad    0ed |
+	satin    0ed |
+	saute    0ed |
+	scoog    0ed |
+	scoug    0ed |
+	segue    1ed |
+	shake    shook |
+	shall    should |
+	shape    shaped |
+	shave    shaved |
+	shine    shined |
+	shoot    shot |
+	singe    1ed |
+	sleep    slept |
+	slide    slid |
+	sling    slung |
+	slink    slunk |
+	smite    smote |
+	speak    spoke |
+	speed    sped |
+	spell    spelt |
+	spend    spent |
+	split    split |
+	squid    0ded |
+	stand    stood |
+	steal    stole |
+	stick    stuck |
+	sting    stung |
+	stink    stank |
+	swear    swore |
+	sweep    swept |
+	swing    swung |
+	teach    taught |
+	think    thought |
+	throw    threw |
+	tinge    1ed |
+	tread    trod |
+	tyran    0ned |
+	unpen    0ned |
+	unset    unset |
+	upset    upset |
+	vogue    1ed |
+	vomit    0ed |
+	weave    wove |
+	winge    1ed |
+	worth    worth |
+	wring    wrang |
+	write    wrote |
+	ballad    0ed |
+	ballat    0ed |
+	ballot    0ed |
+	basset    0ed |
+	become    became |
+	befall    befell |
+	behold    beheld |
+	birdie    1ed |
+	caucus    0ed |
+	centre    1ed |
+	chalan    0ed |
+	chasse    1ed |
+	choose    chose |
+	cleave    clove |
+	closet    0ed |
+	clothe    clothed |
+	combat    0ed |
+	coquet    0ted |
+	corset    0ed |
+	cosset    0ed |
+	emblem    0ed |
+	fidget    0ed |
+	fillip    0ed |
+	forbid    forbade |
+	forego    forewent |
+	forget    forgot |
+	freeze    froze |
+	gusset    0ed |
+	jeelie    1ed |
+	misfit    misfitted |
+	misget    misgot |
+	mishit    mishit |
+	misken    0ned |
+	mislay    mislaid |
+	missay    missaid |
+	misset    misset |
+	mortar    0ed |
+	naysay    naysaid |
+	ouglie    1ed |
+	outbid    outbid |
+	output    output |
+	outrun    outran |
+	outsit    outsat |
+	overdo    overdid |
+	parrot    0ed |
+	peenge    1ed |
+	posset    0ed |
+	possum    0ed |
+	prepay    prepaid |
+	preset    preset |
+	profit    0ed |
+	quaere    1ed |
+	rallye    1ed |
+	recast    recast |
+	redraw    redrew |
+	regret    0ted |
+	regrow    regrew |
+	re-lay    re-laid |
+	remake    remade |
+	reread    reread |
+	resell    resold |
+	resend    resent |
+	resing    resang |
+	retake    retook |
+	retell    retold |
+	rewind    rewound |
+	russet    0ed |
+	shrink    shrank |
+	shrive    shrove |
+	slalom    0ed |
+	sortie    1ed |
+	spread    spread |
+	spring    sprang |
+	stride    strode |
+	strike    struck |
+	string    strung |
+	strive    strove |
+	stymie    1ed |
+	sublet    sublet |
+	sunset    sunset |
+	swinge    1ed |
+	target    0ed |
+	thrive    throve |
+	turnip    0ed |
+	unbend    unbent |
+	unbind    unbound |
+	unhear    unheard |
+	unmake    unmade |
+	unwind    unwound |
+	uphold    upheld |
+	velvet    0ed |
+	waylay    waylaid |
+	whinge    1ed |
+	writhe    writhed |
+	beseech    besought |
+	bespeak    bespoke |
+	briquet    0ted |
+	buckram    0ed |
+	chagrin    0ed |
+	challan    0ed |
+	crochet    0ed |
+	delimit    0ed |
+	epithet    0ed |
+	forbear    forbore |
+	forelay    forelaid |
+	forelie    forlay |
+	forerun    foreran |
+	foresee    foresaw |
+	forgive    forgave |
+	forsake    forsook |
+	gainsay    gainsaid |
+	inbreed    inbred |
+	invalid    0ed |
+	leaflet    0ted |
+	lipread    lipread |
+	miscast    miscast |
+	misdeal    misdealt |
+	misfeed    misfed |
+	misgive    misgave |
+	mishear    misheard |
+	mishold    misheld |
+	miskeep    miskept |
+	misknow    misknew |
+	mislead    misled |
+	misread    misread |
+	missend    missent |
+	mistake    mistook |
+	outgrow    outgrew |
+	outride    outrode |
+	outsell    outsold |
+	outswim    outswam |
+	outtell    outtold |
+	outwear    outwore |
+	overbid    overbid |
+	overbuy    overbought |
+	overeat    overate |
+	overfly    overflew |
+	overhit    overhit |
+	overlay    overlaid |
+	overlie    overlay |
+	overnet    0ted |
+	overpay    overpaid |
+	overrun    overran |
+	oversee    oversaw |
+	overset    overset |
+	parquet    0ted |
+	partake    partook |
+	podcast    podcast |
+	precast    precast |
+	quadrat    0ed |
+	ratchet    0ed |
+	rebuild    rebuilt |
+	reinter    0red |
+	reroute    1ed |
+	reshoot    reshot |
+	rethink    rethought |
+	retread    retrod |
+	rewrite    rewrote |
+	schappe    1ed |
+	spaniel    0led |
+	underdo    underdid |
+	undergo    underwent |
+	unrivet    0ed |
+	vermeil    0led |
+	webcast    webcast |
+	backbite    backbit |
+	bespread    bespread |
+	bestride    bestrode |
+	browbeat    browbeat |
+	cicerone    1ed |
+	crosscut    crosscut |
+	damaskin    0ed |
+	disinter    0red |
+	ensilage    1ed |
+	forecast    forecast |
+	foreknow    foreknew |
+	foretell    foretold |
+	forswear    forswore |
+	intercut    intercut |
+	misbeget    misbegot |
+	misshape    misshaped |
+	misshoot    misshot |
+	misspeak    misspoke |
+	misspell    misspelt |
+	misspend    misspent |
+	miswrite    miswrote |
+	outdrink    outdrunk |
+	outfight    outfought |
+	outshine    outshone |
+	outspend    outspent |
+	outswear    outswore |
+	outthink    outthought |
+	outthrow    outthrew |
+	overbear    overbore |
+	overbend    overbent |
+	overblow    overblew |
+	overcast    overcast |
+	overcome    overcame |
+	overdraw    overdrew |
+	overfeed    overfed |
+	overgrow    overgrew |
+	overhang    overhung |
+	overhear    overheard |
+	overlend    overlent |
+	override    overrode |
+	oversell    oversold |
+	overslip    overslipped |
+	overtake    overtook |
+	overwear    overwore |
+	sightsee    sightsaw |
+	stravaig    0ed |
+	telecast    telecast |
+	unclothe    unclothed |
+	underbid    underbid |
+	underbuy    underbought |
+	undercut    undercut |
+	underdig    underdug |
+	underlay    underlaid |
+	underlet    0ted |
+	underlie    underlaid |
+	underpay    underpaid |
+	underrun    underran |
+	unfreeze    unfroze |
+	withdraw    withdrew |
+	withhold    withheld |
+	broadcast    broadcast |
+	discomfit    0ed |
+	facsimile    1ed |
+	misbecome    misbecame |
+	mischoose    mischose |
+	outthrust    outthrust |
+	overbreed    overbred |
+	overbuild    overbuilt |
+	overdrink    overdrank |
+	overdrive    overdrove |
+	overshake    overshook |
+	overshine    overshone |
+	overshoot    overshot |
+	oversleep    overslept |
+	overslide    overslid |
+	overspend    overspent |
+	overswing    overswung |
+	overwrite    overwrote |
+	proofread    proofread |
+	reaedifye    1ed |
+	restringe    1ed |
+	simulcast    simulcast |
+	trampolin    0ed |
+	underbear    underbore |
+	underbind    underbound |
+	undercast    undercast |
+	underdraw    underdrew |
+	underfeed    underfed |
+	undergrow    undergrew |
+	underhang    underhung |
+	undersaye    1ed |
+	undersell    undersold |
+	undertake    undertook |
+	withstand    withstood |
+	ghostwrite    ghostwrote |
+	interbreed    interbred |
+	interweave    interwove |
+	overclothe    overclothed |
+	overstride    overstrode |
+	underbuild    underbuilt |
+	undershoot    undershot |
+	underspend    underspent |
+	understand    understood |
+	underwrite    underwrote |
+	underclothe    underclothed |
+	misunderstand    misunderstood
 
 <en-trie-irregular-compound-past> ::=
 	*<gosyz>ie 1ed   |   /* e.g. boogied  */
@@ -2292,14 +2292,14 @@ when to double the consonant, which again depends on stress.
 	*daub     0ed        /* daubed , bedaubed  */
 
 <en-trie-regular-a-past> ::=
-	*<aeiouy>b            0bed        |
-	*<dglmpw>ad           0ded        |
-	*<bhlnrtw>ed          0ded        |
-	*<bklr>id             0ded        |
-	*<cdghlnprst>od       0ded        |
-	*<bchmprtw>ud         0ded        |
-	*uf                   0fed        |
-	*<aeiouy>g             0ged        |
+	*<aeiouy>b             0bed       |
+	*<dglmpw>ad            0ded       |
+	*<bhlnrtw>ed           0ded       |
+	*<bklr>id              0ded       |
+	*<cdghlnprst>od        0ded       |
+	*<bchmprtw>ud          0ded       |
+	*uf                    0fed       |
+	*<aeiouy>g             0ged       |
 	*<bcdhiklmnprstuv>al   0led       |
 	*<bcdfghkmnprstuvwz>el 0led       |
 	*<cfmnrtv>il           0led       |
@@ -2339,13 +2339,13 @@ when to double the consonant, which again depends on stress.
 	*iz                    0zed
 
 <en-trie-regular-b-past> ::=
-    *<aeiou>c    0ked       |   /* magicked */
-    *<eioy>e     1ed |  /* dried */
-    *<aeiou>y	 0ed    /* played, conveyed, convoyed, guyed, preyed */
+    *<aeiou>c    0ked  |   /* magicked */
+    *<eioy>e     1ed   |   /* dried */
+    *<aeiou>y     0ed      /* played, conveyed, convoyed, guyed, preyed */
 
 <en-trie-regular-c-past> ::=
-    *e           1ed        |
-    *y           1ied       |	/* shied, tried */
+    *e           1ed   |
+    *y           1ied  |   /* shied, tried */
     *            0ed
 
 @h Present to past participles.
@@ -2376,478 +2376,478 @@ cases followed by two general rules.
 	... <en-trie-pasturise-regular>
 
 <en-trie-pasturise-exceptions> ::=
-	abiding			abided |
-	alighting		alighted |
-	arising			arisen |
-	awaking			awakened |
-	backbiting		backbitten |
-	backsliding		backslidden |
-	bearing			born |
-	beating			beaten |
-	becoming		become |
-	befalling		befallen |
-	begeting		begotten |
-	begining		begun |
-	beholding		beheld |
-	bending			bent |
-	bereaving		bereaved |
-	beseeching		besought |
-	besetting		beset |
-	bestrewing		bestrewn |
-	betting			bet |
-	betaking		betaken |
-	bethinking		bethought |
-	binding			bound |
-	biting			bitten |
-	bleeding		bled |
-	blowing			blown |
-	breaking		broken |
-	breeding		bred |
-	bringing		brought |
-	broadcasting	broadcast |
-	browbeating		browbeaten |
-	building		built |
-	burning			burned |
-	bursting		burst |
-	busting			busted |
-	buying			bought |
-	casting			cast |
-	catching		caught |
-	chiding			chided |
-	choosing		chosen |
-	claping			clapped |
-	clinging		clung |
-	clothing		clothed |
-	coming			come |
-	costing			cost |
-	creeping		crept |
-	crossbreeding	crossbred |
-	cutting			cut |
-	daring			dared |
-	daydreaming		daydreamed |
-	dealing			dealt |
-	diging			dug |
-	dighting		dighted |
-	disproving		disproved |
-	diving			dived |
-	doing			done |
-	drawing			drawn |
-	dreaming		dreamed |
-	drinking		drunk |
-	driving			driven |
-	dwelling		dwelt |
-	eating			eaten |
-	enwinding		enwound |
-	falling			fallen |
-	feeding			fed |
-	feeling			felt |
-	fighting		fought |
-	finding			found |
-	fitting			fitted |
-	fleeing			fled |
-	flinging		flung |
-	flying			flown |
-	forbearing		forborne |
-	forbiding		forbidden |
-	fordoing		fordone |
-	forecasting		forecast |
-	foregoing		foregone |
-	foreknowing		foreknown |
-	foreruning		forerun |
-	foreseeing		foreseen |
-	foreshowing		foreshown |
-	forespeaking	forespoken |
-	foretelling		foretold |
-	forgetting		forgotten |
-	forgiving		forgiven |
-	forsaking		forsaken |
-	forswearing		forsworn |
-	fraughting		fraught |
-	freezing		frozen |
-	frostbiting		frostbitten |
-	gainsaying		gainsaid |
-	getting			got |
-	gilding			gilded |
-	giving			given |
-	going			gone |
-	grinding		ground |
-	growing			grown |
-	halterbreaking	halterbroken |
-	hamstringing	hamstrung |
-	hand-feeding	hand-fed |
-	handwriting		handwritten |
-	hanging			hung |
-	hearing			heard |
-	heaving			heaved |
-	hewing			hewn |
-	hiding			hidden |
-	hitting			hit |
-	holding			held |
-	hurting			hurt |
-	inbreeding		inbred |
-	inlaying		inlaid |
-	inputing		input |
-	insetting		inset |
-	interbreeding	interbred |
-	intercutting	intercut |
-	interlaying		interlaid |
-	intersetting	interset |
-	interweaving	interwoven |
-	interwinding	interwound |
-	inweaving		inwoven |
-	jerry-building	jerry-built |
-	keeping			kept |
-	kneeling		knelt |
-	knitting		knitted |
-	knowing			known |
-	lading			laden |
-	landsliding		landslid |
-	laying			laid |
-	leading			led |
-	leaning			leaned |
-	leaping			leaped |
-	learning		learned |
-	leaving			left |
-	lending			lent |
-	letting			let |
-	lieing			lain |
-	lighting		lit |
-	lip-reading		lip-read |
-	losing			lost |
-	making			made |
-	meaning			meant |
-	meeting			met |
-	misbecoming		misbecome |
-	miscasting		miscast |
-	miscutting		miscut |
-	misdealing		misdealt |
-	misdoing		misdone |
-	mishearing		misheard |
-	mishitting		mishit |
-	mislaying		mislaid |
-	misleading		misled |
-	mislearning		mislearned |
-	misreading		misread |
-	missaying		missaid |
-	missending		missent |
-	missetting		misset |
-	misspeaking		misspoken |
-	misspelling		misspelled |
-	misspending		misspent |
-	misswearing		missworn |
-	mistaking		mistaken |
-	misteaching		mistaught |
-	mistelling		mistold |
-	misthinking		misthought |
-	misunderstanding	misunderstood |
-	miswearing		misworn |
-	misweding		miswed |
-	miswriting		miswritten |
-	mowing			mowed |
-	offsetting		offset |
-	outbiding		outbid |
-	outbreeding		outbred |
-	outdoing		outdone |
-	outdrawing		outdrawn |
-	outdrinking		outdrunk |
-	outdriving		outdriven |
-	outfighting		outfought |
-	outflying		outflown |
-	outgrowing		outgrown |
-	outlaying		outlaid |
-	outleaping		outleaped |
-	outputing		output |
-	outriding		outridden |
-	outruning		outrun |
-	outseeing		outseen |
-	outselling		outsold |
-	outshining		outshined |
-	outshooting		outshot |
-	outsinging		outsung |
-	outsitting		outsat |
-	outsleeping		outslept |
-	outsmelling		outsmelled |
-	outspeaking		outspoken |
-	outspeeding		outsped |
-	outspending		outspent |
-	outspining		outspun |
-	outspringing	outsprung |
-	outstanding		outstood |
-	outswearing		outsworn |
-	outswiming		outswum |
-	outtelling		outtold |
-	outthinking		outthought |
-	outthrowing		outthrown |
-	outwearing		outworn |
-	outwinding		outwound |
-	outwriting		outwritten |
-	overbearing		overborne |
-	overbiding		overbid |
-	overbreeding	overbred |
-	overbuilding	overbuilt |
-	overbuying		overbought |
-	overcasting		overcast |
-	overcoming		overcome |
-	overcutting		overcut |
-	overdoing		overdone |
-	overdrawing		overdrawn |
-	overdrinking	overdrunk |
-	overeating		overeaten |
-	overfeeding		overfed |
-	overhanging		overhung |
-	overhearing		overheard |
-	overlaying		overlaid |
-	overleaping		overleaped |
-	overlieing		overlain |
-	overpaying		overpaid |
-	overriding		overridden |
-	overruning		overrun |
-	overseeing		overseen |
-	overselling		oversold |
-	oversetting		overset |
-	oversewing		oversewn |
-	overshooting	overshot |
-	oversleeping	overslept |
-	oversowing		oversown |
-	overspeaking	overspoken |
-	overspending	overspent |
-	overspilling	overspilled |
-	overspining		overspun |
-	overspreading	overspread |
-	overspringing	oversprung |
-	overstanding	overstood |
-	overstrewing	overstrewn |
-	overstriding	overstridden |
-	overstriking	overstruck |
-	overtaking		overtaken |
-	overthinking	overthought |
-	overthrowing	overthrown |
-	overwearing		overworn |
-	overwinding		overwound |
-	overwriting		overwritten |
-	partaking		partaken |
-	paying			paid |
-	pleading		pleaded |
-	praying			prayed |
-	prebuilding		prebuilt |
-	predoing		predone |
-	premaking		premade |
-	prepaying		prepaid |
-	preselling		presold |
-	presetting		preset |
-	preshrinking	preshrunk |
-	presplitting	presplit |
-	proofreading	proofread |
-	proving			proven |
-	putting			put |
-	quick-freezing	quick-frozen |
-	quiting			quit |
-	reading			read |
-	reawaking		reawaken |
-	rebiding		rebid |
-	rebinding		rebound |
-	rebroadcasting	rebroadcast |
-	rebuilding		rebuilt |
-	recasting		recast |
-	recutting		recut |
-	redealing		redealt |
-	redoing			redone |
-	redrawing		redrawn |
-	reeving			reeved |
-	refitting		refitted |
-	regrinding		reground |
-	regrowing		regrown |
-	rehanging		rehung |
-	rehearing		reheard |
-	reknitting		reknitted |
-	relearning		relearned |
-	relighting		relit |
-	remaking		remade |
-	rending			rent |
-	repaying		repaid |
-	rereading		reread |
-	reruning		rerun |
-	reselling		resold |
-	resending		resent |
-	resetting		reset |
-	resewing		resewn |
-	retaking		retaken |
-	reteaching		retaught |
-	retearing		retorn |
-	retelling		retold |
-	rethinking		rethought |
-	retreading		retread |
-	retrofitting	retrofitted |
-	rewaking		rewaken |
-	rewearing		reworn |
-	reweaving		rewoven |
-	reweding		rewed |
-	reweting		rewet |
-	rewining		rewon |
-	rewinding		rewound |
-	rewriting		rewritten |
-	riding			rid |
-	riding			ridden |
-	ringing			rung |
-	rising			risen |
-	riving			riven |
-	roughcasting	roughcast |
-	running			run |
-	sand-casting	sand-cast |
-	sawing			sawed |
-	saying			said |
-	seeing			seen |
-	seeking			sought |
-	self-feeding	self-fed |
-	self-sowing		self-sown |
-	selling			sold |
-	sending			sent |
-	setting			set |
-	sewing			sewn |
-	shaking			shaken |
-	shaving			shaved |
-	shearing		sheared |
-	sheding			shed |
-	shining			shined |
-	shoeing			shoed |
-	shooting		shot |
-	showing			shown |
-	shrinking		shrunk |
-	shriving		shriven |
-	shutting		shut |
-	sight-reading	sight-read |
-	singing			sung |
-	sinking			sunk |
-	siting			sat |
-	skywriting		skywritten |
-	sleeping		slept |
-	sliding			slid |
-	slinging		slung |
-	slinking		slinked |
-	slitting		slit |
-	smelling		smelled |
-	smiting			smitten |
-	sneaking		sneaked |
-	sowing			sown |
-	speaking		spoken |
-	speeding		sped |
-	spelling		spelled |
-	spending		spent |
-	spilling		spilled |
-	spinning		spun |
-	spitting		spit |
-	splitting		split |
-	spoiling		spoiled |
-	spoon-feeding	spoon-fed |
-	spreading		spread |
-	springing		sprung |
-	stall-feeding	stall-fed |
-	standing		stood |
-	staving			staved |
-	stealing		stolen |
-	sticking		stuck |
-	stinging		stung |
-	stinking		stunk |
-	strewing		strewn |
-	striding		stridden |
-	striking		struck |
-	stringing		strung |
-	striping		stripped |
-	striving		striven |
-	subletting		sublet |
-	sunburning		sunburned |
-	swearing		sworn |
-	sweating		sweat |
-	sweeping		swept |
-	swelling		swollen |
-	swiming			swum |
-	swinging		swung |
-	taking			taken |
-	teaching		taught |
-	tearing			torn |
-	telecasting		telecast |
-	telling			told |
-	test-driving	test-driven |
-	test-flying		test-flown |
-	thinking		thought |
-	thriving		thrived |
-	throwing		thrown |
-	thrusting		thrust |
-	treading		trodden |
-	troubleshooting	troubleshot |
-	typecasting		typecast |
-	typesetting		typeset |
-	typewriting		typewritten |
-	unbearing		unborn |
-	unbending		unbent |
-	unbinding		unbound |
-	unbuilding		unbuilt |
-	underbiding		underbid |
-	underbuying		underbought |
-	undercutting	undercut |
-	underfeeding	underfed |
-	undergoing		undergone |
-	underlaying		underlaid |
-	underletting	underlet |
-	underlieing		underlain |
-	underruning		underrun |
-	underselling	undersold |
-	undershooting	undershot |
-	underspending	underspent |
-	understanding	understood |
-	undertaking		undertaken |
-	underthrusting	underthrust |
-	underwriting	underwritten |
-	undoing			undone |
-	undrawing		undrawn |
-	unfreezing		unfrozen |
-	unhanging		unhung |
-	unhiding		unhidden |
-	unholding		unheld |
-	unknitting		unknitted |
-	unlading		unladen |
-	unlaying		unlaid |
-	unlearning		unlearned |
-	unmaking		unmade |
-	unreeving		unreeved |
-	unsaying		unsaid |
-	unsewing		unsewn |
-	unslinging		unslung |
-	unspining		unspun |
-	unsticking		unstuck |
-	unstringing		unstrung |
-	unswearing		unsworn |
-	unteaching		untaught |
-	unthinking		unthought |
-	unweaving		unwoven |
-	unwinding		unwound |
-	unwriting		unwritten |
-	upholding		upheld |
-	upsetting		upset |
-	vexing			vexed |
-	waking			woken |
-	waylaying		waylaid |
-	wearing			worn |
-	weaving			woven |
-	weding			wed |
-	weeping			wept |
-	wetting			wet |
-	wining			won |
-	winding			wound |
-	withdrawing		withdrawn |
-	withholding		withheld |
-	withstanding	withstood |
-	wringing		wrung |
-	writing			written
+	abiding         abided |
+	alighting       alighted |
+	arising         arisen |
+	awaking         awakened |
+	backbiting      backbitten |
+	backsliding     backslidden |
+	bearing         born |
+	beating         beaten |
+	becoming        become |
+	befalling       befallen |
+	begeting        begotten |
+	begining        begun |
+	beholding       beheld |
+	bending         bent |
+	bereaving       bereaved |
+	beseeching      besought |
+	besetting       beset |
+	bestrewing      bestrewn |
+	betting         bet |
+	betaking        betaken |
+	bethinking      bethought |
+	binding         bound |
+	biting          bitten |
+	bleeding        bled |
+	blowing         blown |
+	breaking        broken |
+	breeding        bred |
+	bringing        brought |
+	broadcasting    broadcast |
+	browbeating     browbeaten |
+	building        built |
+	burning         burned |
+	bursting        burst |
+	busting         busted |
+	buying          bought |
+	casting         cast |
+	catching        caught |
+	chiding         chided |
+	choosing        chosen |
+	claping         clapped |
+	clinging        clung |
+	clothing        clothed |
+	coming          come |
+	costing         cost |
+	creeping        crept |
+	crossbreeding   crossbred |
+	cutting         cut |
+	daring          dared |
+	daydreaming     daydreamed |
+	dealing         dealt |
+	diging          dug |
+	dighting        dighted |
+	disproving      disproved |
+	diving          dived |
+	doing           done |
+	drawing         drawn |
+	dreaming        dreamed |
+	drinking        drunk |
+	driving         driven |
+	dwelling        dwelt |
+	eating          eaten |
+	enwinding       enwound |
+	falling         fallen |
+	feeding         fed |
+	feeling         felt |
+	fighting        fought |
+	finding         found |
+	fitting         fitted |
+	fleeing         fled |
+	flinging        flung |
+	flying          flown |
+	forbearing      forborne |
+	forbiding       forbidden |
+	fordoing        fordone |
+	forecasting     forecast |
+	foregoing       foregone |
+	foreknowing     foreknown |
+	foreruning      forerun |
+	foreseeing      foreseen |
+	foreshowing     foreshown |
+	forespeaking    forespoken |
+	foretelling     foretold |
+	forgetting      forgotten |
+	forgiving       forgiven |
+	forsaking       forsaken |
+	forswearing     forsworn |
+	fraughting      fraught |
+	freezing        frozen |
+	frostbiting     frostbitten |
+	gainsaying      gainsaid |
+	getting         got |
+	gilding         gilded |
+	giving          given |
+	going           gone |
+	grinding        ground |
+	growing         grown |
+	halterbreaking  halterbroken |
+	hamstringing    hamstrung |
+	hand-feeding    hand-fed |
+	handwriting     handwritten |
+	hanging         hung |
+	hearing         heard |
+	heaving         heaved |
+	hewing          hewn |
+	hiding          hidden |
+	hitting         hit |
+	holding         held |
+	hurting         hurt |
+	inbreeding      inbred |
+	inlaying        inlaid |
+	inputing        input |
+	insetting       inset |
+	interbreeding   interbred |
+	intercutting    intercut |
+	interlaying     interlaid |
+	intersetting    interset |
+	interweaving    interwoven |
+	interwinding    interwound |
+	inweaving       inwoven |
+	jerry-building  jerry-built |
+	keeping         kept |
+	kneeling        knelt |
+	knitting        knitted |
+	knowing         known |
+	lading          laden |
+	landsliding     landslid |
+	laying          laid |
+	leading         led |
+	leaning         leaned |
+	leaping         leaped |
+	learning        learned |
+	leaving         left |
+	lending         lent |
+	letting         let |
+	lieing          lain |
+	lighting        lit |
+	lip-reading     lip-read |
+	losing          lost |
+	making          made |
+	meaning         meant |
+	meeting         met |
+	misbecoming     misbecome |
+	miscasting      miscast |
+	miscutting      miscut |
+	misdealing      misdealt |
+	misdoing        misdone |
+	mishearing      misheard |
+	mishitting      mishit |
+	mislaying       mislaid |
+	misleading      misled |
+	mislearning     mislearned |
+	misreading      misread |
+	missaying       missaid |
+	missending      missent |
+	missetting      misset |
+	misspeaking     misspoken |
+	misspelling     misspelled |
+	misspending     misspent |
+	misswearing     missworn |
+	mistaking       mistaken |
+	misteaching     mistaught |
+	mistelling      mistold |
+	misthinking     misthought |
+	misunderstanding  misunderstood |
+	miswearing      misworn |
+	misweding       miswed |
+	miswriting      miswritten |
+	mowing          mowed |
+	offsetting      offset |
+	outbiding       outbid |
+	outbreeding     outbred |
+	outdoing        outdone |
+	outdrawing      outdrawn |
+	outdrinking     outdrunk |
+	outdriving      outdriven |
+	outfighting     outfought |
+	outflying       outflown |
+	outgrowing      outgrown |
+	outlaying       outlaid |
+	outleaping      outleaped |
+	outputing       output |
+	outriding       outridden |
+	outruning       outrun |
+	outseeing       outseen |
+	outselling      outsold |
+	outshining      outshined |
+	outshooting     outshot |
+	outsinging      outsung |
+	outsitting      outsat |
+	outsleeping     outslept |
+	outsmelling     outsmelled |
+	outspeaking     outspoken |
+	outspeeding     outsped |
+	outspending     outspent |
+	outspining      outspun |
+	outspringing    outsprung |
+	outstanding     outstood |
+	outswearing     outsworn |
+	outswiming      outswum |
+	outtelling      outtold |
+	outthinking     outthought |
+	outthrowing     outthrown |
+	outwearing      outworn |
+	outwinding      outwound |
+	outwriting      outwritten |
+	overbearing     overborne |
+	overbiding      overbid |
+	overbreeding    overbred |
+	overbuilding    overbuilt |
+	overbuying      overbought |
+	overcasting     overcast |
+	overcoming      overcome |
+	overcutting     overcut |
+	overdoing       overdone |
+	overdrawing     overdrawn |
+	overdrinking    overdrunk |
+	overeating      overeaten |
+	overfeeding     overfed |
+	overhanging     overhung |
+	overhearing     overheard |
+	overlaying      overlaid |
+	overleaping     overleaped |
+	overlieing      overlain |
+	overpaying      overpaid |
+	overriding      overridden |
+	overruning      overrun |
+	overseeing      overseen |
+	overselling     oversold |
+	oversetting     overset |
+	oversewing      oversewn |
+	overshooting    overshot |
+	oversleeping    overslept |
+	oversowing      oversown |
+	overspeaking    overspoken |
+	overspending    overspent |
+	overspilling    overspilled |
+	overspining     overspun |
+	overspreading   overspread |
+	overspringing   oversprung |
+	overstanding    overstood |
+	overstrewing    overstrewn |
+	overstriding    overstridden |
+	overstriking    overstruck |
+	overtaking      overtaken |
+	overthinking    overthought |
+	overthrowing    overthrown |
+	overwearing     overworn |
+	overwinding     overwound |
+	overwriting     overwritten |
+	partaking       partaken |
+	paying          paid |
+	pleading        pleaded |
+	praying         prayed |
+	prebuilding     prebuilt |
+	predoing        predone |
+	premaking       premade |
+	prepaying       prepaid |
+	preselling      presold |
+	presetting      preset |
+	preshrinking    preshrunk |
+	presplitting    presplit |
+	proofreading    proofread |
+	proving         proven |
+	putting         put |
+	quick-freezing  quick-frozen |
+	quiting         quit |
+	reading         read |
+	reawaking       reawaken |
+	rebiding        rebid |
+	rebinding       rebound |
+	rebroadcasting  rebroadcast |
+	rebuilding      rebuilt |
+	recasting       recast |
+	recutting       recut |
+	redealing       redealt |
+	redoing         redone |
+	redrawing       redrawn |
+	reeving         reeved |
+	refitting       refitted |
+	regrinding      reground |
+	regrowing       regrown |
+	rehanging       rehung |
+	rehearing       reheard |
+	reknitting      reknitted |
+	relearning      relearned |
+	relighting      relit |
+	remaking        remade |
+	rending         rent |
+	repaying        repaid |
+	rereading       reread |
+	reruning        rerun |
+	reselling       resold |
+	resending       resent |
+	resetting       reset |
+	resewing        resewn |
+	retaking        retaken |
+	reteaching      retaught |
+	retearing       retorn |
+	retelling       retold |
+	rethinking      rethought |
+	retreading      retread |
+	retrofitting    retrofitted |
+	rewaking        rewaken |
+	rewearing       reworn |
+	reweaving       rewoven |
+	reweding        rewed |
+	reweting        rewet |
+	rewining        rewon |
+	rewinding       rewound |
+	rewriting       rewritten |
+	riding          rid |
+	riding          ridden |
+	ringing         rung |
+	rising          risen |
+	riving          riven |
+	roughcasting    roughcast |
+	running         run |
+	sand-casting    sand-cast |
+	sawing          sawed |
+	saying          said |
+	seeing          seen |
+	seeking         sought |
+	self-feeding    self-fed |
+	self-sowing     self-sown |
+	selling         sold |
+	sending         sent |
+	setting         set |
+	sewing          sewn |
+	shaking         shaken |
+	shaving         shaved |
+	shearing        sheared |
+	sheding         shed |
+	shining         shined |
+	shoeing         shoed |
+	shooting        shot |
+	showing         shown |
+	shrinking       shrunk |
+	shriving        shriven |
+	shutting        shut |
+	sight-reading   sight-read |
+	singing         sung |
+	sinking         sunk |
+	siting          sat |
+	skywriting      skywritten |
+	sleeping        slept |
+	sliding         slid |
+	slinging        slung |
+	slinking        slinked |
+	slitting        slit |
+	smelling        smelled |
+	smiting         smitten |
+	sneaking        sneaked |
+	sowing          sown |
+	speaking        spoken |
+	speeding        sped |
+	spelling        spelled |
+	spending        spent |
+	spilling        spilled |
+	spinning        spun |
+	spitting        spit |
+	splitting       split |
+	spoiling        spoiled |
+	spoon-feeding   spoon-fed |
+	spreading       spread |
+	springing       sprung |
+	stall-feeding   stall-fed |
+	standing        stood |
+	staving         staved |
+	stealing        stolen |
+	sticking        stuck |
+	stinging        stung |
+	stinking        stunk |
+	strewing        strewn |
+	striding        stridden |
+	striking        struck |
+	stringing       strung |
+	striping        stripped |
+	striving        striven |
+	subletting      sublet |
+	sunburning      sunburned |
+	swearing        sworn |
+	sweating        sweat |
+	sweeping        swept |
+	swelling        swollen |
+	swiming         swum |
+	swinging        swung |
+	taking          taken |
+	teaching        taught |
+	tearing         torn |
+	telecasting     telecast |
+	telling         told |
+	test-driving    test-driven |
+	test-flying     test-flown |
+	thinking        thought |
+	thriving        thrived |
+	throwing        thrown |
+	thrusting       thrust |
+	treading        trodden |
+	troubleshooting troubleshot |
+	typecasting     typecast |
+	typesetting     typeset |
+	typewriting     typewritten |
+	unbearing       unborn |
+	unbending       unbent |
+	unbinding       unbound |
+	unbuilding      unbuilt |
+	underbiding     underbid |
+	underbuying     underbought |
+	undercutting    undercut |
+	underfeeding    underfed |
+	undergoing      undergone |
+	underlaying     underlaid |
+	underletting    underlet |
+	underlieing     underlain |
+	underruning     underrun |
+	underselling    undersold |
+	undershooting   undershot |
+	underspending   underspent |
+	understanding   understood |
+	undertaking     undertaken |
+	underthrusting  underthrust |
+	underwriting    underwritten |
+	undoing         undone |
+	undrawing       undrawn |
+	unfreezing      unfrozen |
+	unhanging       unhung |
+	unhiding        unhidden |
+	unholding       unheld |
+	unknitting      unknitted |
+	unlading        unladen |
+	unlaying        unlaid |
+	unlearning      unlearned |
+	unmaking        unmade |
+	unreeving       unreeved |
+	unsaying        unsaid |
+	unsewing        unsewn |
+	unslinging      unslung |
+	unspining       unspun |
+	unsticking      unstuck |
+	unstringing     unstrung |
+	unswearing      unsworn |
+	unteaching      untaught |
+	unthinking      unthought |
+	unweaving       unwoven |
+	unwinding       unwound |
+	unwriting       unwritten |
+	upholding       upheld |
+	upsetting       upset |
+	vexing          vexed |
+	waking          woken |
+	waylaying       waylaid |
+	wearing         worn |
+	weaving         woven |
+	weding          wed |
+	weeping         wept |
+	wetting         wet |
+	wining          won |
+	winding         wound |
+	withdrawing     withdrawn |
+	withholding     withheld |
+	withstanding    withstood |
+	wringing        wrung |
+	writing         written
 
 <en-trie-pasturise-regular-y> ::=
-	*aying			3ed	|		/* e.g., "slaying" to "slayed" */
-	*eying			3ed	|		/* e.g., "preying" to "preyed" */
-	*oying			3ed	|		/* e.g., "toying" to "toyed" */
-	*ying			4ied 		/* e.g., "verifying" to "verified" */
+	*aying          3ed    |        /* e.g., "slaying" to "slayed" */
+	*eying          3ed    |        /* e.g., "preying" to "preyed" */
+	*oying          3ed    |        /* e.g., "toying" to "toyed" */
+	*ying           4ied         /* e.g., "verifying" to "verified" */
 
 <en-trie-pasturise-regular> ::=
-	*ing			3ed 		/* e.g., "smashing" to "smashed" */
+	*ing            3ed         /* e.g., "smashing" to "smashed" */
 
 @h Adjective agreements.
 English doesn't inflect adjectives at all (let's not argue about "blond"
@@ -2855,19 +2855,19 @@ and "blonde"), so the following are just stubs.
 
 =
 <adjective-to-plural> ::=
-	*				0
+	*                0
 
 <adjective-to-masculine-singular> ::=
-	*				0
+	*                0
 
 <adjective-to-feminine-singular> ::=
-	*				0
+	*                0
 
 <adjective-to-masculine-plural> ::=
-	*				0
+	*                0
 
 <adjective-to-feminine-plural> ::=
-	*				0
+	*                0
 
 @ Grading of adjectives is more interesting. These spelling rules are taken
 from the Oxford English Grammar at 4.24, "Gradability and comparison".
@@ -2878,26 +2878,26 @@ rare in English adjectives.
 
 =
 <adjective-to-comparative> ::=
-	good							better |
-	well							better |
-	bad								worse |
-	far								farther |
-	*e								1er |		/* e.g. "close" to "closer" */
-	*<bcdfghkmlnprstvwxyz>y			1ier |		/* e.g. "ugly" to "uglier" */
-	*<aeiou><aeiou><bcdfghkmlnprstvxyz>	0er |	/* e.g. "cheap" to "cheaper", not "cheapper" */
-	*<aeiou><bcdfghkmlnprstvxyz>	0+er |		/* e.g. "fit" to "fitter" */
-	*								0er
+	good                                  better |
+	well                                  better |
+	bad                                   worse |
+	far                                   farther |
+	*e                                    1er |     /* e.g. "close" to "closer" */
+	*<bcdfghkmlnprstvwxyz>y               1ier |    /* e.g. "ugly" to "uglier" */
+	*<aeiou><aeiou><bcdfghkmlnprstvxyz>   0er |     /* e.g. "cheap" to "cheaper" not "cheapper" */
+	*<aeiou><bcdfghkmlnprstvxyz>          0+er |    /* e.g. "fit" to "fitter" */
+	*                                     0er
 
 <adjective-to-superlative> ::=
-	good							best |
-	well							best |
-	bad								worst |
-	far								farthest |
-	*e								1est |
-	*<bcdfghkmlnprstvwxyz>y			1iest |
-	*<aeiou><aeiou><bcdfghkmlnprstvxyz>	0est |
-	*<aeiou><bcdfghkmlnprstvxyz>	0+est |
-	*								0est
+	good                                  best |
+	well                                  best |
+	bad                                   worst |
+	far                                   farthest |
+	*e                                    1est |
+	*<bcdfghkmlnprstvwxyz>y               1iest |
+	*<aeiou><aeiou><bcdfghkmlnprstvxyz>   0est |
+	*<aeiou><bcdfghkmlnprstvxyz>          0+est |
+	*                                     0est
 
 @ To the best of my knowledge there's no technical term for "the noun which
 is formed from an adjective to refer to the quality it measures", so the
@@ -2913,9 +2913,9 @@ sometimes less elegant, but never means the wrong thing.
 
 =
 <adjective-to-quiddity> ::=
-	*ong							3ength |	/* e.g. "strong" to "strength" */
-	*<bcdfghkmlnprstvwxyz>y			1iness |	/* e.g. "happy" to "happiness" */
-	*								0ness
+	*ong                            3ength |    /* e.g. "strong" to "strength" */
+	*<bcdfghkmlnprstvwxyz>y         1iness |    /* e.g. "happy" to "happiness" */
+	*                               0ness
 
 @ English has almost no noun cases at all, with the only exceptions being
 Anglo-Saxon pronouns (thus we distinguish "they" and "them" as nominative
@@ -2927,13 +2927,13 @@ case. We won't bother to distinguish gender:
 	nominative | accusative
 
 <noun-declension> ::=
-	*	<en-noun-declension-group> <en-noun-declension-tables>
+	*    <en-noun-declension-group> <en-noun-declension-tables>
 
 @ And the sorting into groups sorts everything into "group 1", the only group:
 
 =
 <en-noun-declension-group> ::=
-	*			1
+	*            1
 
 <en-noun-declension-tables> ::=
 	<en-noun-declension-uninflected>
@@ -2951,10 +2951,10 @@ don't distinguish nominative from accusative.
 
 =
 <article-declension> ::=
-	*			<en-article-declension>
+	*           <en-article-declension>
 
 <en-article-declension> ::=
-	a			a a
-				some some |
-	the			the the |
-				the the
+	a           a    a
+	            some some |
+	the         the  the
+	            the  the

@@ -108,7 +108,7 @@ void UseNouns::nl_translates(parse_node *pn) {
 	inform_language *nl = Node::get_defn_language(pn->next->next);
 	int g = Annotations::read_int(pn->next->next, gender_reference_ANNOT);
 	if (nl == NULL) internal_error("No such NL");
-	if (nl == InflectionDefns::default_nl(NULL)) {
+	if (nl == DefaultLanguage::get(NULL)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantTranslateIntoEnglish),
 			"you can't translate into English",
 			"only out of it.");

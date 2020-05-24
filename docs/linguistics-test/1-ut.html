@@ -115,7 +115,7 @@ any text but then fail.
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;stock&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">verb</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), InflectionDefns::default_nl(NULL));</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">verb</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), DefaultLanguage::get(NULL));</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Syntax tree. </b></p>

@@ -1,4 +1,4 @@
-[InflectionDefns::] Linguistic Definitions.
+[InflectionDefns::] Linguistic Constants.
 
 Some basic linguistic constants are defined.
 
@@ -45,12 +45,12 @@ which is required to be case 0.
 in English. Some languages can use optional extras; French, for example, uses
 tense 5 for the past historic.
 
-@d NO_KNOWN_TENSES 7 /* allowing for two optional extras in non-English languages */
-@d IS_TENSE 0		/* Present */
-@d WAS_TENSE 1 		/* Past */
-@d HASBEEN_TENSE 2 	/* Present perfect */
-@d HADBEEN_TENSE 3 	/* Past perfect */
-@d WILLBE_TENSE 4 	/* Future (not used in assertions or conditions) */
+@d NO_KNOWN_TENSES 7
+@d IS_TENSE 0       /* Present */
+@d WAS_TENSE 1      /* Past */
+@d HASBEEN_TENSE 2  /* Present perfect */
+@d HADBEEN_TENSE 3  /* Past perfect */
+@d WILLBE_TENSE 4   /* Future (not used in assertions or conditions) */
 @d CUSTOM1_TENSE 5
 @d CUSTOM2_TENSE 6
 
@@ -66,20 +66,4 @@ void InflectionDefns::log_tense_number(OUTPUT_STREAM, int t) {
 		case CUSTOM2_TENSE: WRITE("CUSTOM2_TENSE"); break;
 		default:            WRITE("<invalid-tense>"); break;
 	}
-}
-
-@h A default language.
-The following is in effect also a constant; Inform sets it to English early
-in its run.
-
-=
-NATURAL_LANGUAGE_WORDS_TYPE *default_language_for_linguistics = NULL;
-
-void InflectionDefns::set_default_nl(NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	default_language_for_linguistics = nl;
-}
-
-NATURAL_LANGUAGE_WORDS_TYPE *InflectionDefns::default_nl(NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	if (nl) return nl;
-	return default_language_for_linguistics;
 }

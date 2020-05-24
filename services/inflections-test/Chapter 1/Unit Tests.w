@@ -14,9 +14,9 @@ void Unit::test_adjectives(text_stream *arg) {
 			if (Lexer::word(i) == PARBREAK_V) continue;
 			wording W = Wordings::one_word(i);
 			PRINT("%W --> ", W);
-			PRINT("comparative: %W, ", Grading::make_comparative(W, InflectionDefns::default_nl(NULL)));
-			PRINT("superlative: %W, ", Grading::make_superlative(W, InflectionDefns::default_nl(NULL)));
-			PRINT("quiddity: %W\n", Grading::make_quiddity(W, InflectionDefns::default_nl(NULL)));
+			PRINT("comparative: %W, ", Grading::make_comparative(W, DefaultLanguage::get(NULL)));
+			PRINT("superlative: %W, ", Grading::make_superlative(W, DefaultLanguage::get(NULL)));
+			PRINT("quiddity: %W\n", Grading::make_quiddity(W, DefaultLanguage::get(NULL)));
 		}
 	}
 }
@@ -35,7 +35,7 @@ void Unit::test_articles(text_stream *arg) {
 			TEMPORARY_TEXT(T);
 			WRITE_TO(T, "%W", W);
 			TEMPORARY_TEXT(AT);
-			ArticleInflection::preface_by_article(AT, T, InflectionDefns::default_nl(NULL));
+			ArticleInflection::preface_by_article(AT, T, DefaultLanguage::get(NULL));
 			PRINT("%S --> %S\n", T, AT);
 			DISCARD_TEXT(AT);
 			DISCARD_TEXT(T);
@@ -62,12 +62,12 @@ void Unit::test_declensions(text_stream *arg) {
 			if (Lexer::word(i) == f_V) { gen = FEMININE_GENDER; continue; }
 			if (Lexer::word(i) == n_V) { gen = NEUTER_GENDER; continue; }
 			wording W = Wordings::one_word(i);
-			declension D = Declensions::decline(W, InflectionDefns::default_nl(NULL), gen, 1);
-			declension AD = Declensions::decline_article(PW, InflectionDefns::default_nl(NULL), gen, 1);
+			declension D = Declensions::of_noun(W, DefaultLanguage::get(NULL), gen, 1);
+			declension AD = Declensions::of_article(PW, DefaultLanguage::get(NULL), gen, 1);
 			PRINT("%W --> ", W);
 			Declensions::writer(STDOUT, &D, &AD);
-			D = Declensions::decline(W, InflectionDefns::default_nl(NULL), gen, 2);
-			AD = Declensions::decline_article(PW, InflectionDefns::default_nl(NULL), gen, 2);
+			D = Declensions::of_noun(W, DefaultLanguage::get(NULL), gen, 2);
+			AD = Declensions::of_article(PW, DefaultLanguage::get(NULL), gen, 2);
 			PRINT("pl --> ");
 			Declensions::writer(STDOUT, &D, &AD);
 			PRINT("\n");
@@ -106,7 +106,7 @@ void Unit::test_plurals(text_stream *arg) {
 			TEMPORARY_TEXT(G);
 			WRITE_TO(G, "%W", W);
 			TEMPORARY_TEXT(ASAGIG);
-			Pluralisation::regular(ASAGIG, G, InflectionDefns::default_nl(NULL));
+			Pluralisation::regular(ASAGIG, G, DefaultLanguage::get(NULL));
 			PRINT("%S --> %S\n", G, ASAGIG);
 			DISCARD_TEXT(ASAGIG);
 			DISCARD_TEXT(G);
@@ -129,7 +129,7 @@ void Unit::test_verbs(text_stream *arg) {
 			if (c++ < 10) {
 				PRINT("Verb %W -->\n", W);
 				TEMPORARY_TEXT(T);
-				Conjugation::test(T, W, InflectionDefns::default_nl(NULL));
+				Conjugation::test(T, W, DefaultLanguage::get(NULL));
 				Regexp::replace(T, L"%^", L"\n", REP_REPEATING);
 				PRINT("%S\n", T);
 				DISCARD_TEXT(T);

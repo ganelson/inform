@@ -20,11 +20,11 @@ wording Grading::make_comparative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 		WRITE_TO(comprised, "some-long-text");
 	else
 		WRITE_TO(comprised, "%N", Wordings::first_wn(W));
-	nl = InflectionDefns::default_nl(nl);
+	nl = DefaultLanguage::get(nl);
 	match_avinue *comp_trie =
 		PreformUtilities::define_trie(<adjective-to-comparative>, TRIE_END,
-			InflectionDefns::default_nl(nl));
-	Inflections::suffix_inflection(transformed, comp_trie, comprised);
+			DefaultLanguage::get(nl));
+	Inflect::suffix(transformed, comp_trie, comprised);
 	wording PW = Feeds::feed_text(transformed);
 	word_assemblage merged =
 		PreformUtilities::merge(<comparative-construction>, 0,
@@ -46,11 +46,11 @@ wording Grading::make_superlative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 		WRITE_TO(comprised, "some-long-text");
 	else
 		WRITE_TO(comprised, "%N", Wordings::first_wn(W));
-	nl = InflectionDefns::default_nl(nl);
+	nl = DefaultLanguage::get(nl);
 	match_avinue *comp_trie =
 		PreformUtilities::define_trie(<adjective-to-superlative>, TRIE_END,
-			InflectionDefns::default_nl(nl));
-	Inflections::suffix_inflection(transformed, comp_trie, comprised);
+			DefaultLanguage::get(nl));
+	Inflect::suffix(transformed, comp_trie, comprised);
 	wording PW = Feeds::feed_text(transformed);
 	LOGIF(CONSTRUCTED_PLURALS, "[Superlative of %W is %W]\n", W, PW);
 	DISCARD_TEXT(transformed);
@@ -71,11 +71,11 @@ wording Grading::make_quiddity(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 		WRITE_TO(comprised, "some-long-text");
 	else
 		WRITE_TO(comprised, "%N", Wordings::first_wn(W));
-	nl = InflectionDefns::default_nl(nl);
+	nl = DefaultLanguage::get(nl);
 	match_avinue *comp_trie =
 		PreformUtilities::define_trie(<adjective-to-quiddity>, TRIE_END,
-			InflectionDefns::default_nl(nl));
-	Inflections::suffix_inflection(transformed, comp_trie, comprised);
+			DefaultLanguage::get(nl));
+	Inflect::suffix(transformed, comp_trie, comprised);
 	wording PW = Feeds::feed_text(transformed);
 	LOGIF(CONSTRUCTED_PLURALS, "[Quiddity of %W is %W]\n", W, PW);
 	DISCARD_TEXT(transformed);

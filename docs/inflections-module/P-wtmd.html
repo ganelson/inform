@@ -59,7 +59,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">inflections</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the inflections module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Inflections</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Inflections</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Declensions</a></li><li><a href="P-wtmd.html#SP11">&#167;11. Verb conjugations</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Naming conventions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The inflections module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -93,41 +93,47 @@ and the code for initialising them from Preform grammar is provided by
 <a href="../words-module/4-pu.html" class="internal">Preform Utilities (in words)</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Though tries are, as just mentioned, created from Preform grammar, they're
-parsed quite differently. The rules are as follows:
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Though tries are, as just mentioned, created from Preform grammar, they are
+parsed quite differently.
 </p>
 
-<ul class="items"><li>(a) A nonterminal in trie grammar can either be a list of other tries, or it
-can be a list of inflection rules. Mixtures of the two are not allowed. For
-example &lt;singular-noun-to-its-indefinite-article&gt; is a list of other tries,
-while &lt;en-trie-indef-a&gt; contains actual rules.
-</li><li>(b) In a list of tries, each production consists only of a single nonterminal
-identifying the trie to make use of. One exception: writing <span class="extract"><span class="extract-syntax">...</span></span> before the
+<p class="commentary">In trie grammar, a NT must be either a list of other tries, which are tested
+in sequence until one matches, or must be a list of inflection rules. These
+cannot be mixed within the same NT.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>In a list of tries, each production consists only of a single nonterminal
+identifying the trie to make use of. One exception: the token <span class="extract"><span class="extract-syntax">...</span></span> before the
 trie's name makes it work on the end of a word instead of the beginning.
-Inform attempts to find a match using each trie in turn, until a match is
-found. For example:
-</li></ul>
+For example:
+</p>
+
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;fiddle-with-words&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-function-syntax">&lt;fiddle-with-exceptions&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fiddle-with-irregular-endings&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;fiddle-with-regular-endings&gt;</span>
 </pre>
-<p class="commentary">means try &lt;fiddle-with-exceptions&gt; first (on the whole word), then
+<p class="commentary">means try &lt;fiddle-with-exceptions&gt; first (on the whole text), then
 &lt;fiddle-with-irregular-endings&gt; (on the tail), and finally &lt;fiddle-with-regular-endings&gt;
 (also on the tail).
 </p>
 
-<ul class="items"><li>(c) In a list of inflection rules, each production consists of two words. The
-first word is what to match; the second gives instructions on what to turn
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>In a list of inflection rules, each production consists of two tokens. The
+first token is what to match; the second gives instructions on what to turn
 it into. An asterisk is used to mean "any string of 0 or more letters";
-a digit in the replacement text means "truncate by this many letters and
-add...". (As a special case, the replacement text "0" means: make no
-change.) Some examples:
-</li></ul>
+a digit at the start of the replacement text means "truncate by this many
+letters and add...". The simplest possible instruction is <span class="extract"><span class="Preform-extract-syntax">0</span></span> alone, which
+means "truncate 0 letters and add nothing", and therefore leaves the text
+unchanged.
+</p>
+
+<p class="commentary">Some examples:
+</p>
+
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;pluralise&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">lead</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">lead</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">lead</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">codex</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">codices</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">*mouse</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">5mice</span>
 </pre>
@@ -135,54 +141,200 @@ change.) Some examples:
 and "fieldmouse" as "fieldmice".
 </p>
 
-<p class="commentary">Designing a trie is not quite as easy as it looks. It looks as if this is a
-sequence of tests to perform in succession, but it's better to think of the
-rules all being performed at once. In general, if you need one inflection
-rule to take precedence over another, put it in an earlier trie, rather than
-putting it earlier in the same trie.
+<p class="commentary">The special character <span class="extract"><span class="Preform-extract-syntax">+</span></span> after a digit means "double the last letter", so
+that, for example, <span class="extract"><span class="Preform-extract-syntax">0+er</span></span> turns "big" to "bigger". In other positions, <span class="extract"><span class="Preform-extract-syntax">+</span></span>
+means "add another word", so for example <span class="extract"><span class="Preform-extract-syntax">0+er+still</span></span> turns "big" to "bigger
+still".
+</p>
+
+<p class="commentary">Designing a list of inflection rules is not quite as easy as it looks, because
+these rules are not applied in succession: it's better to think of the rules
+as all being performed at once. In general, if you need one inflection
+rule to take precedence over another, put it in an earlier trie (in the list
+of tries which includes this one), rather than putting it earlier in the same trie.
 </p>
 
 <p class="commentary">For the implementation of these rules, see <a href="2-tai.html" class="internal">Tries and Inflections</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Once we have that general inflection machinery, most of what we need to
-do becomes a simple matter of writing wrapper functions for tries.
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Once we have that general inflection machinery, most of what we need to
+do becomes a simple matter of writing wrapper functions for tries, and these
+occupy the rest of <a href="2-tai.html" class="internal">Chapter 2: Simple Inflections</a>.
 </p>
 
-<ul class="items"><li>&#9679; <a href="3-ai.html#SP1" class="internal">ArticleInflection::preface_by_article</a> handles the variation of articles:
+<ul class="items"><li>&#9679; <a href="2-ai.html#SP1" class="internal">ArticleInflection::preface_by_article</a> handles the variation of articles:
 for example, mutating "a" to "an" when it comes before "orange", thus making
 "an orange" rather than "a orange".
-</li><li>&#9679; <a href="3-ga.html#SP2" class="internal">Grading::make_comparative</a> turns "tall" into "taller".
-</li><li>&#9679; <a href="3-ga.html#SP3" class="internal">Grading::make_superlative</a> turns "tall" into "tallest".
-</li><li>&#9679; <a href="3-ga.html#SP4" class="internal">Grading::make_quiddity</a> turns "tall" into "tallness".
-</li><li>&#9679; <a href="3-pp.html#SP1" class="internal">PastParticiples::pasturise_wording</a> turns "looking away" to "looked away".
-</li><li>&#9679; <a href="3-plr.html#SP3" class="internal">Pluralisation::make</a> produces a series of allowable plurals for a
+</li><li>&#9679; <a href="2-ga.html#SP2" class="internal">Grading::make_comparative</a> turns "tall" into "taller".
+</li><li>&#9679; <a href="2-ga.html#SP3" class="internal">Grading::make_superlative</a> turns "tall" into "tallest".
+</li><li>&#9679; <a href="2-ga.html#SP4" class="internal">Grading::make_quiddity</a> turns "tall" into "tallness".
+</li><li>&#9679; <a href="2-pp.html#SP1" class="internal">PastParticiples::pasturise_wording</a> turns "looking away" to "looked away".
+</li><li>&#9679; <a href="2-plr.html#SP3" class="internal">Pluralisation::make</a> produces a series of allowable plurals for a
 word, using a combination of a trie to handle regular pluralisation (for
 English, we use Conway's algorithm) and a dictionary of user-supplied
 exceptions.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Tries are highly language specific and should not be translated as such:
-instead, an appropriate version needs to be written for every language.
-The tries for English are in <a href="4-ei.html" class="internal">English Inflections</a>.
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Declensions. </b><a href="3-dcl.html" class="internal">Declensions</a> are sets of inflected forms of a noun or adjective according
+to their grammatical case. A language should list its cases in a special
+nonterminal called &lt;grammatical-case-names&gt;, in which "nominative" or its
+equivalent should always come first. For example:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;grammatical-case-names&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">nominative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">vocative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">accusative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">dative</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">genetive</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ablative</span>
+</pre>
+<p class="commentary">The function <a href="3-dcl.html#SP2" class="internal">Declensions::no_cases</a> returns a count of these for a given
+natural language. The actual names of cases are only needed by the function
+<a href="3-dcl.html#SP3" class="internal">Declensions::writer</a>, which prints out tables of declensions for debugging
+purposes.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b><a href="3-dcl.html#SP5" class="internal">Declensions::of_noun</a> and <a href="3-dcl.html#SP5" class="internal">Declensions::of_article</a> are functions to
+generate declensions, with one form for each case, from a given stem word.
+These are done with Preform NTs called &lt;noun-declension&gt; and &lt;article-declension&gt;
+respectively; these are currently the only two "declension NTs".
+</p>
+
+<p class="commentary">The rule for a "declension NT" is that it must provide a list of possibilities
+in the form either <span class="extract"><span class="Preform-extract-syntax">gender table</span></span> or <span class="extract"><span class="Preform-extract-syntax">gender grouper table</span></span>, where <span class="extract"><span class="Preform-extract-syntax">gender</span></span> is:
+</p>
+
+<ul class="items"><li>&#9679; the letter <span class="extract"><span class="Preform-extract-syntax">m</span></span> for masculine,
+</li><li>&#9679; the letter <span class="extract"><span class="Preform-extract-syntax">f</span></span> for feminine,
+</li><li>&#9679; the letter <span class="extract"><span class="Preform-extract-syntax">n</span></span> for neuter/common,
+</li><li>&#9679; the asterisk <span class="extract"><span class="Preform-extract-syntax">*</span></span> for "any gender".
+</li></ul>
+<p class="commentary">In the two-token form <span class="extract"><span class="Preform-extract-syntax">gender table</span></span>, the <span class="extract"><span class="Preform-extract-syntax">table</span></span> is a nonterminal for
+irregular forms; if the three-token form <span class="extract"><span class="Preform-extract-syntax">gender grouper table</span></span>, the <span class="extract"><span class="Preform-extract-syntax">grouper</span></span>
+is a nonterminal which works out which "group" the word falls into &mdash; groups
+are numbered, so perhaps, e.g., the word "device" falls into group 1 &mdash; and
+then the <span class="extract"><span class="Preform-extract-syntax">table</span></span> provides declensions for the different groups needed.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>A simple example of using the irregular forms table is provided by the
+English language definition of &lt;article-declension&gt;:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;en-article-declension&gt;</span>
+
+<span class="Preform-function-syntax">&lt;en-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a</span>
+<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">some</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">some</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span>
+<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">the</span>
+</pre>
+<p class="commentary">Here the declension NT is &lt;article-declension&gt; and contains only one possibility,
+applying to all genders (hence the <span class="extract"><span class="Preform-extract-syntax">*</span></span>). The <span class="extract"><span class="Preform-extract-syntax">table</span></span> of irregular forms is then
+&lt;en-article-declension&gt;. Each production begins with the possibility against
+which the stem is matched &mdash; here, it's going to have to be "a" or "the". There
+are then one possibility for each case (nominative and accusative) in each of
+the two numbers (singular and plural), making four forms in all. English, of
+course, is not very inflected: this would be more interesting for French:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">m</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;fr-masculine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">f</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;fr-feminine-article-declension&gt;</span>
+
+<span class="Preform-function-syntax">&lt;fr-masculine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">un</span>
+<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">le</span>
+<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">les</span>
+
+<span class="Preform-function-syntax">&lt;fr-feminine-article-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">un</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">une</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">une</span>
+<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">des</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">la</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">la</span>
+<span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">les</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>So much for irregular forms. Grouped forms are useful for languages like
+German, which has about 12 groups of nouns, each with its own way of declining.
+For example, there's one group which goes something like:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kraft</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kraft</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">Kräfte</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kräfte</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kräften</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kräfte</span>
+</pre>
+<p class="commentary">and another which goes like:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kamera</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kamera</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kameras</span><span class="Preform-plain-syntax">	</span><span class="Preform-constant-syntax">Kameras</span>
+</pre>
+<p class="commentary">For German, we might then have
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;noun-declension&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">  </span><span class="Preform-function-syntax">&lt;de-noun-grouper&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;de-noun-tables&gt;</span>
+
+<span class="Preform-function-syntax">&lt;de-noun-grouper&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">kraft</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">kamera</span><span class="Preform-plain-syntax">  </span><span class="Preform-constant-syntax">2</span>
+
+<span class="Preform-function-syntax">&lt;de-noun-tables&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;de-noun-group1-table&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;de-noun-group2-table&gt;</span>
+</pre>
+<p class="commentary">where for example:
+</p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;de-noun-group1-table&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">3äfte</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äfte</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äften</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3äfte</span>
+</pre>
+<p class="commentary">giving inflection rules for the four cases of German in singular and then
+in plural. In practice, of course, &lt;de-noun-grouper&gt; will need to sort out
+nouns rather better than this, and there are about 12 groups. Groups are
+numbered upwards from 1 to, in principle, 99. See <a href="3-dcl.html#SP8" class="internal">Declensions::decline_from_groups</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Verb conjugations. </b>This module supplies an extensive system for conjugating verbs. A full set
+of inflected forms for a verb, in all its tenses, moods and so on, is stored
+in a <a href="3-vc.html#SP1" class="internal">verb_conjugation</a> object. Making these objects is a nontrivial task:
+see the function <a href="3-vc.html#SP6" class="internal">Conjugation::conjugate</a>.
+</p>
+
+<p class="commentary">Like declensions, verb conjugations rely on a set of tables in special formats,
+but which are stored in nonterminals of Preform grammar. There is a full
+description of the syntax used in these tables in the section <a href="4-ei.html" class="internal">English Inflections</a>,
+which demonstrates a complete conjugation of English verbs.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Naming conventions. </b>Tries are highly language specific, and would need rewriting for every language.
+The tries for English are supplied in <a href="4-ei.html" class="internal">English Inflections</a>, but that's just
+for convenience; other languages should supply them in the Inform source text of
+the relevant language extension, or in <span class="extract"><span class="Preform-extract-syntax">Syntax.preform</span></span> files.
 </p>
 
 <p class="commentary">Except at the very top level, translators are free to created new tries
-and name them as they please. For example, the Spanish implementation of
+and name them as they please, but the top-level tries must have the same
+names that they have here. For example, the Spanish implementation of
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">&lt;singular-noun-to-its-indefinite-article&gt;</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;singular-noun-to-its-indefinite-article&gt;</span>
 </pre>
 <p class="commentary">may look entirely unlike its English version, but at the top level it still
 has to have that name.
 </p>
 
-<p class="commentary">Lower-level tries used in the implementation should have names beginning
+<p class="commentary">All lower-level tries used in the implementation should have names beginning
 with a language code: hence the names "en-" used in <a href="4-ei.html" class="internal">English Inflections</a>.
+There doesn't need to be any direct Spanish equivalent to
+&lt;en-trie-plural-assimilated-classical-inflections&gt;, for example.
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-ld.html">2</a></li><li class="progresschapter"><a href="3-ai.html">3</a></li><li class="progresschapter"><a href="4-ei.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-tai.html">2</a></li><li class="progresschapter"><a href="3-lc.html">3</a></li><li class="progresschapter"><a href="4-dl.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

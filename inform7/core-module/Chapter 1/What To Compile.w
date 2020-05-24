@@ -64,7 +64,7 @@ int Task::carry_out(build_step *S) {
 	inform7_task->stage_of_compilation = -1;
 	inform7_task->next_resource_number = 3;
 	
-	InflectionDefns::set_default_nl(Projects::get_language_of_syntax(project));
+	DefaultLanguage::set(Projects::get_language_of_syntax(project));
 
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	inform7_task = NULL;

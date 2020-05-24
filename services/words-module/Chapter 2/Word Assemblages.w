@@ -142,7 +142,7 @@ void WordAssemblages::as_array(word_assemblage *wa, vocabulary_entry ***array, i
 }
 
 @ =
-int WordAssemblages::compare(word_assemblage *wa1, word_assemblage *wa2) {
+int WordAssemblages::eq(word_assemblage *wa1, word_assemblage *wa2) {
 	if (wa1 == wa2) return TRUE;
 	if ((wa1 == NULL) || (wa2 == NULL)) return FALSE;
 	if (wa1->no_indiv_words != wa2->no_indiv_words) return FALSE;

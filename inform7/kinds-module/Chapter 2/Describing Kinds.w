@@ -468,7 +468,7 @@ void Kinds::Textual::write_plural(OUTPUT_STREAM, kind *K) {
 void Kinds::Textual::write_articled(OUTPUT_STREAM, kind *K) {
 	TEMPORARY_TEXT(TEMP);
 	Kinds::Textual::write_inner(TEMP, K, FALSE, TRUE);
-	ArticleInflection::preface_by_article(OUT, TEMP, InflectionDefns::default_nl(NULL));
+	ArticleInflection::preface_by_article(OUT, TEMP, DefaultLanguage::get(NULL));
 	DISCARD_TEXT(TEMP);
 }
 

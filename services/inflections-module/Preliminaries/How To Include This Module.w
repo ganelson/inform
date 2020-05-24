@@ -26,3 +26,5 @@ Import: somepath/inflections
 (*) The parent must call |InflectionsModule::start()| just after it starts up, and
 |InflectionsModule::end()| just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
+
+@ This module has no callback functions to modify its behaviour.

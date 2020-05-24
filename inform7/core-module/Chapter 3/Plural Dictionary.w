@@ -33,7 +33,7 @@ int Plurals::plural_SMF(int task, parse_node *V, wording *NPs) {
 				wording P = Node::get_text(V->next->next);
 				@<Forbid plural declarations containing quoted text@>;
 				if (Assertions::Creator::vet_name_for_noun(P) == FALSE) return TRUE;
-				Pluralisation::register(S, P, InflectionDefns::default_nl(NULL));
+				Pluralisation::register(S, P, DefaultLanguage::get(NULL));
 				return TRUE;
 			}
 			break;

@@ -23,30 +23,15 @@ DECLARE_CLASS(verb_conjugation)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
-=
-void InflectionsModule::start(void) {
-	@<Register this module's stream writers@>;
-	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
-	@<Register this module's command line switches@>;
-}
-void InflectionsModule::end(void) {
-}
-
-@<Register this module's stream writers@> =
-	;
-
-@
-
 @e CONSTRUCTED_PAST_PARTICIPLES_DA
 @e CONSTRUCTED_PLURALS_DA
 
-@<Register this module's debugging log aspects@> =
-	Log::declare_aspect(CONSTRUCTED_PAST_PARTICIPLES_DA, L"constructed past participles", FALSE, FALSE);
-	Log::declare_aspect(CONSTRUCTED_PLURALS_DA, L"constructed plurals", FALSE, FALSE);
-
-@<Register this module's debugging log writers@> =
-	;
-
-@<Register this module's command line switches@> =
-	;
+=
+void InflectionsModule::start(void) {
+	Log::declare_aspect(CONSTRUCTED_PAST_PARTICIPLES_DA,
+		L"constructed past participles", FALSE, FALSE);
+	Log::declare_aspect(CONSTRUCTED_PLURALS_DA,
+		L"constructed plurals", FALSE, FALSE);
+}
+void InflectionsModule::end(void) {
+}

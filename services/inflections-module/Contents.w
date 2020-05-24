@@ -11,18 +11,19 @@ Preliminaries
 Chapter 1: Starting Up
 	Inflections Module
 
-Chapter 2: Machinery
-	Linguistic Definitions
+Chapter 2: Simple Inflections
 	Tries and Inflections
-
-Chapter 3: Grammatical Uses of Inflection
 	Article Inflection
-	Declensions
-	Name Clusters
-	Pluralisation
 	Grading Adjectives
 	Past Participles
+	Pluralisation
+
+Chapter 3: Declension and Conjugation
+	Linguistic Constants
+	Name Clusters
+	Declensions
 	Verb Conjugation
 
-Chapter 4: Default Language
+Chapter 4: English
+	Default Language
 	English Inflections

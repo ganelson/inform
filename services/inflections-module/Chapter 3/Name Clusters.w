@@ -41,10 +41,10 @@ name_cluster *Clusters::new(void) {
 =
 individual_name *Clusters::add_one(name_cluster *names, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl, int gender, int number) {
-	nl = InflectionDefns::default_nl(nl);
+	nl = DefaultLanguage::get(nl);
 	individual_name *in = CREATE(individual_name);
 	in->principal_meaning = NULL_GENERAL_POINTER;
-	in->name = Declensions::decline(W, nl, gender, number);
+	in->name = Declensions::of_noun(W, nl, gender, number);
 	in->name_language = nl;
 	in->name_number = number;
 	in->name_gender = gender;
@@ -94,8 +94,8 @@ combinations. Here we only work through six, ignoring animation:
 =
 void Clusters::add_with_agreements(name_cluster *cl, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	nl = InflectionDefns::default_nl(nl);
-	if (nl == InflectionDefns::default_nl(NULL))
+	nl = DefaultLanguage::get(nl);
+	if (nl == DefaultLanguage::get(NULL))
 		Clusters::add(cl, W, nl, NEUTER_GENDER, 1, FALSE);
 	else
 		for (int gna = 0; gna < 6; gna++)
@@ -133,13 +133,13 @@ through one or two tries.
 @<Process via the agreement trie in this pipeline@> =
 	word_assemblage wa = WordAssemblages::from_wording(W);
 	if (step1)
-		wa = Inflections::apply_trie_to_wa(wa,
+		wa = Inflect::first_word(wa,
 			PreformUtilities::define_trie(step1, TRIE_END,
-				InflectionDefns::default_nl(nl)));
+				DefaultLanguage::get(nl)));
 	if (step2)
-		wa = Inflections::apply_trie_to_wa(wa,
+		wa = Inflect::first_word(wa,
 			PreformUtilities::define_trie(step2, TRIE_END,
-				InflectionDefns::default_nl(nl)));
+				DefaultLanguage::get(nl)));
 	FW = WordAssemblages::to_wording(&wa);
 
 @h Plural fixing.
@@ -155,7 +155,7 @@ void Clusters::set_plural_name(name_cluster *cl, wording W,
 	individual_name *in;
 	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
 		if (in->name_number == 2) {
-			in->name = Declensions::decline(W, nl, NEUTER_GENDER, 2);
+			in->name = Declensions::of_noun(W, nl, NEUTER_GENDER, 2);
 			return;
 		}
 	Clusters::add(cl, W, NULL, NEUTER_GENDER, 2, FALSE);

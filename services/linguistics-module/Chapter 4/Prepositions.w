@@ -55,7 +55,7 @@ to one verb is the same preposition as the "for" attached to another one.
 preposition_identity *Prepositions::make(word_assemblage wa, int unexpected_upper_casing_used) {
 	preposition_identity *prep = NULL;
 	LOOP_OVER(prep, preposition_identity)
-		if (WordAssemblages::compare(&(prep->prep_text), &wa))
+		if (WordAssemblages::eq(&(prep->prep_text), &wa))
 			return prep;
 
 	prep = CREATE(preposition_identity);

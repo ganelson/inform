@@ -42,7 +42,7 @@ one not found in the dictionary).
 =
 plural_dictionary_entry *Pluralisation::make(wording W, wording *PW,
 	plural_dictionary_entry *search_from, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	nl = InflectionDefns::default_nl(nl);
+	nl = DefaultLanguage::get(nl);
 
 	plural_dictionary_entry *pde;
 
@@ -94,10 +94,11 @@ The following takes a single word, assumes it to be a noun which meaningfully
 has a plural, and modifies it to the plural form.
 
 =
-int Pluralisation::regular(OUTPUT_STREAM, text_stream *from, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	nl = InflectionDefns::default_nl(nl);
+int Pluralisation::regular(OUTPUT_STREAM, text_stream *from,
+	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
+	nl = DefaultLanguage::get(nl);
 	match_avinue *plural_trie =
 		PreformUtilities::define_trie(<singular-noun-to-its-plural>, TRIE_END,
-			InflectionDefns::default_nl(nl));
-	return Inflections::suffix_inflection(OUT, plural_trie, from);
+			DefaultLanguage::get(nl));
+	return Inflect::suffix(OUT, plural_trie, from);
 }

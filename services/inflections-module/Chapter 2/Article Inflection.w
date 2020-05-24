@@ -15,7 +15,7 @@ void ArticleInflection::preface_by_article(OUTPUT_STREAM,
 		indef_trie =
 			PreformUtilities::define_trie(
 				<singular-noun-to-its-indefinite-article>, TRIE_START,
-				InflectionDefns::default_nl(NULL));
+				DefaultLanguage::get(NULL));
 	wchar_t *result = Tries::search_avinue(indef_trie, initial_text);
 	if (result == NULL) result = L"a";
 	WRITE("%w %S", result, initial_text);

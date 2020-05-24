@@ -55,7 +55,7 @@ any text but then fail.
 
 @ =
 <stock> ::=
-	verb <cardinal-number> ...	==> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), InflectionDefns::default_nl(NULL));
+	verb <cardinal-number> ...	==> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), DefaultLanguage::get(NULL));
 
 @h Syntax tree.
 
