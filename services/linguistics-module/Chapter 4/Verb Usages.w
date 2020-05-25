@@ -4,7 +4,7 @@ To parse the many forms a verb can take.
 
 @
 
-@default VERB_MEANING_TYPE struct verb_conjugation
+@default VERB_MEANING_LINGUISTICS_TYPE struct verb_conjugation
 
 @ The "permitted verb" is just a piece of temporary context used in parsing:
 it's convenient for the verb currently being considered to be stored in
@@ -228,13 +228,13 @@ out whether it's needed.
 @<Register usages in this combination@> =
 	for (int person = 0; person < NO_KNOWN_PERSONS; person++) {
 		int p = priority;
-		#ifdef ALLOW_VERB_USAGE_IN_ASSERTIONS
-		if (ALLOW_VERB_USAGE_IN_ASSERTIONS(vc, tense, sense, person) == FALSE) p = 0;
+		#ifdef ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK
+		if (ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK(vc, tense, sense, person) == FALSE) p = 0;
 		#else
 		if (VerbUsages::allow_in_assertions(vc, tense, sense, person) == FALSE) p = 0;
 		#endif
-		#ifdef ALLOW_VERB_USAGE_GENERALLY
-		if (ALLOW_VERB_USAGE_GENERALLY(vc, tense, sense, person) == FALSE) p = -1;
+		#ifdef ALLOW_VERB_LINGUISTICS_CALLBACK
+		if (ALLOW_VERB_LINGUISTICS_CALLBACK(vc, tense, sense, person) == FALSE) p = -1;
 		#else
 		if (VerbUsages::allow_generally(vc, tense, sense, person) == FALSE) p = -1;
 		#endif
@@ -335,12 +335,12 @@ int VerbUsages::is_foreign(verb_usage *vu) {
 @ And some access routines.
 
 =
-VERB_MEANING_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition_identity *prep, preposition_identity *second_prep) {
+VERB_MEANING_LINGUISTICS_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition_identity *prep, preposition_identity *second_prep) {
 	if (vu == NULL) return NULL;
 	verb_meaning *uvm = Verbs::regular_meaning(vu->verb_used, prep, second_prep);
 
 	if (uvm == NULL) return NULL;
-	VERB_MEANING_TYPE *root = VerbMeanings::get_relational_meaning(uvm);
+	VERB_MEANING_LINGUISTICS_TYPE *root = VerbMeanings::get_relational_meaning(uvm);
 	if ((vu->mood == PASSIVE_MOOD) && (root != VERB_MEANING_EQUALITY))
 		root = VerbMeanings::reverse_VMT(root);
 	return root;
@@ -621,10 +621,10 @@ void VerbUsages::preform_optimiser(void) {
 
 =
 int VerbUsages::adaptive_person(NATURAL_LANGUAGE_WORDS_TYPE *X) {
-	#ifdef PREFORM_ADAPTIVE_PERSON
-	return PREFORM_ADAPTIVE_PERSON(X);
+	#ifdef ADAPTIVE_PERSON_LINGUISTICS_CALLBACK
+	return ADAPTIVE_PERSON_LINGUISTICS_CALLBACK(X);
 	#endif
-	#ifndef PREFORM_ADAPTIVE_PERSON
+	#ifndef ADAPTIVE_PERSON_LINGUISTICS_CALLBACK
 	return FIRST_PERSON_PLURAL;
 	#endif
 }

@@ -142,8 +142,8 @@ excerpt meanings, with the same hash code except that one has this extra bit
 set and the other hasn't.)
 
 @<Take note of casing on first word, in the few circumstances when we care@> =
-	#ifdef EM_CASE_SENSITIVITY_TEST
-	if (EM_CASE_SENSITIVITY_TEST(mc_bitmap)) {
+	#ifdef EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK
+	if (EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK(mc_bitmap)) {
 		wchar_t *tx = Lexer::word_raw_text(Wordings::first_wn(W));
 		if ((tx[0]) && (Characters::isupper(tx[0])) &&
 			((tx[1] == 0) || (Vocabulary::used_case_sensitively(Lexer::word(Wordings::first_wn(W)))))) {
@@ -158,8 +158,8 @@ if we aren't looking for text substitutions.
 
 @<Skip an initial article most of the time@> =
 	if (parsing_mode & PARAMETRISED_PM) {
-		#ifdef EM_IGNORE_DEFINITE_ARTICLE_TEST
-		if (EM_IGNORE_DEFINITE_ARTICLE_TEST(mc_bitmap))
+		#ifdef EM_IGNORE_DEFINITE_ARTICLE_TEST_LINGUISTICS_CALLBACK
+		if (EM_IGNORE_DEFINITE_ARTICLE_TEST_LINGUISTICS_CALLBACK(mc_bitmap))
 		#endif
 			W = Articles::remove_the(W);
 	} else {
@@ -247,8 +247,8 @@ i.e., where any text X can appear in "award X points", for example.
 	vocabulary_entry *v = Lexer::word(Wordings::first_wn(W));
 	if (v == NULL) internal_error("Unidentified word when parsing");
 	parse_node *p;
-	#ifdef EM_ALLOW_BLANK_TEST
-	if (EM_ALLOW_BLANK_TEST(mc_bitmap)) {
+	#ifdef EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK
+	if (EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK(mc_bitmap)) {
 		for (p = blank_says_p; p; p = p->next_alternative) {
 			parse_node *this_result =
 				Node::new_with_words(mc_bitmap, W);

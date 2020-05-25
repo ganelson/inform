@@ -6,16 +6,16 @@ To abstract the meaning of a verb.
 @h Other modukes.
 We allow the modules using us to have their own data about the semantics of
 a verb, which we will attach to our own |verb_meaning| structure. It has to
-be a pointer to the type |VERB_MEANING_TYPE|, and by default, there's none:
+be a pointer to the type |VERB_MEANING_LINGUISTICS_TYPE|, and by default, there's none:
 
-@default VERB_MEANING_TYPE void
+@default VERB_MEANING_LINGUISTICS_TYPE void
 
 =
-VERB_MEANING_TYPE *VerbMeanings::reverse_VMT(VERB_MEANING_TYPE *recto) {
-	#ifdef VERB_MEANING_REVERSAL
-	return VERB_MEANING_REVERSAL(recto);
+VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::reverse_VMT(VERB_MEANING_LINGUISTICS_TYPE *recto) {
+	#ifdef VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK
+	return VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK(recto);
 	#endif
-	#ifndef VERB_MEANING_REVERSAL
+	#ifndef VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK
 	return recto;
 	#endif
 }
@@ -49,7 +49,7 @@ But most sentences set the state of some relation:
 
 Our abstraction stays close to that. We're going to assume that most
 verbs have a regular meaning which can be represented in a piece of
-data (of type |VERB_MEANING_TYPE|, which for Inform 7 means a binary
+data (of type |VERB_MEANING_LINGUISTICS_TYPE|, which for Inform 7 means a binary
 predicate), while a few have special meanings which can only be handled
 ad-hoc by a function. Here's the type for such a function:
 
@@ -68,7 +68,7 @@ say that the usage is invalid: see Verb Phrases for more.
 =
 typedef struct verb_meaning {
 	int reversed;
-	VERB_MEANING_TYPE *regular_meaning; /* in I7, this will be a binary predicate */
+	VERB_MEANING_LINGUISTICS_TYPE *regular_meaning; /* in I7, this will be a binary predicate */
 	int (*special_meaning)(int, parse_node *, wording *); /* (for tangling reasons, can't use typedef here) */
 	struct verb_identity *take_meaning_from; /* "to like", in the example above */
 	struct parse_node *where_assigned; /* at which sentence this is assigned to a form */
@@ -107,7 +107,7 @@ int VerbMeanings::is_meaningless(verb_meaning *vm) {
 	return FALSE;
 }
 
-verb_meaning VerbMeanings::new(VERB_MEANING_TYPE *rel, special_meaning_fn soa) {
+verb_meaning VerbMeanings::new(VERB_MEANING_LINGUISTICS_TYPE *rel, special_meaning_fn soa) {
 	verb_meaning vm = VerbMeanings::meaninglessness();
 	vm.regular_meaning = rel;
 	vm.special_meaning = soa;
@@ -127,13 +127,13 @@ verb_meaning VerbMeanings::new_indirection(verb_identity *from, int reversed) {
 	return vm;
 }
 
-VERB_MEANING_TYPE *VerbMeanings::get_relational_meaning(verb_meaning *vm) {
+VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::get_relational_meaning(verb_meaning *vm) {
 	if (vm == NULL) return NULL;
 	int rev = vm->reversed;
 	vm = VerbMeanings::indirect_meaning(vm);
 	if (vm == NULL) return NULL;
 	if (VerbMeanings::is_meaningless(vm)) return NULL;
-	VERB_MEANING_TYPE *rel = vm->regular_meaning;
+	VERB_MEANING_LINGUISTICS_TYPE *rel = vm->regular_meaning;
 	if (rel == NULL) return NULL;
 	if (vm->reversed) rev = (rev)?FALSE:TRUE;
 	if (rev) rel = VerbMeanings::reverse_VMT(rel);

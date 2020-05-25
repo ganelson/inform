@@ -39,9 +39,9 @@ following. (The six highest bits are defined in the |words| module.)
 
 @
 
-@d EM_CASE_SENSITIVITY_TEST UseExcerptMeanings::case_sensitivity
-@d EM_ALLOW_BLANK_TEST UseExcerptMeanings::allow_blank
-@d EM_IGNORE_DEFINITE_ARTICLE_TEST UseExcerptMeanings::ignore_definite_article
+@d EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK UseExcerptMeanings::case_sensitivity
+@d EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK UseExcerptMeanings::allow_blank
+@d EM_IGNORE_DEFINITE_ARTICLE_TEST_LINGUISTICS_CALLBACK UseExcerptMeanings::ignore_definite_article
 
 =
 int UseExcerptMeanings::case_sensitivity(unsigned int mc) {
@@ -72,7 +72,7 @@ int UseExcerptMeanings::ignore_definite_article(unsigned int mc) {
 	(VOID_PHRASE_MC + VALUE_PHRASE_MC + COND_PHRASE_MC + SAY_PHRASE_MC)
 @
 
-@d LINGUISTICS_PROBLEM_HANDLER UseExcerptMeanings::linguistics_problem_handler
+@d PROBLEM_LINGUISTICS_CALLBACK UseExcerptMeanings::linguistics_problem_handler
 
 =
 void UseExcerptMeanings::linguistics_problem_handler(int err_no, wording W, void *ref, int k) {

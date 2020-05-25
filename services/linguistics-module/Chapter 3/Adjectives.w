@@ -28,7 +28,7 @@ ever brings up.)
 Because of this we need a structure to represent an adjective as
 distinct from its meaning, and this is it.
 
-@default ADJECTIVE_MEANING_TYPE void
+@default ADJECTIVE_MEANING_LINGUISTICS_TYPE void
 
 =
 typedef struct adjectival_phrase {
@@ -37,7 +37,7 @@ typedef struct adjectival_phrase {
 	struct inter_name *aph_iname;
 	struct package_request *aph_package;
 	#endif
-	ADJECTIVE_MEANING_TYPE *meanings;
+	ADJECTIVE_MEANING_LINGUISTICS_TYPE *meanings;
 	CLASS_DEFINITION
 } adjectival_phrase;
 
@@ -64,22 +64,22 @@ adjectival_phrase *Adjectives::from_word_range(wording W, NATURAL_LANGUAGE_WORDS
 	aph->adjective_names = Clusters::new();
 	Clusters::add_with_agreements(aph->adjective_names, W, nl);
 	aph->meanings = NULL;
-	#ifdef EMPTY_ADJECTIVE_MEANING
-	aph->meanings = EMPTY_ADJECTIVE_MEANING();
+	#ifdef EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK
+	aph->meanings = EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK();
 	#endif
 	#ifdef CORE_MODULE
 	aph->aph_package = Hierarchy::package(Modules::current(), ADJECTIVES_HAP);
 	aph->aph_iname = Hierarchy::make_iname_in(ADJECTIVE_HL, aph->aph_package);
 	#endif
 	if ((nl == NULL) && (Wordings::nonempty(W))) {
-		#ifdef ADJECTIVE_NAME_VETTING
-		if (ADJECTIVE_NAME_VETTING(W)) {
+		#ifdef ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK
+		if (ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK(W)) {
 		#endif
 			ExcerptMeanings::register(ADJECTIVE_MC,
 				W, STORE_POINTER_adjectival_phrase(aph));
 			LOOP_THROUGH_WORDING(n, W)
 				NTI::mark_word(n, <adjective-name>);
-		#ifdef ADJECTIVE_NAME_VETTING
+		#ifdef ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK
 		}
 		#endif
 	}

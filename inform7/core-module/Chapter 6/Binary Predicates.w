@@ -319,8 +319,8 @@ relation $LEPC(n, T)$ which is true if and only if the number $n$ is listed
 as one of the eggs-per-clutch entries in the table $T$, where $T$ has to be
 one of the tables which has a column of this name.
 
-@d VERB_MEANING_TYPE struct binary_predicate
-@d VERB_MEANING_REVERSAL BinaryPredicates::get_reversal
+@d VERB_MEANING_LINGUISTICS_TYPE struct binary_predicate
+@d VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK BinaryPredicates::get_reversal
 @d VERB_MEANING_EQUALITY R_equality
 @d VERB_MEANING_UNIVERSAL R_universal
 @d VERB_MEANING_POSSESSION a_has_b_predicate

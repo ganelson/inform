@@ -163,7 +163,7 @@ wording Nouns::get_name_in_play(noun *t, int plural_flag, NATURAL_LANGUAGE_WORDS
 
 void Nouns::set_plural_name(noun *t, wording W) {
 	NATURAL_LANGUAGE_WORDS_TYPE *L = NULL;
-	#ifdef CORE_LANGUAGE
+	#ifdef CORE_MODULE
 	L = Task::language_of_syntax();
 	#endif
 	Clusters::set_plural_name(t->names, W, L);

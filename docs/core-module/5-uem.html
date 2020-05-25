@@ -98,9 +98,9 @@ following. (The six highest bits are defined in the <span class="extract"><span 
 </pre>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">EM_CASE_SENSITIVITY_TEST</span><span class="plain-syntax"> </span><a href="5-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::case_sensitivity</span></a>
-<span class="definition-keyword">define</span> <span class="constant-syntax">EM_ALLOW_BLANK_TEST</span><span class="plain-syntax"> </span><a href="5-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::allow_blank</span></a>
-<span class="definition-keyword">define</span> <span class="constant-syntax">EM_IGNORE_DEFINITE_ARTICLE_TEST</span><span class="plain-syntax"> </span><a href="5-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::ignore_definite_article</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::case_sensitivity</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::allow_blank</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">EM_IGNORE_DEFINITE_ARTICLE_TEST_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::ignore_definite_article</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UseExcerptMeanings::case_sensitivity</span><span class="plain-syntax">(</span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mc</span><span class="plain-syntax">) {</span>
@@ -133,7 +133,7 @@ following. (The six highest bits are defined in the <span class="extract"><span 
 </pre>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LINGUISTICS_PROBLEM_HANDLER</span><span class="plain-syntax"> </span><a href="5-uem.html#SP7" class="function-link"><span class="function-syntax">UseExcerptMeanings::linguistics_problem_handler</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEM_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-uem.html#SP7" class="function-link"><span class="function-syntax">UseExcerptMeanings::linguistics_problem_handler</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UseExcerptMeanings::linguistics_problem_handler</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">err_no</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">) {</span>

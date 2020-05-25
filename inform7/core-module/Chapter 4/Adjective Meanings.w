@@ -4,7 +4,7 @@ One individual meaning which an adjective can have.
 
 @ An adjective can have a long list of meanings in different contexts:
 
-@d ADJECTIVE_MEANING_TYPE struct adjective_meaning_block
+@d ADJECTIVE_MEANING_LINGUISTICS_TYPE struct adjective_meaning_block
 
 =
 typedef struct adjective_meaning_block {
@@ -143,7 +143,7 @@ inter_name *Adjectives::Meanings::iname(adjectival_phrase *aph, int task, int we
 
 @h The block of definitions.
 
-@d EMPTY_ADJECTIVE_MEANING Adjectives::Meanings::new_block
+@d EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK Adjectives::Meanings::new_block
 
 =
 adjective_meaning_block *Adjectives::Meanings::new_block(void) {

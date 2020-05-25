@@ -321,9 +321,9 @@ void ExcerptMeanings::register_em(unsigned int meaning_code, excerpt_meaning *em
 	if (meaning_code & SUBSET_PARSING_BITMAP) {
 		@<Place the new meaning under the subset list for each non-article word@>;
 	}
-	#ifdef EM_ALLOW_BLANK_TEST
+	#ifdef EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK
 	else if ((em->no_em_tokens == 1) && (em->em_tokens[0] == NULL) &&
-		(EM_ALLOW_BLANK_TEST(meaning_code))) {
+		(EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK(meaning_code))) {
 		@<Place the new meaning under the say-blank list@>;
 	}
 	#endif
@@ -447,8 +447,8 @@ excerpt_meaning *ExcerptMeanings::register(
 
 	@<Unless this is parametrised, skip any initial article@>;
 
-	#ifdef EM_CASE_SENSITIVITY_TEST
-	if (EM_CASE_SENSITIVITY_TEST(meaning_code))
+	#ifdef EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK
+	if (EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK(meaning_code))
 		@<Detect use of upper case on the first word of this new text substitution@>;
 	#endif
 
@@ -588,15 +588,15 @@ going to any trouble to prevent this.
 @h Errors.
 Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |LINGUISTICS_PROBLEM_HANDLER|
+texts in HTML. So the client is allowed to define |PROBLEM_LINGUISTICS_CALLBACK|
 to some routine of her own, gazumping this one.
 
 =
 void ExcerptMeanings::problem_handler(int err_no, wording W, void *ref, int k) {
-	#ifdef LINGUISTICS_PROBLEM_HANDLER
-	LINGUISTICS_PROBLEM_HANDLER(err_no, W, ref, k);
+	#ifdef PROBLEM_LINGUISTICS_CALLBACK
+	PROBLEM_LINGUISTICS_CALLBACK(err_no, W, ref, k);
 	#endif
-	#ifndef LINGUISTICS_PROBLEM_HANDLER
+	#ifndef PROBLEM_LINGUISTICS_CALLBACK
 	TEMPORARY_TEXT(text);
 	WRITE_TO(text, "%+W", W);
 	switch (err_no) {

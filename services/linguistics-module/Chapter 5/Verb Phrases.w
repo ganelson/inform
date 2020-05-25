@@ -543,7 +543,7 @@ the exactly equivalent idea of the hat being worn by Darcy.
 
 @<Insert a relationship subtree if the verb creates one without a relative phrase@> =
 	verb_meaning *vm = Node::get_verb_meaning(V);
-	VERB_MEANING_TYPE *meaning = VerbMeanings::get_relational_meaning(vm);
+	VERB_MEANING_LINGUISTICS_TYPE *meaning = VerbMeanings::get_relational_meaning(vm);
 	if (meaning == NULL) return FALSE;
 	Node::set_verb_meaning(V, vm);
 	if ((Annotations::read_int(V, possessive_verb_ANNOT) == FALSE) && (meaning != VERB_MEANING_EQUALITY)) {

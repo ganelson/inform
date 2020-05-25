@@ -10,8 +10,8 @@ verb_conjugation *vc_have = NULL;
 
 @h What verb usages we allow.
 
-@d ALLOW_VERB_USAGE_IN_ASSERTIONS Unit::allow_in_assertions
-@d ALLOW_VERB_USAGE_GENERALLY Unit::allow_generally
+@d ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK Unit::allow_in_assertions
+@d ALLOW_VERB_LINGUISTICS_CALLBACK Unit::allow_generally
 
 =
 int Unit::allow_in_assertions(verb_conjugation *vc, int tense, int sense, int person) {

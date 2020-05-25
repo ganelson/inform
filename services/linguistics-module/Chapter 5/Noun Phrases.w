@@ -281,7 +281,7 @@ directions, in particular, a little better.
 	<permitted-preposition> <np-inner-without-rp>		==> 0; @<Work out a meaning@>;
 
 @<Work out a meaning@> =
-	VERB_MEANING_TYPE *R = VerbMeanings::get_relational_meaning(
+	VERB_MEANING_LINGUISTICS_TYPE *R = VerbMeanings::get_relational_meaning(
 		Verbs::regular_meaning(permitted_verb_identity, RP[1], NULL));
 	if (R == NULL) return FALSE;
 	*XP = NounPhrases::PN_rel(W, VerbMeanings::reverse_VMT(R), -1, RP[2]);
@@ -429,7 +429,7 @@ A modest utility routine to construct and annotation RELATIONSHIP nodes.
 @d DIRECTION_RELN 2
 
 =
-parse_node *NounPhrases::PN_rel(wording W, VERB_MEANING_TYPE *R, int reln_type, parse_node *referent) {
+parse_node *NounPhrases::PN_rel(wording W, VERB_MEANING_LINGUISTICS_TYPE *R, int reln_type, parse_node *referent) {
 	if (preform_lookahead_mode) return NULL;
 	parse_node *P = Node::new(RELATIONSHIP_NT);
 	Node::set_text(P, W);

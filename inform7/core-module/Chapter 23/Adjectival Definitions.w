@@ -184,7 +184,7 @@ offer the new adjective around and see if anybody claims it.
 
 @
 
-@d ADJECTIVE_NAME_VETTING Phrases::Adjectives::vet_name
+@d ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK Phrases::Adjectives::vet_name
 
 =
 int Phrases::Adjectives::vet_name(wording W) {
