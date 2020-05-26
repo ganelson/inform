@@ -784,6 +784,7 @@ int Kinds::known_name(text_stream *sn) {
 @h Annotating vocabulary.
 
 =
+#ifdef KINDS_MODULE
 kind *Kinds::read_kind_marking_from_vocabulary(vocabulary_entry *ve) {
 	return ve->means.one_word_kind;
 }
@@ -792,6 +793,7 @@ void Kinds::mark_vocabulary_as_kind(vocabulary_entry *ve, kind *K) {
 	Vocabulary::set_flags(ve, KIND_FAST_MC);
 	NTI::mark_vocabulary(ve, <k-kind>);
 }
+#endif
 
 @h From context.
 Sometimes we need to kmow the current values of the 26 kind variables, A

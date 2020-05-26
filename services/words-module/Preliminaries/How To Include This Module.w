@@ -61,6 +61,11 @@ command-line error message written to |STDERR|.
 prevent this from being issued to the terminal as an error message: see
 //Lexer::lexer_problem_handler//.
 
+(*) |VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK| is called to attach a
+meaning object to a single //vocabulary_entry//. In this module, meanings are
+not our concern: all we provide is the opportunity for our parent tool to
+attach such meanings to words. See //Vocabulary::vocab_entry_new//.
+
 @ If the selection of a natural language is a meaningful thing to the parent,
 it can define |NATURAL_LANGUAGE_WORDS_TYPE| to tell the Preform parser how
 to refer to these. For example, the //supervisor// module has:

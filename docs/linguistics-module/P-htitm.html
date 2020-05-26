@@ -153,12 +153,12 @@ it allows them in any form in non-assertion contexts. See
 and <span class="extract"><span class="extract-syntax">EM_IGNORE_DEFINITE_ARTICLE_TEST_LINGUISTICS_CALLBACK</span></span> can all make excerpts
 parse in slightly different ways. <a href="../core-module/index.html" class="internal">core</a> sets all of these to return <span class="extract"><span class="extract-syntax">TRUE</span></span>
 for say phrases, and <span class="extract"><span class="extract-syntax">FALSE</span></span> for everything else. See <a href="2-pe.html#SP5" class="internal">ExParser::parse_excerpt</a>
-and <a href="2-em.html#SP15" class="internal">ExcerptMeanings::register</a>.
+and <a href="2-em.html#SP13" class="internal">ExcerptMeanings::register</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK</span></span>, if provided, should be the default
 meaning for an adjective newly defined &mdash; see <a href="3-adj.html#SP4" class="internal">Adjectives::from_word_range</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_LINGUISTICS_CALLBACK</span></span> is called when an error is found, and can
 prevent this from being issued to the terminal as an error message: see
-<a href="2-em.html#SP16" class="internal">ExcerptMeanings::problem_handler</a>.
+<a href="2-em.html#SP14" class="internal">ExcerptMeanings::problem_handler</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">TRACING_LINGUISTICS_CALLBACK</span></span>, if provided, can return <span class="extract"><span class="extract-syntax">TRUE</span></span> to allow
 extensive details of verb parsing to be copied to the debugging log. See
 <a href="5-vp.html#SP10" class="internal">VerbPhrases::tracing</a>.

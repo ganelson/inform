@@ -151,6 +151,8 @@ they can be rather lengthy.
 				I"documentation-diagnostics.txt", &Index::DocReferences::log_statistics);
 			CoreMain::write_diagnostics(
 				I"verbs-diagnostics.txt", &NewVerbs::log_all);
+			CoreMain::write_diagnostics(
+				I"excerpts-diagnostics.txt", &ExParser::debug_parser_statistics);
 		}
 	}
 

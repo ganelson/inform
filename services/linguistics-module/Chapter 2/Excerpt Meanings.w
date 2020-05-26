@@ -4,53 +4,23 @@ To register and deregister meanings for excerpts of text as
 nouns, adjectives, imperative phrases and other usages.
 
 @h Excerpt meanings.
-Most compilers keep a "symbols table" of identifier names and what
-meanings they have: for instance, when compiling Inform, GCC's symbols
-table records that |problem_count| is the name of an integer variable and
-|excerpt_meaning| of a defined type. This is usually stored so that a
-new name can rapidly be checked to see if it matches one that is currently
-known.
-
-In natural language we must similarly remember meanings of excerpts. (Recall
-that an "excerpt" is a run of one or more adjacent words in the source text.)
-Here we store just such a lexicon. We won't use this for every grammatical
-category (determiners and verb forms are more efficiently stored elsewhere),
-but otherwise it's a general grab-bag of meanings. Inform uses this data
-structure to store (a) adjectives, (b) nouns and (c) imperative phrases
-of the sort used to define rules. Examples include:
-
->> american dialect, say close bracket, player's command, open, Hall of Mirrors
-
-Most compilers use a symbols table whose efficiency depends on the fact
-that symbol names are relatively long strings (say, 8 or more units)
-drawn from a small alphabet (say, the 37 letters, digits and the underscore).
-But Inform has short symbols (typically one to three units) drawn from a
-huge alphabet (say, all 5,000 different words found in the source text).
-And we also need to parse in ways which a conventional compiler does not.
-If C has registered the identifier |pink_martini| then it never needs to
-notice |pnk_martin| as being related to it. But when Inform registers
-"pink martini" as the name of an instance, it then has to spot that
-either "pink" or "martini" alone might also refer to the same object.
-So we are not going to use the conventional algorithms.
-
-@ We now define the |excerpt_meaning| data structure, which holds a single
-entry in this super-dictionary. The text to be matched is specified as a
-sequence of at least one, and at most 32, tokens: these can either be
+We now define the //excerpt_meaning// data structure, which holds a single
+entry in this what amounts to a dictionary. The text to be matched is specified
+as a sequence of at least one, and at most 32, tokens: these can either be
 pointers to specific vocabulary, or can be null, which implies that
-arbitrary non-empty text can appear in the given position. (It is forbidden
-for the token list to contain two nulls in a row.) For instance, the
-token list:
+arbitrary non-empty text can appear in the given position. It is forbidden
+for the token list to contain two nulls in a row.
+
+For instance, the token list:
 = (text)
 	drink # milk #
-#
-matches "drink more milk today and every day", but not "drink milk". (The
-sharp symbol |#| is printed in place of a null token, both in this documentation
-and in the debugging log.)
+=
+matches "drink more milk today and every day", but not "drink milk". The
+sharp symbol |#| is printed in place of a null token, both here and in the
+debugging log.
 
 Each excerpt meaning also comes with a hash code, which is automatically
 generated from its token list, and a pointer to some structure.
-
-@e TooLongName_LINERROR from 1
 
 @d MAX_TOKENS_PER_EXCERPT_MEANING 32
 
@@ -71,25 +41,27 @@ have a meaning with code |NOUN_MC|.
 
 Meaning codes are used in other contexts in Inform besides this one. There
 are up to 31 of them and each is a distinct power of two; there is no
-significance to their ordering. The point is that a signed integer (which
-we know can hold values at least up to $2^{31}-1$) can hold a bitmap
-representing any subset of these meaning codes; for instance, |PROPERTY_MC
-+ TABLE_MC| might mean "either a property name or a table name".
+significance to their ordering. Integers are assumed at least 32 bits wide and
+can therefore hold a bitmap representing any subset of these meaning codes;
+using only 31 bits avoids any potential nuisance over the sign bit.
 
-@ The |meaning_code| field of an |excerpt_meaning| is always exactly
-one of the |*_MC| values. (It is never a bitmap combination.)
+For instance, |PROPERTY_MC + TABLE_MC| might mean "either a property name or
+a table name". But the |meaning_code| field of an //excerpt_meaning// is always
+a pure power of 2, i.e., a single bit.
 
 @d MISCELLANEOUS_MC			0x00000001 /* a grab-bag of other possible nouns */
 @d NOUN_MC					0x00000002 /* e.g., |upright chair| */
 @d ADJECTIVE_MC				0x00000004 /* e.g., |invisible| */
 
-@ Each word in our vocabulary will be annotated with this structure:
-
-@d VOCABULARY_MEANING_INITIALISER ExcerptMeanings::new_meaning
+@h Annotating words.
+Each word in the vocabulary collected up by //words// will be annotated with
+an object of the following class:
 
 =
 typedef struct vocabulary_meaning {
+	#ifdef KINDS_MODULE
 	struct kind *one_word_kind; /* ditto as a kind with single-word name */
+	#endif
 	struct parse_node *start_list; /* meanings starting with this */
 	struct parse_node *end_list; /* meanings ending with this */
 	struct parse_node *middle_list; /* meanings with this inside but at neither end */
@@ -99,9 +71,11 @@ typedef struct vocabulary_meaning {
 
 @ With the following initialiser:
 
+@d VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK ExcerptMeanings::new_meaning
+
 =
 vocabulary_meaning ExcerptMeanings::new_meaning(vocabulary_entry *ve) {
-	#ifdef CORE_MODULE
+	#ifdef KINDS_MODULE
 	if (Kinds::Textual::parse_variable(ve)) ve->flags |= KIND_FAST_MC;
 	#endif
 	if ((ve->flags) & NUMBER_MC) Cardinals::mark_as_cardinal(ve);
@@ -110,7 +84,9 @@ vocabulary_meaning ExcerptMeanings::new_meaning(vocabulary_entry *ve) {
 	vocabulary_meaning vm;
 	vm.start_list = NULL; vm.end_list = NULL; vm.middle_list = NULL;
 	vm.subset_list = NULL; vm.subset_list_length = 0;
+	#ifdef KINDS_MODULE
 	vm.one_word_kind = NULL;
+	#endif
 	return vm;
 }
 
@@ -581,6 +557,8 @@ excerpt_meaning *ExcerptMeanings::register_assemblage(
 a tendency to fire twice or more on the same source text because of
 registering multiple inflected forms of the same text; but it's not worth
 going to any trouble to prevent this.
+
+@e TooLongName_LINERROR from 1
 
 @<Complain of excessive length of the new excerpt@> =
 	ExcerptMeanings::problem_handler(TooLongName_LINERROR, EMPTY_WORDING, NULL, 0);

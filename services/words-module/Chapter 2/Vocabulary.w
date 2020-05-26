@@ -24,7 +24,7 @@ possible meaning as a literal integer, we cache the result: for instance,
 17 for the text |17|.
 
 The meaning codes alluded to below are also used for excerpts of text
-(i.e., are not just for single words) and are defined in Excerpt Meanings.
+(i.e., are not just for single words): see //linguistics: Excerpt Meanings//.
 
 @d ING_MC					0x04000000 /* a word ending in -ing */
 @d NUMBER_MC				0x08000000 /* one, two, ..., twelve, 1, 2, ... */
@@ -44,7 +44,7 @@ typedef struct vocabulary_entry {
 	struct vocabulary_entry *lower_case_form; /* or null if none exists */
 	struct vocabulary_entry *upper_case_form; /* or null if none exists */
 	int nt_incidence; /* bitmap hashing which Preform nonterminals it occurs in */
-	#ifdef VOCABULARY_MEANING_INITIALISER
+	#ifdef VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK
 	struct vocabulary_meaning means;
 	#endif
 } vocabulary_entry;
@@ -143,8 +143,8 @@ vocabulary_entry *Vocabulary::vocab_entry_new(wchar_t *text, int hash_code,
 	if ((l>3) && (text[l-3] == 'i') && (text[l-2] == 'n') && (text[l-1] == 'g'))
 		ve->flags |= ING_MC;
 	ve->literal_number_value = val;
-	#ifdef VOCABULARY_MEANING_INITIALISER
-	ve->means = VOCABULARY_MEANING_INITIALISER(ve);
+	#ifdef VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK
+	ve->means = VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK(ve);
 	#endif
 	return ve;
 }

@@ -43,10 +43,14 @@ DECLARE_CLASS(noun)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
+@e EXCERPT_MEANINGS_DA
+@e EXCERPT_PARSING_DA
+@e TIME_PERIODS_DA
+@e VERB_USAGES_DA
+@e VERB_FORMS_DA
+
 =
 void LinguisticsModule::start(void) {
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 	Cardinals::enable_in_word_form();
@@ -56,19 +60,7 @@ void LinguisticsModule::start(void) {
 void LinguisticsModule::end(void) {
 }
 
-@<Register this module's memory allocation reasons@> =
-	;
-
-@<Register this module's stream writers@> =
-	;
-
 @
-
-@e EXCERPT_MEANINGS_DA
-@e EXCERPT_PARSING_DA
-@e TIME_PERIODS_DA
-@e VERB_USAGES_DA
-@e VERB_FORMS_DA
 
 @<Register this module's debugging log aspects@> =
 	Log::declare_aspect(TIME_PERIODS_DA, L"time periods", FALSE, FALSE);
@@ -84,26 +76,26 @@ void LinguisticsModule::end(void) {
 	Writers::register_logger('w', Verbs::log_verb);
 	Writers::register_logger('y', VerbMeanings::log);
 
-@ This module uses |syntax|, and adds the following annotations to the
+@ This module uses //syntax//, and adds the following annotations to the
 syntax tree.
 
 @e meaning_ANNOT /* |excerpt_meaning|: for leaves */
 
-@e verbal_certainty_ANNOT		/* |int|: certainty level if known */
+@e verbal_certainty_ANNOT		 /* |int|: certainty level if known */
 @e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
 @e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
-@e inverted_verb_ANNOT   		/* |int|: an inversion of subject and object has occurred */
-@e possessive_verb_ANNOT   		/* |int|: this is a non-relative use of "to have" */
-@e verb_ANNOT   					/* |verb_usage|: what's being done here */
-@e preposition_ANNOT   			/* |preposition_identity|: which preposition, if any, qualifies it */
-@e second_preposition_ANNOT   	/* |preposition_identity|: which further preposition, if any, qualifies it */
-@e verb_meaning_ANNOT   			/* |verb_meaning|: what it means */
+@e inverted_verb_ANNOT   		 /* |int|: an inversion of subject and object has occurred */
+@e possessive_verb_ANNOT   		 /* |int|: this is a non-relative use of "to have" */
+@e verb_ANNOT   				 /* |verb_usage|: what's being done here */
+@e preposition_ANNOT   			 /* |preposition_identity|: which preposition, if any, qualifies it */
+@e second_preposition_ANNOT   	 /* |preposition_identity|: which further preposition, if any, qualifies it */
+@e verb_meaning_ANNOT   		 /* |verb_meaning|: what it means */
 
-@e nounphrase_article_ANNOT 		/* |int|: definite or indefinite article: see below */
-@e plural_reference_ANNOT 		/* |int|: used by PROPER NOUN nodes for evident plurals */
-@e gender_reference_ANNOT 		/* |int|: used by PROPER NOUN nodes for evident genders */
-@e relationship_node_type_ANNOT 	/* |int|: what kind of inference this assertion makes */
-@e implicitly_refers_to_ANNOT 	/* |int|: this will implicitly refer to something */
+@e nounphrase_article_ANNOT 	 /* |int|: definite or indefinite article: see below */
+@e plural_reference_ANNOT 		 /* |int|: used by PROPER NOUN nodes for evident plurals */
+@e gender_reference_ANNOT 		 /* |int|: used by PROPER NOUN nodes for evident genders */
+@e relationship_node_type_ANNOT  /* |int|: what kind of inference this assertion makes */
+@e implicitly_refers_to_ANNOT 	 /* |int|: this will implicitly refer to something */
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)

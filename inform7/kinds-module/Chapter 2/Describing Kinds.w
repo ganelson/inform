@@ -338,7 +338,8 @@ for kind variables, converting them to and from the numbers 1 to 26:
 =
 int Kinds::Textual::parse_variable(vocabulary_entry *ve) {
 	if (ve == NULL) return 0;
-	return Kinds::Textual::parse_kind_variable_name(Vocabulary::get_exemplar(ve, TRUE), TRUE);
+	return Kinds::Textual::parse_kind_variable_name(
+		Vocabulary::get_exemplar(ve, TRUE), TRUE);
 }
 
 int Kinds::Textual::parse_kind_variable_name(wchar_t *p, int allow_lower) {

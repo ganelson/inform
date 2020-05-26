@@ -58,7 +58,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">linguistics</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the linguistics module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. A symbols table for natural language</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Optimisations</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The linguistics module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -74,6 +74,103 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. A symbols table for natural language. </b>Our first task is to provide something equivalent to the "symbols table"
+used in a compiler for a conventional language. For example, in a C compiler,
+identifiers such as <span class="extract"><span class="extract-syntax">int</span></span>, <span class="extract"><span class="extract-syntax">x</span></span> or <span class="extract"><span class="extract-syntax">printf</span></span> might all be entries in such a
+table, and any new name can rapidly be checked to see if it matches one already
+known.
+</p>
+
+<p class="commentary">In natural language we have "excerpts", that is, contiguous runs of words,
+rather than identifiers. But we must similarly remember their meanings.
+Examples might include:
+</p>
+
+<blockquote>
+    <p>american dialect, say close bracket, player's command, open, Hall of Mirrors</p>
+</blockquote>
+
+<p class="commentary">Conventional symbols table algorithms depend on the fact that identifiers are
+relatively long sequences of letters (often 8 or more units) drawn from a
+small alphabet (say, the 37 letters, digits and the underscore). But Inform
+has short symbols (typically 1 to 3 units) drawn from a huge alphabet (say,
+5,000 different words found in the source text). Inform also allows for
+flexibility in matching: the excerpt meaning <span class="extract"><span class="extract-syntax">give # bone</span></span>, for example, must
+match "give a dog a bone" or "give me the thigh bone".
+</p>
+
+<p class="commentary">We also need to parse in ways which a conventional compiler does not. If C has
+registered the identifier <span class="extract"><span class="extract-syntax">pink_martini</span></span>, it never needs to notice <span class="extract"><span class="extract-syntax">martini</span></span> as
+being related to it. But when Inform registers "pink martini" as the name of an
+instance, it then has to spot that either "pink" or "martini" alone might also
+refer to the same object.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The lexicon is stored using <a href="2-em.html#SP1" class="internal">excerpt_meaning</a> objects, in <a href="2-em.html" class="internal">Excerpt Meanings</a>,
+and the algorithm for matching against is <a href="2-pe.html#SP5" class="internal">ExParser::parse_excerpt</a>. When
+the parent wants to declare a new meaning, it calls either
+</p>
+
+<ul class="items"><li>&#9679; <a href="2-em.html#SP13" class="internal">ExcerptMeanings::register</a> to register using a wording to represent
+the text of the excerpt, or
+</li><li>&#9679; <a href="2-em.html#SP13_3_2" class="internal">ExcerptMeanings::register_assemblage</a> to use a word assemblage instead.
+</li></ul>
+<p class="commentary">In either case it must supply a "meaning code", such as <span class="extract"><span class="extract-syntax">TABLE_MC</span></span>, to give
+a very loose idea of what is meant; we will use that to make lookups faster.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Optimisations. </b>This is a speed-critical part of Inform and has been heavily optimised, at the
+cost of some complexity. There are two main ideas:
+</p>
+
+<p class="commentary">Firstly, each word in the vocabulary gathered up by the <a href="../words-module/index.html" class="internal">words</a> module &mdash;
+i.e., each different word in the source text &mdash; has a <a href="2-em.html#SP3" class="internal">vocabulary_meaning</a>
+object attached to it. This in turn contains lists of all known meanings
+starting with, ending with, or simply involving the word.
+</p>
+
+<p class="commentary">For example, if "great green dragon" is given a meaning, then this is added to
+the first-word list for "great", the last-word list for "dragon", and the
+middle-word list for "green".
+</p>
+
+<p class="commentary">In addition, every word in an excerpt which is not an article adds the meaning
+to its "subset list" &mdash; here, that would be all three words, but for "gandalf
+the grey", it would be entered onto the subset lists for "gandalf" and "grey".
+Subset lists tend to be longer and thus slower to deal with, and are used only
+in contexts where it is legal to use a subset of a name to refer to the
+meaning &mdash; for example, to say just "Gandalf" but mean the same wizard.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Secondly, recall that each vocabulary entry has a field 32 bits wide for
+a bitmap, of which only 6 bits were used in the lexer. (See <a href="../words-module/2-vcb.html" class="internal">Vocabulary (in words)</a>.)
+For example, cardinal numbers had the <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span> bit set.
+</p>
+
+<p class="commentary">We're now going to use the other 26 bits. The idea is that if a meaning is
+registered for the name of, say, a table, then the <span class="extract"><span class="extract-syntax">TABLE_MC</span></span> bit would be
+set for each of the words in that name. For example, if "table of tides" is
+such a name, then each if the words <span class="extract"><span class="extract-syntax">table</span></span>, <span class="extract"><span class="extract-syntax">of</span></span> and <span class="extract"><span class="extract-syntax">tides</span></span> picks up the
+<span class="extract"><span class="extract-syntax">TABLE_MC</span></span> bit.
+</p>
+
+<p class="commentary">What we gain by this is that if we are ever testing some words in the source
+text to see if they might be the name of a table, we can immediately reject,
+say, "green table" because the word <span class="extract"><span class="extract-syntax">green</span></span> does not have the <span class="extract"><span class="extract-syntax">TABLE_MC</span></span> bit.
+</p>
+
+<p class="commentary">For more on this, and for complications arising to do with case sensitivity,
+see <a href="2-em.html#SP9_1" class="internal">ExcerptMeanings::hash_code_from_token_list</a>.
+</p>
+
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">no_calls_to_parse_excerpt = 104881</span>
+<span class="plain-syntax">no_meanings_tried = 249662</span>
+<span class="plain-syntax">no_meanings_tried_in_detail = 22177</span>
+<span class="plain-syntax">no_successful_calls_to_parse_excerpt = 17693</span>
+<span class="plain-syntax">no_matched_ems = 19457</span>
+<span class="plain-syntax">number of excerpt meanings registered = 3161</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-em.html">2</a></li><li class="progresschapter"><a href="3-aap.html">3</a></li><li class="progresschapter"><a href="4-vrb.html">4</a></li><li class="progresschapter"><a href="5-dgr.html">5</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
