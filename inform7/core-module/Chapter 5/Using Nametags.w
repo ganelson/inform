@@ -71,7 +71,7 @@ void UseNouns::visit_to_name(parse_node *p) {
 
 @<Act on a request to translate a noun in a specific way@> =
 	wording W = Wordings::trim_last_word(Node::get_text(p->down->next));
-	parse_node *res = ExParser::parse_excerpt(NOUN_MC, W);
+	parse_node *res = Lexicon::retrieve(NOUN_MC, W);
 	if (res) {
 		noun *nt = Nouns::disambiguate(res, MAX_NOUN_PRIORITY);
 		if (nt) {

@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
 	WordsModule::start();
 	InflectionsModule::start();
 	SyntaxModule::start();
+	LexiconModule::start();
 	LinguisticsModule::start();
 
 	CommandLine::declare_heading(L"linguistics-test: a tool for testing the linguistics module\n");
@@ -29,6 +30,7 @@ int main(int argc, char **argv) {
 	WordsModule::end();
 	InflectionsModule::end();
 	SyntaxModule::end();
+	LexiconModule::end();
 	LinguisticsModule::end();
 	Foundation::end();
 	return 0;

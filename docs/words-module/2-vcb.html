@@ -89,7 +89,7 @@ possible meaning as a literal integer, we cache the result: for instance,
 </p>
 
 <p class="commentary">The meaning codes alluded to below are also used for excerpts of text
-(i.e., are not just for single words): see <a href="../linguistics-module/2-em.html" class="internal">Excerpt Meanings (in linguistics)</a>.
+(i.e., are not just for single words): see <a href="../lexicon-module/2-em.html" class="internal">Excerpt Meanings (in lexicon)</a>.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ING_MC</span><span class="plain-syntax">					</span><span class="constant-syntax">0x04000000</span><span class="plain-syntax"> </span><span class="comment-syntax"> a word ending in -ing</span>
@@ -111,7 +111,7 @@ possible meaning as a literal integer, we cache the result: for instance,
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">upper_case_form</span><span class="plain-syntax">; </span><span class="comment-syntax"> or null if none exists</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt_incidence</span><span class="plain-syntax">; </span><span class="comment-syntax"> bitmap hashing which Preform nonterminals it occurs in</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">vocabulary_meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">means</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">vocabulary_lexicon_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">means</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax">;</span>
 </pre>

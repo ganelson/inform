@@ -90,7 +90,7 @@ void PreformUtilities::enter_lexicon(nonterminal *nt, int pos, char *category, c
 			for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt)
 				for (ptoken *alt = pt; alt; alt = alt->alternative_ptoken)
 					if (alt->ve_pt)
-						Index::Lexicon::new_entry_with_details(EMPTY_WORDING, pos,
+						IndexLexicon::new_entry_with_details(EMPTY_WORDING, pos,
 							WordAssemblages::lit_1(alt->ve_pt), category, gloss);
 }
 #endif

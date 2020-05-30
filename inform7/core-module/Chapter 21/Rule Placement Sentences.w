@@ -25,7 +25,7 @@ optionally be used.)
 =
 <rulebook-name> internal {
 	W = Articles::remove_the(W);
-	parse_node *p = ExParser::parse_excerpt(RULEBOOK_MC, W);
+	parse_node *p = Lexicon::retrieve(RULEBOOK_MC, W);
 	if (Rvalues::is_CONSTANT_construction(p, CON_rulebook)) {
 		*XP = Rvalues::to_rulebook(p);
 		return TRUE;

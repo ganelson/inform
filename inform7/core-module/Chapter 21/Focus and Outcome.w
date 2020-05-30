@@ -214,7 +214,7 @@ can be used in a void context as a sort of return-from-rule phrase.
 
 =
 <named-rulebook-outcome> internal {
-	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome)) {
 		*XP = Rvalues::to_named_rulebook_outcome(p);
 		return TRUE;
@@ -224,7 +224,7 @@ can be used in a void context as a sort of return-from-rule phrase.
 
 @ =
 named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
-	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome))
 		return Rvalues::to_named_rulebook_outcome(p);
 

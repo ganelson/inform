@@ -1,4 +1,4 @@
-[Index::Lexicon::] Lexicon Index.
+[IndexLexicon::] Lexicon Index.
 
 To construct the Lexicon portion of the Phrasebook page of the
 Index, which gives brief definitions and references for nouns, adjectives
@@ -52,7 +52,7 @@ lexicon_entry *current_main_verb = NULL; /* when parsing verb declarations */
 @ Lexicon entries are created by the following routine:
 
 =
-lexicon_entry *Index::Lexicon::lexicon_new_entry(wording W) {
+lexicon_entry *IndexLexicon::lexicon_new_entry(wording W) {
 	lexicon_entry *lex = CREATE(lexicon_entry);
 	lex->wording_of_entry = W;
 	lex->text_of_entry = WordAssemblages::lit_0();
@@ -68,17 +68,17 @@ The |current_main_verb| setting is used to ensure that inflected forms of the
 same verb are grouped together in the verbs table.
 
 =
-lexicon_entry *Index::Lexicon::new_entry_with_details(wording W, int pos,
+lexicon_entry *IndexLexicon::new_entry_with_details(wording W, int pos,
 	word_assemblage wa, char *category, char *gloss) {
-	lexicon_entry *lex = Index::Lexicon::lexicon_new_entry(W);
+	lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
 	lex->part_of_speech = pos;
 	lex->text_of_entry = wa;
 	lex->category = category; lex->gloss_note = gloss;
 	return lex;
 }
 
-lexicon_entry *Index::Lexicon::new_main_verb(word_assemblage infinitive, int part) {
-	lexicon_entry *lex = Index::Lexicon::lexicon_new_entry(EMPTY_WORDING);
+lexicon_entry *IndexLexicon::new_main_verb(word_assemblage infinitive, int part) {
+	lexicon_entry *lex = IndexLexicon::lexicon_new_entry(EMPTY_WORDING);
 	lex->text_of_entry = infinitive;
 	lex->part_of_speech = part;
 	lex->category = "verb";
@@ -92,7 +92,7 @@ collection of vocabulary words, and it's therefore convenient to have a utility
 routine which extracts the name in plain text from either source.
 
 =
-void Index::Lexicon::lexicon_copy_to_stream(lexicon_entry *lex, text_stream *text) {
+void IndexLexicon::lexicon_copy_to_stream(lexicon_entry *lex, text_stream *text) {
 	if (Wordings::nonempty(lex->wording_of_entry))
 		WRITE_TO(text, "%+W", lex->wording_of_entry);
 	else
@@ -105,7 +105,7 @@ lexicon entries have already been created for verbs and determiners. But
 it doesn't yet contain nouns or adjectives.
 
 =
-void Index::Lexicon::index(OUTPUT_STREAM) {
+void IndexLexicon::index(OUTPUT_STREAM) {
 	@<Stock the lexicon with nouns from names of objects@>;
 	@<Stock the lexicon with nouns from kinds of object@>;
 	@<Stock the lexicon with adjectives from names of adjectival phrases@>;
@@ -126,7 +126,7 @@ void Index::Lexicon::index(OUTPUT_STREAM) {
 only, for the foot of the World index.
 
 =
-void Index::Lexicon::index_common_nouns(OUTPUT_STREAM) {
+void IndexLexicon::index_common_nouns(OUTPUT_STREAM) {
 	int common_nouns_only = TRUE;
 	@<Main body of the lexicon@>;
 }
@@ -138,7 +138,7 @@ void Index::Lexicon::index_common_nouns(OUTPUT_STREAM) {
 	LOOP_OVER_OBJECT_INSTANCES(I) {
 		wording W = Instances::get_name(I, FALSE);
 		if (Wordings::nonempty(W)) {
-			lexicon_entry *lex = Index::Lexicon::lexicon_new_entry(W);
+			lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
 			lex->part_of_speech = PROPER_NOUN_LEXE;
 			lex->category = "noun";
 			lex->entry_refers_to = STORE_POINTER_instance(I);
@@ -155,7 +155,7 @@ source text.
 		if (Kinds::Compare::lt(K, K_object)) {
 			wording W = Kinds::Behaviour::get_name(K, FALSE);
 			if (Wordings::nonempty(W)) {
-				lexicon_entry *lex = Index::Lexicon::lexicon_new_entry(W);
+				lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
 				lex->part_of_speech = NOUN_LEXE;
 				lex->category = "noun";
 				lex->entry_refers_to = STORE_POINTER_kind(K);
@@ -170,7 +170,7 @@ source text.
 	LOOP_OVER(adj, adjectival_phrase) {
 		wording W = Adjectives::get_text(adj, FALSE);
 		if (Wordings::nonempty(W)) {
-			lex = Index::Lexicon::lexicon_new_entry(W);
+			lex = IndexLexicon::lexicon_new_entry(W);
 			lex->part_of_speech = ADJECTIVAL_PHRASE_LEXE;
 			lex->category = "adjective";
 			lex->entry_refers_to = STORE_POINTER_adjectival_phrase(adj);
@@ -189,7 +189,7 @@ on. (Sometimes these will also be listed separately with an adjectival sense.)
 			Properties::Conditions::get_coinciding_property(Instances::to_kind(qn));
 		if ((prn) && (Properties::Conditions::of_what(prn))) continue;
 		wording NW = Instances::get_name(qn, FALSE);
-		lex = Index::Lexicon::lexicon_new_entry(NW);
+		lex = IndexLexicon::lexicon_new_entry(NW);
 		lex->part_of_speech = ENUMERATED_CONSTANT_LEXE;
 		lex->category = "noun";
 		lex->entry_refers_to = STORE_POINTER_instance(qn);
@@ -199,7 +199,7 @@ on. (Sometimes these will also be listed separately with an adjectival sense.)
 	verb_conjugation *vc;
 	LOOP_OVER(vc, verb_conjugation)
 		if ((vc->vc_conjugates == NULL) && (vc->auxiliary_only == FALSE) && (vc->instance_of_verb))
-			Index::Lexicon::new_main_verb(vc->infinitive, MVERB_LEXE);
+			IndexLexicon::new_main_verb(vc->infinitive, MVERB_LEXE);
 
 @ It seems unfitting for a dictionary to omit "a", "an", "the", "some",
 "which" or "who".
@@ -221,7 +221,7 @@ into a single, canonical, lower-case representation.
 @<Create lower-case forms of all lexicon entries@> =
 	lexicon_entry *lex;
 	LOOP_OVER(lex, lexicon_entry) {
-		Index::Lexicon::lexicon_copy_to_stream(lex, lex->reduced_to_lower_case);
+		IndexLexicon::lexicon_copy_to_stream(lex, lex->reduced_to_lower_case);
 		LOOP_THROUGH_TEXT(pos, lex->reduced_to_lower_case)
 			Str::put(pos, Characters::tolower(Str::get(pos)));
 	}
@@ -322,7 +322,7 @@ treachery amongst the" in "Doctor Who: The Completely Useless
 Encyclopaedia", eds. Howarth and Lyons (1996).)
 
 @<Text of the actual lexicon entry@> =
-	Index::Lexicon::lexicon_copy_to_stream(lex, OUT);
+	IndexLexicon::lexicon_copy_to_stream(lex, OUT);
 	if (lex->part_of_speech == ABLE_VERB_LEXE) WRITE(", to be able to");
 	if (lex->part_of_speech == PREP_LEXE) WRITE(", to be");
 
@@ -433,7 +433,7 @@ of value.
 This is used in two different ways: firstly, at the foot of the lexicon --
 
 =
-void Index::Lexicon::index_verbs(OUTPUT_STREAM) {
+void IndexLexicon::index_verbs(OUTPUT_STREAM) {
 	HTML_OPEN("p"); HTML_CLOSE("p"); /* for spacing */
 	HTML_OPEN("p"); WRITE("Verbs listed as \"for saying only\" are values of the kind \"verb\" "
 		"and can be used in adaptive text, but they have no meaning to Inform, so "
@@ -449,7 +449,7 @@ void Index::Lexicon::index_verbs(OUTPUT_STREAM) {
 			TEMPORARY_TEXT(entry_text);
 			HTML_OPEN_WITH("p", "class=\"hang\"");
 			Index::anchor_numbered(OUT, 10000+verb_count++); /* anchors from 10000: see above */
-			Index::Lexicon::lexicon_copy_to_stream(lex, entry_text);
+			IndexLexicon::lexicon_copy_to_stream(lex, entry_text);
 			if (lex->part_of_speech == VERB_LEXE) WRITE("To <b>%S</b>", entry_text);
 			else if (lex->part_of_speech == MVERB_LEXE) WRITE("To <b>%S</b>", entry_text);
 			else if (lex->part_of_speech == AVERB_LEXE) WRITE("<b>%S</b>", entry_text);
@@ -473,7 +473,7 @@ void Index::Lexicon::index_verbs(OUTPUT_STREAM) {
 be able to print out a table of just those verbs created in that extension.
 
 =
-void Index::Lexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
+void IndexLexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
 	int verb_count = 0;
 	lexicon_entry *lex;
 	LOOP_OVER(lex, lexicon_entry)
@@ -481,7 +481,7 @@ void Index::Lexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, inform_e
 			&& (lex->verb_defined_at)
 			&& (Lexer::file_of_origin(Wordings::first_wn(Node::get_text(lex->verb_defined_at))) == sf)) {
 			TEMPORARY_TEXT(entry_text);
-			Index::Lexicon::lexicon_copy_to_stream(lex, entry_text);
+			IndexLexicon::lexicon_copy_to_stream(lex, entry_text);
 			if (verb_count++ == 0) { HTML_OPEN("p"); WRITE("Verbs: "); } else WRITE(", ");
 			if (lex->part_of_speech == VERB_LEXE) WRITE("to <b>%S</b>", entry_text);
 			else WRITE("to be able to <b>%S</b>", entry_text);

@@ -4658,19 +4658,17 @@
         0 
           constraint CS = {22} extremes [1, 1]
 
-<article-declension> nti 25 constraint DS = {24, 25} & CW = {24, 25} extremes [3, 6]
+<article-declension> nti 25 constraint DS = {24, 25} & CW = {24, 25} extremes [6, 6]
     English:
         * <en-article-declension> 
-          constraint DS = {24, 25} & CW = {24, 25} extremes [3, 6]
+          constraint DS = {24, 25} & CW = {24, 25} extremes [6, 6]
 
-<en-article-declension> nti 24 constraint CS = {24} extremes [2, 5]
+<en-article-declension> nti 24 constraint CS = {24} extremes [5, 5]
     English:
         a a a some some 
           constraint CS = {24} extremes [5, 5]
-        the the the 
-          constraint CS = {24} extremes [3, 3]
-        the the 
-          constraint CS = {24} extremes [2, 2]
+        the the the the the 
+          constraint CS = {24} extremes [5, 5]
 
 <pronoun> hits 88/492 nti 9 constraint CW = {26, 27} extremes [1, 1]
     English:

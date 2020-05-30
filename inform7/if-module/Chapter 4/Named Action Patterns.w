@@ -30,7 +30,7 @@ named_action_pattern *PL::Actions::Patterns::Named::nap_new(wording W) {
 }
 
 named_action_pattern *PL::Actions::Patterns::Named::by_name(wording W) {
-	parse_node *p = ExParser::parse_excerpt(NAMED_AP_MC, W);
+	parse_node *p = Lexicon::retrieve(NAMED_AP_MC, W);
 	if (p) return Rvalues::to_named_action_pattern(p);
 	return NULL;
 }

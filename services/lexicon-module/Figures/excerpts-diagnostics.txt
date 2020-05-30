@@ -1,0 +1,10 @@
+Size of lexicon: 3161 excerpt meanings
+
+Number of attempts to retrieve: 104881
+  of which unsuccessful: 87188
+  of which successful: 17693
+
+Total attempts to match against excerpt meanings: 249662
+  of which, total with incorrect hash codes: 227485
+  of which, total with correct hash codes: 22177
+  of which, total which matched: 19457

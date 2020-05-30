@@ -190,7 +190,7 @@ handlers until right at the end of the program. The routine which does so,
 			(apparent_subject->down->next)) {
 			wording W = Wordings::up_to(Node::get_text(apparent_subject->down),
 				Wordings::last_wn(Node::get_text(apparent_subject->down->next)));
-			parse_node *ap = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+			parse_node *ap = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 			if (Rvalues::is_CONSTANT_of_kind(ap, K_action_name)) {
 				Node::set_type_and_clear_annotations(apparent_subject, PROPER_NOUN_NT);
 				Node::set_text(apparent_subject, W);

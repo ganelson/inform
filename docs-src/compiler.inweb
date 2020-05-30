@@ -38,6 +38,7 @@ divided up into "modules", many shared between two or even all three tools.
     .             .      +----------------------------------------------+
 +-----------------------------------------------------------------------+
 |  SERVICES              shared //linguistics//-module                      |
+|                         shared //lexicon//-module                         |
 |                        shared //inflections//-module                      |
 |                         shared //problems//-module                        |
 |                          shared //syntax//-module                         |

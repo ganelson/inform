@@ -110,16 +110,16 @@ Total memory consumption was 256347K = 250 MB
      ----  parsing_pp_data                          96 objects, 4608 bytes
      ----  build_vertex                             40 objects, 4480 bytes
      ----  hierarchy_attachment_point               48 objects, 4224 bytes
-     ----  stacked_variable_list_array              1 x 100 objects, 4032 bytes
      ----  placement_affecting_array                1 x 100 objects, 4032 bytes
+     ----  stacked_variable_list_array              1 x 100 objects, 4032 bytes
      ----  activity                                 35 objects, 3920 bytes
      ----  inbuild_edition                          54 objects, 3888 bytes
      ----  inbuild_copy                             35 objects, 3640 bytes
      ----  command_line_switch                      41 objects, 3280 bytes
      ----  kind_constructor_comparison_schema_array 1 x 100 objects, 3232 bytes
      ----  instance_usage_array                     1 x 200 objects, 3232 bytes
-     ----  compatibility_specification              66 objects, 3168 bytes
      ----  definition                               44 objects, 3168 bytes
+     ----  compatibility_specification              66 objects, 3168 bytes
      ----  inform_extension                         19 objects, 3040 bytes
      ----  property_of_value_storage                93 objects, 2976 bytes
      ----  submodule_request                        71 objects, 2840 bytes
@@ -127,8 +127,8 @@ Total memory consumption was 256347K = 250 MB
      ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes
      ----  equation_symbol                          30 objects, 2400 bytes
      ----  semver_range                             22 objects, 2288 bytes
-     ----  plugin_call_array                        1 x 100 objects, 1632 bytes
      ----  table_contribution_array                 1 x 100 objects, 1632 bytes
+     ----  plugin_call_array                        1 x 100 objects, 1632 bytes
      ----  activity_crossref_array                  1 x 100 objects, 1632 bytes
      ----  use_option                               29 objects, 1624 bytes
      ----  kind_interaction                         39 objects, 1560 bytes
@@ -138,15 +138,15 @@ Total memory consumption was 256347K = 250 MB
      ----  noun_filter_token                        22 objects, 1408 bytes
      ----  scene                                    1 object, 1344 bytes
      ----  special_meaning_holder                   33 objects, 1320 bytes
-     ----  constant_phrase                          20 objects, 1280 bytes
      ----  build_script                             40 objects, 1280 bytes
+     ----  constant_phrase                          20 objects, 1280 bytes
      ----  invocation_options_array                 1 x 100 objects, 1224 bytes
      ----  hierarchy_metadatum                      15 objects, 1200 bytes
      ----  quantifier                               16 objects, 1152 bytes
      ----  table_column                             16 objects, 896 bytes
      ----  inbuild_requirement                      22 objects, 880 bytes
-     ----  control_structure_phrase                 12 objects, 864 bytes
      ----  code_generation                          1 object, 864 bytes
+     ----  control_structure_phrase                 12 objects, 864 bytes
      ----  cached_understanding                     21 objects, 840 bytes
      ----  runtime_kind_structure                   13 objects, 832 bytes
      ----  phrase_option_array                      1 x 100 objects, 824 bytes
@@ -162,8 +162,8 @@ Total memory consumption was 256347K = 250 MB
      ----  I6T_intervention                         8 objects, 640 bytes
      ----  relation_guard                           5 objects, 640 bytes
      ----  nascent_array                            7 objects, 616 bytes
-     ----  named_rulebook_outcome                   15 objects, 600 bytes
      ----  inbuild_search_result                    15 objects, 600 bytes
+     ----  named_rulebook_outcome                   15 objects, 600 bytes
      ----  label_namespace                          10 objects, 560 bytes
      ----  inform_kit                               5 objects, 520 bytes
      ----  equation                                 4 objects, 416 bytes

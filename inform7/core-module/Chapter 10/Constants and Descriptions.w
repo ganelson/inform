@@ -46,7 +46,7 @@ being used as nouns for functional-programming purposes.
 
 =
 <s-miscellaneous-proper-noun> internal {
-	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (p) {
 		if ((Rvalues::is_CONSTANT_of_kind(p, K_action_name)) ||
 			(Rvalues::is_CONSTANT_construction(p, CON_relation)) ||
@@ -54,7 +54,7 @@ being used as nouns for functional-programming purposes.
 			*XP = p; return TRUE;
 		}
 	}
-	p = ExParser::parse_excerpt(VARIABLE_MC, W);
+	p = Lexicon::retrieve(VARIABLE_MC, W);
 	if (p) {
 		nonlocal_variable *nlv = Lvalues::get_nonlocal_variable_if_any(p);
 		if (NonlocalVariables::is_constant(nlv)) {
@@ -63,7 +63,7 @@ being used as nouns for functional-programming purposes.
 	}
 
 	if ((Vocabulary::disjunction_of_flags(W)) & CONSTANT_VAL_BITMAP) {
-		p = ExParser::parse_excerpt(CONSTANT_VAL_BITMAP, W);
+		p = Lexicon::retrieve(CONSTANT_VAL_BITMAP, W);
 		if (p) { *XP = p; return TRUE; }
 	}
 	return FALSE;
@@ -73,7 +73,7 @@ being used as nouns for functional-programming purposes.
 
 =
 <s-named-constant> internal {
-	parse_node *p = ExParser::parse_excerpt(VARIABLE_MC, W);
+	parse_node *p = Lexicon::retrieve(VARIABLE_MC, W);
 	if (p) {
 		nonlocal_variable *nlv = Lvalues::get_nonlocal_variable_if_any(p);
 		if (NonlocalVariables::is_constant(nlv)) {
@@ -89,7 +89,7 @@ names; but because they are stored internally without the compulsory words
 
 =
 <s-rulebook-outcome-name> internal {
-	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome)) {
 		*XP = p;
 		return TRUE;
@@ -98,7 +98,7 @@ names; but because they are stored internally without the compulsory words
 }
 
 <s-use-option-name> internal {
-	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_of_kind(p, K_use_option)) {
 		*XP = p; return TRUE;
 	}
@@ -106,7 +106,7 @@ names; but because they are stored internally without the compulsory words
 }
 
 <s-rule-name> internal {
-	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_construction(p, CON_rule)) {
 		*XP = p;
 		return TRUE;
@@ -121,7 +121,7 @@ as constants.
 
 =
 <s-table-column-name> internal {
-	parse_node *p = ExParser::parse_excerpt(TABLE_COLUMN_MC, W);
+	parse_node *p = Lexicon::retrieve(TABLE_COLUMN_MC, W);
 	if (p) { *XP = p; return TRUE; }
 	return FALSE;
 }
@@ -138,7 +138,7 @@ to do this.
 	<property-name-construction>
 
 <s-property-name> internal {
-	parse_node *p = ExParser::parse_excerpt(PROPERTY_MC, W);
+	parse_node *p = Lexicon::retrieve(PROPERTY_MC, W);
 	if (p) {
 		*XP = p;
 		if (<property-name-as-noun-phrase>(W))
@@ -247,10 +247,10 @@ possible adjective name it can see.
 
 =
 <s-adjective> internal ? {
-	parse_node *p = ExParser::parse_excerpt_maximal(ADJECTIVE_MC, W);
+	parse_node *p = Lexicon::retrieve_longest_initial_segment(ADJECTIVE_MC, W);
 	if (p) {
 		adjective_usage *ale = AdjectiveUsages::new(
-			RETRIEVE_POINTER_adjectival_phrase(ExcerptMeanings::data(Node::get_meaning(p))),
+			RETRIEVE_POINTER_adjectival_phrase(Lexicon::get_data(Node::get_meaning(p))),
 				TRUE);
 		*XP = Descriptions::from_proposition(NULL, W);
 		Descriptions::add_to_adjective_list(ale, *XP);
@@ -366,7 +366,7 @@ is just a little faster written as an internal like this.
 
 =
 <s-instance-name> internal {
-	parse_node *p = ExParser::parse_excerpt(NOUN_MC, W);
+	parse_node *p = Lexicon::retrieve(NOUN_MC, W);
 	if (p) {
 		noun *nt = Nouns::disambiguate(p, MAX_NOUN_PRIORITY);
 		if ((nt) && (Nouns::priority(nt) == LOW_NOUN_PRIORITY)) {

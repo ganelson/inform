@@ -5,9 +5,10 @@ Language: InC
 Licence: Artistic License 2.0
 
 Import: foundation
-Import: ../services/words
+Import: words
 Import: inflections
-Import: ../services/syntax
+Import: syntax
+Import: lexicon
 Import: linguistics
 
 Chapter 1: Scaffolding

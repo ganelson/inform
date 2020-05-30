@@ -1,6 +1,0 @@
-no_calls_to_parse_excerpt = 104881
-no_meanings_tried = 249662
-no_meanings_tried_in_detail = 22177
-no_successful_calls_to_parse_excerpt = 17693
-no_matched_ems = 19457
-number of excerpt meanings registered = 3161

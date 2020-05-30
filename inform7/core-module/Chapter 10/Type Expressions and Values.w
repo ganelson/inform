@@ -386,7 +386,7 @@ the text "grand total" is parsed as the local.
 
 =
 <s-global-variable> internal {
-	parse_node *p = ExParser::parse_excerpt(VARIABLE_MC, W);
+	parse_node *p = Lexicon::retrieve(VARIABLE_MC, W);
 	if (p) { *XP = p; return TRUE; }
 	return FALSE;
 }
@@ -416,7 +416,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 			property_word_to_suppress = PreformUtilities::word(<property-of-shape>, 0);
 		word_to_suppress_in_phrases = property_word_to_suppress;
 	}
-	parse_node *p = ExParser::parse_excerpt(VALUE_PHRASE_MC, W);
+	parse_node *p = Lexicon::retrieve(VALUE_PHRASE_MC, W);
 	word_to_suppress_in_phrases = suppression;
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
@@ -428,7 +428,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 
 <s-value-phrase> internal {
 	W = Articles::remove_the(W);
-	parse_node *p = ExParser::parse_excerpt(VALUE_PHRASE_MC, W);
+	parse_node *p = Lexicon::retrieve(VALUE_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);

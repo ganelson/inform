@@ -89,7 +89,7 @@ either/or property where a valued property is wanted, or vice versa.
 
 =
 property *Properties::obtain(wording W, int valued) {
-	parse_node *p = ExParser::parse_excerpt(PROPERTY_MC, W);
+	parse_node *p = Lexicon::retrieve(PROPERTY_MC, W);
 	property *prn;
 	if (p == NULL) {
 		prn = Properties::create(W, NULL, NULL);

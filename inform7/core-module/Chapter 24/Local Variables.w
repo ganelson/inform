@@ -193,7 +193,7 @@ local_variable *LocalVariables::add_to_locals_slate(locals_slate *slate, int pur
 		W = Articles::remove_the(W);
 	}
 	lvar->varname = W;
-	lvar->name_hash = ExcerptMeanings::hash_code(W);
+	lvar->name_hash = Lexicon::wording_hash(W);
 
 @<Throw a problem for an unsuitable name@> =
 	Problems::quote_source(1, current_sentence);
@@ -552,7 +552,7 @@ longer permits local names to be overloaded like this, there's no longer
 any need.
 
 @<Parse the locals directly@> =
-	int h = ExcerptMeanings::hash_code(W);
+	int h = Lexicon::wording_hash(W);
 	local_variable *lvar;
 	for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
 		if ((Wordings::nonempty(lvar->varname)) &&

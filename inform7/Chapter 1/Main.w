@@ -38,6 +38,7 @@ int Main::deputy(int argc, char *argv[]) {
 	WordsModule::start();
 	InflectionsModule::start();
 	SyntaxModule::start();
+	LexiconModule::start();
 	LinguisticsModule::start();
 	KindsModule::start();
 	ProblemsModule::start();
@@ -56,6 +57,7 @@ int Main::deputy(int argc, char *argv[]) {
 	WordsModule::end();
 	InflectionsModule::end();
 	SyntaxModule::end();
+	LexiconModule::end();
 	LinguisticsModule::end();
 	KindsModule::end();
 	ProblemsModule::end();

@@ -1,6 +1,6 @@
 Title: linguistics
 Author: Graham Nelson
-Purpose: A library of code to store grammatical categories of vocabulary.
+Purpose: A library of code to create grammatical categories of vocabulary.
 Language: InC
 Licence: Artistic License 2.0
 
@@ -12,11 +12,7 @@ Chapter 1: Setting Up
 "Loading this module."
 	Linguistics Module
 
-Chapter 2: Excerpts
-	Excerpt Meanings
-	Parse Excerpts
-
-Chapter 3: Grammatical Categories I
+Chapter 2: Grammatical Categories I
 	Articles and Pronouns
 	Cardinals and Ordinals
 	Determiners and Quantifiers
@@ -24,14 +20,14 @@ Chapter 3: Grammatical Categories I
 	Adjective Usages
 	Nouns
 
-Chapter 4: Grammatical Categories II
+Chapter 3: Grammatical Categories II
 	Verbs
 	Verb Usages
 	Prepositions
 	Adverbs of Certainty
 	Adverb Phrases of Occurrence
 
-Chapter 5: Diagramming Sentences
+Chapter 4: Diagramming Sentences
 	Diagrams
 	Verb Meanings
 	Noun Phrases

@@ -135,7 +135,7 @@ testing the existence of something.
 	<s-existential-np> is/are ...
 
 <s-phrase-to-decide> internal {
-	parse_node *p = ExParser::parse_excerpt(COND_PHRASE_MC, W);
+	parse_node *p = Lexicon::retrieve(COND_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
@@ -237,7 +237,7 @@ typechecking to choose between much later on.
 
 =
 <s-to-phrase> internal {
-	parse_node *p = ExParser::parse_excerpt(VOID_PHRASE_MC, W);
+	parse_node *p = Lexicon::retrieve(VOID_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
@@ -248,7 +248,7 @@ typechecking to choose between much later on.
 
 @ =
 <s-text-substitution> internal {
-	parse_node *p = ExParser::parse_excerpt(SAY_PHRASE_MC, W);
+	parse_node *p = Lexicon::retrieve(SAY_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
@@ -319,7 +319,7 @@ S-tree as we run sideways through the alternative readings.
 @<Build the invocation list@> =
 	for (; p; p = p->next_alternative) {
 		phrase *ph = RETRIEVE_POINTER_phrase(
-			ExcerptMeanings::data(Node::get_meaning(p)));
+			Lexicon::get_data(Node::get_meaning(p)));
 		parse_node *inv = Phrases::Parser::parse_against(ph, p);
 		if ((Phrases::TypeData::is_the_primordial_say(&(ph->type_data)) == FALSE) &&
 			(Rvalues::is_CONSTANT_of_kind(

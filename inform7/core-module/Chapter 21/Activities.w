@@ -539,7 +539,7 @@ values, of the kind to which the activity applies.
 
 =
 <activity-name> internal {
-	parse_node *p = ExParser::parse_excerpt(ACTIVITY_MC, W);
+	parse_node *p = Lexicon::retrieve(ACTIVITY_MC, W);
 	if (Rvalues::is_CONSTANT_construction(p, CON_activity)) {
 		*XP = Rvalues::to_activity(p);
 		return TRUE;

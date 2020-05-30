@@ -420,7 +420,7 @@ void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 @ Verbs (this one we delegate):
 
 @<Document and dictionary the verbs made in extension@> =
-	Index::Lexicon::list_verbs_in_file(OUT, E->read_into_file, E);
+	IndexLexicon::list_verbs_in_file(OUT, E->read_into_file, E);
 
 @ Adjectival phrases:
 

@@ -12,7 +12,7 @@ By convention, the modules considered as "services" have no dependencies on
 other modules except for //foundation// and other "services" modules.
 
 A tool can import //linguistics// only if it also imports //foundation//,
-//words//, //syntax// and //inflections//.
+//words//, //syntax//, //inflections// and //lexicon//.
 
 @h Importing the module.
 We'll use the term "parent" to mean the tool which is importing //linguistics//,
@@ -83,18 +83,8 @@ allows them in assertions only in the third person (singular or plural), whereas
 it allows them in any form in non-assertion contexts. See
 //VerbUsages::register_moods_of_verb//.
 
-(*) |EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK|, |EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK|
-and |EM_IGNORE_DEFINITE_ARTICLE_TEST_LINGUISTICS_CALLBACK| can all make excerpts
-parse in slightly different ways. //core// sets all of these to return |TRUE|
-for say phrases, and |FALSE| for everything else. See //ExParser::parse_excerpt//
-and //ExcerptMeanings::register//.
-
 (*) |EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK|, if provided, should be the default
 meaning for an adjective newly defined -- see //Adjectives::from_word_range//.
-
-(*) |PROBLEM_LINGUISTICS_CALLBACK| is called when an error is found, and can
-prevent this from being issued to the terminal as an error message: see
-//ExcerptMeanings::problem_handler//.
 
 (*) |TRACING_LINGUISTICS_CALLBACK|, if provided, can return |TRUE| to allow
 extensive details of verb parsing to be copied to the debugging log. See

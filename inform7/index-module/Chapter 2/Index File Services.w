@@ -610,7 +610,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Lx")) {
-		Index::Lexicon::index(OUT);
+		IndexLexicon::index(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Rl")) {
@@ -618,7 +618,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Vb")) {
-		Index::Lexicon::index_verbs(OUT);
+		IndexLexicon::index_verbs(OUT);
 		return;
 	}
 
@@ -637,7 +637,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Gz")) {
-		Index::Lexicon::index_common_nouns(OUT);
+		IndexLexicon::index_common_nouns(OUT);
 		return;
 	}
 

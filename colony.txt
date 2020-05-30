@@ -32,6 +32,7 @@ module: "syntax" at "services/syntax-module" in "docs/syntax-module"
 module: "words" at "services/words-module" in "docs/words-module"
 module: "html" at "services/html-module" in "docs/html-module"
 module: "inflections" at "services/inflections-module" in "docs/inflections-module"
+module: "lexicon" at "services/lexicon-module" in "docs/lexicon-module"
 module: "linguistics" at "services/linguistics-module" in "docs/linguistics-module"
 module: "problems" at "services/problems-module" in "docs/problems-module"
 

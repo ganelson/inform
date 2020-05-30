@@ -116,13 +116,13 @@ make two further checks:
 	if (Wordings::length(W) == 1) K = Kinds::read_kind_marking_from_vocabulary(Lexer::word(Wordings::first_wn(W)));
 	if (K == NULL) {
 		if (<definite-article>(Wordings::first_word(W))) return FALSE;
-		parse_node *p = ExParser::parse_excerpt(KIND_SLOW_MC, W);
+		parse_node *p = Lexicon::retrieve(KIND_SLOW_MC, W);
 		if (p) {
 			excerpt_meaning *em = Node::get_meaning(p);
 			K = Kinds::base_construction(
-				RETRIEVE_POINTER_kind_constructor(ExcerptMeanings::data(em)));
+				RETRIEVE_POINTER_kind_constructor(Lexicon::get_data(em)));
 		} else {
-			p = ExParser::parse_excerpt(NOUN_MC, W);
+			p = Lexicon::retrieve(NOUN_MC, W);
 			if (p) {
 				noun *nt = Nouns::disambiguate(p, HIGH_NOUN_PRIORITY);
 				if (nt) K = Kinds::base_construction(

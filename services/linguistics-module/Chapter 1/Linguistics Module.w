@@ -22,7 +22,6 @@ which use this module:
 @e verb_usage_tier_CLASS
 @e preposition_identity_CLASS
 @e time_period_CLASS
-@e excerpt_meaning_CLASS
 @e noun_CLASS
 
 =
@@ -38,13 +37,10 @@ DECLARE_CLASS(verb_usage)
 DECLARE_CLASS(verb_usage_tier)
 DECLARE_CLASS(preposition_identity)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(time_period, 100)
-DECLARE_CLASS(excerpt_meaning)
 DECLARE_CLASS(noun)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
-@e EXCERPT_MEANINGS_DA
-@e EXCERPT_PARSING_DA
 @e TIME_PERIODS_DA
 @e VERB_USAGES_DA
 @e VERB_FORMS_DA
@@ -66,11 +62,8 @@ void LinguisticsModule::end(void) {
 	Log::declare_aspect(TIME_PERIODS_DA, L"time periods", FALSE, FALSE);
 	Log::declare_aspect(VERB_USAGES_DA, L"verb usages", FALSE, TRUE);
 	Log::declare_aspect(VERB_FORMS_DA, L"verb forms", FALSE, TRUE);
-	Log::declare_aspect(EXCERPT_MEANINGS_DA, L"excerpt meanings", FALSE, FALSE);
-	Log::declare_aspect(EXCERPT_PARSING_DA, L"excerpt parsing", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
-	Writers::register_logger('M', ExcerptMeanings::log);
 	Writers::register_logger('t', Occurrence::log);
 	Writers::register_logger('p', Prepositions::log);
 	Writers::register_logger('w', Verbs::log_verb);
@@ -78,8 +71,6 @@ void LinguisticsModule::end(void) {
 
 @ This module uses //syntax//, and adds the following annotations to the
 syntax tree.
-
-@e meaning_ANNOT /* |excerpt_meaning|: for leaves */
 
 @e verbal_certainty_ANNOT		 /* |int|: certainty level if known */
 @e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
@@ -98,19 +89,17 @@ syntax tree.
 @e implicitly_refers_to_ANNOT 	 /* |int|: this will implicitly refer to something */
 
 =
-DECLARE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
 DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
 DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition_identity)
 DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition_identity)
 DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
 
-MAKE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
 MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
 MAKE_ANNOTATION_FUNCTIONS(preposition, preposition_identity)
 MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition_identity)
 MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
 
-@ This module requires |words|, which contains the Preform parser. When that
+@ This module requires //words//, which contains the Preform parser. When that
 initialises, it calls the following routine to improve its performance.
 
 @d PREFORM_OPTIMISER_WORDS_CALLBACK LinguisticsModule::preform_optimiser

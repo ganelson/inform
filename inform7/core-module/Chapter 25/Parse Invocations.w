@@ -59,7 +59,7 @@ void Phrases::Parser::register_phrasal(unsigned int phrase_mc, phrase *ph, wordi
 	@<Vet phrase text for suitability@>;
 	@<Look for slash-divided alternative phrasings and recurse to register all variations@>;
 
-	ExcerptMeanings::register(phrase_mc, W, STORE_POINTER_phrase(ph));
+	Lexicon::register(phrase_mc, W, STORE_POINTER_phrase(ph));
 }
 
 @ Some sanity checks first:

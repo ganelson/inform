@@ -10,7 +10,10 @@ with lingistic roles. For example, the cluster of names for the common noun
 
 >> man (En, singular), men (En, plural), homme (Fr, singular), hommes (Fr, plural)
 
-(at least in the nominative case). Clusters can be used for adjectives too.
+While this perhaps looks a little unstructured, that means that it doesn't
+impose many assumptions about the language. Compare the XML frameworks used
+in the Lexical Markup Framework standard ISO 24613, which it would be fairly
+easy to convert our //name_cluster// objects to.
 
 =
 typedef struct name_cluster {

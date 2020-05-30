@@ -126,7 +126,7 @@ them back that way too:
 
 =
 use_option *UseOptions::parse_uo(wording OW) {
-	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, OW);
+	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, OW);
 	if (Rvalues::is_CONSTANT_of_kind(p, K_use_option)) {
 		return Rvalues::to_use_option(p);
 	}

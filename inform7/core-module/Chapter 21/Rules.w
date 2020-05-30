@@ -156,11 +156,11 @@ rule *Rules::by_name(wording W) {
 	if (Wordings::empty(W)) return NULL;
 	W = Articles::remove_the(W);
 	if (<rule-name-formal>(W)) {
-		parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+		parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 		if (Rvalues::is_CONSTANT_construction(p, CON_rule))
 			return Rvalues::to_rule(p);
 	} else {
-		parse_node *p = ExParser::parse_excerpt(RULE_MC, W);
+		parse_node *p = Lexicon::retrieve(RULE_MC, W);
 		if (Rvalues::is_CONSTANT_construction(p, CON_rule))
 			return Rvalues::to_rule(p);
 	}

@@ -352,7 +352,7 @@ instance *Instances::parse_object(wording W) {
 	parse_node *p;
 	if (Wordings::empty(W)) return NULL;
 	if (<s-literal>(W)) return NULL;
-	p = ExParser::parse_excerpt(NOUN_MC, W);
+	p = Lexicon::retrieve(NOUN_MC, W);
 	if (p == NULL) return NULL;
 	noun *nt = Nouns::disambiguate(p, MAX_NOUN_PRIORITY);
 	if (nt == NULL) return NULL;
@@ -377,7 +377,7 @@ the second matches the others; and the third all instances, of whatever kind.
 }
 
 <instance-of-non-object> internal {
-	parse_node *p = ExParser::parse_excerpt(NAMED_CONSTANT_MC, W);
+	parse_node *p = Lexicon::retrieve(NAMED_CONSTANT_MC, W);
 	instance *I = Rvalues::to_instance(p);
 	if (I) { *XP = I; return TRUE; }
 	return FALSE;
@@ -388,7 +388,7 @@ the second matches the others; and the third all instances, of whatever kind.
 	W = Articles::remove_the(W);
 	instance *I = Instances::parse_object(W);
 	if (I) { *XP = I; return TRUE; }
-	parse_node *p = ExParser::parse_excerpt(NAMED_CONSTANT_MC, W);
+	parse_node *p = Lexicon::retrieve(NAMED_CONSTANT_MC, W);
 	I = Rvalues::to_instance(p);
 	if (I) { *XP = I; return TRUE; }
 	return FALSE;

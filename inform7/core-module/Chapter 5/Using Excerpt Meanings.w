@@ -39,9 +39,9 @@ following. (The six highest bits are defined in the |words| module.)
 
 @
 
-@d EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK UseExcerptMeanings::case_sensitivity
-@d EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK UseExcerptMeanings::allow_blank
-@d EM_IGNORE_DEFINITE_ARTICLE_TEST_LINGUISTICS_CALLBACK UseExcerptMeanings::ignore_definite_article
+@d EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK UseExcerptMeanings::case_sensitivity
+@d EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK UseExcerptMeanings::allow_blank
+@d EM_IGNORE_DEFINITE_ARTICLE_TEST_LEXICON_CALLBACK UseExcerptMeanings::ignore_definite_article
 
 =
 int UseExcerptMeanings::case_sensitivity(unsigned int mc) {
@@ -72,12 +72,12 @@ int UseExcerptMeanings::ignore_definite_article(unsigned int mc) {
 	(VOID_PHRASE_MC + VALUE_PHRASE_MC + COND_PHRASE_MC + SAY_PHRASE_MC)
 @
 
-@d PROBLEM_LINGUISTICS_CALLBACK UseExcerptMeanings::linguistics_problem_handler
+@d PROBLEM_LEXICON_CALLBACK UseExcerptMeanings::linguistics_problem_handler
 
 =
 void UseExcerptMeanings::linguistics_problem_handler(int err_no, wording W, void *ref, int k) {
 	switch (err_no) {
-		case TooLongName_LINERROR:
+		case TooLongName_LEXICONERROR:
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooLongName),
 				"that seems to involve far too long a name",
 				"since in general names are limited to a maximum of 32 words.");

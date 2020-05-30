@@ -24,7 +24,7 @@ possible meaning as a literal integer, we cache the result: for instance,
 17 for the text |17|.
 
 The meaning codes alluded to below are also used for excerpts of text
-(i.e., are not just for single words): see //linguistics: Excerpt Meanings//.
+(i.e., are not just for single words): see //lexicon: Excerpt Meanings//.
 
 @d ING_MC					0x04000000 /* a word ending in -ing */
 @d NUMBER_MC				0x08000000 /* one, two, ..., twelve, 1, 2, ... */
@@ -45,7 +45,7 @@ typedef struct vocabulary_entry {
 	struct vocabulary_entry *upper_case_form; /* or null if none exists */
 	int nt_incidence; /* bitmap hashing which Preform nonterminals it occurs in */
 	#ifdef VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK
-	struct vocabulary_meaning means;
+	struct vocabulary_lexicon_data means;
 	#endif
 } vocabulary_entry;
 

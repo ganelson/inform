@@ -71,7 +71,7 @@ other modules except for <a href="../../../inweb/docs/foundation-module/index.ht
 </p>
 
 <p class="commentary">A tool can import <a href="index.html" class="internal">linguistics</a> only if it also imports <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>,
-<a href="../words-module/index.html" class="internal">words</a>, <a href="../syntax-module/index.html" class="internal">syntax</a> and <a href="../inflections-module/index.html" class="internal">inflections</a>.
+<a href="../words-module/index.html" class="internal">words</a>, <a href="../syntax-module/index.html" class="internal">syntax</a>, <a href="../inflections-module/index.html" class="internal">inflections</a> and <a href="../lexicon-module/index.html" class="internal">lexicon</a>.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Importing the module. </b>We'll use the term "parent" to mean the tool which is importing <a href="index.html" class="internal">linguistics</a>,
@@ -105,11 +105,11 @@ meaning is attached to verbs at all.)
 </pre>
 <p class="commentary">The parent may also want to define <span class="extract"><span class="extract-syntax">VERB_MEANING_UNIVERSAL</span></span>, which should be
 a value of this type, and represents the "to relate" verb which can assert
-any verb meaning &mdash; for example, "X relates to Y by R". See <a href="4-vu.html" class="internal">Verb Usages</a>.
+any verb meaning &mdash; for example, "X relates to Y by R". See <a href="3-vu.html" class="internal">Verb Usages</a>.
 </p>
 
 <p class="commentary">Similarly, <span class="extract"><span class="extract-syntax">ADJECTIVE_MEANING_LINGUISTICS_TYPE</span></span> should be a type for the meaning
-of an adjective. See <a href="3-adj.html" class="internal">Adjectives</a>.
+of an adjective. See <a href="2-adj.html" class="internal">Adjectives</a>.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Using callbacks. </b>Shared modules like this one are tweaked in behaviour by defining "callback
@@ -139,35 +139,27 @@ following alphabetical list has references to fuller explanations:
 
 <ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">ADAPTIVE_PERSON_LINGUISTICS_CALLBACK</span></span> returns the default person for adaptive
 text generation; in Inform, this tends to be the value of the adaptive text viewpoint
-property for the natural language of play. See <a href="4-vu.html#SP24" class="internal">VerbUsages::adaptive_person</a>.
+property for the natural language of play. See <a href="3-vu.html#SP24" class="internal">VerbUsages::adaptive_person</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK</span></span> should return <span class="extract"><span class="extract-syntax">TRUE</span></span> if the given
 name is acceptable as an adjective, and should otherwise print some sort of
 error message and return <span class="extract"><span class="extract-syntax">FALSE</span></span>. If this callback is not provided, all non-empty
-names are acceptable. See <a href="3-adj.html#SP4" class="internal">Adjectives::from_word_range</a>.
+names are acceptable. See <a href="2-adj.html#SP4" class="internal">Adjectives::from_word_range</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK</span></span> and <span class="extract"><span class="extract-syntax">ALLOW_VERB_LINGUISTICS_CALLBACK</span></span>
 give the parent control over which forms of verbs are allowed: for examole, <a href="../core-module/index.html" class="internal">core</a>
 allows them in assertions only in the third person (singular or plural), whereas
 it allows them in any form in non-assertion contexts. See
-<a href="4-vu.html#SP8" class="internal">VerbUsages::register_moods_of_verb</a>.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">EM_CASE_SENSITIVITY_TEST_LINGUISTICS_CALLBACK</span></span>, <span class="extract"><span class="extract-syntax">EM_ALLOW_BLANK_TEST_LINGUISTICS_CALLBACK</span></span>
-and <span class="extract"><span class="extract-syntax">EM_IGNORE_DEFINITE_ARTICLE_TEST_LINGUISTICS_CALLBACK</span></span> can all make excerpts
-parse in slightly different ways. <a href="../core-module/index.html" class="internal">core</a> sets all of these to return <span class="extract"><span class="extract-syntax">TRUE</span></span>
-for say phrases, and <span class="extract"><span class="extract-syntax">FALSE</span></span> for everything else. See <a href="2-pe.html#SP5" class="internal">ExParser::parse_excerpt</a>
-and <a href="2-em.html#SP13" class="internal">ExcerptMeanings::register</a>.
+<a href="3-vu.html#SP8" class="internal">VerbUsages::register_moods_of_verb</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK</span></span>, if provided, should be the default
-meaning for an adjective newly defined &mdash; see <a href="3-adj.html#SP4" class="internal">Adjectives::from_word_range</a>.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_LINGUISTICS_CALLBACK</span></span> is called when an error is found, and can
-prevent this from being issued to the terminal as an error message: see
-<a href="2-em.html#SP14" class="internal">ExcerptMeanings::problem_handler</a>.
+meaning for an adjective newly defined &mdash; see <a href="2-adj.html#SP4" class="internal">Adjectives::from_word_range</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">TRACING_LINGUISTICS_CALLBACK</span></span>, if provided, can return <span class="extract"><span class="extract-syntax">TRUE</span></span> to allow
 extensive details of verb parsing to be copied to the debugging log. See
-<a href="5-vp.html#SP10" class="internal">VerbPhrases::tracing</a>.
+<a href="4-vp.html#SP10" class="internal">VerbPhrases::tracing</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK</span></span> reverses the meaning of a verb:
 in the sense that the reversal of "A knows B" would be "A is known by B",
-or in other words "B knows A". See <a href="5-vm.html#SP1" class="internal">VerbMeanings::reverse_VMT</a>.
+or in other words "B knows A". See <a href="4-vm.html#SP1" class="internal">VerbMeanings::reverse_VMT</a>.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-em.html">2</a></li><li class="progresschapter"><a href="3-aap.html">3</a></li><li class="progresschapter"><a href="4-vrb.html">4</a></li><li class="progresschapter"><a href="5-dgr.html">5</a></li><li class="progressnext"><a href="1-lm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-aap.html">2</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="1-lm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

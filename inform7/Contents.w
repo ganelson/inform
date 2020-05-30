@@ -14,6 +14,7 @@ Import: services/html
 Import: services/arch
 Import: services/problems
 Import: services/inflections
+Import: services/lexicon
 Import: services/linguistics
 Import: kinds
 Import: inter/bytecode

@@ -72,7 +72,7 @@ the player types either of these:
 	<unicode-character-name>		==> Rvalues::from_Unicode_point(R[1], W)
 
 <unicode-character-name> internal {
-	parse_node *p = ExParser::parse_excerpt(MISCELLANEOUS_MC, W);
+	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if ((p) && (Node::get_type(p) == PROPER_NOUN_NT)) {
 		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(Node::get_text(p))));
 		return TRUE;
