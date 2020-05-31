@@ -67,6 +67,7 @@ typedef struct vocabulary_lexicon_data {
 	struct parse_node *middle_list; /* meanings with this inside but at neither end */
 	struct parse_node *subset_list; /* meanings allowing subsets which include this */
 	int subset_list_length; /* number of meanings in the subset list */
+	int scanned_already; /* used only for diagnostics */
 } vocabulary_lexicon_data;
 
 @ With the following initialiser:
@@ -81,13 +82,14 @@ vocabulary_lexicon_data ExcerptMeanings::new_vocabulary_attachment(vocabulary_en
 	if ((ve->flags) & NUMBER_MC) Cardinals::mark_as_cardinal(ve);
 	if ((ve->flags) & ORDINAL_MC) Cardinals::mark_as_ordinal(ve);
 
-	vocabulary_lexicon_data vm;
-	vm.start_list = NULL; vm.end_list = NULL; vm.middle_list = NULL;
-	vm.subset_list = NULL; vm.subset_list_length = 0;
+	vocabulary_lexicon_data ld;
+	ld.start_list = NULL; ld.end_list = NULL; ld.middle_list = NULL;
+	ld.subset_list = NULL; ld.subset_list_length = 0;
+	ld.scanned_already = FALSE;
 	#ifdef KINDS_MODULE
-	vm.one_word_kind = NULL;
+	ld.one_word_kind = NULL;
 	#endif
-	return vm;
+	return ld;
 }
 
 @h Creating EMs.

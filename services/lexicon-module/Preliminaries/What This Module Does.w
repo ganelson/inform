@@ -100,10 +100,12 @@ The following statistics show how many times the lexicon was used during
 a typical Inform 7 compilation (the same one used to generate the data in
 //inform7: Performance Metrics//).
 
-If optimising is working as it should, then:
-(*) the number of attempts with incorrect hash codes will be much larger
-than the number with correct ones; but
-(*) the number of attempts with correct hash codes will be close to the
+Optimisation is worthwhile if:
+(*) the number of attempts with incorrect hash codes is appreciably larger
+than the number with correct ones
+
+Optimisation is efficient if:
+(*) the number of attempts with correct hash codes is close to the
 number of successes.
 
 = (hyperlinked undisplayed text from Figures/excerpts-diagnostics.txt)

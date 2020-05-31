@@ -11,8 +11,8 @@ excerpt_meaning *Lexicon::register(
 	return ExcerptMeanings::register(meaning_code, W, data);
 }
 
-@ //excerpt_meaning// are intended to be fairly opaque, but the user can call
-this to extract their attached data:
+@ //excerpt_meaning// objects are intended to be fairly opaque, but the user
+can call this to extract their attached data:
 
 =
 general_pointer Lexicon::get_data(excerpt_meaning *em) {

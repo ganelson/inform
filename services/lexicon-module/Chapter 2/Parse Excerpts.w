@@ -510,8 +510,47 @@ typical Inform story can be read off in //inform7: Performance Metrics//.
 
 =
 void FromLexicon::statistics(void) {
-	LOG("Size of lexicon: %d excerpt meanings\n\n", NUMBER_CREATED(excerpt_meaning));
-
+	LOG("Size of lexicon: %d excerpt meanings\n", NUMBER_CREATED(excerpt_meaning));
+	vocabulary_entry *sve = NULL, *eve = NULL, *mve = NULL, *subve = NULL;
+	int lsl = 0, lel = 0, lml = 0, lsubl = 0,
+		nsl = 0, nel = 0, nml = 0, nsubl = 0,
+		m = 0, n = 0;
+	for (int i = 0; i<lexer_wordcount; i++) {
+		vocabulary_entry *ve = Lexer::word(i);
+		vocabulary_lexicon_data *ld = &(ve->means);
+		if ((ld) && (ld->scanned_already == FALSE)) {
+			m++;
+			ld->scanned_already = TRUE;
+			int sl = FromLexicon::len(ld->start_list);
+			int el = FromLexicon::len(ld->end_list);
+			int ml = FromLexicon::len(ld->middle_list);
+			int subl = FromLexicon::len(ld->subset_list);
+			if (sl > 0) nsl++;
+			if (el > 0) nel++;
+			if (ml > 0) nml++;
+			if (subl > 0) nsubl++;
+			if (sl + el + ml + subl > 0) n++;
+			if (sl > lsl) { lsl = sl; sve = ve; }
+			if (el > lel) { lel = el; eve = ve; }
+			if (ml > lml) { lml = ml; mve = ve; }
+			if (subl > lsubl) { lsubl = subl; subve = ve; }
+		}
+	}
+	LOG("  Stored among %d words out of total vocabulary of %d\n", n, m);
+	if (nsl > 0)
+		LOG("  %d words have a start list: longest belongs to %V (with %d meanings)\n",
+			nsl, sve, lsl);
+	if (nel > 0)
+		LOG("  %d words have an end list: longest belongs to %V (with %d meanings)\n",
+			nel, eve, lel);
+	if (nml > 0)
+		LOG("  %d words have a middle list: longest belongs to %V (with %d meanings)\n",
+			nml, mve, lml);
+	if (nsubl > 0)
+		LOG("  %d words have a subset list: longest belongs to %V (with %d meanings)\n",
+			nsubl, subve, lsubl);
+	LOG("\n");
+	
 	LOG("Number of attempts to retrieve: %d\n", no_calls_to_parse_excerpt);
 	LOG("  of which unsuccessful: %d\n",
 		no_calls_to_parse_excerpt - no_successful_calls_to_parse_excerpt);
@@ -524,5 +563,14 @@ void FromLexicon::statistics(void) {
 		no_meanings_tried_in_detail);
 	LOG("  of which, total which matched: %d\n", no_matched_ems);
 
+
 	if (Log::aspect_switched_on(EXCERPT_MEANINGS_DA)) ExcerptMeanings::log_all();
+}
+
+int FromLexicon::len(parse_node *pn) {
+	int N = 0;
+	while (pn) {
+		N++; pn = pn->next_alternative;
+	}
+	return N;
 }
