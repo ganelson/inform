@@ -6,8 +6,8 @@
 /*                    checks syntax and translates such directives into      */
 /*                    specifications for the object-maker.                   */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -186,7 +186,6 @@ Advanced game to get an extra 62)");
         }
     }
     else {
-        /* INDIV_PROP_START could be a memory setting */
         if (no_properties==INDIV_PROP_START) {
             discard_token_location(beginning_debug_location);
             error_numbered("All properties already declared -- max is",

@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "states" :  Statement translator                                        */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -170,7 +170,7 @@ static void parse_action(void)
             if (version_number==4)
                 assemblez_4_to(call_vs_zc, AO, AO2, AO3, AO4, temp_var1);
             else
-                assemblez_4(call_zc, AO, AO2, AO3, AO4);
+                assemblez_4_to(call_zc, AO, AO2, AO3, AO4, temp_var1);
             break;
           case 3:
             AO5 = code_generate(AO5, QUANTITY_CONTEXT, -1);
@@ -840,9 +840,9 @@ static void parse_statement_z(int break_label, int continue_label)
                          if (j > ln2) ln2 = j;
                      }
                      put_token_back();
-                     array_entry(ln++,parse_expression(CONSTANT_CONTEXT));
+                     array_entry(ln++, FALSE, parse_expression(CONSTANT_CONTEXT));
                  } while (TRUE);
-                 finish_array(ln);
+                 finish_array(ln, FALSE);
                  if (ln == 0)
                      error("No lines of text given for 'box' display");
 
@@ -1801,9 +1801,9 @@ static void parse_statement_g(int break_label, int continue_label)
                          if (j > ln2) ln2 = j;
                      }
                      put_token_back();
-                     array_entry(ln++,parse_expression(CONSTANT_CONTEXT));
+                     array_entry(ln++, FALSE, parse_expression(CONSTANT_CONTEXT));
                  } while (TRUE);
-                 finish_array(ln);
+                 finish_array(ln, FALSE);
                  if (ln == 0)
                      error("No lines of text given for 'box' display");
 

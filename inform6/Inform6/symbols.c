@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "symbols" :  The symbols table; creating stock of reserved words        */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -51,7 +51,7 @@ int no_named_constants;                         /* Copied into story file    */
   int32  **symbs;
   int32  *svals;
   int    *smarks;            /* Glulx-only */
-  int32  *slines;
+  brief_location  *slines;
   int    *sflags;
 #ifdef VAX
   char   *stypes;            /* In VAX C, insanely, "signed char" is illegal */
@@ -230,8 +230,7 @@ extern int symbol_index(char *p, int hashcode)
                                      unbound-symbol-causes-asm-error? */
     sflags[no_symbols]  =  UNKNOWN_SFLAG;
     stypes[no_symbols]  =  CONSTANT_T;
-    slines[no_symbols]  =  ErrorReport.line_number
-                           + FILE_LINE_SCALE_FACTOR*ErrorReport.file_number;
+    slines[no_symbols]  =  get_brief_location(&ErrorReport);
     if (debugfile_switch)
     {   nullify_debug_file_position
             (&symbol_debug_backpatch_positions[no_symbols]);
@@ -284,6 +283,7 @@ extern char *typename(int type)
         case LABEL_T:               return("Label");
         case GLOBAL_VARIABLE_T:     return("Global variable");
         case ARRAY_T:               return("Array");
+        case STATIC_ARRAY_T:        return("Static array");
         case CONSTANT_T:            return("Defined constant");
         case ATTRIBUTE_T:           return("Attribute");
         case PROPERTY_T:            return("Property");
@@ -316,8 +316,8 @@ static void describe_flags(int flags)
 extern void describe_symbol(int k)
 {   printf("%4d  %-16s  %2d:%04d  %04x  %s  ",
         k, (char *) (symbs[k]), 
-        (int)(slines[k]/FILE_LINE_SCALE_FACTOR),
-        (int)(slines[k]%FILE_LINE_SCALE_FACTOR),
+        (int)(slines[k].file_index),
+        (int)(slines[k].line_number),
         svals[k], typename(stypes[k]));
     describe_flags(sflags[k]);
 }
@@ -507,8 +507,7 @@ static void assign_symbol_base(int index, int32 value, int type)
     if (sflags[index] & UNKNOWN_SFLAG)
     {   sflags[index] &= (~UNKNOWN_SFLAG);
         if (is_systemfile()) sflags[index] |= INSF_SFLAG;
-        slines[index] = ErrorReport.line_number
-                        + FILE_LINE_SCALE_FACTOR*ErrorReport.file_number;
+        slines[index] = get_brief_location(&ErrorReport);
     }
 }
 
@@ -585,14 +584,14 @@ static void emit_debug_information_for_predefined_symbol
 
 static void create_symbol(char *p, int32 value, int type)
 {   int i = symbol_index(p, -1);
-    svals[i] = value; stypes[i] = type; slines[i] = 0;
+    svals[i] = value; stypes[i] = type; slines[i] = blank_brief_location;
     sflags[i] = USED_SFLAG + SYSTEM_SFLAG;
     emit_debug_information_for_predefined_symbol(p, i, value, type);
 }
 
 static void create_rsymbol(char *p, int value, int type)
 {   int i = symbol_index(p, -1);
-    svals[i] = value; stypes[i] = type; slines[i] = 0;
+    svals[i] = value; stypes[i] = type; slines[i] = blank_brief_location;
     sflags[i] = USED_SFLAG + SYSTEM_SFLAG + REDEFINABLE_SFLAG;
     emit_debug_information_for_predefined_symbol(p, i, value, type);
 }
@@ -813,7 +812,7 @@ typedef struct df_reference_struct df_reference_t;
 
 struct df_function_struct {
     char *name; /* borrowed reference, generally to the symbs[] table */
-    int32 source_line; /* copied from routine_starts_line */
+    brief_location source_line; /* copied from routine_starts_line */
     int sysfile; /* does this occur in a system file? */
     uint32 address; /* function offset in zcode_area (not the final address) */
     uint32 newaddress; /* function offset after stripping */
@@ -884,7 +883,7 @@ uint32 df_total_size_after_stripping;
    Any symbol referenced from now on will be associated with the function.
 */
 extern void df_note_function_start(char *name, uint32 address, 
-    int embedded_flag, int32 source_line)
+    int embedded_flag, brief_location source_line)
 {
     df_function_t *func;
     int bucket;
@@ -1360,7 +1359,7 @@ extern void symbols_allocate_arrays(void)
     svals      = my_calloc(sizeof(int32),   MAX_SYMBOLS, "symbol values");
     if (glulx_mode)
         smarks = my_calloc(sizeof(int),     MAX_SYMBOLS, "symbol markers");
-    slines     = my_calloc(sizeof(int32),   MAX_SYMBOLS, "symbol lines");
+    slines     = my_calloc(sizeof(brief_location), MAX_SYMBOLS, "symbol lines");
     stypes     = my_calloc(sizeof(char),    MAX_SYMBOLS, "symbol types");
     sflags     = my_calloc(sizeof(int),     MAX_SYMBOLS, "symbol flags");
     if (debugfile_switch)
@@ -1393,7 +1392,7 @@ extern void symbols_allocate_arrays(void)
         df_functions_sorted = NULL;
         df_functions_sorted_count = 0;
 
-        df_note_function_start("<global namespace>", DF_NOT_IN_FUNCTION, FALSE, -1);
+        df_note_function_start("<global namespace>", DF_NOT_IN_FUNCTION, FALSE, blank_brief_location);
         df_note_function_end(DF_NOT_IN_FUNCTION);
         /* Now df_current_function is df_functions_head. */
     }

@@ -2,15 +2,17 @@
 /*   "bpatch" : Keeps track of, and finally acts on, backpatch markers,      */
 /*              correcting symbol values not known at compilation time       */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
 #include "header.h"
 
-memory_block zcode_backpatch_table, zmachine_backpatch_table;
-int32 zcode_backpatch_size, zmachine_backpatch_size;
+memory_block zcode_backpatch_table, staticarray_backpatch_table,
+    zmachine_backpatch_table;
+int32 zcode_backpatch_size, staticarray_backpatch_size,
+    zmachine_backpatch_size;
 
 /* ------------------------------------------------------------------------- */
 /*   The mending operation                                                   */
@@ -32,6 +34,8 @@ static int32 backpatch_value_z(int32 value)
             value += strings_offset/scale_factor; break;
         case ARRAY_MV:
             value += variables_offset; break;
+        case STATIC_ARRAY_MV:
+            value += static_arrays_offset; break;
         case IROUTINE_MV:
             if (OMIT_UNUSED_ROUTINES)
                 value = df_stripped_address_for_address(value);
@@ -141,6 +145,7 @@ static int32 backpatch_value_z(int32 value)
                         value += code_offset/scale_factor; 
                         break;
                     case ARRAY_T: value += variables_offset; break;
+                    case STATIC_ARRAY_T: value += static_arrays_offset; break;
                 }
             }
             break;
@@ -182,6 +187,8 @@ static int32 backpatch_value_g(int32 value)
             break;
         case ARRAY_MV:
             value += arrays_offset; break;
+        case STATIC_ARRAY_MV:
+            value += static_arrays_offset; break;
         case VARIABLE_MV:
             value = variables_offset + (4*value); break;
         case OBJECT_MV:
@@ -289,6 +296,7 @@ static int32 backpatch_value_g(int32 value)
                         value += code_offset;
                         break;
                     case ARRAY_T: value += arrays_offset; break;
+                    case STATIC_ARRAY_T: value += static_arrays_offset; break;
                     case OBJECT_T:
                     case CLASS_T:
                       value = object_tree_offset + 
@@ -411,6 +419,7 @@ extern void backpatch_zmachine_image_z(void)
             case PROP_ZA:            addr = prop_values_offset; break;
             case INDIVIDUAL_PROP_ZA: addr = individuals_offset; break;
             case DYNAMIC_ARRAY_ZA:   addr = variables_offset; break;
+            case STATIC_ARRAY_ZA:    addr = static_arrays_offset; break;
             default:
                 if (no_link_errors == 0)
                     if (compiler_error("Illegal area to backpatch"))
@@ -457,8 +466,9 @@ extern void backpatch_zmachine_image_g(void)
         case PROP_DEFAULTS_ZA:   addr = prop_defaults_offset+4; break;
         case PROP_ZA:            addr = prop_values_offset; break;
         case INDIVIDUAL_PROP_ZA: addr = individuals_offset; break;
-        case ARRAY_ZA:           addr = arrays_offset; break;
+        case DYNAMIC_ARRAY_ZA:   addr = arrays_offset; break;
         case GLOBALVAR_ZA:       addr = variables_offset; break;
+        /* STATIC_ARRAY_ZA is in ROM and therefore not handled here */
         default:
           if (no_link_errors == 0)
             if (compiler_error("Illegal area to backpatch"))
@@ -491,11 +501,13 @@ extern void backpatch_zmachine_image_g(void)
 
 extern void init_bpatch_vars(void)
 {   initialise_memory_block(&zcode_backpatch_table);
+    initialise_memory_block(&staticarray_backpatch_table);
     initialise_memory_block(&zmachine_backpatch_table);
 }
 
 extern void bpatch_begin_pass(void)
 {   zcode_backpatch_size = 0;
+    staticarray_backpatch_size = 0;
     zmachine_backpatch_size = 0;
 }
 
@@ -505,6 +517,7 @@ extern void bpatch_allocate_arrays(void)
 
 extern void bpatch_free_arrays(void)
 {   deallocate_memory_block(&zcode_backpatch_table);
+    deallocate_memory_block(&staticarray_backpatch_table);
     deallocate_memory_block(&zmachine_backpatch_table);
 }
 

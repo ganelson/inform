@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "directs" : Directives (# commands)                                     */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -14,7 +14,7 @@ int no_routines,                   /* Number of routines compiled so far     */
     no_termcs;                     /* Number of terminating characters       */
 int terminating_characters[32];
 
-int32 routine_starts_line;         /* Source code line on which the current
+brief_location routine_starts_line; /* Source code location where the current
                                       routine starts.  (Useful for reporting
                                       "unused variable" warnings on the start
                                       line rather than the end line.)        */
@@ -647,6 +647,72 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         }
         make_object(FALSE, NULL, -1, -1, -1);
         return FALSE;                                     /* See "objects.c" */
+
+    /* --------------------------------------------------------------------- */
+    /*   Origsource <file>                                                   */
+    /*   Origsource <file> <line>                                            */
+    /*   Origsource <file> <line> <char>                                     */
+    /*   Origsource                                                          */
+    /*                                                                       */
+    /*   The first three forms declare that all following lines are derived  */
+    /*   from the named Inform 7 source file (with an optional line number   */
+    /*   and character number). This will be reported in error messages and  */
+    /*   in debug output. The declaration holds through the next Origsource  */
+    /*   directive (but does not apply to included files).                   */
+    /*                                                                       */
+    /*   The fourth form, with no arguments, clears the declaration.         */
+    /*                                                                       */
+    /*   Unlike the Include directive, Origsource does not open the named    */
+    /*   file or even verify that it exists. The filename is treated as an   */
+    /*   opaque string.                                                      */
+    /* --------------------------------------------------------------------- */
+
+    case ORIGSOURCE_CODE:
+        {
+            char *origsource_file = NULL;
+            int32 origsource_line = 0;
+            int32 origsource_char = 0;
+
+            /* Parse some optional tokens followed by a mandatory semicolon. */
+
+            get_next_token();
+            if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))) {
+                if (token_type != DQ_TT) {
+                    return ebf_error_recover("a file name in double-quotes",
+                        token_text);
+                }
+                origsource_file = token_text;
+
+                get_next_token();
+                if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))) {
+                    if (token_type != NUMBER_TT) {
+                        return ebf_error_recover("a file line number",
+                            token_text);
+                    }
+                    origsource_line = token_value;
+                    if (origsource_line < 0)
+                        origsource_line = 0;
+
+                    get_next_token();
+                    if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))) {
+                        if (token_type != NUMBER_TT) {
+                            return ebf_error_recover("a file line number",
+                                token_text);
+                        }
+                        origsource_char = token_value;
+                        if (origsource_char < 0)
+                            origsource_char = 0;
+                        
+                        get_next_token();
+                    }
+                }
+            }
+
+            put_token_back();
+
+            set_origsource_location(origsource_file, origsource_line, origsource_char);
+        }
+        break;
 
     /* --------------------------------------------------------------------- */
     /*   Property [long] [additive] name [alias oldname]                     */

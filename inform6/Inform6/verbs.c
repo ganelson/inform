@@ -2,8 +2,8 @@
 /*   "verbs" :  Manages actions and grammar tables; parses the directives    */
 /*              Verb and Extend.                                             */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -325,21 +325,29 @@ static void register_verb(char *English_verb, int number)
 {
     /*  Registers a new English verb as referring to the given Inform-verb
         number.  (See comments above for format of the list.)                */
+    int entrysize;
 
     if (find_or_renumber_verb(English_verb, NULL) != -1)
     {   error_named("Two different verb definitions refer to", English_verb);
         return;
     }
 
-    English_verb_list_size += strlen(English_verb)+4;
+    /* We set a hard limit of MAX_VERB_WORD_SIZE=120 because the
+       English_verb_list table stores length in a leading byte. (We could
+       raise that to 250, really, but there's little point when
+       MAX_DICT_WORD_SIZE is 40.) */
+    entrysize = strlen(English_verb)+4;
+    if (entrysize > MAX_VERB_WORD_SIZE+4)
+        error_numbered("Verb word is too long -- max length is", MAX_VERB_WORD_SIZE);
+    English_verb_list_size += entrysize;
     if (English_verb_list_size >= MAX_VERBSPACE)
         memoryerror("MAX_VERBSPACE", MAX_VERBSPACE);
 
-    English_verb_list_top[0] = 4+strlen(English_verb);
+    English_verb_list_top[0] = entrysize;
     English_verb_list_top[1] = number/256;
     English_verb_list_top[2] = number%256;
     strcpy(English_verb_list_top+3, English_verb);
-    English_verb_list_top += English_verb_list_top[0];
+    English_verb_list_top += entrysize;
 }
 
 static int get_verb(void)

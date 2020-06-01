@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "text" : Text translation, the abbreviations optimiser, the dictionary  */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -667,7 +667,11 @@ string; substituting '   '.");
         else {
           unicode = text_to_unicode((char *) (text_in+i));
           i += textual_form_length - 1;
-          if (unicode >= 0 && unicode < 256) {
+          if (unicode == '@' || unicode == '\0') {
+            write_z_char_g('@');
+            write_z_char_g(unicode ? '@' : '0');
+          }
+          else if (unicode >= 0 && unicode < 256) {
             write_z_char_g(unicode);
           }
           else {

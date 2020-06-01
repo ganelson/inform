@@ -3,8 +3,8 @@
 /*              by the compiler (e.g. DefArt) which the program doesn't      */
 /*              provide                                                      */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -232,7 +232,11 @@ static VeneerRoutine VRs_z[VENEER_ROUTINES] =
          {   if (identifier >= 1 && identifier < 64 && obj.#identifier <= 2)\
                  return obj.identifier;\
              RT__Err(\"read\", obj, identifier); return; }\
+         #IFV3;\
+         if (obj..#identifier > 2) RT__Err(\"read\", obj, identifier);\
+         #IFNOT;\
          if (obj..#identifier > 2) RT__Err(\"read\", obj, identifier, 2);\
+         #ENDIF;\
          return x-->0;\
          ]", "", "", "", "", ""
     },
@@ -2230,7 +2234,7 @@ static void compile_symbol_table_routine(void)
             AO3.marker = 0;
             assemblez_store(temp_var3, AO3);
             AO3.value = svals[array_symbols[j]];
-            AO3.marker = ARRAY_MV;
+            AO3.marker = (!array_locs[j] ? ARRAY_MV : STATIC_ARRAY_MV);
             assemblez_1(ret_zc, AO3);
             assemble_label_no(nl);
         }

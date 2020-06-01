@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "chars" : Character set mappings and the Z-machine alphabet table       */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 /*  Inform uses six different character representations:                     */
@@ -1031,7 +1031,10 @@ static void make_unicode_zscii_map(void)
 }
 
 extern void new_zscii_character(int32 u, int plus_flag)
-{   if (plus_flag == FALSE)
+{
+    if (u < 0 || u > 0xFFFF)
+        error("Zcharacter table cannot contain Unicode characters beyond $FFFF");
+    if (plus_flag == FALSE)
         zscii_high_water_mark = 0;
     if (zscii_high_water_mark == 0x61)
         error("No more room in the Zcharacter table");
@@ -1066,7 +1069,7 @@ extern int32 zscii_to_unicode(int z)
 /*                                                                           */
 /*      @..      where .. is an accent                                       */
 /*  and @{...}   where ... specifies a Unicode char in hexadecimal           */
-/*               (1 to 4 digits long)                                        */
+/*               (1 to 6 digits long)                                        */
 /*                                                                           */
 /*  If either syntax is malformed, an error is generated                     */
 /*  and the Unicode (= ISO = ASCII) character value of '?' is returned       */
@@ -1085,10 +1088,20 @@ extern int32 text_to_unicode(char *text)
     {   if (character_set_unicode)
         {   if (text[0] & 0x80) /* 8-bit */
             {   switch (text[0] & 0xF0)
-                {   case 0xf0:
-                        error_named("Inform does not currently support Unicode characters beyond $FFFF:", text);
-                        textual_form_length = 1;
-                        return '?';
+                {   case 0xf0: /* 4-byte UTF-8 string */
+                        textual_form_length = 4;
+                        if ((text[0] & 0xf8) != 0xf0)
+                        {   error("Invalid 4-byte UTF-8 string.");
+                            return '?';
+                        }
+                        if ((text[1] & 0xc0) != 0x80 || (text[2] & 0xc0) != 0x80 || (text[3] & 0xc0) != 0x80)
+                        {   error("Invalid 4-byte UTF-8 string.");
+                            return '?';
+                        }
+                        return (text[0] & 0x07) << 18
+                            | (text[1] & 0x3f) << 12
+                            | (text[2] & 0x3f) << 6
+                            | (text[3] & 0x3f);
                         break;
                     case 0xe0: /* 3-byte UTF-8 string */
                         textual_form_length = 3;
@@ -1155,8 +1168,8 @@ extern int32 text_to_unicode(char *text)
             {   error("'@{' without matching '}'");
                 total = '?'; break;
             }
-            if (i == 6)
-            {   error("At most four hexadecimal digits allowed in '@{...}'");
+            if (i == 8)
+            {   error("At most six hexadecimal digits allowed in '@{...}'");
                 total = '?'; break;
             }
             d = character_digit_value[(uchar)text[i]];

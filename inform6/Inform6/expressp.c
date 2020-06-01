@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "expressp" :  The expression parser                                     */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -128,6 +128,14 @@ but not used as a value:", unicode);
             current_token.symflags = sflags[symbol];
             switch(stypes[symbol])
             {   case ROUTINE_T:
+                    /* Replaced functions must always be backpatched
+                       because there could be another definition coming. */
+                    if (sflags[symbol] & REPLACE_SFLAG)
+                    {   current_token.marker = SYMBOL_MV;
+                        if (module_switch) import_symbol(symbol);
+                        v = symbol;
+                        break;
+                    }
                     current_token.marker = IROUTINE_MV;
                     break;
                 case GLOBAL_VARIABLE_T:
@@ -141,6 +149,9 @@ but not used as a value:", unicode);
                     break;
                 case ARRAY_T:
                     current_token.marker = ARRAY_MV;
+                    break;
+                case STATIC_ARRAY_T:
+                    current_token.marker = STATIC_ARRAY_MV;
                     break;
                 case INDIVIDUAL_PROPERTY_T:
                     if (module_switch) current_token.marker = IDENT_MV;
@@ -1867,7 +1878,8 @@ extern assembly_operand parse_expression(int context)
 
         if ((a.type == ENDEXP_TT) && (b.type == ENDEXP_TT))
         {   if (emitter_sp == 0)
-            {   compiler_error("SR error: emitter stack empty");
+            {   error("No expression between brackets '(' and ')'");
+                put_token_back();
                 return AO;
             }
             if (emitter_sp > 1)

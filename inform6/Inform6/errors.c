@@ -2,8 +2,8 @@
 /*   "errors" : Warnings, errors and fatal errors                            */
 /*              (with error throwback code for RISC OS machines)             */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -30,7 +30,7 @@ static void print_preamble(void)
     int j, with_extension_flag = FALSE; char *p;
 
     j = ErrorReport.file_number;
-    if (j <= 0 || j > input_file) p = ErrorReport.source;
+    if (j <= 0 || j > total_files) p = ErrorReport.source;
     else p = InputFiles[j-1].filename;
 
     if (!p) p = "";
@@ -41,6 +41,21 @@ static void print_preamble(void)
 
             if (!(ErrorReport.main_flag)) printf("\"%s\", ", p);
             printf("line %d: ", ErrorReport.line_number);
+            if (ErrorReport.orig_file) {
+                char *op;
+                if (ErrorReport.orig_file <= 0 || ErrorReport.orig_file > total_files)
+                    op = ErrorReport.orig_source;
+                else
+                    op = InputFiles[ErrorReport.orig_file-1].filename;
+                printf("(\"%s\"", op);
+                if (ErrorReport.orig_line) {
+                    printf(", %d", ErrorReport.orig_line);
+                    if (ErrorReport.orig_char) {
+                        printf(":%d", ErrorReport.orig_char);
+                    }
+                }
+                printf("): ");
+            }
             break;
 
         case 1:  /* Microsoft error message format */
@@ -202,15 +217,11 @@ extern void error_numbered(char *s1, int val)
     error(error_message_buff);
 }
 
-extern void error_named_at(char *s1, char *s2, int32 report_line)
+extern void error_named_at(char *s1, char *s2, brief_location report_line)
 {   int i;
 
     ErrorPosition E = ErrorReport;
-    if (report_line != -1)
-    {   ErrorReport.file_number = report_line/FILE_LINE_SCALE_FACTOR;
-        ErrorReport.line_number = report_line%FILE_LINE_SCALE_FACTOR;
-        ErrorReport.main_flag = (ErrorReport.file_number == 1);
-    }
+    export_brief_location(report_line, &ErrorReport);
 
     snprintf(error_message_buff, ERROR_BUFLEN,"%s \"%s\"",s1,s2);
     ellipsize_error_message_buff();
@@ -307,15 +318,11 @@ extern void warning_named(char *s1, char *s2)
     message(2,error_message_buff);
 }
 
-extern void dbnu_warning(char *type, char *name, int32 report_line)
+extern void dbnu_warning(char *type, char *name, brief_location report_line)
 {   int i;
     ErrorPosition E = ErrorReport;
     if (nowarnings_switch) { no_suppressed_warnings++; return; }
-    if (report_line != -1)
-    {   ErrorReport.file_number = report_line/FILE_LINE_SCALE_FACTOR;
-        ErrorReport.line_number = report_line%FILE_LINE_SCALE_FACTOR;
-        ErrorReport.main_flag = (ErrorReport.file_number == 1);
-    }
+    export_brief_location(report_line, &ErrorReport);
     snprintf(error_message_buff, ERROR_BUFLEN, "%s \"%s\" declared but not used", type, name);
     ellipsize_error_message_buff();
     i = concise_switch; concise_switch = TRUE;
@@ -324,7 +331,7 @@ extern void dbnu_warning(char *type, char *name, int32 report_line)
     ErrorReport = E;
 }
 
-extern void uncalled_routine_warning(char *type, char *name, int32 report_line)
+extern void uncalled_routine_warning(char *type, char *name, brief_location report_line)
 {   int i;
     /* This is called for functions which have been detected by the
        track-unused-routines module. These will often (but not always)
@@ -332,11 +339,7 @@ extern void uncalled_routine_warning(char *type, char *name, int32 report_line)
        than routine addresses. */
     ErrorPosition E = ErrorReport;
     if (nowarnings_switch) { no_suppressed_warnings++; return; }
-    if (report_line != -1)
-    {   ErrorReport.file_number = report_line/FILE_LINE_SCALE_FACTOR;
-        ErrorReport.line_number = report_line%FILE_LINE_SCALE_FACTOR;
-        ErrorReport.main_flag = (ErrorReport.file_number == 1);
-    }
+    export_brief_location(report_line, &ErrorReport);
     if (OMIT_UNUSED_ROUTINES)
         snprintf(error_message_buff, ERROR_BUFLEN, "%s \"%s\" unused and omitted", type, name);
     else
@@ -472,6 +475,10 @@ extern void errors_begin_pass(void)
     ErrorReport.file_number = -1;
     ErrorReport.source = "<no text read yet>";
     ErrorReport.main_flag = FALSE;
+    ErrorReport.orig_source = NULL;
+    ErrorReport.orig_file = 0;
+    ErrorReport.orig_line = 0;
+    ErrorReport.orig_char = 0;
 }
 
 extern void errors_allocate_arrays(void)

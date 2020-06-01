@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "expressc" :  The expression code generator                             */
 /*                                                                           */
-/*   Part of Inform 6.33                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2016                                 */
+/*   Part of Inform 6.34                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2020                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -437,7 +437,7 @@ static void access_memory_z(int oc, assembly_operand AO1, assembly_operand AO2,
         index_ao;
     int x = 0, y = 0, byte_flag = FALSE, read_flag = FALSE, from_module = FALSE;
 
-    if (AO1.marker == ARRAY_MV)
+    if (AO1.marker == ARRAY_MV || AO1.marker == STATIC_ARRAY_MV)
     {   
         INITAO(&zero_ao);
 
@@ -451,10 +451,16 @@ static void access_memory_z(int oc, assembly_operand AO1, assembly_operand AO2,
 
         size_ao = zero_ao; size_ao.value = -1;
         for (x=0; x<no_arrays; x++)
-        {   if (AO1.value == svals[array_symbols[x]])
+        {   if (((AO1.marker == ARRAY_MV) == (!array_locs[x]))
+                && (AO1.value == svals[array_symbols[x]]))
             {   size_ao.value = array_sizes[x]; y=x;
             }
         }
+        
+        if (array_locs[y] && !read_flag) {
+            error("Cannot write to a static array");
+        }
+
         if (size_ao.value==-1) 
             from_module=TRUE;
         else {
@@ -490,7 +496,7 @@ static void access_memory_z(int oc, assembly_operand AO1, assembly_operand AO2,
     /* If we recognise AO1 as arising textually from a declared
        array, we can check bounds explicitly. */
 
-    if ((AO1.marker == ARRAY_MV) && (!from_module))
+    if ((AO1.marker == ARRAY_MV || AO1.marker == STATIC_ARRAY_MV) && (!from_module))
     {   
         int passed_label = next_label++, failed_label = next_label++,
             final_label = next_label++; 
@@ -802,19 +808,24 @@ static void access_memory_g(int oc, assembly_operand AO1, assembly_operand AO2,
     else 
       read_flag = FALSE;
 
-    if (AO1.marker == ARRAY_MV)
+    if (AO1.marker == ARRAY_MV || AO1.marker == STATIC_ARRAY_MV)
     {   
         INITAO(&zero_ao);
 
         size_ao = zero_ao; size_ao.value = -1;
         for (x=0; x<no_arrays; x++)
-        {   if (AO1.value == svals[array_symbols[x]])
+        {   if (((AO1.marker == ARRAY_MV) == (!array_locs[x]))
+                && (AO1.value == svals[array_symbols[x]]))
             {   size_ao.value = array_sizes[x]; y=x;
             }
         }
         if (size_ao.value==-1) compiler_error("Array size can't be found");
 
         type_ao = zero_ao; type_ao.value = array_types[y];
+
+        if (array_locs[y] && !read_flag) {
+            error("Cannot write to a static array");
+        }
 
         if ((!is_systemfile()))
         {   if (data_len == 1)
@@ -842,7 +853,7 @@ static void access_memory_g(int oc, assembly_operand AO1, assembly_operand AO2,
     /* If we recognise AO1 as arising textually from a declared
        array, we can check bounds explicitly. */
 
-    if (AO1.marker == ARRAY_MV)
+    if (AO1.marker == ARRAY_MV || AO1.marker == STATIC_ARRAY_MV)
     {   
         /* Calculate the largest permitted array entry + 1
            Here "size_ao.value" = largest permitted entry of its own kind */
@@ -1775,9 +1786,9 @@ static void generate_code_from(int n, int void_flag)
                                  arg_c++, arg_et = ET[arg_et].right)
                             {   if (ET[arg_et].value.type == VARIABLE_OT)
               error("Only constants can be used as possible 'random' results");
-                                array_entry(arg_c, ET[arg_et].value);
+                                array_entry(arg_c, FALSE, ET[arg_et].value);
                             }
-                            finish_array(arg_c);
+                            finish_array(arg_c, FALSE);
 
                             assemblez_1_to(random_zc, AO, temp_var1);
                             assemblez_dec(temp_var1);
@@ -2511,9 +2522,9 @@ static void generate_code_from(int n, int void_flag)
                             {   if (ET[arg_et].value.type == LOCALVAR_OT
                                     || ET[arg_et].value.type == GLOBALVAR_OT)
               error("Only constants can be used as possible 'random' results");
-                                array_entry(arg_c, ET[arg_et].value);
+                                array_entry(arg_c, FALSE, ET[arg_et].value);
                             }
-                            finish_array(arg_c);
+                            finish_array(arg_c, FALSE);
 
                             assembleg_2(random_gc, AO, stack_pointer);
                             assembleg_3(aload_gc, AO2, stack_pointer, Result);
