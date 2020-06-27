@@ -24,11 +24,11 @@ the kind.
 		if (Kinds::Compare::lt(K, K_object)) {
 			wording W = Kinds::Behaviour::get_name(K, FALSE);
 			if (Wordings::nonempty(W)) {
-				TEMPORARY_TEXT(temp);
+				TEMPORARY_TEXT(temp)
 				WRITE_TO(temp, "kind_%N", Wordings::first_wn(W));
 				if (Index::DocReferences::validate_if_possible(temp))
 					Kinds::Behaviour::set_documentation_reference(K, temp);
-				DISCARD_TEXT(temp);
+				DISCARD_TEXT(temp)
 			}
 		}
 

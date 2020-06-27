@@ -94,7 +94,7 @@ void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 	for (int i=0; i<L; i++) {
 		wchar_t c = Str::get_at(S, i);
 		if (c == URL_SYMBOL_CHAR) {
-			TEMPORARY_TEXT(T);
+			TEMPORARY_TEXT(T)
 			for (i++; i<L; i++) {
 				wchar_t c = Str::get_at(S, i);
 				if (c == URL_SYMBOL_CHAR) break;
@@ -102,7 +102,7 @@ void CodeGen::FC::splat(code_generation *gen, inter_tree_node *P) {
 			}
 			inter_symbol *symb = Inter::SymbolsTables::url_name_to_symbol(I, NULL, T);
 			WRITE("%S", CodeGen::CL::name(symb));
-			DISCARD_TEXT(T);
+			DISCARD_TEXT(T)
 		} else PUT(c);
 	}
 }

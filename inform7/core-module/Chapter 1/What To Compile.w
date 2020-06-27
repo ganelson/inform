@@ -312,10 +312,10 @@ leafname |A.html|.
 =
 filename *Task::index_file(text_stream *leafname, int sub) {
 	if (sub >= 0) {
-		TEMPORARY_TEXT(full_leafname);
+		TEMPORARY_TEXT(full_leafname)
 		WRITE_TO(full_leafname, "%d_%S", sub, leafname);
 		filename *F = Filenames::in(Task::index_details_path(), full_leafname);
-		DISCARD_TEXT(full_leafname);
+		DISCARD_TEXT(full_leafname)
 		return F;
 	} else {
 		return Filenames::in(Task::index_path(), leafname);
@@ -344,10 +344,10 @@ int Task::wraps_existing_storyfile(void) {
 void Task::set_existing_storyfile(text_stream *name) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	if (name == NULL) {
-		TEMPORARY_TEXT(leaf);
+		TEMPORARY_TEXT(leaf)
 		WRITE_TO(leaf, "story.%S", TargetVMs::get_unblorbed_extension(Task::vm()));
 		inform7_task->existing_storyfile = Filenames::in(inform7_task->materials, leaf);
-		DISCARD_TEXT(leaf);
+		DISCARD_TEXT(leaf)
 	} else {
 		inform7_task->existing_storyfile = Filenames::in(inform7_task->materials, name);
 	}

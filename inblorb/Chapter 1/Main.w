@@ -181,9 +181,9 @@ the blurb files it writes. But it leaves [DATESTAMP] and [TIMESTAMP] alone.)
 
 =
 void Main::initialise_time_variables(void) {
-	TEMPORARY_TEXT(datestamp);
-	TEMPORARY_TEXT(infocom);
-	TEMPORARY_TEXT(timestamp);
+	TEMPORARY_TEXT(datestamp)
+	TEMPORARY_TEXT(infocom)
+	TEMPORARY_TEXT(timestamp)
 	char *weekdays[] = { "Sunday", "Monday", "Tuesday", "Wednesday",
 		"Thursday", "Friday", "Saturday" };
 	char *months[] = { "January", "February", "March", "April", "May", "June",
@@ -198,9 +198,9 @@ void Main::initialise_time_variables(void) {
 	Placeholders::set_to(I"DATESTAMP", datestamp, 0);
 	Placeholders::set_to(I"INFOCOMDATESTAMP", infocom, 0);
 	Placeholders::set_to(I"TIMESTAMP", timestamp, 0);
-	DISCARD_TEXT(datestamp);
-	DISCARD_TEXT(infocom);
-	DISCARD_TEXT(timestamp);
+	DISCARD_TEXT(datestamp)
+	DISCARD_TEXT(infocom)
+	DISCARD_TEXT(timestamp)
 }
 
 @h Opening and closing banners.

@@ -339,15 +339,15 @@ allowed; they should probably be withdrawn.
 
 @<Set for-use-with extension identifier@> =
 	*X = R[0] + 4;
-	TEMPORARY_TEXT(exft);
-	TEMPORARY_TEXT(exfa);
+	TEMPORARY_TEXT(exft)
+	TEMPORARY_TEXT(exfa)
 	wording TW = GET_RW(<extension-identifier>, 1);
 	wording AW = GET_RW(<extension-identifier>, 2);
 	WRITE_TO(exft, "%+W", TW);
 	WRITE_TO(exfa, "%+W", AW);
 	work_identified = Works::new(extension_genre, exft, exfa);
-	DISCARD_TEXT(exft);
-	DISCARD_TEXT(exfa);
+	DISCARD_TEXT(exft)
+	DISCARD_TEXT(exfa)
 
 @ This nonterminal matches any description of a virtual machine, and produces
 the result |TRUE| if the VM we are building for fits that description, |FALSE|
@@ -694,7 +694,7 @@ void Headings::suppress_dependencies(parse_node *pn) {
 	Copies::attach_error(C, CE);
 
 @<Can't find heading in the given extension@> =
-	TEMPORARY_TEXT(vt);
+	TEMPORARY_TEXT(vt)
 	WRITE_TO(vt, "unspecified, that is, the extension didn't have a version number");
 	inform_extension *E;
 	LOOP_OVER(E, inform_extension)
@@ -707,7 +707,7 @@ void Headings::suppress_dependencies(parse_node *pn) {
 	CopyErrors::supply_work(CE, h->for_use_with);
 	CopyErrors::supply_wording(CE, h->in_place_of_text);
 	Copies::attach_error(C, CE);
-	DISCARD_TEXT(vt);
+	DISCARD_TEXT(vt)
 
 @<Can't replace heading unless level matches@> =
 	copy_error *CE = CopyErrors::new(SYNTAX_CE, UnequalHeadingInPlaceOf_SYNERROR);

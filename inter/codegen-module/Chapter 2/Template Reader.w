@@ -226,7 +226,7 @@ void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf,
 		}
 		return;
 	}
-	TEMPORARY_TEXT(heading_name);
+	TEMPORARY_TEXT(heading_name)
 	int skip_part = FALSE, comment = TRUE, extract = FALSE;
 	int col = 1, cr, sfp = 0;
 
@@ -252,7 +252,7 @@ void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf,
 	OmitFile:
 	if (Str::len(segment_name) > 0)
 		TemplateReader::I6T_file_intervene(OUT, AFTER_LINK_STAGE, segment_name, NULL, kit);
-	DISCARD_TEXT(heading_name);
+	DISCARD_TEXT(heading_name)
 }
 
 @ We look for the |.i6t| files in a list of possible locations supplied as
@@ -271,8 +271,8 @@ part of the I6T kit.
 @ 
 
 @<Interpret the I6T file@> =
-	TEMPORARY_TEXT(command);
-	TEMPORARY_TEXT(argument);
+	TEMPORARY_TEXT(command)
+	TEMPORARY_TEXT(argument)
 	do {
 		Str::clear(command);
 		Str::clear(argument);
@@ -287,8 +287,8 @@ part of the I6T kit.
 		}
 		if (comment == FALSE) @<Deal with material which isn't commentary@>;
 	} while (cr != EOF);
-	DISCARD_TEXT(command);
-	DISCARD_TEXT(argument);
+	DISCARD_TEXT(command)
+	DISCARD_TEXT(argument)
 
 
 @ I6 template files are encoded as ISO Latin-1, not as Unicode UTF-8, so
@@ -318,7 +318,7 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 @d INWEB_EXTRACT_SYNTAX 7
 
 @<Read the rest of line as an at-heading@> =
-	TEMPORARY_TEXT(I6T_buffer);
+	TEMPORARY_TEXT(I6T_buffer)
 	int i = 0, committed = FALSE, unacceptable_character = FALSE;
 	while (i<MAX_I6T_LINE_LENGTH) {
 		@<Read next character from I6T stream@>;
@@ -368,17 +368,17 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 		PUT_TO(I6T_buffer, cr);
 	}
 	Str::copy(command, I6T_buffer);
-	DISCARD_TEXT(I6T_buffer);
+	DISCARD_TEXT(I6T_buffer)
 
 @<Read the rest of line as an equals-heading@> =
-	TEMPORARY_TEXT(I6T_buffer);
+	TEMPORARY_TEXT(I6T_buffer)
 	int i = 0;
 	while (i<MAX_I6T_LINE_LENGTH) {
 		@<Read next character from I6T stream@>;
 		if ((cr == 10) || (cr == 13)) break;
 		PUT_TO(I6T_buffer, cr);
 	}
-	DISCARD_TEXT(I6T_buffer);
+	DISCARD_TEXT(I6T_buffer)
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, I6T_buffer, L" %(text%c*%) *")) {
 		inweb_syntax = INWEB_EXTRACT_SYNTAX;
@@ -498,7 +498,7 @@ be the empty string: see above). The argument must not include |}|.
 within I6:
 
 @<Read up to the next plus close-bracket as an I7 expression@> =
-	TEMPORARY_TEXT(i7_exp);
+	TEMPORARY_TEXT(i7_exp)
 	while (TRUE) {
 		@<Read next character from I6T stream@>;
 		if (cr == EOF) break;
@@ -507,7 +507,7 @@ within I6:
 		PUT_TO(i7_exp, cr);
 	}
 	LOG("SPONG: %S\n", i7_exp);
-	DISCARD_TEXT(i7_exp);
+	DISCARD_TEXT(i7_exp)
 		TemplateReader::error("use of (+ ... +) in the template has been withdrawn: '%S'", i7_exp);
 
 @h Acting on I6T commands.
@@ -558,7 +558,7 @@ using template-hacking there are a handful of cases that can't be avoided, so...
 =
 void TemplateReader::error(char *message, text_stream *quote) {
 	#ifdef PROBLEMS_MODULE
-	TEMPORARY_TEXT(M);
+	TEMPORARY_TEXT(M)
 	WRITE_TO(M, message, quote);
 	Problems::quote_stream(1, M);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
@@ -570,7 +570,7 @@ void TemplateReader::error(char *message, text_stream *quote) {
 		"an extension which does some 'template hacking', as it's called, "
 		"but made a mistake doing so.");
 	Problems::issue_problem_end();
-	DISCARD_TEXT(M);
+	DISCARD_TEXT(M)
 	#endif
 	#ifndef PROBLEMS_MODULE
 	Errors::with_text(message, quote);

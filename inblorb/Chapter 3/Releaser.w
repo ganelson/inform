@@ -222,10 +222,10 @@ the template to add more if it wants to.
 					Placeholders::set_to(I"SOURCEPREFIX", I"source", 0);
 					pathname *Source = Pathnames::down(project_folder, I"Source");
 					filename *story = Filenames::in(Source, I"story.ni");
-					TEMPORARY_TEXT(source_text);
+					TEMPORARY_TEXT(source_text)
 					WRITE_TO(source_text, "%f", story);
 					Placeholders::set_to(I"SOURCELOCATION", source_text, 0);
-					DISCARD_TEXT(source_text);
+					DISCARD_TEXT(source_text)
 					Requests::release_file_into_website(I"source.html", t, NULL); break;
 			}
 	WRITE_TO(STDERR, "TEMPLATE is %S\n", t);
@@ -470,12 +470,12 @@ void Requests::report_requested_material(text_stream *ph) {
 @<Itemise the website, mentioning how many pages it has@> =
 	if (Requests::count_requests_of_type(WEBSITE_REQ) > 0) {
 		Placeholders::append_to(ph, I"<li>A website (generated from the [TEMPLATE] template) of ");
-		TEMPORARY_TEXT(pcount);
+		TEMPORARY_TEXT(pcount)
 		WRITE_TO(pcount, "%d page%s", HTML_pages_created, (HTML_pages_created!=1)?"s":"");
 		Placeholders::append_to(ph, pcount);
 		Placeholders::append_to(ph, I"</li>");
 		launch_website = TRUE;
-		DISCARD_TEXT(pcount);
+		DISCARD_TEXT(pcount)
 	}
 
 @<Itemise the interpreter@> =
@@ -496,12 +496,12 @@ void Requests::report_requested_material(text_stream *ph) {
 	if (Requests::count_requests_of_type(SOURCE_REQ) > 0) {
 		if (source_HTML_pages_created > 0) {
 			Placeholders::append_to(ph, I"<li>The source text (as plain text and as ");
-			TEMPORARY_TEXT(pcount);
+			TEMPORARY_TEXT(pcount)
 			WRITE_TO(pcount, "%d web page%s",
 				source_HTML_pages_created, (source_HTML_pages_created!=1)?"s":"");
 			Placeholders::append_to(ph, pcount);
 			Placeholders::append_to(ph, I")</li>");
-			DISCARD_TEXT(pcount);
+			DISCARD_TEXT(pcount)
 		}
 	}
 	if (Requests::count_requests_of_type(RELEASE_SOURCE_REQ) > 0)
@@ -517,16 +517,16 @@ void Requests::report_requested_material(text_stream *ph) {
 				Placeholders::append_to(ph, I"<li>");
 				Placeholders::append_to(ph, leafname);
 				if (req->outcome_data >= 4096) {
-					TEMPORARY_TEXT(filesize);
+					TEMPORARY_TEXT(filesize)
 					WRITE_TO(filesize, " (%dK)", req->outcome_data/1024);
 					Placeholders::append_to(ph, filesize);
-					DISCARD_TEXT(filesize);
+					DISCARD_TEXT(filesize)
 				} else if (req->outcome_data >= 0) {
-					TEMPORARY_TEXT(filesize);
+					TEMPORARY_TEXT(filesize)
 					WRITE_TO(filesize, " (%d byte%s)",
 						req->outcome_data, (req->outcome_data!=1)?"s":"");
 					Placeholders::append_to(ph, filesize);
-					DISCARD_TEXT(filesize);
+					DISCARD_TEXT(filesize)
 				}
 				if (Str::eq_wide_string(req->details3, L"--") == FALSE) {
 					Placeholders::append_to(ph, I" to subfolder ");

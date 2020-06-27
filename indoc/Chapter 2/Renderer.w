@@ -93,7 +93,7 @@ text_stream *Renderer::render_block(OUTPUT_STREAM, volume *V, section *S) {
 }
 
 @<Render the examples below the text of the block@> =
- 	TEMPORARY_TEXT(form_of_title_to_test);
+ 	TEMPORARY_TEXT(form_of_title_to_test)
  	@<Adapt the block title to the form of the title to test@>;
  	int no_examples_rendered_here = 0;
  	for (int n = 0; n < no_examples; n++) {
@@ -131,16 +131,16 @@ section names are capitalised for this purpose.)
  			Str::put(pos, Characters::toupper(Str::get(pos)));
 
 @<Render the example here@> =
-	TEMPORARY_TEXT(index_term);
+	TEMPORARY_TEXT(index_term)
 	WRITE_TO(index_term, "%S=___=!example", E->ex_public_name);
  	Indexes::mark_index_term(index_term, V, NULL, NULL, E, NULL, NULL);
-	DISCARD_TEXT(index_term);
+	DISCARD_TEXT(index_term)
  	if (indoc_settings->format == HTML_FORMAT) {
-		TEMPORARY_TEXT(comment);
+		TEMPORARY_TEXT(comment)
 		WRITE_TO(comment, "START EXAMPLE \"%d: %S\" \"e%d\"",
 			E->example_position[0], E->ex_public_name, E->allocation_id);
 		HTML::comment(OUT, comment);
-		DISCARD_TEXT(comment);
+		DISCARD_TEXT(comment)
  	}
  	Examples::render_example_cue(OUT, E, V, 0);
 	code_example = E;
@@ -153,7 +153,7 @@ text_stream *Renderer::render_example_body(OUTPUT_STREAM, example *E, volume *V,
 	int hide = FALSE;
 	if (indoc_settings->examples_mode == EXMODE_openable_internal) hide = TRUE;
 	if (indoc_settings->format == HTML_FORMAT) {
-		TEMPORARY_TEXT(id);
+		TEMPORARY_TEXT(id)
 		WRITE_TO(id, "example%d", E->allocation_id);
 		HTML::begin_div_with_class_and_id_S(OUT, I"egpanel", id, hide);
 	}
@@ -229,13 +229,13 @@ code, broken off from the main narrative.
 
 @<Enter code mode@> =
  	code_mode = 1;
- 	TEMPORARY_TEXT(id);
+ 	TEMPORARY_TEXT(id)
  	WRITE_TO(id, "c%d", ++unique_code_pos_counter);
  	if (code_example) WRITE_TO(id, "_%d", code_example->allocation_id);
- 	TEMPORARY_TEXT(comment);
+ 	TEMPORARY_TEXT(comment)
  	WRITE_TO(comment, "START CODE \"%S\"", id);
  	HTML::comment(OUT, comment);
- 	DISCARD_TEXT(comment);
+ 	DISCARD_TEXT(comment)
  	HTML_OPEN_WITH("blockquote", "class=\"code\"");
  	HTML_OPEN_WITH("p", "class=\"quoted\"");
  	HTML::anchor(OUT, id);
@@ -246,7 +246,7 @@ very much.
 
 @<Render the line in code mode@> =
  	@<Render some indentation@>;
- 	TEMPORARY_TEXT(raw);
+ 	TEMPORARY_TEXT(raw)
  	Str::copy(raw, P->par_texts);
 
  	if (indoc_settings->treat_code_as_verbatim == FALSE) {
@@ -309,7 +309,7 @@ people use the blank marker |--| explicitly if they want blanks.)
 	HTML_OPEN_WITH("td", "class=\"quotedtablecell\"");
 	HTML_OPEN_WITH("p", "class=\"quoted\"");
 
- 	TEMPORARY_TEXT(row);
+ 	TEMPORARY_TEXT(row)
  	match_results mr = Regexp::create_mr();
  	Regexp::match(&mr, P->par_texts, L" *(%c*?) *");
  	Str::copy(row, mr.exp[0]); /* Strip leading and trailing space */
@@ -323,7 +323,7 @@ people use the blank marker |--| explicitly if they want blanks.)
  		Str::copy(row, mr.exp[1]);
  	}
  	WRITE("%S", row);
- 	DISCARD_TEXT(row);
+ 	DISCARD_TEXT(row)
  	Regexp::dispose_of(&mr);
  	HTML_CLOSE("p");
  	HTML_CLOSE("td");
@@ -376,10 +376,10 @@ convert those to HTML links.
  			WRITE("%S\n", P->par_texts);
  		} else {
  			if (Str::len(P->par_styles) > 0) {
- 				TEMPORARY_TEXT(details);
+ 				TEMPORARY_TEXT(details)
  				WRITE_TO(details, "class=\"%S\"", P->par_styles);
  				HTML::open(OUT, "p", details);
- 				DISCARD_TEXT(details);
+ 				DISCARD_TEXT(details)
  				WRITE("%S", P->par_texts);
 				HTML_CLOSE("p");
  			} else {
@@ -405,7 +405,7 @@ see below.
 
 @<Convert this paste marker to a Javascript paste mechanism@> =
 	Str::copy(raw, mr.exp[0]);
-	TEMPORARY_TEXT(right);
+	TEMPORARY_TEXT(right)
 	Str::copy(right, mr.exp[1]);
  	if (indoc_settings->javascript_paste_method == PASTEMODE_none) {
  		WRITE_TO(raw, "%S", right);
@@ -416,9 +416,9 @@ see below.
  			WRITE_TO(raw, "%d", Javascript_paste_count);
  		}
  		WRITE_TO(raw, "(");
- 		TEMPORARY_TEXT(J_text);
+ 		TEMPORARY_TEXT(J_text)
  		@<Determine the quoted J-text@>;
- 		TEMPORARY_TEXT(titling);
+ 		TEMPORARY_TEXT(titling)
  		if (code_example) {
  			WRITE_TO(titling, "Example - ");
  			LOOP_THROUGH_TEXT(pos, code_example->ex_public_name) {
@@ -500,15 +500,15 @@ down to the last line which is included in the paste.
 @<Collate the indented lines in that range into the J-text@> =
  	for (int j=i; j<up_to; j++) {
  		int ic = paragraphs[j].par_indentation;
- 		TEMPORARY_TEXT(joinbit);
+ 		TEMPORARY_TEXT(joinbit)
  		while (ic > 1) { ic--; PUT_TO(J_text, '\t'); }
  		if (j == i) Str::copy(joinbit, right);
  		else Str::copy(joinbit, paragraphs[j].par_texts);
  		if ((paragraphs[j].par_indentation == 0) && (Str::len(joinbit) > 0)) {
- 			TEMPORARY_TEXT(br);
+ 			TEMPORARY_TEXT(br)
  			WRITE_TO(br, "[%S]", joinbit);
  			Str::copy(joinbit, br);
- 			DISCARD_TEXT(br);
+ 			DISCARD_TEXT(br)
  		}
  		for (int k=0, L = Str::len(joinbit), prev_c = -1; k<L; k++) {
  			int c = Str::get_at(joinbit, k);
@@ -525,7 +525,7 @@ down to the last line which is included in the paste.
  			prev_c = c;
  		}
  		PUT_TO(J_text, '\n');
- 		DISCARD_TEXT(joinbit);
+ 		DISCARD_TEXT(joinbit)
  	}
 
 @ =
@@ -542,7 +542,7 @@ void Renderer::remove_paste_markers(text_stream *text) {
 }
 
 void Renderer::remove_paste_markers_from(text_stream *text, int i) {
-	TEMPORARY_TEXT(modified);
+	TEMPORARY_TEXT(modified)
 	for (int j=0; j<i; j++) PUT_TO(modified, Str::get_at(text, j));
 	for (int L=Str::len(text); i<L; i++) {
 		int c = Str::get_at(text, i);
@@ -553,12 +553,12 @@ void Renderer::remove_paste_markers_from(text_stream *text, int i) {
 		else PUT_TO(modified, c);
 	}
 	Str::copy(text, modified);
-	DISCARD_TEXT(modified);
+	DISCARD_TEXT(modified)
 }
 
 @ =
 void Renderer::apply_Inform_escape_characters(text_stream *text) {
-	TEMPORARY_TEXT(modified);
+	TEMPORARY_TEXT(modified)
 	for (int i=0, L=Str::len(text); i<L; i++) {
 		int c = Str::get_at(text, i);
 		switch (c) {
@@ -594,7 +594,7 @@ void Renderer::apply_Inform_escape_characters(text_stream *text) {
 		}
 	}
 	Str::copy(text, modified);
-	DISCARD_TEXT(modified);
+	DISCARD_TEXT(modified)
 }
 
 @h Rendering cross-references to other sections.
@@ -614,7 +614,7 @@ void Renderer::render_cross_reference(OUTPUT_STREAM,
  		WRITE("(See %S for %S.)\n", sname, reason);
 
  	if (indoc_settings->format == HTML_FORMAT) {
-	  	TEMPORARY_TEXT(dest);
+	  	TEMPORARY_TEXT(dest)
 	 	WRITE_TO(dest, "index.html");
 	 	@<Identify the reference destination and be sure it exists@>;
 
@@ -627,7 +627,7 @@ void Renderer::render_cross_reference(OUTPUT_STREAM,
  		WRITE(" for %S", reason);
  		if (quieter == FALSE) HTML_CLOSE("i");
  		HTML_CLOSE("p");
-	  	DISCARD_TEXT(dest);
+	  	DISCARD_TEXT(dest)
  	}
 }
 
@@ -699,7 +699,7 @@ text_stream *Renderer::close_formatted_file(OUTPUT_STREAM) {
 with a |<head>| we make ourselves.
 
 @<Write the HTML header for the formatted file@> =
- 	TEMPORARY_TEXT(top);
+ 	TEMPORARY_TEXT(top)
  	HTMLUtilities::get_tt_matter(top, 0, 1);
  	if (Str::len(top) > 0) {
  		match_results mr = Regexp::create_mr();
@@ -724,11 +724,11 @@ with a |<head>| we make ourselves.
  		HTMLUtilities::paste_script(OUT, NULL, 0);
  		HTMLUtilities::create_script(OUT, NULL, 0, NULL);
  	}
-  	DISCARD_TEXT(top);
+  	DISCARD_TEXT(top)
 
 @<Write the HTML footer for the formatted file@> =
- 	TEMPORARY_TEXT(tail);
+ 	TEMPORARY_TEXT(tail)
  	HTMLUtilities::get_tt_matter(tail, 0, 0);
  	if (Str::len(tail) > 0) { WRITE("%S", tail); }
  	else { HTML::end_body(OUT); }
-  	DISCARD_TEXT(tail);
+  	DISCARD_TEXT(tail)

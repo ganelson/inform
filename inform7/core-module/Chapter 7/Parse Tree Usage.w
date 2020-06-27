@@ -417,11 +417,11 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 	if (Node::get_meaning(pn)) WRITE("$M", Node::get_meaning(pn));
 	else WRITE("$N", pn->node_type);
 	if (Wordings::nonempty(Node::get_text(pn))) {
-		TEMPORARY_TEXT(text);
+		TEMPORARY_TEXT(text)
 		WRITE_TO(text, "%W", Node::get_text(pn));
 		Str::truncate(text, 60);
 		WRITE("'%S'", text);
-		DISCARD_TEXT(text);
+		DISCARD_TEXT(text)
 	}
 
 	if ((pn->node_type >= UNKNOWN_NT) && (pn->node_type <= TEST_VALUE_NT))

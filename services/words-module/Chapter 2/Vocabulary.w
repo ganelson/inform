@@ -439,11 +439,11 @@ and then find its identity as if it were a whole word.
 
 =
 vocabulary_entry *Vocabulary::entry_for_partial_text(wchar_t *str, int from, int to) {
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	for (int i=from; i<=to; i++) PUT_TO(TEMP, str[i]);
 	PUT_TO(TEMP, 0);
 	wording W = Feeds::feed_text(TEMP);
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 	if (Wordings::empty(W)) return NULL;
 	return Lexer::word(Wordings::first_wn(W));
 }

@@ -16,14 +16,14 @@ text_stream *IndexUtilities::open_page(text_stream *title, text_stream *leafname
 	if (Streams::open_to_file(OUT, F, UTF8_ENC) == FALSE)
 		Errors::fatal_with_file("can't write index page file", F);
 
-	TEMPORARY_TEXT(head);
+	TEMPORARY_TEXT(head)
 	HTMLUtilities::get_tt_matter(head, 1, 1);
 	if (Str::len(head) > 0) {
 		wchar_t replacement[1024];
-		TEMPORARY_TEXT(rep);
+		TEMPORARY_TEXT(rep)
 		WRITE_TO(rep, "<title>Inform 7 - %S</title>", title);
 		Str::copy_to_wide_string(replacement, rep, 1024);
-		DISCARD_TEXT(rep);
+		DISCARD_TEXT(rep)
 		Regexp::replace(head, L"%[SUBHEADING%]", NULL, REP_REPEATING);
 		Regexp::replace(head, L"<title>%c*</title>", replacement, REP_REPEATING);
 		WRITE("%S", head);
@@ -33,14 +33,14 @@ text_stream *IndexUtilities::open_page(text_stream *title, text_stream *leafname
 		HTML::end_head(OUT);
 		HTML::begin_body(OUT, I"paper papertint");
 	}
-	DISCARD_TEXT(head);
+	DISCARD_TEXT(head)
 	Nav::render_navigation_index_top(OUT, leafname, title);
 	return OUT;
 }
 
 @ =
 void IndexUtilities::close_page(OUTPUT_STREAM) {
-	TEMPORARY_TEXT(tail);
+	TEMPORARY_TEXT(tail)
 	HTMLUtilities::get_tt_matter(tail, 1, 0);
 	if (Str::len(tail) > 0) WRITE("%S", tail);
 	else HTML::end_body(OUT);
@@ -96,7 +96,7 @@ void IndexUtilities::improve_alphabetisation(text_stream *sort_key) {
 		Regexp::replace(sort_key, L"10 ", L"ten ", REP_ATSTART);
 		Regexp::replace(sort_key, L"11 ", L"eleven ", REP_ATSTART);
 		Regexp::replace(sort_key, L"12 ", L"twelve ", REP_ATSTART);
-		TEMPORARY_TEXT(x);
+		TEMPORARY_TEXT(x)
 		Str::copy(x, sort_key);
 		Str::clear(sort_key);
 		match_results mr = Regexp::create_mr();
@@ -106,7 +106,7 @@ void IndexUtilities::improve_alphabetisation(text_stream *sort_key) {
 			WRITE_TO(sort_key, "%08d", Str::atoi(mr.exp[1], 0));
 		}
 		WRITE_TO(sort_key, "%S", x);
-		DISCARD_TEXT(x);
+		DISCARD_TEXT(x)
 	}
 }
 
@@ -127,10 +127,10 @@ void IndexUtilities::alphabet_row(OUTPUT_STREAM, int sequence) {
 			for (int i=0; i<26; i++)
 				if (letters_taken[i] == FALSE) {
 					if (faked == FALSE) { faked = TRUE; HTML_OPEN("p"); }
-					TEMPORARY_TEXT(singleton);
+					TEMPORARY_TEXT(singleton)
 					PUT_TO(singleton, 'A'+i);
 					HTML::anchor(OUT, singleton);
-					DISCARD_TEXT(singleton);
+					DISCARD_TEXT(singleton)
 				}
 			if (faked) { HTML_CLOSE("p"); }
 			break;

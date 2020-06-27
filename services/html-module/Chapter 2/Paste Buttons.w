@@ -92,12 +92,12 @@ void PasteButtons::paste_text(OUTPUT_STREAM, text_stream *alt_stream) {
 }
 void PasteButtons::paste_inner(OUTPUT_STREAM, int from, int to, text_stream *alt_stream) {
 	#ifndef WINDOWS_JAVASCRIPT /* MacOS style, with long function arguments allowed in links */
-		TEMPORARY_TEXT(link);
+		TEMPORARY_TEXT(link)
 		WRITE_TO(link, "href=\"javascript:pasteCode(");
 		PasteButtons::argument(link, from, to, alt_stream);
 		WRITE_TO(link, ")\"");
 		HTML_OPEN_WITH("a", "%S", link);
-		DISCARD_TEXT(link);
+		DISCARD_TEXT(link)
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/paste.png");
 		HTML_CLOSE("a");
 	#endif
@@ -221,7 +221,7 @@ filing system.
 
 =
 void PasteButtons::open_file(OUTPUT_STREAM, pathname *P, text_stream *leaf, char *contents) {
-	TEMPORARY_TEXT(fn);
+	TEMPORARY_TEXT(fn)
 	if (leaf) WRITE_TO(fn, "%f", Filenames::in(P, leaf));
 	else WRITE_TO(fn, "%p", P);
 
@@ -232,5 +232,5 @@ void PasteButtons::open_file(OUTPUT_STREAM, pathname *P, text_stream *leaf, char
 	HTML_OPEN_WITH("a", "href='javascript:project().openFile(\"%S\")'", fn);
 	HTML_TAG_WITH("img", "%s", contents);
 	HTML_CLOSE("a");
-	DISCARD_TEXT(fn);
+	DISCARD_TEXT(fn)
 }

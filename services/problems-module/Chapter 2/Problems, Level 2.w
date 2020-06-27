@@ -406,32 +406,32 @@ its type, stored internally as a single character.
 @ Tinting text involves some HTML, of course:
 
 @<Quote a red-tinted word range in a problem message@> =
-	TEMPORARY_TEXT(OUT);
+	TEMPORARY_TEXT(OUT)
 	HTML::begin_colour(OUT, I"800000");
 	WRITE("%W", problem_quotations[t].text_quoted);
 	HTML::end_colour(OUT);
 	@<Spool temporary stream text to the problem buffer@>;
-	DISCARD_TEXT(OUT);
+	DISCARD_TEXT(OUT)
 
 @ And:
 
 @<Quote a green-tinted word range in a problem message@> =
-	TEMPORARY_TEXT(OUT);
+	TEMPORARY_TEXT(OUT)
 	HTML::begin_colour(OUT, I"008000");
 	WRITE("%W", problem_quotations[t].text_quoted);
 	HTML::end_colour(OUT);
 	@<Spool temporary stream text to the problem buffer@>;
-	DISCARD_TEXT(OUT);
+	DISCARD_TEXT(OUT)
 
 @ More generally, the reference is to some structure we can't write
 ourselves, and must delegate to:
 
 @<Expand structure-based escape@> =
 	Problems::append_source(EMPTY_WORDING);
-	TEMPORARY_TEXT(OUT);
+	TEMPORARY_TEXT(OUT)
 	(problem_quotations[t].expander)(OUT, problem_quotations[t].structure_quoted);
 	@<Spool temporary stream text to the problem buffer@>;
-	DISCARD_TEXT(OUT);
+	DISCARD_TEXT(OUT)
 	Problems::transcribe_appended_source();
 
 @<Spool temporary stream text to the problem buffer@> =

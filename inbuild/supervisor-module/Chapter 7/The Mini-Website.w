@@ -145,7 +145,7 @@ The following supplies the necessary filenames.
 
 =
 filename *ExtensionWebsite::page_URL(inbuild_work *work, int eg_number) {
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	Str::copy(leaf, work->title);
 	if (eg_number > 0) WRITE_TO(leaf, "-eg%d", eg_number);
 	WRITE_TO(leaf, ".html");
@@ -154,6 +154,6 @@ filename *ExtensionWebsite::page_URL(inbuild_work *work, int eg_number) {
 	P = Pathnames::down(P, I"Extensions");
 	if (Pathnames::create_in_file_system(P) == 0) return NULL;
 	filename *F = Filenames::in(Pathnames::down(P, work->author_name), leaf);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
 	return F;
 }

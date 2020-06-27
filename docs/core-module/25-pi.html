@@ -267,8 +267,8 @@ make the result too slow.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">a_form</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">b_form</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">a_form</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">b_form</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="25-pi.html#SP3_2_1_1" class="named-paragraph-link"><span class="named-paragraph">Splice up the A and B forms of the slashed word</span><span class="named-paragraph-number">3.2.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="25-pi.html#SP3_2_1_2" class="named-paragraph-link"><span class="named-paragraph">Make sure the A form isn't the S-word</span><span class="named-paragraph-number">3.2.1.2</span></a></span><span class="plain-syntax">;</span>
 
@@ -276,8 +276,8 @@ make the result too slow.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="25-pi.html#SP3_2_1_3" class="named-paragraph-link"><span class="named-paragraph">Splice up the A and B forms of the whole phrase wording</span><span class="named-paragraph-number">3.2.1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">AW</span><span class="plain-syntax">)) </span><a href="25-pi.html#SP3" class="function-link"><span class="function-syntax">Phrases::Parser::register_phrasal</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">phrase_mc</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph</span><span class="plain-syntax">, </span><span class="identifier-syntax">AW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">BW</span><span class="plain-syntax">)) </span><a href="25-pi.html#SP3" class="function-link"><span class="function-syntax">Phrases::Parser::register_phrasal</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">phrase_mc</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph</span><span class="plain-syntax">, </span><span class="identifier-syntax">BW</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">a_form</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">b_form</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">a_form</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">b_form</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="25-pi.html#SP3_2">&#167;3.2</a>.</li></ul>

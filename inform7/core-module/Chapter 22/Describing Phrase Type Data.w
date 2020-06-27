@@ -207,10 +207,10 @@ void Phrases::TypeData::Textual::inv_write_HTML_representation(OUTPUT_STREAM, pa
 	if (ph) {
 		ph_type_data *phtd = &(ph->type_data);
 		if (Wordings::nonempty(ph->ph_documentation_symbol)) {
-			TEMPORARY_TEXT(pds);
+			TEMPORARY_TEXT(pds)
 			WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(ph->ph_documentation_symbol)));
 			Index::DocReferences::link_to(OUT, pds, -1);
-			DISCARD_TEXT(pds);
+			DISCARD_TEXT(pds)
 		} else
 			Index::link_to(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)), FALSE);
 		WRITE(" ");
@@ -265,10 +265,10 @@ void Phrases::TypeData::Textual::write_reveal_box(OUTPUT_STREAM, ph_type_data *p
 }
 
 @<Present a paste button containing the text of the phrase@> =
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	Phrases::write_HTML_representation(TEMP, ph, PASTE_PHRASE_FORMAT);
 	PasteButtons::paste_text(OUT, TEMP);
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 	WRITE("&nbsp;");
 
 @ This is only possible for phrases mentioned in the built-in manuals,
@@ -277,12 +277,12 @@ of course.
 @<Quote from and reference to the documentation, where possible@> =
 	if (Wordings::nonempty(ph->ph_documentation_symbol)) {
 		HTML_CLOSE("p");
-		TEMPORARY_TEXT(pds);
+		TEMPORARY_TEXT(pds)
 		WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(ph->ph_documentation_symbol)));
 		Index::DocReferences::doc_fragment(OUT, pds);
 		HTML_OPEN("p"); WRITE("<b>See</b> ");
 		Index::DocReferences::fully_link(OUT, pds);
-		DISCARD_TEXT(pds);
+		DISCARD_TEXT(pds)
 	}
 
 @<Present the equation form of the phrase, if it has one@> =

@@ -79,8 +79,8 @@ These are created when we scan the instructions file.
 
 =
 void Scanner::create_volume(pathname *book_path, text_stream *leaf, text_stream *title, text_stream *abbrev_supplied) {
-  	TEMPORARY_TEXT(pre);
- 	TEMPORARY_TEXT(abbrev);
+  	TEMPORARY_TEXT(pre)
+ 	TEMPORARY_TEXT(abbrev)
 	Str::copy(abbrev, abbrev_supplied);
 
  	@<Work out title and abbreviation if these aren't supplied@>;
@@ -105,8 +105,8 @@ void Scanner::create_volume(pathname *book_path, text_stream *leaf, text_stream 
 
  	PRINT("Volume %d: %S  %S %S  %f\n", no_volumes-1, title, abbrev, pre,
  		V->vol_rawtext_filename);
-  	DISCARD_TEXT(pre);
-  	DISCARD_TEXT(abbrev);
+  	DISCARD_TEXT(pre)
+  	DISCARD_TEXT(abbrev)
 }
 
 @<Work out title and abbreviation if these aren't supplied@> =
@@ -260,7 +260,7 @@ anchor is blank, the filename alone is used.
 @<Work out section URLs and anchors, depending on granularity@> =
  	char *extension = "txt";
  	if (indoc_settings->format == HTML_FORMAT) extension = "html";
- 	TEMPORARY_TEXT(leaf);
+ 	TEMPORARY_TEXT(leaf)
  	if (indoc_settings->granularity == SECTION_GRANULARITY) {
  		if (indoc_settings->html_for_Inform_application)
  			WRITE_TO(leaf, "%Sdoc%d.%s", sr->owner->vol_prefix, sr->s, extension);
@@ -282,7 +282,7 @@ anchor is blank, the filename alone is used.
 	S->section_filename = Filenames::in(indoc_settings->destination, leaf);
 	S->section_URL = Str::duplicate(leaf);
 	S->unanchored_URL = Str::duplicate(leaf);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
  	if (Str::len(S->section_anchor) > 0) WRITE_TO(S->section_URL, "#%S", S->section_anchor);
 
 @ And similarly for chapters.

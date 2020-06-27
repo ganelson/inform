@@ -80,7 +80,7 @@ resource block later on.
 	inter_t ID = 0;
 	while (BinaryFiles::read_int32(fh, &ID)) {
 		if (ID == 0) break;
-		TEMPORARY_TEXT(keyword);
+		TEMPORARY_TEXT(keyword)
 		unsigned int L;
 		if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		for (unsigned int i=0; i<L; i++) {
@@ -90,7 +90,7 @@ resource block later on.
 		}
 		inter_annotation_form *IA = Inter::Annotations::form(ID, keyword, FALSE);
 		if (IA == NULL) Inter::Binary::read_error(&eloc, ftell(fh), I"conflicting annotation name");
-		DISCARD_TEXT(keyword);
+		DISCARD_TEXT(keyword)
 	}
 
 @<Write the annotations@> =
@@ -234,14 +234,14 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 
 		unsigned int L;
 		if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-		TEMPORARY_TEXT(name);
+		TEMPORARY_TEXT(name)
 		for (unsigned int i=0; i<L; i++) {
 			unsigned int c;
 			if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			PUT_TO(name, (int) c);
 		}
 		if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-		TEMPORARY_TEXT(trans);
+		TEMPORARY_TEXT(trans)
 		for (unsigned int i=0; i<L; i++) {
 			unsigned int c;
 			if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
@@ -277,8 +277,8 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		}
 
 		LOGIF(INTER_BINARY, "Read symbol $3\n", S);
-		DISCARD_TEXT(name);
-		DISCARD_TEXT(trans);
+		DISCARD_TEXT(name)
+		DISCARD_TEXT(trans)
 	}
 
 @<Write a symbols table resource@> =
@@ -333,7 +333,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		if (grid) sc = grid[sc];
 		Inter::Packages::set_scope(res->stored_package, Inter::Warehouse::get_symbols_table(warehouse, sc));
 	}
-	TEMPORARY_TEXT(N);
+	TEMPORARY_TEXT(N)
 	unsigned int L;
 	if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	for (unsigned int i=0; i<L; i++) {
@@ -342,7 +342,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		PUT_TO(N, (int) c);
 	}
 	Inter::Packages::set_name((parent)?(parent):(I->root_package), res->stored_package, N);
-	DISCARD_TEXT(N);
+	DISCARD_TEXT(N)
 
 @<Write a package resource@> =
 	inter_package *P = res->stored_package;

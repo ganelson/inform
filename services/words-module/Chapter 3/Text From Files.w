@@ -153,7 +153,7 @@ source_file *TextFromFiles::filename_to_source_file(text_stream *name2) {
 	int l2 = Str::len(name2);
 	source_file *sf;
 	LOOP_OVER(sf, source_file) {
-		TEMPORARY_TEXT(name1);
+		TEMPORARY_TEXT(name1)
 		WRITE_TO(name1, "%f", sf->name);
 		int l1 = Str::len(name1);
 		int minl = (l1<l2)?l1:l2;

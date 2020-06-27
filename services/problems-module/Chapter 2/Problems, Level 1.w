@@ -54,12 +54,12 @@ mask out angle brackets which we don't want to interpret as HTML:
 void ProblemBuffer::copy_source_reference(wording W) {
 	if (Wordings::empty(W)) { WRITE_TO(PBUFF, "<no text>"); return; }
 	source_file *referred = Lexer::file_of_origin(Wordings::first_wn(W));
-	TEMPORARY_TEXT(file);
+	TEMPORARY_TEXT(file)
 	if (referred) {
 		WRITE_TO(file, "%f", TextFromFiles::get_filename(referred));
 		pathname *proj = HTML::get_link_abbreviation_path();
 		if (proj) {
-			TEMPORARY_TEXT(project_prefix);
+			TEMPORARY_TEXT(project_prefix)
 			WRITE_TO(project_prefix, "%p", proj);
 			if (Str::prefix_eq(file, project_prefix, Str::len(project_prefix)))
 				Str::delete_n_characters(file, Str::len(project_prefix));
@@ -90,7 +90,7 @@ void ProblemBuffer::copy_source_reference(wording W) {
 			Node::get_text(redirected_to_B));
 		WRITE_TO(PBUFF, ")");
 	}
-	DISCARD_TEXT(file);
+	DISCARD_TEXT(file)
 }
 
 @ Once the error message is fully constructed, we will want to output it

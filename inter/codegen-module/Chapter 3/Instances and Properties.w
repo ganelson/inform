@@ -504,7 +504,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 				inter_symbol *kind_name = kinds_in_source_order[i];
 				if (CodeGen::IP::weak_id(kind_name) == w) {
 					if (Inter::Symbols::get_flag(kind_name, VPH_MARK_BIT)) {
-						TEMPORARY_TEXT(sticks);
+						TEMPORARY_TEXT(sticks)
 						WRITE("VPH_Class VPH_%d\n    with value_range %d\n",
 							w, Inter::Kind::instance_count(kind_name));
 						for (int p=0; p<no_properties; p++) {
@@ -523,7 +523,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 							}
 						}
 						WRITE(";\n%S\n", sticks);
-						DISCARD_TEXT(sticks);
+						DISCARD_TEXT(sticks)
 					}
 				}
 			}
@@ -630,7 +630,7 @@ brackets: thus |(4) (-5)|. This cannot be confused with function calling
 because I6 doesn't allow function calls in a constant context.
 
 @<Compile a stick of property values and put its address here@> =
-	TEMPORARY_TEXT(ident);
+	TEMPORARY_TEXT(ident)
 	WRITE_TO(ident, "KOVP_%d_P%d", w, CodeGen::IP::pnum(prop_name));
 	WRITE("%S", ident);
 	WRITE_TO(sticks, "Array %S table 0 0", ident);
@@ -713,7 +713,7 @@ though this won't happen for any property created by I7 source text.
 
 @<Write the property metadata array@> =
 	if (properties_found) {
-		TEMPORARY_TEXT(pm_writer);
+		TEMPORARY_TEXT(pm_writer)
 		WRITE_TO(pm_writer, "[ CreatePropertyOffsets i;\n"); STREAM_INDENT(pm_writer);
 		WRITE_TO(pm_writer, "for (i=0: i<attributed_property_offsets_SIZE: i++)"); STREAM_INDENT(pm_writer);
 		WRITE_TO(pm_writer, "attributed_property_offsets-->i = -1;\n"); STREAM_OUTDENT(pm_writer);
@@ -739,7 +739,7 @@ though this won't happen for any property created by I7 source text.
 		STREAM_OUTDENT(pm_writer);
 		WRITE_TO(pm_writer, "];\n");
 		WRITE("%S", pm_writer);
-		DISCARD_TEXT(pm_writer);
+		DISCARD_TEXT(pm_writer)
 	}
 
 @<Write the property name in double quotes@> =
@@ -985,7 +985,7 @@ void CodeGen::IP::append(code_generation *gen, inter_symbol *symb) {
 	for (int i=0; i<L; i++) {
 		wchar_t c = Str::get_at(S, i);
 		if (c == URL_SYMBOL_CHAR) {
-			TEMPORARY_TEXT(T);
+			TEMPORARY_TEXT(T)
 			for (i++; i<L; i++) {
 				wchar_t c = Str::get_at(S, i);
 				if (c == URL_SYMBOL_CHAR) break;
@@ -993,7 +993,7 @@ void CodeGen::IP::append(code_generation *gen, inter_symbol *symb) {
 			}
 			inter_symbol *symb = Inter::SymbolsTables::url_name_to_symbol(I, NULL, T);
 			WRITE("%S", CodeGen::CL::name(symb));
-			DISCARD_TEXT(T);
+			DISCARD_TEXT(T)
 		} else PUT(c);
 		if ((c == '\n') && (i != Str::len(S)-1)) WRITE("    ");
 	}

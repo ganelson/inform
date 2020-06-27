@@ -453,10 +453,10 @@ segment *segment_being_written = NULL;
 int no_doc_files = 0, no_src_files = 0;
 
 void Websites::write_source_text_pages(filename *template, pathname *website_pathname) {
-	TEMPORARY_TEXT(contents_leafname);
+	TEMPORARY_TEXT(contents_leafname)
 	WRITE_TO(contents_leafname, "%S.html", Placeholders::read(I"SOURCEPREFIX"));
 	filename *contents_page = Filenames::in(website_pathname, contents_leafname);
-	DISCARD_TEXT(contents_leafname);
+	DISCARD_TEXT(contents_leafname)
 
 	@<Devise URLs for the segments@>;
 	@<Work out how the segments link together@>;

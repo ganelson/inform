@@ -1647,10 +1647,10 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 	if (ap->noun_spec) {
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ap->noun_spec, K_understanding))) {
 			request_bits = request_bits | 16;
-			TEMPORARY_TEXT(BC);
+			TEMPORARY_TEXT(BC)
 			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, FALSE, Node::get_text(ap->noun_spec));
 			Emit::array_iname_entry(lt->lt_sba_iname);
-			DISCARD_TEXT(BC);
+			DISCARD_TEXT(BC)
 		} else Specifications::Compiler::emit(ap->noun_spec);
 	} else {
 		Emit::array_numeric_entry(0);
@@ -1958,10 +1958,10 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	LocalVariables::end_condition_emit();
 
 @<Emit CPM range@> =
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Range %d from %d to %d", range_to_compile, ranges_from[range_to_compile], ranges_to[range_to_compile]);
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 	int downs = 0;
 	for (int i=0, done=0; i<cpm_count; i++) {
 		int cpmc = needed[i];
@@ -1978,10 +1978,10 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 
 @<Emit CPM condition piece@> =
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "So %d", cpmc);
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 	switch (cpmc) {
 		case ACTOR_IS_PLAYER_CPMC:
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);

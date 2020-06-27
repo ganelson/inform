@@ -69,7 +69,7 @@ void Examples::scan_examples(void) {
 	scan_directory *dir = Directories::open(indoc_settings->examples_directory);
 	if (dir == NULL) Errors::fatal("can't open examples directory");
 
-	TEMPORARY_TEXT(leafname);
+	TEMPORARY_TEXT(leafname)
 	while (Directories::next(dir, leafname)) {
 		if (Str::get_last_char(leafname) == FOLDER_SEPARATOR) continue;
 		filename *exloc = Filenames::in(indoc_settings->examples_directory, leafname);
@@ -145,15 +145,15 @@ void Examples::examples_helper(text_stream *line, text_file_position *tfp, void 
 		match_results mr2 = Regexp::create_mr();
 
 		E->ex_rubric = Str::duplicate(mr.exp[0]);
-		TEMPORARY_TEXT(rb);
+		TEMPORARY_TEXT(rb)
 		Str::copy(rb, E->ex_rubric);
 		if (Regexp::match(&mr2, rb, L"(%c*?) *-- *(%c*)")) Str::copy(rb, mr2.exp[1]);
 		if (Regexp::match(&mr2, rb, L"(%c*); *(%c*?)")) Str::copy(rb, mr2.exp[0]);
 		if (Regexp::match(&mr2, rb, L"(%c*?): *(%c*?)")) Str::copy(rb, mr2.exp[1]);
 		E->ex_rubric_pared_down = Str::duplicate(rb);
-		DISCARD_TEXT(rb);
+		DISCARD_TEXT(rb)
 
-		TEMPORARY_TEXT(name);
+		TEMPORARY_TEXT(name)
 		Str::copy(name, E->ex_rubric);
 		if (Regexp::match(&mr2, name, L"%c*;(%c*?)")) Str::copy(name, mr2.exp[0]);
 		if (Regexp::match(&mr2, name, L"(%c*?): (%d+). %c*")) {
@@ -166,7 +166,7 @@ void Examples::examples_helper(text_stream *line, text_file_position *tfp, void 
 		if (examples_by_name == NULL) examples_by_name = Dictionaries::new(100, FALSE);
 		Dictionaries::create(examples_by_name, name);
 		Dictionaries::write_value(examples_by_name, name, E);
-		DISCARD_TEXT(name);
+		DISCARD_TEXT(name)
 
 		Regexp::dispose_of(&mr2);
 	} else {
@@ -340,21 +340,21 @@ void Examples::render_example_cue(OUTPUT_STREAM, example *E, volume *V, int writ
 
 @<Render example cue in HTML@> =
 	if (writing_index ==  FALSE) {
-		TEMPORARY_TEXT(anchor);
+		TEMPORARY_TEXT(anchor)
 		WRITE_TO(anchor, "e%d", E->allocation_id);
 		HTML::anchor(OUT, anchor);
-		DISCARD_TEXT(anchor);
+		DISCARD_TEXT(anchor)
 	}
 
 	if (indoc_settings->navigation->simplified_examples == FALSE) @<Render the example cue left surround@>;
 
-	TEMPORARY_TEXT(url);
-	TEMPORARY_TEXT(onclick);
+	TEMPORARY_TEXT(url)
+	TEMPORARY_TEXT(onclick)
 	Examples::open_example_url(url, E, V, V, writing_index);
 	Examples::open_example_onclick(onclick, E, V, V, writing_index);
 	HTML::begin_link_with_class_onclick(OUT, I"eglink", url, onclick);
-	DISCARD_TEXT(url);
-	DISCARD_TEXT(onclick);
+	DISCARD_TEXT(url)
+	DISCARD_TEXT(onclick)
 
 	@<Render the example difficulty asterisks@>;
 	@<Render the example name@>;
@@ -381,13 +381,13 @@ other book.
 
 	HTML_OPEN_WITH("td", "class=\"egcellforoval\""); /* The Oval begins */
 	HTML::begin_div_with_class_S(OUT, I"egovalfornumber overstruckimage");
-	TEMPORARY_TEXT(url);
-	TEMPORARY_TEXT(onclick);
+	TEMPORARY_TEXT(url)
+	TEMPORARY_TEXT(onclick)
 	Examples::open_example_url(url, E, V, V, writing_index);
 	Examples::open_example_onclick(onclick, E, V, V, writing_index);
 	HTML::begin_link_with_class_onclick(OUT, I"eglink", url, onclick);
-	DISCARD_TEXT(url);
-	DISCARD_TEXT(onclick);
+	DISCARD_TEXT(url)
+	DISCARD_TEXT(onclick)
 	WRITE("<b>%d</b>", E->example_position[0]);
 	HTML::end_link(OUT);
 	HTML::end_div(OUT);
@@ -404,7 +404,7 @@ other book.
 
 @<Render the example name@> =
 	HTML_OPEN("b");
-	TEMPORARY_TEXT(text_of_name);
+	TEMPORARY_TEXT(text_of_name)
 	Str::copy(text_of_name, E->ex_rubric);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text_of_name, L"%c*;(%c*?)")) Str::copy(text_of_name, mr.exp[0]);
@@ -424,7 +424,7 @@ other book.
 	} else {
 		WRITE("Example %d: %S", E->example_position[0], text_of_name);
 	}
-	DISCARD_TEXT(text_of_name);
+	DISCARD_TEXT(text_of_name)
 	Regexp::dispose_of(&mr);
 	HTML_CLOSE("b");
 
@@ -443,7 +443,7 @@ other book.
 	if (V->allocation_id == 1) { cross_to = "WI"; V_to = volumes[0]; }
 	HTML::comment(OUT, I"START IGNORE");
 	HTML::begin_div_with_class_S(OUT, I"egovalforxref overstruckimage");
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	Examples::open_example_url(url, E, V, V_to, writing_index);
 	HTML::begin_link(OUT, url);
 	WRITE("<i>%s</i>", cross_to);

@@ -43,7 +43,7 @@ void SourceLinks::set_case(text_stream *p) {
 
 void SourceLinks::link(OUTPUT_STREAM, source_location sl, int nonbreaking_space) {
 	if (sl.file_of_origin) {
-		TEMPORARY_TEXT(fn);
+		TEMPORARY_TEXT(fn)
 		WRITE_TO(fn, "%f", TextFromFiles::get_filename(sl.file_of_origin));
 		@<Truncate the path according to the current abbreviation@>;
 		@<Remove indication that the path is inside the Source directory@>;
@@ -55,7 +55,7 @@ void SourceLinks::link(OUTPUT_STREAM, source_location sl, int nonbreaking_space)
 			HTML_OPEN_WITH("a", "href=\"source:%S#line%d\"", fn, sl.line_number);
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/Reveal.png");
 		HTML_CLOSE("a");
-		DISCARD_TEXT(fn);
+		DISCARD_TEXT(fn)
 	}
 }
 
@@ -64,11 +64,11 @@ void SourceLinks::link(OUTPUT_STREAM, source_location sl, int nonbreaking_space)
 @<Truncate the path according to the current abbreviation@> =
 	pathname *abbrev = HTML::get_link_abbreviation_path();
 	if (abbrev) {
-		TEMPORARY_TEXT(pp);
+		TEMPORARY_TEXT(pp)
 		WRITE_TO(pp, "%p", abbrev);
 		int N = Str::len(pp);
 		if (Str::prefix_eq(fn, pp, N)) Str::delete_n_characters(fn, N+1);
-		DISCARD_TEXT(pp);
+		DISCARD_TEXT(pp)
 	}
 
 @<Remove indication that the path is inside the Source directory@> =

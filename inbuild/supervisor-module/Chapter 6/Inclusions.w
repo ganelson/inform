@@ -132,8 +132,8 @@ and then we call the sentence-breaker to graft the new material on to the
 parse tree.
 
 @<Fulfill request to include a single extension@> =
-	TEMPORARY_TEXT(exft);
-	TEMPORARY_TEXT(exfa);
+	TEMPORARY_TEXT(exft)
+	TEMPORARY_TEXT(exfa)
 	WRITE_TO(exft, "%+W", W);
 	WRITE_TO(exfa, "%+W", AW);
 	inbuild_work *work = Works::new(extension_genre, exft, exfa);
@@ -141,8 +141,8 @@ parse tree.
 	if (version_word >= 0) V = Inclusions::parse_version(version_word);
 	semver_range *R = VersionNumberRanges::compatibility_range(V);
 	inbuild_requirement *req = Requirements::new(work, R);
-	DISCARD_TEXT(exft);
-	DISCARD_TEXT(exfa);
+	DISCARD_TEXT(exft)
+	DISCARD_TEXT(exfa)
 
 	E = Inclusions::load(last_H0, current_sentence, req, for_project);
 
@@ -220,7 +220,7 @@ report this problem at the inclusion line.
 		CopyErrors::supply_node(CE, current_sentence);
 		Copies::attach_error(inclusions_errors_to, CE);
 	} else {
-		TEMPORARY_TEXT(versions);
+		TEMPORARY_TEXT(versions)
 		inbuild_search_result *search_result;
 		LOOP_OVER_LINKED_LIST(search_result, inbuild_search_result, L) {
 			if (Str::len(versions) > 0) WRITE_TO(versions, " or ");
@@ -231,7 +231,7 @@ report this problem at the inclusion line.
 		copy_error *CE = CopyErrors::new_T(SYNTAX_CE, ExtVersionTooLow_SYNERROR, versions);
 		CopyErrors::supply_node(CE, at);
 		Copies::attach_error(inclusions_errors_to, CE);
-		DISCARD_TEXT(versions);
+		DISCARD_TEXT(versions)
 	}
 
 @ =

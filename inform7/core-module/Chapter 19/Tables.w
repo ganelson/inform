@@ -758,7 +758,7 @@ columns and in the same order.
 @<Display the old and new table column names@> =
 	Problems::issue_problem_begin(Task::syntax_tree(), "****");
 	Problems::issue_problem_segment("The old table has columns: "); {
-		TEMPORARY_TEXT(TEMP);
+		TEMPORARY_TEXT(TEMP)
 		int j;
 		for (j=0; j<old_t->no_columns; j++) {
 			if (j > 0) WRITE_TO(TEMP, ", ");
@@ -766,12 +766,12 @@ columns and in the same order.
 		}
 		WRITE_TO(TEMP, ". ");
 		Problems::issue_problem_segment_from_stream(TEMP);
-		DISCARD_TEXT(TEMP);
+		DISCARD_TEXT(TEMP)
 	}
 	Problems::issue_problem_end();
 	Problems::issue_problem_begin(Task::syntax_tree(), "****");
 	Problems::issue_problem_segment("The new table has columns: "); {
-		TEMPORARY_TEXT(TEMP);
+		TEMPORARY_TEXT(TEMP)
 		int i;
 		for (i=0; i<t->no_columns; i++) {
 			if (i > 0) WRITE_TO(TEMP, ", ");
@@ -779,7 +779,7 @@ columns and in the same order.
 		}
 		WRITE_TO(TEMP, ".");
 		Problems::issue_problem_segment_from_stream(TEMP);
-		DISCARD_TEXT(TEMP);
+		DISCARD_TEXT(TEMP)
 	}
 	Problems::issue_problem_end();
 
@@ -1389,11 +1389,11 @@ Helvetica-style lower case "x", but life is full of compromises.
 		} else {
 			if (t->first_column_by_definition) WRITE("<i>sets</i> ");
 			WRITE("%+W&nbsp;", CW);
-			TEMPORARY_TEXT(TEMP);
+			TEMPORARY_TEXT(TEMP)
 			WRITE_TO(TEMP, "%+W", CW);
 			if (t->first_column_by_definition == FALSE) WRITE_TO(TEMP, " entry");
 			PasteButtons::paste_text(OUT, TEMP);
-			DISCARD_TEXT(TEMP);
+			DISCARD_TEXT(TEMP)
 		}
 		HTML::next_html_column(OUT, 0);
 		if ((t->first_column_by_definition) && (col == 0)) {

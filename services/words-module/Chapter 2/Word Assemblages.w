@@ -79,10 +79,10 @@ wording WordAssemblages::to_wording(word_assemblage *wa) {
 	if (wa->no_indiv_words == 0) return EMPTY_WORDING;
 	feed_t id = Feeds::begin();
 	for (int i=0; i<wa->no_indiv_words; i++) {
-		TEMPORARY_TEXT(str);
+		TEMPORARY_TEXT(str)
 		WRITE_TO(str, " %V ", wa->indiv_words[i]);
 		Feeds::feed_text(str);
-		DISCARD_TEXT(str);
+		DISCARD_TEXT(str)
 	}
 	return Feeds::end(id);
 }
@@ -123,7 +123,7 @@ void WordAssemblages::writer(OUTPUT_STREAM, char *format_string, void *vW) {
 
 vocabulary_entry *WordAssemblages::hyphenated(word_assemblage *wa) {
 	if (wa->no_indiv_words > 9) return NULL;
-	TEMPORARY_TEXT(str);
+	TEMPORARY_TEXT(str)
 	WRITE_TO(str, " ");
 	int i;
 	for (i=0; i<wa->no_indiv_words; i++) {
@@ -132,7 +132,7 @@ vocabulary_entry *WordAssemblages::hyphenated(word_assemblage *wa) {
 	}
 	WRITE_TO(str, " ");
 	wording W = Feeds::feed_text(str);
-	DISCARD_TEXT(str);
+	DISCARD_TEXT(str)
 	return Lexer::word(Wordings::first_wn(W));
 }
 

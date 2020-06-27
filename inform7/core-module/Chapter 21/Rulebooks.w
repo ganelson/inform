@@ -893,10 +893,10 @@ void Rulebooks::RulebookNames_array(void) {
 	} else {
 		rulebook *rb;
 		LOOP_OVER(rb, rulebook) {
-			TEMPORARY_TEXT(rbt);
+			TEMPORARY_TEXT(rbt)
 			WRITE_TO(rbt, "%~W rulebook", rb->primary_name);
 			Emit::array_text_entry(rbt);
-			DISCARD_TEXT(rbt);
+			DISCARD_TEXT(rbt)
 		}
 	}
 	Emit::array_end(save);
@@ -1174,7 +1174,7 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 	if (rb) n = Rulebooks::no_rules(rb);
 	if (av) n = Activities::no_rules(av);
 
-	TEMPORARY_TEXT(textual_name);
+	TEMPORARY_TEXT(textual_name)
 	if (name) WRITE_TO(textual_name, "%s", name);
 	else if (Wordings::nonempty(W)) WRITE_TO(textual_name, "%+W", W);
 	else WRITE_TO(textual_name, "nameless");
@@ -1210,7 +1210,7 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 
 	HTML::open_indented_p(OUT, 1, "tight");
 	if (av) {
-		TEMPORARY_TEXT(skeleton);
+		TEMPORARY_TEXT(skeleton)
 		WRITE_TO(skeleton, "Before %S:", textual_name);
 		PasteButtons::paste_text(OUT, skeleton);
 		WRITE("&nbsp;<i>b</i> ");
@@ -1222,13 +1222,13 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 		WRITE_TO(skeleton, "After %S:", textual_name);
 		PasteButtons::paste_text(OUT, skeleton);
 		WRITE("&nbsp;<i>a</i>");
-		DISCARD_TEXT(skeleton);
+		DISCARD_TEXT(skeleton)
 	} else {
 		PasteButtons::paste_text(OUT, textual_name);
 		WRITE("&nbsp;<i>name</i>");
 	}
 	HTML_CLOSE("p");
-	DISCARD_TEXT(textual_name);
+	DISCARD_TEXT(textual_name)
 
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);

@@ -201,10 +201,10 @@ for the kinds we inherit from.
 				<possessive-second-person>,
 				<possessive-first-person>);
 			wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
-			TEMPORARY_TEXT(content);
+			TEMPORARY_TEXT(content)
 			WRITE_TO(content, "%w", p);
 			Emit::array_dword_entry(content);
-			DISCARD_TEXT(content);
+			DISCARD_TEXT(content)
 		}
 		if (from_kind) /* see test case PM_PluralsFromKind */
 			LOOP_THROUGH_WORDING(j, PW) {
@@ -213,10 +213,10 @@ for the kinds we inherit from.
 					if (compare_word(j, Lexer::word(k)))
 						additional = FALSE;
 				if (additional) {
-					TEMPORARY_TEXT(content);
+					TEMPORARY_TEXT(content)
 					WRITE_TO(content, "%w", Lexer::word_text(j));
 					Emit::array_plural_dword_entry(content);
-					DISCARD_TEXT(content);
+					DISCARD_TEXT(content)
 				}
 			}
 

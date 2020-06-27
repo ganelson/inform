@@ -80,13 +80,13 @@ inside the |inform7| executable, where we are silent throughout.
 int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM,
 	linked_list *search_list) {
 	int rv = TRUE;
-	TEMPORARY_TEXT(command);
+	TEMPORARY_TEXT(command)
 	@<Work out a shell command, and perhaps print or call it@>;
 	@<Perform the skill internally if that's called for@>;
 	#ifndef CORE_MODULE
 	if (rv == FALSE) WRITE_TO(STDERR, "Build failed at '%S'\n", command);
 	#endif
-	DISCARD_TEXT(command);
+	DISCARD_TEXT(command)
 	return rv;
 }
 

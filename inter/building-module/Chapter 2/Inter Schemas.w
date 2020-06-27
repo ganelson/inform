@@ -831,7 +831,7 @@ out for the two extra syntaxes allowed, |{-bracing}| and |(+ Inform 7 interpolat
 
 @<Look for a possible Inform 7 fragment@> =
 	int save_pos = pos, accept = FALSE;
-	TEMPORARY_TEXT(source_text_fragment);
+	TEMPORARY_TEXT(source_text_fragment)
 	pos += 2;
 	while (Str::get_at(from, pos)) {
 		if ((Str::get_at(from, pos-1) == '+') && (Str::get_at(from, pos) == ')')) {
@@ -844,7 +844,7 @@ out for the two extra syntaxes allowed, |{-bracing}| and |(+ Inform 7 interpolat
 		@<Absorb raw material, if any@>;
 		@<Expand a fragment of Inform 7 text@>;
 	} else { int c = '('; @<Absorb a raw character@>; pos = save_pos; }
-	DISCARD_TEXT(source_text_fragment);
+	DISCARD_TEXT(source_text_fragment)
 
 @ The empty I7 interpolation is legal, but produces no result.
 
@@ -861,7 +861,7 @@ a "bracing".
 
 @<Look for a possible bracing@> =
 	int save_pos = pos++, accept = FALSE;
-	TEMPORARY_TEXT(bracing);
+	TEMPORARY_TEXT(bracing)
 	while (TRUE) {
 		int c = Str::get_at(from, pos);
 		if (c == 0) break;
@@ -874,7 +874,7 @@ a "bracing".
 		@<Absorb raw material, if any@>;
 		@<Parse a bracing into an inline command@>;
 	} else { int c = '{'; @<Absorb a raw character@>; pos = save_pos; }
-	DISCARD_TEXT(bracing);
+	DISCARD_TEXT(bracing)
 
 @ That's everything, then, except the one thing that counts: how to expand
 a bracing.
@@ -969,7 +969,7 @@ the direction of the |<| or |>| in |extremal_property_sign|, and the second,
 optional, operand in |operand2|.
 
 @<Decompose the bracing@> =
-	TEMPORARY_TEXT(pname);
+	TEMPORARY_TEXT(pname)
 	if (Str::get_first_char(t->bracing) == '-') {
 		int portion = 1;
 		for (int i=1, L = Str::len(t->bracing); i<L; i++) {
@@ -1001,7 +1001,7 @@ optional, operand in |operand2|.
 		#endif
 		Str::copy(t->bracing, t->operand);
 	}
-	DISCARD_TEXT(pname);
+	DISCARD_TEXT(pname)
 
 @ In abbreviated prototypes, |*1| and |*2| are placeholders.
 
@@ -1035,7 +1035,7 @@ optional, operand in |operand2|.
 	}
 	if (Characters::isdigit(c)) {
 		@<Absorb raw material, if any@>;
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		for (int i=pos; i<=at; i++) PUT_TO(T, Str::get_at(from, i));
 		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, T, 0, 0, -1);
 		t->bracing = Str::duplicate(T);
@@ -1044,7 +1044,7 @@ optional, operand in |operand2|.
 		t->constant_number = c - '1';
 		InterSchemas::add_token(sch, t);
 		preceding_token = t;
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 		pos = at;
 	} else if (c == '?') {
 		inter_schema_token *t = InterSchemas::new_token(INLINE_ISTT, I"*?", 0, 0, -1);
@@ -1246,7 +1246,7 @@ inclusive; we ignore an empty token.
 
 @<Break off a token@> =
 	if (y >= x) {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		for (int i = x; i <= y; i++) PUT_TO(T, Str::get_at(current_raw, i));
 
 		int is = RAW_ISTT;
@@ -1260,7 +1260,7 @@ inclusive; we ignore an empty token.
 		#endif
 		InterSchemas::add_token(sch, n);
 		if (n->ist_type != WHITE_SPACE_ISTT) preceding_token = n;
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	}
 
 @ Finally, we identify what sort of token we're looking at.

@@ -193,13 +193,13 @@ text_stream *Inter::SymbolsTables::render_identifier_unique(inter_symbols_table 
 			name = Str::duplicate(name);
 			still_unduplicated = FALSE;
 		}
-		TEMPORARY_TEXT(TAIL);
+		TEMPORARY_TEXT(TAIL)
 		WRITE_TO(TAIL, "_%d", N++);
 		if (A > 0) Str::truncate(name, Str::len(name) - A);
 		A = Str::len(TAIL);
 		WRITE_TO(name, "%S", TAIL);
 		Str::truncate(name, 31);
-		DISCARD_TEXT(TAIL);
+		DISCARD_TEXT(TAIL)
 	}
 	return name;
 }
@@ -403,7 +403,7 @@ inter_symbol *Inter::SymbolsTables::url_name_to_symbol(inter_tree *I, inter_symb
 	inter_symbols_table *at = Inter::Tree::global_scope(I);
 	if (Str::get_first_char(S) == '/') {
 		inter_package *at_P = I->root_package;
-		TEMPORARY_TEXT(C);
+		TEMPORARY_TEXT(C)
 		LOOP_THROUGH_TEXT(P, S) {
 			wchar_t c = Str::get(P);
 			if (c == '/') {

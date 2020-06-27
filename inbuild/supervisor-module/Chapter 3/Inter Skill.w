@@ -70,13 +70,13 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 
 	filename *assim = Architectures::canonical_binary(kit_path, A);
 	filename *assim_t = Architectures::canonical_textual(kit_path, A);
-	TEMPORARY_TEXT(fullname);
+	TEMPORARY_TEXT(fullname)
 	WRITE_TO(fullname, "%f", assim);
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"), fullname);
 	Str::clear(fullname);
 	WRITE_TO(fullname, "%f", assim_t);
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*outt"), fullname);
-	DISCARD_TEXT(fullname);
+	DISCARD_TEXT(fullname)
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*kit"),
 		Pathnames::directory_name(kit_path));
 

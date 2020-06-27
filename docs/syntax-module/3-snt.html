@@ -916,10 +916,10 @@ it would be too late.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;language-modifying-sentence&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">wd</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">wd</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">wd</span><span class="plain-syntax">, </span><span class="string-syntax">"%+W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::one_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LoadPreform::parse_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">wd</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">wd</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">wd</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><a href="2-na.html#SP6" class="function-link"><span class="function-syntax">Annotations::write_int</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">new</span><span class="plain-syntax">, </span><span class="constant-syntax">sentence_unparsed_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-snt.html#SP6_9">&#167;6.9</a>.</li></ul>
@@ -935,7 +935,7 @@ to some routine of her own, gazumping this one.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PROBLEM_SYNTAX_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">err_no</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PROBLEM_SYNTAX_CALLBACK</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="string-syntax">"%+W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">err_no</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">UnexpectedSemicolon_SYNERROR:</span>
@@ -972,7 +972,7 @@ to some routine of her own, gazumping this one.
 <span class="plain-syntax">            </span><span class="identifier-syntax">Errors::with_text</span><span class="plain-syntax">(</span><span class="string-syntax">"heading stops before end of line: %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>

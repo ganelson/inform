@@ -306,11 +306,11 @@ void Plugins::Manage::index_innards(OUTPUT_STREAM, target_vm *VM) {
 	for (int i=0; i<NO_DEFINED_DA_VALUES; i++) {
 		debugging_aspect *da = &(the_debugging_aspects[i]);
 		if (Str::len(da->unhyphenated_name) > 0) {
-			TEMPORARY_TEXT(is);
+			TEMPORARY_TEXT(is)
 			WRITE_TO(is, "Include %S in the debugging log.", da->unhyphenated_name);
 			PasteButtons::paste_text(OUT, is);
 			WRITE("&nbsp;%S", is);
-			DISCARD_TEXT(is);
+			DISCARD_TEXT(is)
 			HTML_TAG("br");
 		}
 	}

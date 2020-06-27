@@ -666,10 +666,10 @@ recurring decimals. If it can't, then we must approximate.
 	int M = sc.int_M;
 	int cl10M = 1; while (M > cl10M) cl10M = cl10M*10;
 
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "M = %d, ceiling(log_10(M)) = %d", M, cl10M);
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 
 	if (cl10M % M == 0)
 		@<Use an exact method, since the multiplier divides a power of 10@>

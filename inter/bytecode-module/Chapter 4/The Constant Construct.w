@@ -162,14 +162,14 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	if ((idt) && (idt->type_ID == TEXT_IDT)) {
 		if ((Str::begins_with_wide_string(S, L"\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-			TEMPORARY_TEXT(parsed_text);
+			TEMPORARY_TEXT(parsed_text)
 			*E = Inter::Constant::parse_text(parsed_text, S, 1, Str::len(S)-2, eloc);
 			inter_t ID = 0;
 			if (*E == NULL) {
 				ID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 				Str::copy(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), ID), parsed_text);
 			}
-			DISCARD_TEXT(parsed_text);
+			DISCARD_TEXT(parsed_text)
 			if (*E) return;
 			*E = Inter::Constant::new_textual(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), ID, (inter_t) ilp->indent_level, eloc);
 			return;

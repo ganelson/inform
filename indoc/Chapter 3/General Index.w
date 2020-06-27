@@ -23,12 +23,12 @@ void Indexes::add_indexing_notation_for_symbols(text_stream *L, text_stream *sty
 }
 
 void Indexes::add_indexing_notation_for_definitions(text_stream *style, text_stream *options, text_stream *subdef) {
-	TEMPORARY_TEXT(key);
+	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "!%S", subdef);
 	if (Str::len(subdef) > 0) WRITE_TO(key, "-");
 	WRITE_TO(key, "definition");
 	Indexes::add_category(style, options, key);
-	DISCARD_TEXT(key);
+	DISCARD_TEXT(key)
 }
 
 void Indexes::add_indexing_notation_for_examples(text_stream *style, text_stream *options) {
@@ -145,18 +145,18 @@ void Indexes::scan_indexingnotations(text_stream *text, volume *V, section *S, e
 		text_stream *carets = outer_mr.exp[1];
 		text_stream *term_to_index = outer_mr.exp[2];
 		text_stream *right = outer_mr.exp[3];
-		TEMPORARY_TEXT(see);
-		TEMPORARY_TEXT(alphabetise_as);
+		TEMPORARY_TEXT(see)
+		TEMPORARY_TEXT(alphabetise_as)
 		if (Regexp::match(&mr, term_to_index, L"(%c+?) *<-- *(%c+) *")) {
 			Str::copy(term_to_index, mr.exp[0]); Str::copy(see, mr.exp[1]);
 		}
 		if (Regexp::match(&mr, term_to_index, L"(%c+?) *--> *(%c+) *")) {
 			Str::copy(term_to_index, mr.exp[0]); Str::copy(alphabetise_as, mr.exp[1]);
 		}
-		TEMPORARY_TEXT(lemma);
+		TEMPORARY_TEXT(lemma)
 		Indexes::extract_from_indexable_matter(lemma, term_to_index);
 
-		TEMPORARY_TEXT(midriff);
+		TEMPORARY_TEXT(midriff)
 		Str::copy(midriff, lemma);
 
 		Regexp::replace(midriff, L"%c*: ", NULL, REP_ATSTART);
@@ -171,25 +171,25 @@ void Indexes::scan_indexingnotations(text_stream *text, volume *V, section *S, e
 			Indexes::note_index_term_alphabetisation(lemma, alphabetise_as);
 		}
 
-		TEMPORARY_TEXT(smoke_test_text);
+		TEMPORARY_TEXT(smoke_test_text)
 		Indexes::process_category_options(smoke_test_text, lemma, TRUE, 1);
 
 		while (Regexp::match(&mr, see, L" *(%c+) *<-- *(%c+?) *")) {
 			Str::copy(see, mr.exp[0]);
-			TEMPORARY_TEXT(seethis);
+			TEMPORARY_TEXT(seethis)
 			Indexes::extract_from_indexable_matter(seethis, mr.exp[1]);
 			Indexes::mark_index_term(seethis, NULL, NULL, NULL, NULL, lemma, NULL);
 			WRITE_TO(smoke_test_text, " <-- ");
 			Indexes::process_category_options(smoke_test_text, seethis, TRUE, 2);
-			DISCARD_TEXT(seethis);
+			DISCARD_TEXT(seethis)
 		}
 		if (Str::len(see) > 0) {
-			TEMPORARY_TEXT(seethis);
+			TEMPORARY_TEXT(seethis)
 			Indexes::extract_from_indexable_matter(seethis, see);
 			Indexes::mark_index_term(seethis, NULL, NULL, NULL, NULL, lemma, NULL);
 			WRITE_TO(smoke_test_text, " <-- ");
 			Indexes::process_category_options(smoke_test_text, seethis, TRUE, 3);
-			DISCARD_TEXT(seethis);
+			DISCARD_TEXT(seethis)
 		}
 		if (Str::eq_wide_string(carets, L"^") == FALSE) Str::clear(midriff);
 		if (indoc_settings->test_index_mode) {
@@ -221,7 +221,7 @@ void Indexes::extract_from_indexable_matter(OUTPUT_STREAM, text_stream *text) {
 		Regexp::dispose_of(&mr);
 		return;
 	}
-	TEMPORARY_TEXT(trimmed);
+	TEMPORARY_TEXT(trimmed)
 	Str::copy(trimmed, text);
 	Str::trim_white_space(trimmed);
 	int claimed = FALSE;
@@ -235,7 +235,7 @@ void Indexes::extract_from_indexable_matter(OUTPUT_STREAM, text_stream *text) {
 					WRITE("=___=%S", SN->sp_style);
 					claimed = TRUE; break;
 				}
-	DISCARD_TEXT(trimmed);
+	DISCARD_TEXT(trimmed)
 	Regexp::dispose_of(&mr);
 	if (claimed == FALSE) {
 		WRITE("%S=___=standard", text); /* last resort */
@@ -248,13 +248,13 @@ void Indexes::index_notify_of_symbol(text_stream *symbol, volume *V, section *S)
 	LOOP_OVER(SN, span_notation)
 		if (SN->sp_purpose == INDEX_SYMBOLS_SPP) {
 			if (Str::begins_with_wide_string(symbol, SN->sp_left)) {
-				TEMPORARY_TEXT(term);
+				TEMPORARY_TEXT(term)
 				Str::copy(term, S->unlabelled_title);
 				LOOP_THROUGH_TEXT(pos, term)
 					Str::put(pos, Characters::tolower(Str::get(pos)));
 				WRITE_TO(term, "=___=%S", SN->sp_style);
 				Indexes::mark_index_term(term, V, S, NULL, NULL, NULL, NULL);
-				DISCARD_TEXT(term);
+				DISCARD_TEXT(term)
 			}
 		}
 }
@@ -262,7 +262,7 @@ void Indexes::index_notify_of_symbol(text_stream *symbol, volume *V, section *S)
 @ =
 void Indexes::mark_index_term(text_stream *given_term, volume *V, section *S,
 	text_stream *anchor, example *E, text_stream *see, text_stream *alphabetise_as) {
-	TEMPORARY_TEXT(term);
+	TEMPORARY_TEXT(term)
 	Indexes::process_category_options(term, given_term, TRUE, 4);
 	if ((Regexp::match(NULL, term, L"IGNORE=___=ME%c*")) ||
 		(Regexp::match(NULL, term, L"%c*:IGNORE=___=ME%c*"))) return;
@@ -276,17 +276,17 @@ void Indexes::mark_index_term(text_stream *given_term, volume *V, section *S,
 			Dictionaries::read_value(categories_by_name, category);
 		Regexp::dispose_of(&mr);
 		if (ic->cat_alsounder == TRUE) {
-			TEMPORARY_TEXT(processed_term);
+			TEMPORARY_TEXT(processed_term)
 			Indexes::process_category_options(processed_term, given_term, FALSE, 5);
 			if ((Regexp::match(NULL, processed_term, L"IGNORE=___=ME%c*")) ||
 				(Regexp::match(NULL, processed_term, L"%c*:IGNORE=___=ME%c*"))) return;
 			Indexes::ensure_lemmas_exist(processed_term);
 			Indexes::set_index_point(processed_term, V, S, anchor, E, see);
-			DISCARD_TEXT(processed_term);
+			DISCARD_TEXT(processed_term)
 		}
 	}
 	Indexes::set_index_point(term, V, S, anchor, E, see);
-	DISCARD_TEXT(term);
+	DISCARD_TEXT(term)
 }
 
 @ =
@@ -307,10 +307,10 @@ void Indexes::ensure_lemmas_exist(text_stream *text) {
 		Regexp::dispose_of(&mr);
 	}
 	if (Dictionaries::find(index_points_dict, text) == NULL) {
-		TEMPORARY_TEXT(copied);
+		TEMPORARY_TEXT(copied)
 		Str::copy(copied, text);
 		Indexes::set_index_point(copied, NULL, NULL, NULL, NULL, NULL);
-		DISCARD_TEXT(copied);
+		DISCARD_TEXT(copied)
 	}
 }
 
@@ -348,10 +348,10 @@ void Indexes::set_index_point(text_stream *term, volume *V, section *S,
 
 @ =
 void Indexes::note_index_term_alphabetisation(text_stream *term, text_stream *alphabetise_as) {
-	TEMPORARY_TEXT(processed_term);
+	TEMPORARY_TEXT(processed_term)
 	Indexes::process_category_options(processed_term, term, TRUE, 6);
 	IndexUtilities::alphabetisation_exception(processed_term, alphabetise_as);
-	DISCARD_TEXT(processed_term);
+	DISCARD_TEXT(processed_term)
 }
 
 void Indexes::process_category_options(OUTPUT_STREAM, text_stream *text, int allow_under, int n) {
@@ -420,10 +420,10 @@ else suppressed as unwanted (because the user didn't set up a redirection).
 in the category "royalty", so that "James I" becomes "James I (monarch)".
 
 @<Prefix and suffix as necessary@> =
-	TEMPORARY_TEXT(rewritten);
+	TEMPORARY_TEXT(rewritten)
 	WRITE_TO(rewritten, "%S%S%S", ic->cat_prefix, lemma, ic->cat_suffix);
 	Str::copy(lemma, rewritten);
-	DISCARD_TEXT(rewritten);
+	DISCARD_TEXT(rewritten)
 
 @ And this could automatically reroute the lemma so that it appears as
 a subentry under the category's choice of headword: e.g., "James I"
@@ -431,9 +431,9 @@ might be placed as as a subentry of "Kings".
 
 @<Automatically file under a headword as necessary@> =
 	if ((allow_under) && (Str::len(ic->cat_under) > 0)) {
-		TEMPORARY_TEXT(extracted);
-		TEMPORARY_TEXT(icu);
-		TEMPORARY_TEXT(old_lemma);
+		TEMPORARY_TEXT(extracted)
+		TEMPORARY_TEXT(icu)
+		TEMPORARY_TEXT(old_lemma)
 		Str::copy(old_lemma, lemma);
 
 		Indexes::extract_from_indexable_matter(extracted, ic->cat_under);
@@ -441,9 +441,9 @@ might be placed as as a subentry of "Kings".
 		Str::clear(lemma);
 		WRITE_TO(lemma, "%S:%S", icu, old_lemma);
 
-		DISCARD_TEXT(extracted);
-		DISCARD_TEXT(old_lemma);
-		DISCARD_TEXT(icu);
+		DISCARD_TEXT(extracted)
+		DISCARD_TEXT(old_lemma)
+		DISCARD_TEXT(icu)
 	}
 
 @h Rendering.
@@ -476,7 +476,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 @<Construct sorting keys for the lemmas@> =
 	index_lemma *il;
 	LOOP_OVER(il, index_lemma) {
-		TEMPORARY_TEXT(sort_key);
+		TEMPORARY_TEXT(sort_key)
 		Str::copy(sort_key, il->term);
 
 		/* ensure subentries follow main entries */
@@ -490,7 +490,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		if (indoc_settings->index_alphabetisation_algorithm == WORD_ALPHABETIZATION)
 			Regexp::replace(sort_key, L" ", L"aaaaaaaaaaaaaaaaaaaaaa", REP_REPEATING);
 
-		TEMPORARY_TEXT(un);
+		TEMPORARY_TEXT(un)
 		Str::copy(un, sort_key);
 		Regexp::replace(un, L"%(%c*?%)", NULL, REP_REPEATING);
 		Regexp::replace(un, L" ", NULL, REP_REPEATING);
@@ -500,8 +500,8 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 			f = Str::get_first_char(sort_key);
 		WRITE_TO(il->sorting_key, "%c_%S=___=%S=___=%07d",
 			f, un, sort_key, il->allocation_id);
-		DISCARD_TEXT(un);
-		DISCARD_TEXT(sort_key);
+		DISCARD_TEXT(un)
+		DISCARD_TEXT(sort_key)
 		Regexp::dispose_of(&mr);
 	}
 
@@ -529,12 +529,12 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 @<Start a block of the index@> =
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "class=\"letterblock\"");
-	TEMPORARY_TEXT(inc);
+	TEMPORARY_TEXT(inc)
 	if (current_incipit == '#') WRITE_TO(inc, "NN");
 	else PUT_TO(inc, current_incipit);
 	HTML::anchor(OUT, inc);
 	IndexUtilities::majuscule_heading(OUT, inc, TRUE);
-	DISCARD_TEXT(inc);
+	DISCARD_TEXT(inc)
 	HTML_CLOSE("td");
 	HTML_OPEN("td");
 
@@ -543,14 +543,14 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	HTML_CLOSE("tr");
 
 @<Render an index entry@> =
-	TEMPORARY_TEXT(anc);
+	TEMPORARY_TEXT(anc)
 	int A = il->allocation_id;
 	WRITE_TO(anc, "l%d", A);
 	HTML::anchor(OUT, anc);
-	DISCARD_TEXT(anc);
+	DISCARD_TEXT(anc)
 
-	TEMPORARY_TEXT(term);
-	TEMPORARY_TEXT(category);
+	TEMPORARY_TEXT(term)
+	TEMPORARY_TEXT(category)
 	match_results mr = Regexp::create_mr();
 	Str::copy(term, il->term);
 	if (Regexp::match(&mr, term, L"(%c*)=___=(%c*)")) {
@@ -565,13 +565,13 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		ic->cat_usage++;
 
 		int indent_level = 0;
-		TEMPORARY_TEXT(lemma_wording);
+		TEMPORARY_TEXT(lemma_wording)
 		@<Work out the wording and indentation level@>;
 
-		TEMPORARY_TEXT(details);
+		TEMPORARY_TEXT(details)
 		WRITE_TO(details, "class=\"indexentry\" style=\"margin-left: %dem;\"", 4*indent_level);
 		HTML::open(OUT, "p", details);
-		DISCARD_TEXT(details);
+		DISCARD_TEXT(details)
 		@<Render the lemma text@>;
 		@<Render the category gloss@>;
 		WRITE("&nbsp;&nbsp;");
@@ -588,7 +588,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 @d SAVED_CLOSE_BRACKET 0x0087 /* Unicode "end of selected area" */
 
 @<Work out the wording and indentation level@> =
-	TEMPORARY_TEXT(untreated);
+	TEMPORARY_TEXT(untreated)
 	Str::copy(untreated, term);
 	while (Regexp::match(&mr, untreated, L"%c*?: *(%c+)")) {
 		Str::copy(untreated, mr.exp[0]); indent_level++;
@@ -640,18 +640,18 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		WRITE("&nbsp;<span class=\"indexgloss\">%S</span>", ic->cat_glossed);
 
 @<Render the list of index points@> =
-	TEMPORARY_TEXT(elist);
+	TEMPORARY_TEXT(elist)
 	Str::copy(elist, il->index_points);
 	while (Regexp::match(&mr, elist, L"(%c*?)_(%c*?)_(%c*?),(%c*)")) {
 		if (lc++ > 0) WRITE(", ");
 
 		int volume_number = Str::atoi(mr.exp[0], 0);
 		int section_number = Str::atoi(mr.exp[1], 0);
-		TEMPORARY_TEXT(anchor);
+		TEMPORARY_TEXT(anchor)
 		Str::copy(anchor, mr.exp[2]);
 		Str::copy(elist, mr.exp[3]);
 
-		TEMPORARY_TEXT(etext);
+		TEMPORARY_TEXT(etext)
 		if (section_number >= 100000) {
 			int eno = section_number-100000;
 			example *E = examples[eno];
@@ -667,23 +667,23 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 				volume_number, section_number, volumes[volume_number]->vol_section_count);
 			internal_error("unknown section");
 		}
-		TEMPORARY_TEXT(url);
+		TEMPORARY_TEXT(url)
 		WRITE_TO(url, "%S", Filenames::get_leafname(S->section_filename));
 		if (Str::len(anchor) > 0) WRITE_TO(url, "#%S", anchor);
 		text_stream *link_class = I"indexlink";
 		if (volume_number > 0) link_class = I"indexlinkalt";
-		TEMPORARY_TEXT(link);
+		TEMPORARY_TEXT(link)
 		WRITE_TO(link, "%S%S", S->label, etext);
 		HTMLUtilities::general_link(OUT, link_class, url, link);
-		DISCARD_TEXT(link);
-		DISCARD_TEXT(url);
-		DISCARD_TEXT(anchor);
-		DISCARD_TEXT(etext);
+		DISCARD_TEXT(link)
+		DISCARD_TEXT(url)
+		DISCARD_TEXT(anchor)
+		DISCARD_TEXT(etext)
 	}
-	DISCARD_TEXT(elist);
+	DISCARD_TEXT(elist)
 
 @<Render the list of see-references@> =
-	TEMPORARY_TEXT(seelist);
+	TEMPORARY_TEXT(seelist)
 	Str::copy(seelist, il->index_see);
 	int sc = 0;
 	if (Str::len(seelist) > 0) {
@@ -699,13 +699,13 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 			text_stream *see = mr2.exp[0];
 			Str::copy(seelist, mr2.exp[1]);
 			index_lemma *ils = (index_lemma *) Dictionaries::read_value(index_points_dict, see);
-			TEMPORARY_TEXT(url);
+			TEMPORARY_TEXT(url)
 			WRITE_TO(url, "#l%d", ils->allocation_id);
 			Regexp::replace(see, L"=___=%i+?:", L":", REP_REPEATING);
 			Regexp::replace(see, L"=___=%i+", NULL, REP_REPEATING);
 			Regexp::replace(see, L":", L": ", REP_REPEATING);
 			HTMLUtilities::general_link(OUT, I"indexseelink", url, see);
-			DISCARD_TEXT(url);
+			DISCARD_TEXT(url)
 		}
 		Regexp::dispose_of(&mr2);
 	}

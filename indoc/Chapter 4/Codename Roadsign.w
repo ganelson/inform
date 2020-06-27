@@ -28,12 +28,12 @@ void Roadsign::roadsign_volume_title(navigation_design *self, text_stream *OUT, 
 }
 
 @<Render a volume heading@> =
-	TEMPORARY_TEXT(partn);
+	TEMPORARY_TEXT(partn)
 	if (no_volumes > 1) Roadsign::roman_numeral(partn, V->allocation_id);
 	HTML_OPEN_WITH("p", "class=\"volumeheading\"");
 	WRITE("%S%S", partn, V->vol_title);
 	HTML_CLOSE("p");
-	DISCARD_TEXT(partn);
+	DISCARD_TEXT(partn)
 
 @ Some cumbersome Perl to produce a balanced two-column chapter listing:
 
@@ -69,26 +69,26 @@ void Roadsign::roadsign_volume_title(navigation_design *self, text_stream *OUT, 
 
 @<Render the volume-top roadsign@> =
 	Roadsign::roadsign_begin(OUT, 1);
-	TEMPORARY_TEXT(txt);
+	TEMPORARY_TEXT(txt)
 	WRITE_TO(txt, "Start reading here: %c%S", SECTION_SYMBOL, V->sections[0]->title);
 	Roadsign::roadsign_add_direction(OUT, I"arrow-right.png", txt, V->chapters[0]->chapter_URL);
 	if (no_volumes > 1) {
 		for (int v = 0; v < no_volumes; v++) {
-			TEMPORARY_TEXT(icon);
+			TEMPORARY_TEXT(icon)
 			if (v < V->allocation_id) WRITE_TO(icon, "arrow-up");
 			if (v > V->allocation_id) WRITE_TO(icon, "arrow-down");
 			if (Str::len(icon) > 0) {
 				volume *LV = volumes[v];
-				TEMPORARY_TEXT(txt);
+				TEMPORARY_TEXT(txt)
 				Roadsign::roman_numeral(txt, v);
 				WRITE_TO(txt, "%S", LV->vol_title);
-				TEMPORARY_TEXT(img);
+				TEMPORARY_TEXT(img)
 				WRITE_TO(img, "%S.png", icon);
 				Roadsign::roadsign_add_direction(OUT, img, txt, LV->vol_URL);
-				DISCARD_TEXT(txt);
-				DISCARD_TEXT(img);
+				DISCARD_TEXT(txt)
+				DISCARD_TEXT(img)
 			}
-			DISCARD_TEXT(icon);
+			DISCARD_TEXT(icon)
 		}
 	}
 	if ((no_examples > 0) && (NUMBER_CREATED(index_lemma) > 0)) {
@@ -165,12 +165,12 @@ void Roadsign::roadsign_navigation_index_top(navigation_design *self, text_strea
 
 	for (int v = 0; v < no_volumes; v++) {
 		volume *V = volumes[v];
-		TEMPORARY_TEXT(text);
+		TEMPORARY_TEXT(text)
 		Roadsign::roman_numeral(text, v);
 		WRITE_TO(text, "%S", V->vol_title);
 		if (no_volumes == 1) Str::copy(text, I"Contents");
 		Roadsign::roadsign_add_direction(OUT, I"arrow-up-left.png", text, V->vol_URL);
-		DISCARD_TEXT(text);
+		DISCARD_TEXT(text)
 	}
 	Roadsign::roadsign_end(OUT, 1);
 
@@ -195,53 +195,53 @@ void Roadsign::roadsign_navigation_middle(navigation_design *self, text_stream *
 }
 
 @<Add home, back and forward directions to the roadsign@> =
-	TEMPORARY_TEXT(txt);
+	TEMPORARY_TEXT(txt)
 	WRITE_TO(txt, "Start of %S", C->chapter_full_title);
 	Roadsign::roadsign_add_direction(OUT, I"arrow-up.png", txt, C->chapter_URL);
-	DISCARD_TEXT(txt);
+	DISCARD_TEXT(txt)
 
 	if (S->previous_section) {
 		chapter *to_chap = S->previous_section->in_which_chapter;
-		TEMPORARY_TEXT(link);
+		TEMPORARY_TEXT(link)
 		WRITE_TO(link, "Back to ");
 		if (to_chap != C)
 			WRITE_TO(link, "Chapter %d: %S: ", to_chap->chapter_number, to_chap->chapter_title);
 		WRITE_TO(link, "%c%S", SECTION_SYMBOL, S->previous_section->title);
 		Roadsign::roadsign_add_direction(OUT, I"arrow-left.png",
 			link, S->previous_section->section_URL);
-		DISCARD_TEXT(link);
+		DISCARD_TEXT(link)
 	}
 	if (S->next_section) {
 		chapter *to_chap = S->next_section->in_which_chapter;
-		TEMPORARY_TEXT(link);
+		TEMPORARY_TEXT(link)
 		WRITE_TO(link, "Onward to ");
 		if (to_chap != C)
 			WRITE_TO(link, "Chapter %d: %S: ", to_chap->chapter_number, to_chap->chapter_title);
 		WRITE_TO(link, "%c%S", SECTION_SYMBOL, S->next_section->title);
 		Roadsign::roadsign_add_direction(OUT, I"arrow-right.png",
 			link, S->next_section->section_URL);
-		DISCARD_TEXT(link);
+		DISCARD_TEXT(link)
 	}
 
 @<Add directions to this section's examples to the roadsign@> =
 	example *E;
 	LOOP_OVER(E, example) {
 		if (E->example_belongs_to_section[V->allocation_id] == S) {
-			TEMPORARY_TEXT(stars);
+			TEMPORARY_TEXT(stars)
 			for (int starcc=0; starcc < E->ex_star_count; starcc++)
 				HTMLUtilities::asterisk_image(stars, I"asterisk.png");
-			TEMPORARY_TEXT(pn);
+			TEMPORARY_TEXT(pn)
 			Str::copy(pn, E->ex_public_name);
 			Rawtext::escape_HTML_characters_in(pn);
-			TEMPORARY_TEXT(text);
+			TEMPORARY_TEXT(text)
 			WRITE_TO(text, "Example %d: %S <b>%S</b>&#160;&#160;&#160; %S",
 				E->example_position[0], stars, pn, E->ex_outline);
-			TEMPORARY_TEXT(url);
+			TEMPORARY_TEXT(url)
 			Examples::goto_example_url(url, E, V);
 			Roadsign::roadsign_add_direction(OUT, I"arrow-down.png", text, url);
-			DISCARD_TEXT(text);
-			DISCARD_TEXT(stars);
-			DISCARD_TEXT(url);
+			DISCARD_TEXT(text)
+			DISCARD_TEXT(stars)
+			DISCARD_TEXT(url)
 		}
 	}
 
@@ -262,10 +262,10 @@ void Roadsign::roadsign_chapter_jumps(OUTPUT_STREAM, volume *V, chapter *C, int 
 	Roadsign::roadsign_begin(OUT, 1);
 	int chc = V->vol_chapter_count;
 	if ((chc > 1) && (bottom == FALSE)) {
-		TEMPORARY_TEXT(text);
+		TEMPORARY_TEXT(text)
 		WRITE_TO(text, "Contents of <i>%S</i>", V->vol_title);
 		Roadsign::roadsign_add_direction(OUT, I"arrow-up-left.png", text, V->vol_URL);
-		DISCARD_TEXT(text);
+		DISCARD_TEXT(text)
 		if (C->previous_chapter)
 			Roadsign::roadsign_add_direction(OUT, I"arrow-left.png",
 				C->previous_chapter->chapter_full_title, C->previous_chapter->chapter_URL);

@@ -62,7 +62,7 @@ void Inter::Errors::issue(inter_error_message *iem) {
 }
 
 void Inter::Errors::issue_to(OUTPUT_STREAM, inter_error_message *iem) {
-	TEMPORARY_TEXT(E);
+	TEMPORARY_TEXT(E)
 	WRITE_TO(E, "%S", iem->error_body);
 	if (iem->error_quote)
 		WRITE_TO(E, ": '%S'", iem->error_quote);
@@ -76,7 +76,7 @@ void Inter::Errors::issue_to(OUTPUT_STREAM, inter_error_message *iem) {
 		Errors::in_text_file_S(E, NULL);
 	if (eloc.error_line)
 		WRITE(">--> %S\n", eloc.error_line);
-	DISCARD_TEXT(E);
+	DISCARD_TEXT(E)
 }
 
 inter_error_message *Inter::Errors::gather_first(inter_error_message *E, inter_error_message *F) {

@@ -90,24 +90,24 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	}
 
 @<Symbol definition@> =
-	TEMPORARY_TEXT(ident);
+	TEMPORARY_TEXT(ident)
 	@<Extract second token into ident@>;
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "I6 defines %S here\n", ident);
 	Dictionaries::create(state->I6_level_symbols, ident);
-	DISCARD_TEXT(ident);
+	DISCARD_TEXT(ident)
 
 @<Deal with an IFDEF@> =
-	TEMPORARY_TEXT(ident);
+	TEMPORARY_TEXT(ident)
 	@<Extract rest of text into ident@>;
 	int result = FALSE;
 	text_stream *symbol_name = ident;
 	@<Decide whether symbol defined@>;
 	@<Stack up the result@>;
 	allow = FALSE;
-	DISCARD_TEXT(ident);
+	DISCARD_TEXT(ident)
 
 @<Deal with an IFNDEF@> =
-	TEMPORARY_TEXT(ident);
+	TEMPORARY_TEXT(ident)
 	@<Extract rest of text into ident@>;
 	int result = FALSE;
 	text_stream *symbol_name = ident;
@@ -115,7 +115,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	result = (result)?FALSE:TRUE;
 	@<Stack up the result@>;
 	allow = FALSE;
-	DISCARD_TEXT(ident);
+	DISCARD_TEXT(ident)
 
 @<Decide whether symbol defined@> =
 	inter_symbol *symbol = Inter::SymbolsTables::symbol_from_name_in_main_or_basics(I, symbol_name);
@@ -127,7 +127,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	if (Log::aspect_switched_on(RESOLVING_CONDITIONAL_COMPILATION_DA)) LOG_INDENT;
 
 @<Deal with an IFTRUE@> =
-	TEMPORARY_TEXT(ident);
+	TEMPORARY_TEXT(ident)
 	@<Extract rest of text into ident@>;
 	int result = NOT_APPLICABLE;
 	text_stream *cond = ident;
@@ -156,7 +156,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	if (Log::aspect_switched_on(RESOLVING_CONDITIONAL_COMPILATION_DA)) LOG_INDENT;
 	@<Stack up the result@>;
 	allow = FALSE;
-	DISCARD_TEXT(ident);
+	DISCARD_TEXT(ident)
 
 @<Stack up the result@> =
 	if (state->cc_sp >= MAX_CC_STACK_SIZE) {

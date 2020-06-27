@@ -51,19 +51,19 @@ compilation_module *Modules::new(parse_node *from) {
 	Node::set_module(from, C);
 	Modules::propagate_downwards(from->down, C);
 
-	TEMPORARY_TEXT(pname);
+	TEMPORARY_TEXT(pname)
 	@<Compose a name for the module package this will lead to@>;
 	C->inter_presence = Packaging::get_module(Emit::tree(), pname);
-	DISCARD_TEXT(pname);
+	DISCARD_TEXT(pname)
 
 	if (owner) {
 		Hierarchy::markup(C->inter_presence->the_package, EXT_AUTHOR_HMD, owner->as_copy->edition->work->raw_author_name);
 		Hierarchy::markup(C->inter_presence->the_package, EXT_TITLE_HMD, owner->as_copy->edition->work->raw_title);
-		TEMPORARY_TEXT(V);
+		TEMPORARY_TEXT(V)
 		semantic_version_number N = owner->as_copy->edition->version;
 		WRITE_TO(V, "%v", &N);
 		Hierarchy::markup(C->inter_presence->the_package, EXT_VERSION_HMD, V);
-		DISCARD_TEXT(V);
+		DISCARD_TEXT(V)
 	}
 
 	if (Extensions::is_standard(owner)) SR_module = C;

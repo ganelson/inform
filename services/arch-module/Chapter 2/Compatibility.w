@@ -102,11 +102,11 @@ compatibility_specification *Compatibility::from_text(text_stream *text) {
 	int error_in_syntax = FALSE;
 
 	match_results mr = Regexp::create_mr();
-	TEMPORARY_TEXT(parse);
+	TEMPORARY_TEXT(parse)
 	WRITE_TO(parse, "%S", text);
 	@<Remove excess space and/or enclosing brackets and lower in case@>;
 	@<Actually parse the description@>;
-	DISCARD_TEXT(parse);
+	DISCARD_TEXT(parse)
 	Regexp::dispose_of(&mr);
 
 	return (error_in_syntax)?NULL:C;

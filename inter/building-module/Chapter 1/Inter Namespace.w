@@ -128,10 +128,10 @@ inter_name *InterNames::new(inter_name_generator *F, package_request *R, wording
 
 @<Ensure that the name, as now extended by the memo, is a legal Inter identifier@> =
 	Identifiers::purify(iname->memo);
-	TEMPORARY_TEXT(NBUFF);
+	TEMPORARY_TEXT(NBUFF)
 	WRITE_TO(NBUFF, "%n", iname);
 	int L = Str::len(NBUFF);
-	DISCARD_TEXT(NBUFF);
+	DISCARD_TEXT(NBUFF)
 	if (L > 28) Str::truncate(iname->memo, Str::len(iname->memo) - (L - 28));
 
 @ That creation function should be called only by these, which in turn must
@@ -215,11 +215,11 @@ automatically here:
 =
 inter_symbol *InterNames::to_symbol(inter_name *iname) {
 	if (iname->symbol == NULL) {
-		TEMPORARY_TEXT(NBUFF);
+		TEMPORARY_TEXT(NBUFF)
 		WRITE_TO(NBUFF, "%n", iname);
 		inter_symbols_table *T = InterNames::scope(iname);
 		iname->symbol = Produce::new_symbol(T, NBUFF);
-		DISCARD_TEXT(NBUFF);
+		DISCARD_TEXT(NBUFF)
 	}
 	return iname->symbol;
 }

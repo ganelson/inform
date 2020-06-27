@@ -44,14 +44,14 @@ contributes only the un-filename-extended leafname |Marbles-v2_1|.
 void Editions::write_canonical_leaf(OUTPUT_STREAM, inbuild_edition *E) {
 	WRITE("%S", E->work->title);
 	if (VersionNumbers::is_null(E->version) == FALSE) {
-		TEMPORARY_TEXT(vn);
+		TEMPORARY_TEXT(vn)
 		WRITE_TO(vn, "-v%v", &(E->version));
 		LOOP_THROUGH_TEXT(pos, vn)
 			if (Str::get(pos) == '.')
 				PUT('_');
 			else
 				PUT(Str::get(pos));
-		DISCARD_TEXT(vn);
+		DISCARD_TEXT(vn)
 	}
 }
 

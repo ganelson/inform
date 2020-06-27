@@ -465,7 +465,7 @@ void PL::Naming::compile_small_names(void) {
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), I"'s ");
 		Produce::up(Emit::tree());
-		TEMPORARY_TEXT(SNAMES);
+		TEMPORARY_TEXT(SNAMES)
 		LOOP_THROUGH_WORDING(j, NA) {
 			CompiledText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
 			if (j<Wordings::last_wn(NA)) WRITE_TO(SNAMES, " ");
@@ -474,7 +474,7 @@ void PL::Naming::compile_small_names(void) {
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), SNAMES);
 		Produce::up(Emit::tree());
-		DISCARD_TEXT(SNAMES);
+		DISCARD_TEXT(SNAMES)
 
 		Produce::rtrue(Emit::tree());
 		Routines::end(save);

@@ -99,7 +99,7 @@ void Nav::render_navigation_top(OUTPUT_STREAM, volume *V, section *S) {
 
 @<Write HTML comments giving the Inform user interface search assistance@> =
 	WRITE("\n");
-	TEMPORARY_TEXT(comment);
+	TEMPORARY_TEXT(comment)
 	WRITE_TO(comment, "SEARCH TITLE \"%S\"", S->unlabelled_title);
 	HTML::comment(OUT, comment);
 	Str::clear(comment);
@@ -108,7 +108,7 @@ void Nav::render_navigation_top(OUTPUT_STREAM, volume *V, section *S) {
 	Str::clear(comment);
 	WRITE_TO(comment, "SEARCH SORT \"%S\"", S->sort_code);
 	HTML::comment(OUT, comment);
-	DISCARD_TEXT(comment);
+	DISCARD_TEXT(comment)
 
 @h Index top.
 And this is a variant for index pages, such as the index of examples.

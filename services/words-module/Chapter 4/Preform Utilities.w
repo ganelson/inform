@@ -192,10 +192,10 @@ override the normal convention.
 
 @<Add this pattern and instruction to the trie, creating it if necessary@> =
 	if (ave == NULL) ave = Tries::new_avinue(end);
-	TEMPORARY_TEXT(from);
+	TEMPORARY_TEXT(from)
 	WRITE_TO(from, "%V", first->ve_pt);
 	Tries::add_to_avinue(ave, from, Vocabulary::get_exemplar(second->ve_pt, FALSE));
-	DISCARD_TEXT(from);
+	DISCARD_TEXT(from)
 
 @ The following may be useful for debugging:
 
@@ -236,7 +236,7 @@ void PreformUtilities::error(word_assemblage base_text, nonterminal *nt,
 		LOG("The production at fault is:\n");
 		Instrumentation::log_production(pr, FALSE); LOG("\n");
 	}
-	TEMPORARY_TEXT(ERM);
+	TEMPORARY_TEXT(ERM)
 	if (nt == NULL)
 		WRITE_TO(ERM, "(no nonterminal)");
 	else
@@ -248,16 +248,16 @@ void PreformUtilities::error(word_assemblage base_text, nonterminal *nt,
 		WRITE_TO(ERM, "can't conjugate verb '%A': ", &base_text);
 
 	if (pr) {
-		TEMPORARY_TEXT(TEMP);
+		TEMPORARY_TEXT(TEMP)
 		for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt) {
 			Instrumentation::write_ptoken(TEMP, pt);
 			if (pt->next_pt) WRITE_TO(TEMP, " ");
 		}
 		WRITE_TO(ERM, "line %d ('%S'): ", pr->match_number, TEMP);
-		DISCARD_TEXT(TEMP);
+		DISCARD_TEXT(TEMP)
 	}
 	WRITE_TO(ERM, "%s", message);
 	Errors::with_text("Preform error: %S", ERM);
-	DISCARD_TEXT(ERM);
+	DISCARD_TEXT(ERM)
 	#endif
 }

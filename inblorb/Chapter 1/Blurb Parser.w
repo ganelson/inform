@@ -194,14 +194,14 @@ void Parser::interpret_line(text_stream *command, text_file_position *tf, void *
 	if (verbose_mode) PRINT("! %03d: %S\n", TextFiles::get_line_count(tf), command);
 
 	int num1 = 0, num2 = 0, num3 = 0, outcome = -1; /* which of the legal command syntaxes is used */
-	TEMPORARY_TEXT(text1);
-	TEMPORARY_TEXT(text2);
-	TEMPORARY_TEXT(text3);
+	TEMPORARY_TEXT(text1)
+	TEMPORARY_TEXT(text2)
+	TEMPORARY_TEXT(text3)
 	@<Parse the command and set operands appropriately@>;
 	@<Take action on the command@>;
-	DISCARD_TEXT(text1);
-	DISCARD_TEXT(text2);
-	DISCARD_TEXT(text3);
+	DISCARD_TEXT(text1)
+	DISCARD_TEXT(text2)
+	DISCARD_TEXT(text3)
 	Regexp::dispose_of(&mr);
 }
 
@@ -284,10 +284,10 @@ copied in |text1|, |num1|, ..., accordingly.
 			break;
 		case release_file_COMMAND: {
 			filename *to_release = Filenames::from_text(text1);
-			TEMPORARY_TEXT(leaf);
+			TEMPORARY_TEXT(leaf)
 			WRITE_TO(leaf, "%S", Filenames::get_leafname(to_release));
 			Requests::request_3(COPY_REQ, text1, leaf, I"--", FALSE);
-			DISCARD_TEXT(leaf);
+			DISCARD_TEXT(leaf)
 			break;
 		}
 		case release_file_from_COMMAND:
@@ -350,10 +350,10 @@ reasons these need to be manipulated to deal with awkward characters.
 	pathname *Release = Pathnames::from_text(text1);
 	pathname *Materials = Pathnames::up(Release);
 
-	TEMPORARY_TEXT(as_txt);
+	TEMPORARY_TEXT(as_txt)
 	WRITE_TO(as_txt, "%p", Materials);
 	Placeholders::set_to(I"MATERIALSFOLDERPATH", as_txt, 0);
-	DISCARD_TEXT(as_txt);
+	DISCARD_TEXT(as_txt)
 
 	Placeholders::set_to(I"MATERIALSFOLDER",
 		Pathnames::directory_name(Materials), 0);

@@ -70,10 +70,10 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 		}
 	}
 
-	TEMPORARY_TEXT(ident);
+	TEMPORARY_TEXT(ident)
 	WRITE_TO(ident, "pp_auto_%d", pp_counter++);
 	inter_symbol *pp_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ident, E);
-	DISCARD_TEXT(ident);
+	DISCARD_TEXT(ident)
 	if (*E) return;
 
 	inter_symbol *store = NULL;

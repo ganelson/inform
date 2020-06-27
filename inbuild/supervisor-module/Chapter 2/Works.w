@@ -212,7 +212,7 @@ each extension's page is generated from its |inbuild_work|.
 
 =
 void Works::begin_extension_link(OUTPUT_STREAM, inbuild_work *work, text_stream *rubric) {
-	TEMPORARY_TEXT(link);
+	TEMPORARY_TEXT(link)
 	WRITE_TO(link, "href='inform://Extensions/Extensions/");
 	Works::escape_apostrophes(link, work->author_name);
 	WRITE_TO(link, "/");
@@ -222,7 +222,7 @@ void Works::begin_extension_link(OUTPUT_STREAM, inbuild_work *work, text_stream 
 	else WRITE_TO(link, "title=\"%X\" ", work);
 	WRITE_TO(link, "style=\"text-decoration: none\"");
 	HTML_OPEN_WITH("a", "%S", link);
-	DISCARD_TEXT(link);
+	DISCARD_TEXT(link)
 }
 
 void Works::escape_apostrophes(OUTPUT_STREAM, text_stream *S) {

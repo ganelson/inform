@@ -126,12 +126,12 @@ void PL::Bibliographic::Release::visit_to_quote(OUTPUT_STREAM, parse_node *p) {
 		int rev = FALSE;
 		special_meaning_fn soa = VerbMeanings::get_special_meaning(vm, &rev);
 		if (soa == PL::Bibliographic::Release::release_along_with_SMF) {
-			TEMPORARY_TEXT(TEMP);
+			TEMPORARY_TEXT(TEMP)
 			Index::link_to(TEMP, Wordings::first_wn(Node::get_text(p)), TRUE);
 			WRITE("status instruction ||");
 			STREAM_COPY(OUT, TEMP);
 			WRITE("||\n");
-			DISCARD_TEXT(TEMP);
+			DISCARD_TEXT(TEMP)
 		}
 	}
 }
@@ -206,10 +206,10 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			if (payload == NAMED_EXISTING_STORY_FILE_PAYLOAD) {
 				wording SW = GET_RW(<release-sentence-object>, 1);
 				Word::dequote(Wordings::first_wn(SW));
-				TEMPORARY_TEXT(leaf);
+				TEMPORARY_TEXT(leaf)
 				WRITE_TO(leaf, "%N", Wordings::first_wn(SW));
 				Task::set_existing_storyfile(leaf);
-				DISCARD_TEXT(leaf);
+				DISCARD_TEXT(leaf)
 			} else {
 				Task::set_existing_storyfile(NULL);
 			}
@@ -219,10 +219,10 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			wording LW = GET_RW(<release-sentence-object>, 2);
 			Word::dequote(Wordings::first_wn(LW));
 			Word::dequote(Wordings::first_wn(DW));
-			TEMPORARY_TEXT(leaf);
+			TEMPORARY_TEXT(leaf)
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
 			filename *A = Filenames::in(Projects::materials_path(Task::project()), leaf);
-			DISCARD_TEXT(leaf);
+			DISCARD_TEXT(leaf)
 			PL::Bibliographic::Release::create_aux_file(A,
 				Task::release_path(),
 				Lexer::word_text(Wordings::first_wn(DW)),
@@ -232,10 +232,10 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 		case CSS_PAYLOAD: case JAVASCRIPT_PAYLOAD: case HIDDEN_FILE_PAYLOAD: {
 			wording LW = GET_RW(<release-sentence-object>, 1);
 			Word::dequote(Wordings::first_wn(LW));
-			TEMPORARY_TEXT(leaf);
+			TEMPORARY_TEXT(leaf)
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
 			filename *A = Filenames::in(Projects::materials_path(Task::project()), leaf);
-			DISCARD_TEXT(leaf);
+			DISCARD_TEXT(leaf)
 			PL::Bibliographic::Release::create_aux_file(A,
 				Task::release_path(),
 				L"--",
@@ -247,14 +247,14 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			wording FW = GET_RW(<release-sentence-object>, 2);
 			Word::dequote(Wordings::first_wn(LW));
 			Word::dequote(Wordings::first_wn(FW));
-			TEMPORARY_TEXT(leaf);
+			TEMPORARY_TEXT(leaf)
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
 			filename *A = Filenames::in(Projects::materials_path(Task::project()), leaf);
-			DISCARD_TEXT(leaf);
-			TEMPORARY_TEXT(folder);
+			DISCARD_TEXT(leaf)
+			TEMPORARY_TEXT(folder)
 			WRITE_TO(folder, "%N", Wordings::first_wn(FW));
 			pathname *P = Pathnames::down(Task::release_path(), folder);
-			DISCARD_TEXT(folder);
+			DISCARD_TEXT(folder)
 			PL::Bibliographic::Release::create_aux_file(A, P, L"--", payload);
 			break;
 		}
@@ -617,11 +617,11 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 	LOOP_OVER(af, auxiliary_file) {
 		WRITE("<auxiliary>\n"); INDENT;
 		WRITE("<leafname>");
-		TEMPORARY_TEXT(rel);
+		TEMPORARY_TEXT(rel)
 		Filenames::to_text_relative(rel, af->name_of_original_file,
 			Projects::materials_path(Task::project()));
 		HTML::write_xml_safe_text(OUT, rel);
-		DISCARD_TEXT(rel);
+		DISCARD_TEXT(rel)
 		WRITE("</leafname>\n");
 		if (Str::len(af->brief_description) > 0) {
 			WRITE("<description>");
@@ -828,11 +828,11 @@ for archival re-releases of 1980s IF.)
 =
 void PL::Bibliographic::Release::write_release_blurb(OUTPUT_STREAM,
 	int cover_picture_number, char *cover_art_format) {
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	@<Compose the blorbed story filename into the TEMP stream@>;
 	WRITE("! Blurb file created by Inform %B (build %B)\n\n", FALSE, TRUE);
 	@<Write the body of the Blurb file@>;
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 }
 
 @ Note that we truncate the title if it becomes vastly long, to make sure
@@ -971,13 +971,13 @@ own credits.
 @<Give instructions about auxiliary files@> =
 	auxiliary_file *af;
 	LOOP_OVER(af, auxiliary_file) {
-		TEMPORARY_TEXT(rel);
+		TEMPORARY_TEXT(rel)
 		Pathnames::to_text_relative(rel, af->folder_to_release_to, Task::release_path());
 		WRITE("auxiliary \"%f\" \"%S\" \"%S\"\n",
 			af->name_of_original_file,
 			(Str::len(af->brief_description) > 0)?(af->brief_description):I"--",
 			(Str::len(rel) > 0)?rel:I"--");
-		DISCARD_TEXT(rel);
+		DISCARD_TEXT(rel)
 	}
 	if (release_booklet) {
 		WRITE("auxiliary \"%f\" \"Introduction to IF\" \"--\"\n", Supervisor::file_from_installation(INTRO_BOOKLET_IRES));
@@ -1005,19 +1005,19 @@ file online.
 	auxiliary_file *af;
 	LOOP_OVER(af, auxiliary_file)
 		if (af->from_payload == JAVASCRIPT_PAYLOAD) {
-			TEMPORARY_TEXT(rel);
+			TEMPORARY_TEXT(rel)
 			Filenames::to_text_relative(rel, af->name_of_original_file,
 				Projects::materials_path(Task::project()));
 			WRITE("<script src='%S'></script>", rel);
-			DISCARD_TEXT(rel);
+			DISCARD_TEXT(rel)
 		}
 	LOOP_OVER(af, auxiliary_file)
 		if (af->from_payload == CSS_PAYLOAD) {
-			TEMPORARY_TEXT(rel);
+			TEMPORARY_TEXT(rel)
 			Filenames::to_text_relative(rel, af->name_of_original_file,
 				Projects::materials_path(Task::project()));
 			WRITE("<link rel='stylesheet' href='%S' type='text/css' media='all'></link>", rel);
-			DISCARD_TEXT(rel);
+			DISCARD_TEXT(rel)
 		}
 	WRITE("\"\n");
 	WRITE("interpreter \"%S\" \"%c\"\n", interpreter_template_leafname, Str::get_first_char(ext));

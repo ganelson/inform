@@ -818,10 +818,10 @@ properties) and for kinds (which do, but differently).
 	if (Specifications::is_kind_like(owner)) {
 		kind *K = Specifications::to_kind(owner);
 		if (Kinds::Compare::lt(K, K_object) == FALSE) {
-			TEMPORARY_TEXT(st);
+			TEMPORARY_TEXT(st)
 			WRITE_TO(st, "%+W", Wordings::one_word(Wordings::first_wn(W)));
 			Kinds::Behaviour::set_specification_text(K, st);
-			DISCARD_TEXT(st);
+			DISCARD_TEXT(st)
 			return;
 		}
 	} else if (Plugins::Call::offered_specification(owner, W)) {

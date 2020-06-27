@@ -145,10 +145,10 @@ void PL::Sounds::register_sound(wording F, wording FN) {
 	blorb_sound *bs = RETRIEVE_POINTER_blorb_sound(
 		Instances::get_connection(latest_instance));
 
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	WRITE_TO(leaf, "%N", wn);
 	bs->filename_of_sound_file = Filenames::in(Task::sounds_path(), leaf);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
 
 	bs->name = F;
 	bs->sound_number = Task::get_next_free_blorb_resource_ID();
@@ -174,11 +174,11 @@ void PL::Sounds::write_sounds_manifest(OUTPUT_STREAM) {
 	WRITE("<dict>\n"); INDENT;
 	LOOP_OVER(bs, blorb_sound) {
 		WRITE("<key>%d</key>\n", bs->sound_number);
-		TEMPORARY_TEXT(rel);
+		TEMPORARY_TEXT(rel)
 		Filenames::to_text_relative(rel, bs->filename_of_sound_file,
 			Projects::materials_path(Task::project()));
 		WRITE("<string>%S</string>\n", rel);
-		DISCARD_TEXT(rel);
+		DISCARD_TEXT(rel)
 	}
 	OUTDENT; WRITE("</dict>\n");
 }
@@ -234,7 +234,7 @@ The index is only a little helpful for sounds.
 void PL::Sounds::index_all(OUTPUT_STREAM) {
 	if (Plugins::Manage::plugged_in(sounds_plugin) == FALSE) return;
 	blorb_sound *bs; FILE *SOUND_FILE;
-	TEMPORARY_TEXT(line2);
+	TEMPORARY_TEXT(line2)
 	int rv;
 	if (NUMBER_CREATED(blorb_sound) == 0) {
 		HTML_OPEN("p");
@@ -331,15 +331,15 @@ void PL::Sounds::index_all(OUTPUT_STREAM) {
 		HTML::next_html_column(OUT, 0);
 		WRITE("%+W", bs->name);
 		Index::link(OUT, Wordings::first_wn(bs->name));
-		TEMPORARY_TEXT(rel);
+		TEMPORARY_TEXT(rel)
 		Filenames::to_text_relative(rel, bs->filename_of_sound_file,
 			Projects::materials_path(Task::project()));
 		HTML_TAG("br");
 		WRITE("%SFilename: \"%S\" - resource number %d", line2, rel, bs->sound_number);
-		DISCARD_TEXT(rel);
+		DISCARD_TEXT(rel)
 		HTML::end_html_row(OUT);
 	}
 	HTML::end_html_table(OUT);
 	HTML_OPEN("p");
-	DISCARD_TEXT(line2);
+	DISCARD_TEXT(line2)
 }

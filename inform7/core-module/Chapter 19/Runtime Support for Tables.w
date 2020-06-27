@@ -288,10 +288,10 @@ void Tables::Support::compile_print_table_names(void) {
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
-						TEMPORARY_TEXT(S);
+						TEMPORARY_TEXT(S)
 						WRITE_TO(S, "%+W", Node::get_text(t->headline_fragment));
 						Produce::val_text(Emit::tree(), S);
-						DISCARD_TEXT(S);
+						DISCARD_TEXT(S)
 					Produce::up(Emit::tree());
 					Produce::rtrue(Emit::tree());
 				Produce::up(Emit::tree());

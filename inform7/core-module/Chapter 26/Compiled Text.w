@@ -314,7 +314,7 @@ int CompiledText::alphabetic(int letter) {
 int CompiledText::expand_unisub(OUTPUT_STREAM, wchar_t *p, int i) {
 	if ((p[i+1] == 'u') && (p[i+2] == 'n') && (p[i+3] == 'i') && (p[i+4] == 'c')
 		&& (p[i+5] == 'o') && (p[i+6] == 'd') && (p[i+7] == 'e') && (p[i+8] == ' ')) {
-		TEMPORARY_TEXT(substitution_buffer);
+		TEMPORARY_TEXT(substitution_buffer)
 		int j = i+9;
 		while (p[j] == ' ') j++;
 		while ((p[j]) && (p[j] != ']'))
@@ -330,7 +330,7 @@ int CompiledText::expand_unisub(OUTPUT_STREAM, wchar_t *p, int i) {
 
 int CompiledText::expand_unisub_S(OUTPUT_STREAM, text_stream *p, int i) {
 	if (Str::includes_wide_string_at(p, L"unicode ", i+1)) {
-		TEMPORARY_TEXT(substitution_buffer);
+		TEMPORARY_TEXT(substitution_buffer)
 		int j = i+9;
 		while (Str::get_at(p, j) == ' ') j++;
 		while ((Str::get_at(p, j)) && (Str::get_at(p, j) != ']'))

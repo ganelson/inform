@@ -71,10 +71,10 @@ text being read is now complete, and can be translated as HTML.
 =
 void Translator::flush(translator_state *ts) {
 	if (Str::len(ts->current_code) > 0) {
-		TEMPORARY_TEXT(leaf);
+		TEMPORARY_TEXT(leaf)
 		WRITE_TO(leaf, "%S.html", ts->current_code);
 		filename *F = Filenames::in(ts->destination_folder, leaf);
-		DISCARD_TEXT(leaf);
+		DISCARD_TEXT(leaf)
 		@<Give any material in double-quotes a blue tint@>;
 		@<Translate the material out to HTML@>;
 		ts->counter++;

@@ -239,7 +239,7 @@ the context of a value.
 			if (L != Produce::level(Emit::tree())) internal_error("formal parameter expression error");
 			int NC = 0, unprov = FALSE, prov = FALSE;
 			@<Count the applicability conditions@>;
-			TEMPORARY_TEXT(C); WRITE_TO(C, "Think %d unprov %d prov %d", NC, unprov, prov); Emit::code_comment(C); DISCARD_TEXT(C);
+			TEMPORARY_TEXT(C) WRITE_TO(C, "Think %d unprov %d prov %d", NC, unprov, prov); Emit::code_comment(C); DISCARD_TEXT(C)
 			if (unprov) { Produce::inv_primitive(Emit::tree(), OR_BIP); Produce::down(Emit::tree()); }
 			@<Compile code to apply the first invocation which is applicable, as expression@>;
 			for (int i = 0; i<NC-1; i++) Produce::up(Emit::tree());

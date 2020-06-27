@@ -25,7 +25,7 @@ void Unsigned::unsigned_volume_title(navigation_design *self, text_stream *OUT, 
 }
 
 @<Render a volume heading@> =
-	TEMPORARY_TEXT(partn);
+	TEMPORARY_TEXT(partn)
 	if (no_volumes > 1) Roadsign::roman_numeral(partn, V->allocation_id);
 	HTML_OPEN_WITH("p", "class=\"volumeheading\"");
 	WRITE("%S%S", partn, V->vol_title);

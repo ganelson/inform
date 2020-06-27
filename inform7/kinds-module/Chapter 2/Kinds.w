@@ -835,7 +835,7 @@ void Kinds::problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2) {
 	KINDS_PROBLEM_HANDLER(err_no, pn, K1, K2);
 	#endif
 	#ifndef KINDS_PROBLEM_HANDLER
-	TEMPORARY_TEXT(text);
+	TEMPORARY_TEXT(text)
 	WRITE_TO(text, "%+W", Node::get_text(pn));
 	switch (err_no) {
 		case DimensionRedundant_KINDERROR:
@@ -867,7 +867,7 @@ void Kinds::problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2) {
 			break;
 		default: internal_error("unimplemented problem message");
 	}
-	DISCARD_TEXT(text);
+	DISCARD_TEXT(text)
 	#endif
 }
 

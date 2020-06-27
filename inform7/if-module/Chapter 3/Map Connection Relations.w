@@ -118,7 +118,7 @@ this to other languages.)
 	if (Wordings::length(W) > MAX_WORDS_IN_DIRECTION)
 		W = Wordings::truncate(W, MAX_WORDS_IN_DIRECTION); /* just truncate for now */
 
-	TEMPORARY_TEXT(relname); /* for debugging log, e.g., "north-map" */
+	TEMPORARY_TEXT(relname) /* for debugging log, e.g., "north-map" */
 	WRITE_TO(relname, "%W-map", W);
 	LOOP_THROUGH_TEXT(pos, relname)
 		if (Str::get(pos) == ' ') Str::put(pos, '-');
@@ -150,7 +150,7 @@ this to other languages.)
 	Verbs::add_form(copular_verb, prep2, NULL, vm, SVO_FS_BIT);
 	Verbs::add_form(copular_verb, prep3, NULL, vm, SVO_FS_BIT);
 
-	DISCARD_TEXT(relname);
+	DISCARD_TEXT(relname)
 
 @ That was one step, and here's the second. At this point we have created the
 instance |I| for the direction, and given it the kind "direction". That

@@ -87,7 +87,7 @@ void TemplateManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	pathname *P = TemplateManager::path_within_nest(N);
 	scan_directory *D = Directories::open(P);
 	if (D) {
-		TEMPORARY_TEXT(LEAFNAME);
+		TEMPORARY_TEXT(LEAFNAME)
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
 				Str::delete_last_character(LEAFNAME);
@@ -98,7 +98,7 @@ void TemplateManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 				}
 			}
 		}
-		DISCARD_TEXT(LEAFNAME);
+		DISCARD_TEXT(LEAFNAME)
 		Directories::close(D);
 	}
 }
@@ -109,10 +109,10 @@ a folder, we need to |rsync| it.
 
 =
 pathname *TemplateManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	Editions::write_canonical_leaf(leaf, E);
 	pathname *P = Pathnames::down(TemplateManager::path_within_nest(N), leaf);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
 	return P;
 }
 
@@ -125,11 +125,11 @@ void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
-			TEMPORARY_TEXT(command);
+			TEMPORARY_TEXT(command)
 			WRITE_TO(command, "mkdir -p ");
 			Shell::quote_path(command, P);
 			WRITE_TO(STDOUT, "%S\n", command);
-			DISCARD_TEXT(command);
+			DISCARD_TEXT(command)
 		} else {
 			Pathnames::create_in_file_system(N->location);
 			Pathnames::create_in_file_system(TemplateManager::path_within_nest(N));
@@ -137,12 +137,12 @@ void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 		}
 	}
 	if (meth->methodology == DRY_RUN_METHODOLOGY) {
-		TEMPORARY_TEXT(command);
+		TEMPORARY_TEXT(command)
 		WRITE_TO(command, "rsync -a --delete ");
 		Shell::quote_path(command, C->location_if_path);
 		Shell::quote_path(command, P);
 		WRITE_TO(STDOUT, "%S\n", command);
-		DISCARD_TEXT(command);
+		DISCARD_TEXT(command)
 	} else {
 		Pathnames::rsync(C->location_if_path, P);
 	}

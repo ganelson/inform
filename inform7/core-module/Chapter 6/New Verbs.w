@@ -844,10 +844,10 @@ void NewVerbs::ConjugateVerb(void) {
 	inter_symbol *t_s = LocalVariables::add_named_call_as_symbol(I"t");
 	inter_symbol *modal_to_s = LocalVariables::add_named_call_as_symbol(I"modal_to");
 
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "%A", &(vf->infinitive_reference_text));
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
@@ -903,13 +903,13 @@ void NewVerbs::ConjugateVerb(void) {
 	Produce::up(Emit::tree());
 
 	if (vf->preposition) {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		WRITE_TO(T, " %A", &(vf->preposition->prep_text));
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), T);
 		Produce::up(Emit::tree());
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	}
 
 	Routines::end(save);
@@ -1017,7 +1017,7 @@ void NewVerbs::ConjugateVerb(void) {
 void NewVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, inter_symbol *modal_to_s, int mau) {
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());
-		TEMPORARY_TEXT(OUT);
+		TEMPORARY_TEXT(OUT)
 		if ((NewVerbs::takes_contraction_form(wa) == FALSE) && (NewVerbs::takes_contraction_form(&(vc->infinitive))))
 			WRITE(" ");
 		int i, n;
@@ -1028,14 +1028,14 @@ void NewVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, inter_sym
 			wchar_t *q = Vocabulary::get_exemplar(words[i], FALSE);
 			if ((q[0]) && (q[Wide::len(q)-1] == '*')) {
 internal_error("star alert!");
-				TEMPORARY_TEXT(unstarred);
+				TEMPORARY_TEXT(unstarred)
 				WRITE_TO(unstarred, "%V", words[i]);
 				Str::delete_last_character(unstarred);
 				feed_t id = Feeds::begin();
 				Feeds::feed_C_string(L" ");
 				Feeds::feed_text(unstarred);
 				Feeds::feed_C_string(L" ");
-				DISCARD_TEXT(unstarred);
+				DISCARD_TEXT(unstarred)
 				wording W = Feeds::end(id);
 				adjectival_phrase *aph = Adjectives::declare(W, vc->defined_in);
 				WRITE("\"; %n(prior_named_noun, (prior_named_list >= 2)); print \"",
@@ -1045,7 +1045,7 @@ internal_error("star alert!");
 			}
 		}
 		Produce::val_text(Emit::tree(), OUT);
-		DISCARD_TEXT(OUT);
+		DISCARD_TEXT(OUT)
 	Produce::up(Emit::tree());
 	if (mau != 0) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);

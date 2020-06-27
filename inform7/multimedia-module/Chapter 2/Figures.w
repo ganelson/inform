@@ -161,10 +161,10 @@ void PL::Figures::register_figure(wording F, wording FN) {
 	bf->name = F;
 	if (wn >= 0) {
 		bf->figure_number = Task::get_next_free_blorb_resource_ID();
-		TEMPORARY_TEXT(leaf);
+		TEMPORARY_TEXT(leaf)
 		WRITE_TO(leaf, "%N", wn);
 		bf->filename_of_image_file = Filenames::in(Task::figures_path(), leaf);
-		DISCARD_TEXT(leaf);
+		DISCARD_TEXT(leaf)
 		bf->alt_description = <<alttext>>;
 	} else {
 		bf->figure_number = 1;
@@ -210,11 +210,11 @@ void PL::Figures::write_picture_manifest(OUTPUT_STREAM, int include_cover,
 	LOOP_OVER(bf, blorb_figure)
 		if (bf->figure_number > 1) {
 			WRITE("<key>%d</key>\n", bf->figure_number);
-			TEMPORARY_TEXT(rel);
+			TEMPORARY_TEXT(rel)
 			Filenames::to_text_relative(rel, bf->filename_of_image_file,
 				Projects::materials_path(Task::project()));
 			WRITE("<string>%S</string>\n", rel);
-			DISCARD_TEXT(rel);
+			DISCARD_TEXT(rel)
 		}
 	OUTDENT; WRITE("</dict>\n");
 	PL::Sounds::write_sounds_manifest(OUT);
@@ -288,7 +288,7 @@ void PL::Figures::index_all(OUTPUT_STREAM) {
 	int count_of_displayed_figures = 0;
 	LOOP_OVER(bf, blorb_figure) {
 		if (bf->figure_number > 1) {
-			TEMPORARY_TEXT(line2);
+			TEMPORARY_TEXT(line2)
 			unsigned int width = 0, height = 0;
 			rv = 0;
 			FIGURE_FILE = Filenames::fopen(bf->filename_of_image_file, "rb");
@@ -335,14 +335,14 @@ void PL::Figures::index_all(OUTPUT_STREAM) {
 			WRITE("%+W", bf->name);
 			Index::link(OUT, Wordings::first_wn(bf->name));
 
-			TEMPORARY_TEXT(rel);
+			TEMPORARY_TEXT(rel)
 			Filenames::to_text_relative(rel, bf->filename_of_image_file,
 				Projects::materials_path(Task::project()));
 			HTML_TAG("br");
 			WRITE("%SFilename: \"%S\" - resource number %d", line2, rel, bf->figure_number);
-			DISCARD_TEXT(rel);
+			DISCARD_TEXT(rel)
 			HTML::end_html_row(OUT);
-			DISCARD_TEXT(line2);
+			DISCARD_TEXT(line2)
 		}
 	}
 	HTML::end_html_table(OUT);

@@ -69,11 +69,11 @@ void PipelineManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *error_text) {
 	if (TextFiles::exists(F) == FALSE) return NULL;
 	semantic_version_number V = VersionNumbers::null();
-	TEMPORARY_TEXT(unext);
+	TEMPORARY_TEXT(unext)
 	Filenames::write_unextended_leafname(unext, F);
 	inbuild_copy *C = PipelineManager::new_copy(
 		Editions::new(Works::new_raw(pipeline_genre, unext, NULL), V), F);
-	DISCARD_TEXT(unext);
+	DISCARD_TEXT(unext)
 	return C;
 }
 
@@ -88,7 +88,7 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	pathname *P = PipelineManager::path_within_nest(N);
 	scan_directory *D = Directories::open(P);
 	if (D) {
-		TEMPORARY_TEXT(LEAFNAME);
+		TEMPORARY_TEXT(LEAFNAME)
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) != FOLDER_SEPARATOR) {
 				filename *F = Filenames::in(P, LEAFNAME);
@@ -98,7 +98,7 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 				}
 			}
 		}
-		DISCARD_TEXT(LEAFNAME);
+		DISCARD_TEXT(LEAFNAME)
 		Directories::close(D);
 	}
 }
@@ -109,11 +109,11 @@ since a pipeline is a single file; to sync, we just overwrite.
 
 =
 filename *PipelineManager::filename_in_nest(inbuild_nest *N, inbuild_edition *E) {
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	Editions::write_canonical_leaf(leaf, E);
 	WRITE_TO(leaf, ".interpipeline");
 	filename *F = Filenames::in(PipelineManager::path_within_nest(N), leaf);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
 	return F;
 }
 
@@ -125,21 +125,21 @@ void PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
-			TEMPORARY_TEXT(command);
+			TEMPORARY_TEXT(command)
 			WRITE_TO(command, "mkdir -p ");
 			Shell::quote_path(command, Filenames::up(F));
 			WRITE_TO(STDOUT, "%S\n", command);
-			DISCARD_TEXT(command);
+			DISCARD_TEXT(command)
 		} else {
 			Pathnames::create_in_file_system(N->location);
 			Pathnames::create_in_file_system(Filenames::up(F));
 		}
 	}
 
-	TEMPORARY_TEXT(command);
+	TEMPORARY_TEXT(command)
 	WRITE_TO(command, "cp -f ");
 	Shell::quote_file(command, C->location_if_file);
 	Shell::quote_file(command, F);
 	BuildSteps::shell(command, meth);
-	DISCARD_TEXT(command);
+	DISCARD_TEXT(command)
 }

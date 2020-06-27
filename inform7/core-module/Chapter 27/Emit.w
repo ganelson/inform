@@ -190,10 +190,10 @@ int ppi7_counter = 0;
 void Emit::basic_permission(inter_bookmark *at, inter_name *name, inter_symbol *owner_name, inter_symbol *store) {
 	inter_symbol *prop_name = Produce::define_symbol(name);
 	inter_error_message *E = NULL;
-	TEMPORARY_TEXT(ident);
+	TEMPORARY_TEXT(ident)
 	WRITE_TO(ident, "pp_i7_%d", ppi7_counter++);
 	inter_symbol *pp_name = Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(at), ident, &E);
-	DISCARD_TEXT(ident);
+	DISCARD_TEXT(ident)
 	Produce::guard(E);
 	Produce::guard(Inter::Permission::new(at,
 		Inter::SymbolsTables::id_from_IRS_and_symbol(at, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(at, owner_name), Inter::SymbolsTables::id_from_IRS_and_symbol(at, pp_name), (store)?(Inter::SymbolsTables::id_from_IRS_and_symbol(at, store)):0, Produce::baseline(at), NULL));

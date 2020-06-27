@@ -22,10 +22,10 @@ int Inflect::follow_suffix_instruction(OUTPUT_STREAM, text_stream *from,
 	wchar_t *instruction) {
 	int success = TRUE;
 	if (instruction == NULL) { success = FALSE; instruction = L"0"; }
-	TEMPORARY_TEXT(outcome);
+	TEMPORARY_TEXT(outcome)
 	@<Modify the original according to the instruction@>;
 	@<Write the output, interpreting plus signs as word breaks@>;
-	DISCARD_TEXT(outcome);
+	DISCARD_TEXT(outcome)
 	return success;
 }
 
@@ -70,8 +70,8 @@ word_assemblage Inflect::first_word(word_assemblage wa, match_avinue *T) {
 	WordAssemblages::as_array(&wa, &words, &no_words);
 	if (no_words == 0) return wa;
 
-	TEMPORARY_TEXT(unsuffixed);
-	TEMPORARY_TEXT(suffixed);
+	TEMPORARY_TEXT(unsuffixed)
+	TEMPORARY_TEXT(suffixed)
 	WRITE_TO(unsuffixed, "%V", words[0]);
 	int s = Inflect::suffix(suffixed, T, unsuffixed);
 	if (s == FALSE) {
@@ -81,7 +81,7 @@ word_assemblage Inflect::first_word(word_assemblage wa, match_avinue *T) {
 	}
 	wording W = Feeds::feed_text(suffixed);
 	WordAssemblages::truncate(&wa, 1);
-	DISCARD_TEXT(suffixed);
-	DISCARD_TEXT(unsuffixed);
+	DISCARD_TEXT(suffixed)
+	DISCARD_TEXT(unsuffixed)
 	return WordAssemblages::join(WordAssemblages::from_wording(W), wa);
 }

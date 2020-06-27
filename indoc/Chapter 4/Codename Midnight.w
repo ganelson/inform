@@ -26,16 +26,16 @@ heading includes these anyway.
 =
 void Midnight::midnight_section_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C, section *S) {
 	if (S->begins_which_chapter == NULL) {
-		TEMPORARY_TEXT(comment);
+		TEMPORARY_TEXT(comment)
 		WRITE_TO(comment, "START IGNORE %d", S->number_within_volume);
 		HTML::comment(OUT, comment);
-		DISCARD_TEXT(comment);
+		DISCARD_TEXT(comment)
 	}
 	HTML::begin_div_with_class_S(OUT, I"bookheader");
 	text_stream *linkleft = NULL;
 	text_stream *linkright = NULL;
 	@<Work out URLs for the preceding and following sections@>;
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	WRITE_TO(leaf, "%S.html", indoc_settings->contents_leafname);
 	Midnight::midnight_banner(OUT,
 		S->in_which_chapter->chapter_full_title, V, leaf, linkleft, linkright);
@@ -82,10 +82,10 @@ void Midnight::midnight_navigation_bottom(navigation_design *self, text_stream *
 		HTMLUtilities::general_link(OUT, I"footerlink", S->previous_section->section_URL, I"Previous");
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"footercontents\"");
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::general_link(OUT, I"footerlink", url, I"Contents");
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"footernext\"");
 	if (S->next_section)
@@ -108,16 +108,16 @@ top of every Midnight page.
 =
 void Midnight::midnight_banner(OUTPUT_STREAM, text_stream *title, volume *V,
 	text_stream *linkcentre, text_stream *linkleft, text_stream *linkright) {
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTML_OPEN_WITH("table", "class=\"fullwidth midnightblack\"");
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "class=\"midnightbannerleftcell\"");
 	if (Str::len(linkleft) > 0) {
-		TEMPORARY_TEXT(img);
+		TEMPORARY_TEXT(img)
 		HTMLUtilities::image_with_id(img, I"Hookleft.png", I"hookleft");
 		HTMLUtilities::general_link(OUT, I"standardlink", linkleft, img);
-		DISCARD_TEXT(img);
+		DISCARD_TEXT(img)
 	}
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"midnightbannercentrecell\"");
@@ -128,20 +128,20 @@ void Midnight::midnight_banner(OUTPUT_STREAM, text_stream *title, volume *V,
 	if (Str::len(linkcentre) > 0) HTML::end_link(OUT);
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"midnightbannerrightcell\"");
-	TEMPORARY_TEXT(img);
+	TEMPORARY_TEXT(img)
 	HTMLUtilities::image_with_id(img, I"Hookup.png", I"hookup");
 	HTMLUtilities::general_link(OUT, I"standardlink", url, img);
-	DISCARD_TEXT(img);
+	DISCARD_TEXT(img)
 	if (Str::len(linkright) > 0) {
-		TEMPORARY_TEXT(img);
+		TEMPORARY_TEXT(img)
 		HTMLUtilities::image_with_id(img, I"Hookright.png", I"hookright");
 		HTMLUtilities::general_link(OUT, I"standardlink", linkright, img);
-		DISCARD_TEXT(img);
+		DISCARD_TEXT(img)
 	}
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML_CLOSE("table");
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 }
 
 @ And this is a similar design motif used in Midnight contents pages: see below.
@@ -183,7 +183,7 @@ of each volume side by side.
 
 =
 void Midnight::write_contents_page(navigation_design *self, volume *V) {
-	TEMPORARY_TEXT(leafname);
+	TEMPORARY_TEXT(leafname)
 	WRITE_TO(leafname, "%S%S.html", V->vol_prefix, indoc_settings->contents_leafname);
 	filename *F = Filenames::in(indoc_settings->destination, leafname);
 
@@ -194,7 +194,7 @@ void Midnight::write_contents_page(navigation_design *self, volume *V) {
 	if (indoc_settings->wrapper == WRAPPER_epub)
 		Epub::note_page(indoc_settings->ebook, F, I"Contents", I"toc");
 
-	TEMPORARY_TEXT(title);
+	TEMPORARY_TEXT(title)
 	WRITE_TO(title, "Contents");
 	@<Begin the HTML page for the contents@>;
 	Nav::navigation_contents_heading(OUT, V);
@@ -205,20 +205,20 @@ void Midnight::write_contents_page(navigation_design *self, volume *V) {
 	@<Render any tailpiece at the foot of the contents@>;
 
 	@<End the HTML page for the contents@>;
-	DISCARD_TEXT(title);
+	DISCARD_TEXT(title)
 	Streams::close(OUT);
 }
 
 @<Begin the HTML page for the contents@> =
-	TEMPORARY_TEXT(xxx);
+	TEMPORARY_TEXT(xxx)
 	HTMLUtilities::get_tt_matter(xxx, 1, 1);
 	if (Str::len(xxx) > 0) {
 		Regexp::replace(xxx, L"%[SUBHEADING%]", NULL, 0);
 		wchar_t replacement[1024];
-		TEMPORARY_TEXT(rep);
+		TEMPORARY_TEXT(rep)
 		WRITE_TO(rep, "<title>%S</title>", title);
 		Str::copy_to_wide_string(replacement, rep, 1024);
-		DISCARD_TEXT(rep);
+		DISCARD_TEXT(rep)
 		Regexp::replace(xxx, L"<title>%c*</title>", replacement, REP_REPEATING);
 		WRITE("%S", xxx);
 	} else {
@@ -233,14 +233,14 @@ void Midnight::write_contents_page(navigation_design *self, volume *V) {
 		HTML::end_head(OUT);
 		HTML::begin_body(OUT, self->contents_body_class);
 	}
-	DISCARD_TEXT(xxx);
+	DISCARD_TEXT(xxx)
 
 @<End the HTML page for the contents@> =
-	TEMPORARY_TEXT(tail);
+	TEMPORARY_TEXT(tail)
 	HTMLUtilities::get_tt_matter(tail, 1, 0);
 	if (Str::len(tail) > 0) WRITE("%S", tail);
 	else HTML::end_body(OUT);
-	DISCARD_TEXT(tail);
+	DISCARD_TEXT(tail)
 
 @<Render this column of the contents@> =
 	if (self->columnar) {
@@ -259,13 +259,13 @@ void Midnight::write_contents_page(navigation_design *self, volume *V) {
 			WRITE("Chapter %d. %S", C->chapter_number, C->chapter_title);
 			HTML_CLOSE("h3");
 		}
-		TEMPORARY_TEXT(destination);
+		TEMPORARY_TEXT(destination)
 		WRITE_TO(destination, "%S", S->section_URL);
-		TEMPORARY_TEXT(description);
+		TEMPORARY_TEXT(description)
 		WRITE_TO(description, "%S. %S", S->label, S->title);
 		HTMLUtilities::general_link(OUT, I"standardlink", destination, description);
-		DISCARD_TEXT(description);
-		DISCARD_TEXT(destination);
+		DISCARD_TEXT(description)
+		DISCARD_TEXT(destination)
 		HTML_TAG("br");
 	}
 
@@ -279,10 +279,10 @@ void Midnight::write_contents_page(navigation_design *self, volume *V) {
 
 	volume *OV = volumes[0];
 	if (V == volumes[0]) OV = volumes[1];
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	WRITE_TO(url, "%Sindex.html", OV->vol_prefix);
 	HTMLUtilities::textual_link(OUT, url, OV->vol_title);
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 
 @ This is almost as simple, but now the lines linking to sections within a
 chapter are grouped into a |<div>| for that chapter, which can be hidden
@@ -295,10 +295,10 @@ there are in practice about 25.
 	volume *X = V;
 	if (column == 1) X = volumes[1-V->allocation_id];
 
-	TEMPORARY_TEXT(extra);
+	TEMPORARY_TEXT(extra)
 	if (indoc_settings->contents_expandable) HTMLUtilities::all_extras_link(extra, X->vol_abbrev);
 	Midnight::midnight_contents_column_banner(OUT, X->vol_title, X, extra);
-	DISCARD_TEXT(extra);
+	DISCARD_TEXT(extra)
 
 	int extra_count = 0;
 	for (section *S = volumes[column]->sections[0]; S; S = S->next_section) {
@@ -336,9 +336,9 @@ there are in practice about 25.
 	int id = column*1000 + extra_count++;
 	HTML_OPEN_WITH("p", "class=\"midnightcontentsA\"");
 	if (indoc_settings->contents_expandable) HTMLUtilities::extra_link(OUT, id);
-	TEMPORARY_TEXT(thetitle);
+	TEMPORARY_TEXT(thetitle)
 	Str::copy(thetitle, C->chapter_title);
-	TEMPORARY_TEXT(theprefix);
+	TEMPORARY_TEXT(theprefix)
 	if (no_volumes == 1) WRITE_TO(theprefix, "<b>Chapter %d</b>", C->chapter_number);
 	else WRITE_TO(theprefix, "<b>%d</b>", C->chapter_number);
 	match_results mr = Regexp::create_mr();
@@ -347,20 +347,20 @@ there are in practice about 25.
 		Str::clear(thetitle); Str::copy(thetitle, mr.exp[0]);
 	}
 	Regexp::dispose_of(&mr);
-	TEMPORARY_TEXT(txt);
+	TEMPORARY_TEXT(txt)
 	WRITE_TO(txt, "%S.&#160;%S", theprefix, thetitle);
 	HTMLUtilities::general_link(OUT, I"standardlink", S->section_URL, txt);
-	DISCARD_TEXT(txt);
+	DISCARD_TEXT(txt)
 	HTML_CLOSE("p");
 	if (indoc_settings->contents_expandable) HTMLUtilities::extra_div_open(OUT, id);
-	DISCARD_TEXT(theprefix);
-	DISCARD_TEXT(thetitle);
+	DISCARD_TEXT(theprefix)
+	DISCARD_TEXT(thetitle)
 
 @<Render a section link@> =
-	TEMPORARY_TEXT(txt);
+	TEMPORARY_TEXT(txt)
 	WRITE_TO(txt, "%c%S", SECTION_SYMBOL, S->title);
 	Midnight::mc_link_B(OUT, S->section_URL, txt);
-	DISCARD_TEXT(txt);
+	DISCARD_TEXT(txt)
 
 @ In Midnight mode, this is where the extra indexes are listed in the contents:
 some in the left-hand (WWI) column, others in the right-hand (RB). This is

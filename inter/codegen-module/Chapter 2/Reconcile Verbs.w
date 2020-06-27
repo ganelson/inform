@@ -50,11 +50,11 @@ void CodeGen::ReconcileVerbs::visitor2(inter_tree *I, inter_tree_node *P, void *
 		if (V1 == DWORD_IVAL) {
 			text_stream *glob_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), V2);
 			if (Dictionaries::find(observed_verbs, glob_text)) {
-				TEMPORARY_TEXT(nv);
+				TEMPORARY_TEXT(nv)
 				WRITE_TO(nv, "!%S", glob_text);
 				Str::clear(glob_text);
 				Str::copy(glob_text, nv);
-				DISCARD_TEXT(nv);
+				DISCARD_TEXT(nv)
 			}
 			Dictionaries::create(observed_verbs, glob_text);
 		}

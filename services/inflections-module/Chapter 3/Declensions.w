@@ -167,14 +167,14 @@ declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORD
 							if (pt->ptoken_category != FIXED_WORD_PTC)
 								internal_error("NTs are not allowed in irregular decs");
 							if (((num == 1) && (c < nc)) || ((num == 2) && (c >= nc))) {
-								TEMPORARY_TEXT(stem);
-								TEMPORARY_TEXT(result);
+								TEMPORARY_TEXT(stem)
+								TEMPORARY_TEXT(result)
 								WRITE_TO(stem, "%W", W);
 								Inflect::follow_suffix_instruction(result, stem,
 									Vocabulary::get_exemplar(pt->ve_pt, TRUE));
 								D.name_cased[c%nc] = Feeds::feed_text(result);
-								DISCARD_TEXT(stem);
-								DISCARD_TEXT(result);
+								DISCARD_TEXT(stem)
+								DISCARD_TEXT(result)
 							}
 							c++;
 						}
@@ -193,12 +193,12 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 	nonterminal *gnt, nonterminal *nt, int num, int *found) {
 	declension D;
 	D.within_language = nl;
-	TEMPORARY_TEXT(from);
+	TEMPORARY_TEXT(from)
 	WRITE_TO(from, "%+W", W);
 	match_avinue *group_trie = PreformUtilities::define_trie(gnt, TRIE_END,
 		DefaultLanguage::get(nl));
 	wchar_t *result = Tries::search_avinue(group_trie, from);
-	DISCARD_TEXT(from);
+	DISCARD_TEXT(from)
 	if (result == NULL) {
 		*found = FALSE;
 	} else {
@@ -250,14 +250,14 @@ declension Declensions::decline_from(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
 					(pr->first_pt->next_pt != NULL))
 					internal_error("<noun-declension> too complex");
 				if (((c < nc) && (num == 1)) || ((c >= nc) && (num == 2))) {
-					TEMPORARY_TEXT(stem);
-					TEMPORARY_TEXT(result);
+					TEMPORARY_TEXT(stem)
+					TEMPORARY_TEXT(result)
 					WRITE_TO(stem, "%+W", W);
 					Inflect::follow_suffix_instruction(result, stem,
 						Vocabulary::get_exemplar(pr->first_pt->ve_pt, TRUE));
 					D.name_cased[c%nc] = Feeds::feed_text(result);
-					DISCARD_TEXT(stem);
-					DISCARD_TEXT(result);
+					DISCARD_TEXT(stem)
+					DISCARD_TEXT(result)
 				}
 				c++;
 			}

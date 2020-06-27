@@ -913,10 +913,10 @@ void Relations::compile_relation_records(void) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_NAME_HL));
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
-				TEMPORARY_TEXT(A);
+				TEMPORARY_TEXT(A)
 				WRITE_TO(A, "%A", &(bp->relation_name));
 				Produce::val_text(Emit::tree(), A);
-				DISCARD_TEXT(A);
+				DISCARD_TEXT(A)
 			Produce::up(Emit::tree());
 
 			switch(bp->form_of_relation) {
@@ -998,10 +998,10 @@ void Relations::compile_relation_records(void) {
 	Emit::array_end(save);
 
 @<Write the name field of the relation record@> =
-	TEMPORARY_TEXT(NF);
+	TEMPORARY_TEXT(NF)
 	WRITE_TO(NF, "%A relation", &(bp->relation_name));
 	Emit::array_text_entry(NF);
-	DISCARD_TEXT(NF);
+	DISCARD_TEXT(NF)
 
 @<Write the permissions field of the relation record@> =
 	binary_predicate *dbp = bp;
@@ -1080,12 +1080,12 @@ void Relations::compile_relation_records(void) {
 	Kinds::RunTime::emit_strong_id(BinaryPredicates::kind(bp));
 
 @<Write the description field of the relation record@> =
-	TEMPORARY_TEXT(DF);
+	TEMPORARY_TEXT(DF)
 	if (bp->form_of_relation == Relation_Implicit)
 		WRITE_TO(DF, "%S", BinaryPredicates::get_log_name(bp));
 	else CompiledText::from_text(DF, Node::get_text(bp->bp_created_at));
 	Emit::array_text_entry(DF);
-	DISCARD_TEXT(DF);
+	DISCARD_TEXT(DF)
 
 @<Write the handler field of the relation record@> =
 	Emit::array_iname_entry(handler);
@@ -1700,7 +1700,7 @@ void Relations::compile_default_relation(inter_name *identifier, kind *K) {
 	Kinds::RunTime::emit_block_value_header(K, FALSE, 8);
 	Emit::array_null_entry();
 	Emit::array_null_entry();
-	TEMPORARY_TEXT(DVT);
+	TEMPORARY_TEXT(DVT)
 	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, K);
 	Emit::array_text_entry(DVT);
 	Emit::array_iname_entry(TTF_iname);
@@ -1708,7 +1708,7 @@ void Relations::compile_default_relation(inter_name *identifier, kind *K) {
 	Kinds::RunTime::emit_strong_id(K);
 	Emit::array_iname_entry(Hierarchy::find(EMPTYRELATIONHANDLER_HL));
 	Emit::array_text_entry(DVT);
-	DISCARD_TEXT(DVT);
+	DISCARD_TEXT(DVT)
 	Emit::array_end(save);
 }
 
@@ -1716,10 +1716,10 @@ void Relations::compile_blank_relation(kind *K) {
 	Kinds::RunTime::emit_block_value_header(K, FALSE, 34);
 	Emit::array_null_entry();
 	Emit::array_null_entry();
-	TEMPORARY_TEXT(DVT);
+	TEMPORARY_TEXT(DVT)
 	WRITE_TO(DVT, "anonymous "); Kinds::Textual::write(DVT, K);
 	Emit::array_text_entry(DVT);
-	DISCARD_TEXT(DVT);
+	DISCARD_TEXT(DVT)
 
 	Emit::array_iname_entry(TTF_iname);
 	Emit::array_numeric_entry(7);
@@ -2306,10 +2306,10 @@ void Relations::compile_defined_relations(void) {
 	LOOP_OVER(bp, binary_predicate)
 		if ((bp->form_of_relation == Relation_ByRoutine) && (bp->right_way_round)) {
 			current_sentence = bp->bp_created_at;
-			TEMPORARY_TEXT(C);
+			TEMPORARY_TEXT(C)
 			WRITE_TO(C, "Routine to decide if %S(t_0, t_1)", BinaryPredicates::get_log_name(bp));
 			Produce::comment(Emit::tree(), C);
-			DISCARD_TEXT(C);
+			DISCARD_TEXT(C)
 			Relations::compile_routine_to_decide(bp->bp_by_routine_iname,
 				bp->condition_defn_text, bp->term_details[0], bp->term_details[1]);
 		}

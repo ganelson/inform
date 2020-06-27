@@ -170,10 +170,10 @@ int Calculus::Deferrals::Cinders::cind_declare_in(int cinder_number, pcalc_term 
 		return Calculus::Deferrals::Cinders::cind_declare_in(cinder_number, &(pt->function->fn_of));
 	if ((pt->constant) && (pt->cinder >= 0))
 		if (Node::is(pt->constant, CONSTANT_NT) == FALSE) {
-			TEMPORARY_TEXT(cinder_name);
+			TEMPORARY_TEXT(cinder_name)
 			WRITE_TO(cinder_name, "const_%d", cinder_number++);
 			LocalVariables::add_named_call_as_symbol(cinder_name);
-			DISCARD_TEXT(cinder_name);
+			DISCARD_TEXT(cinder_name)
 		}
 	return cinder_number;
 }

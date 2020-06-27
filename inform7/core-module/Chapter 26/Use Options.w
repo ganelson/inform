@@ -267,12 +267,12 @@ void UseOptions::set_use_options(parse_node *p) {
 @<Set the chain given in this word range@> =
 	wording CW = GET_RW(<use-inter-pipeline>, 1);
 	if (traverse == 1) {
-		TEMPORARY_TEXT(p);
+		TEMPORARY_TEXT(p)
 		WRITE_TO(p, "%W", CW);
 		Str::delete_first_character(p);
 		Str::delete_last_character(p);
 		Supervisor::set_inter_pipeline(p);
-		DISCARD_TEXT(p);
+		DISCARD_TEXT(p)
 	}
 	return;
 
@@ -289,7 +289,7 @@ void UseOptions::set_use_options(parse_node *p) {
 
 @<Deal with the case of an I6 memory setting@> =
 	int n = -<<r>>, w1 = Wordings::first_wn(Node::get_text(p));
-	TEMPORARY_TEXT(new_identifier);
+	TEMPORARY_TEXT(new_identifier)
 	WRITE_TO(new_identifier, "%+W", Wordings::one_word(w1));
 	if (Str::len(new_identifier) > 63) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadICLIdentifier),
@@ -305,7 +305,7 @@ void UseOptions::set_use_options(parse_node *p) {
 	ms = CREATE(i6_memory_setting);
 	ms->ICL_identifier = Str::duplicate(new_identifier);
 	ms->number = n;
-	DISCARD_TEXT(new_identifier);
+	DISCARD_TEXT(new_identifier)
 	return;
 
 @ For the pragma-like UOs:
@@ -437,10 +437,10 @@ void UseOptions::compile_icl_commands(void) {
 		if ((Str::eq_wide_string(ms->ICL_identifier, L"MAX_LOCAL_VARIABLES")) &&
 			(TargetVMs::allow_MAX_LOCAL_VARIABLES(Task::vm()) == FALSE))
 			continue;
-		TEMPORARY_TEXT(prag);
+		TEMPORARY_TEXT(prag)
 		WRITE_TO(prag, "$%S=%d", ms->ICL_identifier, ms->number);
 		Emit::pragma(prag);
-		DISCARD_TEXT(prag);
+		DISCARD_TEXT(prag)
 	}
 }
 
@@ -480,10 +480,10 @@ void UseOptions::index(OUTPUT_STREAM) {
 
 @<Write in the index line for a use option not taken@> =
 	HTML_OPEN_WITH("span", "style=\"white-space:nowrap\";");
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	WRITE_TO(TEMP, "Use %+W.", uo->name);
 	PasteButtons::paste_text(OUT, TEMP);
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 	WRITE("&nbsp;%+W", uo->name);
 	HTML_CLOSE("span");
 
@@ -536,10 +536,10 @@ void UseOptions::index_options_in_force_from(OUTPUT_STREAM, int category, inform
 	if (uo->where_used) Index::link(OUT, Wordings::first_wn(Node::get_text(uo->where_used)));
 	if (uo->minimum_setting_value >= 0) {
 		WRITE("&nbsp;");
-		TEMPORARY_TEXT(TEMP);
+		TEMPORARY_TEXT(TEMP)
 		WRITE_TO(TEMP, "Use %+W of at least %d.", uo->name, 2*(uo->minimum_setting_value));
 		PasteButtons::paste_text(OUT, TEMP);
-		DISCARD_TEXT(TEMP);
+		DISCARD_TEXT(TEMP)
 		WRITE("&nbsp;<i>Double this</i>");
 	}
 	HTML_CLOSE("p");
@@ -596,12 +596,12 @@ void UseOptions::TestUseOption_routine(void) {
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 						Produce::down(Emit::tree());
-							TEMPORARY_TEXT(N);
+							TEMPORARY_TEXT(N)
 							WRITE_TO(N, "%W option", uo->name);
 							if (uo->minimum_setting_value > 0)
 								WRITE_TO(N, " [%d]", uo->minimum_setting_value);
 							Produce::val_text(Emit::tree(), N);
-							DISCARD_TEXT(N);
+							DISCARD_TEXT(N)
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());

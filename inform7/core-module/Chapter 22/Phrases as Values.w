@@ -140,10 +140,10 @@ case the phrase occurs as a constant but is never explicitly invoked.
 		Phrases::Constants::kind(cphr));
 	Emit::array_iname_entry(RS);
 
-	TEMPORARY_TEXT(name);
+	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "%W", Nouns::nominative(cphr->name));
 	Emit::array_text_entry(name);
-	DISCARD_TEXT(name);
+	DISCARD_TEXT(name)
 
 	Emit::array_end(save);
 
@@ -178,10 +178,10 @@ made above.
 	packaging_state save = Emit::named_array_begin(closure_identifier, K_value);
 	Kinds::RunTime::emit_strong_id(K);
 	Emit::array_iname_entry(rname);
-	TEMPORARY_TEXT(DVT);
+	TEMPORARY_TEXT(DVT)
 	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, K);
 	Emit::array_text_entry(DVT);
-	DISCARD_TEXT(DVT);
+	DISCARD_TEXT(DVT)
 	Emit::array_end(save);
 
 @ And here is the function that refers to:

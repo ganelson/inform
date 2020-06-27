@@ -44,21 +44,21 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 inter_error_message *Inter::Package::new_package_named(inter_bookmark *IBM, text_stream *name, int uniquely,
 	inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
 	if (uniquely) {
-		TEMPORARY_TEXT(mutable);
+		TEMPORARY_TEXT(mutable)
 		WRITE_TO(mutable, "%S", name);
 		inter_package *pack;
 		int N = 1, A = 0;
 		while ((pack = Inter::Packages::by_name(Inter::Bookmarks::package(IBM), mutable)) != NULL) {
-			TEMPORARY_TEXT(TAIL);
+			TEMPORARY_TEXT(TAIL)
 			WRITE_TO(TAIL, "_%d", N++);
 			if (A > 0) Str::truncate(mutable, Str::len(mutable) - A);
 			A = Str::len(TAIL);
 			WRITE_TO(mutable, "%S", TAIL);
 			Str::truncate(mutable, 31);
-			DISCARD_TEXT(TAIL);
+			DISCARD_TEXT(TAIL)
 		}
 		inter_error_message *E = Inter::Package::new_package(IBM, mutable, ptype_name, level, eloc, created);
-		DISCARD_TEXT(mutable);
+		DISCARD_TEXT(mutable)
 		return E;
 	}
 	return Inter::Package::new_package(IBM, name, ptype_name, level, eloc, created);

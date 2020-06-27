@@ -421,10 +421,10 @@ at run-time, so we can't know now how many we will need.
 						Emit::array_numeric_entry(0);
 				}
 				words_used++;
-				TEMPORARY_TEXT(divider);
+				TEMPORARY_TEXT(divider)
 				WRITE_TO(divider, "Exits from: %~I", I);
 				Emit::array_divider(divider);
-				DISCARD_TEXT(divider);
+				DISCARD_TEXT(divider)
 			}
 	}
 	Emit::array_end(save);

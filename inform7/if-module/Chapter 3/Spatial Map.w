@@ -2886,7 +2886,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 		} else {
 			WRITE("; ");
 		}
-		TEMPORARY_TEXT(TEMP);
+		TEMPORARY_TEXT(TEMP)
 		wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(DW));
 		for (int j=0; p[j]; j++) {
 			if (j==0) PUT_TO(TEMP, Characters::toupper(p[j]));
@@ -2899,7 +2899,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 		else WRITE_TO(TEMP, "here");
 		WRITE_TO(TEMP, " is .[=0x000A=]");
 		PasteButtons::paste_text(OUT, TEMP);
-		DISCARD_TEXT(TEMP);
+		DISCARD_TEXT(TEMP)
 		WRITE("&nbsp;%+W", DW);
 	}
 	if (k>0) HTML_CLOSE("p");

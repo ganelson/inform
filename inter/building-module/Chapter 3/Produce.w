@@ -91,10 +91,10 @@ inter_package *Produce::package(inter_tree *I, inter_name *iname, inter_symbol *
 	if (ptype == NULL) internal_error("no package type");
 	inter_t B = Produce::baseline(Packaging::at(I));
 	inter_package *IP = NULL;
-	TEMPORARY_TEXT(hmm);
+	TEMPORARY_TEXT(hmm)
 	WRITE_TO(hmm, "%n", iname);
 	Produce::guard(Inter::Package::new_package_named(Packaging::at(I), hmm, TRUE, ptype, B, NULL, &IP));
-	DISCARD_TEXT(hmm);
+	DISCARD_TEXT(hmm)
 	if (IP) Inter::Bookmarks::set_current_package(Packaging::at(I), IP);
 	return IP;
 }
@@ -104,10 +104,10 @@ void Produce::annotate_symbol_t(inter_symbol *symb, inter_t annot_ID, text_strea
 }
 
 void Produce::annotate_symbol_w(inter_symbol *symb, inter_t annot_ID, wording W) {
-	TEMPORARY_TEXT(temp);
+	TEMPORARY_TEXT(temp)
 	WRITE_TO(temp, "%W", W);
 	Inter::Symbols::annotate_t(Inter::Packages::tree(symb->owning_table->owning_package), symb->owning_table->owning_package, symb, annot_ID, temp);
-	DISCARD_TEXT(temp);
+	DISCARD_TEXT(temp)
 }
 
 void Produce::annotate_symbol_i(inter_symbol *symb, inter_t annot_ID, inter_t V) {
@@ -397,10 +397,10 @@ void Produce::lab(inter_tree *I, inter_symbol *L) {
 
 inter_symbol *Produce::reserve_label(inter_tree *I, text_stream *lname) {
 	if (Str::get_first_char(lname) != '.') {
-		TEMPORARY_TEXT(dotted);
+		TEMPORARY_TEXT(dotted)
 		WRITE_TO(dotted, ".%S", lname);
 		inter_symbol *lab_name = Produce::reserve_label(I, dotted);
-		DISCARD_TEXT(dotted);
+		DISCARD_TEXT(dotted)
 		return lab_name;
 	}
 	inter_symbol *lab_name = Produce::local_exists(I, lname);

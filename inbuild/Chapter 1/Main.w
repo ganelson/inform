@@ -197,7 +197,7 @@ linked_list *Main::list_of_targets(void) {
 }
 
 void Main::add_search_results_as_targets(text_stream *req_text) {	
-	TEMPORARY_TEXT(errors);
+	TEMPORARY_TEXT(errors)
 	inbuild_requirement *req = Requirements::from_text(req_text, errors);
 	if (Str::len(errors) > 0) {
 		Errors::with_text("requirement malformed: %S", errors);
@@ -208,24 +208,24 @@ void Main::add_search_results_as_targets(text_stream *req_text) {
 		LOOP_OVER_LINKED_LIST(R, inbuild_search_result, L)
 			Main::add_target(R->copy);
 	}
-	DISCARD_TEXT(errors);
+	DISCARD_TEXT(errors)
 }
 
 void Main::add_directory_contents_targets(pathname *P) {
 	scan_directory *D = Directories::open(P);
-	TEMPORARY_TEXT(LEAFNAME);
+	TEMPORARY_TEXT(LEAFNAME)
 	while (Directories::next(D, LEAFNAME)) {
-		TEMPORARY_TEXT(FILENAME);
+		TEMPORARY_TEXT(FILENAME)
 		WRITE_TO(FILENAME, "%p%c%S", P, FOLDER_SEPARATOR, LEAFNAME);
 		Main::add_file_or_path_as_target(FILENAME, FALSE);
-		DISCARD_TEXT(FILENAME);
+		DISCARD_TEXT(FILENAME)
 	}
-	DISCARD_TEXT(LEAFNAME);
+	DISCARD_TEXT(LEAFNAME)
 	Directories::close(D);
 }
 
 void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
-	TEMPORARY_TEXT(ext);
+	TEMPORARY_TEXT(ext)
 	int pos = Str::len(arg) - 1, dotpos = -1;
 	while (pos >= 0) {
 		wchar_t c = Str::get_at(arg, pos);
@@ -245,7 +245,7 @@ void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
 	LOOP_OVER(G, inbuild_genre)
 		if (C == NULL)
 			VOID_METHOD_CALL(G, GENRE_CLAIM_AS_COPY_MTID, &C, arg, ext, directory_status);
-	DISCARD_TEXT(ext);
+	DISCARD_TEXT(ext)
 	if (C == NULL) {
 		if (throwing_error) Errors::with_text("unable to identify '%S'", arg);
 		return;

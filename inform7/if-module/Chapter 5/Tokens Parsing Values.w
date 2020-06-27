@@ -238,10 +238,10 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 				}
 				@<Reset word number@>;
 
-				TEMPORARY_TEXT(L);
+				TEMPORARY_TEXT(L)
 				WRITE_TO(L, ".Failed_%d", next_label++);
 				inter_symbol *flab = Produce::reserve_label(Emit::tree(), L);
-				DISCARD_TEXT(L);
+				DISCARD_TEXT(L)
 
 				LOOP_THROUGH_WORDING(k, NW) {
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -249,10 +249,10 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 						Produce::inv_primitive(Emit::tree(), NE_BIP);
 						Produce::down(Emit::tree());
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
-							TEMPORARY_TEXT(W);
+							TEMPORARY_TEXT(W)
 							WRITE_TO(W, "%N", k);
 							Produce::val_dword(Emit::tree(), W);
-							DISCARD_TEXT(W);
+							DISCARD_TEXT(W)
 						Produce::up(Emit::tree());
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());

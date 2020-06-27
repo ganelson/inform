@@ -89,7 +89,7 @@ We shall therefore make few assumptions about it.
 
 =
 void Solution::read_skein_line(text_stream *line, int pass) {
-	TEMPORARY_TEXT(node_id);
+	TEMPORARY_TEXT(node_id)
 	Solution::find_node_ID_in_tag(node_id, line, "item");
 	if (pass == 1) {
 		if (Str::len(node_id) > 0) @<Create a new skein tree node with this node ID@>;
@@ -100,7 +100,7 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 	} else {
 		if (Str::len(node_id) > 0) current_skein_node = Solution::find_node_with_ID(node_id);
 		if (current_skein_node) {
-			TEMPORARY_TEXT(child_node_id);
+			TEMPORARY_TEXT(child_node_id)
 			Solution::find_node_ID_in_tag(child_node_id, line, "child");
 			if (Str::len(child_node_id) > 0) {
 				skein_node *new_child = Solution::find_node_with_ID(child_node_id);
@@ -110,10 +110,10 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 				}
 				@<Make the parent-child relationship@>;
 			}
-			DISCARD_TEXT(child_node_id);
+			DISCARD_TEXT(child_node_id)
 		}
 	}
-	DISCARD_TEXT(node_id);
+	DISCARD_TEXT(node_id)
 }
 
 @ Note that the root is the first knot in the Skein file.
@@ -166,7 +166,7 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 
 =
 void Solution::find_node_ID_in_tag(OUTPUT_STREAM, text_stream *line, char *tag) {
-	TEMPORARY_TEXT(prototype);
+	TEMPORARY_TEXT(prototype)
 	WRITE_TO(prototype, "%c*?<%s nodeId=\"(%c*?)\"%c*", tag);
 	wchar_t prototype_Cs[128];
 	Str::copy_to_wide_string(prototype_Cs, prototype, 128);
@@ -174,25 +174,25 @@ void Solution::find_node_ID_in_tag(OUTPUT_STREAM, text_stream *line, char *tag) 
 	if (Regexp::match(&mr, line, prototype_Cs)) Str::copy(OUT, mr.exp[0]);
 	else Str::clear(OUT);
 	Regexp::dispose_of(&mr);
-	DISCARD_TEXT(prototype);
+	DISCARD_TEXT(prototype)
 }
 
 @ Try to find the text of a particular tag on the line:
 
 =
 int Solution::find_text_of_tag(OUTPUT_STREAM, text_stream *line, char *tag) {
-	TEMPORARY_TEXT(prototype);
+	TEMPORARY_TEXT(prototype)
 	WRITE_TO(prototype, "%c*?>(%c*?)</%s%c*", tag);
 	match_results mr = Regexp::create_mr();
 	wchar_t prototype_Cs[128];
 	Str::copy_to_wide_string(prototype_Cs, prototype, 128);
 	if (Regexp::match(&mr, line, prototype_Cs)) {
-		DISCARD_TEXT(prototype);
+		DISCARD_TEXT(prototype)
 		Str::copy(OUT, mr.exp[0]);
 		Regexp::dispose_of(&mr);
 		return TRUE;
 	}
-	DISCARD_TEXT(prototype);
+	DISCARD_TEXT(prototype)
 	Str::clear(OUT);
 	return FALSE;
 }
@@ -215,13 +215,13 @@ void Solution::undo_XML_escapes_in_string(text_stream *p) {
 	int i = 0, j = 0;
 	while (Str::get_at(p, i)) {
 		if (Str::get_at(p, i) == '&') {
-			TEMPORARY_TEXT(xml_escape);
+			TEMPORARY_TEXT(xml_escape)
 			int k=0;
 			while ((Str::get_at(p, i+k) != 0) && (Str::get_at(p, i+k) != ';'))
 				PUT_TO(xml_escape, Characters::tolower(Str::get_at(p, i + k++)));
 			PUT_TO(xml_escape, Str::get_at(p, i+k));
 			@<We have identified an XML escape@>;
-			DISCARD_TEXT(xml_escape);
+			DISCARD_TEXT(xml_escape)
 		}
 		Str::put_at(p, j++, Str::get_at(p, i++));
 	}

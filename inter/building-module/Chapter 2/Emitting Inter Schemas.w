@@ -155,7 +155,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 
 @<Label@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("label outside code");
-	TEMPORARY_TEXT(L);
+	TEMPORARY_TEXT(L)
 	WRITE_TO(L, ".");
 	for (inter_schema_node *at = isn->child_node; at; at=at->next_node) {
 		for (inter_schema_token *t = at->expression_tokens; t; t=t->next) {
@@ -177,7 +177,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 		}
 	}
 	Produce::place_label(I, Produce::reserve_label(I, L));
-	DISCARD_TEXT(L);
+	DISCARD_TEXT(L)
 
 @<Code block@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("code block in expression");
@@ -515,12 +515,12 @@ inter_symbol *EmitInterSchemas::find_identifier(inter_tree *I, inter_schema_toke
 
 inter_symbol *EmitInterSchemas::find_identifier_text(inter_tree *I, text_stream *name, inter_symbols_table *first_call, inter_symbols_table *second_call) {
 	if (Str::get_at(name, 0) == 0x00A7) {
-		TEMPORARY_TEXT(SR);
+		TEMPORARY_TEXT(SR)
 		Str::copy(SR, name);
 		Str::delete_first_character(SR);
 		Str::delete_last_character(SR);
 		inter_symbol *S = Inter::SymbolsTables::url_name_to_symbol(I, NULL, SR);
-		DISCARD_TEXT(SR);
+		DISCARD_TEXT(SR)
 		if (S) return S;
 	}
 	if (first_call) {

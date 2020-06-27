@@ -493,7 +493,7 @@ void Properties::set_translation(property *prn, wchar_t *t) {
 		return;
 	}
 	Properties::iname(prn);
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	for (int i=0; ((t[i]) && (i<31)); i++) {
 		if ((Characters::isalpha(t[i])) || (Characters::isdigit(t[i])) || (t[i] == '_'))
 			PUT_TO(T, t[i]);
@@ -502,7 +502,7 @@ void Properties::set_translation(property *prn, wchar_t *t) {
 	}
 	Produce::change_translation(prn->prop_iname, T);
 	Hierarchy::make_available(Emit::tree(), prn->prop_iname);
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 	prn->translated = TRUE;
 }
 
@@ -513,7 +513,7 @@ void Properties::set_translation_S(property *prn, text_stream *t) {
 		return;
 	}
 	Properties::iname(prn);
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	LOOP_THROUGH_TEXT(pos, t) {
 		int c = Str::get(pos);
 		if ((isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
@@ -523,7 +523,7 @@ void Properties::set_translation_S(property *prn, text_stream *t) {
 	}
 	Str::truncate(T, 31);
 	Produce::change_translation(prn->prop_iname, T);
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 	prn->translated = TRUE;
 }
 

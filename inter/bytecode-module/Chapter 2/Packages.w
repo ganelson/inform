@@ -273,7 +273,7 @@ inter_package *Inter::Packages::by_name(inter_package *P, text_stream *name) {
 inter_package *Inter::Packages::by_url(inter_tree *I, text_stream *S) {
 	if (Str::get_first_char(S) == '/') {
 		inter_package *at_P = I->root_package;
-		TEMPORARY_TEXT(C);
+		TEMPORARY_TEXT(C)
 		LOOP_THROUGH_TEXT(P, S) {
 			wchar_t c = Str::get(P);
 			if (c == '/') {
@@ -287,7 +287,7 @@ inter_package *Inter::Packages::by_url(inter_tree *I, text_stream *S) {
 			}
 		}
 		inter_package *pack = Inter::Packages::by_name(at_P, C);
-		DISCARD_TEXT(C);
+		DISCARD_TEXT(C)
 		return pack;
 	}
 	return Inter::Packages::by_name(I->root_package, S);

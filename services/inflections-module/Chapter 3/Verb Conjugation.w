@@ -299,18 +299,18 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 		if (vc->vc_conjugates == NULL) {
 			package_request *R =
 				Hierarchy::package(Modules::find(vc->where_vc_created), MVERBS_HAP);
-			TEMPORARY_TEXT(ANT);
-			WRITE_TO(ANT, "%A (modal)", vc->tabulations[ACTIVE_MOOD].vc_text[0][0][2]);
+			TEMPORARY_TEXT(ANT)
+			WRITE_TO(ANT, "%A (modal)", &(vc->tabulations[ACTIVE_MOOD].vc_text[0][0][2]));
 			Hierarchy::markup(R, MVERB_NAME_HMD, ANT);
-			DISCARD_TEXT(ANT);
+			DISCARD_TEXT(ANT)
 			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
 		} else {
 			package_request *R =
 				Verbs::verb_package(vc->vc_conjugates, vc->where_vc_created);
-			TEMPORARY_TEXT(ANT);
-			WRITE_TO(ANT, "to %A", vc->infinitive);
+			TEMPORARY_TEXT(ANT)
+			WRITE_TO(ANT, "to %A", &(vc->infinitive));
 			Hierarchy::markup(R, VERB_NAME_HMD, ANT);
-			DISCARD_TEXT(ANT);
+			DISCARD_TEXT(ANT)
 			vc->vc_iname = Hierarchy::make_iname_in(NONMODAL_CONJUGATION_FN_HL, R);
 		}
 	}
@@ -655,12 +655,12 @@ word_assemblage Conjugation::expand_with_endings(vocabulary_entry *ve,
 				Vocabulary::entry_for_partial_text(p, i+1, Wide::len(p)-1);
 			word_assemblage front_wa = Conjugation::expand_with_endings(front, verb_forms);
 			word_assemblage back_wa = Conjugation::expand_with_endings(back, verb_forms);
-			TEMPORARY_TEXT(TEMP);
+			TEMPORARY_TEXT(TEMP)
 			WRITE_TO(TEMP, "%A", &front_wa);
 			if (p[i] == '~') PUT_TO(TEMP, ' ');
 			WRITE_TO(TEMP, "%A", &back_wa);
 			wording W = Feeds::feed_text(TEMP);
-			DISCARD_TEXT(TEMP);
+			DISCARD_TEXT(TEMP)
 			return WordAssemblages::from_wording(W);
 		}
 
@@ -703,7 +703,7 @@ word_assemblage Conjugation::shorten_with_contractions(word_assemblage wa) {
 		wchar_t *q = Vocabulary::get_exemplar(words[i+1], TRUE);
 		int j = Wide::len(p)-2;
 		if ((j >= 0) && (p[j] == '-') && (p[j+1] == '\'')) {
-			TEMPORARY_TEXT(TEMP);
+			TEMPORARY_TEXT(TEMP)
 			int contract_this = FALSE;
 			@<Decide whether a contraction is needed here@>;
 			if (contract_this) {
@@ -721,7 +721,7 @@ word_assemblage Conjugation::shorten_with_contractions(word_assemblage wa) {
 				wording W = Feeds::feed_text(TEMP);
 				words[i] = Lexer::word(Wordings::first_wn(W));
 			}
-			DISCARD_TEXT(TEMP);
+			DISCARD_TEXT(TEMP)
 		}
 	}
 	return wa;

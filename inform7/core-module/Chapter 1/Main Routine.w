@@ -99,7 +99,7 @@ with a use option, so by default this file will never be written.
 @<Name the telemetry@> =
 	pathname *P = Pathnames::down(Supervisor::transient(), I"Telemetry");
 	if (Pathnames::create_in_file_system(P)) {
-		TEMPORARY_TEXT(leafname_of_telemetry);
+		TEMPORARY_TEXT(leafname_of_telemetry)
 		int this_month = the_present->tm_mon + 1;
 		int this_day = the_present->tm_mday;
 		int this_year = the_present->tm_year + 1900;
@@ -107,7 +107,7 @@ with a use option, so by default this file will never be written.
 			"Telemetry %04d-%02d-%02d.txt", this_year, this_month, this_day);
 		filename *F = Filenames::in(P, leafname_of_telemetry);
 		Telemetry::locate_telemetry_file(F);
-		DISCARD_TEXT(leafname_of_telemetry);
+		DISCARD_TEXT(leafname_of_telemetry)
 	}
 
 @ The compiler is now ready for use. We ask //supervisor// to go ahead and

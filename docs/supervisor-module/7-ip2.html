@@ -185,7 +185,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax"> = </span><a href="7-tm.html#SP5" class="function-link"><span class="function-syntax">ExtensionWebsite::page_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">work</span><span class="plain-syntax">, -1);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leaf</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leaf</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Filenames::write_unextended_leafname</span><span class="plain-syntax">(</span><span class="identifier-syntax">leaf</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-ip2.html#SP2_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Write up the rubric, if any</span><span class="named-paragraph-number">2.2.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-ip2.html#SP2_2_1_5" class="named-paragraph-link"><span class="named-paragraph">Write up the table of contents for the supplied documentation, if any</span><span class="named-paragraph-number">2.2.1.5</span></a></span><span class="plain-syntax">;</span>
@@ -193,7 +193,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Extensions::Files::document_in_detail</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-ip2.html#SP2_2_1_6" class="named-paragraph-link"><span class="named-paragraph">Write up the supplied documentation, if any</span><span class="named-paragraph-number">2.2.1.6</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leaf</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leaf</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_TAG</span><span class="plain-syntax">(</span><span class="string-syntax">"hr"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
@@ -203,10 +203,10 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">inclusion_text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">inclusion_text</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">inclusion_text</span><span class="plain-syntax">, </span><span class="string-syntax">"Include %X.\n\n\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">work</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PasteButtons::paste_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">inclusion_text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">inclusion_text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">inclusion_text</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>

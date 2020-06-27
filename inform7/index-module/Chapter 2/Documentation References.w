@@ -312,7 +312,7 @@ void Index::DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 	for (i=0; p[i]; i++) {
 		if ((p[i] == '*') && (p[i+1] == '=')) {
 			i += 2;
-			TEMPORARY_TEXT(rn);
+			TEMPORARY_TEXT(rn)
 			int j;
 			for (j=0; p[i+j]; j++) {
 				if ((p[i+j] == '=') && (p[i+j+1] == '*')) {
@@ -324,7 +324,7 @@ void Index::DocReferences::doc_fragment_to(OUTPUT_STREAM, text_stream *fn) {
 					PUT_TO(rn, p[i+j]);
 				}
 			}
-			DISCARD_TEXT(rn);
+			DISCARD_TEXT(rn)
 		} else if (tracking) tracking->fragment_length++;
 	}
 

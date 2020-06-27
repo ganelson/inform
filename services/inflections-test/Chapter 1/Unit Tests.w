@@ -32,13 +32,13 @@ void Unit::test_articles(text_stream *arg) {
 		LOOP_THROUGH_WORDING(i, sf->text_read) {
 			if (Lexer::word(i) == PARBREAK_V) continue;
 			wording W = Wordings::one_word(i);
-			TEMPORARY_TEXT(T);
+			TEMPORARY_TEXT(T)
 			WRITE_TO(T, "%W", W);
-			TEMPORARY_TEXT(AT);
+			TEMPORARY_TEXT(AT)
 			ArticleInflection::preface_by_article(AT, T, DefaultLanguage::get(NULL));
 			PRINT("%S --> %S\n", T, AT);
-			DISCARD_TEXT(AT);
-			DISCARD_TEXT(T);
+			DISCARD_TEXT(AT)
+			DISCARD_TEXT(T)
 		}
 	}
 }
@@ -103,13 +103,13 @@ void Unit::test_plurals(text_stream *arg) {
 		LOOP_THROUGH_WORDING(i, sf->text_read) {
 			if (Lexer::word(i) == PARBREAK_V) continue;
 			wording W = Wordings::one_word(i);
-			TEMPORARY_TEXT(G);
+			TEMPORARY_TEXT(G)
 			WRITE_TO(G, "%W", W);
-			TEMPORARY_TEXT(ASAGIG);
+			TEMPORARY_TEXT(ASAGIG)
 			Pluralisation::regular(ASAGIG, G, DefaultLanguage::get(NULL));
 			PRINT("%S --> %S\n", G, ASAGIG);
-			DISCARD_TEXT(ASAGIG);
-			DISCARD_TEXT(G);
+			DISCARD_TEXT(ASAGIG)
+			DISCARD_TEXT(G)
 		}
 	}
 }
@@ -128,11 +128,11 @@ void Unit::test_verbs(text_stream *arg) {
 			wording W = Wordings::one_word(i);
 			if (c++ < 10) {
 				PRINT("Verb %W -->\n", W);
-				TEMPORARY_TEXT(T);
+				TEMPORARY_TEXT(T)
 				Conjugation::test(T, W, DefaultLanguage::get(NULL));
 				Regexp::replace(T, L"%^", L"\n", REP_REPEATING);
 				PRINT("%S\n", T);
-				DISCARD_TEXT(T);
+				DISCARD_TEXT(T)
 			} else {
 				Conjugation::test_participle(STDOUT, W);
 			}

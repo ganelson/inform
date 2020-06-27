@@ -863,10 +863,10 @@ void PL::Parsing::Tokens::General::test_distinguish_visible_property(gpr_kit *gp
 }
 
 void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, property *prn) {
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Distinguishing property %n", Properties::iname(prn));
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 
 	if (Properties::is_either_or(prn)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1004,16 +1004,16 @@ void PL::Parsing::Tokens::General::test_parse_visible_property(gpr_kit *gprk, pa
 int unique_pvp_counter = 0;
 void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 	inference_subject *subj, property *prn, int visibility_level) {
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Parsing property %n", Properties::iname(prn));
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 
 	if (Properties::is_either_or(prn)) {
-		TEMPORARY_TEXT(L);
+		TEMPORARY_TEXT(L)
 		WRITE_TO(L, ".pvp_pass_L_%d", unique_pvp_counter++);
 		inter_symbol *pass_label = Produce::reserve_label(Emit::tree(), L);
-		DISCARD_TEXT(L);
+		DISCARD_TEXT(L)
 
 		PL::Parsing::Tokens::General::parse_visible_either_or(
 			gprk, prn, visibility_level, pass_label);
@@ -1163,10 +1163,10 @@ void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, proper
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
-				TEMPORARY_TEXT(N);
+				TEMPORARY_TEXT(N)
 				WRITE_TO(N, "%N", i);
 				Produce::val_dword(Emit::tree(), N);
-				DISCARD_TEXT(N);
+				DISCARD_TEXT(N)
 			Produce::up(Emit::tree());
 			k++;
 		}

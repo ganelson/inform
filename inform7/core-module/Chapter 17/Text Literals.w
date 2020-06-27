@@ -283,7 +283,7 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 	if (Task::wraps_existing_storyfile()) { /* to prevent trouble when no story file is really being made */
 		Emit::named_string_constant(lt->lt_iname, I"--");
 	} else {
-		TEMPORARY_TEXT(TLT);
+		TEMPORARY_TEXT(TLT)
 		int options = CT_DEQUOTE + CT_EXPAND_APOSTROPHES;
 		if (lt->unescaped) options = CT_DEQUOTE;
 		if (lt->bibliographic_conventions)
@@ -291,7 +291,7 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 		if (lt->unexpanded) options = CT_DEQUOTE;
 		CompiledText::from_wide_string(TLT, Lexer::word_text(lt->lt_position), options);
 		Emit::named_string_constant(lt->lt_iname, TLT);
-		DISCARD_TEXT(TLT);
+		DISCARD_TEXT(TLT)
 	}
 	if (lt->small_block_array_needed) {
 		packaging_state save = Emit::named_array_begin(lt->lt_sba_iname, K_value);
@@ -314,10 +314,10 @@ void Strings::TextLiterals::traverse_lts(literal_text *lt) {
 	packaging_state save = Routines::begin(iname);
 	Produce::inv_primitive(Emit::tree(), BOX_BIP);
 	Produce::down(Emit::tree());
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		CompiledText::bq_from_wide_string(T, Lexer::word_text(lt->lt_position));
 		Produce::val_text(Emit::tree(), T);
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	Produce::up(Emit::tree());
 	Routines::end(save);
 

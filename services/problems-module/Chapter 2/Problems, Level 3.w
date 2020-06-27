@@ -132,18 +132,18 @@ void StandardProblems::nodal_error_fn_S(parse_node_tree *T, parse_node *pn,
 void StandardProblems::nodal_check(parse_node_tree *T, parse_node *pn,
 	node_type_t node_type_required, char *filename, int linenum) {
 	if (pn == NULL) {
-		TEMPORARY_TEXT(internal_message);
+		TEMPORARY_TEXT(internal_message)
 		WRITE_TO(internal_message, "NULL node found where type %S expected",
 			NodeType::get_name(node_type_required));
 		StandardProblems::internal_error_tu_fn_S(T, internal_message, filename, linenum);
-		DISCARD_TEXT(internal_message);
+		DISCARD_TEXT(internal_message)
 	} else if (Node::get_type(pn) != node_type_required) {
-		TEMPORARY_TEXT(internal_message);
+		TEMPORARY_TEXT(internal_message)
 		WRITE_TO(internal_message, "Node of type %S found where type %S expected",
 			NodeType::get_name(Node::get_type(pn)),
 			NodeType::get_name(node_type_required));
 		StandardProblems::nodal_error_fn_S(T, pn, internal_message, filename, linenum);
-		DISCARD_TEXT(internal_message);
+		DISCARD_TEXT(internal_message)
 	}
 }
 
@@ -154,14 +154,14 @@ macro, which invokes the following:
 =
 void StandardProblems::internal_error_on_node_type_fn(parse_node_tree *T,
 	parse_node *pn, char *filename, int linenum) {
-	TEMPORARY_TEXT(internal_message);
+	TEMPORARY_TEXT(internal_message)
 	if (pn == NULL)
 		StandardProblems::internal_error_tu_fn(T, "Unexpected NULL node found",
 			filename, linenum);
 	WRITE_TO(internal_message, "Unexpectedly found node of type %S",
 		NodeType::get_name(Node::get_type(pn)));
 	StandardProblems::nodal_error_fn_S(T, pn, internal_message, filename, linenum);
-	DISCARD_TEXT(internal_message);
+	DISCARD_TEXT(internal_message)
 }
 
 @ The following routines are relics of an era of horrific, primordial upheaval,
@@ -174,12 +174,12 @@ void StandardProblems::s_subtree_error_set_position(parse_node_tree *T, parse_no
 	latest_s_subtree = p;
 }
 void StandardProblems::s_subtree_error(parse_node_tree *T, char *mess) {
-	TEMPORARY_TEXT(internal_message);
+	TEMPORARY_TEXT(internal_message)
 	WRITE_TO(internal_message, "S-subtree error: %s", mess);
 	LOG("%S", internal_message);
 	if (latest_s_subtree) LOG("Applied to the subtree:\n$T", latest_s_subtree);
 	StandardProblems::internal_error_tu_fn_S(T, internal_message, __FILE__, __LINE__);
-	DISCARD_TEXT(internal_message);
+	DISCARD_TEXT(internal_message)
 }
 
 @h Handmade problems.
@@ -287,13 +287,13 @@ void StandardProblems::unlocated_problem_on_file(parse_node_tree *T, SIGIL_ARGUM
 	char *message, filename *F) {
 	ACT_ON_SIGIL
 	do_not_locate_problems = TRUE;
-	TEMPORARY_TEXT(fn);
+	TEMPORARY_TEXT(fn)
 	WRITE_TO(fn, "%f", F);
 	Problems::quote_stream(1, fn);
 	Problems::issue_problem_begin(T, message);
 	Problems::issue_problem_segment(message);
 	Problems::issue_problem_end();
-	DISCARD_TEXT(fn);
+	DISCARD_TEXT(fn)
 	do_not_locate_problems = FALSE;
 }
 

@@ -390,12 +390,12 @@ int Kinds::RunTime::emit_cast_call(kind *from, kind *to, int *down) {
 			(Kinds::FloatingPoint::uses_floating_point(to))) {
 			return TRUE;
 		}
-		TEMPORARY_TEXT(N);
+		TEMPORARY_TEXT(N)
 		WRITE_TO(N, "%S_to_%S",
 			Kinds::Behaviour::get_name_in_template_code(from),
 			Kinds::Behaviour::get_name_in_template_code(to));
 		inter_name *iname = Produce::find_by_name(Emit::tree(), N);
-		DISCARD_TEXT(N);
+		DISCARD_TEXT(N)
 		Produce::inv_call_iname(Emit::tree(), iname);
 		*down = TRUE;
 		Produce::down(Emit::tree());
@@ -592,11 +592,11 @@ compile under Inform 6.
 	rks->make_default = FALSE;
 	rks->default_requested_here = NULL;
 	package_request *PR = Kinds::Behaviour::package(K);
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	Kinds::Textual::write(TEMP, K);
 	wording W = Feeds::feed_text(TEMP);
 	rks->rks_iname = Hierarchy::make_iname_with_memo(KIND_HL, PR, W);
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 	rks->rks_dv_iname = Hierarchy::make_iname_in(DEFAULT_VALUE_HL, PR);
 
 @ It's convenient to combine this system with one which constructs default
@@ -1016,10 +1016,10 @@ inter_name *Kinds::RunTime::assure_iname_exists(kind *K) {
 
 inter_name *Kinds::RunTime::constructed_kind_name(kind *K) {
 	package_request *R2 = Kinds::Behaviour::package(K);
-	TEMPORARY_TEXT(KT);
+	TEMPORARY_TEXT(KT)
 	Kinds::Textual::write(KT, K);
 	wording W = Feeds::feed_text(KT);
-	DISCARD_TEXT(KT);
+	DISCARD_TEXT(KT)
 	int v = -2;
 	if (Kinds::Compare::lt(K, K_object)) v = Kinds::RunTime::I6_classnumber(K);
 	return Hierarchy::make_iname_with_memo_and_value(KIND_CLASS_HL, R2, W, v);
@@ -1067,7 +1067,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
 		if ((Kinds::Behaviour::is_an_enumeration(K)) || (Kinds::Compare::le(K, K_object))) {
-			TEMPORARY_TEXT(ICN);
+			TEMPORARY_TEXT(ICN)
 			WRITE_TO(ICN, "ICOUNT_");
 			Kinds::Textual::write(ICN, K);
 			Str::truncate(ICN, 31);
@@ -1077,7 +1077,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 			}
 			inter_name *iname = Hierarchy::make_iname_with_specific_name(ICOUNT_HL, Emit::main_render_unique(Produce::main_scope(Emit::tree()), ICN), Kinds::Behaviour::package(K));
 			Hierarchy::make_available(Emit::tree(), iname);
-			DISCARD_TEXT(ICN);
+			DISCARD_TEXT(ICN)
 			Emit::named_numeric_constant(iname, (inter_t) Instances::count(K));
 		}
 	}
@@ -1130,10 +1130,10 @@ compilation errors.
 @<Compile I6 printing routine for a vacant but named kind@> =
 	packaging_state save = Routines::begin(printing_rule_name);
 	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "! weak kind ID: %d\n", Kinds::RunTime::weak_id(K));
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_symbol(Emit::tree(), K_value, value_s);
@@ -1176,14 +1176,14 @@ but at present this can't happen.
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 						Produce::down(Emit::tree());
-							TEMPORARY_TEXT(CT);
+							TEMPORARY_TEXT(CT)
 							wording NW = Instances::get_name_in_play(I, FALSE);
 							LOOP_THROUGH_WORDING(k, NW) {
 								CompiledText::from_wide_string(CT, Lexer::word_raw_text(k), CT_RAW);
 								if (k < Wordings::last_wn(NW)) WRITE_TO(CT, " ");
 							}
 							Produce::val_text(Emit::tree(), CT);
-							DISCARD_TEXT(CT);
+							DISCARD_TEXT(CT)
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
@@ -1194,14 +1194,14 @@ but at present this can't happen.
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
-						TEMPORARY_TEXT(DT);
+						TEMPORARY_TEXT(DT)
 						wording W = Kinds::Behaviour::get_name(K, FALSE);
 						WRITE_TO(DT, "<illegal ");
 						if (Wordings::nonempty(W)) WRITE_TO(DT, "%W", W);
 						else WRITE_TO(DT, "value");
 						WRITE_TO(DT, ">");
 						Produce::val_text(Emit::tree(), DT);
-						DISCARD_TEXT(DT);
+						DISCARD_TEXT(DT)
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -1800,10 +1800,10 @@ void Kinds::RunTime::I7_Kind_Name_routine(void) {
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
-						TEMPORARY_TEXT(S);
+						TEMPORARY_TEXT(S)
 						WRITE_TO(S, "%+W", Kinds::Behaviour::get_name(K, FALSE));
 						Produce::val_text(Emit::tree(), S);
-						DISCARD_TEXT(S);
+						DISCARD_TEXT(S)
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());

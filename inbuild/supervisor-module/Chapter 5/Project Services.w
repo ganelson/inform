@@ -73,7 +73,7 @@ but ending |.materials| instead of |.inform|.
 
 =
 pathname *Projects::materialise_pathname(pathname *in, text_stream *leaf) {
-	TEMPORARY_TEXT(mf);
+	TEMPORARY_TEXT(mf)
 	WRITE_TO(mf, "%S", leaf);
 	int i = Str::len(mf)-1;
 	while ((i>0) && (Str::get_at(mf, i) != '.')) i--;
@@ -82,7 +82,7 @@ pathname *Projects::materialise_pathname(pathname *in, text_stream *leaf) {
 		WRITE_TO(mf, ".materials");
 	}
 	pathname *materials = Pathnames::down(in, mf);
-	DISCARD_TEXT(mf);
+	DISCARD_TEXT(mf)
 	return materials;
 }
 
@@ -561,19 +561,19 @@ for a release of a blorbed one.
 	BuildSteps::attach(inf_V, code_generate_using_inter_skill,
 		proj->compile_for_release, VM, NULL, proj->as_copy);
 
-	TEMPORARY_TEXT(story_file_leafname);
+	TEMPORARY_TEXT(story_file_leafname)
 	WRITE_TO(story_file_leafname, "output.%S", TargetVMs::get_unblorbed_extension(VM));
 	filename *unblorbed_F = Filenames::in(build_folder, story_file_leafname);
-	DISCARD_TEXT(story_file_leafname);
+	DISCARD_TEXT(story_file_leafname)
 	proj->unblorbed_vertex = Graphs::file_vertex(unblorbed_F);
 	Graphs::need_this_to_build(proj->unblorbed_vertex, inf_V);
 	BuildSteps::attach(proj->unblorbed_vertex, compile_using_inform6_skill,
 		proj->compile_for_release, VM, NULL, proj->as_copy);
 
-	TEMPORARY_TEXT(story_file_leafname2);
+	TEMPORARY_TEXT(story_file_leafname2)
 	WRITE_TO(story_file_leafname2, "output.%S", TargetVMs::get_blorbed_extension(VM));
 	filename *blorbed_F = Filenames::in(build_folder, story_file_leafname2);
-	DISCARD_TEXT(story_file_leafname2);
+	DISCARD_TEXT(story_file_leafname2)
 	proj->blorbed_vertex = Graphs::file_vertex(blorbed_F);
 	proj->blorbed_vertex->always_build_this = TRUE;
 	Graphs::need_this_to_build(proj->blorbed_vertex, proj->unblorbed_vertex);
@@ -725,10 +725,10 @@ like Basic Inform or Standard Rules; and also any sentences in the
 	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading);
 
 	int wc = lexer_wordcount;
-	TEMPORARY_TEXT(early);
+	TEMPORARY_TEXT(early)
 	Projects::early_source_text(early, proj);
 	if (Str::len(early) > 0) Feeds::feed_text(early);
-	DISCARD_TEXT(early);
+	DISCARD_TEXT(early)
 	inbuild_nest *ext = Supervisor::external();
 	if (ext) OptionsFile::read(
 		Filenames::in(ext->location, I"Options.txt"));

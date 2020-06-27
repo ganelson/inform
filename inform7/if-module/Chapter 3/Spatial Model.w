@@ -1155,11 +1155,11 @@ as a value for |description| from the room class.
 			if (World::Inferences::get_property(inf) == P_description)
 				desc_seen = TRUE;
 		if (desc_seen == FALSE) {
-			TEMPORARY_TEXT(val);
+			TEMPORARY_TEXT(val)
 			WRITE_TO(val, "\"\"");
 			Properties::Valued::assert(P_description, Kinds::Knowledge::as_subject(K_room),
 				Rvalues::from_unescaped_wording(Feeds::feed_text(val)), LIKELY_CE);
-			DISCARD_TEXT(val);
+			DISCARD_TEXT(val)
 		}
 	}
 

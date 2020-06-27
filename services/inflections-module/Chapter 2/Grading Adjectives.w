@@ -14,8 +14,8 @@ The following does the suffixing:
 
 =
 wording Grading::make_comparative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	TEMPORARY_TEXT(comprised);
-	TEMPORARY_TEXT(transformed);
+	TEMPORARY_TEXT(comprised)
+	TEMPORARY_TEXT(transformed)
 	if (*(Lexer::word_text(Wordings::first_wn(W))) == '\"')
 		WRITE_TO(comprised, "some-long-text");
 	else
@@ -31,8 +31,8 @@ wording Grading::make_comparative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 			WordAssemblages::from_wording(PW));
 	PW = WordAssemblages::to_wording(&merged);
 	LOGIF(CONSTRUCTED_PLURALS, "[Comparative of %W is %W]\n", W, PW);
-	DISCARD_TEXT(transformed);
-	DISCARD_TEXT(comprised);
+	DISCARD_TEXT(transformed)
+	DISCARD_TEXT(comprised)
 	return PW;
 }
 
@@ -40,8 +40,8 @@ wording Grading::make_comparative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 
 =
 wording Grading::make_superlative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	TEMPORARY_TEXT(comprised);
-	TEMPORARY_TEXT(transformed);
+	TEMPORARY_TEXT(comprised)
+	TEMPORARY_TEXT(transformed)
 	if (*(Lexer::word_text(Wordings::first_wn(W))) == '\"')
 		WRITE_TO(comprised, "some-long-text");
 	else
@@ -53,8 +53,8 @@ wording Grading::make_superlative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	Inflect::suffix(transformed, comp_trie, comprised);
 	wording PW = Feeds::feed_text(transformed);
 	LOGIF(CONSTRUCTED_PLURALS, "[Superlative of %W is %W]\n", W, PW);
-	DISCARD_TEXT(transformed);
-	DISCARD_TEXT(comprised);
+	DISCARD_TEXT(transformed)
+	DISCARD_TEXT(comprised)
 	return PW;
 }
 
@@ -65,8 +65,8 @@ comparison: for instance, "tallness" for "tall", or "steeliness" for "steely".
 
 =
 wording Grading::make_quiddity(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	TEMPORARY_TEXT(comprised);
-	TEMPORARY_TEXT(transformed);
+	TEMPORARY_TEXT(comprised)
+	TEMPORARY_TEXT(transformed)
 	if (*(Lexer::word_text(Wordings::first_wn(W))) == '\"')
 		WRITE_TO(comprised, "some-long-text");
 	else
@@ -78,7 +78,7 @@ wording Grading::make_quiddity(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	Inflect::suffix(transformed, comp_trie, comprised);
 	wording PW = Feeds::feed_text(transformed);
 	LOGIF(CONSTRUCTED_PLURALS, "[Quiddity of %W is %W]\n", W, PW);
-	DISCARD_TEXT(transformed);
-	DISCARD_TEXT(comprised);
+	DISCARD_TEXT(transformed)
+	DISCARD_TEXT(comprised)
 	return PW;
 }

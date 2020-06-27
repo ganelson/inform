@@ -30,9 +30,9 @@ void Links::create_auxiliary_file(text_stream *fn, text_stream *description, tex
 	auxiliary_file *aux = CREATE(auxiliary_file);
 	aux->description = Str::duplicate(description);
 	aux->aux_subfolder = Str::duplicate(subfolder);
-	TEMPORARY_TEXT(ext);
+	TEMPORARY_TEXT(ext)
 	Links::get_extension_from_textual_filename(ext, fn);
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	Links::get_leafname_from_textual_filename(leaf, fn);
 	if (Str::get_first_char(ext) == '.') {
 		aux->full_filename = Filenames::from_text(fn);
@@ -45,8 +45,8 @@ void Links::create_auxiliary_file(text_stream *fn, text_stream *description, tex
 		aux->format = I"link";
 	}
 	aux->aux_leafname = Str::duplicate(leaf);
-	DISCARD_TEXT(ext);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(ext)
+	DISCARD_TEXT(leaf)
 
 	PRINT("! Auxiliary file: <%S> = <%S>\n", fn, description);
 }
@@ -155,9 +155,9 @@ void Links::request_copy_of_auxiliaries(void) {
 		if (Str::eq(aux->format, I"link")) {
 			if (verbose_mode)
 				PRINT("! COPY <%f> as <%S>\n", aux->full_filename, aux->aux_leafname);
-			TEMPORARY_TEXT(as_text);
+			TEMPORARY_TEXT(as_text)
 			WRITE_TO(as_text, "%f", aux->full_filename);
 			Requests::request_copy(as_text, aux->aux_leafname, aux->aux_subfolder);
-			DISCARD_TEXT(as_text);
+			DISCARD_TEXT(as_text)
 		}
 }

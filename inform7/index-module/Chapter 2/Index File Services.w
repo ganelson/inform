@@ -216,7 +216,7 @@ and text underneath in another of class "headingrubric".
 	HTML_CLOSE("td");
 
 @<End a row of the periodic table@> =
-	TEMPORARY_TEXT(tds);
+	TEMPORARY_TEXT(tds)
 	if (ip == current_index_page) {
 		WRITE_TO(tds, "onclick=\"show_all_elements(); return false;\" ");
 	} else {
@@ -227,7 +227,7 @@ and text underneath in another of class "headingrubric".
 		WRITE_TO(tds, "colspan=\"%d\" ", max_elements - ip->no_elements + 1);
 	WRITE_TO(tds, "style=\"width:100%%\"");
 	HTML_OPEN_WITH("td", "%S", tds);
-	DISCARD_TEXT(tds);
+	DISCARD_TEXT(tds)
 	WRITE("\n");
 
 	HTML_OPEN_WITH("div", "class=\"headingbox\"");
@@ -280,12 +280,12 @@ void Index::index_banner_line(OUTPUT_STREAM, int N, text_stream *sym, text_strea
 	HTML_OPEN_WITH("td", "valign=\"top\" align=\"left\"");
 	HTML_OPEN_WITH("div", "id=\"minibox%d_%d\" class=\"smallbox\"",
 		current_index_page->allocation_id+1, N);
-	TEMPORARY_TEXT(dets);
+	TEMPORARY_TEXT(dets)
 	WRITE_TO(dets, "class=\"symbol\" title=\"%S\" ", name);
 	if (link) WRITE_TO(dets, "href=\"%s\"", link);
 	else WRITE_TO(dets, "href=\"#\" onclick=\"click_element_box('segment%d'); return false;\"", N);
 	HTML_OPEN_WITH("a", "%S", dets);
-	DISCARD_TEXT(dets);
+	DISCARD_TEXT(dets)
 	WRITE("%S", sym);
 	HTML_CLOSE("a");
 	HTML_OPEN_WITH("div", "class=\"indexno\"");
@@ -709,23 +709,23 @@ void Index::explain(OUTPUT_STREAM, text_stream *explanation) {
 				HTML_TAG("br");
 				WRITE("<i>"); italics_open = TRUE; break;
 			case '<': {
-				TEMPORARY_TEXT(link);
+				TEMPORARY_TEXT(link)
 				WRITE("&nbsp;");
 				i++;
 				while ((i<L) && (Str::get_at(explanation, i) != '>'))
 					PUT_TO(link, Str::get_at(explanation, i++));
 				Index::DocReferences::link(OUT, link);
-				DISCARD_TEXT(link);
+				DISCARD_TEXT(link)
 				break;
 			}
 			case '[': {
-				TEMPORARY_TEXT(link);
+				TEMPORARY_TEXT(link)
 				WRITE("&nbsp;");
 				i++;
 				while ((i<L) && (Str::get_at(explanation, i) != '>'))
 					PUT_TO(link, Str::get_at(explanation, i++));
 				Index::below_link(OUT, link);
-				DISCARD_TEXT(link);
+				DISCARD_TEXT(link)
 				break;
 			}
 			default: WRITE("%c", Str::get_at(explanation, i)); break;

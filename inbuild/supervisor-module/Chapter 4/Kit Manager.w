@@ -50,7 +50,7 @@ inform_kit *KitManager::from_copy(inbuild_copy *C) {
 dictionary *kit_copy_cache = NULL;
 inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
 	if (kit_copy_cache == NULL) kit_copy_cache = Dictionaries::new(16, FALSE);
-	TEMPORARY_TEXT(key);
+	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%p", P);
 	inbuild_copy *C = NULL;
 	if (Dictionaries::find(kit_copy_cache, key))
@@ -63,7 +63,7 @@ inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
 		Dictionaries::create(kit_copy_cache, key);
 		Dictionaries::write_value(kit_copy_cache, key, C);
 	}
-	DISCARD_TEXT(key);
+	DISCARD_TEXT(key)
 	return C;
 }
 
@@ -108,7 +108,7 @@ void KitManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	pathname *P = KitManager::path_within_nest(N);
 	scan_directory *D = Directories::open(P);
 	if (D) {
-		TEMPORARY_TEXT(LEAFNAME);
+		TEMPORARY_TEXT(LEAFNAME)
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
 				Str::delete_last_character(LEAFNAME);
@@ -119,7 +119,7 @@ void KitManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 				}
 			}
 		}
-		DISCARD_TEXT(LEAFNAME);
+		DISCARD_TEXT(LEAFNAME)
 		Directories::close(D);
 	}
 }
@@ -130,10 +130,10 @@ we need to |rsync| it.
 
 =
 pathname *KitManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	Editions::write_canonical_leaf(leaf, E);
 	pathname *P = Pathnames::down(KitManager::path_within_nest(N), leaf);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
 	return P;
 }
 
@@ -145,11 +145,11 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
-			TEMPORARY_TEXT(command);
+			TEMPORARY_TEXT(command)
 			WRITE_TO(command, "mkdir -p ");
 			Shell::quote_path(command, dest_kit);
 			WRITE_TO(STDOUT, "%S\n", command);
-			DISCARD_TEXT(command);
+			DISCARD_TEXT(command)
 		} else {
 			Pathnames::create_in_file_system(N->location);
 			Pathnames::create_in_file_system(KitManager::path_within_nest(N));
@@ -157,12 +157,12 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 		}
 	}
 	if (meth->methodology == DRY_RUN_METHODOLOGY) {
-		TEMPORARY_TEXT(command);
+		TEMPORARY_TEXT(command)
 		WRITE_TO(command, "rsync -a --delete ");
 		Shell::quote_path(command, C->location_if_path);
 		Shell::quote_path(command, dest_kit);
 		WRITE_TO(STDOUT, "%S\n", command);
-		DISCARD_TEXT(command);
+		DISCARD_TEXT(command)
 	} else {
 		Pathnames::rsync(C->location_if_path, dest_kit);
 	}

@@ -208,7 +208,7 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 		return;
 	}
 	nlv->nlv_name_translated = TRUE;
-	TEMPORARY_TEXT(name);
+	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "%N", Wordings::first_wn(Node::get_text(p2)));
 	if (Str::eq(name, I"nothing")) {
 		NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_nothing());
@@ -218,7 +218,7 @@ void NonlocalVariables::translates(wording W, parse_node *p2) {
 		NonlocalVariables::set_I6_identifier(nlv, FALSE, NonlocalVariables::nve_from_iname(as_iname));
 		NonlocalVariables::set_I6_identifier(nlv, TRUE, NonlocalVariables::nve_from_iname(as_iname));
 	}
-	DISCARD_TEXT(name);
+	DISCARD_TEXT(name)
 	LOGIF(VARIABLE_CREATIONS,
 		"Translated variable: $Z as %N\n", nlv, Wordings::first_wn(Node::get_text(p2)));
 }
@@ -841,10 +841,10 @@ void NonlocalVariables::index_single(OUTPUT_STREAM, nonlocal_variable *nlv) {
 	WRITE("%+W", nlv->name);
 	Index::link(OUT, Wordings::first_wn(nlv->name));
 	if (Wordings::nonempty(nlv->var_documentation_symbol)) {
-		TEMPORARY_TEXT(ixt);
+		TEMPORARY_TEXT(ixt)
 		WRITE_TO(ixt, "%+W", Wordings::one_word(Wordings::first_wn(nlv->var_documentation_symbol)));
 		Index::DocReferences::link(OUT, ixt);
-		DISCARD_TEXT(ixt);
+		DISCARD_TEXT(ixt)
 	}
 	WRITE(" - <i>");
 	Kinds::Textual::write(OUT, nlv->nlv_kind);

@@ -85,14 +85,14 @@ and set the "story title" and "story author" variables accordingly.
 =
 void PL::Bibliographic::bibliographic_data(parse_node *PN) {
 	inbuild_edition *edn = Task::edition();
-	TEMPORARY_TEXT(T);
-	TEMPORARY_TEXT(A);
+	TEMPORARY_TEXT(T)
+	TEMPORARY_TEXT(A)
 	WRITE_TO(T, "\"%S\" ", edn->work->title);
 	WRITE_TO(A, "\"%S\" ", edn->work->author_name);
 	wording TW = Feeds::feed_text(T);
 	wording AW = Feeds::feed_text(A);
-	DISCARD_TEXT(T);
-	DISCARD_TEXT(A);
+	DISCARD_TEXT(T)
+	DISCARD_TEXT(A)
 
 	if ((story_title_VAR) && (story_author_VAR)) {
 		parse_node *the_title;
@@ -122,12 +122,12 @@ int PL::Bibliographic::story_author_is(text_stream *p) {
 		parse_node *spec = NonlocalVariables::get_initial_value(story_author_VAR);
 		Node::set_kind_of_value(spec, K_text);
 		int result = FALSE;
-		TEMPORARY_TEXT(TEMP);
+		TEMPORARY_TEXT(TEMP)
 		wording W = Node::get_text(spec);
 		int w1 = Wordings::first_wn(W);
 		PL::Bibliographic::compile_bibliographic_text(TEMP, Lexer::word_text(w1));
 		if (Str::eq(TEMP, p)) result = TRUE;
-		DISCARD_TEXT(TEMP);
+		DISCARD_TEXT(TEMP)
 		return result;
 	}
 	return FALSE;
@@ -268,12 +268,12 @@ should be able to fake the date-stamp with dates of their own choosing.
 
 @<Compile the I6 serial number, based on the date@> =
 	inter_name *iname = Hierarchy::find(SERIAL_HL);
-	TEMPORARY_TEXT(SN);
+	TEMPORARY_TEXT(SN)
 	int year_digits = (the_present->tm_year) % 100;
 	WRITE_TO(SN, "%02d%02d%02d",
 		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
 	Emit::named_text_constant(iname, SN);
-	DISCARD_TEXT(SN);
+	DISCARD_TEXT(SN)
 	Hierarchy::make_available(Emit::tree(), iname);
 
 @ The Library Card is part of the Contents index, and is intended as a
@@ -290,19 +290,19 @@ void PL::Bibliographic::index_library_card(OUTPUT_STREAM) {
 	PL::Bibliographic::library_card_entry(OUT, "Story headline", story_headline_VAR, I"An Interactive Fiction");
 	PL::Bibliographic::library_card_entry(OUT, "Story genre", story_genre_VAR, I"Fiction");
 	if (episode_number >= 0) {
-		TEMPORARY_TEXT(episode_text);
+		TEMPORARY_TEXT(episode_text)
 		WRITE_TO(episode_text, "%d of %w", episode_number, series_name);
 		PL::Bibliographic::library_card_entry(OUT, "Episode", NULL, episode_text);
-		DISCARD_TEXT(episode_text);
+		DISCARD_TEXT(episode_text)
 	}
 	PL::Bibliographic::library_card_entry(OUT, "Release number", story_release_number_VAR, I"1");
 	PL::Bibliographic::library_card_entry(OUT, "Story creation year", story_creation_year_VAR, I"(This year)");
-	TEMPORARY_TEXT(lang);
+	TEMPORARY_TEXT(lang)
 	inform_language *L = Projects::get_language_of_play(Task::project());
 	if (L == NULL) WRITE_TO(lang, "English");
 	else WRITE_TO(lang, "%X", L->as_copy->edition->work);
 	PL::Bibliographic::library_card_entry(OUT, "Language of play", NULL, lang);
-	DISCARD_TEXT(lang);
+	DISCARD_TEXT(lang)
 	PL::Bibliographic::library_card_entry(OUT, "IFID number", NULL, PL::Bibliographic::IFID::read_uuid());
 	PL::Bibliographic::library_card_entry(OUT, "Story description", story_description_VAR, I"None");
 	HTML::end_html_table(OUT);

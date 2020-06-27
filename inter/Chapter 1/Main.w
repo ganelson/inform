@@ -22,10 +22,10 @@ void Main::add_pipeline_variable(text_stream *name, text_stream *value) {
 	Str::copy(Dictionaries::create_text(pipeline_vars, name), value);
 }
 void Main::add_pipeline_variable_from_filename(text_stream *name, filename *F) {
-	TEMPORARY_TEXT(fullname);
+	TEMPORARY_TEXT(fullname)
 	WRITE_TO(fullname, "%f", F);
 	Main::add_pipeline_variable(name, fullname);
-	DISCARD_TEXT(fullname);
+	DISCARD_TEXT(fullname)
 }
 
 @h Main routine.

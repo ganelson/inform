@@ -7,8 +7,8 @@ For example, "turning away" to "turned away".
 
 =
 wording PastParticiples::pasturise_wording(wording W) {
-	TEMPORARY_TEXT(pasturised);
-	TEMPORARY_TEXT(from);
+	TEMPORARY_TEXT(pasturised)
+	TEMPORARY_TEXT(from)
 	feed_t id = Feeds::begin();
 	LOOP_THROUGH_WORDING(i, W) {
 		WRITE_TO(from, "%W", Wordings::one_word(i));
@@ -24,8 +24,8 @@ wording PastParticiples::pasturise_wording(wording W) {
 	}
 	wording PLW = Feeds::end(id);
 	LOGIF(CONSTRUCTED_PAST_PARTICIPLES, "[Past participle of %W is %W]\n", W, PLW);
-	DISCARD_TEXT(from);
-	DISCARD_TEXT(pasturised);
+	DISCARD_TEXT(from)
+	DISCARD_TEXT(pasturised)
 	return PLW;
 }
 

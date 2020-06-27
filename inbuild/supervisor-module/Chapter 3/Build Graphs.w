@@ -145,21 +145,21 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
 	if (following_build_edge == FALSE) WRITE("--use---> ");
 	Graphs::describe_vertex(OUT, V);
 	WRITE(" ");
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	switch (V->type) {
 		case COPY_VERTEX: Copies::write_copy(T, V->as_copy); break;
 		case REQUIREMENT_VERTEX: Requirements::write(T, V->as_requirement); break;
 		case FILE_VERTEX: WRITE("%f", V->as_file); break;
 	}
-	TEMPORARY_TEXT(S);
+	TEMPORARY_TEXT(S)
 	WRITE_TO(S, "%p", stem);
 	if (Str::prefix_eq(T, S, Str::len(S))) {
 		WRITE("... "); Str::substr(OUT, Str::at(T, Str::len(S)), Str::end(T));
 	} else {
 		WRITE("%S", T);
 	}
-	DISCARD_TEXT(S);
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(S)
+	DISCARD_TEXT(T)
 	if (V->last_described_in_generation == description_round) { WRITE(" q.v.\n"); return; }
 	V->last_described_in_generation = description_round;
 	WRITE("\n");
@@ -296,8 +296,8 @@ to |N| if it's already there; but that is difficult to detect.
 
 	pathname *P = C->location_if_path;
 	if (C->location_if_file) P = Filenames::up(C->location_if_file);
-	TEMPORARY_TEXT(nl);
-	TEMPORARY_TEXT(cl);
+	TEMPORARY_TEXT(nl)
+	TEMPORARY_TEXT(cl)
 	WRITE_TO(nl, "%p/", N->location);
 	WRITE_TO(cl, "%p/", P);
 	if (Str::prefix_eq(cl, nl, Str::len(nl))) {
@@ -306,5 +306,5 @@ to |N| if it's already there; but that is difficult to detect.
 		WRITE(" -- archiving\n");
 		Copies::copy_to(C, N, TRUE, BM);
 	}
-	DISCARD_TEXT(nl);
-	DISCARD_TEXT(cl);
+	DISCARD_TEXT(nl)
+	DISCARD_TEXT(cl)

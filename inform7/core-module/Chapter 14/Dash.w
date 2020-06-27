@@ -1770,11 +1770,11 @@ extensions).
 	if (ph) {
 		wording NW = ph->ph_documentation_symbol;
 		if (Wordings::nonempty(NW)) {
-			TEMPORARY_TEXT(pds);
+			TEMPORARY_TEXT(pds)
 			WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(NW)));
 			Index::DocReferences::doc_mark_used(pds,
 				Wordings::first_wn(Node::get_text(inv)));
-			DISCARD_TEXT(pds);
+			DISCARD_TEXT(pds)
 		}
 	}
 
@@ -3420,10 +3420,10 @@ int verbose_checking_state = FALSE;
 
 void Dash::tracing_phrases(wchar_t *text) {
 	if ((text) && (text[0])) {
-		TEMPORARY_TEXT(LT);
+		TEMPORARY_TEXT(LT)
 		WRITE_TO(LT, "%w", text);
 		Log::set_aspect_from_command_line(LT, FALSE);
-		DISCARD_TEXT(LT);
+		DISCARD_TEXT(LT)
 		verbose_checking_state = TRUE;
 	} else {
 		verbose_checking_state = (verbose_checking_state)?FALSE:TRUE;

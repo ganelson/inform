@@ -91,10 +91,10 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 			if (Str::eq(mr.exp[1], cgt->target_name))
 				ST->target_argument = cgt;
 		if (ST->target_argument == NULL) {
-			TEMPORARY_TEXT(ERR);
+			TEMPORARY_TEXT(ERR)
 			WRITE_TO(ERR, "no such code generation format as '%S'\n", mr.exp[1]);
 			Errors::in_text_file_S(ERR, tfp);
-			DISCARD_TEXT(ERR);
+			DISCARD_TEXT(ERR)
 			return NULL;
 		}
 		ST->step_argument = CodeGen::Pipeline::read_parameter(mr.exp[2], D, tfp);
@@ -122,10 +122,10 @@ pipeline_step *CodeGen::Pipeline::read_step(text_stream *step, dictionary *D,
 		if (Str::eq(step, stage->stage_name))
 			ST->step_stage = stage;
 	if (ST->step_stage == NULL) {
-		TEMPORARY_TEXT(ERR);
+		TEMPORARY_TEXT(ERR)
 		WRITE_TO(ERR, "no such stage as '%S'\n", step);
 		Errors::in_text_file_S(ERR, tfp);
-		DISCARD_TEXT(ERR);
+		DISCARD_TEXT(ERR)
 		return NULL;
 	}
 	if (ST->step_stage->takes_repository) {
@@ -149,10 +149,10 @@ text_stream *CodeGen::Pipeline::read_parameter(text_stream *from, dictionary *D,
 	if (Str::get_first_char(from) == '*') {
 		text_stream *find = Dictionaries::get_text(D, from);
 		if (find) return Str::duplicate(find);
-		TEMPORARY_TEXT(ERR);
+		TEMPORARY_TEXT(ERR)
 		WRITE_TO(ERR, "no such pipeline variable as '%S'\n", from);
 		Errors::in_text_file_S(ERR, tfp);
-		DISCARD_TEXT(ERR);
+		DISCARD_TEXT(ERR)
 	}
 	return Str::duplicate(from);
 }
@@ -209,7 +209,7 @@ codegen_pipeline *CodeGen::Pipeline::parse(text_stream *instructions, dictionary
 
 void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instructions,
 	text_file_position *tfp) {
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	LOOP_THROUGH_TEXT(P, instructions)
 		if (Characters::is_babel_whitespace(Str::get(P)))
 			PUT_TO(T, ' ');
@@ -228,7 +228,7 @@ void CodeGen::Pipeline::parse_into(codegen_pipeline *S, text_stream *instruction
 		else S->erroneous = TRUE;
 	}
 	Regexp::dispose_of(&mr);
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 }
 
 void CodeGen::Pipeline::set_repository(codegen_pipeline *S, inter_tree *I) {
@@ -272,13 +272,13 @@ void CodeGen::Pipeline::run(pathname *P, codegen_pipeline *S, linked_list *PP,
 			Time::stop_stopwatch(prep_timer);
 
 			int skip_step = FALSE;
-			TEMPORARY_TEXT(STAGE_NAME);
+			TEMPORARY_TEXT(STAGE_NAME)
 			WRITE_TO(STAGE_NAME, "inter step %d/%d: ", ++step_count, step_total);
 			CodeGen::Pipeline::write_step(STAGE_NAME, step);
 			Log::new_stage(STAGE_NAME);
 			stopwatch_timer *step_timer =
 				Time::start_stopwatch(pipeline_timer, STAGE_NAME);
-			DISCARD_TEXT(STAGE_NAME);
+			DISCARD_TEXT(STAGE_NAME)
 
 
 			if ((step->step_stage->stage_arg == FILE_STAGE_ARG) ||

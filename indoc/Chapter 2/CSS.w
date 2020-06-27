@@ -78,7 +78,7 @@ There's one CSS file for each volume.
 void CSS::write_CSS_files(filename *from) {
 	volume *V;
 	LOOP_OVER(V, volume) {
-		TEMPORARY_TEXT(leafname);
+		TEMPORARY_TEXT(leafname)
 		WRITE_TO(leafname, "indoc");
 		if (no_volumes > 1) WRITE_TO(leafname, "_%S", V->vol_abbrev);
 		WRITE_TO(leafname, ".css");
@@ -152,11 +152,11 @@ all CSS files, but here we know that |base.css| is tidily written.
 	Regexp::dispose_of(&mr);
 
 @<Add the new CSS lines supplied@> =
-	TEMPORARY_TEXT(want);
+	TEMPORARY_TEXT(want)
 	Str::copy(want, TD->css_tweak);
 	CSS::expand_IMAGES(want);
 	WRITE("%S", want);
-	DISCARD_TEXT(want);
+	DISCARD_TEXT(want)
 	chs->this_style_tweaked = TRUE;
 	TD->css_tweaked = TRUE;
 	if (TD->css_plus > 0)
@@ -184,7 +184,7 @@ all CSS files, but here we know that |base.css| is tidily written.
 			text_stream *tag = TD->css_style;
 			CSS::alert_CSS_change(I"Adding", tag, V);
 			WRITE("%S {\n", tag);
-			TEMPORARY_TEXT(expanded);
+			TEMPORARY_TEXT(expanded)
 			Str::copy(expanded, TD->css_tweak);
 			CSS::expand_IMAGES(expanded);
 			WRITE("%S}\n", expanded);
@@ -197,13 +197,13 @@ all CSS files, but here we know that |base.css| is tidily written.
 	LOOP_OVER(TD, CSS_tweak_data) {
 		if ((TD->within_volume == V) && (TD->css_tweaked == FALSE)) {
 			text_stream *tag = TD->css_style;
-			TEMPORARY_TEXT(err);
+			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "CSS modification had no effect: failed to ");
 			if (TD->css_plus > 0) WRITE_TO(err, "augment");
 			else WRITE_TO(err, "replace");
 			WRITE_TO(err, " the style \"%S\"", tag);
 			Errors::in_text_file_S(err, NULL);
-			DISCARD_TEXT(err);
+			DISCARD_TEXT(err)
 		}
 	}
 
@@ -269,7 +269,7 @@ void CSS::make_regex_safe(text_stream *text) {
 
 =
 void CSS::expand_spannotations(text_stream *text, int purpose) {
-	TEMPORARY_TEXT(modified);
+	TEMPORARY_TEXT(modified)
 	int changes = 0;
 	for (int i=0, L = Str::len(text); i<L; i++) {
 		int claimed = FALSE;
@@ -300,5 +300,5 @@ void CSS::expand_spannotations(text_stream *text, int purpose) {
 			PUT_TO(modified, Str::get_at(text, i));
 	}
 	if (changes > 0) Str::copy(text, modified);
-	DISCARD_TEXT(modified);
+	DISCARD_TEXT(modified)
 }

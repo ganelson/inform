@@ -761,14 +761,14 @@ There are 15 possibilities, and their icons are named as the following shows:
 	if (bits == 0)
 		PL::HTMLMap::index_room_square(OUT, room_grid[ROOM_GRID_POS(P)], pass);
 	else {
-		TEMPORARY_TEXT(icon_name);
+		TEMPORARY_TEXT(icon_name)
 		WRITE_TO(icon_name, "long");
 		if (bits & LONGEW_MAPBIT) WRITE_TO(icon_name, "_ew");
 		if (bits & LONGNS_MAPBIT) WRITE_TO(icon_name, "_ns");
 		if (bits & LONGSWNE_MAPBIT) WRITE_TO(icon_name, "_swne");
 		if (bits & LONGNWSE_MAPBIT) WRITE_TO(icon_name, "_nwse");
 		PL::HTMLMap::plot_map_icon(OUT, icon_name);
-		DISCARD_TEXT(icon_name);
+		DISCARD_TEXT(icon_name)
 	}
 	HTML_CLOSE("td");
 
@@ -857,8 +857,8 @@ void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i
 @<There's something in this map cell@> =
 	int exit = exit_grid[ICON_GRID_POS(P, i1, i2)];
 
-	TEMPORARY_TEXT(icon_name);
-	TEMPORARY_TEXT(tool_tip);
+	TEMPORARY_TEXT(icon_name)
+	TEMPORARY_TEXT(tool_tip)
 
 	@<Compose the icon name for this exit@>;
 	@<Compose a tool tip for this exit icon@>;
@@ -866,8 +866,8 @@ void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i
 	if (Str::len(tool_tip) > 0) PL::HTMLMap::plot_map_icon_with_tip(OUT, icon_name, tool_tip);
 	else PL::HTMLMap::plot_map_icon(OUT, icon_name);
 
-	DISCARD_TEXT(icon_name);
-	DISCARD_TEXT(tool_tip);
+	DISCARD_TEXT(icon_name)
+	DISCARD_TEXT(tool_tip)
 
 @<Compose the icon name for this exit@> =
 	char *clue = PL::SpatialMap::find_icon_label(exit);
@@ -932,7 +932,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
 		HTML_OPEN("tr");
 		HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
 			PF_I(map, I)->world_index_colour);
-		TEMPORARY_TEXT(col);
+		TEMPORARY_TEXT(col)
 		if (PF_I(map, I)->world_index_text_colour)
 			WRITE_TO(col, "%w", PF_I(map, I)->world_index_text_colour);
 		else
@@ -944,7 +944,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
 		HTML_CLOSE("tr");
 		HTML_CLOSE("table");
 		WRITE("\n");
-		DISCARD_TEXT(col);
+		DISCARD_TEXT(col)
 	}
 }
 
@@ -959,7 +959,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
 		HTML::begin_colour(OUT, col);
 	}
 	if ((pass == 1) && (I == benchmark_room)) HTML_OPEN("b");
-	TEMPORARY_TEXT(abbrev);
+	TEMPORARY_TEXT(abbrev)
 	@<Work out the abbreviation for this room's name@>;
 	#ifdef HTML_MAP_FONT_SIZE
 	HTML_OPEN_WITH("span", "style=\"font-size:%dpx;\"", HTML_MAP_FONT_SIZE);
@@ -971,7 +971,7 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
 	#endif
 	if ((pass == 1) && (I == benchmark_room)) HTML_CLOSE("b");
 	if (pass == 1) { HTML::end_colour(OUT); HTML_CLOSE("a"); }
-	DISCARD_TEXT(abbrev);
+	DISCARD_TEXT(abbrev)
 
 @ When names are abbreviated for use on the World Index map (for instance,
 "Marble Hallway" becomes "MH") each word is tested against the following

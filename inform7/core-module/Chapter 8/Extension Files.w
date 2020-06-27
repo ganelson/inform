@@ -147,7 +147,7 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	packaging_state save = Routines::begin(iname);
 	inform_extension *E;
 	LOOP_OVER(E, inform_extension) {
-		TEMPORARY_TEXT(the_author_name);
+		TEMPORARY_TEXT(the_author_name)
 		WRITE_TO(the_author_name, "%S", E->as_copy->edition->work->author_name);
 		int self_penned = FALSE;
 		#ifdef IF_MODULE
@@ -156,15 +156,15 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 		if (((E == NULL) || (E->authorial_modesty == FALSE)) && /* if (1) extension doesn't ask to be modest */
 			((general_authorial_modesty == FALSE) || /* and (2) author doesn't ask to be modest, or... */
 			(self_penned == FALSE))) { /* ...didn't write this extension */
-				TEMPORARY_TEXT(C);
+				TEMPORARY_TEXT(C)
 				Extensions::Files::credit_ef(C, E, TRUE); /* then we award a credit */
 				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_text(Emit::tree(), C);
 				Produce::up(Emit::tree());
-				DISCARD_TEXT(C);
+				DISCARD_TEXT(C)
 			}
-		DISCARD_TEXT(the_author_name);
+		DISCARD_TEXT(the_author_name)
 	}
 	Routines::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
@@ -172,13 +172,13 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 	iname = Hierarchy::find(SHOWFULLEXTENSIONVERSIONS_HL);
 	save = Routines::begin(iname);
 	LOOP_OVER(E, inform_extension) {
-		TEMPORARY_TEXT(C);
+		TEMPORARY_TEXT(C)
 		Extensions::Files::credit_ef(C, E, TRUE);
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), C);
 		Produce::up(Emit::tree());
-		DISCARD_TEXT(C);
+		DISCARD_TEXT(C)
 	}
 	Routines::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
@@ -196,13 +196,13 @@ void Extensions::Files::ShowExtensionVersions_routine(void) {
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
-				TEMPORARY_TEXT(C);
+				TEMPORARY_TEXT(C)
 				Extensions::Files::credit_ef(C, E, FALSE);
 				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_text(Emit::tree(), C);
 				Produce::up(Emit::tree());
-				DISCARD_TEXT(C);
+				DISCARD_TEXT(C)
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
@@ -362,14 +362,14 @@ void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 			if (Lexer::file_of_origin(
 				Wordings::first_wn(Node::get_text(Instances::get_creating_sentence(I))))
 					== E->read_into_file) {
-				TEMPORARY_TEXT(name_of_its_kind);
+				TEMPORARY_TEXT(name_of_its_kind)
 				kind *k = Instances::to_kind(I);
 				wording W = Kinds::Behaviour::get_name(k, FALSE);
 				WRITE_TO(name_of_its_kind, "%+W", W);
 				kc = Extensions::Files::document_headword(OUT, kc, E,
 					"Physical creations", name_of_its_kind, OW);
 				WRITE(" (a %S)", name_of_its_kind);
-				DISCARD_TEXT(name_of_its_kind);
+				DISCARD_TEXT(name_of_its_kind)
 			}
 		}
 	}

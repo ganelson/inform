@@ -36,7 +36,7 @@ void Properties::SameRelations::REL_create_second_stock(void) {
 			inter_name *i6_pname = Properties::iname(prn);
 			@<Work out the name for the same-property-value-as relation@>;
 
-			TEMPORARY_TEXT(relname);
+			TEMPORARY_TEXT(relname)
 			WRITE_TO(relname, "%V", rel_name);
 			binary_predicate *bp = BinaryPredicates::make_pair(PROPERTY_SAME_KBP,
 				BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
@@ -44,7 +44,7 @@ void Properties::SameRelations::REL_create_second_stock(void) {
 				Calculus::Schemas::new("*1.%n = *2.%n", i6_pname, i6_pname),
 				Calculus::Schemas::new("*1.%n == *2.%n", i6_pname, i6_pname),
 				WordAssemblages::lit_1(rel_name));
-			DISCARD_TEXT(relname);
+			DISCARD_TEXT(relname)
 			bp->same_property = prn;
 			Properties::SameRelations::register_same_property_as(bp, Properties::get_name(prn));
 		}
@@ -80,13 +80,13 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 |MAX_WORD_LENGTH| or overflow our storage for a debugging-log name.
 
 @<Work out the name for the same-property-value-as relation@> =
-	TEMPORARY_TEXT(i7_name);
+	TEMPORARY_TEXT(i7_name)
 	WRITE_TO(i7_name, "same-%<W-as", prn->name);
 	LOOP_THROUGH_TEXT(pos, i7_name)
 		if (Str::get(pos) == ' ') Str::put(pos, '-');
 	wording I7W = Feeds::feed_text_expanding_strings(i7_name);
 	rel_name = Lexer::word(Wordings::first_wn(I7W));
-	DISCARD_TEXT(i7_name);
+	DISCARD_TEXT(i7_name)
 
 @h Typechecking.
 We just let the standard machinery do its work.

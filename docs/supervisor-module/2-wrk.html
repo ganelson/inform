@@ -294,7 +294,7 @@ each extension's page is generated from its <span class="extract"><span class="e
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Works::begin_extension_link</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Works::begin_extension_link</span></span>:<br/>Index Pages - <a href="7-ip.html#SP1_1_2_1_6_4_1">&#167;1.1.2.1.6.4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_work</span><span class="plain-syntax"> *</span><span class="identifier-syntax">work</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rubric</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">, </span><span class="string-syntax">"href='inform:</span><span class="comment-syntax">Extensions/Extensions/");</span>
 <span class="string-syntax">    Works::escape_apostrophes(link, work-&gt;author_name);</span>
 <span class="string-syntax">    WRITE_TO(link, "</span><span class="plain-syntax">/</span><span class="string-syntax">");</span>
@@ -304,7 +304,7 @@ each extension's page is generated from its <span class="extract"><span class="e
 <span class="character-syntax">    else WRITE_TO(link, "title=\"%X\" ", work);</span>
 <span class="character-syntax">    WRITE_TO(link, "style=\"text-decoration: none\"");</span>
 <span class="character-syntax">    HTML_OPEN_WITH("a", "%S", link);</span>
-<span class="character-syntax">    DISCARD_TEXT(link);</span>
+<span class="character-syntax">    DISCARD_TEXT(link)</span>
 <span class="character-syntax">}</span>
 
 <span class="character-syntax">void Works::escape_apostrophes(OUTPUT_STREAM, text_stream *S) {</span>

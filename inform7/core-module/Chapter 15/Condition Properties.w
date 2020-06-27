@@ -121,10 +121,10 @@ nameless subjects.)
 	else Feeds::feed_C_string(L" nameless ");
 	Feeds::feed_C_string(L" condition ");
 	if (ct > 0) {
-		TEMPORARY_TEXT(numb);
+		TEMPORARY_TEXT(numb)
 		WRITE_TO(numb, " %d ", ct+1);
 		Feeds::feed_text(numb);
-		DISCARD_TEXT(numb);
+		DISCARD_TEXT(numb)
 	}
 	W = Feeds::end(id);
 

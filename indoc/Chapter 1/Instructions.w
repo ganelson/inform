@@ -295,8 +295,8 @@ which reads:
 @<Act on a volume creation@> =
 	@<Disallow this in a specific target@>;
 	text_stream *title = mr.exp[0];
-	TEMPORARY_TEXT(file);
-	TEMPORARY_TEXT(abbrev);
+	TEMPORARY_TEXT(file)
+	TEMPORARY_TEXT(abbrev)
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, title, L"(%c+?) *= *(%c+?)")) { /* the optional filename syntax */
 		Str::copy(title, mr2.exp[0]); Str::copy(file, mr2.exp[1]);
@@ -307,8 +307,8 @@ which reads:
 		Str::copy(title, mr2.exp[0]); Str::copy(abbrev, mr2.exp[1]);
 	}
 	Scanner::create_volume(settings->book_folder, file, title, abbrev);
-	DISCARD_TEXT(file);
-	DISCARD_TEXT(abbrev);
+	DISCARD_TEXT(file)
+	DISCARD_TEXT(abbrev)
 	Regexp::dispose_of(&mr2);
 
 @<Act on a CSS tweak@> =
@@ -331,18 +331,18 @@ which reads:
 		if (Regexp::match(&mr2, tweak, L"(%c+?) *{ *")) {
 			int plus = 0;
 			text_stream *tag = mr2.exp[0];
-			TEMPORARY_TEXT(want);
-			TEMPORARY_TEXT(ncl);
+			TEMPORARY_TEXT(want)
+			TEMPORARY_TEXT(ncl)
 			while ((TextFiles::read_line(ncl, FALSE, tfp)), (Str::len(ncl) > 0)) {
 				Str::trim_white_space(ncl);
 				if (Regexp::match(&mr3, ncl, L" *} *")) break;
 				WRITE_TO(want, "%S\n", ncl);
 			}
-			DISCARD_TEXT(ncl);
+			DISCARD_TEXT(ncl)
 			if (Regexp::match(&mr3, tag, L"(%c*?) *%+%+ *")) { plus = 2; tag = mr3.exp[0]; }
 			else if (Regexp::match(&mr3, tag, L"(%c*?) *%+ *")) { plus = 1; tag = mr3.exp[0]; }
 			CSS::request_css_tweak(act_on, tag, want, plus);
-			DISCARD_TEXT(want);
+			DISCARD_TEXT(want)
 		} else Errors::in_text_file("bad CSS tweaking syntax", tfp);
 	}
 	Regexp::dispose_of(&mr2);
@@ -381,12 +381,12 @@ taste). In a multiple-line value, each line is terminated with a newline.
 	if (Str::eq(val, I"{")) {
 		Str::clear(val);
 		match_results mr2 = Regexp::create_mr();
-		TEMPORARY_TEXT(ncl);
+		TEMPORARY_TEXT(ncl)
 		while ((TextFiles::read_line(ncl, FALSE, tfp)), (Str::len(ncl) > 0)) {
 			if (Regexp::match(&mr2, ncl, L" *} *")) break;
 			WRITE_TO(val, "%S\n", ncl);
 		}
-		DISCARD_TEXT(ncl);
+		DISCARD_TEXT(ncl)
 		Regexp::dispose_of(&mr2);
 	}
 
@@ -530,18 +530,18 @@ pathname *Instructions::set_path(text_stream *val, settings_block *settings) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {
 			if ((Str::get_at(val, 2) == '/') || (Str::get_at(val, 2) == FOLDER_SEPARATOR)) {
-				TEMPORARY_TEXT(t);
+				TEMPORARY_TEXT(t)
 				Str::copy_tail(t, val, 3);
 				pathname *P = Pathnames::from_text_relative(settings->book_folder, t);
-				DISCARD_TEXT(t);
+				DISCARD_TEXT(t)
 				return P;
 			} else if (Str::get_at(val, 2) == 0) return settings->book_folder;
 		}
 		if ((Str::get_at(val, 1) == '/') || (Str::get_at(val, 1) == FOLDER_SEPARATOR)) {
-			TEMPORARY_TEXT(t);
+			TEMPORARY_TEXT(t)
 			Str::copy_tail(t, val, 2);
 			pathname *P = Pathnames::from_text_relative(home_path, t);
-			DISCARD_TEXT(t);
+			DISCARD_TEXT(t)
 			return P;
 		} else if (Str::get_at(val, 1) == 0) return home_path;
 	}
@@ -553,18 +553,18 @@ filename *Instructions::set_file(text_stream *val, settings_block *settings) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {
 			if ((Str::get_at(val, 2) == '/') || (Str::get_at(val, 2) == FOLDER_SEPARATOR)) {
-				TEMPORARY_TEXT(t);
+				TEMPORARY_TEXT(t)
 				Str::copy_tail(t, val, 3);
 				filename *F = Filenames::from_text_relative(settings->book_folder, t);
-				DISCARD_TEXT(t);
+				DISCARD_TEXT(t)
 				return F;
 			}
 		}
 		if ((Str::get_at(val, 1) == '/') || (Str::get_at(val, 1) == FOLDER_SEPARATOR)) {
-			TEMPORARY_TEXT(t);
+			TEMPORARY_TEXT(t)
 			Str::copy_tail(t, val, 2);
 			filename *F = Filenames::from_text_relative(home_path, t);
-			DISCARD_TEXT(t);
+			DISCARD_TEXT(t)
 			return F;
 		}
 	}
@@ -582,10 +582,10 @@ int Instructions::set_range(text_stream *key, text_stream *val,
 		Regexp::dispose_of(&mr);
 		if ((v >= min) && (v <= max)) return v;
 	}
-	TEMPORARY_TEXT(ERM);
+	TEMPORARY_TEXT(ERM)
 	WRITE_TO(ERM, "'%S' must a number from %d to %d, not '%S'", key, min, max, val);
 	Errors::in_text_file_S(ERM, tfp);
-	DISCARD_TEXT(ERM);
+	DISCARD_TEXT(ERM)
 	return min;
 }
 
@@ -595,10 +595,10 @@ int Instructions::set_range(text_stream *key, text_stream *val,
 int Instructions::set_yn(text_stream *key, text_stream *val, text_file_position *tfp) {
 	if (Str::eq_wide_string(val, L"yes")) { return 1; }
 	if (Str::eq_wide_string(val, L"no")) { return 0; }
-	TEMPORARY_TEXT(ERM);
+	TEMPORARY_TEXT(ERM)
 	WRITE_TO(ERM, "'%S' must be 'yes' or 'no', not '%S'", key, val);
 	Errors::in_text_file_S(ERM, tfp);
-	DISCARD_TEXT(ERM);
+	DISCARD_TEXT(ERM)
 	return 0;
 }
 

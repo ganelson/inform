@@ -225,7 +225,7 @@ far as the user is concerned it opens the example and goes there.
 
 @<Typeset the table of contents entry for this example@> =
 	WRITE("&nbsp;&nbsp;&nbsp;"); /* always indent TOC entries for examples */
-	TEMPORARY_TEXT(link);
+	TEMPORARY_TEXT(link)
 	WRITE_TO(link, "style=\"text-decoration: none\" href=\"");
 	DocumentationRenderer::href_of_example(link, base_leafname, example_count, example_count);
 	WRITE_TO(link, "\"");
@@ -518,7 +518,7 @@ had its infamous PNG transparency bug.)
 closes it up, if it's currently open.
 
 @<Incorporate link to the example opened up@> =
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	WRITE_TO(url, "href=\"");
 	if (example_count == example_which_is_open) /* this example currently open */
 		DocumentationRenderer::href_of_example(url, base_leafname, EDOC_ALL_EXAMPLES_CLOSED, example_count);
@@ -526,7 +526,7 @@ closes it up, if it's currently open.
 		DocumentationRenderer::href_of_example(url, base_leafname, example_count, example_count);
 	WRITE_TO(url, "\" style=\"text-decoration: none\"");
 	HTML_OPEN_WITH("a", "%S", url);
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 
 @h Typesetting I7 tables in displayed source text.
 Unsurprisingly, I7 tables are set (after their titling lines) as HTML tables,

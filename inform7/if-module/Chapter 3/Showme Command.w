@@ -196,13 +196,13 @@ routine for colours; and the best thing is to print nothing at all.
 	}
 
 @<Compile the SHOWME printing of the value of a value property@> =
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%+W: ", prn->name);
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_text(Emit::tree(), T);
 	Produce::up(Emit::tree());
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 
 	if (Kinds::Compare::eq(K, K_text)) {
 		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
@@ -289,13 +289,13 @@ turn by turn.
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			@<Compile the comma as needed@>;
-			TEMPORARY_TEXT(T);
+			TEMPORARY_TEXT(T)
 			WRITE_TO(T, "%+W", prn->name);
 			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_text(Emit::tree(), T);
 			Produce::up(Emit::tree());
-			DISCARD_TEXT(T);
+			DISCARD_TEXT(T)
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 

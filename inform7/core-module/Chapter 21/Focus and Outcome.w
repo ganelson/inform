@@ -425,10 +425,10 @@ void Rulebooks::Outcomes::index_outcomes(OUTPUT_STREAM, outcomes *outs, int supp
 void Rulebooks::Outcomes::RulebookOutcomePrintingRule(void) {
 	named_rulebook_outcome *rbno;
 	LOOP_OVER(rbno, named_rulebook_outcome) {
-		TEMPORARY_TEXT(RV);
+		TEMPORARY_TEXT(RV)
 		WRITE_TO(RV, "%+W", Nouns::nominative(rbno->name));
 		Emit::named_string_constant(rbno->nro_iname, RV);
-		DISCARD_TEXT(RV);
+		DISCARD_TEXT(RV)
 	}
 
 	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_rulebook_outcome);

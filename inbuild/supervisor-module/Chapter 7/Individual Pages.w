@@ -106,7 +106,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 	HTML_CLOSE("p");
 	if (E) {
 		filename *B = ExtensionWebsite::page_URL(work, -1);
-		TEMPORARY_TEXT(leaf);
+		TEMPORARY_TEXT(leaf)
 		Filenames::write_unextended_leafname(leaf, B);
 		@<Write up the rubric, if any@>;
 		@<Write up the table of contents for the supplied documentation, if any@>;
@@ -114,16 +114,16 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 		Extensions::Files::document_in_detail(OUT, E);
 		#endif
 		@<Write up the supplied documentation, if any@>;
-		DISCARD_TEXT(leaf);
+		DISCARD_TEXT(leaf)
 	} else {
 		HTML_TAG("hr");
 	}
 
 @<Write Javascript paste icon for source text to include this extension@> =
-	TEMPORARY_TEXT(inclusion_text);
+	TEMPORARY_TEXT(inclusion_text)
 	WRITE_TO(inclusion_text, "Include %X.\n\n\n", work);
 	PasteButtons::paste_text(OUT, inclusion_text);
-	DISCARD_TEXT(inclusion_text);
+	DISCARD_TEXT(inclusion_text)
 	WRITE("&nbsp;");
 
 @<Write up any restrictions on VM usage@> =

@@ -60,15 +60,15 @@ void I6T::interpreter_shared(parse_node_tree *T, int int_mode, OUTPUT_STREAM, wc
 	int N_escape, filename *index_structure) {
 	FILE *Input_File = NULL;
 	int col = 1, cr, sfp = 0;
-	TEMPORARY_TEXT(heading_name);
+	TEMPORARY_TEXT(heading_name)
 
 	int comment = FALSE;
 	if ((int_mode == I6TCODE_MODE) && (Str::len(segment_name) > 0)) comment = TRUE;
 
 	@<Open a file for input, if necessary@>;
 
-	TEMPORARY_TEXT(command);
-	TEMPORARY_TEXT(argument);
+	TEMPORARY_TEXT(command)
+	TEMPORARY_TEXT(argument)
 	do {
 		Str::clear(command);
 		Str::clear(argument);
@@ -116,11 +116,11 @@ void I6T::interpreter_shared(parse_node_tree *T, int int_mode, OUTPUT_STREAM, wc
 			if (OUT) PUT_TO(OUT, cr);
 		}
 	} while (cr != EOF);
-	DISCARD_TEXT(command);
-	DISCARD_TEXT(argument);
+	DISCARD_TEXT(command)
+	DISCARD_TEXT(argument)
 	if (Input_File) { if (DL) STREAM_FLUSH(DL); fclose(Input_File); }
 
-	DISCARD_TEXT(heading_name);
+	DISCARD_TEXT(heading_name)
 }
 
 @ "If necessary" because our input may be supplied as a wide string, not a
@@ -203,7 +203,7 @@ I6 code like so:
 which can trigger an unwanted |(+|.
 
 @<Read up to the next plus close-bracket as an I7 expression@> =
-	TEMPORARY_TEXT(i7_exp);
+	TEMPORARY_TEXT(i7_exp)
 	while (TRUE) {
 		@<Read next character from I6T stream@>;
 		if (cr == EOF) break;
@@ -212,7 +212,7 @@ which can trigger an unwanted |(+|.
 		PUT_TO(i7_exp, cr);
 	}
 	Invocations::Inline::compile_I7_expression_from_text(NULL, OUT, i7_exp);
-	DISCARD_TEXT(i7_exp);
+	DISCARD_TEXT(i7_exp)
 
 @h Acting on I6T commands.
 At one time there were very many commands avalable here, but no longer.
@@ -269,13 +269,13 @@ time.) |{-index:name}| opens the index file called |name|.
 			text_stream *titling = mr.exp[0];
 			text_stream *explanation = mr.exp[1];
 			match_results mr2 = Regexp::create_mr();
-			TEMPORARY_TEXT(leafname);
+			TEMPORARY_TEXT(leafname)
 			Str::copy(leafname, titling);
 			if (Regexp::match(&mr2, leafname, L"(%C+?) (%c+)")) Str::copy(leafname, mr2.exp[0]);
 			WRITE_TO(leafname, ".html");
 			Index::open_file(leafname, titling, -1, explanation);
 			Regexp::dispose_of(&mr2);
-			DISCARD_TEXT(leafname);
+			DISCARD_TEXT(leafname)
 		} else {
 			internal_error("bad index format");
 		}

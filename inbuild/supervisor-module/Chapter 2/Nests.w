@@ -63,17 +63,17 @@ would just produce search results which were more copious than needed.)
 
 =
 void Nests::add_to_search_sequence(linked_list *search_list, inbuild_nest *N) {
-	TEMPORARY_TEXT(NS);
+	TEMPORARY_TEXT(NS)
 	WRITE_TO(NS, "%p", N->location);
 	int already_here = FALSE;
 	inbuild_nest *M;
 	LOOP_OVER_LINKED_LIST(M, inbuild_nest, search_list) {
-		TEMPORARY_TEXT(MS);
+		TEMPORARY_TEXT(MS)
 		WRITE_TO(NS, "%p", M->location);
 		if (Str::eq(NS, MS)) already_here = TRUE;
-		DISCARD_TEXT(MS);
+		DISCARD_TEXT(MS)
 	}
-	DISCARD_TEXT(NS);
+	DISCARD_TEXT(NS)
 	if (already_here) return;
 	ADD_TO_LINKED_LIST(N, inbuild_nest, search_list);
 }

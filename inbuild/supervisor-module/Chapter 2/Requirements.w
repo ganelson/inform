@@ -57,18 +57,18 @@ inbuild_requirement *Requirements::from_text(text_stream *T,
 	for (int at = 0; at < Str::len(T); at++) {
 		wchar_t c = Str::get_at(T, at);
 		if (c == ',') {
-			TEMPORARY_TEXT(initial);
+			TEMPORARY_TEXT(initial)
 			Str::substr(initial, Str::at(T, from), Str::at(T, at));
 			Requirements::impose_clause(req, initial, errors);
-			DISCARD_TEXT(initial);
+			DISCARD_TEXT(initial)
 			from = at + 1;
 		}
 	}
 	if (from < Str::len(T)) {
-		TEMPORARY_TEXT(final);
+		TEMPORARY_TEXT(final)
 		Str::substr(final, Str::at(T, from), Str::end(T));
 		Requirements::impose_clause(req, final, errors);
-		DISCARD_TEXT(final);
+		DISCARD_TEXT(final)
 	}
 	return req;
 }
@@ -81,8 +81,8 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T,
 	Str::trim_white_space(T);
 	if (Str::eq(T, I"all")) return;
 
-	TEMPORARY_TEXT(term);
-	TEMPORARY_TEXT(value);
+	TEMPORARY_TEXT(term)
+	TEMPORARY_TEXT(value)
 	for (int at = 0; at < Str::len(T); at++) {
 		wchar_t c = Str::get_at(T, at);
 		if (c == '=') {
@@ -99,8 +99,8 @@ void Requirements::impose_clause(inbuild_requirement *req, text_stream *T,
 		if (Str::len(errors) == 0)
 			WRITE_TO(errors, "clause not in the form 'term=value': '%S'", T);
 	}
-	DISCARD_TEXT(term);
-	DISCARD_TEXT(value);
+	DISCARD_TEXT(term)
+	DISCARD_TEXT(value)
 }
 
 @<Deal with a term-value pair@> =

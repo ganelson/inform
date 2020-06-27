@@ -105,28 +105,28 @@ int Symbols::perform_ifdef_inner(text_stream *cond) {
 @<The comma operator is left-associative and means or@> =
 	int k = Symbols::find_operator(cond, ',');
  	if (k >= 0) {
- 		TEMPORARY_TEXT(L);
- 		TEMPORARY_TEXT(R);
+ 		TEMPORARY_TEXT(L)
+ 		TEMPORARY_TEXT(R)
  		Str::copy(L, cond);
  		Str::truncate(L, k);
  		Str::copy_tail(R, cond, k+1);
  		int rv = ((Symbols::perform_ifdef(L)) || (Symbols::perform_ifdef(R)));
- 		DISCARD_TEXT(L);
- 		DISCARD_TEXT(R);
+ 		DISCARD_TEXT(L)
+ 		DISCARD_TEXT(R)
  		return rv;
  	} else if (k == -2) @<The expression is malformed@>;
 
 @<The plus operator is left-associative and means and@> =
 	int k = Symbols::find_operator(cond, '+');
  	if (k >= 0) {
-		TEMPORARY_TEXT(L);
- 		TEMPORARY_TEXT(R);
+		TEMPORARY_TEXT(L)
+ 		TEMPORARY_TEXT(R)
  		Str::copy(L, cond);
  		Str::truncate(L, k);
  		Str::copy_tail(R, cond, k+1);
  		int rv = ((Symbols::perform_ifdef(L)) && (Symbols::perform_ifdef(R)));
- 		DISCARD_TEXT(L);
- 		DISCARD_TEXT(R);
+ 		DISCARD_TEXT(L)
+ 		DISCARD_TEXT(R)
  		return rv;
  	} else if (k == -2) @<The expression is malformed@>;
 

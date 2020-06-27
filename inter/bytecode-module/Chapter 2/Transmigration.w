@@ -231,14 +231,14 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @<Correct the reference to this symbol@> =
 	inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
 	if (equivalent == NULL) {
-		TEMPORARY_TEXT(URL);
+		TEMPORARY_TEXT(URL)
 		Inter::SymbolsTables::symbol_to_url_name(URL, target);
 		equivalent = Inter::SymbolsTables::url_name_to_symbol(ipct->destination->package_head->tree, NULL, URL);
 		if ((equivalent == NULL) && (Inter::Kind::is(target)))
 			equivalent = Inter::Packages::search_resources_exhaustively(ipct->destination->package_head->tree, target->symbol_name);
 		if (equivalent == NULL)
 			equivalent = Inter::Connectors::plug(ipct->destination_tree, URL);
-		DISCARD_TEXT(URL);
+		DISCARD_TEXT(URL)
 		Inter::Transmigration::cache(target, equivalent);
 	}
 	symb->equated_to = equivalent;
@@ -277,10 +277,10 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 @<Correct the origin reference to this migrant symbol@> =
 	inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
 	if (equivalent == NULL) {
-		TEMPORARY_TEXT(URL);
+		TEMPORARY_TEXT(URL)
 		Inter::SymbolsTables::symbol_to_url_name(URL, target);
 		equivalent = Inter::Connectors::plug(ipct->origin_tree, URL);
-		DISCARD_TEXT(URL);
+		DISCARD_TEXT(URL)
 		Inter::Transmigration::cache(target, equivalent);
 	}
 	symb->equated_to = equivalent;

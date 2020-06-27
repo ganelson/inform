@@ -497,8 +497,8 @@ binary_predicate *BinaryPredicates::make_pair(int family,
 	text_stream *name, text_stream *namer, property *pn,
 	i6_schema *mtf, i6_schema *tf, word_assemblage source_name) {
 	binary_predicate *bp, *bpr;
-	TEMPORARY_TEXT(n);
-	TEMPORARY_TEXT(nr);
+	TEMPORARY_TEXT(n)
+	TEMPORARY_TEXT(nr)
 	Str::copy(n, name);
 	if (Str::len(n) == 0) WRITE_TO(n, "nameless");
 	Str::copy(nr, namer);
@@ -532,13 +532,13 @@ made:
 
 =
 binary_predicate *BinaryPredicates::make_pair_sketchily(word_assemblage wa, int f) {
-	TEMPORARY_TEXT(relname);
+	TEMPORARY_TEXT(relname)
 	WRITE_TO(relname, "%V", WordAssemblages::first_word(&wa));
 	binary_predicate *bp =
 		BinaryPredicates::make_pair(EXPLICIT_KBP,
 		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
 		relname, NULL, NULL, NULL, NULL, wa);
-	DISCARD_TEXT(relname);
+	DISCARD_TEXT(relname)
 	bp->form_of_relation = f;
 	bp->reversal->form_of_relation = f;
 	return bp;

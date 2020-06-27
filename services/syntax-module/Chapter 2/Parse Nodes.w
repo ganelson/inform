@@ -330,11 +330,11 @@ void Node::log_node(OUTPUT_STREAM, void *vpn) {
 	#else
 	NodeType::log(OUT, (int) pn->node_type);
 	if (Wordings::nonempty(Node::get_text(pn))) {
-		TEMPORARY_TEXT(text);
+		TEMPORARY_TEXT(text)
 		WRITE_TO(text, "%W", Node::get_text(pn));
 		Str::truncate(text, 60);
 		WRITE("'%S'", text);
-		DISCARD_TEXT(text);
+		DISCARD_TEXT(text)
 	}
 	#ifdef LINGUISTICS_MODULE
 	Diagrams::log_node(OUT, pn);

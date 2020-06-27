@@ -44,15 +44,15 @@ void Extensions::scan(inbuild_copy *C) {
 	Copies::set_metadata(C, STORE_POINTER_inform_extension(E));
 	@<Initialise the extension docket@>;
 
-	TEMPORARY_TEXT(claimed_author_name);
-	TEMPORARY_TEXT(claimed_title);
-	TEMPORARY_TEXT(reqs);
+	TEMPORARY_TEXT(claimed_author_name)
+	TEMPORARY_TEXT(claimed_title)
+	TEMPORARY_TEXT(reqs)
 	semantic_version_number V = VersionNumbers::null();
 	@<Scan the file@>;
 	@<Change the edition of the copy in light of the metadata found in the scan@>;
-	DISCARD_TEXT(claimed_author_name);
-	DISCARD_TEXT(claimed_title);
-	DISCARD_TEXT(reqs);
+	DISCARD_TEXT(claimed_author_name)
+	DISCARD_TEXT(claimed_title)
+	DISCARD_TEXT(reqs)
 }
 
 @<Initialise the extension docket@> =
@@ -83,8 +83,8 @@ alone, and the version number is returned.
 
 =
 @<Scan the file@> =
-	TEMPORARY_TEXT(titling_line);
-	TEMPORARY_TEXT(version_text);
+	TEMPORARY_TEXT(titling_line)
+	TEMPORARY_TEXT(version_text)
 	filename *F = C->location_if_file;
 	FILE *EXTF = Filenames::fopen_caseless(F, "r");
 	if (EXTF == NULL) {
@@ -97,15 +97,15 @@ alone, and the version number is returned.
 		if (Str::len(version_text) > 0) {
 			V = VersionNumbers::from_text(version_text);
 			if (VersionNumbers::is_null(V)) {
-				TEMPORARY_TEXT(error_text);
+				TEMPORARY_TEXT(error_text)
 				WRITE_TO(error_text, "the version number '%S' is malformed", version_text);
 				Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, error_text));
-				DISCARD_TEXT(error_text);
+				DISCARD_TEXT(error_text)
 			}
 		}
 	}
-	DISCARD_TEXT(titling_line);
-	DISCARD_TEXT(version_text);
+	DISCARD_TEXT(titling_line)
+	DISCARD_TEXT(version_text)
 
 @ The titling line is terminated by any of |0A|, |0D|, |0A 0D| or |0D 0A|, or
 by the local |\n| for good measure.
@@ -221,10 +221,10 @@ are immutable, and need to be for the extensions dictionary to work.
 		compatibility_specification *CS = Compatibility::from_text(reqs);
 		if (CS) C->edition->compatibility = CS;
 		else {
-			TEMPORARY_TEXT(err);
+			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "cannot read compatibility '%S'", reqs);
 			Copies::attach_error(C, CopyErrors::new_T(EXT_MISWORDED_CE, -1, err));
-			DISCARD_TEXT(err);
+			DISCARD_TEXT(err)
 		}
 	}
 
@@ -364,10 +364,10 @@ void Extensions::read_source_text_for(inform_extension *E) {
 	filename *F = E->as_copy->location_if_file;
 	int doc_only = FALSE;
 	if (census_mode) doc_only = TRUE;
-	TEMPORARY_TEXT(synopsis);
+	TEMPORARY_TEXT(synopsis)
 	@<Concoct a synopsis for the extension to be read@>;
 	E->read_into_file = SourceText::read_file(E->as_copy, F, synopsis, doc_only, FALSE);
-	DISCARD_TEXT(synopsis);
+	DISCARD_TEXT(synopsis)
 	if (E->read_into_file) {
 		E->read_into_file->your_ref = STORE_POINTER_inbuild_copy(E->as_copy);
 		@<Break the text into sentences@>;

@@ -165,12 +165,12 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 
 @<Compile a comment about this line@> =
 	if (Wordings::nonempty(Node::get_text(to_compile))) {
-		TEMPORARY_TEXT(C);
+		TEMPORARY_TEXT(C)
 		WRITE_TO(C, "[%d: ", statement_count);
 		CompiledText::comment(C, Node::get_text(to_compile));
 		WRITE_TO(C, "]");
 		Emit::code_comment(C);
-		DISCARD_TEXT(C);
+		DISCARD_TEXT(C)
 	}
 
 @<Compile the head@> =
@@ -534,19 +534,19 @@ inline definitions for "say if" and similar.
 @<Compile a say tail@> =
 	statement_count = Routines::Compile::code_block(statement_count, p, FALSE);
 
-	TEMPORARY_TEXT(SAYL);
+	TEMPORARY_TEXT(SAYL)
 	WRITE_TO(SAYL, ".");
 	JumpLabels::write(SAYL, I"Say");
 	Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), SAYL));
-	DISCARD_TEXT(SAYL);
+	DISCARD_TEXT(SAYL)
 
 	JumpLabels::read_counter(I"Say", TRUE);
 
-	TEMPORARY_TEXT(SAYXL);
+	TEMPORARY_TEXT(SAYXL)
 	WRITE_TO(SAYXL, ".");
 	JumpLabels::write(SAYXL, I"SayX");
 	Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), SAYXL));
-	DISCARD_TEXT(SAYXL);
+	DISCARD_TEXT(SAYXL)
 
 	JumpLabels::read_counter(I"SayX", TRUE);
 

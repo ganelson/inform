@@ -399,10 +399,10 @@ inter_name *Packaging::function(inter_tree *I, inter_name *function_iname, inter
 	package_request *P = Packaging::request(I, function_iname, PackageTypes::function(I));
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (temp_iname) {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		WRITE_TO(T, "%n", temp_iname);
 		Produce::change_translation(iname, T);
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	}
 	return iname;
 }

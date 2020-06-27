@@ -111,10 +111,10 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	else if (Regexp::match(&mr, text, L"index from: (%c*)"))
 		K->index_structure = Str::duplicate(mr.exp[0]);
 	else {
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "unreadable instruction '%S'", text);
 		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-		DISCARD_TEXT(err);	
+		DISCARD_TEXT(err)	
 	}
 	Regexp::dispose_of(&mr);
 }
@@ -123,10 +123,10 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	compatibility_specification *CS = Compatibility::from_text(mr.exp[0]);
 	if (CS) C->edition->compatibility = CS;
 	else {
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "cannot read compatibility '%S'", mr.exp[0]);
 		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-		DISCARD_TEXT(err);
+		DISCARD_TEXT(err)
 	}
 
 @<Add early source@> =
@@ -137,10 +137,10 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	inbuild_work *work = Works::new(extension_genre, mr.exp[1], mr.exp[2]);
 	semantic_version_number V = VersionNumbers::from_text(mr.exp[0]);
 	if (VersionNumbers::is_null(V)) {
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "cannot read version number '%S'", mr.exp[0]);
 		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-		DISCARD_TEXT(err);
+		DISCARD_TEXT(err)
 	} else {
 		inbuild_requirement *req = Requirements::new(work,
 			VersionNumberRanges::compatibility_range(V));

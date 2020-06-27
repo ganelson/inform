@@ -122,7 +122,7 @@ inter_symbol *Primitives::get(inter_tree *I, inter_t bip) {
 }
 
 void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim, text_stream *category) {
-	TEMPORARY_TEXT(prim_command);
+	TEMPORARY_TEXT(prim_command)
 	WRITE_TO(prim_command, "primitive %S %S", prim, category);
 	Produce::guard(Inter::Defn::read_construct_text(prim_command, NULL, IBM));
 	inter_error_message *E = NULL;
@@ -132,7 +132,7 @@ void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim,
 	if (bip >= MAX_BIPS) internal_error("unsafely high bip");
 	Site::set_opcode(I, bip, S);
 	Produce::guard(E);
-	DISCARD_TEXT(prim_command);
+	DISCARD_TEXT(prim_command)
 }
 
 int Primitives::is_indirect_interp(inter_t s) {

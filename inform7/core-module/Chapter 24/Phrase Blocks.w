@@ -181,10 +181,10 @@ void Frames::Blocks::divide_code_block(void) {
 void Frames::Blocks::close_code_block(void) {
 	if (block_being_compiled == NULL) return; /* for problem recovery only */
 	if (block_being_compiled->label_following >= 0) {
-		TEMPORARY_TEXT(TL);
+		TEMPORARY_TEXT(TL)
 		WRITE_TO(TL, ".loop_break_%d", block_being_compiled->label_following);
 		Produce::place_label(Emit::tree(), Produce::reserve_label(Emit::tree(), TL));
-		DISCARD_TEXT(TL);
+		DISCARD_TEXT(TL)
 	}
 
 	LOGIF(LOCAL_VARIABLES, "End of block level %d\n", current_block_stack.pb_sp);
@@ -254,10 +254,10 @@ void Frames::Blocks::emit_break(void) {
 					unique_breakage_count++;
 			Produce::inv_primitive(Emit::tree(), JUMP_BIP);
 			Produce::down(Emit::tree());
-				TEMPORARY_TEXT(TL);
+				TEMPORARY_TEXT(TL)
 				WRITE_TO(TL, ".loop_break_%d", current_block_stack.pb_stack[i].label_following);
 				Produce::lab(Emit::tree(), Produce::reserve_label(Emit::tree(), TL));
-				DISCARD_TEXT(TL);
+				DISCARD_TEXT(TL)
 			Produce::up(Emit::tree());
 			return;
 		}

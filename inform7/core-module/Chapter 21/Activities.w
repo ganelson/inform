@@ -397,13 +397,13 @@ void Activities::index(OUTPUT_STREAM, activity *av, int indent) {
 	if (Rulebooks::is_empty(av->for_rules, Rulebooks::no_rule_context()) == FALSE) empty = FALSE;
 	if (Rulebooks::is_empty(av->after_rules, Rulebooks::no_rule_context()) == FALSE) empty = FALSE;
 	if (av->cross_references) empty = FALSE;
-	TEMPORARY_TEXT(doc_link);
+	TEMPORARY_TEXT(doc_link)
 	if (Wordings::nonempty(av->av_documentation_symbol))
 		WRITE_TO(doc_link, "%+W", Wordings::one_word(Wordings::first_wn(av->av_documentation_symbol)));
 	if (empty) text = "There are no rules before, for or after this activity.";
 	Rulebooks::index_rules_box(OUT, NULL, av->name, doc_link,
 		NULL, av, text, indent, TRUE);
-	DISCARD_TEXT(doc_link);
+	DISCARD_TEXT(doc_link)
 }
 
 int Activities::no_rules(activity *av) {

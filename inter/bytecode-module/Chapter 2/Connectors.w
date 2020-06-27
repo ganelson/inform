@@ -11,7 +11,7 @@ if (Str::eq(wanted, I"self")) internal_error("selfie!");
 	WRITE_TO(PN, "plug_%05d", unique_plug_number++);
 	inter_symbol *plug = Inter::SymbolsTables::create_with_unique_name(
 		Inter::Packages::scope(connectors), PN);
-	DISCARD_TEXT(PN);
+	DISCARD_TEXT(PN)
 	Inter::SymbolsTables::make_plug(plug, wanted);
 	LOGIF(INTER_CONNECTORS, "Plug I%d: $3 seeking %S\n", I->allocation_id, plug, plug->equated_name);
 	return plug;

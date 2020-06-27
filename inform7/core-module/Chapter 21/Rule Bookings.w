@@ -689,7 +689,7 @@ void Rules::Bookings::list_compile_rule_phrases(booking *list_head,
 	for (br = list_head->next_rule, s = 1; br; br = br->next_rule, s++) {
 		Rules::compile_comment(br->rule_being_booked, s, t);
 		if (br->next_rule) {
-			TEMPORARY_TEXT(C);
+			TEMPORARY_TEXT(C)
 			if (br->placement != br->next_rule->placement) {
 				WRITE_TO(C, "--- now the ");
 				switch(br->next_rule->placement) {
@@ -707,7 +707,7 @@ void Rules::Bookings::list_compile_rule_phrases(booking *list_head,
 					case 1: WRITE_TO(C, "  >>> %S >>>", law); Produce::comment(Emit::tree(), C); break;
 				}
 			}
-			DISCARD_TEXT(C);
+			DISCARD_TEXT(C)
 		}
 	}
 	CompiledText::divider_comment();

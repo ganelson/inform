@@ -472,14 +472,14 @@ local_variable *LocalVariables::find_pcalc_var(int v) {
 local_variable *LocalVariables::find_const_var(int v) {
 	ph_stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) return NULL;
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "const_%d", v);
 	local_variable *lvar, *found = NULL;
 	locals_slate *slate = &(phsf->local_value_variables);
 	for (lvar = slate->local_variable_allocation; lvar; lvar = lvar->next)
 		if (Str::eq(lvar->lv_lvalue, T))
 			found = lvar;
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 	return found;
 }
 
@@ -1139,10 +1139,10 @@ inter_symbol *LocalVariables::declare_this(local_variable *lvar, int shell_mode,
 		case TOKEN_CALL_PARAMETER_LV: annot = CALL_PARAMETER_IANN; break;
 		case OTHER_CALL_PARAMETER_LV: annot = IMPLIED_CALL_PARAMETER_IANN; break;
 	}
-	TEMPORARY_TEXT(comment);
+	TEMPORARY_TEXT(comment)
 	LocalVariables::comment_on(comment, lvar, lvar->lv_purpose);
 	inter_symbol *symb = Emit::local(lvar->kind_as_declared, lvar->lv_lvalue, annot, comment);
-	DISCARD_TEXT(comment);
+	DISCARD_TEXT(comment)
 	return symb;
 }
 

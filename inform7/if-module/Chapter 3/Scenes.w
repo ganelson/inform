@@ -256,7 +256,7 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 @<Define phrases detecting whether or not the scene has ended this way@> =
 	wording NW = Instances::get_name(sc->as_instance, FALSE);
 
-	TEMPORARY_TEXT(i6_code);
+	TEMPORARY_TEXT(i6_code)
 	feed_t id = Feeds::begin();
 	Feeds::feed_C_string_expanding_strings(L"To decide if (S - ");
 	Feeds::feed_wording(NW);
@@ -285,7 +285,7 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 	Feeds::feed_text_expanding_strings(i6_code);
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), '.');
 	Sentences::RuleSubtrees::register_recently_lexed_phrases();
-	DISCARD_TEXT(i6_code);
+	DISCARD_TEXT(i6_code)
 
 @h Anchors.
 These are joins between the endings of different scenes, and there are two
@@ -909,7 +909,7 @@ end actually occurred.)
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEBUG_SCENES_HL));
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			TEMPORARY_TEXT(OUT);
+			TEMPORARY_TEXT(OUT)
 			WRITE("[Scene '");
 			if (sc->as_instance) WRITE("%+W", Instances::get_name(sc->as_instance, FALSE));
 			WRITE("' ");
@@ -920,7 +920,7 @@ end actually occurred.)
 			Produce::down(Emit::tree());
 				Produce::val_text(Emit::tree(), OUT);
 			Produce::up(Emit::tree());
-			DISCARD_TEXT(OUT);
+			DISCARD_TEXT(OUT)
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -1017,13 +1017,13 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 }
 
 @<Show status of this running scene@> =
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "Scene '%+W' playing (for ", NW);
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_text(Emit::tree(), T);
 	Produce::up(Emit::tree());
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 
 	Produce::inv_primitive(Emit::tree(), PRINTNUMBER_BIP);
 	Produce::down(Emit::tree());
@@ -1062,13 +1062,13 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 	Produce::up(Emit::tree());
 
 @<Show status of this recently ended scene@> =
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "Scene '%+W' ended", NW);
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_text(Emit::tree(), T);
 	Produce::up(Emit::tree());
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 
 	if (sc->no_ends > 2) {
 		Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
@@ -1086,13 +1086,13 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) end);
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
-							TEMPORARY_TEXT(T);
+							TEMPORARY_TEXT(T)
 							WRITE_TO(T, " %+W", sc->end_names[end]);
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_text(Emit::tree(), T);
 							Produce::up(Emit::tree());
-							DISCARD_TEXT(T);
+							DISCARD_TEXT(T)
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 				}

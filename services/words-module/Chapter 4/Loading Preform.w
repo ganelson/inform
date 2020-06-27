@@ -130,7 +130,7 @@ int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 @ We either switch to an existing natural language, or create a new one.
 
 @<Parse a definition language switch@> =
-	TEMPORARY_TEXT(lname);
+	TEMPORARY_TEXT(lname)
 	WRITE_TO(lname, "%W", Wordings::one_word(wn+1));
 	NATURAL_LANGUAGE_WORDS_TYPE *nl = NULL;
 	#ifdef PREFORM_LANGUAGE_FROM_NAME_WORDS_CALLBACK
@@ -141,7 +141,7 @@ int LoadPreform::parse(wording W, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 		PreformUtilities::production_error(NULL, NULL,
 			"tried to define for missing language");
 	}
-	DISCARD_TEXT(lname);
+	DISCARD_TEXT(lname)
 	current_natural_language = nl;
 	wn++;
 

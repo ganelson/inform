@@ -39,10 +39,10 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 		kit.i6t_files[i] = Pathnames::down(P, I"Sections");
 	int stage = EARLY_LINK_STAGE;
 	if (Str::eq(template_file, I"none")) stage = CATCH_ALL_LINK_STAGE;
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	TemplateReader::I6T_file_intervene(T, stage, NULL, NULL, &kit);
 	CodeGen::MergeTemplate::receive_raw(T, &kit);
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 	if (Str::ne(template_file, I"none"))
 		TemplateReader::extract(template_file, &kit);
 }

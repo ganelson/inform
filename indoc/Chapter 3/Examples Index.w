@@ -34,7 +34,7 @@ degree of alphabetisation.
 =
 void ExamplesIndex::add_to_alphabetic_examples_index(text_stream *given_rubric,
 	section *index_to_S, example *index_to_E, int bold_flag, int RB_flag) {
-	TEMPORARY_TEXT(rubric);
+	TEMPORARY_TEXT(rubric)
 	Str::copy(rubric, given_rubric);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, rubric, L"(%c*); *(%c*?)")) {
@@ -45,7 +45,7 @@ void ExamplesIndex::add_to_alphabetic_examples_index(text_stream *given_rubric,
 		@<Add a single new term to the examples index@>;
 	}
 	Regexp::dispose_of(&mr);
-	DISCARD_TEXT(rubric);
+	DISCARD_TEXT(rubric)
 }
 
 @<Translate the rubric according to the Recipe Book catalogue@> =
@@ -56,8 +56,8 @@ void ExamplesIndex::add_to_alphabetic_examples_index(text_stream *given_rubric,
 	}
 
 @<Add a single new term to the examples index@> =
-	TEMPORARY_TEXT(sort_key);
-	TEMPORARY_TEXT(subtitle);
+	TEMPORARY_TEXT(sort_key)
+	TEMPORARY_TEXT(subtitle)
 	Str::copy(sort_key, rubric);
 	if (Regexp::match(&mr, rubric, L"(%c*?) *-- *(%c*)")) Str::copy(rubric, mr.exp[0]);
 	if (Regexp::match(&mr, rubric, L"(%c*?): *(%c*?)")) {
@@ -68,10 +68,10 @@ void ExamplesIndex::add_to_alphabetic_examples_index(text_stream *given_rubric,
 	if (RB_flag) {
 		text_stream *pre = Dictionaries::get_text(recipe_sort_prefix, rubric);
 		if (Str::len(pre) > 0) {
-			TEMPORARY_TEXT(p);
+			TEMPORARY_TEXT(p)
 			WRITE_TO(p, "%S>%S", pre, sort_key);
 			Str::copy(sort_key, p);
-			DISCARD_TEXT(p);
+			DISCARD_TEXT(p)
 		}
 	}
 
@@ -106,7 +106,7 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 	qsort(eid_list, (size_t) NUMBER_CREATED(example_index_data), sizeof(example_index_data *),
 		ExamplesIndex::sort_comparison);
 
-	TEMPORARY_TEXT(current_subtitle);
+	TEMPORARY_TEXT(current_subtitle)
 	int current_letter = -1;
 	int first_letter_block = TRUE;
 	for (int i=0; i<NUMBER_CREATED(example_index_data); i++) {
@@ -114,10 +114,10 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 		int initial = Str::get_first_char(eid->sort_key);
 		if (Characters::isdigit(initial)) initial = '#';
 		if (initial != current_letter) @<Start a new letter block@>;
-		TEMPORARY_TEXT(url);
+		TEMPORARY_TEXT(url)
 		@<Work out the URL of this example@>;
 		@<Write an alphabetical-index entry@>;
-		DISCARD_TEXT(url);
+		DISCARD_TEXT(url)
 	}
 	@<End a letter block@>;
 
@@ -146,12 +146,12 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 	int uc_current_letter = Characters::toupper(current_letter);
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "class=\"letterblock\"");
-	TEMPORARY_TEXT(inc);
+	TEMPORARY_TEXT(inc)
 	PUT_TO(inc, uc_current_letter);
 	HTML::anchor(OUT, inc);
 	IndexUtilities::majuscule_heading(OUT, inc, TRUE);
 	IndexUtilities::note_letter(uc_current_letter);
-	DISCARD_TEXT(inc);
+	DISCARD_TEXT(inc)
 	HTML_CLOSE("td");
 	HTML_OPEN("td");
 	first_letter_block = FALSE;
@@ -171,11 +171,11 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 	}
 
 	if (eid->alpha_index_embolden == TRUE) { HTML_OPEN("b"); }
-	TEMPORARY_TEXT(link_text);
+	TEMPORARY_TEXT(link_text)
 	Str::copy(link_text, eid->alpha_index_rubric);
 	Rawtext::escape_HTML_characters_in(link_text);
 	HTMLUtilities::general_link(OUT, I"standardlink", url, link_text);
-	DISCARD_TEXT(link_text);
+	DISCARD_TEXT(link_text)
 
 	if (eid->alpha_index_embolden == TRUE) { HTML_CLOSE("b"); }
 	HTML_CLOSE("p");

@@ -90,8 +90,8 @@ new information on those, so we update the //inbuild_work// object representing
 the extension:
 
 @<Change the sort and usage dates, and word count, for the extension work@> =
-	TEMPORARY_TEXT(sdate);
-	TEMPORARY_TEXT(udate);
+	TEMPORARY_TEXT(sdate)
+	TEMPORARY_TEXT(udate)
 	int mode = 0, wc = 0;
 	LOOP_THROUGH_TEXT(pos, ede->entry_text) {
 		if (Str::get(pos) == '/') { mode = 1; continue; }
@@ -109,8 +109,8 @@ the extension:
 	if (Str::len(sdate) > 0) Extensions::set_sort_date(ede->ede_extension, sdate);
 	if (wc > 0) Extensions::set_word_count(ede->ede_extension, wc);
 	if (Str::len(udate) > 0) Extensions::set_usage_date(ede->ede_extension, udate);
-	DISCARD_TEXT(sdate);
-	DISCARD_TEXT(udate);
+	DISCARD_TEXT(sdate)
+	DISCARD_TEXT(udate)
 
 @ This is where the |indexing| records are made; they time-stamp the extension
 with its time of last usage, and the word count. (|the_present| is a global
@@ -118,7 +118,7 @@ variable created by //foundation//.)
 
 =
 void ExtensionDictionary::time_stamp(inform_extension *E) {
-	TEMPORARY_TEXT(dbuff);
+	TEMPORARY_TEXT(dbuff)
 	char *ascday[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 	char *ascmon[] = { "January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December" };
@@ -131,7 +131,7 @@ void ExtensionDictionary::time_stamp(inform_extension *E) {
 		the_present->tm_hour, the_present->tm_min);
 	ExtensionDictionary::new_ede(E, I"indexing",
 		E->as_copy->edition->work->author_name, E->as_copy->edition->work->title, dbuff);
-	DISCARD_TEXT(dbuff);
+	DISCARD_TEXT(dbuff)
 }
 
 @ We provide two more convenient creator functions: from a wording or from text.
@@ -140,10 +140,10 @@ void ExtensionDictionary::time_stamp(inform_extension *E) {
 void ExtensionDictionary::new_entry_from_wording(text_stream *category,
 	inform_extension *E, wording W) {
 	if (Wordings::nonempty(W)) { /* a safety precaution: never index the empty text */
-		TEMPORARY_TEXT(headword);
+		TEMPORARY_TEXT(headword)
 		WRITE_TO(headword, "%+W", W);
 		ExtensionDictionary::new_entry(category, E, headword);
-		DISCARD_TEXT(headword);
+		DISCARD_TEXT(headword)
 	}
 }
 
@@ -205,11 +205,11 @@ days when overlong records were truncated.
 =
 void ExtensionDictionary::load_helper(text_stream *line_entry,
 	text_file_position *tfp, void *state) {
-	TEMPORARY_TEXT(author);
-	TEMPORARY_TEXT(title);
-	TEMPORARY_TEXT(headword);
-	TEMPORARY_TEXT(category);
-	TEMPORARY_TEXT(at);
+	TEMPORARY_TEXT(author)
+	TEMPORARY_TEXT(title)
+	TEMPORARY_TEXT(headword)
+	TEMPORARY_TEXT(category)
+	TEMPORARY_TEXT(at)
 	int strokes, pos;
 	for (strokes = 0, pos = 0; strokes <= 5; pos++) {
 		wchar_t c = Str::get_at(line_entry, pos);
@@ -226,11 +226,11 @@ void ExtensionDictionary::load_helper(text_stream *line_entry,
 			}
 		}
 	}
-	DISCARD_TEXT(author);
-	DISCARD_TEXT(title);
-	DISCARD_TEXT(headword);
-	DISCARD_TEXT(category);
-	DISCARD_TEXT(at);
+	DISCARD_TEXT(author)
+	DISCARD_TEXT(title)
+	DISCARD_TEXT(headword)
+	DISCARD_TEXT(category)
+	DISCARD_TEXT(at)
 	if (Str::len(at) == 0) {
 		inbuild_requirement *req =
 			Requirements::any_version_of(Works::new(extension_genre, title, author));

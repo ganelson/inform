@@ -209,7 +209,7 @@ I6 routine.
 =
 inter_name *Routines::ToPhrases::make_iname(phrase *ph, kind *req_kind) {
 	if (Phrases::TypeData::invoked_inline(ph)) {
-		TEMPORARY_TEXT(identifier);
+		TEMPORARY_TEXT(identifier)
 		wchar_t *p = Phrases::get_inline_definition(ph);
 		int found = FALSE;
 		for (int i=0; p[i]; i++)
@@ -235,7 +235,7 @@ inter_name *Routines::ToPhrases::make_iname(phrase *ph, kind *req_kind) {
 			WRITE_TO(identifier, "ErrorRecoverySymbol");
 		}
 		inter_name *symb = Produce::find_by_name(Emit::tree(), identifier);
-		DISCARD_TEXT(identifier);
+		DISCARD_TEXT(identifier)
 		return symb;
 	}
 	to_phrase_request *req = Routines::ToPhrases::make_request(
@@ -271,11 +271,11 @@ to write a comment about this:
 void Routines::ToPhrases::comment_on_request(to_phrase_request *req) {
 	if (req == NULL) Produce::comment(Emit::tree(), I"No specific request");
 	else {
-		TEMPORARY_TEXT(C);
+		TEMPORARY_TEXT(C)
 		WRITE_TO(C, "Request %d: ", req->allocation_id);
 		Kinds::Textual::write(C, req->requested_exact_kind);
 		Produce::comment(Emit::tree(), C);
-		DISCARD_TEXT(C);
+		DISCARD_TEXT(C)
 	}
 }
 

@@ -73,8 +73,8 @@ function togglePopup(material_id) {
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">PastParticiples::pasturise_wording</span><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pasturised</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pasturised</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">feed_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::begin</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_WORDING</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="string-syntax">"%W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::one_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">));</span>
@@ -90,8 +90,8 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">PLW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">CONSTRUCTED_PAST_PARTICIPLES</span><span class="plain-syntax">, </span><span class="string-syntax">"[Past participle of %W is %W]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">PLW</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pasturised</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pasturised</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">PLW</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

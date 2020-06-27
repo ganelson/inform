@@ -28,10 +28,10 @@ void Languages::scan(inbuild_copy *C) {
 	if (C == NULL) internal_error("no copy to scan");
 	Copies::set_metadata(C, STORE_POINTER_inform_language(L));
 
-	TEMPORARY_TEXT(sentence_format);
+	TEMPORARY_TEXT(sentence_format)
 	WRITE_TO(sentence_format, "%S language", C->edition->work->title);
 	L->instance_name = Feeds::feed_text(sentence_format);
-	DISCARD_TEXT(sentence_format);
+	DISCARD_TEXT(sentence_format)
 	L->nl_instance = NULL;
 	L->Preform_loaded = FALSE;
 	L->adaptive_person = -1; /* i.e., none yet specified */

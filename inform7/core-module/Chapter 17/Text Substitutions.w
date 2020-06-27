@@ -314,10 +314,10 @@ a request for a new text substitution to be compiled later...
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 						Produce::down(Emit::tree());
-							TEMPORARY_TEXT(S);
+							TEMPORARY_TEXT(S)
 							WRITE_TO(S, "%W", ts->unsubstituted_text);
 							Produce::val_text(Emit::tree(), S);
-							DISCARD_TEXT(S);
+							DISCARD_TEXT(S)
 						Produce::up(Emit::tree());
 						Produce::rtrue(Emit::tree());
 					Produce::up(Emit::tree());

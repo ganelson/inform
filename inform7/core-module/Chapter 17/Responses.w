@@ -403,10 +403,10 @@ divided up by the extensions containing the rules which produce them.
 	if (contiguous_match == FALSE) {
 		contiguous_match = TRUE;
 		if ((no_cms++ == 0) && (E)) {
-			TEMPORARY_TEXT(QT);
+			TEMPORARY_TEXT(QT)
 			WRITE_TO(QT, "%<X", E->as_copy->edition->work);
 			Emit::array_text_entry(QT);
-			DISCARD_TEXT(QT);
+			DISCARD_TEXT(QT)
 		} else
 			Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
 		Emit::array_numeric_entry((inter_t) (tally));
@@ -447,7 +447,7 @@ void Strings::index_response(OUTPUT_STREAM, rule *R, int marker, response_messag
 	WRITE("%+W", resp->original_text->unsubstituted_text);
 	HTML_CLOSE("span");
 	WRITE("&nbsp;&nbsp;");
-	TEMPORARY_TEXT(S);
+	TEMPORARY_TEXT(S)
 	WRITE_TO(S, "%+W response (%c)", R->name, 'A' + marker);
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>name</i>");
@@ -456,7 +456,7 @@ void Strings::index_response(OUTPUT_STREAM, rule *R, int marker, response_messag
 	WRITE_TO(S, "The %+W response (%c) is \"New text.\".");
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>set</i>");
-	DISCARD_TEXT(S);
+	DISCARD_TEXT(S)
 }
 
 @ =

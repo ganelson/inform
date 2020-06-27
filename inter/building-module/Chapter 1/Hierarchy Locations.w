@@ -247,7 +247,7 @@ inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_r
 		text_stream *T = NULL;	
 		@<Make the actual iname@>;
 	} else if (hl->trans.name_generator) {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		inter_name *temp_iname = NULL;
 		if (derive_from) {
 			temp_iname = InterNames::derived(hl->trans.name_generator, derive_from, W);
@@ -257,7 +257,7 @@ inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_r
 		W = EMPTY_WORDING;
 		WRITE_TO(T, "%n", temp_iname);
 		@<Make the actual iname@>;
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	} else {
 		text_stream *T = NULL;
 		@<Make the actual iname@>;

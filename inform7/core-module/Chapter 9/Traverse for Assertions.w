@@ -419,14 +419,14 @@ is the rubric, the second the credit line.
 	inform_extension *E = Extensions::corresponding_to(pos);
 	if (E) {
 		Word::dequote(wn);
-		TEMPORARY_TEXT(txt);
+		TEMPORARY_TEXT(txt)
 		WRITE_TO(txt, "%W", Wordings::one_word(wn));
 		switch (near_start_of_extension++) {
 			case 1: Extensions::set_rubric(E, txt); break;
 			case 2: Extensions::set_extra_credit(E, txt);
 				near_start_of_extension = 0; break;
 		}
-		DISCARD_TEXT(txt);
+		DISCARD_TEXT(txt)
 	}
 	return;
 

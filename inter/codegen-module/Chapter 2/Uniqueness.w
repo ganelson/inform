@@ -39,10 +39,10 @@ void CodeGen::Uniqueness::visitor(inter_tree *I, inter_tree_node *P, void *state
 					Dictionaries::write_value(D, N, (void *) U);
 				}
 				U->count++;
-				TEMPORARY_TEXT(T);
+				TEMPORARY_TEXT(T)
 				WRITE_TO(T, "%S_U%d", N, U->count);
 				Inter::Symbols::set_translate(S, T);
-				DISCARD_TEXT(T);
+				DISCARD_TEXT(T)
 				Inter::Symbols::clear_flag(S, MAKE_NAME_UNIQUE);
 			}
 		}

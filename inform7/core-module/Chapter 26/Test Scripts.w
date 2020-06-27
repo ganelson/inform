@@ -119,7 +119,7 @@ test_scenario *ts_being_parsed = NULL;
 	int i, x1 = R[1];
     Word::dequote(x1);
     wchar_t *p = Lexer::word_text(x1++);
-    TEMPORARY_TEXT(individual_command);
+    TEMPORARY_TEXT(individual_command)
     Str::clear(ts_being_parsed->text_of_script);
     for (i=0; p[i]; i++) {
     	int c = Characters::tolower(p[i]);
@@ -143,7 +143,7 @@ test_scenario *ts_being_parsed = NULL;
     int L = Str::len(ts_being_parsed->text_of_script);
     if (Str::get_at(ts_being_parsed->text_of_script, L-1) == '/')
     	Str::put_at(ts_being_parsed->text_of_script, L-1, ' ');
-    DISCARD_TEXT(individual_command);
+    DISCARD_TEXT(individual_command)
 
 @<Process the in-test requirement@> =
 	ts_being_parsed->place = RP[1];
@@ -269,12 +269,12 @@ void PL::Parsing::TestScripts::write_text(void) {
 	test_scenario *test;
 	LOOP_OVER(test, test_scenario) {
 		packaging_state save = Emit::named_byte_array_begin(test->text_iname, K_text);
-		TEMPORARY_TEXT(tttext);
+		TEMPORARY_TEXT(tttext)
 		CompiledText::from_stream(tttext, test->text_of_script,
 			CT_EXPAND_APOSTROPHES + CT_RECOGNISE_APOSTROPHE_SUBSTITUTION);
 		WRITE_TO(tttext, "||||");
 		Emit::array_text_entry(tttext);
-		DISCARD_TEXT(tttext);
+		DISCARD_TEXT(tttext)
 		Emit::array_end(save);
 
 		save = Emit::named_array_begin(test->req_iname, K_value);
@@ -316,10 +316,10 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 				LOOP_OVER(test, test_scenario) {
 					Produce::inv_primitive(Emit::tree(), CASE_BIP);
 					Produce::down(Emit::tree());
-						TEMPORARY_TEXT(W);
+						TEMPORARY_TEXT(W)
 						WRITE_TO(W, "%w", Lexer::word_raw_text(Wordings::first_wn(test->name)));
 						Produce::val_dword(Emit::tree(), W);
-						DISCARD_TEXT(W);
+						DISCARD_TEXT(W)
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTSTART_HL));
@@ -345,14 +345,14 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 							Produce::val_text(Emit::tree(), I">--> The following tests are available:\n");
 						Produce::up(Emit::tree());
 						LOOP_OVER(test, test_scenario) {
-							TEMPORARY_TEXT(T);
+							TEMPORARY_TEXT(T)
 							WRITE_TO(T, "'test %w'\n",
 								Lexer::word_raw_text(Wordings::first_wn(test->name)));
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_text(Emit::tree(), T);
 							Produce::up(Emit::tree());
-							DISCARD_TEXT(T);
+							DISCARD_TEXT(T)
 						}
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 						Produce::down(Emit::tree());
@@ -386,25 +386,25 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 		if (itc->itc_code == HEADLINE_INTT) {
 			n = 0;
 			Produce::inv_primitive(Emit::tree(), STYLEBOLD_BIP);
-			TEMPORARY_TEXT(T);
+			TEMPORARY_TEXT(T)
 			WRITE_TO(T, "\n%+W\n", itc->text_supplying_the_case);
 			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_text(Emit::tree(), T);
 			Produce::up(Emit::tree());
-			DISCARD_TEXT(T);
+			DISCARD_TEXT(T)
 			Produce::inv_primitive(Emit::tree(), STYLEROMAN_BIP);
 			continue;
 		}
-		TEMPORARY_TEXT(C);
+		TEMPORARY_TEXT(C)
 		WRITE_TO(C, "%d. %+W\n", n, itc->text_supplying_the_case);
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), C);
 		Produce::up(Emit::tree());
-		DISCARD_TEXT(C);
+		DISCARD_TEXT(C)
 
-		TEMPORARY_TEXT(OUT);
+		TEMPORARY_TEXT(OUT)
 		itc_save_OUT = OUT;
 		current_sentence = itc->itc_defined_at;
 		switch (itc->itc_code) {
@@ -493,7 +493,7 @@ void PL::Parsing::TestScripts::InternalTestCases_routine(void) {
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), OUT);
 		Produce::up(Emit::tree());
-		DISCARD_TEXT(OUT);
+		DISCARD_TEXT(OUT)
 	}
 	Routines::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
@@ -540,7 +540,7 @@ void PL::Parsing::TestScripts::end_internal_reporting(void) {
 
 @ =
 void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
-	TEMPORARY_TEXT(OUT);
+	TEMPORARY_TEXT(OUT)
 	itc_save_OUT = OUT;
 	if (Node::is(spec, PROPERTY_VALUE_NT))
 		spec = Lvalues::underlying_property(spec);
@@ -555,7 +555,7 @@ void PL::Parsing::TestScripts::emit_showme(parse_node *spec) {
 	Produce::down(Emit::tree());
 		Produce::val_text(Emit::tree(), OUT);
 	Produce::up(Emit::tree());
-	DISCARD_TEXT(OUT);
+	DISCARD_TEXT(OUT)
 
 	if (Kinds::get_construct(K) == CON_list_of) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_SAY_HL));

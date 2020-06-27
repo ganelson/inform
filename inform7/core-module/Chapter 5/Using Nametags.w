@@ -75,10 +75,10 @@ void UseNouns::visit_to_name(parse_node *p) {
 	if (res) {
 		noun *nt = Nouns::disambiguate(res, MAX_NOUN_PRIORITY);
 		if (nt) {
-			TEMPORARY_TEXT(i6r);
+			TEMPORARY_TEXT(i6r)
 			WRITE_TO(i6r, "%N", Wordings::first_wn(Node::get_text(p->down->next->next)));
 			UseNouns::noun_set_I6_representation(nt, i6r);
-			DISCARD_TEXT(i6r);
+			DISCARD_TEXT(i6r)
 		}
 	} else {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadObjectTranslation),

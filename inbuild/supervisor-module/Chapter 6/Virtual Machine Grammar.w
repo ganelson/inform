@@ -12,7 +12,7 @@ to give it permanency.
 
 =
 <version-number> internal 1 {
-	TEMPORARY_TEXT(vtext);
+	TEMPORARY_TEXT(vtext)
 	WRITE_TO(vtext, "%W", W);
 	semantic_version_number V = VersionNumbers::from_text(vtext);
 	int result = FALSE;
@@ -22,7 +22,7 @@ to give it permanency.
 		H->version = V;
 		*XP = (void *) H;
 	}
-	DISCARD_TEXT(vtext);
+	DISCARD_TEXT(vtext)
 	return result;
 }
 
@@ -31,7 +31,7 @@ with result |TRUE| if the current target VM matches that description and
 |FALSE| if not.
 =
 <virtual-machine> internal {
-	TEMPORARY_TEXT(vtext);
+	TEMPORARY_TEXT(vtext)
 	WRITE_TO(vtext, "%W", W);
 	compatibility_specification *C = Compatibility::from_text(vtext);
 	if (C) { *XP = C; return TRUE; }

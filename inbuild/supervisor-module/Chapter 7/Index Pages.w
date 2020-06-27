@@ -322,7 +322,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	HTML::begin_html_table(OUT, FIRST_STRIPE_COLOUR, TRUE, 0, 0, 2, 0, 0);
 	@<Show a titling row explaining the census sorting, if necessary@>;
 	int stripe = 0;
-	TEMPORARY_TEXT(current_author_name);
+	TEMPORARY_TEXT(current_author_name)
 	int i, current_installation = -1;
 	for (i=0; i<no_entries; i++) {
 		extension_census_datum *ecd = sorted_census_results[i];
@@ -335,7 +335,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		@<Print the census line for this extension@>;
 		HTML::end_html_row(OUT);
 	}
-	DISCARD_TEXT(current_author_name);
+	DISCARD_TEXT(current_author_name)
 	@<Show a final titling row closing the census sorting@>;
 	HTML::end_html_table(OUT);
 

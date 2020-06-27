@@ -405,10 +405,10 @@ void Supervisor::create_default_externals(void) {
 		pathname *P = home_path;
 		char *subfolder_within = INFORM_FOLDER_RELATIVE_TO_HOME;
 		if (subfolder_within[0]) {
-			TEMPORARY_TEXT(SF);
+			TEMPORARY_TEXT(SF)
 			WRITE_TO(SF, "%s", subfolder_within);
 			P = Pathnames::down(home_path, SF);
-			DISCARD_TEXT(SF);
+			DISCARD_TEXT(SF)
 		}
 		P = Pathnames::down(P, I"Inform");
 		E = Supervisor::add_nest(P, EXTERNAL_NEST_TAG);
@@ -505,12 +505,12 @@ int Supervisor::set_I7_bundle(text_stream *loc) {
 	pathname *P = Pathnames::from_text(project_bundle_request);
 	pathname *materials = Projects::materialise_pathname(
 		Pathnames::up(P), Pathnames::directory_name(P));
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	WRITE_TO(leaf, "%s-settings.txt", PROGRAM_NAME);
 	filename *expert_settings = Filenames::in(materials, leaf);
 	if (TextFiles::exists(expert_settings))
 		CommandLine::also_read_file(expert_settings);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
 	return TRUE;
 }
 

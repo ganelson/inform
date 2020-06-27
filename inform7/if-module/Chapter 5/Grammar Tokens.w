@@ -471,18 +471,18 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Produce::inv_primitive(Emit::tree(), NE_BIP);
 				Produce::down(Emit::tree());
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
-					TEMPORARY_TEXT(N);
+					TEMPORARY_TEXT(N)
 					WRITE_TO(N, "%N", wn);
 					Produce::val_dword(Emit::tree(), N);
-					DISCARD_TEXT(N);
+					DISCARD_TEXT(N)
 				Produce::up(Emit::tree());
 				@<Then jump to our doom@>;
 			Produce::up(Emit::tree());
 		} else {
-			TEMPORARY_TEXT(WT);
+			TEMPORARY_TEXT(WT)
 			WRITE_TO(WT, "%N", wn);
 			Emit::array_dword_entry(WT);
-			DISCARD_TEXT(WT);
+			DISCARD_TEXT(WT)
 		}
 		return NULL;
 	}
@@ -543,10 +543,10 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			(bp == a_has_b_predicate) ||
 			(bp == R_wearing) ||
 			(bp == R_carrying)) {
-			TEMPORARY_TEXT(L);
+			TEMPORARY_TEXT(L)
 			WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
 			inter_symbol *exit_label = Produce::reserve_label(Emit::tree(), L);
-			DISCARD_TEXT(L);
+			DISCARD_TEXT(L)
 
 			Produce::inv_primitive(Emit::tree(), OBJECTLOOP_BIP);
 			Produce::down(Emit::tree());
@@ -638,10 +638,10 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			Produce::up(Emit::tree());
 		} else if (bp == R_incorporation) {
-			TEMPORARY_TEXT(L);
+			TEMPORARY_TEXT(L)
 			WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
 			inter_symbol *exit_label = Produce::reserve_label(Emit::tree(), L);
-			DISCARD_TEXT(L);
+			DISCARD_TEXT(L)
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
@@ -999,10 +999,10 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 
-						TEMPORARY_TEXT(L);
+						TEMPORARY_TEXT(L)
 						WRITE_TO(L, ".ol_mm_%d", ol_loop_counter++);
 						inter_symbol *exit_label = Produce::reserve_label(Emit::tree(), L);
-						DISCARD_TEXT(L);
+						DISCARD_TEXT(L)
 
 						Produce::inv_primitive(Emit::tree(), IF_BIP);
 						Produce::down(Emit::tree());

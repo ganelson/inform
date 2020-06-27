@@ -1124,7 +1124,7 @@ void Lexer::lexer_problem_handler(int err, text_stream *details, wchar_t *word) 
 	#ifndef PROBLEM_WORDS_CALLBACK
 	if (err == MEMORY_OUT_LEXERERROR)
 		Errors::fatal("Out of memory: unable to create lexer workspace");
-	TEMPORARY_TEXT(word_t);
+	TEMPORARY_TEXT(word_t)
 	if (word) WRITE_TO(word_t, "%w", word);
 	switch (err) {
 		case STRING_TOO_LONG_LEXERERROR:
@@ -1148,7 +1148,7 @@ void Lexer::lexer_problem_handler(int err, text_stream *details, wchar_t *word) 
 		default:
 			internal_error("unknown lexer error");
     }
-	DISCARD_TEXT(word_t);
+	DISCARD_TEXT(word_t)
 	#endif
 }
 

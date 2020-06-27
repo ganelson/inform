@@ -115,7 +115,7 @@ void NaturalLanguages::preform_error(word_assemblage base_text, nonterminal *nt,
 			"I'm having difficulties conjugating the verb '%5'. ");
 	}
 
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	if (pr) {
 		Problems::quote_number(3, &(pr->match_number));
 		ptoken *pt;
@@ -135,6 +135,6 @@ void NaturalLanguages::preform_error(word_assemblage base_text, nonterminal *nt,
 			"%1: %2.");
 	}
 	Problems::issue_problem_end();
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 }
 

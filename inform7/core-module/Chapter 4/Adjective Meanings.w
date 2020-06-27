@@ -983,13 +983,13 @@ known in order to sort.
 	packaging_state save = Routines::begin(iname);
 	@<Add an it-variable to represent the value or object in the domain@>;
 
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "meaning of \"");
 	if (Wordings::nonempty(W)) WRITE_TO(C, "%~W", W);
 	else WRITE_TO(C, "<nameless>");
 	WRITE_TO(C, "\"");
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 
 	if (problem_count == 0) {
 		local_variable *it_lv = LocalVariables::it_variable();
@@ -1397,7 +1397,7 @@ void Adjectives::Meanings::agreements(void) {
 						Produce::down(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 							Produce::down(Emit::tree());
-								TEMPORARY_TEXT(T);
+								TEMPORARY_TEXT(T)
 								int number_sought = 1, gender_sought = NEUTER_GENDER;
 								if (gna%3 == 0) gender_sought = MASCULINE_GENDER;
 								if (gna%3 == 1) gender_sought = FEMININE_GENDER;
@@ -1407,7 +1407,7 @@ void Adjectives::Meanings::agreements(void) {
 								if (Wordings::nonempty(AW)) WRITE_TO(T, "%W", AW);
 								else WRITE_TO(T, "%W", PW);
 								Produce::val_text(Emit::tree(), T);
-								DISCARD_TEXT(T);
+								DISCARD_TEXT(T)
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());

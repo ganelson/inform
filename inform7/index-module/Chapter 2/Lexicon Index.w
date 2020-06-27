@@ -446,7 +446,7 @@ void IndexLexicon::index_verbs(OUTPUT_STREAM) {
 			(lex->part_of_speech == MVERB_LEXE) ||
 			(lex->part_of_speech == PREP_LEXE) ||
 			(lex->part_of_speech == ABLE_VERB_LEXE)) {
-			TEMPORARY_TEXT(entry_text);
+			TEMPORARY_TEXT(entry_text)
 			HTML_OPEN_WITH("p", "class=\"hang\"");
 			Index::anchor_numbered(OUT, 10000+verb_count++); /* anchors from 10000: see above */
 			IndexLexicon::lexicon_copy_to_stream(lex, entry_text);
@@ -465,7 +465,7 @@ void IndexLexicon::index_verbs(OUTPUT_STREAM) {
 			NewVerbs::tabulate(OUT, lex, WAS_TENSE, "past");
 			NewVerbs::tabulate(OUT, lex, HASBEEN_TENSE, "present perfect");
 			NewVerbs::tabulate(OUT, lex, HADBEEN_TENSE, "past perfect");
-			DISCARD_TEXT(entry_text);
+			DISCARD_TEXT(entry_text)
 		}
 }
 
@@ -480,13 +480,13 @@ void IndexLexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, inform_ext
 		if (((lex->part_of_speech == VERB_LEXE) || (lex->part_of_speech == ABLE_VERB_LEXE))
 			&& (lex->verb_defined_at)
 			&& (Lexer::file_of_origin(Wordings::first_wn(Node::get_text(lex->verb_defined_at))) == sf)) {
-			TEMPORARY_TEXT(entry_text);
+			TEMPORARY_TEXT(entry_text)
 			IndexLexicon::lexicon_copy_to_stream(lex, entry_text);
 			if (verb_count++ == 0) { HTML_OPEN("p"); WRITE("Verbs: "); } else WRITE(", ");
 			if (lex->part_of_speech == VERB_LEXE) WRITE("to <b>%S</b>", entry_text);
 			else WRITE("to be able to <b>%S</b>", entry_text);
 			ExtensionDictionary::new_entry(I"verb", E, entry_text);
-			DISCARD_TEXT(entry_text);
+			DISCARD_TEXT(entry_text)
 		}
 	if (verb_count > 0) HTML_CLOSE("p");
 }

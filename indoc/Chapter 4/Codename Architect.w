@@ -26,16 +26,16 @@ At the front end of a section, before any of its text.
 =
 void Architect::architect_section_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C, section *S) {
 	if (S->begins_which_chapter == NULL) {
-		TEMPORARY_TEXT(comment);
+		TEMPORARY_TEXT(comment)
 		WRITE_TO(comment, "START IGNORE %d", S->number_within_volume);
 		HTML::comment(OUT, comment);
-		DISCARD_TEXT(comment);
+		DISCARD_TEXT(comment)
 	}
 	HTML::begin_div_with_class_S(OUT, I"bookheader");
 	text_stream *linkleft = NULL;
 	text_stream *linkright = NULL;
 	@<Work out URLs for the preceding and following sections@>;
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	WRITE_TO(leaf, "%S.html", indoc_settings->contents_leafname);
 	Architect::architect_banner(OUT,
 		S->in_which_chapter->chapter_full_title, V, leaf, linkleft, linkright);
@@ -82,10 +82,10 @@ void Architect::architect_navigation_bottom(navigation_design *self, text_stream
 		HTMLUtilities::general_link(OUT, I"footerlink", S->previous_section->section_URL, I"Previous");
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"footercontents\"");
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::general_link(OUT, I"footerlink", url, I"Contents");
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"footernext\"");
 	if (S->next_section)
@@ -112,18 +112,18 @@ void Architect::architect_banner(text_stream *OUT, text_stream *title, volume *V
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "class=\"midnightbannerleftcell\"");
 	if (Str::len(linkleft) > 0) {
-		TEMPORARY_TEXT(img);
+		TEMPORARY_TEXT(img)
 		HTMLUtilities::image_with_id(img, I"Hookleft.png", I"hookleft");
 		HTMLUtilities::general_link(OUT, I"standardlink", linkleft, img);
-		DISCARD_TEXT(img);
+		DISCARD_TEXT(img)
 	}
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"midnightbannercentrecell\"");
 	if (Str::len(linkcentre) > 0) {
-		TEMPORARY_TEXT(url);
+		TEMPORARY_TEXT(url)
 		WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 		HTML::begin_link_with_class(OUT, I"standardlink", url);
-		DISCARD_TEXT(url);
+		DISCARD_TEXT(url)
 	}
 	HTML_OPEN_WITH("span", "class=\"midnightbannertext\"");
 	WRITE("%S", title);
@@ -132,18 +132,18 @@ void Architect::architect_banner(text_stream *OUT, text_stream *title, volume *V
 		HTML::end_link(OUT);
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "class=\"midnightbannerrightcell\"");
-	TEMPORARY_TEXT(url);
-	TEMPORARY_TEXT(img);
+	TEMPORARY_TEXT(url)
+	TEMPORARY_TEXT(img)
 	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::image_with_id(img, I"Hookup.png", I"hookup");
 	HTMLUtilities::general_link(OUT, I"standardlink", url, img);
-	DISCARD_TEXT(img);
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(img)
+	DISCARD_TEXT(url)
 	if (Str::len(linkright) > 0) {
-		TEMPORARY_TEXT(img);
+		TEMPORARY_TEXT(img)
 		HTMLUtilities::image_with_id(img, I"Hookright.png", I"hookright");
 		HTMLUtilities::general_link(OUT, I"standardlink", linkright, img);
-		DISCARD_TEXT(img);
+		DISCARD_TEXT(img)
 	}
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");

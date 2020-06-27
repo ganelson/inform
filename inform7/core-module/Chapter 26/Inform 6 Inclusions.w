@@ -126,23 +126,23 @@ appropriate time.
 
 @<It's positioned with respect to a template segment@> =
 	Word::dequote(segment_inclusion_wn);
-	TEMPORARY_TEXT(seg);
+	TEMPORARY_TEXT(seg)
 	WRITE_TO(seg, "%W", Wordings::one_word(segment_inclusion_wn));
 	Config::Inclusions::new_intervention(inclusion_side, seg, NULL,
 		Lexer::word_raw_text(Wordings::first_wn(Node::get_text(PN)) + 2), NULL);
-	DISCARD_TEXT(seg);
+	DISCARD_TEXT(seg)
 
 @<It's positioned with respect to a template section@> =
 	Word::dequote(section_inclusion_wn);
 	Word::dequote(segment_inclusion_wn);
-	TEMPORARY_TEXT(sec);
-	TEMPORARY_TEXT(seg);
+	TEMPORARY_TEXT(sec)
+	TEMPORARY_TEXT(seg)
 	WRITE_TO(sec, "%W", Wordings::one_word(section_inclusion_wn));
 	WRITE_TO(seg, "%W", Wordings::one_word(segment_inclusion_wn));
 	Config::Inclusions::new_intervention(inclusion_side, seg, sec,
 		Lexer::word_raw_text(Wordings::first_wn(Node::get_text(PN)) + 2), NULL);
-	DISCARD_TEXT(sec);
-	DISCARD_TEXT(seg);
+	DISCARD_TEXT(sec)
+	DISCARD_TEXT(seg)
 
 @ When it comes to class and object definitions, we don't give the Template
 code instructions; we remember what's needed ourselves:

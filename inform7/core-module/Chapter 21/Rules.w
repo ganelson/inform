@@ -210,7 +210,7 @@ void Rules::set_I7_definition(rule *R, phrase *ph) {
 }
 
 void Rules::set_I6_definition(rule *R, wchar_t *identifier) {
-	TEMPORARY_TEXT(XT);
+	TEMPORARY_TEXT(XT)
 	WRITE_TO(XT, "%w", identifier);
 	R->rule_extern_iname = Hierarchy::make_iname_in(EXTERIOR_RULE_HL, R->rule_package);
 
@@ -219,7 +219,7 @@ void Rules::set_I6_definition(rule *R, wchar_t *identifier) {
 
 	R->xiname = xiname;
 	R->rule_extern_iname_as_text = Str::duplicate(XT);
-	DISCARD_TEXT(XT);
+	DISCARD_TEXT(XT)
 }
 
 inter_name *Rules::get_handler_definition(rule *R) {
@@ -624,7 +624,7 @@ void Rules::RulePrintingRule_routine(void) {
 				Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
-					TEMPORARY_TEXT(OUT);
+					TEMPORARY_TEXT(OUT)
 					@<Print a textual name for this rule@>;
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
@@ -659,13 +659,13 @@ void Rules::RulePrintingRule_routine(void) {
 
 @ =
 void Rules::compile_comment(rule *R, int index, int from) {
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Rule %d/%d", index, from);
 	if (R->defn_as_phrase == NULL) {
 		WRITE_TO(C, ": %n", R->rule_extern_iname);
 	}
 	Produce::comment(Emit::tree(), C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 	if (R->defn_as_phrase) {
 		Phrases::Usage::write_I6_comment_describing(&(R->defn_as_phrase->usage_data));
 	}
@@ -773,7 +773,7 @@ int Rules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 	HTML::end_colour(OUT);
 	WRITE("&nbsp;&nbsp;");
 
-	TEMPORARY_TEXT(S);
+	TEMPORARY_TEXT(S)
 	WRITE_TO(S, "%+W", R->name);
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>name</i> ");
@@ -782,7 +782,7 @@ int Rules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 	WRITE_TO(S, "The %W is not listed in the %W rulebook.\n", R->name, owner->primary_name);
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>unlist</i>");
-	DISCARD_TEXT(S);
+	DISCARD_TEXT(S)
 
 	int l, c;
 	for (l=0, c=0; l<26; l++)
@@ -907,7 +907,7 @@ void Rules::check_response_usages(void) {
 		for (int l=0; l<26; l++) {
 			if ((R->lettered_responses_used[l]) &&
 				(R->lettered_responses[l] == NULL)) {
-				TEMPORARY_TEXT(offers);
+				TEMPORARY_TEXT(offers)
 				int c = 0;
 				for (int l=0; l<26; l++)
 					if (R->lettered_responses[l]) {
@@ -915,7 +915,7 @@ void Rules::check_response_usages(void) {
 						if (c > 1) WRITE_TO(offers, ", ");
 						WRITE_TO(offers, "%c", 'A'+l);
 					}
-				TEMPORARY_TEXT(letter);
+				TEMPORARY_TEXT(letter)
 				PUT_TO(letter, 'A'+l);
 				Problems::quote_source(1, R->lettered_responses_used[l]);
 				Problems::quote_wording(2, R->name);
@@ -927,8 +927,8 @@ void Rules::check_response_usages(void) {
 					"You wrote %1, but the '%2' doesn't have a response "
 					"lettered '%3'. (It has %4.)");
 				Problems::issue_problem_end();
-				DISCARD_TEXT(letter);
-				DISCARD_TEXT(offers);
+				DISCARD_TEXT(letter)
+				DISCARD_TEXT(offers)
 			}
 		}
 	}

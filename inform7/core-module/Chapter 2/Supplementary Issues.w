@@ -283,33 +283,33 @@ sometimes not.
 void StandardProblems::release_problem(SIGIL_ARGUMENTS, char *message, filename *name) {
 	ACT_ON_SIGIL
 	Problems::quote_text(1, message);
-	TEMPORARY_TEXT(fn);
+	TEMPORARY_TEXT(fn)
 	WRITE_TO(fn, "%f", name);
 	Problems::quote_stream(2, fn);
 	Problems::issue_problem_begin(Task::syntax_tree(), message);
 	Problems::issue_problem_segment("A problem occurred with the 'Release along with...': "
 		"instructions: %1 (with the file '%2')");
 	Problems::issue_problem_end();
-	DISCARD_TEXT(fn);
+	DISCARD_TEXT(fn)
 }
 
 void StandardProblems::release_problem_path(SIGIL_ARGUMENTS, char *message, pathname *path) {
 	ACT_ON_SIGIL
 	Problems::quote_text(1, message);
-	TEMPORARY_TEXT(pn);
+	TEMPORARY_TEXT(pn)
 	WRITE_TO(pn, "%p", path);
 	Problems::quote_stream(2, pn);
 	Problems::issue_problem_begin(Task::syntax_tree(), message);
 	Problems::issue_problem_segment("A problem occurred with the 'Release along with...': "
 		"instructions: %1 (with the file '%2')");
 	Problems::issue_problem_end();
-	DISCARD_TEXT(pn);
+	DISCARD_TEXT(pn)
 }
 
 void StandardProblems::release_problem_at_sentence(SIGIL_ARGUMENTS, char *message, filename *name) {
 	ACT_ON_SIGIL
 	Problems::quote_text(1, message);
-	TEMPORARY_TEXT(fn);
+	TEMPORARY_TEXT(fn)
 	WRITE_TO(fn, "%f", name);
 	Problems::quote_stream(2, fn);
 	Problems::quote_source(3, current_sentence);
@@ -317,7 +317,7 @@ void StandardProblems::release_problem_at_sentence(SIGIL_ARGUMENTS, char *messag
 	Problems::issue_problem_segment("A problem occurred with the 'Release along with...': "
 		"instructions (%3): %1 (with the file '%2')");
 	Problems::issue_problem_end();
-	DISCARD_TEXT(fn);
+	DISCARD_TEXT(fn)
 }
 
 @h Cartographical problems.

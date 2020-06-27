@@ -37,25 +37,25 @@ void Twilight::twilight_section_title(navigation_design *self, text_stream *OUT,
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "width=80 valign=\"top\"");
 	if (S->previous_section) {
-		TEMPORARY_TEXT(img);
+		TEMPORARY_TEXT(img)
 		HTMLUtilities::image_element(img, I"Back.png");
 		HTMLUtilities::general_link(OUT, I"standardlink", S->previous_section->section_URL, img);
-		DISCARD_TEXT(img);
+		DISCARD_TEXT(img)
 	} else {
 		HTMLUtilities::image_element(OUT, I"BackDisabled.png");
 	}
-	TEMPORARY_TEXT(url);
-	TEMPORARY_TEXT(img);
+	TEMPORARY_TEXT(url)
+	TEMPORARY_TEXT(img)
 	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::image_element(img, I"Home.png");
 	HTMLUtilities::general_link(OUT, I"standardlink", url, img);
-	DISCARD_TEXT(img);
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(img)
+	DISCARD_TEXT(url)
 	if (S->next_section) {
-		TEMPORARY_TEXT(img);
+		TEMPORARY_TEXT(img)
 		HTMLUtilities::image_element(img, I"Forward.png");
 		HTMLUtilities::general_link(OUT, I"standardlink", S->next_section->section_URL, img);
-		DISCARD_TEXT(img);
+		DISCARD_TEXT(img)
 	} else {
 		HTMLUtilities::image_element(OUT, I"ForwardDisabled.png");
 	}
@@ -104,10 +104,10 @@ void Twilight::twilight_navigation_bottom(navigation_design *self, text_stream *
 		HTMLUtilities::general_link(OUT, I"footerlink", S->next_section->section_URL, I"Next");
 		WRITE(" / ");
 	}
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	WRITE_TO(url, "%S.html", indoc_settings->contents_leafname);
 	HTMLUtilities::general_link(OUT, I"footerlink", url, I"Contents");
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 	HTML_CLOSE("p");
 	HTML::end_div(OUT);
 }

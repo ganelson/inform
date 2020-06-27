@@ -1229,13 +1229,13 @@ void PL::Actions::ActionData(void) {
 						if (j0 >= 0) {
 							@<Insert a space here if needed to break up the action name@>;
 
-							TEMPORARY_TEXT(AT);
+							TEMPORARY_TEXT(AT)
 							PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_text(Emit::tree(), AT);
 							Produce::up(Emit::tree());
-							DISCARD_TEXT(AT);
+							DISCARD_TEXT(AT)
 
 							j0 = -1;
 						}
@@ -1266,13 +1266,13 @@ void PL::Actions::ActionData(void) {
 				}
 				if (j0 >= 0) {
 					@<Insert a space here if needed to break up the action name@>;
-					TEMPORARY_TEXT(AT);
+					TEMPORARY_TEXT(AT)
 					PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_text(Emit::tree(), AT);
 					Produce::up(Emit::tree());
-					DISCARD_TEXT(AT);
+					DISCARD_TEXT(AT)
 				}
 				if (somethings < an->max_parameters) {
 					Produce::inv_primitive(Emit::tree(), IF_BIP);

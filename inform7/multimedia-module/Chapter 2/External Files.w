@@ -184,7 +184,7 @@ void PL::Files::register_file(wording F, wording FN) {
 	}
 
 	int ownership = OWNED_BY_THIS_PROJECT;
-	TEMPORARY_TEXT(ifid_of_file);
+	TEMPORARY_TEXT(ifid_of_file)
 
 	if (<external-file-sentence-subject>(F) == FALSE) internal_error("bad ef grammar");
 	F = GET_RW(<external-file-name>, 1);
@@ -244,7 +244,7 @@ void PL::Files::register_file(wording F, wording FN) {
 
 	LOGIF(FIGURE_CREATIONS, "Created external file <%W> = filename '%N'\n",
 		F, exf->unextended_filename);
-	DISCARD_TEXT(ifid_of_file);
+	DISCARD_TEXT(ifid_of_file)
 }
 
 @h I6 arrays of file structures.
@@ -262,10 +262,10 @@ void PL::Files::arrays(void) {
 	LOOP_OVER(exf, external_file) {
 		if (exf->file_ownership == OWNED_BY_SPECIFIC_PROJECT) {
 			packaging_state save = Emit::named_string_array_begin(exf->IFID_array_iname, K_value);
-			TEMPORARY_TEXT(II);
+			TEMPORARY_TEXT(II)
 			WRITE_TO(II, "//%S//", exf->IFID_of_owner);
 			Emit::array_text_entry(II);
-			DISCARD_TEXT(II);
+			DISCARD_TEXT(II)
 			Emit::array_end(save);
 		}
 	}
@@ -277,12 +277,12 @@ void PL::Files::arrays(void) {
 		if (exf->file_is_binary) Emit::array_numeric_entry(1);
 		else Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry(0);
-		TEMPORARY_TEXT(WW);
+		TEMPORARY_TEXT(WW)
 		WRITE_TO(WW, "%w", Lexer::word_raw_text(exf->unextended_filename));
 		Str::delete_first_character(WW);
 		Str::delete_last_character(WW);
 		Emit::array_text_entry(WW);
-		DISCARD_TEXT(WW);
+		DISCARD_TEXT(WW)
 		switch (exf->file_ownership) {
 			case OWNED_BY_THIS_PROJECT: Emit::array_iname_entry(PL::Bibliographic::IFID::UUID()); break;
 			case OWNED_BY_ANOTHER_PROJECT: Emit::array_null_entry(); break;

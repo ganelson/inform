@@ -256,7 +256,7 @@ void Kinds::Interpreter::despatch_kind_command(parse_node_tree *T, text_stream *
 	if (Str::get_first_char(command) == '#') Kinds::Interpreter::begin_kind_macro(command);
 	else if (Str::get_first_char(command) == '*') Kinds::Interpreter::begin_kind_template(command);
 	else {
-		TEMPORARY_TEXT(name);
+		TEMPORARY_TEXT(name)
 		Str::copy(name, command);
 		int should_know = FALSE;
 		if (Str::get_first_char(name) == '+') { Str::delete_first_character(name); should_know = TRUE; }
@@ -274,7 +274,7 @@ void Kinds::Interpreter::despatch_kind_command(parse_node_tree *T, text_stream *
 				Kinds::base_construction(constructor_described), name, EMPTY_WORDING);
 		}
 		#endif
-		DISCARD_TEXT(name);
+		DISCARD_TEXT(name)
 	}
 
 @h Parsing single kind commands.
@@ -282,8 +282,8 @@ Each command is read in as text, parsed and stored into a modest structure.
 
 =
 single_kind_command Kinds::Interpreter::parse_kind_command(text_stream *whole_command) {
-	TEMPORARY_TEXT(command);
-	TEMPORARY_TEXT(argument);
+	TEMPORARY_TEXT(command)
+	TEMPORARY_TEXT(argument)
 	single_kind_command stc;
 
 	@<Parse line into command and argument, divided by a colon@>;
@@ -301,8 +301,8 @@ single_kind_command Kinds::Interpreter::parse_kind_command(text_stream *whole_co
 		case TEXT_KCA: @<Parse a textual argument for a kind command@>; break;
 		case VOCABULARY_KCA: @<Parse a vocabulary argument for a kind command@>; break;
 	}
-	DISCARD_TEXT(command);
-	DISCARD_TEXT(argument);
+	DISCARD_TEXT(command)
+	DISCARD_TEXT(argument)
 	return stc;
 }
 
@@ -513,14 +513,14 @@ void Kinds::Interpreter::transcribe_kind_template(parse_node_tree *T,
 	int i = 0;
 	while (Str::get_at(p, i)) {
 		if ((Str::get_at(p, i) == '\n') || (Str::get_at(p, i) == ' ')) { i++; continue; }
-		TEMPORARY_TEXT(template_line_buffer);
+		TEMPORARY_TEXT(template_line_buffer)
 		int terminator = 0;
 		@<Transcribe one line of the template into the line buffer@>;
 		if (Str::len(template_line_buffer) > 0) {
 			wording XW = Feeds::feed_text(template_line_buffer);
 			if (terminator != 0) Sentences::make_node(T, XW, terminator);
 		}
-		DISCARD_TEXT(template_line_buffer);
+		DISCARD_TEXT(template_line_buffer)
 	}
 	#ifdef CORE_MODULE
 	Sentences::Rearrangement::further_material();
@@ -538,13 +538,13 @@ not matter, since such things never come into kind definitions.
 @<Transcribe one line of the template into the line buffer@> =
 	while ((Str::get_at(p, i) != 0) && (Str::get_at(p, i) != '\n')) {
 		if (Str::get_at(p, i) == '<') {
-			TEMPORARY_TEXT(template_wildcard_buffer);
+			TEMPORARY_TEXT(template_wildcard_buffer)
 			i++;
 			while ((Str::get_at(p, i) != 0) && (Str::get_at(p, i) != '\n') && (Str::get_at(p, i) != '>'))
 				PUT_TO(template_wildcard_buffer, Str::get_at(p, i++));
 			i++;
 			@<Transcribe the template wildcard@>;
-			DISCARD_TEXT(template_wildcard_buffer);
+			DISCARD_TEXT(template_wildcard_buffer)
 		} else PUT_TO(template_line_buffer, Str::get_at(p, i++));
 	}
 	if (Str::get_last_char(template_line_buffer) == '.') {
@@ -910,7 +910,7 @@ void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_comm
 		if (Str::get(pos) == 0) break;
 		if (Str::get(pos) == ',') { c++; pos = Str::forward(pos); continue; }
 		if (c >= 2) { c=1; break; }
-		TEMPORARY_TEXT(wd);
+		TEMPORARY_TEXT(wd)
 		while ((!Characters::is_space_or_tab(Str::get(pos))) && (Str::get(pos) != ',') && (Str::get(pos) != 0)) {
 			PUT_TO(wd, Str::get(pos)); pos = Str::forward(pos);
 		}
@@ -924,7 +924,7 @@ void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_comm
 				internal_error("illegal constructor-arity keyword");
 			}
 		}
-		DISCARD_TEXT(wd);
+		DISCARD_TEXT(wd)
 	}
 	con->constructor_arity = c+1;
 

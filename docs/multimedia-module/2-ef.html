@@ -278,7 +278,7 @@ letters or digits, with the first being a letter.
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ownership</span><span class="plain-syntax"> = </span><span class="constant-syntax">OWNED_BY_THIS_PROJECT</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ifid_of_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ifid_of_file</span><span class="plain-syntax">)</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;external-file-sentence-subject&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"bad ef grammar"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;external-file-name&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
@@ -338,7 +338,7 @@ letters or digits, with the first being a letter.
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">FIGURE_CREATIONS</span><span class="plain-syntax">, </span><span class="string-syntax">"Created external file &lt;%W&gt; = filename '%N'\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">exf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unextended_filename</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ifid_of_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ifid_of_file</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. I6 arrays of file structures. </b>External files are written in I6 as their array names:
@@ -356,10 +356,10 @@ letters or digits, with the first being a letter.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">exf</span><span class="plain-syntax">, </span><span class="reserved-syntax">external_file</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">exf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">file_ownership</span><span class="plain-syntax"> == </span><span class="constant-syntax">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">packaging_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">save</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Emit::named_string_array_begin</span><span class="plain-syntax">(</span><span class="identifier-syntax">exf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">IFID_array_iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">II</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">II</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">II</span><span class="plain-syntax">, </span><span class="string-syntax">"//%S</span><span class="comment-syntax">", exf-&gt;IFID_of_owner);</span>
 <span class="string-syntax">            Emit::array_text_entry(II);</span>
-<span class="string-syntax">            DISCARD_TEXT(II);</span>
+<span class="string-syntax">            DISCARD_TEXT(II)</span>
 <span class="string-syntax">            Emit::array_end(save);</span>
 <span class="string-syntax">        }</span>
 <span class="string-syntax">    }</span>
@@ -371,12 +371,12 @@ letters or digits, with the first being a letter.
 <span class="string-syntax">        if (exf-&gt;file_is_binary) Emit::array_numeric_entry(1);</span>
 <span class="string-syntax">        else Emit::array_numeric_entry(0);</span>
 <span class="string-syntax">        Emit::array_numeric_entry(0);</span>
-<span class="string-syntax">        TEMPORARY_TEXT(WW);</span>
+<span class="string-syntax">        TEMPORARY_TEXT(WW)</span>
 <span class="string-syntax">        WRITE_TO(WW, "</span><span class="plain-syntax">%</span><span class="identifier-syntax">w</span><span class="string-syntax">", Lexer::word_raw_text(exf-&gt;unextended_filename));</span>
 <span class="string-syntax">        Str::delete_first_character(WW);</span>
 <span class="string-syntax">        Str::delete_last_character(WW);</span>
 <span class="string-syntax">        Emit::array_text_entry(WW);</span>
-<span class="string-syntax">        DISCARD_TEXT(WW);</span>
+<span class="string-syntax">        DISCARD_TEXT(WW)</span>
 <span class="string-syntax">        switch (exf-&gt;file_ownership) {</span>
 <span class="string-syntax">            case OWNED_BY_THIS_PROJECT: Emit::array_iname_entry(PL::Bibliographic::IFID::UUID()); break;</span>
 <span class="string-syntax">            case OWNED_BY_ANOTHER_PROJECT: Emit::array_null_entry(); break;</span>

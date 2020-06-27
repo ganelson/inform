@@ -518,7 +518,7 @@ this could cause trouble on unusual platforms.
 infinities to represent arbitrarily large numbers.
 
 @<Match a real number element token@> =
-	TEMPORARY_TEXT(real_buffer);
+	TEMPORARY_TEXT(real_buffer)
 	int point_at = -1, mult_at = -1;
 	while ((Characters::isdigit(wd[wpos])) || ((wd[wpos] == '.') && (point_at == -1))) {
 		if (wd[wpos] == '.') point_at = Str::len(real_buffer);
@@ -538,7 +538,7 @@ infinities to represent arbitrarily large numbers.
 		}
 	}
 	wording W = Feeds::feed_text(real_buffer);
-	DISCARD_TEXT(real_buffer);
+	DISCARD_TEXT(real_buffer)
 	if ((point_at == -1) && (mult_at == -1)) {
 		if (<cardinal-number>(Wordings::first_word(W)) == FALSE) return NULL;
 		matched_number = <<r>>;
@@ -686,14 +686,14 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	Produce::up(Emit::tree());
 
-	TEMPORARY_TEXT(SL);
+	TEMPORARY_TEXT(SL)
 	WRITE_TO(SL, ".Succeeded_LP_%d", label);
 	inter_symbol *succeeded_label = Produce::reserve_label(Emit::tree(), SL);
-	DISCARD_TEXT(SL);
-	TEMPORARY_TEXT(FL);
+	DISCARD_TEXT(SL)
+	TEMPORARY_TEXT(FL)
 	WRITE_TO(FL, ".Failed_LP_%d", label);
 	inter_symbol *failed_label = Produce::reserve_label(Emit::tree(), FL);
-	DISCARD_TEXT(FL);
+	DISCARD_TEXT(FL)
 
 	for (tc=0, ec=0; tc<lp->no_lp_tokens; tc++) {
 		int lookahead = -1;
@@ -825,10 +825,10 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 					Produce::up(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
-						TEMPORARY_TEXT(EXP);
+						TEMPORARY_TEXT(EXP)
 						WRITE_TO(EXP, " by: %W]\n", lp->prototype_text);
 						Produce::val_text(Emit::tree(), EXP);
-						DISCARD_TEXT(EXP);
+						DISCARD_TEXT(EXP)
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -860,10 +860,10 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 		Produce::inv_primitive(Emit::tree(), NE_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_symbol(Emit::tree(), K_value, gprk->cur_word_s);
-			TEMPORARY_TEXT(N);
+			TEMPORARY_TEXT(N)
 			WRITE_TO(N, "%N", lp->lp_tokens[tc].token_wn);
 			Produce::val_dword(Emit::tree(), N);
-			DISCARD_TEXT(N);
+			DISCARD_TEXT(N)
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
@@ -1974,10 +1974,10 @@ void LiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_li
 						k++; lp->marked_for_printing = TRUE;
 					}
 			if (k > 0) {
-				TEMPORARY_TEXT(C);
+				TEMPORARY_TEXT(C)
 				WRITE_TO(C, "The named notation: %W", lpn->notation_name);
 				Emit::code_comment(C);
-				DISCARD_TEXT(C);
+				DISCARD_TEXT(C)
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), EQ_BIP);
@@ -2104,25 +2104,25 @@ the sorting measure.
 	}
 
 @<Compile I6 code to print a fixed word token within a literal pattern@> =
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	CompiledText::from_wide_string(T, Lexer::word_raw_text(lp->lp_tokens[tc].token_wn), CT_RAW);
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_text(Emit::tree(), T);
 	Produce::up(Emit::tree());
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 
 @<Compile I6 code to print a character token within a literal pattern@> =
-	TEMPORARY_TEXT(T);
-	TEMPORARY_TEXT(tiny_string);
+	TEMPORARY_TEXT(T)
+	TEMPORARY_TEXT(tiny_string)
 	PUT_TO(tiny_string, lp->lp_tokens[tc].token_char);
 	CompiledText::from_stream(T, tiny_string, CT_RAW);
-	DISCARD_TEXT(tiny_string);
+	DISCARD_TEXT(tiny_string)
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_text(Emit::tree(), T);
 	Produce::up(Emit::tree());
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 
 @<Compile I6 code to print an element token within a literal pattern@> =
 	literal_pattern_element *lpe = &(lp->lp_elements[ec]);
@@ -2287,33 +2287,33 @@ the sorting measure.
 @ =
 inter_symbol *LiteralPatterns::jump_label(literal_pattern *lp) {
 	if (lp->jump_label == NULL) {
-		TEMPORARY_TEXT(N);
+		TEMPORARY_TEXT(N)
 		WRITE_TO(N, ".Use_LP_%d", lp->allocation_id);
 		lp->jump_label = Produce::reserve_label(Emit::tree(), N);
-		DISCARD_TEXT(N);
+		DISCARD_TEXT(N)
 	}
 	return lp->jump_label;
 }
 
 @ =
 void LiteralPatterns::comment_use_of_lp(literal_pattern *lp) {
-	TEMPORARY_TEXT(W);
+	TEMPORARY_TEXT(W)
 	WRITE_TO(W, "%W, ", lp->prototype_text);
 	Kinds::Scalings::describe(W, lp->scaling);
 	Emit::code_comment(W);
-	DISCARD_TEXT(W);
+	DISCARD_TEXT(W)
 }
 
 @ =
 void LiteralPatterns::log_lp_debugging_data(literal_pattern *lp) {
-	TEMPORARY_TEXT(W);
+	TEMPORARY_TEXT(W)
 	WRITE_TO(W, "%s %s LP%d: primary %d, s/p: %d/%d\n",
 		(lp->benchmark)?"***":"---",
 		(lp->equivalent_unit)?"equiv":"new  ",
 		lp->allocation_id, lp->primary_alternative,
 		lp->singular_form_only, lp->plural_form_only);
 	Emit::code_comment(W);
-	DISCARD_TEXT(W);
+	DISCARD_TEXT(W)
 	LiteralPatterns::comment_use_of_lp(lp);
 }
 
@@ -3000,7 +3000,7 @@ the LPs under each named possibility.
 
 @<Compile the printing phrase for this and perhaps subsequent LPs@> =
 	kind *K = lpn2->can_use_this_lp->kind_specified;
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	Kinds::Textual::write(TEMP, K);
 
 	feed_t id = Feeds::begin();
@@ -3012,14 +3012,14 @@ the LPs under each named possibility.
 	Sentences::make_node(Task::syntax_tree(), XW, ':');
 
 	id = Feeds::begin();
-	TEMPORARY_TEXT(print_rule_buff);
+	TEMPORARY_TEXT(print_rule_buff)
 	WRITE_TO(print_rule_buff, " (- {-printing-routine:%S", TEMP);
 	WRITE_TO(print_rule_buff, "}({val}, %d); -) ", lpn->allocation_id + 1);
 	Feeds::feed_text(print_rule_buff);
-	DISCARD_TEXT(print_rule_buff);
+	DISCARD_TEXT(print_rule_buff)
 	XW = Feeds::end(id);
 	Sentences::make_node(Task::syntax_tree(), XW, '.');
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 
 	literal_pattern_name *lpn3;
 	for (lpn3 = lpn2; lpn3; lpn3 = lpn3->next)
@@ -3031,12 +3031,12 @@ Creating a LP implicitly defines further I7 source text, as follows.
 
 =
 void LiteralPatterns::define_packing_phrases(literal_pattern *lp, kind *K) {
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	Kinds::Textual::write(TEMP, K);
 	@<Define phrases to convert from a packed value to individual parts@>;
 	@<Define a phrase to convert from numerical parts to a packed value@>;
 	Sentences::RuleSubtrees::register_recently_lexed_phrases();
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 }
 
 @ First, we automatically create $n$ phrases to unpack the elements given the value.
@@ -3067,7 +3067,7 @@ automatically generates:
 		Sentences::make_node(Task::syntax_tree(), XW, ':');
 
 		id = Feeds::begin();
-		TEMPORARY_TEXT(print_rule_buff);
+		TEMPORARY_TEXT(print_rule_buff)
 		if (i==0)
 			WRITE_TO(print_rule_buff, " (- ({full}/%d) -) ", lpe->element_multiplier);
 		else if (lpe->element_multiplier > 1)
@@ -3081,7 +3081,7 @@ automatically generates:
 			@<Issue a problem for overly long part names@>
 		else
 			Sentences::make_node(Task::syntax_tree(), XW, '.');
-		DISCARD_TEXT(print_rule_buff);
+		DISCARD_TEXT(print_rule_buff)
 	}
 
 @ And similarly, a packing phrase to calculate the value given its elements.
@@ -3093,7 +3093,7 @@ For instance, the dollars-and-cents example compiles:
 @<Define a phrase to convert from numerical parts to a packed value@> =
 	if (lp->no_lp_elements > 0) {
 		feed_t id = Feeds::begin();
-		TEMPORARY_TEXT(print_rule_buff);
+		TEMPORARY_TEXT(print_rule_buff)
 		Feeds::feed_C_string(L"To decide which ");
 		Feeds::feed_text(TEMP);
 		Feeds::feed_C_string(L" is ");
@@ -3127,7 +3127,7 @@ For instance, the dollars-and-cents example compiles:
 			XW = Feeds::end(id);
 			Sentences::make_node(Task::syntax_tree(), XW, '.');
 		}
-		DISCARD_TEXT(print_rule_buff);
+		DISCARD_TEXT(print_rule_buff)
 	}
 
 @<Issue a problem for overly long part names@> =

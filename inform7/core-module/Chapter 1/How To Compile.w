@@ -77,7 +77,7 @@ as possible.
 
 @d BENCH(routine) {
 	if (problem_count == 0) {
-		TEMPORARY_TEXT(name);
+		TEMPORARY_TEXT(name)
 		WRITE_TO(name, "//");
 		WRITE_TO(name, #routine);
 		WRITE_TO(name, "//");
@@ -86,7 +86,7 @@ as possible.
 				Str::put_at(name, i, ':'); Str::put_at(name, i+1, ':');
 			}
 		stopwatch_timer *st = Time::start_stopwatch(sequence_timer, name);
-		DISCARD_TEXT(name);
+		DISCARD_TEXT(name)
 		routine();
 		int cs = Time::stop_stopwatch(st);
 		if (cs > 0) LOG(".... " #routine "() took %dcs\n", cs);
@@ -95,7 +95,7 @@ as possible.
 
 @d BENCH_IF(plugin, routine) {
 	if ((problem_count == 0) && (Plugins::Manage::plugged_in(plugin))) {
-		TEMPORARY_TEXT(name);
+		TEMPORARY_TEXT(name)
 		WRITE_TO(name, "//");
 		WRITE_TO(name, #routine);
 		WRITE_TO(name, "//");
@@ -104,7 +104,7 @@ as possible.
 				Str::put_at(name, i, ':'); Str::put_at(name, i+1, ':');
 			}
 		stopwatch_timer *st = Time::start_stopwatch(sequence_timer, name);
-		DISCARD_TEXT(name);
+		DISCARD_TEXT(name)
 		routine();
 		int cs = Time::stop_stopwatch(st);
 		if (cs > 0) LOG(".... " #routine "() took %dcs\n", cs);

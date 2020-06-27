@@ -78,15 +78,15 @@ it can be rebuilt quickly whenever needed again.
 	feed_t id = Feeds::begin();
 	if (Wordings::length(W) > 1) Feeds::feed_wording(Wordings::trim_last_word(W));
 	int last_wn = Wordings::last_wn(W);
-	TEMPORARY_TEXT(original);
-	TEMPORARY_TEXT(pluralised);
+	TEMPORARY_TEXT(original)
+	TEMPORARY_TEXT(pluralised)
 	WRITE_TO(original, "%+W", Wordings::one_word(last_wn));
 	if (*(Lexer::word_text(last_wn)) == '\"') WRITE_TO(pluralised, "some-long-text");
 	else Pluralisation::regular(pluralised, original, nl);
 	Feeds::feed_text(pluralised);
 	*PW = Feeds::end(id);
-	DISCARD_TEXT(original);
-	DISCARD_TEXT(pluralised);
+	DISCARD_TEXT(original)
+	DISCARD_TEXT(pluralised)
 	LOGIF(CONSTRUCTED_PLURALS, "[Constructing plural of %W as %W]\n", W, *PW);
 
 @h The pluralizing trie.

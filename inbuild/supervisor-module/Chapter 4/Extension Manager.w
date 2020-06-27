@@ -53,7 +53,7 @@ inform_extension *ExtensionManager::from_copy(inbuild_copy *C) {
 dictionary *ext_copy_cache = NULL;
 inbuild_copy *ExtensionManager::new_copy(filename *F) {
 	if (ext_copy_cache == NULL) ext_copy_cache = Dictionaries::new(16, FALSE);
-	TEMPORARY_TEXT(key);
+	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%f", F);
 	inbuild_copy *C = NULL;
 	if (Dictionaries::find(ext_copy_cache, key))
@@ -68,7 +68,7 @@ inbuild_copy *ExtensionManager::new_copy(filename *F) {
 		Dictionaries::create(ext_copy_cache, key);
 		Dictionaries::write_value(ext_copy_cache, key, C);
 	}
-	DISCARD_TEXT(key);
+	DISCARD_TEXT(key)
 	return C;
 }
 
@@ -127,7 +127,7 @@ void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
 	scan_directory *D = Directories::open(P);
 	if (D) {
-		TEMPORARY_TEXT(LEAFNAME);
+		TEMPORARY_TEXT(LEAFNAME)
 		while (Directories::next(D, LEAFNAME)) {
 			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
 				Str::delete_last_character(LEAFNAME);
@@ -140,7 +140,7 @@ void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 				ExtensionManager::search_nest_for_single_file(F, N, req, search_results);
 			}
 		}
-		DISCARD_TEXT(LEAFNAME);
+		DISCARD_TEXT(LEAFNAME)
 		Directories::close(D);
 	}
 }
@@ -161,22 +161,22 @@ since an extension is a single file; to sync, we just overwrite.
 void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *E = ExtensionManager::path_within_nest(N);
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	Editions::write_canonical_leaf(leaf, C->edition);
 	WRITE_TO(leaf, ".i7x");
 	filename *F = Filenames::in(
 		Pathnames::down(E, C->edition->work->author_name), leaf);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
 
 	if (TextFiles::exists(F)) {
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {
 		if (meth->methodology == DRY_RUN_METHODOLOGY) {
-			TEMPORARY_TEXT(command);
+			TEMPORARY_TEXT(command)
 			WRITE_TO(command, "mkdir -p ");
 			Shell::quote_path(command, Filenames::up(F));
 			WRITE_TO(STDOUT, "%S\n", command);
-			DISCARD_TEXT(command);
+			DISCARD_TEXT(command)
 		} else {
 			Pathnames::create_in_file_system(N->location);
 			Pathnames::create_in_file_system(Pathnames::down(N->location, I"Extensions"));
@@ -184,12 +184,12 @@ void ExtensionManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild
 		}
 	}
 
-	TEMPORARY_TEXT(command);
+	TEMPORARY_TEXT(command)
 	WRITE_TO(command, "cp -f ");
 	Shell::quote_file(command, C->location_if_file);
 	Shell::quote_file(command, F);
 	BuildSteps::shell(command, meth);
-	DISCARD_TEXT(command);
+	DISCARD_TEXT(command)
 }
 
 @h Build graph.

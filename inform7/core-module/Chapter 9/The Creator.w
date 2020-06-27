@@ -978,7 +978,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 	}
 
 @<Insert the appropriate possessive@> =
-	TEMPORARY_TEXT(genitive_form);
+	TEMPORARY_TEXT(genitive_form)
 	if (Plugins::Call::irregular_genitive(owner, genitive_form, &propriety) == FALSE) {
 		if (Wordings::nonempty(OW)) {
 			if (Wordings::length(OW) > 1)
@@ -987,7 +987,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 		}
 	}
 	Feeds::feed_text_expanding_strings(genitive_form);
-	DISCARD_TEXT(genitive_form);
+	DISCARD_TEXT(genitive_form)
 
 @<Insert the appropriate name@> =
 	Feeds::feed_wording(OW);
@@ -998,13 +998,13 @@ and an |COMMON_NOUN_NT| node, "nose".
 		SW = InferenceSubjects::get_name_text(Kinds::Knowledge::as_subject(instance_kind));
 	else if (<s-constant-value>(NW)) SW = NW;
 	if (Wordings::nonempty(SW)) {
-		TEMPORARY_TEXT(textual_count);
+		TEMPORARY_TEXT(textual_count)
 		WRITE_TO(textual_count, " %d ", ++name_stubs_count);
 		feed_t id = Feeds::begin();
 		Feeds::feed_wording(SW);
 		Feeds::feed_text_expanding_strings(textual_count);
 		NW = Feeds::end(id);
-		DISCARD_TEXT(textual_count);
+		DISCARD_TEXT(textual_count)
 	}
 
 @ This is how callings are parsed, both in assertions and conditions: that is,

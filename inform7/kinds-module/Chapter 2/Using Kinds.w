@@ -318,10 +318,10 @@ void Kinds::Behaviour::write_support_routine_name(OUTPUT_STREAM, kind *K) {
 
 #ifdef CORE_MODULE
 inter_name *Kinds::Behaviour::get_support_routine_as_iname(kind *K) {
-	TEMPORARY_TEXT(N);
+	TEMPORARY_TEXT(N)
 	Kinds::Behaviour::write_support_routine_name(N, K);
 	inter_name *iname = Produce::find_by_name(Emit::tree(), N);
-	DISCARD_TEXT(N);
+	DISCARD_TEXT(N)
 	return iname;
 }
 #endif

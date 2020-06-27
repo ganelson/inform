@@ -1635,15 +1635,15 @@ void Hierarchy::markup(package_request *R, int hm_id, text_stream *value) {
 }
 
 void Hierarchy::markup_wording(package_request *R, int hm_id, wording W) {
-	TEMPORARY_TEXT(ANT);
+	TEMPORARY_TEXT(ANT)
 	WRITE_TO(ANT, "%W", W);
 	Hierarchy::markup(R, hm_id, ANT);
-	DISCARD_TEXT(ANT);
+	DISCARD_TEXT(ANT)
 }
 
 void Hierarchy::markup_wa(package_request *R, int hm_id, word_assemblage WA) {
-	TEMPORARY_TEXT(ANT);
+	TEMPORARY_TEXT(ANT)
 	WRITE_TO(ANT, "%A", WA);
 	Hierarchy::markup(R, hm_id, ANT);
-	DISCARD_TEXT(ANT);
+	DISCARD_TEXT(ANT)
 }

@@ -339,21 +339,21 @@ can't normally be unravelled at compile time.
 	Sentences::RuleSubtrees::register_recently_lexed_phrases();
 
 @<Feed the preamble for the superlative phrase into the lexer@> =
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	WRITE_TO(TEMP, " To decide which object is %N ( S - description of objects ) ",
 		Wordings::first_wn(mdef->superlative));
 	Sentences::make_node(Task::syntax_tree(),
 		Feeds::feed_text(TEMP),
 		':');
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 
 @<Feed the body of the superlative phrase into the lexer@> =
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	WRITE_TO(TEMP, " (- {-primitive-definition:extremal%s%W}  -) ",
 		Properties::Measurement::strict_comparison(mdef->region_shape),
 		mdef->name_of_property_to_compare);
 	Sentences::make_node(Task::syntax_tree(), Feeds::feed_text(TEMP), '.');
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 
 @<Create the adjectival meaning arising from this measurement@> =
 	adjective_meaning *am = Adjectives::Meanings::new(MEASUREMENT_KADJ,
@@ -480,13 +480,13 @@ behaviour despite being of mutually incompatible kinds.)
 
 @<Construct a BP named for the quiddity and tested using the comparative schema@> =
 	binary_predicate *bp;
-	TEMPORARY_TEXT(relname);
+	TEMPORARY_TEXT(relname)
 	WRITE_TO(relname, "%V", quiddity);
 	bp = BinaryPredicates::make_pair(PROPERTY_COMPARISON_KBP,
 		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
 		relname, NULL, NULL, NULL,
 		schema_to_compare_property_values, WordAssemblages::lit_1(quiddity));
-	DISCARD_TEXT(relname);
+	DISCARD_TEXT(relname)
 	BinaryPredicates::set_comparison_details(bp, mdef->region_shape, mdef->prop);
 	Properties::Measurement::register_comparative(comparative_form, bp);
 

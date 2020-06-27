@@ -476,10 +476,10 @@ grammar_line *PL::Parsing::Lines::list_take_out_one_word_grammar(grammar_line *l
 	for (gl = list_head, glp = NULL; gl; gl = gl->next_line) {
 		int wn = PL::Parsing::Lines::gl_contains_single_unconditional_word(gl);
 		if (wn >= 0) {
-			TEMPORARY_TEXT(content);
+			TEMPORARY_TEXT(content)
 			WRITE_TO(content, "%w", Lexer::word_text(wn));
 			Emit::array_dword_entry(content);
-			DISCARD_TEXT(content);
+			DISCARD_TEXT(content)
 			gl->suppress_compilation = TRUE;
 		} else glp = gl;
 	}
@@ -1035,10 +1035,10 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 	inter_symbol *fail_label = NULL;
 
 	if (gprk) {
-		TEMPORARY_TEXT(L);
+		TEMPORARY_TEXT(L)
 		WRITE_TO(L, ".Fail_%d", current_label);
 		fail_label = Produce::reserve_label(Emit::tree(), L);
-		DISCARD_TEXT(L);
+		DISCARD_TEXT(L)
 	}
 
 	PL::Parsing::Lines::gl_compile_extra_token_for_condition(gprk, gl, gv_is, fail_label);
@@ -1246,10 +1246,10 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 					Produce::up(Emit::tree());
 				}
 				if (next_reserved_label) Produce::place_label(Emit::tree(), next_reserved_label);
-				TEMPORARY_TEXT(L);
+				TEMPORARY_TEXT(L)
 				WRITE_TO(L, ".group_%d_%d_%d", current_grammar_block, lexeme_equivalence_class, alternative_number+1);
 				next_reserved_label = Produce::reserve_label(Emit::tree(), L);
-				DISCARD_TEXT(L);
+				DISCARD_TEXT(L)
 
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
@@ -1320,7 +1320,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 
 @<Jump to end of group@> =
 	if (eog_reserved_label == NULL) {
-		TEMPORARY_TEXT(L);
+		TEMPORARY_TEXT(L)
 		WRITE_TO(L, ".group_%d_%d_end",
 			current_grammar_block, lexeme_equivalence_class);
 		eog_reserved_label = Produce::reserve_label(Emit::tree(), L);
@@ -1423,7 +1423,7 @@ int PL::Parsing::Lines::index_list_with_action(OUTPUT_STREAM, grammar_line *gl) 
 	while (gl != NULL) {
 		if (gl->belongs_to_gv) {
 			wording VW = PL::Parsing::Verbs::get_verb_text(gl->belongs_to_gv);
-			TEMPORARY_TEXT(trueverb);
+			TEMPORARY_TEXT(trueverb)
 			if (Wordings::nonempty(VW))
 				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
 			HTML::open_indented_p(OUT, 2, "hanging");
@@ -1435,7 +1435,7 @@ int PL::Parsing::Lines::index_list_with_action(OUTPUT_STREAM, grammar_line *gl) 
 			if (gl->reversed) WRITE(" <i>reversed</i>");
 			HTML_CLOSE("p");
 			said_something = TRUE;
-			DISCARD_TEXT(trueverb);
+			DISCARD_TEXT(trueverb)
 		}
 		gl = gl->next_with_action;
 	}
@@ -1450,7 +1450,7 @@ void PL::Parsing::Lines::index_list_for_token(OUTPUT_STREAM, grammar_line *gl) {
 	while (gl != NULL) {
 		if (gl->belongs_to_gv) {
 			wording VW = PL::Parsing::Verbs::get_verb_text(gl->belongs_to_gv);
-			TEMPORARY_TEXT(trueverb);
+			TEMPORARY_TEXT(trueverb)
 			if (Wordings::nonempty(VW))
 				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
 			HTML::open_indented_p(OUT, 2, "hanging");
@@ -1462,7 +1462,7 @@ void PL::Parsing::Lines::index_list_for_token(OUTPUT_STREAM, grammar_line *gl) {
 			Index::link(OUT, gl->original_text);
 			if (gl->reversed) WRITE(" <i>reversed</i>");
 			HTML_CLOSE("p");
-			DISCARD_TEXT(trueverb);
+			DISCARD_TEXT(trueverb)
 		}
 		gl = gl->sorted_next_line;
 	}

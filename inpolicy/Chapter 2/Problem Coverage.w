@@ -59,11 +59,11 @@ the problem message test cases, so we observe them.
 =
 void Coverage::which_problems_have_test_cases(void) {
 	filename *CAT = Filenames::in(path_to_inpolicy_workspace, I"cases.txt");
-	TEMPORARY_TEXT(COMMAND);
+	TEMPORARY_TEXT(COMMAND)
 	WRITE_TO(COMMAND, "../intest/Tangled/intest inform7 -catalogue ");
 	Shell::redirect(COMMAND, CAT);
 	if (Shell::run(COMMAND)) Errors::fatal("can't run intest to harvest cases");
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 	TextFiles::read(CAT, FALSE, "unable to read roster of test cases", TRUE,
 		&Coverage::test_case_harvester, NULL, NULL);
 }
@@ -129,7 +129,7 @@ void Coverage::existence_harvester(text_stream *text, text_file_position *tfp, v
 	while (Regexp::match(&mr, text, L"(%c*?)_p_%((%c+?)%)(%c*)")) {
 		Str::clear(text);
 		WRITE_TO(text, "%S%S", mr.exp[0], mr.exp[2]);
-		TEMPORARY_TEXT(name);
+		TEMPORARY_TEXT(name)
 		Str::copy(name, mr.exp[1]);
 		if (Str::eq(name, I"sigil")) break;
 		int context = CODE_MENTIONS_PCON;
@@ -144,7 +144,7 @@ void Coverage::existence_harvester(text_stream *text, text_file_position *tfp, v
 			WRITE_TO(name, "_%f_line%d", SF, tfp->line_count);
 		}
 		Coverage::observe_problem(name, context);
-		DISCARD_TEXT(name);
+		DISCARD_TEXT(name)
 	}
 	Regexp::dispose_of(&mr);
 }

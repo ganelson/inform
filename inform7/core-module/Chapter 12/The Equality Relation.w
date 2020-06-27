@@ -336,14 +336,14 @@ one that's more helpfully specific and return |TRUE|.
 @<Add kind-checking code for run-time checking@> =
 	if ((Kinds::Compare::compatible(st[1], st[0]) == SOMETIMES_MATCH) &&
 		(Kinds::Compare::lt(st[0], K_object))) {
-		TEMPORARY_TEXT(TEMP);
+		TEMPORARY_TEXT(TEMP)
 		WRITE_TO(TEMP,
 			"; if (~~(*1 ofclass %n)) RunTimeProblem(RTP_WRONGASSIGNEDKIND, *1, \"*?\", \"",
 			Kinds::RunTime::I6_classname(st[0]));
 		Kinds::Textual::write(TEMP, st[0]);
 		WRITE_TO(TEMP, "\");");
 		Calculus::Schemas::append(asch->schema, "%S", TEMP);
-		DISCARD_TEXT(TEMP);
+		DISCARD_TEXT(TEMP)
 	}
 
 @h Problem message text.

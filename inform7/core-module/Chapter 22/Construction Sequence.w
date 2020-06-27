@@ -340,7 +340,7 @@ points", say). This is where we do it:
 			if ((Kinds::Behaviour::involves_var(KR, k)) &&
 				(Phrases::TypeData::tokens_contain_variable(&(ph->type_data), k) == FALSE)) {
 				current_sentence = Phrases::declaration_node(ph);
-				TEMPORARY_TEXT(var_letter);
+				TEMPORARY_TEXT(var_letter)
 				PUT_TO(var_letter, 'A'+k-1);
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_stream(2, var_letter);
@@ -351,7 +351,7 @@ points", say). This is where we do it:
 					"a kind variable (%2) which it can't determine through "
 					"usage.");
 				Problems::issue_problem_end();
-				DISCARD_TEXT(var_letter);
+				DISCARD_TEXT(var_letter)
 		}
 	}
 

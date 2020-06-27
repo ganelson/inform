@@ -152,8 +152,8 @@ will register 36 excerpts. But the hashing in the excerpts parser shouldn't
 make the result too slow.
 
 @<This word is divided by a forward slash at the j-position in word i@> =
-	TEMPORARY_TEXT(a_form);
-	TEMPORARY_TEXT(b_form);
+	TEMPORARY_TEXT(a_form)
+	TEMPORARY_TEXT(b_form)
 	@<Splice up the A and B forms of the slashed word@>;
 	@<Make sure the A form isn't the S-word@>;
 
@@ -161,8 +161,8 @@ make the result too slow.
 	@<Splice up the A and B forms of the whole phrase wording@>;
 	if (Wordings::nonempty(AW)) Phrases::Parser::register_phrasal(phrase_mc, ph, AW);
 	if (Wordings::nonempty(BW)) Phrases::Parser::register_phrasal(phrase_mc, ph, BW);
-	DISCARD_TEXT(a_form);
-	DISCARD_TEXT(b_form);
+	DISCARD_TEXT(a_form)
+	DISCARD_TEXT(b_form)
 	return;
 
 @ The double-dash means "omit this word altogether".

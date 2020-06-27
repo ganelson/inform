@@ -100,7 +100,7 @@ example, |ulx| produces one of the Glulx VMs.
 target_vm *TargetVMs::find(text_stream *ext, int debug) {
 	target_vm *result = NULL;
 	if (Str::len(ext) == 0) ext = I"ulx";
-	TEMPORARY_TEXT(file_extension);
+	TEMPORARY_TEXT(file_extension)
 	Str::copy(file_extension, ext);
 	if (Str::get_first_char(file_extension) == '.')
 		Str::delete_first_character(file_extension);
@@ -111,7 +111,7 @@ target_vm *TargetVMs::find(text_stream *ext, int debug) {
 		if ((Str::eq_insensitive(VM->VM_unblorbed_extension, ext)) &&
 			(VM->with_debugging_enabled == debug))
 			result = VM;
-	DISCARD_TEXT(file_extension);
+	DISCARD_TEXT(file_extension)
 	return result;
 }
 

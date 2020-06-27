@@ -514,11 +514,11 @@ and so on. The point of this is that it guarantees we won't define two labels
 with identical names in the same Inform 6 routine, which would fail to compile.
 
 @<Inline command "label"@> =
-	TEMPORARY_TEXT(L);
+	TEMPORARY_TEXT(L)
 	WRITE_TO(L, ".");
 	JumpLabels::write(L, sche->operand);
 	Produce::lab(Emit::tree(), Produce::reserve_label(Emit::tree(), L));
-	DISCARD_TEXT(L);
+	DISCARD_TEXT(L)
 	return;
 
 @ We can also output just the numerical counter:
@@ -1148,7 +1148,7 @@ because |{-copy:S:+}| adds 1 to S, whereas |{-copy:S:+1}| adds the value
 of the variable {-my:1} to S.
 
 @<Find what we are copying from, to and how@> =
-	TEMPORARY_TEXT(from_p);
+	TEMPORARY_TEXT(from_p)
 
 	int c = Str::get_first_char(sche->operand2);
 	if (c == '+') { copy_form = 1; Str::copy_tail(from_p, sche->operand2, 1); }
@@ -1170,7 +1170,7 @@ of the variable {-my:1} to S.
 			"gone wrong: I couldn't work those out.");
 		return;
 	}
-	DISCARD_TEXT(from_p);
+	DISCARD_TEXT(from_p)
 
 @ Use of |{-copy:...}| will produce problem messages if the target is a protected
 local variable, or a global which isn't allowed to change in play (such as the
@@ -1313,10 +1313,10 @@ result would be the same without the optimisation.
 		(Vocabulary::test_flags(Wordings::first_wn(SW), TEXTWITHSUBS_MC) == FALSE)) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
-			TEMPORARY_TEXT(T);
+			TEMPORARY_TEXT(T)
 			CompiledText::from_wide_string_for_emission(T, Lexer::word_text(Wordings::first_wn(SW)));
 			Produce::val_text(Emit::tree(), T);
-			DISCARD_TEXT(T);
+			DISCARD_TEXT(T)
 		Produce::up(Emit::tree());
 	} else {
 		kind *K = Specifications::to_kind(to_say);
@@ -1412,11 +1412,11 @@ very special circumstances.
 	if (Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT) == -1) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(NULL_HL));
 	} else {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		WRITE_TO(T, "%~W", Wordings::one_word(Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT)));
 		inter_symbol *T_s = EmitInterSchemas::find_identifier_text(Emit::tree(), T, NULL, NULL);
 		Produce::val_symbol(Emit::tree(), K_value, T_s);
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	}
 	return;
 

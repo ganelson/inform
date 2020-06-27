@@ -253,13 +253,13 @@ and we also understand "only R" and "everything" and "nothing".
 @ Otherwise a request must be the name of a single debugging aspect.
 
 @<See if this is a simple request for debugging information@> =
-	TEMPORARY_TEXT(req);
+	TEMPORARY_TEXT(req)
 	LOOP_THROUGH_WORDING(j, RQW) {
 		WRITE_TO(req, "%N", j);
 		if (j<Wordings::last_wn(RQW)) WRITE_TO(req, " ");
 	}
 	int rv = Log::set_aspect_from_command_line(req, FALSE);
-	DISCARD_TEXT(req);
+	DISCARD_TEXT(req)
 	if (rv) return;
 
 @ Here, then, is one of Inform's largest grammars, <nonstructural-sentence>.

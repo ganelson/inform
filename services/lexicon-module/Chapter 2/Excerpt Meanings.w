@@ -542,13 +542,13 @@ void ExcerptMeanings::problem_handler(int err_no, wording W, void *ref, int k) {
 	PROBLEM_LEXICON_CALLBACK(err_no, W, ref, k);
 	#endif
 	#ifndef PROBLEM_LEXICON_CALLBACK
-	TEMPORARY_TEXT(text);
+	TEMPORARY_TEXT(text)
 	WRITE_TO(text, "%+W", W);
 	switch (err_no) {
 		case TooLongName_LEXICONERROR:
 			Errors::nowhere("noun too long");
 			break;
 	}
-	DISCARD_TEXT(text);
+	DISCARD_TEXT(text)
 	#endif
 }

@@ -121,13 +121,13 @@ run-time problem message may be needed; compiling it for every deferred
 proposition would be wasteful of space in the Z-machine.
 
 @<Compile the constant origin text for run-time problem use@> =
-	TEMPORARY_TEXT(COTT);
+	TEMPORARY_TEXT(COTT)
 	if (pdef->deferred_from)
 		WRITE_TO(COTT, "%~W", Node::get_text(pdef->deferred_from));
 	else
 		WRITE_TO(COTT, "not sure where this came from");
 	Emit::named_string_constant(pdef->rtp_iname, COTT);
-	DISCARD_TEXT(COTT);
+	DISCARD_TEXT(COTT)
 
 @ Just in case this hasn't already been done:
 
@@ -192,12 +192,12 @@ specific to particular deferral reasons.
 	Calculus::Variables::determine_status(proposition, var_states, NULL);
 	for (j=0; j<26; j++)
 		if (var_states[j] != UNUSED_VST) {
-			TEMPORARY_TEXT(letter_var);
+			TEMPORARY_TEXT(letter_var)
 			PUT_TO(letter_var, pcalc_vars[j]);
 			var_s[j] = LocalVariables::add_internal_local_as_symbol(letter_var);
 			WRITE_TO(letter_var, "_ix");
 			var_ix_s[j] = LocalVariables::add_internal_local_as_symbol_noting(letter_var, &(var_ix_lv[j]));
-			DISCARD_TEXT(letter_var);
+			DISCARD_TEXT(letter_var)
 		} else {
 			var_s[j] = NULL;
 			var_ix_s[j] = NULL;
@@ -209,13 +209,13 @@ specific to particular deferral reasons.
 	TRAVERSE_PROPOSITION(pl, proposition)
 		if (pl->element == DOMAIN_OPEN_ATOM) {
 			if (no_extras >= MAX_QC_VARIABLES) break;
-			TEMPORARY_TEXT(q_var);
+			TEMPORARY_TEXT(q_var)
 			WRITE_TO(q_var, "qcy_%d", no_extras);
 			qcy_s[no_extras] = LocalVariables::add_internal_local_as_symbol(q_var);
 			Str::clear(q_var);
 			WRITE_TO(q_var, "qcn_%d", no_extras);
 			qcn_s[no_extras] = LocalVariables::add_internal_local_as_symbol(q_var);
-			DISCARD_TEXT(q_var);
+			DISCARD_TEXT(q_var)
 			no_extras++;
 		}
 
@@ -963,10 +963,10 @@ syntax to break or continue a loop other than the innermost one.
 
 @<Jump to next outer loop for this reason@> =
 	if (NextOuterLoop_labels[reason] == NULL) {
-		TEMPORARY_TEXT(L);
+		TEMPORARY_TEXT(L)
 		WRITE_TO(L, ".NextOuterLoop_%d", reason);
 		NextOuterLoop_labels[reason] = Produce::reserve_label(Emit::tree(), L);
-		DISCARD_TEXT(L);
+		DISCARD_TEXT(L)
 	}
 	Produce::inv_primitive(Emit::tree(), JUMP_BIP);
 	Produce::down(Emit::tree());
@@ -975,10 +975,10 @@ syntax to break or continue a loop other than the innermost one.
 
 @<Place next outer loop label@> =
 	if (NextOuterLoop_labels[reason] == NULL) {
-		TEMPORARY_TEXT(L);
+		TEMPORARY_TEXT(L)
 		WRITE_TO(L, ".NextOuterLoop_%d", reason);
 		NextOuterLoop_labels[reason] = Produce::reserve_label(Emit::tree(), L);
-		DISCARD_TEXT(L);
+		DISCARD_TEXT(L)
 	}
 	Produce::place_label(Emit::tree(), NextOuterLoop_labels[reason]);
 

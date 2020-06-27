@@ -79,10 +79,10 @@ as the text of a number written out in decimal, so:
 
 =
 void Placeholders::set_to_number(text_stream *var, int v) {
-	TEMPORARY_TEXT(temp_digits);
+	TEMPORARY_TEXT(temp_digits)
 	WRITE_TO(temp_digits, "%d", v);
 	Placeholders::set_to(var, temp_digits, 0);
-	DISCARD_TEXT(temp_digits);
+	DISCARD_TEXT(temp_digits)
 }
 
 @ And here we set a given placeholder to a given text value. If it doesn't
@@ -181,7 +181,7 @@ within an HTML paragraph.
 			WRITE("</p><p>"); i += 4; continue;
 		}
 		if (c == '[') {
-			TEMPORARY_TEXT(inner_name);
+			TEMPORARY_TEXT(inner_name)
 			int expanded = FALSE;
 			for (int j = i+1; j<L; j++) {
 				int c = Str::get_at(wv->pl_contents, j);
@@ -194,7 +194,7 @@ within an HTML paragraph.
 				}
 				PUT_TO(inner_name, c);
 			}
-			DISCARD_TEXT(inner_name);
+			DISCARD_TEXT(inner_name)
 			if (expanded) continue;
 		}
 		if (((c == '\x0a') || (c == '\x0d') || (c == '\x7f')) && (multiparagraph_mode)) {

@@ -280,7 +280,7 @@ packaging_state PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_ver
 	if (Wordings::empty(gv->command))
 		Emit::array_dword_entry(I"no.verb");
 	else {
-		TEMPORARY_TEXT(vt);
+		TEMPORARY_TEXT(vt)
 		WRITE_TO(vt, "%W", Wordings::one_word(Wordings::first_wn(gv->command)));
 		if (PL::Parsing::Verbs::command_verb_reserved(vt)) {
 			current_sentence = gv->where_gv_created;
@@ -295,16 +295,16 @@ packaging_state PL::Parsing::Verbs::gv_compile_Verb_directive_header(grammar_ver
 				"Actions Index page.");
 			Problems::issue_problem_end();
 		}
-		DISCARD_TEXT(vt);
-		TEMPORARY_TEXT(WD);
+		DISCARD_TEXT(vt)
+		TEMPORARY_TEXT(WD)
 		WRITE_TO(WD, "%N", Wordings::first_wn(gv->command));
 		Emit::array_dword_entry(WD);
-		DISCARD_TEXT(WD);
+		DISCARD_TEXT(WD)
 		for (int i=0; i<gv->no_aliased_commands; i++) {
-			TEMPORARY_TEXT(WD);
+			TEMPORARY_TEXT(WD)
 			WRITE_TO(WD, "%N", Wordings::first_wn(gv->aliased_command[i]));
 			Emit::array_dword_entry(WD);
-			DISCARD_TEXT(WD);
+			DISCARD_TEXT(WD)
 		}
 	}
 	return save;
@@ -322,12 +322,12 @@ void PL::Parsing::Verbs::reserve(text_stream *verb_name) {
 
 int PL::Parsing::Verbs::command_verb_reserved(text_stream *verb_tried) {
 	reserved_command_verb *rcv;
-	TEMPORARY_TEXT(normalised_vt);
+	TEMPORARY_TEXT(normalised_vt)
 	PL::Parsing::Verbs::normalise_cv_to(normalised_vt, verb_tried);
 	LOOP_OVER(rcv, reserved_command_verb)
 		if (Str::eq(normalised_vt, rcv->reserved_text))
 			return TRUE;
-	DISCARD_TEXT(normalised_vt);
+	DISCARD_TEXT(normalised_vt)
 	return FALSE;
 }
 
@@ -366,10 +366,10 @@ void PL::Parsing::Verbs::index_normal(OUTPUT_STREAM, grammar_verb *gv, text_stre
 void PL::Parsing::Verbs::index_alias(OUTPUT_STREAM, grammar_verb *gv, text_stream *headword) {
 	WRITE("&quot;%S&quot;, <i>same as</i> &quot;%N&quot;",
 		headword, Wordings::first_wn(gv->command));
-	TEMPORARY_TEXT(link);
+	TEMPORARY_TEXT(link)
 	WRITE_TO(link, "%N", Wordings::first_wn(gv->command));
 	Index::below_link(OUT, link);
-	DISCARD_TEXT(link);
+	DISCARD_TEXT(link)
 	HTML_TAG("br");
 }
 

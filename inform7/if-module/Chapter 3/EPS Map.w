@@ -770,7 +770,7 @@ For instance, |28&-125| means $(28, -125)$ which is stored as $-1249972$.
 
 =
 int PL::EPSMap::parse_eps_map_offset(wording W) {
-	TEMPORARY_TEXT(offs);
+	TEMPORARY_TEXT(offs)
 	WRITE_TO(offs, "%W", Wordings::one_word(Wordings::first_wn(W)));
 	if (Str::len(offs) >= 30) return ERRONEOUS_OFFSET_VALUE;
 	match_results mr = Regexp::create_mr();
@@ -779,7 +779,7 @@ int PL::EPSMap::parse_eps_map_offset(wording W) {
 		xbit = Str::atoi(mr.exp[0], 0), ybit = Str::atoi(mr.exp[1], 0);
 		Regexp::dispose_of(&mr);
 	} else return ERRONEOUS_OFFSET_VALUE;
-	DISCARD_TEXT(offs);
+	DISCARD_TEXT(offs)
 	return xbit + ybit*10000;
 }
 
@@ -1105,7 +1105,7 @@ on -- come from here.
 =
 void PL::EPSMap::plot_text_at(OUTPUT_STREAM, wchar_t *text_to_plot, instance *I, int abbrev_to,
 	wchar_t *font, int x, int y, int pointsize, int centre_h, int centre_v) {
-	TEMPORARY_TEXT(txt);
+	TEMPORARY_TEXT(txt)
 	if (text_to_plot) {
 		WRITE_TO(txt, "%w", text_to_plot);
 	} else if (I) {
@@ -1113,7 +1113,7 @@ void PL::EPSMap::plot_text_at(OUTPUT_STREAM, wchar_t *text_to_plot, instance *I,
 		@<If that fails, try taking the name from its source text name@>;
 	} else return;
 	PL::EPSMap::plot_stream_at(OUT, txt, I, abbrev_to, font, x, y, pointsize, centre_h, centre_v);
-	DISCARD_TEXT(txt);
+	DISCARD_TEXT(txt)
 }
 
 @<Try taking the name from the printed name property of the room@> =
@@ -1139,11 +1139,11 @@ void PL::EPSMap::plot_text_at(OUTPUT_STREAM, wchar_t *text_to_plot, instance *I,
 @ =
 void PL::EPSMap::plot_stream_at(OUTPUT_STREAM, text_stream *text_to_plot, instance *I, int abbrev_to,
 	wchar_t *font, int x, int y, int pointsize, int centre_h, int centre_v) {
-	TEMPORARY_TEXT(txt);
+	TEMPORARY_TEXT(txt)
 	Str::copy(txt, text_to_plot);
 	@<Abbreviate the text to be printed by stripping dispensable letters@>;
 	PL::EPSMap::EPS_compile_text(OUT, txt, x, y, font, pointsize, centre_h, centre_v);
-	DISCARD_TEXT(txt);
+	DISCARD_TEXT(txt)
 }
 
 @ The following cuts the text down to the abbreviation length by knocking out,

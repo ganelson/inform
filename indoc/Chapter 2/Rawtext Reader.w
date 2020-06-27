@@ -131,8 +131,8 @@ void Rawtext::process_large_helper(text_stream *rawl, text_file_position *tfp,
 		@<Deal with a block heading@>
 	else if (rhs->skipping_current_block == FALSE) {
 		int suppress_p_tag = FALSE;
-		TEMPORARY_TEXT(HTML_prefix);
-		TEMPORARY_TEXT(css_style);
+		TEMPORARY_TEXT(HTML_prefix)
+		TEMPORARY_TEXT(css_style)
 		match_results mr2 = Regexp::create_mr();
 		@<Deal with any permitted markup@>;
 		if ((indoc_settings->treat_code_as_verbatim == FALSE) || (Str::get_first_char(rawl) != '\t')) {
@@ -142,8 +142,8 @@ void Rawtext::process_large_helper(text_stream *rawl, text_file_position *tfp,
 		int abandon_para = FALSE;
 		@<Deal with paragraph tags@>;
 		if (abandon_para == FALSE) @<Deal with a regular paragraph@>;
-		DISCARD_TEXT(HTML_prefix);
-		DISCARD_TEXT(css_style);
+		DISCARD_TEXT(HTML_prefix)
+		DISCARD_TEXT(css_style)
 		Regexp::dispose_of(&mr2);
 	}
 	Regexp::dispose_of(&mr);
@@ -275,28 +275,28 @@ is used, then the image is styled as |img.classname|.
  		text_stream *left = mr2.exp[0];
  		text_stream *name = mr2.exp[1];
  		text_stream *right = mr2.exp[2];
- 		TEMPORARY_TEXT(cl);
+ 		TEMPORARY_TEXT(cl)
  		match_results mr3 = Regexp::create_mr();
  		if (Regexp::match(&mr3, name, L"(%c*?): *(%c*)")) {
  			Str::copy(cl, mr3.exp[0]); Str::copy(name, mr3.exp[1]);
   			Regexp::dispose_of(&mr3);
 		}
- 		TEMPORARY_TEXT(url);
+ 		TEMPORARY_TEXT(url)
  		HTMLUtilities::image_URL(url, name);
  		Str::clear(rawl);
  		if (indoc_settings->format == HTML_FORMAT) {
  			WRITE_TO(rawl, "%S", left);
- 			TEMPORARY_TEXT(details);
+ 			TEMPORARY_TEXT(details)
  			WRITE_TO(details, "alt=\"%S\" src=\"%S\"", name, url);
  			if (Str::len(cl) > 0) WRITE_TO(details, " class=\"%S\"", cl);
  			HTML::tag_sc(rawl, "img", details);
-			DISCARD_TEXT(details);
+			DISCARD_TEXT(details)
  			WRITE_TO(rawl, "%S", right);
  		} else {
  			WRITE_TO(rawl, "%S(Image %S here)%S", left, name, right);
  		}
- 		DISCARD_TEXT(cl);
- 		DISCARD_TEXT(url);
+ 		DISCARD_TEXT(cl)
+ 		DISCARD_TEXT(url)
  	}
 
 @ A paragraph beginning with braced material, |{thus}|, is "tagged". There
@@ -348,7 +348,7 @@ throw the whole paragraph away. If we're generating for no specific platform
 @<Deal with a phrase definition paragraph tag@> =
  	if (Regexp::match(&mr4, paragraph_tag, L"defn *(%c*?)")) {
  		text_stream *defn = mr4.exp[0];
- 		TEMPORARY_TEXT(head);
+ 		TEMPORARY_TEXT(head)
  		Str::copy(head, rawl);
  		while (Characters::is_whitespace(Str::get_last_char(head)))
  			Str::delete_last_character(head);
@@ -396,7 +396,7 @@ in tag elements into |&quot;| escapes.
 
 @<Treat the text as necessary@> =
  	if (indoc_settings->format == HTML_FORMAT) {
- 		TEMPORARY_TEXT(dequotee);
+ 		TEMPORARY_TEXT(dequotee)
  		Str::copy(dequotee, rawl);
  		Str::clear(rawl);
  		match_results mr4 = Regexp::create_mr();
@@ -413,7 +413,7 @@ in tag elements into |&quot;| escapes.
 @ =
 void Rawtext::escape_HTML_characters_in(text_stream *text) {
  	if (indoc_settings->format == HTML_FORMAT) {
-		TEMPORARY_TEXT(modified);
+		TEMPORARY_TEXT(modified)
 		for (int i=0, L=Str::len(text); i<L; i++) {
 			int c = Str::get_at(text, i);
 			switch (c) {
@@ -431,6 +431,6 @@ void Rawtext::escape_HTML_characters_in(text_stream *text) {
 			}
 		}
 		Str::copy(text, modified);
-		DISCARD_TEXT(modified);
+		DISCARD_TEXT(modified)
  	}
 }

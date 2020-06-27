@@ -189,7 +189,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	if (submodule_name) {
 		IBM_d = CodeGen::Assimilate::template_submodule(I, submodule_name, P);
 
-		TEMPORARY_TEXT(subpackage_name);
+		TEMPORARY_TEXT(subpackage_name)
 		if (suffix) {
 			WRITE_TO(subpackage_name, "%S_%S", identifier, suffix);
 		} else {
@@ -197,7 +197,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		}
 		Inter::Bookmarks::set_current_package(IBM,
 			CodeGen::Assimilate::new_package_named(IBM, subpackage_name, subpackage_type));
-		DISCARD_TEXT(subpackage_name);
+		DISCARD_TEXT(subpackage_name)
 
 	}
 
@@ -237,7 +237,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		case ATTRIBUTE_PLM: {
-			TEMPORARY_TEXT(A);
+			TEMPORARY_TEXT(A)
 			WRITE_TO(A, "P_%S", con_name->symbol_name);
 			inter_symbol *attr_symbol = Inter::SymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), A);
 			
@@ -265,7 +265,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			CodeGen::Assimilate::install_socket(I, attr_symbol, con_name->symbol_name);
 			if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol)))
 				CodeGen::Assimilate::install_socket(I, attr_symbol, Inter::Symbols::get_translate(attr_symbol));
-			DISCARD_TEXT(A);
+			DISCARD_TEXT(A)
 			break;
 		}
 		case PROPERTY_PLM: {
@@ -305,7 +305,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			string_position spos = Str::start(conts);
 			int NT = 0, next_is_action = FALSE;
 			while (TRUE) {
-				TEMPORARY_TEXT(value);
+				TEMPORARY_TEXT(value)
 				if (next_is_action) WRITE_TO(value, "##");
 				@<Extract a token@>;
 				if ((next_is_action) && (action_kind_symbol)) {
@@ -335,7 +335,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 						(Inter::SymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == verb_directive_result_symbol))
 						next_is_action = TRUE;
 				}
-				DISCARD_TEXT(value);
+				DISCARD_TEXT(value)
 			}
 
 			inter_tree_node *array_in_progress =
@@ -418,18 +418,18 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	inter_symbol *fnt = function_ptype_symbol;
 	if (fnt == NULL) fnt = plain_ptype_symbol;
 
-	TEMPORARY_TEXT(fname);
+	TEMPORARY_TEXT(fname)
 	WRITE_TO(fname, "%S_fn", identifier);
 	inter_package *FP = CodeGen::Assimilate::new_package_named(IBM, fname, fnt);
-	DISCARD_TEXT(fname);
+	DISCARD_TEXT(fname)
 
 	inter_bookmark outer_save = Inter::Bookmarks::snapshot(IBM);
 	Inter::Bookmarks::set_current_package(IBM, FP);
 
-	TEMPORARY_TEXT(bname);
+	TEMPORARY_TEXT(bname)
 	WRITE_TO(bname, "%S_B", identifier);
 	inter_package *IP = CodeGen::Assimilate::new_package_named(IBM, bname, code_ptype_symbol);
-	DISCARD_TEXT(bname);
+	DISCARD_TEXT(bname)
 
 	inter_bookmark inner_save = Inter::Bookmarks::snapshot(IBM);
 	Inter::Bookmarks::set_current_package(IBM, IP);
@@ -438,13 +438,13 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	if (chain) {
 		string_position spos = Str::start(chain);
 		while (TRUE) {
-			TEMPORARY_TEXT(value);
+			TEMPORARY_TEXT(value)
 			@<Extract a token@>;
 			if (Str::len(value) == 0) break;
 			inter_symbol *loc_name = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
 			Inter::Symbols::local(loc_name);
 			Produce::guard(Inter::Local::new(IBM, loc_name, unchecked_kind_symbol, 0, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-			DISCARD_TEXT(value);
+			DISCARD_TEXT(value)
 		}
 	}
 
@@ -498,19 +498,19 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		inter_bookmark *IBM = &IBM_d;
 		inter_symbol *ptype = action_ptype_symbol;
 		if (ptype == NULL) ptype = plain_ptype_symbol;
-		TEMPORARY_TEXT(an);
+		TEMPORARY_TEXT(an)
 		WRITE_TO(an, "assim_action_%d", ++no_assimilated_actions);
 		Inter::Bookmarks::set_current_package(IBM, CodeGen::Assimilate::new_package_named(IBM, an, ptype));
-		DISCARD_TEXT(an);
+		DISCARD_TEXT(an)
 		inter_symbol *asymb = CodeGen::Assimilate::make_socketed_symbol(I, value, Inter::Bookmarks::scope(IBM));
-		TEMPORARY_TEXT(unsharped);
+		TEMPORARY_TEXT(unsharped)
 		WRITE_TO(unsharped, "%SSub", value);
 		Str::delete_first_character(unsharped);
 		Str::delete_first_character(unsharped);
 		inter_symbol *txsymb = Inter::Connectors::find_socket(I, unsharped);
 		inter_symbol *xsymb = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
 		if (txsymb) Inter::SymbolsTables::equate(xsymb, txsymb);
-		DISCARD_TEXT(unsharped);
+		DISCARD_TEXT(unsharped)
 		Produce::guard(Inter::Constant::new_numerical(IBM,
 			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
 			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), action_kind_symbol),
@@ -525,7 +525,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
 		from++;
 		to--;
-		TEMPORARY_TEXT(dw);
+		TEMPORARY_TEXT(dw)
 		LOOP_THROUGH_TEXT(pos, S) {
 			if (pos.index < from) continue;
 			if (pos.index > to) continue;
@@ -536,13 +536,13 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 		Str::copy(glob_storage, dw);
 		*val1 = DWORD_IVAL; *val2 = ID;
-		DISCARD_TEXT(dw);
+		DISCARD_TEXT(dw)
 		return;
 	}
 	if ((Str::get_at(S, from) == '"') && (Str::get_at(S, to) == '"')) {
 		from++;
 		to--;
-		TEMPORARY_TEXT(dw);
+		TEMPORARY_TEXT(dw)
 		LOOP_THROUGH_TEXT(pos, S) {
 			if (pos.index < from) continue;
 			if (pos.index > to) continue;
@@ -553,7 +553,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 		Str::copy(glob_storage, dw);
 		*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
-		DISCARD_TEXT(dw);
+		DISCARD_TEXT(dw)
 		return;
 	}
 	if ((Str::get_at(S, from) == '(') && (Str::get_at(S, to) == ')')) { from++; to--; }
@@ -751,11 +751,11 @@ inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op,
 
 int ccs_count = 0;
 inter_symbol *CodeGen::Assimilate::computed_constant_symbol(inter_package *pack) {
-	TEMPORARY_TEXT(NN);
+	TEMPORARY_TEXT(NN)
 	WRITE_TO(NN, "Computed_Constant_Value_%d", ccs_count++);
 	inter_symbol *mcc_name = Inter::SymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
 	Inter::Symbols::set_flag(mcc_name, MAKE_NAME_UNIQUE);
-	DISCARD_TEXT(NN);
+	DISCARD_TEXT(NN)
 	return mcc_name;
 }
 

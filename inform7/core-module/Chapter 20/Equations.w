@@ -787,7 +787,7 @@ rather than |mc|. (This is one reason why most programming languages don't
 allow implicit multiplication.)
 
 @<Break off a symbol name as a token@> =
-	TEMPORARY_TEXT(text_of_symbol);
+	TEMPORARY_TEXT(text_of_symbol)
 	int j; /* the length of the symbol name we try to break off */
 	for (j=0; (j<14) && (Characters::isalnum(p[i+j])) && (token == NULL); j++)
 		PUT_TO(text_of_symbol, p[i+j]);
@@ -810,7 +810,7 @@ allow implicit multiplication.)
 			"by adding 'where %3 is a number'.");
 		return NULL;
 	}
-	DISCARD_TEXT(text_of_symbol);
+	DISCARD_TEXT(text_of_symbol)
 
 @<Look for this symbol name@> =
 	if (Str::eq_wide_string(text_of_symbol, Lexer::word_raw_text(Wordings::first_wn(ev->name)))) {
@@ -831,11 +831,11 @@ capacity; and so is the number 0 itself.
 		return NULL;
 	}
 
-	TEMPORARY_TEXT(text_of_number);
+	TEMPORARY_TEXT(text_of_number)
 	@<Copy the literal number into a C string, flanked by spaces@>;
 	/* now sneakily add this to the word stream, and let the S-parser read it: */
 	wording NW = Feeds::feed_text(text_of_number);
-	DISCARD_TEXT(text_of_number);
+	DISCARD_TEXT(text_of_number)
 
 	parse_node *spec = NULL;
 	if (<s-type-expression>(NW)) spec = <<rp>>;
@@ -883,14 +883,14 @@ capacity; and so is the number 0 itself.
 		case '(': token = Equations::enode_new(OPEN_BRACKET_EQN); bl++; break;
 		case ')': token = Equations::enode_new(CLOSE_BRACKET_EQN); bl--; break;
 		default: {
-			TEMPORARY_TEXT(symbol);
+			TEMPORARY_TEXT(symbol)
 			PUT_TO(symbol, c);
 			StandardProblems::equation_problem_S(_p_(PM_EquationOperatorUnrecognised), eqn, symbol,
 				"the symbol '%3' is one that I don't recognise. I was "
 				"expecting an arithmetic sign, '+', '-', '*','/', or '^', "
 				"or else '=' or a bracket '(' or ')'.");
 			LOG("Bad operator '%S'\n", symbol); return NULL;
-			DISCARD_TEXT(symbol);
+			DISCARD_TEXT(symbol)
 		}
 	}
 	i++;
@@ -1591,10 +1591,10 @@ void Equations::emit_solution_inner(wording W, equation *eqn) {
 	@<Rearrange the equation so that this symbol is the entire LHS@>;
 	@<Identify the symbols in the equation with local variables@>;
 
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Solving %n for '$w'", eqn->eqn_iname, to_solve->name);
 	Emit::code_comment(C);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 	Equations::enode_compile_by_emission(eqn, eqn->parsed_equation);
 }
 
