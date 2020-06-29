@@ -476,7 +476,7 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e phrase_options_invoked_ANNOT /* |invocation_options|: details of any options used */
 @e property_name_used_as_noun_ANNOT /* |int|: in ambiguous cases such as "open" */
 @e proposition_ANNOT /* |pcalc_prop|: for specification nodes */
-@e prep_ANNOT /* |preposition_identity|: for e.g. "is on" */
+@e prep_ANNOT /* |preposition|: for e.g. "is on" */
 @e quant_ANNOT /* |quantifier|: for quantified excerpts like "three baskets" */
 @e quantification_parameter_ANNOT /* |int|: e.g., 3 for "three baskets" */
 @e record_as_self_ANNOT /* |int|: record recipient as |self| when writing this */
@@ -550,7 +550,7 @@ DECLARE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
 DECLARE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
 DECLARE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
-DECLARE_ANNOTATION_FUNCTIONS(prep, preposition_identity)
+DECLARE_ANNOTATION_FUNCTIONS(prep, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(quant, quantifier)
 DECLARE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
@@ -604,7 +604,7 @@ MAKE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
 MAKE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
 MAKE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
-MAKE_ANNOTATION_FUNCTIONS(prep, preposition_identity)
+MAKE_ANNOTATION_FUNCTIONS(prep, preposition)
 MAKE_ANNOTATION_FUNCTIONS(quant, quantifier)
 MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(say_adjective, adjective)

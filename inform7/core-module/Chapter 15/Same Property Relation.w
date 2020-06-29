@@ -55,7 +55,7 @@ void Properties::SameRelations::register_same_property_as(binary_predicate *root
 	if (Wordings::empty(W)) return;
 	set_where_created = current_sentence;
 	verb_meaning vm = VerbMeanings::new(root, NULL);
-	preposition_identity *prep =
+	preposition *prep =
 		Prepositions::make(
 			PreformUtilities::merge(<same-property-as-construction>, 0,
 				WordAssemblages::from_wording(W)), FALSE);

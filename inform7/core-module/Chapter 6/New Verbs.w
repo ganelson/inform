@@ -336,8 +336,8 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 			return;
 		}
 		verb *vi = NULL;
-		preposition_identity *prep = NULL;
-		preposition_identity *second_prep = NULL;
+		preposition *prep = NULL;
+		preposition *second_prep = NULL;
 		if (Wordings::nonempty(V)) @<Find or create a new verb@>;
 		if (Wordings::nonempty(P))
 			prep = Prepositions::make(WordAssemblages::from_wording(P),
@@ -1185,13 +1185,13 @@ void NewVerbs::log(verb_usage *vu) {
 
 void NewVerbs::log_all(void) {
 	verb_usage *vu;
-	preposition_identity *prep;
+	preposition *prep;
 	LOG("The current S-grammar has the following verb and preposition usages:\n");
 	LOOP_OVER(vu, verb_usage) {
 		NewVerbs::log(vu);
 		LOG("\n");
 	}
-	LOOP_OVER(prep, preposition_identity) {
+	LOOP_OVER(prep, preposition) {
 		LOG("$p\n", prep);
 	}
 }
@@ -1233,8 +1233,8 @@ void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
 			}
 			return;
 		}
-	preposition_identity *prep;
-	LOOP_OVER(prep, preposition_identity)
+	preposition *prep;
+	LOOP_OVER(prep, preposition)
 		if (prep->prep_lex_entry == lex) {
 			if (prep->where_prep_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));

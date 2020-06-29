@@ -92,8 +92,23 @@ typedef struct determiner {
 	int takes_number; /* does a number follow? (e.g. for "at least N" */
 	struct quantifier *quantifier_meant; /* meaning of this quantifier */
 	char *index_text; /* used in the Phrasebook index lexicon */
+	struct linguistic_stock_item *in_stock;
 	CLASS_DEFINITION
 } determiner;
+
+@ Determiners are a grammatical category:
+
+=
+grammatical_category *determiners_category = NULL;
+void Quantifiers::create_category(void) {
+	determiners_category = Stock::new_category(I"determiner");
+	METHOD_ADD(determiners_category, LOG_GRAMMATICAL_CATEGORY_MTID, Quantifiers::log_item);
+}
+
+void Quantifiers::log_item(grammatical_category *cat, general_pointer data) {
+	determiner *D = RETRIEVE_POINTER_determiner(data);
+	LOG("'%A' --> %s", &(D->text_of_det), D->quantifier_meant->log_text);
+}
 
 @h Creating a quantifier.
 At present, there's only the built-in set, and no method exists to create
@@ -331,6 +346,7 @@ determiner *Quantifiers::det_new(int not, int pr, int num, quantifier *quant, ch
 		IndexLexicon::new_entry_with_details(
 			EMPTY_WORDING, MISCELLANEOUS_LEXE, wa, "determiner", text);
 	#endif
+	det->in_stock = Stock::new(determiners_category, STORE_POINTER_determiner(det));
 	return det;
 }
 

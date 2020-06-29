@@ -94,7 +94,7 @@ usage; it's attached to the tree only briefly before sentence conversion
 removes it again.
 
 =
-parse_node *ExParser::Subtrees::verb_marker(verb_usage *vu, preposition_identity *prep, parse_node *np) {
+parse_node *ExParser::Subtrees::verb_marker(verb_usage *vu, preposition *prep, parse_node *np) {
 	parse_node *VP_part = Node::new(UNKNOWN_NT);
 	Node::set_vu(VP_part, vu);
 	Node::set_prep(VP_part, prep);
@@ -281,7 +281,7 @@ parse_node *ExParser::Subtrees::to_specification(int SV_not_SN, wording W, parse
 parse_node *ExParser::Subtrees::to_specification_inner(int SV_not_SN, wording W, parse_node *A, parse_node *B) {
 	parse_node *spec;
 	parse_node *subject_noun_phrase = NULL, *verb_phrase = NULL;
-	verb_usage *vu = NULL; preposition_identity *prep = NULL;
+	verb_usage *vu = NULL; preposition *prep = NULL;
 	int verb_phrase_negated = FALSE;
 
 	if (Node::is(A, AMBIGUITY_NT)) {

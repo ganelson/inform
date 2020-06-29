@@ -9,8 +9,8 @@ Preliminaries
 	How To Include This Module
 
 Chapter 1: Setting Up
-"Loading this module."
 	Linguistics Module
+	Stock Control
 
 Chapter 2: NP Categories
 	Adjectives

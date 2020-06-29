@@ -14,13 +14,15 @@ which use this module:
 @e adjective_usage_CLASS
 @e quantifier_CLASS
 @e determiner_CLASS
+@e grammatical_category_CLASS
+@e linguistic_stock_item_CLASS
 @e verb_CLASS
 @e verb_form_CLASS
 @e verb_meaning_CLASS
 @e verb_sense_CLASS
 @e verb_usage_CLASS
 @e verb_usage_tier_CLASS
-@e preposition_identity_CLASS
+@e preposition_CLASS
 @e time_period_CLASS
 @e noun_CLASS
 
@@ -29,13 +31,15 @@ DECLARE_CLASS(adjective)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(adjective_usage, 1000)
 DECLARE_CLASS(quantifier)
 DECLARE_CLASS(determiner)
+DECLARE_CLASS(grammatical_category)
+DECLARE_CLASS(linguistic_stock_item)
 DECLARE_CLASS(verb)
 DECLARE_CLASS(verb_form)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(verb_meaning, 100)
 DECLARE_CLASS(verb_sense)
 DECLARE_CLASS(verb_usage)
 DECLARE_CLASS(verb_usage_tier)
-DECLARE_CLASS(preposition_identity)
+DECLARE_CLASS(preposition)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(time_period, 100)
 DECLARE_CLASS(noun)
 
@@ -49,6 +53,7 @@ DECLARE_CLASS(noun)
 void LinguisticsModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
+	Stock::create_categories();
 	Cardinals::enable_in_word_form();
 	Articles::mark_for_preform();
 	Prepositions::mark_for_preform();
@@ -78,8 +83,8 @@ syntax tree.
 @e inverted_verb_ANNOT           /* |int|: an inversion of subject and object has occurred */
 @e possessive_verb_ANNOT         /* |int|: this is a non-relative use of "to have" */
 @e verb_ANNOT                    /* |verb_usage|: what's being done here */
-@e preposition_ANNOT             /* |preposition_identity|: which preposition, if any, qualifies it */
-@e second_preposition_ANNOT      /* |preposition_identity|: which further preposition, if any, qualifies it */
+@e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
+@e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
 @e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
 
 @e nounphrase_article_ANNOT      /* |int|: definite or indefinite article: see below */
@@ -90,13 +95,13 @@ syntax tree.
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
-DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition_identity)
-DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition_identity)
+DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition)
+DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
 
 MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
-MAKE_ANNOTATION_FUNCTIONS(preposition, preposition_identity)
-MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition_identity)
+MAKE_ANNOTATION_FUNCTIONS(preposition, preposition)
+MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
 
 @ This module requires //words//, which contains the Preform parser. When that

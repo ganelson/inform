@@ -132,15 +132,15 @@ this to other languages.)
 	int mpc_form = 0;
 	if (<notable-directions>(W)) mpc_form = 1;
 
-	preposition_identity *prep1 = Prepositions::make(
+	preposition *prep1 = Prepositions::make(
 		PreformUtilities::merge(<mapping-preposition-construction>, mpc_form,
 			WordAssemblages::from_wording(W)),
 		FALSE);
-	preposition_identity *prep2 = Prepositions::make(
+	preposition *prep2 = Prepositions::make(
 		PreformUtilities::merge(<mapping-preposition-construction>, 2,
 			WordAssemblages::from_wording(W)),
 		FALSE);
-	preposition_identity *prep3 = Prepositions::make(
+	preposition *prep3 = Prepositions::make(
 		PreformUtilities::merge(<mapping-preposition-construction>, 3,
 			WordAssemblages::from_wording(W)),
 		FALSE);

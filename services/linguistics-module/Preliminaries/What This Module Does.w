@@ -33,7 +33,11 @@ for each of these grammatical categories to correspond closely to an object
 class of the same name -- that is, //noun//, //verb//, //adjective// and so on.
 For example, "brick" and "wall" correspond to two different instances of //noun//,
 and "to be" to //verb//. The instances of these grammatical classes, taken
-together, form what is called "stock".
+together, form what is called the "stock".
+
+The stock is not just a figure of speech, it's actually a data structure:
+see //Stock Control//. We keep this mainly to produce diagnostic logs of the
+entire stock -- see below for an example of the result.
 
 @ To be clear, though:
 (a) The stock is a range of possibilities and not a tally of what actually
@@ -160,15 +164,49 @@ parametrised family: the two adverb phrases here are the one measuring "times",
 that is, repetitions, and the one measuring "turns", a purely
 interactive-fictional construction useful to Inform. See //Adverb Phrases of Occurrence//.
 
-Adverbs of certainty are words like "usually" or "always". There is a fixed
+@ Adverbs of certainty are words like "usually" or "always". There is a fixed
 stock of these, at five certainty levels. See //Adverbs of Certainty//.
 
-Prepositions are phrases like "over" or "on top of".
+@ Prepositions are phrases like "over" or "on top of". Each is an instance of
+the //preposition// class. See //Prepositions//.
 
-Prepositions::make
+The user creates the stock of adjectives by calling //Prepositions::make//,
+but note that this function is also called when verbs are created, in order
+to implement participles like "carrying" as prepositions -- which is not
+linguistically ideal, but makes it possible to parse auxiliary uses of 
+"to be" efficiently, as in "X is carried by Y".
 
-@ One verbs above all is special to us, because of the unique role it plays
-in natural language. This is the copular verb, so called because it has two
-interacting subject phrases rather than a subject and an object: in English,
-"to be". We store its identity in a global variable which is set equal
-to the first-created verb marked as copular.
+@ Each verb in the stock is an instance of //verb//. For example, "to carry"
+or "to be" might be verbs. One verb in the stock is special and is the
+copular verb -- in English, that's "to be". A copular verb is one which has two
+interacting subject phrases rather than a subject and an object.[1]
+
+The user creates the stock of adjectives by calling //Verbs::new_verb// or
+//Verbs::new_operator_verb//. (Operator verbs are mathematical operators
+such as |<=|, which can be added to the stock as if they were regular verbs,
+but which do not conjugate or have tenses.)
+
+Each verb has a list of //verb_form// objects, one for each "form" it takes.
+A form in this sense is a combination of a verb with prepositions; meanings
+correspond to verb forms, not verbs alone. For example, the verb in the
+sentences "Peter is hungry" and "Jane will be in the Dining Room" is in
+each case "to be", but the forms are different: one is "to be" alone, the
+other "to be" plus the preposition "in", which changes the meaning.
+
+The user, then, creates //verb// objects and gives them //verb_form//s,
+attaching meanings to each form via the mechanisms in //Verb Meanings//
+(which wrap those meanings in //verb_meaning// objects). The linguistics
+module then has to provide an efficient way to parse text to find uses
+of these verbs, and it does so by constructing intermediate objects.
+See //Verb Usages//.
+
+[1] Compare "Peter carries a ball", where Peter and the ball have very
+asymmetric roles because the action is done by Peter but to the ball, and
+"Peter is the mayor", where two nouns are equated in a symmetrical sort of way.
+
+@h Performance in practice.
+The following tabulates the linguistic stock accumulated by a typical Inform 7
+compilation (the same one used to generate the data in //inform7: Performance Metrics//).
+Within each categpry, items are listed in order of creation.
+
+= (hyperlinked undisplayed text from Figures/stock-diagnostics.txt)

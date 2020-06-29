@@ -357,11 +357,11 @@ who is in the Dining Room" (note the additional "is"), it would.
 		}
 	}
 
-	preposition_identity *prep = vf->preposition;
-	preposition_identity *second_prep = vf->second_clause_preposition;
+	preposition *prep = vf->preposition;
+	preposition *second_prep = vf->second_clause_preposition;
 
-	preposition_identity *required_first = prep;
-	preposition_identity *required_second = second_prep;
+	preposition *required_first = prep;
+	preposition *required_second = second_prep;
 
 	int existential = FALSE, structures = vf->form_structures, last_preposition_position = Wordings::last_wn(OW);
 

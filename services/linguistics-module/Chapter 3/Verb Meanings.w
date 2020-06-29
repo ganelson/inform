@@ -188,7 +188,7 @@ void VerbMeanings::log(OUTPUT_STREAM, void *vvm) {
 
 =
 verb_meaning *VerbMeanings::get_regular_meaning_of_verb(verb *V,
-	preposition_identity *prep, preposition_identity *second_prep) {
+	preposition *prep, preposition *second_prep) {
 	verb_form *vf = Verbs::find_form(V, prep, second_prep);
 	return VerbMeanings::get_regular_meaning_of_verb_form(vf);
 }

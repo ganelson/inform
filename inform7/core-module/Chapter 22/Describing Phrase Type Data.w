@@ -472,10 +472,10 @@ messages.
 
 =
 <phrase-vetting> ::=
-	( ...... ) <copular-verb> {<copular-preposition>} ( ...... )	==> <<rel1>> = Wordings::first_wn(WR[2]); <<rel2>> = Wordings::last_wn(WR[2]); <<preposition_identity:prep>> = RP[2]; @<Issue PM_MasksRelation problem@>
+	( ...... ) <copular-verb> {<copular-preposition>} ( ...... )	==> <<rel1>> = Wordings::first_wn(WR[2]); <<rel2>> = Wordings::last_wn(WR[2]); <<preposition:prep>> = RP[2]; @<Issue PM_MasksRelation problem@>
 
 @<Issue PM_MasksRelation problem@> =
-	preposition_identity *prep = <<preposition_identity:prep>>;
+	preposition *prep = <<preposition:prep>>;
 	*XP = K_number;
 	Problems::quote_source(1, current_sentence);
 	if (Prepositions::get_where_pu_created(prep) == NULL)

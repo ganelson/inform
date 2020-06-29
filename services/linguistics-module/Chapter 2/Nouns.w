@@ -46,15 +46,13 @@ rather than vice versa. But this arrangement makes it convenient to add
 translations into non-English languages later on (i.e., at a time after the
 initial creation of the //noun// object).
 
-@h Structure.
-
 =
 typedef struct noun {
 	struct lexical_cluster *names;
 	int noun_subclass; /* either |COMMON_NOUN| or |PROPER_NOUN| */
-
 	struct general_pointer meaning;
 	unsigned int registration_category;
+	struct linguistic_stock_item *in_stock;
 
 	#ifdef NOUN_COMPILATION_LINGUISTICS_CALLBACK
 	struct name_compilation_data name_compilation; /* see //core: Using Nametags// on this */
@@ -65,6 +63,21 @@ typedef struct noun {
 
 	CLASS_DEFINITION
 } noun;
+
+@ Nouns are a grammatical category:
+
+=
+grammatical_category *nouns_category = NULL;
+void Nouns::create_category(void) {
+	nouns_category = Stock::new_category(I"noun");
+	METHOD_ADD(nouns_category, LOG_GRAMMATICAL_CATEGORY_MTID, Nouns::log_item);
+}
+
+void Nouns::log_item(grammatical_category *cat, general_pointer data) {
+	noun *N = RETRIEVE_POINTER_noun(data);
+	if (N->noun_subclass == COMMON_NOUN) LOG("common: "); else LOG("proper: ");
+	Nouns::log(N);
+}
 
 @h Creation.
 The following functions are called to create new proper or common nouns, and
@@ -104,42 +117,43 @@ noun *Nouns::new_common_noun(wording W, int gender, int options,
 =
 noun *Nouns::new_inner(wording W, general_pointer owner, int p, int options,
 	unsigned int mc, NATURAL_LANGUAGE_WORDS_TYPE *lang, int gender) {
-	noun *t = CREATE(noun);
-	t->meaning = owner;
-	t->registration_category = mc;
-	t->noun_subclass = p;
-	t->names = Clusters::new();
-	if (Wordings::nonempty(W)) Nouns::supply_text(t, W, lang, gender, 1, options);
+	noun *N = CREATE(noun);
+	N->meaning = owner;
+	N->registration_category = mc;
+	N->noun_subclass = p;
+	N->names = Clusters::new();
+	if (Wordings::nonempty(W)) Nouns::supply_text(N, W, lang, gender, 1, options);
 	#ifdef NOUN_COMPILATION_LINGUISTICS_CALLBACK
-	NOUN_COMPILATION_LINGUISTICS_CALLBACK(t);
+	NOUN_COMPILATION_LINGUISTICS_CALLBACK(N);
 	#endif
-	return t;
+	N->in_stock = Stock::new(nouns_category, STORE_POINTER_noun(N));
+	return N;
 }
 
 @h Subclass.
 
 =
-int Nouns::subclass(noun *t) {
-	if (t == NULL) return 0;
-	return t->noun_subclass;
+int Nouns::subclass(noun *N) {
+	if (N == NULL) return 0;
+	return N->noun_subclass;
 }
 
-int Nouns::is_proper(noun *t) {
-	if ((t) && (t->noun_subclass == PROPER_NOUN)) return TRUE;
+int Nouns::is_proper(noun *N) {
+	if ((N) && (N->noun_subclass == PROPER_NOUN)) return TRUE;
 	return FALSE;
 }
 
-int Nouns::is_common(noun *t) {
-	if ((t) && (t->noun_subclass == COMMON_NOUN)) return TRUE;
+int Nouns::is_common(noun *N) {
+	if ((N) && (N->noun_subclass == COMMON_NOUN)) return TRUE;
 	return FALSE;
 }
 
 @h Logging.
 
 =
-void Nouns::log(noun *t) {
-	if (t == NULL) { LOG("<untagged>"); return; }
-	wording W = Nouns::nominative_singular(t);
+void Nouns::log(noun *N) {
+	if (N == NULL) { LOG("<untagged>"); return; }
+	wording W = Nouns::nominative_singular(N);
 	if (Wordings::nonempty(W)) LOG("'%W'", W);
 }
 
@@ -152,16 +166,16 @@ nominative cases; if we ever get to the point of Inform source text written
 fully in a language like German, that will need to change.
 
 =
-void Nouns::supply_text(noun *t, wording W, NATURAL_LANGUAGE_WORDS_TYPE *lang,
+void Nouns::supply_text(noun *N, wording W, NATURAL_LANGUAGE_WORDS_TYPE *lang,
 	int gender, int number, int options) {
-	linked_list *L = Clusters::add(t->names, W, lang, gender, number,
+	linked_list *L = Clusters::add(N->names, W, lang, gender, number,
 		(options & WITH_PLURAL_FORMS_NTOPT)?TRUE:FALSE);
 	if (options & ADD_TO_LEXICON_NTOPT) {
 		individual_form *in;
 		LOOP_OVER_LINKED_LIST(in, individual_form, L) {
-			general_pointer m = t->meaning;
-			if (t->registration_category == NOUN_MC) m = STORE_POINTER_noun(t);
-			Lexicon::register(t->registration_category,
+			general_pointer m = N->meaning;
+			if (N->registration_category == NOUN_MC) m = STORE_POINTER_noun(N);
+			Lexicon::register(N->registration_category,
 				Clusters::get_nominative_of_form(in), m);
 		}
 	}
@@ -171,40 +185,40 @@ void Nouns::supply_text(noun *t, wording W, NATURAL_LANGUAGE_WORDS_TYPE *lang,
 We normally access names in their nominative cases, so:
 
 =
-wording Nouns::nominative_singular(noun *t) {
-	if (t == NULL) return EMPTY_WORDING;
-	return Clusters::get_form(t->names, FALSE);
+wording Nouns::nominative_singular(noun *N) {
+	if (N == NULL) return EMPTY_WORDING;
+	return Clusters::get_form(N->names, FALSE);
 }
 
-int Nouns::nominative_singular_includes(noun *t, vocabulary_entry *wd) {
-	if (t == NULL) return FALSE;
-	wording W = Nouns::nominative_singular(t);
+int Nouns::nominative_singular_includes(noun *N, vocabulary_entry *wd) {
+	if (N == NULL) return FALSE;
+	wording W = Nouns::nominative_singular(N);
 	LOOP_THROUGH_WORDING(i, W)
 		if (wd == Lexer::word(i))
 			return TRUE;
 	return FALSE;
 }
 
-wording Nouns::nominative(noun *t, int plural_flag) {
-	return Clusters::get_form(t->names, plural_flag);
+wording Nouns::nominative(noun *N, int plural_flag) {
+	return Clusters::get_form(N->names, plural_flag);
 }
 
-wording Nouns::nominative_in_language(noun *t, int plural_flag,
+wording Nouns::nominative_in_language(noun *N, int plural_flag,
 	NATURAL_LANGUAGE_WORDS_TYPE *lang) {
-	return Clusters::get_form_in_language(t->names, plural_flag, lang);
+	return Clusters::get_form_in_language(N->names, plural_flag, lang);
 }
 
-void Nouns::set_nominative_plural_in_language(noun *t, wording W,
+void Nouns::set_nominative_plural_in_language(noun *N, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *lang) {
-	Clusters::set_plural_in_language(t->names, W, lang);
+	Clusters::set_plural_in_language(N->names, W, lang);
 }
 
 @h Meaning.
 
 =
-general_pointer Nouns::meaning(noun *t) {
-	if (t == NULL) return NULL_GENERAL_POINTER;
-	return t->meaning;
+general_pointer Nouns::meaning(noun *N) {
+	if (N == NULL) return NULL_GENERAL_POINTER;
+	return N->meaning;
 }
 
 @h Exact parsing in the lexicon.

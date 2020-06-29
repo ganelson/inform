@@ -27,11 +27,11 @@ be turned into one of the following structures:
 typedef struct verb_usage {
 	struct word_assemblage vu_text;			/* text to recognise */
 	int vu_allow_unexpected_upper_case; 	/* for verbs like "to Hoover" or "to Google" */
-
 	struct verb *verb_used;
 	int negated_form_of_verb; 				/* is this a negated form? */
 	int mood;								/* active/passive: one of the two |*_MOOD| values */
 	int tensed; 							/* one of the |*_TENSE| values */
+	struct linguistic_stock_item *in_stock;
 
 	#ifdef CORE_MODULE
 	struct lexicon_entry *vu_lex_entry; 	/* for use when indexing */
@@ -170,7 +170,7 @@ an unfortunate mock-Indian sound to it.
 
 @<Add present participle forms@> =
 	if (WordAssemblages::nonempty(vc->present_participle)) {
-		preposition_identity *prep =
+		preposition *prep =
 			Prepositions::make(vc->present_participle, unexpected_upper_casing_used);
 		Verbs::add_form(copular_verb, prep, NULL,
 			VerbMeanings::new_indirection(vi, FALSE), SVO_FS_BIT);
@@ -187,7 +187,7 @@ void VerbUsages::register_moods_of_verb(verb_conjugation *vc, int mood,
 	verb *vi, int unexpected_upper_casing_used, int priority) {
 	verb_tabulation *vt = &(vc->tabulations[mood]);
 	if (WordAssemblages::nonempty(vt->to_be_auxiliary)) {
-		preposition_identity *prep =
+		preposition *prep =
 			Prepositions::make(vt->to_be_auxiliary, unexpected_upper_casing_used);
 		Verbs::add_form(copular_verb, prep, NULL,
 			VerbMeanings::new_indirection(vi, (mood == PASSIVE_MOOD)?TRUE:FALSE),
@@ -335,7 +335,7 @@ int VerbUsages::is_foreign(verb_usage *vu) {
 @ And some access routines.
 
 =
-VERB_MEANING_LINGUISTICS_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition_identity *prep, preposition_identity *second_prep) {
+VERB_MEANING_LINGUISTICS_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition *prep, preposition *second_prep) {
 	if (vu == NULL) return NULL;
 	verb_meaning *uvm = VerbMeanings::get_regular_meaning_of_verb(vu->verb_used, prep, second_prep);
 

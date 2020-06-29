@@ -499,7 +499,7 @@ prepositional usages to test property-equality ("the same height as").
 void Properties::Measurement::register_comparative(wording W, binary_predicate *root) {
 	set_where_created = current_sentence;
 	verb_meaning vm = VerbMeanings::new(root, NULL);
-	preposition_identity *prep =
+	preposition *prep =
 		Prepositions::make(PreformUtilities::merge(<comparative-property-construction>, 0,
 			WordAssemblages::lit_1(Lexer::word(Wordings::first_wn(W)))), FALSE);
 	Verbs::add_form(copular_verb, prep, NULL, vm, SVO_FS_BIT);

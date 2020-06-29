@@ -432,6 +432,8 @@ diagnostics:
 	rm -f inform7/Figures/preform-diagnostics.txt
 	cp -f inform7/Figures/excerpts-diagnostics.txt services/lexicon-module/Figures/excerpts-diagnostics.txt
 	rm -f inform7/Figures/excerpts-diagnostics.txt
+	cp -f inform7/Figures/stock-diagnostics.txt services/linguistics-module/Figures/stock-diagnostics.txt
+	rm -f inform7/Figures/stock-diagnostics.txt
 
 .PHONY: morepages
 morepages: {repeat-webs-span}docs/$(@LEAF)/index.html{end-span}

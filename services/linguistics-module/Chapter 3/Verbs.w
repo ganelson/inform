@@ -2,11 +2,6 @@
 
 To record the identity and different structural forms of verbs.
 
-@h Definitions.
-
-
-=
-
 @h Verb Identities.
 What is a verb? Are the verbs in "Peter is hungry" and "Jane will be in the
 Dining Room" the same? How about in "Donald Trump lies on television" and
@@ -21,6 +16,7 @@ usages in a sentence.
 typedef struct verb {
 	struct verb_conjugation *conjugation;
 	struct verb_form *first_form;
+	struct linguistic_stock_item *in_stock;
 
 	#ifdef VERB_COMPILATION_LINGUISTICS_CALLBACK
 	struct verb_compilation_data verb_compilation; /* see //core: Using Nametags// on this */
@@ -28,6 +24,21 @@ typedef struct verb {
 
 	CLASS_DEFINITION
 } verb;
+
+@ Verbs are a grammatical category:
+
+=
+grammatical_category *verbs_category = NULL;
+void Verbs::create_category(void) {
+	verbs_category = Stock::new_category(I"verb");
+	METHOD_ADD(verbs_category, LOG_GRAMMATICAL_CATEGORY_MTID, Verbs::log_item);
+}
+
+void Verbs::log_item(grammatical_category *cat, general_pointer data) {
+	verb *V = RETRIEVE_POINTER_verb(data);
+	if (V->conjugation) LOG("%A", &(V->conjugation->infinitive));
+	else LOG("(unconjugated)");
+}
 
 @ Note also that every verb always has a bare form, where no prepositions are
 combined with it. This is (initially) meaningless, but it always exists.
@@ -50,6 +61,7 @@ verb *Verbs::new_verb(verb_conjugation *vc, int cop) {
 	@<Give the new verb a single meaningless form@>;
 	@<If this is the first copular verb, remember that@>;
 
+	V->in_stock = Stock::new(verbs_category, STORE_POINTER_verb(V));
 	LOGIF(VERB_FORMS, "New verb: $w\n", V);
 	return V;
 }
@@ -125,8 +137,8 @@ form usages can be legal for the same form, this is a bitmap:
 =
 typedef struct verb_form {
 	struct verb *underlying_verb;
-	struct preposition_identity *preposition;
-	struct preposition_identity *second_clause_preposition;
+	struct preposition *preposition;
+	struct preposition *second_clause_preposition;
 	int form_structures; /* bitmap of |*_FS_BIT| values */
 
 	struct word_assemblage infinitive_reference_text; /* e.g. "translate into" */
@@ -136,6 +148,7 @@ typedef struct verb_form {
 	struct verb_sense *list_of_senses;
 
 	struct verb_form *next_form; /* within the linked list for the verb */
+	struct linguistic_stock_item *in_stock;
 
 	#ifdef VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK
 	struct verb_form_compilation_data verb_form_compilation; /* see //core: New Verbs// on this */
@@ -143,6 +156,25 @@ typedef struct verb_form {
 
 	CLASS_DEFINITION
 } verb_form;
+
+@ Verb forms are also a grammatical category:
+
+=
+grammatical_category *verb_forms_category = NULL;
+void Verbs::create_forms_category(void) {
+	verb_forms_category = Stock::new_category(I"verb_form");
+	METHOD_ADD(verb_forms_category, LOG_GRAMMATICAL_CATEGORY_MTID, Verbs::log_form_item);
+}
+
+void Verbs::log_form_item(grammatical_category *cat, general_pointer data) {
+	verb_form *vf = RETRIEVE_POINTER_verb_form(data);
+	LOG("$w + $p + $p",
+		vf->underlying_verb, vf->preposition, vf->second_clause_preposition);
+	if (vf->form_structures & SVO_FS_BIT) LOG(" SVO");
+	if (vf->form_structures & VO_FS_BIT) LOG(" VO");
+	if (vf->form_structures & SVOO_FS_BIT) LOG(" SVOO");
+	if (vf->form_structures & VOO_FS_BIT) LOG(" VOO");
+}
 
 @h Verb senses.
 In this model, a verb can have multiple senses. Inform makes little use of
@@ -165,7 +197,7 @@ Forms are stored in a linked list, and are uniquely identified by the triplet
 of verb and two prepositions:
 
 =
-verb_form *Verbs::find_form(verb *V, preposition_identity *prep, preposition_identity *second_prep) {
+verb_form *Verbs::find_form(verb *V, preposition *prep, preposition *second_prep) {
 	if (V)
 		for (verb_form *vf = V->first_form; vf; vf = vf->next_form)
 			if ((vf->preposition == prep) && (vf->second_clause_preposition == second_prep))
@@ -176,8 +208,8 @@ verb_form *Verbs::find_form(verb *V, preposition_identity *prep, preposition_ide
 @ And here's how we add them.
 
 =
-void Verbs::add_form(verb *V, preposition_identity *prep,
-	preposition_identity *second_prep, verb_meaning vm, int form_structs) {
+void Verbs::add_form(verb *V, preposition *prep,
+	preposition *second_prep, verb_meaning vm, int form_structs) {
 	if (VerbMeanings::is_meaningless(&vm) == FALSE)
 		LOGIF(VERB_FORMS, "  Adding form: $w + $p + $p = $y\n",
 			V, prep, second_prep, &vm);
@@ -202,7 +234,7 @@ void Verbs::add_form(verb *V, preposition_identity *prep,
 		vf->underlying_verb = V;
 		vf->preposition = prep;
 		vf->second_clause_preposition = second_prep;
-		vf->form_structures = 0;
+		vf->form_structures = form_structs;
 		vf->list_of_senses = NULL;
 		vf->next_form = NULL;
 		#ifdef VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK
@@ -210,6 +242,7 @@ void Verbs::add_form(verb *V, preposition_identity *prep,
 		#endif
 		@<Compose the reference texts for the new form@>;
 		@<Insert the new form into the list of forms for this verb@>;
+		vf->in_stock = Stock::new(verb_forms_category, STORE_POINTER_verb_form(vf));
 	}
 
 @ The reference texts are just for convenience, really: they express the form

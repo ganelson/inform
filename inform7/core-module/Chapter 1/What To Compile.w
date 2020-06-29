@@ -80,11 +80,8 @@ only issue stubby Unix-like command line errors.)
 
 =
 void Task::issue_problems_arising(build_vertex *V) {
-	if (V->type == COPY_VERTEX) {
-		LOG("Issue from copy of %X at %08x\n",
-			V->as_copy->edition->work, V->as_copy);
+	if (V->type == COPY_VERTEX)
 		SourceProblems::issue_problems_arising(V->as_copy);
-	}
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
 		Task::issue_problems_arising(W);

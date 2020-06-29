@@ -102,9 +102,9 @@ Here the |binary_predicate| is the carrying relation and the |time_period|
 is the past tense. (The term "binary predicate" comes from logic once
 again; an Inform author would call the same concept a "relation".)
 (-b) "are in" is recognised as a usage of the verb "to be" plus "in",
-which matches the wording of a |preposition_identity| structure. Here the tense
+which matches the wording of a |preposition| structure. Here the tense
 derives only from the "to be" part: which is "are", so the |time_period|
-parsed is the present tense. This makes the |preposition_identity| a simpler
+parsed is the present tense. This makes the |preposition| a simpler
 business than the |verb_usage| structure -- it only needs to refer to the
 underlying meaning, which is once again a |binary_predicate| structure,
 the one for the containment relation.
@@ -175,7 +175,7 @@ box, increase the score by 7" $\rightarrow$ |excerpt_meaning| $\rightarrow$
 $\rightarrow$ ...many... $\rightarrow$ |pcalc_prop|
 (-a) "was carrying" $\rightarrow$ |verb_usage| $\rightarrow$ |binary_predicate|
 plus |time_period|
-(-b) "are in" $\rightarrow$ |preposition_identity| $\rightarrow$ |binary_predicate|
+(-b) "are in" $\rightarrow$ |preposition| $\rightarrow$ |binary_predicate|
 plus |time_period|
 (-c) "at least three" $\rightarrow$ |determiner| $\rightarrow$ |quantifier| plus
 literal number
@@ -190,7 +190,7 @@ structures.
 
 @ To sum up further still, |excerpt_meaning| structures are used to parse
 simple nouns and imperative phrases, whereas other specialist structures
-(|preposition_identity|, |determiner|, etc.) are used to parse the hinges
+(|preposition|, |determiner|, etc.) are used to parse the hinges
 which hold sentences together. Once parsed, individual excerpts tend to
 have meanings which might be pointers to a bewildering range of structures
 (|instance|, |quantifier|, |binary_predicate|, |adjective|,

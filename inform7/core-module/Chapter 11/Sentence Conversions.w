@@ -108,8 +108,8 @@ it can be applied.
 	if ((SV_not_SN == FALSE) && (VerbUsages::get_tense_used(vu) != IS_TENSE))
 		@<Disallow the past tenses in relative clauses@>;
 
-	preposition_identity *prep = Node::get_prep(verb_phrase_subtree);
-	preposition_identity *second_prep = Node::get_second_preposition(verb_phrase_subtree);
+	preposition *prep = Node::get_prep(verb_phrase_subtree);
+	preposition *second_prep = Node::get_second_preposition(verb_phrase_subtree);
 
 	verb_phrase_relation = VerbUsages::get_regular_meaning(vu, prep, second_prep);
 

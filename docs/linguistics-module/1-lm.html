@@ -72,13 +72,15 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">quantifier_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">determiner_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">grammatical_category_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">linguistic_stock_item_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_form_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_meaning_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_sense_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_usage_tier_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">preposition_identity_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">preposition_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">time_period_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">noun_CLASS</span>
 </pre>
@@ -87,13 +89,15 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_usage</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">quantifier</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">determiner</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">grammatical_category</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_form</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_usage_tier</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preposition_identity</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">time_period</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax">)</span>
 </pre>
@@ -108,9 +112,10 @@ which use this module:
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LinguisticsModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-lm.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-lm.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log writers</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><a href="1-sc.html#SP2" class="function-link"><span class="function-syntax">Stock::create_categories</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-cao.html#SP3" class="function-link"><span class="function-syntax">Cardinals::enable_in_word_form</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-art.html#SP5" class="function-link"><span class="function-syntax">Articles::mark_for_preform</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="3-prp.html#SP11" class="function-link"><span class="function-syntax">Prepositions::mark_for_preform</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="3-prp.html#SP12" class="function-link"><span class="function-syntax">Prepositions::mark_for_preform</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LinguisticsModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
@@ -129,7 +134,7 @@ which use this module:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'t'</span><span class="plain-syntax">, </span><a href="3-apoo.html#SP3" class="function-link"><span class="function-syntax">Occurrence::log</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'p'</span><span class="plain-syntax">, </span><a href="3-prp.html#SP4" class="function-link"><span class="function-syntax">Prepositions::log</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'p'</span><span class="plain-syntax">, </span><a href="3-prp.html#SP5" class="function-link"><span class="function-syntax">Prepositions::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'w'</span><span class="plain-syntax">, </span><a href="3-vrb.html#SP4" class="function-link"><span class="function-syntax">Verbs::log_verb</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'y'</span><span class="plain-syntax">, </span><a href="3-vm.html#SP6" class="function-link"><span class="function-syntax">VerbMeanings::log</span></a><span class="plain-syntax">);</span>
 </pre>
@@ -144,8 +149,8 @@ syntax tree.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inverted_verb_ANNOT</span><span class="plain-syntax">           </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: an inversion of subject and object has occurred</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">possessive_verb_ANNOT</span><span class="plain-syntax">         </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: this is a non-relative use of "to have"</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_ANNOT</span><span class="plain-syntax">                    </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">verb_usage</span></span><span class="comment-syntax">: what's being done here</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">preposition_ANNOT</span><span class="plain-syntax">             </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">preposition_identity</span></span><span class="comment-syntax">: which preposition, if any, qualifies it</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">second_preposition_ANNOT</span><span class="plain-syntax">      </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">preposition_identity</span></span><span class="comment-syntax">: which further preposition, if any, qualifies it</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">preposition_ANNOT</span><span class="plain-syntax">             </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">preposition</span></span><span class="comment-syntax">: which preposition, if any, qualifies it</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">second_preposition_ANNOT</span><span class="plain-syntax">      </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">preposition</span></span><span class="comment-syntax">: which further preposition, if any, qualifies it</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_meaning_ANNOT</span><span class="plain-syntax">            </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">verb_meaning</span></span><span class="comment-syntax">: what it means</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">nounphrase_article_ANNOT</span><span class="plain-syntax">      </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: definite or indefinite article: see below</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">plural_reference_ANNOT</span><span class="plain-syntax">        </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: used by PROPER NOUN nodes for evident plurals</span>
@@ -155,13 +160,13 @@ syntax tree.
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_usage</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition_identity</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">second_preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition_identity</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">second_preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">)</span>
 
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_usage</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition_identity</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">second_preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition_identity</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">second_preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>This module requires <a href="../words-module/index.html" class="internal">words</a>, which contains the Preform parser. When that
@@ -175,15 +180,15 @@ initialises, it calls the following routine to improve its performance.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LinguisticsModule::preform_optimiser</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-cao.html#SP3" class="function-link"><span class="function-syntax">Cardinals::preform_optimiser</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="3-vu.html#SP23" class="function-link"><span class="function-syntax">VerbUsages::preform_optimiser</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="3-prp.html#SP11" class="function-link"><span class="function-syntax">Prepositions::preform_optimiser</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="3-prp.html#SP12" class="function-link"><span class="function-syntax">Prepositions::preform_optimiser</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first_round_of_nt_optimisation_made</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">first_round_of_nt_optimisation_made</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><a href="2-daq.html#SP18" class="function-link"><span class="function-syntax">Quantifiers::make_built_in</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><a href="2-daq.html#SP19" class="function-link"><span class="function-syntax">Quantifiers::make_built_in</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="P-htitm.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">lm</li><li class="progresschapter"><a href="2-adj.html">2</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="2-adj.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="P-htitm.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">lm</li><li class="progresssection"><a href="1-sc.html">sc</a></li><li class="progresschapter"><a href="2-adj.html">2</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="1-sc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

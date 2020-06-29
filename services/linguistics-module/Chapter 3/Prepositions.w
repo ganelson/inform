@@ -21,18 +21,29 @@ will vary depending on the verb it's coupled with.
 
 =
 typedef struct preposition {
-	int X;
-} preposition;
-
-typedef struct preposition_identity {
 	struct word_assemblage prep_text;
 	#ifdef CORE_MODULE
 	struct lexicon_entry *prep_lex_entry; /* for use when indexing */
 	#endif
 	struct parse_node *where_prep_created; /* for use if problem messages needed */
 	int allow_unexpected_upper_case; /* for preps like "in Cahoots With" */
+	struct linguistic_stock_item *in_stock;
 	CLASS_DEFINITION
-} preposition_identity;
+} preposition;
+
+@ Prepositions are a grammatical category:
+
+=
+grammatical_category *prepositions_category = NULL;
+void Prepositions::create_category(void) {
+	prepositions_category = Stock::new_category(I"preposition");
+	METHOD_ADD(prepositions_category, LOG_GRAMMATICAL_CATEGORY_MTID, Prepositions::log_item);
+}
+
+void Prepositions::log_item(grammatical_category *cat, general_pointer data) {
+	preposition *P = RETRIEVE_POINTER_preposition(data);
+	LOG("%A", &(P->prep_text));
+}
 
 @ As with verbs, "prepositions" can be long, but are not unlimited.
 
@@ -46,7 +57,7 @@ typedef struct preposition_identity {
 
 =
 void Prepositions::log(OUTPUT_STREAM, void *vprep) {
-	preposition_identity *prep = (preposition_identity *) vprep;
+	preposition *prep = (preposition *) vprep;
 	if (prep == NULL) { WRITE("___"); }
 	else { WRITE("p=%A", &(prep->prep_text)); }
 }
@@ -56,13 +67,13 @@ Prepositions are completely determined by their wording: the "for" attached
 to one verb is the same preposition as the "for" attached to another one.
 
 =
-preposition_identity *Prepositions::make(word_assemblage wa, int unexpected_upper_casing_used) {
-	preposition_identity *prep = NULL;
-	LOOP_OVER(prep, preposition_identity)
+preposition *Prepositions::make(word_assemblage wa, int unexpected_upper_casing_used) {
+	preposition *prep = NULL;
+	LOOP_OVER(prep, preposition)
 		if (WordAssemblages::eq(&(prep->prep_text), &wa))
 			return prep;
 
-	prep = CREATE(preposition_identity);
+	prep = CREATE(preposition);
 	prep->prep_text = wa;
 	prep->where_prep_created = set_where_created;
 	prep->allow_unexpected_upper_case = unexpected_upper_casing_used;
@@ -71,6 +82,7 @@ preposition_identity *Prepositions::make(word_assemblage wa, int unexpected_uppe
 	#ifdef CORE_MODULE
 	prep->prep_lex_entry = IndexLexicon::new_main_verb(wa, PREP_LEXE);
 	#endif
+	prep->in_stock = Stock::new(prepositions_category, STORE_POINTER_preposition(prep));
 	LOGIF(VERB_FORMS, "New preposition: $p\n", prep);
 
 	return prep;
@@ -79,11 +91,11 @@ preposition_identity *Prepositions::make(word_assemblage wa, int unexpected_uppe
 @ Two utility routines:
 
 =
-parse_node *Prepositions::get_where_pu_created(preposition_identity *prep) {
+parse_node *Prepositions::get_where_pu_created(preposition *prep) {
 	return prep->where_prep_created;
 }
 
-int Prepositions::length(preposition_identity *prep) {
+int Prepositions::length(preposition *prep) {
 	if (prep == NULL) return 0;
 	return WordAssemblages::length(&(prep->prep_text));
 }
@@ -94,7 +106,7 @@ perhaps entirely filling, the given wording. We return the word number after
 the preposition ends, which might therefore be just outside the range.
 
 =
-int Prepositions::parse_prep_against(wording W, preposition_identity *prep) {
+int Prepositions::parse_prep_against(wording W, preposition *prep) {
 	return WordAssemblages::parse_as_weakly_initial_text(W, &(prep->prep_text), EMPTY_WORDING,
 		prep->allow_unexpected_upper_case, TRUE);
 }
@@ -105,8 +117,8 @@ preposition, but note that it does so by testing in creation order.
 =
 <preposition> internal ? {
 	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) return FALSE;
-	preposition_identity *prep;
-	LOOP_OVER(prep, preposition_identity) {
+	preposition *prep;
+	LOOP_OVER(prep, preposition) {
 		int i = Prepositions::parse_prep_against(W, prep);
 		if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W)+1)) {
 			*XP = prep;
@@ -126,7 +138,7 @@ So it will find the longest match.
 	if (copular_verb == NULL) return FALSE;
 	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) return FALSE;
 	for (verb_form *vf = copular_verb->first_form; vf; vf=vf->next_form) {
-		preposition_identity *prep = vf->preposition;
+		preposition *prep = vf->preposition;
 		if ((prep) && (VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE)) {
 			int i = Prepositions::parse_prep_against(W, prep);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W)+1)) {
@@ -146,7 +158,7 @@ with a given "permitted verb".
 	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) return FALSE;
 	if (permitted_verb)
 		for (verb_form *vf = permitted_verb->first_form; vf; vf=vf->next_form) {
-			preposition_identity *prep = vf->preposition;
+			preposition *prep = vf->preposition;
 			if ((prep) && (VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE)) {
 				int i = Prepositions::parse_prep_against(W, prep);
 				if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W)+1)) {

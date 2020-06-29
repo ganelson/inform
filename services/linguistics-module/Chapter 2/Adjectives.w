@@ -17,6 +17,7 @@ Inform does this, see //core: Adjective Meanings//.
 = 
 typedef struct adjective {
 	struct lexical_cluster *adjective_names;
+	struct linguistic_stock_item *in_stock;
 
 	#ifdef ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK
 	struct adjective_compilation_data adjective_compilation;
@@ -27,6 +28,20 @@ typedef struct adjective {
 
 	CLASS_DEFINITION
 } adjective;
+
+@ Adjectives are a grammatical category:
+
+=
+grammatical_category *adjectives_category = NULL;
+void Adjectives::create_category(void) {
+	adjectives_category = Stock::new_category(I"adjective");
+	METHOD_ADD(adjectives_category, LOG_GRAMMATICAL_CATEGORY_MTID, Adjectives::log_item);
+}
+
+void Adjectives::log_item(grammatical_category *cat, general_pointer data) {
+	adjective *adj = RETRIEVE_POINTER_adjective(data);
+	Adjectives::log(adj);
+}
 
 @h Creation.
 The following declares a new adjective, creating it only if it does not
@@ -52,6 +67,7 @@ adjective *Adjectives::declare(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK(adj);
 	#endif
 	@<Register the new adjective with the lexicon module@>;
+	adj->in_stock = Stock::new(adjectives_category, STORE_POINTER_adjective(adj));
 	return adj;
 }
 
@@ -108,14 +124,13 @@ This is used in unit testing.
 void Adjectives::test_adjective(OUTPUT_STREAM, wording W) {
 	adjective *adj = Adjectives::declare(W, NULL);
 	if (adj == NULL) { WRITE("Failed test\n"); return; }
-	int g, n;
-	for (g = NEUTER_GENDER; g <= FEMININE_GENDER; g++) {
+	for (int g = NEUTER_GENDER; g <= FEMININE_GENDER; g++) {
 		switch (g) {
 			case NEUTER_GENDER: WRITE("neuter "); break;
 			case MASCULINE_GENDER: WRITE("masculine "); break;
 			case FEMININE_GENDER: WRITE("feminine "); break;
 		}
-		for (n = 1; n <= 2; n++) {
+		for (int n = 1; n <= 2; n++) {
 			if (n == 1) WRITE("singular: "); else WRITE(" / plural: ");
 			wording C = Clusters::get_form_general(adj->adjective_names,
 				NULL, n, g);
