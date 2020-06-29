@@ -100,7 +100,7 @@ compare "clothing" and "clothes", which has no adequate singular.)
 
 =
 void Assertions::Refiner::pn_make_adjective(parse_node *p, adjective_usage *ale, parse_node *spec) {
-	adjectival_phrase *aph = AdjectiveUsages::get_aph(ale);
+	adjective *aph = AdjectiveUsages::get_aph(ale);
 	Node::set_type(p, ADJECTIVE_NT);
 	Node::set_aph(p, aph);
 	Node::set_evaluation(p, NULL);

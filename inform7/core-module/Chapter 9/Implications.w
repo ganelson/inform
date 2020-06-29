@@ -254,7 +254,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain, i
 	}
 
 @<Apply the conclusion to the candidate@> =
-	adjectival_phrase *aph = Properties::EitherOr::get_aph(conclusion_prop);
+	adjective *aph = Properties::EitherOr::get_aph(conclusion_prop);
 	pcalc_prop *prop = Calculus::Atoms::KIND_new(InferenceSubjects::domain(domain), Calculus::Terms::new_variable(0));
 	if (conclusion_state == FALSE) {
 		prop = Calculus::Propositions::concatenate(prop, Calculus::Atoms::new(NEGATION_OPEN_ATOM));

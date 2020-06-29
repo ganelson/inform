@@ -50,7 +50,6 @@ which use this module:
 @e i6_inclusion_matter_CLASS
 @e literal_list_CLASS
 @e adjective_meaning_CLASS
-@e adjective_meaning_block_CLASS
 @e measurement_definition_CLASS
 @e literal_pattern_name_CLASS
 @e equation_CLASS
@@ -98,7 +97,6 @@ which use this module:
 =
 DECLARE_CLASS(activity)
 DECLARE_CLASS(adjective_meaning)
-DECLARE_CLASS(adjective_meaning_block)
 DECLARE_CLASS(applicability_condition)
 DECLARE_CLASS(binary_predicate)
 DECLARE_CLASS(booking)
@@ -407,7 +405,7 @@ void CoreModule::writer(OUTPUT_STREAM, char *format_string, int wn) {
 tree; though it's a little like itemising the baubles on a Christmas tree.
 
 @e action_meaning_ANNOT /* |action_pattern|: meaning in parse tree when used as noun */
-@e aph_ANNOT /* |adjectival_phrase|: which adjective is asserted */
+@e aph_ANNOT /* |adjective|: which adjective is asserted */
 @e category_of_I6_translation_ANNOT /* int: what sort of "translates into I6" sentence this is */
 @e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
 @e colon_block_command_ANNOT /* int: this COMMAND uses the ":" not begin/end syntax */
@@ -488,7 +486,7 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e results_from_splitting_ANNOT /* |int|: node in a routine's parse tree from comma block notation */
 @e row_amendable_ANNOT /* int: a candidate row for a table amendment */
 @e save_self_ANNOT /* |int|: this invocation must save and preserve |self| at run-time */
-@e say_adjective_ANNOT /* |adjectival_phrase|: ...or the adjective to be agreed with by "say" */
+@e say_adjective_ANNOT /* |adjective|: ...or the adjective to be agreed with by "say" */
 @e say_verb_ANNOT /* |verb_conjugation|: ...or the verb to be conjugated by "say" */
 @e say_verb_negated_ANNOT /* relevant only for that */
 @e self_object_ANNOT /* |int|: this represents |self| at run-time */
@@ -512,7 +510,7 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */
 
 = (early code)
-DECLARE_ANNOTATION_FUNCTIONS(aph, adjectival_phrase)
+DECLARE_ANNOTATION_FUNCTIONS(aph, adjective)
 DECLARE_ANNOTATION_FUNCTIONS(condition_tense, time_period)
 DECLARE_ANNOTATION_FUNCTIONS(constant_activity, activity)
 DECLARE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
@@ -555,7 +553,7 @@ DECLARE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
 DECLARE_ANNOTATION_FUNCTIONS(prep, preposition_identity)
 DECLARE_ANNOTATION_FUNCTIONS(quant, quantifier)
 DECLARE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
-DECLARE_ANNOTATION_FUNCTIONS(say_adjective, adjectival_phrase)
+DECLARE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 DECLARE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
 DECLARE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
 DECLARE_ANNOTATION_FUNCTIONS(subject, inference_subject)
@@ -568,7 +566,7 @@ DECLARE_ANNOTATION_FUNCTIONS(vu, verb_usage)
 to provide their get and set functions:
 
 =
-MAKE_ANNOTATION_FUNCTIONS(aph, adjectival_phrase)
+MAKE_ANNOTATION_FUNCTIONS(aph, adjective)
 MAKE_ANNOTATION_FUNCTIONS(condition_tense, time_period)
 MAKE_ANNOTATION_FUNCTIONS(constant_activity, activity)
 MAKE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
@@ -609,7 +607,7 @@ MAKE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
 MAKE_ANNOTATION_FUNCTIONS(prep, preposition_identity)
 MAKE_ANNOTATION_FUNCTIONS(quant, quantifier)
 MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
-MAKE_ANNOTATION_FUNCTIONS(say_adjective, adjectival_phrase)
+MAKE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 MAKE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
 MAKE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
 MAKE_ANNOTATION_FUNCTIONS(subject, inference_subject)

@@ -12,7 +12,7 @@ Chapter 1: Setting Up
 "Loading this module."
 	Linguistics Module
 
-Chapter 2: Grammatical Categories I
+Chapter 2: NP Categories
 	Articles and Pronouns
 	Cardinals and Ordinals
 	Determiners and Quantifiers
@@ -20,7 +20,7 @@ Chapter 2: Grammatical Categories I
 	Adjective Usages
 	Nouns
 
-Chapter 3: Grammatical Categories II
+Chapter 3: VP Categories
 	Verbs
 	Verb Usages
 	Prepositions

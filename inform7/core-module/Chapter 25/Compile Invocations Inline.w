@@ -1689,7 +1689,7 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 		return;
 	}
 
-	adjectival_phrase *aph = Adjectives::parse(LW);
+	adjective *aph = Adjectives::parse(LW);
 	if (aph) {
 		if (Adjectives::Meanings::write_adjective_test_routine(VH, aph)) return;
 		StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible),

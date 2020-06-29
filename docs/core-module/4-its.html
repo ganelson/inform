@@ -243,7 +243,7 @@ from "Definition: a thing is invisible if...".
 <p class="commentary">The S-parser treats all adjectives alike &mdash; more or less just as names.
 This is because "open" may mean one thing for containers and another
 for scenes, for example. The identification of an adjective's name with
-its set of possible meanings is via a structure called <span class="extract"><span class="extract-syntax">adjectival_phrase</span></span>.
+its set of possible meanings is via a structure called <span class="extract"><span class="extract-syntax">adjective</span></span>.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>To sum up. If we write "text" \(\rightarrow\) structure used for parsing
@@ -270,7 +270,7 @@ literal number
 <span class="extract"><span class="extract-syntax">invocation</span></span> (incorporating a <span class="extract"><span class="extract-syntax">phrase</span></span>)
 </li><li>(8) Adjectives like the "closed" in "three closed doors" are identified
 by name only, with little attempt to detect which sense is meant, so they
-pass straight through the S-parser as pointers to <span class="extract"><span class="extract-syntax">adjectival_phrase</span></span>
+pass straight through the S-parser as pointers to <span class="extract"><span class="extract-syntax">adjective</span></span>
 structures.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>To sum up further still, <span class="extract"><span class="extract-syntax">excerpt_meaning</span></span> structures are used to parse
@@ -278,7 +278,7 @@ simple nouns and imperative phrases, whereas other specialist structures
 (<span class="extract"><span class="extract-syntax">preposition_identity</span></span>, <span class="extract"><span class="extract-syntax">determiner</span></span>, etc.) are used to parse the hinges
 which hold sentences together. Once parsed, individual excerpts tend to
 have meanings which might be pointers to a bewildering range of structures
-(<span class="extract"><span class="extract-syntax">instance</span></span>, <span class="extract"><span class="extract-syntax">quantifier</span></span>, <span class="extract"><span class="extract-syntax">binary_predicate</span></span>, <span class="extract"><span class="extract-syntax">adjectival_phrase</span></span>,
+(<span class="extract"><span class="extract-syntax">instance</span></span>, <span class="extract"><span class="extract-syntax">quantifier</span></span>, <span class="extract"><span class="extract-syntax">binary_predicate</span></span>, <span class="extract"><span class="extract-syntax">adjective</span></span>,
 etc.) but these pointers are held together inside the S-parser by a single
 unifying construction: the <span class="extract"><span class="extract-syntax">parse_node</span></span>. And we will eventually turn the
 whole thing into a <span class="extract"><span class="extract-syntax">specification</span></span> for the rest of Inform to use.

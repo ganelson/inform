@@ -154,7 +154,7 @@ from "Definition: a thing is invisible if...".
 The S-parser treats all adjectives alike -- more or less just as names.
 This is because "open" may mean one thing for containers and another
 for scenes, for example. The identification of an adjective's name with
-its set of possible meanings is via a structure called |adjectival_phrase|.
+its set of possible meanings is via a structure called |adjective|.
 
 @ To sum up. If we write "text" $\rightarrow$ structure used for parsing
 $\rightarrow$ structure used to hold meaning, our example is parsed like so:
@@ -185,7 +185,7 @@ literal number
 
 (8) Adjectives like the "closed" in "three closed doors" are identified
 by name only, with little attempt to detect which sense is meant, so they
-pass straight through the S-parser as pointers to |adjectival_phrase|
+pass straight through the S-parser as pointers to |adjective|
 structures.
 
 @ To sum up further still, |excerpt_meaning| structures are used to parse
@@ -193,7 +193,7 @@ simple nouns and imperative phrases, whereas other specialist structures
 (|preposition_identity|, |determiner|, etc.) are used to parse the hinges
 which hold sentences together. Once parsed, individual excerpts tend to
 have meanings which might be pointers to a bewildering range of structures
-(|instance|, |quantifier|, |binary_predicate|, |adjectival_phrase|,
+(|instance|, |quantifier|, |binary_predicate|, |adjective|,
 etc.) but these pointers are held together inside the S-parser by a single
 unifying construction: the |parse_node|. And we will eventually turn the
 whole thing into a |specification| for the rest of Inform to use.

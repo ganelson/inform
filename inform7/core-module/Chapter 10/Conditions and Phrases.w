@@ -266,11 +266,11 @@ typechecking to choose between much later on.
 singulars.
 
 =
-parse_node *ExParser::say_adjective(adjectival_phrase *aph, wording W) {
+parse_node *ExParser::say_adjective(adjective *aph, wording W) {
 	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
-	Invocations::set_adjectival_phrase(inv, aph);
+	Invocations::set_adjective(inv, aph);
 	spec->down = Node::new(INVOCATION_LIST_NT);
 	spec->down->down = Invocations::add_to_list(spec->down->down, inv);
 	return spec;

@@ -51,7 +51,7 @@ typedef struct property {
 	struct property *negation; /* and which property name (if any) negates it? */
 	int stored_in_negation; /* this is the dummy half of an either/or pair */
 	struct adjective_meaning *adjectival_meaning_registered; /* and has it been made an adjective yet? */
-	struct adjectival_phrase *adjectival_phrase_registered; /* similarly */
+	struct adjective *adjective_registered; /* similarly */
 	#ifdef IF_MODULE
 	struct grammar_verb *eo_parsing_grammar; /* exotic forms used in parsing */
 	#endif

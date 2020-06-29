@@ -105,7 +105,7 @@ void Properties::EitherOr::initialise(property *prn) {
 	prn->stored_in_negation = FALSE;
 	prn->implemented_as_attribute = NOT_APPLICABLE;
 	prn->adjectival_meaning_registered = NULL;
-	prn->adjectival_phrase_registered = NULL;
+	prn->adjective_registered = NULL;
 	#ifdef IF_MODULE
 	prn->eo_parsing_grammar = NULL;
 	#endif
@@ -180,9 +180,9 @@ void Properties::EitherOr::set_parsing_grammar(property *prn, grammar_verb *gv) 
 }
 #endif
 
-adjectival_phrase *Properties::EitherOr::get_aph(property *prn) {
+adjective *Properties::EitherOr::get_aph(property *prn) {
 	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	return prn->adjectival_phrase_registered;
+	return prn->adjective_registered;
 }
 
 @h Assertion.
@@ -254,12 +254,12 @@ void Properties::EitherOr::create_adjective_from_property(property *prn, wording
 		Adjectives::Meanings::new(EORP_KADJ, STORE_POINTER_property(prn), W);
 	Adjectives::Meanings::declare(am, W, 1);
 	Adjectives::Meanings::set_domain_from_kind(am, K);
-	prn->adjectival_phrase_registered = Adjectives::Meanings::get_aph_from_am(am);
+	prn->adjective_registered = Adjectives::Meanings::get_aph_from_am(am);
 	prn->adjectival_meaning_registered = am;
 }
 
 void Properties::EitherOr::make_new_adjective_sense_from_property(property *prn, wording W, kind *K) {
-	adjectival_phrase *aph = prn->adjectival_phrase_registered;
+	adjective *aph = prn->adjective_registered;
 	if (Adjectives::Meanings::applicable_to(aph, K)) return;
 	adjective_meaning *am =
 		Adjectives::Meanings::new(EORP_KADJ, STORE_POINTER_property(prn), W);

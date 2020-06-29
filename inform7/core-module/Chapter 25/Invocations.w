@@ -222,7 +222,7 @@ void Invocations::set_verb_conjugation(parse_node *inv,
 @ The say adjective:
 
 =
-void Invocations::set_adjectival_phrase(parse_node *inv, adjectival_phrase *aph) {
+void Invocations::set_adjective(parse_node *inv, adjective *aph) {
 	if (inv == NULL) internal_error("tried to set ADJ of null inv");
 	Node::set_say_adjective(inv, aph);
 }

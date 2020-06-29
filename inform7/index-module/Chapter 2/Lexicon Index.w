@@ -166,14 +166,14 @@ source text.
 
 @<Stock the lexicon with adjectives from names of adjectival phrases@> =
 	lexicon_entry *lex;
-	adjectival_phrase *adj;
-	LOOP_OVER(adj, adjectival_phrase) {
-		wording W = Adjectives::get_text(adj, FALSE);
+	adjective *adj;
+	LOOP_OVER(adj, adjective) {
+		wording W = Adjectives::get_nominative_singular(adj);
 		if (Wordings::nonempty(W)) {
 			lex = IndexLexicon::lexicon_new_entry(W);
 			lex->part_of_speech = ADJECTIVAL_PHRASE_LEXE;
 			lex->category = "adjective";
-			lex->entry_refers_to = STORE_POINTER_adjectival_phrase(adj);
+			lex->entry_refers_to = STORE_POINTER_adjective(adj);
 		}
 	}
 
@@ -395,7 +395,7 @@ different contexts. We want to quote all of those.
 @<Definition of adjectival phrase entry@> =
 	int ac = 0, nc;
 	adjective_meaning *am;
-	adjectival_phrase *aph = RETRIEVE_POINTER_adjectival_phrase(lex->entry_refers_to);
+	adjective *aph = RETRIEVE_POINTER_adjective(lex->entry_refers_to);
 	@<Begin definition text@>;
 	WRITE(": ");
 	LOOP_OVER_SORTED_MEANINGS(aph, am) ac++; nc = ac;

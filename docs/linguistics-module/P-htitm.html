@@ -108,10 +108,6 @@ a value of this type, and represents the "to relate" verb which can assert
 any verb meaning &mdash; for example, "X relates to Y by R". See <a href="3-vu.html" class="internal">Verb Usages</a>.
 </p>
 
-<p class="commentary">Similarly, <span class="extract"><span class="extract-syntax">ADJECTIVE_MEANING_LINGUISTICS_TYPE</span></span> should be a type for the meaning
-of an adjective. See <a href="2-adj.html" class="internal">Adjectives</a>.
-</p>
-
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Using callbacks. </b>Shared modules like this one are tweaked in behaviour by defining "callback
 functions". This means that the parent might provide a function of its own
 which would answer a question put to it by the module, or take some action
@@ -143,14 +139,18 @@ property for the natural language of play. See <a href="3-vu.html#SP24" class="i
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK</span></span> should return <span class="extract"><span class="extract-syntax">TRUE</span></span> if the given
 name is acceptable as an adjective, and should otherwise print some sort of
 error message and return <span class="extract"><span class="extract-syntax">FALSE</span></span>. If this callback is not provided, all non-empty
-names are acceptable. See <a href="2-adj.html#SP4" class="internal">Adjectives::from_word_range</a>.
+names are acceptable. See <a href="2-adj.html#SP2" class="internal">Adjectives::declare</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK</span></span> and <span class="extract"><span class="extract-syntax">ALLOW_VERB_LINGUISTICS_CALLBACK</span></span>
 give the parent control over which forms of verbs are allowed: for examole, <a href="../core-module/index.html" class="internal">core</a>
 allows them in assertions only in the third person (singular or plural), whereas
 it allows them in any form in non-assertion contexts. See
 <a href="3-vu.html#SP8" class="internal">VerbUsages::register_moods_of_verb</a>.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK</span></span>, if provided, should be the default
-meaning for an adjective newly defined &mdash; see <a href="2-adj.html#SP4" class="internal">Adjectives::from_word_range</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK</span></span>, if provided, should accompany a
+declaration of a structure called <span class="extract"><span class="extract-syntax">adjecttve_compilation_data</span></span>; this function should
+then set up that data for the given adjective &mdash; see <a href="2-adj.html#SP2" class="internal">Adjectives::declare</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">ADJECTIVE_MEANING_LINGUISTICS_CALLBACK</span></span>, if provided, should accompany a
+declaration of a structure called <span class="extract"><span class="extract-syntax">adjective_meaning_data</span></span>; this function should
+then set up that data for the given adjective &mdash; see <a href="2-adj.html#SP2" class="internal">Adjectives::declare</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">NOUN_COMPILATION_LINGUISTICS_CALLBACK</span></span>, if provided, should accompany a
 declaration of a structure called <span class="extract"><span class="extract-syntax">name_compilation_data</span></span>; this function should
 then set up that data for the given noun &mdash; see <a href="2-nns.html#SP6" class="internal">Nouns::new_inner</a>.

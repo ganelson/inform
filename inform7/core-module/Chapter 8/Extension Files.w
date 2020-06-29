@@ -425,10 +425,10 @@ void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 @ Adjectival phrases:
 
 @<Document and dictionary the adjectival phrases made in extension@> =
-	adjectival_phrase *adj;
+	adjective *adj;
 	int kc = 0;
-	LOOP_OVER(adj, adjectival_phrase) {
-		wording W = Adjectives::get_text(adj, FALSE);
+	LOOP_OVER(adj, adjective) {
+		wording W = Adjectives::get_nominative_singular(adj);
 		if ((Wordings::nonempty(W)) &&
 			(Lexer::file_of_origin(Wordings::first_wn(W)) == E->read_into_file))
 			kc = Extensions::Files::document_headword(OUT, kc, E, "Adjectives", I"adjective", W);

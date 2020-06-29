@@ -43,9 +43,6 @@ The parent may also want to define |VERB_MEANING_UNIVERSAL|, which should be
 a value of this type, and represents the "to relate" verb which can assert
 any verb meaning -- for example, "X relates to Y by R". See //Verb Usages//.
 
-Similarly, |ADJECTIVE_MEANING_LINGUISTICS_TYPE| should be a type for the meaning
-of an adjective. See //Adjectives//. 
-
 @h Using callbacks.
 Shared modules like this one are tweaked in behaviour by defining "callback
 functions". This means that the parent might provide a function of its own
@@ -75,7 +72,7 @@ property for the natural language of play. See //VerbUsages::adaptive_person//.
 (*) |ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK| should return |TRUE| if the given
 name is acceptable as an adjective, and should otherwise print some sort of
 error message and return |FALSE|. If this callback is not provided, all non-empty
-names are acceptable. See //Adjectives::from_word_range//.
+names are acceptable. See //Adjectives::declare//.
 
 (*) |ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK| and |ALLOW_VERB_LINGUISTICS_CALLBACK|
 give the parent control over which forms of verbs are allowed: for examole, //core//
@@ -83,8 +80,13 @@ allows them in assertions only in the third person (singular or plural), whereas
 it allows them in any form in non-assertion contexts. See
 //VerbUsages::register_moods_of_verb//.
 
-(*) |EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK|, if provided, should be the default
-meaning for an adjective newly defined -- see //Adjectives::from_word_range//.
+(*) |ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK|, if provided, should accompany a
+declaration of a structure called |adjecttve_compilation_data|; this function should
+then set up that data for the given adjective -- see //Adjectives::declare//.
+
+(*) |ADJECTIVE_MEANING_LINGUISTICS_CALLBACK|, if provided, should accompany a
+declaration of a structure called |adjective_meaning_data|; this function should
+then set up that data for the given adjective -- see //Adjectives::declare//.
 
 (*) |NOUN_COMPILATION_LINGUISTICS_CALLBACK|, if provided, should accompany a
 declaration of a structure called |name_compilation_data|; this function should

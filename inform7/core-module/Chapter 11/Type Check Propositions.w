@@ -438,11 +438,11 @@ only produce a problem message when the worst happens.
 int Calculus::Propositions::Checker::type_check_unary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
 	adjective_usage *tr = RETRIEVE_POINTER_adjective_usage(pl->predicate);
-	adjectival_phrase *aph = AdjectiveUsages::get_aph(tr);
+	adjective *aph = AdjectiveUsages::get_aph(tr);
 	kind *K = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), vta, tck);
 
 	if ((aph) && (Adjectives::Meanings::applicable_to(aph, K) == FALSE)) {
-	wording W = Adjectives::get_text(aph, FALSE);
+	wording W = Adjectives::get_nominative_singular(aph);
 	if (tck->log_to_I6_text)
 			LOG("Adjective '%W' undefined on $u\n", W, K);
 		Problems::quote_wording(4, W);

@@ -4,14 +4,30 @@ One individual meaning which an adjective can have.
 
 @ An adjective can have a long list of meanings in different contexts:
 
-@d ADJECTIVE_MEANING_LINGUISTICS_TYPE struct adjective_meaning_block
-
 =
-typedef struct adjective_meaning_block {
+typedef struct adjective_meaning_data {
 	struct adjective_meaning *possible_meanings; /* list of definitions in order given */
 	struct adjective_meaning *sorted_meanings; /* the same list sorted into logical order */
-	CLASS_DEFINITION
-} adjective_meaning_block;
+} adjective_meaning_data;
+
+
+@ Adjectives are simpler than verbs, since they define unary rather than
+binary predicates. The word "open" applies to only one term -- logically, we
+regard it as |open(x)|, whereas a verb like "suspects" would appear
+in formulae as |suspects(x, y)|.
+
+But they are nevertheless complicated enough to have multiple meanings. For
+instance, two of the senses of "empty" in the Standard Rules are:
+
+>> Definition: a text is empty rather than non-empty if it is "".
+
+>> Definition: a table name is empty rather than non-empty if the number of filled rows in it is 0.
+
+(Which also defines two of the senses of "non-empty", another adjective.)
+The clause |empty(x)| can be fully understood only when we know what
+kind of value x has; for a text, the first sense applies, and for a table
+name, the second.
+
 
 @ Each individual sense of an adjective has its own |adjective_meaning|
 structure, which we define next. It consists of some logistical data to keep
@@ -43,7 +59,7 @@ typedef struct adjective_meaning {
 	struct wording adjective_index_text; /* text to use in the Phrasebook index */
 	struct parse_node *defined_at; /* from what sentence this came (if it did) */
 
-	struct adjectival_phrase *owning_adjective; /* of which this is a definition */
+	struct adjective *owning_adjective; /* of which this is a definition */
 	struct adjective_meaning *next_meaning; /* next in order of definition */
 	struct adjective_meaning *next_sorted; /* next in logically sorted order */
 
@@ -119,15 +135,30 @@ adjectival phrase in sorted order, so:
 @h Symbols.
 
 =
+typedef struct adjective_compilation_data {
+	struct inter_name *aph_iname;
+	struct package_request *aph_package;
+} adjective_compilation_data;
+
+@
+
+@d ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK Adjectives::Meanings::initialise
+
+=
+void Adjectives::Meanings::initialise(adjective *adj) {
+	adj->adjective_compilation.aph_package = Hierarchy::package(Modules::current(), ADJECTIVES_HAP);
+	adj->adjective_compilation.aph_iname = Hierarchy::make_iname_in(ADJECTIVE_HL, adj->adjective_compilation.aph_package);
+}
+
 typedef struct adjective_iname_holder {
-	struct adjectival_phrase *aph_held;
+	struct adjective *aph_held;
 	int task_code;
 	int weak_ID_of_domain;
 	struct inter_name *iname_held;
 	CLASS_DEFINITION
 } adjective_iname_holder;
 
-inter_name *Adjectives::Meanings::iname(adjectival_phrase *aph, int task, int weak_id) {
+inter_name *Adjectives::Meanings::iname(adjective *aph, int task, int weak_id) {
 	adjective_iname_holder *aih;
 	LOOP_OVER(aih, adjective_iname_holder)
 		if ((aih->aph_held == aph) && (aih->task_code == task) && (aih->weak_ID_of_domain == weak_id))
@@ -136,20 +167,19 @@ inter_name *Adjectives::Meanings::iname(adjectival_phrase *aph, int task, int we
 	aih->aph_held = aph;
 	aih->task_code = task;
 	aih->weak_ID_of_domain = weak_id;
-	package_request *PR = Hierarchy::package_within(ADJECTIVE_TASKS_HAP, aph->aph_package);
+	package_request *PR = Hierarchy::package_within(ADJECTIVE_TASKS_HAP, aph->adjective_compilation.aph_package);
 	aih->iname_held = Hierarchy::make_iname_in(TASK_FN_HL, PR);
 	return aih->iname_held;
 }
 
 @h The block of definitions.
 
-@d EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK Adjectives::Meanings::new_block
+@d ADJECTIVE_MEANING_LINGUISTICS_CALLBACK Adjectives::Meanings::new_block
 
 =
-adjective_meaning_block *Adjectives::Meanings::new_block(void) {
-	adjective_meaning_block *amb = CREATE(adjective_meaning_block);
-	amb->possible_meanings = NULL; amb->sorted_meanings = NULL;
-	return amb;
+void Adjectives::Meanings::new_block(adjective *adj) {
+	adj->adjective_meanings.possible_meanings = NULL;
+	adj->adjective_meanings.sorted_meanings = NULL;
 }
 
 @ The following assigns a new meaning to a given word range: we find the
@@ -164,11 +194,11 @@ in the case of texts and table names.) It's convenient and costs little
 memory to keep the sorted list as a second linked list.
 
 =
-adjectival_phrase *Adjectives::Meanings::declare(adjective_meaning *am,
+adjective *Adjectives::Meanings::declare(adjective_meaning *am,
 	wording W, int route) {
-	adjectival_phrase *aph = Adjectives::declare(W, NULL);
-	adjective_meaning *aml = aph->meanings->possible_meanings;
-	if (aml == NULL) aph->meanings->possible_meanings = am;
+	adjective *aph = Adjectives::declare(W, NULL);
+	adjective_meaning *aml = aph->adjective_meanings.possible_meanings;
+	if (aml == NULL) aph->adjective_meanings.possible_meanings = am;
 	else {
 		while (aml->next_meaning) aml = aml->next_meaning;
 		aml->next_meaning = am;
@@ -183,18 +213,18 @@ and it can only be declared once. So every AM belongs to one and only one
 APH, which we can read off as follows:
 
 =
-adjectival_phrase *Adjectives::Meanings::get_aph_from_am(adjective_meaning *am) {
+adjective *Adjectives::Meanings::get_aph_from_am(adjective_meaning *am) {
 	return am->owning_adjective;
 }
 
 @ And here we log the unsorted meaning list.
 
 =
-void Adjectives::Meanings::log_meanings(adjectival_phrase *aph) {
+void Adjectives::Meanings::log_meanings(adjective *aph) {
 	adjective_meaning *am;
 	int n;
 	if (aph == NULL) { LOG("<null-APH>\n"); return; }
-	for (n=1, am = aph->meanings->possible_meanings; am; n++, am = am->next_meaning)
+	for (n=1, am = aph->adjective_meanings.possible_meanings; am; n++, am = am->next_meaning)
 		LOG("%d: %W (domain:$j) (dk:$u)\n", n, am->adjective_index_text,
 			am->domain_infs, am->domain_kind);
 }
@@ -229,11 +259,11 @@ unsorted list, which is helpful since we may need to call this routine
 early in the run when sorting cannot yet be done.
 
 =
-int Adjectives::Meanings::applicable_to(adjectival_phrase *aph,
+int Adjectives::Meanings::applicable_to(adjective *aph,
 	kind *K) {
 	if (aph) {
 		adjective_meaning *am;
-		for (am = aph->meanings->possible_meanings; am; am = am->next_meaning) {
+		for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning) {
 			if (am->domain_infs == NULL) {
 				if (am->setting_domain) @<Issue a problem for a circularity@>;
 				am->setting_domain = TRUE;
@@ -271,17 +301,17 @@ Does a given APH have any interpretation as an enumerated property value,
 or an either/or property? If so we return the earliest known.
 
 =
-instance *Adjectives::Meanings::has_ENUMERATIVE_meaning(adjectival_phrase *aph) {
+instance *Adjectives::Meanings::has_ENUMERATIVE_meaning(adjective *aph) {
 	adjective_meaning *am;
-	for (am = aph->meanings->possible_meanings; am; am = am->next_meaning)
+	for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning)
 		if (am->adjective_form == ENUMERATIVE_KADJ)
 			return RETRIEVE_POINTER_instance(am->detailed_meaning);
 	return NULL;
 }
 
-property *Adjectives::Meanings::has_EORP_meaning(adjectival_phrase *aph, int *sense) {
+property *Adjectives::Meanings::has_EORP_meaning(adjective *aph, int *sense) {
 	if (aph)
-		for (adjective_meaning *am = aph->meanings->possible_meanings; am; am = am->next_meaning)
+		for (adjective_meaning *am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning)
 			if (am->adjective_form == EORP_KADJ) {
 				if (sense) *sense = am->meaning_parity;
 				return RETRIEVE_POINTER_property(am->detailed_meaning);
@@ -319,11 +349,11 @@ matched, and |FALSE| if there was no definition which applied, or if
 none of those which did could be asserted for it.
 
 =
-int Adjectives::Meanings::assert(adjectival_phrase *aph, kind *kind_domain,
+int Adjectives::Meanings::assert(adjective *aph, kind *kind_domain,
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
 	adjective_meaning *am;
 	Adjectives::Meanings::sort(aph);
-	for (am = aph->meanings->sorted_meanings; am; am = am->next_sorted) {
+	for (am = aph->adjective_meanings.sorted_meanings; am; am = am->next_sorted) {
 		if (Adjectives::Meanings::domain_weak_match(kind_domain,
 			Adjectives::Meanings::get_domain(am)) == FALSE) continue;
 		if (Adjectives::Meanings::domain_subj_compare(infs_to_assert_on, am) == FALSE) continue;
@@ -338,24 +368,24 @@ After meanings have been declared, a typical APH will have a disordered
 sorts the possibles list into the sorted list.
 
 =
-void Adjectives::Meanings::sort(adjectival_phrase *aph) {
+void Adjectives::Meanings::sort(adjective *aph) {
 	if (aph == NULL) internal_error("tried to sort meanings for null APH");
-	aph->meanings->sorted_meanings =
-		Adjectives::Meanings::list_sort(aph->meanings->possible_meanings);
+	aph->adjective_meanings.sorted_meanings =
+		Adjectives::Meanings::list_sort(aph->adjective_meanings.possible_meanings);
 }
 
 @ And voil\`a, the result can be read here:
 
 =
-adjective_meaning *Adjectives::Meanings::get_sorted_definition_list(adjectival_phrase *aph) {
-	return aph->meanings->sorted_meanings;
+adjective_meaning *Adjectives::Meanings::get_sorted_definition_list(adjective *aph) {
+	return aph->adjective_meanings.sorted_meanings;
 }
 
 @ Occasionally we just want one meaning:
 
 =
-adjective_meaning *Adjectives::Meanings::first_meaning(adjectival_phrase *aph) {
-	return aph->meanings->possible_meanings;
+adjective_meaning *Adjectives::Meanings::first_meaning(adjective *aph) {
+	return aph->adjective_meanings.possible_meanings;
 }
 
 adjective_meaning *Adjectives::Meanings::list_sort(adjective_meaning *unsorted_head) {
@@ -831,12 +861,12 @@ run-time, we return |NULL| as our schema, and the code-generator will use
 that to issue a suitable problem message.
 
 =
-i6_schema *Adjectives::Meanings::get_i6_schema(adjectival_phrase *aph,
+i6_schema *Adjectives::Meanings::get_i6_schema(adjective *aph,
 	kind *kind_domain, int T) {
 	adjective_meaning *am;
 	if (kind_domain == NULL) kind_domain = K_object;
 	Adjectives::Meanings::sort(aph);
-	for (am = aph->meanings->sorted_meanings; am; am = am->next_sorted) {
+	for (am = aph->adjective_meanings.sorted_meanings; am; am = am->next_sorted) {
 		kind *am_kind = Adjectives::Meanings::get_domain(am);
 		if (am_kind == NULL) Adjectives::Meanings::set_definition_domain(am, FALSE);
 		if (Adjectives::Meanings::domain_weak_match(kind_domain, am_kind) == FALSE) continue;
@@ -858,7 +888,7 @@ negation does not, and so must use those of the original.
 
 @<Construct a schema for this adjective, using the standard routine naming@> =
 	int task = T; char *negation_operator = "";
-	adjectival_phrase *use_aph = aph;
+	adjective *use_aph = aph;
 	if (am->am_negated_from) {
 		use_aph = am->am_negated_from->owning_adjective;
 		switch (T) {
@@ -879,15 +909,15 @@ objects, if there is one; otherwise the first-declared meaning.
 
 =
 int Adjectives::Meanings::write_adjective_test_routine(value_holster *VH,
-	adjectival_phrase *aph) {
+	adjective *aph) {
 	i6_schema *sch;
 	int weak_id = Kinds::RunTime::weak_id(K_object);
 	sch = Adjectives::Meanings::get_i6_schema(aph, NULL,
 		TEST_ADJECTIVE_TASK);
 	if (sch == NULL) {
-		if (aph->meanings->possible_meanings == NULL) return FALSE;
+		if (aph->adjective_meanings.possible_meanings == NULL) return FALSE;
 		kind *am_kind =
-			Adjectives::Meanings::get_domain(aph->meanings->possible_meanings);
+			Adjectives::Meanings::get_domain(aph->adjective_meanings.possible_meanings);
 		if (am_kind == NULL) return FALSE;
 		weak_id = Kinds::RunTime::weak_id(am_kind);
 	}
@@ -942,12 +972,12 @@ void Adjectives::Meanings::compile_support_code(void) {
 	@<Ensure, just in case, that domains exist and are sorted on@>;
 	int T;
 	for (T=1; T<=NO_ADJECTIVE_TASKS; T++) {
-		adjectival_phrase *aph;
-		LOOP_OVER(aph, adjectival_phrase) {
+		adjective *aph;
+		LOOP_OVER(aph, adjective) {
 			adjective_meaning *am;
-			for (am = aph->meanings->possible_meanings; am; am = am->next_meaning)
+			for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning)
 				am->defined_already = FALSE;
-			for (am = aph->meanings->sorted_meanings; am; ) {
+			for (am = aph->adjective_meanings.sorted_meanings; am; ) {
 				kind *K = NULL;
 				am = Adjectives::Meanings::list_next_domain_kind(am, &K, T);
 				if (K)
@@ -962,10 +992,10 @@ having been established, but certainly possible. We need the domains to be
 known in order to sort.
 
 @<Ensure, just in case, that domains exist and are sorted on@> =
-	adjectival_phrase *aph;
-	LOOP_OVER(aph, adjectival_phrase) {
+	adjective *aph;
+	LOOP_OVER(aph, adjective) {
 		adjective_meaning *am;
-		for (am = aph->meanings->possible_meanings; am; am = am->next_meaning) {
+		for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning) {
 			Adjectives::Meanings::set_definition_domain(am, FALSE);
 			am->defined_already = FALSE;
 		}
@@ -975,7 +1005,7 @@ known in order to sort.
 @ The following is a standard way to compile a one-off routine.
 
 @<Compile adjective definition for this atomic kind of value@> =
-	wording W = Adjectives::get_text(aph, FALSE);
+	wording W = Adjectives::get_nominative_singular(aph);
 	LOGIF(VARIABLE_CREATIONS, "Compiling support code for %W applying to $u, task %d\n",
 		W, K, T);
 
@@ -994,7 +1024,7 @@ known in order to sort.
 	if (problem_count == 0) {
 		local_variable *it_lv = LocalVariables::it_variable();
 		inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
-		Adjectives::Meanings::list_compile(aph->meanings->sorted_meanings, Frames::current_stack_frame(), K, T, it_s);
+		Adjectives::Meanings::list_compile(aph->adjective_meanings.sorted_meanings, Frames::current_stack_frame(), K, T, it_s);
 	}
 	Produce::rfalse(Emit::tree());
 
@@ -1029,7 +1059,7 @@ wasted allocating memory and copying the block value first.)
 @<Add an it-variable to represent the value or object in the domain@> =
 	kind *add_K = K_number;
 	adjective_meaning *am;
-	for (am = aph->meanings->sorted_meanings; am; am = am->next_sorted)
+	for (am = aph->adjective_meanings.sorted_meanings; am; am = am->next_sorted)
 		if ((am->adjective_form != I6_ROUTINE_KADJ) &&
 			(Adjectives::Meanings::domain_weak_match(K, Adjectives::Meanings::get_domain(am))))
 			add_K = K;
@@ -1243,8 +1273,7 @@ void Adjectives::Meanings::print_to_index(OUTPUT_STREAM, adjective_meaning *am) 
 	int rv;
 	@<Index the domain of validity of the AM@>;
 	if (am->am_negated_from) {
-		wording W = Adjectives::get_text(
-			am->am_negated_from->owning_adjective, FALSE);
+		wording W = Adjectives::get_nominative_singular(am->am_negated_from->owning_adjective);
 		WRITE(" opposite of </i>%+W<i>", W);
 	} else {
 		switch (am->adjective_form) {
@@ -1284,8 +1313,8 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 =
 <adaptive-adjective> internal {
 	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL)) return FALSE;
-	adjectival_phrase *aph;
-	LOOP_OVER(aph, adjectival_phrase) {
+	adjective *aph;
+	LOOP_OVER(aph, adjective) {
 		wording AW = Clusters::get_form_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
 		if (Wordings::match(AW, W)) {
 			*XP = aph; *X = FALSE; return TRUE;
@@ -1299,12 +1328,12 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 =
 void Adjectives::Meanings::agreements(void) {
 	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL)) return;
-	adjectival_phrase *aph;
-	LOOP_OVER(aph, adjectival_phrase) {
+	adjective *aph;
+	LOOP_OVER(aph, adjective) {
 		wording PW = Clusters::get_form_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
 		if (Wordings::empty(PW)) continue;
 
-		packaging_state save = Routines::begin(aph->aph_iname);
+		packaging_state save = Routines::begin(aph->adjective_compilation.aph_iname);
 		inter_symbol *o_s = LocalVariables::add_named_call_as_symbol(I"o");
 		inter_symbol *force_plural_s = LocalVariables::add_named_call_as_symbol(I"force_plural");
 		inter_symbol *gna_s = LocalVariables::add_internal_local_as_symbol(I"gna");
@@ -1419,8 +1448,8 @@ void Adjectives::Meanings::agreements(void) {
 	}
 }
 
-void Adjectives::Meanings::emit(adjectival_phrase *aph) {
-	Produce::inv_call_iname(Emit::tree(), aph->aph_iname);
+void Adjectives::Meanings::emit(adjective *aph) {
+	Produce::inv_call_iname(Emit::tree(), aph->adjective_compilation.aph_iname);
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PRIOR_NAMED_NOUN_HL));
 		Produce::inv_primitive(Emit::tree(), GE_BIP);

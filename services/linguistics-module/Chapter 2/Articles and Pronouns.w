@@ -1,11 +1,12 @@
 [Articles::] Articles and Pronouns.
 
-To define some elementary particles.
+Preform grammar for the articles and pronouns.
 
 @h Pronouns.
 We now define some grammatical basics. These are all very simple, and the user
 can't create new instances of them -- whereas the source text can make new
-adjectives, verbs and nouns, it can't make new pronouns.
+adjectives, verbs and nouns, it can't make new pronouns. (Note also that
+there is no //noun// object representing "pronoun".)
 
 =
 <pronoun> ::=

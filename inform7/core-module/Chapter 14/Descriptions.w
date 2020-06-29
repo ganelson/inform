@@ -189,7 +189,7 @@ adjective_usage *Descriptions::first_adjective_usage(parse_node *spec) {
 
 void Descriptions::add_to_adjective_list(adjective_usage *au, parse_node *spec) {
 	pcalc_prop *prop = Descriptions::to_proposition(spec);
-	adjectival_phrase *aph = AdjectiveUsages::get_aph(au);
+	adjective *aph = AdjectiveUsages::get_aph(au);
 	int negated = FALSE;
 	if (AdjectiveUsages::get_parity(au) == FALSE) negated = TRUE;
 	prop = Calculus::Propositions::concatenate(prop,
@@ -203,7 +203,7 @@ void Descriptions::add_to_adjective_list_w(adjective_usage *au, parse_node *spec
 	quantifier *Q = Descriptions::get_quantifier(spec);
 	int N = Descriptions::get_quantification_parameter(spec);
 	pcalc_prop *prop = Descriptions::get_inner_prop(spec);
-	adjectival_phrase *aph = AdjectiveUsages::get_aph(au);
+	adjective *aph = AdjectiveUsages::get_aph(au);
 	int negated = FALSE;
 	if (AdjectiveUsages::get_parity(au) == FALSE) negated = TRUE;
 	prop = Calculus::Propositions::concatenate(prop,

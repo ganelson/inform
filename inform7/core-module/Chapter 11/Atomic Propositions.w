@@ -359,7 +359,7 @@ to be able to create $U(t)$ for any term $t$, but in practice we only ever
 need $t=x$, that is, variable 0.
 
 =
-pcalc_prop *Calculus::Atoms::unary_PREDICATE_from_aph(adjectival_phrase *aph, int negated) {
+pcalc_prop *Calculus::Atoms::unary_PREDICATE_from_aph(adjective *aph, int negated) {
 	pcalc_prop *prop = Calculus::Atoms::new(PREDICATE_ATOM);
 	prop->arity = 1;
 	prop->terms[0] = Calculus::Terms::new_variable(0);

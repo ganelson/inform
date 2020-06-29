@@ -1,122 +1,102 @@
 [Adjectives::] Adjectives.
 
-To record the names of all adjectives.
+To create adjective objects, each of which represents a single adjective
+which may have multiple inflected forms and meanings.
 
-@h Adjectives are not their meanings.
-Adjectives are simpler than verbs, since they define unary rather than
-binary predicates. The word "open" applies to only one term -- logically, we
-regard it as |open(x)|, whereas a verb like "suspects" would appear
-in formulae as |suspects(x, y)|.
+@h An adjective is only a lexical cluster.
+We represent adjectives like "empty" with //adjective// objects. The only
+linguistic data in these objects is the lexical cluster for its wordings,
+possibly in multiple languages. These allow adjectives to have inflected
+forms, though this never really arises in English. (Let's not argue about
+the word "blond"/"blonde", the only counterexample anybody ever brings up.)
 
-But they are nevertheless complicated enough to have multiple meanings. For
-instance, two of the senses of "empty" in the Standard Rules are:
+Beyond that, an //adjective// object simply contains two convenient hooks
+for the user of this module to attach semantics to an adjective. For how
+Inform does this, see //core: Adjective Meanings//.
 
->> Definition: a text is empty rather than non-empty if it is "".
-
->> Definition: a table name is empty rather than non-empty if the number of filled rows in it is 0.
-
-(Which also defines two of the senses of "non-empty", another adjective.)
-The clause |empty(x)| can be fully understood only when we know what
-kind of value x has; for a text, the first sense applies, and for a table
-name, the second.
-
-Adjectives may also need to inflect, though not in English. (Let's not argue
-about the word "blond"/"blonde", which is the only counterexample anybody
-ever brings up.)
-
-@h Adjectival phrases.
-Because of this we need a structure to represent an adjective as
-distinct from its meaning, and this is it.
-
-@default ADJECTIVE_MEANING_LINGUISTICS_TYPE void
-
-=
+= 
 typedef struct adjective {
-	int X;
+	struct lexical_cluster *adjective_names;
+
+	#ifdef ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK
+	struct adjective_compilation_data adjective_compilation;
+	#endif
+	#ifdef ADJECTIVE_MEANING_LINGUISTICS_CALLBACK
+	struct adjective_meaning_data adjective_meanings;
+	#endif
+
+	CLASS_DEFINITION
 } adjective;
 
-typedef struct adjectival_phrase {
-	struct lexical_cluster *adjective_names;
-	#ifdef CORE_MODULE
-	struct inter_name *aph_iname;
-	struct package_request *aph_package;
-	#endif
-	ADJECTIVE_MEANING_LINGUISTICS_TYPE *meanings;
-	CLASS_DEFINITION
-} adjectival_phrase;
-
-@ The following declares a new adjective, creating it only if necessary:
+@h Creation.
+The following declares a new adjective, creating it only if it does not
+already exist.
 
 =
-adjectival_phrase *Adjectives::declare(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	adjectival_phrase *aph;
-	LOOP_OVER(aph, adjectival_phrase) {
-		wording C = Clusters::get_form_in_language(aph->adjective_names, FALSE, nl);
-		if (Wordings::match(C, W)) return aph;
+adjective *Adjectives::declare(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
+	adjective *adj;
+	LOOP_OVER(adj, adjective) {
+		wording C = Clusters::get_form_in_language(adj->adjective_names, FALSE, nl);
+		if (Wordings::match(C, W)) return adj;
 	}
-	return Adjectives::from_word_range(W, nl);
+	adj = NULL;
+	if (Wordings::nonempty(W)) adj = Adjectives::parse(W);
+	if (adj) return adj;
+	adj = CREATE(adjective);
+	adj->adjective_names = Clusters::new();
+	Clusters::add_with_agreements(adj->adjective_names, W, nl);
+	#ifdef ADJECTIVE_MEANING_LINGUISTICS_CALLBACK
+	ADJECTIVE_MEANING_LINGUISTICS_CALLBACK(adj);
+	#endif
+	#ifdef ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK
+	ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK(adj);
+	#endif
+	@<Register the new adjective with the lexicon module@>;
+	return adj;
 }
 
-@ Whereas this simply creates it:
+@ It's very important for performance that parsing adjective names can be
+done quickly, so we use the lexicon's optimisation code to mark all words
+occurring in any known adjective. Whereas nouns are registered with the
+lexicon under any number of different meaning codes, adjectives are always
+registered under |ADJECTIVE_MC|.
 
-=
-adjectival_phrase *Adjectives::from_word_range(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	adjectival_phrase *aph = NULL;
-	if (Wordings::nonempty(W)) aph = Adjectives::parse(W);
-	if (aph) return aph;
-	aph = CREATE(adjectival_phrase);
-	aph->adjective_names = Clusters::new();
-	Clusters::add_with_agreements(aph->adjective_names, W, nl);
-	aph->meanings = NULL;
-	#ifdef EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK
-	aph->meanings = EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK();
-	#endif
-	#ifdef CORE_MODULE
-	aph->aph_package = Hierarchy::package(Modules::current(), ADJECTIVES_HAP);
-	aph->aph_iname = Hierarchy::make_iname_in(ADJECTIVE_HL, aph->aph_package);
-	#endif
+@<Register the new adjective with the lexicon module@> =
 	if ((nl == NULL) && (Wordings::nonempty(W))) {
 		#ifdef ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK
 		if (ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK(W)) {
 		#endif
-			Lexicon::register(ADJECTIVE_MC,
-				W, STORE_POINTER_adjectival_phrase(aph));
-			LOOP_THROUGH_WORDING(n, W)
-				NTI::mark_word(n, <adjective-name>);
+			Lexicon::register(ADJECTIVE_MC, W, STORE_POINTER_adjective(adj));
+			LOOP_THROUGH_WORDING(n, W) NTI::mark_word(n, <adjective-name>);
 		#ifdef ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK
 		}
 		#endif
 	}
-	return aph;
-}
 
 @ =
-wording Adjectives::get_text(adjectival_phrase *aph, int plural) {
-	return Clusters::get_form(aph->adjective_names, plural);
+wording Adjectives::get_nominative_singular(adjective *adj) {
+	return Clusters::get_form(adj->adjective_names, FALSE);
 }
 
 @h Parsing adjectives.
 This does what its name suggests: matches the name of any adjective known to
-Inform.
+Inform. By construction there is only one |adjective| for any given excerpt of
+text, so the following is unambiguous:
 
 =
 <adjective-name> internal {
 	parse_node *p = Lexicon::retrieve(ADJECTIVE_MC, W);
 	if (p) {
-		*XP = RETRIEVE_POINTER_adjectival_phrase(
-			Lexicon::get_data(Node::get_meaning(p)));
+		*XP = RETRIEVE_POINTER_adjective(Lexicon::get_data(Node::get_meaning(p)));
 		return TRUE;
 	}
 	return FALSE;
 }
 
-@ These are registered as excerpt meanings with the |ADJECTIVE_MC| meaning
-code, so parsing a word range to match an adjective is easy. By construction
-there is only one |adjectival_phrase| for any given excerpt of text, so
-the following is unambiguous:
+@ Wrapping which:
 
 =
-adjectival_phrase *Adjectives::parse(wording W) {
+adjective *Adjectives::parse(wording W) {
 	if (<adjective-name>(W)) return <<rp>>;
 	return NULL;
 }
@@ -126,8 +106,8 @@ This is used in unit testing.
 
 =
 void Adjectives::test_adjective(OUTPUT_STREAM, wording W) {
-	adjectival_phrase *aph = Adjectives::declare(W, NULL);
-	if (aph == NULL) { WRITE("Failed test\n"); return; }
+	adjective *adj = Adjectives::declare(W, NULL);
+	if (adj == NULL) { WRITE("Failed test\n"); return; }
 	int g, n;
 	for (g = NEUTER_GENDER; g <= FEMININE_GENDER; g++) {
 		switch (g) {
@@ -137,7 +117,7 @@ void Adjectives::test_adjective(OUTPUT_STREAM, wording W) {
 		}
 		for (n = 1; n <= 2; n++) {
 			if (n == 1) WRITE("singular: "); else WRITE(" / plural: ");
-			wording C = Clusters::get_form_general(aph->adjective_names,
+			wording C = Clusters::get_form_general(adj->adjective_names,
 				NULL, n, g);
 			WRITE("%W", C);
 		}
@@ -149,10 +129,9 @@ void Adjectives::test_adjective(OUTPUT_STREAM, wording W) {
 To identify an adjective in the debugging log:
 
 =
-void Adjectives::log(adjectival_phrase *aph) {
-	if (aph == NULL) { LOG("<null adjectival phrase>"); return; }
-	wording W = Adjectives::get_text(aph, FALSE);
+void Adjectives::log(adjective *adj) {
+	if (adj == NULL) { LOG("<null adjectival phrase>"); return; }
+	wording W = Adjectives::get_nominative_singular(adj);
 	if (Streams::I6_escapes_enabled(DL)) LOG("'%W'", W);
-	else LOG("A%d'%W'", aph->allocation_id, W);
+	else LOG("A%d'%W'", adj->allocation_id, W);
 }
-

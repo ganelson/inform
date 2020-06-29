@@ -277,7 +277,7 @@ adjective apparatus.
 @<Make an annotated schema for a unary predicate@> =
 	int atask = 0; /* redundant assignment to appease |gcc -O2| */
 	adjective_usage *tr = RETRIEVE_POINTER_adjective_usage(pl->predicate);
-	adjectival_phrase *aph = AdjectiveUsages::get_aph(tr);
+	adjective *aph = AdjectiveUsages::get_aph(tr);
 
 	if (AdjectiveUsages::get_parity(tr) == FALSE) asch.negate_schema = TRUE;
 

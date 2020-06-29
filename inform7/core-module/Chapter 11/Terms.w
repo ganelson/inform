@@ -157,7 +157,7 @@ again.
 
 =
 pcalc_term Calculus::Terms::adj_to_noun_conversion(adjective_usage *tr) {
-	adjectival_phrase *aph = AdjectiveUsages::get_aph(tr);
+	adjective *aph = AdjectiveUsages::get_aph(tr);
 	instance *I = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
 	if (I) return Calculus::Terms::new_constant(Rvalues::from_instance(I));
 	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
@@ -170,14 +170,14 @@ pcalc_term Calculus::Terms::adj_to_noun_conversion(adjective_usage *tr) {
 =
 adjective_usage *Calculus::Terms::noun_to_adj_conversion(pcalc_term pt) {
 	kind *K;
-	adjectival_phrase *aph;
+	adjective *aph;
 	parse_node *spec = pt.constant;
 	if (Node::is(spec, CONSTANT_NT) == FALSE) return NULL;
 	K = Node::get_kind_of_value(spec);
 	if (Properties::Conditions::get_coinciding_property(K) == NULL) return NULL;
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
 		instance *I = Node::get_constant_instance(spec);
-		aph = Instances::get_adjectival_phrase(I);
+		aph = Instances::get_adjective(I);
 		return AdjectiveUsages::new(aph, TRUE);
 	}
 	return NULL;

@@ -690,7 +690,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 								K_object) == FALSE)
 							&& (Descriptions::number_of_adjectives_applied_to(spec) == 1)
 							&& (AdjectiveUsages::get_parity(Calculus::Propositions::first_adjective_usage(Specifications::to_proposition(spec), NULL)))) {
-							adjectival_phrase *aph =
+							adjective *aph =
 								AdjectiveUsages::get_aph(Calculus::Propositions::first_adjective_usage(Specifications::to_proposition(spec), NULL));
 							instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
 							if (q) {

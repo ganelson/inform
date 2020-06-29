@@ -1,7 +1,7 @@
 [Nouns::] Nouns.
 
-Noun objects are an abstraction for the names given to concepts created
-in the source text.
+To create noun objects, each of which represents a single common or proper noun
+which may have multiple inflected forms.
 
 @h A noun is more than a lexical cluster.
 Consider the line:

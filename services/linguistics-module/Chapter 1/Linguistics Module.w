@@ -10,7 +10,7 @@ which use this module:
 
 @ This module defines the following classes:
 
-@e adjectival_phrase_CLASS
+@e adjective_CLASS
 @e adjective_usage_CLASS
 @e quantifier_CLASS
 @e determiner_CLASS
@@ -25,7 +25,7 @@ which use this module:
 @e noun_CLASS
 
 =
-DECLARE_CLASS(adjectival_phrase)
+DECLARE_CLASS(adjective)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(adjective_usage, 1000)
 DECLARE_CLASS(quantifier)
 DECLARE_CLASS(determiner)

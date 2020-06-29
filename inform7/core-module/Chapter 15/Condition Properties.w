@@ -34,7 +34,7 @@ property *Properties::Conditions::new(inference_subject *infs, wording NW, parse
 			else
 				PW = Node::get_text(option);
 			if (<adjective-name>(PW)) {
-				adjectival_phrase *aph = <<rp>>;
+				adjective *aph = <<rp>>;
 				instance *I = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
 				kind *K = (I)?Instances::to_kind(I):NULL;
 				if (common_kind == NULL) {

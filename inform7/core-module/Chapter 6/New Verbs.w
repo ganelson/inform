@@ -1037,9 +1037,9 @@ internal_error("star alert!");
 				Feeds::feed_C_string(L" ");
 				DISCARD_TEXT(unstarred)
 				wording W = Feeds::end(id);
-				adjectival_phrase *aph = Adjectives::declare(W, vc->defined_in);
+				adjective *aph = Adjectives::declare(W, vc->defined_in);
 				WRITE("\"; %n(prior_named_noun, (prior_named_list >= 2)); print \"",
-					aph->aph_iname);
+					aph->adjective_compilation.aph_iname);
 			} else {
 				WRITE("%V", words[i]);
 			}

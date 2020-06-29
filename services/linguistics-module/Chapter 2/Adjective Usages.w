@@ -7,12 +7,12 @@ positively or negatively.
 
 =
 typedef struct adjective_usage {
-	adjectival_phrase *ref_to;
+	adjective *ref_to;
 	int ref_positive; /* used positively? */
 } adjective_usage;
 
 @ =
-adjective_usage *AdjectiveUsages::new(adjectival_phrase *aph, int pos) {
+adjective_usage *AdjectiveUsages::new(adjective *aph, int pos) {
 	adjective_usage *au = CREATE(adjective_usage);
 	au->ref_to = aph;
 	au->ref_positive = pos;
@@ -27,16 +27,16 @@ adjective_usage *AdjectiveUsages::copy(adjective_usage *au_from) {
 
 =
 void AdjectiveUsages::log(adjective_usage *au) {
-	adjectival_phrase *aph = AdjectiveUsages::get_aph(au);
+	adjective *aph = AdjectiveUsages::get_aph(au);
 	if (au->ref_positive == FALSE) LOG("~");
-	wording W = Adjectives::get_text(aph, FALSE);
+	wording W = Adjectives::get_nominative_singular(aph);
 	LOG("<adj:%W>", W);
 }
 
 @ Access:
 
 =
-adjectival_phrase *AdjectiveUsages::get_aph(adjective_usage *au) {
+adjective *AdjectiveUsages::get_aph(adjective_usage *au) {
 	if (au == NULL) return NULL;
 	return au->ref_to;
 }

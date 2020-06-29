@@ -36,7 +36,7 @@ typedef struct instance {
 
 	int enumeration_index; /* within each kind, named constants are counted from 1 */
 	struct general_pointer connection; /* to the data structure for a constant of a kind significant to Inform */
-	struct adjectival_phrase *usage_as_aph; /* if this is a noun used adjectivally, like "red" */
+	struct adjective *usage_as_aph; /* if this is a noun used adjectivally, like "red" */
 
 	int index_appearances; /* how many times have I appeared thus far in the World index? */
 	struct instance_usage *first_noted_usage;
@@ -741,7 +741,7 @@ property, but we don't go there in Inform.)
 These adjectives are easy to handle:
 
 =
-adjectival_phrase *Instances::get_adjectival_phrase(instance *I) {
+adjective *Instances::get_adjective(instance *I) {
 	return I->usage_as_aph;
 }
 
