@@ -7,7 +7,7 @@ positively or negatively.
 
 =
 typedef struct adjective_usage {
-	adjective *ref_to;
+	struct adjective *ref_to;
 	int ref_positive; /* used positively? */
 } adjective_usage;
 

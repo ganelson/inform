@@ -17,7 +17,7 @@ typedef struct verb_conjugation {
 	struct verb_tabulation tabulations[NO_KNOWN_MOODS];
 	NATURAL_LANGUAGE_WORDS_TYPE *defined_in;
 	#ifdef LINGUISTICS_MODULE
-	struct verb_identity *vc_conjugates;
+	struct verb *vc_conjugates;
 	#endif
 	#ifdef CORE_MODULE
 	struct parse_node *where_vc_created;
@@ -306,7 +306,7 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
 		} else {
 			package_request *R =
-				Verbs::verb_package(vc->vc_conjugates, vc->where_vc_created);
+				NewVerbs::package(vc->vc_conjugates, vc->where_vc_created);
 			TEMPORARY_TEXT(ANT)
 			WRITE_TO(ANT, "to %A", &(vc->infinitive));
 			Hierarchy::markup(R, VERB_NAME_HMD, ANT);

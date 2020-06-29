@@ -4,14 +4,8 @@ To record the identity and different structural forms of verbs.
 
 @h Definitions.
 
-@ One verbs above all is special to us, because of the unique role it plays
-in natural language. This is the copular verb, so called because it has two
-interacting subject phrases rather than a subject and an object: in English,
-"to be". We store its identity in a global variable which is set equal
-to the first-created verb marked as copular.
 
 =
-verb_identity *copular_verb = NULL;
 
 @h Verb Identities.
 What is a verb? Are the verbs in "Peter is hungry" and "Jane will be in the
@@ -24,19 +18,18 @@ defines a verb as a combination of its inflected forms with its possible
 usages in a sentence.
 
 =
-typedef struct verb_identity {
+typedef struct verb {
 	struct verb_conjugation *conjugation;
-	struct verb_form *list_of_forms;
-	#ifdef CORE_MODULE
-	struct package_request *verb_package;
+	struct verb_form *first_form;
+
+	#ifdef VERB_COMPILATION_LINGUISTICS_CALLBACK
+	struct verb_compilation_data verb_compilation; /* see //core: Using Nametags// on this */
 	#endif
+
 	CLASS_DEFINITION
-} verb_identity;
+} verb;
 
-@ Note that the first verb submitted with the copular flag set is considered
-to be the definitive copular verb.
-
-Note also that every verb always has a bare form, where no prepositions are
+@ Note also that every verb always has a bare form, where no prepositions are
 combined with it. This is (initially) meaningless, but it always exists.
 
 Finally, note that the conjugation can be null. This is used only for
@@ -44,42 +37,46 @@ what we'll call "operator verbs", where a mathematical operator is used
 instead of a word: for example, the |<=| sign is such a verb in Inform.
 
 =
-verb_identity *Verbs::new_verb(verb_conjugation *vc, int cop) {
-	verb_identity *vi = CREATE(verb_identity);
-	vi->conjugation = vc;
-	vi->list_of_forms = NULL;
-	#ifdef CORE_MODULE
-	vi->verb_package = NULL;
+verb *copular_verb = NULL;
+
+verb *Verbs::new_verb(verb_conjugation *vc, int cop) {
+	verb *V = CREATE(verb);
+	V->conjugation = vc;
+	V->first_form = NULL;
+	#ifdef VERB_COMPILATION_LINGUISTICS_CALLBACK
+	VERB_COMPILATION_LINGUISTICS_CALLBACK(V);
 	#endif
+
+	@<Give the new verb a single meaningless form@>;
+	@<If this is the first copular verb, remember that@>;
+
+	LOGIF(VERB_FORMS, "New verb: $w\n", V);
+	return V;
+}
+
+@<Give the new verb a single meaningless form@> =
+	Verbs::add_form(V, NULL, NULL, VerbMeanings::meaninglessness(), SVO_FS_BIT);
+
+@ Note that the first verb submitted with the copular flag set is considered
+to be the definitive copular verb.
+
+@<If this is the first copular verb, remember that@> =
 	if ((cop) && (copular_verb == NULL) && (vc) &&
-		(WordAssemblages::nonempty(vc->infinitive))) copular_verb = vi;
-	LOGIF(VERB_FORMS, "New verb: $w\n", vi);
-	Verbs::add_form(vi, NULL, NULL, VerbMeanings::meaninglessness(), SVO_FS_BIT);
-	return vi;
-}
+		(WordAssemblages::nonempty(vc->infinitive))) copular_verb = V;
 
-void Verbs::log_verb(OUTPUT_STREAM, void *vvi) {
-	verb_identity *vi = (verb_identity *) vvi;
-	if (vi == NULL) { WRITE("<no-vi>"); }
-	else {
-		WRITE("v=");
-		if (vi->conjugation) WRITE("%A", &(vi->conjugation->infinitive));
-		else WRITE("<none>");
-		WRITE("(%d)", vi->allocation_id);
-	}
-}
-
-@h Package.
+@
 
 =
-#ifdef CORE_MODULE
-package_request *Verbs::verb_package(verb_identity *vi, parse_node *where) {
-	if (vi == NULL) internal_error("no verb identity");
-	if (vi->verb_package == NULL)
-		vi->verb_package = Hierarchy::package(Modules::find(where), VERBS_HAP);
-	return vi->verb_package;
+void Verbs::log_verb(OUTPUT_STREAM, void *vvi) {
+	verb *V = (verb *) vvi;
+	if (V == NULL) { WRITE("<no-V>"); }
+	else {
+		WRITE("v=");
+		if (V->conjugation) WRITE("%A", &(V->conjugation->infinitive));
+		else WRITE("<none>");
+		WRITE("(%d)", V->allocation_id);
+	}
 }
-#endif
 
 @h Operator Verbs.
 As noted above, these are tenseless verbs with no conjugation, represented
@@ -87,10 +84,10 @@ only by symbols such as |<=|. As infix operators, they mimic SVO sentence
 structures.
 
 =
-verb_identity *Verbs::new_operator_verb(verb_meaning vm) {
-	verb_identity *vi = Verbs::new_verb(NULL, FALSE);
-	Verbs::add_form(vi, NULL, NULL, vm, SVO_FS_BIT);
-	return vi;
+verb *Verbs::new_operator_verb(verb_meaning vm) {
+	verb *V = Verbs::new_verb(NULL, FALSE);
+	Verbs::add_form(V, NULL, NULL, vm, SVO_FS_BIT);
+	return V;
 }
 
 @h Verb Forms.
@@ -127,14 +124,11 @@ form usages can be legal for the same form, this is a bitmap:
 
 =
 typedef struct verb_form {
-	struct verb_identity *underlying_verb;
+	struct verb *underlying_verb;
 	struct preposition_identity *preposition;
 	struct preposition_identity *second_clause_preposition;
 	int form_structures; /* bitmap of |*_FS_BIT| values */
-	#ifdef CORE_MODULE
-	struct inter_name *vf_iname; /* routine to conjugate this */
-	struct parse_node *where_vf_created;
-	#endif
+
 	struct word_assemblage infinitive_reference_text; /* e.g. "translate into" */
 	struct word_assemblage pos_reference_text; /* e.g. "translate into" */
 	struct word_assemblage neg_reference_text; /* e.g. "do not translate into" */
@@ -142,6 +136,11 @@ typedef struct verb_form {
 	struct verb_sense *list_of_senses;
 
 	struct verb_form *next_form; /* within the linked list for the verb */
+
+	#ifdef VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK
+	struct verb_form_compilation_data verb_form_compilation; /* see //core: New Verbs// on this */
+	#endif
+
 	CLASS_DEFINITION
 } verb_form;
 
@@ -166,9 +165,9 @@ Forms are stored in a linked list, and are uniquely identified by the triplet
 of verb and two prepositions:
 
 =
-verb_form *Verbs::find_form(verb_identity *vi, preposition_identity *prep, preposition_identity *second_prep) {
-	if (vi)
-		for (verb_form *vf = vi->list_of_forms; vf; vf = vf->next_form)
+verb_form *Verbs::find_form(verb *V, preposition_identity *prep, preposition_identity *second_prep) {
+	if (V)
+		for (verb_form *vf = V->first_form; vf; vf = vf->next_form)
 			if ((vf->preposition == prep) && (vf->second_clause_preposition == second_prep))
 				return vf;
 	return NULL;
@@ -177,15 +176,15 @@ verb_form *Verbs::find_form(verb_identity *vi, preposition_identity *prep, prepo
 @ And here's how we add them.
 
 =
-void Verbs::add_form(verb_identity *vi, preposition_identity *prep,
+void Verbs::add_form(verb *V, preposition_identity *prep,
 	preposition_identity *second_prep, verb_meaning vm, int form_structs) {
 	if (VerbMeanings::is_meaningless(&vm) == FALSE)
 		LOGIF(VERB_FORMS, "  Adding form: $w + $p + $p = $y\n",
-			vi, prep, second_prep, &vm);
+			V, prep, second_prep, &vm);
 
 	VerbMeanings::set_where_assigned(&vm, current_sentence);
 
-	if (vi == NULL) internal_error("added form to null verb");
+	if (V == NULL) internal_error("added form to null verb");
 
 	verb_form *vf = NULL;
 	@<Find or create the verb form structure for this combination@>;
@@ -197,18 +196,17 @@ void Verbs::add_form(verb_identity *vi, preposition_identity *prep,
 }
 
 @<Find or create the verb form structure for this combination@> =
-	vf = Verbs::find_form(vi, prep, second_prep);
+	vf = Verbs::find_form(V, prep, second_prep);
 	if (vf == NULL) {
 		vf = CREATE(verb_form);
-		vf->underlying_verb = vi;
+		vf->underlying_verb = V;
 		vf->preposition = prep;
 		vf->second_clause_preposition = second_prep;
 		vf->form_structures = 0;
 		vf->list_of_senses = NULL;
 		vf->next_form = NULL;
-		#ifdef CORE_MODULE
-		vf->vf_iname = NULL;
-		vf->where_vf_created = current_sentence;
+		#ifdef VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK
+		VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK(vf);
 		#endif
 		@<Compose the reference texts for the new form@>;
 		@<Insert the new form into the list of forms for this verb@>;
@@ -218,7 +216,7 @@ void Verbs::add_form(verb_identity *vi, preposition_identity *prep,
 in a canonical verbal form. For example, "translate into |+| as".
 
 @<Compose the reference texts for the new form@> =
-	verb_conjugation *vc = vi->conjugation;
+	verb_conjugation *vc = V->conjugation;
 	if (vc) {
 		int p = VerbUsages::adaptive_person(vc->defined_in);
 		word_assemblage we_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][0][p]);
@@ -249,13 +247,13 @@ in a canonical verbal form. For example, "translate into |+| as".
 @ The list of forms for a verb is in order of preposition length.
 
 @<Insert the new form into the list of forms for this verb@> =
-	verb_form *prev = NULL, *evf = vi->list_of_forms;
+	verb_form *prev = NULL, *evf = V->first_form;
 	for (; evf; prev = evf, evf = evf->next_form) {
 		if (Prepositions::length(prep) > Prepositions::length(evf->preposition)) break;
 	}
 	if (prev == NULL) {
-		vf->next_form = vi->list_of_forms;
-		vi->list_of_forms = vf;
+		vf->next_form = V->first_form;
+		V->first_form = vf;
 	} else {
 		vf->next_form = prev->next_form;
 		prev->next_form = vf;
@@ -272,45 +270,9 @@ we overwrite that with the new (presumably meaningful) one.
 		prev = vs; vs = vs->next_sense;
 	}
 	if (vs == NULL) {
-		vs = Verbs::new_sense(vm);
+		verb_sense *vs = CREATE(verb_sense);
+		vs->vm = vm;
+		vs->next_sense = NULL;
 		if (prev == NULL) vf->list_of_senses = vs;
 		else prev->next_sense = vs;
 	}
-
-@ =
-#ifdef CORE_MODULE
-inter_name *Verbs::form_iname(verb_form *vf) {
-	if (vf->vf_iname == NULL) {
-		package_request *R = Verbs::verb_package(vf->underlying_verb, vf->where_vf_created);
-		package_request *R2 = Hierarchy::package_within(VERB_FORMS_HAP, R);
-		vf->vf_iname = Hierarchy::make_iname_in(FORM_FN_HL, R2);
-	}
-	return vf->vf_iname;
-}
-#endif
-
-@ Where:
-
-=
-verb_sense *Verbs::new_sense(verb_meaning vm) {
-	verb_sense *vs = CREATE(verb_sense);
-	vs->vm = vm;
-	vs->next_sense = NULL;
-	return vs;
-}
-
-verb_meaning *Verbs::regular_meaning(verb_identity *vi,
-	preposition_identity *prep, preposition_identity *second_prep) {
-	verb_form *vf = Verbs::find_form(vi, prep, second_prep);
-	return Verbs::regular_meaning_from_form(vf);
-}
-
-verb_meaning *Verbs::regular_meaning_from_form(verb_form *vf) {
-	if (vf)
-		for (verb_sense *vs = vf->list_of_senses; vs; vs = vs->next_sense) {
-			int rev = 0;
-			if (VerbMeanings::get_special_meaning(&(vs->vm), &rev) == NULL)
-				return &(vs->vm);
-		}
-	return NULL;
-}

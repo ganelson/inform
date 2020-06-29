@@ -11,7 +11,7 @@ it's convenient for the verb currently being considered to be stored in
 a global variable.
 
 =
-verb_identity *permitted_verb_identity = NULL;
+verb *permitted_verb = NULL;
 
 @h Verb usages.
 We already have the ability to conjugate verbs -- to turn "to have" into "I have",
@@ -28,7 +28,7 @@ typedef struct verb_usage {
 	struct word_assemblage vu_text;			/* text to recognise */
 	int vu_allow_unexpected_upper_case; 	/* for verbs like "to Hoover" or "to Google" */
 
-	struct verb_identity *verb_used;
+	struct verb *verb_used;
 	int negated_form_of_verb; 				/* is this a negated form? */
 	int mood;								/* active/passive: one of the two |*_MOOD| values */
 	int tensed; 							/* one of the |*_TENSE| values */
@@ -88,7 +88,7 @@ Here we create a single verb usage; note that the empty text cannot be used.
 =
 parse_node *set_where_created = NULL;
 verb_usage *VerbUsages::register_single_usage(word_assemblage wa, int negated, int tense,
-	int mood, verb_identity *vi, int unexpected_upper_casing_used) {
+	int mood, verb *vi, int unexpected_upper_casing_used) {
 	if (WordAssemblages::nonempty(wa) == FALSE) return NULL;
 	LOGIF(VERB_USAGES, "new usage: '%A'\n", &wa);
 	VerbUsages::mark_as_verb(WordAssemblages::first_word(&wa));
@@ -139,7 +139,7 @@ as equivalent to "Peter wears the hat", but not "1 is been by X" as
 equivalent to "X is 1".
 
 =
-void VerbUsages::register_all_usages_of_verb(verb_identity *vi,
+void VerbUsages::register_all_usages_of_verb(verb *vi,
 	int unexpected_upper_casing_used, int priority) {
 	verb_conjugation *vc = vi->conjugation;
 	if (vc == NULL) return;
@@ -184,7 +184,7 @@ of "to be", which is convenient however dubious in linguistic terms.
 
 =
 void VerbUsages::register_moods_of_verb(verb_conjugation *vc, int mood,
-	verb_identity *vi, int unexpected_upper_casing_used, int priority) {
+	verb *vi, int unexpected_upper_casing_used, int priority) {
 	verb_tabulation *vt = &(vc->tabulations[mood]);
 	if (WordAssemblages::nonempty(vt->to_be_auxiliary)) {
 		preposition_identity *prep =
@@ -337,7 +337,7 @@ int VerbUsages::is_foreign(verb_usage *vu) {
 =
 VERB_MEANING_LINGUISTICS_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition_identity *prep, preposition_identity *second_prep) {
 	if (vu == NULL) return NULL;
-	verb_meaning *uvm = Verbs::regular_meaning(vu->verb_used, prep, second_prep);
+	verb_meaning *uvm = VerbMeanings::get_regular_meaning_of_verb(vu->verb_used, prep, second_prep);
 
 	if (uvm == NULL) return NULL;
 	VERB_MEANING_LINGUISTICS_TYPE *root = VerbMeanings::get_relational_meaning(uvm);
@@ -390,8 +390,8 @@ which has a meaning.
 <meaningful-nonimperative-verb> internal ? {
 	verb_usage *vu;
 	LOOP_OVER_USAGES(vu) {
-		verb_identity *vi = vu->verb_used;
-		for (verb_form *vf = vi->list_of_forms; vf; vf = vf->next_form)
+		verb *vi = vu->verb_used;
+		for (verb_form *vf = vi->first_form; vf; vf = vf->next_form)
 			if ((VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE) &&
 				(vf->form_structures & (SVO_FS_BIT + SVOO_FS_BIT))) {
 				int i = VerbUsages::parse_against_verb(W, vu);
@@ -399,7 +399,7 @@ which has a meaning.
 					if ((vf->preposition == NULL) ||
 						(WordAssemblages::is_at(&(vf->preposition->prep_text), i, Wordings::last_wn(W)))) {
 						*XP = vu;
-						permitted_verb_identity = vu->verb_used;
+						permitted_verb = vu->verb_used;
 						return i-1;
 					}
 				}

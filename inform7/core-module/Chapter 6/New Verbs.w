@@ -20,6 +20,51 @@ typedef struct special_meaning_holder {
 	CLASS_DEFINITION
 } special_meaning_holder;
 
+@
+
+=
+typedef struct verb_compilation_data {
+	struct package_request *verb_package;
+} verb_compilation_data;
+
+typedef struct verb_form_compilation_data {
+	struct inter_name *vf_iname; /* routine to conjugate this */
+	struct parse_node *where_vf_created;
+} verb_form_compilation_data;
+
+@
+
+@d VERB_COMPILATION_LINGUISTICS_CALLBACK NewVerbs::initialise_verb
+@d VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK NewVerbs::initialise_verb_form
+
+=
+void NewVerbs::initialise_verb(verb *V) {
+	V->verb_compilation.verb_package = NULL;
+}
+
+void NewVerbs::initialise_verb_form(verb_form *VF) {
+	VF->verb_form_compilation.vf_iname = NULL;
+	VF->verb_form_compilation.where_vf_created = current_sentence;
+}
+
+package_request *NewVerbs::package(verb *V, parse_node *where) {
+	if (V == NULL) internal_error("no verb identity");
+	if (V->verb_compilation.verb_package == NULL)
+		V->verb_compilation.verb_package =
+			Hierarchy::package(Modules::find(where), VERBS_HAP);
+	return V->verb_compilation.verb_package;
+}
+
+inter_name *NewVerbs::form_iname(verb_form *vf) {
+	if (vf->verb_form_compilation.vf_iname == NULL) {
+		package_request *R =
+			NewVerbs::package(vf->underlying_verb, vf->verb_form_compilation.where_vf_created);
+		package_request *R2 = Hierarchy::package_within(VERB_FORMS_HAP, R);
+		vf->verb_form_compilation.vf_iname = Hierarchy::make_iname_in(FORM_FN_HL, R2);
+	}
+	return vf->verb_form_compilation.vf_iname;
+}
+
 @h Inequalities as operator verbs.
 Note that numerical comparisons are handled by two methods. Verbally, they are
 prepositions: "less than", for instance, is combined with "to be", giving us
@@ -171,7 +216,7 @@ now absolutely any non-empty word range is accepted as the property name.
 @<Use verb infinitive as shorthand@> =
 	*X = VM_VERBM;
 	verb_form *vf = RP[1];
-	verb_meaning *vm = Verbs::regular_meaning_from_form(vf);
+	verb_meaning *vm = VerbMeanings::get_regular_meaning_of_verb_form(vf);
 	if (vm) {
 		*XP = vm;
 	} else {
@@ -290,7 +335,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 				"but not as long as this.");
 			return;
 		}
-		verb_identity *vi = NULL;
+		verb *vi = NULL;
 		preposition_identity *prep = NULL;
 		preposition_identity *second_prep = NULL;
 		if (Wordings::nonempty(V)) @<Find or create a new verb@>;
@@ -302,7 +347,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 				unexpected_upper_casing_used);
 
 		if (meaning_given) {
-			verb_meaning *current = Verbs::regular_meaning(vi, prep, second_prep);
+			verb_meaning *current = VerbMeanings::get_regular_meaning_of_verb(vi, prep, second_prep);
 			if (VerbMeanings::is_meaningless(current) == FALSE) {
 				LOG("Currently $w means $y\n", vi, current);
 				parse_node *where = VerbMeanings::get_where_assigned(current);
@@ -635,7 +680,7 @@ void NewVerbs::bootstrap(void) {
 
 	word_assemblage infinitive = PreformUtilities::wording(<bootstrap-verb>, 0);
 	verb_conjugation *vc = Conjugation::conjugate(infinitive, DefaultLanguage::get(NULL));
-	verb_identity *vi = Verbs::new_verb(vc, TRUE);
+	verb *vi = Verbs::new_verb(vc, TRUE);
 	vc->vc_conjugates = vi;
 	VerbUsages::register_all_usages_of_verb(vi, FALSE, 2);
 
@@ -737,7 +782,7 @@ void NewVerbs::ConjugateVerb(void) {
 	packaging_state save = Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(vf, verb_form)
 		if (NewVerbs::verb_form_is_instance(vf))
-			Emit::array_iname_entry(Verbs::form_iname(vf));
+			Emit::array_iname_entry(NewVerbs::form_iname(vf));
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 }
@@ -782,8 +827,8 @@ void NewVerbs::ConjugateVerb(void) {
 	int modal_verb = FALSE;
 	@<Check for modality@>;
 
-	verb_identity *vi = vc->vc_conjugates;
-	verb_meaning *vm = (vi)?Verbs::regular_meaning(vi, NULL, NULL):NULL;
+	verb *vi = vc->vc_conjugates;
+	verb_meaning *vm = (vi)?VerbMeanings::get_regular_meaning_of_verb(vi, NULL, NULL):NULL;
 	binary_predicate *meaning = VerbMeanings::get_relational_meaning(vm);
 	inter_name *rel_iname = default_rr;
 	if (meaning) {
@@ -838,7 +883,7 @@ void NewVerbs::ConjugateVerb(void) {
 
 @<Compile ConjugateVerbForm routine@> =
 	verb_conjugation *vc = vf->underlying_verb->conjugation;
-	packaging_state save = Routines::begin(Verbs::form_iname(vf));
+	packaging_state save = Routines::begin(NewVerbs::form_iname(vf));
 	inter_symbol *fn_s = LocalVariables::add_named_call_as_symbol(I"fn");
 	inter_symbol *vp_s = LocalVariables::add_named_call_as_symbol(I"vp");
 	inter_symbol *t_s = LocalVariables::add_named_call_as_symbol(I"t");
@@ -1181,7 +1226,7 @@ void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
 		if (vu->vu_lex_entry == lex) {
 			if (vu->where_vu_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
-			verb_meaning *vm = Verbs::regular_meaning(vu->verb_used, NULL, NULL);
+			verb_meaning *vm = VerbMeanings::get_regular_meaning_of_verb(vu->verb_used, NULL, NULL);
 			if (vm) {
 				binary_predicate *bp = VerbMeanings::get_relational_meaning(vm);
 				if (bp) Relations::index_for_verbs(OUT, bp);
@@ -1193,7 +1238,7 @@ void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
 		if (prep->prep_lex_entry == lex) {
 			if (prep->where_prep_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
-			verb_meaning *vm = Verbs::regular_meaning(copular_verb, prep, NULL);
+			verb_meaning *vm = VerbMeanings::get_regular_meaning_of_verb(copular_verb, prep, NULL);
 			if (vm) {
 				binary_predicate *bp = VerbMeanings::get_relational_meaning(vm);
 				if (bp) Relations::index_for_verbs(OUT, bp);

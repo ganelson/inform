@@ -20,6 +20,10 @@ Note that the following says nothing about the preposition's meaning, which
 will vary depending on the verb it's coupled with.
 
 =
+typedef struct preposition {
+	int X;
+} preposition;
+
 typedef struct preposition_identity {
 	struct word_assemblage prep_text;
 	#ifdef CORE_MODULE
@@ -121,7 +125,7 @@ So it will find the longest match.
 <copular-preposition> internal ? {
 	if (copular_verb == NULL) return FALSE;
 	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) return FALSE;
-	for (verb_form *vf = copular_verb->list_of_forms; vf; vf=vf->next_form) {
+	for (verb_form *vf = copular_verb->first_form; vf; vf=vf->next_form) {
 		preposition_identity *prep = vf->preposition;
 		if ((prep) && (VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE)) {
 			int i = Prepositions::parse_prep_against(W, prep);
@@ -140,8 +144,8 @@ with a given "permitted verb".
 =
 <permitted-preposition> internal ? {
 	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) return FALSE;
-	if (permitted_verb_identity)
-		for (verb_form *vf = permitted_verb_identity->list_of_forms; vf; vf=vf->next_form) {
+	if (permitted_verb)
+		for (verb_form *vf = permitted_verb->first_form; vf; vf=vf->next_form) {
 			preposition_identity *prep = vf->preposition;
 			if ((prep) && (VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE)) {
 				int i = Prepositions::parse_prep_against(W, prep);

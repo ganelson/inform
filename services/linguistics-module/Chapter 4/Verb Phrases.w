@@ -292,11 +292,11 @@ it's at the front; and if it's "Peter test me with flash cards", we won't
 match "test... with..." because it's not at the front.
 
 @<Consider whether this usage is being made at this position@> =
-	verb_identity *vi = vu->verb_used;
+	verb *vi = vu->verb_used;
 	int i = -1;
 	wording ISW = EMPTY_WORDING, IOW = EMPTY_WORDING;
 	int certainty = UNKNOWN_CE, pre_certainty = UNKNOWN_CE, post_certainty = UNKNOWN_CE;
-	for (verb_form *vf = vi->list_of_forms; vf; vf = vf->next_form) {
+	for (verb_form *vf = vi->first_form; vf; vf = vf->next_form) {
 		verb_meaning *vm = &(vf->list_of_senses->vm);
 		if (VerbMeanings::is_meaningless(vm) == FALSE) {
 			if (i < 0) {
@@ -508,8 +508,8 @@ int VerbPhrases::default_verb(int task, parse_node *V, wording *NPs) {
 	switch (task) {
 		case ACCEPT_SMFT: {
 			verb_usage *vu = Node::get_verb(V);
-			verb_identity *vsave = permitted_verb_identity;
-			permitted_verb_identity = (vu)?vu->verb_used:NULL;
+			verb *vsave = permitted_verb;
+			permitted_verb = (vu)?vu->verb_used:NULL;
 
 			if (<nounphrase-as-object>(OW) == FALSE) internal_error("<nounphrase-as-object> failed");
 			parse_node *O_PN = <<rp>>;
@@ -521,7 +521,7 @@ int VerbPhrases::default_verb(int task, parse_node *V, wording *NPs) {
 			V->next->next = O_PN;
 			@<Insert a relationship subtree if the verb creates one without a relative phrase@>;
 
-			permitted_verb_identity = vsave;
+			permitted_verb = vsave;
 			return TRUE;
 		}
 	}

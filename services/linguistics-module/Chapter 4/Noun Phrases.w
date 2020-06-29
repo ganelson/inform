@@ -259,6 +259,23 @@ in the case of a participle like "holding".
 	<np-relative-phrase-implicit> |    ==> 0; *XP = RP[1]
 	<np-relative-phrase-explicit>								==> 0; *XP = RP[1]
 
+@ Inform guesses above that most English words ending in "-ing" are present
+participles -- like guessing, bluffing, cheating, and so on. But there is
+a conspicuous exception to this; so any word found in <non-participles>
+is never treated as a participle.
+
+=
+<non-participles> ::=
+	thing/something
+
+<probable-participle> internal 1 {
+	if (Vocabulary::test_flags(Wordings::first_wn(W), ING_MC)) {
+		if (<non-participles>(W)) return FALSE;
+		return TRUE;
+	}
+	return FALSE;
+}
+
 @ Finally, we define what we mean by implicit and explicit relative phrases.
 As examples, the right-hand sides of:
 
@@ -282,7 +299,7 @@ directions, in particular, a little better.
 
 @<Work out a meaning@> =
 	VERB_MEANING_LINGUISTICS_TYPE *R = VerbMeanings::get_relational_meaning(
-		Verbs::regular_meaning(permitted_verb_identity, RP[1], NULL));
+		VerbMeanings::get_regular_meaning_of_verb(permitted_verb, RP[1], NULL));
 	if (R == NULL) return FALSE;
 	*XP = NounPhrases::PN_rel(W, VerbMeanings::reverse_VMT(R), -1, RP[2]);
 

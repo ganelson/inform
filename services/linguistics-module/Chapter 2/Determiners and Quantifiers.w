@@ -364,6 +364,12 @@ no text appears in front of the number "three".
 	greater than |
 	other than
 
+@h Negation.
+
+=
+<negated-clause> ::=
+	not ...
+
 @h Parsing the determiner at the head of a noun phrase.
 We run through the possible determiners in reverse creation order, choosing the
 first which matches. The following returns $-1$ if nothing was found, or

@@ -70,7 +70,7 @@ typedef struct verb_meaning {
 	int reversed;
 	VERB_MEANING_LINGUISTICS_TYPE *regular_meaning; /* in I7, this will be a binary predicate */
 	int (*special_meaning)(int, parse_node *, wording *); /* (for tangling reasons, can't use typedef here) */
-	struct verb_identity *take_meaning_from; /* "to like", in the example above */
+	struct verb *take_meaning_from; /* "to like", in the example above */
 	struct parse_node *where_assigned; /* at which sentence this is assigned to a form */
 } verb_meaning;
 
@@ -81,7 +81,7 @@ preposition
 =
 verb_meaning *VerbMeanings::indirect_meaning(verb_meaning *vm) {
 	if ((vm) && (vm->take_meaning_from)) {
-		return Verbs::regular_meaning(vm->take_meaning_from, NULL, NULL);
+		return VerbMeanings::get_regular_meaning_of_verb(vm->take_meaning_from, NULL, NULL);
 	}
 	return vm;
 }
@@ -120,7 +120,7 @@ verb_meaning VerbMeanings::special(special_meaning_fn soa) {
 	return vm;
 }
 
-verb_meaning VerbMeanings::new_indirection(verb_identity *from, int reversed) {
+verb_meaning VerbMeanings::new_indirection(verb *from, int reversed) {
 	verb_meaning vm = VerbMeanings::meaninglessness();
 	vm.reversed = reversed;
 	vm.take_meaning_from = from;
@@ -182,4 +182,23 @@ void VerbMeanings::log(OUTPUT_STREAM, void *vvm) {
 	}
 	if ((VerbMeanings::get_relational_meaning(vm) == NULL) && (vm->special_meaning == NULL))
 		WRITE("(meaningless)");
+}
+
+@ Where:
+
+=
+verb_meaning *VerbMeanings::get_regular_meaning_of_verb(verb *V,
+	preposition_identity *prep, preposition_identity *second_prep) {
+	verb_form *vf = Verbs::find_form(V, prep, second_prep);
+	return VerbMeanings::get_regular_meaning_of_verb_form(vf);
+}
+
+verb_meaning *VerbMeanings::get_regular_meaning_of_verb_form(verb_form *vf) {
+	if (vf)
+		for (verb_sense *vs = vf->list_of_senses; vs; vs = vs->next_sense) {
+			int rev = 0;
+			if (VerbMeanings::get_special_meaning(&(vs->vm), &rev) == NULL)
+				return &(vs->vm);
+		}
+	return NULL;
 }

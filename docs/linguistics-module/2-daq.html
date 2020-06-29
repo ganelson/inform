@@ -81,7 +81,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">linguistics</a></li><li><a href="index.html#2">Chapter 2: NP Categories</a></li><li><b>Determiners and Quantifiers</b></li></ul></div>
 <p class="purpose">To create the determiners found in standard English which refer to collections of things, and to create their meanings as logical quantifiers.</p>
 
-<ul class="toc"><li><a href="2-daq.html#SP1">&#167;1. How these relate</a></li><li><a href="2-daq.html#SP5">&#167;5. Creating a quantifier</a></li><li><a href="2-daq.html#SP8">&#167;8. Acting on quantifiers</a></li><li><a href="2-daq.html#SP11">&#167;11. Creating a determiner</a></li><li><a href="2-daq.html#SP13">&#167;13. Parsing the determiner at the head of a noun phrase</a></li><li><a href="2-daq.html#SP17">&#167;17. The built-in set</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-daq.html#SP1">&#167;1. How these relate</a></li><li><a href="2-daq.html#SP5">&#167;5. Creating a quantifier</a></li><li><a href="2-daq.html#SP8">&#167;8. Acting on quantifiers</a></li><li><a href="2-daq.html#SP11">&#167;11. Creating a determiner</a></li><li><a href="2-daq.html#SP13">&#167;13. Negation</a></li><li><a href="2-daq.html#SP14">&#167;14. Parsing the determiner at the head of a noun phrase</a></li><li><a href="2-daq.html#SP18">&#167;18. The built-in set</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. How these relate. </b>In logic, a "quantifier" appears at the front of a statement which can
 apply to many cases, and describes the quantity of cases for which the
@@ -194,7 +194,7 @@ is written so that it would be fairly easy to add this ability.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="function-syntax">Quantifiers::quant_new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::quant_new</span></span>:<br/><a href="2-daq.html#SP17_1">&#167;17.1</a>, <a href="2-daq.html#SP17_2">&#167;17.2</a>, <a href="2-daq.html#SP17_3">&#167;17.3</a>, <a href="2-daq.html#SP17_4">&#167;17.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">op</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_comp</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="function-syntax">Quantifiers::quant_new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::quant_new</span></span>:<br/><a href="2-daq.html#SP18_1">&#167;18.1</a>, <a href="2-daq.html#SP18_2">&#167;18.2</a>, <a href="2-daq.html#SP18_3">&#167;18.3</a>, <a href="2-daq.html#SP18_4">&#167;18.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">op</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is_comp</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quant</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">quantifier</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">op</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"=="</span><span class="plain-syntax">))      </span><span class="identifier-syntax">quant</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operator_prim</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EQ_BIP</span><span class="plain-syntax">;</span>
@@ -266,7 +266,7 @@ puzzlingly redundant from a traditional logic point of view.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Quantifiers::quants_negate_each_other</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::quants_negate_each_other</span></span>:<br/><a href="2-daq.html#SP17_1">&#167;17.1</a>, <a href="2-daq.html#SP17_2">&#167;17.2</a>, <a href="2-daq.html#SP17_3">&#167;17.3</a>, <a href="2-daq.html#SP17_4">&#167;17.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">qx</span><span class="plain-syntax">, </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">qy</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Quantifiers::quants_negate_each_other</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::quants_negate_each_other</span></span>:<br/><a href="2-daq.html#SP18_1">&#167;18.1</a>, <a href="2-daq.html#SP18_2">&#167;18.2</a>, <a href="2-daq.html#SP18_3">&#167;18.3</a>, <a href="2-daq.html#SP18_4">&#167;18.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">qx</span><span class="plain-syntax">, </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">qy</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">qx</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_quant</span><span class="plain-syntax"> = </span><span class="identifier-syntax">qy</span><span class="plain-syntax">; </span><span class="identifier-syntax">qy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_quant</span><span class="plain-syntax"> = </span><span class="identifier-syntax">qx</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="function-syntax">Quantifiers::get_negation</span><span class="plain-syntax">(</span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quant</span><span class="plain-syntax">) {</span>
@@ -429,7 +429,7 @@ options open.
 <span class="definition-keyword">define</span> <span class="constant-syntax">OTHER_THAN_DET_NAME</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">determiner</span><span class="plain-syntax"> *</span><span class="function-syntax">Quantifiers::det_new</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::det_new</span></span>:<br/><a href="2-daq.html#SP17_1">&#167;17.1</a>, <a href="2-daq.html#SP17_2">&#167;17.2</a>, <a href="2-daq.html#SP17_3">&#167;17.3</a>, <a href="2-daq.html#SP17_4">&#167;17.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">num</span><span class="plain-syntax">, </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quant</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">determiner</span><span class="plain-syntax"> *</span><span class="function-syntax">Quantifiers::det_new</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::det_new</span></span>:<br/><a href="2-daq.html#SP18_1">&#167;18.1</a>, <a href="2-daq.html#SP18_2">&#167;18.2</a>, <a href="2-daq.html#SP18_3">&#167;18.3</a>, <a href="2-daq.html#SP18_4">&#167;18.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pr</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">num</span><span class="plain-syntax">, </span><span class="reserved-syntax">quantifier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quant</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">wa</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pr</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">wa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WordAssemblages::lit_0</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">wa</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PreformUtilities::wording</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;determiner-names&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">pr</span><span class="plain-syntax">);</span>
@@ -480,7 +480,14 @@ no text appears in front of the number "three".
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">other</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">than</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Parsing the determiner at the head of a noun phrase. </b>We run through the possible determiners in reverse creation order, choosing the
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Negation. </b></p>
+
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;negated-clause&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
+</pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Parsing the determiner at the head of a noun phrase. </b>We run through the possible determiners in reverse creation order, choosing the
 first which matches. The following returns \(-1\) if nothing was found, or
 else the first word number after the determiner words, and in that case
 it also writes a pointer to the quantifier meant to <span class="extract"><span class="Preform-extract-syntax">*which_quant</span></span> and the
@@ -502,7 +509,7 @@ are tried before "all".)
 <span class="plain-syntax">    </span><span class="reserved-syntax">determiner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">det</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_BACKWARDS_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">det</span><span class="plain-syntax">, </span><span class="reserved-syntax">determiner</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">not_flag</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">det</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">allows_prefixed_not</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">XW</span><span class="plain-syntax"> = </span><a href="2-daq.html#SP16" class="function-link"><span class="function-syntax">Quantifiers::det_parse_against_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">det</span><span class="plain-syntax">, </span><span class="identifier-syntax">which_P</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">XW</span><span class="plain-syntax"> = </span><a href="2-daq.html#SP17" class="function-link"><span class="function-syntax">Quantifiers::det_parse_against_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">det</span><span class="plain-syntax">, </span><span class="identifier-syntax">which_P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">XW</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">not_flag</span><span class="plain-syntax">) *</span><span class="identifier-syntax">which_quant</span><span class="plain-syntax"> = </span><span class="identifier-syntax">det</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">quantifier_meant</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_quant</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">else</span><span class="plain-syntax"> *</span><span class="identifier-syntax">which_quant</span><span class="plain-syntax"> = </span><span class="identifier-syntax">det</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">quantifier_meant</span><span class="plain-syntax">;</span>
@@ -512,7 +519,7 @@ are tried before "all".)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>We look for a determiner at the start of a noun phrase; this can sometimes
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>We look for a determiner at the start of a noun phrase; this can sometimes
 be followed by a number. For example,
 </p>
 
@@ -539,7 +546,7 @@ names like "three of clubs", meaning a single playing card.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> TRUE</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>English has an awkward ambiguity here: what does this mean?
+<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>English has an awkward ambiguity here: what does this mean?
 </p>
 
 <blockquote>
@@ -561,7 +568,7 @@ from determiner parsing:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">one</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>We attempt to see if the word range begins with (or consists of) text which
+<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>We attempt to see if the word range begins with (or consists of) text which
 refers to the given determiner, returning the first word past this text and
 also (where appropriate) setting the number specified. For instance, for
 "at least three doors are open" and the <span class="extract"><span class="Preform-extract-syntax">at_least_determiner</span></span> we would
@@ -569,7 +576,7 @@ return the word "doors" and set <span class="extract"><span class="Preform-extra
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Quantifiers::det_parse_against_text</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::det_parse_against_text</span></span>:<br/><a href="2-daq.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">determiner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">det</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">which_P</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Quantifiers::det_parse_against_text</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::det_parse_against_text</span></span>:<br/><a href="2-daq.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">determiner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">det</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">which_P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parameter</span><span class="plain-syntax"> = -1;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WordAssemblages::parse_as_weakly_initial_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, &amp;(</span><span class="identifier-syntax">det</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_of_det</span><span class="plain-syntax">),</span>
@@ -586,25 +593,25 @@ return the word "doors" and set <span class="extract"><span class="Preform-extra
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;determination-of&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;determination-of&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        *</span><span class="identifier-syntax">which_P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">parameter</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="2-aap.html#SP6" class="function-link"><span class="function-syntax">Articles::remove_the</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="2-art.html#SP4" class="function-link"><span class="function-syntax">Articles::remove_the</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. The built-in set. </b>We now construct both the tidy logical world of 16 quantifiers in matched
+<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. The built-in set. </b>We now construct both the tidy logical world of 16 quantifiers in matched
 pairs, and also a higgledy-piggledy world of 20 English-language determiners
 referring to them. There are four broad families which we take in turn.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Quantifiers::make_built_in</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Quantifiers::make_built_in</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-daq.html#SP17_1" class="named-paragraph-link"><span class="named-paragraph">Make traditional quantification determiners</span><span class="named-paragraph-number">17.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-daq.html#SP17_2" class="named-paragraph-link"><span class="named-paragraph">Make complement comparison determiners</span><span class="named-paragraph-number">17.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-daq.html#SP17_3" class="named-paragraph-link"><span class="named-paragraph">Make proportion determiners</span><span class="named-paragraph-number">17.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-daq.html#SP17_4" class="named-paragraph-link"><span class="named-paragraph">Make cardinality quantification determiners</span><span class="named-paragraph-number">17.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-daq.html#SP18_1" class="named-paragraph-link"><span class="named-paragraph">Make traditional quantification determiners</span><span class="named-paragraph-number">18.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-daq.html#SP18_2" class="named-paragraph-link"><span class="named-paragraph">Make complement comparison determiners</span><span class="named-paragraph-number">18.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-daq.html#SP18_3" class="named-paragraph-link"><span class="named-paragraph">Make proportion determiners</span><span class="named-paragraph-number">18.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-daq.html#SP18_4" class="named-paragraph-link"><span class="named-paragraph">Make cardinality quantification determiners</span><span class="named-paragraph-number">18.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17_1"></a><b>&#167;17.1.  </b>As discussed above, the two traditional quantifiers in logic are "for
+<p class="commentary firstcommentary"><a id="SP18_1"></a><b>&#167;18.1.  </b>As discussed above, the two traditional quantifiers in logic are "for
 all" and "there exists", usually written in mathematical notation as
 \(\forall\) and \(\exists\), but we also need to create their negation
 quantifiers. So we end up with four: <span class="extract"><span class="extract-syntax">ForAll</span></span>, <span class="extract"><span class="extract-syntax">NotAll</span></span>, <span class="extract"><span class="extract-syntax">Exists</span></span> and
@@ -647,7 +654,7 @@ door is open" but would never say "not each door is open". In all other
 respects "each" and "every" are synonymous in the S-parser.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make traditional quantification determiners</span><span class="named-paragraph-number">17.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make traditional quantification determiners</span><span class="named-paragraph-number">18.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -677,8 +684,8 @@ respects "each" and "every" are synonymous in the S-parser.
 <span class="plain-syntax">    </span><a href="2-daq.html#SP11" class="function-link"><span class="function-syntax">Quantifiers::det_new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">SOME_DET_NAME</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">exists_quantifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-daq.html#SP11" class="function-link"><span class="function-syntax">Quantifiers::det_new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">ANY_DET_NAME</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">exists_quantifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-daq.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_2"></a><b>&#167;17.2.  </b>Here \(T=-1\), because we are counting actual numbers of matches rather than
+<ul class="endnotetexts"><li>This code is used in <a href="2-daq.html#SP18">&#167;18</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP18_2"></a><b>&#167;18.2.  </b>Here \(T=-1\), because we are counting actual numbers of matches rather than
 a proportion of matches. But these quantifiers count downwards from the total:
 thus "all but six" means there have to be exactly \(S-6\) matching items,
 where \(S\) is the total available. The only logical negation for this
@@ -688,7 +695,7 @@ construction to have any natural English paraphrase, so we do not make a
 built-in quantifiers all occur in negation pairs.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make complement comparison determiners</span><span class="named-paragraph-number">17.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make complement comparison determiners</span><span class="named-paragraph-number">18.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -702,15 +709,15 @@ built-in quantifiers all occur in negation pairs.
 <span class="plain-syntax">    </span><a href="2-daq.html#SP11" class="function-link"><span class="function-syntax">Quantifiers::det_new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">ALL_EXCEPT_DET_NAME</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">all_but_quantifier</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"- see &lt;/i&gt;all but&lt;i&gt;"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-daq.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_3"></a><b>&#167;17.3.  </b>Here the \(T\)-coefficient, measuring the proportion needed, has \(0 &lt; T &lt; 10\).
+<ul class="endnotetexts"><li>This code is used in <a href="2-daq.html#SP18">&#167;18</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP18_3"></a><b>&#167;18.3.  </b>Here the \(T\)-coefficient, measuring the proportion needed, has \(0 &lt; T &lt; 10\).
 </p>
 
 <p class="commentary">We don't support the determiner "half", as in, "if half the doors are open",
 because it's ambiguous as to whether it means exactly half or half-or-more.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make proportion determiners</span><span class="named-paragraph-number">17.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make proportion determiners</span><span class="named-paragraph-number">18.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -731,8 +738,8 @@ because it's ambiguous as to whether it means exactly half or half-or-more.
 <span class="plain-syntax">    </span><a href="2-daq.html#SP11" class="function-link"><span class="function-syntax">Quantifiers::det_new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">UNDER_HALF_DET_NAME</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">under_half_quantifier</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"used in conditions: true if fewer than half of possibilities work"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-daq.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_4"></a><b>&#167;17.4.  </b>The usefulness of cardinality quantifiers in logic as applied to
+<ul class="endnotetexts"><li>This code is used in <a href="2-daq.html#SP18">&#167;18</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP18_4"></a><b>&#167;18.4.  </b>The usefulness of cardinality quantifiers in logic as applied to
 linguistics seems to be an observation due to Barwise and Cooper. They are
 a natural generalisation of the for-all and there-exists quantifiers, and
 again come in matched pairs.
@@ -757,7 +764,7 @@ write that, but of course the two assertions need not be adjacent in
 the source text. One might be in an extension, for instance.)
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make cardinality quantification determiners</span><span class="named-paragraph-number">17.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make cardinality quantification determiners</span><span class="named-paragraph-number">18.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -793,8 +800,8 @@ the source text. One might be in an extension, for instance.)
 
 <span class="plain-syntax">    </span><a href="2-daq.html#SP11" class="function-link"><span class="function-syntax">Quantifiers::det_new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, -1, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">at_least_quantifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-daq.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>The following question is relevant when simplifying propositions:
+<ul class="endnotetexts"><li>This code is used in <a href="2-daq.html#SP18">&#167;18</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>The following question is relevant when simplifying propositions:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -808,7 +815,7 @@ the source text. One might be in an extension, for instance.)
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-cao.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-aap.html">aap</a></li><li class="progresssection"><a href="2-cao.html">cao</a></li><li class="progresscurrent">daq</li><li class="progresssection"><a href="2-adj.html">adj</a></li><li class="progresssection"><a href="2-au.html">au</a></li><li class="progresssection"><a href="2-nns.html">nns</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="2-adj.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-cao.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-adj.html">adj</a></li><li class="progresssection"><a href="2-au.html">au</a></li><li class="progresssection"><a href="2-art.html">art</a></li><li class="progresssection"><a href="2-cao.html">cao</a></li><li class="progresscurrent">daq</li><li class="progresssection"><a href="2-nns.html">nns</a></li><li class="progresssection"><a href="2-prn.html">prn</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="2-nns.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

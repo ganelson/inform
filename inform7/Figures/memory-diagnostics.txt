@@ -102,7 +102,7 @@ Total memory consumption was 256345K = 250 MB
      ----  stacked_variable_array                   1 x 100 objects, 6432 bytes
      ----  uniqueness_count                         260 objects, 6240 bytes
      ----  text_literal_holder                      145 objects, 5800 bytes
-     ----  verb_identity                            108 objects, 5184 bytes
+     ----  verb                                     108 objects, 5184 bytes
      ----  inbuild_work                             78 objects, 4992 bytes
      ----  kind_constructor_instance_array          2 x 100 = 200 objects, 4864 bytes
      ----  heading_tree                             20 objects, 4640 bytes

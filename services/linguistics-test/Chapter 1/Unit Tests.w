@@ -90,7 +90,7 @@ void Unit::diagram(parse_node *p) {
 			verb_conjugation *vc = <<rp>>;
 			int cop = FALSE;
 			if (my_first_verb) { cop = TRUE; }
-			verb_identity *vi = Verbs::new_verb(vc, cop);
+			verb *vi = Verbs::new_verb(vc, cop);
 			my_first_verb = FALSE;
 			vc->vc_conjugates = vi;
 			VerbUsages::register_all_usages_of_verb(vi, FALSE, <<r>>);

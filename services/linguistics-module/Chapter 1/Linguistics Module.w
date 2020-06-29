@@ -14,7 +14,7 @@ which use this module:
 @e adjective_usage_CLASS
 @e quantifier_CLASS
 @e determiner_CLASS
-@e verb_identity_CLASS
+@e verb_CLASS
 @e verb_form_CLASS
 @e verb_meaning_CLASS
 @e verb_sense_CLASS
@@ -29,7 +29,7 @@ DECLARE_CLASS(adjective)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(adjective_usage, 1000)
 DECLARE_CLASS(quantifier)
 DECLARE_CLASS(determiner)
-DECLARE_CLASS(verb_identity)
+DECLARE_CLASS(verb)
 DECLARE_CLASS(verb_form)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(verb_meaning, 100)
 DECLARE_CLASS(verb_sense)

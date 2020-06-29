@@ -13,15 +13,17 @@ Chapter 1: Setting Up
 	Linguistics Module
 
 Chapter 2: NP Categories
-	Articles and Pronouns
-	Cardinals and Ordinals
-	Determiners and Quantifiers
 	Adjectives
 	Adjective Usages
+	Articles
+	Cardinals and Ordinals
+	Determiners and Quantifiers
 	Nouns
+	Pronouns
 
 Chapter 3: VP Categories
 	Verbs
+	Verb Meanings
 	Verb Usages
 	Prepositions
 	Adverbs of Certainty
@@ -29,6 +31,5 @@ Chapter 3: VP Categories
 
 Chapter 4: Diagramming Sentences
 	Diagrams
-	Verb Meanings
 	Noun Phrases
 	Verb Phrases

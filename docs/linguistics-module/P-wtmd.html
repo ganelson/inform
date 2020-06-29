@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -58,7 +63,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">linguistics</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the linguistics module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Goals and non-goals</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Noun phrases</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Verb phrases</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The linguistics module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -74,8 +79,163 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Goals and non-goals. </b>The linguistics module aims to provide Preform grammar capable to taking a
+verb phrase of natural language and parsing it into a "diagram" somewhat like
+the ones students draw in school grammar classes. For example,
+</p>
+
+<blockquote>
+    <p>most of the heavy bricks have been on top of the wall</p>
+</blockquote>
+
+<p class="commentary">becomes a "diagram" &mdash; a fragment of the tree provided by the <a href="../syntax-module/index.html" class="internal">syntax</a>
+module &mdash; in which the relationship "to be on top of" appears as the root,
+with two noun phrases, "most of the heavy bricks" and "the wall", beneath it.
+</p>
+
+<p class="commentary">To be in a position to do this, the module needs a way to accumulate
+knowledge about the possible nouns, verbs, adjectives, prepositions and so on
+which might appear in such sentences. Where sensible, a design goal here is
+for each of these grammatical categories to correspond closely to an object
+class of the same name &mdash; that is, <a href="2-nns.html#SP4" class="internal">noun</a>, <a href="3-vrb.html#SP2" class="internal">verb</a>, <a href="2-adj.html#SP1" class="internal">adjective</a> and so on.
+For example, "brick" and "wall" correspond to two different instances of <a href="2-nns.html#SP4" class="internal">noun</a>,
+and "to be" to <a href="3-vrb.html#SP2" class="internal">verb</a>. The instances of these grammatical classes, taken
+together, form what is called "stock".
+</p>
+
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>To be clear, though:
+</p>
+
+<ul class="items"><li>(a) The stock is a range of possibilities and not a tally of what actually
+appears in any given source text being looked at. When Inform compiles a
+source text, it may perhaps mention "brick" many times, but the stock would
+still just contain one <a href="2-nns.html#SP4" class="internal">noun</a> object for "brick"; equally, the text being
+compiled might not contain the verb "to provide", even though the stock has it.
+</li><li>(b) For the most part, it is for the user of this module to create an
+appropriate stock. This will never be so large as to meaningfully define the
+entire English (or any other) language; it's likely to focus on some narrow
+subject area. The stock does not have to be created all at once: it can fill
+out over time.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+</li><li>(c) For the most part, it is up to the user to give meanings to terms in the
+stock, and the linguistics module tries to impose as few constraints as possible
+about those meanings.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+</li><li>(d) Only "for the most part", because certain "fixed" grammatical categories
+are an exception &mdash; for example, articles, or cardinal and ordinal
+numbers, or determiners. In these categories, the linguistics module provides
+the stock and the user cannot change or add to it; and the linguistics
+module provides the meanings, too, which the user can read but cannot change.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> When Inform reads "A brick is a kind of thing. Two bricks are here.",
+for example, the first sentence causes it to create the <a href="2-nns.html#SP4" class="internal">noun</a> for brick,
+so that the second sentence is read with a stock which is one term larger.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Verbs are a partial exception in that we need to make some minimal
+assumptions about how verb meanings will work &mdash; this is abstracted out in
+the section <a href="3-vm.html" class="internal">Verb Meanings</a>. Even there, though, the user will have to find
+her own way to define what verbs actually mean.
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> For example, the determiner "all of" has a fixed meaning defined here
+as the <a href="2-daq.html#SP2" class="internal">quantifier</a> object <span class="extract"><span class="extract-syntax">for_all_quantifier</span></span>; and the cardinal "six"
+always means 6.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>This module is designed to work closely with the <a href="../inflections-module/index.html" class="internal">inflections</a> module,
+and the demarcation line between the two is that <a href="../inflections-module/index.html" class="internal">inflections</a> knows nothing
+about the meaning or usage of words, while <a href="index.html" class="internal">linguistics</a> is largely free
+to ignore the complications brought in by inflected forms of words.
+</p>
+
+<p class="commentary">For example, a single <a href="3-vrb.html#SP2" class="internal">verb</a> object represents "to carry", even though it
+has many different expressions in words &mdash; "has not carried", "will carry",
+and so on. A single <a href="2-nns.html#SP4" class="internal">noun</a> representing "brick" would include its plural
+"bricks" and indeed its declension into other cases, in a language which has
+noun cases. Our goal here is that the stock should never contain two different
+instances which merely represent inflected forms of the same thing.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Noun phrases. </b>For convenience we will run through the stock in two sets: those grammatical
+categories used in noun phrases, and provided by <a href="2-adj.html" class="internal">Chapter 2: NP Categories</a>; and those
+used in verb phrases, <a href="3-vrb.html" class="internal">Chapter 3: VP Categories</a>. In alphabetical order:
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Each adjective in the stock is an instance of <a href="2-adj.html#SP1" class="internal">adjective</a>. All senses of
+the same adjectival word &mdash; "empty", say &mdash; are represented by the same
+<a href="2-adj.html#SP1" class="internal">adjective</a>: it's for the user to manage multiple meanings, and to deduce
+which one applies from the context.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
+</p>
+
+<p class="commentary">The user creates the stock of adjectives by calling <a href="2-adj.html#SP2" class="internal">Adjectives::declare</a>.
+</p>
+
+<p class="commentary"><a href="2-au.html" class="internal">Adjective Usages</a> also provides a convenient way to record lists of
+adjectives which apply to something (e.g., in "a great big horse", the list
+would be "great", "big"). Adjectives can be used negatively in such lists
+(e.g. in "a door which is not open"), but we do not record antonyms here:
+because we aren't concerned with meanings, we see no affinity between
+"a not open box" and "a closed box".
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> In Inform, for example, empty means something different for rulebooks
+than for containers. An adjective is a unary predicate applying to something,
+and the kind of that thing can be used to decide which meaning applies. See
+<a href="../core-module/4-am.html" class="internal">Adjective Meanings (in core)</a> for how Inform does this.
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The articles are a fixed stock of two: the definite and indefinite articles.
+(There is no <span class="extract"><span class="extract-syntax">article</span></span> class.) See <a href="2-art.html" class="internal">Articles</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The cardinal numbers are a fixed stock of twelve given in words, and the
+entire range of integer literals given in digits. See <a href="2-cao.html" class="internal">Cardinals and Ordinals</a>.
+We regard cardinals as uninflected: when "un" in French becomes "une", that is
+the indefinite article inflecting, not the cardinal number "un". (There is no
+<span class="extract"><span class="extract-syntax">cardinal</span></span> class.)
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>The determiners are a fixed stock of roughly 20, each being an instance of
+the class <a href="2-daq.html#SP4" class="internal">determiner</a>. Properly speaking some are families of determiners &mdash;
+"all but three" and "all but six" are the same <a href="2-daq.html#SP4" class="internal">determiner</a> but with a
+different numerical parameter. But others, like "most of", have fixed wording.
+The meaning of each determiner is a logical <a href="2-daq.html#SP2" class="internal">quantifier</a>.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
+See <a href="2-daq.html" class="internal">Determiners and Quantifiers</a>.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Inform makes heavy use of these quantifiers when representing the meaning
+of sentences in predicate calculus, but that's beyond the scope of this module.
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Each noun in the stock is an instance of <a href="2-nns.html#SP4" class="internal">noun</a>. Unlike with <a href="2-adj.html#SP1" class="internal">adjective</a>,
+when the same noun word has multiple meanings, it gets multiple <a href="2-nns.html#SP4" class="internal">noun</a> objects,
+one for each meaning.<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Nouns divide into two subclasses: common nouns, such
+as "monument", and proper nouns, such as "Statue of Liberty".<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup>
+</p>
+
+<p class="commentary">The user creates the stock of adjectives by calling <a href="2-nns.html#SP5" class="internal">Nouns::new_proper_noun</a>
+or <a href="2-nns.html#SP5" class="internal">Nouns::new_common_noun</a>.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Because nouns unlike adjectives are not predicates, and therefore are not
+always dependent on some other word which will establish which meaning is
+intended. Our best option is instead to parse in some context-sensitive way.
+<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Inform source text contains more proper nouns than a grammarian would guess.
+The sentence "Mary is carrying a kite" will result in two proper nouns being
+added to the stock, "Mary" and "kite", unless "kite" is already known as a
+common noun. This is because "the kite", from then on, will be understood
+as referring to this one specific object, just as "Mary" will.
+<a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The pronouns are a fixed stock which, in a sense, contains just one thing:
+there is in a sense only one pronoun in the world, but which occurs in
+nominative (he, she), accusative (him, her), or possessive (his, her) forms.
+See <a href="2-prn.html" class="internal">Pronouns</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Verb phrases. </b>...
+</p>
+
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>One verbs above all is special to us, because of the unique role it plays
+in natural language. This is the copular verb, so called because it has two
+interacting subject phrases rather than a subject and an object: in English,
+"to be". We store its identity in a global variable which is set equal
+to the first-created verb marked as copular.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-aap.html">2</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-adj.html">2</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>
