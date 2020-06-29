@@ -257,7 +257,7 @@ int Adjectives::Meanings::applicable_to(adjectival_phrase *aph,
 @<Issue a problem for a circularity@> =
 	if (problem_count == 0) {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, Clusters::get_name(aph->adjective_names, FALSE));
+		Problems::quote_wording(2, Clusters::get_form(aph->adjective_names, FALSE));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AdjectiveCircular));
 		Problems::issue_problem_segment(
 			"In the sentence %1, it looks as if the definition of the adjective "
@@ -1286,7 +1286,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL)) return FALSE;
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
-		wording AW = Clusters::get_name_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
+		wording AW = Clusters::get_form_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
 		if (Wordings::match(AW, W)) {
 			*XP = aph; *X = FALSE; return TRUE;
 		}
@@ -1301,7 +1301,7 @@ void Adjectives::Meanings::agreements(void) {
 	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL)) return;
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
-		wording PW = Clusters::get_name_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
+		wording PW = Clusters::get_form_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
 		if (Wordings::empty(PW)) continue;
 
 		packaging_state save = Routines::begin(aph->aph_iname);
@@ -1402,7 +1402,7 @@ void Adjectives::Meanings::agreements(void) {
 								if (gna%3 == 0) gender_sought = MASCULINE_GENDER;
 								if (gna%3 == 1) gender_sought = FEMININE_GENDER;
 								if (gna >= 3) number_sought = 2;
-								wording AW = Clusters::get_name_general(aph->adjective_names,
+								wording AW = Clusters::get_form_general(aph->adjective_names,
 									Projects::get_language_of_play(Task::project()), number_sought, gender_sought);
 								if (Wordings::nonempty(AW)) WRITE_TO(T, "%W", AW);
 								else WRITE_TO(T, "%W", PW);

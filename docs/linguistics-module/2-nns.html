@@ -66,9 +66,9 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">linguistics</a></li><li><a href="index.html#2">Chapter 2: Grammatical Categories I</a></li><li><b>Nouns</b></li></ul></div>
 <p class="purpose">Noun objects are an abstraction for the names given to concepts created in the source text.</p>
 
-<ul class="toc"><li><a href="2-nns.html#SP1">&#167;1. A noun is more than a name cluster</a></li><li><a href="2-nns.html#SP4">&#167;4. Structure</a></li><li><a href="2-nns.html#SP5">&#167;5. Creation</a></li><li><a href="2-nns.html#SP7">&#167;7. Subclass</a></li><li><a href="2-nns.html#SP8">&#167;8. Logging</a></li><li><a href="2-nns.html#SP9">&#167;9. Attaching some wording to a noun</a></li><li><a href="2-nns.html#SP10">&#167;10. Name access</a></li><li><a href="2-nns.html#SP11">&#167;11. Meaning</a></li><li><a href="2-nns.html#SP12">&#167;12. Exact parsing in the lexicon</a></li><li><a href="2-nns.html#SP13">&#167;13. Disambiguation</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-nns.html#SP1">&#167;1. A noun is more than a lexical cluster</a></li><li><a href="2-nns.html#SP4">&#167;4. Structure</a></li><li><a href="2-nns.html#SP5">&#167;5. Creation</a></li><li><a href="2-nns.html#SP7">&#167;7. Subclass</a></li><li><a href="2-nns.html#SP8">&#167;8. Logging</a></li><li><a href="2-nns.html#SP9">&#167;9. Attaching some wording to a noun</a></li><li><a href="2-nns.html#SP10">&#167;10. Name access</a></li><li><a href="2-nns.html#SP11">&#167;11. Meaning</a></li><li><a href="2-nns.html#SP12">&#167;12. Exact parsing in the lexicon</a></li><li><a href="2-nns.html#SP13">&#167;13. Disambiguation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. A noun is more than a name cluster. </b>Consider the line:
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. A noun is more than a lexical cluster. </b>Consider the line:
 </p>
 
 <blockquote>
@@ -77,14 +77,14 @@ function togglePopup(material_id) {
 
 <p class="commentary">Inform generates a new noun from this line: "mammal". This may well occur
 in a variety of inflected forms (though in English, there will be just two:
-"mammal" and "mammals"). That set of forms is gathered into a <span class="extract"><span class="extract-syntax">name_cluster</span></span>
-object: see <a href="../inflections-module/3-nc.html" class="internal">Name Clusters (in inflections)</a>. Name clusters are not necessarily
+"mammal" and "mammals"). That set of forms is gathered into a <span class="extract"><span class="extract-syntax">lexical_cluster</span></span>
+object: see <a href="../inflections-module/3-lc2.html" class="internal">Lexical Clusters (in inflections)</a>. Lexical clusters are not necessarily
 of nouns &mdash; they are also used for adjectives, for example. So it would be
-wrong to represent a noun by a name cluster alone.
+wrong to represent a noun by a lexical cluster alone.
 </p>
 
 <p class="commentary">Inform instead attaches a <a href="2-nns.html#SP4" class="internal">noun</a> object to the new "mammal" kind. This object
-contains the name cluster to define its syntax, but it also has semantics attached.
+contains the lexical cluster to define its syntax, but it also has semantics attached.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>From a linguistic point of view, the class of nouns can be divided into two
@@ -126,7 +126,7 @@ initial creation of the <a href="2-nns.html#SP4" class="internal">noun</a> objec
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">noun</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">names</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">lexical_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">names</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun_subclass</span><span class="plain-syntax">; </span><span class="comment-syntax"> either </span><span class="extract"><span class="extract-syntax">COMMON_NOUN</span></span><span class="comment-syntax"> or </span><span class="extract"><span class="extract-syntax">PROPER_NOUN</span></span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax">;</span>
@@ -150,7 +150,7 @@ note that:
 <ul class="items"><li>(i) It is legal for the supplied text to be empty, and this does happen
 for example when Inform creates the nouns of anonymous objects, as in a
 sentence such as "Four people are in the Dining Room." Empty text in <span class="extract"><span class="extract-syntax">W</span></span> means
-that no forms are added to the name cluster and nothing is registered with
+that no forms are added to the lexical cluster and nothing is registered with
 the lexicon.
 </li><li>(ii) If a noun is added to the lexicon with the special meaning code <span class="extract"><span class="extract-syntax">NOUN_MC</span></span>,
 passed to these functions in <span class="extract"><span class="extract-syntax">mc</span></span>, then the meaning given to the lexicon is
@@ -226,18 +226,23 @@ to a combination of just two possibilities:
 we add a new one.
 </p>
 
+<p class="commentary">For the time being, nouns are registered with the lexicon only in their
+nominative cases; if we ever get to the point of Inform source text written
+fully in a language like German, that will need to change.
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::supply_text</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Nouns::supply_text</span></span>:<br/><a href="2-nns.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lang</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">gender</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">options</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Clusters::add</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">names</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">gender</span><span class="plain-syntax">, </span><span class="identifier-syntax">number</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">options</span><span class="plain-syntax"> &amp; </span><span class="constant-syntax">WITH_PLURAL_FORMS_NTOPT</span><span class="plain-syntax">)?</span><span class="identifier-syntax">TRUE:FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">options</span><span class="plain-syntax"> &amp; </span><span class="constant-syntax">ADD_TO_LEXICON_NTOPT</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">individual_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">in</span><span class="plain-syntax">, </span><span class="identifier-syntax">individual_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">individual_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">in</span><span class="plain-syntax">, </span><span class="identifier-syntax">individual_form</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax"> = </span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">meaning</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">registration_category</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NOUN_MC</span><span class="plain-syntax">) </span><span class="identifier-syntax">m</span><span class="plain-syntax"> = </span><span class="identifier-syntax">STORE_POINTER_noun</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Lexicon::register</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">registration_category</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Declensions::in_case</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name</span><span class="plain-syntax">), </span><span class="identifier-syntax">NOMINATIVE_CASE</span><span class="plain-syntax">), </span><span class="identifier-syntax">m</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">Clusters::get_nominative_of_form</span><span class="plain-syntax">(</span><span class="identifier-syntax">in</span><span class="plain-syntax">), </span><span class="identifier-syntax">m</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
@@ -248,7 +253,7 @@ we add a new one.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::nominative_singular</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Nouns::nominative_singular</span></span>:<br/><a href="2-nns.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Clusters::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">names</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Clusters::get_form</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">names</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::nominative_singular_includes</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><span class="identifier-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wd</span><span class="plain-syntax">) {</span>
@@ -261,12 +266,12 @@ we add a new one.
 <span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::nominative</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Clusters::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">names</span><span class="plain-syntax">, </span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Clusters::get_form</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">names</span><span class="plain-syntax">, </span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::nominative_in_language</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lang</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Clusters::get_name_in_language</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">names</span><span class="plain-syntax">, </span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Clusters::get_form_in_language</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">names</span><span class="plain-syntax">, </span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::set_nominative_plural_in_language</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>

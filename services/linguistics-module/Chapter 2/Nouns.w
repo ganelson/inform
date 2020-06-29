@@ -3,20 +3,20 @@
 Noun objects are an abstraction for the names given to concepts created
 in the source text.
 
-@h A noun is more than a name cluster.
+@h A noun is more than a lexical cluster.
 Consider the line:
 
 >> A mammal is a kind of animal.
 
 Inform generates a new noun from this line: "mammal". This may well occur
 in a variety of inflected forms (though in English, there will be just two:
-"mammal" and "mammals"). That set of forms is gathered into a |name_cluster|
-object: see //inflections: Name Clusters//. Name clusters are not necessarily
+"mammal" and "mammals"). That set of forms is gathered into a |lexical_cluster|
+object: see //inflections: Lexical Clusters//. Lexical clusters are not necessarily
 of nouns -- they are also used for adjectives, for example. So it would be
-wrong to represent a noun by a name cluster alone.
+wrong to represent a noun by a lexical cluster alone.
 
 Inform instead attaches a //noun// object to the new "mammal" kind. This object
-contains the name cluster to define its syntax, but it also has semantics attached.
+contains the lexical cluster to define its syntax, but it also has semantics attached.
 
 @ From a linguistic point of view, the class of nouns can be divided into two
 subclasses: common nouns and proper nouns. "Mammal" is a common noun, whereas
@@ -50,7 +50,7 @@ initial creation of the //noun// object).
 
 =
 typedef struct noun {
-	struct name_cluster *names;
+	struct lexical_cluster *names;
 	int noun_subclass; /* either |COMMON_NOUN| or |PROPER_NOUN| */
 
 	struct general_pointer meaning;
@@ -72,7 +72,7 @@ note that:
 (i) It is legal for the supplied text to be empty, and this does happen
 for example when Inform creates the nouns of anonymous objects, as in a
 sentence such as "Four people are in the Dining Room." Empty text in |W| means
-that no forms are added to the name cluster and nothing is registered with
+that no forms are added to the lexical cluster and nothing is registered with
 the lexicon.
 (ii) If a noun is added to the lexicon with the special meaning code |NOUN_MC|,
 passed to these functions in |mc|, then the meaning given to the lexicon is
@@ -147,18 +147,22 @@ void Nouns::log(noun *t) {
 As noted above, each noun comes with a cluster of names, and here's where
 we add a new one.
 
+For the time being, nouns are registered with the lexicon only in their
+nominative cases; if we ever get to the point of Inform source text written
+fully in a language like German, that will need to change.
+
 =
 void Nouns::supply_text(noun *t, wording W, NATURAL_LANGUAGE_WORDS_TYPE *lang,
 	int gender, int number, int options) {
 	linked_list *L = Clusters::add(t->names, W, lang, gender, number,
 		(options & WITH_PLURAL_FORMS_NTOPT)?TRUE:FALSE);
 	if (options & ADD_TO_LEXICON_NTOPT) {
-		individual_name *in;
-		LOOP_OVER_LINKED_LIST(in, individual_name, L) {
+		individual_form *in;
+		LOOP_OVER_LINKED_LIST(in, individual_form, L) {
 			general_pointer m = t->meaning;
 			if (t->registration_category == NOUN_MC) m = STORE_POINTER_noun(t);
 			Lexicon::register(t->registration_category,
-				Declensions::in_case(&(in->name), NOMINATIVE_CASE), m);
+				Clusters::get_nominative_of_form(in), m);
 		}
 	}
 }
@@ -169,7 +173,7 @@ We normally access names in their nominative cases, so:
 =
 wording Nouns::nominative_singular(noun *t) {
 	if (t == NULL) return EMPTY_WORDING;
-	return Clusters::get_name(t->names, FALSE);
+	return Clusters::get_form(t->names, FALSE);
 }
 
 int Nouns::nominative_singular_includes(noun *t, vocabulary_entry *wd) {
@@ -182,12 +186,12 @@ int Nouns::nominative_singular_includes(noun *t, vocabulary_entry *wd) {
 }
 
 wording Nouns::nominative(noun *t, int plural_flag) {
-	return Clusters::get_name(t->names, plural_flag);
+	return Clusters::get_form(t->names, plural_flag);
 }
 
 wording Nouns::nominative_in_language(noun *t, int plural_flag,
 	NATURAL_LANGUAGE_WORDS_TYPE *lang) {
-	return Clusters::get_name_in_language(t->names, plural_flag, lang);
+	return Clusters::get_form_in_language(t->names, plural_flag, lang);
 }
 
 void Nouns::set_nominative_plural_in_language(noun *t, wording W,

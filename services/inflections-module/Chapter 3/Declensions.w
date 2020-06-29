@@ -10,7 +10,7 @@ also "case", which expresses context.
 
 The //inflections// module uses the term "declension" in a more limited sense:
 it is just the set of variations by case. Variations by gender and number are
-taken care of by what are less elegantly called //Name Clusters//.
+taken care of by what are less elegantly called //Lexical Clusters//.
 
 At any rate, a //declension// object is a set of wordings, one for each case:
 

@@ -20,7 +20,7 @@ Chapter 2: Simple Inflections
 
 Chapter 3: Declension and Conjugation
 	Linguistic Constants
-	Name Clusters
+	Lexical Clusters
 	Declensions
 	Verb Conjugation
 

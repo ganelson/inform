@@ -1,75 +1,78 @@
-[Clusters::] Name Clusters.
+[Clusters::] Lexical Clusters.
 
-Name clusters are sets of noun or adjective forms, perhaps multiple
+Lexical clusters are sets of noun or adjective forms, perhaps multiple
 or in multiple languages, which have in common that they share a meaning.
 
 @h Cluster.
-A cluster is a linked list of wordings, in effect, but they are annotated
-with lingistic roles. For example, the cluster of names for the common noun
-"man" might be:
+A cluster is a linked list of "forms", annotated with lingistic roles. For
+example, the cluster of forms for the common noun "man" might be:
 
 >> man (En, singular), men (En, plural), homme (Fr, singular), hommes (Fr, plural)
+
+We would call each of these four an "individual form" of the cluster. Each can
+in fact consist of multiple wordings, inflected into different cases, but
+in English this doesn't really show.
 
 While this perhaps looks a little unstructured, that means that it doesn't
 impose many assumptions about the language. A similarly pragmatic view is taken
 by the XML frameworks used in the Lexical Markup Framework standard ISO 24613,
-which it would be fairly easy to convert our //name_cluster// objects to.
+which it would be fairly easy to convert our //lexical_cluster// objects to.
 
 =
-typedef struct name_cluster {
-	struct linked_list *listed; /* of |individual_name| */
+typedef struct lexical_cluster {
+	struct linked_list *listed; /* of |individual_form| */
 	CLASS_DEFINITION
-} name_cluster;
+} lexical_cluster;
 
-typedef struct individual_name {
-	struct declension name; /* text of name */
-	int name_number; /* 1 for singular, 2 for plural */
-	int name_gender; /* 1 is neuter, 2 is masculine, 3 is feminine */
-	NATURAL_LANGUAGE_WORDS_TYPE *name_language;
+typedef struct individual_form {
+	struct declension declined; /* text of form */
+	int form_number; /* 1 for singular, 2 for plural */
+	int form_gender; /* 1 is neuter, 2 is masculine, 3 is feminine */
+	NATURAL_LANGUAGE_WORDS_TYPE *form_language;
 	CLASS_DEFINITION
-} individual_name;
+} individual_form;
 
 @ A cluster begins empty.
 
 =
-name_cluster *Clusters::new(void) {
-	name_cluster *names = CREATE(name_cluster);
-	names->listed = NEW_LINKED_LIST(individual_name);
-	return names;
+lexical_cluster *Clusters::new(void) {
+	lexical_cluster *forms = CREATE(lexical_cluster);
+	forms->listed = NEW_LINKED_LIST(individual_form);
+	return forms;
 }
 
-@ The following can add either a single name, or a name and its plural(s):
+@ The following can add either a single form, or a form and its plural(s):
 
 =
-individual_name *Clusters::add_one(name_cluster *names, wording W,
+individual_form *Clusters::add_one(lexical_cluster *forms, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl, int gender, int number) {
 	nl = DefaultLanguage::get(nl);
-	individual_name *in = CREATE(individual_name);
-	in->name = Declensions::of_noun(W, nl, gender, number);
-	in->name_language = nl;
-	in->name_number = number;
-	in->name_gender = gender;
-	ADD_TO_LINKED_LIST(in, individual_name, names->listed);
+	individual_form *in = CREATE(individual_form);
+	in->declined = Declensions::of_noun(W, nl, gender, number);
+	in->form_language = nl;
+	in->form_number = number;
+	in->form_gender = gender;
+	ADD_TO_LINKED_LIST(in, individual_form, forms->listed);
 	return in;
 }
 
-linked_list *Clusters::add(name_cluster *names, wording W,
+linked_list *Clusters::add(lexical_cluster *forms, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl, int gender, int number, int pluralise) {
-	linked_list *L = NEW_LINKED_LIST(individual_name);
-	individual_name *in = Clusters::add_one(names, W, nl, gender, number);
-	ADD_TO_LINKED_LIST(in, individual_name, L);
+	linked_list *L = NEW_LINKED_LIST(individual_form);
+	individual_form *in = Clusters::add_one(forms, W, nl, gender, number);
+	ADD_TO_LINKED_LIST(in, individual_form, L);
 	if ((pluralise) && (number == 1))
-		@<Add plural names as well@>;
+		@<Add plural forms as well@>;
 	return L;
 }
 
 @ The following makes all possible plurals and registers those too. (Note
-that every instance gets a plural name: even something palpably unique, like
+that every instance gets a plural form: even something palpably unique, like
 "the Koh-i-Noor diamond".) The plural dictionary supports multiple plurals,
-so there may be any number of names registered: for instance, the kind
+so there may be any number of forms registered: for instance, the kind
 "person" is registered with plurals "persons" and "people".
 
-@<Add plural names as well@> =
+@<Add plural forms as well@> =
 	plural_dictionary_entry *pde = NULL;
 	int k = 0;
 	do {
@@ -78,8 +81,8 @@ so there may be any number of names registered: for instance, the kind
 		pde = Pluralisation::make(W, &PW, pde, nl);
 		if (Wordings::nonempty(PW)) {
 			LOGIF(CONSTRUCTED_PLURALS, "(%d) Plural of <%W>: <%W>\n", k, W, PW);
-			individual_name *in = Clusters::add_one(names, PW, nl, gender, 2);
-			ADD_TO_LINKED_LIST(in, individual_name, L);
+			individual_form *in = Clusters::add_one(forms, PW, nl, gender, 2);
+			ADD_TO_LINKED_LIST(in, individual_form, L);
 		}
 	} while (pde);
 
@@ -93,7 +96,7 @@ At run time, it's an integer from 0 to 11 which encodes all possible
 combinations. Here we only work through six, ignoring animation:
 
 =
-void Clusters::add_with_agreements(name_cluster *cl, wording W,
+void Clusters::add_with_agreements(lexical_cluster *cl, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	nl = DefaultLanguage::get(nl);
 	if (nl == DefaultLanguage::get(NULL))
@@ -144,19 +147,19 @@ through one or two tries.
 	FW = WordAssemblages::to_wording(&wa);
 
 @h Plural fixing.
-Less elegantly, we can force the plural of a name in a cluster to a given
+Less elegantly, we can force the plural of a form in a cluster to a given
 fixed text, overwriting it if it's already there. In practice this is done
-only when the built-in kinds are being given plural names; some of these
+only when the built-in kinds are being given plural forms; some of these
 (those for kind constructors with optional wordings) have a peculiar format,
 and wouldn't pass through the pluralising tries intact.
 
 =
-void Clusters::set_plural_in_language(name_cluster *cl, wording W,
+void Clusters::set_plural_in_language(lexical_cluster *cl, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	individual_name *in;
-	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
-		if (in->name_number == 2) {
-			in->name = Declensions::of_noun(W, nl, NEUTER_GENDER, 2);
+	individual_form *in;
+	LOOP_OVER_LINKED_LIST(in, individual_form, cl->listed)
+		if (in->form_number == 2) {
+			in->declined = Declensions::of_noun(W, nl, NEUTER_GENDER, 2);
 			return;
 		}
 	Clusters::add(cl, W, NULL, NEUTER_GENDER, 2, FALSE);
@@ -166,46 +169,53 @@ void Clusters::set_plural_in_language(name_cluster *cl, wording W,
 These are always quite small, so there's no need for any efficient device
 to search them.
 
-The first routine finds the earliest name with the correct number (singular
+The first routine finds the earliest form with the correct number (singular
 or plural):
 
 =
-wording Clusters::get_name(name_cluster *cl, int plural_flag) {
+wording Clusters::get_form(lexical_cluster *cl, int plural_flag) {
 	int number_sought = 1;
 	if (plural_flag) number_sought = 2;
-	individual_name *in;
-	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
-		if (in->name_number == number_sought)
-			return Declensions::in_case(&(in->name), NOMINATIVE_CASE);
+	individual_form *in;
+	LOOP_OVER_LINKED_LIST(in, individual_form, cl->listed)
+		if (in->form_number == number_sought)
+			return Clusters::get_nominative_of_form(in);
 	return EMPTY_WORDING;
 }
 
-@ The following variant finds the earliest name in the language of play,
+@ The following variant finds the earliest form in the language of play,
 falling back on English if there's none registered:
 
 =
-wording Clusters::get_name_in_language(name_cluster *cl, int plural_flag,
+wording Clusters::get_form_in_language(lexical_cluster *cl, int plural_flag,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	int number_sought = 1;
 	if (plural_flag) number_sought = 2;
-	individual_name *in;
-	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
-		if ((in->name_number == number_sought) &&
-			(in->name_language == nl))
-			return Declensions::in_case(&(in->name), NOMINATIVE_CASE);
-	return Clusters::get_name(cl, plural_flag);
+	individual_form *in;
+	LOOP_OVER_LINKED_LIST(in, individual_form, cl->listed)
+		if ((in->form_number == number_sought) &&
+			(in->form_language == nl))
+			return Clusters::get_nominative_of_form(in);
+	return Clusters::get_form(cl, plural_flag);
 }
 
 @ A more specific search, which can optionally test for number and gender.
 
 =
-wording Clusters::get_name_general(name_cluster *cl,
+wording Clusters::get_form_general(lexical_cluster *cl,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl, int number_sought, int gender_sought) {
-	individual_name *in;
-	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
-		if (((number_sought == -1) || (number_sought == in->name_number)) &&
-			((gender_sought == -1) || (gender_sought == in->name_gender)) &&
-			(in->name_language == nl))
-			return Declensions::in_case(&(in->name), NOMINATIVE_CASE);
+	individual_form *in;
+	LOOP_OVER_LINKED_LIST(in, individual_form, cl->listed)
+		if (((number_sought == -1) || (number_sought == in->form_number)) &&
+			((gender_sought == -1) || (gender_sought == in->form_gender)) &&
+			(in->form_language == nl))
+			return Clusters::get_nominative_of_form(in);
 	return EMPTY_WORDING;
+}
+
+@ All of which use:
+
+=
+wording Clusters::get_nominative_of_form(individual_form *in) {
+	return Declensions::in_case(&(in->declined), NOMINATIVE_CASE);
 }

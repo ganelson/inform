@@ -10,14 +10,14 @@ which use this module:
 
 @ This module defines the following classes:
 
-@e name_cluster_CLASS
-@e individual_name_CLASS
+@e lexical_cluster_CLASS
+@e individual_form_CLASS
 @e plural_dictionary_entry_CLASS
 @e verb_conjugation_CLASS
 
 =
-DECLARE_CLASS(individual_name)
-DECLARE_CLASS(name_cluster)
+DECLARE_CLASS(individual_form)
+DECLARE_CLASS(lexical_cluster)
 DECLARE_CLASS(plural_dictionary_entry)
 DECLARE_CLASS(verb_conjugation)
 

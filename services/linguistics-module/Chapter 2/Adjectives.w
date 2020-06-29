@@ -31,8 +31,12 @@ distinct from its meaning, and this is it.
 @default ADJECTIVE_MEANING_LINGUISTICS_TYPE void
 
 =
+typedef struct adjective {
+	int X;
+} adjective;
+
 typedef struct adjectival_phrase {
-	struct name_cluster *adjective_names;
+	struct lexical_cluster *adjective_names;
 	#ifdef CORE_MODULE
 	struct inter_name *aph_iname;
 	struct package_request *aph_package;
@@ -47,7 +51,7 @@ typedef struct adjectival_phrase {
 adjectival_phrase *Adjectives::declare(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
-		wording C = Clusters::get_name_in_language(aph->adjective_names, FALSE, nl);
+		wording C = Clusters::get_form_in_language(aph->adjective_names, FALSE, nl);
 		if (Wordings::match(C, W)) return aph;
 	}
 	return Adjectives::from_word_range(W, nl);
@@ -88,7 +92,7 @@ adjectival_phrase *Adjectives::from_word_range(wording W, NATURAL_LANGUAGE_WORDS
 
 @ =
 wording Adjectives::get_text(adjectival_phrase *aph, int plural) {
-	return Clusters::get_name(aph->adjective_names, plural);
+	return Clusters::get_form(aph->adjective_names, plural);
 }
 
 @h Parsing adjectives.
@@ -133,7 +137,7 @@ void Adjectives::test_adjective(OUTPUT_STREAM, wording W) {
 		}
 		for (n = 1; n <= 2; n++) {
 			if (n == 1) WRITE("singular: "); else WRITE(" / plural: ");
-			wording C = Clusters::get_name_general(aph->adjective_names,
+			wording C = Clusters::get_form_general(aph->adjective_names,
 				NULL, n, g);
 			WRITE("%W", C);
 		}

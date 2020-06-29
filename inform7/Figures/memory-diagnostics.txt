@@ -27,7 +27,7 @@ Total memory consumption was 256345K = 250 MB
      0.2%  dictionary                               16345 objects, 784560 bytes
      0.2%  dict_entry_array                         236 x 100 = 23600 objects, 762752 bytes
      0.2%  package_request                          7928 objects, 697664 bytes
-     0.2%  individual_name                          2623 objects, 650504 bytes
+     0.2%  individual_form                          2623 objects, 650504 bytes
      0.2%  inter_name_generator_array               16 x 1000 = 16000 objects, 640512 bytes
      0.2%  verb_usage                               1628 objects, 573056 bytes
      0.1%  inference_subject                        781 objects, 512336 bytes
@@ -50,7 +50,7 @@ Total memory consumption was 256345K = 250 MB
      ----  documentation_ref                        1275 objects, 112200 bytes
      ----  hierarchy_location                       731 objects, 105264 bytes
      ----  preposition_identity                     273 objects, 82992 bytes
-     ----  name_cluster                             2577 objects, 82464 bytes
+     ----  lexical_cluster                          2577 objects, 82464 bytes
      ----  pcalc_term_array                         2 x 1000 = 2000 objects, 80064 bytes
      ----  kind_variable_declaration                1652 objects, 79296 bytes
      ----  inter_tree                               6 objects, 78672 bytes
