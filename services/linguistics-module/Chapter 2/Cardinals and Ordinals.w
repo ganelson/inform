@@ -44,8 +44,8 @@ this is not a noun, and isn't allowed as a constant value in Inform.
 	twelfth
 
 @ Those two nonterminals here simply supply text: for efficiency reasons we
-don't actually parse them, although they would give the correct response if
-we did. Instead they're scanned for words which are marked with the appropriate
+don't actually parse against them, although they would give the correct response
+if we did. Instead they're scanned for words which are marked with the appropriate
 numbers.
 
 =
@@ -104,7 +104,7 @@ in decimal digits, perhaps with a minus sign.
 
 @ These mustn't match any number too large to fit into the virtual machine
 being compiled to, so "42000", for instance, is not a valid literal if Inform
-is parsing text in a work intended for the 16-bit Z-machine.
+is parsing text in a work intended for a 16-bit VM.
 
 Why do we catch this here? The answer is probably that it's an excess of
 caution, but this is a rare case where the choice of virtual machine affects

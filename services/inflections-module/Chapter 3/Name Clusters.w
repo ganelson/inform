@@ -11,9 +11,9 @@ with lingistic roles. For example, the cluster of names for the common noun
 >> man (En, singular), men (En, plural), homme (Fr, singular), hommes (Fr, plural)
 
 While this perhaps looks a little unstructured, that means that it doesn't
-impose many assumptions about the language. Compare the XML frameworks used
-in the Lexical Markup Framework standard ISO 24613, which it would be fairly
-easy to convert our //name_cluster// objects to.
+impose many assumptions about the language. A similarly pragmatic view is taken
+by the XML frameworks used in the Lexical Markup Framework standard ISO 24613,
+which it would be fairly easy to convert our //name_cluster// objects to.
 
 =
 typedef struct name_cluster {
@@ -22,7 +22,6 @@ typedef struct name_cluster {
 } name_cluster;
 
 typedef struct individual_name {
-	general_pointer principal_meaning; /* for the client to attach some meaning */
 	struct declension name; /* text of name */
 	int name_number; /* 1 for singular, 2 for plural */
 	int name_gender; /* 1 is neuter, 2 is masculine, 3 is feminine */
@@ -46,7 +45,6 @@ individual_name *Clusters::add_one(name_cluster *names, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl, int gender, int number) {
 	nl = DefaultLanguage::get(nl);
 	individual_name *in = CREATE(individual_name);
-	in->principal_meaning = NULL_GENERAL_POINTER;
 	in->name = Declensions::of_noun(W, nl, gender, number);
 	in->name_language = nl;
 	in->name_number = number;
@@ -153,7 +151,7 @@ only when the built-in kinds are being given plural names; some of these
 and wouldn't pass through the pluralising tries intact.
 
 =
-void Clusters::set_plural_name(name_cluster *cl, wording W,
+void Clusters::set_plural_in_language(name_cluster *cl, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	individual_name *in;
 	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
@@ -186,7 +184,7 @@ wording Clusters::get_name(name_cluster *cl, int plural_flag) {
 falling back on English if there's none registered:
 
 =
-wording Clusters::get_name_in_play(name_cluster *cl, int plural_flag,
+wording Clusters::get_name_in_language(name_cluster *cl, int plural_flag,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	int number_sought = 1;
 	if (plural_flag) number_sought = 2;
@@ -210,22 +208,4 @@ wording Clusters::get_name_general(name_cluster *cl,
 			(in->name_language == nl))
 			return Declensions::in_case(&(in->name), NOMINATIVE_CASE);
 	return EMPTY_WORDING;
-}
-
-@h Meanings.
-We will come to how excerpts of text are given meanings later on. For now, it's
-enough to say that each individual name can have one, and that the pointer
-to an |excerpt_meaning| records it.
-
-=
-void Clusters::set_principal_meaning(individual_name *in, general_pointer meaning) {
-	if (in == NULL) internal_error("no individual name");
-	in->principal_meaning = meaning;
-}
-
-general_pointer Clusters::get_principal_meaning(name_cluster *cl) {
-	individual_name *in;
-	LOOP_OVER_LINKED_LIST(in, individual_name, cl->listed)
-		return in->principal_meaning;
-	return NULL_GENERAL_POINTER;
 }

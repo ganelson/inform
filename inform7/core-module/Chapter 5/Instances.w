@@ -143,19 +143,17 @@ full, whereas a "tuna fish" (an object) can be called just "tuna".
 	if (any_parsing) {
 		if (exact_parsing)
 			I->tag =
-				Nouns::new_proper_noun(W, NEUTER_GENDER,
-					REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT + ATTACH_TO_SEARCH_LIST_NTOPT,
+				Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 					NAMED_CONSTANT_MC, Rvalues::from_instance(I));
 		else
 			I->tag =
-				Nouns::new_proper_noun(W, NEUTER_GENDER,
-					REGISTER_SINGULAR_NTOPT + ATTACH_TO_SEARCH_LIST_NTOPT,
+				Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 					NOUN_MC, Rvalues::from_instance(I));
 	} else {
-		I->tag = Nouns::new_proper_noun(W, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT + ATTACH_TO_SEARCH_LIST_NTOPT,
-			NOUN_HAS_NO_MC, NULL);
+		I->tag = Nouns::new_proper_noun(W, NEUTER_GENDER, 0,
+			NAMED_CONSTANT_MC, NULL);
 	}
+	Sentences::Headings::initialise_noun_resolution(I->tag);
 
 @ The values in an enumerated kind such as our perpetual "colour" example
 are numbered 1, 2, 3, ..., in order of creation. This is where we assign
@@ -267,17 +265,17 @@ inference_subject *Instances::as_subject(instance *I) {
 =
 wording Instances::get_name(instance *I, int plural) {
 	if ((I == NULL) || (I->tag == NULL)) return EMPTY_WORDING;
-	return Nouns::get_name(I->tag, plural);
+	return Nouns::nominative(I->tag, plural);
 }
 
 wording Instances::get_name_in_play(instance *I, int plural) {
 	if ((I == NULL) || (I->tag == NULL)) return EMPTY_WORDING;
-	return Nouns::get_name_in_play(I->tag, plural, Projects::get_language_of_play(Task::project()));
+	return Nouns::nominative_in_language(I->tag, plural, Projects::get_language_of_play(Task::project()));
 }
 
 int Instances::full_name_includes(instance *I, vocabulary_entry *wd) {
 	if (I == NULL) return FALSE;
-	return Nouns::full_name_includes(I->tag, wd);
+	return Nouns::nominative_singular_includes(I->tag, wd);
 }
 
 noun *Instances::get_noun(instance *I) {
@@ -295,7 +293,7 @@ inter_name *Instances::iname(instance *I) {
 		I->instance_package = Hierarchy::local_package(INSTANCES_HAP);
 		UseNouns::noun_compose_identifier(I->instance_package, I->tag, I->allocation_id);
 		I->instance_iname = UseNouns::iname(I->tag);
-		Hierarchy::markup_wording(I->instance_package, INSTANCE_NAME_HMD, Nouns::get_name(I->tag, FALSE));
+		Hierarchy::markup_wording(I->instance_package, INSTANCE_NAME_HMD, Nouns::nominative(I->tag, FALSE));
 	}
 	return I->instance_iname;
 }
@@ -312,7 +310,7 @@ void Instances::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 		case '-': @<Write the instance with normalised casing@>; break;
 		case '~': {
 			inter_name *N = Instances::iname(I);
-			if (Str::len(I->tag->nt_I6_identifier) > 0) WRITE("%S", I->tag->nt_I6_identifier);
+			if (Str::len(I->tag->name_compilation.nt_identifier) > 0) WRITE("%S", I->tag->name_compilation.nt_identifier);
 			else WRITE("%n", N);
 			break;
 		}
@@ -354,14 +352,14 @@ instance *Instances::parse_object(wording W) {
 	if (<s-literal>(W)) return NULL;
 	p = Lexicon::retrieve(NOUN_MC, W);
 	if (p == NULL) return NULL;
-	noun *nt = Nouns::disambiguate(p, MAX_NOUN_PRIORITY);
-	if (nt == NULL) return NULL;
-	if (Nouns::priority(nt) != LOW_NOUN_PRIORITY) return NULL;
-	parse_node *pn = RETRIEVE_POINTER_parse_node(Nouns::tag_holder(nt));
-	if (Node::is(pn, CONSTANT_NT)) {
-		kind *K = Node::get_kind_of_value(pn);
-		if (Kinds::Compare::le(K, K_object))
-			return Node::get_constant_instance(pn);
+	noun *nt = Nouns::disambiguate(p, FALSE);
+	if (Nouns::is_proper(nt)) {
+		parse_node *pn = RETRIEVE_POINTER_parse_node(Nouns::meaning(nt));
+		if (Node::is(pn, CONSTANT_NT)) {
+			kind *K = Node::get_kind_of_value(pn);
+			if (Kinds::Compare::le(K, K_object))
+				return Node::get_constant_instance(pn);
+		}
 	}
 	return NULL;
 }

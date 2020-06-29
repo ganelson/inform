@@ -20,8 +20,7 @@ named_action_pattern *PL::Actions::Patterns::Named::nap_new(wording W) {
 	named_action_pattern *nap = CREATE(named_action_pattern);
 	nap->first = NULL;
 	nap->text_of_declaration = W;
-	nap->name = Nouns::new_proper_noun(W, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	nap->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		NAMED_AP_MC, Rvalues::from_named_action_pattern(nap));
 
 	package_request *PR = Hierarchy::local_package(NAMED_ACTION_PATTERNS_HAP);
@@ -74,7 +73,7 @@ void PL::Actions::Patterns::Named::index(OUTPUT_STREAM) {
 	}
 
 	LOOP_OVER(nap, named_action_pattern) {
-		HTML_OPEN("p"); WRITE("<b>%+W</b>", Nouns::nominative(nap->name));
+		HTML_OPEN("p"); WRITE("<b>%+W</b>", Nouns::nominative_singular(nap->name));
 		Index::link(OUT, Wordings::first_wn(nap->text_of_declaration));
 		HTML_TAG("br");
 		ap = nap->first;

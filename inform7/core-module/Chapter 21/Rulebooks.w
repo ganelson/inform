@@ -249,21 +249,18 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	if (rb == built_in_rulebooks[ACTION_PROCESSING_RB])
 		all_action_processing_vars = StackedVariables::add_owner_to_list(NULL, rb->owned_by_rb);
 
-	Nouns::new_proper_noun(rb->primary_name, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	Nouns::new_proper_noun(rb->primary_name, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		RULEBOOK_MC, Rvalues::from_rulebook(rb));
 	word_assemblage wa =
 		PreformUtilities::merge(<rulebook-name-construction>, 0,
 			WordAssemblages::from_wording(rb->primary_name));
 	wording AW = WordAssemblages::to_wording(&wa);
-	Nouns::new_proper_noun(AW, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		RULEBOOK_MC, Rvalues::from_rulebook(rb));
 	wa = PreformUtilities::merge(<rulebook-name-construction>, 1,
 			WordAssemblages::from_wording(rb->primary_name));
 	AW = WordAssemblages::to_wording(&wa);
-	Nouns::new_proper_noun(AW, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		RULEBOOK_MC, Rvalues::from_rulebook(rb));
 
 	return rb;
@@ -299,8 +296,7 @@ rulebook *Rulebooks::new_automatic(wording W, kind *basis,
 
 void Rulebooks::set_alt_name(rulebook *rb, wording AW) {
 	rb->alternative_name = AW;
-	Nouns::new_proper_noun(AW, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		RULEBOOK_MC, Rvalues::from_rulebook(rb));
 }
 

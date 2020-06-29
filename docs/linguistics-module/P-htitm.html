@@ -151,6 +151,13 @@ it allows them in any form in non-assertion contexts. See
 <a href="3-vu.html#SP8" class="internal">VerbUsages::register_moods_of_verb</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK</span></span>, if provided, should be the default
 meaning for an adjective newly defined &mdash; see <a href="2-adj.html#SP4" class="internal">Adjectives::from_word_range</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">NOUN_COMPILATION_LINGUISTICS_CALLBACK</span></span>, if provided, should accompany a
+declaration of a structure called <span class="extract"><span class="extract-syntax">name_compilation_data</span></span>; this function should
+then set up that data for the given noun &mdash; see <a href="2-nns.html#SP6" class="internal">Nouns::new_inner</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK</span></span>, if provided, should accompany a
+declaration of a structure called <span class="extract"><span class="extract-syntax">name_resolution_data</span></span>; this function should
+decide which possible reading of the meaning of a noun makes the best sense in
+context &mdash; see <a href="2-nns.html#SP13" class="internal">Nouns::disambiguate</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">TRACING_LINGUISTICS_CALLBACK</span></span>, if provided, can return <span class="extract"><span class="extract-syntax">TRUE</span></span> to allow
 extensive details of verb parsing to be copied to the debugging log. See
 <a href="4-vp.html#SP10" class="internal">VerbPhrases::tracing</a>.

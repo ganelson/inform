@@ -323,8 +323,8 @@ mode, we can get that value back again if we look it up by name.
 		if (Kinds::Behaviour::definite(cphr->cphr_kind) == FALSE) {
 			phrase *ph = Phrases::Constants::as_phrase(cphr);
 			if (ph) current_sentence = Phrases::declaration_node(ph);
-			Problems::quote_source(1, NounPhrases::new_raw(Nouns::nominative(cphr->name)));
-			Problems::quote_wording(2, Nouns::nominative(cphr->name));
+			Problems::quote_source(1, NounPhrases::new_raw(Nouns::nominative_singular(cphr->name)));
+			Problems::quote_wording(2, Nouns::nominative_singular(cphr->name));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedGeneric));
 			Problems::issue_problem_segment(
 				"I can't allow %1, because the phrase it gives a name to "
@@ -552,13 +552,13 @@ int Phrases::Usage::get_timing_of_event(ph_usage_data *phud) {
 int Phrases::Usage::has_name_as_constant(ph_usage_data *phud) {
 	if ((phud->constant_phrase_holder) &&
 		(phud->explicit_name_used_in_maths == FALSE) &&
-		(Wordings::nonempty(Nouns::nominative(phud->constant_phrase_holder->name)))) return TRUE;
+		(Wordings::nonempty(Nouns::nominative_singular(phud->constant_phrase_holder->name)))) return TRUE;
 	return FALSE;
 }
 
 wording Phrases::Usage::get_equation_form(ph_usage_data *phud) {
 	if (phud->explicit_name_used_in_maths)
-		return Wordings::first_word(Nouns::nominative(phud->constant_phrase_holder->name));
+		return Wordings::first_word(Nouns::nominative_singular(phud->constant_phrase_holder->name));
 	return EMPTY_WORDING;
 }
 
@@ -591,7 +591,7 @@ void Phrases::Usage::log(ph_usage_data *phud) {
 	}
 	LOG("PHUD: <%W>: rule attachment mode %s\n", phud->full_preamble, ram);
 	if (phud->constant_phrase_holder)
-		LOG("  Constant name: <%W>\n", Nouns::nominative(phud->constant_phrase_holder->name));
+		LOG("  Constant name: <%W>\n", Nouns::nominative_singular(phud->constant_phrase_holder->name));
 	if (Wordings::nonempty(phud->explicit_name))
 		LOG("  Explicit name: <%W>\n", phud->explicit_name);
 	if (phud->explicit_name_used_in_maths)

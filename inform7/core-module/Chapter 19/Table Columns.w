@@ -62,15 +62,13 @@ table_column *Tables::Columns::new_table_column(wording W) {
 	tc->table_from_which_kind_inferred = NULL;
 	tc->listed_in_predicate = Tables::Relations::make_listed_in_predicate(tc);
 	if (Wordings::nonempty(W)) { /* as always happens except when recovering from a problem */
-		tc->name = Nouns::new_proper_noun(W, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		tc->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			TABLE_COLUMN_MC, Rvalues::from_table_column(tc));
 		word_assemblage wa =
 			PreformUtilities::merge(<table-column-name-construction>, 0,
 				WordAssemblages::from_wording(W));
 		wording AW = WordAssemblages::to_wording(&wa);
-		Nouns::new_proper_noun(AW, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			TABLE_COLUMN_MC, Rvalues::from_table_column(tc));
 	}
 	return tc;
@@ -78,7 +76,7 @@ table_column *Tables::Columns::new_table_column(wording W) {
 
 @ =
 void Tables::Columns::log(table_column *tc) {
-	LOG("'%W'/", Nouns::nominative(tc->name));
+	LOG("'%W'/", Nouns::nominative_singular(tc->name));
 	if (tc->kind_stored_in_column == NULL) LOG("unknown");
 	else LOG("$u", tc->kind_stored_in_column);
 }
@@ -475,7 +473,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 @<Issue a problem for kind mismatch between columns of the same name@> =
 	int quoted_col = i + 1; /* i.e., counting from 1 */
 	Problems::quote_table(6, tcu->column_identity->table_from_which_kind_inferred);
-	Problems::quote_wording(7, Nouns::nominative(tcu->column_identity->name));
+	Problems::quote_wording(7, Nouns::nominative_singular(tcu->column_identity->name));
 	Problems::quote_number(8, &quoted_col);
 	Problems::quote_number(9, &table_cell_row);
 	StandardProblems::table_problem(_p_(PM_TableIncompatibleEntry2),
@@ -492,7 +490,7 @@ happens:
 
 @<Issue a problem for an inconsistent kind for this column@> =
 	Problems::quote_table(6, tcu->column_identity->table_from_which_kind_inferred);
-	Problems::quote_wording(7, Nouns::nominative(tcu->column_identity->name));
+	Problems::quote_wording(7, Nouns::nominative_singular(tcu->column_identity->name));
 	Problems::quote_kind(4, K);
 	Problems::quote_kind(5, CK);
 	StandardProblems::table_problem(_p_(PM_TableColumnIncompatible),
@@ -509,7 +507,7 @@ happens:
 void Tables::Columns::approve_kind(table *t, int i, table_column_usage *tcu) {
 	kind *K = Tables::Columns::get_kind(tcu->column_identity);
 	LOGIF(TABLES, "Column %d '%W' has kind $u with data:\n$T",
-		i, Nouns::nominative(tcu->column_identity->name), K, tcu->entries);
+		i, Nouns::nominative_singular(tcu->column_identity->name), K, tcu->entries);
 	if ((Kinds::get_construct(K) == CON_list_of) &&
 		(Kinds::Compare::eq(Kinds::unary_construction_material(K), K_value))) {
 		StandardProblems::table_problem(_p_(PM_TableColumnEmptyLists),

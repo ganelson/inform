@@ -3,8 +3,7 @@
 A lightweight structure to record uses of an adjective, either
 positively or negatively.
 
-@h Adjective usages.
-This really is just an ordered pair of an adjective and a boolean:
+@ This really is just an ordered pair of an adjective and a boolean:
 
 =
 typedef struct adjective_usage {
@@ -20,6 +19,13 @@ adjective_usage *AdjectiveUsages::new(adjectival_phrase *aph, int pos) {
 	return au;
 }
 
+adjective_usage *AdjectiveUsages::copy(adjective_usage *au_from) {
+	return AdjectiveUsages::new(au_from->ref_to, au_from->ref_positive);
+}
+
+@ Logging:
+
+=
 void AdjectiveUsages::log(adjective_usage *au) {
 	adjectival_phrase *aph = AdjectiveUsages::get_aph(au);
 	if (au->ref_positive == FALSE) LOG("~");
@@ -27,10 +33,9 @@ void AdjectiveUsages::log(adjective_usage *au) {
 	LOG("<adj:%W>", W);
 }
 
-adjective_usage *AdjectiveUsages::copy(adjective_usage *au_from) {
-	return AdjectiveUsages::new(au_from->ref_to, au_from->ref_positive);
-}
+@ Access:
 
+=
 adjectival_phrase *AdjectiveUsages::get_aph(adjective_usage *au) {
 	if (au == NULL) return NULL;
 	return au->ref_to;
@@ -41,6 +46,10 @@ int AdjectiveUsages::get_parity(adjective_usage *au) {
 	return au->ref_positive;
 }
 
+@ And this is the only non-trivial thing one can do with an adjective usage:
+reverse its sense.
+
+=
 void AdjectiveUsages::flip_parity(adjective_usage *au) {
 	if (au == NULL) internal_error("null adjective flipped");
 	au->ref_positive = (au->ref_positive)?FALSE:TRUE;

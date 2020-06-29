@@ -368,10 +368,10 @@ is just a little faster written as an internal like this.
 <s-instance-name> internal {
 	parse_node *p = Lexicon::retrieve(NOUN_MC, W);
 	if (p) {
-		noun *nt = Nouns::disambiguate(p, MAX_NOUN_PRIORITY);
-		if ((nt) && (Nouns::priority(nt) == LOW_NOUN_PRIORITY)) {
+		noun *nt = Nouns::disambiguate(p, FALSE);
+		if (Nouns::is_proper(nt)) {
 			instance *I = Rvalues::to_object_instance(
-				RETRIEVE_POINTER_parse_node(Nouns::tag_holder(nt)));
+				RETRIEVE_POINTER_parse_node(Nouns::meaning(nt)));
 			*XP = Rvalues::from_instance(I); return TRUE;
 		}
 	}

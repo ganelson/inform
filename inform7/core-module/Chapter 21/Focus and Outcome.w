@@ -232,8 +232,7 @@ named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
 	Hierarchy::markup_wording(R, OUTCOME_NAME_HMD, W);
 
 	named_rulebook_outcome *rbno = CREATE(named_rulebook_outcome);
-	rbno->name = Nouns::new_proper_noun(W, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	rbno->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		MISCELLANEOUS_MC, Rvalues::from_named_rulebook_outcome(rbno));
 	rbno->nro_iname = Hierarchy::make_iname_with_memo(OUTCOME_HL, R, W);
 	if (<notable-rulebook-outcomes>(W)) {
@@ -397,7 +396,7 @@ void Rulebooks::Outcomes::index_outcomes(OUTPUT_STREAM, outcomes *outs, int supp
 			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("<i>outcome</i>&nbsp;&nbsp;");
 			if (outs->default_named_outcome == ro) WRITE("<b>");
-			WRITE("%+W", Nouns::nominative(rbno->name));
+			WRITE("%+W", Nouns::nominative_singular(rbno->name));
 			if (outs->default_named_outcome == ro) WRITE("</b> (default)");
 			WRITE(" - <i>");
 			switch(ro->kind_of_outcome) {
@@ -426,7 +425,7 @@ void Rulebooks::Outcomes::RulebookOutcomePrintingRule(void) {
 	named_rulebook_outcome *rbno;
 	LOOP_OVER(rbno, named_rulebook_outcome) {
 		TEMPORARY_TEXT(RV)
-		WRITE_TO(RV, "%+W", Nouns::nominative(rbno->name));
+		WRITE_TO(RV, "%+W", Nouns::nominative_singular(rbno->name));
 		Emit::named_string_constant(rbno->nro_iname, RV);
 		DISCARD_TEXT(RV)
 	}

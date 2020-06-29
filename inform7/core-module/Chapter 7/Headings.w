@@ -28,6 +28,13 @@ name_resolution_data *Sentences::Headings::name_resolution_data(noun *t) {
 	return &(t->name_resolution);
 }
 
+void Sentences::Headings::initialise_noun_resolution(noun *t) {
+	if (t == NULL) internal_error("tried to initialise resolution data for null tag");
+	Sentences::Headings::disturb();
+	Sentences::Headings::attach_noun(t);
+	Sentences::Headings::verify_divisions();
+}
+
 int no_tags_attached = 0;
 void Sentences::Headings::attach_noun(noun *new_tag) {
 	if (current_sentence == NULL) return;
@@ -182,9 +189,8 @@ void Sentences::Headings::construct_noun_search_list(void) {
 
 	@<Start the search list empty@>;
 
-	int i;
-	for (i=1; i<=MAX_NOUN_PRIORITY; i++)
-		Sentences::Headings::build_search_list_from(h, NULL, i);
+	Sentences::Headings::build_search_list_from(h, NULL, COMMON_NOUN);
+	Sentences::Headings::build_search_list_from(h, NULL, PROPER_NOUN);
 
 	@<Verify that the search list indeed contains every noun just once@>;
 
@@ -263,7 +269,7 @@ void Sentences::Headings::build_search_list_from(heading *within, heading *way_w
 	if (within == NULL) return;
 
 	LOOP_OVER_NOUNS_UNDER(nt, within)
-		if (Nouns::priority(nt) == p)
+		if (Nouns::subclass(nt) == p)
 			@<Add tag to the end of the search list@>;
 
 	/* recurse downwards through subordinate headings, other than the way we came up */
@@ -304,6 +310,34 @@ noun *Sentences::Headings::highest_scoring_noun_searched(void) {
 		if (x > best_score) { best_nt = nt; best_score = x; }
 	}
 	return best_nt;
+}
+
+@ It's a tricky task to choose from a list of possible nouns which might have
+been intended by text such as "chair". If the list is empty or contains only
+one choice, no problem. Otherwise we will probably have to reorder the noun
+search list, and then run through it. The code below looks as if it picks out
+the match with highest score, so that the ordering is unimportant, but in fact
+the score assigned to a match is based purely on the number of words missed
+out (see later): that means that ambiguities often arise between two lexically
+similar objects, e.g., a "blue chair" or a "red chair" when the text simply
+specifies "chair". Since the code below accepts the first noun with the
+highest score, the outcome is thus determined by which of the blue and red
+chairs ranks highest in the search list: and that is why the search list is so
+important.
+
+@d NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK Sentences::Headings::choose_highest_scoring_noun
+
+=
+noun *Sentences::Headings::choose_highest_scoring_noun(parse_node *p, int common_only) {
+	Sentences::Headings::construct_noun_search_list();
+	noun *nt;
+	LOOP_OVER(nt, noun) Sentences::Headings::set_noun_search_score(nt, 0);
+	for (parse_node *p2 = p; p2; p2 = p2->next_alternative) {
+		noun *nt = RETRIEVE_POINTER_noun(Lexicon::get_data(Node::get_meaning(p2)));
+		if (Nouns::is_eligible_match(nt, common_only))
+			Sentences::Headings::set_noun_search_score(nt, Node::get_score(p2));
+	}
+	return Sentences::Headings::highest_scoring_noun_searched();
 }
 
 @h Handling headings during the main traverses.
@@ -482,7 +516,7 @@ in practice strews distractingly many orange berries across the page.
 	noun *nt;
 	int c = 0;
 	LOOP_OVER_NOUNS_UNDER(nt, h) {
-		wording W = Nouns::get_name(nt, FALSE);
+		wording W = Nouns::nominative(nt, FALSE);
 		if (Wordings::nonempty(W)) {
 			if (c++ == 0) {
 				HTML::open_indented_p(OUT, ind_used+1, "hanging");

@@ -99,8 +99,7 @@ void UseOptions::new_use_option(parse_node *p) {
 		uo->source_file_scoped = FALSE;
 		if ((<notable-use-option-name>(OW)) && (<<r>> == AUTHORIAL_MODESTY_UO))
 			uo->source_file_scoped = TRUE;
-		Nouns::new_proper_noun(OW, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		Nouns::new_proper_noun(OW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			MISCELLANEOUS_MC, Rvalues::from_use_option(uo));
 	}
 }

@@ -145,8 +145,7 @@ slightly differently. (Not all rule names do: those for timed events do not.)
 @<Register the name of this rule@> =
 	unsigned int mc = RULE_MC;
 	if (<rule-name-formal>(W)) mc = MISCELLANEOUS_MC;
-	Nouns::new_proper_noun(W, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		mc, Rvalues::from_rule(R));
 
 @ Reversing the process:

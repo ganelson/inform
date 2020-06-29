@@ -204,15 +204,13 @@ activity *Activities::new(kind *creation_kind, wording W) {
 			"this already has a meaning",
 			"and so cannot be the name of a newly created activity.");
 	} else {
-		Nouns::new_proper_noun(W, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			ACTIVITY_MC, Rvalues::from_activity(av));
 		word_assemblage wa =
 			PreformUtilities::merge(<activity-name-construction>, 0,
 				WordAssemblages::from_wording(av->name));
 		wording AW = WordAssemblages::to_wording(&wa);
-		Nouns::new_proper_noun(AW, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			ACTIVITY_MC, Rvalues::from_activity(av));
 	}
 

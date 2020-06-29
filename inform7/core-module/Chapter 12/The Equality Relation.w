@@ -23,8 +23,7 @@ void Calculus::Equality::REL_create_initial_stock(void) {
 	word_assemblage wa = PreformUtilities::merge(<relation-name-formal>, 0,
 			PreformUtilities::wording(<relation-names>, EQUALITY_RELATION_NAME));
 	wording AW = WordAssemblages::to_wording(&wa);
-	Nouns::new_proper_noun(AW, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		MISCELLANEOUS_MC, Rvalues::from_binary_predicate(R_equality));
 
 	#ifndef IF_MODULE

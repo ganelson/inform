@@ -1,4 +1,4 @@
-Total memory consumption was 256347K = 250 MB
+Total memory consumption was 256345K = 250 MB
 
 62.4% was used for 1335177 objects, in 267912 frames in 200 x 800K = 160000K = 156 MB:
 
@@ -27,7 +27,7 @@ Total memory consumption was 256347K = 250 MB
      0.2%  dictionary                               16345 objects, 784560 bytes
      0.2%  dict_entry_array                         236 x 100 = 23600 objects, 762752 bytes
      0.2%  package_request                          7928 objects, 697664 bytes
-     0.2%  individual_name                          2623 objects, 692472 bytes
+     0.2%  individual_name                          2623 objects, 650504 bytes
      0.2%  inter_name_generator_array               16 x 1000 = 16000 objects, 640512 bytes
      0.2%  verb_usage                               1628 objects, 573056 bytes
      0.1%  inference_subject                        781 objects, 512336 bytes
@@ -35,8 +35,8 @@ Total memory consumption was 256347K = 250 MB
      0.1%  rule                                     469 objects, 363944 bytes
      0.1%  i6_schema_array                          6 x 100 = 600 objects, 360192 bytes
      0.1%  verb_form                                386 objects, 339680 bytes
-     0.1%  noun                                     2440 objects, 312320 bytes
      0.1%  scan_directory                           70 objects, 288960 bytes
+     0.1%  noun                                     2440 objects, 273280 bytes
      0.1%  binary_predicate                         439 objects, 270424 bytes
      ----  action_name_list_array                   3 x 1000 = 3000 objects, 240096 bytes
      ----  inter_annotation_array                   1 x 8192 objects, 196640 bytes
@@ -63,7 +63,7 @@ Total memory consumption was 256347K = 250 MB
      ----  property_permission                      96 objects, 56832 bytes
      ----  pcalc_func_array                         1 x 1000 objects, 56032 bytes
      ----  ph_stack_frame_box                       577 objects, 55392 bytes
-     ----  kind_constructor                         75 objects, 54600 bytes
+     ----  kind_constructor                         75 objects, 55200 bytes
      ----  text_substitution                        436 objects, 48832 bytes
      ----  grammar_line                             230 objects, 46000 bytes
      ----  table                                    7 objects, 45528 bytes
@@ -142,7 +142,7 @@ Total memory consumption was 256347K = 250 MB
      ----  constant_phrase                          20 objects, 1280 bytes
      ----  invocation_options_array                 1 x 100 objects, 1224 bytes
      ----  hierarchy_metadatum                      15 objects, 1200 bytes
-     ----  quantifier                               16 objects, 1152 bytes
+     ----  quantifier                               16 objects, 1024 bytes
      ----  table_column                             16 objects, 896 bytes
      ----  inbuild_requirement                      22 objects, 880 bytes
      ----  code_generation                          1 object, 864 bytes
@@ -204,7 +204,7 @@ Total memory consumption was 256347K = 250 MB
 
 37.5% was used for memory not allocated for objects:
 
-    16.0%  text stream storage                      42037484 bytes in 265078 claims
+    16.0%  text stream storage                      42035820 bytes in 265078 claims
      3.5%  dictionary storage                       9265152 bytes in 16345 claims
      ----  sorting                                  1112 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
@@ -219,5 +219,5 @@ Total memory consumption was 256347K = 250 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.9% was overhead - 52468856 bytes = 51239K = 50 MB
+20.0% was overhead - 52549392 bytes = 51317K = 50 MB
 

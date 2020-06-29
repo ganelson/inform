@@ -72,21 +72,21 @@ void LinguisticsModule::end(void) {
 @ This module uses //syntax//, and adds the following annotations to the
 syntax tree.
 
-@e verbal_certainty_ANNOT		 /* |int|: certainty level if known */
+@e verbal_certainty_ANNOT        /* |int|: certainty level if known */
 @e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
 @e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
-@e inverted_verb_ANNOT   		 /* |int|: an inversion of subject and object has occurred */
-@e possessive_verb_ANNOT   		 /* |int|: this is a non-relative use of "to have" */
-@e verb_ANNOT   				 /* |verb_usage|: what's being done here */
-@e preposition_ANNOT   			 /* |preposition_identity|: which preposition, if any, qualifies it */
-@e second_preposition_ANNOT   	 /* |preposition_identity|: which further preposition, if any, qualifies it */
-@e verb_meaning_ANNOT   		 /* |verb_meaning|: what it means */
+@e inverted_verb_ANNOT           /* |int|: an inversion of subject and object has occurred */
+@e possessive_verb_ANNOT         /* |int|: this is a non-relative use of "to have" */
+@e verb_ANNOT                    /* |verb_usage|: what's being done here */
+@e preposition_ANNOT             /* |preposition_identity|: which preposition, if any, qualifies it */
+@e second_preposition_ANNOT      /* |preposition_identity|: which further preposition, if any, qualifies it */
+@e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
 
-@e nounphrase_article_ANNOT 	 /* |int|: definite or indefinite article: see below */
-@e plural_reference_ANNOT 		 /* |int|: used by PROPER NOUN nodes for evident plurals */
-@e gender_reference_ANNOT 		 /* |int|: used by PROPER NOUN nodes for evident genders */
+@e nounphrase_article_ANNOT      /* |int|: definite or indefinite article: see below */
+@e plural_reference_ANNOT        /* |int|: used by PROPER NOUN nodes for evident plurals */
+@e gender_reference_ANNOT        /* |int|: used by PROPER NOUN nodes for evident genders */
 @e relationship_node_type_ANNOT  /* |int|: what kind of inference this assertion makes */
-@e implicitly_refers_to_ANNOT 	 /* |int|: this will implicitly refer to something */
+@e implicitly_refers_to_ANNOT    /* |int|: this will implicitly refer to something */
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)

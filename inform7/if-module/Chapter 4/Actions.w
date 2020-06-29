@@ -256,8 +256,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	word_assemblage wa = PreformUtilities::merge(<action-name-construction>, 0,
 		WordAssemblages::from_wording(W));
 	wording AW = WordAssemblages::to_wording(&wa);
-	an->name = Nouns::new_proper_noun(AW, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	an->name = Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		MISCELLANEOUS_MC, Rvalues::from_action_name(an));
 
 	Vocabulary::set_flags(Lexer::word(Wordings::first_wn(W)), ACTION_PARTICIPLE_MC);

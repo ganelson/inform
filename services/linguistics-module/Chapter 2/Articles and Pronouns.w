@@ -9,16 +9,16 @@ adjectives, verbs and nouns, it can't make new pronouns.
 
 =
 <pronoun> ::=
-	<nominative-pronoun> |    ==> R[1]
-	<accusative-pronoun>		==> R[1]
+	<nominative-pronoun> |      ==> R[1]
+	<accusative-pronoun>        ==> R[1]
 
 <nominative-pronoun> ::=
-	it/he/she |    ==> 1		/* singular */
-	they						==> 2		/* plural */
+	it/he/she |                 ==> 1 /* singular */
+	they                        ==> 2 /* plural */
 
 <accusative-pronoun> ::=
-	it/him/her |    ==> 1		/* singular */
-	them						==> 2		/* plural */
+	it/him/her |                ==> 1 /* singular */
+	them                        ==> 2 /* plural */
 
 @h Possessives.
 Inform uses these not only for parsing but also to inflect text. For example,
@@ -29,16 +29,16 @@ person to second person).
 
 =
 <possessive-first-person> ::=
-	my |    ==> 1		/* singular */
-	our							==> 2		/* plural */
+	my |                        ==> 1 /* singular */
+	our                         ==> 2 /* plural */
 
 <possessive-second-person> ::=
-	your |    ==> 1		/* singular */
-	your						==> 2		/* plural */
+	your |                      ==> 1 /* singular */
+	your                        ==> 2 /* plural */
 
 <possessive-third-person> ::=
-	its/his/her |    ==> 1		/* singular */
-	their						==> 2		/* plural */
+	its/his/her |               ==> 1 /* singular */
+	their                       ==> 2 /* plural */
 
 @h Articles.
 
@@ -49,18 +49,19 @@ person to second person).
 
 =
 <article> ::=
-	<indefinite-article> |    ==> R[1]
-	<definite-article>			==> R[1]
+	<indefinite-article> |      ==> R[1]
+	<definite-article>          ==> R[1]
 
 @ The articles need to be single words, and the following two productions
 have an unusual convention: they are required to have production numbers
-which encode both the implied grammatical number and gender.
+which encode both the implied grammatical number and gender. These numbers
+mean:
 
-(a) singular, neuter; (b) masculine; (c) feminine
-(d) plural, neuter; (e) masculine; (f) feminine
+|/a/| singular, neuter; |/b/| singular, masculine; |/c/| singular, feminine;
+|/d/| plural, neuter; |/e/| plural, masculine; |/f/| plural, feminine.
 
-In English gender doesn't appear in articles, and "the" is ambiguous as to
-number in any case, so we end up with something quite dull:
+But since in English gender doesn't appear in articles, and "the" is ambiguous
+as to number in any case, we end up with something quite dull as the default:
 
 =
 <definite-article> ::=
@@ -86,8 +87,8 @@ number in any case, so we end up with something quite dull:
 
 @ =
 wording Articles::remove_the(wording W) {
-	if ((Wordings::length(W) > 1) &&
-		(<optional-definite-article>(W))) return GET_RW(<optional-definite-article>, 1);
+	if ((Wordings::length(W) > 1) && (<optional-definite-article>(W)))
+		return GET_RW(<optional-definite-article>, 1);
 	return W;
 }
 
@@ -124,7 +125,6 @@ is never treated as a participle.
 	not ...
 
 @h Marking for Preform efficiency.
-
 
 =
 void Articles::mark_for_preform(void) {

@@ -34,9 +34,7 @@ inter_name *Kinds::RunTime::I6_classname(kind *K) {
 }
 
 int Kinds::RunTime::I6_classnumber(kind *K) {
-	noun *nt = Kinds::Behaviour::get_noun(K);
-	if (nt == NULL) return 0;
-	return Nouns::range_number(nt);
+	return Kinds::Behaviour::get_range_number(K);
 }
 
 @h Default values.

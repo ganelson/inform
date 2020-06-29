@@ -231,8 +231,7 @@ could be referred to elsewhere in the text by any of three names:
 		word_assemblage wa = PreformUtilities::merge(<equation-names-construction>, 0,
 			WordAssemblages::from_wording(NO));
 		wording AW = WordAssemblages::to_wording(&wa);
-		Nouns::new_proper_noun(AW, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			EQUATION_MC, Rvalues::from_equation(eqn));
 	}
 
@@ -247,15 +246,13 @@ could be referred to elsewhere in the text by any of three names:
 				"because Inform would read '2 + 2' as arithmetic, not a name.");
 			Problems::issue_problem_end();
 		} else {
-			Nouns::new_proper_noun(NA, NEUTER_GENDER,
-				REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+			Nouns::new_proper_noun(NA, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 				EQUATION_MC, Rvalues::from_equation(eqn));
 			word_assemblage wa =
 				PreformUtilities::merge(<equation-names-construction>, 0,
 					WordAssemblages::from_wording(NA));
 			wording AW = WordAssemblages::to_wording(&wa);
-			Nouns::new_proper_noun(AW, NEUTER_GENDER,
-				REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+			Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 				EQUATION_MC, Rvalues::from_equation(eqn));
 		}
 	}

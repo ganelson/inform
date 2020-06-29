@@ -448,8 +448,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 		word_assemblage wa = PreformUtilities::merge(<table-names-construction>, 0,
 			WordAssemblages::from_wording(t->table_no_text));
 		wording AW = WordAssemblages::to_wording(&wa);
-		Nouns::new_proper_noun(AW, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			TABLE_MC, Rvalues::from_table(t));
 	}
 	if (Wordings::nonempty(t->table_name_text)) {
@@ -458,8 +457,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 		word_assemblage wa = PreformUtilities::merge(<table-names-construction>, 1,
 				WordAssemblages::from_wording(t->table_name_text));
 		wording AW = WordAssemblages::to_wording(&wa);
-		Nouns::new_proper_noun(AW, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			TABLE_MC, Rvalues::from_table(t));
 	}
 
@@ -592,11 +590,11 @@ the other table at all. The result will be:
 	LOGIF(TABLES, "Column correspondence table:\n  old->new: ");
 	for (j=0; j<old_t->no_columns; j++)
 		LOGIF(TABLES, "%d (%W) ", old_to_new[j],
-			Nouns::nominative(old_t->columns[j].column_identity->name));
+			Nouns::nominative_singular(old_t->columns[j].column_identity->name));
 	LOGIF(TABLES, "\n  new->old: ");
 	for (i=0; i<t->no_columns; i++)
 		LOGIF(TABLES, "%d (%W) ", new_to_old[i],
-			Nouns::nominative(t->columns[i].column_identity->name));
+			Nouns::nominative_singular(t->columns[i].column_identity->name));
 	LOGIF(TABLES, "\n");
 
 @ We can carry out the continuation immediately, since it just means splicing
@@ -762,7 +760,7 @@ columns and in the same order.
 		int j;
 		for (j=0; j<old_t->no_columns; j++) {
 			if (j > 0) WRITE_TO(TEMP, ", ");
-			WRITE_TO(TEMP, "%+W", Nouns::nominative(old_t->columns[j].column_identity->name));
+			WRITE_TO(TEMP, "%+W", Nouns::nominative_singular(old_t->columns[j].column_identity->name));
 		}
 		WRITE_TO(TEMP, ". ");
 		Problems::issue_problem_segment_from_stream(TEMP);
@@ -775,7 +773,7 @@ columns and in the same order.
 		int i;
 		for (i=0; i<t->no_columns; i++) {
 			if (i > 0) WRITE_TO(TEMP, ", ");
-			WRITE_TO(TEMP, "%+W", Nouns::nominative(t->columns[i].column_identity->name));
+			WRITE_TO(TEMP, "%+W", Nouns::nominative_singular(t->columns[i].column_identity->name));
 		}
 		WRITE_TO(TEMP, ".");
 		Problems::issue_problem_segment_from_stream(TEMP);
@@ -898,7 +896,7 @@ us issue more contextual problem messages.
 	int quoted_col = table_cell_col + 1; /* i.e., counting from 1 */
 	Problems::quote_number(4, &quoted_col);
 	Problems::quote_wording(5,
-		Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
+		Nouns::nominative_singular(table_being_examined->columns[table_cell_col].column_identity->name));
 	Problems::quote_number(6, &table_cell_row);
 	StandardProblems::table_problem(_p_(PM_NonconstantActionInTable),
 		table_being_examined, NULL, table_cell_node,
@@ -922,7 +920,7 @@ people -- it needs to be "yourself" instead, since "player" is a variable.
 		int quoted_col = table_cell_col + 1; /* i.e., counting from 1 */
 		Problems::quote_number(4, &quoted_col);
 		Problems::quote_wording(5,
-			Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
+			Nouns::nominative_singular(table_being_examined->columns[table_cell_col].column_identity->name));
 		Problems::quote_number(6, &table_cell_row);
 		Problems::quote_subject(7, infs);
 		StandardProblems::table_problem(_p_(PM_TablePlayerEntry),
@@ -935,7 +933,7 @@ people -- it needs to be "yourself" instead, since "player" is a variable.
 		int quoted_col = table_cell_col + 1; /* i.e., counting from 1 */
 		Problems::quote_number(4, &quoted_col);
 		Problems::quote_wording(5,
-			Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
+			Nouns::nominative_singular(table_being_examined->columns[table_cell_col].column_identity->name));
 		Problems::quote_number(6, &table_cell_row);
 		StandardProblems::table_problem(_p_(PM_TableVariableEntry),
 			table_being_examined, NULL, table_cell_node,
@@ -953,7 +951,7 @@ people -- it needs to be "yourself" instead, since "player" is a variable.
 	int quoted_col = table_cell_col + 1; /* i.e., counting from 1 */
 	Problems::quote_number(4, &quoted_col);
 	Problems::quote_wording(5,
-		Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
+		Nouns::nominative_singular(table_being_examined->columns[table_cell_col].column_identity->name));
 	Problems::quote_number(6, &table_cell_row);
 	StandardProblems::table_problem(_p_(PM_TableUnknownEntry),
 		table_being_examined, NULL, table_cell_node,
@@ -1022,7 +1020,7 @@ void Tables::stock_table_cell(table *t, parse_node *cell, int row_count, int col
 		int quoted_col = table_cell_col + 1; /* i.e., counting from 1 */
 		Problems::quote_number(4, &quoted_col);
 		Problems::quote_wording(5,
-			Nouns::nominative(table_being_examined->columns[table_cell_col].column_identity->name));
+			Nouns::nominative_singular(table_being_examined->columns[table_cell_col].column_identity->name));
 		Problems::quote_number(6, &table_cell_row);
 		StandardProblems::table_problem(_p_(PM_TableDescriptionEntry),
 			t, NULL, cell,
@@ -1245,7 +1243,7 @@ time to find a clear wording for:
 	Problems::quote_number(1, &amend_row);
 	Problems::quote_number(2, &quoted_col);
 	Problems::quote_source(3, amend_cell);
-	Problems::quote_wording(4, Nouns::nominative(main_table->columns[col].column_identity->name));
+	Problems::quote_wording(4, Nouns::nominative_singular(main_table->columns[col].column_identity->name));
 	Problems::quote_table(5, main_table);
 	Problems::quote_number(6, &matches_in_last_round);
 	if (matches_in_last_round > 2) Problems::quote_text(7, "any");
@@ -1381,7 +1379,7 @@ Helvetica-style lower case "x", but life is full of compromises.
 	for (col = 0; col < t->no_columns; col++) {
 		HTML::first_html_column(OUT, 0);
 		WRITE("&nbsp;&nbsp;col %d:&nbsp;&nbsp;", col+1);
-		wording CW = Nouns::nominative(t->columns[col].column_identity->name);
+		wording CW = Nouns::nominative_singular(t->columns[col].column_identity->name);
 		if ((t->first_column_by_definition) && (col == 0)) {
 			parse_node *PN = t->where_used_to_define;
 			WRITE("%+W", Node::get_text(PN));

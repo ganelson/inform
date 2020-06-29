@@ -708,12 +708,12 @@ matched up with the inference subject already existing.
 	unsigned int mc = KIND_SLOW_MC;
 	if (Kinds::Compare::le(super, K_object)) mc = NOUN_MC;
 	noun *nt = Nouns::new_common_noun(W, NEUTER_GENDER,
-		PARSE_EXACTLY_NTOPT + REGISTER_SINGULAR_NTOPT +
-		REGISTER_PLURAL_NTOPT + ATTACH_TO_SEARCH_LIST_NTOPT,
+		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
 		KIND_SLOW_MC, STORE_POINTER_kind_constructor(K->construct));
- 	if (Kinds::Compare::le(super, K_object))
-		Nouns::set_range_number(nt, no_kinds_of_object++);
+	Sentences::Headings::initialise_noun_resolution(nt);
 	Kinds::Constructors::attach_noun(K->construct, nt);
+ 	if (Kinds::Compare::le(super, K_object))
+ 		Kinds::Behaviour::set_range_number(K, no_kinds_of_object++);
 
 @h Kind names in the I6 template.
 We defined some "constant" kinds and constructors above, to provide

@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">inflections</a></li><li><a href="index.html#3">Chapter 3: Declension and Conjugation</a></li><li><b>Name Clusters</b></li></ul></div>
 <p class="purpose">Name clusters are sets of noun or adjective forms, perhaps multiple or in multiple languages, which have in common that they share a meaning.</p>
 
-<ul class="toc"><li><a href="3-nc.html#SP1">&#167;1. Cluster</a></li><li><a href="3-nc.html#SP5">&#167;5. Plural fixing</a></li><li><a href="3-nc.html#SP6">&#167;6. Searching declensions</a></li><li><a href="3-nc.html#SP9">&#167;9. Meanings</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-nc.html#SP1">&#167;1. Cluster</a></li><li><a href="3-nc.html#SP5">&#167;5. Plural fixing</a></li><li><a href="3-nc.html#SP6">&#167;6. Searching declensions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Cluster. </b>A cluster is a linked list of wordings, in effect, but they are annotated
 with lingistic roles. For example, the cluster of names for the common noun
@@ -78,9 +78,9 @@ with lingistic roles. For example, the cluster of names for the common noun
 </blockquote>
 
 <p class="commentary">While this perhaps looks a little unstructured, that means that it doesn't
-impose many assumptions about the language. Compare the XML frameworks used
-in the Lexical Markup Framework standard ISO 24613, which it would be fairly
-easy to convert our <a href="3-nc.html#SP1" class="internal">name_cluster</a> objects to.
+impose many assumptions about the language. A similarly pragmatic view is taken
+by the XML frameworks used in the Lexical Markup Framework standard ISO 24613,
+which it would be fairly easy to convert our <a href="3-nc.html#SP1" class="internal">name_cluster</a> objects to.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -90,7 +90,6 @@ easy to convert our <a href="3-nc.html#SP1" class="internal">name_cluster</a> ob
 <span class="plain-syntax">} </span><span class="reserved-syntax">name_cluster</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">individual_name</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">principal_meaning</span><span class="plain-syntax">; </span><span class="comment-syntax"> for the client to attach some meaning</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">declension</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment-syntax"> text of name</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_number</span><span class="plain-syntax">; </span><span class="comment-syntax"> 1 for singular, 2 for plural</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_gender</span><span class="plain-syntax">; </span><span class="comment-syntax"> 1 is neuter, 2 is masculine, 3 is feminine</span>
@@ -117,7 +116,6 @@ easy to convert our <a href="3-nc.html#SP1" class="internal">name_cluster</a> ob
 <span class="plain-syntax">    </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nl</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">gender</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">nl</span><span class="plain-syntax"> = </span><a href="4-dl.html#SP1" class="function-link"><span class="function-syntax">DefaultLanguage::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">individual_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">individual_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">principal_meaning</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax"> = </span><a href="3-dcl.html#SP5" class="function-link"><span class="function-syntax">Declensions::of_noun</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">nl</span><span class="plain-syntax">, </span><span class="identifier-syntax">gender</span><span class="plain-syntax">, </span><span class="identifier-syntax">number</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name_language</span><span class="plain-syntax"> = </span><span class="identifier-syntax">nl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name_number</span><span class="plain-syntax"> = </span><span class="identifier-syntax">number</span><span class="plain-syntax">;</span>
@@ -241,7 +239,7 @@ and wouldn't pass through the pluralising tries intact.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Clusters::set_plural_name</span><span class="plain-syntax">(</span><span class="reserved-syntax">name_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cl</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Clusters::set_plural_in_language</span><span class="plain-syntax">(</span><span class="reserved-syntax">name_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cl</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">individual_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">in</span><span class="plain-syntax">, </span><span class="reserved-syntax">individual_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">cl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">listed</span><span class="plain-syntax">)</span>
@@ -276,7 +274,7 @@ falling back on English if there's none registered:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Clusters::get_name_in_play</span><span class="plain-syntax">(</span><span class="reserved-syntax">name_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cl</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Clusters::get_name_in_language</span><span class="plain-syntax">(</span><span class="reserved-syntax">name_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cl</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">number_sought</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">plural_flag</span><span class="plain-syntax">) </span><span class="identifier-syntax">number_sought</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
@@ -301,24 +299,6 @@ falling back on English if there's none registered:
 <span class="plain-syntax">            (</span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name_language</span><span class="plain-syntax"> == </span><span class="identifier-syntax">nl</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-dcl.html#SP4" class="function-link"><span class="function-syntax">Declensions::in_case</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">), </span><span class="constant-syntax">NOMINATIVE_CASE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Meanings. </b>We will come to how excerpts of text are given meanings later on. For now, it's
-enough to say that each individual name can have one, and that the pointer
-to an <span class="extract"><span class="extract-syntax">excerpt_meaning</span></span> records it.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Clusters::set_principal_meaning</span><span class="plain-syntax">(</span><span class="reserved-syntax">individual_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in</span><span class="plain-syntax">, </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">in</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no individual name"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">principal_meaning</span><span class="plain-syntax"> = </span><span class="identifier-syntax">meaning</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="function-syntax">Clusters::get_principal_meaning</span><span class="plain-syntax">(</span><span class="reserved-syntax">name_cluster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cl</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">individual_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">in</span><span class="plain-syntax">, </span><span class="reserved-syntax">individual_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">cl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">listed</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">principal_meaning</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

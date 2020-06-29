@@ -47,7 +47,7 @@ typedef struct adjectival_phrase {
 adjectival_phrase *Adjectives::declare(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	adjectival_phrase *aph;
 	LOOP_OVER(aph, adjectival_phrase) {
-		wording C = Clusters::get_name_in_play(aph->adjective_names, FALSE, nl);
+		wording C = Clusters::get_name_in_language(aph->adjective_names, FALSE, nl);
 		if (Wordings::match(C, W)) return aph;
 	}
 	return Adjectives::from_word_range(W, nl);
@@ -118,6 +118,7 @@ adjectival_phrase *Adjectives::parse(wording W) {
 }
 
 @h Testing agreement.
+This is used in unit testing.
 
 =
 void Adjectives::test_adjective(OUTPUT_STREAM, wording W) {

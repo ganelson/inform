@@ -115,8 +115,8 @@ this is not a noun, and isn't allowed as a constant value in Inform.
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Those two nonterminals here simply supply text: for efficiency reasons we
-don't actually parse them, although they would give the correct response if
-we did. Instead they're scanned for words which are marked with the appropriate
+don't actually parse against them, although they would give the correct response
+if we did. Instead they're scanned for words which are marked with the appropriate
 numbers.
 </p>
 
@@ -178,7 +178,7 @@ in decimal digits, perhaps with a minus sign.
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b>These mustn't match any number too large to fit into the virtual machine
 being compiled to, so "42000", for instance, is not a valid literal if Inform
-is parsing text in a work intended for the 16-bit Z-machine.
+is parsing text in a work intended for a 16-bit VM.
 </p>
 
 <p class="commentary">Why do we catch this here? The answer is probably that it's an excess of

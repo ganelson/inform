@@ -21,6 +21,16 @@ noun *Kinds::Behaviour::get_noun(kind *K) {
 	return K->construct->dt_tag;
 }
 
+int Kinds::Behaviour::get_range_number(kind *K) {
+	if (K == NULL) return 0;
+	return K->construct->class_number;
+}
+
+void Kinds::Behaviour::set_range_number(kind *K, int r) {
+	if (K == NULL) return;
+	K->construct->class_number = r;
+}
+
 @h Definiteness.
 A kind like "number" is definite. One way to be indefinite is to be a
 kind of kind, like "arithmetic value":

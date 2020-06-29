@@ -369,8 +369,8 @@ traverse 2, if not before, we will be able to give it a kind, since after
 table-stocking the column will have a kind for its entries.
 
 @<Ensure that a property with the same name as the column name exists@> =
-	<unfortunate-table-column-property>(Nouns::nominative(t->columns[i].column_identity->name));
-	P = Properties::Valued::obtain(Nouns::nominative(t->columns[i].column_identity->name));
+	<unfortunate-table-column-property>(Nouns::nominative_singular(t->columns[i].column_identity->name));
+	P = Properties::Valued::obtain(Nouns::nominative_singular(t->columns[i].column_identity->name));
 	if (Properties::Valued::kind(P) == NULL) {
 		kind *CK = Tables::Columns::get_kind(t->columns[i].column_identity);
 		if ((Kinds::get_construct(CK) == CON_rule) ||

@@ -516,8 +516,7 @@ binary_predicate *BinaryPredicates::make_pair(int family,
 		word_assemblage wa =
 			PreformUtilities::merge(<relation-name-formal>, 0, source_name);
 		wording AW = WordAssemblages::to_wording(&wa);
-		Nouns::new_proper_noun(AW, NEUTER_GENDER,
-			REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			MISCELLANEOUS_MC, Rvalues::from_binary_predicate(bp));
 	}
 

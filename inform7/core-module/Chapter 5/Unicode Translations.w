@@ -20,10 +20,8 @@ void UnicodeTranslations::unicode_translates(parse_node *pn) {
 		return;
 	}
 
-	Nouns::new_proper_noun(Node::get_text(pn->next), NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
-		MISCELLANEOUS_MC,
-		NounPhrases::new_raw(Node::get_text(pn->next->next)));
+	Nouns::new_proper_noun(Node::get_text(pn->next), NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+		MISCELLANEOUS_MC, NounPhrases::new_raw(Node::get_text(pn->next->next)));
 }
 
 @ The following parses the subject noun phrase of sentences like

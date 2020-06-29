@@ -297,7 +297,7 @@ of course.
 
 @<Present the name of the phrase regarded as a value, if it has one@> =
 	if (ph->usage_data.constant_phrase_holder) {
-		wording W = Nouns::nominative(ph->usage_data.constant_phrase_holder->name);
+		wording W = Nouns::nominative_singular(ph->usage_data.constant_phrase_holder->name);
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		WRITE("<b>Name:</b> ");

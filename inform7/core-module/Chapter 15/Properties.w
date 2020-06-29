@@ -263,15 +263,13 @@ name in both forms. The following grammar is used to construct this prefix.
 	property ...
 
 @<Register the property name as a noun@> =
-	Nouns::new_proper_noun(W, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		PROPERTY_MC, Rvalues::from_property(prn));
 	word_assemblage wa =
 		PreformUtilities::merge(<property-name-construction>, 0,
 			WordAssemblages::from_wording(W));
 	wording AW = WordAssemblages::to_wording(&wa);
-	Nouns::new_proper_noun(AW, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		PROPERTY_MC, Rvalues::from_property(prn));
 
 @h As kinds.

@@ -73,6 +73,7 @@ typedef struct kind_constructor {
 	/* H: representing this kind at run-time */
 	int weak_kind_ID; /* as used at run-time by the I6 template */
 	struct text_stream *name_in_template_code; /* an I6 identifier */
+	int class_number; /* for classes of object */
 	#ifdef CORE_MODULE
 	struct inter_name *con_iname;
 	struct package_request *kc_package;
@@ -256,6 +257,7 @@ I6 template files.
 	/* H: representing this kind at run-time */
 	con->weak_kind_ID = next_free_data_type_ID++;
 	con->name_in_template_code = Str::new();
+	con->class_number = 0;
 
 	/* I: storing values at run-time */
 	con->multiple_block = FALSE;
@@ -342,7 +344,7 @@ void Kinds::Constructors::attach_noun(kind_constructor *con, noun *nt) {
 wording Kinds::Constructors::get_name(kind_constructor *con, int plural_form) {
 	if (con->dt_tag) {
 		noun *nt = con->dt_tag;
-		if (nt) return Nouns::get_name(nt, plural_form);
+		if (nt) return Nouns::nominative(nt, plural_form);
 	}
 	return EMPTY_WORDING;
 }
@@ -351,7 +353,7 @@ wording Kinds::Constructors::get_name_in_play(kind_constructor *con, int plural_
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (con->dt_tag) {
 		noun *nt = con->dt_tag;
-		if (nt) return Nouns::get_name_in_play(nt, plural_form, nl);
+		if (nt) return Nouns::nominative_in_language(nt, plural_form, nl);
 	}
 	return EMPTY_WORDING;
 }

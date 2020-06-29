@@ -54,7 +54,7 @@ void PL::Actions::Lists::log(action_name_list *anl) {
 		if (anl->action_listed)
 			LOG("%W", anl->action_listed->present_name);
 		if (anl->nap_listed)
-			LOG("%W", Nouns::nominative(anl->nap_listed->name));
+			LOG("%W", Nouns::nominative_singular(anl->nap_listed->name));
 		else LOG("NULL");
 		for (i=0; i<anl->parc; i++)
 			LOG(" [%d: %W]", i, anl->parameter[i]);
@@ -70,7 +70,7 @@ void PL::Actions::Lists::log_briefly(action_name_list *anl) {
 		for (a = anl; a; a = a->next) {
 			if (a->nap_listed) {
 				if (a->parity == -1) LOG("not-");
-				LOG("%W / ", Nouns::nominative(a->nap_listed->name));
+				LOG("%W / ", Nouns::nominative_singular(a->nap_listed->name));
 			} else if (a->action_listed == NULL)
 				LOG("ANY / ");
 			else {

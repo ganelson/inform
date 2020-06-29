@@ -72,7 +72,7 @@ void StandardProblems::table_problem(SIGIL_ARGUMENTS, table *t, table_column *tc
 	ACT_ON_SIGIL
 	current_sentence = t->headline_fragment;
 	Problems::quote_table(1, t);
-	if (tc) Problems::quote_wording(2, Nouns::nominative(tc->name));
+	if (tc) Problems::quote_wording(2, Nouns::nominative_singular(tc->name));
 	if (data) Problems::quote_source(3, data);
 	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment(message);

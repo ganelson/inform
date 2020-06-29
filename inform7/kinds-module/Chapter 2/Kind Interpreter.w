@@ -887,13 +887,17 @@ void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_comm
 			wording LW = Feeds::end(id);
 			if (tcc == singular_KCC) {
 				int ro = 0;
-				if (con->group != PROPER_CONSTRUCTOR_GRP) ro = REGISTER_SINGULAR_NTOPT + REGISTER_PLURAL_NTOPT;
+				if (con->group != PROPER_CONSTRUCTOR_GRP) ro = ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT;
 				noun *nt =
-					Nouns::new_common_noun(LW, NEUTER_GENDER, PARSE_EXACTLY_NTOPT + ro,
+					Nouns::new_common_noun(LW, NEUTER_GENDER, ro,
 					KIND_SLOW_MC, STORE_POINTER_kind_constructor(con));
 				con->dt_tag = nt;
 			} else {
-				Nouns::set_plural_name(con->dt_tag, LW);
+				NATURAL_LANGUAGE_WORDS_TYPE *L = NULL;
+				#ifdef CORE_MODULE
+				L = Task::language_of_syntax();
+				#endif
+				Nouns::set_nominative_plural_in_language(con->dt_tag, LW, L);
 			}
 			return;
 		}

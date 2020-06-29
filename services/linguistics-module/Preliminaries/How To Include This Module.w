@@ -86,6 +86,15 @@ it allows them in any form in non-assertion contexts. See
 (*) |EMPTY_ADJECTIVE_MEANING_LINGUISTICS_CALLBACK|, if provided, should be the default
 meaning for an adjective newly defined -- see //Adjectives::from_word_range//.
 
+(*) |NOUN_COMPILATION_LINGUISTICS_CALLBACK|, if provided, should accompany a
+declaration of a structure called |name_compilation_data|; this function should
+then set up that data for the given noun -- see //Nouns::new_inner//.
+
+(*) |NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK|, if provided, should accompany a
+declaration of a structure called |name_resolution_data|; this function should
+decide which possible reading of the meaning of a noun makes the best sense in
+context -- see //Nouns::disambiguate//.
+
 (*) |TRACING_LINGUISTICS_CALLBACK|, if provided, can return |TRUE| to allow
 extensive details of verb parsing to be copied to the debugging log. See
 //VerbPhrases::tracing//.

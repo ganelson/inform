@@ -29,8 +29,7 @@ constant_phrase *Phrases::Constants::create(wording NW, wording RW) {
 	cphr->phrase_meant = NULL; /* we won't know until later */
 	cphr->cphr_kind = NULL; /* nor this */
 	cphr->associated_preamble_text = RW;
-	cphr->name = Nouns::new_proper_noun(NW, NEUTER_GENDER,
-		REGISTER_SINGULAR_NTOPT + PARSE_EXACTLY_NTOPT,
+	cphr->name = Nouns::new_proper_noun(NW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		PHRASE_CONSTANT_MC, Rvalues::from_constant_phrase(cphr));
 	cphr->cphr_iname = NULL;
 	return cphr;
@@ -141,7 +140,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
 	Emit::array_iname_entry(RS);
 
 	TEMPORARY_TEXT(name)
-	WRITE_TO(name, "%W", Nouns::nominative(cphr->name));
+	WRITE_TO(name, "%W", Nouns::nominative_singular(cphr->name));
 	Emit::array_text_entry(name);
 	DISCARD_TEXT(name)
 

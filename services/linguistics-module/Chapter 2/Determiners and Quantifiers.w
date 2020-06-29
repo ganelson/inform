@@ -3,9 +3,8 @@
 To create the determiners found in standard English which refer
 to collections of things, and to create their meanings as logical quantifiers.
 
-@h Definitions.
-
-@ In logic, a "quantifier" appears at the front of a statement which can
+@h How these relate.
+In logic, a "quantifier" appears at the front of a statement which can
 apply to many cases, and describes the quantity of cases for which the
 statement is true: all of them, some of them, exactly six, and so on.
 
@@ -33,9 +32,9 @@ passed, but to those which didn't, and those are called "complementary"
 of closed doors and not the number of open ones.
 
 @ These different ways to describe multiple outcomes are represented in Inform by
-|quantifier| structures. One exists for each different meaning supported
+//quantifier// structures. One exists for each different meaning supported
 by Inform -- |ForAll|, |Exists| and so forth -- except that some quantifiers
-take a numerical parameter, and a single |quantifier| structure represents
+take a numerical parameter, and a single //quantifier// structure represents
 the meaning for any value of this parameter. For instance, the cardinality
 quantifiers |Card=3| and |Card=17| are both represented by the same
 quantifier structure, whose pointer is called |exactly_quantifier| below.
@@ -44,7 +43,6 @@ containers, for instance, where the parameter is 3 or 17 respectively.
 
 =
 typedef struct quantifier {
-	char *operator;
 	#ifdef CORE_MODULE
 	inter_t operator_prim; /* inter opcode to compare successes against the threshold */
 	#endif
@@ -103,18 +101,16 @@ new quantifiers from the source text or the template files, but what follows
 is written so that it would be fairly easy to add this ability.
 
 =
-quantifier *Quantifiers::quant_new(char *op, int T, int is_comp, char *text) {
+quantifier *Quantifiers::quant_new(text_stream *op, int T, int is_comp, char *text) {
 	quantifier *quant = CREATE(quantifier);
-	quant->operator = op;
 	#ifdef CORE_MODULE
-	quant->operator_prim = 0;
-	if (strcmp(op, "==") == 0) quant->operator_prim = EQ_BIP;
-	if (strcmp(op, "~=") == 0) quant->operator_prim = NE_BIP;
-	if (strcmp(op, ">=") == 0) quant->operator_prim = GE_BIP;
-	if (strcmp(op, ">") == 0) quant->operator_prim = GT_BIP;
-	if (strcmp(op, "<=") == 0) quant->operator_prim = LE_BIP;
-	if (strcmp(op, "<") == 0) quant->operator_prim = LT_BIP;
-	if (quant->operator_prim == 0) internal_error("unfamiliar operator");
+	if (Str::eq(op, I"=="))      quant->operator_prim = EQ_BIP;
+	else if (Str::eq(op, I"~=")) quant->operator_prim = NE_BIP;
+	else if (Str::eq(op, I">=")) quant->operator_prim = GE_BIP;
+	else if (Str::eq(op, I">"))  quant->operator_prim = GT_BIP;
+	else if (Str::eq(op, I"<=")) quant->operator_prim = LE_BIP;
+	else if (Str::eq(op, I"<"))  quant->operator_prim = LT_BIP;
+	else internal_error("unfamiliar operator");
 	#endif
 
 	quant->T_coefficient = T; quant->is_complementary = is_comp;
@@ -207,33 +203,6 @@ I6 will fold that out in eventual code generation. When the proportion is
 the resulting I6 is more legible.)
 
 =
-void Quantifiers::compile_test(OUTPUT_STREAM, quantifier *quant, int index,
-	int quantification_parameter) {
-	int TC = quant->T_coefficient;
-	switch (TC) {
-		case -1:
-			if (quant->is_complementary)
-				WRITE("qcy_%d %s qcn_%d-%d",
-					index, quant->operator, index, quantification_parameter);
-			else
-				WRITE("qcy_%d %s %d",
-					index, quant->operator, quantification_parameter);
-			break;
-		case 10:
-			WRITE("qcy_%d %s qcn_%d", index, quant->operator, index);
-			break;
-		case 0:
-			WRITE("qcy_%d %s 0", index, quant->operator);
-			break;
-		default:
-			if (strcmp(quant->operator, "==") != 0)
-				WRITE("qcy_%d*10 %s %d*qcn_%d", index, quant->operator, TC, index);
-			else
-				WRITE("qcy_%d %s %d*qcn_%d/10", index, quant->operator, TC, index);
-			break;
-	}
-}
-
 #ifdef CORE_MODULE
 void Quantifiers::emit_test(quantifier *quant,
 	int quantification_parameter, inter_symbol *qcy, inter_symbol *qcn) {
@@ -249,11 +218,13 @@ void Quantifiers::emit_test(quantifier *quant,
 				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, qcn);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+						(inter_t) quantification_parameter);
 				Produce::up(Emit::tree());
 			} else {
 				Produce::val_symbol(Emit::tree(), K_value, qcy);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) quantification_parameter);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+					(inter_t) quantification_parameter);
 			}
 			break;
 		case 10:
@@ -535,10 +506,10 @@ door is open" but would never say "not each door is open". In all other
 respects "each" and "every" are synonymous in the S-parser.
 
 @<Make traditional quantification determiners@> =
-	for_all_quantifier     = Quantifiers::quant_new("==", 10, FALSE, "ForAll");
-	not_for_all_quantifier = Quantifiers::quant_new("<", 10, FALSE, "NotAll");
-	exists_quantifier      = Quantifiers::quant_new(">", 0, FALSE, "Exists");
-	not_exists_quantifier  = Quantifiers::quant_new("==", 0, FALSE, "DoesNotExist");
+	for_all_quantifier     = Quantifiers::quant_new(I"==", 10, FALSE, "ForAll");
+	not_for_all_quantifier = Quantifiers::quant_new(I"<", 10, FALSE, "NotAll");
+	exists_quantifier      = Quantifiers::quant_new(I">", 0, FALSE, "Exists");
+	not_exists_quantifier  = Quantifiers::quant_new(I"==", 0, FALSE, "DoesNotExist");
 
 	for_all_quantifier->can_be_used_in_now = TRUE;
 	for_all_quantifier->can_be_used_in_assertions = TRUE;
@@ -571,8 +542,8 @@ construction to have any natural English paraphrase, so we do not make a
 built-in quantifiers all occur in negation pairs.
 
 @<Make complement comparison determiners@> =
-	all_but_quantifier     = Quantifiers::quant_new("==", -1, TRUE, "AllBut%d");
-	not_all_but_quantifier = Quantifiers::quant_new("~=", -1, TRUE, "NotAllBut%d");
+	all_but_quantifier     = Quantifiers::quant_new(I"==", -1, TRUE, "AllBut%d");
+	not_all_but_quantifier = Quantifiers::quant_new(I"~=", -1, TRUE, "NotAllBut%d");
 
 	Quantifiers::quants_negate_each_other(all_but_quantifier, not_all_but_quantifier);
 
@@ -587,10 +558,10 @@ We don't support the determiner "half", as in, "if half the doors are open",
 because it's ambiguous as to whether it means exactly half or half-or-more.
 
 @<Make proportion determiners@> =
-	almost_all_quantifier  = Quantifiers::quant_new(">=", 8, FALSE, "Proportion>=80%%");
-	almost_no_quantifier   = Quantifiers::quant_new("<",  2, FALSE, "Proportion<20%%");
-	most_quantifier        = Quantifiers::quant_new(">",  5, FALSE, "Proportion>50%%");
-	under_half_quantifier  = Quantifiers::quant_new("<=", 5, FALSE, "Proportion<=50%%");
+	almost_all_quantifier  = Quantifiers::quant_new(I">=", 8, FALSE, "Proportion>=80%%");
+	almost_no_quantifier   = Quantifiers::quant_new(I"<",  2, FALSE, "Proportion<20%%");
+	most_quantifier        = Quantifiers::quant_new(I">",  5, FALSE, "Proportion>50%%");
+	under_half_quantifier  = Quantifiers::quant_new(I"<=", 5, FALSE, "Proportion<=50%%");
 
 	Quantifiers::quants_negate_each_other(almost_all_quantifier, almost_no_quantifier);
 	Quantifiers::quants_negate_each_other(most_quantifier, under_half_quantifier);
@@ -625,12 +596,12 @@ write that, but of course the two assertions need not be adjacent in
 the source text. One might be in an extension, for instance.)
 
 @<Make cardinality quantification determiners@> =
-	at_least_quantifier    = Quantifiers::quant_new(">=", -1, FALSE, "Card>=%d");
-	at_most_quantifier     = Quantifiers::quant_new("<=", -1, FALSE, "Card<=%d");
-	exactly_quantifier     = Quantifiers::quant_new("==", -1, FALSE, "Card=%d");
-	less_than_quantifier   = Quantifiers::quant_new("<",  -1, FALSE, "Card<%d");
-	more_than_quantifier   = Quantifiers::quant_new(">",  -1, FALSE, "Card>%d");
-	other_than_quantifier  = Quantifiers::quant_new("~=", -1, FALSE, "Card~=%d");
+	at_least_quantifier    = Quantifiers::quant_new(I">=", -1, FALSE, "Card>=%d");
+	at_most_quantifier     = Quantifiers::quant_new(I"<=", -1, FALSE, "Card<=%d");
+	exactly_quantifier     = Quantifiers::quant_new(I"==", -1, FALSE, "Card=%d");
+	less_than_quantifier   = Quantifiers::quant_new(I"<",  -1, FALSE, "Card<%d");
+	more_than_quantifier   = Quantifiers::quant_new(I">",  -1, FALSE, "Card>%d");
+	other_than_quantifier  = Quantifiers::quant_new(I"~=", -1, FALSE, "Card~=%d");
 
 	at_least_quantifier->can_be_used_in_assertions = TRUE;
 
