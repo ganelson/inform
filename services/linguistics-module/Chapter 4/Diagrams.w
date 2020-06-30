@@ -69,12 +69,10 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 			}
 			break;
 		case PROPER_NOUN_NT:
-			switch (Annotations::read_int(pn, nounphrase_article_ANNOT)) {
-				case IT_ART: WRITE(" (pronoun)"); break;
-				case DEF_ART: WRITE(" (definite)"); break;
-				case INDEF_ART: WRITE(" (indefinite)"); break;
-			}
-			if (Annotations::read_int(pn, plural_reference_ANNOT)) WRITE(" (plural)");
+			if (Annotations::read_int(pn, pronoun_ANNOT) != 0)
+				Pronouns::write_lcon(OUT, Annotations::read_int(pn, pronoun_ANNOT));
+			if (Annotations::read_int(pn, nounphrase_article_ANNOT) != 0)
+				Articles::write_lcon(OUT, Annotations::read_int(pn, nounphrase_article_ANNOT));
 			break;
 		case RELATIONSHIP_NT:
 			switch (Annotations::read_int(pn, relationship_node_type_ANNOT)) {

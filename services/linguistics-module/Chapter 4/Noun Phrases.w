@@ -34,7 +34,7 @@ The following macro is useful in the grammar below:
 =
 parse_node *NounPhrases::new_raw(wording W) {
 	parse_node *PN = Node::new(PROPER_NOUN_NT);
-	Annotations::write_int(PN, nounphrase_article_ANNOT, NO_ART);
+	Annotations::write_int(PN, nounphrase_article_ANNOT, 0);
 	Node::set_text(PN, W);
 	return PN;
 }
@@ -94,18 +94,15 @@ leave the text empty.
 <nounphrase-articled> ::=
 	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
 	<if-not-deliberately-capitalised> <indefinite-article> <nounphrase> |    ==> 0; *XP = RP[3]; @<Annotate node by article@>;
-	<if-not-deliberately-capitalised> <definite-article> <nounphrase> |    ==> 0; *XP = RP[3]; @<Annotate node by definite article@>;
+	<if-not-deliberately-capitalised> <definite-article> <nounphrase> |    ==> 0; *XP = RP[3]; @<Annotate node by article@>;
 	<nounphrase>															==> 0; *XP = RP[1]
 
 @<Annotate node by article@> =
-	Annotations::write_int(*XP, nounphrase_article_ANNOT, INDEF_ART);
-	Annotations::write_int(*XP, plural_reference_ANNOT, (R[2] >= 3)?TRUE:FALSE);
-	Annotations::write_int(*XP, gender_reference_ANNOT, (R[2] % 3) + 1);
-
-@<Annotate node by definite article@> =
-	Annotations::write_int(*XP, nounphrase_article_ANNOT, DEF_ART);
-	Annotations::write_int(*XP, plural_reference_ANNOT, (R[2] >= 3)?TRUE:FALSE);
-	Annotations::write_int(*XP, gender_reference_ANNOT, (R[2] % 3) + 1);
+	Annotations::write_int(*XP, nounphrase_article_ANNOT, R[2]);
+	Annotations::write_int(*XP, plural_reference_ANNOT,
+		(Lcon::get_number(R[2]) == SINGULAR_NUMBER)?FALSE:TRUE);
+	Annotations::write_int(*XP, gender_reference_ANNOT,
+		Lcon::get_gender(R[2]));
 
 @ Sometimes we want to look at the article (if any) used in a raw NP, and
 absorb that into annotations, removing it from the wording. For instance, in
@@ -126,6 +123,8 @@ parse_node *NounPhrases::annotate_by_articles(parse_node *RAW_NP) {
 		Annotations::read_int(MODEL, nounphrase_article_ANNOT));
 	Annotations::write_int(RAW_NP, plural_reference_ANNOT,
 		Annotations::read_int(MODEL, plural_reference_ANNOT));
+	Annotations::write_int(RAW_NP, gender_reference_ANNOT,
+		Annotations::read_int(MODEL, gender_reference_ANNOT));
 	return RAW_NP;
 }
 
@@ -380,7 +379,7 @@ speed optimisation, and doesn't affect the language's definition.
 	<np-inner> <np-with-or-having-tail> |    ==> 0; *XP = NounPhrases::PN_pair(WITH_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-inner> <np-and-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-kind-phrase> |    ==> 0; *XP = RP[1]
-	<nominative-pronoun> |    ==> GENERATE_RAW_NP; Annotations::write_int(*XP, nounphrase_article_ANNOT, IT_ART);
+	<subject-pronoun> |    ==> GENERATE_RAW_NP; Annotations::write_int(*XP, pronoun_ANNOT, R[1]);
 	<np-articled-balanced>							==> 0; *XP = RP[1]
 
 @ The tail of with-or-having parses for instance "with carrying capacity 5"

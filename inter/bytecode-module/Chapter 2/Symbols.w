@@ -6,7 +6,7 @@ To manage named symbols in inter code.
 
 =
 typedef struct inter_symbol {
-	inter_t symbol_ID;
+	inter_ti symbol_ID;
 	struct inter_symbols_table *owning_table;
 	struct text_stream *symbol_name;
 	struct inter_tree_node *definition;
@@ -20,7 +20,7 @@ typedef struct inter_symbol {
 } inter_symbol;
 
 @ =
-inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, inter_t ID) {
+inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, inter_ti ID) {
 	if (Str::len(name) == 0) internal_error("symbol cannot have empty text as identifier");
 
 	inter_symbol *symb = CREATE(inter_symbol);
@@ -74,12 +74,12 @@ int Inter::Symbols::sort_number(const inter_symbol *S) {
 }
 
 @ =
-int Inter::Symbols::is_stored_in_data(inter_t val1, inter_t val2) {
+int Inter::Symbols::is_stored_in_data(inter_ti val1, inter_ti val2) {
 	if (val1 == ALIAS_IVAL) return TRUE;
 	return FALSE;
 }
 
-void Inter::Symbols::to_data(inter_tree *I, inter_package *pack, inter_symbol *S, inter_t *val1, inter_t *val2) {
+void Inter::Symbols::to_data(inter_tree *I, inter_package *pack, inter_symbol *S, inter_ti *val1, inter_ti *val2) {
 	if (S == NULL) internal_error("no symbol");
 	*val1 = ALIAS_IVAL; *val2 = Inter::SymbolsTables::id_from_symbol(I, pack, S);
 }
@@ -206,25 +206,25 @@ void Inter::Symbols::annotate(inter_symbol *symb, inter_annotation IA) {
 	Inter::Annotations::add_to_set(&(symb->ann_set), IA);
 }
 
-void Inter::Symbols::annotate_i(inter_symbol *symb, inter_t annot_ID, inter_t n) {
+void Inter::Symbols::annotate_i(inter_symbol *symb, inter_ti annot_ID, inter_ti n) {
 	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
 	Inter::Symbols::annotate(symb, IA);
 }
 
-int Inter::Symbols::read_annotation(const inter_symbol *symb, inter_t ID) {
+int Inter::Symbols::read_annotation(const inter_symbol *symb, inter_ti ID) {
 	inter_annotation *IA = Inter::Annotations::find(&(symb->ann_set), ID);
 	if (IA) return (int) IA->annot_value;
 	return -1;
 }
 
-text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_tree *I, inter_t ID) {
+text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_tree *I, inter_ti ID) {
 	inter_annotation *IA = Inter::Annotations::find(&(symb->ann_set), ID);
 	if (IA) return Inter::Warehouse::get_text(Inter::Tree::warehouse(I), IA->annot_value);
 	return NULL;
 }
 
-void Inter::Symbols::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *symb, inter_t annot_ID, text_stream *S) {
-	inter_t n = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), owner);
+void Inter::Symbols::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *symb, inter_ti annot_ID, text_stream *S) {
+	inter_ti n = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), owner);
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), n), S);
 	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
 	Inter::Symbols::annotate(symb, IA);
@@ -234,7 +234,7 @@ void Inter::Symbols::write_annotations(OUTPUT_STREAM, inter_tree_node *F, inter_
 	if (symb) Inter::Annotations::write_set(OUT, &(symb->ann_set), F);
 }
 
-void Inter::Symbols::transpose_annotations(inter_symbol *symb, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Symbols::transpose_annotations(inter_symbol *symb, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	if (symb) Inter::Annotations::transpose_set(&(symb->ann_set), grid, grid_extent, E);
 }
 

@@ -100,7 +100,7 @@ will vary depending on the verb it's coupled with.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure preposition is accessed in 2/adj, 2/daq, 2/nns, 3/vrb, 3/vu, 4/vp and here.</li></ul>
+<ul class="endnotetexts"><li>The structure preposition is accessed in 2/adj, 2/art, 2/daq, 2/nns, 2/prn, 3/vrb, 3/vu, 4/vp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Prepositions are a grammatical category:
 </p>
 
@@ -132,7 +132,7 @@ will vary depending on the verb it's coupled with.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Prepositions::log</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Prepositions::log</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vprep</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">preposition</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prep</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">preposition</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vprep</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prep</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) { </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"___"</span><span class="plain-syntax">); }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"p=%A"</span><span class="plain-syntax">, &amp;(</span><span class="identifier-syntax">prep</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">prep_text</span><span class="plain-syntax">)); }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%A"</span><span class="plain-syntax">, &amp;(</span><span class="identifier-syntax">prep</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prep_text</span><span class="plain-syntax">)); }</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Creation. </b>Prepositions are completely determined by their wording: the "for" attached

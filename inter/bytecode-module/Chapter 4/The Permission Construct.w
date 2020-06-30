@@ -83,11 +83,11 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	}
 
 	*E = Inter::Permission::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, owner_name),
-		Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, pp_name), (store)?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, store)):0, (inter_t) ilp->indent_level, eloc);
+		Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, pp_name), (store)?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, store)):0, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_t PID, inter_t KID,
-	inter_t PPID, inter_t SID, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID,
+	inter_ti PPID, inter_ti SID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_4(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
@@ -95,7 +95,7 @@ inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_t PID, in
 }
 
 void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	inter_t vcount = Inode::vcount(P);
+	inter_ti vcount = Inode::vcount(P);
 
 	if (P->W.extent != EXTENT_PERM_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 

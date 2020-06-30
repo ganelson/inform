@@ -45,8 +45,8 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbol *val_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
-	inter_t val1 = 0;
-	inter_t val2 = 0;
+	inter_ti val1 = 0;
+	inter_ti val2 = 0;
 
 	inter_symbol *kind_as_value = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	*E = NULL;
@@ -60,14 +60,14 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = Inter::Val::new(IBM, val_kind, ilp->indent_level, val1, val2, eloc);
 }
 
-inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_symbol *val_kind, int level, inter_t val1, inter_t val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_4(IBM, VAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, val_kind), val1, val2, eloc, (inter_t) level);
+inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_symbol *val_kind, int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
+	inter_tree_node *P = Inode::fill_4(IBM, VAL_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, val_kind), val1, val2, eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
-void Inter::Val::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Val::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.data[VAL2_VAL_IFLD] = Inter::Types::transpose_value(P->W.data[VAL1_VAL_IFLD], P->W.data[VAL2_VAL_IFLD], grid, grid_extent, E);
 }
 

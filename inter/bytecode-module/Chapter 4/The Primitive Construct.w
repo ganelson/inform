@@ -40,29 +40,29 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	inter_tree_node *F = Inode::fill_1(IBM, PRIMITIVE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prim_name), eloc, (inter_t) ilp->indent_level);
+	inter_tree_node *F = Inode::fill_1(IBM, PRIMITIVE_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prim_name), eloc, (inter_ti) ilp->indent_level);
 
 	text_stream *in = ilp->mr.exp[1];
 	match_results mr2 = Regexp::create_mr();
 	while (Regexp::match(&mr2, in, L" *(%i+) *(%c*)")) {
-		inter_t lcat = Inter::Primitive::category(eloc, mr2.exp[0], E);
+		inter_ti lcat = Inter::Primitive::category(eloc, mr2.exp[0], E);
 		if (*E) return;
 		if (lcat == 0) break;
-		if (Inode::extend(F, (inter_t) 1) == FALSE) internal_error("can't extend");
+		if (Inode::extend(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
 		F->W.data[F->W.extent - 1] = lcat;
 		Str::copy(in, mr2.exp[1]);
 	}
 
-	inter_t rcat = Inter::Primitive::category(eloc, ilp->mr.exp[2], E);
+	inter_ti rcat = Inter::Primitive::category(eloc, ilp->mr.exp[2], E);
 	if (*E) return;
-	if (Inode::extend(F, (inter_t) 1) == FALSE) internal_error("can't extend");
+	if (Inode::extend(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
 	F->W.data[F->W.extent - 1] = rcat;
 
 	*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), F); if (*E) return;
 	Inter::Bookmarks::insert(IBM, F);
 }
 
-inter_t Inter::Primitive::category(inter_error_location *eloc, text_stream *T, inter_error_message **E) {
+inter_ti Inter::Primitive::category(inter_error_location *eloc, text_stream *T, inter_error_message **E) {
 	*E = NULL;
 	if (Str::eq(T, I"void")) return 0;
 	if (Str::eq(T, I"val")) return VAL_PRIM_CAT;
@@ -73,7 +73,7 @@ inter_t Inter::Primitive::category(inter_error_location *eloc, text_stream *T, i
 	return VAL_PRIM_CAT;
 }
 
-void Inter::Primitive::write_category(OUTPUT_STREAM, inter_t cat) {
+void Inter::Primitive::write_category(OUTPUT_STREAM, inter_ti cat) {
 	switch (cat) {
 		case VAL_PRIM_CAT: WRITE("val"); break;
 		case REF_PRIM_CAT: WRITE("ref"); break;
@@ -122,14 +122,14 @@ int Inter::Primitive::arity(inter_symbol *prim) {
 	return D->W.extent - CAT_PRIM_IFLD - 1;
 }
 
-inter_t Inter::Primitive::operand_category(inter_symbol *prim, int i) {
+inter_ti Inter::Primitive::operand_category(inter_symbol *prim, int i) {
 	if (prim == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(prim);
 	if (D == NULL) return 0;
 	return D->W.data[CAT_PRIM_IFLD + i];
 }
 
-inter_t Inter::Primitive::result_category(inter_symbol *prim) {
+inter_ti Inter::Primitive::result_category(inter_symbol *prim) {
 	if (prim == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(prim);
 	if (D == NULL) return 0;

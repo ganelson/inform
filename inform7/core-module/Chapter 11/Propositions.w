@@ -477,7 +477,7 @@ pcalc_prop *Calculus::Propositions::composited_kind(pcalc_prop *prop) {
 
 int Calculus::Propositions::contains_nonexistence_quantifier(pcalc_prop *prop) {
 	while ((prop = Calculus::Propositions::prop_seek_atom(prop, QUANTIFIER_ATOM, 1)) != NULL) {
-		quantifier *quant = RETRIEVE_POINTER_quantifier(prop->predicate);
+		quantifier *quant = prop->quant;
 		if (quant != exists_quantifier) return TRUE;
 		prop = prop->next;
 	}
@@ -579,7 +579,7 @@ pcalc_term Calculus::Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 	if (prop == NULL) return pct;
 	if (prop->next != NULL) return pct;
 	if ((prop->element == PREDICATE_ATOM) && (prop->arity == 1)) {
- 		adjective_usage *tr = RETRIEVE_POINTER_adjective_usage(prop->predicate);
+ 		unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(prop->predicate);
 		return Calculus::Terms::adj_to_noun_conversion(tr);
 	}
 	if (prop->element == KIND_ATOM) {
@@ -594,14 +594,14 @@ pcalc_term Calculus::Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 following are useful for looping through them:
 
 =
-adjective_usage *Calculus::Propositions::first_adjective_usage(pcalc_prop *prop, pcalc_prop **ppp) {
+unary_predicate *Calculus::Propositions::first_unary_predicate(pcalc_prop *prop, pcalc_prop **ppp) {
 	prop = Calculus::Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 1);
 	if (ppp) *ppp = prop;
 	if (prop == NULL) return NULL;
 	return Calculus::Atoms::au_from_unary_PREDICATE(prop);
 }
 
-adjective_usage *Calculus::Propositions::next_adjective_usage(pcalc_prop **ppp) {
+unary_predicate *Calculus::Propositions::next_unary_predicate(pcalc_prop **ppp) {
 	if (ppp == NULL) internal_error("bad ppp");
 	pcalc_prop *prop = Calculus::Propositions::prop_seek_atom((*ppp)->next, PREDICATE_ATOM, 1);
 	*ppp = prop;

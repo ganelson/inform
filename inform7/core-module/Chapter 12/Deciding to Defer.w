@@ -310,7 +310,7 @@ void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, 
 						Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (calling_count - 1));
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (calling_count - 1));
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 					LocalVariables::add_calling_to_condition(local);
@@ -341,7 +341,7 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 						Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) calling_count++);
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) calling_count++);
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 				break;
@@ -611,7 +611,7 @@ void Calculus::Deferrals::emit_number_of_S(parse_node *spec) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
 			Specifications::Compiler::emit_as_val(K_value, spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) NUMBER_OF_DUSAGE);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) NUMBER_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
 		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
@@ -707,7 +707,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 		Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 		Produce::down(Emit::tree());
 			Specifications::Compiler::emit_as_val(K_value, spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) RANDOM_OF_DUSAGE);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) RANDOM_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
 		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
@@ -744,7 +744,7 @@ void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 			Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 			Produce::down(Emit::tree());
 				Specifications::Compiler::emit_as_val(K_value, spec);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) TOTAL_DUSAGE);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TOTAL_DUSAGE);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	} else {
@@ -766,7 +766,7 @@ void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 		Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 		Produce::down(Emit::tree());
 			Specifications::Compiler::emit_as_val(K_value, spec);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
 			Specifications::Compiler::emit_as_val(K_value, in);
 		Produce::up(Emit::tree());
 	} else {
@@ -814,12 +814,12 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
 					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_LOOP_SIGN_HL));
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sign);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sign);
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 				Produce::down(Emit::tree());
 					Specifications::Compiler::emit_as_val(K_value, spec);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) EXTREMAL_DUSAGE);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) EXTREMAL_DUSAGE);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -947,7 +947,7 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 					Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 					Produce::down(Emit::tree());
 						Specifications::Compiler::emit_as_val(K_value, spec);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
 						Specifications::Compiler::emit_as_val(K_value,
 							Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
 					Produce::up(Emit::tree());
@@ -1036,7 +1036,7 @@ void Calculus::Deferrals::emit_repeat_call(parse_node *spec, local_variable *fro
 	Produce::inv_primitive(Emit::tree(), INDIRECT2_BIP);
 	Produce::down(Emit::tree());
 		Specifications::Compiler::emit_as_val(K_value, spec);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) LOOP_DOMAIN_DUSAGE);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) LOOP_DOMAIN_DUSAGE);
 		if (fromv) {
 			inter_symbol *fromv_s = LocalVariables::declare_this(fromv, FALSE, 8);
 			Produce::val_symbol(Emit::tree(), K_value, fromv_s);

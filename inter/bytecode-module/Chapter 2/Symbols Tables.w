@@ -11,7 +11,7 @@ typedef struct inter_symbols_table {
 	int size;
 	struct inter_symbol **symbol_array;
 	int n_index;
-	inter_t next_free_ID;
+	inter_ti next_free_ID;
 	CLASS_DEFINITION
 } inter_symbols_table;
 
@@ -62,7 +62,7 @@ void Inter::SymbolsTables::write_declarations(OUTPUT_STREAM, inter_symbols_table
 	}
 }
 
-inter_symbol *Inter::SymbolsTables::search_inner(inter_symbols_table *T, text_stream *S, int create, inter_t ID, int equating) {
+inter_symbol *Inter::SymbolsTables::search_inner(inter_symbols_table *T, text_stream *S, int create, inter_ti ID, int equating) {
 	if (T == NULL) internal_error("no IST");
 	if (S == NULL) return NULL;
 	
@@ -149,7 +149,7 @@ inter_symbol *Inter::SymbolsTables::symbol_from_name_creating(inter_symbols_tabl
 	return Inter::SymbolsTables::search_inner(T, S, TRUE, 0, TRUE);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_name_creating_at_ID(inter_symbols_table *T, text_stream *S, inter_t ID) {
+inter_symbol *Inter::SymbolsTables::symbol_from_name_creating_at_ID(inter_symbols_table *T, text_stream *S, inter_ti ID) {
 	return Inter::SymbolsTables::search_inner(T, S, TRUE, ID, TRUE);
 }
 
@@ -216,7 +216,7 @@ a different meaning in one inter frame than in another. We provide two ways
 to access this: one following equations, the other not.
 
 =
-inter_symbol *Inter::SymbolsTables::unequated_symbol_from_id(inter_symbols_table *T, inter_t ID) {
+inter_symbol *Inter::SymbolsTables::unequated_symbol_from_id(inter_symbols_table *T, inter_ti ID) {
 	if (T == NULL) return NULL;
 	int index = (int) ID - (int) SYMBOL_BASE_VAL;
 	if (index < 0) return NULL;
@@ -224,7 +224,7 @@ inter_symbol *Inter::SymbolsTables::unequated_symbol_from_id(inter_symbols_table
 	return T->symbol_array[index];
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_id(inter_symbols_table *T, inter_t ID) {
+inter_symbol *Inter::SymbolsTables::symbol_from_id(inter_symbols_table *T, inter_ti ID) {
 	inter_symbol *S = Inter::SymbolsTables::unequated_symbol_from_id(T, ID);
 	while ((S) && (S->equated_to)) S = S->equated_to;
 	return S;
@@ -241,16 +241,16 @@ inter_symbol *Inter::SymbolsTables::global_symbol_from_frame_data(inter_tree_nod
 	return Inter::SymbolsTables::symbol_from_id(Inode::globals(P), P->W.data[x]);
 }
 
-inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_package *owner, inter_t ID) {
+inter_symbol *Inter::SymbolsTables::local_symbol_from_id(inter_package *owner, inter_ti ID) {
 	return Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope(owner), ID);
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_table(inter_t val1, inter_t val2, inter_symbols_table *T) {
+inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_table(inter_ti val1, inter_ti val2, inter_symbols_table *T) {
 	if (val1 == ALIAS_IVAL) return Inter::SymbolsTables::symbol_from_id(T, val2);
 	return NULL;
 }
 
-inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_frame(inter_t val1, inter_t val2, inter_tree_node *P) {
+inter_symbol *Inter::SymbolsTables::symbol_from_data_pair_and_frame(inter_ti val1, inter_ti val2, inter_tree_node *P) {
 	return Inter::SymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
 }
 
@@ -259,7 +259,7 @@ If all we want is to read the ID of a symbol definitely present in the given
 symbols table, that's easy:
 
 =
-inter_t Inter::SymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
+inter_ti Inter::SymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
 	inter_symbols_table *T = Inter::Packages::scope(P);
 	if (T == NULL) T = Inter::Tree::global_scope(I);
@@ -270,11 +270,11 @@ inter_t Inter::SymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, i
 	return S->symbol_ID;
 }
 
-inter_t Inter::SymbolsTables::id_from_symbol_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
+inter_ti Inter::SymbolsTables::id_from_symbol_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
 	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(I, P, S);
 }
 
-inter_t Inter::SymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_bookmark *IBM, inter_symbol *S) {
+inter_ti Inter::SymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_bookmark *IBM, inter_symbol *S) {
 	return Inter::SymbolsTables::id_from_symbol_inner_not_creating(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), S);
 }
 
@@ -289,7 +289,7 @@ well if we did.) It's therefore an internal error to call this routine with
 a global symbol in any non-global context.
 
 =
-inter_t Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter_package *P, inter_symbol *S) {
+inter_ti Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
 	inter_symbols_table *T = Inter::Packages::scope(P);
 	if (T == NULL) T = G;
@@ -301,7 +301,7 @@ inter_t Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter
 		}
 		for (int i=0; i<T->size; i++)
 			if ((T->symbol_array[i]) && (T->symbol_array[i]->equated_to == S))
-				return (inter_t) T->symbol_array[i]->symbol_ID;
+				return (inter_ti) T->symbol_array[i]->symbol_ID;
 		text_stream *N = Inter::SymbolsTables::render_identifier_unique(T, S->symbol_name);
 		inter_symbol *X = Inter::SymbolsTables::search_inner(T, N, TRUE, 0, FALSE);
 		if (X->equated_to == NULL) {
@@ -317,15 +317,15 @@ inter_t Inter::SymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter
 	return S->symbol_ID;
 }
 
-inter_t Inter::SymbolsTables::id_from_symbol(inter_tree *I, inter_package *P, inter_symbol *S) {
+inter_ti Inter::SymbolsTables::id_from_symbol(inter_tree *I, inter_package *P, inter_symbol *S) {
 	return Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(I), P, S);
 }
 
-inter_t Inter::SymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package *P, inter_symbol *S) {
+inter_ti Inter::SymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package *P, inter_symbol *S) {
 	return Inter::SymbolsTables::id_from_symbol_inner(Inode::globals(F), P, S);
 }
 
-inter_t Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
+inter_ti Inter::SymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
 	return Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(Inter::Bookmarks::tree(IBM)), Inter::Bookmarks::package(IBM), S);
 }
 

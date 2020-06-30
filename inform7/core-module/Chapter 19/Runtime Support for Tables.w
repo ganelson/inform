@@ -133,11 +133,11 @@ the values given there.
 	if (Kinds::Behaviour::requires_blanks_bitmap(K) == FALSE) 	bits += TB_COLUMN_NOBLANKBITS;
 	if (t->preserve_row_order_at_run_time) 						bits += TB_COLUMN_DONTSORTME;
 
-	Emit::array_numeric_entry((inter_t) (Tables::Columns::get_id(tc) + bits));
+	Emit::array_numeric_entry((inter_ti) (Tables::Columns::get_id(tc) + bits));
 	if (bits & TB_COLUMN_NOBLANKBITS)
 		Emit::array_null_entry();
 	else
-		Emit::array_numeric_entry((inter_t) blanks_array_hwm);
+		Emit::array_numeric_entry((inter_ti) blanks_array_hwm);
 	words_used += 2;
 
 @ The cell can only contain a generic value in the case of column 1 of a table
@@ -151,7 +151,7 @@ used to define new kinds; in this case it doesn't matter what we write, but
 	} else {
 		#ifdef IF_MODULE
 		if (bits & TB_COLUMN_TOPIC) {
-			inter_t v1 = 0, v2 = 0;
+			inter_ti v1 = 0, v2 = 0;
 			PL::Parsing::compile_understanding(&v1, &v2, Node::get_text(cell), TRUE);
 			Emit::array_generic_entry(v1, v2);
 		} else {
@@ -231,7 +231,7 @@ case.)
 	}
 
 @<Ship the current byte of the blanks table@> =
-	Emit::array_numeric_entry((inter_t) byte_so_far);
+	Emit::array_numeric_entry((inter_ti) byte_so_far);
 	byte_so_far = 0; current_bit = 1;
 
 @ We need a default value for the "table" kind, but it's not obvious what

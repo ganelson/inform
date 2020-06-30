@@ -616,7 +616,7 @@ a number: all that matters is that the correct integer value is compiled.
 @<Compile a literal-compilation-mode constant@> =
 	int N = Rvalues::to_int(spec_found);
 	if (Holsters::data_acceptable(VH))
-		Holsters::holster_pair(VH, LITERAL_IVAL, (inter_t) N);
+		Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) N);
 
 @ Whereas here, an instance is attached.
 
@@ -717,7 +717,7 @@ kinds of value:
 	if (Kinds::get_construct(kind_of_constant) == CON_rulebook) {
 		rulebook *rb = Rvalues::to_rulebook(spec_found);
 		if (Holsters::data_acceptable(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_t) rb->allocation_id);
+			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) rb->allocation_id);
 		return;
 	}
 	if (Kinds::Compare::eq(kind_of_constant, K_rulebook_outcome)) {
@@ -734,7 +734,7 @@ kinds of value:
 	if (Kinds::get_construct(kind_of_constant) == CON_table_column) {
 		table_column *tc = Rvalues::to_table_column(spec_found);
 		if (Holsters::data_acceptable(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_t) Tables::Columns::get_id(tc));
+			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) Tables::Columns::get_id(tc));
 		return;
 	}
 	if (Kinds::Compare::eq(kind_of_constant, K_text)) {
@@ -745,7 +745,7 @@ kinds of value:
 	if ((K_understanding) && (Kinds::Compare::eq(kind_of_constant, K_understanding))) {
 		if (Wordings::empty(Node::get_text(spec_found)))
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
-		inter_t v1 = 0, v2 = 0;
+		inter_ti v1 = 0, v2 = 0;
 		PL::Parsing::compile_understanding(&v1, &v2, Node::get_text(spec_found), FALSE);
 		if (Holsters::data_acceptable(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
@@ -756,7 +756,7 @@ kinds of value:
 	if (Kinds::Compare::eq(kind_of_constant, K_use_option)) {
 		use_option *uo = Rvalues::to_use_option(spec_found);
 		if (Holsters::data_acceptable(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_t) uo->allocation_id);
+			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) uo->allocation_id);
 		return;
 	}
 	if (Kinds::Compare::eq(kind_of_constant, K_verb)) {

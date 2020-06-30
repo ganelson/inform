@@ -301,8 +301,8 @@ void NonlocalVariables::emit_lvalue(nonlocal_variable *nlv) {
 			if (nlv->lvalue_nve.allow_outside) ex = MSTVON_HL;
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ex));
 			Produce::down(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_ID);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) nlv->lvalue_nve.stv_index);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) nlv->lvalue_nve.stv_ID);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) nlv->lvalue_nve.stv_index);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}  else if (nlv->lvalue_nve.use_own_iname) {
@@ -437,7 +437,7 @@ int NonlocalVariables::SUBJ_compile_all(void) {
 			COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 
 			inter_name *iname = NonlocalVariables::iname(nlv);
-			inter_t v1 = 0, v2 = 0;
+			inter_ti v1 = 0, v2 = 0;
 
 			NonlocalVariables::seek_initial_value(iname, &v1, &v2, nlv);
 
@@ -705,7 +705,7 @@ which makes its kind safe. Hence the error messages.
 void NonlocalVariables::emit_initial_value(nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	NonlocalVariables::compile_initial_value_vh(&VH, nlv);
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Holsters::unholster_pair(&VH, &v1, &v2);
 	Emit::array_generic_entry(v1, v2);
 }
@@ -716,7 +716,7 @@ void NonlocalVariables::emit_initial_value_as_val(nonlocal_variable *nlv) {
 	Holsters::to_val_mode(Emit::tree(), &VH);
 }
 
-void NonlocalVariables::seek_initial_value(inter_name *iname, inter_t *v1, inter_t *v2, nonlocal_variable *nlv) {
+void NonlocalVariables::seek_initial_value(inter_name *iname, inter_ti *v1, inter_ti *v2, nonlocal_variable *nlv) {
 	ival_emission IE = Emit::begin_ival_emission(iname);
 	NonlocalVariables::compile_initial_value_vh(Emit::ival_holster(&IE), nlv);
 	Emit::end_ival_emission(&IE, v1, v2);

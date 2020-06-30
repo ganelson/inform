@@ -6,7 +6,7 @@ To mark symbols up with metadata.
 
 =
 typedef struct inter_annotation_form {
-	inter_t annotation_ID;
+	inter_ti annotation_ID;
 	int textual_flag;
 	struct text_stream *annotation_keyword;
 	CLASS_DEFINITION
@@ -14,7 +14,7 @@ typedef struct inter_annotation_form {
 
 typedef struct inter_annotation {
 	struct inter_annotation_form *annot;
-	inter_t annot_value;
+	inter_ti annot_value;
 	struct inter_annotation *next;
 } inter_annotation;
 
@@ -52,7 +52,7 @@ void Inter::Annotations::copy_set_to_symbol(inter_annotation_set *set, inter_sym
 			Inter::Symbols::annotate(S, *A);
 }
 
-void Inter::Annotations::transpose_set(inter_annotation_set *set, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Annotations::transpose_set(inter_annotation_set *set, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	for (inter_annotation *A = set->anns; A; A = A->next)
 		Inter::Defn::transpose_annotation(A, grid, grid_extent, E);
 }
@@ -67,7 +67,7 @@ int Inter::Annotations::exist(inter_annotation_set *set) {
 	return FALSE;
 }
 
-inter_annotation *Inter::Annotations::find(const inter_annotation_set *set, inter_t ID) {
+inter_annotation *Inter::Annotations::find(const inter_annotation_set *set, inter_ti ID) {
 	if (set)
 		for (inter_annotation *A = set->anns; A; A = A->next)
 			if (A->annot->annotation_ID == ID)
@@ -75,7 +75,7 @@ inter_annotation *Inter::Annotations::find(const inter_annotation_set *set, inte
 	return NULL;
 }
 
-inter_annotation_form *Inter::Annotations::form(inter_t ID, text_stream *keyword, int textual) {
+inter_annotation_form *Inter::Annotations::form(inter_ti ID, text_stream *keyword, int textual) {
 	inter_annotation_form *IAF;
 	LOOP_OVER(IAF, inter_annotation_form)
 		if (Str::eq(keyword, IAF->annotation_keyword)) {
@@ -99,7 +99,7 @@ inter_annotation Inter::Annotations::invalid_annotation(void) {
 	return IA;
 }
 
-inter_annotation Inter::Annotations::value_annotation(inter_annotation_form *IAF, inter_t V) {
+inter_annotation Inter::Annotations::value_annotation(inter_annotation_form *IAF, inter_ti V) {
 	inter_annotation IA;
 	IA.annot = IAF;
 	IA.annot_value = V;
@@ -110,7 +110,7 @@ int Inter::Annotations::is_invalid(inter_annotation IA) {
 	if ((IA.annot == NULL) || (IA.annot->annotation_ID == INVALID_IANN)) return TRUE;
 	return FALSE;
 }
-inter_annotation Inter::Annotations::from_bytecode(inter_t c1, inter_t c2) {
+inter_annotation Inter::Annotations::from_bytecode(inter_ti c1, inter_ti c2) {
 	inter_annotation_form *IAF;
 	LOOP_OVER(IAF, inter_annotation_form)
 		if (c1 == IAF->annotation_ID) {
@@ -127,14 +127,14 @@ void Inter::Annotations::set_to_bytecode(FILE *fh, inter_annotation_set *set) {
 	for (inter_annotation *A = set->anns; A; A = A->next) c++;
 	BinaryFiles::write_int32(fh, c);
 	for (inter_annotation *A = set->anns; A; A = A->next) {
-		inter_t c1 = 0, c2 = 0;
+		inter_ti c1 = 0, c2 = 0;
 		Inter::Annotations::to_bytecode(*A, &c1, &c2);
 		BinaryFiles::write_int32(fh, (unsigned int) c1);
 		BinaryFiles::write_int32(fh, (unsigned int) c2);
 	}
 }
 
-void Inter::Annotations::to_bytecode(inter_annotation IA, inter_t *c1, inter_t *c2) {
+void Inter::Annotations::to_bytecode(inter_annotation IA, inter_ti *c1, inter_ti *c2) {
 	*c1 = IA.annot->annotation_ID;
 	*c2 = IA.annot_value;
 }

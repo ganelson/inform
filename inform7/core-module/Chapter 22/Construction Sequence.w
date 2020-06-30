@@ -213,7 +213,7 @@ void Phrases::Manager::add_rules_to_rulebooks(void) {
 	Phrases::Manager::advance_phrase_time_to(EARLY_AFTERNOON_PHT);
 	Rules::Bookings::make_automatic_placements();
 	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL);
-	Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(rulebook));
+	Emit::named_numeric_constant(iname, (inter_ti) NUMBER_CREATED(rulebook));
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 

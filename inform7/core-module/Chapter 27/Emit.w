@@ -38,7 +38,7 @@ void Emit::begin(void) {
 	inter_name *KUF = Hierarchy::find(K_UNCHECKED_FUNCTION_HL);
 	save = Packaging::enter_home_of(KUF);
 	unchecked_function_interk = InterNames::to_symbol(KUF);
-	inter_t operands[2];
+	inter_ti operands[2];
 	operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk);
 	operands[1] = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk);
 	Emit::kind_inner(Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_function_interk), ROUTINE_IDT, 0, FUNCTION_ICON, 2, operands);
@@ -67,9 +67,9 @@ inter_symbol *Emit::response(inter_name *iname, rule *R, int marker, inter_name 
 	inter_symbol *symb = InterNames::to_symbol(iname);
 	inter_symbol *rsymb = InterNames::to_symbol(Rules::iname(R));
 	inter_symbol *vsymb = InterNames::to_symbol(val_iname);
-	inter_t val1 = 0, val2 = 0;
+	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(Packaging::at(Emit::tree())), Inter::Bookmarks::package(Packaging::at(Emit::tree())), vsymb, &val1, &val2);
-	Produce::guard(Inter::Response::new(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), symb), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), rsymb), (inter_t) marker, val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Response::new(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), symb), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), rsymb), (inter_ti) marker, val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return symb;
 }
@@ -88,7 +88,7 @@ insert them into the Inter stream close to the top.
 =
 void Emit::pragma(text_stream *text) {
 	inter_tree *I = Emit::tree();
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Tree::root_package(I));
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Tree::root_package(I));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID), text);
 	inter_symbol *target_name =
 		Inter::SymbolsTables::symbol_from_name_creating(
@@ -99,7 +99,7 @@ void Emit::pragma(text_stream *text) {
 void Emit::append(inter_name *iname, text_stream *text) {
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symbol = InterNames::to_symbol(iname);
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID), text);
 	Produce::guard(Inter::Append::new(Packaging::at(Emit::tree()), symbol, ID, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
@@ -121,16 +121,16 @@ LOG("Holding %S\n", name);
 	return symb;
 }
 
-void Emit::kind(inter_name *iname, inter_t TID, inter_name *super,
+void Emit::kind(inter_name *iname, inter_ti TID, inter_name *super,
 	int constructor, int arity, kind **operand_kinds) {
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *S = InterNames::to_symbol(iname);
-	inter_t SID = 0;
+	inter_ti SID = 0;
 	if (S) SID = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), S);
 	inter_symbol *SS = (super)?InterNames::to_symbol(super):NULL;
-	inter_t SUP = 0;
+	inter_ti SUP = 0;
 	if (SS) SUP = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), SS);
-	inter_t operands[MAX_KIND_ARITY];
+	inter_ti operands[MAX_KIND_ARITY];
 	if (arity > MAX_KIND_ARITY) internal_error("kind arity too high");
 	for (int i=0; i<arity; i++) {
 		if (operand_kinds[i] == K_nil) operands[i] = 0;
@@ -144,12 +144,12 @@ void Emit::kind(inter_name *iname, inter_t TID, inter_name *super,
 	Packaging::exit(Emit::tree(), save);
 }
 
-void Emit::kind_inner(inter_t SID, inter_t TID, inter_t SUP,
-	int constructor, int arity, inter_t *operands) {
+void Emit::kind_inner(inter_ti SID, inter_ti TID, inter_ti SUP,
+	int constructor, int arity, inter_ti *operands) {
 	Produce::guard(Inter::Kind::new(Packaging::at(Emit::tree()), SID, TID, SUP, constructor, arity, operands, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
 
-inter_symbol *Emit::variable(inter_name *name, kind *K, inter_t v1, inter_t v2, text_stream *rvalue) {
+inter_symbol *Emit::variable(inter_name *name, kind *K, inter_ti v1, inter_ti v2, text_stream *rvalue) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *var_name = Produce::define_symbol(name);
 	inter_symbol *var_kind = Produce::kind_to_symbol(K);
@@ -201,8 +201,8 @@ void Emit::basic_permission(inter_bookmark *at, inter_name *name, inter_symbol *
 
 typedef struct dval_written {
 	kind *K_written;
-	inter_t v1;
-	inter_t v2;
+	inter_ti v1;
+	inter_ti v2;
 	CLASS_DEFINITION
 } dval_written;
 
@@ -219,7 +219,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 		Emit::defaultvalue(K, dw->v1, dw->v2);
 }
 
-void Emit::defaultvalue(kind *K, inter_t v1, inter_t v2) {
+void Emit::defaultvalue(kind *K, inter_ti v1, inter_ti v2) {
 	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
 	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::DefaultValue::new(Packaging::at(Emit::tree()),
@@ -227,7 +227,7 @@ void Emit::defaultvalue(kind *K, inter_t v1, inter_t v2) {
 	Packaging::exit(Emit::tree(), save);
 }
 
-void Emit::propertyvalue(property *P, kind *K, inter_t v1, inter_t v2) {
+void Emit::propertyvalue(property *P, kind *K, inter_ti v1, inter_ti v2) {
 	Properties::emit_single(P);
 	inter_symbol *prop_name = InterNames::to_symbol(Properties::iname(P));
 	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
@@ -235,7 +235,7 @@ void Emit::propertyvalue(property *P, kind *K, inter_t v1, inter_t v2) {
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
 
-void Emit::instance_propertyvalue(property *P, instance *I, inter_t v1, inter_t v2) {
+void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_ti v2) {
 	Properties::emit_single(P);
 	inter_symbol *prop_name = InterNames::to_symbol(Properties::iname(P));
 	inter_symbol *owner_kind = InterNames::to_symbol(Instances::emitted_iname(I));
@@ -245,7 +245,7 @@ void Emit::instance_propertyvalue(property *P, instance *I, inter_t v1, inter_t 
 
 void Emit::named_string_constant(inter_name *name, text_stream *contents) {
 	packaging_state save = Packaging::enter_home_of(name);
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID), contents);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::guard(Inter::Constant::new_textual(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), string_interk), ID, Produce::baseline(Packaging::at(Emit::tree())), NULL));
@@ -257,26 +257,26 @@ void Emit::instance(inter_name *name, kind *K, int v) {
 	inter_symbol *inst_name = Produce::define_symbol(name);
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for val");
-	inter_t v1 = LITERAL_IVAL, v2 = (inter_t) v;
+	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) v;
 	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
 	Produce::guard(Inter::Instance::new(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
 void Emit::named_generic_constant_xiname(package_request *PR, inter_name *name, inter_name *xiname) {
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Inter::Symbols::to_data(Emit::tree(), Packaging::incarnate(PR), InterNames::to_symbol(xiname), &v1, &v2);
 	Emit::named_generic_constant(name, v1, v2);
 }
 
-void Emit::named_generic_constant(inter_name *name, inter_t val1, inter_t val2) {
+void Emit::named_generic_constant(inter_name *name, inter_ti val1, inter_ti val2) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), unchecked_interk), val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
-inter_name *Emit::named_numeric_constant(inter_name *name, inter_t val) {
+inter_name *Emit::named_numeric_constant(inter_name *name, inter_ti val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
@@ -284,7 +284,7 @@ inter_name *Emit::named_numeric_constant(inter_name *name, inter_t val) {
 	return name;
 }
 
-void Emit::hold_numeric_constant(inter_name *name, inter_t val) {
+void Emit::hold_numeric_constant(inter_name *name, inter_ti val) {
 	inter_symbol *con_name = InterNames::to_symbol(name);
 	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
@@ -292,13 +292,13 @@ void Emit::hold_numeric_constant(inter_name *name, inter_t val) {
 void Emit::named_text_constant(inter_name *name, text_stream *content) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Produce::text_value(Emit::tree(), &v1, &v2, content);
 	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
-void Emit::named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val) {
+void Emit::named_pseudo_numeric_constant(inter_name *name, kind *K, inter_ti val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
@@ -306,7 +306,7 @@ void Emit::named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val)
 	Packaging::exit(Emit::tree(), save);
 }
 
-void Emit::ds_named_pseudo_numeric_constant(inter_name *name, kind *K, inter_t val) {
+void Emit::ds_named_pseudo_numeric_constant(inter_name *name, kind *K, inter_ti val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
@@ -348,11 +348,11 @@ packaging_state Emit::named_verb_array_begin(inter_name *name, kind *K) {
 typedef struct nascent_array {
 	struct inter_symbol *array_name_symbol;
 	struct kind *entry_kind;
-	inter_t array_form;
+	inter_ti array_form;
 	int no_entries;
 	int capacity;
-	inter_t *entry_data1;
-	inter_t *entry_data2;
+	inter_ti *entry_data1;
+	inter_ti *entry_data2;
 	struct nascent_array *up;
 	struct nascent_array *down;
 	CLASS_DEFINITION
@@ -395,26 +395,26 @@ void Emit::pull_array(void) {
 	current_A = current_A->up;
 }
 
-void Emit::add_entry(inter_t v1, inter_t v2) {
+void Emit::add_entry(inter_ti v1, inter_ti v2) {
 	if (current_A == NULL) internal_error("no nascent array");
 	int N = current_A->no_entries;
 	if (N+1 > current_A->capacity) {
 		int M = 4*(N+1);
 		if (current_A->capacity == 0) M = 256;
 
-		inter_t *old_data1 = current_A->entry_data1;
-		inter_t *old_data2 = current_A->entry_data2;
+		inter_ti *old_data1 = current_A->entry_data1;
+		inter_ti *old_data2 = current_A->entry_data2;
 
-		current_A->entry_data1 = Memory::calloc(M, sizeof(inter_t), EMIT_ARRAY_MREASON);
-		current_A->entry_data2 = Memory::calloc(M, sizeof(inter_t), EMIT_ARRAY_MREASON);
+		current_A->entry_data1 = Memory::calloc(M, sizeof(inter_ti), EMIT_ARRAY_MREASON);
+		current_A->entry_data2 = Memory::calloc(M, sizeof(inter_ti), EMIT_ARRAY_MREASON);
 
 		for (int i=0; i<current_A->capacity; i++) {
 			current_A->entry_data1[i] = old_data1[i];
 			current_A->entry_data2[i] = old_data2[i];
 		}
 
-		if (old_data1) Memory::I7_array_free(old_data1, EMIT_ARRAY_MREASON, current_A->capacity, sizeof(inter_t));
-		if (old_data2) Memory::I7_array_free(old_data2, EMIT_ARRAY_MREASON, current_A->capacity, sizeof(inter_t));
+		if (old_data1) Memory::I7_array_free(old_data1, EMIT_ARRAY_MREASON, current_A->capacity, sizeof(inter_ti));
+		if (old_data2) Memory::I7_array_free(old_data2, EMIT_ARRAY_MREASON, current_A->capacity, sizeof(inter_ti));
 
 		current_A->capacity = M;
 	}
@@ -444,7 +444,7 @@ void Emit::array_iname_entry(inter_name *iname) {
 	inter_symbol *alias;
 	if (iname == NULL) alias = Site::veneer_symbol(Emit::tree(), NOTHING_VSYMB);
 	else alias = InterNames::to_symbol(iname);
-	inter_t val1 = 0, val2 = 0;
+	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Emit::array_IRS();
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), alias, &val1, &val2);
 	Emit::add_entry(val1, val2);
@@ -458,7 +458,7 @@ void Emit::array_MPN_entry(void) {
 	Emit::array_iname_entry(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 }
 
-void Emit::array_generic_entry(inter_t val1, inter_t val2) {
+void Emit::array_generic_entry(inter_ti val1, inter_ti val2) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	Emit::add_entry(val1, val2);
 }
@@ -466,7 +466,7 @@ void Emit::array_generic_entry(inter_t val1, inter_t val2) {
 #ifdef IF_MODULE
 void Emit::array_action_entry(action_name *an) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	inter_symbol *symb = InterNames::to_symbol(PL::Actions::iname(an));
 	inter_bookmark *IBM = Emit::array_IRS();
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), symb, &v1, &v2);
@@ -476,33 +476,33 @@ void Emit::array_action_entry(action_name *an) {
 
 void Emit::array_text_entry(text_stream *content) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Produce::text_value(Emit::tree(), &v1, &v2, content);
 	Emit::add_entry(v1, v2);
 }
 
 void Emit::array_dword_entry(text_stream *content) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Produce::dword_value(Emit::tree(), &v1, &v2, content);
 	Emit::add_entry(v1, v2);
 }
 
 void Emit::array_plural_dword_entry(text_stream *content) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Produce::plural_dword_value(Emit::tree(), &v1, &v2, content);
 	Emit::add_entry(v1, v2);
 }
 
-void Emit::array_numeric_entry(inter_t N) {
+void Emit::array_numeric_entry(inter_ti N) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	Emit::add_entry(LITERAL_IVAL, N);
 }
 
 void Emit::array_divider(text_stream *divider_text) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
-	inter_t S = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+	inter_ti S = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), S), divider_text);
 	Emit::add_entry(DIVIDER_IVAL, S);
 }
@@ -518,7 +518,7 @@ void Emit::array_end(packaging_state save) {
 	inter_symbol *con_name = current_A->array_name_symbol;
 	inter_bookmark *IBM = Packaging::at(Emit::tree());
 	kind *K = current_A->entry_kind;
-	inter_t CID = 0;
+	inter_ti CID = 0;
 	if (K) {
 		inter_symbol *con_kind = NULL;
 		if (current_A->array_form == CONSTANT_INDIRECT_LIST)
@@ -553,14 +553,14 @@ inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *in
 		if (Kinds::Compare::le(K, K_object)) alias = Site::veneer_symbol(Emit::tree(), NOTHING_VSYMB);
 		else internal_error("can't handle a null alias");
 	}
-	inter_t val1 = 0, val2 = 0;
+	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(Packaging::at(Emit::tree())), Inter::Bookmarks::package(Packaging::at(Emit::tree())), alias, &val1, &val2);
 	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), val_kind), val1, val2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return name;
 }
 
-inter_name *Emit::named_numeric_constant_hex(inter_name *name, inter_t val) {
+inter_name *Emit::named_numeric_constant_hex(inter_name *name, inter_ti val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::annotate_symbol_i(con_name, HEX_IANN, 0);
@@ -569,7 +569,7 @@ inter_name *Emit::named_numeric_constant_hex(inter_name *name, inter_t val) {
 	return name;
 }
 
-inter_name *Emit::named_unchecked_constant_hex(inter_name *name, inter_t val) {
+inter_name *Emit::named_unchecked_constant_hex(inter_name *name, inter_ti val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::annotate_symbol_i(con_name, HEX_IANN, 0);
@@ -582,7 +582,7 @@ inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
 	packaging_state save = Packaging::enter_home_of(name);
 	inter_symbol *con_name = Produce::define_symbol(name);
 	Produce::annotate_symbol_i(con_name, SIGNED_IANN, 0);
-	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, (inter_t) val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Constant::new_numerical(Packaging::at(Emit::tree()), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), con_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), int_interk), LITERAL_IVAL, (inter_ti) val, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return name;
 }
@@ -590,16 +590,16 @@ inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
 // inter_bookmark current_inter_bookmark;
 
 void Emit::early_comment(text_stream *text) {
-/*	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+/*	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID), text);
 	Produce::guard(Inter::Comment::new(Packaging::at(Emit::tree()), Produce::baseline(Packaging::at(Emit::tree())) + 1, NULL, ID));
 */
 }
 
 void Emit::code_comment(text_stream *text) {
-/*	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+/*	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID), text);
-	Produce::guard(Inter::Comment::new(Produce::at(Emit::tree()), (inter_t) Produce::level(Emit::tree()), NULL, ID));
+	Produce::guard(Inter::Comment::new(Produce::at(Emit::tree()), (inter_ti) Produce::level(Emit::tree()), NULL, ID));
 */
 }
 
@@ -615,12 +615,12 @@ void Emit::routine(inter_name *rname, kind *rkind, inter_package *block) {
 		Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
 
-inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_stream *comm) {
+inter_symbol *Emit::local(kind *K, text_stream *lname, inter_ti annot, text_stream *comm) {
 	if (Site::get_cir(Emit::tree()) == NULL) internal_error("not in an inter routine");
 	if (K == NULL) K = K_number;
 	inter_symbol *loc_name = Produce::new_local_symbol(Site::get_cir(Emit::tree()), lname);
 	inter_symbol *loc_kind = Produce::kind_to_symbol(K);
-	inter_t ID = 0;
+	inter_ti ID = 0;
 	if ((comm) && (Str::len(comm) > 0)) {
 		ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 		Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID), comm);
@@ -634,29 +634,29 @@ inter_symbol *Emit::local(kind *K, text_stream *lname, inter_t annot, text_strea
 void Emit::cast(kind *F, kind *T) {
 	inter_symbol *from_kind = Produce::kind_to_symbol(F);
 	inter_symbol *to_kind = Produce::kind_to_symbol(T);
-	Produce::guard(Inter::Cast::new(Produce::at(Emit::tree()), from_kind, to_kind, (inter_t) Produce::level(Emit::tree()), NULL));
+	Produce::guard(Inter::Cast::new(Produce::at(Emit::tree()), from_kind, to_kind, (inter_ti) Produce::level(Emit::tree()), NULL));
 }
 
 void Emit::intervention(int stage, text_stream *segment, text_stream *part, text_stream *i6, text_stream *seg) {
 	inter_warehouse *warehouse = Inter::Tree::warehouse(Emit::tree());
-	inter_t ID1 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+	inter_ti ID1 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID1), segment);
 
-	inter_t ID2 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+	inter_ti ID2 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID2), part);
 
-	inter_t ID3 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+	inter_ti ID3 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID3), i6);
 
-	inter_t ID4 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
+	inter_ti ID4 = Inter::Warehouse::create_text(warehouse, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(Emit::tree()), ID4), seg);
 
-	inter_t ref = Inter::Warehouse::create_ref(warehouse);
+	inter_ti ref = Inter::Warehouse::create_ref(warehouse);
 	Inter::Warehouse::set_ref(warehouse, ref, (void *) current_sentence);
 
 	Inter::Warehouse::attribute_resource(warehouse, ref, Inter::Bookmarks::package(Packaging::at(Emit::tree())));
 
-	Produce::guard(Inter::Link::new(Packaging::at(Emit::tree()), (inter_t) stage, ID1, ID2, ID3, ID4, ref, Produce::baseline(Packaging::at(Emit::tree())), NULL));
+	Produce::guard(Inter::Link::new(Packaging::at(Emit::tree()), (inter_ti) stage, ID1, ID2, ID3, ID4, ref, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
 
 @ =
@@ -669,26 +669,26 @@ text_stream *Emit::to_text(inter_name *iname) {
 
 void Emit::holster(value_holster *VH, inter_name *iname) {
 	if (Holsters::data_acceptable(VH)) {
-		inter_t v1 = 0, v2 = 0;
+		inter_ti v1 = 0, v2 = 0;
 		Emit::to_ival(&v1, &v2, iname);
 		Holsters::holster_pair(VH, v1, v2);
 	}
 }
 
-void Emit::symbol_to_ival(inter_t *val1, inter_t *val2, inter_symbol *S) {
+void Emit::symbol_to_ival(inter_ti *val1, inter_ti *val2, inter_symbol *S) {
 	inter_bookmark *IBM = Packaging::at(Emit::tree());
 	if (S) { Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), S, val1, val2); return; }
 	*val1 = LITERAL_IVAL; *val2 = 0;
 }
 
-void Emit::to_ival(inter_t *val1, inter_t *val2, inter_name *iname) {
+void Emit::to_ival(inter_ti *val1, inter_ti *val2, inter_name *iname) {
 	inter_bookmark *IBM = Packaging::at(Emit::tree());
 	inter_symbol *S = InterNames::to_symbol(iname);
 	if (S) { Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), S, val1, val2); return; }
 	*val1 = LITERAL_IVAL; *val2 = 0;
 }
 
-void Emit::to_ival_in_context(inter_name *context, inter_t *val1, inter_t *val2, inter_name *iname) {
+void Emit::to_ival_in_context(inter_name *context, inter_ti *val1, inter_ti *val2, inter_name *iname) {
 	package_request *PR = InterNames::location(context);
 	inter_package *pack = Packaging::incarnate(PR);
 	inter_symbol *S = InterNames::to_symbol(iname);
@@ -719,7 +719,7 @@ value_holster *Emit::ival_holster(ival_emission *IE) {
 	return &(IE->emission_VH);
 }
 
-void Emit::end_ival_emission(ival_emission *IE, inter_t *v1, inter_t *v2) {
+void Emit::end_ival_emission(ival_emission *IE, inter_ti *v1, inter_ti *v2) {
 	Holsters::unholster_pair(&(IE->emission_VH), v1, v2);
 	Packaging::exit(Emit::tree(), IE->saved_PS);
 }

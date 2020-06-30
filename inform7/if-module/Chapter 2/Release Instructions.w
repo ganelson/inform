@@ -756,9 +756,9 @@ int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variabl
 			if (Kinds::Compare::eq(K, K_number)) {
 				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 				Specifications::Compiler::compile_constant_to_kind_vh(&VH, val, K);
-				inter_t v1 = 0, v2 = 0;
+				inter_ti v1 = 0, v2 = 0;
 				Holsters::unholster_pair(&VH, &v1, &v2);
-				WRITE("%d", (inter_t) v2);
+				WRITE("%d", (inter_ti) v2);
 			} else {
 				wording W = Node::get_text(val);
 				int w1 = Wordings::first_wn(W);
@@ -784,9 +784,9 @@ int PL::Bibliographic::Release::write_var_to_text(OUTPUT_STREAM, nonlocal_variab
 			if (Kinds::Compare::eq(K, K_number)) {
 				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 				Specifications::Compiler::compile_constant_to_kind_vh(&VH, val, K);
-				inter_t v1 = 0, v2 = 0;
+				inter_ti v1 = 0, v2 = 0;
 				Holsters::unholster_pair(&VH, &v1, &v2);
-				WRITE("%d", (inter_t) v2);
+				WRITE("%d", (inter_ti) v2);
 			} else {
 				wording W = Node::get_text(val);
 				int w1 = Wordings::first_wn(W);

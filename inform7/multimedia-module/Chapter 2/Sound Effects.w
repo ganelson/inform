@@ -222,7 +222,7 @@ void PL::Sounds::compile_ResourceIDsOfSounds_array(void) {
 	packaging_state save = Emit::named_array_begin(iname, K_number);
 	Emit::array_numeric_entry(0);
 	blorb_sound *bs;
-	LOOP_OVER(bs, blorb_sound) Emit::array_numeric_entry((inter_t) bs->sound_number);
+	LOOP_OVER(bs, blorb_sound) Emit::array_numeric_entry((inter_ti) bs->sound_number);
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 }

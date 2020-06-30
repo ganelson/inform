@@ -17,7 +17,8 @@ At any rate, a //declension// object is a set of wordings, one for each case:
 =
 typedef struct declension {
 	NATURAL_LANGUAGE_WORDS_TYPE *within_language;
-	struct wording name_cased[MAX_GRAMMATICAL_CASES];
+	struct wording wording_cased[MAX_GRAMMATICAL_CASES];
+	lcon_ti lcon_cased[MAX_GRAMMATICAL_CASES];
 } declension;
 
 @ Cases in a language are itemised in the special nonterminal <grammatical-case-names>:
@@ -55,7 +56,7 @@ void Declensions::writer(OUTPUT_STREAM, declension *D, declension *AD) {
 					internal_error("<grammatical-case-names> too complex");
 				if (c > 0) WRITE(", ");
 				WRITE("%w: %W %W", Vocabulary::get_exemplar(pr->first_pt->ve_pt, TRUE),
-					AD->name_cased[c], D->name_cased[c]);
+					AD->wording_cased[c], D->wording_cased[c]);
 				c++;
 				if (c >= nc) break;
 			}
@@ -72,7 +73,7 @@ void Declensions::writer(OUTPUT_STREAM, declension *D, declension *AD) {
 wording Declensions::in_case(declension *D, int c) {
 	if ((c < 0) || (c >= Declensions::no_cases(D->within_language)))
 		internal_error("case out of range");
-	return D->name_cased[c];
+	return D->wording_cased[c];
 }
 
 @ So much for using declensions; now to generate them. They are inflected from
@@ -100,7 +101,7 @@ we will say that so does any inflected form of it:
 
 @<Fix the origin@> =
 	for (int c = 0; c < Declensions::no_cases(nl); c++)
-		LOOP_THROUGH_WORDING(i, D.name_cased[c])
+		LOOP_THROUGH_WORDING(i, D.wording_cased[c])
 			Lexer::set_word_location(i, Lexer::word_location(Wordings::first_wn(W)));
 
 @ For the format of the table expressed by the nonterminal |nt|, see
@@ -137,13 +138,13 @@ declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl
 	int found = FALSE;
 	nonterminal *gnt = pr->first_pt->next_pt->nt_pt;
 	if (pr->first_pt->next_pt->next_pt == NULL) {
-		D = Declensions::decline_from_irregulars(W, nl, gnt, num, &found);
+		D = Declensions::decline_from_irregulars(W, nl, gnt, gen, num, &found);
 	} else {
 		if ((pr->first_pt->next_pt->next_pt->ptoken_category != NONTERMINAL_PTC) ||
 			(pr->first_pt->next_pt->next_pt->next_pt != NULL))
 			internal_error("this line must end with two nonterminals");
 		nonterminal *tnt = pr->first_pt->next_pt->next_pt->nt_pt;
-		D = Declensions::decline_from_groups(W, nl, gnt, tnt, num, &found);
+		D = Declensions::decline_from_groups(W, nl, gnt, tnt, gen, num, &found);
 	}
 	if (found) return D;
 
@@ -151,7 +152,7 @@ declension Declensions::decline_inner(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl
 
 =
 declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
-	nonterminal *gnt, int num, int *found) {
+	nonterminal *gnt, int gen, int num, int *found) {
 	*found = FALSE;
 	declension D;
 	D.within_language = nl;
@@ -166,13 +167,14 @@ declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORD
 						for (ptoken *pt = pr->first_pt->next_pt; pt; pt = pt->next_pt) {
 							if (pt->ptoken_category != FIXED_WORD_PTC)
 								internal_error("NTs are not allowed in irregular decs");
-							if (((num == 1) && (c < nc)) || ((num == 2) && (c >= nc))) {
+							if (((num == SINGULAR_NUMBER) && (c < nc)) || ((num == PLURAL_NUMBER) && (c >= nc))) {
 								TEMPORARY_TEXT(stem)
 								TEMPORARY_TEXT(result)
 								WRITE_TO(stem, "%W", W);
 								Inflect::follow_suffix_instruction(result, stem,
 									Vocabulary::get_exemplar(pt->ve_pt, TRUE));
-								D.name_cased[c%nc] = Feeds::feed_text(result);
+								D.wording_cased[c%nc] = Feeds::feed_text(result);
+								D.lcon_cased[c%nc] = Declensions::lcon(gen, num, c%nc);
 								DISCARD_TEXT(stem)
 								DISCARD_TEXT(result)
 							}
@@ -190,7 +192,7 @@ declension Declensions::decline_from_irregulars(wording W, NATURAL_LANGUAGE_WORD
 
 =
 declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
-	nonterminal *gnt, nonterminal *nt, int num, int *found) {
+	nonterminal *gnt, nonterminal *nt, int gen, int num, int *found) {
 	declension D;
 	D.within_language = nl;
 	TEMPORARY_TEXT(from)
@@ -213,7 +215,7 @@ declension Declensions::decline_from_groups(wording W, NATURAL_LANGUAGE_WORDS_TY
 						(pr->first_pt->next_pt != NULL))
 						internal_error("noun declension nonterminal malformed");
 					if (--group == 0)
-						return Declensions::decline_from(W, nl, pr->first_pt->nt_pt, num);
+						return Declensions::decline_from(W, nl, pr->first_pt->nt_pt, gen, num);
 				}
 		internal_error("noun declension nonterminal has too few groups");
 	}
@@ -238,7 +240,7 @@ consists of a single word giving the rewriting instruction to use.
 
 =
 declension Declensions::decline_from(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
-	nonterminal *nt, int num) {
+	nonterminal *nt, int gen, int num) {
 	int c = 0, nc = Declensions::no_cases(nl);
 	declension D;
 	D.within_language = nl;
@@ -249,13 +251,14 @@ declension Declensions::decline_from(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
 					(pr->first_pt->ptoken_category != FIXED_WORD_PTC) ||
 					(pr->first_pt->next_pt != NULL))
 					internal_error("<noun-declension> too complex");
-				if (((c < nc) && (num == 1)) || ((c >= nc) && (num == 2))) {
+				if (((c < nc) && (num == SINGULAR_NUMBER)) || ((c >= nc) && (num == PLURAL_NUMBER))) {
 					TEMPORARY_TEXT(stem)
 					TEMPORARY_TEXT(result)
 					WRITE_TO(stem, "%+W", W);
 					Inflect::follow_suffix_instruction(result, stem,
 						Vocabulary::get_exemplar(pr->first_pt->ve_pt, TRUE));
-					D.name_cased[c%nc] = Feeds::feed_text(result);
+					D.wording_cased[c%nc] = Feeds::feed_text(result);
+					D.lcon_cased[c%nc] = Declensions::lcon(gen, num, c%nc);
 					DISCARD_TEXT(stem)
 					DISCARD_TEXT(result)
 				}
@@ -268,4 +271,15 @@ declension Declensions::decline_from(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl,
 	}
 	internal_error("declination unavailable");
 	return D;
+}
+
+@ Where, finally:
+
+=
+lcon_ti Declensions::lcon(int gen, int num, int c) {
+	lcon_ti l = Lcon::base();
+	l = Lcon::set_number(l, num);
+	l = Lcon::set_gender(l, gen);
+	l = Lcon::set_case(l, c);
+	return l;
 }

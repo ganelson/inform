@@ -342,7 +342,7 @@ int Phrases::Context::compile_test_head(phrase *ph, applicability_condition *acl
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DB_RULE_HL));
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, identifier);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ph->allocation_id);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -386,7 +386,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 	tests++;
 
 @<Compile a scene test tail@> =
-	inter_t failure_code = 1;
+	inter_ti failure_code = 1;
 	@<Compile a generic test fail@>;
 
 @h Action test.
@@ -411,7 +411,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 	}
 
 @<Compile an action test tail@> =
-	inter_t failure_code = 2;
+	inter_ti failure_code = 2;
 	@<Compile a generic test fail@>;
 
 @h Actor-is-player test.
@@ -430,7 +430,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 	tests++;
 
 @<Compile an actor-is-player test tail@> =
-	inter_t failure_code = 3;
+	inter_ti failure_code = 3;
 	@<Compile a generic test fail@>;
 
 @h Activity-or-condition test.
@@ -454,7 +454,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 		tests++;
 
 @<Compile an activity or explicit condition test tail@> =
-	inter_t failure_code = 4;
+	inter_ti failure_code = 4;
 	@<Compile a generic test fail@>;
 
 @<Compile a generic test fail@> =
@@ -473,7 +473,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DB_RULE_HL));
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, identifier);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ph->allocation_id);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ph->allocation_id);
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, failure_code);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());

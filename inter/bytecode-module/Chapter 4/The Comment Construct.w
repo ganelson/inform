@@ -25,10 +25,10 @@ void Inter::Comment::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	*E = Inter::Defn::vet_level(IBM, COMMENT_IST, ilp->indent_level, eloc);
 	if (*E) return;
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
-	*E = Inter::Comment::new(IBM, (inter_t) ilp->indent_level, eloc, ilp->terminal_comment);
+	*E = Inter::Comment::new(IBM, (inter_ti) ilp->indent_level, eloc, ilp->terminal_comment);
 }
 
-inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_t level, inter_error_location *eloc, inter_t comment_ID) {
+inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_ti level, inter_error_location *eloc, inter_ti comment_ID) {
 	inter_tree_node *P = Inode::fill_0(IBM, COMMENT_IST, eloc, level);
 	Inode::attach_comment(P, comment_ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
@@ -36,6 +36,6 @@ inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_t level, int
 	return NULL;
 }
 
-void Inter::Comment::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Comment::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	Inode::attach_comment(P, grid[Inode::get_comment(P)]);
 }

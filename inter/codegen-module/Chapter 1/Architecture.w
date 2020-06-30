@@ -55,29 +55,29 @@ int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, i
 		UNCHECKED_IDT,
 		0,
 		BASE_ICON, 0, NULL,
-		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
+		(inter_ti) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
 	inter_symbol *typeless_int_symbol = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_generic), I"K_typeless_int");
 	Inter::Kind::new(&in_generic,
 		Inter::SymbolsTables::id_from_symbol(I, generic_p, typeless_int_symbol),
 		INT32_IDT,
 		0,
 		BASE_ICON, 0, NULL,
-		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
+		(inter_ti) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
 	inter_symbol *truth_state_kind_symbol = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_generic), I"K_truth_state");
 	Inter::Kind::new(&in_generic,
 		Inter::SymbolsTables::id_from_symbol(I, generic_p, truth_state_kind_symbol),
 		INT2_IDT,
 		0,
 		BASE_ICON, 0, NULL,
-		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
+		(inter_ti) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
 	inter_symbol *action_name_kind_symbol = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_generic), I"K_action_name");
 	Inter::Kind::new(&in_generic,
 		Inter::SymbolsTables::id_from_symbol(I, generic_p, action_name_kind_symbol),
 		INT32_IDT,
 		0,
 		BASE_ICON, 0, NULL,
-		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
-	inter_t operands[2];
+		(inter_ti) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
+	inter_ti operands[2];
 	operands[0] = Inter::SymbolsTables::id_from_IRS_and_symbol(&in_generic, unchecked_kind_symbol);
 	operands[1] = Inter::SymbolsTables::id_from_IRS_and_symbol(&in_generic, unchecked_kind_symbol);
 	inter_symbol *unchecked_function_symbol = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_generic), I"K_unchecked_function");
@@ -86,14 +86,14 @@ int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, i
 		ROUTINE_IDT,
 		0,
 		FUNCTION_ICON, 2, operands,
-		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
+		(inter_ti) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
 	inter_symbol *list_of_unchecked_kind_symbol = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(&in_generic), I"K_list_of_values");
 	Inter::Kind::new(&in_generic,
 		Inter::SymbolsTables::id_from_symbol(I, generic_p, list_of_unchecked_kind_symbol),
 		LIST_IDT,
 		0,
 		LIST_ICON, 1, operands,
-		(inter_t) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
+		(inter_ti) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
 	
 	if (Str::ne(step->step_argument, I"none")) {
 		inter_package *template_p = NULL;
@@ -110,7 +110,7 @@ int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, i
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, con_name),
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 		LITERAL_IVAL, (Z)?2:4,
-		(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
+		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	inter_symbol *target_name;
 	if (Z) target_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"TARGET_ZCODE");
 	else target_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"TARGET_GLULX");
@@ -118,20 +118,20 @@ int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, i
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, target_name),
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 		LITERAL_IVAL, 1,
-		(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
+		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	if (D) {
 		inter_symbol *D_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"DEBUG");
 		Inter::Constant::new_numerical(in_veneer,
 			Inter::SymbolsTables::id_from_symbol(I, veneer_p, D_name),
 			Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 			LITERAL_IVAL, 1,
-			(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
+			(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	}
 	inter_symbol *P_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"PLUGIN_FILES");
 	Inter::Constant::new_numerical(in_veneer,
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, P_name),
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 		LITERAL_IVAL, 1,
-		(inter_t) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
+		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	return TRUE;
 }

@@ -729,7 +729,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 					Produce::inv_primitive(Emit::tree(), EQ_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, gprk->cur_word_s);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) -1);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 					Produce::up(Emit::tree());
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
@@ -785,7 +785,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 				} else {
 					Produce::inv_primitive(Emit::tree(), TIMES_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) -1);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 						Produce::val_symbol(Emit::tree(), K_value, gprk->matched_number_s);
 					Produce::up(Emit::tree());
 				}
@@ -897,7 +897,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 					Produce::ref_symbol(Emit::tree(), K_value, gprk->wpos_s);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) lower_form);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) lower_form);
 		Produce::up(Emit::tree());
 		if (upper_form != lower_form) {
 			Produce::inv_primitive(Emit::tree(), NE_BIP);
@@ -911,7 +911,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) upper_form);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) upper_form);
 			Produce::up(Emit::tree());
 		}
 		if (upper_form != lower_form) { Produce::up(Emit::tree()); }
@@ -945,7 +945,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 				Produce::val_symbol(Emit::tree(), K_value, gprk->cur_addr_s);
 				Produce::val_symbol(Emit::tree(), K_value, gprk->wpos_s);
 			Produce::up(Emit::tree());
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) '-');
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) '-');
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
@@ -953,7 +953,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->sgn_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) -1);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
 			Produce::down(Emit::tree());
@@ -1120,7 +1120,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 					Produce::val_symbol(Emit::tree(), K_value, gprk->cur_addr_s);
 					Produce::val_symbol(Emit::tree(), K_value, gprk->wpos_s);
 				Produce::up(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) 'x');
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) 'x');
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
@@ -1192,7 +1192,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 								Produce::val_symbol(Emit::tree(), K_value, gprk->cur_addr_s);
 								Produce::val_symbol(Emit::tree(), K_value, gprk->wpos_s);
 							Produce::up(Emit::tree());
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) '1');
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) '1');
 						Produce::up(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), AND_BIP);
 						Produce::down(Emit::tree());
@@ -1207,7 +1207,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 										Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 									Produce::up(Emit::tree());
 								Produce::up(Emit::tree());
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) '0');
+								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) '0');
 							Produce::up(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), EQ_BIP);
 							Produce::down(Emit::tree());
@@ -1220,7 +1220,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 										Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
 									Produce::up(Emit::tree());
 								Produce::up(Emit::tree());
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) '^');
+								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) '^');
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
@@ -1263,7 +1263,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 										Produce::val_symbol(Emit::tree(), K_value, gprk->cur_addr_s);
 										Produce::val_symbol(Emit::tree(), K_value, gprk->wpos_s);
 									Produce::up(Emit::tree());
-									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) '+');
+									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) '+');
 								Produce::up(Emit::tree());
 								Produce::inv_primitive(Emit::tree(), EQ_BIP);
 								Produce::down(Emit::tree());
@@ -1272,7 +1272,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 										Produce::val_symbol(Emit::tree(), K_value, gprk->cur_addr_s);
 										Produce::val_symbol(Emit::tree(), K_value, gprk->wpos_s);
 									Produce::up(Emit::tree());
-									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) '-');
+									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) '-');
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
@@ -1470,7 +1470,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 			Produce::inv_primitive(Emit::tree(), GE_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, gprk->tot_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) lpe->element_range);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) lpe->element_range);
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
@@ -1550,7 +1550,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 						Produce::inv_primitive(Emit::tree(), STORE_BIP);
 						Produce::down(Emit::tree());
 							Produce::ref_symbol(Emit::tree(), K_value, gprk->f_s);
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) M);
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) M);
 						Produce::up(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), WHILE_BIP);
 						Produce::down(Emit::tree());
@@ -1983,7 +1983,7 @@ void LiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_li
 					Produce::inv_primitive(Emit::tree(), EQ_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, which_s);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lpn->allocation_id + 1));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lpn->allocation_id + 1));
 					Produce::up(Emit::tree());
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
@@ -2046,7 +2046,7 @@ the sorting measure.
 
 	for (lp = lp_list; lp; lp = lp->next_for_this_kind) {
 		if (lp->marked_for_printing) {
-			inter_t op = GE_BIP; last_lp = lp;
+			inter_ti op = GE_BIP; last_lp = lp;
 			if (lp->primary_alternative) { last_primary = lp; }
 			if (lp->singular_form_only) { last_singular = lp; op = EQ_BIP; }
 			if (lp->plural_form_only) { last_plural = lp; op = GT_BIP; }
@@ -2148,7 +2148,7 @@ the sorting measure.
 							Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_symbol(Emit::tree(), K_value, value_s);
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lpe->element_multiplier));
+								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lpe->element_multiplier));
 							Produce::up(Emit::tree());
 							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 						Produce::up(Emit::tree());
@@ -2167,7 +2167,7 @@ the sorting measure.
 				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, value_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lpe->element_multiplier));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lpe->element_multiplier));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			if (lp->number_signed) {
@@ -2207,11 +2207,11 @@ the sorting measure.
 									Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
 									Produce::down(Emit::tree());
 										Produce::val_symbol(Emit::tree(), K_value, value_s);
-										Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lpe->element_multiplier));
+										Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lpe->element_multiplier));
 									Produce::up(Emit::tree());
-									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lpe->element_range));
+									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lpe->element_range));
 								Produce::up(Emit::tree());
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (pow));
+								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (pow));
 							Produce::up(Emit::tree());
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
@@ -2231,9 +2231,9 @@ the sorting measure.
 					Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, value_s);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lpe->element_multiplier));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lpe->element_multiplier));
 					Produce::up(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lpe->element_range));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lpe->element_range));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		}
@@ -2250,7 +2250,7 @@ the sorting measure.
 					Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, value_s);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lp->lp_elements[ec].element_multiplier));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lp->lp_elements[ec].element_multiplier));
 					Produce::up(Emit::tree());
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 				Produce::up(Emit::tree());
@@ -2269,9 +2269,9 @@ the sorting measure.
 						Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_symbol(Emit::tree(), K_value, value_s);
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lp->lp_elements[ec].element_multiplier));
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lp->lp_elements[ec].element_multiplier));
 						Produce::up(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (lp->lp_elements[ec].element_range));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (lp->lp_elements[ec].element_range));
 					Produce::up(Emit::tree());
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 				Produce::up(Emit::tree());

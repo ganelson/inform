@@ -550,7 +550,7 @@ one to test them, one to print them.
 =
 void UseOptions::TestUseOption_routine(void) {
 	inter_name *iname = Hierarchy::find(NO_USE_OPTIONS_HL);
-	Emit::named_numeric_constant(iname, (inter_t) NUMBER_CREATED(use_option));
+	Emit::named_numeric_constant(iname, (inter_ti) NUMBER_CREATED(use_option));
 	@<Compile the TestUseOption routine@>;
 	@<Compile the PrintUseOption routine@>;
 }
@@ -566,7 +566,7 @@ void UseOptions::TestUseOption_routine(void) {
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, UO_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) uo->allocation_id);
 				Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
@@ -590,7 +590,7 @@ void UseOptions::TestUseOption_routine(void) {
 			LOOP_OVER(uo, use_option) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) uo->allocation_id);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) uo->allocation_id);
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);
@@ -642,10 +642,10 @@ void UseOptions::configure_template(void) {
 	if (ranking_table_given) bitmap += 512;
 
 	inter_name *iname = Hierarchy::find(TEMPLATE_CONFIGURATION_BITMAP_HL);
-	Emit::named_numeric_constant(iname, (inter_t) bitmap);
+	Emit::named_numeric_constant(iname, (inter_ti) bitmap);
 	Hierarchy::make_available(Emit::tree(), iname);
 
 	iname = Hierarchy::find(TEMPLATE_CONFIGURATION_LOOKMODE_HL);
-	Emit::named_numeric_constant(iname, (inter_t) room_description_level);
+	Emit::named_numeric_constant(iname, (inter_ti) room_description_level);
 	Hierarchy::make_available(Emit::tree(), iname);
 }

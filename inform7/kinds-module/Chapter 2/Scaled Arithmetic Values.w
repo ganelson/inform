@@ -459,12 +459,12 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), TIMES_BIP);
 			Produce::down(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) scale_factor);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) scale_factor);
 				Produce::val_symbol(Emit::tree(), K_value, var);
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
 			Produce::down(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) to_add);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) to_add);
 				Produce::val_symbol(Emit::tree(), K_value, var_to_add);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -480,23 +480,23 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 			Produce::inv_primitive(Emit::tree(), GT_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, var);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (max/scale_factor));
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (max/scale_factor));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), GT_BIP);
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), PLUS_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) to_add);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) to_add);
 						Produce::val_symbol(Emit::tree(), K_value, var_to_add);
 					Produce::up(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (max/scale_factor));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (max/scale_factor));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -524,7 +524,7 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, V_var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc.int_O);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_O);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		}
@@ -536,7 +536,7 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 					Produce::inv_primitive(Emit::tree(), MODULO_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, V_var);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc.int_M);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_M);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			}
@@ -546,7 +546,7 @@ void Kinds::Scalings::compile_value_to_quanta(scaling_transformation sc,
 				Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, V_var);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc.int_M);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc.int_M);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		}
@@ -585,7 +585,7 @@ operator to use: say, |">="|.
 =
 #ifdef CORE_MODULE
 void Kinds::Scalings::compile_threshold_test(scaling_transformation sc,
-	inter_symbol *V_var, inter_t op) {
+	inter_symbol *V_var, inter_ti op) {
 	Produce::inv_primitive(Emit::tree(), op);
 	Produce::down(Emit::tree());
 	if (sc.use_integer_scaling) {
@@ -593,7 +593,7 @@ void Kinds::Scalings::compile_threshold_test(scaling_transformation sc,
 		Produce::down(Emit::tree());
 			Produce::val_symbol(Emit::tree(), K_value, V_var);
 		Produce::up(Emit::tree());
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) Kinds::Scalings::quantum(sc));
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Kinds::Scalings::quantum(sc));
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_COMPARE_HL));
 		Produce::down(Emit::tree());
@@ -696,7 +696,7 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 			Produce::inv_primitive(Emit::tree(), TIMES_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, R_var);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) t);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) t);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
@@ -704,7 +704,7 @@ be; print that many zeroes; and then print |26t| as if it's an integer.
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, S_var);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) cl10M);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) cl10M);
 	Produce::up(Emit::tree());
 
 	Produce::inv_primitive(Emit::tree(), WHILE_BIP);
@@ -805,9 +805,9 @@ digit after the decimal point should be |R_var| times |10/M|, the second
 							Produce::inv_primitive(Emit::tree(), TIMES_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_symbol(Emit::tree(), K_value, R_var);
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (R/g));
+								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (R/g));
 							Produce::up(Emit::tree());
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (M/g));
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (M/g));
 						Produce::up(Emit::tree());
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);
 					Produce::up(Emit::tree());

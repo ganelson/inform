@@ -211,7 +211,7 @@ void PL::Bibliographic::compile_constants(void) {
 @<Compile the I6 Story constant@> =
 	inter_name *iname = Hierarchy::find(STORY_HL);
 	NonlocalVariables::treat_as_plain_text_word(story_title_VAR);
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	if (NonlocalVariables::has_initial_value_set(story_title_VAR))
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_title_VAR);
 	else
@@ -223,7 +223,7 @@ void PL::Bibliographic::compile_constants(void) {
 
 @<Compile the I6 Headline constant@> =
 	inter_name *iname = Hierarchy::find(HEADLINE_HL);
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	if (NonlocalVariables::has_initial_value_set(story_headline_VAR)) {
 		NonlocalVariables::treat_as_plain_text_word(story_headline_VAR);
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_headline_VAR);
@@ -238,7 +238,7 @@ void PL::Bibliographic::compile_constants(void) {
 @<Compile the I6 Story Author constant@> =
 	if (NonlocalVariables::has_initial_value_set(story_author_VAR)) {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
-		inter_t v1 = 0, v2 = 0;
+		inter_ti v1 = 0, v2 = 0;
 		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_author_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
@@ -246,7 +246,7 @@ void PL::Bibliographic::compile_constants(void) {
 		UseOptions::story_author_given();
 	} else {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
-		inter_t v1 = LITERAL_IVAL, v2 = 0;
+		inter_ti v1 = LITERAL_IVAL, v2 = 0;
 		Emit::named_generic_constant(iname, v1, v2);
 		Hierarchy::make_available(Emit::tree(), iname);
 	}
@@ -256,7 +256,7 @@ void PL::Bibliographic::compile_constants(void) {
 @<Compile the I6 Release directive@> =
 	if (NonlocalVariables::has_initial_value_set(story_release_number_VAR)) {
 		inter_name *iname = Hierarchy::find(RELEASE_HL);
-		inter_t v1 = 0, v2 = 0;
+		inter_ti v1 = 0, v2 = 0;
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_release_number_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
 		Hierarchy::make_available(Emit::tree(), iname);

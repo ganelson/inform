@@ -233,7 +233,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 	Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) count);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) count);
 	Produce::up(Emit::tree());
 
 	Routines::end(save);

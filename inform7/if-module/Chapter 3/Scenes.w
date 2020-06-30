@@ -588,7 +588,7 @@ void PL::Scenes::DetectSceneChange_routine(void) {
 		Produce::inv_primitive(Emit::tree(), GT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_symbol(Emit::tree(), K_value, chs_s);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) MAX_SCENE_CHANGE_ITERATION);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) MAX_SCENE_CHANGE_ITERATION);
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
@@ -634,7 +634,7 @@ numbers so that more abstruse ways to end take precedence over less.
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_STATUS_HL));
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 			Produce::up(Emit::tree());
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
@@ -652,7 +652,7 @@ numbers so that more abstruse ways to end take precedence over less.
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_STATUS_HL));
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 			Produce::up(Emit::tree());
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		Produce::up(Emit::tree());
@@ -680,7 +680,7 @@ void PL::Scenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s, inter_sy
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_ENDINGS_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 					Produce::up(Emit::tree());
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 				Produce::up(Emit::tree());
@@ -801,7 +801,7 @@ end actually occurred.)
 			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 			Produce::up(Emit::tree());
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
@@ -812,7 +812,7 @@ end actually occurred.)
 			Produce::inv_call_iname(Emit::tree(), iname);
 			Produce::down(Emit::tree());
 				Kinds::RunTime::emit_weak_id_as_val(K_scene);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ix+1);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ix+1);
 				Produce::val_iname(Emit::tree(), K_value, Properties::iname(P_recurring));
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -822,7 +822,7 @@ end actually occurred.)
 					Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 					Produce::up(Emit::tree());
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 				Produce::up(Emit::tree());
@@ -834,7 +834,7 @@ end actually occurred.)
 					Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 					Produce::up(Emit::tree());
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
 				Produce::up(Emit::tree());
@@ -847,18 +847,18 @@ end actually occurred.)
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(FOLLOWRULEBOOK_HL));
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WHEN_SCENE_BEGINS_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (sc->allocation_id + 1));
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (sc->allocation_id + 1));
 		Produce::up(Emit::tree());
 	}
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(FOLLOWRULEBOOK_HL));
 	Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (sc->end_rulebook[end]->allocation_id));
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (sc->end_rulebook[end]->allocation_id));
 	Produce::up(Emit::tree());
 	if (end == 1) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(FOLLOWRULEBOOK_HL));
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WHEN_SCENE_ENDS_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (sc->allocation_id + 1));
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (sc->allocation_id + 1));
 		Produce::up(Emit::tree());
 	}
 
@@ -870,7 +870,7 @@ end actually occurred.)
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, sarr);
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 		Produce::up(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(THE_TIME_HL));
 	Produce::up(Emit::tree());
@@ -880,16 +880,16 @@ end actually occurred.)
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_ENDINGS_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 		Produce::up(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), BITWISEOR_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_ENDINGS_HL));
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 			Produce::up(Emit::tree());
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (1 << end));
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (1 << end));
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -898,9 +898,9 @@ end actually occurred.)
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_LATEST_ENDING_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 		Produce::up(Emit::tree());
-		Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_t) end);
+		Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) end);
 	Produce::up(Emit::tree());
 
 @<Compile code to print text in response to the SCENES command@> =
@@ -953,7 +953,7 @@ This is allowed; it's a case where the "tolerance" below is raised.
 								Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 								Produce::down(Emit::tree());
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
-									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) other_scene->allocation_id);
+									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) other_scene->allocation_id);
 								Produce::up(Emit::tree());
 								if (other_end >= 1)
 									Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
@@ -996,7 +996,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 						Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_STATUS_HL));
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 						Produce::up(Emit::tree());
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
@@ -1033,7 +1033,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_STARTED_HL));
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
@@ -1051,7 +1051,7 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_LATEST_ENDING_HL));
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 			Produce::up(Emit::tree());
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		Produce::up(Emit::tree());
@@ -1076,14 +1076,14 @@ void PL::Scenes::ShowSceneStatus_routine(void) {
 			Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(SCENE_LATEST_ENDING_HL));
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
 				for (int end=2; end<sc->no_ends; end++) {
 					Produce::inv_primitive(Emit::tree(), CASE_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) end);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) end);
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
 							TEMPORARY_TEXT(T)
@@ -1144,7 +1144,7 @@ void PL::Scenes::emit_during_clause(parse_node *spec) {
 				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCENE_STATUS_HL));
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) sc->allocation_id);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) sc->allocation_id);
 				Produce::up(Emit::tree());
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 			Produce::up(Emit::tree());

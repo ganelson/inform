@@ -90,7 +90,7 @@ particular order.
 =
 int Kinds::Knowledge::emit_all(void) {
 	inter_name *iname = Hierarchy::find(MAX_WEAK_ID_HL);
-	Emit::named_numeric_constant(iname, (inter_t) next_free_data_type_ID);
+	Emit::named_numeric_constant(iname, (inter_ti) next_free_data_type_ID);
 	Kinds::Knowledge::emit_recursive(Kinds::Knowledge::as_subject(K_object));
 	return FALSE;
 }

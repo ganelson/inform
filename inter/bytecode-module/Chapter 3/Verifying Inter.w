@@ -35,7 +35,7 @@ inter_error_message *Inter::Verify::local_defn(inter_tree_node *P, int index, in
 	return NULL;
 }
 
-inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node *P, inter_t ID, inter_t construct) {
+inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node *P, inter_ti ID, inter_ti construct) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
@@ -52,7 +52,7 @@ inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node
 	return NULL;
 }
 
-inter_error_message *Inter::Verify::global_symbol(inter_tree_node *P, inter_t ID, inter_t construct) {
+inter_error_message *Inter::Verify::global_symbol(inter_tree_node *P, inter_ti ID, inter_ti construct) {
 	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(Inode::globals(P), ID);
 	if (S == NULL) { internal_error("IO"); return Inode::error(P, I"3no symbol for ID", NULL); }
 	inter_tree_node *D = Inter::Symbols::definition(S);
@@ -67,7 +67,7 @@ inter_error_message *Inter::Verify::global_symbol(inter_tree_node *P, inter_t ID
 	return NULL;
 }
 
-inter_error_message *Inter::Verify::local_symbol(inter_tree_node *P, inter_t ID, inter_t construct, inter_symbols_table *T) {
+inter_error_message *Inter::Verify::local_symbol(inter_tree_node *P, inter_ti ID, inter_ti construct, inter_symbols_table *T) {
 	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
 	if (S == NULL) return Inode::error(P, I"4no symbol for ID", NULL);
 	inter_tree_node *D = Inter::Symbols::definition(S);
@@ -82,7 +82,7 @@ inter_error_message *Inter::Verify::local_symbol(inter_tree_node *P, inter_t ID,
 	return NULL;
 }
 
-inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_tree_node *P, inter_t ID) {
+inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_tree_node *P, inter_ti ID) {
 	inter_symbols_table *T = Inter::Packages::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 	inter_symbol *S = Inter::SymbolsTables::symbol_from_id(T, ID);
@@ -99,7 +99,7 @@ inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_tree_
 }
 
 inter_error_message *Inter::Verify::data_type(inter_tree_node *P, int index) {
-	inter_t ID = P->W.data[index];
+	inter_ti ID = P->W.data[index];
 	inter_data_type *idt = Inter::Types::find_by_ID(ID);
 	if (idt == NULL) return Inode::error(P, I"unknown data type", NULL);
 	return NULL;
@@ -109,15 +109,15 @@ inter_error_message *Inter::Verify::value(inter_package *owner, inter_tree_node 
 	inter_symbols_table *T = Inter::Packages::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 	if (kind_symbol == NULL) return Inode::error(P, I"unknown kind for value", NULL);
-	inter_t V1 = P->W.data[index];
-	inter_t V2 = P->W.data[index+1];
+	inter_ti V1 = P->W.data[index];
+	inter_ti V2 = P->W.data[index+1];
 	return Inter::Types::verify(P, kind_symbol, V1, V2, T);
 }
 
 inter_error_message *Inter::Verify::local_value(inter_tree_node *P, int index, inter_symbol *kind_symbol, inter_symbols_table *T) {
 	if (kind_symbol == NULL) return Inode::error(P, I"unknown kind for value", NULL);
-	inter_t V1 = P->W.data[index];
-	inter_t V2 = P->W.data[index+1];
+	inter_ti V1 = P->W.data[index];
+	inter_ti V2 = P->W.data[index+1];
 	return Inter::Types::verify(P, kind_symbol, V1, V2, T);
 }
 

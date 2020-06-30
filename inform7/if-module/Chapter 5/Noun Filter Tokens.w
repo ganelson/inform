@@ -217,7 +217,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 						Produce::up(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 						Produce::down(Emit::tree());
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (-1));
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (-1));
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
@@ -284,7 +284,7 @@ void PL::Parsing::Tokens::Filters::emit_id(int id) {
 	noun_filter_token *nft;
 	LOOP_OVER(nft, noun_filter_token)
 		if (nft->allocation_id == id) {
-			inter_t annot = 0;
+			inter_ti annot = 0;
 			if (nft->parse_using_gpr == FALSE) {
 				if (nft->global_scope_flag) annot = SCOPE_FILTER_IANN;
 				else annot = NOUN_FILTER_IANN;

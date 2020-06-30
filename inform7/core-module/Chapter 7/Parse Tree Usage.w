@@ -226,6 +226,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, negated_boolean_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, new_relation_here_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, nowhere_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, pronoun_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, quant_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, quantification_parameter_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, row_amendable_ANNOT);

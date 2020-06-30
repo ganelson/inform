@@ -122,7 +122,7 @@ noun *Nouns::new_inner(wording W, general_pointer owner, int p, int options,
 	N->registration_category = mc;
 	N->noun_subclass = p;
 	N->names = Clusters::new();
-	if (Wordings::nonempty(W)) Nouns::supply_text(N, W, lang, gender, 1, options);
+	if (Wordings::nonempty(W)) Nouns::supply_text(N, W, lang, gender, SINGULAR_NUMBER, options);
 	#ifdef NOUN_COMPILATION_LINGUISTICS_CALLBACK
 	NOUN_COMPILATION_LINGUISTICS_CALLBACK(N);
 	#endif
@@ -257,7 +257,7 @@ noun *Nouns::disambiguate(parse_node *p, int common_only) {
 @<If only one of the possible matches is eligible, return that@> =
 	int candidates = 0; 
 	for (parse_node *p2 = p; p2; p2 = p2->next_alternative) {
-		noun *nt = RETRIEVE_POINTER_noun(Lexicon::get_data(Node::get_meaning(p2)));
+		noun *nt = Nouns::from_excerpt_meaning(Node::get_meaning(p2));
 		if (Nouns::is_eligible_match(nt, common_only)) {
 			first_nt = nt; candidates++;
 		}
@@ -274,4 +274,8 @@ noun *Nouns::disambiguate(parse_node *p, int common_only) {
 int Nouns::is_eligible_match(noun *nt, int common_only) {
 	if ((common_only) && (Nouns::is_common(nt) == FALSE)) return FALSE;
 	return TRUE;
+}
+
+noun *Nouns::from_excerpt_meaning(excerpt_meaning *em) {
+	return RETRIEVE_POINTER_noun(Lexicon::get_data(em));
 }

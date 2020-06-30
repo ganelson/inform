@@ -379,7 +379,7 @@ int PL::Map::map_compile_model_tables(void) {
 
 @<Declare I6 constants for the directions@> =
 	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_HL);
-	Emit::named_numeric_constant(ndi, (inter_t) registered_directions);
+	Emit::named_numeric_constant(ndi, (inter_ti) registered_directions);
 	Hierarchy::make_available(Emit::tree(), ndi);
 
 	instance *I;

@@ -35,14 +35,14 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	if (*E) return;
 
 	inter_package *pack = NULL;
-	*E = Inter::Package::new_package_named(IBM, ilp->mr.exp[0], FALSE, ptype_name, (inter_t) ilp->indent_level, eloc, &pack);
+	*E = Inter::Package::new_package_named(IBM, ilp->mr.exp[0], FALSE, ptype_name, (inter_ti) ilp->indent_level, eloc, &pack);
 	if (*E) return;
 
 	Inter::Bookmarks::set_current_package(IBM, pack);
 }
 
 inter_error_message *Inter::Package::new_package_named(inter_bookmark *IBM, text_stream *name, int uniquely,
-	inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
+	inter_symbol *ptype_name, inter_ti level, inter_error_location *eloc, inter_package **created) {
 	if (uniquely) {
 		TEMPORARY_TEXT(mutable)
 		WRITE_TO(mutable, "%S", name);
@@ -64,12 +64,12 @@ inter_error_message *Inter::Package::new_package_named(inter_bookmark *IBM, text
 	return Inter::Package::new_package(IBM, name, ptype_name, level, eloc, created);
 }
 
-inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, text_stream *name_text, inter_symbol *ptype_name, inter_t level, inter_error_location *eloc, inter_package **created) {
-	inter_t STID = Inter::Warehouse::create_symbols_table(Inter::Bookmarks::warehouse(IBM));
+inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, text_stream *name_text, inter_symbol *ptype_name, inter_ti level, inter_error_location *eloc, inter_package **created) {
+	inter_ti STID = Inter::Warehouse::create_symbols_table(Inter::Bookmarks::warehouse(IBM));
 	inter_tree_node *P = Inode::fill_3(IBM,
 		PACKAGE_IST,
 		Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
-	inter_t PID = Inter::Warehouse::create_package(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::tree(IBM));
+	inter_ti PID = Inter::Warehouse::create_package(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::tree(IBM));
 	inter_package *pack = Inter::Warehouse::get_package(Inter::Bookmarks::warehouse(IBM), PID);
 	pack->package_head = P;
 	P->W.data[PID_PACKAGE_IFLD] = PID;
@@ -92,7 +92,7 @@ inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, text_strea
 	return NULL;
 }
 
-void Inter::Package::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Package::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.data[PID_PACKAGE_IFLD] = grid[P->W.data[PID_PACKAGE_IFLD]];
 	P->W.data[SYMBOLS_PACKAGE_IFLD] = grid[P->W.data[SYMBOLS_PACKAGE_IFLD]];
 }

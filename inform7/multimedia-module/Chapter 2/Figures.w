@@ -260,7 +260,7 @@ void PL::Figures::compile_ResourceIDsOfFigures_array(void) {
 	packaging_state save = Emit::named_array_begin(iname, K_number);
 	Emit::array_numeric_entry(0);
 	blorb_figure *bf;
-	LOOP_OVER(bf, blorb_figure) Emit::array_numeric_entry((inter_t) bf->figure_number);
+	LOOP_OVER(bf, blorb_figure) Emit::array_numeric_entry((inter_ti) bf->figure_number);
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 }

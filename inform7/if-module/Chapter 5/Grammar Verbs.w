@@ -169,7 +169,7 @@ grammar_verb *PL::Parsing::Verbs::find_or_create_command(wording W) {
 
 	if (Wordings::empty(W)) {
 		inter_name *iname = Hierarchy::find(NO_VERB_VERB_DEFINED_HL);
-		Emit::named_numeric_constant(iname, (inter_t) 1);
+		Emit::named_numeric_constant(iname, (inter_ti) 1);
 		UseOptions::no_verb_verb();
 	}
 	else LOGIF(GRAMMAR_CONSTRUCTION, "GV%d has verb %W\n", gv->allocation_id, W);

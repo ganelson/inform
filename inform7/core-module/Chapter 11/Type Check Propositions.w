@@ -288,15 +288,15 @@ would work instead. If it would, we make the change within the proposition.
 	if (BinaryPredicates::is_the_wrong_way_round(bp)) internal_error("BP wrong way round");
 	if (Calculus::Propositions::Checker::type_check_binary_predicate(pl, &vta, tck) == NEVER_MATCH) {
 		if (bp == R_equality) {
-			adjective_usage *alt = Calculus::Terms::noun_to_adj_conversion(pl->terms[1]);
+			unary_predicate *alt = Calculus::Terms::noun_to_adj_conversion(pl->terms[1]);
 			if (alt) {
 				pcalc_prop test_unary = *pl;
 				test_unary.arity = 1;
-				test_unary.predicate = STORE_POINTER_adjective_usage(alt);
+				test_unary.predicate = STORE_POINTER_unary_predicate(alt);
 				if (Calculus::Propositions::Checker::type_check_unary_predicate(&test_unary, &vta, tck) == NEVER_MATCH)
 					@<The BP fails type-checking@>;
 				pl->arity = 1;
-				pl->predicate = STORE_POINTER_adjective_usage(alt);
+				pl->predicate = STORE_POINTER_unary_predicate(alt);
 			} else @<The BP fails type-checking@>;
 		} else @<The BP fails type-checking@>;
 	}
@@ -437,8 +437,8 @@ only produce a problem message when the worst happens.
 =
 int Calculus::Propositions::Checker::type_check_unary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
-	adjective_usage *tr = RETRIEVE_POINTER_adjective_usage(pl->predicate);
-	adjective *aph = AdjectiveUsages::get_aph(tr);
+	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	adjective *aph = UnaryPredicates::get_adj(tr);
 	kind *K = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), vta, tck);
 
 	if ((aph) && (Adjectives::Meanings::applicable_to(aph, K) == FALSE)) {

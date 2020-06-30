@@ -125,7 +125,7 @@ after the call parameters, and is used only as a scratch variable.
 	inter_name *iname = Hierarchy::find(STACKFRAMECREATE_HL);
 	Produce::inv_call_iname(Emit::tree(), iname);
 	Produce::down(Emit::tree());
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) NBV);
+	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) NBV);
 	Produce::up(Emit::tree());
 
 	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame)
@@ -169,7 +169,7 @@ after the call parameters, and is used only as a scratch variable.
 		inter_name *iname = Hierarchy::find(BLKVALUEFREEONSTACK_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
 		Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_t) pall->offset_index);
+		Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) pall->offset_index);
 		Produce::up(Emit::tree());
 	}
 

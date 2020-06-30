@@ -38,7 +38,7 @@ inter_package *Inter::Connectors::connectors_package(inter_tree *I) {
 			if (linkage == NULL) internal_error("no linkage ptype");
 			inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
 			Inter::Package::new_package(&IBM, I"connectors", linkage,
-				(inter_t) Inter::Bookmarks::baseline(&IBM)+1, NULL, &(connectors));
+				(inter_ti) Inter::Bookmarks::baseline(&IBM)+1, NULL, &(connectors));
 		}
 		if (connectors == NULL) internal_error("unable to create connector package");
 		Site::set_connectors_package(I, connectors);

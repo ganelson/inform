@@ -31,11 +31,11 @@ void Inter::Version::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Version::new(IBM, Str::atoi(ilp->mr.exp[0], 0), (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Version::new(IBM, Str::atoi(ilp->mr.exp[0], 0), (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Version::new(inter_bookmark *IBM, int V, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_1(IBM, VERSION_IST, (inter_t) V, eloc, level);
+inter_error_message *Inter::Version::new(inter_bookmark *IBM, int V, inter_ti level, inter_error_location *eloc) {
+	inter_tree_node *P = Inode::fill_1(IBM, VERSION_IST, (inter_ti) V, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;

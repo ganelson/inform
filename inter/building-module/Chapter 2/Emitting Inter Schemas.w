@@ -55,7 +55,7 @@ int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *isn
 		
 		text_stream *symbol_to_check = NULL;
 		text_stream *value_to_check = NULL;
-		inter_t operation_to_check = 0;
+		inter_ti operation_to_check = 0;
 		if ((isn->dir_clarifier == IFDEF_I6RW) ||
 			(isn->dir_clarifier == IFNDEF_I6RW)) {
 			symbol_to_check = isn->child_node->expression_tokens->material;
@@ -462,8 +462,8 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 			case NUMBER_ISTT:
 			case BIN_NUMBER_ISTT:
 			case HEX_NUMBER_ISTT: {
-				inter_t v1 = 0, v2 = 0;
-				if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_t) t->constant_number; }
+				inter_ti v1 = 0, v2 = 0;
+				if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number; }
 				else if (Inter::Types::read_I6_decimal(t->material, &v1, &v2) == FALSE)
 					internal_error("bad number");
 				Produce::val(I, K_value, v1, v2);

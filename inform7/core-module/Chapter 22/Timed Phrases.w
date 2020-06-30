@@ -56,7 +56,7 @@ void Phrases::Timed::TimedEventTimesTable(void) {
 		int t = Phrases::Usage::get_timing_of_event(&(ph->usage_data));
 		if (t == NOT_A_TIMED_EVENT) continue;
 		if (t == NO_FIXED_TIME) when_count++;
-		else Emit::array_numeric_entry((inter_t) t);
+		else Emit::array_numeric_entry((inter_ti) t);
 	}
 
 	for (int i=0; i<when_count+1; i++) {

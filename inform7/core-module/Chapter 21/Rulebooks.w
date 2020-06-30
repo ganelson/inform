@@ -74,7 +74,7 @@ typedef struct rulebook_match {
 	int match_length;
 	int advance_words;
 	int tail_words;
-	int article_used;
+	struct article *article_used;
 	int placement_requested;
 } rulebook_match;
 
@@ -532,7 +532,7 @@ void Rulebooks::rulebook_var_creators(void) {
 			if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_t) (rb->allocation_id));
+					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (rb->allocation_id));
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -673,9 +673,9 @@ of the two outer words and is discontiguous.
 
 =
 <rulebook-stem-inner> ::=
-	<indefinite-article> <rulebook-stem-inner-unarticled> |    ==> INDEF_ART; <<place>> = R[2]
-	<definite-article> <rulebook-stem-inner-unarticled> |    ==> DEF_ART; <<place>> = R[2]
-	<rulebook-stem-inner-unarticled>						==> NO_ART; <<place>> = R[1]
+	<indefinite-article> <rulebook-stem-inner-unarticled> |    ==> R[1]; <<place>> = R[2]
+	<definite-article> <rulebook-stem-inner-unarticled> |    ==> R[1]; <<place>> = R[2]
+	<rulebook-stem-inner-unarticled>						==> 0; <<place>> = R[1]
 
 <rulebook-stem-inner-unarticled> ::=
 	rule for/about/on <rulebook-stem-name> |    ==> MIDDLE_PLACEMENT; <<len>> = R[1]
@@ -694,7 +694,7 @@ of the two outer words and is discontiguous.
 @ =
 rulebook_match Rulebooks::rb_match_from_description(wording W) {
 	int initial_w1 = Wordings::first_wn(W), modifier_words;
-	int art = NO_ART, pl = MIDDLE_PLACEMENT;
+	int art = 0, pl = MIDDLE_PLACEMENT;
 	rulebook *rb;
 	rulebook_match rm;
 
@@ -709,7 +709,7 @@ rulebook_match Rulebooks::rb_match_from_description(wording W) {
 	rm.match_from = initial_w1;
 	rm.tail_words = 0;
 	rm.matched_rulebook = NULL;
-	rm.article_used = art;
+	rm.article_used = Articles::from_lcon(art);
 	rm.placement_requested = pl;
 
 	LOOP_OVER(rb, rulebook) {

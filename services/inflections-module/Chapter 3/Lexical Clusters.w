@@ -4,14 +4,14 @@ Lexical clusters are sets of noun or adjective forms, perhaps multiple
 or in multiple languages, which have in common that they share a meaning.
 
 @h Cluster.
-A cluster is a linked list of "forms", annotated with lingistic roles. For
+A cluster is a linked list of declensions, annotated with lingistic roles. For
 example, the cluster of forms for the common noun "man" might be:
 
->> man (En, singular), men (En, plural), homme (Fr, singular), hommes (Fr, plural)
+>> man (En, neuter singular), men (En, neuter plural), homme (Fr, masculine singular), hommes (Fr, masculine plural)
 
-We would call each of these four an "individual form" of the cluster. Each can
-in fact consist of multiple wordings, inflected into different cases, but
-in English this doesn't really show.
+We will call each of these four an "individual form" of the cluster. Each of
+the four is in turn given a declension into cases, but for English or indeed
+French this doesn't really show. For German, it would be a different matter.
 
 While this perhaps looks a little unstructured, that means that it doesn't
 impose many assumptions about the language. A similarly pragmatic view is taken
@@ -26,9 +26,6 @@ typedef struct lexical_cluster {
 
 typedef struct individual_form {
 	struct declension declined; /* text of form */
-	int form_number; /* 1 for singular, 2 for plural */
-	int form_gender; /* 1 is neuter, 2 is masculine, 3 is feminine */
-	NATURAL_LANGUAGE_WORDS_TYPE *form_language;
 	CLASS_DEFINITION
 } individual_form;
 
@@ -49,9 +46,6 @@ individual_form *Clusters::add_one(lexical_cluster *forms, wording W,
 	nl = DefaultLanguage::get(nl);
 	individual_form *in = CREATE(individual_form);
 	in->declined = Declensions::of_noun(W, nl, gender, number);
-	in->form_language = nl;
-	in->form_number = number;
-	in->form_gender = gender;
 	ADD_TO_LINKED_LIST(in, individual_form, forms->listed);
 	return in;
 }
@@ -61,8 +55,7 @@ linked_list *Clusters::add(lexical_cluster *forms, wording W,
 	linked_list *L = NEW_LINKED_LIST(individual_form);
 	individual_form *in = Clusters::add_one(forms, W, nl, gender, number);
 	ADD_TO_LINKED_LIST(in, individual_form, L);
-	if ((pluralise) && (number == 1))
-		@<Add plural forms as well@>;
+	if ((pluralise) && (number == SINGULAR_NUMBER)) @<Add plural forms as well@>;
 	return L;
 }
 
@@ -81,51 +74,55 @@ so there may be any number of forms registered: for instance, the kind
 		pde = Pluralisation::make(W, &PW, pde, nl);
 		if (Wordings::nonempty(PW)) {
 			LOGIF(CONSTRUCTED_PLURALS, "(%d) Plural of <%W>: <%W>\n", k, W, PW);
-			individual_form *in = Clusters::add_one(forms, PW, nl, gender, 2);
+			individual_form *in = Clusters::add_one(forms, PW, nl, gender, PLURAL_NUMBER);
 			ADD_TO_LINKED_LIST(in, individual_form, L);
 		}
 	} while (pde);
 
 @ The following is more suited to adjectives, or to words which are used
 adjectivally, such as past participles in French. This time we generate all
-possible gender and number agreements -- except in English, where no variation
-occurs: please don't argue about blond/blonde.
-
-GNA is a traditional Inform term, standing for "gender-number-animation".
-At run time, it's an integer from 0 to 11 which encodes all possible
-combinations. Here we only work through six, ignoring animation:
+possible gender and number agreements.
 
 =
 void Clusters::add_with_agreements(lexical_cluster *cl, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	nl = DefaultLanguage::get(nl);
 	if (nl == DefaultLanguage::get(NULL))
-		Clusters::add(cl, W, nl, NEUTER_GENDER, 1, FALSE);
+		Clusters::add(cl, W, nl, NEUTER_GENDER, SINGULAR_NUMBER, FALSE);
 	else
-		for (int gna = 0; gna < 6; gna++)
-			@<Generate agreement form in this GNA and add to the declension@>;
+		for (int form_number = 0; form_number < NO_KNOWN_NUMBERS; form_number++)
+			for (int form_gender = 1; form_gender < NO_KNOWN_GENDERS; form_gender++)
+				@<Generate agreement form and add to the declension@>;
 }
 
 @ We use tries to modify the base text, which is taken to be the neuter
 singular form, into the other five forms.
 
-@<Generate agreement form in this GNA and add to the declension@> =
+@<Generate agreement form and add to the declension@> =
 	nonterminal *step1 = NULL, *step2 = NULL;
-	int form_number = 1, form_gender = NEUTER_GENDER;
-	if (gna >= 3) form_number = 2;
-	switch (gna) {
-		case 0:	step1 = <adjective-to-masculine-singular>;
-				form_gender = MASCULINE_GENDER; break;
-		case 1:	step1 = <adjective-to-feminine-singular>;
-				form_gender = FEMININE_GENDER; break;
-		case 2:	break;
-		case 3: step1 = <adjective-to-masculine-singular>;
-				step2 = <adjective-to-masculine-plural>;
-				form_gender = MASCULINE_GENDER; break;
-		case 4: step1 = <adjective-to-feminine-singular>;
-				step2 = <adjective-to-feminine-plural>;
-				form_gender = FEMININE_GENDER; break;
-		case 5: step1 = <adjective-to-plural>; break;
+	switch (form_number) {
+		case SINGULAR_NUMBER:
+			switch (form_number) {
+				case NEUTER_GENDER:
+					break;
+				case MASCULINE_GENDER:
+					step1 = <adjective-to-masculine-singular>; break;
+				case FEMININE_GENDER:
+					step1 = <adjective-to-feminine-singular>; break;
+			}
+			break;
+		case PLURAL_NUMBER:
+			switch (form_number) {
+				case NEUTER_GENDER:
+					step1 = <adjective-to-plural>; break;
+				case MASCULINE_GENDER:
+					step1 = <adjective-to-masculine-singular>;
+					step2 = <adjective-to-masculine-plural>; break;
+				case FEMININE_GENDER:
+					step1 = <adjective-to-feminine-singular>;
+					step2 = <adjective-to-feminine-plural>; break;
+			}
+			break;
 	}
 	wording FW = EMPTY_WORDING;
 	@<Process via the agreement trie in this pipeline@>;
@@ -158,11 +155,11 @@ void Clusters::set_plural_in_language(lexical_cluster *cl, wording W,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	individual_form *in;
 	LOOP_OVER_LINKED_LIST(in, individual_form, cl->listed)
-		if (in->form_number == 2) {
-			in->declined = Declensions::of_noun(W, nl, NEUTER_GENDER, 2);
+		if (Clusters::get_number_of_form(in) == PLURAL_NUMBER) {
+			in->declined = Declensions::of_noun(W, nl, NEUTER_GENDER, PLURAL_NUMBER);
 			return;
 		}
-	Clusters::add(cl, W, NULL, NEUTER_GENDER, 2, FALSE);
+	Clusters::add(cl, W, NULL, NEUTER_GENDER, PLURAL_NUMBER, FALSE);
 }
 
 @h Searching declensions.
@@ -174,11 +171,11 @@ or plural):
 
 =
 wording Clusters::get_form(lexical_cluster *cl, int plural_flag) {
-	int number_sought = 1;
-	if (plural_flag) number_sought = 2;
+	int number_sought = SINGULAR_NUMBER;
+	if (plural_flag) number_sought = PLURAL_NUMBER;
 	individual_form *in;
 	LOOP_OVER_LINKED_LIST(in, individual_form, cl->listed)
-		if (in->form_number == number_sought)
+		if (Clusters::get_number_of_form(in) == number_sought)
 			return Clusters::get_nominative_of_form(in);
 	return EMPTY_WORDING;
 }
@@ -189,12 +186,12 @@ falling back on English if there's none registered:
 =
 wording Clusters::get_form_in_language(lexical_cluster *cl, int plural_flag,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
-	int number_sought = 1;
-	if (plural_flag) number_sought = 2;
+	int number_sought = SINGULAR_NUMBER;
+	if (plural_flag) number_sought = PLURAL_NUMBER;
 	individual_form *in;
 	LOOP_OVER_LINKED_LIST(in, individual_form, cl->listed)
-		if ((in->form_number == number_sought) &&
-			(in->form_language == nl))
+		if ((Clusters::get_number_of_form(in) == number_sought) &&
+			(Clusters::language_of_form(in) == nl))
 			return Clusters::get_nominative_of_form(in);
 	return Clusters::get_form(cl, plural_flag);
 }
@@ -206,11 +203,15 @@ wording Clusters::get_form_general(lexical_cluster *cl,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl, int number_sought, int gender_sought) {
 	individual_form *in;
 	LOOP_OVER_LINKED_LIST(in, individual_form, cl->listed)
-		if (((number_sought == -1) || (number_sought == in->form_number)) &&
-			((gender_sought == -1) || (gender_sought == in->form_gender)) &&
-			(in->form_language == nl))
+		if (((number_sought == -1) || (number_sought == Clusters::get_number_of_form(in))) &&
+			((gender_sought == -1) || (gender_sought == Clusters::get_gender_of_form(in))) &&
+			(Clusters::language_of_form(in) == nl))
 			return Clusters::get_nominative_of_form(in);
 	return EMPTY_WORDING;
+}
+
+NATURAL_LANGUAGE_WORDS_TYPE *Clusters::language_of_form(individual_form *in) {
+	return in->declined.within_language;
 }
 
 @ All of which use:
@@ -219,3 +220,13 @@ wording Clusters::get_form_general(lexical_cluster *cl,
 wording Clusters::get_nominative_of_form(individual_form *in) {
 	return Declensions::in_case(&(in->declined), NOMINATIVE_CASE);
 }
+
+int Clusters::get_number_of_form(individual_form *in) {
+	return Lcon::get_number(in->declined.lcon_cased[NOMINATIVE_CASE]);
+}
+
+int Clusters::get_gender_of_form(individual_form *in) {
+	return Lcon::get_gender(in->declined.lcon_cased[NOMINATIVE_CASE]);
+}
+
+

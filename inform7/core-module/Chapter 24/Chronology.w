@@ -73,28 +73,28 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), LE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) L);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) L);
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_actions);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_actions);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), AND_BIP);
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), GE_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) duration.until);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) duration.until);
 						Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_actions);
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_actions);
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), LOOKUPBYTE_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTIONCURRENTLYHAPPENINGFLAG_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_actions);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_actions);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -103,20 +103,20 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), LE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) L);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) L);
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_actions);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_actions);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), GE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) duration.until);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) duration.until);
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_actions);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_actions);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -130,14 +130,14 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_actions);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_actions);
 					Produce::up(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) L);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) L);
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), LOOKUPBYTE_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTIONCURRENTLYHAPPENINGFLAG_HL));
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_actions);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_actions);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		} else {
@@ -146,9 +146,9 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_actions);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_actions);
 				Produce::up(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) L);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) L);
 			Produce::up(Emit::tree());
 		}
 	}
@@ -233,13 +233,13 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 	}
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTSINGLEPASTSTATE_HL));
 	Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) past_flag);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) no_past_tenses);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) past_flag);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) no_past_tenses);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (output_wanted + 4*perfect_flag));
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (output_wanted + 4*perfect_flag));
 	Produce::up(Emit::tree());
 	if (operate) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) duration.length);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) duration.length);
 		Produce::up(Emit::tree());
 	}
 
@@ -522,7 +522,7 @@ void Chronology::past_tenses_i6_escape(void) {
 				current_sentence = ptc->where_ptc_tested; /* ensure problems reported correctly */
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (ptc->allocation_id));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (ptc->allocation_id));
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
 						BEGIN_COMPILATION_MODE;
@@ -788,9 +788,9 @@ times".
 void Chronology::chronology_extents_i6_escape(void) {
 	inter_name *iname1 = Hierarchy::find(NO_PAST_TENSE_CONDS_HL);
 	Hierarchy::make_available(Emit::tree(), iname1);
-	Emit::named_numeric_constant(iname1, (inter_t) no_past_tenses);
+	Emit::named_numeric_constant(iname1, (inter_ti) no_past_tenses);
 
 	inter_name *iname2 = Hierarchy::find(NO_PAST_TENSE_ACTIONS_HL);
 	Hierarchy::make_available(Emit::tree(), iname2);
-	Emit::named_numeric_constant(iname2, (inter_t) no_past_actions);
+	Emit::named_numeric_constant(iname2, (inter_ti) no_past_actions);
 }

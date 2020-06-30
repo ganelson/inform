@@ -37,20 +37,20 @@ void Inter::Metadata::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if ((Str::begins_with_wide_string(S, L"\"")) && (Str::ends_with_wide_string(S, L"\""))) {
 		TEMPORARY_TEXT(parsed_text)
 		*E = Inter::Constant::parse_text(parsed_text, S, 1, Str::len(S)-2, eloc);
-		inter_t ID = 0;
+		inter_ti ID = 0;
 		if (*E == NULL) {
 			ID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 			Str::copy(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), ID), parsed_text);
 		}
 		DISCARD_TEXT(parsed_text)
 		if (*E) return;
-		*E = Inter::Metadata::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, key_name), ID, (inter_t) ilp->indent_level, eloc);
+		*E = Inter::Metadata::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, key_name), ID, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
 	*E = Inter::Errors::quoted(I"metadata value must be string", S, eloc);
 }
 
-inter_error_message *Inter::Metadata::new(inter_bookmark *IBM, inter_t SID, inter_t TID, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Metadata::new(inter_bookmark *IBM, inter_ti SID, inter_ti TID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_3(IBM,
 		METADATA_IST, SID, LITERAL_TEXT_IVAL, TID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;

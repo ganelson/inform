@@ -11,7 +11,7 @@ which use this module:
 @ This module defines the following classes:
 
 @e adjective_CLASS
-@e adjective_usage_CLASS
+@e article_CLASS
 @e quantifier_CLASS
 @e determiner_CLASS
 @e grammatical_category_CLASS
@@ -25,10 +25,11 @@ which use this module:
 @e preposition_CLASS
 @e time_period_CLASS
 @e noun_CLASS
+@e pronoun_CLASS
 
 =
 DECLARE_CLASS(adjective)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(adjective_usage, 1000)
+DECLARE_CLASS(article)
 DECLARE_CLASS(quantifier)
 DECLARE_CLASS(determiner)
 DECLARE_CLASS(grammatical_category)
@@ -42,9 +43,11 @@ DECLARE_CLASS(verb_usage_tier)
 DECLARE_CLASS(preposition)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(time_period, 100)
 DECLARE_CLASS(noun)
+DECLARE_CLASS(pronoun)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
+@e LINGUISTIC_STOCK_DA
 @e TIME_PERIODS_DA
 @e VERB_USAGES_DA
 @e VERB_FORMS_DA
@@ -53,6 +56,7 @@ DECLARE_CLASS(noun)
 void LinguisticsModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
+	@<Declare new memory allocation reasons@>;
 	Stock::create_categories();
 	Cardinals::enable_in_word_form();
 	Articles::mark_for_preform();
@@ -61,9 +65,8 @@ void LinguisticsModule::start(void) {
 void LinguisticsModule::end(void) {
 }
 
-@
-
 @<Register this module's debugging log aspects@> =
+	Log::declare_aspect(LINGUISTIC_STOCK_DA, L"linguistic stock", FALSE, FALSE);
 	Log::declare_aspect(TIME_PERIODS_DA, L"time periods", FALSE, FALSE);
 	Log::declare_aspect(VERB_USAGES_DA, L"verb usages", FALSE, TRUE);
 	Log::declare_aspect(VERB_FORMS_DA, L"verb forms", FALSE, TRUE);
@@ -73,6 +76,14 @@ void LinguisticsModule::end(void) {
 	Writers::register_logger('p', Prepositions::log);
 	Writers::register_logger('w', Verbs::log_verb);
 	Writers::register_logger('y', VerbMeanings::log);
+
+@ Not all of our memory will be claimed in the form of structures: now and then
+we need to use the equivalent of traditional |malloc| and |calloc| routines.
+
+@e STOCK_MREASON
+
+@<Declare new memory allocation reasons@> =
+	Memory::reason_name(STOCK_MREASON, "linguistic stock array");
 
 @ This module uses //syntax//, and adds the following annotations to the
 syntax tree.
@@ -86,6 +97,7 @@ syntax tree.
 @e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
 @e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
 @e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
+@e pronoun_ANNOT                 /* |int|: an lcon, for NPs where a pronoun was used */
 
 @e nounphrase_article_ANNOT      /* |int|: definite or indefinite article: see below */
 @e plural_reference_ANNOT        /* |int|: used by PROPER NOUN nodes for evident plurals */

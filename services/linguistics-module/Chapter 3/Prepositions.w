@@ -59,7 +59,7 @@ void Prepositions::log_item(grammatical_category *cat, general_pointer data) {
 void Prepositions::log(OUTPUT_STREAM, void *vprep) {
 	preposition *prep = (preposition *) vprep;
 	if (prep == NULL) { WRITE("___"); }
-	else { WRITE("p=%A", &(prep->prep_text)); }
+	else { WRITE("%A", &(prep->prep_text)); }
 }
 
 @h Creation.

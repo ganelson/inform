@@ -36,8 +36,7 @@ void Verbs::create_category(void) {
 
 void Verbs::log_item(grammatical_category *cat, general_pointer data) {
 	verb *V = RETRIEVE_POINTER_verb(data);
-	if (V->conjugation) LOG("%A", &(V->conjugation->infinitive));
-	else LOG("(unconjugated)");
+	Verbs::log_verb(DL, V);
 }
 
 @ Note also that every verb always has a bare form, where no prepositions are
@@ -83,9 +82,8 @@ void Verbs::log_verb(OUTPUT_STREAM, void *vvi) {
 	verb *V = (verb *) vvi;
 	if (V == NULL) { WRITE("<no-V>"); }
 	else {
-		WRITE("v=");
 		if (V->conjugation) WRITE("%A", &(V->conjugation->infinitive));
-		else WRITE("<none>");
+		else WRITE("(unconjugated)");
 		WRITE("(%d)", V->allocation_id);
 	}
 }

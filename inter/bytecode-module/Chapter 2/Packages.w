@@ -7,7 +7,7 @@ To manage packages of inter code.
 =
 typedef struct inter_package {
 	struct inter_tree_node *package_head;
-	inter_t index_n;
+	inter_ti index_n;
 	struct text_stream *package_name_t;
 	struct inter_symbols_table *package_scope;
 	int package_flags;
@@ -26,7 +26,7 @@ typedef struct inter_package {
 @ =
 inter_tree *default_ptree = NULL;
 
-inter_package *Inter::Packages::new(inter_tree *I, inter_t n) {
+inter_package *Inter::Packages::new(inter_tree *I, inter_ti n) {
 	inter_package *pack = CREATE(inter_package);
 	pack->package_head = NULL;
 	pack->package_scope = NULL;
@@ -191,7 +191,7 @@ inter_symbol *Inter::Packages::search_resources_exhaustively(inter_tree *I, text
 	return NULL;
 }
 
-inter_t Inter::Packages::to_PID(inter_package *P) {
+inter_ti Inter::Packages::to_PID(inter_package *P) {
 	if (P == NULL) return 0;
 	return P->index_n;
 }
@@ -230,7 +230,7 @@ text_stream *Inter::Packages::read_metadata(inter_package *P, text_stream *key) 
 	inter_symbol *found = Inter::SymbolsTables::symbol_from_name(Inter::Packages::scope(P), key);
 	if ((found) && (Inter::Symbols::is_defined(found))) {
 		inter_tree_node *D = Inter::Symbols::definition(found);
-		inter_t val2 = D->W.data[VAL1_MD_IFLD + 1];
+		inter_ti val2 = D->W.data[VAL1_MD_IFLD + 1];
 		return Inter::Warehouse::get_text(Inter::Tree::warehouse(Inter::Packages::tree(P)), val2);
 	}
 	return NULL;

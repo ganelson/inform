@@ -69,8 +69,8 @@ void CodeGen::MergeTemplate::catch_all_visitor(inter_tree *I, inter_tree_node *P
 	}
 }
 
-void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_t level) {
-	inter_t SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
+void CodeGen::MergeTemplate::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_ti level) {
+	inter_ti SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
 	Str::copy(glob_storage, content);
 	Produce::guard(Inter::Splat::new(IBM, SID, 0, level, 0, NULL));
@@ -141,7 +141,7 @@ void CodeGen::MergeTemplate::receive_raw(text_stream *S, I6T_kit *kit) {
 void CodeGen::MergeTemplate::chunked_raw(text_stream *S, I6T_kit *kit) {
 	if (Str::len(S) == 0) return;
 	PUT_TO(S, '\n');
-	CodeGen::MergeTemplate::entire_splat(kit->IBM, I"template", S, (inter_t) (Inter::Bookmarks::baseline(kit->IBM) + 1));
+	CodeGen::MergeTemplate::entire_splat(kit->IBM, I"template", S, (inter_ti) (Inter::Bookmarks::baseline(kit->IBM) + 1));
 	Str::clear(S);
 }
 

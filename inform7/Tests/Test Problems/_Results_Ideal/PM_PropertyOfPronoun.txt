@@ -1,10 +1,11 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 43 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7645 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32123 words long.
 Problem__ PM_PropertyOfPronoun
   >--> You wrote 'It can be pointing down' (source text, line 4): but it's
-    often a little ambiguous to declare properties for 'it', so it seems best
-    to spell this out by saying exactly what the property's owner or owners
-    would be.
-Inform 7 has finished: 17 centiseconds used.
+    often a little ambiguous to declare properties for 'it' (or some similarly
+    vague pronoun like 'him' or 'her'), so it seems best to spell this out by
+    saying exactly what the property's owner or owners would be.
+Inform 7 has finished.

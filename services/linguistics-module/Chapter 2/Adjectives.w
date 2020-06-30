@@ -43,6 +43,12 @@ void Adjectives::log_item(grammatical_category *cat, general_pointer data) {
 	Adjectives::log(adj);
 }
 
+adjective *Adjectives::from_lcon(lcon_ti lcon) {
+	linguistic_stock_item *item = Stock::from_lcon(lcon);
+	if (item == NULL) return NULL;
+	return RETRIEVE_POINTER_adjective(item->data);
+}
+
 @h Creation.
 The following declares a new adjective, creating it only if it does not
 already exist.

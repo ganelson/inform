@@ -124,11 +124,11 @@ void Site::set_code(inter_tree *I, inter_bookmark IBM) {
 	I->site.code_bookmark = IBM;
 }
 
-inter_symbol *Site::get_opcode(inter_tree *I, inter_t bip) {
+inter_symbol *Site::get_opcode(inter_tree *I, inter_ti bip) {
 	return I->site.opcodes_set[bip];
 }
 
-void Site::set_opcode(inter_tree *I, inter_t bip, inter_symbol *S) {
+void Site::set_opcode(inter_tree *I, inter_ti bip, inter_symbol *S) {
 	I->site.opcodes_set[bip] = S;
 }
 

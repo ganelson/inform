@@ -39,7 +39,7 @@ inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbo
 	return Inter::SymbolsTables::symbol_from_name_creating(T, name);
 }
 
-inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_t construct, inter_error_message **E) {
+inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_ti construct, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }

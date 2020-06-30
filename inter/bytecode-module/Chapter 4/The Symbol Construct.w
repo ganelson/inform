@@ -47,13 +47,13 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 
 	inter_symbol *name_name = NULL;
-	inter_t level = 0;
+	inter_ti level = 0;
 	if (routine) {
 		inter_symbols_table *locals = Inter::Packages::scope(routine);
 		if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 		name_name = Inter::Textual::new_symbol(eloc, locals, symbol_name, E);
 		if (*E) return;
-		level = (inter_t) ilp->indent_level;
+		level = (inter_ti) ilp->indent_level;
 	} else {
 		name_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), symbol_name, E);
 		if (*E) return;

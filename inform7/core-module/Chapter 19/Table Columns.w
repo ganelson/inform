@@ -156,7 +156,7 @@ void Tables::Columns::compile_run_time_support(void) {
 	LOOP_OVER(tc, table_column) {
 		Produce::inv_primitive(Emit::tree(), CASE_BIP);
 		Produce::down(Emit::tree());
-			Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_t) Tables::Columns::get_id(tc));
+			Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) Tables::Columns::get_id(tc));
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);

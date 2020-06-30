@@ -9,7 +9,7 @@ before subkinds, and kinds are called before their instances, but we don't
 manage that here.
 
 =
-inter_t cs_sequence_counter = 0;
+inter_ti cs_sequence_counter = 0;
 void Properties::Emit::emit_subject(inference_subject *subj) {
 	LOGIF(OBJECT_COMPILATION, "Compiling object definition for $j\n", subj);
 	kind *K = InferenceSubjects::as_kind(subj);
@@ -58,7 +58,7 @@ each one is marked when visited.
 	#ifdef IF_MODULE
 	if ((I) && (Kinds::Compare::le(Instances::to_kind(I), K_object))) {
 		int AC = PL::Spatial::get_definition_depth(I);
-		if (AC > 0) Produce::annotate_i(iname, ARROW_COUNT_IANN, (inter_t) AC);
+		if (AC > 0) Produce::annotate_i(iname, ARROW_COUNT_IANN, (inter_ti) AC);
 	}
 	#endif
 
@@ -130,7 +130,7 @@ int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn)
 @<Now emit a propertyvalue@> =
 	instance *as_I = InferenceSubjects::as_instance(know);
 	kind *as_K = InferenceSubjects::as_kind(know);
-	inter_t v1 = LITERAL_IVAL, v2 = (inter_t) FALSE;
+	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) FALSE;
 	property *in = prn;
 
 	Holsters::unholster_pair(&VH, &v1, &v2);
@@ -138,7 +138,7 @@ int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn)
 	if ((Properties::is_either_or(prn)) && (Properties::EitherOr::implemented_as_attribute(prn))) {
 		if (Properties::EitherOr::stored_in_negation(prn)) {
 			in = Properties::EitherOr::get_negation(prn);
-			v2 = (inter_t) (v2)?FALSE:TRUE;
+			v2 = (inter_ti) (v2)?FALSE:TRUE;
 		}
 	}
 	if (as_I) Emit::instance_propertyvalue(in, as_I, v1, v2);

@@ -714,7 +714,7 @@ void Properties::emit_single(property *prn) {
 		Emit::property(iname, K);
 		if (prn->run_time_only) Emit::permission(prn, K_object, NULL);
 		if (prn->translated) Produce::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
-		Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_t) prn->allocation_id);
+		Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
 	}
 }
 

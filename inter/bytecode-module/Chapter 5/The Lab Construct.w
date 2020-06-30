@@ -42,11 +42,11 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbol *label = Inter::SymbolsTables::symbol_from_name(locals, ilp->mr.exp[0]);
 	if (Inter::Symbols::is_label(label) == FALSE) { *E = Inter::Errors::plain(I"not a label", eloc); return; }
 
-	*E = Inter::Lab::new(IBM, label, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Lab::new(IBM, label, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Lab::new(inter_bookmark *IBM, inter_symbol *label, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_2(IBM, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, label), eloc, (inter_t) level);
+inter_error_message *Inter::Lab::new(inter_bookmark *IBM, inter_symbol *label, inter_ti level, inter_error_location *eloc) {
+	inter_tree_node *P = Inode::fill_2(IBM, LAB_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, label), eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;

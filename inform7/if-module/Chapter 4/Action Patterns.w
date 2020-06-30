@@ -1368,10 +1368,10 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 	parse_node *spec2 = ap->actor_spec; /* the actor */
 
 	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec0, K_understanding)) &&
-		(<nominative-pronoun>(Node::get_text(spec0)) == FALSE))
+		(<subject-pronoun>(Node::get_text(spec0)) == FALSE))
 		spec0 = Rvalues::from_wording(Node::get_text(spec0));
 	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec1, K_understanding)) &&
-		(<nominative-pronoun>(Node::get_text(spec1)) == FALSE))
+		(<subject-pronoun>(Node::get_text(spec1)) == FALSE))
 		spec1 = Rvalues::from_wording(Node::get_text(spec1));
 
 	action_name_list *anl = ap->action;
@@ -1387,7 +1387,7 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYACTION_HL));
 	Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) flag_bits);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) flag_bits);
 		if (spec2) PL::Actions::Patterns::emit_try_action_parameter(spec2, K_object);
 		else Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
 		Produce::val_iname(Emit::tree(), K_action_name, PL::Actions::double_sharp(an));
@@ -1668,7 +1668,7 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 		Specifications::Compiler::emit(ap->actor_spec);
 	} else
 		Emit::array_iname_entry(Instances::iname(I_yourself));
-	Emit::array_numeric_entry((inter_t) request_bits);
+	Emit::array_numeric_entry((inter_ti) request_bits);
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 	if (N) Emit::holster(VH, N);
@@ -2243,7 +2243,7 @@ void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
 	else
 		Specifications::Compiler::emit_as_val(K_value, ap->noun_spec);
 	if (ap->action == NULL)
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) -1);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 	else {
 		if (ap->action->next) bad_form = TRUE;
 		if (PL::Actions::can_be_compiled_in_past_tense(ap->action->action_listed) == FALSE)

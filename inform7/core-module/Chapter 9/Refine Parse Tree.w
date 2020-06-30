@@ -99,13 +99,13 @@ common things, which ought to have count nouns, in fact have mass nouns --
 compare "clothing" and "clothes", which has no adequate singular.)
 
 =
-void Assertions::Refiner::pn_make_adjective(parse_node *p, adjective_usage *ale, parse_node *spec) {
-	adjective *aph = AdjectiveUsages::get_aph(ale);
+void Assertions::Refiner::pn_make_adjective(parse_node *p, unary_predicate *ale, parse_node *spec) {
+	adjective *aph = UnaryPredicates::get_adj(ale);
 	Node::set_type(p, ADJECTIVE_NT);
 	Node::set_aph(p, aph);
 	Node::set_evaluation(p, NULL);
 	Assertions::Refiner::pn_noun_details_from_spec(p, spec);
-	if (AdjectiveUsages::get_parity(ale)) Annotations::write_int(p, negated_boolean_ANNOT, FALSE);
+	if (UnaryPredicates::get_parity(ale)) Annotations::write_int(p, negated_boolean_ANNOT, FALSE);
 	else Annotations::write_int(p, negated_boolean_ANNOT, TRUE);
 }
 
@@ -402,9 +402,9 @@ property of something.
 thing. (If we had more and better pronouns, they would go here.)
 
 @<Act on the special noun phrases "it" and "they"@> =
-	if (Annotations::read_int(p, nounphrase_article_ANNOT) == IT_ART) {
-		if ((<nominative-pronoun>(Node::get_text(p))) &&
-			(<<r>> == 2) &&
+	int pro = Annotations::read_int(p, pronoun_ANNOT);
+	if (pro != 0) {
+		if ((Lcon::get_number(pro) == PLURAL_NUMBER) &&
 			(Assertions::Traverse::get_current_subject_plurality())) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticThey),
 				"I'm unable to handle 'they' here",
@@ -539,7 +539,7 @@ here, given that we know we are looking for a noun.
 
 @<Act on an action pattern used as a noun phrase@> =
 	#ifdef IF_MODULE
-	if (Annotations::read_int(p, nounphrase_article_ANNOT) == NO_ART) {
+	if (Annotations::read_int(p, nounphrase_article_ANNOT) == 0) {
 		if (<action-pattern>(Node::get_text(p))) {
 			Node::set_type(p, ACTION_NT);
 			Node::set_action_meaning(p, <<rp>>);
@@ -594,7 +594,7 @@ sentence.
 @<Act on a simple description@> =
 	if (!((Descriptions::to_instance(spec)) &&
 		((Descriptions::number_of_adjectives_applied_to(spec) > 0) ||
-			(Annotations::read_int(p, nounphrase_article_ANNOT) != DEF_ART)))) {
+			(Articles::from_lcon(Annotations::read_int(p, nounphrase_article_ANNOT)) != definite_article)))) {
 		Assertions::Refiner::refine_from_simple_description(p, spec);
 		return;
 	}
@@ -664,10 +664,10 @@ or memory.
 	int no_adjectives = Descriptions::number_of_adjectives_applied_to(spec);
 	if (no_adjectives == 1) {
 		Assertions::Refiner::pn_make_adjective(p,
-			Descriptions::first_adjective_usage(spec), spec);
+			Descriptions::first_unary_predicate(spec), spec);
 	} else {
 		Node::set_type_and_clear_annotations(p, AND_NT);
-		adjective_usage *ale;
+		unary_predicate *ale;
 		int i = 0;
 		parse_node *AND_p = p;
 		pcalc_prop *ale_prop = NULL;

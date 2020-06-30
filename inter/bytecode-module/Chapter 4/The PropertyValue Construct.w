@@ -38,7 +38,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
-	inter_t plist_ID;
+	inter_ti plist_ID;
 	if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 	else plist_ID = Inter::Instance::properties_list(owner_name);
 	inter_node_list *FL = Inter::Warehouse::get_frame_list(Inter::Bookmarks::warehouse(IBM), plist_ID);
@@ -52,17 +52,17 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	}
 
 	inter_symbol *val_kind = Inter::Property::kind_of(prop_name);
-	inter_t con_val1 = 0;
-	inter_t con_val2 = 0;
+	inter_ti con_val1 = 0;
+	inter_ti con_val2 = 0;
 	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), val_kind, ilp->mr.exp[2], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::PropertyValue::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, owner_name),
-		con_val1, con_val2, (inter_t) ilp->indent_level, eloc);
+		con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
 }
 
 int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, inter_symbol *owner, inter_symbol *prop_name) {
-	inter_t plist_ID;
+	inter_ti plist_ID;
 	if (Inter::Kind::is(owner)) plist_ID = Inter::Kind::permissions_list(owner);
 	else plist_ID = Inter::Instance::permissions_list(owner);
 	inter_node_list *FL = Inode::ID_to_frame_list(F, plist_ID);
@@ -90,8 +90,8 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 	return FALSE;
 }
 
-inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_t PID, inter_t OID,
-	inter_t con_val1, inter_t con_val2, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_ti PID, inter_ti OID,
+	inter_ti con_val1, inter_ti con_val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_4(IBM, PROPERTYVALUE_IST,
 		PID, OID, con_val1, con_val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
@@ -100,7 +100,7 @@ inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_t PID,
 }
 
 void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	inter_t vcount = Inode::vcount(P);
+	inter_ti vcount = Inode::vcount(P);
 
 	if (P->W.extent != EXTENT_PVAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::symbol(owner, P, P->W.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
@@ -116,7 +116,7 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 			*E = Inode::error(P, err, prop_name->symbol_name); return;
 		}
 
-		inter_t plist_ID;
+		inter_ti plist_ID;
 		if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 		else plist_ID = Inter::Instance::properties_list(owner_name);
 

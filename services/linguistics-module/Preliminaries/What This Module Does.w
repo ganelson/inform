@@ -35,10 +35,6 @@ For example, "brick" and "wall" correspond to two different instances of //noun/
 and "to be" to //verb//. The instances of these grammatical classes, taken
 together, form what is called the "stock".
 
-The stock is not just a figure of speech, it's actually a data structure:
-see //Stock Control//. We keep this mainly to produce diagnostic logs of the
-entire stock -- see below for an example of the result.
-
 @ To be clear, though:
 (a) The stock is a range of possibilities and not a tally of what actually
 appears in any given source text being looked at. When Inform compiles a
@@ -84,6 +80,27 @@ and so on. A single //noun// representing "brick" would include its plural
 noun cases. Our goal here is that the stock should never contain two different
 instances which merely represent inflected forms of the same thing.
 
+@h Lcons.
+An "lcon" is a reference to something in the linguistic stock, together with
+annotations for the grammatical form used on a particular occasion. For
+example, an lcon can mean "the indefinite article, in the third person
+plural feminine form", where the stock item is just the indefinite article.
+Lcons are packed into single integers for efficiency: no memory needs to be
+allocated to create lcons, and they copy with value semantics.
+
+Thus the stock is not just a figure of speech, it's actually a data structure:
+see //Stock Control//.
+
+@h Cardinals and ordinals.
+This module does not aspire to parse the full range of literals understood
+by, for example, Inform. But it does provide <cardinal-number> and
+<ordinal-number> nonterminals, which can recognise low numbers in words
+or arbitrary numbers in digits. See //Cardinals and Ordinals//.
+
+Note that these are not part of the stock. It wouldn't really make sense
+for them to be so: we would need a potentially infinite number of them to
+accommodate the possible range of integers which appear.
+
 @h Noun phrases.
 For convenience we will run through the stock in two sets: those grammatical
 categories used in noun phrases, and provided by //Chapter 2//; and those
@@ -96,26 +113,14 @@ which one applies from the context.[1]
 
 The user creates the stock of adjectives by calling //Adjectives::declare//.
 
-//Adjective Usages// also provides a convenient way to record lists of
-adjectives which apply to something (e.g., in "a great big horse", the list
-would be "great", "big"). Adjectives can be used negatively in such lists
-(e.g. in "a door which is not open"), but we do not record antonyms here:
-because we aren't concerned with meanings, we see no affinity between
-"a not open box" and "a closed box".
-
 [1] In Inform, for example, empty means something different for rulebooks
 than for containers. An adjective is a unary predicate applying to something,
 and the kind of that thing can be used to decide which meaning applies. See
 //core: Adjective Meanings// for how Inform does this.
 
-@ The articles are a fixed stock of two: the definite and indefinite articles.
-(There is no |article| class.) See //Articles//.
-
-@ The cardinal numbers are a fixed stock of twelve given in words, and the
-entire range of integer literals given in digits. See //Cardinals and Ordinals//.
-We regard cardinals as uninflected: when "un" in French becomes "une", that is
-the indefinite article inflecting, not the cardinal number "un". (There is no
-|cardinal| class.)
+@ Each article in the stock is an instance of //adjective//. The stock is fixed
+at two, both automatically created: the definite and the indefinite article.
+See //Articles//.
 
 @ The determiners are a fixed stock of roughly 20, each being an instance of
 the class //determiner//. Properly speaking some are families of determiners --
@@ -145,16 +150,9 @@ added to the stock, "Mary" and "kite", unless "kite" is already known as a
 common noun. This is because "the kite", from then on, will be understood
 as referring to this one specific object, just as "Mary" will.
 
-@ The ordinal numbers are a fixed stock of twelve given in words: "first",
-"second" and so on up to "twelfth". See //Cardinals and Ordinals//.
-Ordinals are essentially used adjectivally and may be inflected as such
-(consider "premier", "premiers", "première", "premières" in French).
-There is no |ordinal| class.
-
-@ The pronouns are a fixed stock which, in a sense, contains just one thing:
-there is in a sense only one pronoun in the world, but which occurs in
-nominative (he, she), accusative (him, her), or possessive (his, her) forms.
-See //Pronouns//.
+@ Each pronoun in the stock is an instance of //pronoun//. The stock is fixed
+at three, all automatically created: the subject (he, she), object (him, her)
+and possessive (his, her) pronouns. See //Pronouns//.
 
 @h Verb phrases.
 

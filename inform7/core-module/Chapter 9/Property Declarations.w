@@ -70,7 +70,7 @@ The subject (in this example, "a container") is required not to match:
 <forbidden-property-owners> ::=
 	<article> kind |    ==> @<Issue PM_PropertyOfKind1 problem@>
 	kind |    ==> @<Issue PM_PropertyOfKind1 problem@>
-	<pronoun>				==> @<Issue PM_PropertyOfPronoun problem@>
+	<object-pronoun>				==> @<Issue PM_PropertyOfPronoun problem@>
 
 @<Issue PM_PropertyOfKind1 problem@> =
 	*X = -1;
@@ -84,7 +84,8 @@ The subject (in this example, "a container") is required not to match:
 @<Issue PM_PropertyOfPronoun problem@> =
 	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyOfPronoun),
-		"it's often a little ambiguous to declare properties for 'it'",
+		"it's often a little ambiguous to declare properties for 'it' "
+		"(or some similarly vague pronoun like 'him' or 'her')",
 		"so it seems best to spell this out by saying exactly what the "
 		"property's owner or owners would be.");
 

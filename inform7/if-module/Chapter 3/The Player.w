@@ -339,7 +339,7 @@ code to set things up correctly at run-time.
 void PL::Player::InitialSituation_define(int id, int val) {
 	inter_name *iname = Hierarchy::find(id);
 	Emit::named_array_begin(iname, K_value);
-	Emit::named_numeric_constant(iname, (inter_t) val);
+	Emit::named_numeric_constant(iname, (inter_ti) val);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 

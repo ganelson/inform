@@ -333,7 +333,7 @@ noun *Sentences::Headings::choose_highest_scoring_noun(parse_node *p, int common
 	noun *nt;
 	LOOP_OVER(nt, noun) Sentences::Headings::set_noun_search_score(nt, 0);
 	for (parse_node *p2 = p; p2; p2 = p2->next_alternative) {
-		noun *nt = RETRIEVE_POINTER_noun(Lexicon::get_data(Node::get_meaning(p2)));
+		noun *nt = Nouns::from_excerpt_meaning(Node::get_meaning(p2));
 		if (Nouns::is_eligible_match(nt, common_only))
 			Sentences::Headings::set_noun_search_score(nt, Node::get_score(p2));
 	}

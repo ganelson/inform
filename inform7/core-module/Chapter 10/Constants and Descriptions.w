@@ -249,7 +249,7 @@ possible adjective name it can see.
 <s-adjective> internal ? {
 	parse_node *p = Lexicon::retrieve_longest_initial_segment(ADJECTIVE_MC, W);
 	if (p) {
-		adjective_usage *ale = AdjectiveUsages::new(
+		unary_predicate *ale = UnaryPredicates::new(
 			RETRIEVE_POINTER_adjective(Lexicon::get_data(Node::get_meaning(p))),
 				TRUE);
 		*XP = Descriptions::from_proposition(NULL, W);
@@ -263,18 +263,18 @@ possible adjective name it can see.
 
 @ =
 parse_node *Node::AdjectiveLists::join_adjlist(parse_node *A, parse_node *B) {
-	adjective_usage *au;
+	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, B)
-		Descriptions::add_to_adjective_list(AdjectiveUsages::copy(au), A);
+		Descriptions::add_to_adjective_list(UnaryPredicates::copy(au), A);
 	return A;
 }
 
 parse_node *Node::AdjectiveLists::join_adjlist_w(parse_node *A, parse_node *B) {
-	adjective_usage *au;
+	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, B)
-		Descriptions::add_to_adjective_list_w(AdjectiveUsages::copy(au), A);
+		Descriptions::add_to_adjective_list_w(UnaryPredicates::copy(au), A);
 	return A;
 }
 
@@ -284,10 +284,10 @@ parse_node *Node::AdjectiveLists::make_adjlist(parse_node *A, wording W) {
 }
 
 parse_node *Node::AdjectiveLists::negate_adjlist(parse_node *A) {
-	adjective_usage *au;
+	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A)
-		AdjectiveUsages::flip_parity(au);
+		UnaryPredicates::flip_parity(au);
 	return A;
 }
 
@@ -314,10 +314,10 @@ parse_node *Node::AdjectiveLists::add_adjlist_w(parse_node *spec, parse_node *ad
 
 =
 int Node::AdjectiveLists::adjlist_applies_to_kind(parse_node *A, kind *K) {
-	adjective_usage *au;
+	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A) {
-		adjective *aph = AdjectiveUsages::get_aph(au);
+		adjective *aph = UnaryPredicates::get_adj(au);
 		if (Adjectives::Meanings::applicable_to(aph, K) == FALSE) return FALSE;
 	}
 	return TRUE;

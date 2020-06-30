@@ -374,7 +374,7 @@ of the kind which the constructor makes:
 inter_name *UNKNOWN_TY_iname = NULL;
 void Kinds::Constructors::compile_I6_constants(void) {
 	UNKNOWN_TY_iname = Hierarchy::find(UNKNOWN_TY_HL);
-	Emit::named_numeric_constant(UNKNOWN_TY_iname, (inter_t) UNKNOWN_NT);
+	Emit::named_numeric_constant(UNKNOWN_TY_iname, (inter_ti) UNKNOWN_NT);
 	Hierarchy::make_available(Emit::tree(), UNKNOWN_TY_iname);
 
 	kind_constructor *con;
@@ -383,12 +383,12 @@ void Kinds::Constructors::compile_I6_constants(void) {
 		if (Str::len(tn) > 0) {
 			con->con_iname = Hierarchy::make_iname_with_specific_name(WEAK_ID_HL, tn, Kinds::Constructors::package(con));
 			Hierarchy::make_available(Emit::tree(), con->con_iname);
-			Emit::named_numeric_constant(con->con_iname, (inter_t) con->weak_kind_ID);
+			Emit::named_numeric_constant(con->con_iname, (inter_ti) con->weak_kind_ID);
 		}
 	}
 
 	inter_name *hwm = Hierarchy::find(BASE_KIND_HWM_HL);
-	Emit::named_numeric_constant(hwm, (inter_t) next_free_data_type_ID);
+	Emit::named_numeric_constant(hwm, (inter_ti) next_free_data_type_ID);
 	Hierarchy::make_available(Emit::tree(), hwm);
 }
 inter_name *Kinds::Constructors::UNKNOWN_iname(void) {

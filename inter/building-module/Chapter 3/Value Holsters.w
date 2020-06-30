@@ -13,7 +13,7 @@ To manage requests for compilation to Inter.
 typedef struct value_holster {
 	int vhmode_wanted;
 	int vhmode_provided;
-	inter_t val1, val2;
+	inter_ti val1, val2;
 } value_holster;
 
 @ =
@@ -56,13 +56,13 @@ void Holsters::to_val_mode(inter_tree *I, value_holster *vh) {
 @h Holstering data.
 
 =
-void Holsters::holster_pair(value_holster *vh, inter_t v1, inter_t v2) {
+void Holsters::holster_pair(value_holster *vh, inter_ti v1, inter_ti v2) {
 	if (vh == NULL) internal_error("no VH");
 	vh->val1 = v1; vh->val2 = v2;
 	vh->vhmode_provided = INTER_DATA_VHMODE;
 }
 
-void Holsters::unholster_pair(value_holster *vh, inter_t *v1, inter_t *v2) {
+void Holsters::unholster_pair(value_holster *vh, inter_ti *v1, inter_ti *v2) {
 	if (vh == NULL) internal_error("no VH");
 	if (vh->vhmode_provided != INTER_DATA_VHMODE) {
 		if (vh->vhmode_provided != NO_VHMODE)

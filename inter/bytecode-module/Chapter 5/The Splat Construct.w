@@ -60,18 +60,18 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 		if (routine == NULL) { *E = Inter::Errors::plain(I"indented 'splat' used outside function", eloc); return; }
 	}
 
-	inter_t plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
+	inter_ti plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
 	if (plm == 1000000) { *E = Inter::Errors::plain(I"unknown PLM code before text matter", eloc); return; }
 
-	inter_t SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
+	inter_ti SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
 	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
-	*E = Inter::Splat::new(IBM, SID, plm, (inter_t) ilp->indent_level, ilp->terminal_comment, eloc);
+	*E = Inter::Splat::new(IBM, SID, plm, (inter_ti) ilp->indent_level, ilp->terminal_comment, eloc);
 }
 
-inter_t Inter::Splat::parse_plm(text_stream *S) {
+inter_ti Inter::Splat::parse_plm(text_stream *S) {
 	if (Str::len(S) == 0) return 0;
 	if (Str::eq(S, I"ARRAY")) return ARRAY_PLM;
 	if (Str::eq(S, I"ATTRIBUTE")) return ATTRIBUTE_PLM;
@@ -95,7 +95,7 @@ inter_t Inter::Splat::parse_plm(text_stream *S) {
 	return 1000000;
 }
 
-void Inter::Splat::write_plm(OUTPUT_STREAM, inter_t plm) {
+void Inter::Splat::write_plm(OUTPUT_STREAM, inter_ti plm) {
 	switch (plm) {
 		case ARRAY_PLM: WRITE("ARRAY "); break;
 		case ATTRIBUTE_PLM: WRITE("ATTRIBUTE "); break;
@@ -118,7 +118,7 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_t plm) {
 	}
 }
 
-inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_t SID, inter_t plm, inter_t level, inter_t ID, inter_error_location *eloc) {
+inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_ti SID, inter_ti plm, inter_ti level, inter_ti ID, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
 	if (ID) Inode::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
@@ -126,7 +126,7 @@ inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_t SID, inter_t
 	return NULL;
 }
 
-void Inter::Splat::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Splat::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.data[MATTER_SPLAT_IFLD] = grid[P->W.data[MATTER_SPLAT_IFLD]];
 }
 

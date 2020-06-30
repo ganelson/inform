@@ -145,7 +145,7 @@ void UseNouns::nl_translates(parse_node *pn) {
 			noun *t = Instances::get_noun(I);
 			if (t == NULL) internal_error("stuck on instance name");
 			Nouns::supply_text(t, Node::get_text(pn->next->next), nl, g,
-				1, ADD_TO_LEXICON_NTOPT);
+				SINGULAR_NUMBER, ADD_TO_LEXICON_NTOPT);
 			break;
 		}
 		case TRANS_KIND: {
@@ -155,7 +155,7 @@ void UseNouns::nl_translates(parse_node *pn) {
 			noun *t = Kinds::Constructors::get_noun(KC);
 			if (t == NULL) internal_error("further stuck on kind name");
 			Nouns::supply_text(t, Node::get_text(pn->next->next), nl, g,
-				1, ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT);
+				SINGULAR_NUMBER, ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT);
 			break;
 		}
 		default:

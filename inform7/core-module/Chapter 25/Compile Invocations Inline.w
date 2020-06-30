@@ -239,7 +239,7 @@ charlatans" and what they "deserve". I'm a better person now.
 	int current_opts = Invocations::get_phrase_options_bitmap(inv);
 	switch (<<r>>) {
 		case OPTS_INSUB:
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) current_opts);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) current_opts);
 			break;
 		case OPT_INSUB:
 			if (current_opts & <<opt>>) Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1); else Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
@@ -524,7 +524,7 @@ with identical names in the same Inform 6 routine, which would fail to compile.
 @ We can also output just the numerical counter:
 
 @<Inline command "counter"@> =
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) JumpLabels::read_counter(sche->operand, NOT_APPLICABLE));
+	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) JumpLabels::read_counter(sche->operand, NOT_APPLICABLE));
 	return;
 
 @ We can also output just the storage array:
@@ -1405,7 +1405,7 @@ very special circumstances.
 "say" phrases.
 
 @<Inline command "segment-count"@> =
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) Annotations::read_int(inv, ssp_segment_count_ANNOT));
+	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Annotations::read_int(inv, ssp_segment_count_ANNOT));
 	return;
 
 @<Inline command "final-segment-marker"@> =
@@ -1724,7 +1724,7 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 		} else {
 			value_holster VH2 = Holsters::new(INTER_DATA_VHMODE);
 			Specifications::Compiler::compile_inner(&VH2, spec);
-			inter_t v1 = 0, v2 = 0;
+			inter_ti v1 = 0, v2 = 0;
 			Holsters::unholster_pair(&VH2, &v1, &v2);
 			if (v1 == ALIAS_IVAL) {
 				PUT(URL_SYMBOL_CHAR);

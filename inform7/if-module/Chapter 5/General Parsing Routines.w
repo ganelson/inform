@@ -660,7 +660,7 @@ void PL::Parsing::Tokens::General::compile_parse_name_tail(gpr_kit *gprk) {
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 			Produce::down(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) -1);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
@@ -945,7 +945,7 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 @<Return minus two@> =
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 	Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) -2);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -2);
 	Produce::up(Emit::tree());
 
 @ =

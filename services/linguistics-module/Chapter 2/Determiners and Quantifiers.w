@@ -44,7 +44,7 @@ containers, for instance, where the parameter is 3 or 17 respectively.
 =
 typedef struct quantifier {
 	#ifdef CORE_MODULE
-	inter_t operator_prim; /* inter opcode to compare successes against the threshold */
+	inter_ti operator_prim; /* inter opcode to compare successes against the threshold */
 	#endif
 	int T_coefficient; /* see above */
 	int is_complementary; /* tests the complement of the set, not the set of matches */
@@ -234,12 +234,12 @@ void Quantifiers::emit_test(quantifier *quant,
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, qcn);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-						(inter_t) quantification_parameter);
+						(inter_ti) quantification_parameter);
 				Produce::up(Emit::tree());
 			} else {
 				Produce::val_symbol(Emit::tree(), K_value, qcy);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
-					(inter_t) quantification_parameter);
+					(inter_ti) quantification_parameter);
 			}
 			break;
 		case 10:
@@ -259,7 +259,7 @@ void Quantifiers::emit_test(quantifier *quant,
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) TC);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TC);
 					Produce::val_symbol(Emit::tree(), K_value, qcn);
 				Produce::up(Emit::tree());
 			} else {
@@ -268,7 +268,7 @@ void Quantifiers::emit_test(quantifier *quant,
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), TIMES_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) TC);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) TC);
 						Produce::val_symbol(Emit::tree(), K_value, qcn);
 					Produce::up(Emit::tree());
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 10);

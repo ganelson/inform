@@ -46,7 +46,7 @@ void CodeGen::ReconcileVerbs::visitor2(inter_tree *I, inter_tree_node *P, void *
 
 @<Attend to the verb@> =
 	if (P->W.extent > DATA_CONST_IFLD+1) {
-		inter_t V1 = P->W.data[DATA_CONST_IFLD], V2 = P->W.data[DATA_CONST_IFLD+1];
+		inter_ti V1 = P->W.data[DATA_CONST_IFLD], V2 = P->W.data[DATA_CONST_IFLD+1];
 		if (V1 == DWORD_IVAL) {
 			text_stream *glob_text = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), V2);
 			if (Dictionaries::find(observed_verbs, glob_text)) {

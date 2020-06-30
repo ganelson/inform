@@ -81,7 +81,7 @@ then follow, and finally the optional bitmap of phrase options.
 	for (int k=0; k<tokens->tokens_count; k++)
 		Specifications::Compiler::emit_to_kind(tokens->args[k], tokens->kind_required[k]);
 	if (phrase_options != -1)
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) phrase_options);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) phrase_options);
 
 @<Compute the return kind of the phrase@> =
 	kind *K = tokens->as_requested;

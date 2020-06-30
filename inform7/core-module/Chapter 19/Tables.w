@@ -785,7 +785,7 @@ columns and in the same order.
 parse_node *Tables::empty_cell_node(void) {
 	parse_node *PN;
 	PN = Node::new(PROPER_NOUN_NT);
-	Annotations::write_int(PN, nounphrase_article_ANNOT, NO_ART);
+	Annotations::write_int(PN, nounphrase_article_ANNOT, 0);
 	return PN;
 }
 

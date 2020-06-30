@@ -849,7 +849,7 @@ inter_name *RELS_LIST_iname = NULL;
 inter_name *REL_BLOCK_HEADER_symbol = NULL;
 inter_name *TTF_iname = NULL;
 
-inter_name *Relations::compile_defined_relation_constant(int id, inter_t val) {
+inter_name *Relations::compile_defined_relation_constant(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(Emit::tree(), iname);
 	Emit::named_numeric_constant_hex(iname, val);
@@ -983,7 +983,7 @@ void Relations::compile_relation_records(void) {
 	if (BinaryPredicates::iname(bp) == NULL) internal_error("no bp symbol");
 	packaging_state save = Emit::named_array_begin(BinaryPredicates::iname(bp), K_value);
 	if (bp->dynamic_memory) {
-		Emit::array_numeric_entry((inter_t) 1); /* meaning one entry, which is 0; to be filled in later */
+		Emit::array_numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
 		Kinds::RunTime::emit_block_value_header(BinaryPredicates::kind(bp), FALSE, 8);
 		Emit::array_null_entry();
@@ -1382,7 +1382,7 @@ void Relations::compile_relation_records(void) {
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, shower);
 		Produce::val_symbol(Emit::tree(), K_value, rr_s);
-		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, (inter_t) par);
+		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, (inter_ti) par);
 	Produce::up(Emit::tree());
 	Produce::rtrue(Emit::tree());
 
@@ -1393,7 +1393,7 @@ void Relations::compile_relation_records(void) {
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, emptier);
 			Produce::val_symbol(Emit::tree(), K_value, rr_s);
-			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, (inter_t) par);
+			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, (inter_ti) par);
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, X_s);
@@ -1783,7 +1783,7 @@ void Relations::compile_bit(int b) {
 	word_compiled += (b << bit_counter);
 	bit_counter++;
 	if (bit_counter == 16) {
-		Emit::array_numeric_entry((inter_t) word_compiled);
+		Emit::array_numeric_entry((inter_ti) word_compiled);
 		words_compiled++;
 		word_compiled = 0; bit_counter = 0;
 	}
@@ -1854,8 +1854,8 @@ this is done by the routine |Relations::relation_range| (below).
 		Emit::array_iname_entry(PL::Counting::instance_count_property_symbol(right_kind));
 	} else Emit::array_numeric_entry(0);
 
-	Emit::array_numeric_entry((inter_t) left_count);
-	Emit::array_numeric_entry((inter_t) right_count);
+	Emit::array_numeric_entry((inter_ti) left_count);
+	Emit::array_numeric_entry((inter_ti) right_count);
 	Emit::array_iname_entry(Kinds::Behaviour::get_iname(left_kind));
 	Emit::array_iname_entry(Kinds::Behaviour::get_iname(right_kind));
 
@@ -1885,13 +1885,13 @@ above: it forces the template layer to generate the cache when first used.
 		if (left_count < 256) {
 			v2v_iname = iname;
 			packaging_state save = Emit::named_byte_array_begin(iname, K_number);
-			Emit::array_numeric_entry((inter_t) (2*left_count*left_count));
+			Emit::array_numeric_entry((inter_ti) (2*left_count*left_count));
 			Emit::array_end(save);
 			bytes_used += 2*left_count*left_count;
 		} else {
 			v2v_iname = iname;
 			packaging_state save = Emit::named_array_begin(iname, K_number);
-			Emit::array_numeric_entry((inter_t) (2*left_count*left_count));
+			Emit::array_numeric_entry((inter_ti) (2*left_count*left_count));
 			Emit::array_end(save);
 			words_used += 2*left_count*left_count;
 		}

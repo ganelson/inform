@@ -38,12 +38,12 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	Inter::Annotations::copy_set_to_symbol(&(ilp->set), prop_name);
 
-	*E = Inter::Property::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_kind), (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Property::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, prop_kind), (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_t PID, inter_t KID, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID, inter_ti level, inter_error_location *eloc) {
 	inter_warehouse *warehouse = Inter::Bookmarks::warehouse(IBM);
-	inter_t L1 = Inter::Warehouse::create_frame_list(warehouse);
+	inter_ti L1 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
 	inter_tree_node *P = Inode::fill_3(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
@@ -52,7 +52,7 @@ inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_t PID, inte
 	return NULL;
 }
 
-void Inter::Property::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Property::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.data[PERM_LIST_PROP_IFLD] = grid[P->W.data[PERM_LIST_PROP_IFLD]];
 }
 
@@ -62,7 +62,7 @@ void Inter::Property::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_PROP_IFLD], KIND_IST);
 }
 
-inter_t Inter::Property::permissions_list(inter_symbol *prop_name) {
+inter_ti Inter::Property::permissions_list(inter_symbol *prop_name) {
 	if (prop_name == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(prop_name);
 	if (D == NULL) return 0;

@@ -52,7 +52,7 @@ chosen), but no problem message has been issued about this, or
 int Kinds::RunTime::emit_default_value(kind *K, wording W, char *storage_name) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	int rv = Kinds::RunTime::compile_default_value_vh(&VH, K, W, storage_name);
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Holsters::unholster_pair(&VH, &v1, &v2);
 	Emit::array_generic_entry(v1, v2);
 	return rv;
@@ -134,7 +134,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		return TRUE;
 	}
 
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Kinds::RunTime::get_default_value(&v1, &v2, K);
 	if (v1 != 0) {
 		if (Holsters::data_acceptable(VH)) {
@@ -216,7 +216,7 @@ I6 story file; this effectively suppresses problem messages which the
 absence of rooms would otherwise result in.
 
 =
-void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
+void Kinds::RunTime::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 	if (K == NULL) return;
 	if (K->construct->stored_as) K = K->construct->stored_as;
 
@@ -271,7 +271,7 @@ void Kinds::RunTime::get_default_value(inter_t *v1, inter_t *v2, kind *K) {
 
 	if (Str::len(name) == 0) return;
 
-	inter_t val1 = 0, val2 = 0;
+	inter_ti val1 = 0, val2 = 0;
 	if (Inter::Types::read_I6_decimal(name, &val1, &val2) == TRUE) {
 		*v1 = val1; *v2 = val2; return;
 	}
@@ -458,7 +458,7 @@ void Kinds::RunTime::emit_weak_id(kind *K) {
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = Kinds::Constructors::iname(con);
 	if (iname) Emit::array_iname_entry(iname);
-	else Emit::array_numeric_entry((inter_t) (Kinds::RunTime::weak_id(K)));
+	else Emit::array_numeric_entry((inter_ti) (Kinds::RunTime::weak_id(K)));
 }
 
 void Kinds::RunTime::emit_weak_id_as_val(kind *K) {
@@ -466,7 +466,7 @@ void Kinds::RunTime::emit_weak_id_as_val(kind *K) {
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = Kinds::Constructors::iname(con);
 	if (iname) Produce::val_iname(Emit::tree(), K_value, iname);
-	else Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_t) (Kinds::RunTime::weak_id(K)));
+	else Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (Kinds::RunTime::weak_id(K)));
 }
 
 @ The strong ID is a faithful representation of the |kind| structure,
@@ -684,7 +684,7 @@ void Kinds::RunTime::compile_structures(void) {
 	}
 
 @<Expand out regular bases@> =
-	Emit::array_numeric_entry((inter_t) arity);
+	Emit::array_numeric_entry((inter_ti) arity);
 	switch (arity) {
 		case 1: {
 			kind *X = Kinds::unary_construction_material(K);
@@ -705,7 +705,7 @@ void Kinds::RunTime::compile_structures(void) {
 		arity++;
 		Kinds::binary_construction_material(X, NULL, &X);
 	}
-	Emit::array_numeric_entry((inter_t) arity);
+	Emit::array_numeric_entry((inter_ti) arity);
 	X = Kinds::unary_construction_material(K);
 	while (Kinds::get_construct(X) == CON_TUPLE_ENTRY) {
 		arity++;
@@ -848,7 +848,7 @@ void Kinds::RunTime::emit_heap_allocation(heap_allocation ha) {
 		inter_name *iname = Hierarchy::find(BLKVALUECREATEONSTACK_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
 		Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ha.stack_offset);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ha.stack_offset);
 		Kinds::RunTime::emit_strong_id_as_val(ha.allocated_kind);
 		Produce::up(Emit::tree());
 	} else {
@@ -878,9 +878,9 @@ void Kinds::RunTime::emit_block_value_header(kind *K, int individual, int size) 
 	if (Kinds::get_construct(K) == CON_list_of) flags += BLK_FLAG_TRUNCMULT;
 	if (Kinds::get_construct(K) == CON_relation) flags += BLK_FLAG_MULTIPLE;
 	if (TargetVMs::is_16_bit(Task::vm()))
-		Emit::array_numeric_entry((inter_t) (0x100*n + flags));
+		Emit::array_numeric_entry((inter_ti) (0x100*n + flags));
 	else
-		Emit::array_numeric_entry((inter_t) (0x1000000*n + 0x10000*flags));
+		Emit::array_numeric_entry((inter_ti) (0x1000000*n + 0x10000*flags));
 	Kinds::RunTime::emit_weak_id(K);
 
 	Emit::array_MPN_entry();
@@ -924,7 +924,7 @@ inter_name *Kinds::RunTime::iname(kind *K) {
 		int arity = 0;
 		kind *operands[MAX_KIND_ARITY];
 		int icon = -1;
-		inter_t idt = ROUTINE_IDT;
+		inter_ti idt = ROUTINE_IDT;
 		if (Kinds::get_construct(K) == CON_description) @<Run out inter kind for description@>
 		else if (Kinds::get_construct(K) == CON_list_of) @<Run out inter kind for list@>
 		else if (Kinds::get_construct(K) == CON_phrase) @<Run out inter kind for phrase@>
@@ -1027,7 +1027,7 @@ inter_name *Kinds::RunTime::constructed_kind_name(kind *K) {
 void Kinds::RunTime::emit(kind *K) {
 	if (K == NULL) internal_error("tried to emit null kind");
 	if (Emit::defined(Kinds::RunTime::iname(K))) return;
-	inter_t dt = INT32_IDT;
+	inter_ti dt = INT32_IDT;
 	if (K == K_object) dt = ENUM_IDT;
 	if (Kinds::Behaviour::is_an_enumeration(K)) dt = ENUM_IDT;
 	if (K == K_truth_state) dt = INT2_IDT;
@@ -1046,18 +1046,18 @@ void Kinds::RunTime::emit(kind *K) {
 }
 
 void Kinds::RunTime::kind_declarations(void) {
-	kind *K; inter_t c = 0;
+	kind *K; inter_ti c = 0;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::RunTime::base_represented_in_inter(K)) {
 			Kinds::RunTime::emit(K);
 			inter_name *iname = Kinds::RunTime::iname(K);
-			Produce::annotate_i(iname, WEAK_ID_IANN, (inter_t) Kinds::RunTime::weak_id(K));
+			Produce::annotate_i(iname, WEAK_ID_IANN, (inter_ti) Kinds::RunTime::weak_id(K));
 			Produce::annotate_i(iname, SOURCE_ORDER_IANN, c++);
 		}
 }
 
 void Kinds::RunTime::compile_nnci(inter_name *name, int val) {
-	Emit::named_numeric_constant(name, (inter_t) val);
+	Emit::named_numeric_constant(name, (inter_ti) val);
 	Hierarchy::make_available(Emit::tree(), name);
 }
 
@@ -1076,7 +1076,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 			inter_name *iname = Hierarchy::make_iname_with_specific_name(ICOUNT_HL, Emit::main_render_unique(Produce::main_scope(Emit::tree()), ICN), Kinds::Behaviour::package(K));
 			Hierarchy::make_available(Emit::tree(), iname);
 			DISCARD_TEXT(ICN)
-			Emit::named_numeric_constant(iname, (inter_t) Instances::count(K));
+			Emit::named_numeric_constant(iname, (inter_ti) Instances::count(K));
 		}
 	}
 
@@ -1256,7 +1256,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K, x);
 					Produce::up(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) instance_count);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) instance_count);
 				Produce::up(Emit::tree());
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 			Produce::up(Emit::tree());
@@ -1290,7 +1290,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 						Produce::down(Emit::tree());
 							Produce::val_symbol(Emit::tree(), K, x);
 						Produce::up(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) instance_count-2);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) instance_count-2);
 					Produce::up(Emit::tree());
 				} else {
 					Emit::cast(K, K_number);
@@ -1299,7 +1299,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 					Produce::up(Emit::tree());
 				}
 
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) instance_count);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) instance_count);
 				Produce::up(Emit::tree());
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 			Produce::up(Emit::tree());
@@ -1346,7 +1346,7 @@ and |b| inclusive.
 					if (Kinds::Behaviour::is_quasinumerical(K))
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 					else
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Kinds::Behaviour::get_highest_valid_value_as_integer(K));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -1649,7 +1649,7 @@ unless the two values are genuinely equal.
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_t)
+						Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti)
 							Kinds::Behaviour::get_highest_valid_value_as_integer(K));
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());

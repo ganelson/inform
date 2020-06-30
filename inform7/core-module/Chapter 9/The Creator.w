@@ -364,7 +364,7 @@ is why the following only applies to those.)
 @<If the CALLED name used the definite article, make a note of that@> =
 	#ifdef IF_MODULE
 	if ((Node::get_type(called_name_node) == PROPER_NOUN_NT) &&
-		(Annotations::read_int(called_name_node, nounphrase_article_ANNOT) == DEF_ART)) {
+		(Articles::from_lcon(Annotations::read_int(called_name_node, nounphrase_article_ANNOT)) == definite_article)) {
 		inference_subject *subj = Node::get_subject(p);
 		if ((InferenceSubjects::is_an_object(subj)) ||
 			(InferenceSubjects::is_a_kind_of_object(subj)))
@@ -609,7 +609,7 @@ to abbreviated forms of object names are normally allowed.
 		#ifdef IF_MODULE
 		if (Annotations::read_int(p, plural_reference_ANNOT))
 			PL::Naming::object_now_has_plural_name(recent_creation);
-		if (Annotations::read_int(p, nounphrase_article_ANNOT) == NO_ART)
+		if (Annotations::read_int(p, nounphrase_article_ANNOT) == 0)
 			PL::Naming::object_now_has_proper_name(recent_creation);
 		#endif
 		int g = Annotations::read_int(p, gender_reference_ANNOT);
@@ -966,7 +966,9 @@ and an |COMMON_NOUN_NT| node, "nose".
 			LOOP_THROUGH_WORDING(j, CW) {
 				if (<possessive-third-person>(Wordings::one_word(j)))
 					@<Insert the appropriate possessive@>
-				else if (<pronoun>(Wordings::one_word(j)))
+				else if (<subject-pronoun>(Wordings::one_word(j)))
+					@<Insert the appropriate name@>
+				else if (<object-pronoun>(Wordings::one_word(j)))
 					@<Insert the appropriate name@>
 				else Feeds::feed_wording(Wordings::one_word(j));
 			}

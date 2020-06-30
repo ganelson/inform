@@ -56,7 +56,7 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	inter_data_type *idt = NULL;
 	int constructor = BASE_ICON;
 	int arity = 0;
-	inter_t operands[MAX_ICON_OPERANDS];
+	inter_ti operands[MAX_ICON_OPERANDS];
 	inter_symbol *super_kind = NULL;
 	for (int i=0; i<MAX_ICON_OPERANDS; i++) operands[i] = 0;
 	if (Regexp::match(&mr2, ilp->mr.exp[1], L"<= (%i+)")) {
@@ -155,21 +155,21 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 
 	*E = Inter::Kind::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, symb), idt->type_ID,
 		(super_kind)?(Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, super_kind)):0,
-		constructor, arity, operands, (inter_t) ilp->indent_level, eloc);
+		constructor, arity, operands, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_t SID, inter_t TID, inter_t SUP,
-	int constructor, int arity, inter_t *operands, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_ti SID, inter_ti TID, inter_ti SUP,
+	int constructor, int arity, inter_ti *operands, inter_ti level, inter_error_location *eloc) {
 	inter_warehouse *warehouse = Inter::Bookmarks::warehouse(IBM);
-	inter_t L1 = Inter::Warehouse::create_frame_list(warehouse);
-	inter_t L2 = Inter::Warehouse::create_frame_list(warehouse);
+	inter_ti L1 = Inter::Warehouse::create_frame_list(warehouse);
+	inter_ti L2 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
 	Inter::Warehouse::attribute_resource(warehouse, L2, Inter::Bookmarks::package(IBM));
 	inter_tree_node *P = Inode::fill_8(IBM,
 		KIND_IST, SID, TID, 0, 0, SUP, L1, L2,
-		(inter_t) constructor, eloc, level);
+		(inter_ti) constructor, eloc, level);
 	if (arity > 0) {
-		if (Inode::extend(P, (inter_t) arity) == FALSE)
+		if (Inode::extend(P, (inter_ti) arity) == FALSE)
 			return Inter::Errors::plain(I"can't extend", eloc);
 		for (int i=0; i<arity; i++) P->W.data[OPERANDS_KIND_IFLD+i] = operands[i];
 	}
@@ -178,7 +178,7 @@ inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_t SID, inter_t 
 	return NULL;
 }
 
-void Inter::Kind::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Kind::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.data[PERM_LIST_KIND_IFLD] = grid[P->W.data[PERM_LIST_KIND_IFLD]];
 	P->W.data[PLIST_KIND_IFLD] = grid[P->W.data[PLIST_KIND_IFLD]];
 }
@@ -247,14 +247,14 @@ void Inter::Kind::verify(inter_construct *IC, inter_tree_node *P, inter_package 
 	}
 }
 
-inter_t Inter::Kind::permissions_list(inter_symbol *kind_symbol) {
+inter_ti Inter::Kind::permissions_list(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return 0;
 	return D->W.data[PERM_LIST_KIND_IFLD];
 }
 
-inter_t Inter::Kind::properties_list(inter_symbol *inst_name) {
+inter_ti Inter::Kind::properties_list(inter_symbol *inst_name) {
 	if (inst_name == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(inst_name);
 	if (D == NULL) return 0;
@@ -369,7 +369,7 @@ inter_symbol *Inter::Kind::operand_symbol(inter_symbol *kind_symbol, int i) {
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return NULL;
 	if (i >= D->W.extent - MIN_EXTENT_KIND_IFR) return NULL;
-	inter_t CID = D->W.data[OPERANDS_KIND_IFLD + i];
+	inter_ti CID = D->W.data[OPERANDS_KIND_IFLD + i];
 	inter_symbols_table *T = Inter::Packages::scope_of(D);
 	return Inter::SymbolsTables::symbol_from_id(T, CID);
 }
@@ -381,7 +381,7 @@ inter_data_type *Inter::Kind::data_type(inter_symbol *kind_symbol) {
 	return Inter::Types::find_by_ID(D->W.data[DATA_TYPE_KIND_IFLD]);
 }
 
-inter_t Inter::Kind::next_enumerated_value(inter_symbol *kind_symbol) {
+inter_ti Inter::Kind::next_enumerated_value(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return 0;

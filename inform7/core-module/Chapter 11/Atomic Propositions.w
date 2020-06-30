@@ -21,12 +21,13 @@ The question of how these are joined together is left until the next section.
 typedef struct pcalc_prop {
 	int element; /* one of the constants below: always 1 or greater */
 	int arity; /* 1 for quantifiers and unary predicates; 2 for BPs; 0 otherwise */
-	struct general_pointer predicate; /* usually indicates which predicate structure is meant */
+	struct general_pointer predicate; /* indicates which predicate structure is meant */
 	struct pcalc_term terms[MAX_ATOM_ARITY]; /* terms to which the predicate applies */
 	struct kind *assert_kind; /* |KIND_ATOM|: the kind of value of a variable */
 	int composited; /* |KIND_ATOM|: arises from a composite determiner/noun like "somewhere" */
 	int unarticled; /* |KIND_ATOM|: arises from an unarticled usage like "vehicle", not "a vehicle" */
 	struct wording calling_name; /* |CALLED_ATOM|: text of the name this is called */
+	struct quantifier *quant; /* |QUANTIFIER_ATOM|: which one */
 	int quantification_parameter; /* |QUANTIFIER_ATOM|: e.g., the 3 in "all three" */
 	struct pcalc_prop *next; /* next atom in the list for this proposition */
 } pcalc_prop;
@@ -103,6 +104,7 @@ pcalc_prop *Calculus::Atoms::new(int element) {
 	prop->unarticled = FALSE;
 	prop->arity = 0;
 	prop->predicate = NULL_GENERAL_POINTER;
+	prop->quant = NULL;
 	return prop;
 }
 
@@ -130,7 +132,7 @@ pcalc_prop *Calculus::Atoms::QUANTIFIER_new(quantifier *quant, int v, int parame
 	pcalc_prop *prop = Calculus::Atoms::new(QUANTIFIER_ATOM);
 	prop->arity = 1;
 	prop->terms[0] = Calculus::Terms::new_variable(v);
-	prop->predicate = STORE_POINTER_quantifier(quant);
+	prop->quant = quant;
 	prop->quantification_parameter = parameter;
 	return prop;
 }
@@ -144,8 +146,7 @@ int Calculus::Atoms::is_quantifier(pcalc_prop *prop) {
 }
 
 quantifier *Calculus::Atoms::get_quantifier(pcalc_prop *prop) {
-	if ((prop) && (prop->element == QUANTIFIER_ATOM))
-		return RETRIEVE_POINTER_quantifier(prop->predicate);
+	if ((prop) && (prop->element == QUANTIFIER_ATOM)) return prop->quant;
 	return NULL;
 }
 
@@ -157,28 +158,28 @@ int Calculus::Atoms::get_quantification_parameter(pcalc_prop *prop) {
 
 int Calculus::Atoms::is_existence_quantifier(pcalc_prop *prop) {
 	if ((prop) && (prop->element == QUANTIFIER_ATOM) &&
-		(RETRIEVE_POINTER_quantifier(prop->predicate) == exists_quantifier))
+		(prop->quant == exists_quantifier))
 		return TRUE;
 	return FALSE;
 }
 
 int Calculus::Atoms::is_nonexistence_quantifier(pcalc_prop *prop) {
 	if ((prop) && (prop->element == QUANTIFIER_ATOM) &&
-		(RETRIEVE_POINTER_quantifier(prop->predicate) == not_exists_quantifier))
+		(prop->quant == not_exists_quantifier))
 		return TRUE;
 	return FALSE;
 }
 
 int Calculus::Atoms::is_forall_quantifier(pcalc_prop *prop) {
 	if ((prop) && (prop->element == QUANTIFIER_ATOM) &&
-		(RETRIEVE_POINTER_quantifier(prop->predicate) == for_all_quantifier))
+		(prop->quant == for_all_quantifier))
 		return TRUE;
 	return FALSE;
 }
 
 int Calculus::Atoms::is_notall_quantifier(pcalc_prop *prop) {
 	if ((prop) && (prop->element == QUANTIFIER_ATOM) &&
-		(RETRIEVE_POINTER_quantifier(prop->predicate) == not_for_all_quantifier))
+		(prop->quant == not_for_all_quantifier))
 		return TRUE;
 	return FALSE;
 }
@@ -193,7 +194,7 @@ int Calculus::Atoms::is_for_all_x(pcalc_prop *prop) {
 =
 int Calculus::Atoms::is_now_assertable_quantifier(pcalc_prop *prop) {
 	if (prop->element != QUANTIFIER_ATOM) return FALSE;
-	return Quantifiers::is_now_assertable(RETRIEVE_POINTER_quantifier(prop->predicate));
+	return Quantifiers::is_now_assertable(prop->quant);
 }
 
 @h The PREDICATES group.
@@ -363,13 +364,13 @@ pcalc_prop *Calculus::Atoms::unary_PREDICATE_from_aph(adjective *aph, int negate
 	pcalc_prop *prop = Calculus::Atoms::new(PREDICATE_ATOM);
 	prop->arity = 1;
 	prop->terms[0] = Calculus::Terms::new_variable(0);
-	prop->predicate = STORE_POINTER_adjective_usage(
-		AdjectiveUsages::new(aph, (negated)?FALSE:TRUE));
+	prop->predicate = STORE_POINTER_unary_predicate(
+		UnaryPredicates::new(aph, (negated)?FALSE:TRUE));
 	return prop;
 }
 
-adjective_usage *Calculus::Atoms::au_from_unary_PREDICATE(pcalc_prop *prop) {
-	return RETRIEVE_POINTER_adjective_usage(prop->predicate);
+unary_predicate *Calculus::Atoms::au_from_unary_PREDICATE(pcalc_prop *prop) {
+	return RETRIEVE_POINTER_unary_predicate(prop->predicate);
 }
 
 @ And binary predicates are pretty well the same:
@@ -453,7 +454,7 @@ void Calculus::Atoms::log(pcalc_prop *prop) {
 			}
 			break;
 		case QUANTIFIER_ATOM: {
-			quantifier *quant = RETRIEVE_POINTER_quantifier(prop->predicate);
+			quantifier *quant = prop->quant;
 			Quantifiers::log(quant, prop->quantification_parameter);
 			LOG(" "); @<Log a comma-separated list of terms for this atomic proposition@>;
 			return;
@@ -488,9 +489,9 @@ void Calculus::Atoms::log(pcalc_prop *prop) {
 }
 
 @<Log some suitable textual name for this unary predicate@> =
-	adjective_usage *tr = RETRIEVE_POINTER_adjective_usage(prop->predicate);
-	if (AdjectiveUsages::get_parity(tr) == FALSE) LOG("not-");
-	Adjectives::log(AdjectiveUsages::get_aph(tr));
+	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(prop->predicate);
+	if (UnaryPredicates::get_parity(tr) == FALSE) LOG("not-");
+	Adjectives::log(UnaryPredicates::get_adj(tr));
 
 @ And more easily:
 

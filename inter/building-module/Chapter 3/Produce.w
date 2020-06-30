@@ -46,17 +46,17 @@ inter_symbols_table *Produce::connectors_scope(inter_tree *I) {
 	return Inter::Packages::scope(Site::connectors_package(I));
 }
 
-inter_symbol *Produce::opcode(inter_tree *I, inter_t bip) {
+inter_symbol *Produce::opcode(inter_tree *I, inter_ti bip) {
 	return Primitives::get(I, bip);
 }
 
-inter_t Produce::baseline(inter_bookmark *IBM) {
+inter_ti Produce::baseline(inter_bookmark *IBM) {
 	if (IBM == NULL) return 0;
 	if (Inter::Bookmarks::package(IBM) == NULL) return 0;
 	if (Inter::Packages::is_rootlike(Inter::Bookmarks::package(IBM))) return 0;
 	if (Inter::Packages::is_codelike(Inter::Bookmarks::package(IBM)))
-		return (inter_t) Inter::Packages::baseline(Inter::Packages::parent(Inter::Bookmarks::package(IBM))) + 1;
-	return (inter_t) Inter::Packages::baseline(Inter::Bookmarks::package(IBM)) + 1;
+		return (inter_ti) Inter::Packages::baseline(Inter::Packages::parent(Inter::Bookmarks::package(IBM))) + 1;
+	return (inter_ti) Inter::Packages::baseline(Inter::Bookmarks::package(IBM)) + 1;
 }
 
 void Produce::nop(inter_tree *I) {
@@ -72,7 +72,7 @@ void Produce::version(inter_tree *I, int N) {
 }
 
 void Produce::metadata(inter_tree *I, package_request *P, text_stream *key, text_stream *value) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID), value);
 	inter_name *iname = InterNames::explicitly_named(key, P);
 	inter_symbol *key_name = Produce::define_symbol(iname);
@@ -82,14 +82,14 @@ void Produce::metadata(inter_tree *I, package_request *P, text_stream *key, text
 }
 
 void Produce::comment(inter_tree *I, text_stream *text) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
 	Str::copy(Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID), text);
 	Produce::guard(Inter::Comment::new(Packaging::at(I), Produce::baseline(Packaging::at(I)), NULL, ID));
 }
 
 inter_package *Produce::package(inter_tree *I, inter_name *iname, inter_symbol *ptype) {
 	if (ptype == NULL) internal_error("no package type");
-	inter_t B = Produce::baseline(Packaging::at(I));
+	inter_ti B = Produce::baseline(Packaging::at(I));
 	inter_package *IP = NULL;
 	TEMPORARY_TEXT(hmm)
 	WRITE_TO(hmm, "%n", iname);
@@ -99,22 +99,22 @@ inter_package *Produce::package(inter_tree *I, inter_name *iname, inter_symbol *
 	return IP;
 }
 
-void Produce::annotate_symbol_t(inter_symbol *symb, inter_t annot_ID, text_stream *S) {
+void Produce::annotate_symbol_t(inter_symbol *symb, inter_ti annot_ID, text_stream *S) {
 	Inter::Symbols::annotate_t(Inter::Packages::tree(symb->owning_table->owning_package), symb->owning_table->owning_package, symb, annot_ID, S);
 }
 
-void Produce::annotate_symbol_w(inter_symbol *symb, inter_t annot_ID, wording W) {
+void Produce::annotate_symbol_w(inter_symbol *symb, inter_ti annot_ID, wording W) {
 	TEMPORARY_TEXT(temp)
 	WRITE_TO(temp, "%W", W);
 	Inter::Symbols::annotate_t(Inter::Packages::tree(symb->owning_table->owning_package), symb->owning_table->owning_package, symb, annot_ID, temp);
 	DISCARD_TEXT(temp)
 }
 
-void Produce::annotate_symbol_i(inter_symbol *symb, inter_t annot_ID, inter_t V) {
+void Produce::annotate_symbol_i(inter_symbol *symb, inter_ti annot_ID, inter_ti V) {
 	Inter::Symbols::annotate_i(symb, annot_ID, V);
 }
 
-void Produce::annotate_iname_i(inter_name *N, inter_t annot_ID, inter_t V) {
+void Produce::annotate_iname_i(inter_name *N, inter_ti annot_ID, inter_ti V) {
 	Inter::Symbols::annotate_i(InterNames::to_symbol(N), annot_ID, V);
 }
 
@@ -126,15 +126,15 @@ void Produce::clear_flag(inter_name *iname, int f) {
 	Inter::Symbols::clear_flag(InterNames::to_symbol(iname), f);
 }
 
-void Produce::annotate_i(inter_name *iname, inter_t annot_ID, inter_t V) {
+void Produce::annotate_i(inter_name *iname, inter_ti annot_ID, inter_ti V) {
 	if (iname) Produce::annotate_symbol_i(InterNames::to_symbol(iname), annot_ID, V);
 }
 
-void Produce::annotate_w(inter_name *iname, inter_t annot_ID, wording W) {
+void Produce::annotate_w(inter_name *iname, inter_ti annot_ID, wording W) {
 	if (iname) Produce::annotate_symbol_w(InterNames::to_symbol(iname), annot_ID, W);
 }
 
-int Produce::read_annotation(inter_name *iname, inter_t annot) {
+int Produce::read_annotation(inter_name *iname, inter_ti annot) {
 	return Inter::Symbols::read_annotation(InterNames::to_symbol(iname), annot);
 }
 
@@ -314,13 +314,13 @@ void Produce::pop_code_position(inter_tree *I) {
 }
 
 void Produce::inv_assembly(inter_tree *I, text_stream *opcode) {
-	inter_t SID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Produce::at(I)));
+	inter_ti SID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Produce::at(I)));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), SID);
 	Str::copy(glob_storage, opcode);
-	Produce::guard(Inter::Inv::new_assembly(Produce::at(I), SID, (inter_t) Produce::level(I), NULL));
+	Produce::guard(Inter::Inv::new_assembly(Produce::at(I), SID, (inter_ti) Produce::level(I), NULL));
 }
 
-void Produce::inv_primitive(inter_tree *I, inter_t bip) {
+void Produce::inv_primitive(inter_tree *I, inter_ti bip) {
 	inter_symbol *prim_symb = Primitives::get(I, bip);
 	if (prim_symb == NULL) internal_error("undefined primitive");
 	if ((bip == SWITCH_BIP) ||
@@ -330,16 +330,16 @@ void Produce::inv_primitive(inter_tree *I, inter_t bip) {
 		(bip == WHILE_BIP) ||
 		(bip == DO_BIP) ||
 		(bip == OBJECTLOOP_BIP)) Produce::note_level(I, prim_symb);
-	Produce::guard(Inter::Inv::new_primitive(Produce::at(I), prim_symb, (inter_t) Produce::level(I), NULL));
+	Produce::guard(Inter::Inv::new_primitive(Produce::at(I), prim_symb, (inter_ti) Produce::level(I), NULL));
 }
 
 void Produce::inv_call(inter_tree *I, inter_symbol *prim_symb) {
-	Produce::guard(Inter::Inv::new_call(Produce::at(I), prim_symb, (inter_t) Produce::level(I), NULL));
+	Produce::guard(Inter::Inv::new_call(Produce::at(I), prim_symb, (inter_ti) Produce::level(I), NULL));
 }
 
 void Produce::inv_call_iname(inter_tree *I, inter_name *iname) {
 	inter_symbol *prim_symb = InterNames::to_symbol(iname);
-	Produce::guard(Inter::Inv::new_call(Produce::at(I), prim_symb, (inter_t) Produce::level(I), NULL));
+	Produce::guard(Inter::Inv::new_call(Produce::at(I), prim_symb, (inter_ti) Produce::level(I), NULL));
 }
 
 void Produce::inv_indirect_call(inter_tree *I, int arity) {
@@ -381,7 +381,7 @@ void Produce::pull(inter_tree *I, inter_name *iname) {
 	Produce::up(I);
 }
 
-void Produce::val(inter_tree *I, kind *K, inter_t val1, inter_t val2) {
+void Produce::val(inter_tree *I, kind *K, inter_ti val1, inter_ti val2) {
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for val");
 	Produce::guard(Inter::Val::new(Produce::at(I), val_kind, Produce::level(I), val1, val2, NULL));
@@ -392,7 +392,7 @@ void Produce::val_nothing(inter_tree *I) {
 }
 
 void Produce::lab(inter_tree *I, inter_symbol *L) {
-	Produce::guard(Inter::Lab::new(Produce::at(I), L, (inter_t) Produce::level(I), NULL));
+	Produce::guard(Inter::Lab::new(Produce::at(I), L, (inter_ti) Produce::level(I), NULL));
 }
 
 inter_symbol *Produce::reserve_label(inter_tree *I, text_stream *lname) {
@@ -411,7 +411,7 @@ inter_symbol *Produce::reserve_label(inter_tree *I, text_stream *lname) {
 }
 
 void Produce::place_label(inter_tree *I, inter_symbol *lab_name) {
-	Produce::guard(Inter::Label::new(Produce::at(I), lab_name, (inter_t) Produce::level(I), NULL));
+	Produce::guard(Inter::Label::new(Produce::at(I), lab_name, (inter_ti) Produce::level(I), NULL));
 }
 
 inter_symbol *Produce::local_exists(inter_tree *I, text_stream *lname) {
@@ -422,16 +422,16 @@ inter_symbol *Produce::seek_symbol(inter_symbols_table *T, text_stream *name) {
 	return Inter::SymbolsTables::symbol_from_name(T, name);
 }
 
-void Produce::text_value(inter_tree *I, inter_t *v1, inter_t *v2, text_stream *text) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+void Produce::text_value(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *text) {
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
 	text_stream *text_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 	Str::copy(text_storage, text);
 	*v1 = LITERAL_TEXT_IVAL;
 	*v2 = ID;
 }
 
-void Produce::real_value(inter_tree *I, inter_t *v1, inter_t *v2, double g) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+void Produce::real_value(inter_tree *I, inter_ti *v1, inter_ti *v2, double g) {
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 	if (g > 0) WRITE_TO(glob_storage, "+");
 	WRITE_TO(glob_storage, "%g", g);
@@ -439,8 +439,8 @@ void Produce::real_value(inter_tree *I, inter_t *v1, inter_t *v2, double g) {
 	*v2 = ID;
 }
 
-void Produce::real_value_from_text(inter_tree *I, inter_t *v1, inter_t *v2, text_stream *S) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+void Produce::real_value_from_text(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *S) {
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 	LOOP_THROUGH_TEXT(pos, S)
 		if (Str::get(pos) != '$')
@@ -449,16 +449,16 @@ void Produce::real_value_from_text(inter_tree *I, inter_t *v1, inter_t *v2, text
 	*v2 = ID;
 }
 
-void Produce::dword_value(inter_tree *I, inter_t *v1, inter_t *v2, text_stream *glob) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+void Produce::dword_value(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *glob) {
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = DWORD_IVAL;
 	*v2 = ID;
 }
 
-void Produce::plural_dword_value(inter_tree *I, inter_t *v1, inter_t *v2, text_stream *glob) {
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
+void Produce::plural_dword_value(inter_tree *I, inter_ti *v1, inter_ti *v2, text_stream *glob) {
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), Inter::Bookmarks::package(Packaging::at(I)));
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 	Str::copy(glob_storage, glob);
 	*v1 = PDWORD_IVAL;
@@ -475,41 +475,41 @@ void Produce::val_iname(inter_tree *I, kind *K, inter_name *iname) {
 }
 
 void Produce::val_symbol(inter_tree *I, kind *K, inter_symbol *s) {
-	inter_t val1 = 0, val2 = 0;
+	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), s, &val1, &val2);
 	Produce::val(I, K, val1, val2);
 }
 
 void Produce::val_text(inter_tree *I, text_stream *S) {
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Produce::text_value(I, &v1, &v2, S);
 	Produce::val(I, K_value, v1, v2);
 }
 
 void Produce::val_char(inter_tree *I, wchar_t c) {
-	Produce::val(I, K_value, LITERAL_IVAL, (inter_t) c);
+	Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) c);
 }
 
 void Produce::val_real(inter_tree *I, double g) {
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Produce::real_value(I, &v1, &v2, g);
 	Produce::val(I, K_value, v1, v2);
 }
 
 void Produce::val_real_from_text(inter_tree *I, text_stream *S) {
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Produce::real_value_from_text(I, &v1, &v2, S);
 	Produce::val(I, K_value, v1, v2);
 }
 
 void Produce::val_dword(inter_tree *I, text_stream *S) {
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Produce::dword_value(I, &v1, &v2, S);
 	Produce::val(I, K_value, v1, v2);
 }
 
-void Produce::ref(inter_tree *I, kind *K, inter_t val1, inter_t val2) {
+void Produce::ref(inter_tree *I, kind *K, inter_ti val1, inter_ti val2) {
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for ref");
 	Produce::guard(Inter::Ref::new(Produce::at(I), val_kind, Produce::level(I), val1, val2, NULL));
@@ -520,7 +520,7 @@ void Produce::ref_iname(inter_tree *I, kind *K, inter_name *iname) {
 }
 
 void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
-	inter_t val1 = 0, val2 = 0;
+	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), s, &val1, &val2);
 	Produce::ref(I, K, val1, val2);

@@ -312,7 +312,7 @@ the list!);
 
 	Kinds::RunTime::emit_strong_id(ll->entry_kind);
 
-	Emit::array_numeric_entry((inter_t) n);
+	Emit::array_numeric_entry((inter_ti) n);
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry)
 		Specifications::Compiler::emit_constant_to_kind(
 			lle->llist_entry_value, ll->entry_kind);

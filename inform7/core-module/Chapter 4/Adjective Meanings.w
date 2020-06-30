@@ -1377,7 +1377,7 @@ void Adjectives::Meanings::agreements(void) {
 					Produce::inv_primitive(Emit::tree(), NE_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) -1);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 					Produce::up(Emit::tree());
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
@@ -1421,7 +1421,7 @@ void Adjectives::Meanings::agreements(void) {
 				for (int gna=0; gna<6; gna++) {
 					Produce::inv_primitive(Emit::tree(), CASE_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) gna);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) gna);
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);

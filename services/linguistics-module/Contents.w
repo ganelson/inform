@@ -11,12 +11,11 @@ Preliminaries
 Chapter 1: Setting Up
 	Linguistics Module
 	Stock Control
+	Cardinals and Ordinals
 
 Chapter 2: NP Categories
 	Adjectives
-	Adjective Usages
 	Articles
-	Cardinals and Ordinals
 	Determiners and Quantifiers
 	Nouns
 	Pronouns

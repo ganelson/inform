@@ -117,8 +117,8 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) > 0) return;
 	
 	if (Str::eq(con_name->symbol_name, I"Release")) {
-		inter_t val1 = P->W.data[DATA_CONST_IFLD];
-		inter_t val2 = P->W.data[DATA_CONST_IFLD + 1];
+		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Release ");
 		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
@@ -126,8 +126,8 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	}
 
 	if (Str::eq(con_name->symbol_name, I"Story")) {
-		inter_t val1 = P->W.data[DATA_CONST_IFLD];
-		inter_t val2 = P->W.data[DATA_CONST_IFLD + 1];
+		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Global Story = ");
 		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
@@ -135,8 +135,8 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	}
 
 	if (Str::eq(con_name->symbol_name, I"Serial")) {
-		inter_t val1 = P->W.data[DATA_CONST_IFLD];
-		inter_t val2 = P->W.data[DATA_CONST_IFLD + 1];
+		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 		WRITE("Serial ");
 		CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(P), val1, val2, FALSE);
 		WRITE(";\n");
@@ -144,7 +144,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	}
 
 	if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
-		inter_t ID = P->W.data[DATA_CONST_IFLD];
+		inter_ti ID = P->W.data[DATA_CONST_IFLD];
 		text_stream *S = Inode::ID_to_text(P, ID);
 		WRITE("Array UUID_ARRAY string \"UUID://");
 		for (int i=0, L=Str::len(S); i<L; i++) WRITE("%c", Characters::toupper(Str::get_at(S, i)));
@@ -162,7 +162,7 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 	}
 	switch (P->W.data[FORMAT_CONST_IFLD]) {
 		case CONSTANT_INDIRECT_TEXT: {
-			inter_t ID = P->W.data[DATA_CONST_IFLD];
+			inter_ti ID = P->W.data[DATA_CONST_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
 			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
 			WRITE("\"%S\"", S);
@@ -234,8 +234,8 @@ void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {
 			text_stream *OUT = CodeGen::current(gen);
 			if (ifndef_me) WRITE("#ifndef %S;\n", CodeGen::CL::name(con_name));
 			CodeGen::Targets::begin_constant(gen, CodeGen::CL::name(con_name), TRUE);
-			inter_t val1 = P->W.data[DATA_CONST_IFLD];
-			inter_t val2 = P->W.data[DATA_CONST_IFLD + 1];
+			inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+			inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
 			CodeGen::CL::literal(gen, con_name, Inter::Packages::scope_of(P), val1, val2, FALSE);
 			CodeGen::Targets::end_constant(gen, CodeGen::CL::name(con_name));
 			if (ifndef_me) WRITE(" #endif;\n");
@@ -258,8 +258,8 @@ int CodeGen::CL::constant_depth_inner(inter_symbol *con) {
 	inter_tree_node *D = Inter::Symbols::definition(con);
 	if (D->W.data[ID_IFLD] != CONSTANT_IST) return 1;
 	if (D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) {
-		inter_t val1 = D->W.data[DATA_CONST_IFLD];
-		inter_t val2 = D->W.data[DATA_CONST_IFLD + 1];
+		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
+		inter_ti val2 = D->W.data[DATA_CONST_IFLD + 1];
 		if (val1 == ALIAS_IVAL) {
 			inter_symbol *alias =
 				Inter::SymbolsTables::symbol_from_data_pair_and_table(
@@ -274,8 +274,8 @@ int CodeGen::CL::constant_depth_inner(inter_symbol *con) {
 		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST)) {
 		int total = 0;
 		for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
-			inter_t val1 = D->W.data[i];
-			inter_t val2 = D->W.data[i + 1];
+			inter_ti val1 = D->W.data[i];
+			inter_ti val2 = D->W.data[i + 1];
 			if (val1 == ALIAS_IVAL) {
 				inter_symbol *alias =
 					Inter::SymbolsTables::symbol_from_data_pair_and_table(
@@ -345,7 +345,7 @@ void CodeGen::CL::exit_print_mode(void) {
 	printing_mode = FALSE;
 }
 
-void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_t val1, inter_t val2, int unsub) {
+void CodeGen::CL::literal(code_generation *gen, inter_symbol *con_name, inter_symbols_table *T, inter_ti val1, inter_ti val2, int unsub) {
 	inter_tree *I = gen->from;
 	text_stream *OUT = CodeGen::current(gen);
 	if (val1 == LITERAL_IVAL) {

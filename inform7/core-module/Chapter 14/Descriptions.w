@@ -171,10 +171,10 @@ Adjectives occurring in the proposition can be thought of as forming
 a list. It's sometimes convenient to loop through this list:
 
 @d LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, spec)
-	for (au = Calculus::Propositions::first_adjective_usage(
+	for (au = Calculus::Propositions::first_unary_predicate(
 		Descriptions::to_proposition(spec), &au_prop);
 		au;
-		au = Calculus::Propositions::next_adjective_usage(&au_prop))
+		au = Calculus::Propositions::next_unary_predicate(&au_prop))
 
 =
 int Descriptions::number_of_adjectives_applied_to(parse_node *spec) {
@@ -182,16 +182,16 @@ int Descriptions::number_of_adjectives_applied_to(parse_node *spec) {
 		Descriptions::to_proposition(spec));
 }
 
-adjective_usage *Descriptions::first_adjective_usage(parse_node *spec) {
-	return Calculus::Propositions::first_adjective_usage(
+unary_predicate *Descriptions::first_unary_predicate(parse_node *spec) {
+	return Calculus::Propositions::first_unary_predicate(
 		Descriptions::to_proposition(spec), NULL);
 }
 
-void Descriptions::add_to_adjective_list(adjective_usage *au, parse_node *spec) {
+void Descriptions::add_to_adjective_list(unary_predicate *au, parse_node *spec) {
 	pcalc_prop *prop = Descriptions::to_proposition(spec);
-	adjective *aph = AdjectiveUsages::get_aph(au);
+	adjective *aph = UnaryPredicates::get_adj(au);
 	int negated = FALSE;
-	if (AdjectiveUsages::get_parity(au) == FALSE) negated = TRUE;
+	if (UnaryPredicates::get_parity(au) == FALSE) negated = TRUE;
 	prop = Calculus::Propositions::concatenate(prop,
 		Calculus::Atoms::unary_PREDICATE_from_aph(aph, negated));
 	Calculus::Propositions::Checker::type_check(prop,
@@ -199,13 +199,13 @@ void Descriptions::add_to_adjective_list(adjective_usage *au, parse_node *spec) 
 	Descriptions::set_proposition(spec, prop);
 }
 
-void Descriptions::add_to_adjective_list_w(adjective_usage *au, parse_node *spec) {
+void Descriptions::add_to_adjective_list_w(unary_predicate *au, parse_node *spec) {
 	quantifier *Q = Descriptions::get_quantifier(spec);
 	int N = Descriptions::get_quantification_parameter(spec);
 	pcalc_prop *prop = Descriptions::get_inner_prop(spec);
-	adjective *aph = AdjectiveUsages::get_aph(au);
+	adjective *aph = UnaryPredicates::get_adj(au);
 	int negated = FALSE;
-	if (AdjectiveUsages::get_parity(au) == FALSE) negated = TRUE;
+	if (UnaryPredicates::get_parity(au) == FALSE) negated = TRUE;
 	prop = Calculus::Propositions::concatenate(prop,
 		Calculus::Atoms::unary_PREDICATE_from_aph(aph, negated));
 	Calculus::Propositions::Checker::type_check(prop,

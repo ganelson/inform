@@ -93,15 +93,15 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	ptypes_point = Inter::Bookmarks::after_this_node(destination->package_head->tree, ptypes);
 
 @<Mark the insertion and deletion points with comments@> =
-	inter_t C1 = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(&deletion_point), Inter::Bookmarks::package(&deletion_point));
+	inter_ti C1 = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(&deletion_point), Inter::Bookmarks::package(&deletion_point));
 	WRITE_TO(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(&deletion_point), C1), 
 		"Exported %S here", Inter::Packages::name(migrant));
-	Inter::Comment::new(&deletion_point, (inter_t) Inter::Packages::baseline(migrant), NULL, C1);
+	Inter::Comment::new(&deletion_point, (inter_ti) Inter::Packages::baseline(migrant), NULL, C1);
 
-	inter_t C2 = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(&insertion_point), Inter::Bookmarks::package(&insertion_point));
+	inter_ti C2 = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(&insertion_point), Inter::Bookmarks::package(&insertion_point));
 	WRITE_TO(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(&insertion_point), C2), 
 		"Imported %S here", Inter::Packages::name(migrant));
-	Inter::Comment::new(&insertion_point, (inter_t) Inter::Packages::baseline(destination) + 1, NULL, C2);
+	Inter::Comment::new(&insertion_point, (inter_ti) Inter::Packages::baseline(destination) + 1, NULL, C2);
 
 @<Physically move the subtree to its new home@> =
 	Inter::Packages::remove_subpackage_name(Inter::Packages::parent(migrant), migrant);
@@ -193,7 +193,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 	inter_tree_node *D = Inode::fill_1(ipct->primitives_point, PRIMITIVE_IST, Inter::SymbolsTables::id_from_symbol_inner(Inter::Tree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
 	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
-		if (Inode::extend(D, (inter_t) 1) == FALSE) internal_error("can't extend");
+		if (Inode::extend(D, (inter_ti) 1) == FALSE) internal_error("can't extend");
 		D->W.data[i] = old_D->W.data[i];
 	}
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(ipct->primitives_point), D);

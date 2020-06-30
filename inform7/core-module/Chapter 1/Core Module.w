@@ -91,6 +91,7 @@ which use this module:
 @e adjective_iname_holder_CLASS
 @e label_namespace_CLASS
 @e compile_task_data_CLASS
+@e unary_predicate_CLASS
 
 @ Deep breath, then: the following macros define several hundred functions.
 
@@ -155,6 +156,7 @@ DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(adjective_iname_holder)
 DECLARE_CLASS(label_namespace)
 DECLARE_CLASS(compile_task_data)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unary_predicate, 1000)
 
 @ So much for the managed structures: now for the unmanaged structures.
 
@@ -217,7 +219,7 @@ COMPILE_WRITER(pcalc_prop *, Calculus::Atoms::log)
 COMPILE_WRITER(unit_sequence *, Kinds::Dimensions::log_unit_sequence)
 COMPILE_WRITER(equation *, Equations::log)
 COMPILE_WRITER(phrase *, Phrases::log)
-COMPILE_WRITER(adjective_usage *, AdjectiveUsages::log)
+COMPILE_WRITER(unary_predicate *, UnaryPredicates::log)
 COMPILE_WRITER(ph_usage_data *, Phrases::Usage::log)
 COMPILE_WRITER(kind *, Kinds::Textual::log)
 COMPILE_WRITER_I(int, Sentences::VPs::log)
@@ -382,7 +384,7 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	REGISTER_WRITER('Q', Kinds::Dimensions::log_unit_sequence);
 	REGISTER_WRITER('q', Equations::log);
 	REGISTER_WRITER('R', Phrases::log);
-	REGISTER_WRITER('r', AdjectiveUsages::log);
+	REGISTER_WRITER('r', UnaryPredicates::log);
 	REGISTER_WRITER('U', Phrases::Usage::log);
 	REGISTER_WRITER('u', Kinds::Textual::log);
 	REGISTER_WRITER_I('V', Sentences::VPs::log)

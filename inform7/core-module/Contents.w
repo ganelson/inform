@@ -47,6 +47,7 @@ Chapter 5: Nouns
 Chapter 6: Verbs
 "Verbs which establish relationships between nouns, and which give meaning
 to binary predicates."
+	Unary Predicates
 	Binary Predicates
 	Relations
 	Explicit Relations

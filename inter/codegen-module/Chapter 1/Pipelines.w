@@ -408,8 +408,8 @@ void CodeGen::Pipeline::lint(inter_tree *I) {
 }
 
 void CodeGen::Pipeline::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_t c = Inode::get_package(P)->index_n;
-	inter_t a = Inode::get_package_alt(P);
+	inter_ti c = Inode::get_package(P)->index_n;
+	inter_ti a = Inode::get_package_alt(P);
 	if (c != a) {
 		LOG("Frame gives package as $6, but its location is in package $6\n",
 			Inode::ID_to_package(P, c),

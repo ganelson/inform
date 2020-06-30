@@ -488,7 +488,7 @@ of the stem, so we have to be very careful:
 		"'Instead of taking something:' or 'Every turn:').");
 
 @<Disallow the definite article for anonymous rules@> =
-	if ((parsed_rm.article_used == DEF_ART) &&
+	if ((parsed_rm.article_used == definite_article) &&
 		(parsed_rm.placement_requested == MIDDLE_PLACEMENT))
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RuleWithDefiniteArticle),
 			"a rulebook can contain any number of rules",

@@ -439,10 +439,10 @@ not have survived type-checking. But only some adjectives can be asserted;
 success flag.
 
 @<Assert the truth or falsity of a unary predicate@> =
-	adjective_usage *tr = RETRIEVE_POINTER_adjective_usage(pl->predicate);
-	adjective *aph = AdjectiveUsages::get_aph(tr);
+	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	adjective *aph = UnaryPredicates::get_adj(tr);
 	int parity = (now_negated)?FALSE:TRUE, found;
-	if (AdjectiveUsages::get_parity(tr) == FALSE) parity = (parity)?FALSE:TRUE;
+	if (UnaryPredicates::get_parity(tr) == FALSE) parity = (parity)?FALSE:TRUE;
 	inference_subject *ox = Calculus::Propositions::Assert::subject_of_term(pl->terms[0]);
 	parse_node *ots = Calculus::Propositions::Assert::spec_of_term(pl->terms[0]);
 
@@ -694,8 +694,8 @@ int Calculus::Propositions::Assert::testable_at_compile_time(pcalc_prop *prop) {
 }
 
 @<See if this unary predicate can be tested@> =
-	adjective_usage *ale = RETRIEVE_POINTER_adjective_usage(pl->predicate);
-	adjective *aph = AdjectiveUsages::get_aph(ale);
+	unary_predicate *ale = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	adjective *aph = UnaryPredicates::get_adj(ale);
 	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
 	if (prn == NULL) return FALSE;
 
@@ -722,9 +722,9 @@ int Calculus::Propositions::Assert::test_at_compile_time(pcalc_prop *prop, infer
 	;
 
 @<Test if this unary predicate is true@> =
-	adjective_usage *ale = RETRIEVE_POINTER_adjective_usage(pl->predicate);
-	adjective *aph = AdjectiveUsages::get_aph(ale);
-	int sense = AdjectiveUsages::get_parity(ale);
+	unary_predicate *ale = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	adjective *aph = UnaryPredicates::get_adj(ale);
+	int sense = UnaryPredicates::get_parity(ale);
 	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
 	if (prn) {
 		possession_marker *adj = Properties::get_possession_marker(prn);

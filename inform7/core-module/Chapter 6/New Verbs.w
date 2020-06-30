@@ -152,8 +152,8 @@ of the verb. Each one is matched against this:
 
 =
 <conjugation> ::=
-	<nominative-pronoun> is/are ... |    ==> R[1]; <<is-participle>> = TRUE
-	<nominative-pronoun> ...			==> R[1]; <<is-participle>> = FALSE
+	<subject-pronoun> is/are ... |    ==> R[1]; <<is-participle>> = TRUE
+	<subject-pronoun> ...			==> R[1]; <<is-participle>> = FALSE
 
 @ This syntax was a design mistake. It generalises badly to other languages,
 and doesn't even work perfectly for English. The problem is that the source
@@ -506,7 +506,7 @@ infinitive for that -- the two are the same in most regular English verbs
 	if ((<conjugation>(CW)) == FALSE)
 		@<Give up on verb definition as malformed@>;
 	CW = GET_RW(<conjugation>, 1);
-	int number = <<r>>;
+	int number = Lcon::get_number(<<r>>);
 	int is_a_participle = <<is-participle>>;
 
 	if (Wordings::nonempty(P)) {
@@ -534,7 +534,7 @@ infinitive for that -- the two are the same in most regular English verbs
 			else
 				past_participle = WordAssemblages::from_wording(CW);
 		} else {
-			if (number == 2) {
+			if (number == PLURAL_NUMBER) {
 				if (WordAssemblages::nonempty(present_plural)) {
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PresentPluralTwice),
 						"the present plural has been given twice",
@@ -995,7 +995,7 @@ void NewVerbs::ConjugateVerb(void) {
 		if (some_exist) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (tense+1));
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (tense+1));
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					if ((some_differ) || (some_are_modal)) {
@@ -1022,7 +1022,7 @@ void NewVerbs::ConjugateVerb(void) {
 				if (WordAssemblages::nonempty(*wa)) {
 					Produce::inv_primitive(Emit::tree(), CASE_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) part);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) part);
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
 							int mau = vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][part-1];
@@ -1105,7 +1105,7 @@ internal_error("star alert!");
 				Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, modal_to_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) mau);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) mau);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -1180,7 +1180,7 @@ void NewVerbs::log(verb_usage *vu) {
 	if (vu == NULL) { LOG("(null verb usage)"); return; }
 	LOG("VU: $f ", &(vu->vu_text));
 	if (vu->negated_form_of_verb) LOG("(negated) ");
-	InflectionDefns::log_tense_number(DL, vu->tensed);
+	Lcon::log_tense_number(DL, vu->tensed);
 }
 
 void NewVerbs::log_all(void) {

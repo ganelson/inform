@@ -78,7 +78,7 @@ typedef struct inter_schema_node {
 	int node_marked;								/* used fleetingly during traverses */
 
 	int isn_type;									/* one of the |*_ISNT| values */
-	inter_t isn_clarifier;							/* for |STATEMENT_ISNT| and |OPERATION_ISNT| only */
+	inter_ti isn_clarifier;							/* for |STATEMENT_ISNT| and |OPERATION_ISNT| only */
 	int dir_clarifier;								/* for |DIRECTIVE_ISNT| only */
 	struct inter_schema_token *expression_tokens;	/* for |EXPRESSION_ISNT| only */
 
@@ -232,7 +232,7 @@ typedef struct inter_schema_token {
 	int ist_type;								/* one of the |*_ISTT| values above */
 	struct text_stream *material;				/* textual form of token */
 
-	inter_t operation_primitive;				/* |OPERATOR_ISTT| only: e.g. |PLUS_BIP| for |+| */
+	inter_ti operation_primitive;				/* |OPERATOR_ISTT| only: e.g. |PLUS_BIP| for |+| */
 	int reserved_word;							/* |RESERVED_ISTT| only: which one */
 	int constant_number;						/* |NUMBER_ISTT| only: if non-negative, value of number */
 	struct inter_name *as_quoted;				/* |IDENTIFIER_ISTT| only: the identified symbol if known */
@@ -255,7 +255,7 @@ typedef struct inter_schema_token {
 } inter_schema_token;
 
 @ =
-inter_schema_token *InterSchemas::new_token(int type, text_stream *material, inter_t operation_primitive, int reserved_word, int n) {
+inter_schema_token *InterSchemas::new_token(int type, text_stream *material, inter_ti operation_primitive, int reserved_word, int n) {
 	inter_schema_token *t = CREATE(inter_schema_token);
 	t->ist_type = type;
 	t->material = Str::duplicate(material);
@@ -1250,7 +1250,7 @@ inclusive; we ignore an empty token.
 		for (int i = x; i <= y; i++) PUT_TO(T, Str::get_at(current_raw, i));
 
 		int is = RAW_ISTT;
-		inter_t which = 0;
+		inter_ti which = 0;
 		int which_rw = 0, which_number = -1, which_quote = -1;
 		@<Identify this new token@>;
 
@@ -1951,7 +1951,7 @@ int InterSchemas::alternatecases(inter_schema_node *par, inter_schema_node *isn)
 int InterSchemas::identify_constructs(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
-			inter_t subordinate_to = 0;
+			inter_ti subordinate_to = 0;
 			inter_schema_token *operand1 = NULL, *operand2 = NULL;
 			inter_schema_node *operand2_node = NULL;
 			int dangle = NOT_APPLICABLE;
@@ -2508,7 +2508,7 @@ int InterSchemas::outer_subexpressions(inter_schema_node *par, inter_schema_node
 	return FALSE;
 }
 
-int InterSchemas::prefer_over(inter_t p, inter_t existing) {
+int InterSchemas::prefer_over(inter_ti p, inter_ti existing) {
 	if (existing == 0) return TRUE;
 	if (InterSchemas::precedence(p) < InterSchemas::precedence(existing)) return TRUE;
 	if ((InterSchemas::precedence(p) == InterSchemas::precedence(existing)) &&
@@ -2524,13 +2524,13 @@ int InterSchemas::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 			isn->node_marked = TRUE;
 			inter_schema_token *n = isn->expression_tokens;
 			int bl = 0;
-			inter_t best_operator = 0;
+			inter_ti best_operator = 0;
 			inter_schema_token *break_at = NULL;
 			while (n) {
 				if (n->ist_type == OPEN_ROUND_ISTT) bl++;
 				if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
 				if ((bl == 0) && (n->ist_type == OPERATOR_ISTT)) {
-					inter_t this_operator = n->operation_primitive;
+					inter_ti this_operator = n->operation_primitive;
 					if (InterSchemas::prefer_over(this_operator, best_operator)) {
 						break_at = n; best_operator = this_operator;
 					}
@@ -2785,7 +2785,7 @@ The superclass operator |::| is not allowed in schemas, but nor is it needed.
 @d UNPRECEDENTED_OPERATOR 10000
 
 =
-int InterSchemas::precedence(inter_t O) {
+int InterSchemas::precedence(inter_ti O) {
 	if (O == STORE_BIP) return 1;
 
 	if (O == AND_BIP) return 2;
@@ -2836,7 +2836,7 @@ int InterSchemas::precedence(inter_t O) {
 	return UNPRECEDENTED_OPERATOR;
 }
 
-int InterSchemas::first_operand_ref(inter_t O) {
+int InterSchemas::first_operand_ref(inter_ti O) {
 	if (O == STORE_BIP) return TRUE;
 	if (O == PREINCREMENT_BIP) return TRUE;
 	if (O == PREDECREMENT_BIP) return TRUE;
@@ -2845,7 +2845,7 @@ int InterSchemas::first_operand_ref(inter_t O) {
 	return FALSE;
 }
 
-text_stream *InterSchemas::text_form(inter_t O) {
+text_stream *InterSchemas::text_form(inter_ti O) {
 	if (O == STORE_BIP) return I"=";
 
 	if (O == AND_BIP) return I"&&";
@@ -2895,7 +2895,7 @@ text_stream *InterSchemas::text_form(inter_t O) {
 	return I"???";
 }
 
-int InterSchemas::arity(inter_t O) {
+int InterSchemas::arity(inter_ti O) {
 	if (O == STORE_BIP) return 2;
 
 	if (O == AND_BIP) return 2;
@@ -2945,7 +2945,7 @@ int InterSchemas::arity(inter_t O) {
 	return 0;
 }
 
-int InterSchemas::prefix(inter_t O) {
+int InterSchemas::prefix(inter_ti O) {
 	if (O == NOT_BIP) return TRUE;
 	if (O == BITWISENOT_BIP) return TRUE;
 	if (O == UNARYMINUS_BIP) return TRUE;
@@ -2958,7 +2958,7 @@ int InterSchemas::prefix(inter_t O) {
 	return NOT_APPLICABLE;
 }
 
-int InterSchemas::right_associative(inter_t O) {
+int InterSchemas::right_associative(inter_ti O) {
 	if (O == STORE_BIP) return FALSE;
 	return TRUE;
 }
@@ -2966,7 +2966,7 @@ int InterSchemas::right_associative(inter_t O) {
 @h Metadata on inter primitives.
 
 =
-int InterSchemas::ip_arity(inter_t O) {
+int InterSchemas::ip_arity(inter_ti O) {
 	int arity = 1;
 	if ((O == STYLEROMAN_BIP) ||
 		(O == STYLEBOLD_BIP) ||
@@ -2992,7 +2992,7 @@ int InterSchemas::ip_arity(inter_t O) {
 	return arity;
 }
 
-int InterSchemas::ip_loopy(inter_t O) {
+int InterSchemas::ip_loopy(inter_ti O) {
 	int loopy = FALSE;
 	if (O == OBJECTLOOP_BIP) loopy = TRUE;
 	if (O == FOR_BIP) loopy = TRUE;
@@ -3001,7 +3001,7 @@ int InterSchemas::ip_loopy(inter_t O) {
 	return loopy;
 }
 
-int InterSchemas::ip_prim_cat(inter_t O, int i) {
+int InterSchemas::ip_prim_cat(inter_ti O, int i) {
 	int ok = VAL_PRIM_CAT;
 	if (O == JUMP_BIP) ok = LAB_PRIM_CAT;
 	if (O == RESTORE_BIP) ok = LAB_PRIM_CAT;

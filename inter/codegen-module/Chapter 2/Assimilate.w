@@ -118,7 +118,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 @d MAX_ASSIMILATED_ARRAY_ENTRIES 2048
 
 @<Assimilate definition@> =
-	inter_t plm = P->W.data[PLM_SPLAT_IFLD];
+	inter_ti plm = P->W.data[PLM_SPLAT_IFLD];
 	match_results mr = Regexp::create_mr();
 	text_stream *identifier = NULL;
 	text_stream *value = NULL;
@@ -214,7 +214,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		con_name->equated_to = NULL;
 	}
 
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 
 	switch (plm) {
 		case CONSTANT_PLM:
@@ -224,7 +224,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			Produce::guard(Inter::Constant::new_numerical(IBM,
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
-				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		}
@@ -233,7 +233,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			Produce::guard(Inter::Variable::new(IBM,
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
-				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		case ATTRIBUTE_PLM: {
@@ -246,7 +246,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				Produce::guard(Inter::Property::new(IBM,
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), truth_state_kind_symbol),
-					(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+					(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 				Inter::Symbols::annotate_i(attr_symbol, ATTRIBUTE_IANN, 1);
 				Inter::Symbols::annotate_i(attr_symbol, EITHER_OR_IANN, 1);
 				Inter::Symbols::set_translate(attr_symbol, con_name->symbol_name);
@@ -272,7 +272,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			Produce::guard(Inter::Property::new(IBM,
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
-				(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			if (Str::eq(identifier, I"absent"))
 				CodeGen::Assimilate::install_socket(I, con_name, I"P_absent");
@@ -280,7 +280,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		}
 		case VERB_PLM:
 		case ARRAY_PLM: {
-			inter_t annot = 0;
+			inter_ti annot = 0;
 			match_results mr2 = Regexp::create_mr();
 			text_stream *conts = NULL;
 			if (plm == ARRAY_PLM) {
@@ -298,8 +298,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 			if (annot != 0) Inter::Symbols::annotate_i(con_name, annot, 1);
 
-			inter_t v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
-			inter_t v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
+			inter_ti v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
+			inter_ti v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
 			int no_assimilated_array_entries = 0;
 
 			string_position spos = Str::start(conts);
@@ -342,7 +342,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				Inode::fill_3(IBM, CONSTANT_IST,
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 					Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), list_of_unchecked_kind_symbol),
-					CONSTANT_INDIRECT_LIST, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
+					CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 			int pos = array_in_progress->W.extent;
 			if (Inode::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
 				internal_error("can't extend frame");
@@ -443,18 +443,18 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			if (Str::len(value) == 0) break;
 			inter_symbol *loc_name = Inter::SymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
 			Inter::Symbols::local(loc_name);
-			Produce::guard(Inter::Local::new(IBM, loc_name, unchecked_kind_symbol, 0, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+			Produce::guard(Inter::Local::new(IBM, loc_name, unchecked_kind_symbol, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			DISCARD_TEXT(value)
 		}
 	}
 
-	Produce::guard(Inter::Code::new(IBM, (int) (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+	Produce::guard(Inter::Code::new(IBM, (int) (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	if (Str::len(body) > 0) {
 		int L = Str::len(body) - 1;
 		while ((L>0) && (Str::get_at(body, L) != ']')) L--;
 		while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 		Str::truncate(body, L);
-		CodeGen::Assimilate::routine_body(IBM, IP, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, body, block_bookmark);
+		CodeGen::Assimilate::routine_body(IBM, IP, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, body, block_bookmark);
 	}
 
 	*IBM = inner_save;
@@ -465,7 +465,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		Inter::SymbolsTables::id_from_symbol(I, FP, rsymb),
 		Inter::SymbolsTables::id_from_symbol(I, FP, unchecked_function_symbol),
 		IP,
-		(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
 	*IBM = outer_save;
 
@@ -476,7 +476,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 inter_package *CodeGen::Assimilate::new_package_named(inter_bookmark *IBM, text_stream *name, inter_symbol *ptype) {
 	inter_package *P = NULL;
 	Produce::guard(Inter::Package::new_package_named(IBM, name, TRUE,
-		ptype, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL, &P));
+		ptype, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL, &P));
 	return P;
 }
 
@@ -514,13 +514,13 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		Produce::guard(Inter::Constant::new_numerical(IBM,
 			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
 			Inter::SymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), action_kind_symbol),
-			LITERAL_IVAL, 10000, (inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+			LITERAL_IVAL, 10000, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		Inter::Symbols::annotate_i(asymb, ACTION_IANN, 1);
 	}
 }
 
 @ =
-void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookmark *IBM, text_stream *S, inter_t *val1, inter_t *val2, int Verbal) {
+void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookmark *IBM, text_stream *S, inter_ti *val1, inter_ti *val2, int Verbal) {
 	int sign = 1, base = 10, from = 0, to = Str::len(S)-1, bad = FALSE;
 	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
 		from++;
@@ -532,7 +532,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			int c = Str::get(pos);
 			PUT_TO(dw, c);
 		}
-		inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
+		inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
 		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 		Str::copy(glob_storage, dw);
 		*val1 = DWORD_IVAL; *val2 = ID;
@@ -549,7 +549,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 			int c = Str::get(pos);
 			PUT_TO(dw, c);
 		}
-		inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
+		inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
 		text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 		Str::copy(glob_storage, dw);
 		*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
@@ -581,7 +581,7 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 	}
 	if (bad == FALSE) {
 		N = sign*N;
-		*val1 = LITERAL_IVAL; *val2 = (inter_t) N; return;
+		*val1 = LITERAL_IVAL; *val2 = (inter_ti) N; return;
 	}
 	if (Str::eq(S, I"true")) {
 		*val1 = LITERAL_IVAL; *val2 = 1; return;
@@ -650,7 +650,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, inter_package
 	WRITE_TO(STDERR, "Forced to glob: %S\n", sch->converted_from);
 	internal_error("Reduced to glob in assimilation");
 
-	inter_t ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
+	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(I), pack);
 	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Tree::warehouse(I), ID);
 	Str::copy(glob_storage, sch->converted_from);
 
@@ -658,7 +658,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, inter_package
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
 		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), GLOB_IVAL, ID,
-		(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
 	return mcc_name;
 }
@@ -667,7 +667,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_r(inter_tree *I, inter_packa
 	if (isn->isn_type == SUBEXPRESSION_ISNT) 
 		return CodeGen::Assimilate::compute_constant_r(I, pack, IBM, isn->child_node);
 	if (isn->isn_type == OPERATION_ISNT) {
-		inter_t op = 0;
+		inter_ti op = 0;
 		if (isn->isn_clarifier == PLUS_BIP) op = CONSTANT_SUM_LIST;
 		else if (isn->isn_clarifier == TIMES_BIP) op = CONSTANT_PRODUCT_LIST;
 		else if (isn->isn_clarifier == MINUS_BIP) op = CONSTANT_DIFFERENCE_LIST;
@@ -695,7 +695,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_r(inter_tree *I, inter_packa
 }
 
 inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_schema_token *t) {
-	inter_t v1 = UNDEF_IVAL, v2 = 0;
+	inter_ti v1 = UNDEF_IVAL, v2 = 0;
 	switch (t->ist_type) {
 		case IDENTIFIER_ISTT: {
 			inter_symbol *symb = Inter::Connectors::find_socket(I, t->material);
@@ -705,7 +705,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, inter_pa
 		case NUMBER_ISTT:
 		case BIN_NUMBER_ISTT:
 		case HEX_NUMBER_ISTT:
-			if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_t) t->constant_number; }
+			if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number; }
 			else if (Inter::Types::read_I6_decimal(t->material, &v1, &v2) == FALSE)
 				internal_error("bad number");
 			break;
@@ -715,7 +715,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, inter_pa
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		Inter::SymbolsTables::id_from_symbol(I, pack, mcc_name),
 		Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), v1, v2,
-		(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	return mcc_name;
 }
 
@@ -724,7 +724,7 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 	if (i1 == NULL) return NULL;
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
@@ -735,10 +735,10 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 	return mcc_name;
 }
 
-inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_t op, inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
+inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_ti op, inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_t) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), Inter::SymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
@@ -771,7 +771,7 @@ typedef struct routine_body_request {
 } routine_body_request;
 
 int rb_splat_count = 1;
-int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_package *block_package, inter_t offset, text_stream *body, inter_bookmark bb) {
+int CodeGen::Assimilate::routine_body(inter_bookmark *IBM, inter_package *block_package, inter_ti offset, text_stream *body, inter_bookmark bb) {
 	if (Str::is_whitespace(body)) return FALSE;
 	routine_body_request *req = CREATE(routine_body_request);
 	req->assimilation_pass = current_assimilation_pass;

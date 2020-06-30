@@ -23,7 +23,7 @@ void CodeGen::PLM::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 		text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L" *(%C+) *(%c*);%c*")) {
-			inter_t keyword = 0;
+			inter_ti keyword = 0;
 			if (Str::eq_insensitive(mr.exp[0], I"#ifdef")) keyword = IFDEF_PLM;
 			else if (Str::eq_insensitive(mr.exp[0], I"#ifndef")) keyword = IFNDEF_PLM;
 			else if (Str::eq_insensitive(mr.exp[0], I"#iftrue")) keyword = IFTRUE_PLM;

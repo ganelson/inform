@@ -241,7 +241,7 @@ specific to particular deferral reasons.
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
 					Produce::ref_symbol(Emit::tree(), K_value, reason_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) CONDITION_DUSAGE);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) CONDITION_DUSAGE);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -265,7 +265,7 @@ specific to particular deferral reasons.
 					}
 					Produce::inv_primitive(Emit::tree(), CASE_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) use);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) use);
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
 							Calculus::Propositions::Deferred::compile_comment_about_deferral_reason(reason);
@@ -517,7 +517,7 @@ I6 code as we go, but preserving the Invariant.
 			case QUANTIFIER_ATOM:
 				@<End a run of predicate-like conditions, if one is under way@>;
 				if (R_stack_parity[R_sp-1] == FALSE) negated_quantifier_found = TRUE;
-				quantifier *quant = RETRIEVE_POINTER_quantifier(pl->predicate);
+				quantifier *quant = pl->quant;
 				int param = Calculus::Atoms::get_quantification_parameter(pl);
 				if (quant != exists_quantifier) @<Push the Q-stack@>;
 				@<Compile a loop through possible values of the variable quantified@>;
@@ -843,7 +843,7 @@ quantifier.
 		Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) C_stack_index[C_sp]);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) C_stack_index[C_sp]);
 		Produce::up(Emit::tree());
 		Calculus::Terms::emit(C_stack_term[C_sp]);
 	Produce::up(Emit::tree());
@@ -1116,7 +1116,7 @@ its random $x$ than it ideally would, but we accept the trade-off.
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, selection_s);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) -1);
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 	Produce::up(Emit::tree());
 
 	Produce::inv_primitive(Emit::tree(), WHILE_BIP);

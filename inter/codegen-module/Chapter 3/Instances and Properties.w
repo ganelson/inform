@@ -430,7 +430,7 @@ bother to force them.)
 	}
 
 @<Annotate kinds of object with a sequence counter@> =
-	inter_t c = 1;
+	inter_ti c = 1;
 	for (int i=0; i<no_kind_frames; i++) {
 		inter_symbol *kind_name = kinds_in_source_order[i];
 		if (CodeGen::IP::is_kind_of_object(kind_name))
@@ -656,8 +656,8 @@ because I6 doesn't allow function calls in a constant context.
 		inter_symbol *p_name = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(Y), Y->W.data[PROP_PVAL_IFLD]);
 		if ((p_name == prop_name) && (found == 0)) {
 			found = 1;
-			inter_t v1 = Y->W.data[DVAL1_PVAL_IFLD];
-			inter_t v2 = Y->W.data[DVAL2_PVAL_IFLD];
+			inter_ti v1 = Y->W.data[DVAL1_PVAL_IFLD];
+			inter_ti v2 = Y->W.data[DVAL2_PVAL_IFLD];
 			WRITE_TO(sticks, " (");
 			CodeGen::select_temporary(gen, sticks);
 			CodeGen::CL::literal(gen, NULL, Inter::Packages::scope_of(Y), v1, v2, FALSE);
@@ -746,7 +746,7 @@ though this won't happen for any property created by I7 source text.
 	WRITE("\"");
 	int N = Inter::Symbols::read_annotation(prop_name, PROPERTY_NAME_IANN);
 	if (N <= 0) WRITE("<nameless>");
-	else WRITE("%S", Inter::Warehouse::get_text(Inter::Tree::warehouse(I), (inter_t) N));
+	else WRITE("%S", Inter::Warehouse::get_text(Inter::Tree::warehouse(I), (inter_ti) N));
 	WRITE("\" ");
 	pos++;
 
@@ -841,8 +841,8 @@ void CodeGen::IP::instance(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *inst_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 
 	if (Inter::Kind::is_a(inst_kind, object_kind_symbol) == FALSE) {
-		inter_t val1 = P->W.data[VAL1_INST_IFLD];
-		inter_t val2 = P->W.data[VAL2_INST_IFLD];
+		inter_ti val1 = P->W.data[VAL1_INST_IFLD];
+		inter_ti val2 = P->W.data[VAL2_INST_IFLD];
 		text_stream *OUT = CodeGen::current(gen);
 		int defined = TRUE;
 		if (val1 == UNDEF_IVAL) defined = FALSE;
@@ -1011,9 +1011,9 @@ int CodeGen::IP::is_kind_of_object(inter_symbol *kind_name) {
 @ Counting kinds of object, not very quickly:
 
 =
-inter_t CodeGen::IP::kind_of_object_count(inter_symbol *kind_name) {
+inter_ti CodeGen::IP::kind_of_object_count(inter_symbol *kind_name) {
 	if ((kind_name == NULL) || (kind_name == object_kind_symbol)) return 0;
 	int N = Inter::Symbols::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
-	if (N >= 0) return (inter_t) N;
+	if (N >= 0) return (inter_ti) N;
 	return 0;
 }

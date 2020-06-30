@@ -115,7 +115,7 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!inversion", I"void -> void");
 }
 
-inter_symbol *Primitives::get(inter_tree *I, inter_t bip) {
+inter_symbol *Primitives::get(inter_tree *I, inter_ti bip) {
 	if (I == NULL) internal_error("no tree");
 	if ((bip < 1) || (bip >= MAX_BIPS)) internal_error("bip out of range");
 	return Site::get_opcode(I, bip);
@@ -127,7 +127,7 @@ void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim,
 	Produce::guard(Inter::Defn::read_construct_text(prim_command, NULL, IBM));
 	inter_error_message *E = NULL;
 	inter_symbol *S = Inter::Textual::find_symbol(I, NULL, Inter::Tree::global_scope(I), prim, PRIMITIVE_IST, &E);
-	inter_t bip = Primitives::to_bip(I, S);
+	inter_ti bip = Primitives::to_bip(I, S);
 	if (bip == 0) internal_error("missing bip");
 	if (bip >= MAX_BIPS) internal_error("unsafely high bip");
 	Site::set_opcode(I, bip, S);
@@ -135,7 +135,7 @@ void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim,
 	DISCARD_TEXT(prim_command)
 }
 
-int Primitives::is_indirect_interp(inter_t s) {
+int Primitives::is_indirect_interp(inter_ti s) {
 	if (s == INDIRECT0_BIP) return TRUE;
 	if (s == INDIRECT1_BIP) return TRUE;
 	if (s == INDIRECT2_BIP) return TRUE;
@@ -145,7 +145,7 @@ int Primitives::is_indirect_interp(inter_t s) {
 	return FALSE;
 }
 
-inter_t Primitives::indirect_interp(int arity) {
+inter_ti Primitives::indirect_interp(int arity) {
 	switch (arity) {
 		case 0: return INDIRECT0_BIP;
 		case 1: return INDIRECT1_BIP;
@@ -158,7 +158,7 @@ inter_t Primitives::indirect_interp(int arity) {
 	return 0;
 }
 
-int Primitives::is_indirectv_interp(inter_t s) {
+int Primitives::is_indirectv_interp(inter_ti s) {
 	if (s == INDIRECT0V_BIP) return TRUE;
 	if (s == INDIRECT1V_BIP) return TRUE;
 	if (s == INDIRECT2V_BIP) return TRUE;
@@ -168,7 +168,7 @@ int Primitives::is_indirectv_interp(inter_t s) {
 	return FALSE;
 }
 
-inter_t Primitives::indirectv_interp(int arity) {
+inter_ti Primitives::indirectv_interp(int arity) {
 	switch (arity) {
 		case 0: return INDIRECT0V_BIP;
 		case 1: return INDIRECT1V_BIP;
@@ -297,7 +297,7 @@ inter_t Primitives::indirectv_interp(int arity) {
 @e INVERSION_BIP
 
 =
-text_stream *Primitives::name(inter_t bip) {
+text_stream *Primitives::name(inter_ti bip) {
 	switch (bip) {
 		case NOT_BIP: return I"!not";
 		case AND_BIP: return I"!and";
@@ -419,14 +419,14 @@ void Primitives::scan_tree(inter_tree *I) {
 
 void Primitives::scan_visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	inter_symbol *prim_name = Inter::SymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
-	inter_t bip = Primitives::to_bip(I, prim_name);
+	inter_ti bip = Primitives::to_bip(I, prim_name);
 	if (bip) Site::set_opcode(I, bip, prim_name);
 }
 
-inter_t Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
+inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 	if (symb == NULL) return 0;
 	int B = Inter::Symbols::read_annotation(symb, BIP_CODE_IANN);
-	inter_t bip = (B > 0)?((inter_t) B):0;
+	inter_ti bip = (B > 0)?((inter_ti) B):0;
 	if (bip != 0) return bip;
 	if (Str::eq(symb->symbol_name, I"!not")) bip = NOT_BIP;
 	if (Str::eq(symb->symbol_name, I"!and")) bip = AND_BIP;

@@ -42,7 +42,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_t stage = 0;
+	inter_ti stage = 0;
 	text_stream *stage_text = ilp->mr.exp[0];
 	if (Str::eq(stage_text, I"early")) stage = EARLY_LINK_STAGE;
 	else if (Str::eq(stage_text, I"before")) stage = BEFORE_LINK_STAGE;
@@ -50,7 +50,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	else if (Str::eq(stage_text, I"after")) stage = AFTER_LINK_STAGE;
 	else { *E = Inter::Errors::plain(I"no such stage name is supported", eloc); return; }
 
-	inter_t SIDS[5];
+	inter_ti SIDS[5];
 	SIDS[0] = stage;
 	for (int i=1; i<=4; i++) {
 		SIDS[i] = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
@@ -58,11 +58,11 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		if (*E) return;
 	}
 
-	*E = Inter::Link::new(IBM, SIDS[0], SIDS[1], SIDS[2], SIDS[3], SIDS[4], 0, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Link::new(IBM, SIDS[0], SIDS[1], SIDS[2], SIDS[3], SIDS[4], 0, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Link::new(inter_bookmark *IBM,
-	inter_t stage, inter_t text1, inter_t text2, inter_t text3, inter_t text4, inter_t ref, inter_t level,
+	inter_ti stage, inter_ti text1, inter_ti text2, inter_ti text3, inter_ti text4, inter_ti ref, inter_ti level,
 	struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
@@ -70,7 +70,7 @@ inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	return NULL;
 }
 
-void Inter::Link::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Link::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	for (int i=SEGMENT_LINK_IFLD; i<=TO_SEGMENT_LINK_IFLD; i++)
 		P->W.data[i] = grid[P->W.data[i]];
 }

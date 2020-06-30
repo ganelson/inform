@@ -22,8 +22,8 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	inter_warehouse *warehouse = Inter::Tree::warehouse(I);
 	default_ptree = I;
 
-	inter_t *grid = NULL;
-	inter_t grid_extent = 0;
+	inter_ti *grid = NULL;
+	inter_ti grid_extent = 0;
 	unsigned int X = 0;
 
 	@<Read the shibboleth@>;
@@ -31,7 +31,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	@<Read the resources@>;
 	@<Read the symbol equations@>;
 	@<Read the bytecode@>;
-	if (grid) Memory::I7_array_free(grid, INTER_BYTECODE_MREASON, (int) grid_extent, sizeof(inter_t));
+	if (grid) Memory::I7_array_free(grid, INTER_BYTECODE_MREASON, (int) grid_extent, sizeof(inter_ti));
 	Primitives::scan_tree(I);
 
 	BinaryFiles::close(fh);
@@ -60,13 +60,13 @@ void Inter::Binary::write(filename *F, inter_tree *I) {
 for |intr|), then four zero bytes, so that we can tell this file from a
 text file coincidentally opening with those letters.
 
-@d INTER_SHIBBOLETH ((inter_t) 0x696E7472)
+@d INTER_SHIBBOLETH ((inter_ti) 0x696E7472)
 
 @<Read the shibboleth@> =
 	if ((BinaryFiles::read_int32(fh, &X) == FALSE) ||
-		((inter_t) X != INTER_SHIBBOLETH) ||
+		((inter_ti) X != INTER_SHIBBOLETH) ||
 		(BinaryFiles::read_int32(fh, &X) == FALSE) ||
-		((inter_t) X != 0)) Inter::Binary::read_error(&eloc, 0, I"not a binary inter file");
+		((inter_ti) X != 0)) Inter::Binary::read_error(&eloc, 0, I"not a binary inter file");
 
 @<Write the shibboleth@> =
 	BinaryFiles::write_int32(fh, (unsigned int) INTER_SHIBBOLETH);
@@ -77,7 +77,7 @@ now, because they will be referred to in the symbol definitions in the
 resource block later on.
 
 @<Read the annotations@> =
-	inter_t ID = 0;
+	inter_ti ID = 0;
 	while (BinaryFiles::read_int32(fh, &ID)) {
 		if (ID == 0) break;
 		TEMPORARY_TEXT(keyword)
@@ -120,15 +120,15 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			Inter::Binary::read_error(&eloc, ftell(fh), I"max zero");
 			grid_extent = 1000;
 		}
-		grid = (inter_t *) Memory::calloc((int) grid_extent, sizeof(inter_t), INTER_BYTECODE_MREASON);
-		for (inter_t i=0; i<grid_extent; i++) grid[i] = 0;
-		for (inter_t i=0; i<count; i++) {
+		grid = (inter_ti *) Memory::calloc((int) grid_extent, sizeof(inter_ti), INTER_BYTECODE_MREASON);
+		for (inter_ti i=0; i<grid_extent; i++) grid[i] = 0;
+		for (inter_ti i=0; i<count; i++) {
 			unsigned int from_N;
 			if (BinaryFiles::read_int32(fh, &from_N)) {
-				inter_t n;
+				inter_ti n;
 				switch (i) {
-					case 0: n = (inter_t) Inter::Tree::global_scope(I)->n_index; break;
-					case 1: n = (inter_t) Inter::Tree::root_package(I)->index_n; break;
+					case 0: n = (inter_ti) Inter::Tree::global_scope(I)->n_index; break;
+					case 1: n = (inter_ti) Inter::Tree::root_package(I)->index_n; break;
 					default: n = Inter::Warehouse::create_resource(warehouse); break;
 				}
 	if (trace_bin) WRITE_TO(STDOUT, "Reading resource %d <--- %d\n", n, from_N);
@@ -139,12 +139,12 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 				grid[from_N] = n;
 			} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		}
-		for (inter_t i=0; i<grid_extent; i++) {
+		for (inter_ti i=0; i<grid_extent; i++) {
 	if (trace_bin) WRITE_TO(STDOUT, "%d ", grid[i]);
 		}
 	if (trace_bin) WRITE_TO(STDOUT, "\n");
 		
-		for (inter_t i=0; i<count; i++) {
+		for (inter_ti i=0; i<count; i++) {
 			unsigned int from_N = 0;
 			if (BinaryFiles::read_int32(fh, &from_N) == FALSE)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
@@ -152,7 +152,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"from-N out of range");
 				from_N = grid_extent - 1;
 			}
-			inter_t n = grid[from_N];
+			inter_ti n = grid[from_N];
 			inter_resource_holder *res = &(warehouse->stored_resources[n]);
 			unsigned int X = NO_IRSRC;
 			if (BinaryFiles::read_int32(fh, &X) == FALSE)
@@ -443,7 +443,7 @@ enough that the slot exists for the eventual list to be stored in.
 		}
 		unsigned int comment = 0;
 		if (BinaryFiles::read_int32(fh, &comment)) {
-			if (comment != 0) Inode::attach_comment(P, (inter_t) comment);
+			if (comment != 0) Inode::attach_comment(P, (inter_ti) comment);
 		} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	if (trace_bin) WRITE_TO(STDOUT, "Verify\n");
 		inter_error_message *E = NULL;
@@ -488,9 +488,9 @@ int Inter::Binary::test_file(filename *F) {
 	FILE *fh = BinaryFiles::open_for_reading(F);
 	unsigned int X = 0;
 	if ((BinaryFiles::read_int32(fh, &X) == FALSE) ||
-		((inter_t) X != INTER_SHIBBOLETH)) verdict = FALSE;
+		((inter_ti) X != INTER_SHIBBOLETH)) verdict = FALSE;
 	if ((BinaryFiles::read_int32(fh, &X) == FALSE) ||
-		((inter_t) X != 0)) verdict = FALSE;
+		((inter_ti) X != 0)) verdict = FALSE;
 	BinaryFiles::close(fh);
 	return verdict;
 }

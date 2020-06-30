@@ -36,10 +36,10 @@ typedef struct inter_resource_holder {
 
 typedef struct inter_warehouse_room {
 	struct inter_warehouse *owning_warehouse;
-	inter_t index_offset;
+	inter_ti index_offset;
 	int size;
 	int capacity;
-	inter_t *bytecode;
+	inter_ti *bytecode;
 	struct inter_warehouse_room *next_room;
 	CLASS_DEFINITION
 } inter_warehouse_room;
@@ -63,11 +63,11 @@ inter_warehouse *Inter::Warehouse::new(void) {
 inter_warehouse_room *Inter::Warehouse::new_room(inter_warehouse *owner, int capacity, inter_warehouse_room *prec) {
 	inter_warehouse_room *IS = CREATE(inter_warehouse_room);
 	IS->owning_warehouse = owner;
-	IS->index_offset = (prec)?(prec->index_offset + (inter_t) prec->capacity):0;
+	IS->index_offset = (prec)?(prec->index_offset + (inter_ti) prec->capacity):0;
 	IS->size = 0;
 	IS->capacity = capacity;
-	IS->bytecode = (inter_t *)
-		Memory::calloc(capacity, sizeof(inter_t), INTER_BYTECODE_MREASON);
+	IS->bytecode = (inter_ti *)
+		Memory::calloc(capacity, sizeof(inter_ti), INTER_BYTECODE_MREASON);
 	LOGIF(INTER_MEMORY, "Created repository %d segment %d with capacity %d\n",
 		owner->allocation_id, IS->allocation_id, IS->capacity);
 	return IS;
@@ -76,7 +76,7 @@ inter_warehouse_room *Inter::Warehouse::new_room(inter_warehouse *owner, int cap
 typedef struct warehouse_floor_space {
 	struct inter_warehouse_room *repo_segment;
 	int index;
-	inter_t *data;
+	inter_ti *data;
 	int extent;
 } warehouse_floor_space;
 
@@ -92,7 +92,7 @@ warehouse_floor_space Inter::Warehouse::find_room_in_room(inter_warehouse_room *
 
 	int at = IS->size, this_piece = PREFRAME_SIZE + n;
 	for (int i=0; i<this_piece; i++) IS->bytecode[at + i] = 0;
-	IS->bytecode[at + PREFRAME_SKIP_AMOUNT] = (inter_t) this_piece;
+	IS->bytecode[at + PREFRAME_SKIP_AMOUNT] = (inter_ti) this_piece;
 	IS->size += this_piece;
 
 	warehouse_floor_space W;
@@ -126,7 +126,7 @@ inter_tree_node *Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_t
 	return F;
 }
 
-inter_t Inter::Warehouse::create_resource(inter_warehouse *warehouse) {
+inter_ti Inter::Warehouse::create_resource(inter_warehouse *warehouse) {
 	if (warehouse->size >= warehouse->capacity) {
 		int new_size = 128;
 		while (new_size < 2*warehouse->capacity) new_size = 2*new_size;
@@ -150,18 +150,18 @@ inter_t Inter::Warehouse::create_resource(inter_warehouse *warehouse) {
 	warehouse->stored_resources[n].stored_package = NULL;
 	warehouse->stored_resources[n].stored_text_stream = NULL;
 	warehouse->stored_resources[n].stored_frame_list = NULL;
-	return (inter_t) n;
+	return (inter_ti) n;
 }
 
-inter_t Inter::Warehouse::store_origin(inter_warehouse *warehouse, inter_error_location *eloc) {
+inter_ti Inter::Warehouse::store_origin(inter_warehouse *warehouse, inter_error_location *eloc) {
 	if (eloc) {
 		if (eloc->error_interb) {
 			warehouse->origin_file = eloc->error_interb;
-			return (inter_t) (0x10000000 + eloc->error_offset);
+			return (inter_ti) (0x10000000 + eloc->error_offset);
 		}
 		if (eloc->error_tfp) {
 			warehouse->origin_file = eloc->error_tfp->text_file_filename;
-			return (inter_t) (eloc->error_tfp->line_count);
+			return (inter_ti) (eloc->error_tfp->line_count);
 		}
 	}
 	return 0;
@@ -173,7 +173,7 @@ typedef struct inter_error_stash {
 	CLASS_DEFINITION
 } inter_error_stash;
 
-inter_error_location *Inter::Warehouse::retrieve_origin(inter_warehouse *warehouse, inter_t C) {
+inter_error_location *Inter::Warehouse::retrieve_origin(inter_warehouse *warehouse, inter_ti C) {
 	if ((warehouse) && (warehouse->origin_file)) {
 		inter_error_stash *stash = CREATE(inter_error_stash);
 		stash->stashed_tfp = TextFiles::nowhere();
@@ -190,14 +190,14 @@ inter_error_location *Inter::Warehouse::retrieve_origin(inter_warehouse *warehou
 	return NULL;
 }
 
-inter_symbols_table *Inter::Warehouse::get_symbols_table(inter_warehouse *warehouse, inter_t n) {
-	if (n >= (inter_t) warehouse->size) return NULL;
+inter_symbols_table *Inter::Warehouse::get_symbols_table(inter_warehouse *warehouse, inter_ti n) {
+	if (n >= (inter_ti) warehouse->size) return NULL;
 	if (n == 0) return NULL;
 	return warehouse->stored_resources[n].stored_symbols_table;
 }
 
-inter_t Inter::Warehouse::create_symbols_table(inter_warehouse *warehouse) {
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
+inter_ti Inter::Warehouse::create_symbols_table(inter_warehouse *warehouse) {
+	inter_ti n = Inter::Warehouse::create_resource(warehouse);
 	if (warehouse->stored_resources[n].stored_symbols_table == NULL) {
 		warehouse->stored_resources[n].irsrc = SYMBOLS_TABLE_IRSRC;
 		warehouse->stored_resources[n].stored_symbols_table = Inter::SymbolsTables::new();
@@ -206,18 +206,18 @@ inter_t Inter::Warehouse::create_symbols_table(inter_warehouse *warehouse) {
 	return n;
 }
 
-void Inter::Warehouse::attribute_resource(inter_warehouse *warehouse, inter_t n, inter_package *owner) {
-	if (n >= (inter_t) warehouse->size) internal_error("out of range");
+void Inter::Warehouse::attribute_resource(inter_warehouse *warehouse, inter_ti n, inter_package *owner) {
+	if (n >= (inter_ti) warehouse->size) internal_error("out of range");
 	warehouse->stored_resources[n].owning_package = owner;
 }
 
-text_stream *Inter::Warehouse::get_text(inter_warehouse *warehouse, inter_t n) {
-	if (n >= (inter_t) warehouse->size) return NULL;
+text_stream *Inter::Warehouse::get_text(inter_warehouse *warehouse, inter_ti n) {
+	if (n >= (inter_ti) warehouse->size) return NULL;
 	return warehouse->stored_resources[n].stored_text_stream;
 }
 
-inter_t Inter::Warehouse::create_text(inter_warehouse *warehouse, inter_package *owner) {
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
+inter_ti Inter::Warehouse::create_text(inter_warehouse *warehouse, inter_package *owner) {
+	inter_ti n = Inter::Warehouse::create_resource(warehouse);
 	if (warehouse->stored_resources[n].stored_text_stream == NULL) {
 		warehouse->stored_resources[n].irsrc = STRING_IRSRC;
 		warehouse->stored_resources[n].stored_text_stream = Str::new();
@@ -226,14 +226,14 @@ inter_t Inter::Warehouse::create_text(inter_warehouse *warehouse, inter_package 
 	return n;
 }
 
-inter_package *Inter::Warehouse::get_package(inter_warehouse *warehouse, inter_t n) {
-	if (n >= (inter_t) warehouse->size) return NULL;
+inter_package *Inter::Warehouse::get_package(inter_warehouse *warehouse, inter_ti n) {
+	if (n >= (inter_ti) warehouse->size) return NULL;
 	if (n == 0) return NULL;
 	return warehouse->stored_resources[n].stored_package;
 }
 
-inter_t Inter::Warehouse::create_package(inter_warehouse *warehouse, inter_tree *I) {
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
+inter_ti Inter::Warehouse::create_package(inter_warehouse *warehouse, inter_tree *I) {
+	inter_ti n = Inter::Warehouse::create_resource(warehouse);
 	if (warehouse->stored_resources[n].stored_package == NULL) {
 		warehouse->stored_resources[n].irsrc = PACKAGE_IRSRC;
 		warehouse->stored_resources[n].stored_package = Inter::Packages::new(I, n);
@@ -243,34 +243,34 @@ inter_t Inter::Warehouse::create_package(inter_warehouse *warehouse, inter_tree 
 	return n;
 }
 
-void *Inter::Warehouse::get_ref(inter_warehouse *warehouse, inter_t n) {
-	if (n >= (inter_t) warehouse->size) return NULL;
+void *Inter::Warehouse::get_ref(inter_warehouse *warehouse, inter_ti n) {
+	if (n >= (inter_ti) warehouse->size) return NULL;
 	return warehouse->stored_resources[n].stored_ref;
 }
 
-inter_t Inter::Warehouse::create_ref(inter_warehouse *warehouse) {
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
+inter_ti Inter::Warehouse::create_ref(inter_warehouse *warehouse) {
+	inter_ti n = Inter::Warehouse::create_resource(warehouse);
 	warehouse->stored_resources[n].irsrc = REF_IRSRC;
 	warehouse->stored_resources[n].stored_ref = NULL;
 	return n;
 }
 
-inter_node_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, inter_t N) {
+inter_node_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, inter_ti N) {
 	if (warehouse == NULL) return NULL;
 	int n = (int) N;
 	if (n >= warehouse->size) return NULL;
 	return warehouse->stored_resources[n].stored_frame_list;
 }
 
-inter_t Inter::Warehouse::create_frame_list(inter_warehouse *warehouse) {
-	inter_t n = Inter::Warehouse::create_resource(warehouse);
+inter_ti Inter::Warehouse::create_frame_list(inter_warehouse *warehouse) {
+	inter_ti n = Inter::Warehouse::create_resource(warehouse);
 	warehouse->stored_resources[n].irsrc = FRAME_LIST_IRSRC;
 	warehouse->stored_resources[n].stored_frame_list = Inter::Lists::new();
 	return n;
 }
 
-void Inter::Warehouse::set_ref(inter_warehouse *warehouse, inter_t n, void *ref) {
-	if (n >= (inter_t) warehouse->size) return;
+void Inter::Warehouse::set_ref(inter_warehouse *warehouse, inter_ti n, void *ref) {
+	if (n >= (inter_ti) warehouse->size) return;
 	warehouse->stored_resources[n].stored_ref = ref;
 }
 

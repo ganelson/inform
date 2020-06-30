@@ -48,7 +48,7 @@ void CodeGen::FC::frame(code_generation *gen, inter_tree_node *P) {
 				internal_error("constant defined in main");
 			}
 			if (Inter::Symbols::read_annotation(con_name, TEXT_LITERAL_IANN) == 1) {
-				inter_t ID = P->W.data[DATA_CONST_IFLD];
+				inter_ti ID = P->W.data[DATA_CONST_IFLD];
 				text_stream *S = CodeGen::CL::literal_text_at(gen,
 					Inode::ID_to_text(P, ID));
 				CodeGen::select_temporary(gen, S);
@@ -173,7 +173,7 @@ void CodeGen::FC::lab(code_generation *gen, inter_tree_node *P) {
 			PUT(Str::get(pos));
 }
 
-void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_t val1, inter_t val2) {
+void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_ti val1, inter_ti val2) {
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(
 			val1, val2, Inter::Bookmarks::scope(IBM));
@@ -205,8 +205,8 @@ void CodeGen::FC::val_from(OUTPUT_STREAM, inter_bookmark *IBM, inter_t val1, int
 void CodeGen::FC::val(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *val_kind = Inter::SymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
 	if (val_kind) {
-		inter_t val1 = P->W.data[VAL1_VAL_IFLD];
-		inter_t val2 = P->W.data[VAL2_VAL_IFLD];
+		inter_ti val1 = P->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = P->W.data[VAL2_VAL_IFLD];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 			inter_package *pack = Inter::Packages::container(P);
 			inter_symbol *symb = Inter::SymbolsTables::local_symbol_from_id(pack, val2);
@@ -268,15 +268,15 @@ void CodeGen::FC::inv(code_generation *gen, inter_tree_node *P) {
 			break;
 		}
 		case INVOKED_OPCODE: {
-			inter_t ID = P->W.data[INVOKEE_INV_IFLD];
+			inter_ti ID = P->W.data[INVOKEE_INV_IFLD];
 			text_stream *S = Inode::ID_to_text(P, ID);
 			WRITE("%S", S);
 			negate_label_mode = FALSE;
 			LOOP_THROUGH_INTER_CHILDREN(F, P) {
 				query_labels_mode = TRUE;
 				if (F->W.data[ID_IFLD] == VAL_IST) {
-					inter_t val1 = F->W.data[VAL1_VAL_IFLD];
-					inter_t val2 = F->W.data[VAL2_VAL_IFLD];
+					inter_ti val1 = F->W.data[VAL1_VAL_IFLD];
+					inter_ti val2 = F->W.data[VAL2_VAL_IFLD];
 					if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 						inter_symbol *symb = Inter::SymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
 						if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {

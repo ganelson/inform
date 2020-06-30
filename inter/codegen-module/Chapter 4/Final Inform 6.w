@@ -162,7 +162,7 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 	text_stream *OUT = CodeGen::current(gen);
 	int suppress_terminal_semicolon = FALSE;
 	inter_tree *I = gen->from;
-	inter_t bip = Primitives::to_bip(I, prim_name);
+	inter_ti bip = Primitives::to_bip(I, prim_name);
 	switch (bip) {
 		case INVERSION_BIP:		WRITE("inversion"); break;
 
@@ -312,8 +312,8 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 	int rboolean = NOT_APPLICABLE;
 	inter_tree_node *V = Inter::Tree::first_child(P);
 	if (V->W.data[ID_IFLD] == VAL_IST) {
-		inter_t val1 = V->W.data[VAL1_VAL_IFLD];
-		inter_t val2 = V->W.data[VAL2_VAL_IFLD];
+		inter_ti val1 = V->W.data[VAL1_VAL_IFLD];
+		inter_ti val2 = V->W.data[VAL2_VAL_IFLD];
 		if (val1 == LITERAL_IVAL) {
 			if (val2 == 0) rboolean = FALSE;
 			if (val2 == 1) rboolean = TRUE;

@@ -44,11 +44,11 @@ void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	inter_symbol *to_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
-	*E = Inter::Cast::new(IBM, from_kind, to_kind, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Cast::new(IBM, from_kind, to_kind, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Cast::new(inter_bookmark *IBM, inter_symbol *from_kind, inter_symbol *to_kind, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_3(IBM, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, from_kind), eloc, (inter_t) level);
+inter_error_message *Inter::Cast::new(inter_bookmark *IBM, inter_symbol *from_kind, inter_symbol *to_kind, inter_ti level, inter_error_location *eloc) {
+	inter_tree_node *P = Inode::fill_3(IBM, CAST_IST, 0, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, to_kind), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, from_kind), eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;

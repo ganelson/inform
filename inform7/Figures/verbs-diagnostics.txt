@@ -1627,276 +1627,276 @@ VU: unbolts IS_TENSE
 VU: unbolt IS_TENSE
 VU: unbolted WAS_TENSE
 VU: unbolted WAS_TENSE
-p=meant by
-p=meaning
-p=implied by
-p=implying
-p=being able to be
-p=had by
-p=having
-p=specified by
-p=specifying
-p=related by
-p=relating
-p=substituted by
-p=substituting
-p=for
-p=done by
-p=doing
-p=if
-p=when
-p=unless
-p=translated by
-p=translating
-p=into
-p=as
-p=provided by
-p=providing
-p=used by
-p=using
-p=included by
-p=including
-p=in
-p=omitted by
-p=omitting
-p=from
-p=greater than
-p=less than
-p=at least
-p=at most
-p=being able to
-p=coulding
-p=maying
-p=mighting
-p=musting
-p=shoulding
-p=woulding
-p=being
-p=aren'ting
-p=can'ting
-p=don'ting
-p=haven'ting
-p=mustn'ting
-p=mightn'ting
-p=mayn'ting
-p=wouldn'ting
-p=couldn'ting
-p=shouldn'ting
-p=won'ting
-p=begun by
-p=beginning
-p=ended by
-p=ending
-p=tested by
-p=testing
-p=with
-p=understood by
-p=understanding
-p=released by
-p=releasing
-p=along with
-p=indexed by
-p=indexing
-p=map with
-p=inside
-p=within
-p=held in
-p=held inside
-p=contained by
-p=containing
-p=contained in
-p=on top of
-p=on
-p=supported by
-p=supporting
-p=supported on
-p=incorporated by
-p=incorporating
-p=part of
-p=a part of
-p=parts of
-p=enclosed by
-p=enclosing
-p=carried by
-p=carrying
-p=held by
-p=holding
-p=worn by
-p=wearing
-p=being able to see
-p=being able to touch
-p=concealed by
-p=concealing
-p=adjacent to
-p=regionally in
-p=mapped north of
-p=north of
-p=north from
-p=mapped northeast of
-p=northeast of
-p=northeast from
-p=mapped northwest of
-p=northwest of
-p=northwest from
-p=mapped south of
-p=south of
-p=south from
-p=mapped southeast of
-p=southeast of
-p=southeast from
-p=mapped southwest of
-p=southwest of
-p=southwest from
-p=mapped east of
-p=east of
-p=east from
-p=mapped west of
-p=west of
-p=west from
-p=mapped up of
-p=up of
-p=up from
-p=mapped down of
-p=down of
-p=down from
-p=mapped inside
-p=inside of
-p=inside from
-p=mapped outside
-p=outside of
-p=outside from
-p=above
-p=mapped above
-p=below
-p=mapped below
-p=through
-p=unlocked by
-p=unlocking
-p=achieved by
-p=achieving
-p=appreciated by
-p=appreciating
-p=arrived by
-p=arriving
-p=cared by
-p=caring
-p=closed by
-p=closing
-p=died by
-p=dying
-p=discovered by
-p=discovering
-p=dropped by
-p=dropping
-p=eaten by
-p=eating
-p=felt by
-p=feeling
-p=found by
-p=finding
-p=got by
-p=getting
-p=given by
-p=giving
-p=gone by
-p=going
-p=happened by
-p=happening
-p=heard by
-p=hearing
-p=jumped by
-p=jumping
-p=lacked by
-p=lacking
-p=led by
-p=leading
-p=liked by
-p=liking
-p=listened by
-p=listening
-p=locked by
-p=locking
-p=looked by
-p=looking
-p=needed by
-p=needing
-p=opened by
-p=opening
-p=passed by
-p=passing
-p=picked by
-p=picking
-p=provoked by
-p=provoking
-p=pulled by
-p=pulling
-p=pushed by
-p=pushing
-p=put by
-p=putting
-p=rubbed by
-p=rubbing
-p=said by
-p=saying
-p=searched by
-p=searching
-p=seen by
-p=seeing
-p=seemed by
-p=seeming
-p=set by
-p=setting
-p=smelled by
-p=smelling
-p=sniffed by
-p=sniffing
-p=squeezed by
-p=squeezing
-p=switched by
-p=switching
-p=taken by
-p=taking
-p=talked by
-p=talking
-p=tasted by
-p=tasting
-p=touched by
-p=touching
-p=turned by
-p=turning
-p=waited by
-p=waiting
-p=waved by
-p=waving
-p=won by
-p=winning
-p=protected by
-p=protecting
-p=owned by
-p=owning
-p=fitted by
-p=fitting
-p=unbolted by
-p=unbolting
-p=the same variable initial value as
-p=the same specification as
-p=the same indefinite appearance text as
-p=the same printed name as
-p=the same printed plural name as
-p=the same indefinite article as
-p=the same adaptive text viewpoint as
-p=the same description as
-p=the same map region as
-p=the same initial appearance as
-p=the same opposite as
-p=the same other side as
-p=the same carrying capacity as
-p=the same matching key as
-p=the same list grouping key as
-p=the same destination as
-p=the same conversation as
-p=the same walk style as
-p=the same last opener as
-p=the same ownership relation storage as
-p=the same infection color as
-p=the same unbolting relation storage as
+meant by
+meaning
+implied by
+implying
+being able to be
+had by
+having
+specified by
+specifying
+related by
+relating
+substituted by
+substituting
+for
+done by
+doing
+if
+when
+unless
+translated by
+translating
+into
+as
+provided by
+providing
+used by
+using
+included by
+including
+in
+omitted by
+omitting
+from
+greater than
+less than
+at least
+at most
+being able to
+coulding
+maying
+mighting
+musting
+shoulding
+woulding
+being
+aren'ting
+can'ting
+don'ting
+haven'ting
+mustn'ting
+mightn'ting
+mayn'ting
+wouldn'ting
+couldn'ting
+shouldn'ting
+won'ting
+begun by
+beginning
+ended by
+ending
+tested by
+testing
+with
+understood by
+understanding
+released by
+releasing
+along with
+indexed by
+indexing
+map with
+inside
+within
+held in
+held inside
+contained by
+containing
+contained in
+on top of
+on
+supported by
+supporting
+supported on
+incorporated by
+incorporating
+part of
+a part of
+parts of
+enclosed by
+enclosing
+carried by
+carrying
+held by
+holding
+worn by
+wearing
+being able to see
+being able to touch
+concealed by
+concealing
+adjacent to
+regionally in
+mapped north of
+north of
+north from
+mapped northeast of
+northeast of
+northeast from
+mapped northwest of
+northwest of
+northwest from
+mapped south of
+south of
+south from
+mapped southeast of
+southeast of
+southeast from
+mapped southwest of
+southwest of
+southwest from
+mapped east of
+east of
+east from
+mapped west of
+west of
+west from
+mapped up of
+up of
+up from
+mapped down of
+down of
+down from
+mapped inside
+inside of
+inside from
+mapped outside
+outside of
+outside from
+above
+mapped above
+below
+mapped below
+through
+unlocked by
+unlocking
+achieved by
+achieving
+appreciated by
+appreciating
+arrived by
+arriving
+cared by
+caring
+closed by
+closing
+died by
+dying
+discovered by
+discovering
+dropped by
+dropping
+eaten by
+eating
+felt by
+feeling
+found by
+finding
+got by
+getting
+given by
+giving
+gone by
+going
+happened by
+happening
+heard by
+hearing
+jumped by
+jumping
+lacked by
+lacking
+led by
+leading
+liked by
+liking
+listened by
+listening
+locked by
+locking
+looked by
+looking
+needed by
+needing
+opened by
+opening
+passed by
+passing
+picked by
+picking
+provoked by
+provoking
+pulled by
+pulling
+pushed by
+pushing
+put by
+putting
+rubbed by
+rubbing
+said by
+saying
+searched by
+searching
+seen by
+seeing
+seemed by
+seeming
+set by
+setting
+smelled by
+smelling
+sniffed by
+sniffing
+squeezed by
+squeezing
+switched by
+switching
+taken by
+taking
+talked by
+talking
+tasted by
+tasting
+touched by
+touching
+turned by
+turning
+waited by
+waiting
+waved by
+waving
+won by
+winning
+protected by
+protecting
+owned by
+owning
+fitted by
+fitting
+unbolted by
+unbolting
+the same variable initial value as
+the same specification as
+the same indefinite appearance text as
+the same printed name as
+the same printed plural name as
+the same indefinite article as
+the same adaptive text viewpoint as
+the same description as
+the same map region as
+the same initial appearance as
+the same opposite as
+the same other side as
+the same carrying capacity as
+the same matching key as
+the same list grouping key as
+the same destination as
+the same conversation as
+the same walk style as
+the same last opener as
+the same ownership relation storage as
+the same infection color as
+the same unbolting relation storage as

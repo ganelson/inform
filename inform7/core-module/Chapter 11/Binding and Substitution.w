@@ -424,8 +424,8 @@ kind *Calculus::Variables::infer_kind_of_variable_0(pcalc_prop *prop) {
 			if (K) return K;
 		}
 		if ((p->element == PREDICATE_ATOM) && (p->arity == 1) && (p->terms[0].variable == 0)) {
-			adjective_usage *tr = RETRIEVE_POINTER_adjective_usage(p->predicate);
-			adjective *aph = AdjectiveUsages::get_aph(tr);
+			unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(p->predicate);
+			adjective *aph = UnaryPredicates::get_adj(tr);
 			adjective_meaning *am = Adjectives::Meanings::first_meaning(aph);
 			kind *K = Adjectives::Meanings::get_domain(am);
 			if (K) return K;

@@ -168,7 +168,7 @@ inter_symbol *Veneer::make(inter_tree *I, inter_symbol **slot, text_stream *S, t
 			Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), veneer_package, *slot),
 			Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), veneer_package, unchecked_kind_symbol),
 			LITERAL_IVAL, 0,
-			(inter_t) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+			(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	}
 	return *slot;
 }

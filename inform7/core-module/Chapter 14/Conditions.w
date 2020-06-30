@@ -341,5 +341,5 @@ type-checker won't allow these specifications to be compiled anywhere else.
 		if (po == NULL) internal_error("no phrase options exist in this frame");
 		inter_symbol *po_s = LocalVariables::declare_this(po, FALSE, 8);
 		Produce::val_symbol(Emit::tree(), K_value, po_s);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) Annotations::read_int(spec_found, phrase_option_ANNOT));
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Annotations::read_int(spec_found, phrase_option_ANNOT));
 	Produce::up(Emit::tree());

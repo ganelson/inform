@@ -4,7 +4,7 @@ A primitive notion of data type, below the level of kinds.
 
 @ =
 typedef struct inter_data_type {
-	inter_t type_ID;
+	inter_ti type_ID;
 	struct text_stream *reserved_word;
 	long long int min_value;
 	long long int max_value;
@@ -18,7 +18,7 @@ inter_data_type *unchecked_idt = NULL;
 @ =
 dictionary *idt_lookup = NULL;
 
-inter_data_type *Inter::Types::create(inter_t ID, text_stream *name, int A, int B, int en) {
+inter_data_type *Inter::Types::create(inter_ti ID, text_stream *name, int A, int B, int en) {
 	inter_data_type *IDT = CREATE(inter_data_type);
 	IDT->type_ID = ID;
 	IDT->reserved_word = Str::duplicate(name);
@@ -38,7 +38,7 @@ int Inter::Types::is_enumerated(inter_data_type *idt) {
 	return FALSE;
 }
 
-inter_data_type *Inter::Types::find_by_ID(inter_t ID) {
+inter_data_type *Inter::Types::find_by_ID(inter_ti ID) {
 	inter_data_type *IDT;
 	LOOP_OVER(IDT, inter_data_type)
 		if (ID == IDT->type_ID)
@@ -52,7 +52,7 @@ inter_data_type *Inter::Types::find_by_name(text_stream *name) {
 	return NULL;
 }
 
-inter_t Inter::Types::transpose_value(inter_t V1, inter_t V2, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+inter_ti Inter::Types::transpose_value(inter_ti V1, inter_ti V2, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	switch (V1) {
 		case DWORD_IVAL:
 		case PDWORD_IVAL:
@@ -66,13 +66,13 @@ inter_t Inter::Types::transpose_value(inter_t V1, inter_t V2, inter_t *grid, int
 	return V2;
 }
 
-inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind_symbol, inter_t V1, inter_t V2, inter_symbols_table *scope) {
+inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind_symbol, inter_ti V1, inter_ti V2, inter_symbols_table *scope) {
 	if (suppress_type_errors) return NULL;
 	switch (V1) {
 		case LITERAL_IVAL: {
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
 			if (idt) {
-				long long int I = (signed_inter_t) V2;
+				long long int I = (signed_inter_ti) V2;
 				if ((I < idt->min_value) || (I > idt->max_value)) return Inode::error(P, I"value out of range", NULL);
 				return NULL;
 			}
@@ -120,7 +120,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 	return Inode::error(P, I"value of unknown category", NULL);
 }
 
-inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T, inter_t V1, inter_t V2) {
+inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T, inter_ti V1, inter_ti V2) {
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_data_pair_and_table(V1, V2, T);
 	if (symb) {
 		inter_tree_node *D = Inter::Symbols::definition(symb);
@@ -148,7 +148,7 @@ inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T
 =
 
 void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *kind_symbol,
-	inter_t V1, inter_t V2, inter_symbols_table *scope, int hex_flag) {
+	inter_ti V1, inter_ti V2, inter_symbols_table *scope, int hex_flag) {
 	switch (V1) {
 		case LITERAL_IVAL:
 			if (hex_flag) WRITE("0x%x", V2);
@@ -193,7 +193,7 @@ void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *kind_s
 	}
 }
 
-inter_error_message *Inter::Types::read(text_stream *line, inter_error_location *eloc, inter_tree *I, inter_package *pack, inter_symbol *kind_symbol, text_stream *S, inter_t *val1, inter_t *val2, inter_symbols_table *scope) {
+inter_error_message *Inter::Types::read(text_stream *line, inter_error_location *eloc, inter_tree *I, inter_package *pack, inter_symbol *kind_symbol, text_stream *S, inter_ti *val1, inter_ti *val2, inter_symbols_table *scope) {
 	if (Str::eq(S, I"undef")) {
 		*val1 = UNDEF_IVAL; *val2 = 0; return NULL;
 	}
@@ -293,11 +293,11 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	if ((idt) && ((N < idt->min_value) || (N > idt->max_value)))
 		return Inter::Errors::quoted(I"value out of range", S, eloc);
 
-	*val1 = LITERAL_IVAL; *val2 = (inter_t) N;
+	*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
 	return NULL;
 }
 
-int Inter::Types::read_I6_decimal(text_stream *S, inter_t *val1, inter_t *val2) {
+int Inter::Types::read_I6_decimal(text_stream *S, inter_ti *val1, inter_ti *val2) {
 	int sign = 1, base = 10, from = 0;
 	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
 	if (Str::prefix_eq(S, I"$", 1)) { base = 16; from = 1; }
@@ -316,7 +316,7 @@ int Inter::Types::read_I6_decimal(text_stream *S, inter_t *val1, inter_t *val2) 
 	}
 	N = sign*N;
 
-	*val1 = LITERAL_IVAL; *val2 = (inter_t) N;
+	*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
 	return TRUE;
 }
 

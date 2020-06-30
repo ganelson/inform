@@ -62,12 +62,12 @@ void Unit::test_declensions(text_stream *arg) {
 			if (Lexer::word(i) == f_V) { gen = FEMININE_GENDER; continue; }
 			if (Lexer::word(i) == n_V) { gen = NEUTER_GENDER; continue; }
 			wording W = Wordings::one_word(i);
-			declension D = Declensions::of_noun(W, DefaultLanguage::get(NULL), gen, 1);
-			declension AD = Declensions::of_article(PW, DefaultLanguage::get(NULL), gen, 1);
+			declension D = Declensions::of_noun(W, DefaultLanguage::get(NULL), gen, SINGULAR_NUMBER);
+			declension AD = Declensions::of_article(PW, DefaultLanguage::get(NULL), gen, SINGULAR_NUMBER);
 			PRINT("%W --> ", W);
 			Declensions::writer(STDOUT, &D, &AD);
-			D = Declensions::of_noun(W, DefaultLanguage::get(NULL), gen, 2);
-			AD = Declensions::of_article(PW, DefaultLanguage::get(NULL), gen, 2);
+			D = Declensions::of_noun(W, DefaultLanguage::get(NULL), gen, PLURAL_NUMBER);
+			AD = Declensions::of_article(PW, DefaultLanguage::get(NULL), gen, PLURAL_NUMBER);
 			PRINT("pl --> ");
 			Declensions::writer(STDOUT, &D, &AD);
 			PRINT("\n");

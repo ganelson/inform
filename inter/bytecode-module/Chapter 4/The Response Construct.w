@@ -37,7 +37,7 @@ void Inter::Response::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *rule_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], CONSTANT_IST, E);
 	if (*E) return;
 
-	inter_t n1 = UNDEF_IVAL, n2 = 0;
+	inter_ti n1 = UNDEF_IVAL, n2 = 0;
 	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), NULL, ilp->mr.exp[2], &n1, &n2, Inter::Bookmarks::scope(IBM));
 	if (*E) return;
 	if ((n1 != LITERAL_IVAL) || (n2 >= 26))
@@ -46,12 +46,12 @@ void Inter::Response::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *val_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[3], CONSTANT_IST, E);
 	if (*E) return;
 
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), val_name, &v1, &v2);
-	*E = Inter::Response::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, resp_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, rule_name), n2, v1, v2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Response::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, resp_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, rule_name), n2, v1, v2, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Response::new(inter_bookmark *IBM, inter_t SID, inter_t RID, inter_t marker, inter_t v1, inter_t v2, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Response::new(inter_bookmark *IBM, inter_ti SID, inter_ti RID, inter_ti marker, inter_ti v1, inter_ti v2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_5(IBM, RESPONSE_IST, SID, RID, marker, v1, v2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);

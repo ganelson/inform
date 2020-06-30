@@ -276,10 +276,10 @@ adjective apparatus.
 
 @<Make an annotated schema for a unary predicate@> =
 	int atask = 0; /* redundant assignment to appease |gcc -O2| */
-	adjective_usage *tr = RETRIEVE_POINTER_adjective_usage(pl->predicate);
-	adjective *aph = AdjectiveUsages::get_aph(tr);
+	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	adjective *aph = UnaryPredicates::get_adj(tr);
 
-	if (AdjectiveUsages::get_parity(tr) == FALSE) asch.negate_schema = TRUE;
+	if (UnaryPredicates::get_parity(tr) == FALSE) asch.negate_schema = TRUE;
 
 	if ((pl->terms[0].constant) && (pl->terms[0].term_checked_as_kind == NULL))
 		pl->terms[0].term_checked_as_kind = Specifications::to_kind(pl->terms[0].constant);

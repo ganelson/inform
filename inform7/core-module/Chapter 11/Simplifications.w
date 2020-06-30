@@ -266,9 +266,9 @@ pcalc_prop *Calculus::Simplifications::prop_ungroup_and_negate_determiner(pcalc_
 		fnd = Calculus::Propositions::match(after, 3, ANY_ATOM_HERE, NULL,
 			NEGATION_OPEN_ATOM, NULL, QUANTIFIER_ATOM, &quant_atom);
 	if (fnd) {
-		quantifier *quant = RETRIEVE_POINTER_quantifier(quant_atom->predicate);
+		quantifier *quant = quant_atom->quant;
 		quantifier *antiquant = Quantifiers::get_negation(quant);
-		quant_atom->predicate = STORE_POINTER_quantifier(antiquant);
+		quant_atom->quant = antiquant;
 		prop = Calculus::Propositions::ungroup_after(prop, after, &last); /* remove negation group brackets */
 		if ((quant == exists_quantifier) && (add_domain_brackets)) {
 			prop = Calculus::Propositions::insert_atom(prop, quant_atom, Calculus::Atoms::new(DOMAIN_OPEN_ATOM));

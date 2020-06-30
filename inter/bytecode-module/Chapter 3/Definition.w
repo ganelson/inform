@@ -11,12 +11,12 @@ typedef struct inter_line_parse {
 	struct text_stream *line;
 	struct match_results mr;
 	struct inter_annotation_set set;
-	inter_t terminal_comment;
+	inter_ti terminal_comment;
 	int indent_level;
 } inter_line_parse;
 
 typedef struct inter_construct {
-	inter_t construct_ID;
+	inter_ti construct_ID;
 	wchar_t *construct_syntax;
 	int min_level;
 	int max_level;
@@ -29,7 +29,7 @@ typedef struct inter_construct {
 
 inter_construct *IC_lookup[MAX_INTER_CONSTRUCTS];
 
-inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
+inter_construct *Inter::Defn::create_construct(inter_ti ID, wchar_t *syntax,
 	text_stream *sing,
 	text_stream *plur) {
 	inter_construct *IC = CREATE(inter_construct);
@@ -56,7 +56,7 @@ inter_construct *Inter::Defn::create_construct(inter_t ID, wchar_t *syntax,
 
 =
 VOID_METHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *, inter_line_parse *, inter_error_location *, inter_error_message **E)
-VOID_METHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t max, inter_error_message **E)
+VOID_METHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti max, inter_error_message **E)
 VOID_METHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E)
 VOID_METHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_tree_node *P, inter_error_message **E)
 VOID_METHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_tree_node *P, inter_error_message **E)
@@ -110,7 +110,7 @@ void Inter::Defn::create_language(void) {
 }
 
 inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keyword, inter_error_location *eloc, inter_error_message **E) {
-	inter_t val = 0;
+	inter_ti val = 0;
 	int textual = FALSE;
 	*E = NULL;
 	LOOP_THROUGH_TEXT(P, keyword)
@@ -126,7 +126,7 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 				if (EP) *E = EP;
 				textual = TRUE;
 			} else {
-				val = (inter_t) Str::atoi(keyword, P.index + 1);
+				val = (inter_ti) Str::atoi(keyword, P.index + 1);
 				textual = FALSE;
 			}
 			Str::truncate(keyword, P.index);
@@ -155,7 +155,7 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_anno
 	}
 }
 
-void Inter::Defn::transpose_annotation(inter_annotation *IA, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Defn::transpose_annotation(inter_annotation *IA, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	if (IA->annot->textual_flag)
 		IA->annot_value = grid[IA->annot_value];
 }
@@ -176,7 +176,7 @@ inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_t
 	return E;
 }
 
-inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inter_tree_node *P, inter_t *grid, inter_t max) {
+inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inter_tree_node *P, inter_ti *grid, inter_ti max) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
@@ -203,9 +203,9 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	for (inter_t L=0; L<P->W.data[LEVEL_IFLD]; L++) WRITE("\t");
+	for (inter_ti L=0; L<P->W.data[LEVEL_IFLD]; L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
-	inter_t ID = Inode::get_comment(P);
+	inter_ti ID = Inode::get_comment(P);
 	if (ID != 0) {
 		if (P->W.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
 		WRITE("# %S", Inode::ID_to_text(P, ID));
@@ -284,7 +284,7 @@ inter_package *Inter::Defn::get_latest_block_package(void) {
 	return latest_block_package;
 }
 
-inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_t cons, int level, inter_error_location *eloc) {
+inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_ti cons, int level, inter_error_location *eloc) {
 	int actual = level;
 	if ((Inter::Bookmarks::package(IBM)) &&
 		(Inter::Packages::is_rootlike(Inter::Bookmarks::package(IBM)) == FALSE))	

@@ -333,7 +333,7 @@ will do: it doesn't have to be "it".)
 
 =
 <action-pronoun> ::=
-	<accusative-pronoun>
+	<object-pronoun>
 
 @ =
 int PL::Actions::action_names_overlap(action_name *an1, action_name *an2) {
@@ -435,7 +435,7 @@ inter_name *PL::Actions::base_iname(action_name *an) {
 inter_name *PL::Actions::double_sharp(action_name *an) {
 	if (an->an_iname == NULL) {
 		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, PL::Actions::base_iname(an), an->an_package);
-		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_t) an->allocation_id);
+		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_ti) an->allocation_id);
 		Hierarchy::make_available(Emit::tree(), an->an_iname);
 		Produce::annotate_i(an->an_iname, ACTION_IANN, 1);
 	}
@@ -1152,9 +1152,9 @@ void PL::Actions::compile_action_routines(void) {
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
 			Produce::inv_call_iname(Emit::tree(), generic_iname);
 			Produce::down(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) an->check_rules->allocation_id);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) an->carry_out_rules->allocation_id);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) an->report_rules->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->check_rules->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->carry_out_rules->allocation_id);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->report_rules->allocation_id);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 		Routines::end(save);
@@ -1184,7 +1184,7 @@ void PL::Actions::ActionData(void) {
 		if (an->second_access == IMPOSSIBLE_ACCESS) msp = 0;
 		record_count++;
 		Emit::array_action_entry(an);
-		inter_t bitmap = (inter_t) (mn + ms*0x02 + ml*0x04 + mnp*0x08 +
+		inter_ti bitmap = (inter_ti) (mn + ms*0x02 + ml*0x04 + mnp*0x08 +
 			msp*0x10 + ((an->out_of_world)?1:0)*0x20 + hn*0x40 + hs*0x80);
 		Emit::array_numeric_entry(bitmap);
 		Kinds::RunTime::emit_strong_id(an->noun_kind);
@@ -1193,13 +1193,13 @@ void PL::Actions::ActionData(void) {
 				(StackedVariables::owner_empty(an->owned_by_an) == FALSE))
 			Emit::array_iname_entry(StackedVariables::frame_creator(an->owned_by_an));
 		else Emit::array_numeric_entry(0);
-		Emit::array_numeric_entry((inter_t) (20000+an->allocation_id));
+		Emit::array_numeric_entry((inter_ti) (20000+an->allocation_id));
 	}
 	Emit::array_end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 
 	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_HL);
-	Emit::named_numeric_constant(ad_iname, (inter_t) record_count);
+	Emit::named_numeric_constant(ad_iname, (inter_ti) record_count);
 	Hierarchy::make_available(Emit::tree(), ad_iname);
 
 	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);

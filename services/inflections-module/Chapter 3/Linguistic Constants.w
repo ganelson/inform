@@ -1,4 +1,4 @@
-[InflectionDefns::] Linguistic Constants.
+[Lcon::] Linguistic Constants.
 
 Some basic linguistic constants are defined.
 
@@ -15,6 +15,9 @@ in the English Language extension, which we assume will be followed by other
 languages.
 
 @d NO_KNOWN_PERSONS 6
+@d FIRST_PERSON 0
+@d SECOND_PERSON 1
+@d THIRD_PERSON 2
 @d FIRST_PERSON_SINGULAR 0
 @d SECOND_PERSON_SINGULAR 1
 @d THIRD_PERSON_SINGULAR 2
@@ -33,6 +36,12 @@ languages.
 @d NO_KNOWN_MOODS 2
 @d ACTIVE_MOOD 0
 @d PASSIVE_MOOD 1
+
+@ And two senses:
+
+@d NO_KNOWN_SENSES 2
+@d POSITIVE_SENSE 0
+@d NEGATIVE_SENSE 1
 
 @ 25 cases sounds like plenty, but some languages are pretty scary this
 way: Hungarian has 18. We only require one case to exist, the nominative,
@@ -54,8 +63,76 @@ tense 5 for the past historic.
 @d CUSTOM1_TENSE 5
 @d CUSTOM2_TENSE 6
 
+@h Packed references.
+The following enables even a 32-bit integer to hold an ID reference in the
+range 0 to 128K, together with any combination of gender, person, number,
+mood, case, tense, and sense. This could be optimised further, exploiting
+for example that no grammatical concept ever simultaneously has mood and
+gender, but it seems unlikely that there's any need.
+
+If the 128K limit on references ever becomes problematic, which seems very
+unlikely, we might compromise on the number of cases; or we might simply
+change |lcon_ti| to a wider integer type. (It needs to have value copy
+semantics.) If so, though, Preform results will also need to be widened,
+because numerous Preform nonterminals in //linguistics// return |lcon_ti|
+values, and at present Preform return values are |int|.
+
+@d lcon_ti int
+
+@ And here's how we pack everything in:
+= (text)
+            <-- lsb     32 bits      msb -->
+    gender  xx..............................
+    person  ..xx............................
+    number  ....x...........................
+    mood    .....x..........................
+    case    ......xxxxx.....................
+	tense   ...........xxx..................
+	sense   ..............x.................
+	id      ...............xxxxxxxxxxxxxxxxx
 =
-void InflectionDefns::log_tense_number(OUTPUT_STREAM, int t) {
+
+@d GENDER_LCBASE 0x00000001
+@d GENDER_LCMASK 0x00000003
+@d PERSON_LCBASE 0x00000004
+@d PERSON_LCMASK 0x0000000C
+@d NUMBER_LCBASE 0x00000010
+@d NUMBER_LCMASK 0x00000010
+@d MOOD_LCBASE   0x00000020
+@d MOOD_LCMASK   0x00000020
+@d CASE_LCBASE   0x00000040
+@d CASE_LCMASK   0x000007C0
+@d TENSE_LCBASE  0x00000800
+@d TENSE_LCMASK  0x00003800
+@d SENSE_LCBASE  0x00004000
+@d SENSE_LCMASK  0x00004000
+@d ID_LCBASE     0x00008000
+
+=
+lcon_ti Lcon::base(void) { return (lcon_ti) 0; }
+lcon_ti Lcon::of_id(int id) { return (lcon_ti) id*ID_LCBASE; }
+
+int Lcon::get_id(lcon_ti l)     { return (int) l/ID_LCBASE; }
+int Lcon::get_gender(lcon_ti l) { return (int) (l & GENDER_LCMASK) / GENDER_LCBASE; }
+int Lcon::get_person(lcon_ti l) { return (int) (l & PERSON_LCMASK) / PERSON_LCBASE; }
+int Lcon::get_number(lcon_ti l) { return (int) (l & NUMBER_LCMASK) / NUMBER_LCBASE; }
+int Lcon::get_mood(lcon_ti l)   { return (int) (l & MOOD_LCMASK) / MOOD_LCBASE; }
+int Lcon::get_case(lcon_ti l)   { return (int) (l & CASE_LCMASK) / CASE_LCBASE; }
+int Lcon::get_tense(lcon_ti l)  { return (int) (l & TENSE_LCMASK) / TENSE_LCBASE; }
+int Lcon::get_sense(lcon_ti l)  { return (int) (l & SENSE_LCMASK) / SENSE_LCBASE; }
+
+lcon_ti Lcon::set_gender(lcon_ti l, int x) { return (l & (~GENDER_LCMASK)) + x*GENDER_LCBASE; }
+lcon_ti Lcon::set_person(lcon_ti l, int x) { return (l & (~PERSON_LCMASK)) + x*PERSON_LCBASE; }
+lcon_ti Lcon::set_number(lcon_ti l, int x) { return (l & (~NUMBER_LCMASK)) + x*NUMBER_LCBASE; }
+lcon_ti Lcon::set_mood(lcon_ti l, int x)   { return (l & (~MOOD_LCMASK)) + x*MOOD_LCBASE; }
+lcon_ti Lcon::set_case(lcon_ti l, int x)   { return (l & (~CASE_LCMASK)) + x*CASE_LCBASE; }
+lcon_ti Lcon::set_tense(lcon_ti l, int x)  { return (l & (~TENSE_LCMASK)) + x*TENSE_LCBASE; }
+lcon_ti Lcon::set_sense(lcon_ti l, int x)  { return (l & (~SENSE_LCMASK)) + x*SENSE_LCBASE; }
+
+@
+
+=
+void Lcon::log_tense_number(OUTPUT_STREAM, int t) {
 	switch (t) {
 		case IS_TENSE:      WRITE("IS_TENSE"); break;
 		case WAS_TENSE:     WRITE("WAS_TENSE"); break;

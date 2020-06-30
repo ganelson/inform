@@ -90,8 +90,8 @@ Inform data structures: the result of the routine below, assuming no problems
 are issued, is simply that the name of a snippet-parsing routine is printed.
 
 =
-void PL::Parsing::compile_understanding(inter_t *val1, inter_t *val2, wording W, int table_entry) {
-	if (<nominative-pronoun>(W)) { *val1 = LITERAL_IVAL; *val2 = 0; }
+void PL::Parsing::compile_understanding(inter_ti *val1, inter_ti *val2, wording W, int table_entry) {
+	if (<subject-pronoun>(W)) { *val1 = LITERAL_IVAL; *val2 = 0; }
 	else {
 		cached_understanding *cu;
 		LOOP_OVER(cu, cached_understanding)
@@ -689,9 +689,9 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 							(Kinds::Compare::lt(Specifications::to_kind(spec),
 								K_object) == FALSE)
 							&& (Descriptions::number_of_adjectives_applied_to(spec) == 1)
-							&& (AdjectiveUsages::get_parity(Calculus::Propositions::first_adjective_usage(Specifications::to_proposition(spec), NULL)))) {
+							&& (UnaryPredicates::get_parity(Calculus::Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL)))) {
 							adjective *aph =
-								AdjectiveUsages::get_aph(Calculus::Propositions::first_adjective_usage(Specifications::to_proposition(spec), NULL));
+								UnaryPredicates::get_adj(Calculus::Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL));
 							instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
 							if (q) {
 								spec = Rvalues::from_instance(q);

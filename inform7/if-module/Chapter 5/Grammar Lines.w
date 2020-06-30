@@ -347,7 +347,7 @@ void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (100 + gl->allocation_id));
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100 + gl->allocation_id));
 		Produce::up(Emit::tree());
 
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -400,7 +400,7 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 						else spec = Specifications::new_UNKNOWN(gl->mistake_response_text);
 						Produce::inv_primitive(Emit::tree(), CASE_BIP);
 						Produce::down(Emit::tree());
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) (100+gl->allocation_id));
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100+gl->allocation_id));
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSERERROR_HL));

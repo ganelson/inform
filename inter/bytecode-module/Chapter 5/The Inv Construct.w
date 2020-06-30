@@ -49,16 +49,16 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 
 	if ((Inter::Symbols::is_extern(invoked_name)) ||
 		(Inter::Symbols::is_predeclared(invoked_name))) {
-		*E = Inter::Inv::new_call(IBM, invoked_name, (inter_t) ilp->indent_level, eloc);
+		*E = Inter::Inv::new_call(IBM, invoked_name, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
 	switch (Inter::Symbols::definition(invoked_name)->W.data[ID_IFLD]) {
 		case PRIMITIVE_IST:
-			*E = Inter::Inv::new_primitive(IBM, invoked_name, (inter_t) ilp->indent_level, eloc);
+			*E = Inter::Inv::new_primitive(IBM, invoked_name, (inter_ti) ilp->indent_level, eloc);
 			return;
 		case CONSTANT_IST:
 			if (Inter::Constant::is_routine(invoked_name)) {
-				*E = Inter::Inv::new_call(IBM, invoked_name, (inter_t) ilp->indent_level, eloc);
+				*E = Inter::Inv::new_call(IBM, invoked_name, (inter_ti) ilp->indent_level, eloc);
 				return;
 			}
 			break;
@@ -66,32 +66,32 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = Inter::Errors::quoted(I"not a function or primitive", ilp->mr.exp[0], eloc);
 }
 
-inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, Inter::SymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, invoked_name),
-		eloc, (inter_t) level);
+		eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
-inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *invoked_name, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_t) level);
+inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
+	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
-inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_t opcode_storage, inter_t level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_t) level);
+inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_ti opcode_storage, inter_ti level, inter_error_location *eloc) {
+	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
 	if (E) return E;
 	Inter::Bookmarks::insert(IBM, P);
 	return NULL;
 }
 
-void Inter::Inv::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Inv::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	if (P->W.data[METHOD_INV_IFLD] == INVOKED_OPCODE)
 		P->W.data[INVOKEE_INV_IFLD] = grid[P->W.data[INVOKEE_INV_IFLD]];
 }
@@ -163,8 +163,8 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 			*E = Inode::error(P, I"only inv, ref, cast, splat, lab, code, concatenate and val can be under an inv", NULL);
 			return;
 		}
-		inter_t cat_as_invoked = Inter::Inv::evaluated_category(C);
-		inter_t cat_needed = Inter::Inv::operand_category(P, i-1);
+		inter_ti cat_as_invoked = Inter::Inv::evaluated_category(C);
+		inter_ti cat_needed = Inter::Inv::operand_category(P, i-1);
 		if ((cat_as_invoked != cat_needed) && (P->W.data[METHOD_INV_IFLD] != INVOKED_OPCODE)) {
 			inter_symbol *invokee = Inter::Inv::invokee(P);
 			text_stream *err = Str::new();
@@ -177,7 +177,7 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 	}
 }
 
-char *Inter::Inv::cat_name(inter_t cat) {
+char *Inter::Inv::cat_name(inter_ti cat) {
 	switch (cat) {
 		case REF_PRIM_CAT: return "ref";
 		case VAL_PRIM_CAT: return "val";
@@ -201,7 +201,7 @@ int Inter::Inv::arity(inter_tree_node *P) {
 	return 0;
 }
 
-inter_t Inter::Inv::evaluated_category(inter_tree_node *P) {
+inter_ti Inter::Inv::evaluated_category(inter_tree_node *P) {
 	if (P->W.data[0] == REF_IST) return REF_PRIM_CAT;
 	if (P->W.data[0] == VAL_IST) return VAL_PRIM_CAT;
 	if (P->W.data[0] == EVALUATION_IST) return VAL_PRIM_CAT;
@@ -219,7 +219,7 @@ inter_t Inter::Inv::evaluated_category(inter_tree_node *P) {
 	return 0;
 }
 
-inter_t Inter::Inv::operand_category(inter_tree_node *P, int i) {
+inter_ti Inter::Inv::operand_category(inter_tree_node *P, int i) {
 	if (P->W.data[0] == REF_IST) return REF_PRIM_CAT;
 	if (P->W.data[0] == VAL_IST) return VAL_PRIM_CAT;
 	if (P->W.data[0] == EVALUATION_IST) return VAL_PRIM_CAT;

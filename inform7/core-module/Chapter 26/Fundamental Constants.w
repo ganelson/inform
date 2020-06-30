@@ -40,7 +40,7 @@ is a remote prospect for now. Anyway, it's this comparison issue which
 means we need a different value for each possible word size.
 
 =
-inter_name *FundamentalConstants::emit_one(int id, inter_t val) {
+inter_name *FundamentalConstants::emit_one(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(Emit::tree(), iname);
 	Emit::named_numeric_constant(iname, val);
@@ -54,14 +54,14 @@ inter_name *FundamentalConstants::emit_signed(int id, int val) {
 	return iname;
 }
 
-inter_name *FundamentalConstants::emit_hex(int id, inter_t val) {
+inter_name *FundamentalConstants::emit_hex(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(Emit::tree(), iname);
 	Emit::named_numeric_constant_hex(iname, val);
 	return iname;
 }
 
-inter_name *FundamentalConstants::emit_unchecked_hex(int id, inter_t val) {
+inter_name *FundamentalConstants::emit_unchecked_hex(int id, inter_ti val) {
 	inter_name *iname = Hierarchy::find(id);
 	Hierarchy::make_available(Emit::tree(), iname);
 	Emit::named_unchecked_constant_hex(iname, val);

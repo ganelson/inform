@@ -50,18 +50,18 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if (Inter::Types::is_enumerated(idt) == FALSE)
 		{ *E = Inter::Errors::quoted(I"not a kind which has instances", ilp->mr.exp[1], eloc); return; }
 
-	inter_t v1 = UNDEF_IVAL, v2 = 0;
+	inter_ti v1 = UNDEF_IVAL, v2 = 0;
 	if (vtext) {
 		*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), NULL, vtext, &v1, &v2, Inter::Bookmarks::scope(IBM));
 		if (*E) return;
 	}
-	*E = Inter::Instance::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, inst_kind), v1, v2, (inter_t) ilp->indent_level, eloc);
+	*E = Inter::Instance::new(IBM, Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, inst_name), Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, inst_kind), v1, v2, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_t SID, inter_t KID, inter_t V1, inter_t V2, inter_t level, inter_error_location *eloc) {
+inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti V1, inter_ti V2, inter_ti level, inter_error_location *eloc) {
 	inter_warehouse *warehouse = Inter::Bookmarks::warehouse(IBM);
-	inter_t L1 = Inter::Warehouse::create_frame_list(warehouse);
-	inter_t L2 = Inter::Warehouse::create_frame_list(warehouse);
+	inter_ti L1 = Inter::Warehouse::create_frame_list(warehouse);
+	inter_ti L2 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
 	Inter::Warehouse::attribute_resource(warehouse, L2, Inter::Bookmarks::package(IBM));
 	inter_tree_node *P = Inode::fill_6(IBM, INSTANCE_IST, SID, KID, V1, V2, L1, L2, eloc, level);
@@ -71,7 +71,7 @@ inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_t SID, inte
 	return NULL;
 }
 
-void Inter::Instance::transpose(inter_construct *IC, inter_tree_node *P, inter_t *grid, inter_t grid_extent, inter_error_message **E) {
+void Inter::Instance::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.data[PLIST_INST_IFLD] = grid[P->W.data[PLIST_INST_IFLD]];
 	P->W.data[PERM_LIST_INST_IFLD] = grid[P->W.data[PERM_LIST_INST_IFLD]];
 }
@@ -91,13 +91,13 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	} else { *E = Inode::error(P, I"not a kind which has instances", NULL); return; }
 	*E = Inter::Verify::value(owner, P, VAL1_INST_IFLD, inst_kind); if (*E) return;
 
-	inter_t vcount = Inode::vcount(P);
+	inter_ti vcount = Inode::vcount(P);
 	if (vcount == 0) {
 		Inter::Kind::new_instance(inst_kind, inst_name);
 	}
 }
 
-inter_t Inter::Instance::permissions_list(inter_symbol *kind_symbol) {
+inter_ti Inter::Instance::permissions_list(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return 0;
@@ -118,7 +118,7 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	Inter::Symbols::write_annotations(OUT, P, inst_name);
 }
 
-inter_t Inter::Instance::properties_list(inter_symbol *inst_name) {
+inter_ti Inter::Instance::properties_list(inter_symbol *inst_name) {
 	if (inst_name == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(inst_name);
 	if (D == NULL) return 0;

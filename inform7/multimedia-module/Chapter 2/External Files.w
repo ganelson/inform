@@ -255,7 +255,7 @@ void PL::Files::arrays(void) {
 	if (Plugins::Manage::plugged_in(files_plugin) == FALSE) return;
 
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
-	Emit::named_numeric_constant(iname, (inter_t) (NUMBER_CREATED(external_file)));
+	Emit::named_numeric_constant(iname, (inter_ti) (NUMBER_CREATED(external_file)));
 	Hierarchy::make_available(Emit::tree(), iname);
 
 	external_file *exf;

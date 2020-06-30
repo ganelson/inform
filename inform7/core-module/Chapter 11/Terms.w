@@ -156,8 +156,8 @@ adjectival form of such an adjective into its noun form, and back
 again.
 
 =
-pcalc_term Calculus::Terms::adj_to_noun_conversion(adjective_usage *tr) {
-	adjective *aph = AdjectiveUsages::get_aph(tr);
+pcalc_term Calculus::Terms::adj_to_noun_conversion(unary_predicate *tr) {
+	adjective *aph = UnaryPredicates::get_adj(tr);
 	instance *I = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
 	if (I) return Calculus::Terms::new_constant(Rvalues::from_instance(I));
 	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
@@ -168,7 +168,7 @@ pcalc_term Calculus::Terms::adj_to_noun_conversion(adjective_usage *tr) {
 @ And conversely:
 
 =
-adjective_usage *Calculus::Terms::noun_to_adj_conversion(pcalc_term pt) {
+unary_predicate *Calculus::Terms::noun_to_adj_conversion(pcalc_term pt) {
 	kind *K;
 	adjective *aph;
 	parse_node *spec = pt.constant;
@@ -178,7 +178,7 @@ adjective_usage *Calculus::Terms::noun_to_adj_conversion(pcalc_term pt) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
 		instance *I = Node::get_constant_instance(spec);
 		aph = Instances::get_adjective(I);
-		return AdjectiveUsages::new(aph, TRUE);
+		return UnaryPredicates::new(aph, TRUE);
 	}
 	return NULL;
 }

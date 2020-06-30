@@ -530,8 +530,9 @@ local_variable *LocalVariables::parse(ph_stack_frame *phsf, wording W) {
 }
 
 local_variable *LocalVariables::parse_inner(ph_stack_frame *phsf, wording W) {
-	if ((phsf->local_value_variables.it_variable_exists) && (<pronoun>(W)))
-		return LocalVariables::it_variable();
+	if (phsf->local_value_variables.it_variable_exists)
+		if ((<object-pronoun-third-person>(W)) || (<subject-pronoun-third-person>(W)))
+			return LocalVariables::it_variable();
 
 	if (<definite-article>(W)) return NULL;
 	W = Articles::remove_the(W);
@@ -647,7 +648,7 @@ void LocalVariables::compile_storage(OUTPUT_STREAM, ph_stack_frame *phsf) {
 
 int LocalVariables::emit_storage(ph_stack_frame *phsf) {
 	int NC = 0;
-	inter_t j = 0;
+	inter_ti j = 0;
 	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
 		NC++;
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
@@ -672,7 +673,7 @@ function, i.e., immediately after the call.
 =
 void LocalVariables::compile_retrieval(ph_stack_frame *phsf) {
 	inter_name *LP = Hierarchy::find(LOCALPARKING_HL);
-	inter_t j=0;
+	inter_ti j=0;
 	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
@@ -1134,7 +1135,7 @@ inter_symbol *LocalVariables::declare_this(local_variable *lvar, int shell_mode,
 	inter_symbol *S = Produce::local_exists(Emit::tree(), lvar->lv_lvalue);
 	if (S) return S;
 
-	inter_t annot = 0;
+	inter_ti annot = 0;
 	switch (lvar->lv_purpose) {
 		case TOKEN_CALL_PARAMETER_LV: annot = CALL_PARAMETER_IANN; break;
 		case OTHER_CALL_PARAMETER_LV: annot = IMPLIED_CALL_PARAMETER_IANN; break;

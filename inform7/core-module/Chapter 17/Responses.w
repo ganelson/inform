@@ -162,12 +162,12 @@ essence here.
 			Produce::inv_primitive(Emit::tree(), GE_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, code_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) 'a');
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) 'a');
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), LE_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, code_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) 'z');
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) 'z');
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
@@ -183,7 +183,7 @@ essence here.
 				Produce::inv_primitive(Emit::tree(), MINUS_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, code_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ('a'-'A'));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ('a'-'A'));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -230,7 +230,7 @@ essence here.
 				if (r2->responding_rule == resp->responding_rule) {
 					Produce::inv_primitive(Emit::tree(), CASE_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ('A' + r2->response_marker));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ('A' + r2->response_marker));
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -357,7 +357,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), PRINTCHAR_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) ('A' + resp->response_marker));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ('A' + resp->response_marker));
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 				Produce::down(Emit::tree());
@@ -409,12 +409,12 @@ divided up by the extensions containing the rules which produce them.
 			DISCARD_TEXT(QT)
 		} else
 			Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
-		Emit::array_numeric_entry((inter_t) (tally));
+		Emit::array_numeric_entry((inter_ti) (tally));
 	}
 
 @<End a possible run of matches@> =
 	if (contiguous_match) {
-		Emit::array_numeric_entry((inter_t) (tally-1));
+		Emit::array_numeric_entry((inter_ti) (tally-1));
 		contiguous_match = FALSE;
 	}
 
@@ -493,7 +493,7 @@ void Strings::compile_general(value_holster *VH, parse_node *str) {
 		} else {
 			int A = Annotations::read_int(str, constant_number_ANNOT);
 			if (Holsters::data_acceptable(VH))
-				Holsters::holster_pair(VH, LITERAL_IVAL, (inter_t) A);
+				Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) A);
 		}
 	} else {
 		if (Wordings::empty(SW)) internal_error("Text no longer available for CONSTANT/TEXT");

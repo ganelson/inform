@@ -806,7 +806,7 @@ than once for each rule.
 	rb_symb = identifier;
 	switch (format) {
 		case ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); break;
-		case GROUPED_ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); Emit::array_numeric_entry((inter_t) -2); break;
+		case GROUPED_ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); Emit::array_numeric_entry((inter_ti) -2); break;
 		case ROUTINE_RBF: {
 			save_array = Routines::begin(identifier);
 			forbid_breaks_s = LocalVariables::add_named_call_as_symbol(I"forbid_breaks");
@@ -840,8 +840,8 @@ than once for each rule.
 			#ifdef IF_MODULE
 			if (an) Emit::array_action_entry(an); else
 			#endif
-				Emit::array_numeric_entry((inter_t) -2);
-			if (group_size > 1) Emit::array_numeric_entry((inter_t) group_size);
+				Emit::array_numeric_entry((inter_ti) -2);
+			if (group_size > 1) Emit::array_numeric_entry((inter_ti) group_size);
 			action_group_open = TRUE;
 			break;
 		case ROUTINE_RBF:

@@ -331,7 +331,7 @@ void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
 								for (int i=0, L = Str::len(p); i<L; i++, l++)
 									if (Str::includes_wide_string_at(p, L"[']", i))
 										l -= 2;
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_t) l);
+								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) l);
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());

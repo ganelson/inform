@@ -67,20 +67,104 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">linguistics</a></li><li><a href="index.html#2">Chapter 2: NP Categories</a></li><li><b>Articles</b></li></ul></div>
 <p class="purpose">Preform grammar for the articles.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b></p>
+<ul class="toc"><li><a href="2-art.html#SP1">&#167;1. Articles</a></li><li><a href="2-art.html#SP3">&#167;3. Stock references</a></li><li><a href="2-art.html#SP4">&#167;4. English articles</a></li><li><a href="2-art.html#SP7">&#167;7. Removing articles</a></li></ul><hr class="tocbar">
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">DEF_ART</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax"> the definite article</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">INDEF_ART</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax"> the indefinite article</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">NO_ART</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax"> no article supplied</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">IT_ART</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax"> a special case to handle "it"</span>
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Articles. </b>Article objects contain no interesting data: in effect, the <a href="2-art.html#SP1" class="internal">article</a> class
+is an enumeration.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">article</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">article</span><span class="plain-syntax">;</span>
 </pre>
+<ul class="endnotetexts"><li>The structure article is accessed in 1/sc, 2/adj, 2/daq, 2/nns, 2/prn, 3/vrb, 3/prp and here.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The stock of articles is fixed at three:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">grammatical_category</span><span class="plain-syntax"> *</span><span class="identifier-syntax">articles_category</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">definite_article</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">indefinite_article</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::create_category</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Articles::create_category</span></span>:<br/>Stock Control - <a href="1-sc.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">articles_category</span><span class="plain-syntax"> = </span><a href="1-sc.html#SP3" class="function-link"><span class="function-syntax">Stock::new_category</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"article"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">articles_category</span><span class="plain-syntax">, </span><span class="constant-syntax">LOG_GRAMMATICAL_CATEGORY_MTID</span><span class="plain-syntax">, </span><a href="2-art.html#SP2" class="function-link"><span class="function-syntax">Articles::log_item</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">definite_article</span><span class="plain-syntax"> = </span><a href="2-art.html#SP2" class="function-link"><span class="function-syntax">Articles::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"definite article"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">indefinite_article</span><span class="plain-syntax"> = </span><a href="2-art.html#SP2" class="function-link"><span class="function-syntax">Articles::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"indefinite article"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="function-syntax">Articles::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">article</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_stock</span><span class="plain-syntax"> = </span><a href="1-sc.html#SP6" class="function-link"><span class="function-syntax">Stock::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">articles_category</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORE_POINTER_article</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::log_item</span><span class="plain-syntax">(</span><span class="reserved-syntax">grammatical_category</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cat</span><span class="plain-syntax">, </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">data</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_article</span><span class="plain-syntax">(</span><span class="identifier-syntax">data</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Stock references. </b>We ignore case in articles, but do take note of number and gender.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">lcon_ti</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::use</span><span class="plain-syntax">(</span><span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">lcon_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">lcon</span><span class="plain-syntax"> = </span><a href="1-sc.html#SP8" class="function-link"><span class="function-syntax">Stock::to_lcon</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_stock</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">lcon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lcon::set_number</span><span class="plain-syntax">(</span><span class="identifier-syntax">lcon</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">lcon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lcon::set_gender</span><span class="plain-syntax">(</span><span class="identifier-syntax">lcon</span><span class="plain-syntax">, </span><span class="identifier-syntax">g</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">lcon</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::use_a_to_f</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Articles::use_a_to_f</span></span>:<br/><a href="2-art.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-art.html#SP3" class="function-link"><span class="function-syntax">Articles::use</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, (</span><span class="identifier-syntax">r</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">3</span><span class="plain-syntax">)?</span><span class="identifier-syntax">PLURAL_NUMBER:SINGULAR_NUMBER</span><span class="plain-syntax">, (</span><span class="identifier-syntax">r</span><span class="plain-syntax"> % </span><span class="constant-syntax">3</span><span class="plain-syntax">) + </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="function-syntax">Articles::from_lcon</span><span class="plain-syntax">(</span><span class="identifier-syntax">lcon_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">lcon</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">item</span><span class="plain-syntax"> = </span><a href="1-sc.html#SP8" class="function-link"><span class="function-syntax">Stock::from_lcon</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lcon</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">item</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RETRIEVE_POINTER_article</span><span class="plain-syntax">(</span><span class="identifier-syntax">item</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">data</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::write_lcon</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Articles::write_lcon</span></span>:<br/>Diagrams - <a href="4-dgr.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">lcon_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">lcon</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">article</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="2-art.html#SP3" class="function-link"><span class="function-syntax">Articles::from_lcon</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lcon</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" %S "</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Lcon::get_number</span><span class="plain-syntax">(</span><span class="identifier-syntax">lcon</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SINGULAR_NUMBER:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"s"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PLURAL_NUMBER:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Lcon::get_gender</span><span class="plain-syntax">(</span><span class="identifier-syntax">lcon</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEUTER_GENDER:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(n)"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">MASCULINE_GENDER:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(m)"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">FEMININE_GENDER:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(f)"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. English articles. </b>A small subterfuge is used here for efficiency's sake. In principle we should
+test and distinguish all six combined number/gender forms of the articles,
+but that would be fractionally slower in English where there are so few
+possibilities. The indirection below enables &lt;definite-article-forms&gt; and
+&lt;indefinite-article-forms&gt; to be only partially filled in, with the amount
+differing in different languages.
+</p>
+
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;indefinite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">      </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;definite-article&gt;</span><span class="Preform-plain-syntax">          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
+
+<span class="Preform-function-syntax">&lt;definite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;definite-article-forms&gt;</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Articles::use_a_to_f(definite_article, R[1])</span>
+
+<span class="Preform-function-syntax">&lt;indefinite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;indefinite-article-forms&gt;</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> Articles::use_a_to_f(indefinite_article, R[1])</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The articles need to be single words, and the following two productions
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The articles need to be single words, and the following two productions
 have an unusual convention: they are required to have production numbers
 which encode both the implied grammatical number and gender. These numbers
 mean:
@@ -95,34 +179,52 @@ as to number in any case, we end up with something quite dull as the default:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;definite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-function-syntax">&lt;definite-article-forms&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">/a/</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span>
 
-<span class="Preform-function-syntax">&lt;indefinite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-function-syntax">&lt;indefinite-article-forms&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">/a/</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">a/an</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">/d/</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">some</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>These are useful for stripping optional articles from text:
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>It's very important to parse articles, which occur very often, rapidly. So
+we give these special priority in Preform optimisation; they have their very
+own private bit.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::mark_for_preform</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Articles::mark_for_preform</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;definite-article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;indefinite-article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;definite-article-forms&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;indefinite-article-forms&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Removing articles. </b>These are useful for stripping optional articles from text:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;optional-definite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;definite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;definite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span>
+
+<span class="Preform-function-syntax">&lt;optional-indefinite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;indefinite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">	</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span>
 
 <span class="Preform-function-syntax">&lt;optional-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">	            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span>
 
 <span class="Preform-function-syntax">&lt;compulsory-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">	            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::remove_the</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Articles::remove_the</span></span>:<br/>Determiners and Quantifiers - <a href="2-daq.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::remove_the</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Articles::remove_the</span></span>:<br/>Determiners and Quantifiers - <a href="2-daq.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wordings::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="function-syntax">&lt;optional-definite-article&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;optional-definite-article&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
@@ -136,20 +238,8 @@ as to number in any case, we end up with something quite dull as the default:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>It's very important to parse articles, which occur very often, rapidly. So
-we give these special priority in Preform optimisation; they have their very
-own private bit.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Articles::mark_for_preform</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Articles::mark_for_preform</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;definite-article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">NTI::give_nt_reserved_incidence_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;indefinite-article&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">ARTICLE_RES_NT_BIT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-au.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-adj.html">adj</a></li><li class="progresssection"><a href="2-au.html">au</a></li><li class="progresscurrent">art</li><li class="progresssection"><a href="2-cao.html">cao</a></li><li class="progresssection"><a href="2-daq.html">daq</a></li><li class="progresssection"><a href="2-nns.html">nns</a></li><li class="progresssection"><a href="2-prn.html">prn</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="2-cao.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-adj.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-adj.html">adj</a></li><li class="progresscurrent">art</li><li class="progresssection"><a href="2-daq.html">daq</a></li><li class="progresssection"><a href="2-nns.html">nns</a></li><li class="progresssection"><a href="2-prn.html">prn</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-dgr.html">4</a></li><li class="progressnext"><a href="2-daq.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

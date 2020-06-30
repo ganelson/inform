@@ -18,9 +18,9 @@ typedef struct inter_tree {
 inter_tree *Inter::Tree::new(void) {
 	inter_tree *I = CREATE(inter_tree);
 	I->housed = Inter::Warehouse::new();
-	inter_t N = Inter::Warehouse::create_symbols_table(I->housed);
+	inter_ti N = Inter::Warehouse::create_symbols_table(I->housed);
 	inter_symbols_table *globals = Inter::Warehouse::get_symbols_table(I->housed, N);
-	inter_t root_package_ID = Inter::Warehouse::create_package(I->housed, I);
+	inter_ti root_package_ID = Inter::Warehouse::create_package(I->housed, I);
 	I->root_package = Inter::Warehouse::get_package(I->housed, root_package_ID);
 	I->root_node = Inode::root_frame(I->housed, I);
 	I->root_package->package_head = I->root_node;
@@ -265,8 +265,8 @@ void Inter::Tree::set_parent_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
 void Inter::Tree::traverse_root_only(inter_tree *from, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(P, from->root_node) {
 		if ((filter == 0) ||
-			((filter > 0) && (P->W.data[ID_IFLD] == (inter_t) filter)) ||
-			((filter < 0) && (P->W.data[ID_IFLD] != (inter_t) -filter)))
+			((filter > 0) && (P->W.data[ID_IFLD] == (inter_ti) filter)) ||
+			((filter < 0) && (P->W.data[ID_IFLD] != (inter_ti) -filter)))
 			(*visitor)(from, P, state);
 	}
 }
@@ -276,8 +276,8 @@ void Inter::Tree::traverse(inter_tree *from, void (*visitor)(inter_tree *, inter
 	if (mp) {
 		inter_tree_node *D = Inter::Packages::definition(mp);
 		if ((filter == 0) ||
-			((filter > 0) && (D->W.data[ID_IFLD] == (inter_t) filter)) ||
-			((filter < 0) && (D->W.data[ID_IFLD] != (inter_t) -filter)))
+			((filter > 0) && (D->W.data[ID_IFLD] == (inter_ti) filter)) ||
+			((filter < 0) && (D->W.data[ID_IFLD] != (inter_ti) -filter)))
 			(*visitor)(from, D, state);
 		Inter::Tree::traverse_r(from, D, visitor, state, filter);
 	}
@@ -285,8 +285,8 @@ void Inter::Tree::traverse(inter_tree *from, void (*visitor)(inter_tree *, inter
 void Inter::Tree::traverse_r(inter_tree *from, inter_tree_node *P, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((filter == 0) ||
-			((filter > 0) && (C->W.data[ID_IFLD] == (inter_t) filter)) ||
-			((filter < 0) && (C->W.data[ID_IFLD] != (inter_t) -filter)))
+			((filter > 0) && (C->W.data[ID_IFLD] == (inter_ti) filter)) ||
+			((filter < 0) && (C->W.data[ID_IFLD] != (inter_ti) -filter)))
 			(*visitor)(from, C, state);
 		Inter::Tree::traverse_r(from, C, visitor, state, filter);
 	}

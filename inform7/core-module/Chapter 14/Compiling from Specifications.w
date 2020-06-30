@@ -191,7 +191,7 @@ void Specifications::Compiler::emit(parse_node *spec) {
 	Specifications::Compiler::compile_inner(&VH, spec);
 	END_COMPILATION_MODE;
 
-	inter_t v1 = 0, v2 = 0;
+	inter_ti v1 = 0, v2 = 0;
 	Holsters::unholster_pair(&VH, &v1, &v2);
 	Emit::array_generic_entry(v1, v2);
 }
