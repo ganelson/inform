@@ -21,7 +21,7 @@ named_action_pattern *PL::Actions::Patterns::Named::nap_new(wording W) {
 	nap->first = NULL;
 	nap->text_of_declaration = W;
 	nap->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		NAMED_AP_MC, Rvalues::from_named_action_pattern(nap));
+		NAMED_AP_MC, Rvalues::from_named_action_pattern(nap), Task::language_of_syntax());
 
 	package_request *PR = Hierarchy::local_package(NAMED_ACTION_PATTERNS_HAP);
 	nap->nap_iname = Hierarchy::make_iname_in(NAP_FN_HL, PR);

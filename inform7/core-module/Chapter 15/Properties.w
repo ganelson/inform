@@ -264,13 +264,13 @@ name in both forms. The following grammar is used to construct this prefix.
 
 @<Register the property name as a noun@> =
 	Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		PROPERTY_MC, Rvalues::from_property(prn));
+		PROPERTY_MC, Rvalues::from_property(prn), Task::language_of_syntax());
 	word_assemblage wa =
 		PreformUtilities::merge(<property-name-construction>, 0,
 			WordAssemblages::from_wording(W));
 	wording AW = WordAssemblages::to_wording(&wa);
 	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		PROPERTY_MC, Rvalues::from_property(prn));
+		PROPERTY_MC, Rvalues::from_property(prn), Task::language_of_syntax());
 
 @h As kinds.
 

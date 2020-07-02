@@ -119,8 +119,12 @@ make two further checks:
 		parse_node *p = Lexicon::retrieve(KIND_SLOW_MC, W);
 		if (p) {
 			excerpt_meaning *em = Node::get_meaning(p);
-			K = Kinds::base_construction(
-				RETRIEVE_POINTER_kind_constructor(Lexicon::get_data(em)));
+			general_pointer m = Lexicon::get_data(em);
+			if (m.run_time_type_code == noun_usage_CLASS) {
+				noun_usage *nu = RETRIEVE_POINTER_noun_usage(m);
+				m = nu->noun_used->meaning;
+			}
+			K = Kinds::base_construction(RETRIEVE_POINTER_kind_constructor(m));
 		} else {
 			p = Lexicon::retrieve(NOUN_MC, W);
 			if (p) {
@@ -132,6 +136,13 @@ make two further checks:
 	}
 	if (K) { *XP = K; return TRUE; }
 	return FALSE;
+}
+
+@
+
+=
+kind_constructor *Kinds::Textual::em_to_kc(excerpt_meaning *em) {
+	return NULL;
 }
 
 @ "Object based rulebook" has been on a voyage of unhyphenation: in the

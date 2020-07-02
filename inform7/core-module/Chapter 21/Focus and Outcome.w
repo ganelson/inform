@@ -233,7 +233,7 @@ named_rulebook_outcome *Rulebooks::Outcomes::rbno_by_name(wording W) {
 
 	named_rulebook_outcome *rbno = CREATE(named_rulebook_outcome);
 	rbno->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		MISCELLANEOUS_MC, Rvalues::from_named_rulebook_outcome(rbno));
+		MISCELLANEOUS_MC, Rvalues::from_named_rulebook_outcome(rbno), Task::language_of_syntax());
 	rbno->nro_iname = Hierarchy::make_iname_with_memo(OUTCOME_HL, R, W);
 	if (<notable-rulebook-outcomes>(W)) {
 		int i = -1;

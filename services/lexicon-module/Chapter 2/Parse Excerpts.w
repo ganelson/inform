@@ -454,8 +454,7 @@ abbreviated form of an object name like "Chamber 11".
 		EXAMINE_EXCERPT_MEANING_IN_DETAIL;
 		if (Wordings::length(W) <= Node::get_meaning(p)->no_em_tokens) {
 			int err = FALSE;
-			#ifdef PARSE_EXACTLY_LEXICON_CALLBACK
-			if (PARSE_EXACTLY_LEXICON_CALLBACK(Node::get_meaning(p))) {
+			if (FromLexicon::parse_exactly(Node::get_meaning(p))) {
 				LOGIF(EXCERPT_PARSING,
 					"Require exact matching of $M\n", Node::get_meaning(p));
 				err = TRUE;
@@ -468,7 +467,6 @@ abbreviated form of an object name like "Chamber 11".
 				}
 				goto SubsetMatchDecided;
 			}
-			#endif
 			LOOP_THROUGH_WORDING(k, W) {
 				err = TRUE;
 				for (j=0; j<Node::get_meaning(p)->no_em_tokens; j++)
@@ -485,12 +483,30 @@ abbreviated form of an object name like "Chamber 11".
 		}
 	}
 
+@ Inform uses the callback here simply to disallow inexact parsing of |NOUN_NT|
+excerpts when the use option "unabbreviated object names" is set.
+
+=
+int FromLexicon::parse_exactly(excerpt_meaning *em) {
+	#ifdef PARSE_EXACTLY_LEXICON_CALLBACK
+	return PARSE_EXACTLY_LEXICON_CALLBACK(em);
+	#endif
+	#ifndef PARSE_EXACTLY_LEXICON_CALLBACK
+	if (em->meaning_code == NOUN_MC) return FALSE;
+	return TRUE;
+	#endif
+}
+
 @ The following adds a result to the list already formed, and returns the list
 as extended by one.
 
 =
 parse_node *FromLexicon::result(excerpt_meaning *em, int score, parse_node *list) {
 	parse_node *this_result;
+	#ifdef PN_FROM_EM_LEXICON_CALLBACK
+	this_result = PN_FROM_EM_LEXICON_CALLBACK(em);
+	#endif
+	#ifndef PN_FROM_EM_LEXICON_CALLBACK
 	if (VALID_POINTER_parse_node(Lexicon::get_data(em))) {
 		parse_node *val = RETRIEVE_POINTER_parse_node(Lexicon::get_data(em));
 		this_result = Node::new(INVALID_NT);
@@ -499,9 +515,20 @@ parse_node *FromLexicon::result(excerpt_meaning *em, int score, parse_node *list
 		this_result = Node::new(em->meaning_code);
 		Node::set_meaning(this_result, em);
 	}
+	#endif
 	this_result->next_alternative = list;
 	Node::set_score(this_result, score);
 	return this_result;
+}
+
+parse_node *FromLexicon::retrieve_parse_node(excerpt_meaning *em) {
+	if (em == NULL) return NULL;
+	#ifdef PN_FROM_EM_LEXICON_CALLBACK
+	return PN_FROM_EM_LEXICON_CALLBACK(em);
+	#endif
+	#ifndef PN_FROM_EM_LEXICON_CALLBACK
+	return RETRIEVE_POINTER_parse_node(Lexicon::get_data(em));
+	#endif
 }
 
 @h Monitoring the efficiency of the parser.

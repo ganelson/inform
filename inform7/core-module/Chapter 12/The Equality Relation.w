@@ -24,7 +24,8 @@ void Calculus::Equality::REL_create_initial_stock(void) {
 			PreformUtilities::wording(<relation-names>, EQUALITY_RELATION_NAME));
 	wording AW = WordAssemblages::to_wording(&wa);
 	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		MISCELLANEOUS_MC, Rvalues::from_binary_predicate(R_equality));
+		MISCELLANEOUS_MC, Rvalues::from_binary_predicate(R_equality),
+		Task::language_of_syntax());
 
 	#ifndef IF_MODULE
 	a_has_b_predicate =

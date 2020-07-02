@@ -157,7 +157,7 @@ to have the "initial value" property.
 	nlv->substitution_marker = 0;
 	if ((Wordings::nonempty(W)) && (scope == NULL)) /* that is, if it's a global */
 		Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			VARIABLE_MC, Lvalues::new_actual_NONLOCAL_VARIABLE(nlv));
+			VARIABLE_MC, Lvalues::new_actual_NONLOCAL_VARIABLE(nlv), Task::language_of_syntax());
 	nlv->nlv_knowledge =
 		InferenceSubjects::new(nonlocal_variables,
 			VARI_SUB, STORE_POINTER_nonlocal_variable(nlv), CERTAIN_CE);

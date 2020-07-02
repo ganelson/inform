@@ -24,9 +24,6 @@ DECLARE_CLASS(excerpt_meaning)
 void LexiconModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
-//	Cardinals::enable_in_word_form();
-//	Articles::mark_for_preform();
-//	Prepositions::mark_for_preform();
 }
 void LexiconModule::end(void) {
 }

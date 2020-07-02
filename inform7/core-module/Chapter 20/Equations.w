@@ -232,7 +232,7 @@ could be referred to elsewhere in the text by any of three names:
 			WordAssemblages::from_wording(NO));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			EQUATION_MC, Rvalues::from_equation(eqn));
+			EQUATION_MC, Rvalues::from_equation(eqn), Task::language_of_syntax());
 	}
 
 	if (Wordings::nonempty(NA)) {
@@ -247,13 +247,13 @@ could be referred to elsewhere in the text by any of three names:
 			Problems::issue_problem_end();
 		} else {
 			Nouns::new_proper_noun(NA, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-				EQUATION_MC, Rvalues::from_equation(eqn));
+				EQUATION_MC, Rvalues::from_equation(eqn), Task::language_of_syntax());
 			word_assemblage wa =
 				PreformUtilities::merge(<equation-names-construction>, 0,
 					WordAssemblages::from_wording(NA));
 			wording AW = WordAssemblages::to_wording(&wa);
 			Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-				EQUATION_MC, Rvalues::from_equation(eqn));
+				EQUATION_MC, Rvalues::from_equation(eqn), Task::language_of_syntax());
 		}
 	}
 

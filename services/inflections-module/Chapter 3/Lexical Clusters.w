@@ -221,6 +221,10 @@ wording Clusters::get_nominative_of_form(individual_form *in) {
 	return Declensions::in_case(&(in->declined), NOMINATIVE_CASE);
 }
 
+lcon_ti Clusters::get_lcon_of_form(individual_form *in) {
+	return in->declined.lcon_cased[NOMINATIVE_CASE];
+}
+
 int Clusters::get_number_of_form(individual_form *in) {
 	return Lcon::get_number(in->declined.lcon_cased[NOMINATIVE_CASE]);
 }

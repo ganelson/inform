@@ -100,7 +100,7 @@ void UseOptions::new_use_option(parse_node *p) {
 		if ((<notable-use-option-name>(OW)) && (<<r>> == AUTHORIAL_MODESTY_UO))
 			uo->source_file_scoped = TRUE;
 		Nouns::new_proper_noun(OW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			MISCELLANEOUS_MC, Rvalues::from_use_option(uo));
+			MISCELLANEOUS_MC, Rvalues::from_use_option(uo), Task::language_of_syntax());
 	}
 }
 
@@ -387,6 +387,19 @@ int UseOptions::get_dynamic_memory_allocation(void) {
 =
 int UseOptions::get_index_figure_thumbnails(void) {
 	return index_figure_thumbnails;
+}
+
+@ Exact parsing in the lexicon:
+
+@d PARSE_EXACTLY_LEXICON_CALLBACK UseOptions::parse_exactly
+
+=
+int UseOptions::parse_exactly(excerpt_meaning *em) {
+	if (em->meaning_code == NOUN_MC) {
+		if (use_exact_parsing_option) return TRUE;
+		return FALSE;
+	}
+	return TRUE;
 }
 
 @ And this is what the rest of Inform calls to find out whether a particular

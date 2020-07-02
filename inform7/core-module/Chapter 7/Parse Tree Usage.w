@@ -274,6 +274,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(INVOCATION_NT, save_self_ANNOT);
 	Annotations::allow(INVOCATION_NT, unproven_ANNOT);
 
+	ParseTreeUsage::allow_annotation_to_specification(meaning_ANNOT);
 	ParseTreeUsage::allow_annotation_to_specification(converted_SN_ANNOT);
 	ParseTreeUsage::allow_annotation_to_specification(subject_term_ANNOT);
 	ParseTreeUsage::allow_annotation_to_specification(epistemological_status_ANNOT);

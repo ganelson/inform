@@ -888,9 +888,13 @@ void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_comm
 			if (tcc == singular_KCC) {
 				int ro = 0;
 				if (con->group != PROPER_CONSTRUCTOR_GRP) ro = ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT;
+				NATURAL_LANGUAGE_WORDS_TYPE *L = NULL;
+				#ifdef CORE_MODULE
+				L = Task::language_of_syntax();
+				#endif
 				noun *nt =
 					Nouns::new_common_noun(LW, NEUTER_GENDER, ro,
-					KIND_SLOW_MC, STORE_POINTER_kind_constructor(con));
+					KIND_SLOW_MC, STORE_POINTER_kind_constructor(con), L);
 				con->dt_tag = nt;
 			} else {
 				NATURAL_LANGUAGE_WORDS_TYPE *L = NULL;

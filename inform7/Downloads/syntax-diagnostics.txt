@@ -2515,14 +2515,14 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'those in the accusative'
                                     INVOCATION_NT'those in the accusative'
                                         RVALUE_CONTEXT_NT'accusative'
-                                            CONSTANT_NT'accusative'-grammatical case(I_accusative)
+                                            {accusative = NAMED_CONSTANT_MC}'accusative'-grammatical case(I_accusative)
                     RULE_NT'to say those'
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT'say those in the nominative'
                                 INVOCATION_LIST_SAY_NT'those in the nominative'
                                     INVOCATION_NT'those in the nominative'
                                         RVALUE_CONTEXT_NT'nominative'
-                                            CONSTANT_NT'nominative'-grammatical case(I_nominative)
+                                            {nominative = NAMED_CONSTANT_MC}'nominative'-grammatical case(I_nominative)
                     RULE_NT'to say those in ( case - grammatical case )'
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT
@@ -2536,7 +2536,7 @@ ROOT_NT
                                             NEW_LOCAL_CONTEXT_NT'item'
                                                 UNKNOWN_NT'item'
                                             RVALUE_CONTEXT_NT'prior named object'
-                                                NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                                {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'if the prior naming context is plural'
                                             INVOCATION_NT'if the prior naming context is plural'
@@ -2601,7 +2601,7 @@ ROOT_NT
                                             NEW_LOCAL_CONTEXT_NT'item'
                                                 UNKNOWN_NT'item'
                                             RVALUE_CONTEXT_NT'prior named object'
-                                                NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                                {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'if the prior naming context is plural'
                                             INVOCATION_NT'if the prior naming context is plural'
@@ -2673,7 +2673,7 @@ ROOT_NT
                                             NEW_LOCAL_CONTEXT_NT'item'
                                                 UNKNOWN_NT'item'
                                             RVALUE_CONTEXT_NT'prior named object'
-                                                NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                                {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'if the prior naming context is plural'
                                             INVOCATION_NT'if the prior naming context is plural'
@@ -2738,7 +2738,7 @@ ROOT_NT
                                             NEW_LOCAL_CONTEXT_NT'item'
                                                 UNKNOWN_NT'item'
                                             RVALUE_CONTEXT_NT'prior named object'
-                                                NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                                {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'if the prior naming context is plural'
                                             INVOCATION_NT'if the prior naming context is plural'
@@ -2804,7 +2804,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -2870,7 +2870,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -2936,7 +2936,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3002,7 +3002,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3068,7 +3068,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3134,7 +3134,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3200,7 +3200,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3266,7 +3266,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3332,7 +3332,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3398,7 +3398,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3464,7 +3464,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3533,7 +3533,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the prior naming context is plural'
                                     INVOCATION_NT'if the prior naming context is plural'
@@ -3698,7 +3698,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the item is the player'
                                     INVOCATION_NT'if the item is the player'
@@ -3744,7 +3744,7 @@ ROOT_NT
                                     NEW_LOCAL_CONTEXT_NT'item'
                                         UNKNOWN_NT'item'
                                     RVALUE_CONTEXT_NT'prior named object'
-                                        NONLOCAL_VARIABLE_NT'prior named object'('prior named object'(var)[object])
+                                        {prior named object = VARIABLE_MC}'prior named object'('prior named object'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the item is the player'
                                     INVOCATION_NT'if the item is the player'
@@ -5606,7 +5606,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'follow the scene changing rules'
                                         INVOCATION_NT'follow the scene changing rules'
                                             RVALUE_CONTEXT_NT'scene changing rules'
-                                                CONSTANT_NT'scene changing rules'-rulebook
+                                                {scene changing rules = RULEBOOK_MC}'scene changing rules'-rulebook
                             SENTENCE_NT'the when play begins stage rule is listed in the startup rul'
                                 VERB_NT'is'
                                 PROPER_NOUN_NT'the when play begins stage rule'
@@ -5628,7 +5628,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'follow the when play begins rulebook'
                                         INVOCATION_NT'follow the when play begins rulebook'
                                             RVALUE_CONTEXT_NT'when play begins rulebook'
-                                                CONSTANT_NT'when play begins rulebook'-rulebook
+                                                {when play begins rulebook = RULEBOOK_MC}'when play begins rulebook'-rulebook
                             RULE_NT'this is the fix baseline scoring rule'
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'now the last notified score is the score'
@@ -5649,13 +5649,13 @@ ROOT_NT
                                     INVOCATION_LIST_NT'follow the every turn rules'
                                         INVOCATION_NT'follow the every turn rules'
                                             RVALUE_CONTEXT_NT'every turn rules'
-                                                CONSTANT_NT'every turn rules'-rulebook
+                                                {every turn rules = RULEBOOK_MC}'every turn rules'-rulebook
                             RULE_NT'a first turn sequence rule'
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'follow the scene changing rules'
                                         INVOCATION_NT'follow the scene changing rules'
                                             RVALUE_CONTEXT_NT'scene changing rules'
-                                                CONSTANT_NT'scene changing rules'-rulebook
+                                                {scene changing rules = RULEBOOK_MC}'scene changing rules'-rulebook
                             SENTENCE_NT'the generate action rule is listed first in the turn sequenc'
                                 VERB_NT'is'
                                 PROPER_NOUN_NT'the generate action rule'
@@ -5685,7 +5685,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'follow the scene changing rules'
                                         INVOCATION_NT'follow the scene changing rules'
                                             RVALUE_CONTEXT_NT'scene changing rules'
-                                                CONSTANT_NT'scene changing rules'-rulebook
+                                                {scene changing rules = RULEBOOK_MC}'scene changing rules'-rulebook
                             SENTENCE_NT'the adjust light rule is listed last in the turn sequence ru'
                                 VERB_NT'is'
                                 PROPER_NOUN_NT'the adjust light rule'
@@ -5759,13 +5759,13 @@ ROOT_NT
                                     INVOCATION_LIST_NT'follow the when play ends rulebook'
                                         INVOCATION_NT'follow the when play ends rulebook'
                                             RVALUE_CONTEXT_NT'when play ends rulebook'
-                                                CONSTANT_NT'when play ends rulebook'-rulebook
+                                                {when play ends rulebook = RULEBOOK_MC}'when play ends rulebook'-rulebook
                             RULE_NT'this is the print player's obituary rule'
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'carry out the printing the player's obituary activity'
                                         INVOCATION_NT'carry out the printing the player's obituary activity'
                                             RVALUE_CONTEXT_NT'printing the player's obituary'
-                                                CONSTANT_NT'printing the player's obituary'-activity
+                                                {printing the player's obituary = ACTIVITY_MC}'printing the player's obituary'-activity
                             SENTENCE_NT'the resurrect player if asked rule translates into i6 as RES'
                                 VERB_NT'translates into'
                                 PROPER_NOUN_NT'resurrect player if asked rule'
@@ -5851,7 +5851,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'set pronouns from the current item from the multiple object '
                                                 INVOCATION_NT'set pronouns from the current item from the multiple object '
                                                     RVALUE_CONTEXT_NT'current item from the multiple object list'
-                                                        NONLOCAL_VARIABLE_NT'current item from the multiple object list'('current item from the multiple object list'(var)[object])
+                                                        {current item from the multiple object list = VARIABLE_MC}'current item from the multiple object list'('current item from the multiple object list'(var)[object])
                             RULE_NT'this is the announce items from multiple object lists rule'
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT
@@ -5870,13 +5870,13 @@ ROOT_NT
                                     INVOCATION_LIST_NT'abide by the before rules'
                                         INVOCATION_NT'abide by the before rules'
                                             RVALUE_CONTEXT_NT'before rules'
-                                                CONSTANT_NT'before rules'-rulebook
+                                                {before rules = RULEBOOK_MC}'before rules'-rulebook
                             RULE_NT'this is the instead stage rule'
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'abide by the instead rules'
                                         INVOCATION_NT'abide by the instead rules'
                                             RVALUE_CONTEXT_NT'instead rules'
-                                                CONSTANT_NT'instead rules'-rulebook
+                                                {instead rules = RULEBOOK_MC}'instead rules'-rulebook
                             RULE_NT'this is the end action-processing in success rule'
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'rule succeeds'
@@ -5918,7 +5918,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'follow the player's action awareness rules'
                                         INVOCATION_NT'follow the player's action awareness rules'
                                             RVALUE_CONTEXT_NT'player's action awareness rules'
-                                                CONSTANT_NT'player's action awareness rules'-rulebook
+                                                {player's action awareness rules = RULEBOOK_MC}'player's action awareness rules'-rulebook
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'if rule succeeded'
                                             INVOCATION_NT'if rule succeeded'
@@ -5956,7 +5956,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'abide by the after rules'
                                                 INVOCATION_NT'abide by the after rules'
                                                     RVALUE_CONTEXT_NT'after rules'
-                                                        CONSTANT_NT'after rules'-rulebook
+                                                        {after rules = RULEBOOK_MC}'after rules'-rulebook
                             RULE_NT'a specific action-processing rule ( this is the investigate '
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT
@@ -5968,7 +5968,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'follow the player's action awareness rules'
                                                 INVOCATION_NT'follow the player's action awareness rules'
                                                     RVALUE_CONTEXT_NT'player's action awareness rules'
-                                                        CONSTANT_NT'player's action awareness rules'-rulebook
+                                                        {player's action awareness rules = RULEBOOK_MC}'player's action awareness rules'-rulebook
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'if rule succeeded'
                                                     INVOCATION_NT'if rule succeeded'
@@ -6142,7 +6142,7 @@ ROOT_NT
                                                     INVOCATION_NT'description of the event'
                                                         RVALUE_CONTEXT_NT'description of the event'
                                                             PROPERTY_VALUE_NT'description of the event'
-                                                                CONSTANT_NT-nothing valued property
+                                                                {description = PROPERTY_MC}-nothing valued property
                                                                 LOCAL_VARIABLE_NT'the event'(tmp_0;scene)
                                                 INVOCATION_LIST_SAY_NT'paragraph break'
                                                     INVOCATION_NT'paragraph break'
@@ -6447,7 +6447,7 @@ ROOT_NT
                                     INVOCATION_LIST_SAY_NT'listing group size in words'
                                         INVOCATION_NT'listing group size in words'
                                             RVALUE_CONTEXT_NT'listing group size'
-                                                NONLOCAL_VARIABLE_NT'listing group size'('listing group size'(var)[number])
+                                                {listing group size = VARIABLE_MC}'listing group size'('listing group size'(var)[number])
                                     INVOCATION_LIST_SAY_NT'" "'
                                         INVOCATION_NT'" "'
                                             RVALUE_CONTEXT_NT'" "'
@@ -6455,7 +6455,7 @@ ROOT_NT
                                 INVOCATION_LIST_NT'carry out the printing the plural name activity with the ite'
                                     INVOCATION_NT'carry out the printing the plural name activity with the ite'
                                         RVALUE_CONTEXT_NT'printing the plural name'
-                                            CONSTANT_NT'printing the plural name'-activity on objects
+                                            {printing the plural name = ACTIVITY_MC}'printing the plural name'-activity on objects
                                         RVALUE_CONTEXT_NT'item'
                                             LOCAL_VARIABLE_NT'item'(tmp_0;thing)
                         SENTENCE_NT'the standard printing a number of something rule is listed l'
@@ -6729,7 +6729,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'repeat through the table of final question options'
                                         INVOCATION_NT'repeat through the table of final question options'
                                             RVALUE_CONTEXT_NT'table of final question options'
-                                                CONSTANT_NT'table of final question options'-table name
+                                                {table of final question options = TABLE_MC}'table of final question options'-table name
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the only if victorious entry is false or the story has en'
@@ -6753,7 +6753,7 @@ ROOT_NT
                                                                                 INVOCATION_NT'there is a final response rule entry'
                                                                                     LVALUE_TR_CONTEXT_NT'a final response rule entry'
                                                                                         TABLE_ENTRY_NT'a final response rule entry'
-                                                                                            CONSTANT_NT-nothing valued table column
+                                                                                            {final response rule = TABLE_COLUMN_MC}-nothing valued table column
                                                                     TEST_PROPOSITION_NT'the final response activity entry is not empty'(test: [ NOT[ A4'empty'('the final response activity entry') NOT] ])
                                                     CODE_BLOCK_NT
                                                         CODE_BLOCK_NT
@@ -6766,7 +6766,7 @@ ROOT_NT
                                                                                     INVOCATION_NT'there is a final question wording entry'
                                                                                         LVALUE_TR_CONTEXT_NT'a final question wording entry'
                                                                                             TABLE_ENTRY_NT'a final question wording entry'
-                                                                                                CONSTANT_NT-nothing valued table column
+                                                                                                {final question wording = TABLE_COLUMN_MC}-nothing valued table column
                                                             CODE_BLOCK_NT
                                                                 INVOCATION_LIST_NT'increase named options count by 1'
                                                                     INVOCATION_NT'increase named options count by 1'
@@ -6783,7 +6783,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'abide by the immediately quit rule'
                                             INVOCATION_NT'abide by the immediately quit rule'
                                                 RVALUE_CONTEXT_NT'immediately quit rule'
-                                                    CONSTANT_NT'immediately quit rule'-rule
+                                                    {immediately quit rule = MISCELLANEOUS_MC}'immediately quit rule'-rule
                                 CODE_BLOCK_NT'say "Would you like to " ( a )'
                                     INVOCATION_LIST_SAY_NT'"Would you like to " ( a )'
                                         INVOCATION_NT'"Would you like to " ( a )'
@@ -6793,7 +6793,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'repeat through the table of final question options'
                                         INVOCATION_NT'repeat through the table of final question options'
                                             RVALUE_CONTEXT_NT'table of final question options'
-                                                CONSTANT_NT'table of final question options'-table name
+                                                {table of final question options = TABLE_MC}'table of final question options'-table name
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the only if victorious entry is false or the story has en'
@@ -6817,7 +6817,7 @@ ROOT_NT
                                                                                 INVOCATION_NT'there is a final response rule entry'
                                                                                     LVALUE_TR_CONTEXT_NT'a final response rule entry'
                                                                                         TABLE_ENTRY_NT'a final response rule entry'
-                                                                                            CONSTANT_NT-nothing valued table column
+                                                                                            {final response rule = TABLE_COLUMN_MC}-nothing valued table column
                                                                     TEST_PROPOSITION_NT'the final response activity entry is not empty'(test: [ NOT[ A4'empty'('the final response activity entry') NOT] ])
                                                     CODE_BLOCK_NT
                                                         CODE_BLOCK_NT
@@ -6830,14 +6830,14 @@ ROOT_NT
                                                                                     INVOCATION_NT'there is a final question wording entry'
                                                                                         LVALUE_TR_CONTEXT_NT'a final question wording entry'
                                                                                             TABLE_ENTRY_NT'a final question wording entry'
-                                                                                                CONSTANT_NT-nothing valued table column
+                                                                                                {final question wording = TABLE_COLUMN_MC}-nothing valued table column
                                                             CODE_BLOCK_NT
                                                                 CODE_BLOCK_NT'say final question wording entry'
                                                                     INVOCATION_LIST_SAY_NT'final question wording entry'
                                                                         INVOCATION_NT'final question wording entry'
                                                                             RVALUE_CONTEXT_NT'final question wording entry'
                                                                                 TABLE_ENTRY_NT'final question wording entry'
-                                                                                    CONSTANT_NT-nothing valued table column
+                                                                                    {final question wording = TABLE_COLUMN_MC}-nothing valued table column
                                                                 INVOCATION_LIST_NT'decrease named options count by 1'
                                                                     INVOCATION_NT'decrease named options count by 1'
                                                                         LVALUE_CONTEXT_NT'named options count'
@@ -6892,7 +6892,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'repeat through the table of final question options'
                                         INVOCATION_NT'repeat through the table of final question options'
                                             RVALUE_CONTEXT_NT'table of final question options'
-                                                CONSTANT_NT'table of final question options'-table name
+                                                {table of final question options = TABLE_MC}'table of final question options'-table name
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the only if victorious entry is false or the story has en'
@@ -6916,7 +6916,7 @@ ROOT_NT
                                                                                 INVOCATION_NT'there is a final response rule entry'
                                                                                     LVALUE_TR_CONTEXT_NT'a final response rule entry'
                                                                                         TABLE_ENTRY_NT'a final response rule entry'
-                                                                                            CONSTANT_NT-nothing valued table column
+                                                                                            {final response rule = TABLE_COLUMN_MC}-nothing valued table column
                                                                     TEST_PROPOSITION_NT'the final response activity entry is not empty'(test: [ NOT[ A4'empty'('the final response activity entry') NOT] ])
                                                     CODE_BLOCK_NT
                                                         CODE_BLOCK_NT
@@ -6928,10 +6928,10 @@ ROOT_NT
                                                                                 INVOCATION_LIST_NT'player's command matches the topic entry'
                                                                                     INVOCATION_NT'player's command matches the topic entry'
                                                                                         RVALUE_CONTEXT_NT'player's command'
-                                                                                            NONLOCAL_VARIABLE_NT'player's command'('player's command'(var)[snippet])
+                                                                                            {player's command = VARIABLE_MC}'player's command'('player's command'(var)[snippet])
                                                                                         RVALUE_CONTEXT_NT'topic entry'
                                                                                             TABLE_ENTRY_NT'topic entry'
-                                                                                                CONSTANT_NT-nothing valued table column
+                                                                                                {topic = TABLE_COLUMN_MC}-nothing valued table column
                                                             CODE_BLOCK_NT
                                                                 CODE_BLOCK_NT
                                                                     INVOCATION_LIST_NT'if there is a final response rule entry'
@@ -6943,19 +6943,19 @@ ROOT_NT
                                                                                             INVOCATION_NT'there is a final response rule entry'
                                                                                                 LVALUE_TR_CONTEXT_NT'a final response rule entry'
                                                                                                     TABLE_ENTRY_NT'a final response rule entry'
-                                                                                                        CONSTANT_NT-nothing valued table column
+                                                                                                        {final response rule = TABLE_COLUMN_MC}-nothing valued table column
                                                                     CODE_BLOCK_NT
                                                                         INVOCATION_LIST_NT'abide by final response rule entry'
                                                                             INVOCATION_NT'abide by final response rule entry'
                                                                                 RVALUE_CONTEXT_NT'final response rule entry'
                                                                                     TABLE_ENTRY_NT'final response rule entry'
-                                                                                        CONSTANT_NT-nothing valued table column
+                                                                                        {final response rule = TABLE_COLUMN_MC}-nothing valued table column
                                                                     CODE_BLOCK_NT'otherwise'
                                                                         INVOCATION_LIST_NT'carry out the final response activity entry activity'
                                                                             INVOCATION_NT'carry out the final response activity entry activity'
                                                                                 RVALUE_CONTEXT_NT'final response activity entry'
                                                                                     TABLE_ENTRY_NT'final response activity entry'
-                                                                                        CONSTANT_NT-nothing valued table column
+                                                                                        {final response activity = TABLE_COLUMN_MC}-nothing valued table column
                                                                 INVOCATION_LIST_NT'rule succeeds'
                                                                     INVOCATION_NT'rule succeeds'
                                 CODE_BLOCK_NT'say "Please give one of the answers above." ( a )'
@@ -6972,7 +6972,7 @@ ROOT_NT
                                 INVOCATION_LIST_NT'carry out the printing the locale description activity with '
                                     INVOCATION_NT'carry out the printing the locale description activity with '
                                         RVALUE_CONTEXT_NT'printing the locale description'
-                                            CONSTANT_NT'printing the locale description'-activity on objects
+                                            {printing the locale description = ACTIVITY_MC}'printing the locale description'-activity on objects
                                         RVALUE_CONTEXT_NT'o'
                                             LOCAL_VARIABLE_NT'o'(t_0;object)
                         RULE_NT'to set the/-- locale priority of ( o - an object ) to ( n - '
@@ -7001,19 +7001,19 @@ ROOT_NT
                                                                     INVOCATION_NT'there is a notable-object of o in the table of locale priori'
                                                                         LVALUE_TR_CONTEXT_NT'a notable-object of o in the table of locale priorities'
                                                                             TABLE_ENTRY_NT'a notable-object of o in the table of locale priorities'
-                                                                                CONSTANT_NT-nothing valued table column
-                                                                                CONSTANT_NT-nothing valued table column
+                                                                                {notable-object = TABLE_COLUMN_MC}-nothing valued table column
+                                                                                {notable-object = TABLE_COLUMN_MC}-nothing valued table column
                                                                                 LOCAL_VARIABLE_NT'o'(t_0;object)
-                                                                                CONSTANT_NT'the table of locale priorities'-table name
+                                                                                {table of locale priorities = TABLE_MC}'the table of locale priorities'-table name
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'choose row with a notable-object of o in the table of locale'
                                                     INVOCATION_NT'choose row with a notable-object of o in the table of locale'
                                                         RVALUE_CONTEXT_NT'a notable-object'
-                                                            CONSTANT_NT'a notable-object'-nothing valued table column
+                                                            {notable-object = TABLE_COLUMN_MC}'a notable-object'-nothing valued table column
                                                         RVALUE_CONTEXT_NT'o'
                                                             LOCAL_VARIABLE_NT'o'(t_0;object)
                                                         RVALUE_CONTEXT_NT'table of locale priorities'
-                                                            CONSTANT_NT'table of locale priorities'-table name
+                                                            {table of locale priorities = TABLE_MC}'table of locale priorities'-table name
                                                 CODE_BLOCK_NT
                                                     INVOCATION_LIST_NT'if n <= 0'
                                                         INVOCATION_NT'if n <= 0'
@@ -7035,7 +7035,7 @@ ROOT_NT
                                                         INVOCATION_LIST_NT'choose a blank row in the table of locale priorities'
                                                             INVOCATION_NT'choose a blank row in the table of locale priorities'
                                                                 RVALUE_CONTEXT_NT'table of locale priorities'
-                                                                    CONSTANT_NT'table of locale priorities'-table name
+                                                                    {table of locale priorities = TABLE_MC}'table of locale priorities'-table name
                                                         INVOCATION_LIST_NT'now the notable-object entry is o'
                                                             CONDITION_CONTEXT_NT'the notable-object entry is o'
                                                         INVOCATION_LIST_NT'now the locale description priority entry is n'
@@ -7056,7 +7056,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'repeat through the table of locale priorities'
                                         INVOCATION_NT'repeat through the table of locale priorities'
                                             RVALUE_CONTEXT_NT'table of locale priorities'
-                                                CONSTANT_NT'table of locale priorities'-table name
+                                                {table of locale priorities = TABLE_MC}'table of locale priorities'-table name
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'blank out the whole row'
                                             INVOCATION_NT'blank out the whole row'
@@ -7067,11 +7067,11 @@ ROOT_NT
                                         NEW_LOCAL_CONTEXT_NT'domain'
                                             UNKNOWN_NT'domain'
                                         RVALUE_CONTEXT_NT'parameter-object'
-                                            NONLOCAL_VARIABLE_NT'parameter-object'('parameter-object'(var)[object])
+                                            {parameter-object = VARIABLE_MC}'parameter-object'('parameter-object'(var)[object])
                                 INVOCATION_LIST_NT'carry out the choosing notable locale objects activity with '
                                     INVOCATION_NT'carry out the choosing notable locale objects activity with '
                                         RVALUE_CONTEXT_NT'choosing notable locale objects'
-                                            CONSTANT_NT'choosing notable locale objects'-activity on objects
+                                            {choosing notable locale objects = ACTIVITY_MC}'choosing notable locale objects'-activity on objects
                                         RVALUE_CONTEXT_NT'domain'
                                             LOCAL_VARIABLE_NT'domain'(tmp_0;object)
                                 INVOCATION_LIST_NT'continue the activity'
@@ -7083,26 +7083,26 @@ ROOT_NT
                                         NEW_LOCAL_CONTEXT_NT'domain'
                                             UNKNOWN_NT'domain'
                                         RVALUE_CONTEXT_NT'parameter-object'
-                                            NONLOCAL_VARIABLE_NT'parameter-object'('parameter-object'(var)[object])
+                                            {parameter-object = VARIABLE_MC}'parameter-object'('parameter-object'(var)[object])
                                 INVOCATION_LIST_NT'sort the table of locale priorities in locale description pr'
                                     INVOCATION_NT'sort the table of locale priorities in locale description pr'
                                         RVALUE_CONTEXT_NT'table of locale priorities'
-                                            CONSTANT_NT'table of locale priorities'-table name
+                                            {table of locale priorities = TABLE_MC}'table of locale priorities'-table name
                                         RVALUE_CONTEXT_NT'locale description priority'
-                                            CONSTANT_NT'locale description priority'-nothing valued table column
+                                            {locale description priority = TABLE_COLUMN_MC}'locale description priority'-nothing valued table column
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'repeat through the table of locale priorities'
                                         INVOCATION_NT'repeat through the table of locale priorities'
                                             RVALUE_CONTEXT_NT'table of locale priorities'
-                                                CONSTANT_NT'table of locale priorities'-table name
+                                                {table of locale priorities = TABLE_MC}'table of locale priorities'-table name
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'carry out the printing a locale paragraph about activity wit'
                                             INVOCATION_NT'carry out the printing a locale paragraph about activity wit'
                                                 RVALUE_CONTEXT_NT'printing a locale paragraph about'
-                                                    CONSTANT_NT'printing a locale paragraph about'-activity on objects
+                                                    {printing a locale paragraph about = ACTIVITY_MC}'printing a locale paragraph about'-activity on objects
                                                 RVALUE_CONTEXT_NT'notable-object entry'
                                                     TABLE_ENTRY_NT'notable-object entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {notable-object = TABLE_COLUMN_MC}-nothing valued table column
                                 INVOCATION_LIST_NT'continue the activity'
                                     INVOCATION_NT'continue the activity'
                         RULE_NT'for printing the locale description ( this is the you-can-al'
@@ -7112,7 +7112,7 @@ ROOT_NT
                                         NEW_LOCAL_CONTEXT_NT'domain'
                                             UNKNOWN_NT'domain'
                                         RVALUE_CONTEXT_NT'parameter-object'
-                                            NONLOCAL_VARIABLE_NT'parameter-object'('parameter-object'(var)[object])
+                                            {parameter-object = VARIABLE_MC}'parameter-object'('parameter-object'(var)[object])
                                 INVOCATION_LIST_NT'let the mentionable count be 0'
                                     INVOCATION_NT'let the mentionable count be 0'
                                         NEW_LOCAL_CONTEXT_NT'mentionable count'
@@ -7133,7 +7133,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'repeat through the table of locale priorities'
                                         INVOCATION_NT'repeat through the table of locale priorities'
                                             RVALUE_CONTEXT_NT'table of locale priorities'
-                                                CONSTANT_NT'table of locale priorities'-table name
+                                                {table of locale priorities = TABLE_MC}'table of locale priorities'-table name
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the locale description priority entry is greater than 0'
@@ -7174,7 +7174,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'begin the listing nondescript items activity with the domain'
                                             INVOCATION_NT'begin the listing nondescript items activity with the domain'
                                                 RVALUE_CONTEXT_NT'listing nondescript items'
-                                                    CONSTANT_NT'listing nondescript items'-activity on objects
+                                                    {listing nondescript items = ACTIVITY_MC}'listing nondescript items'-activity on objects
                                                 RVALUE_CONTEXT_NT'domain'
                                                     LOCAL_VARIABLE_NT'domain'(tmp_0;object)
                                         CODE_BLOCK_NT
@@ -7186,7 +7186,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'abandon the listing nondescript items activity with the doma'
                                                     INVOCATION_NT'abandon the listing nondescript items activity with the doma'
                                                         RVALUE_CONTEXT_NT'listing nondescript items'
-                                                            CONSTANT_NT'listing nondescript items'-activity on objects
+                                                            {listing nondescript items = ACTIVITY_MC}'listing nondescript items'-activity on objects
                                                         RVALUE_CONTEXT_NT'domain'
                                                             LOCAL_VARIABLE_NT'domain'(tmp_0;object)
                                             CODE_BLOCK_NT'otherwise'
@@ -7199,7 +7199,7 @@ ROOT_NT
                                                                         INVOCATION_LIST_NT'handling the listing nondescript items activity with the dom'
                                                                             INVOCATION_NT'handling the listing nondescript items activity with the dom'
                                                                                 RVALUE_CONTEXT_NT'listing nondescript items'
-                                                                                    CONSTANT_NT'listing nondescript items'-activity on objects
+                                                                                    {listing nondescript items = ACTIVITY_MC}'listing nondescript items'-activity on objects
                                                                                 RVALUE_CONTEXT_NT'domain'
                                                                                     LOCAL_VARIABLE_NT'domain'(tmp_0;object)
                                                     CODE_BLOCK_NT
@@ -7341,7 +7341,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'end the listing nondescript items activity with the domain'
                                                     INVOCATION_NT'end the listing nondescript items activity with the domain'
                                                         RVALUE_CONTEXT_NT'listing nondescript items'
-                                                            CONSTANT_NT'listing nondescript items'-activity on objects
+                                                            {listing nondescript items = ACTIVITY_MC}'listing nondescript items'-activity on objects
                                                         RVALUE_CONTEXT_NT'domain'
                                                             LOCAL_VARIABLE_NT'domain'(tmp_0;object)
                                 INVOCATION_LIST_NT'continue the activity'
@@ -7357,7 +7357,7 @@ ROOT_NT
                                         NEW_LOCAL_CONTEXT_NT'domain'
                                             UNKNOWN_NT'domain'
                                         RVALUE_CONTEXT_NT'parameter-object'
-                                            NONLOCAL_VARIABLE_NT'parameter-object'('parameter-object'(var)[object])
+                                            {parameter-object = VARIABLE_MC}'parameter-object'('parameter-object'(var)[object])
                                 INVOCATION_LIST_NT'let the held item be the first thing held by the domain'
                                     INVOCATION_NT'let the held item be the first thing held by the domain'
                                         NEW_LOCAL_CONTEXT_NT'held item'
@@ -7473,7 +7473,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'carry out the writing a paragraph about activity with the it'
                                             INVOCATION_NT'carry out the writing a paragraph about activity with the it'
                                                 RVALUE_CONTEXT_NT'writing a paragraph about'
-                                                    CONSTANT_NT'writing a paragraph about'-activity on objects
+                                                    {writing a paragraph about = ACTIVITY_MC}'writing a paragraph about'-activity on objects
                                                 RVALUE_CONTEXT_NT'item'
                                                     LOCAL_VARIABLE_NT'item'(tmp_0;thing)
                                         CODE_BLOCK_NT
@@ -7488,7 +7488,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'increase the locale paragraph count by 1'
                                                     INVOCATION_NT'increase the locale paragraph count by 1'
                                                         LVALUE_CONTEXT_NT'locale paragraph count'
-                                                            NONLOCAL_VARIABLE_NT'locale paragraph count'('locale paragraph count'(var)[number])
+                                                            {locale paragraph count = VARIABLE_MC}'locale paragraph count'('locale paragraph count'(var)[number])
                                                         RVALUE_CONTEXT_NT'1'
                                                             CONSTANT_NT'1'-number
                                                 INVOCATION_LIST_NT'now the item is mentioned'
@@ -7519,7 +7519,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'increase the locale paragraph count by 1'
                                                     INVOCATION_NT'increase the locale paragraph count by 1'
                                                         LVALUE_CONTEXT_NT'locale paragraph count'
-                                                            NONLOCAL_VARIABLE_NT'locale paragraph count'('locale paragraph count'(var)[number])
+                                                            {locale paragraph count = VARIABLE_MC}'locale paragraph count'('locale paragraph count'(var)[number])
                                                         RVALUE_CONTEXT_NT'1'
                                                             CONSTANT_NT'1'-number
                                                 CODE_BLOCK_NT'say "[initial appearance of the item]"'
@@ -7527,7 +7527,7 @@ ROOT_NT
                                                         INVOCATION_NT'initial appearance of the item'
                                                             RVALUE_CONTEXT_NT'initial appearance of the item'
                                                                 PROPERTY_VALUE_NT'initial appearance of the item'
-                                                                    CONSTANT_NT-nothing valued property
+                                                                    {initial appearance = PROPERTY_MC}-nothing valued property
                                                                     LOCAL_VARIABLE_NT'the item'(tmp_0;thing)
                                                 CODE_BLOCK_NT'say "[paragraph break]"'
                                                     INVOCATION_LIST_SAY_NT'paragraph break'
@@ -7603,7 +7603,7 @@ ROOT_NT
                                                         INVOCATION_NT'initial appearance of the item'
                                                             RVALUE_CONTEXT_NT'initial appearance of the item'
                                                                 PROPERTY_VALUE_NT'initial appearance of the item'
-                                                                    CONSTANT_NT-nothing valued property
+                                                                    {initial appearance = PROPERTY_MC}-nothing valued property
                                                                     LOCAL_VARIABLE_NT'the item'(tmp_1;thing)
                                                 CODE_BLOCK_NT'say paragraph break'
                                                     INVOCATION_LIST_SAY_NT'paragraph break'
@@ -7652,7 +7652,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'increase the locale paragraph count by 1'
                                                     INVOCATION_NT'increase the locale paragraph count by 1'
                                                         LVALUE_CONTEXT_NT'locale paragraph count'
-                                                            NONLOCAL_VARIABLE_NT'locale paragraph count'('locale paragraph count'(var)[number])
+                                                            {locale paragraph count = VARIABLE_MC}'locale paragraph count'('locale paragraph count'(var)[number])
                                                         RVALUE_CONTEXT_NT'1'
                                                             CONSTANT_NT'1'-number
                                                 CODE_BLOCK_NT'say "On [the item] " ( a )'
@@ -7718,7 +7718,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'increase the locale paragraph count by 1'
                                                     INVOCATION_NT'increase the locale paragraph count by 1'
                                                         LVALUE_CONTEXT_NT'locale paragraph count'
-                                                            NONLOCAL_VARIABLE_NT'locale paragraph count'('locale paragraph count'(var)[number])
+                                                            {locale paragraph count = VARIABLE_MC}'locale paragraph count'('locale paragraph count'(var)[number])
                                                         RVALUE_CONTEXT_NT'1'
                                                             CONSTANT_NT'1'-number
                                                 CODE_BLOCK_NT'say "On [the item] " ( a )'
@@ -7928,7 +7928,7 @@ ROOT_NT
                                 INVOCATION_LIST_NT'list the contents of the player , with newlines , indented ,'
                                     INVOCATION_NT'list the contents of the player'
                                         RVALUE_CONTEXT_NT'player'
-                                            NONLOCAL_VARIABLE_NT'player'('player'(var)[person])
+                                            {player = VARIABLE_MC}'player'('player'(var)[person])
                         RULE_NT'report an actor taking inventory ( this is the report other '
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -8038,7 +8038,7 @@ ROOT_NT
                                                         RVALUE_CONTEXT_NT'actor'
                                                             NONLOCAL_VARIABLE_NT'actor'('actor'(var)[person])
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_NT'let the owner be the not-counting-parts holder of the noun'
                                     INVOCATION_NT'let the owner be the not-counting-parts holder of the noun'
                                         NEW_LOCAL_CONTEXT_NT'owner'
@@ -8048,7 +8048,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'not-counting-parts holder of the noun'
                                                     INVOCATION_NT'not-counting-parts holder of the noun'
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'while the owner is not nothing and the owner is not the loca'
                                         INVOCATION_NT'while the owner is not nothing and the owner is not the loca'
@@ -8093,7 +8093,7 @@ ROOT_NT
                                         NEW_LOCAL_CONTEXT_NT'h'
                                             UNKNOWN_NT'h'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'while h is not nothing and h is not a room'
                                         INVOCATION_NT'while h is not nothing and h is not a room'
@@ -8144,7 +8144,7 @@ ROOT_NT
                                                         RVALUE_CONTEXT_NT'actor'
                                                             NONLOCAL_VARIABLE_NT'actor'('actor'(var)[person])
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the local ceiling is the noun'
                                         INVOCATION_NT'if the local ceiling is the noun'
@@ -8434,7 +8434,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'holder of the noun'
                                                     INVOCATION_NT'holder of the noun'
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the owner is a person'
                                         INVOCATION_NT'if the owner is a person'
@@ -8450,9 +8450,9 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'convert to the taking off action on the noun'
                                                     INVOCATION_NT'convert to the taking off action on the noun'
                                                         RVALUE_CONTEXT_NT'taking off action'
-                                                            CONSTANT_NT'taking off action'-action name
+                                                            {taking off action = MISCELLANEOUS_MC}'taking off action'-action name
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the actor is the player'
                                                 INVOCATION_NT'if the actor is the player'
@@ -8471,9 +8471,9 @@ ROOT_NT
                                 INVOCATION_LIST_NT'convert to the taking action on the noun'
                                     INVOCATION_NT'convert to the taking action on the noun'
                                         RVALUE_CONTEXT_NT'taking action'
-                                            CONSTANT_NT'taking action'-action name
+                                            {taking action = MISCELLANEOUS_MC}'taking action'-action name
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         SENTENCE_NT'the can't take component parts rule is listed before the can'
                             VERB_NT'is'
                             PROPER_NOUN_NT'the can't take component parts rule'
@@ -8753,9 +8753,9 @@ ROOT_NT
                                         INVOCATION_LIST_NT'convert to the dropping action on the noun'
                                             INVOCATION_NT'convert to the dropping action on the noun'
                                                 RVALUE_CONTEXT_NT'dropping action'
-                                                    CONSTANT_NT'dropping action'-action name
+                                                    {dropping action = MISCELLANEOUS_MC}'dropping action'-action name
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         RULE_NT'check an actor putting something on ( this is the can't put '
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -8777,9 +8777,9 @@ ROOT_NT
                                 INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun'
                                     INVOCATION_NT'carry out the implicitly taking activity with the noun'
                                         RVALUE_CONTEXT_NT'implicitly taking'
-                                            CONSTANT_NT'implicitly taking'-activity on objects
+                                            {implicitly taking = ACTIVITY_MC}'implicitly taking'-activity on objects
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the actor is carrying the noun'
                                         INVOCATION_NT'if the actor is carrying the noun'
@@ -8801,7 +8801,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'component parts core of the noun'
                                                     INVOCATION_NT'component parts core of the noun'
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_NT'let the second-cpc be the component parts core of the second'
                                     INVOCATION_NT'let the second-cpc be the component parts core of the second'
                                         NEW_LOCAL_CONTEXT_NT'second-cpc'
@@ -8811,7 +8811,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'component parts core of the second noun'
                                                     INVOCATION_NT'component parts core of the second noun'
                                                         RVALUE_CONTEXT_NT'second noun'
-                                                            NONLOCAL_VARIABLE_NT'second noun'('second noun'(var)[object])
+                                                            {second noun = VARIABLE_MC}'second noun'('second noun'(var)[object])
                                 INVOCATION_LIST_NT'let the transfer ceiling be the common ancestor of the noun-'
                                     INVOCATION_NT'let the transfer ceiling be the common ancestor of the noun-'
                                         NEW_LOCAL_CONTEXT_NT'transfer ceiling'
@@ -9001,9 +9001,9 @@ ROOT_NT
                                         INVOCATION_LIST_NT'convert to the dropping action on the noun'
                                             INVOCATION_NT'convert to the dropping action on the noun'
                                                 RVALUE_CONTEXT_NT'dropping action'
-                                                    CONSTANT_NT'dropping action'-action name
+                                                    {dropping action = MISCELLANEOUS_MC}'dropping action'-action name
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         RULE_NT'check an actor inserting something into ( this is the can't '
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -9025,9 +9025,9 @@ ROOT_NT
                                 INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun'
                                     INVOCATION_NT'carry out the implicitly taking activity with the noun'
                                         RVALUE_CONTEXT_NT'implicitly taking'
-                                            CONSTANT_NT'implicitly taking'-activity on objects
+                                            {implicitly taking = ACTIVITY_MC}'implicitly taking'-activity on objects
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the actor is carrying the noun'
                                         INVOCATION_NT'if the actor is carrying the noun'
@@ -9049,7 +9049,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'component parts core of the noun'
                                                     INVOCATION_NT'component parts core of the noun'
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_NT'let the second-cpc be the component parts core of the second'
                                     INVOCATION_NT'let the second-cpc be the component parts core of the second'
                                         NEW_LOCAL_CONTEXT_NT'second-cpc'
@@ -9059,7 +9059,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'component parts core of the second noun'
                                                     INVOCATION_NT'component parts core of the second noun'
                                                         RVALUE_CONTEXT_NT'second noun'
-                                                            NONLOCAL_VARIABLE_NT'second noun'('second noun'(var)[object])
+                                                            {second noun = VARIABLE_MC}'second noun'('second noun'(var)[object])
                                 INVOCATION_LIST_NT'let the transfer ceiling be the common ancestor of the noun-'
                                     INVOCATION_NT'let the transfer ceiling be the common ancestor of the noun-'
                                         NEW_LOCAL_CONTEXT_NT'transfer ceiling'
@@ -9347,9 +9347,9 @@ ROOT_NT
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun'
                                             INVOCATION_NT'carry out the implicitly taking activity with the noun'
                                                 RVALUE_CONTEXT_NT'implicitly taking'
-                                                    CONSTANT_NT'implicitly taking'-activity on objects
+                                                    {implicitly taking = ACTIVITY_MC}'implicitly taking'-activity on objects
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the actor is not carrying the noun'
                                                 INVOCATION_NT'if the actor is not carrying the noun'
@@ -9472,7 +9472,7 @@ ROOT_NT
                                                 NEW_LOCAL_CONTEXT_NT'direction d'
                                                     UNKNOWN_NT'direction d'
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                         INVOCATION_LIST_NT'let the target be the room-or-door direction d from the room'
                                             INVOCATION_NT'let the target be the room-or-door direction d from the room'
                                                 LVALUE_LOCAL_CONTEXT_NT'target'
@@ -9497,7 +9497,7 @@ ROOT_NT
                                                         LVALUE_LOCAL_CONTEXT_NT'target'
                                                             LOCAL_VARIABLE_NT'target'(tmp_1;object)
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the target is a door'
                                         INVOCATION_NT'if the target is a door'
@@ -9657,7 +9657,7 @@ ROOT_NT
                                                 NEW_LOCAL_CONTEXT_NT'direction d'
                                                     UNKNOWN_NT'direction d'
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                         INVOCATION_LIST_NT'let the target be the room-or-door direction d from the room'
                                             INVOCATION_NT'let the target be the room-or-door direction d from the room'
                                                 LVALUE_LOCAL_CONTEXT_NT'target'
@@ -9682,7 +9682,7 @@ ROOT_NT
                                                         LVALUE_LOCAL_CONTEXT_NT'target'
                                                             LOCAL_VARIABLE_NT'target'(tmp_0;object)
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the target is a door'
                                         INVOCATION_NT'if the target is a door'
@@ -9871,8 +9871,8 @@ ROOT_NT
                                                                     UNKNOWN_NT'back way'
                                                                 RVALUE_CONTEXT_NT'opposite of the noun'
                                                                     PROPERTY_VALUE_NT'opposite of the noun'
-                                                                        CONSTANT_NT-nothing valued property
-                                                                        NONLOCAL_VARIABLE_NT'the noun'('noun'(var)[object])
+                                                                        {opposite = PROPERTY_MC}-nothing valued property
+                                                                        {noun = VARIABLE_MC}'the noun'('noun'(var)[object])
                                                         CODE_BLOCK_NT
                                                             INVOCATION_LIST_NT'if the location is the room gone to'
                                                                 INVOCATION_NT'if the location is the room gone to'
@@ -9890,7 +9890,7 @@ ROOT_NT
                                                                                         RVALUE_CONTEXT_NT'back way'
                                                                                             LOCAL_VARIABLE_NT'back way'(tmp_0;direction)
                                                                                         RVALUE_CONTEXT_NT'location'
-                                                                                            NONLOCAL_VARIABLE_NT'location'('location'(var)[object])
+                                                                                            {location = VARIABLE_MC}'location'('location'(var)[object])
                                                                 INVOCATION_LIST_NT'let the room normally this way be the room noun from the roo'
                                                                     INVOCATION_NT'let the room normally this way be the room noun from the roo'
                                                                         NEW_LOCAL_CONTEXT_NT'room normally this way'
@@ -9900,7 +9900,7 @@ ROOT_NT
                                                                                 INVOCATION_LIST_NT'room noun from the room gone from'
                                                                                     INVOCATION_NT'room noun from the room gone from'
                                                                                         RVALUE_CONTEXT_NT'noun'
-                                                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                                                                         RVALUE_CONTEXT_NT'room gone from'
                                                                                             NONLOCAL_VARIABLE_NT'room gone from'('room gone from'(var)[room])
                                                                 CODE_BLOCK_NT
@@ -10141,9 +10141,9 @@ ROOT_NT
                                         INVOCATION_LIST_NT'convert to the going action on the noun'
                                             INVOCATION_NT'convert to the going action on the noun'
                                                 RVALUE_CONTEXT_NT'going action'
-                                                    CONSTANT_NT'going action'-action name
+                                                    {going action = MISCELLANEOUS_MC}'going action'-action name
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         RULE_NT'check an actor entering ( this is the convert enter compass '
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -10155,9 +10155,9 @@ ROOT_NT
                                         INVOCATION_LIST_NT'convert to the going action on the noun'
                                             INVOCATION_NT'convert to the going action on the noun'
                                                 RVALUE_CONTEXT_NT'going action'
-                                                    CONSTANT_NT'going action'-action name
+                                                    {going action = MISCELLANEOUS_MC}'going action'-action name
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         RULE_NT'check an actor entering ( this is the can't enter what's alr'
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -10179,7 +10179,7 @@ ROOT_NT
                                                         RVALUE_CONTEXT_NT'actor'
                                                             NONLOCAL_VARIABLE_NT'actor'('actor'(var)[person])
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the local ceiling is the noun'
                                         INVOCATION_NT'if the local ceiling is the noun'
@@ -10234,7 +10234,7 @@ ROOT_NT
                                                                         INVOCATION_LIST_NT'player's command includes "stand"'
                                                                             INVOCATION_NT'player's command includes "stand"'
                                                                                 RVALUE_CONTEXT_NT'player's command'
-                                                                                    NONLOCAL_VARIABLE_NT'player's command'('player's command'(var)[snippet])
+                                                                                    {player's command = VARIABLE_MC}'player's command'('player's command'(var)[snippet])
                                                                                 RVALUE_CONTEXT_NT'"stand"'
                                                                                     CONSTANT_NT'"stand"'-topic
                                                     CODE_BLOCK_NT
@@ -10253,7 +10253,7 @@ ROOT_NT
                                                                                 INVOCATION_LIST_NT'player's command includes "sit"'
                                                                                     INVOCATION_NT'player's command includes "sit"'
                                                                                         RVALUE_CONTEXT_NT'player's command'
-                                                                                            NONLOCAL_VARIABLE_NT'player's command'('player's command'(var)[snippet])
+                                                                                            {player's command = VARIABLE_MC}'player's command'('player's command'(var)[snippet])
                                                                                         RVALUE_CONTEXT_NT'"sit"'
                                                                                             CONSTANT_NT'"sit"'-topic
                                                             CODE_BLOCK_NT
@@ -10272,7 +10272,7 @@ ROOT_NT
                                                                                         INVOCATION_LIST_NT'player's command includes "lie"'
                                                                                             INVOCATION_NT'player's command includes "lie"'
                                                                                                 RVALUE_CONTEXT_NT'player's command'
-                                                                                                    NONLOCAL_VARIABLE_NT'player's command'('player's command'(var)[snippet])
+                                                                                                    {player's command = VARIABLE_MC}'player's command'('player's command'(var)[snippet])
                                                                                                 RVALUE_CONTEXT_NT'"lie"'
                                                                                                     CONSTANT_NT'"lie"'-topic
                                                                     CODE_BLOCK_NT
@@ -10386,7 +10386,7 @@ ROOT_NT
                                                         RVALUE_CONTEXT_NT'actor'
                                                             NONLOCAL_VARIABLE_NT'actor'('actor'(var)[person])
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the local ceiling is the actor'
                                         INVOCATION_NT'if the local ceiling is the actor'
@@ -10427,7 +10427,7 @@ ROOT_NT
                                                         RVALUE_CONTEXT_NT'actor'
                                                             NONLOCAL_VARIABLE_NT'actor'('actor'(var)[person])
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'while the holder of the actor is not the local ceiling'
                                         INVOCATION_NT'while the holder of the actor is not the local ceiling'
@@ -10506,7 +10506,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'holder of the noun'
                                                     INVOCATION_NT'holder of the noun'
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the noun is part of the target'
                                         INVOCATION_NT'if the noun is part of the target'
@@ -10585,9 +10585,9 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'convert to the entering action on the noun'
                                                     INVOCATION_NT'convert to the entering action on the noun'
                                                         RVALUE_CONTEXT_NT'entering action'
-                                                            CONSTANT_NT'entering action'-action name
+                                                            {entering action = MISCELLANEOUS_MC}'entering action'-action name
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                                 INVOCATION_LIST_NT'continue the action'
                                                     INVOCATION_NT'continue the action'
                                         INVOCATION_LIST_NT'let the target be the holder of the target'
@@ -10607,7 +10607,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'actor'
                                             NONLOCAL_VARIABLE_NT'actor'('actor'(var)[person])
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         RULE_NT'report an actor entering ( this is the standard report enter'
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -10673,7 +10673,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'describe locale for the noun'
                                             INVOCATION_NT'describe locale for the noun'
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         SENTENCE_NT'exiting is an action applying to nothing'
                             VERB_NT'is'
                             PROPER_NOUN_NT'exiting'
@@ -10727,7 +10727,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'convert to the going action on the outside'
                                                     INVOCATION_NT'convert to the going action on the outside'
                                                         RVALUE_CONTEXT_NT'going action'
-                                                            CONSTANT_NT'going action'-action name
+                                                            {going action = MISCELLANEOUS_MC}'going action'-action name
                                                         RVALUE_CONTEXT_NT'outside'
                                                             CONSTANT_NT'outside'-direction(out_obj)(I33'outside')
                         RULE_NT'check an actor exiting ( this is the can't exit when not ins'
@@ -10793,7 +10793,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'convert to the getting off action on the platform'
                                             INVOCATION_NT'convert to the getting off action on the platform'
                                                 RVALUE_CONTEXT_NT'getting off action'
-                                                    CONSTANT_NT'getting off action'-action name
+                                                    {getting off action = MISCELLANEOUS_MC}'getting off action'-action name
                                                 RVALUE_CONTEXT_NT'platform'
                                                     LOCAL_VARIABLE_NT'platform'(tmp_0;supporter)
                         RULE_NT'carry out an actor exiting ( this is the standard exiting ru'
@@ -10925,7 +10925,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'not-counting-parts holder of the noun'
                                                     INVOCATION_NT'not-counting-parts holder of the noun'
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_NT'surreptitiously move the actor to the former exterior'
                                     INVOCATION_NT'surreptitiously move the actor to the former exterior'
                                         RVALUE_CONTEXT_NT'actor'
@@ -11046,7 +11046,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'begin the printing the name of a dark room activity'
                                             INVOCATION_NT'begin the printing the name of a dark room activity'
                                                 RVALUE_CONTEXT_NT'printing the name of a dark room'
-                                                    CONSTANT_NT'printing the name of a dark room'-activity
+                                                    {printing the name of a dark room = ACTIVITY_MC}'printing the name of a dark room'-activity
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if handling the printing the name of a dark room activity'
                                                 INVOCATION_NT'if handling the printing the name of a dark room activity'
@@ -11056,7 +11056,7 @@ ROOT_NT
                                                                 INVOCATION_LIST_NT'handling the printing the name of a dark room activity'
                                                                     INVOCATION_NT'handling the printing the name of a dark room activity'
                                                                         RVALUE_CONTEXT_NT'printing the name of a dark room'
-                                                                            CONSTANT_NT'printing the name of a dark room'-activity
+                                                                            {printing the name of a dark room = ACTIVITY_MC}'printing the name of a dark room'-activity
                                             CODE_BLOCK_NT
                                                 CODE_BLOCK_NT'say "Darkness" ( a )'
                                                     INVOCATION_LIST_SAY_NT'"Darkness" ( a )'
@@ -11066,7 +11066,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'end the printing the name of a dark room activity'
                                             INVOCATION_NT'end the printing the name of a dark room activity'
                                                 RVALUE_CONTEXT_NT'printing the name of a dark room'
-                                                    CONSTANT_NT'printing the name of a dark room'-activity
+                                                    {printing the name of a dark room = ACTIVITY_MC}'printing the name of a dark room'-activity
                                     CODE_BLOCK_NT'otherwise'
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the visibility ceiling is the location'
@@ -11180,7 +11180,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'begin the printing the description of a dark room activity'
                                             INVOCATION_NT'begin the printing the description of a dark room activity'
                                                 RVALUE_CONTEXT_NT'printing the description of a dark room'
-                                                    CONSTANT_NT'printing the description of a dark room'-activity
+                                                    {printing the description of a dark room = ACTIVITY_MC}'printing the description of a dark room'-activity
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if handling the printing the description of a dark room acti'
                                                 INVOCATION_NT'if handling the printing the description of a dark room acti'
@@ -11190,7 +11190,7 @@ ROOT_NT
                                                                 INVOCATION_LIST_NT'handling the printing the description of a dark room activit'
                                                                     INVOCATION_NT'handling the printing the description of a dark room activit'
                                                                         RVALUE_CONTEXT_NT'printing the description of a dark room'
-                                                                            CONSTANT_NT'printing the description of a dark room'-activity
+                                                                            {printing the description of a dark room = ACTIVITY_MC}'printing the description of a dark room'-activity
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'now the prior named object is nothing'
                                                     CONDITION_CONTEXT_NT'the prior named object is nothing'
@@ -11202,7 +11202,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'end the printing the description of a dark room activity'
                                             INVOCATION_NT'end the printing the description of a dark room activity'
                                                 RVALUE_CONTEXT_NT'printing the description of a dark room'
-                                                    CONSTANT_NT'printing the description of a dark room'-activity
+                                                    {printing the description of a dark room = ACTIVITY_MC}'printing the description of a dark room'-activity
                                     CODE_BLOCK_NT'otherwise'
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the visibility ceiling is the location'
@@ -11412,8 +11412,8 @@ ROOT_NT
                                                 INVOCATION_NT'description of the noun'
                                                     RVALUE_CONTEXT_NT'description of the noun'
                                                         PROPERTY_VALUE_NT'description of the noun'
-                                                            CONSTANT_NT-nothing valued property
-                                                            NONLOCAL_VARIABLE_NT'the noun'('noun'(var)[object])
+                                                            {description = PROPERTY_MC}-nothing valued property
+                                                            {noun = VARIABLE_MC}'the noun'('noun'(var)[object])
                                             INVOCATION_LIST_SAY_NT'line break'
                                                 INVOCATION_NT'line break'
                                         INVOCATION_LIST_NT'now examine text printed is true'
@@ -11465,7 +11465,7 @@ ROOT_NT
                                                         INVOCATION_LIST_NT'list the contents of the noun , as a sentence , tersely , no'
                                                             INVOCATION_NT'list the contents of the noun'
                                                                 RVALUE_CONTEXT_NT'noun'
-                                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                                         CODE_BLOCK_NT'say "."'
                                                             INVOCATION_LIST_SAY_NT'"."'
                                                                 INVOCATION_NT'"."'
@@ -11519,7 +11519,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'list the contents of the noun , as a sentence , tersely , no'
                                                     INVOCATION_NT'list the contents of the noun'
                                                         RVALUE_CONTEXT_NT'noun'
-                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                                 CODE_BLOCK_NT'say "."'
                                                     INVOCATION_LIST_SAY_NT'"."'
                                                         INVOCATION_NT'"."'
@@ -11695,7 +11695,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'list the contents of the noun , as a sentence , tersely , no'
                                             INVOCATION_NT'list the contents of the noun'
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                         CODE_BLOCK_NT'say "."'
                                             INVOCATION_LIST_SAY_NT'"."'
                                                 INVOCATION_NT'"."'
@@ -11723,7 +11723,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'list the contents of the noun , as a sentence , tersely , no'
                                             INVOCATION_NT'list the contents of the noun'
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                         CODE_BLOCK_NT'say "."'
                                             INVOCATION_LIST_SAY_NT'"."'
                                                 INVOCATION_NT'"."'
@@ -12337,7 +12337,7 @@ ROOT_NT
                                                         INVOCATION_LIST_NT'list the contents of the noun , as a sentence , tersely , no'
                                                             INVOCATION_NT'list the contents of the noun'
                                                                 RVALUE_CONTEXT_NT'noun'
-                                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                                         CODE_BLOCK_NT'say "."'
                                                             INVOCATION_LIST_SAY_NT'"."'
                                                                 INVOCATION_NT'"."'
@@ -12839,9 +12839,9 @@ ROOT_NT
                                 INVOCATION_LIST_NT'move the noun to the second noun'
                                     INVOCATION_NT'move the noun to the second noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                         RVALUE_CONTEXT_NT'second noun'
-                                            NONLOCAL_VARIABLE_NT'second noun'('second noun'(var)[object])
+                                            {second noun = VARIABLE_MC}'second noun'('second noun'(var)[object])
                         RULE_NT'report an actor giving something to ( this is the standard r'
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -12920,9 +12920,9 @@ ROOT_NT
                                         INVOCATION_LIST_NT'convert to the examining action on the noun'
                                             INVOCATION_NT'convert to the examining action on the noun'
                                                 RVALUE_CONTEXT_NT'examining action'
-                                                    CONSTANT_NT'examining action'-action name
+                                                    {examining action = MISCELLANEOUS_MC}'examining action'-action name
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         RULE_NT'check an actor showing something to ( this is the block show'
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -13285,11 +13285,11 @@ ROOT_NT
                                 INVOCATION_LIST_NT'convert to request of the noun to perform giving it to actio'
                                     INVOCATION_NT'convert to request of the noun to perform giving it to actio'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                         RVALUE_CONTEXT_NT'giving it to action'
-                                            CONSTANT_NT'giving it to action'-action name
+                                            {giving it to action = MISCELLANEOUS_MC}'giving it to action'-action name
                                         RVALUE_CONTEXT_NT'second noun'
-                                            NONLOCAL_VARIABLE_NT'second noun'('second noun'(var)[object])
+                                            {second noun = VARIABLE_MC}'second noun'('second noun'(var)[object])
                                         RVALUE_CONTEXT_NT'actor'
                                             NONLOCAL_VARIABLE_NT'actor'('actor'(var)[person])
                     HEADING_NT'section 7 - standard actions which are checked but then do n' (level 5)
@@ -15761,7 +15761,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'carry out the issuing the response text activity with r'
                                         INVOCATION_NT'carry out the issuing the response text activity with r'
                                             RVALUE_CONTEXT_NT'issuing the response text'
-                                                CONSTANT_NT'issuing the response text'-activity on responses
+                                                {issuing the response text = ACTIVITY_MC}'issuing the response text'-activity on responses
                                             RVALUE_CONTEXT_NT'r'
                                                 LOCAL_VARIABLE_NT'r'(t_0;response)
                         HEADING_NT'section 5 - saying lists of things' (level 5)
@@ -16304,7 +16304,7 @@ ROOT_NT
                             INVOCATION_LIST_NT'follow the character movement rules'
                                 INVOCATION_NT'follow the character movement rules'
                                     RVALUE_CONTEXT_NT'character movement rules'
-                                        CONSTANT_NT'character movement rules'-rulebook
+                                        {character movement rules = RULEBOOK_MC}'character movement rules'-rulebook
             RULE_NT'every turn'
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the last person named is the player'
@@ -16353,13 +16353,13 @@ ROOT_NT
                             INVOCATION_LIST_NT'follow the shopper rules'
                                 INVOCATION_NT'follow the shopper rules'
                                     RVALUE_CONTEXT_NT'shopper rules'
-                                        CONSTANT_NT'shopper rules'-rulebook
+                                        {shopper rules = RULEBOOK_MC}'shopper rules'-rulebook
                             INVOCATION_LIST_NT'now the current actor is passive'
                                 CONDITION_CONTEXT_NT'the current actor is passive'
                     INVOCATION_LIST_NT'follow the movement reporting rule'
                         INVOCATION_NT'follow the movement reporting rule'
                             RVALUE_CONTEXT_NT'movement reporting rule'
-                                CONSTANT_NT'movement reporting rule'-rule
+                                {movement reporting rule = MISCELLANEOUS_MC}'movement reporting rule'-rule
             RULE_NT'a character movement rule'
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT
@@ -16375,13 +16375,13 @@ ROOT_NT
                             INVOCATION_LIST_NT'follow the shopowner rules'
                                 INVOCATION_NT'follow the shopowner rules'
                                     RVALUE_CONTEXT_NT'shopowner rules'
-                                        CONSTANT_NT'shopowner rules'-rulebook
+                                        {shopowner rules = RULEBOOK_MC}'shopowner rules'-rulebook
                             INVOCATION_LIST_NT'now the current owner is passive'
                                 CONDITION_CONTEXT_NT'the current owner is passive'
                     INVOCATION_LIST_NT'follow the infection rule'
                         INVOCATION_NT'follow the infection rule'
                             RVALUE_CONTEXT_NT'infection rule'
-                                CONSTANT_NT'infection rule'-rule
+                                {infection rule = MISCELLANEOUS_MC}'infection rule'-rule
             RULE_NT'to decide whether movement has not yet occurred'
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT
@@ -16431,7 +16431,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the person asked'
                             INVOCATION_NT'the person asked'
                                 RVALUE_CONTEXT_NT'person asked'
-                                    NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                    {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                         INVOCATION_LIST_SAY_NT'", muttering darkly about air-conditioning and electricity, '
                             INVOCATION_NT'", muttering darkly about air-conditioning and electricity, '
                                 RVALUE_CONTEXT_NT'", muttering darkly about air-conditioning and electricity, '
@@ -16439,7 +16439,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the noun'
                             INVOCATION_NT'the noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'"."'
                             INVOCATION_NT'"."'
                                 RVALUE_CONTEXT_NT'"."'
@@ -16503,7 +16503,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the person asked'
                                     INVOCATION_NT'the person asked'
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" tries unsuccessfully to get "'
                                     INVOCATION_NT'" tries unsuccessfully to get "'
                                         RVALUE_CONTEXT_NT'" tries unsuccessfully to get "'
@@ -16511,7 +16511,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the noun'
                                     INVOCATION_NT'the noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'"."'
                                     INVOCATION_NT'"."'
                                         RVALUE_CONTEXT_NT'"."'
@@ -16525,7 +16525,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the person asked'
                             INVOCATION_NT'the person asked'
                                 RVALUE_CONTEXT_NT'person asked'
-                                    NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                    {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                         INVOCATION_LIST_SAY_NT'" registers "'
                             INVOCATION_NT'" registers "'
                                 RVALUE_CONTEXT_NT'" registers "'
@@ -16533,7 +16533,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the noun'
                             INVOCATION_NT'the noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'" and files it away."'
                             INVOCATION_NT'" and files it away."'
                                 RVALUE_CONTEXT_NT'" and files it away."'
@@ -16675,7 +16675,7 @@ ROOT_NT
                     INVOCATION_LIST_NT'move the noun to the public library'
                         INVOCATION_NT'move the noun to the public library'
                             RVALUE_CONTEXT_NT'noun'
-                                NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                             RVALUE_CONTEXT_NT'public library'
                                 CONSTANT_NT'public library'-room(I_public_library)(I110'public library')
                     INVOCATION_LIST_NT'now the noun is submitted'
@@ -16686,7 +16686,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the person asked'
                             INVOCATION_NT'the person asked'
                                 RVALUE_CONTEXT_NT'person asked'
-                                    NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                    {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                         INVOCATION_LIST_SAY_NT'" turns in "'
                             INVOCATION_NT'" turns in "'
                                 RVALUE_CONTEXT_NT'" turns in "'
@@ -16694,7 +16694,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the noun'
                             INVOCATION_NT'the noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'"."'
                             INVOCATION_NT'"."'
                                 RVALUE_CONTEXT_NT'"."'
@@ -16734,7 +16734,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the person asked'
                             INVOCATION_NT'the person asked'
                                 RVALUE_CONTEXT_NT'person asked'
-                                    NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                    {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                         INVOCATION_LIST_SAY_NT'" slips "'
                             INVOCATION_NT'" slips "'
                                 RVALUE_CONTEXT_NT'" slips "'
@@ -16742,7 +16742,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'a noun'
                             INVOCATION_NT'a noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'" into the outgoing mail slot."'
                             INVOCATION_NT'" into the outgoing mail slot."'
                                 RVALUE_CONTEXT_NT'" into the outgoing mail slot."'
@@ -16759,7 +16759,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the person asked'
                                     INVOCATION_NT'the person asked'
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" shoves into the mail slot "'
                                     INVOCATION_NT'" shoves into the mail slot "'
                                         RVALUE_CONTEXT_NT'" shoves into the mail slot "'
@@ -16801,7 +16801,7 @@ ROOT_NT
                     INVOCATION_LIST_NT'move the noun to the movie rental store'
                         INVOCATION_NT'move the noun to the movie rental store'
                             RVALUE_CONTEXT_NT'noun'
-                                NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                             RVALUE_CONTEXT_NT'movie rental store'
                                 CONSTANT_NT'movie rental store'-room(I_movie_rental_store)(I104'movie rental store')
             RULE_NT'report someone resolving a dvd'
@@ -16810,7 +16810,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the person asked'
                             INVOCATION_NT'the person asked'
                                 RVALUE_CONTEXT_NT'person asked'
-                                    NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                    {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                         INVOCATION_LIST_SAY_NT'" returns "'
                             INVOCATION_NT'" returns "'
                                 RVALUE_CONTEXT_NT'" returns "'
@@ -16818,7 +16818,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the noun'
                             INVOCATION_NT'the noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'"."'
                             INVOCATION_NT'"."'
                                 RVALUE_CONTEXT_NT'"."'
@@ -16835,7 +16835,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the person asked'
                                     INVOCATION_NT'the person asked'
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" turns in "'
                                     INVOCATION_NT'" turns in "'
                                         RVALUE_CONTEXT_NT'" turns in "'
@@ -16884,9 +16884,9 @@ ROOT_NT
                                                     INVOCATION_LIST_NT'location of the person asked'
                                                         INVOCATION_NT'location of the person asked'
                                                             RVALUE_CONTEXT_NT'person asked'
-                                                                NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                                                {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                                             RVALUE_CONTEXT_NT'noun'
-                                                NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                     CODE_BLOCK_NT
                         INVOCATION_LIST_NT'if the way is a direction'
                             INVOCATION_NT'if the way is a direction'
@@ -16920,7 +16920,7 @@ ROOT_NT
                     INVOCATION_LIST_NT'abide by the block giving rule'
                         INVOCATION_NT'abide by the block giving rule'
                             RVALUE_CONTEXT_NT'block giving rule'
-                                CONSTANT_NT'block giving rule'-rule
+                                {block giving rule = MISCELLANEOUS_MC}'block giving rule'-rule
             RULE_NT'before someone resolving a coupon when the person asked is n'
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try the person asked approaching cold comfort'
@@ -16957,7 +16957,7 @@ ROOT_NT
                             RVALUE_CONTEXT_NT'reward'
                                 LOCAL_VARIABLE_NT'reward'(tmp_0;thing)
                             RVALUE_CONTEXT_NT'person asked'
-                                NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                     INVOCATION_LIST_NT'now the noun is nowhere'
                         CONDITION_CONTEXT_NT'the noun is nowhere'
                     CODE_BLOCK_NT
@@ -16970,7 +16970,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the person asked'
                                     INVOCATION_NT'the person asked'
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" trades in "'
                                     INVOCATION_NT'" trades in "'
                                         RVALUE_CONTEXT_NT'" trades in "'
@@ -16978,7 +16978,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the noun'
                                     INVOCATION_NT'the noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" and receives "'
                                     INVOCATION_NT'" and receives "'
                                         RVALUE_CONTEXT_NT'" and receives "'
@@ -17057,7 +17057,7 @@ ROOT_NT
                             NEW_LOCAL_CONTEXT_NT'current color'
                                 UNKNOWN_NT'current color'
                             RVALUE_CONTEXT_NT'french vanilla'
-                                CONSTANT_NT'french vanilla'-infection color(I_french_vanilla)
+                                {french vanilla = NAMED_CONSTANT_MC}'french vanilla'-infection color(I_french_vanilla)
                     CODE_BLOCK_NT
                         INVOCATION_LIST_NT'while current color is not cookie dough cream'
                             INVOCATION_NT'while current color is not cookie dough cream'
@@ -17120,7 +17120,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'infection color understood'
                             INVOCATION_NT'infection color understood'
                                 RVALUE_CONTEXT_NT'infection color understood'
-                                    NONLOCAL_VARIABLE_NT'infection color understood'('infection color understood'(var)[infection color])
+                                    {infection color understood = VARIABLE_MC}'infection color understood'('infection color understood'(var)[infection color])
                         INVOCATION_LIST_SAY_NT'" for you!'"'
                             INVOCATION_NT'" for you!'"'
                                 RVALUE_CONTEXT_NT'" for you!'"'
@@ -17179,7 +17179,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the person asked'
                                     INVOCATION_NT'the person asked'
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" licks "'
                                     INVOCATION_NT'" licks "'
                                         RVALUE_CONTEXT_NT'" licks "'
@@ -17187,7 +17187,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the noun'
                                     INVOCATION_NT'the noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'"."'
                                     INVOCATION_NT'"."'
                                         RVALUE_CONTEXT_NT'"."'
@@ -17198,7 +17198,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the person asked'
                             INVOCATION_NT'the person asked'
                                 RVALUE_CONTEXT_NT'person asked'
-                                    NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                    {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                         INVOCATION_LIST_SAY_NT'" pops the end of "'
                             INVOCATION_NT'" pops the end of "'
                                 RVALUE_CONTEXT_NT'" pops the end of "'
@@ -17206,7 +17206,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the noun'
                             INVOCATION_NT'the noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'" into "'
                             INVOCATION_NT'" into "'
                                 RVALUE_CONTEXT_NT'" into "'
@@ -17249,7 +17249,7 @@ ROOT_NT
                             INVOCATION_NT'infection color'
                                 RVALUE_CONTEXT_NT'infection color'
                                     PROPERTY_VALUE_NT'infection color'
-                                        CONSTANT_NT'infection color'-infection colors valued property
+                                        {infection color = PROPERTY_MC}'infection color'-infection colors valued property
                                         CONSTANT_NT-object(-self-)
                         INVOCATION_LIST_SAY_NT'" "'
                             INVOCATION_NT'" "'
@@ -17374,7 +17374,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the noun'
                                     INVOCATION_NT'the noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" cannot be infected."'
                                     INVOCATION_NT'" cannot be infected."'
                                         RVALUE_CONTEXT_NT'" cannot be infected."'
@@ -17402,7 +17402,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'noun'
                             INVOCATION_NT'noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'"."'
                             INVOCATION_NT'"."'
                                 RVALUE_CONTEXT_NT'"."'
@@ -17413,7 +17413,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the person asked'
                             INVOCATION_NT'the person asked'
                                 RVALUE_CONTEXT_NT'person asked'
-                                    NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                    {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                         INVOCATION_LIST_SAY_NT'" sneezes on "'
                             INVOCATION_NT'" sneezes on "'
                                 RVALUE_CONTEXT_NT'" sneezes on "'
@@ -17431,7 +17431,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'noun'
                             INVOCATION_NT'noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'end if'
                             INVOCATION_NT'end if'
                         INVOCATION_LIST_SAY_NT'"!"'
@@ -17470,7 +17470,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the second noun'
                                     INVOCATION_NT'the second noun'
                                         RVALUE_CONTEXT_NT'second noun'
-                                            NONLOCAL_VARIABLE_NT'second noun'('second noun'(var)[object])
+                                            {second noun = VARIABLE_MC}'second noun'('second noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" cannot inject anything."'
                                     INVOCATION_NT'" cannot inject anything."'
                                         RVALUE_CONTEXT_NT'" cannot inject anything."'
@@ -17498,7 +17498,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the noun'
                                     INVOCATION_NT'the noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" is not infected, and the syringe contains a cure, not a va'
                                     INVOCATION_NT'" is not infected, and the syringe contains a cure, not a va'
                                         RVALUE_CONTEXT_NT'" is not infected, and the syringe contains a cure, not a va'
@@ -17525,7 +17525,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the noun'
                             INVOCATION_NT'the noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'", who is now cured (but could easily be reinfected)."'
                             INVOCATION_NT'", who is now cured (but could easily be reinfected)."'
                                 RVALUE_CONTEXT_NT'", who is now cured (but could easily be reinfected)."'
@@ -17749,7 +17749,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'abide by the must have accessible the second noun rule'
                                                 INVOCATION_NT'abide by the must have accessible the second noun rule'
                                                     RVALUE_CONTEXT_NT'must have accessible the second noun rule'
-                                                        CONSTANT_NT'must have accessible the second noun rule'-rule
+                                                        {must have accessible the second noun rule = MISCELLANEOUS_MC}'must have accessible the second noun rule'-rule
                                         CODE_BLOCK_NT'otherwise'
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'if a visible passkey ( called item ) unbolts the noun'
@@ -17762,7 +17762,7 @@ ROOT_NT
                                                     INVOCATION_LIST_NT'abide by the must have accessible the second noun rule'
                                                         INVOCATION_NT'abide by the must have accessible the second noun rule'
                                                             RVALUE_CONTEXT_NT'must have accessible the second noun rule'
-                                                                CONSTANT_NT'must have accessible the second noun rule'-rule
+                                                                {must have accessible the second noun rule = MISCELLANEOUS_MC}'must have accessible the second noun rule'-rule
                                                 CODE_BLOCK_NT'otherwise'
                                                     CODE_BLOCK_NT
                                                         INVOCATION_LIST_NT'if the player is the person asked'
@@ -17774,7 +17774,7 @@ ROOT_NT
                                                                 INVOCATION_LIST_SAY_NT'key-refusal for noun'
                                                                     INVOCATION_NT'key-refusal for noun'
                                                                         RVALUE_CONTEXT_NT'noun'
-                                                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                                     INVOCATION_LIST_NT'stop the action'
                                                         INVOCATION_NT'stop the action'
                             RULE_NT'to say key-refusal for ( locked-thing - an object )'
@@ -17782,7 +17782,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'carry out the refusing keys activity with the locked-thing'
                                         INVOCATION_NT'carry out the refusing keys activity with the locked-thing'
                                             RVALUE_CONTEXT_NT'refusing keys'
-                                                CONSTANT_NT'refusing keys'-activity on objects
+                                                {refusing keys = ACTIVITY_MC}'refusing keys'-activity on objects
                                             RVALUE_CONTEXT_NT'locked-thing'
                                                 LOCAL_VARIABLE_NT'locked-thing'(t_0;object)
                             SENTENCE_NT'refusing keys of something is an activity'
@@ -17863,7 +17863,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'abide by the must have accessible the second noun rule'
                                             INVOCATION_NT'abide by the must have accessible the second noun rule'
                                                 RVALUE_CONTEXT_NT'must have accessible the second noun rule'
-                                                    CONSTANT_NT'must have accessible the second noun rule'-rule
+                                                    {must have accessible the second noun rule = MISCELLANEOUS_MC}'must have accessible the second noun rule'-rule
                                 SENTENCE_NT'the right second rule is listed instead of the can't unlock '
                                     VERB_NT'is'
                                     PROPER_NOUN_NT'the right second rule'
@@ -17915,15 +17915,15 @@ ROOT_NT
                                         INVOCATION_LIST_NT'abide by the can't unlock without a lock rule'
                                             INVOCATION_NT'abide by the can't unlock without a lock rule'
                                                 RVALUE_CONTEXT_NT'can't unlock without a lock rule'
-                                                    CONSTANT_NT'can't unlock without a lock rule'-rule
+                                                    {can't unlock without a lock rule = MISCELLANEOUS_MC}'can't unlock without a lock rule'-rule
                                         INVOCATION_LIST_NT'abide by the can't unlock what's already unlocked rule'
                                             INVOCATION_NT'abide by the can't unlock what's already unlocked rule'
                                                 RVALUE_CONTEXT_NT'can't unlock what's already unlocked rule'
-                                                    CONSTANT_NT'can't unlock what's already unlocked rule'-rule
+                                                    {can't unlock what's already unlocked rule = MISCELLANEOUS_MC}'can't unlock what's already unlocked rule'-rule
                                         INVOCATION_LIST_NT'abide by the need a matching key rule'
                                             INVOCATION_NT'abide by the need a matching key rule'
                                                 RVALUE_CONTEXT_NT'need a matching key rule'
-                                                    CONSTANT_NT'need a matching key rule'-rule
+                                                    {need a matching key rule = MISCELLANEOUS_MC}'need a matching key rule'-rule
                                         INVOCATION_LIST_NT'now the key unlocked with is the second noun'
                                             CONDITION_CONTEXT_NT'the key unlocked with is the second noun'
                                 RULE_NT'carry out an actor unlocking keylessly ( this is the standar'
@@ -17981,7 +17981,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'abide by the must have accessible the second noun rule'
                                             INVOCATION_NT'abide by the must have accessible the second noun rule'
                                                 RVALUE_CONTEXT_NT'must have accessible the second noun rule'
-                                                    CONSTANT_NT'must have accessible the second noun rule'-rule
+                                                    {must have accessible the second noun rule = MISCELLANEOUS_MC}'must have accessible the second noun rule'-rule
                                 SENTENCE_NT'the right second rule is listed instead of the can't lock wi'
                                     VERB_NT'is'
                                     PROPER_NOUN_NT'the right second rule'
@@ -18019,19 +18019,19 @@ ROOT_NT
                                         INVOCATION_LIST_NT'abide by the can't lock without a lock rule'
                                             INVOCATION_NT'abide by the can't lock without a lock rule'
                                                 RVALUE_CONTEXT_NT'can't lock without a lock rule'
-                                                    CONSTANT_NT'can't lock without a lock rule'-rule
+                                                    {can't lock without a lock rule = MISCELLANEOUS_MC}'can't lock without a lock rule'-rule
                                         INVOCATION_LIST_NT'abide by the can't lock what's already locked rule'
                                             INVOCATION_NT'abide by the can't lock what's already locked rule'
                                                 RVALUE_CONTEXT_NT'can't lock what's already locked rule'
-                                                    CONSTANT_NT'can't lock what's already locked rule'-rule
+                                                    {can't lock what's already locked rule = MISCELLANEOUS_MC}'can't lock what's already locked rule'-rule
                                         INVOCATION_LIST_NT'abide by the can't lock what's open rule'
                                             INVOCATION_NT'abide by the can't lock what's open rule'
                                                 RVALUE_CONTEXT_NT'can't lock what's open rule'
-                                                    CONSTANT_NT'can't lock what's open rule'-rule
+                                                    {can't lock what's open rule = MISCELLANEOUS_MC}'can't lock what's open rule'-rule
                                         INVOCATION_LIST_NT'abide by the need a matching key rule'
                                             INVOCATION_NT'abide by the need a matching key rule'
                                                 RVALUE_CONTEXT_NT'need a matching key rule'
-                                                    CONSTANT_NT'need a matching key rule'-rule
+                                                    {need a matching key rule = MISCELLANEOUS_MC}'need a matching key rule'-rule
                                         INVOCATION_LIST_NT'now the key locked with is the second noun'
                                             CONDITION_CONTEXT_NT'the key locked with is the second noun'
                                 RULE_NT'carry out an actor locking keylessly ( this is the standard '
@@ -18170,7 +18170,7 @@ ROOT_NT
                                 INVOCATION_LIST_NT'abide by the carrying requirements rule'
                                     INVOCATION_NT'abide by the carrying requirements rule'
                                         RVALUE_CONTEXT_NT'carrying requirements rule'
-                                            CONSTANT_NT'carrying requirements rule'-rule
+                                            {carrying requirements rule = MISCELLANEOUS_MC}'carrying requirements rule'-rule
                         SENTENCE_NT'understand "put [passkey] on [keychain]" as putting it on'
                             VERB_NT'understand'
                             PROPER_NOUN_NT'"put [passkey] on [keychain]"'
@@ -18212,9 +18212,9 @@ ROOT_NT
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun'
                                             INVOCATION_NT'carry out the implicitly taking activity with the noun'
                                                 RVALUE_CONTEXT_NT'implicitly taking'
-                                                    CONSTANT_NT'implicitly taking'-activity on objects
+                                                    {implicitly taking = ACTIVITY_MC}'implicitly taking'-activity on objects
                                                 RVALUE_CONTEXT_NT'noun'
-                                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         RULE_NT'this is the second noun autotaking rule'
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -18242,9 +18242,9 @@ ROOT_NT
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the second nou'
                                             INVOCATION_NT'carry out the implicitly taking activity with the second nou'
                                                 RVALUE_CONTEXT_NT'implicitly taking'
-                                                    CONSTANT_NT'implicitly taking'-activity on objects
+                                                    {implicitly taking = ACTIVITY_MC}'implicitly taking'-activity on objects
                                                 RVALUE_CONTEXT_NT'second noun'
-                                                    NONLOCAL_VARIABLE_NT'second noun'('second noun'(var)[object])
+                                                    {second noun = VARIABLE_MC}'second noun'('second noun'(var)[object])
                         RULE_NT'this is the must hold the noun rule'
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT
@@ -18256,7 +18256,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'follow the noun autotaking rule'
                                             INVOCATION_NT'follow the noun autotaking rule'
                                                 RVALUE_CONTEXT_NT'noun autotaking rule'
-                                                    CONSTANT_NT'noun autotaking rule'-rule
+                                                    {noun autotaking rule = MISCELLANEOUS_MC}'noun autotaking rule'-rule
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the person asked does not have the noun'
                                         INVOCATION_NT'if the person asked does not have the noun'
@@ -18278,7 +18278,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'follow the second noun autotaking rule'
                                             INVOCATION_NT'follow the second noun autotaking rule'
                                                 RVALUE_CONTEXT_NT'second noun autotaking rule'
-                                                    CONSTANT_NT'second noun autotaking rule'-rule
+                                                    {second noun autotaking rule = MISCELLANEOUS_MC}'second noun autotaking rule'-rule
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the person asked does not have the second noun'
                                         INVOCATION_NT'if the person asked does not have the second noun'
@@ -18308,7 +18308,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'follow the noun autotaking rule'
                                             INVOCATION_NT'follow the noun autotaking rule'
                                                 RVALUE_CONTEXT_NT'noun autotaking rule'
-                                                    CONSTANT_NT'noun autotaking rule'-rule
+                                                    {noun autotaking rule = MISCELLANEOUS_MC}'noun autotaking rule'-rule
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'if the noun is not key-accessible'
                                         INVOCATION_NT'if the noun is not key-accessible'
@@ -18343,7 +18343,7 @@ ROOT_NT
                                                 NEW_LOCAL_CONTEXT_NT'held second noun'
                                                     UNKNOWN_NT'held second noun'
                                                 RVALUE_CONTEXT_NT'second noun'
-                                                    NONLOCAL_VARIABLE_NT'second noun'('second noun'(var)[object])
+                                                    {second noun = VARIABLE_MC}'second noun'('second noun'(var)[object])
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'if the second noun is on a keychain ( called the containing '
                                                 INVOCATION_NT'if the second noun is on a keychain ( called the containing '
@@ -18355,7 +18355,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'follow the second noun autotaking rule'
                                             INVOCATION_NT'follow the second noun autotaking rule'
                                                 RVALUE_CONTEXT_NT'second noun autotaking rule'
-                                                    CONSTANT_NT'second noun autotaking rule'-rule
+                                                    {second noun autotaking rule = MISCELLANEOUS_MC}'second noun autotaking rule'-rule
                                         INVOCATION_LIST_NT'now the second noun is the held second noun'
                                             CONDITION_CONTEXT_NT'the second noun is the held second noun'
                                 CODE_BLOCK_NT
@@ -18448,7 +18448,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the location'
                                     INVOCATION_NT'the location'
                                         RVALUE_CONTEXT_NT'location'
-                                            NONLOCAL_VARIABLE_NT'location'('location'(var)[object])
+                                            {location = VARIABLE_MC}'location'('location'(var)[object])
                                 INVOCATION_LIST_SAY_NT'"."'
                                     INVOCATION_NT'"."'
                                         RVALUE_CONTEXT_NT'"."'
@@ -18467,9 +18467,9 @@ ROOT_NT
                                     INVOCATION_LIST_NT'best route from the location to the noun , using even locked'
                                         INVOCATION_NT'best route from the location to the noun'
                                             RVALUE_CONTEXT_NT'location'
-                                                NONLOCAL_VARIABLE_NT'location'('location'(var)[object])
+                                                {location = VARIABLE_MC}'location'('location'(var)[object])
                                             RVALUE_CONTEXT_NT'noun'
-                                                NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                                {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                     CODE_BLOCK_NT
                         INVOCATION_LIST_NT'if heading is not a direction'
                             INVOCATION_NT'if heading is not a direction'
@@ -18616,7 +18616,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the noun'
                             INVOCATION_NT'the noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'", but shrugs."'
                             INVOCATION_NT'", but shrugs."'
                                 RVALUE_CONTEXT_NT'", but shrugs."'
@@ -18692,7 +18692,7 @@ ROOT_NT
                         INVOCATION_LIST_SAY_NT'the noun'
                             INVOCATION_NT'the noun'
                                 RVALUE_CONTEXT_NT'noun'
-                                    NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                    {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                         INVOCATION_LIST_SAY_NT'" falls out of sight, and you know you will never see it aga'
                             INVOCATION_NT'" falls out of sight, and you know you will never see it aga'
                                 RVALUE_CONTEXT_NT'" falls out of sight, and you know you will never see it aga'
@@ -19095,7 +19095,7 @@ ROOT_NT
                                                     INVOCATION_LIST_NT'best route from the location to the next room'
                                                         INVOCATION_NT'best route from the location to the next room'
                                                             RVALUE_CONTEXT_NT'location'
-                                                                NONLOCAL_VARIABLE_NT'location'('location'(var)[object])
+                                                                {location = VARIABLE_MC}'location'('location'(var)[object])
                                                             RVALUE_CONTEXT_NT'next room'
                                                                 LOCAL_VARIABLE_NT'next room'(tmp_3;room)
                                     CODE_BLOCK_NT'say "[way] to [the next room]"'
@@ -19224,7 +19224,7 @@ ROOT_NT
                                                     RVALUE_CONTEXT_NT'way'
                                                         LOCAL_VARIABLE_NT'way'(tmp_1;direction)
                                                     RVALUE_CONTEXT_NT'location'
-                                                        NONLOCAL_VARIABLE_NT'location'('location'(var)[object])
+                                                        {location = VARIABLE_MC}'location'('location'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if the next room is a room'
                                     INVOCATION_NT'if the next room is a room'
@@ -19541,8 +19541,8 @@ ROOT_NT
                                 UNKNOWN_NT'source'
                             RVALUE_CONTEXT_NT'conversation of the noun'
                                 PROPERTY_VALUE_NT'conversation of the noun'
-                                    CONSTANT_NT-nothing valued property
-                                    NONLOCAL_VARIABLE_NT'the noun'('noun'(var)[object])
+                                    {conversation = PROPERTY_MC}-nothing valued property
+                                    {noun = VARIABLE_MC}'the noun'('noun'(var)[object])
                     CODE_BLOCK_NT
                         INVOCATION_LIST_NT'if topic understood is a topic listed in source'
                             INVOCATION_NT'if topic understood is a topic listed in source'
@@ -19559,7 +19559,7 @@ ROOT_NT
                                                         INVOCATION_NT'there is a turn stamp entry'
                                                             LVALUE_TR_CONTEXT_NT'a turn stamp entry'
                                                                 TABLE_ENTRY_NT'a turn stamp entry'
-                                                                    CONSTANT_NT-nothing valued table column
+                                                                    {turn stamp = TABLE_COLUMN_MC}-nothing valued table column
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT'say "You have already heard that [summary entry]."'
                                         INVOCATION_LIST_SAY_NT'"You have already heard that "'
@@ -19570,7 +19570,7 @@ ROOT_NT
                                             INVOCATION_NT'summary entry'
                                                 RVALUE_CONTEXT_NT'summary entry'
                                                     TABLE_ENTRY_NT'summary entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {summary = TABLE_COLUMN_MC}-nothing valued table column
                                         INVOCATION_LIST_SAY_NT'"."'
                                             INVOCATION_NT'"."'
                                                 RVALUE_CONTEXT_NT'"."'
@@ -19585,7 +19585,7 @@ ROOT_NT
                                             INVOCATION_NT'reply entry'
                                                 RVALUE_CONTEXT_NT'reply entry'
                                                     TABLE_ENTRY_NT'reply entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {reply = TABLE_COLUMN_MC}-nothing valued table column
                                         INVOCATION_LIST_SAY_NT'paragraph break'
                                             INVOCATION_NT'paragraph break'
                         CODE_BLOCK_NT'otherwise'
@@ -19593,7 +19593,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the noun'
                                     INVOCATION_NT'the noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" stares at you blankly."'
                                     INVOCATION_NT'" stares at you blankly."'
                                         RVALUE_CONTEXT_NT'" stares at you blankly."'
@@ -19628,14 +19628,14 @@ ROOT_NT
                                         UNKNOWN_NT'source'
                                     RVALUE_CONTEXT_NT'conversation of the speaker'
                                         PROPERTY_VALUE_NT'conversation of the speaker'
-                                            CONSTANT_NT-nothing valued property
+                                            {conversation = PROPERTY_MC}-nothing valued property
                                             LOCAL_VARIABLE_NT'the speaker'(tmp_0;person)
                             INVOCATION_LIST_NT'sort source in turn stamp order'
                                 INVOCATION_NT'sort source in turn stamp order'
                                     RVALUE_CONTEXT_NT'source'
                                         LOCAL_VARIABLE_NT'source'(tmp_2;table name)
                                     RVALUE_CONTEXT_NT'turn stamp'
-                                        CONSTANT_NT'turn stamp'-nothing valued table column
+                                        {turn stamp = TABLE_COLUMN_MC}'turn stamp'-nothing valued table column
                             CODE_BLOCK_NT'say "[The speaker] has so far told you: [line break]"'
                                 INVOCATION_LIST_SAY_NT'the speaker'
                                     INVOCATION_NT'the speaker'
@@ -19670,7 +19670,7 @@ ROOT_NT
                                                                     INVOCATION_NT'there is a turn stamp entry'
                                                                         LVALUE_TR_CONTEXT_NT'a turn stamp entry'
                                                                             TABLE_ENTRY_NT'a turn stamp entry'
-                                                                                CONSTANT_NT-nothing valued table column
+                                                                                {turn stamp = TABLE_COLUMN_MC}-nothing valued table column
                                                         TEST_PROPOSITION_NT'the speaker is character entry'(test: [ is('the speaker', 'character entry') ])
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'let index be 1'
@@ -19688,7 +19688,7 @@ ROOT_NT
                                                     INVOCATION_NT'summary entry'
                                                         RVALUE_CONTEXT_NT'summary entry'
                                                             TABLE_ENTRY_NT'summary entry'
-                                                                CONSTANT_NT-nothing valued table column
+                                                                {summary = TABLE_COLUMN_MC}-nothing valued table column
                                                 INVOCATION_LIST_SAY_NT'line break'
                                                     INVOCATION_NT'line break'
                             CODE_BLOCK_NT
@@ -19732,14 +19732,14 @@ ROOT_NT
                                             INVOCATION_LIST_NT'player's command includes "the"'
                                                 INVOCATION_NT'player's command includes "the"'
                                                     RVALUE_CONTEXT_NT'player's command'
-                                                        NONLOCAL_VARIABLE_NT'player's command'('player's command'(var)[snippet])
+                                                        {player's command = VARIABLE_MC}'player's command'('player's command'(var)[snippet])
                                                     RVALUE_CONTEXT_NT'"the"'
                                                         CONSTANT_NT'"the"'-topic
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'cut the matched text'
                                 INVOCATION_NT'cut the matched text'
                                     RVALUE_CONTEXT_NT'matched text'
-                                        NONLOCAL_VARIABLE_NT'matched text'('matched text'(var)[snippet])
+                                        {matched text = VARIABLE_MC}'matched text'('matched text'(var)[snippet])
         HEADING_NT'section 6 - movement description' (level 5)
             SENTENCE_NT'a person has some text called walk style'
                 VERB_NT'has'
@@ -19822,11 +19822,11 @@ ROOT_NT
                                                 UNKNOWN_NT'accomplice'
                                             RVALUE_CONTEXT_NT'character entry'
                                                 TABLE_ENTRY_NT'character entry'
-                                                    CONSTANT_NT-nothing valued table column
+                                                    {character = TABLE_COLUMN_MC}-nothing valued table column
                                     INVOCATION_LIST_NT'choose row with heading chosen of next direction in the curr'
                                         INVOCATION_NT'choose row with heading chosen of next direction in the curr'
                                             RVALUE_CONTEXT_NT'heading chosen'
-                                                CONSTANT_NT'heading chosen'-nothing valued table column
+                                                {heading chosen = TABLE_COLUMN_MC}'heading chosen'-nothing valued table column
                                             RVALUE_CONTEXT_NT'next direction'
                                                 LOCAL_VARIABLE_NT'next direction'(tmp_0;direction)
                                             RVALUE_CONTEXT_NT'current table'
@@ -19860,7 +19860,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'choose row with character of accomplice in the current table'
                                         INVOCATION_NT'choose row with character of accomplice in the current table'
                                             RVALUE_CONTEXT_NT'character'
-                                                CONSTANT_NT'character'-nothing valued table column
+                                                {character = TABLE_COLUMN_MC}'character'-nothing valued table column
                                             RVALUE_CONTEXT_NT'accomplice'
                                                 LOCAL_VARIABLE_NT'accomplice'(tmp_3;thing)
                                             RVALUE_CONTEXT_NT'current table'
@@ -19874,7 +19874,7 @@ ROOT_NT
                                                 LOCAL_VARIABLE_NT'next direction'(tmp_0;direction)
                                             RVALUE_CONTEXT_NT'heading chosen entry'
                                                 TABLE_ENTRY_NT'heading chosen entry'
-                                                    CONSTANT_NT-nothing valued table column
+                                                    {heading chosen = TABLE_COLUMN_MC}-nothing valued table column
             SENTENCE_NT'a door has a person called last opener'
                 VERB_NT'has'
                 COMMON_NOUN_NT'door'
@@ -19898,7 +19898,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the person asked'
                                     INVOCATION_NT'the person asked'
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" opens "'
                                     INVOCATION_NT'" opens "'
                                         RVALUE_CONTEXT_NT'" opens "'
@@ -19906,7 +19906,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the noun'
                                     INVOCATION_NT'the noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'". "'
                                     INVOCATION_NT'". "'
                                         RVALUE_CONTEXT_NT'". "'
@@ -19919,7 +19919,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the noun'
                                     INVOCATION_NT'the noun'
                                         RVALUE_CONTEXT_NT'noun'
-                                            NONLOCAL_VARIABLE_NT'noun'('noun'(var)[object])
+                                            {noun = VARIABLE_MC}'noun'('noun'(var)[object])
                                 INVOCATION_LIST_SAY_NT'" opens from the other side. "'
                                     INVOCATION_NT'" opens from the other side. "'
                                         RVALUE_CONTEXT_NT'" opens from the other side. "'
@@ -19947,16 +19947,16 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'the person asked as pronoun'
                                     [1/2] INVOCATION_NT'the person asked as pronoun'/1
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                                     [2/2] INVOCATION_NT'the person asked as pronoun'
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                         CODE_BLOCK_NT'otherwise'
                             CODE_BLOCK_NT'say "[The person asked]"'
                                 INVOCATION_LIST_SAY_NT'the person asked'
                                     INVOCATION_NT'the person asked'
                                         RVALUE_CONTEXT_NT'person asked'
-                                            NONLOCAL_VARIABLE_NT'person asked'('person asked'(var)[object])
+                                            {person asked = VARIABLE_MC}'person asked'('person asked'(var)[object])
                     CODE_BLOCK_NT'say " [if the person asked is in the location]comes[otherwis'
                         INVOCATION_LIST_SAY_NT'" "'
                             INVOCATION_NT'" "'
@@ -20020,12 +20020,12 @@ ROOT_NT
                             INVOCATION_LIST_NT'choose a blank row in the table of visible entrances'
                                 INVOCATION_NT'choose a blank row in the table of visible entrances'
                                     RVALUE_CONTEXT_NT'table of visible entrances'
-                                        CONSTANT_NT'table of visible entrances'-table name
+                                        {table of visible entrances = TABLE_MC}'table of visible entrances'-table name
                         CODE_BLOCK_NT'otherwise'
                             INVOCATION_LIST_NT'choose a blank row in the table of visible exits'
                                 INVOCATION_NT'choose a blank row in the table of visible exits'
                                     RVALUE_CONTEXT_NT'table of visible exits'
-                                        CONSTANT_NT'table of visible exits'-table name
+                                        {table of visible exits = TABLE_MC}'table of visible exits'-table name
                     INVOCATION_LIST_NT'now character entry is the person asked'
                         CONDITION_CONTEXT_NT'character entry is the person asked'
                     INVOCATION_LIST_NT'now total entry is 1'
@@ -20048,23 +20048,23 @@ ROOT_NT
                     INVOCATION_LIST_NT'sort the table of visible entrances in heading chosen order'
                         INVOCATION_NT'sort the table of visible entrances in heading chosen order'
                             RVALUE_CONTEXT_NT'table of visible entrances'
-                                CONSTANT_NT'table of visible entrances'-table name
+                                {table of visible entrances = TABLE_MC}'table of visible entrances'-table name
                             RVALUE_CONTEXT_NT'heading chosen'
-                                CONSTANT_NT'heading chosen'-nothing valued table column
+                                {heading chosen = TABLE_COLUMN_MC}'heading chosen'-nothing valued table column
                     INVOCATION_LIST_NT'tidy departures of the table of visible entrances'
                         INVOCATION_NT'tidy departures of the table of visible entrances'
                             RVALUE_CONTEXT_NT'table of visible entrances'
-                                CONSTANT_NT'table of visible entrances'-table name
+                                {table of visible entrances = TABLE_MC}'table of visible entrances'-table name
                     INVOCATION_LIST_NT'sort the table of visible exits in heading chosen order'
                         INVOCATION_NT'sort the table of visible exits in heading chosen order'
                             RVALUE_CONTEXT_NT'table of visible exits'
-                                CONSTANT_NT'table of visible exits'-table name
+                                {table of visible exits = TABLE_MC}'table of visible exits'-table name
                             RVALUE_CONTEXT_NT'heading chosen'
-                                CONSTANT_NT'heading chosen'-nothing valued table column
+                                {heading chosen = TABLE_COLUMN_MC}'heading chosen'-nothing valued table column
                     INVOCATION_LIST_NT'tidy departures of the table of visible exits'
                         INVOCATION_NT'tidy departures of the table of visible exits'
                             RVALUE_CONTEXT_NT'table of visible exits'
-                                CONSTANT_NT'table of visible exits'-table name
+                                {table of visible exits = TABLE_MC}'table of visible exits'-table name
                     INVOCATION_LIST_NT'let total row count be the number of filled rows in the tabl'
                         INVOCATION_NT'let total row count be the number of filled rows in the tabl'
                             NEW_LOCAL_CONTEXT_NT'total row count'
@@ -20078,13 +20078,13 @@ ROOT_NT
                                                     INVOCATION_LIST_NT'number of filled rows in the table of visible entrances'
                                                         INVOCATION_NT'number of filled rows in the table of visible entrances'
                                                             RVALUE_CONTEXT_NT'table of visible entrances'
-                                                                CONSTANT_NT'table of visible entrances'-table name
+                                                                {table of visible entrances = TABLE_MC}'table of visible entrances'-table name
                                             RVALUE_CONTEXT_NT'number of filled rows in the table of visible exits'
                                                 PHRASE_TO_DECIDE_VALUE_NT'number of filled rows in the table of visible exits'
                                                     INVOCATION_LIST_NT'number of filled rows in the table of visible exits'
                                                         INVOCATION_NT'number of filled rows in the table of visible exits'
                                                             RVALUE_CONTEXT_NT'table of visible exits'
-                                                                CONSTANT_NT'table of visible exits'-table name
+                                                                {table of visible exits = TABLE_MC}'table of visible exits'-table name
                     CODE_BLOCK_NT
                         INVOCATION_LIST_NT'if total row count is 0'
                             INVOCATION_NT'if total row count is 0'
@@ -20096,19 +20096,19 @@ ROOT_NT
                     INVOCATION_LIST_NT'generate descriptions from the table of visible entrances'
                         INVOCATION_NT'generate descriptions from the table of visible entrances'
                             RVALUE_CONTEXT_NT'table of visible entrances'
-                                CONSTANT_NT'table of visible entrances'-table name
+                                {table of visible entrances = TABLE_MC}'table of visible entrances'-table name
                     INVOCATION_LIST_NT'generate descriptions from the table of visible exits'
                         INVOCATION_NT'generate descriptions from the table of visible exits'
                             RVALUE_CONTEXT_NT'table of visible exits'
-                                CONSTANT_NT'table of visible exits'-table name
+                                {table of visible exits = TABLE_MC}'table of visible exits'-table name
                     INVOCATION_LIST_NT'clear the table of visible entrances'
                         INVOCATION_NT'clear the table of visible entrances'
                             RVALUE_CONTEXT_NT'table of visible entrances'
-                                CONSTANT_NT'table of visible entrances'-table name
+                                {table of visible entrances = TABLE_MC}'table of visible entrances'-table name
                     INVOCATION_LIST_NT'clear the table of visible exits'
                         INVOCATION_NT'clear the table of visible exits'
                             RVALUE_CONTEXT_NT'table of visible exits'
-                                CONSTANT_NT'table of visible exits'-table name
+                                {table of visible exits = TABLE_MC}'table of visible exits'-table name
             RULE_NT'to generate descriptions from ( current table - a table name'
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let count be the number of filled rows in the current table'
@@ -20147,7 +20147,7 @@ ROOT_NT
                                         UNKNOWN_NT'accomplice'
                                     RVALUE_CONTEXT_NT'character entry'
                                         TABLE_ENTRY_NT'character entry'
-                                            CONSTANT_NT-nothing valued table column
+                                            {character = TABLE_COLUMN_MC}-nothing valued table column
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if character entry is a person'
                                     INVOCATION_NT'if character entry is a person'
@@ -20167,7 +20167,7 @@ ROOT_NT
                                                             INVOCATION_NT'there is a second entry'
                                                                 LVALUE_TR_CONTEXT_NT'a second entry'
                                                                     TABLE_ENTRY_NT'a second entry'
-                                                                        CONSTANT_NT-nothing valued table column
+                                                                        {second = TABLE_COLUMN_MC}-nothing valued table column
                                                 TEST_PROPOSITION_NT'second entry is a person'(test: [ kind=person('second entry') ])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'now second entry is marked for listing'
@@ -20183,7 +20183,7 @@ ROOT_NT
                                                             INVOCATION_NT'there is a third entry'
                                                                 LVALUE_TR_CONTEXT_NT'a third entry'
                                                                     TABLE_ENTRY_NT'a third entry'
-                                                                        CONSTANT_NT-nothing valued table column
+                                                                        {third = TABLE_COLUMN_MC}-nothing valued table column
                                                 TEST_PROPOSITION_NT'third entry is a person'(test: [ kind=person('third entry') ])
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'now third entry is marked for listing'
@@ -20198,9 +20198,9 @@ ROOT_NT
                                                 INVOCATION_NT'room the heading chosen entry from the location'
                                                     RVALUE_CONTEXT_NT'heading chosen entry'
                                                         TABLE_ENTRY_NT'heading chosen entry'
-                                                            CONSTANT_NT-nothing valued table column
+                                                            {heading chosen = TABLE_COLUMN_MC}-nothing valued table column
                                                     RVALUE_CONTEXT_NT'location'
-                                                        NONLOCAL_VARIABLE_NT'location'('location'(var)[object])
+                                                        {location = VARIABLE_MC}'location'('location'(var)[object])
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'if total entry is 3'
                                     INVOCATION_NT'if total entry is 3'
@@ -20212,7 +20212,7 @@ ROOT_NT
                                             INVOCATION_NT'the character entry'
                                                 RVALUE_CONTEXT_NT'character entry'
                                                     TABLE_ENTRY_NT'character entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {character = TABLE_COLUMN_MC}-nothing valued table column
                                         INVOCATION_LIST_SAY_NT'", "'
                                             INVOCATION_NT'", "'
                                                 RVALUE_CONTEXT_NT'", "'
@@ -20221,7 +20221,7 @@ ROOT_NT
                                             INVOCATION_NT'the second entry'
                                                 RVALUE_CONTEXT_NT'second entry'
                                                     TABLE_ENTRY_NT'second entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {second = TABLE_COLUMN_MC}-nothing valued table column
                                         INVOCATION_LIST_SAY_NT'optional comma'
                                             INVOCATION_NT'optional comma'
                                         INVOCATION_LIST_SAY_NT'" and "'
@@ -20232,7 +20232,7 @@ ROOT_NT
                                             INVOCATION_NT'the third entry'
                                                 RVALUE_CONTEXT_NT'third entry'
                                                     TABLE_ENTRY_NT'third entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {third = TABLE_COLUMN_MC}-nothing valued table column
                                         INVOCATION_LIST_SAY_NT'" "'
                                             INVOCATION_NT'" "'
                                                 RVALUE_CONTEXT_NT'" "'
@@ -20248,7 +20248,7 @@ ROOT_NT
                                             INVOCATION_NT'the character entry'
                                                 RVALUE_CONTEXT_NT'character entry'
                                                     TABLE_ENTRY_NT'character entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {character = TABLE_COLUMN_MC}-nothing valued table column
                                         INVOCATION_LIST_SAY_NT'" and "'
                                             INVOCATION_NT'" and "'
                                                 RVALUE_CONTEXT_NT'" and "'
@@ -20257,7 +20257,7 @@ ROOT_NT
                                             INVOCATION_NT'the second entry'
                                                 RVALUE_CONTEXT_NT'second entry'
                                                     TABLE_ENTRY_NT'second entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {second = TABLE_COLUMN_MC}-nothing valued table column
                                         INVOCATION_LIST_SAY_NT'" "'
                                             INVOCATION_NT'" "'
                                                 RVALUE_CONTEXT_NT'" "'
@@ -20279,11 +20279,11 @@ ROOT_NT
                                                     [1/2] INVOCATION_NT'the character entry as pronoun'/1
                                                         RVALUE_CONTEXT_NT'character entry'
                                                             TABLE_ENTRY_NT'character entry'
-                                                                CONSTANT_NT-nothing valued table column
+                                                                {character = TABLE_COLUMN_MC}-nothing valued table column
                                                     [2/2] INVOCATION_NT'the character entry as pronoun'
                                                         RVALUE_CONTEXT_NT'character entry'
                                                             TABLE_ENTRY_NT'character entry'
-                                                                CONSTANT_NT-nothing valued table column
+                                                                {character = TABLE_COLUMN_MC}-nothing valued table column
                                                 INVOCATION_LIST_SAY_NT'" "'
                                                     INVOCATION_NT'" "'
                                                         RVALUE_CONTEXT_NT'" "'
@@ -20294,7 +20294,7 @@ ROOT_NT
                                                     INVOCATION_NT'the character entry'
                                                         RVALUE_CONTEXT_NT'character entry'
                                                             TABLE_ENTRY_NT'character entry'
-                                                                CONSTANT_NT-nothing valued table column
+                                                                {character = TABLE_COLUMN_MC}-nothing valued table column
                                                 INVOCATION_LIST_SAY_NT'" "'
                                                     INVOCATION_NT'" "'
                                                         RVALUE_CONTEXT_NT'" "'
@@ -20310,9 +20310,9 @@ ROOT_NT
                                             INVOCATION_NT'walk style of the character entry'
                                                 RVALUE_CONTEXT_NT'walk style of the character entry'
                                                     PROPERTY_VALUE_NT'walk style of the character entry'
-                                                        CONSTANT_NT-nothing valued property
+                                                        {walk style = PROPERTY_MC}-nothing valued property
                                                         TABLE_ENTRY_NT'the character entry'
-                                                            CONSTANT_NT-nothing valued table column
+                                                            {character = TABLE_COLUMN_MC}-nothing valued table column
                                         INVOCATION_LIST_SAY_NT'"s "'
                                             INVOCATION_NT'"s "'
                                                 RVALUE_CONTEXT_NT'"s "'
@@ -20477,7 +20477,7 @@ ROOT_NT
                                             INVOCATION_NT'the heading chosen entry'
                                                 RVALUE_CONTEXT_NT'heading chosen entry'
                                                     TABLE_ENTRY_NT'heading chosen entry'
-                                                        CONSTANT_NT-nothing valued table column
+                                                        {heading chosen = TABLE_COLUMN_MC}-nothing valued table column
                                 CODE_BLOCK_NT'otherwise'
                                     CODE_BLOCK_NT'say "[the target]"'
                                         INVOCATION_LIST_SAY_NT'the target'
@@ -20746,7 +20746,7 @@ ROOT_NT
                                     INVOCATION_NT'infection color of the patient'
                                         RVALUE_CONTEXT_NT'infection color of the patient'
                                             PROPERTY_VALUE_NT'infection color of the patient'
-                                                CONSTANT_NT-infection colors valued property
+                                                {infection color = PROPERTY_MC}-infection colors valued property
                                                 LOCAL_VARIABLE_NT'the patient'(tmp_2;person)
                             INVOCATION_LIST_NT'decrement index'
                                 INVOCATION_NT'decrement index'
@@ -20841,7 +20841,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'number of filled rows in the table of dipping phrases'
                                         INVOCATION_NT'number of filled rows in the table of dipping phrases'
                                             RVALUE_CONTEXT_NT'table of dipping phrases'
-                                                CONSTANT_NT'table of dipping phrases'-table name
+                                                {table of dipping phrases = TABLE_MC}'table of dipping phrases'-table name
                     CODE_BLOCK_NT
                         INVOCATION_LIST_NT'if index is greater than 4'
                             INVOCATION_NT'if index is greater than 4'
@@ -20865,13 +20865,13 @@ ROOT_NT
                             RVALUE_CONTEXT_NT'index'
                                 LOCAL_VARIABLE_NT'index'(t_0;number)
                             RVALUE_CONTEXT_NT'table of dipping phrases'
-                                CONSTANT_NT'table of dipping phrases'-table name
+                                {table of dipping phrases = TABLE_MC}'table of dipping phrases'-table name
                     CODE_BLOCK_NT'say dipping entry'
                         INVOCATION_LIST_SAY_NT'dipping entry'
                             INVOCATION_NT'dipping entry'
                                 RVALUE_CONTEXT_NT'dipping entry'
                                     TABLE_ENTRY_NT'dipping entry'
-                                        CONSTANT_NT-nothing valued table column
+                                        {dipping = TABLE_COLUMN_MC}-nothing valued table column
             TABLE_NT'table of dipping phrases dipping "looks as though dipped in"'
             SENTENCE_NT'a door is usually scenery'
                 VERB_NT'is usually'

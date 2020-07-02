@@ -42,9 +42,12 @@ piece of furniture in the model world.
 
 It might seem the wrong way around for the //noun// object to contain its
 meaning -- like saying that a luggage tag has a suitcase hanging from it,
-rather than vice versa. But this arrangement makes it convenient to add
-translations into non-English languages later on (i.e., at a time after the
-initial creation of the //noun// object).
+rather than vice versa. But this enables the lexicon to return a //noun//
+as the result of parsing some text, or more accurately a //noun_usage//
+which points to a //noun//. That in turn means that the lexicon's results
+can convey some linguistic data as well as the actual meaning -- e.g., it
+can say not only "this text refers to X" but also "this text is in the
+feminine accusative plural".
 
 =
 typedef struct noun {
@@ -63,6 +66,35 @@ typedef struct noun {
 
 	CLASS_DEFINITION
 } noun;
+
+@ A //noun_usage// object is what a lexicon search returns when text is matched
+against some form of a noun.
+
+In many languages, declensions do not completely distinguish their cases.
+In English, for example, the accusative and nominative form of almost every
+noun are the same. So it would not be possible for this object to say for
+sure what case was used -- for example, the lexicon can't know that the
+use of "Jane" in the sentences "Peter knows Jane" and "Jane knows Peter" has
+a different case in those sentences: it's only looking at the word itself,
+and can't know the wider context. Instead, when the lexicon parses "Jane",
+it can return the following, which lists the nominative and accusative forms
+as both being possible.
+
+More inflected languages make for more interesting examples here. In German,
+for example, "Tische" could be any of the nominative, accusative or genitive
+plurals of "Tisch", table, but "Tischen" can only be the dative plural. Inform
+does not at present make any real use of this capability, but the //linguistics//
+module tries to leave the door open to better handling of e.g. German syntax
+in future.
+
+=
+typedef struct noun_usage {
+	struct noun *noun_used;
+	NATURAL_LANGUAGE_WORDS_TYPE *language_used;
+	int no_possible_forms;
+	lcon_ti possible_forms[2*MAX_GRAMMATICAL_CASES];
+	CLASS_DEFINITION
+} noun_usage;
 
 @ Nouns are a grammatical category:
 
@@ -87,13 +119,7 @@ for example when Inform creates the nouns of anonymous objects, as in a
 sentence such as "Four people are in the Dining Room." Empty text in |W| means
 that no forms are added to the lexical cluster and nothing is registered with
 the lexicon.
-(ii) If a noun is added to the lexicon with the special meaning code |NOUN_MC|,
-passed to these functions in |mc|, then the meaning given to the lexicon is
-the |noun| object itself, from which the ultimate |meaning| can then be
-derived. The reason for such an indirection is that it makes it possible to
-see whether the noun used was common or proper. Inform uses this when sorting
-out ambiguous names of instances or kinds.
-(iii) The |options| are a bitmap which used to be larger, and is now reduced
+(ii) The |options| are a bitmap which used to be larger, and is now reduced
 to a combination of just two possibilities:
 
 @d ADD_TO_LEXICON_NTOPT 1         /* register these forms with the lexicon */
@@ -101,15 +127,15 @@ to a combination of just two possibilities:
 
 =
 noun *Nouns::new_proper_noun(wording W, int gender, int options,
-	unsigned int mc, parse_node *val) {
+	unsigned int mc, parse_node *val, NATURAL_LANGUAGE_WORDS_TYPE *lang) {
 	general_pointer owner = NULL_GENERAL_POINTER;
 	if (val) owner = STORE_POINTER_parse_node(val);
-	return Nouns::new_inner(W, owner, PROPER_NOUN, options, mc, NULL, gender);
+	return Nouns::new_inner(W, owner, PROPER_NOUN, options, mc, lang, gender);
 }
 
 noun *Nouns::new_common_noun(wording W, int gender, int options,
-	unsigned int mc, general_pointer owner) {
-	return Nouns::new_inner(W, owner, COMMON_NOUN, options, mc, NULL, gender);
+	unsigned int mc, general_pointer owner, NATURAL_LANGUAGE_WORDS_TYPE *lang) {
+	return Nouns::new_inner(W, owner, COMMON_NOUN, options, mc, lang, gender);
 }
 
 @ Note that 
@@ -161,10 +187,6 @@ void Nouns::log(noun *N) {
 As noted above, each noun comes with a cluster of names, and here's where
 we add a new one.
 
-For the time being, nouns are registered with the lexicon only in their
-nominative cases; if we ever get to the point of Inform source text written
-fully in a language like German, that will need to change.
-
 =
 void Nouns::supply_text(noun *N, wording W, NATURAL_LANGUAGE_WORDS_TYPE *lang,
 	int gender, int number, int options) {
@@ -172,14 +194,34 @@ void Nouns::supply_text(noun *N, wording W, NATURAL_LANGUAGE_WORDS_TYPE *lang,
 		(options & WITH_PLURAL_FORMS_NTOPT)?TRUE:FALSE);
 	if (options & ADD_TO_LEXICON_NTOPT) {
 		individual_form *in;
-		LOOP_OVER_LINKED_LIST(in, individual_form, L) {
-			general_pointer m = N->meaning;
-			if (N->registration_category == NOUN_MC) m = STORE_POINTER_noun(N);
-			Lexicon::register(N->registration_category,
-				Clusters::get_nominative_of_form(in), m);
-		}
+		LOOP_OVER_LINKED_LIST(in, individual_form, L)
+			@<Register each distinct declined form of the noun@>;
 	}
 }
+
+@ See the discussion of noun usages above. The idea is that if our form is,
+say, the German plural form of "Tisch", then the declension of that would be
+"Tische", "Tische", "Tischen", "Tische": we group these into two registrations,
+"Tische" (with possible forms nominative, accusative, genitive) and "Tischen"
+(just dative).
+
+@<Register each distinct declined form of the noun@> =
+	int c = Declensions::no_cases(lang);
+	int done[MAX_GRAMMATICAL_CASES];
+	for (int i=0; i<c; i++) done[i] = FALSE;
+	for (int i=0; i<c; i++) if (done[i] == FALSE) {
+		noun_usage *nu = CREATE(noun_usage);
+		nu->noun_used = N;
+		nu->language_used = lang;
+		nu->no_possible_forms = 0;
+		wording W = Declensions::in_case(&(in->declined), i);
+		for (int j=0; j<c; j++)
+			if (Wordings::match_cs(W, Declensions::in_case(&(in->declined), j))) {
+				done[j] = TRUE;
+				nu->possible_forms[nu->no_possible_forms++] = in->declined.lcon_cased[j];
+			}
+		Lexicon::register(N->registration_category, W, STORE_POINTER_noun_usage(nu));				
+	}
 
 @h Name access.
 We normally access names in their nominative cases, so:
@@ -219,21 +261,6 @@ void Nouns::set_nominative_plural_in_language(noun *N, wording W,
 general_pointer Nouns::meaning(noun *N) {
 	if (N == NULL) return NULL_GENERAL_POINTER;
 	return N->meaning;
-}
-
-@h Exact parsing in the lexicon.
-
-@d PARSE_EXACTLY_LEXICON_CALLBACK Nouns::parse_exactly
-
-=
-int Nouns::parse_exactly(excerpt_meaning *em) {
-	if (em->meaning_code == NOUN_MC) {
-		#ifdef CORE_MODULE
-		if (use_exact_parsing_option) return TRUE;
-		#endif
-		return FALSE;
-	}
-	return TRUE;
 }
 
 @h Disambiguation.
@@ -277,5 +304,33 @@ int Nouns::is_eligible_match(noun *nt, int common_only) {
 }
 
 noun *Nouns::from_excerpt_meaning(excerpt_meaning *em) {
-	return RETRIEVE_POINTER_noun(Lexicon::get_data(em));
+	noun_usage *nu = RETRIEVE_POINTER_noun_usage(Lexicon::get_data(em));
+	return nu->noun_used;
+}
+
+@ The following function is so called because Inform registers many constant
+values as nouns -- for example, each rulebook name is a noun, and the meaning
+of that is a valid rvalue in the compiler sense; it's a value which can be
+computed with at run-time. Inform represents rvalues as sprigs of the parse
+tree, so this function returns a |parse_node|.
+
+@d PN_FROM_EM_LEXICON_CALLBACK Nouns::extract_noun_as_rvalue
+
+=
+parse_node *Nouns::extract_noun_as_rvalue(excerpt_meaning *em) {
+	general_pointer m = Lexicon::get_data(em);
+	if (VALID_POINTER_noun_usage(m)) {
+		noun_usage *nu = RETRIEVE_POINTER_noun_usage(m);
+		m = nu->noun_used->meaning;
+	}
+	parse_node *this_result;
+	if (VALID_POINTER_parse_node(m)) {
+		parse_node *val = RETRIEVE_POINTER_parse_node(m);
+		this_result = Node::new(INVALID_NT);
+		Node::copy(this_result, val);
+	} else {
+		this_result = Node::new(em->meaning_code);
+	}
+	Node::set_meaning(this_result, em);
+	return this_result;
 }

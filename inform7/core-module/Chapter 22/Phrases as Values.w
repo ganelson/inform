@@ -30,7 +30,7 @@ constant_phrase *Phrases::Constants::create(wording NW, wording RW) {
 	cphr->cphr_kind = NULL; /* nor this */
 	cphr->associated_preamble_text = RW;
 	cphr->name = Nouns::new_proper_noun(NW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		PHRASE_CONSTANT_MC, Rvalues::from_constant_phrase(cphr));
+		PHRASE_CONSTANT_MC, Rvalues::from_constant_phrase(cphr), Task::language_of_syntax());
 	cphr->cphr_iname = NULL;
 	return cphr;
 }

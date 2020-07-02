@@ -63,13 +63,13 @@ table_column *Tables::Columns::new_table_column(wording W) {
 	tc->listed_in_predicate = Tables::Relations::make_listed_in_predicate(tc);
 	if (Wordings::nonempty(W)) { /* as always happens except when recovering from a problem */
 		tc->name = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			TABLE_COLUMN_MC, Rvalues::from_table_column(tc));
+			TABLE_COLUMN_MC, Rvalues::from_table_column(tc), Task::language_of_syntax());
 		word_assemblage wa =
 			PreformUtilities::merge(<table-column-name-construction>, 0,
 				WordAssemblages::from_wording(W));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			TABLE_COLUMN_MC, Rvalues::from_table_column(tc));
+			TABLE_COLUMN_MC, Rvalues::from_table_column(tc), Task::language_of_syntax());
 	}
 	return tc;
 }

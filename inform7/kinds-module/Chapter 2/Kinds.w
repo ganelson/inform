@@ -707,9 +707,13 @@ matched up with the inference subject already existing.
 @<Use the source-text name to attach a noun to the constructor@> =
 	unsigned int mc = KIND_SLOW_MC;
 	if (Kinds::Compare::le(super, K_object)) mc = NOUN_MC;
+	NATURAL_LANGUAGE_WORDS_TYPE *L = NULL;
+	#ifdef CORE_MODULE
+	L = Task::language_of_syntax();
+	#endif
 	noun *nt = Nouns::new_common_noun(W, NEUTER_GENDER,
 		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
-		KIND_SLOW_MC, STORE_POINTER_kind_constructor(K->construct));
+		KIND_SLOW_MC, STORE_POINTER_kind_constructor(K->construct), L);
 	Sentences::Headings::initialise_noun_resolution(nt);
 	Kinds::Constructors::attach_noun(K->construct, nt);
  	if (Kinds::Compare::le(super, K_object))

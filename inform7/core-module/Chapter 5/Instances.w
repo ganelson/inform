@@ -144,14 +144,14 @@ full, whereas a "tuna fish" (an object) can be called just "tuna".
 		if (exact_parsing)
 			I->tag =
 				Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-					NAMED_CONSTANT_MC, Rvalues::from_instance(I));
+					NAMED_CONSTANT_MC, Rvalues::from_instance(I), Task::language_of_syntax());
 		else
 			I->tag =
 				Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-					NOUN_MC, Rvalues::from_instance(I));
+					NOUN_MC, Rvalues::from_instance(I), Task::language_of_syntax());
 	} else {
 		I->tag = Nouns::new_proper_noun(W, NEUTER_GENDER, 0,
-			NAMED_CONSTANT_MC, NULL);
+			NAMED_CONSTANT_MC, NULL, Task::language_of_syntax());
 	}
 	Sentences::Headings::initialise_noun_resolution(I->tag);
 

@@ -449,7 +449,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 			WordAssemblages::from_wording(t->table_no_text));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			TABLE_MC, Rvalues::from_table(t));
+			TABLE_MC, Rvalues::from_table(t), Task::language_of_syntax());
 	}
 	if (Wordings::nonempty(t->table_name_text)) {
 		LOGIF(TABLES, "Registering table by name: table of %W\n", t->table_name_text);
@@ -458,7 +458,7 @@ number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 				WordAssemblages::from_wording(t->table_name_text));
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			TABLE_MC, Rvalues::from_table(t));
+			TABLE_MC, Rvalues::from_table(t), Task::language_of_syntax());
 	}
 
 @<Parse the table's footer for a number of blank rows@> =

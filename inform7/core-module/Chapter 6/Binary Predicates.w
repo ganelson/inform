@@ -517,7 +517,7 @@ binary_predicate *BinaryPredicates::make_pair(int family,
 			PreformUtilities::merge(<relation-name-formal>, 0, source_name);
 		wording AW = WordAssemblages::to_wording(&wa);
 		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			MISCELLANEOUS_MC, Rvalues::from_binary_predicate(bp));
+			MISCELLANEOUS_MC, Rvalues::from_binary_predicate(bp), Task::language_of_syntax());
 	}
 
 	return bp;
