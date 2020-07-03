@@ -51,10 +51,11 @@ void Pronouns::log_item(grammatical_category *cat, general_pointer data) {
 We ignore case and gender in pronouns, but do take note of number and person.
 
 =
-lcon_ti Pronouns::use(pronoun *P, int n, int p) {
+lcon_ti Pronouns::use(pronoun *P, int n, int p, int g) {
 	lcon_ti lcon = Stock::to_lcon(P->in_stock);
 	lcon = Lcon::set_person(lcon, p);
 	lcon = Lcon::set_number(lcon, n);
+	if (g >= 0) lcon = Lcon::set_gender(lcon, g);
 	return lcon;
 }
 
@@ -76,6 +77,11 @@ void Pronouns::write_lcon(OUTPUT_STREAM, lcon_ti lcon) {
 		case SINGULAR_NUMBER: WRITE("s"); break;
 		case PLURAL_NUMBER: WRITE("p"); break;
 	}
+	switch (Lcon::get_gender(lcon)) {
+		case NEUTER_GENDER: WRITE("(n)"); break;
+		case MASCULINE_GENDER: WRITE("(m)"); break;
+		case FEMININE_GENDER: WRITE("(f)"); break;
+	}
 }
 
 @h English pronouns.
@@ -89,16 +95,18 @@ different forms in Preform grammar directly, as follows.
 	<subject-pronoun-third-person>     ==> R[1]
 
 <subject-pronoun-first-person> ::=
-	i |           ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, FIRST_PERSON)
-	we            ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, FIRST_PERSON)
+	i |     ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, FIRST_PERSON, -1)
+	we      ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, FIRST_PERSON, -1)
 
 <subject-pronoun-second-person> ::=
-	you |         ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, SECOND_PERSON)
-	you           ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, SECOND_PERSON)
+	you |   ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, SECOND_PERSON, -1)
+	you     ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, SECOND_PERSON, -1)
 
 <subject-pronoun-third-person> ::=
-	it/he/she |   ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, THIRD_PERSON)
-	they          ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, THIRD_PERSON)
+	it |    ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, THIRD_PERSON, NEUTER_GENDER)
+	he |    ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, THIRD_PERSON, MASCULINE_GENDER)
+	she |   ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, THIRD_PERSON, FEMININE_GENDER)
+	they    ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, THIRD_PERSON, -1)
 
 @
 
@@ -109,16 +117,18 @@ different forms in Preform grammar directly, as follows.
 	<object-pronoun-third-person>     ==> R[1]
 
 <object-pronoun-first-person> ::=
-	me |          ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, FIRST_PERSON)
-	us            ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, FIRST_PERSON)
+	me |    ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, FIRST_PERSON, -1)
+	us      ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, FIRST_PERSON, -1)
 
 <object-pronoun-second-person> ::=
-	you |         ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, SECOND_PERSON)
-	you           ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, SECOND_PERSON)
+	you |   ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, SECOND_PERSON, -1)
+	you     ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, SECOND_PERSON, -1)
 
 <object-pronoun-third-person> ::=
-	it/him/her |  ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, THIRD_PERSON)
-	them          ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, THIRD_PERSON)
+	it |    ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, THIRD_PERSON, NEUTER_GENDER)
+	him |   ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, THIRD_PERSON, MASCULINE_GENDER)
+	her |   ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, THIRD_PERSON, FEMININE_GENDER)
+	them    ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, THIRD_PERSON, -1)
 
 @
 
@@ -129,13 +139,15 @@ different forms in Preform grammar directly, as follows.
 	<possessive-third-person>     ==> R[1]
 
 <possessive-first-person> ::=
-	my |          ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, FIRST_PERSON)
-	our           ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, FIRST_PERSON)
+	my |    ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, FIRST_PERSON, -1)
+	our     ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, FIRST_PERSON, -1)
 
 <possessive-second-person> ::=
-	your |        ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, SECOND_PERSON)
-	your          ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, SECOND_PERSON)
+	your |  ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, SECOND_PERSON, -1)
+	your    ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, SECOND_PERSON, -1)
 
 <possessive-third-person> ::=
-	its/his/her | ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, THIRD_PERSON)
-	their         ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, THIRD_PERSON)
+	its |   ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, THIRD_PERSON, NEUTER_GENDER)
+	his |   ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, THIRD_PERSON, MASCULINE_GENDER)
+	her |   ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, THIRD_PERSON, FEMININE_GENDER)
+	their   ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, THIRD_PERSON, -1)

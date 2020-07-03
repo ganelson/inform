@@ -8,11 +8,19 @@ verb 3 carry
 
 verb 3 mean
 
+verb 3 see
+
 Chapter 2
 
 Jane is a woman.
 
+She is a person.
+
 Peter carries the torch.
+
+He sees her.
+
+She sees him.
 
 There is a door.
 
@@ -21,3 +29,5 @@ The sailors carry a cask of rum.
 The shovel has a handle.
 
 The does the player mean rules is a rulebook.
+
+Some people are here.

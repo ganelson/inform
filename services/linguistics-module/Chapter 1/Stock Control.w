@@ -71,7 +71,8 @@ linguistic_stock_item *Stock::new(grammatical_category *cat, general_pointer dat
 	cat->number_of_items++;
 	@<Expand the stock array if it has run out of space@>;
 	flat_array_of_stock[item->allocation_id] = item;
-	LOGIF(LINGUISTIC_STOCK, "Added to stock: "); Stock::log(item);
+	LOGIF(LINGUISTIC_STOCK, "Added to stock: ");
+	if (Log::aspect_switched_on(LINGUISTIC_STOCK_DA)) Stock::log(item);
 	return item;
 }
 

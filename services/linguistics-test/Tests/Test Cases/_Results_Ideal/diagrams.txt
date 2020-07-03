@@ -1,4 +1,4 @@
-Read 70 words
+Read 96 words
 ROOT_NT
     HEADING_NT'chapter 1' (level 0)
         HEADING_NT'chapter 1' (level 1)
@@ -6,30 +6,49 @@ ROOT_NT
             SENTENCE_NT'verb 1 have'
             SENTENCE_NT'verb 3 carry'
             SENTENCE_NT'verb 3 mean'
+            SENTENCE_NT'verb 3 see'
         HEADING_NT'chapter 2' (level 1)
             SENTENCE_NT'jane is a woman'
                 VERB_NT'is' (relation)
                 PROPER_NOUN_NT'jane'
-                PROPER_NOUN_NT'woman' (indefinite)
+                PROPER_NOUN_NT'woman' indefinite article s(n)
+            SENTENCE_NT'she is a person'
+                VERB_NT'is' (relation)
+                PROPER_NOUN_NT'she' subject pronoun 3ps(f)
+                PROPER_NOUN_NT'person' indefinite article s(n)
             SENTENCE_NT'peter carries the torch'
                 VERB_NT'carries' (relation)
                 PROPER_NOUN_NT'peter'
                 RELATIONSHIP_NT'carries'
-                    PROPER_NOUN_NT'torch' (definite)
+                    PROPER_NOUN_NT'torch' definite article s(n)
+            SENTENCE_NT'he sees her'
+                VERB_NT'sees' (relation)
+                PROPER_NOUN_NT'he' subject pronoun 3ps(m)
+                RELATIONSHIP_NT'sees'
+                    PROPER_NOUN_NT'her' object pronoun 3ps(f)
+            SENTENCE_NT'she sees him'
+                VERB_NT'sees' (relation)
+                PROPER_NOUN_NT'she' subject pronoun 3ps(f)
+                RELATIONSHIP_NT'sees'
+                    PROPER_NOUN_NT'him' object pronoun 3ps(m)
             SENTENCE_NT'there is a door'
                 VERB_NT'is' (existential) (relation)
                 PROPER_NOUN_NT'there'
-                PROPER_NOUN_NT'door' (indefinite)
+                PROPER_NOUN_NT'door' indefinite article s(n)
             SENTENCE_NT'the sailors carry a cask of rum'
                 VERB_NT'carry' (relation)
-                PROPER_NOUN_NT'sailors' (definite)
+                PROPER_NOUN_NT'sailors' definite article s(n)
                 RELATIONSHIP_NT'carry'
-                    PROPER_NOUN_NT'cask of rum' (indefinite)
+                    PROPER_NOUN_NT'cask of rum' indefinite article s(n)
             SENTENCE_NT'the shovel has a handle'
                 VERB_NT'has' (possessive) (relation)
-                PROPER_NOUN_NT'shovel' (definite)
-                PROPER_NOUN_NT'handle' (indefinite)
+                PROPER_NOUN_NT'shovel' definite article s(n)
+                PROPER_NOUN_NT'handle' indefinite article s(n)
             SENTENCE_NT'the does the player mean rules is a rulebook'
                 VERB_NT'is' (relation)
-                PROPER_NOUN_NT'does the player mean rules' (definite)
-                PROPER_NOUN_NT'rulebook' (indefinite)
+                PROPER_NOUN_NT'does the player mean rules' definite article s(n)
+                PROPER_NOUN_NT'rulebook' indefinite article s(n)
+            SENTENCE_NT'some people are here'
+                VERB_NT'are' (relation)
+                PROPER_NOUN_NT'people' indefinite article p(n)
+                PROPER_NOUN_NT'here'

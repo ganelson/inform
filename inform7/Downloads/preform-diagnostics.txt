@@ -4880,40 +4880,48 @@
 
 <subject-pronoun-third-person> hits 11/356 nti 8 constraint CS = {8} extremes [1, 1]
     English:
-        it/he/she 
-          (hits 10/30) (matched: 'he') constraint CS = {8} extremes [1, 1]
+        it 
+          (hits 7/30) (matched: 'it') constraint CS = {8} extremes [1, 1]
+        he 
+          (hits 3/23) (matched: 'he') constraint CS = {8} extremes [1, 1]
+        she 
+          (hits 0/20) constraint CS = {8} extremes [1, 1]
         they 
           (hits 1/20) (matched: 'they') constraint CS = {8} extremes [1, 1]
 
-<object-pronoun> hits 490/7148 nti 19 constraint CW = {9, 10, 11} extremes [1, 1]
+<object-pronoun> hits 490/7198 nti 19 constraint CW = {9, 10, 11} extremes [1, 1]
     English:
         <object-pronoun-first-person> 
-          (hits 0/2825) constraint CS = {9} extremes [1, 1]
+          (hits 0/2837) constraint CS = {9} extremes [1, 1]
         <object-pronoun-second-person> 
-          (hits 0/256) constraint CS = {10} extremes [1, 1]
+          (hits 0/265) constraint CS = {10} extremes [1, 1]
         <object-pronoun-third-person> 
-          (hits 490/599) (matched: 'it') constraint CS = {11} extremes [1, 1]
+          (hits 490/617) (matched: 'it') constraint CS = {11} extremes [1, 1]
 
-<object-pronoun-first-person> hits 0/5650 nti 9 constraint CS = {9} extremes [1, 1]
+<object-pronoun-first-person> hits 0/5674 nti 9 constraint CS = {9} extremes [1, 1]
     English:
         me 
-          (hits 0/2825) constraint CS = {9} extremes [1, 1]
+          (hits 0/2837) constraint CS = {9} extremes [1, 1]
         us 
-          (hits 0/2825) constraint CS = {9} extremes [1, 1]
+          (hits 0/2837) constraint CS = {9} extremes [1, 1]
 
-<object-pronoun-second-person> hits 0/512 nti 10 constraint CS = {10} extremes [1, 1]
+<object-pronoun-second-person> hits 0/530 nti 10 constraint CS = {10} extremes [1, 1]
     English:
         you 
-          (hits 0/256) constraint CS = {10} extremes [1, 1]
+          (hits 0/265) constraint CS = {10} extremes [1, 1]
         you 
-          (hits 0/256) constraint CS = {10} extremes [1, 1]
+          (hits 0/265) constraint CS = {10} extremes [1, 1]
 
-<object-pronoun-third-person> hits 578/1690 nti 11 constraint CS = {11} extremes [1, 1]
+<object-pronoun-third-person> hits 578/1726 nti 11 constraint CS = {11} extremes [1, 1]
     English:
-        it/him/her 
-          (hits 578/699) (matched: 'it') constraint CS = {11} extremes [1, 1]
+        it 
+          (hits 578/717) (matched: 'it') constraint CS = {11} extremes [1, 1]
+        him 
+          (hits 0/139) constraint CS = {11} extremes [1, 1]
+        her 
+          (hits 0/139) constraint CS = {11} extremes [1, 1]
         them 
-          (hits 0/121) constraint CS = {11} extremes [1, 1]
+          (hits 0/139) constraint CS = {11} extremes [1, 1]
 
 <possessive-pronoun> nti 20 constraint CW = {12, 13, 14} extremes [1, 1]
     English:
@@ -4940,7 +4948,11 @@
 
 <possessive-third-person> hits 0/172 nti 14 constraint CS = {14} extremes [1, 1]
     English:
-        its/his/her 
+        its 
+          (hits 0/21) constraint CS = {14} extremes [1, 1]
+        his 
+          (hits 0/21) constraint CS = {14} extremes [1, 1]
+        her 
           (hits 0/21) constraint CS = {14} extremes [1, 1]
         their 
           (hits 0/21) constraint CS = {14} extremes [1, 1]
@@ -5191,6 +5203,8 @@
           (hits 30/496) (matched: 'a kind of supporter that is portable') constraint DW = {r2, 27} & DS = {27} extremes [1, infinity)
         <subject-pronoun> 
           (hits 4/21) (matched: 'it') constraint CW = {6, 7, 8} extremes [1, 1]
+        <object-pronoun> 
+          (hits 0/25) constraint CW = {9, 10, 11} extremes [1, 1]
         <np-articled-balanced> 
           (hits 1189/1190) (matched long text) constraint (none) extremes [0, infinity)
 
