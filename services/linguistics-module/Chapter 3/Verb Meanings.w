@@ -101,6 +101,11 @@ verb, and therefore
 (b) We can never have a situation where a VM indirects to a verb whose meaning
 then indirects to something else.
 
+This might be used, for example, to set the meaning of "liked by" to be the
+same as the meaning of "likes", but with subject and object reversed. The
+indirection then ensures that if the meaning of "likes" changes, its associated
+usages "is liking" and "is liked by" automatically change with it.
+
 =
 verb_meaning VerbMeanings::indirected(verb *from, int reversed) {
 	verb_meaning vm = VerbMeanings::meaninglessness();

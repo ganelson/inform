@@ -176,6 +176,12 @@ verb, and therefore
 </li><li>(b) We can never have a situation where a VM indirects to a verb whose meaning
 then indirects to something else.
 </li></ul>
+<p class="commentary">This might be used, for example, to set the meaning of "liked by" to be the
+same as the meaning of "likes", but with subject and object reversed. The
+indirection then ensures that if the meaning of "likes" changes, its associated
+usages "is liking" and "is liked by" automatically change with it.
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">verb_meaning</span><span class="plain-syntax"> </span><span class="function-syntax">VerbMeanings::indirected</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VerbMeanings::indirected</span></span>:<br/>Verb Usages - <a href="3-vu.html#SP7_1">&#167;7.1</a>, <a href="3-vu.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reversed</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">vm</span><span class="plain-syntax"> = </span><a href="3-vm.html#SP5" class="function-link"><span class="function-syntax">VerbMeanings::meaninglessness</span></a><span class="plain-syntax">();</span>
