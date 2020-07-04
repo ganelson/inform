@@ -30,8 +30,8 @@ typedef struct verb_conjugation {
 
 typedef struct verb_tabulation {
 	struct word_assemblage to_be_auxiliary; /* use this if non-empty */
-	struct word_assemblage vc_text[NO_KNOWN_TENSES][2][6];
-	int modal_auxiliary_usage[NO_KNOWN_TENSES][2][6];
+	struct word_assemblage vc_text[NO_KNOWN_TENSES][NO_KNOWN_SENSES][NO_KNOWN_PERSONS][NO_KNOWN_NUMBERS];
+	int modal_auxiliary_usage[NO_KNOWN_TENSES][NO_KNOWN_SENSES][NO_KNOWN_PERSONS][NO_KNOWN_NUMBERS];
 } verb_tabulation;
 
 @h Finding.
@@ -70,15 +70,16 @@ int Conjugation::eq(verb_conjugation *nvc, verb_conjugation *vc) {
 			verb_tabulation *vt = &(vc->tabulations[i]);
 			if (WordAssemblages::eq(
 				&(nvt->to_be_auxiliary), &(vt->to_be_auxiliary)) == FALSE) return FALSE;
-			for (int p=0; p<6; p++)
-				for (int s=0; s<2; s++)
-					for (int t=0; t<NO_KNOWN_TENSES; t++) {
-						if (WordAssemblages::eq(
-							&(nvt->vc_text[t][s][p]), &(vt->vc_text[t][s][p])) == FALSE)
+			for (int t=0; t<NO_KNOWN_TENSES; t++)
+				for (int s=0; s<NO_KNOWN_SENSES; s++)
+					for (int p=0; p<NO_KNOWN_PERSONS; p++)
+						for (int n=0; n<NO_KNOWN_NUMBERS; n++) {
+							if (WordAssemblages::eq(
+								&(nvt->vc_text[t][s][p][n]), &(vt->vc_text[t][s][p][n])) == FALSE)
 								return FALSE;
-						if (nvt->modal_auxiliary_usage[t][s][p] !=
-							vt->modal_auxiliary_usage[t][s][p]) return FALSE;
-					}
+							if (nvt->modal_auxiliary_usage[t][s][p][n] !=
+								vt->modal_auxiliary_usage[t][s][p][n]) return FALSE;
+						}
 		}
 		return TRUE;
 	}
@@ -94,23 +95,24 @@ void Conjugation::write(OUTPUT_STREAM, verb_conjugation *vc) {
 	int mood_count = 2;
 	if (WordAssemblages::nonempty(vc->tabulations[PASSIVE_MOOD].to_be_auxiliary))
 		mood_count = 1;
-	int mood, sense, tense, person;
-	for (mood=0; mood<mood_count; mood++) {
-		for (sense=0; sense<2; sense++) {
+	for (int mood=0; mood<mood_count; mood++) {
+		for (int sense=0; sense<NO_KNOWN_SENSES; sense++) {
 			if (mood == 0) WRITE("Active "); else WRITE("Passive ");
 			if (sense == 0) WRITE("positive^"); else WRITE("negative^");
-			for (tense=0; tense<7; tense++) {
+			for (int tense=0; tense<NO_KNOWN_TENSES; tense++) {
 				WRITE("Tense %d: ", tense);
-				for (person=0; person<6; person++) {
-					word_assemblage *wa;
-					if (mood == 0)
-						wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][person]);
-					else
-						wa = &(vc->tabulations[PASSIVE_MOOD].vc_text[tense][sense][person]);
-					if (person > 0) WRITE(" / ");
-					if (WordAssemblages::nonempty(*wa)) WRITE("%A", wa);
-					else WRITE("--");
-				}
+				int person = 0;
+				for (int n=0; n<NO_KNOWN_NUMBERS; n++)
+					for (int p=0; p<NO_KNOWN_PERSONS; p++) {
+						word_assemblage *wa;
+						if (mood == 0)
+							wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][p][n]);
+						else
+							wa = &(vc->tabulations[PASSIVE_MOOD].vc_text[tense][sense][p][n]);
+						if (person++ > 0) WRITE(" / ");
+						if (WordAssemblages::nonempty(*wa)) WRITE("%A", wa);
+						else WRITE("--");
+					}
 				WRITE("^");
 			}
 		}
@@ -201,15 +203,15 @@ Note that verb form 0 can't be overridden: that was the base text.
 @<Start by blanking out all the passive and active slots@> =
 	vc->tabulations[ACTIVE_MOOD].to_be_auxiliary = WordAssemblages::lit_0();
 	vc->tabulations[PASSIVE_MOOD].to_be_auxiliary = WordAssemblages::lit_0();
-	int i, tense, sense;
-	for (tense=0; tense<NO_KNOWN_TENSES; tense++)
-		for (sense=0; sense<2; sense++)
-			for (i=0; i<6; i++) {
-				vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][i] =
-					WordAssemblages::lit_0();
-				vc->tabulations[PASSIVE_MOOD].vc_text[tense][sense][i] =
-					WordAssemblages::lit_0();
-			}
+	for (int t=0; t<NO_KNOWN_TENSES; t++)
+		for (int s=0; s<NO_KNOWN_SENSES; s++)
+			for (int n=0; n<NO_KNOWN_NUMBERS; n++)
+				for (int p=0; p<NO_KNOWN_PERSONS; p++) {
+					vc->tabulations[ACTIVE_MOOD].vc_text[t][s][p][n] =
+						WordAssemblages::lit_0();
+					vc->tabulations[PASSIVE_MOOD].vc_text[t][s][p][n] =
+						WordAssemblages::lit_0();
+				}
 
 @ A tabulation is a sort of program laying out what to put in which slots,
 active or passive. Each production is a step in this program, and it consists
@@ -224,8 +226,7 @@ rest. (The selector is always just a single token.)
 	production_list *pl;
 	for (pl = tabulation->first_pl; pl; pl = pl->next_pl) {
 		if (nl == pl->definition_language) {
-			production *pr;
-			for (pr = pl->first_pr; pr; pr = pr->next_pr) {
+			for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
 				ptoken *selector = pr->first_pt;
 				ptoken *line = (selector)?(selector->next_pt):NULL;
 				if ((selector) && (selector->ptoken_category == FIXED_WORD_PTC) &&
@@ -243,26 +244,28 @@ rest. (The selector is always just a single token.)
 
 	if (set_tba)
 		vc->tabulations[PASSIVE_MOOD].to_be_auxiliary =
-			Conjugation::merge(line, 0, 0, 0, MAX_FORM_TYPES+1, verb_forms, nl, NULL);
+			Conjugation::merge(line, POSITIVE_SENSE, IS_TENSE, FIRST_PERSON,
+				SINGULAR_NUMBER, MAX_FORM_TYPES+1, verb_forms, nl, NULL);
 
 	for (int tense=0; tense<NO_KNOWN_TENSES; tense++)
-		for (int sense=0; sense<2; sense++)
-			for (int person=0; person<6; person++) {
-				if ((sense_set >= 0) && (sense != sense_set)) continue;
-				if ((tense_set >= 0) && (tense != tense_set)) continue;
-				if (active_set) @<Apply to the active mood@>
-				else @<Apply to the passive mood@>;
-			}
+		for (int sense=0; sense<NO_KNOWN_SENSES; sense++)
+			for (int n=0; n<NO_KNOWN_NUMBERS; n++)
+				for (int p=0; p<NO_KNOWN_PERSONS; p++) {
+					if ((sense_set >= 0) && (sense != sense_set)) continue;
+					if ((tense_set >= 0) && (tense != tense_set)) continue;
+					if (active_set) @<Apply to the active mood@>
+					else @<Apply to the passive mood@>;
+				}
 
 @<Apply to the active mood@> =
-	vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][person] =
-		Conjugation::merge(line, sense, tense, person, MAX_FORM_TYPES+1, verb_forms, nl,
-		&(vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][person]));
+	vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][p][n] =
+		Conjugation::merge(line, sense, tense, p, n, MAX_FORM_TYPES+1, verb_forms, nl,
+			&(vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][p][n]));
 
 @<Apply to the passive mood@> =
-	vc->tabulations[PASSIVE_MOOD].vc_text[tense][sense][person] =
-		Conjugation::merge(line, sense, tense, person, MAX_FORM_TYPES+1, verb_forms, nl,
-		&(vc->tabulations[PASSIVE_MOOD].modal_auxiliary_usage[tense][sense][person]));
+	vc->tabulations[PASSIVE_MOOD].vc_text[tense][sense][p][n] =
+		Conjugation::merge(line, sense, tense, p, n, MAX_FORM_TYPES+1, verb_forms, nl,
+			&(vc->tabulations[PASSIVE_MOOD].modal_auxiliary_usage[tense][sense][p][n]));
 
 @ The selector tells us which tense(s), sense(s) and mood(s) to apply the
 line to; |a3|, for example, means active mood, tense 3, in both positive
@@ -300,7 +303,7 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 			package_request *R =
 				Hierarchy::package(Modules::find(vc->where_vc_created), MVERBS_HAP);
 			TEMPORARY_TEXT(ANT)
-			WRITE_TO(ANT, "%A (modal)", &(vc->tabulations[ACTIVE_MOOD].vc_text[0][0][2]));
+			WRITE_TO(ANT, "%A (modal)", &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][THIRD_PERSON]));
 			Hierarchy::markup(R, MVERB_NAME_HMD, ANT);
 			DISCARD_TEXT(ANT)
 			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
@@ -508,7 +511,7 @@ There are other complications, too. See "English Inflections" for more.
 
 =
 word_assemblage Conjugation::merge(ptoken *row,
-	int sense, int tense, int person, int num_ingredients, word_assemblage *ingredients,
+	int sense, int tense, int person, int number, int num_ingredients, word_assemblage *ingredients,
 	NATURAL_LANGUAGE_WORDS_TYPE *nl, int *modal_following) {
 	if (modal_following) { *modal_following = 0; }
 	word_assemblage wa = WordAssemblages::lit_0();
@@ -550,9 +553,9 @@ make use of the same fancy features we're allowing here.
 			int N = 0;
 			production *pr;
 			for (pr = pl->first_pr; pr; pr = pr->next_pr) {
-				if (N == person)
+				if (N == number*3 + person)
 					wa = WordAssemblages::join(wa,
-						Conjugation::merge(pr->first_pt, sense, tense, person,
+						Conjugation::merge(pr->first_pt, sense, tense, person, number,
 							num_ingredients, ingredients, nl, NULL));
 				N++;
 			}
@@ -616,7 +619,7 @@ make use of the numbered verb forms if we want it to.
 			case 2: wa = WordAssemblages::join(wa, aux->present_participle); break;
 			case 3: wa = WordAssemblages::join(wa, aux->past_participle); break;
 			case -1: wa = WordAssemblages::join(wa,
-				aux->tabulations[ACTIVE_MOOD].vc_text[T][S][person]); break;
+				aux->tabulations[ACTIVE_MOOD].vc_text[T][S][person][number]); break;
 			default: internal_error("only parts 1, 2, 3 can be extracted");
 		}
 		continue;

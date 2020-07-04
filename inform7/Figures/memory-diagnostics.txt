@@ -29,8 +29,8 @@ Total memory consumption was 256243K = 250 MB
      0.2%  dict_entry_array                         236 x 100 = 23600 objects, 762752 bytes
      0.2%  package_request                          7928 objects, 697664 bytes
      0.2%  inter_name_generator_array               16 x 1000 = 16000 objects, 640512 bytes
-     0.2%  verb_usage                               1628 objects, 586080 bytes
      0.2%  noun_usage                               2405 objects, 577200 bytes
+     0.2%  verb_usage                               1628 objects, 560032 bytes
      0.1%  local_variable_array                     45 x 100 = 4500 objects, 505440 bytes
      0.1%  inference_subject                        663 objects, 434928 bytes
      0.1%  rule                                     469 objects, 363944 bytes
@@ -46,7 +46,7 @@ Total memory consumption was 256243K = 250 MB
      ----  linguistic_stock_item                    3312 objects, 158976 bytes
      ----  stacked_variable_owner_list_array        38 x 100 = 3800 objects, 153216 bytes
      ----  action_pattern_array                     6 x 100 = 600 objects, 144192 bytes
-     ----  lexicon_entry                            395 objects, 142200 bytes
+     ----  index_lexicon_entry                      395 objects, 142200 bytes
      ----  nonterminal                              752 objects, 138368 bytes
      ----  documentation_ref                        1275 objects, 112200 bytes
      ----  hierarchy_location                       731 objects, 105264 bytes
@@ -224,5 +224,5 @@ Total memory consumption was 256243K = 250 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.9% was overhead - 52309712 bytes = 51083K = 49 MB
+19.9% was overhead - 52335760 bytes = 51109K = 49 MB
 

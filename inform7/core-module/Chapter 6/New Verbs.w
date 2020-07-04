@@ -97,14 +97,24 @@ void NewVerbs::add_inequalities(void) {
 void NewVerbs::add_inequalities_inner(verb_meaning lt, verb_meaning gt, verb_meaning le, verb_meaning ge) {
 	set_where_created = NULL;
 	current_main_verb = NULL;
-	VerbUsages::register_single_usage(PreformUtilities::wording(<inequality-conjugations>, 0),
-		FALSE, IS_TENSE, ACTIVE_MOOD, Verbs::new_operator_verb(lt), FALSE);
-	VerbUsages::register_single_usage(PreformUtilities::wording(<inequality-conjugations>, 1),
-		FALSE, IS_TENSE, ACTIVE_MOOD, Verbs::new_operator_verb(gt), FALSE);
-	VerbUsages::register_single_usage(PreformUtilities::wording(<inequality-conjugations>, 2),
-		FALSE, IS_TENSE, ACTIVE_MOOD, Verbs::new_operator_verb(le), FALSE);
-	VerbUsages::register_single_usage(PreformUtilities::wording(<inequality-conjugations>, 3),
-		FALSE, IS_TENSE, ACTIVE_MOOD, Verbs::new_operator_verb(ge), FALSE);
+
+	for (int i=0; i<=3; i++) {
+		verb *v = NULL;
+		switch (i) {
+			case 0: v = Verbs::new_operator_verb(lt); break;
+			case 1: v = Verbs::new_operator_verb(gt); break;
+			case 2: v = Verbs::new_operator_verb(le); break;
+			case 3: v = Verbs::new_operator_verb(ge); break;
+		}
+		lcon_ti l = Verbs::to_lcon(v);
+		l = Lcon::set_mood(l, ACTIVE_MOOD);
+		l = Lcon::set_tense(l, IS_TENSE);
+		l = Lcon::set_sense(l, POSITIVE_SENSE);
+		l = Lcon::set_person(l, THIRD_PERSON);
+		l = Lcon::set_number(l, SINGULAR_NUMBER);
+		VerbUsages::register_single_usage(
+			PreformUtilities::wording(<inequality-conjugations>, i), FALSE, l);
+	}
 }
 
 verb_meaning NewVerbs::ineq_vm(binary_predicate *bp) {
@@ -960,38 +970,41 @@ void NewVerbs::ConjugateVerb(void) {
 	Routines::end(save);
 
 @<Check for modality@> =
-	for (int sense = 0; sense < 2; sense++)
+	for (int sense=0; sense<NO_KNOWN_SENSES; sense++)
 		for (int tense=0; tense<NO_KNOWN_TENSES; tense++)
-			for (int part=1; part<=6; part++)
-				if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][part-1] != 0)
-					modal_verb = TRUE;
+			for (int person=0; person<NO_KNOWN_PERSONS; person++)
+				for (int number=0; number<NO_KNOWN_NUMBERS; number++)
+					if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][person][number] != 0)
+						modal_verb = TRUE;
 
 @<Compile conjugation in this sense@> =
 	for (int tense=0; tense<NO_KNOWN_TENSES; tense++) {
 		int some_exist = FALSE, some_dont_exist = FALSE,
 			some_differ = FALSE, some_except_3PS_differ = FALSE, some_are_modal = FALSE;
 		word_assemblage *common = NULL, *common_except_3PS = NULL;
-		for (int part=1; part<=6; part++) {
-			word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][part-1]);
-			if (WordAssemblages::nonempty(*wa)) {
-				if (some_exist) {
-					if (WordAssemblages::eq(wa, common) == FALSE)
-						some_differ = TRUE;
-					if (part != 3) {
-						if (common_except_3PS == NULL) common_except_3PS = wa;
-						else if (WordAssemblages::eq(wa, common_except_3PS) == FALSE)
-							some_except_3PS_differ = TRUE;
+		for (int person=0; person<NO_KNOWN_PERSONS; person++)
+			for (int number=0; number<NO_KNOWN_NUMBERS; number++) {
+				word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][person][number]);
+				if (WordAssemblages::nonempty(*wa)) {
+					if (some_exist) {
+						if (WordAssemblages::eq(wa, common) == FALSE)
+							some_differ = TRUE;
+						if ((person != THIRD_PERSON) || (number != SINGULAR_NUMBER)) {
+							if (common_except_3PS == NULL) common_except_3PS = wa;
+							else if (WordAssemblages::eq(wa, common_except_3PS) == FALSE)
+								some_except_3PS_differ = TRUE;
+						}
+					} else {
+						some_exist = TRUE;
+						common = wa;
+						if ((person != THIRD_PERSON) || (number != SINGULAR_NUMBER))
+							common_except_3PS = wa;
 					}
-				} else {
-					some_exist = TRUE;
-					common = wa;
-					if (part != 3) common_except_3PS = wa;
+					if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][person][number] != 0)
+						some_are_modal = TRUE;
 				}
-				if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][part-1] != 0)
-					some_are_modal = TRUE;
+				else some_dont_exist = TRUE;
 			}
-			else some_dont_exist = TRUE;
-		}
 		if (some_exist) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
@@ -1017,20 +1030,22 @@ void NewVerbs::ConjugateVerb(void) {
 		Produce::val_symbol(Emit::tree(), K_value, vp_s);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			for (int part=1; part<=6; part++) {
-				word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][part-1]);
-				if (WordAssemblages::nonempty(*wa)) {
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) part);
-						Produce::code(Emit::tree());
+			for (int person=0; person<NO_KNOWN_PERSONS; person++)
+				for (int number=0; number<NO_KNOWN_NUMBERS; number++) {
+					word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][person][number]);
+					if (WordAssemblages::nonempty(*wa)) {
+						Produce::inv_primitive(Emit::tree(), CASE_BIP);
 						Produce::down(Emit::tree());
-							int mau = vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][part-1];
-							NewVerbs::conj_from_wa(wa, vc, modal_to_s, mau);
+							inter_ti part = ((inter_ti) person) + 3*((inter_ti) number) + 1;
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) part);
+							Produce::code(Emit::tree());
+							Produce::down(Emit::tree());
+								int mau = vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][person][number];
+								NewVerbs::conj_from_wa(wa, vc, modal_to_s, mau);
+							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
+					}
 				}
-			}
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -1044,18 +1059,18 @@ void NewVerbs::ConjugateVerb(void) {
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][2]);
+			word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][THIRD_PERSON][SINGULAR_NUMBER]);
 			NewVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][0]);
+			wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
 			NewVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
 @<Compile for the case where all six parts are the same@> =
-	word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][0]);
+	word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
 	NewVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 
 @ =
@@ -1177,10 +1192,7 @@ usages to the debugging log.
 
 =
 void NewVerbs::log(verb_usage *vu) {
-	if (vu == NULL) { LOG("(null verb usage)"); return; }
-	LOG("VU: $f ", &(vu->vu_text));
-	if (vu->negated_form_of_verb) LOG("(negated) ");
-	Lcon::log_tense_number(DL, vu->tensed);
+	VerbUsages::write(DL, vu);
 }
 
 void NewVerbs::log_all(void) {
@@ -1200,7 +1212,7 @@ void NewVerbs::log_all(void) {
 The following produces the table of verbs in the Phrasebook Index page.
 
 =
-void NewVerbs::tabulate(OUTPUT_STREAM, lexicon_entry *lex, int tense, char *tensename) {
+void NewVerbs::tabulate(OUTPUT_STREAM, index_lexicon_entry *lex, int tense, char *tensename) {
 	verb_usage *vu; int f = TRUE;
 	LOOP_OVER(vu, verb_usage)
 		if ((vu->vu_lex_entry == lex) && (VerbUsages::is_used_negatively(vu) == FALSE)
@@ -1220,13 +1232,13 @@ void NewVerbs::tabulate(OUTPUT_STREAM, lexicon_entry *lex, int tense, char *tens
 	if (f == FALSE) HTML_CLOSE("p");
 }
 
-void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
+void NewVerbs::tabulate_meaning(OUTPUT_STREAM, index_lexicon_entry *lex) {
 	verb_usage *vu;
 	LOOP_OVER(vu, verb_usage)
 		if (vu->vu_lex_entry == lex) {
 			if (vu->where_vu_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
-			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(vu->verb_used));
+			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
 			if (bp) Relations::index_for_verbs(OUT, bp);
 			return;
 		}

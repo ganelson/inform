@@ -65,8 +65,21 @@ this one:
 The following routine picks up on the result of this declaration. (We cache
 this because we need access to it very quickly when parsing text substitutions.)
 
+@d ADAPTIVE_PERSON_LINGUISTICS_CALLBACK NaturalLanguages::adaptive_person
+@d ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK NaturalLanguages::adaptive_number
+
 =
 int NaturalLanguages::adaptive_person(inform_language *L) {
+	int C = NaturalLanguages::adaptive_combination(L);
+	return C % NO_KNOWN_PERSONS;
+}
+
+int NaturalLanguages::adaptive_number(inform_language *L) {
+	int C = NaturalLanguages::adaptive_combination(L);
+	return C / NO_KNOWN_PERSONS;
+}
+
+int NaturalLanguages::adaptive_combination(inform_language *L) {
 	#ifdef IF_MODULE
 	if ((L->adaptive_person == -1) && (P_adaptive_text_viewpoint)) {
 		instance *I = L->nl_instance;
@@ -78,8 +91,7 @@ int NaturalLanguages::adaptive_person(inform_language *L) {
 		}
 	}
 	#endif
-
-	if (L->adaptive_person == -1) return FIRST_PERSON_PLURAL;
+	if (L->adaptive_person == -1) return FIRST_PERSON + 3; /* i.e., plural */
 	return L->adaptive_person;
 }
 

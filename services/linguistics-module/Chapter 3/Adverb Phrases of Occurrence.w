@@ -70,7 +70,7 @@ void Occurrence::log(OUTPUT_STREAM, void *vtp) {
 		default: WRITE(": <invalid-units>"); break;
 	}
 	if (tp->tense != IS_TENSE) {
-		WRITE(": "); Lcon::log_tense_number(OUT, tp->tense);
+		WRITE(":"); Lcon::write_tense(OUT, tp->tense);
 	}
 	WRITE(">");
 }

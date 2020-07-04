@@ -68,20 +68,9 @@ pronoun *Pronouns::from_lcon(lcon_ti lcon) {
 void Pronouns::write_lcon(OUTPUT_STREAM, lcon_ti lcon) {
 	pronoun *P = Pronouns::from_lcon(lcon);
 	WRITE(" %S ", P->name);
-	switch (Lcon::get_person(lcon)) {
-		case FIRST_PERSON: WRITE("1p"); break;
-		case SECOND_PERSON: WRITE("2p"); break;
-		case THIRD_PERSON: WRITE("3p"); break;
-	}
-	switch (Lcon::get_number(lcon)) {
-		case SINGULAR_NUMBER: WRITE("s"); break;
-		case PLURAL_NUMBER: WRITE("p"); break;
-	}
-	switch (Lcon::get_gender(lcon)) {
-		case NEUTER_GENDER: WRITE("(n)"); break;
-		case MASCULINE_GENDER: WRITE("(m)"); break;
-		case FEMININE_GENDER: WRITE("(f)"); break;
-	}
+	Lcon::write_person(OUT, Lcon::get_person(lcon));
+	Lcon::write_number(OUT, Lcon::get_number(lcon));
+	Lcon::write_gender(OUT, Lcon::get_gender(lcon));
 }
 
 @h English pronouns.

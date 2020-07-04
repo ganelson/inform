@@ -64,15 +64,8 @@ article *Articles::from_lcon(lcon_ti lcon) {
 void Articles::write_lcon(OUTPUT_STREAM, lcon_ti lcon) {
 	article *P = Articles::from_lcon(lcon);
 	WRITE(" %S ", P->name);
-	switch (Lcon::get_number(lcon)) {
-		case SINGULAR_NUMBER: WRITE("s"); break;
-		case PLURAL_NUMBER: WRITE("p"); break;
-	}
-	switch (Lcon::get_gender(lcon)) {
-		case NEUTER_GENDER: WRITE("(n)"); break;
-		case MASCULINE_GENDER: WRITE("(m)"); break;
-		case FEMININE_GENDER: WRITE("(f)"); break;
-	}
+	Lcon::write_number(OUT, Lcon::get_number(lcon));
+	Lcon::write_gender(OUT, Lcon::get_gender(lcon));
 }
 
 @h English articles.

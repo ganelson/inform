@@ -4,7 +4,7 @@ To record the identity and different structural forms of verbs.
 
 @h Verb Identities.
 What is a verb? Are the verbs in "Peter is hungry" and "Jane will be in the
-Dining Room" the same? How about in "Donald Trump lies on television" and
+Dining Room" the same? How about in "Donald Trump lies on the television" and
 "My cat Donald lies on the television"? This isn't so easy to answer.
 
 For our purposes two usages of a verbs are "the same verb" if they ultimately
@@ -37,6 +37,16 @@ void Verbs::create_category(void) {
 void Verbs::log_item(grammatical_category *cat, general_pointer data) {
 	verb *V = RETRIEVE_POINTER_verb(data);
 	Verbs::log_verb(DL, V);
+}
+
+verb *Verbs::from_lcon(lcon_ti lcon) {
+	linguistic_stock_item *item = Stock::from_lcon(lcon);
+	if (item == NULL) return NULL;
+	return RETRIEVE_POINTER_verb(item->data);
+}
+
+lcon_ti Verbs::to_lcon(verb *v) {
+	return Stock::to_lcon(v->in_stock);
 }
 
 @ Note also that every verb always has a bare form, where no prepositions are
@@ -258,8 +268,9 @@ in a canonical verbal form. For example, "translate into |+| as".
 	verb_conjugation *vc = V->conjugation;
 	if (vc) {
 		int p = VerbUsages::adaptive_person(vc->defined_in);
-		word_assemblage we_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][0][p]);
-		word_assemblage we_dont_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][1][p]);
+		int n = VerbUsages::adaptive_number(vc->defined_in);
+		word_assemblage we_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
+		word_assemblage we_dont_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
 		vf->infinitive_reference_text = vc->infinitive;
 		vf->pos_reference_text = we_form;
 		vf->neg_reference_text = we_dont_form;

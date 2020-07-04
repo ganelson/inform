@@ -15,7 +15,7 @@ verb_conjugation *vc_have = NULL;
 
 =
 int Unit::allow_in_assertions(verb_conjugation *vc, int tense, int sense, int person) {
-	if ((person == THIRD_PERSON_SINGULAR) || (person == THIRD_PERSON_PLURAL)) return TRUE;
+	if (person == THIRD_PERSON) return TRUE;
 	return FALSE;
 }
 

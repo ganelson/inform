@@ -13,46 +13,46 @@ ROOT_NT
             SENTENCE_NT'sailor = neuter common noun'
         HEADING_NT'chapter 2' (level 1)
             SENTENCE_NT'jane is a woman'
-                VERB_NT'is' (relation)
+                VERB_NT'is' (regular)
                 PROPER_NOUN_NT'jane' (proper)
                 COMMON_NOUN_NT'woman' (common)
             SENTENCE_NT'she is a person'
-                VERB_NT'is' (relation)
-                PROPER_NOUN_NT'she' subject pronoun 3ps(f)
+                VERB_NT'is' (regular)
+                PROPER_NOUN_NT'she' subject pronoun 3p s (f)
                 COMMON_NOUN_NT'person' (common)
             SENTENCE_NT'peter carries the torch'
-                VERB_NT'carries' (relation)
+                VERB_NT'carries' (regular)
                 PROPER_NOUN_NT'peter' (proper)
                 RELATIONSHIP_NT'carries'
-                    PROPER_NOUN_NT'torch' definite article s(n)
+                    PROPER_NOUN_NT'torch' definite article  s (n)
             SENTENCE_NT'he sees her'
-                VERB_NT'sees' (relation)
-                PROPER_NOUN_NT'he' subject pronoun 3ps(m)
+                VERB_NT'sees' (regular)
+                PROPER_NOUN_NT'he' subject pronoun 3p s (m)
                 RELATIONSHIP_NT'sees'
-                    PROPER_NOUN_NT'her' object pronoun 3ps(f)
+                    PROPER_NOUN_NT'her' object pronoun 3p s (f)
             SENTENCE_NT'she sees him'
-                VERB_NT'sees' (relation)
-                PROPER_NOUN_NT'she' subject pronoun 3ps(f)
+                VERB_NT'sees' (regular)
+                PROPER_NOUN_NT'she' subject pronoun 3p s (f)
                 RELATIONSHIP_NT'sees'
-                    PROPER_NOUN_NT'him' object pronoun 3ps(m)
+                    PROPER_NOUN_NT'him' object pronoun 3p s (m)
             SENTENCE_NT'there is a door'
-                VERB_NT'is' (existential) (relation)
+                VERB_NT'is' (existential) (regular)
                 PROPER_NOUN_NT'there'
-                PROPER_NOUN_NT'door' indefinite article s(n)
+                PROPER_NOUN_NT'door' indefinite article  s (n)
             SENTENCE_NT'the sailors carry a cask of rum'
-                VERB_NT'carry' (relation)
+                VERB_NT'carry' (regular)
                 COMMON_NOUN_NT'sailors' (common)
                 RELATIONSHIP_NT'carry'
-                    PROPER_NOUN_NT'cask of rum' indefinite article s(n)
+                    PROPER_NOUN_NT'cask of rum' indefinite article  s (n)
             SENTENCE_NT'the shovel has a handle'
-                VERB_NT'has' (possessive) (relation)
-                PROPER_NOUN_NT'shovel' definite article s(n)
-                PROPER_NOUN_NT'handle' indefinite article s(n)
+                VERB_NT'has' (possessive) (regular)
+                PROPER_NOUN_NT'shovel' definite article  s (n)
+                PROPER_NOUN_NT'handle' indefinite article  s (n)
             SENTENCE_NT'the does the player mean rules is a rulebook'
-                VERB_NT'is' (relation)
-                PROPER_NOUN_NT'does the player mean rules' definite article s(n)
-                PROPER_NOUN_NT'rulebook' indefinite article s(n)
+                VERB_NT'is' (regular)
+                PROPER_NOUN_NT'does the player mean rules' definite article  s (n)
+                PROPER_NOUN_NT'rulebook' indefinite article  s (n)
             SENTENCE_NT'some people are here'
-                VERB_NT'are' (relation)
-                PROPER_NOUN_NT'people' indefinite article p(n)
+                VERB_NT'are' (regular)
+                PROPER_NOUN_NT'people' indefinite article  p (n)
                 PROPER_NOUN_NT'here'

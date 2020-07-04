@@ -14,16 +14,10 @@ First, we support three genders:
 in the English Language extension, which we assume will be followed by other
 languages.
 
-@d NO_KNOWN_PERSONS 6
+@d NO_KNOWN_PERSONS 3
 @d FIRST_PERSON 0
 @d SECOND_PERSON 1
 @d THIRD_PERSON 2
-@d FIRST_PERSON_SINGULAR 0
-@d SECOND_PERSON_SINGULAR 1
-@d THIRD_PERSON_SINGULAR 2
-@d FIRST_PERSON_PLURAL 3
-@d SECOND_PERSON_PLURAL 4
-@d THIRD_PERSON_PLURAL 5
 
 @ And two numbers:
 
@@ -107,6 +101,7 @@ values, and at present Preform return values are |int|.
 @d SENSE_LCBASE  0x00004000
 @d SENSE_LCMASK  0x00004000
 @d ID_LCBASE     0x00008000
+@d ID_LCUNMASK   0x00007FFF
 
 =
 lcon_ti Lcon::base(void) { return (lcon_ti) 0; }
@@ -121,6 +116,7 @@ int Lcon::get_case(lcon_ti l)   { return (int) (l & CASE_LCMASK) / CASE_LCBASE; 
 int Lcon::get_tense(lcon_ti l)  { return (int) (l & TENSE_LCMASK) / TENSE_LCBASE; }
 int Lcon::get_sense(lcon_ti l)  { return (int) (l & SENSE_LCMASK) / SENSE_LCBASE; }
 
+lcon_ti Lcon::set_id(lcon_ti l, int id) { return (l & ID_LCUNMASK) + id*ID_LCBASE; }
 lcon_ti Lcon::set_gender(lcon_ti l, int x) { return (l & (~GENDER_LCMASK)) + x*GENDER_LCBASE; }
 lcon_ti Lcon::set_person(lcon_ti l, int x) { return (l & (~PERSON_LCMASK)) + x*PERSON_LCBASE; }
 lcon_ti Lcon::set_number(lcon_ti l, int x) { return (l & (~NUMBER_LCMASK)) + x*NUMBER_LCBASE; }
@@ -132,7 +128,41 @@ lcon_ti Lcon::set_sense(lcon_ti l, int x)  { return (l & (~SENSE_LCMASK)) + x*SE
 @
 
 =
-void Lcon::log_tense_number(OUTPUT_STREAM, int t) {
+void Lcon::write_person(OUTPUT_STREAM, int p) {
+	switch (p) {
+		case FIRST_PERSON: WRITE("1p"); break;
+		case SECOND_PERSON: WRITE("2p"); break;
+		case THIRD_PERSON: WRITE("3p"); break;
+	}
+}
+
+void Lcon::write_number(OUTPUT_STREAM, int n) {
+	switch (n) {
+		case SINGULAR_NUMBER: WRITE(" s"); break;
+		case PLURAL_NUMBER: WRITE(" p"); break;
+	}
+}
+
+void Lcon::write_gender(OUTPUT_STREAM, int g) {
+	switch (g) {
+		case NEUTER_GENDER: WRITE(" (n)"); break;
+		case MASCULINE_GENDER: WRITE(" (m)"); break;
+		case FEMININE_GENDER: WRITE(" (f)"); break;
+	}
+}
+
+void Lcon::write_sense(OUTPUT_STREAM, int s) {
+	if (s == NEGATIVE_SENSE) WRITE(" -ve");
+	if (s == POSITIVE_SENSE) WRITE(" +ve");
+}
+
+void Lcon::write_mood(OUTPUT_STREAM, int m) {
+	if (m == ACTIVE_MOOD) WRITE(" act");
+	if (m == PASSIVE_MOOD) WRITE(" pass");
+}
+
+void Lcon::write_tense(OUTPUT_STREAM, int t) {
+	WRITE(" "); 
 	switch (t) {
 		case IS_TENSE:      WRITE("IS_TENSE"); break;
 		case WAS_TENSE:     WRITE("WAS_TENSE"); break;

@@ -13,13 +13,13 @@ which use this module:
 @e documentation_ref_CLASS
 @e index_page_CLASS
 @e index_element_CLASS
-@e lexicon_entry_CLASS
+@e index_lexicon_entry_CLASS
 
 =
 DECLARE_CLASS(documentation_ref)
 DECLARE_CLASS(index_element)
 DECLARE_CLASS(index_page)
-DECLARE_CLASS(lexicon_entry)
+DECLARE_CLASS(index_lexicon_entry)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

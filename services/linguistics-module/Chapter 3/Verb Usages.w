@@ -2,21 +2,10 @@
 
 To parse the many forms a verb can take.
 
-@
-
-@default VERB_MEANING_LINGUISTICS_TYPE struct verb_conjugation
-
-@ The "permitted verb" is just a piece of temporary context used in parsing:
-it's convenient for the verb currently being considered to be stored in
-a global variable.
-
-=
-verb *permitted_verb = NULL;
-
 @h Verb usages.
 We already have the ability to conjugate verbs -- to turn "to have" into "I have",
 "you have", "he has", "they have had", "we will have" and so on -- from the
-Inflections module. However, we won't necessarily want to recognise all of
+//inflections// module. However, we won't necessarily want to recognise all of
 those forms in sentences in the source text. For example, Inform only looks
 at present tense forms of verbs in the third person, or at imperative forms.
 
@@ -25,21 +14,18 @@ be turned into one of the following structures:
 
 =
 typedef struct verb_usage {
+	lcon_ti grammatical_usage;              /* includes verb, mood, tense, sense */
 	struct word_assemblage vu_text;			/* text to recognise */
 	int vu_allow_unexpected_upper_case; 	/* for verbs like "to Hoover" or "to Google" */
-	struct verb *verb_used;
-	int negated_form_of_verb; 				/* is this a negated form? */
-	int mood;								/* active/passive: one of the two |*_MOOD| values */
-	int tensed; 							/* one of the |*_TENSE| values */
+	struct verb_usage *next_in_search_list; /* within a linked list of all usages in length order */
+	struct verb_usage *next_within_tier;	/* within the linked list for this tier (see below) */
+	struct parse_node *where_vu_created; 	/* for use if problem messages needed */
+
 	struct linguistic_stock_item *in_stock;
 
 	#ifdef CORE_MODULE
-	struct lexicon_entry *vu_lex_entry; 	/* for use when indexing */
+	struct index_lexicon_entry *vu_lex_entry; 	/* for use when indexing */
 	#endif
-	struct parse_node *where_vu_created; 	/* for use if problem messages needed */
-
-	struct verb_usage *next_in_search_list; /* within a linked list of all usages in length order */
-	struct verb_usage *next_within_tier;	/* within the linked list for this tier (see below) */
 	CLASS_DEFINITION
 } verb_usage;
 
@@ -87,20 +73,18 @@ Here we create a single verb usage; note that the empty text cannot be used.
 
 =
 parse_node *set_where_created = NULL;
-verb_usage *VerbUsages::register_single_usage(word_assemblage wa, int negated, int tense,
-	int mood, verb *vi, int unexpected_upper_casing_used) {
+verb_usage *VerbUsages::register_single_usage(word_assemblage wa,
+	int unexpected_upper_casing_used, lcon_ti semantics) {
 	if (WordAssemblages::nonempty(wa) == FALSE) return NULL;
 	LOGIF(VERB_USAGES, "new usage: '%A'\n", &wa);
 	VerbUsages::mark_as_verb(WordAssemblages::first_word(&wa));
 	verb_usage *vu = CREATE(verb_usage);
 	vu->vu_text = wa;
-	vu->negated_form_of_verb = negated; vu->tensed = tense;
 	#ifdef CORE_MODULE
 	vu->vu_lex_entry = current_main_verb;
 	#endif
 	vu->where_vu_created = set_where_created;
-	vu->verb_used = vi;
-	vu->mood = mood;
+	vu->grammatical_usage = semantics;
 	vu->vu_allow_unexpected_upper_case = unexpected_upper_casing_used;
 	vu->next_within_tier = NULL;
 	vu->next_in_search_list = NULL;
@@ -127,6 +111,20 @@ first in the case of equal length:
 			}
 		}
 	}
+
+@
+
+=
+void VerbUsages::write(OUTPUT_STREAM, verb_usage *vu) {
+	if (vu == NULL) { WRITE("(null verb usage)"); return; }
+	WRITE("vu: %A", &(vu->vu_text));
+	lcon_ti l = vu->grammatical_usage;
+	Lcon::write_sense(OUT, Lcon::get_sense(l));
+	Lcon::write_mood(OUT, Lcon::get_mood(l));
+	Lcon::write_tense(OUT, Lcon::get_tense(l));
+	Lcon::write_person(OUT, Lcon::get_person(l));
+	Lcon::write_number(OUT, Lcon::get_number(l));
+}
 
 @h Registration of regular verbs.
 It would be tiresome to have to call the above routine for every possible
@@ -226,27 +224,34 @@ the persons from 1PS to 3PP.
 out whether it's needed.
 
 @<Register usages in this combination@> =
-	for (int person = 0; person < NO_KNOWN_PERSONS; person++) {
-		int p = priority;
-		#ifdef ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK
-		if (ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK(vc, tense, sense, person) == FALSE) p = 0;
-		#else
-		if (VerbUsages::allow_in_assertions(vc, tense, sense, person) == FALSE) p = 0;
-		#endif
-		#ifdef ALLOW_VERB_LINGUISTICS_CALLBACK
-		if (ALLOW_VERB_LINGUISTICS_CALLBACK(vc, tense, sense, person) == FALSE) p = -1;
-		#else
-		if (VerbUsages::allow_generally(vc, tense, sense, person) == FALSE) p = -1;
-		#endif
-		if (p >= 0) @<Actually register this usage@>;
-	}
+	for (int number = 0; number < NO_KNOWN_NUMBERS; number++)
+		for (int person = 0; person < NO_KNOWN_PERSONS; person++) {
+			int p = priority;
+			#ifdef ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK
+			if (ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK(vc, tense, sense, person) == FALSE) p = 0;
+			#else
+			if (VerbUsages::allow_in_assertions(vc, tense, sense, person) == FALSE) p = 0;
+			#endif
+			#ifdef ALLOW_VERB_LINGUISTICS_CALLBACK
+			if (ALLOW_VERB_LINGUISTICS_CALLBACK(vc, tense, sense, person) == FALSE) p = -1;
+			#else
+			if (VerbUsages::allow_generally(vc, tense, sense, person) == FALSE) p = -1;
+			#endif
+			if (p >= 0) @<Actually register this usage@>;
+		}
 
 @<Actually register this usage@> =
-	verb_usage *vu = VerbUsages::register_single_usage(vt->vc_text[tense][sense][person],
-		(sense==1)?TRUE:FALSE, tense, mood, vi, unexpected_upper_casing_used);
+	lcon_ti l = Verbs::to_lcon(vi);
+	l = Lcon::set_mood(l, mood);
+	l = Lcon::set_tense(l, tense);
+	l = Lcon::set_sense(l, sense);
+	l = Lcon::set_person(l, person);
+	l = Lcon::set_number(l, number);
+	verb_usage *vu = VerbUsages::register_single_usage(vt->vc_text[tense][sense][person][number],
+		unexpected_upper_casing_used, l);
 	if (vu) VerbUsages::set_search_priority(vu, p);
 	if (vi == copular_verb) {
-		if ((tense == IS_TENSE) && (person == THIRD_PERSON_SINGULAR)) {
+		if ((tense == IS_TENSE) && (person == THIRD_PERSON) && (number == SINGULAR_NUMBER)) {
 			if (sense == 1) negated_to_be = vu;
 			else regular_to_be = vu;
 		}
@@ -257,9 +262,7 @@ what are used by Inform. In assertions:
 
 =
 int VerbUsages::allow_in_assertions(verb_conjugation *vc, int tense, int sense, int person) {
-	if ((tense == IS_TENSE) &&
-		(sense == 0) &&
-		((person == THIRD_PERSON_SINGULAR) || (person == THIRD_PERSON_PLURAL)))
+	if ((tense == IS_TENSE) && (sense == POSITIVE_SENSE) && (person == THIRD_PERSON))
 		return TRUE;
 	return FALSE;
 }
@@ -269,8 +272,8 @@ int VerbUsages::allow_in_assertions(verb_conjugation *vc, int tense, int sense, 
 =
 int VerbUsages::allow_generally(verb_conjugation *vc, int tense, int sense, int person) {
 	if (((tense == IS_TENSE) || (tense == WAS_TENSE) ||
-		(tense == HASBEEN_TENSE) || (tense == HADBEEN_TENSE)) &&
-		((person == THIRD_PERSON_SINGULAR) || (person == THIRD_PERSON_PLURAL)))
+			(tense == HASBEEN_TENSE) || (tense == HADBEEN_TENSE)) &&
+		(person == THIRD_PERSON))
 		return TRUE;
 	return FALSE;
 }
@@ -324,9 +327,9 @@ A usage is "foreign" if it belongs to a language other than English:
 
 =
 int VerbUsages::is_foreign(verb_usage *vu) {
-	if ((vu->verb_used) &&
-		(vu->verb_used->conjugation->defined_in) &&
-		(vu->verb_used->conjugation->defined_in != DefaultLanguage::get(NULL))) {
+	verb *v = VerbUsages::get_verb(vu);
+	if ((v) && (v->conjugation->defined_in) &&
+		(v->conjugation->defined_in != DefaultLanguage::get(NULL))) {
 		return TRUE;
 	}
 	return FALSE;
@@ -337,18 +340,29 @@ int VerbUsages::is_foreign(verb_usage *vu) {
 =
 VERB_MEANING_LINGUISTICS_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition *prep, preposition *second_prep) {
 	if (vu == NULL) return NULL;
-	VERB_MEANING_LINGUISTICS_TYPE *root = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(vu->verb_used, prep, second_prep));
-	if ((root) && (vu->mood == PASSIVE_MOOD) && (root != VERB_MEANING_EQUALITY))
+	VERB_MEANING_LINGUISTICS_TYPE *root = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(VerbUsages::get_verb(vu), prep, second_prep));
+	if ((root) && (VerbUsages::get_mood(vu) == PASSIVE_MOOD) && (root != VERB_MEANING_EQUALITY))
 		root = VerbMeanings::reverse_VMT(root);
 	return root;
 }
 
+verb *VerbUsages::get_verb(verb_usage *vu) {
+//	if (vu) return vu->verb_used;
+	if (vu) return Verbs::from_lcon(vu->grammatical_usage);
+	return NULL;
+}
+
+int VerbUsages::get_mood(verb_usage *vu) {
+	return Lcon::get_mood(vu->grammatical_usage);
+}
+
 int VerbUsages::get_tense_used(verb_usage *vu) {
-	return vu->tensed;
+	return Lcon::get_tense(vu->grammatical_usage);
 }
 
 int VerbUsages::is_used_negatively(verb_usage *vu) {
-	return vu->negated_form_of_verb;
+	if (Lcon::get_sense(vu->grammatical_usage) == NEGATIVE_SENSE) return TRUE;
+	return FALSE;
 }
 
 @h Parsing source text against verb usages.
@@ -367,6 +381,13 @@ int VerbUsages::parse_against_verb(wording W, verb_usage *vu) {
 		(Word::unexpectedly_upper_case(Wordings::first_wn(W)))) return -1;
 	return WordAssemblages::parse_as_strictly_initial_text(W, &(vu->vu_text));
 }
+
+@ The "permitted verb" is just a piece of temporary context used in parsing:
+it's convenient for the verb currently being considered to be stored in
+a global variable.
+
+=
+verb *permitted_verb = NULL;
 
 @ We now define a whole run of internals to parse verbs. As examples,
 
@@ -387,7 +408,7 @@ which has a meaning.
 <meaningful-nonimperative-verb> internal ? {
 	verb_usage *vu;
 	LOOP_OVER_USAGES(vu) {
-		verb *vi = vu->verb_used;
+		verb *vi = VerbUsages::get_verb(vu);
 		for (verb_form *vf = vi->first_form; vf; vf = vf->next_form)
 			if ((VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE) &&
 				(vf->form_structures & (SVO_FS_BIT + SVOO_FS_BIT))) {
@@ -396,7 +417,7 @@ which has a meaning.
 					if ((vf->preposition == NULL) ||
 						(WordAssemblages::is_at(&(vf->preposition->prep_text), i, Wordings::last_wn(W)))) {
 						*XP = vu;
-						permitted_verb = vu->verb_used;
+						permitted_verb = VerbUsages::get_verb(vu);
 						return i-1;
 					}
 				}
@@ -414,7 +435,7 @@ and so on.
 	verb_usage *vu;
 	if (preform_backtrack) { vu = preform_backtrack; goto BacktrackFrom; }
 	LOOP_OVER_USAGES(vu) {
-		if (vu->verb_used == copular_verb) {
+		if (VerbUsages::get_verb(vu) == copular_verb) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
 				*XP = vu;
@@ -435,9 +456,9 @@ not carry" qualifies; "is not" or "supports" don't qualify.
 	verb_usage *vu;
 	if (preform_backtrack) { vu = preform_backtrack; goto BacktrackFrom; }
 	LOOP_OVER_USAGES(vu) {
-		if ((vu->tensed == IS_TENSE) &&
-			(vu->verb_used != copular_verb) &&
-			(vu->negated_form_of_verb == TRUE)) {
+		if ((VerbUsages::get_tense_used(vu) == IS_TENSE) &&
+			(VerbUsages::get_verb(vu) != copular_verb) &&
+			(VerbUsages::is_used_negatively(vu))) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
 				*XP = vu;
@@ -476,7 +497,7 @@ Any verb usage which is negative in sense: this is used only to diagnose problem
 	verb_usage *vu;
 	if (preform_backtrack) { vu = preform_backtrack; goto BacktrackFrom; }
 	LOOP_OVER_USAGES(vu) {
-		if (vu->negated_form_of_verb == TRUE) {
+		if (VerbUsages::is_used_negatively(vu)) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
 				*XP = vu;
@@ -495,7 +516,7 @@ Any verb usage which is negative in sense: this is used only to diagnose problem
 	verb_usage *vu;
 	if (preform_backtrack) { vu = preform_backtrack; goto BacktrackFrom; }
 	LOOP_OVER_USAGES(vu) {
-		if (vu->tensed != IS_TENSE) {
+		if (VerbUsages::get_tense_used(vu) != IS_TENSE) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
 				*XP = vu;
@@ -516,8 +537,9 @@ uses of verbs:
 	LOOP_OVER(vc, verb_conjugation)
 		if (vc->auxiliary_only == FALSE) {
 			int p = VerbUsages::adaptive_person(vc->defined_in);
-			word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][0][p]);
-			word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][1][p]);
+			int n = VerbUsages::adaptive_number(vc->defined_in);
+			word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
+			word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
 			if (WordAssemblages::compare_with_wording(we_form, W)) {
 				*XP = vc; *X = FALSE; return TRUE;
 			}
@@ -579,9 +601,10 @@ or "the verb to be able to see" use these.
 	LOOP_OVER(vc, verb_conjugation)
 		if (vc->auxiliary_only == FALSE) {
 			int p = VerbUsages::adaptive_person(vc->defined_in);
-			if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[IS_TENSE][0][p] != 0) {
-				word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][0][p]);
-				word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][1][p]);
+			int n = VerbUsages::adaptive_number(vc->defined_in);
+			if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[IS_TENSE][POSITIVE_SENSE][p][n] != 0) {
+				word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
+				word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
 				if (WordAssemblages::compare_with_wording(we_form, W)) {
 					*XP = vc; *X = FALSE; return TRUE;
 				}
@@ -622,6 +645,14 @@ int VerbUsages::adaptive_person(NATURAL_LANGUAGE_WORDS_TYPE *X) {
 	return ADAPTIVE_PERSON_LINGUISTICS_CALLBACK(X);
 	#endif
 	#ifndef ADAPTIVE_PERSON_LINGUISTICS_CALLBACK
-	return FIRST_PERSON_PLURAL;
+	return FIRST_PERSON;
+	#endif
+}
+int VerbUsages::adaptive_number(NATURAL_LANGUAGE_WORDS_TYPE *X) {
+	#ifdef ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK
+	return ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK(X);
+	#endif
+	#ifndef ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK
+	return PLURAL_NUMBER;
 	#endif
 }

@@ -292,7 +292,7 @@ it's at the front; and if it's "Peter test me with flash cards", we won't
 match "test... with..." because it's not at the front.
 
 @<Consider whether this usage is being made at this position@> =
-	verb *vi = vu->verb_used;
+	verb *vi = VerbUsages::get_verb(vu);
 	int i = -1;
 	wording ISW = EMPTY_WORDING, IOW = EMPTY_WORDING;
 	int certainty = UNKNOWN_CE, pre_certainty = UNKNOWN_CE, post_certainty = UNKNOWN_CE;
@@ -509,7 +509,7 @@ int VerbPhrases::default_verb(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT: {
 			verb_usage *vu = Node::get_verb(V);
 			verb *vsave = permitted_verb;
-			permitted_verb = (vu)?vu->verb_used:NULL;
+			permitted_verb = VerbUsages::get_verb(vu);
 
 			if (<nounphrase-as-object>(OW) == FALSE) internal_error("<nounphrase-as-object> failed");
 			parse_node *O_PN = <<rp>>;

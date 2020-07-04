@@ -1,1632 +1,1632 @@
 The current S-grammar has the following verb and preposition usages:
-VU: < IS_TENSE
-VU: > IS_TENSE
-VU: <= IS_TENSE
-VU: >= IS_TENSE
-VU: has not been (negated) HASBEEN_TENSE
-VU: have not been (negated) HASBEEN_TENSE
-VU: had not been (negated) HADBEEN_TENSE
-VU: had not been (negated) HADBEEN_TENSE
-VU: has been HASBEEN_TENSE
-VU: have been HASBEEN_TENSE
-VU: had been HADBEEN_TENSE
-VU: had been HADBEEN_TENSE
-VU: is not (negated) IS_TENSE
-VU: are not (negated) IS_TENSE
-VU: was not (negated) WAS_TENSE
-VU: were not (negated) WAS_TENSE
-VU: is IS_TENSE
-VU: are IS_TENSE
-VU: was WAS_TENSE
-VU: were WAS_TENSE
-VU: has not meant (negated) HASBEEN_TENSE
-VU: have not meant (negated) HASBEEN_TENSE
-VU: had not meant (negated) HADBEEN_TENSE
-VU: had not meant (negated) HADBEEN_TENSE
-VU: has meant HASBEEN_TENSE
-VU: have meant HASBEEN_TENSE
-VU: had meant HADBEEN_TENSE
-VU: had meant HADBEEN_TENSE
-VU: does not mean (negated) IS_TENSE
-VU: do not mean (negated) IS_TENSE
-VU: did not mean (negated) WAS_TENSE
-VU: did not mean (negated) WAS_TENSE
-VU: means IS_TENSE
-VU: mean IS_TENSE
-VU: meant WAS_TENSE
-VU: meant WAS_TENSE
-VU: has not implied (negated) HASBEEN_TENSE
-VU: have not implied (negated) HASBEEN_TENSE
-VU: had not implied (negated) HADBEEN_TENSE
-VU: had not implied (negated) HADBEEN_TENSE
-VU: has implied HASBEEN_TENSE
-VU: have implied HASBEEN_TENSE
-VU: had implied HADBEEN_TENSE
-VU: had implied HADBEEN_TENSE
-VU: does not imply (negated) IS_TENSE
-VU: do not imply (negated) IS_TENSE
-VU: did not imply (negated) WAS_TENSE
-VU: did not imply (negated) WAS_TENSE
-VU: implies IS_TENSE
-VU: imply IS_TENSE
-VU: implied WAS_TENSE
-VU: implied WAS_TENSE
-VU: has not been able to be (negated) HASBEEN_TENSE
-VU: have not been able to be (negated) HASBEEN_TENSE
-VU: had not been able to be (negated) HADBEEN_TENSE
-VU: had not been able to be (negated) HADBEEN_TENSE
-VU: has been able to be HASBEEN_TENSE
-VU: have been able to be HASBEEN_TENSE
-VU: had been able to be HADBEEN_TENSE
-VU: had been able to be HADBEEN_TENSE
-VU: cannot be (negated) IS_TENSE
-VU: cannot be (negated) IS_TENSE
-VU: could not be (negated) WAS_TENSE
-VU: could not be (negated) WAS_TENSE
-VU: can be IS_TENSE
-VU: can be IS_TENSE
-VU: could be WAS_TENSE
-VU: could be WAS_TENSE
-VU: has not been able to be been by (negated) HASBEEN_TENSE
-VU: have not been able to be been by (negated) HASBEEN_TENSE
-VU: had not been able to be been by (negated) HADBEEN_TENSE
-VU: had not been able to be been by (negated) HADBEEN_TENSE
-VU: has been able to be been by HASBEEN_TENSE
-VU: have been able to be been by HASBEEN_TENSE
-VU: had been able to be been by HADBEEN_TENSE
-VU: had been able to be been by HADBEEN_TENSE
-VU: cannot be been by (negated) IS_TENSE
-VU: cannot be been by (negated) IS_TENSE
-VU: could not be been by (negated) WAS_TENSE
-VU: could not be been by (negated) WAS_TENSE
-VU: can be been by IS_TENSE
-VU: can be been by IS_TENSE
-VU: could be been by WAS_TENSE
-VU: could be been by WAS_TENSE
-VU: has not had (negated) HASBEEN_TENSE
-VU: have not had (negated) HASBEEN_TENSE
-VU: had not had (negated) HADBEEN_TENSE
-VU: had not had (negated) HADBEEN_TENSE
-VU: has had HASBEEN_TENSE
-VU: have had HASBEEN_TENSE
-VU: had had HADBEEN_TENSE
-VU: had had HADBEEN_TENSE
-VU: does not have (negated) IS_TENSE
-VU: do not have (negated) IS_TENSE
-VU: did not have (negated) WAS_TENSE
-VU: did not have (negated) WAS_TENSE
-VU: has IS_TENSE
-VU: have IS_TENSE
-VU: had WAS_TENSE
-VU: had WAS_TENSE
-VU: has not specified (negated) HASBEEN_TENSE
-VU: have not specified (negated) HASBEEN_TENSE
-VU: had not specified (negated) HADBEEN_TENSE
-VU: had not specified (negated) HADBEEN_TENSE
-VU: has specified HASBEEN_TENSE
-VU: have specified HASBEEN_TENSE
-VU: had specified HADBEEN_TENSE
-VU: had specified HADBEEN_TENSE
-VU: does not specify (negated) IS_TENSE
-VU: do not specify (negated) IS_TENSE
-VU: did not specify (negated) WAS_TENSE
-VU: did not specify (negated) WAS_TENSE
-VU: specifies IS_TENSE
-VU: specify IS_TENSE
-VU: specified WAS_TENSE
-VU: specified WAS_TENSE
-VU: has not related (negated) HASBEEN_TENSE
-VU: have not related (negated) HASBEEN_TENSE
-VU: had not related (negated) HADBEEN_TENSE
-VU: had not related (negated) HADBEEN_TENSE
-VU: has related HASBEEN_TENSE
-VU: have related HASBEEN_TENSE
-VU: had related HADBEEN_TENSE
-VU: had related HADBEEN_TENSE
-VU: does not relate (negated) IS_TENSE
-VU: do not relate (negated) IS_TENSE
-VU: did not relate (negated) WAS_TENSE
-VU: did not relate (negated) WAS_TENSE
-VU: relates IS_TENSE
-VU: relate IS_TENSE
-VU: related WAS_TENSE
-VU: related WAS_TENSE
-VU: has not substituted (negated) HASBEEN_TENSE
-VU: have not substituted (negated) HASBEEN_TENSE
-VU: had not substituted (negated) HADBEEN_TENSE
-VU: had not substituted (negated) HADBEEN_TENSE
-VU: has substituted HASBEEN_TENSE
-VU: have substituted HASBEEN_TENSE
-VU: had substituted HADBEEN_TENSE
-VU: had substituted HADBEEN_TENSE
-VU: does not substitute (negated) IS_TENSE
-VU: do not substitute (negated) IS_TENSE
-VU: did not substitute (negated) WAS_TENSE
-VU: did not substitute (negated) WAS_TENSE
-VU: substitutes IS_TENSE
-VU: substitute IS_TENSE
-VU: substituted WAS_TENSE
-VU: substituted WAS_TENSE
-VU: has not done (negated) HASBEEN_TENSE
-VU: have not done (negated) HASBEEN_TENSE
-VU: had not done (negated) HADBEEN_TENSE
-VU: had not done (negated) HADBEEN_TENSE
-VU: has done HASBEEN_TENSE
-VU: have done HASBEEN_TENSE
-VU: had done HADBEEN_TENSE
-VU: had done HADBEEN_TENSE
-VU: does not (negated) IS_TENSE
-VU: do not (negated) IS_TENSE
-VU: did not (negated) WAS_TENSE
-VU: did not (negated) WAS_TENSE
-VU: does IS_TENSE
-VU: do IS_TENSE
-VU: did WAS_TENSE
-VU: did WAS_TENSE
-VU: has not translated (negated) HASBEEN_TENSE
-VU: have not translated (negated) HASBEEN_TENSE
-VU: had not translated (negated) HADBEEN_TENSE
-VU: had not translated (negated) HADBEEN_TENSE
-VU: has translated HASBEEN_TENSE
-VU: have translated HASBEEN_TENSE
-VU: had translated HADBEEN_TENSE
-VU: had translated HADBEEN_TENSE
-VU: does not translate (negated) IS_TENSE
-VU: do not translate (negated) IS_TENSE
-VU: did not translate (negated) WAS_TENSE
-VU: did not translate (negated) WAS_TENSE
-VU: translates IS_TENSE
-VU: translate IS_TENSE
-VU: translated WAS_TENSE
-VU: translated WAS_TENSE
-VU: has not provided (negated) HASBEEN_TENSE
-VU: have not provided (negated) HASBEEN_TENSE
-VU: had not provided (negated) HADBEEN_TENSE
-VU: had not provided (negated) HADBEEN_TENSE
-VU: has provided HASBEEN_TENSE
-VU: have provided HASBEEN_TENSE
-VU: had provided HADBEEN_TENSE
-VU: had provided HADBEEN_TENSE
-VU: does not provide (negated) IS_TENSE
-VU: do not provide (negated) IS_TENSE
-VU: did not provide (negated) WAS_TENSE
-VU: did not provide (negated) WAS_TENSE
-VU: provides IS_TENSE
-VU: provide IS_TENSE
-VU: provided WAS_TENSE
-VU: provided WAS_TENSE
-VU: has not used (negated) HASBEEN_TENSE
-VU: have not used (negated) HASBEEN_TENSE
-VU: had not used (negated) HADBEEN_TENSE
-VU: had not used (negated) HADBEEN_TENSE
-VU: has used HASBEEN_TENSE
-VU: have used HASBEEN_TENSE
-VU: had used HADBEEN_TENSE
-VU: had used HADBEEN_TENSE
-VU: does not use (negated) IS_TENSE
-VU: do not use (negated) IS_TENSE
-VU: did not use (negated) WAS_TENSE
-VU: did not use (negated) WAS_TENSE
-VU: uses IS_TENSE
-VU: use IS_TENSE
-VU: used WAS_TENSE
-VU: used WAS_TENSE
-VU: has not included (negated) HASBEEN_TENSE
-VU: have not included (negated) HASBEEN_TENSE
-VU: had not included (negated) HADBEEN_TENSE
-VU: had not included (negated) HADBEEN_TENSE
-VU: has included HASBEEN_TENSE
-VU: have included HASBEEN_TENSE
-VU: had included HADBEEN_TENSE
-VU: had included HADBEEN_TENSE
-VU: does not include (negated) IS_TENSE
-VU: do not include (negated) IS_TENSE
-VU: did not include (negated) WAS_TENSE
-VU: did not include (negated) WAS_TENSE
-VU: includes IS_TENSE
-VU: include IS_TENSE
-VU: included WAS_TENSE
-VU: included WAS_TENSE
-VU: has not omitted (negated) HASBEEN_TENSE
-VU: have not omitted (negated) HASBEEN_TENSE
-VU: had not omitted (negated) HADBEEN_TENSE
-VU: had not omitted (negated) HADBEEN_TENSE
-VU: has omitted HASBEEN_TENSE
-VU: have omitted HASBEEN_TENSE
-VU: had omitted HADBEEN_TENSE
-VU: had omitted HADBEEN_TENSE
-VU: does not omit (negated) IS_TENSE
-VU: do not omit (negated) IS_TENSE
-VU: did not omit (negated) WAS_TENSE
-VU: did not omit (negated) WAS_TENSE
-VU: omits IS_TENSE
-VU: omit IS_TENSE
-VU: omitted WAS_TENSE
-VU: omitted WAS_TENSE
-VU: has not been able to (negated) HASBEEN_TENSE
-VU: have not been able to (negated) HASBEEN_TENSE
-VU: had not been able to (negated) HADBEEN_TENSE
-VU: had not been able to (negated) HADBEEN_TENSE
-VU: has been able to HASBEEN_TENSE
-VU: have been able to HASBEEN_TENSE
-VU: had been able to HADBEEN_TENSE
-VU: had been able to HADBEEN_TENSE
-VU: cannot (negated) IS_TENSE
-VU: cannot (negated) IS_TENSE
-VU: could not (negated) WAS_TENSE
-VU: could not (negated) WAS_TENSE
-VU: can IS_TENSE
-VU: can IS_TENSE
-VU: could WAS_TENSE
-VU: could WAS_TENSE
-VU: could not have (negated) HASBEEN_TENSE
-VU: could not have (negated) HASBEEN_TENSE
-VU: could not have (negated) HADBEEN_TENSE
-VU: could not have (negated) HADBEEN_TENSE
-VU: could have HASBEEN_TENSE
-VU: could have HASBEEN_TENSE
-VU: could have HADBEEN_TENSE
-VU: could have HADBEEN_TENSE
-VU: could not (negated) IS_TENSE
-VU: could not (negated) IS_TENSE
-VU: could not have (negated) WAS_TENSE
-VU: could not have (negated) WAS_TENSE
-VU: could IS_TENSE
-VU: could IS_TENSE
-VU: could have WAS_TENSE
-VU: could have WAS_TENSE
-VU: may not have (negated) HASBEEN_TENSE
-VU: may not have (negated) HASBEEN_TENSE
-VU: may not have (negated) HADBEEN_TENSE
-VU: may not have (negated) HADBEEN_TENSE
-VU: may have HASBEEN_TENSE
-VU: may have HASBEEN_TENSE
-VU: may have HADBEEN_TENSE
-VU: may have HADBEEN_TENSE
-VU: may not (negated) IS_TENSE
-VU: may not (negated) IS_TENSE
-VU: may not have (negated) WAS_TENSE
-VU: may not have (negated) WAS_TENSE
-VU: may IS_TENSE
-VU: may IS_TENSE
-VU: may have WAS_TENSE
-VU: may have WAS_TENSE
-VU: might not have (negated) HASBEEN_TENSE
-VU: might not have (negated) HASBEEN_TENSE
-VU: might not have (negated) HADBEEN_TENSE
-VU: might not have (negated) HADBEEN_TENSE
-VU: might have HASBEEN_TENSE
-VU: might have HASBEEN_TENSE
-VU: might have HADBEEN_TENSE
-VU: might have HADBEEN_TENSE
-VU: might not (negated) IS_TENSE
-VU: might not (negated) IS_TENSE
-VU: might not have (negated) WAS_TENSE
-VU: might not have (negated) WAS_TENSE
-VU: might IS_TENSE
-VU: might IS_TENSE
-VU: might have WAS_TENSE
-VU: might have WAS_TENSE
-VU: must not have (negated) HASBEEN_TENSE
-VU: must not have (negated) HASBEEN_TENSE
-VU: must not have (negated) HADBEEN_TENSE
-VU: must not have (negated) HADBEEN_TENSE
-VU: must have HASBEEN_TENSE
-VU: must have HASBEEN_TENSE
-VU: must have HADBEEN_TENSE
-VU: must have HADBEEN_TENSE
-VU: must not (negated) IS_TENSE
-VU: must not (negated) IS_TENSE
-VU: must not have (negated) WAS_TENSE
-VU: must not have (negated) WAS_TENSE
-VU: must IS_TENSE
-VU: must IS_TENSE
-VU: must have WAS_TENSE
-VU: must have WAS_TENSE
-VU: should not have (negated) HASBEEN_TENSE
-VU: should not have (negated) HASBEEN_TENSE
-VU: should not have (negated) HADBEEN_TENSE
-VU: should not have (negated) HADBEEN_TENSE
-VU: should have HASBEEN_TENSE
-VU: should have HASBEEN_TENSE
-VU: should have HADBEEN_TENSE
-VU: should have HADBEEN_TENSE
-VU: should not (negated) IS_TENSE
-VU: should not (negated) IS_TENSE
-VU: should not have (negated) WAS_TENSE
-VU: should not have (negated) WAS_TENSE
-VU: should IS_TENSE
-VU: should IS_TENSE
-VU: should have WAS_TENSE
-VU: should have WAS_TENSE
-VU: would not have (negated) HASBEEN_TENSE
-VU: would not have (negated) HASBEEN_TENSE
-VU: would not have (negated) HADBEEN_TENSE
-VU: would not have (negated) HADBEEN_TENSE
-VU: would have HASBEEN_TENSE
-VU: would have HASBEEN_TENSE
-VU: would have HADBEEN_TENSE
-VU: would have HADBEEN_TENSE
-VU: would not (negated) IS_TENSE
-VU: would not (negated) IS_TENSE
-VU: would not have (negated) WAS_TENSE
-VU: would not have (negated) WAS_TENSE
-VU: would IS_TENSE
-VU: would IS_TENSE
-VU: would have WAS_TENSE
-VU: would have WAS_TENSE
-VU: 's not been (negated) HASBEEN_TENSE
-VU: 've not been (negated) HASBEEN_TENSE
-VU: 'd not been (negated) HADBEEN_TENSE
-VU: 'd not been (negated) HADBEEN_TENSE
-VU: 's been HASBEEN_TENSE
-VU: 've been HASBEEN_TENSE
-VU: 'd been HADBEEN_TENSE
-VU: 'd been HADBEEN_TENSE
-VU: 's not (negated) IS_TENSE
-VU: 're not (negated) IS_TENSE
-VU: wasn't (negated) WAS_TENSE
-VU: weren't (negated) WAS_TENSE
-VU: 's IS_TENSE
-VU: 're IS_TENSE
-VU: was WAS_TENSE
-VU: were WAS_TENSE
-VU: 's not had (negated) HASBEEN_TENSE
-VU: 've not had (negated) HASBEEN_TENSE
-VU: 'd not had (negated) HADBEEN_TENSE
-VU: 'd not had (negated) HADBEEN_TENSE
-VU: 's had HASBEEN_TENSE
-VU: 've had HASBEEN_TENSE
-VU: 'd had HADBEEN_TENSE
-VU: 'd had HADBEEN_TENSE
-VU: 's not (negated) IS_TENSE
-VU: 've not (negated) IS_TENSE
-VU: hadn't (negated) WAS_TENSE
-VU: hadn't (negated) WAS_TENSE
-VU: 's IS_TENSE
-VU: 've IS_TENSE
-VU: had WAS_TENSE
-VU: had WAS_TENSE
-VU: hasn't been HASBEEN_TENSE
-VU: haven't been HASBEEN_TENSE
-VU: hadn't been HADBEEN_TENSE
-VU: hadn't been HADBEEN_TENSE
-VU: isn't IS_TENSE
-VU: aren't IS_TENSE
-VU: wasn't WAS_TENSE
-VU: weren't WAS_TENSE
-VU: hasn't been able to HASBEEN_TENSE
-VU: haven't been able to HASBEEN_TENSE
-VU: hadn't been able to HADBEEN_TENSE
-VU: hadn't been able to HADBEEN_TENSE
-VU: can't IS_TENSE
-VU: can't IS_TENSE
-VU: couldn't WAS_TENSE
-VU: couldn't WAS_TENSE
-VU: didn't HASBEEN_TENSE
-VU: didn't HASBEEN_TENSE
-VU: didn't HADBEEN_TENSE
-VU: didn't HADBEEN_TENSE
-VU: doesn't IS_TENSE
-VU: don't IS_TENSE
-VU: didn't WAS_TENSE
-VU: didn't WAS_TENSE
-VU: hadn't HASBEEN_TENSE
-VU: hadn't HASBEEN_TENSE
-VU: hadn't HADBEEN_TENSE
-VU: hadn't HADBEEN_TENSE
-VU: hasn't IS_TENSE
-VU: haven't IS_TENSE
-VU: hadn't WAS_TENSE
-VU: hadn't WAS_TENSE
-VU: mustn't have HASBEEN_TENSE
-VU: mustn't have HASBEEN_TENSE
-VU: mustn't have HADBEEN_TENSE
-VU: mustn't have HADBEEN_TENSE
-VU: mustn't IS_TENSE
-VU: mustn't IS_TENSE
-VU: mustn't have WAS_TENSE
-VU: mustn't have WAS_TENSE
-VU: mightn't have HASBEEN_TENSE
-VU: mightn't have HASBEEN_TENSE
-VU: mightn't have HADBEEN_TENSE
-VU: mightn't have HADBEEN_TENSE
-VU: mightn't IS_TENSE
-VU: mightn't IS_TENSE
-VU: mightn't have WAS_TENSE
-VU: mightn't have WAS_TENSE
-VU: mayn't have HASBEEN_TENSE
-VU: mayn't have HASBEEN_TENSE
-VU: mayn't have HADBEEN_TENSE
-VU: mayn't have HADBEEN_TENSE
-VU: mayn't IS_TENSE
-VU: mayn't IS_TENSE
-VU: mayn't have WAS_TENSE
-VU: mayn't have WAS_TENSE
-VU: wouldn't have HASBEEN_TENSE
-VU: wouldn't have HASBEEN_TENSE
-VU: wouldn't have HADBEEN_TENSE
-VU: wouldn't have HADBEEN_TENSE
-VU: wouldn't IS_TENSE
-VU: wouldn't IS_TENSE
-VU: wouldn't have WAS_TENSE
-VU: wouldn't have WAS_TENSE
-VU: couldn't have HASBEEN_TENSE
-VU: couldn't have HASBEEN_TENSE
-VU: couldn't have HADBEEN_TENSE
-VU: couldn't have HADBEEN_TENSE
-VU: couldn't IS_TENSE
-VU: couldn't IS_TENSE
-VU: couldn't have WAS_TENSE
-VU: couldn't have WAS_TENSE
-VU: shouldn't have HASBEEN_TENSE
-VU: shouldn't have HASBEEN_TENSE
-VU: shouldn't have HADBEEN_TENSE
-VU: shouldn't have HADBEEN_TENSE
-VU: shouldn't IS_TENSE
-VU: shouldn't IS_TENSE
-VU: shouldn't have WAS_TENSE
-VU: shouldn't have WAS_TENSE
-VU: wouldn't HASBEEN_TENSE
-VU: wouldn't HASBEEN_TENSE
-VU: wouldn't HADBEEN_TENSE
-VU: wouldn't HADBEEN_TENSE
-VU: won't IS_TENSE
-VU: won't IS_TENSE
-VU: wouldn't WAS_TENSE
-VU: wouldn't WAS_TENSE
-VU: has not begun (negated) HASBEEN_TENSE
-VU: have not begun (negated) HASBEEN_TENSE
-VU: had not begun (negated) HADBEEN_TENSE
-VU: had not begun (negated) HADBEEN_TENSE
-VU: has begun HASBEEN_TENSE
-VU: have begun HASBEEN_TENSE
-VU: had begun HADBEEN_TENSE
-VU: had begun HADBEEN_TENSE
-VU: does not begin (negated) IS_TENSE
-VU: do not begin (negated) IS_TENSE
-VU: did not begin (negated) WAS_TENSE
-VU: did not begin (negated) WAS_TENSE
-VU: begins IS_TENSE
-VU: begin IS_TENSE
-VU: began WAS_TENSE
-VU: began WAS_TENSE
-VU: has not ended (negated) HASBEEN_TENSE
-VU: have not ended (negated) HASBEEN_TENSE
-VU: had not ended (negated) HADBEEN_TENSE
-VU: had not ended (negated) HADBEEN_TENSE
-VU: has ended HASBEEN_TENSE
-VU: have ended HASBEEN_TENSE
-VU: had ended HADBEEN_TENSE
-VU: had ended HADBEEN_TENSE
-VU: does not end (negated) IS_TENSE
-VU: do not end (negated) IS_TENSE
-VU: did not end (negated) WAS_TENSE
-VU: did not end (negated) WAS_TENSE
-VU: ends IS_TENSE
-VU: end IS_TENSE
-VU: ended WAS_TENSE
-VU: ended WAS_TENSE
-VU: has not tested (negated) HASBEEN_TENSE
-VU: have not tested (negated) HASBEEN_TENSE
-VU: had not tested (negated) HADBEEN_TENSE
-VU: had not tested (negated) HADBEEN_TENSE
-VU: has tested HASBEEN_TENSE
-VU: have tested HASBEEN_TENSE
-VU: had tested HADBEEN_TENSE
-VU: had tested HADBEEN_TENSE
-VU: does not test (negated) IS_TENSE
-VU: do not test (negated) IS_TENSE
-VU: did not test (negated) WAS_TENSE
-VU: did not test (negated) WAS_TENSE
-VU: tests IS_TENSE
-VU: test IS_TENSE
-VU: tested WAS_TENSE
-VU: tested WAS_TENSE
-VU: has not understood (negated) HASBEEN_TENSE
-VU: have not understood (negated) HASBEEN_TENSE
-VU: had not understood (negated) HADBEEN_TENSE
-VU: had not understood (negated) HADBEEN_TENSE
-VU: has understood HASBEEN_TENSE
-VU: have understood HASBEEN_TENSE
-VU: had understood HADBEEN_TENSE
-VU: had understood HADBEEN_TENSE
-VU: does not understand (negated) IS_TENSE
-VU: do not understand (negated) IS_TENSE
-VU: did not understand (negated) WAS_TENSE
-VU: did not understand (negated) WAS_TENSE
-VU: understands IS_TENSE
-VU: understand IS_TENSE
-VU: understood WAS_TENSE
-VU: understood WAS_TENSE
-VU: has not released (negated) HASBEEN_TENSE
-VU: have not released (negated) HASBEEN_TENSE
-VU: had not released (negated) HADBEEN_TENSE
-VU: had not released (negated) HADBEEN_TENSE
-VU: has released HASBEEN_TENSE
-VU: have released HASBEEN_TENSE
-VU: had released HADBEEN_TENSE
-VU: had released HADBEEN_TENSE
-VU: does not release (negated) IS_TENSE
-VU: do not release (negated) IS_TENSE
-VU: did not release (negated) WAS_TENSE
-VU: did not release (negated) WAS_TENSE
-VU: releases IS_TENSE
-VU: release IS_TENSE
-VU: released WAS_TENSE
-VU: released WAS_TENSE
-VU: has not indexed (negated) HASBEEN_TENSE
-VU: have not indexed (negated) HASBEEN_TENSE
-VU: had not indexed (negated) HADBEEN_TENSE
-VU: had not indexed (negated) HADBEEN_TENSE
-VU: has indexed HASBEEN_TENSE
-VU: have indexed HASBEEN_TENSE
-VU: had indexed HADBEEN_TENSE
-VU: had indexed HADBEEN_TENSE
-VU: does not index (negated) IS_TENSE
-VU: do not index (negated) IS_TENSE
-VU: did not index (negated) WAS_TENSE
-VU: did not index (negated) WAS_TENSE
-VU: indexes IS_TENSE
-VU: index IS_TENSE
-VU: indexed WAS_TENSE
-VU: indexed WAS_TENSE
-VU: has not contained (negated) HASBEEN_TENSE
-VU: have not contained (negated) HASBEEN_TENSE
-VU: had not contained (negated) HADBEEN_TENSE
-VU: had not contained (negated) HADBEEN_TENSE
-VU: has contained HASBEEN_TENSE
-VU: have contained HASBEEN_TENSE
-VU: had contained HADBEEN_TENSE
-VU: had contained HADBEEN_TENSE
-VU: does not contain (negated) IS_TENSE
-VU: do not contain (negated) IS_TENSE
-VU: did not contain (negated) WAS_TENSE
-VU: did not contain (negated) WAS_TENSE
-VU: contains IS_TENSE
-VU: contain IS_TENSE
-VU: contained WAS_TENSE
-VU: contained WAS_TENSE
-VU: has not supported (negated) HASBEEN_TENSE
-VU: have not supported (negated) HASBEEN_TENSE
-VU: had not supported (negated) HADBEEN_TENSE
-VU: had not supported (negated) HADBEEN_TENSE
-VU: has supported HASBEEN_TENSE
-VU: have supported HASBEEN_TENSE
-VU: had supported HADBEEN_TENSE
-VU: had supported HADBEEN_TENSE
-VU: does not support (negated) IS_TENSE
-VU: do not support (negated) IS_TENSE
-VU: did not support (negated) WAS_TENSE
-VU: did not support (negated) WAS_TENSE
-VU: supports IS_TENSE
-VU: support IS_TENSE
-VU: supported WAS_TENSE
-VU: supported WAS_TENSE
-VU: has not incorporated (negated) HASBEEN_TENSE
-VU: have not incorporated (negated) HASBEEN_TENSE
-VU: had not incorporated (negated) HADBEEN_TENSE
-VU: had not incorporated (negated) HADBEEN_TENSE
-VU: has incorporated HASBEEN_TENSE
-VU: have incorporated HASBEEN_TENSE
-VU: had incorporated HADBEEN_TENSE
-VU: had incorporated HADBEEN_TENSE
-VU: does not incorporate (negated) IS_TENSE
-VU: do not incorporate (negated) IS_TENSE
-VU: did not incorporate (negated) WAS_TENSE
-VU: did not incorporate (negated) WAS_TENSE
-VU: incorporates IS_TENSE
-VU: incorporate IS_TENSE
-VU: incorporated WAS_TENSE
-VU: incorporated WAS_TENSE
-VU: has not enclosed (negated) HASBEEN_TENSE
-VU: have not enclosed (negated) HASBEEN_TENSE
-VU: had not enclosed (negated) HADBEEN_TENSE
-VU: had not enclosed (negated) HADBEEN_TENSE
-VU: has enclosed HASBEEN_TENSE
-VU: have enclosed HASBEEN_TENSE
-VU: had enclosed HADBEEN_TENSE
-VU: had enclosed HADBEEN_TENSE
-VU: does not enclose (negated) IS_TENSE
-VU: do not enclose (negated) IS_TENSE
-VU: did not enclose (negated) WAS_TENSE
-VU: did not enclose (negated) WAS_TENSE
-VU: encloses IS_TENSE
-VU: enclose IS_TENSE
-VU: enclosed WAS_TENSE
-VU: enclosed WAS_TENSE
-VU: has not carried (negated) HASBEEN_TENSE
-VU: have not carried (negated) HASBEEN_TENSE
-VU: had not carried (negated) HADBEEN_TENSE
-VU: had not carried (negated) HADBEEN_TENSE
-VU: has carried HASBEEN_TENSE
-VU: have carried HASBEEN_TENSE
-VU: had carried HADBEEN_TENSE
-VU: had carried HADBEEN_TENSE
-VU: does not carry (negated) IS_TENSE
-VU: do not carry (negated) IS_TENSE
-VU: did not carry (negated) WAS_TENSE
-VU: did not carry (negated) WAS_TENSE
-VU: carries IS_TENSE
-VU: carry IS_TENSE
-VU: carried WAS_TENSE
-VU: carried WAS_TENSE
-VU: has not held (negated) HASBEEN_TENSE
-VU: have not held (negated) HASBEEN_TENSE
-VU: had not held (negated) HADBEEN_TENSE
-VU: had not held (negated) HADBEEN_TENSE
-VU: has held HASBEEN_TENSE
-VU: have held HASBEEN_TENSE
-VU: had held HADBEEN_TENSE
-VU: had held HADBEEN_TENSE
-VU: does not hold (negated) IS_TENSE
-VU: do not hold (negated) IS_TENSE
-VU: did not hold (negated) WAS_TENSE
-VU: did not hold (negated) WAS_TENSE
-VU: holds IS_TENSE
-VU: hold IS_TENSE
-VU: held WAS_TENSE
-VU: held WAS_TENSE
-VU: has not worn (negated) HASBEEN_TENSE
-VU: have not worn (negated) HASBEEN_TENSE
-VU: had not worn (negated) HADBEEN_TENSE
-VU: had not worn (negated) HADBEEN_TENSE
-VU: has worn HASBEEN_TENSE
-VU: have worn HASBEEN_TENSE
-VU: had worn HADBEEN_TENSE
-VU: had worn HADBEEN_TENSE
-VU: does not wear (negated) IS_TENSE
-VU: do not wear (negated) IS_TENSE
-VU: did not wear (negated) WAS_TENSE
-VU: did not wear (negated) WAS_TENSE
-VU: wears IS_TENSE
-VU: wear IS_TENSE
-VU: wore WAS_TENSE
-VU: wore WAS_TENSE
-VU: has not been able to see (negated) HASBEEN_TENSE
-VU: have not been able to see (negated) HASBEEN_TENSE
-VU: had not been able to see (negated) HADBEEN_TENSE
-VU: had not been able to see (negated) HADBEEN_TENSE
-VU: has been able to see HASBEEN_TENSE
-VU: have been able to see HASBEEN_TENSE
-VU: had been able to see HADBEEN_TENSE
-VU: had been able to see HADBEEN_TENSE
-VU: cannot see (negated) IS_TENSE
-VU: cannot see (negated) IS_TENSE
-VU: could not see (negated) WAS_TENSE
-VU: could not see (negated) WAS_TENSE
-VU: can see IS_TENSE
-VU: can see IS_TENSE
-VU: could see WAS_TENSE
-VU: could see WAS_TENSE
-VU: has not been able to be seen by (negated) HASBEEN_TENSE
-VU: have not been able to be seen by (negated) HASBEEN_TENSE
-VU: had not been able to be seen by (negated) HADBEEN_TENSE
-VU: had not been able to be seen by (negated) HADBEEN_TENSE
-VU: has been able to be seen by HASBEEN_TENSE
-VU: have been able to be seen by HASBEEN_TENSE
-VU: had been able to be seen by HADBEEN_TENSE
-VU: had been able to be seen by HADBEEN_TENSE
-VU: cannot be seen by (negated) IS_TENSE
-VU: cannot be seen by (negated) IS_TENSE
-VU: could not be seen by (negated) WAS_TENSE
-VU: could not be seen by (negated) WAS_TENSE
-VU: can be seen by IS_TENSE
-VU: can be seen by IS_TENSE
-VU: could be seen by WAS_TENSE
-VU: could be seen by WAS_TENSE
-VU: has not been able to touch (negated) HASBEEN_TENSE
-VU: have not been able to touch (negated) HASBEEN_TENSE
-VU: had not been able to touch (negated) HADBEEN_TENSE
-VU: had not been able to touch (negated) HADBEEN_TENSE
-VU: has been able to touch HASBEEN_TENSE
-VU: have been able to touch HASBEEN_TENSE
-VU: had been able to touch HADBEEN_TENSE
-VU: had been able to touch HADBEEN_TENSE
-VU: cannot touch (negated) IS_TENSE
-VU: cannot touch (negated) IS_TENSE
-VU: could not touch (negated) WAS_TENSE
-VU: could not touch (negated) WAS_TENSE
-VU: can touch IS_TENSE
-VU: can touch IS_TENSE
-VU: could touch WAS_TENSE
-VU: could touch WAS_TENSE
-VU: has not been able to be touched by (negated) HASBEEN_TENSE
-VU: have not been able to be touched by (negated) HASBEEN_TENSE
-VU: had not been able to be touched by (negated) HADBEEN_TENSE
-VU: had not been able to be touched by (negated) HADBEEN_TENSE
-VU: has been able to be touched by HASBEEN_TENSE
-VU: have been able to be touched by HASBEEN_TENSE
-VU: had been able to be touched by HADBEEN_TENSE
-VU: had been able to be touched by HADBEEN_TENSE
-VU: cannot be touched by (negated) IS_TENSE
-VU: cannot be touched by (negated) IS_TENSE
-VU: could not be touched by (negated) WAS_TENSE
-VU: could not be touched by (negated) WAS_TENSE
-VU: can be touched by IS_TENSE
-VU: can be touched by IS_TENSE
-VU: could be touched by WAS_TENSE
-VU: could be touched by WAS_TENSE
-VU: has not concealed (negated) HASBEEN_TENSE
-VU: have not concealed (negated) HASBEEN_TENSE
-VU: had not concealed (negated) HADBEEN_TENSE
-VU: had not concealed (negated) HADBEEN_TENSE
-VU: has concealed HASBEEN_TENSE
-VU: have concealed HASBEEN_TENSE
-VU: had concealed HADBEEN_TENSE
-VU: had concealed HADBEEN_TENSE
-VU: does not conceal (negated) IS_TENSE
-VU: do not conceal (negated) IS_TENSE
-VU: did not conceal (negated) WAS_TENSE
-VU: did not conceal (negated) WAS_TENSE
-VU: conceals IS_TENSE
-VU: conceal IS_TENSE
-VU: concealed WAS_TENSE
-VU: concealed WAS_TENSE
-VU: has not unlocked (negated) HASBEEN_TENSE
-VU: have not unlocked (negated) HASBEEN_TENSE
-VU: had not unlocked (negated) HADBEEN_TENSE
-VU: had not unlocked (negated) HADBEEN_TENSE
-VU: has unlocked HASBEEN_TENSE
-VU: have unlocked HASBEEN_TENSE
-VU: had unlocked HADBEEN_TENSE
-VU: had unlocked HADBEEN_TENSE
-VU: does not unlock (negated) IS_TENSE
-VU: do not unlock (negated) IS_TENSE
-VU: did not unlock (negated) WAS_TENSE
-VU: did not unlock (negated) WAS_TENSE
-VU: unlocks IS_TENSE
-VU: unlock IS_TENSE
-VU: unlocked WAS_TENSE
-VU: unlocked WAS_TENSE
-VU: has not achieved (negated) HASBEEN_TENSE
-VU: have not achieved (negated) HASBEEN_TENSE
-VU: had not achieved (negated) HADBEEN_TENSE
-VU: had not achieved (negated) HADBEEN_TENSE
-VU: has achieved HASBEEN_TENSE
-VU: have achieved HASBEEN_TENSE
-VU: had achieved HADBEEN_TENSE
-VU: had achieved HADBEEN_TENSE
-VU: does not achieve (negated) IS_TENSE
-VU: do not achieve (negated) IS_TENSE
-VU: did not achieve (negated) WAS_TENSE
-VU: did not achieve (negated) WAS_TENSE
-VU: achieves IS_TENSE
-VU: achieve IS_TENSE
-VU: achieved WAS_TENSE
-VU: achieved WAS_TENSE
-VU: has not appreciated (negated) HASBEEN_TENSE
-VU: have not appreciated (negated) HASBEEN_TENSE
-VU: had not appreciated (negated) HADBEEN_TENSE
-VU: had not appreciated (negated) HADBEEN_TENSE
-VU: has appreciated HASBEEN_TENSE
-VU: have appreciated HASBEEN_TENSE
-VU: had appreciated HADBEEN_TENSE
-VU: had appreciated HADBEEN_TENSE
-VU: does not appreciate (negated) IS_TENSE
-VU: do not appreciate (negated) IS_TENSE
-VU: did not appreciate (negated) WAS_TENSE
-VU: did not appreciate (negated) WAS_TENSE
-VU: appreciates IS_TENSE
-VU: appreciate IS_TENSE
-VU: appreciated WAS_TENSE
-VU: appreciated WAS_TENSE
-VU: has not arrived (negated) HASBEEN_TENSE
-VU: have not arrived (negated) HASBEEN_TENSE
-VU: had not arrived (negated) HADBEEN_TENSE
-VU: had not arrived (negated) HADBEEN_TENSE
-VU: has arrived HASBEEN_TENSE
-VU: have arrived HASBEEN_TENSE
-VU: had arrived HADBEEN_TENSE
-VU: had arrived HADBEEN_TENSE
-VU: does not arrive (negated) IS_TENSE
-VU: do not arrive (negated) IS_TENSE
-VU: did not arrive (negated) WAS_TENSE
-VU: did not arrive (negated) WAS_TENSE
-VU: arrives IS_TENSE
-VU: arrive IS_TENSE
-VU: arrived WAS_TENSE
-VU: arrived WAS_TENSE
-VU: has not cared (negated) HASBEEN_TENSE
-VU: have not cared (negated) HASBEEN_TENSE
-VU: had not cared (negated) HADBEEN_TENSE
-VU: had not cared (negated) HADBEEN_TENSE
-VU: has cared HASBEEN_TENSE
-VU: have cared HASBEEN_TENSE
-VU: had cared HADBEEN_TENSE
-VU: had cared HADBEEN_TENSE
-VU: does not care (negated) IS_TENSE
-VU: do not care (negated) IS_TENSE
-VU: did not care (negated) WAS_TENSE
-VU: did not care (negated) WAS_TENSE
-VU: cares IS_TENSE
-VU: care IS_TENSE
-VU: cared WAS_TENSE
-VU: cared WAS_TENSE
-VU: has not closed (negated) HASBEEN_TENSE
-VU: have not closed (negated) HASBEEN_TENSE
-VU: had not closed (negated) HADBEEN_TENSE
-VU: had not closed (negated) HADBEEN_TENSE
-VU: has closed HASBEEN_TENSE
-VU: have closed HASBEEN_TENSE
-VU: had closed HADBEEN_TENSE
-VU: had closed HADBEEN_TENSE
-VU: does not close (negated) IS_TENSE
-VU: do not close (negated) IS_TENSE
-VU: did not close (negated) WAS_TENSE
-VU: did not close (negated) WAS_TENSE
-VU: closes IS_TENSE
-VU: close IS_TENSE
-VU: closed WAS_TENSE
-VU: closed WAS_TENSE
-VU: has not died (negated) HASBEEN_TENSE
-VU: have not died (negated) HASBEEN_TENSE
-VU: had not died (negated) HADBEEN_TENSE
-VU: had not died (negated) HADBEEN_TENSE
-VU: has died HASBEEN_TENSE
-VU: have died HASBEEN_TENSE
-VU: had died HADBEEN_TENSE
-VU: had died HADBEEN_TENSE
-VU: does not die (negated) IS_TENSE
-VU: do not die (negated) IS_TENSE
-VU: did not die (negated) WAS_TENSE
-VU: did not die (negated) WAS_TENSE
-VU: dies IS_TENSE
-VU: die IS_TENSE
-VU: died WAS_TENSE
-VU: died WAS_TENSE
-VU: has not discovered (negated) HASBEEN_TENSE
-VU: have not discovered (negated) HASBEEN_TENSE
-VU: had not discovered (negated) HADBEEN_TENSE
-VU: had not discovered (negated) HADBEEN_TENSE
-VU: has discovered HASBEEN_TENSE
-VU: have discovered HASBEEN_TENSE
-VU: had discovered HADBEEN_TENSE
-VU: had discovered HADBEEN_TENSE
-VU: does not discover (negated) IS_TENSE
-VU: do not discover (negated) IS_TENSE
-VU: did not discover (negated) WAS_TENSE
-VU: did not discover (negated) WAS_TENSE
-VU: discovers IS_TENSE
-VU: discover IS_TENSE
-VU: discovered WAS_TENSE
-VU: discovered WAS_TENSE
-VU: has not dropped (negated) HASBEEN_TENSE
-VU: have not dropped (negated) HASBEEN_TENSE
-VU: had not dropped (negated) HADBEEN_TENSE
-VU: had not dropped (negated) HADBEEN_TENSE
-VU: has dropped HASBEEN_TENSE
-VU: have dropped HASBEEN_TENSE
-VU: had dropped HADBEEN_TENSE
-VU: had dropped HADBEEN_TENSE
-VU: does not drop (negated) IS_TENSE
-VU: do not drop (negated) IS_TENSE
-VU: did not drop (negated) WAS_TENSE
-VU: did not drop (negated) WAS_TENSE
-VU: drops IS_TENSE
-VU: drop IS_TENSE
-VU: dropped WAS_TENSE
-VU: dropped WAS_TENSE
-VU: has not eaten (negated) HASBEEN_TENSE
-VU: have not eaten (negated) HASBEEN_TENSE
-VU: had not eaten (negated) HADBEEN_TENSE
-VU: had not eaten (negated) HADBEEN_TENSE
-VU: has eaten HASBEEN_TENSE
-VU: have eaten HASBEEN_TENSE
-VU: had eaten HADBEEN_TENSE
-VU: had eaten HADBEEN_TENSE
-VU: does not eat (negated) IS_TENSE
-VU: do not eat (negated) IS_TENSE
-VU: did not eat (negated) WAS_TENSE
-VU: did not eat (negated) WAS_TENSE
-VU: eats IS_TENSE
-VU: eat IS_TENSE
-VU: ate WAS_TENSE
-VU: ate WAS_TENSE
-VU: has not felt (negated) HASBEEN_TENSE
-VU: have not felt (negated) HASBEEN_TENSE
-VU: had not felt (negated) HADBEEN_TENSE
-VU: had not felt (negated) HADBEEN_TENSE
-VU: has felt HASBEEN_TENSE
-VU: have felt HASBEEN_TENSE
-VU: had felt HADBEEN_TENSE
-VU: had felt HADBEEN_TENSE
-VU: does not feel (negated) IS_TENSE
-VU: do not feel (negated) IS_TENSE
-VU: did not feel (negated) WAS_TENSE
-VU: did not feel (negated) WAS_TENSE
-VU: feels IS_TENSE
-VU: feel IS_TENSE
-VU: felt WAS_TENSE
-VU: felt WAS_TENSE
-VU: has not found (negated) HASBEEN_TENSE
-VU: have not found (negated) HASBEEN_TENSE
-VU: had not found (negated) HADBEEN_TENSE
-VU: had not found (negated) HADBEEN_TENSE
-VU: has found HASBEEN_TENSE
-VU: have found HASBEEN_TENSE
-VU: had found HADBEEN_TENSE
-VU: had found HADBEEN_TENSE
-VU: does not find (negated) IS_TENSE
-VU: do not find (negated) IS_TENSE
-VU: did not find (negated) WAS_TENSE
-VU: did not find (negated) WAS_TENSE
-VU: finds IS_TENSE
-VU: find IS_TENSE
-VU: found WAS_TENSE
-VU: found WAS_TENSE
-VU: has not got (negated) HASBEEN_TENSE
-VU: have not got (negated) HASBEEN_TENSE
-VU: had not got (negated) HADBEEN_TENSE
-VU: had not got (negated) HADBEEN_TENSE
-VU: has got HASBEEN_TENSE
-VU: have got HASBEEN_TENSE
-VU: had got HADBEEN_TENSE
-VU: had got HADBEEN_TENSE
-VU: does not get (negated) IS_TENSE
-VU: do not get (negated) IS_TENSE
-VU: did not get (negated) WAS_TENSE
-VU: did not get (negated) WAS_TENSE
-VU: gets IS_TENSE
-VU: get IS_TENSE
-VU: got WAS_TENSE
-VU: got WAS_TENSE
-VU: has not given (negated) HASBEEN_TENSE
-VU: have not given (negated) HASBEEN_TENSE
-VU: had not given (negated) HADBEEN_TENSE
-VU: had not given (negated) HADBEEN_TENSE
-VU: has given HASBEEN_TENSE
-VU: have given HASBEEN_TENSE
-VU: had given HADBEEN_TENSE
-VU: had given HADBEEN_TENSE
-VU: does not give (negated) IS_TENSE
-VU: do not give (negated) IS_TENSE
-VU: did not give (negated) WAS_TENSE
-VU: did not give (negated) WAS_TENSE
-VU: gives IS_TENSE
-VU: give IS_TENSE
-VU: gave WAS_TENSE
-VU: gave WAS_TENSE
-VU: has not gone (negated) HASBEEN_TENSE
-VU: have not gone (negated) HASBEEN_TENSE
-VU: had not gone (negated) HADBEEN_TENSE
-VU: had not gone (negated) HADBEEN_TENSE
-VU: has gone HASBEEN_TENSE
-VU: have gone HASBEEN_TENSE
-VU: had gone HADBEEN_TENSE
-VU: had gone HADBEEN_TENSE
-VU: does not go (negated) IS_TENSE
-VU: do not go (negated) IS_TENSE
-VU: did not go (negated) WAS_TENSE
-VU: did not go (negated) WAS_TENSE
-VU: goes IS_TENSE
-VU: go IS_TENSE
-VU: went WAS_TENSE
-VU: went WAS_TENSE
-VU: has not happened (negated) HASBEEN_TENSE
-VU: have not happened (negated) HASBEEN_TENSE
-VU: had not happened (negated) HADBEEN_TENSE
-VU: had not happened (negated) HADBEEN_TENSE
-VU: has happened HASBEEN_TENSE
-VU: have happened HASBEEN_TENSE
-VU: had happened HADBEEN_TENSE
-VU: had happened HADBEEN_TENSE
-VU: does not happen (negated) IS_TENSE
-VU: do not happen (negated) IS_TENSE
-VU: did not happen (negated) WAS_TENSE
-VU: did not happen (negated) WAS_TENSE
-VU: happens IS_TENSE
-VU: happen IS_TENSE
-VU: happened WAS_TENSE
-VU: happened WAS_TENSE
-VU: has not heard (negated) HASBEEN_TENSE
-VU: have not heard (negated) HASBEEN_TENSE
-VU: had not heard (negated) HADBEEN_TENSE
-VU: had not heard (negated) HADBEEN_TENSE
-VU: has heard HASBEEN_TENSE
-VU: have heard HASBEEN_TENSE
-VU: had heard HADBEEN_TENSE
-VU: had heard HADBEEN_TENSE
-VU: does not hear (negated) IS_TENSE
-VU: do not hear (negated) IS_TENSE
-VU: did not hear (negated) WAS_TENSE
-VU: did not hear (negated) WAS_TENSE
-VU: hears IS_TENSE
-VU: hear IS_TENSE
-VU: heard WAS_TENSE
-VU: heard WAS_TENSE
-VU: has not jumped (negated) HASBEEN_TENSE
-VU: have not jumped (negated) HASBEEN_TENSE
-VU: had not jumped (negated) HADBEEN_TENSE
-VU: had not jumped (negated) HADBEEN_TENSE
-VU: has jumped HASBEEN_TENSE
-VU: have jumped HASBEEN_TENSE
-VU: had jumped HADBEEN_TENSE
-VU: had jumped HADBEEN_TENSE
-VU: does not jump (negated) IS_TENSE
-VU: do not jump (negated) IS_TENSE
-VU: did not jump (negated) WAS_TENSE
-VU: did not jump (negated) WAS_TENSE
-VU: jumps IS_TENSE
-VU: jump IS_TENSE
-VU: jumped WAS_TENSE
-VU: jumped WAS_TENSE
-VU: has not lacked (negated) HASBEEN_TENSE
-VU: have not lacked (negated) HASBEEN_TENSE
-VU: had not lacked (negated) HADBEEN_TENSE
-VU: had not lacked (negated) HADBEEN_TENSE
-VU: has lacked HASBEEN_TENSE
-VU: have lacked HASBEEN_TENSE
-VU: had lacked HADBEEN_TENSE
-VU: had lacked HADBEEN_TENSE
-VU: does not lack (negated) IS_TENSE
-VU: do not lack (negated) IS_TENSE
-VU: did not lack (negated) WAS_TENSE
-VU: did not lack (negated) WAS_TENSE
-VU: lacks IS_TENSE
-VU: lack IS_TENSE
-VU: lacked WAS_TENSE
-VU: lacked WAS_TENSE
-VU: has not led (negated) HASBEEN_TENSE
-VU: have not led (negated) HASBEEN_TENSE
-VU: had not led (negated) HADBEEN_TENSE
-VU: had not led (negated) HADBEEN_TENSE
-VU: has led HASBEEN_TENSE
-VU: have led HASBEEN_TENSE
-VU: had led HADBEEN_TENSE
-VU: had led HADBEEN_TENSE
-VU: does not lead (negated) IS_TENSE
-VU: do not lead (negated) IS_TENSE
-VU: did not lead (negated) WAS_TENSE
-VU: did not lead (negated) WAS_TENSE
-VU: leads IS_TENSE
-VU: lead IS_TENSE
-VU: led WAS_TENSE
-VU: led WAS_TENSE
-VU: has not liked (negated) HASBEEN_TENSE
-VU: have not liked (negated) HASBEEN_TENSE
-VU: had not liked (negated) HADBEEN_TENSE
-VU: had not liked (negated) HADBEEN_TENSE
-VU: has liked HASBEEN_TENSE
-VU: have liked HASBEEN_TENSE
-VU: had liked HADBEEN_TENSE
-VU: had liked HADBEEN_TENSE
-VU: does not like (negated) IS_TENSE
-VU: do not like (negated) IS_TENSE
-VU: did not like (negated) WAS_TENSE
-VU: did not like (negated) WAS_TENSE
-VU: likes IS_TENSE
-VU: like IS_TENSE
-VU: liked WAS_TENSE
-VU: liked WAS_TENSE
-VU: has not listened (negated) HASBEEN_TENSE
-VU: have not listened (negated) HASBEEN_TENSE
-VU: had not listened (negated) HADBEEN_TENSE
-VU: had not listened (negated) HADBEEN_TENSE
-VU: has listened HASBEEN_TENSE
-VU: have listened HASBEEN_TENSE
-VU: had listened HADBEEN_TENSE
-VU: had listened HADBEEN_TENSE
-VU: does not listen (negated) IS_TENSE
-VU: do not listen (negated) IS_TENSE
-VU: did not listen (negated) WAS_TENSE
-VU: did not listen (negated) WAS_TENSE
-VU: listens IS_TENSE
-VU: listen IS_TENSE
-VU: listened WAS_TENSE
-VU: listened WAS_TENSE
-VU: has not locked (negated) HASBEEN_TENSE
-VU: have not locked (negated) HASBEEN_TENSE
-VU: had not locked (negated) HADBEEN_TENSE
-VU: had not locked (negated) HADBEEN_TENSE
-VU: has locked HASBEEN_TENSE
-VU: have locked HASBEEN_TENSE
-VU: had locked HADBEEN_TENSE
-VU: had locked HADBEEN_TENSE
-VU: does not lock (negated) IS_TENSE
-VU: do not lock (negated) IS_TENSE
-VU: did not lock (negated) WAS_TENSE
-VU: did not lock (negated) WAS_TENSE
-VU: locks IS_TENSE
-VU: lock IS_TENSE
-VU: locked WAS_TENSE
-VU: locked WAS_TENSE
-VU: has not looked (negated) HASBEEN_TENSE
-VU: have not looked (negated) HASBEEN_TENSE
-VU: had not looked (negated) HADBEEN_TENSE
-VU: had not looked (negated) HADBEEN_TENSE
-VU: has looked HASBEEN_TENSE
-VU: have looked HASBEEN_TENSE
-VU: had looked HADBEEN_TENSE
-VU: had looked HADBEEN_TENSE
-VU: does not look (negated) IS_TENSE
-VU: do not look (negated) IS_TENSE
-VU: did not look (negated) WAS_TENSE
-VU: did not look (negated) WAS_TENSE
-VU: looks IS_TENSE
-VU: look IS_TENSE
-VU: looked WAS_TENSE
-VU: looked WAS_TENSE
-VU: has not needed (negated) HASBEEN_TENSE
-VU: have not needed (negated) HASBEEN_TENSE
-VU: had not needed (negated) HADBEEN_TENSE
-VU: had not needed (negated) HADBEEN_TENSE
-VU: has needed HASBEEN_TENSE
-VU: have needed HASBEEN_TENSE
-VU: had needed HADBEEN_TENSE
-VU: had needed HADBEEN_TENSE
-VU: does not need (negated) IS_TENSE
-VU: do not need (negated) IS_TENSE
-VU: did not need (negated) WAS_TENSE
-VU: did not need (negated) WAS_TENSE
-VU: needs IS_TENSE
-VU: need IS_TENSE
-VU: needed WAS_TENSE
-VU: needed WAS_TENSE
-VU: has not opened (negated) HASBEEN_TENSE
-VU: have not opened (negated) HASBEEN_TENSE
-VU: had not opened (negated) HADBEEN_TENSE
-VU: had not opened (negated) HADBEEN_TENSE
-VU: has opened HASBEEN_TENSE
-VU: have opened HASBEEN_TENSE
-VU: had opened HADBEEN_TENSE
-VU: had opened HADBEEN_TENSE
-VU: does not open (negated) IS_TENSE
-VU: do not open (negated) IS_TENSE
-VU: did not open (negated) WAS_TENSE
-VU: did not open (negated) WAS_TENSE
-VU: opens IS_TENSE
-VU: open IS_TENSE
-VU: opened WAS_TENSE
-VU: opened WAS_TENSE
-VU: has not passed (negated) HASBEEN_TENSE
-VU: have not passed (negated) HASBEEN_TENSE
-VU: had not passed (negated) HADBEEN_TENSE
-VU: had not passed (negated) HADBEEN_TENSE
-VU: has passed HASBEEN_TENSE
-VU: have passed HASBEEN_TENSE
-VU: had passed HADBEEN_TENSE
-VU: had passed HADBEEN_TENSE
-VU: does not pass (negated) IS_TENSE
-VU: do not pass (negated) IS_TENSE
-VU: did not pass (negated) WAS_TENSE
-VU: did not pass (negated) WAS_TENSE
-VU: passes IS_TENSE
-VU: pass IS_TENSE
-VU: passed WAS_TENSE
-VU: passed WAS_TENSE
-VU: has not picked (negated) HASBEEN_TENSE
-VU: have not picked (negated) HASBEEN_TENSE
-VU: had not picked (negated) HADBEEN_TENSE
-VU: had not picked (negated) HADBEEN_TENSE
-VU: has picked HASBEEN_TENSE
-VU: have picked HASBEEN_TENSE
-VU: had picked HADBEEN_TENSE
-VU: had picked HADBEEN_TENSE
-VU: does not pick (negated) IS_TENSE
-VU: do not pick (negated) IS_TENSE
-VU: did not pick (negated) WAS_TENSE
-VU: did not pick (negated) WAS_TENSE
-VU: picks IS_TENSE
-VU: pick IS_TENSE
-VU: picked WAS_TENSE
-VU: picked WAS_TENSE
-VU: has not provoked (negated) HASBEEN_TENSE
-VU: have not provoked (negated) HASBEEN_TENSE
-VU: had not provoked (negated) HADBEEN_TENSE
-VU: had not provoked (negated) HADBEEN_TENSE
-VU: has provoked HASBEEN_TENSE
-VU: have provoked HASBEEN_TENSE
-VU: had provoked HADBEEN_TENSE
-VU: had provoked HADBEEN_TENSE
-VU: does not provoke (negated) IS_TENSE
-VU: do not provoke (negated) IS_TENSE
-VU: did not provoke (negated) WAS_TENSE
-VU: did not provoke (negated) WAS_TENSE
-VU: provokes IS_TENSE
-VU: provoke IS_TENSE
-VU: provoked WAS_TENSE
-VU: provoked WAS_TENSE
-VU: has not pulled (negated) HASBEEN_TENSE
-VU: have not pulled (negated) HASBEEN_TENSE
-VU: had not pulled (negated) HADBEEN_TENSE
-VU: had not pulled (negated) HADBEEN_TENSE
-VU: has pulled HASBEEN_TENSE
-VU: have pulled HASBEEN_TENSE
-VU: had pulled HADBEEN_TENSE
-VU: had pulled HADBEEN_TENSE
-VU: does not pull (negated) IS_TENSE
-VU: do not pull (negated) IS_TENSE
-VU: did not pull (negated) WAS_TENSE
-VU: did not pull (negated) WAS_TENSE
-VU: pulls IS_TENSE
-VU: pull IS_TENSE
-VU: pulled WAS_TENSE
-VU: pulled WAS_TENSE
-VU: has not pushed (negated) HASBEEN_TENSE
-VU: have not pushed (negated) HASBEEN_TENSE
-VU: had not pushed (negated) HADBEEN_TENSE
-VU: had not pushed (negated) HADBEEN_TENSE
-VU: has pushed HASBEEN_TENSE
-VU: have pushed HASBEEN_TENSE
-VU: had pushed HADBEEN_TENSE
-VU: had pushed HADBEEN_TENSE
-VU: does not push (negated) IS_TENSE
-VU: do not push (negated) IS_TENSE
-VU: did not push (negated) WAS_TENSE
-VU: did not push (negated) WAS_TENSE
-VU: pushes IS_TENSE
-VU: push IS_TENSE
-VU: pushed WAS_TENSE
-VU: pushed WAS_TENSE
-VU: has not put (negated) HASBEEN_TENSE
-VU: have not put (negated) HASBEEN_TENSE
-VU: had not put (negated) HADBEEN_TENSE
-VU: had not put (negated) HADBEEN_TENSE
-VU: has put HASBEEN_TENSE
-VU: have put HASBEEN_TENSE
-VU: had put HADBEEN_TENSE
-VU: had put HADBEEN_TENSE
-VU: does not put (negated) IS_TENSE
-VU: do not put (negated) IS_TENSE
-VU: did not put (negated) WAS_TENSE
-VU: did not put (negated) WAS_TENSE
-VU: puts IS_TENSE
-VU: put IS_TENSE
-VU: put WAS_TENSE
-VU: put WAS_TENSE
-VU: has not rubbed (negated) HASBEEN_TENSE
-VU: have not rubbed (negated) HASBEEN_TENSE
-VU: had not rubbed (negated) HADBEEN_TENSE
-VU: had not rubbed (negated) HADBEEN_TENSE
-VU: has rubbed HASBEEN_TENSE
-VU: have rubbed HASBEEN_TENSE
-VU: had rubbed HADBEEN_TENSE
-VU: had rubbed HADBEEN_TENSE
-VU: does not rub (negated) IS_TENSE
-VU: do not rub (negated) IS_TENSE
-VU: did not rub (negated) WAS_TENSE
-VU: did not rub (negated) WAS_TENSE
-VU: rubs IS_TENSE
-VU: rub IS_TENSE
-VU: rubbed WAS_TENSE
-VU: rubbed WAS_TENSE
-VU: has not said (negated) HASBEEN_TENSE
-VU: have not said (negated) HASBEEN_TENSE
-VU: had not said (negated) HADBEEN_TENSE
-VU: had not said (negated) HADBEEN_TENSE
-VU: has said HASBEEN_TENSE
-VU: have said HASBEEN_TENSE
-VU: had said HADBEEN_TENSE
-VU: had said HADBEEN_TENSE
-VU: does not say (negated) IS_TENSE
-VU: do not say (negated) IS_TENSE
-VU: did not say (negated) WAS_TENSE
-VU: did not say (negated) WAS_TENSE
-VU: says IS_TENSE
-VU: say IS_TENSE
-VU: said WAS_TENSE
-VU: said WAS_TENSE
-VU: has not searched (negated) HASBEEN_TENSE
-VU: have not searched (negated) HASBEEN_TENSE
-VU: had not searched (negated) HADBEEN_TENSE
-VU: had not searched (negated) HADBEEN_TENSE
-VU: has searched HASBEEN_TENSE
-VU: have searched HASBEEN_TENSE
-VU: had searched HADBEEN_TENSE
-VU: had searched HADBEEN_TENSE
-VU: does not search (negated) IS_TENSE
-VU: do not search (negated) IS_TENSE
-VU: did not search (negated) WAS_TENSE
-VU: did not search (negated) WAS_TENSE
-VU: searches IS_TENSE
-VU: search IS_TENSE
-VU: searched WAS_TENSE
-VU: searched WAS_TENSE
-VU: has not seen (negated) HASBEEN_TENSE
-VU: have not seen (negated) HASBEEN_TENSE
-VU: had not seen (negated) HADBEEN_TENSE
-VU: had not seen (negated) HADBEEN_TENSE
-VU: has seen HASBEEN_TENSE
-VU: have seen HASBEEN_TENSE
-VU: had seen HADBEEN_TENSE
-VU: had seen HADBEEN_TENSE
-VU: does not see (negated) IS_TENSE
-VU: do not see (negated) IS_TENSE
-VU: did not see (negated) WAS_TENSE
-VU: did not see (negated) WAS_TENSE
-VU: sees IS_TENSE
-VU: see IS_TENSE
-VU: saw WAS_TENSE
-VU: saw WAS_TENSE
-VU: has not seemed (negated) HASBEEN_TENSE
-VU: have not seemed (negated) HASBEEN_TENSE
-VU: had not seemed (negated) HADBEEN_TENSE
-VU: had not seemed (negated) HADBEEN_TENSE
-VU: has seemed HASBEEN_TENSE
-VU: have seemed HASBEEN_TENSE
-VU: had seemed HADBEEN_TENSE
-VU: had seemed HADBEEN_TENSE
-VU: does not seem (negated) IS_TENSE
-VU: do not seem (negated) IS_TENSE
-VU: did not seem (negated) WAS_TENSE
-VU: did not seem (negated) WAS_TENSE
-VU: seems IS_TENSE
-VU: seem IS_TENSE
-VU: seemed WAS_TENSE
-VU: seemed WAS_TENSE
-VU: has not set (negated) HASBEEN_TENSE
-VU: have not set (negated) HASBEEN_TENSE
-VU: had not set (negated) HADBEEN_TENSE
-VU: had not set (negated) HADBEEN_TENSE
-VU: has set HASBEEN_TENSE
-VU: have set HASBEEN_TENSE
-VU: had set HADBEEN_TENSE
-VU: had set HADBEEN_TENSE
-VU: does not set (negated) IS_TENSE
-VU: do not set (negated) IS_TENSE
-VU: did not set (negated) WAS_TENSE
-VU: did not set (negated) WAS_TENSE
-VU: sets IS_TENSE
-VU: set IS_TENSE
-VU: set WAS_TENSE
-VU: set WAS_TENSE
-VU: has not smelled (negated) HASBEEN_TENSE
-VU: have not smelled (negated) HASBEEN_TENSE
-VU: had not smelled (negated) HADBEEN_TENSE
-VU: had not smelled (negated) HADBEEN_TENSE
-VU: has smelled HASBEEN_TENSE
-VU: have smelled HASBEEN_TENSE
-VU: had smelled HADBEEN_TENSE
-VU: had smelled HADBEEN_TENSE
-VU: does not smell (negated) IS_TENSE
-VU: do not smell (negated) IS_TENSE
-VU: did not smell (negated) WAS_TENSE
-VU: did not smell (negated) WAS_TENSE
-VU: smells IS_TENSE
-VU: smell IS_TENSE
-VU: smelled WAS_TENSE
-VU: smelled WAS_TENSE
-VU: has not sniffed (negated) HASBEEN_TENSE
-VU: have not sniffed (negated) HASBEEN_TENSE
-VU: had not sniffed (negated) HADBEEN_TENSE
-VU: had not sniffed (negated) HADBEEN_TENSE
-VU: has sniffed HASBEEN_TENSE
-VU: have sniffed HASBEEN_TENSE
-VU: had sniffed HADBEEN_TENSE
-VU: had sniffed HADBEEN_TENSE
-VU: does not sniff (negated) IS_TENSE
-VU: do not sniff (negated) IS_TENSE
-VU: did not sniff (negated) WAS_TENSE
-VU: did not sniff (negated) WAS_TENSE
-VU: sniffs IS_TENSE
-VU: sniff IS_TENSE
-VU: sniffed WAS_TENSE
-VU: sniffed WAS_TENSE
-VU: has not squeezed (negated) HASBEEN_TENSE
-VU: have not squeezed (negated) HASBEEN_TENSE
-VU: had not squeezed (negated) HADBEEN_TENSE
-VU: had not squeezed (negated) HADBEEN_TENSE
-VU: has squeezed HASBEEN_TENSE
-VU: have squeezed HASBEEN_TENSE
-VU: had squeezed HADBEEN_TENSE
-VU: had squeezed HADBEEN_TENSE
-VU: does not squeeze (negated) IS_TENSE
-VU: do not squeeze (negated) IS_TENSE
-VU: did not squeeze (negated) WAS_TENSE
-VU: did not squeeze (negated) WAS_TENSE
-VU: squeezes IS_TENSE
-VU: squeeze IS_TENSE
-VU: squeezed WAS_TENSE
-VU: squeezed WAS_TENSE
-VU: has not switched (negated) HASBEEN_TENSE
-VU: have not switched (negated) HASBEEN_TENSE
-VU: had not switched (negated) HADBEEN_TENSE
-VU: had not switched (negated) HADBEEN_TENSE
-VU: has switched HASBEEN_TENSE
-VU: have switched HASBEEN_TENSE
-VU: had switched HADBEEN_TENSE
-VU: had switched HADBEEN_TENSE
-VU: does not switch (negated) IS_TENSE
-VU: do not switch (negated) IS_TENSE
-VU: did not switch (negated) WAS_TENSE
-VU: did not switch (negated) WAS_TENSE
-VU: switches IS_TENSE
-VU: switch IS_TENSE
-VU: switched WAS_TENSE
-VU: switched WAS_TENSE
-VU: has not taken (negated) HASBEEN_TENSE
-VU: have not taken (negated) HASBEEN_TENSE
-VU: had not taken (negated) HADBEEN_TENSE
-VU: had not taken (negated) HADBEEN_TENSE
-VU: has taken HASBEEN_TENSE
-VU: have taken HASBEEN_TENSE
-VU: had taken HADBEEN_TENSE
-VU: had taken HADBEEN_TENSE
-VU: does not take (negated) IS_TENSE
-VU: do not take (negated) IS_TENSE
-VU: did not take (negated) WAS_TENSE
-VU: did not take (negated) WAS_TENSE
-VU: takes IS_TENSE
-VU: take IS_TENSE
-VU: took WAS_TENSE
-VU: took WAS_TENSE
-VU: has not talked (negated) HASBEEN_TENSE
-VU: have not talked (negated) HASBEEN_TENSE
-VU: had not talked (negated) HADBEEN_TENSE
-VU: had not talked (negated) HADBEEN_TENSE
-VU: has talked HASBEEN_TENSE
-VU: have talked HASBEEN_TENSE
-VU: had talked HADBEEN_TENSE
-VU: had talked HADBEEN_TENSE
-VU: does not talk (negated) IS_TENSE
-VU: do not talk (negated) IS_TENSE
-VU: did not talk (negated) WAS_TENSE
-VU: did not talk (negated) WAS_TENSE
-VU: talks IS_TENSE
-VU: talk IS_TENSE
-VU: talked WAS_TENSE
-VU: talked WAS_TENSE
-VU: has not tasted (negated) HASBEEN_TENSE
-VU: have not tasted (negated) HASBEEN_TENSE
-VU: had not tasted (negated) HADBEEN_TENSE
-VU: had not tasted (negated) HADBEEN_TENSE
-VU: has tasted HASBEEN_TENSE
-VU: have tasted HASBEEN_TENSE
-VU: had tasted HADBEEN_TENSE
-VU: had tasted HADBEEN_TENSE
-VU: does not taste (negated) IS_TENSE
-VU: do not taste (negated) IS_TENSE
-VU: did not taste (negated) WAS_TENSE
-VU: did not taste (negated) WAS_TENSE
-VU: tastes IS_TENSE
-VU: taste IS_TENSE
-VU: tasted WAS_TENSE
-VU: tasted WAS_TENSE
-VU: has not touched (negated) HASBEEN_TENSE
-VU: have not touched (negated) HASBEEN_TENSE
-VU: had not touched (negated) HADBEEN_TENSE
-VU: had not touched (negated) HADBEEN_TENSE
-VU: has touched HASBEEN_TENSE
-VU: have touched HASBEEN_TENSE
-VU: had touched HADBEEN_TENSE
-VU: had touched HADBEEN_TENSE
-VU: does not touch (negated) IS_TENSE
-VU: do not touch (negated) IS_TENSE
-VU: did not touch (negated) WAS_TENSE
-VU: did not touch (negated) WAS_TENSE
-VU: touches IS_TENSE
-VU: touch IS_TENSE
-VU: touched WAS_TENSE
-VU: touched WAS_TENSE
-VU: has not turned (negated) HASBEEN_TENSE
-VU: have not turned (negated) HASBEEN_TENSE
-VU: had not turned (negated) HADBEEN_TENSE
-VU: had not turned (negated) HADBEEN_TENSE
-VU: has turned HASBEEN_TENSE
-VU: have turned HASBEEN_TENSE
-VU: had turned HADBEEN_TENSE
-VU: had turned HADBEEN_TENSE
-VU: does not turn (negated) IS_TENSE
-VU: do not turn (negated) IS_TENSE
-VU: did not turn (negated) WAS_TENSE
-VU: did not turn (negated) WAS_TENSE
-VU: turns IS_TENSE
-VU: turn IS_TENSE
-VU: turned WAS_TENSE
-VU: turned WAS_TENSE
-VU: has not waited (negated) HASBEEN_TENSE
-VU: have not waited (negated) HASBEEN_TENSE
-VU: had not waited (negated) HADBEEN_TENSE
-VU: had not waited (negated) HADBEEN_TENSE
-VU: has waited HASBEEN_TENSE
-VU: have waited HASBEEN_TENSE
-VU: had waited HADBEEN_TENSE
-VU: had waited HADBEEN_TENSE
-VU: does not wait (negated) IS_TENSE
-VU: do not wait (negated) IS_TENSE
-VU: did not wait (negated) WAS_TENSE
-VU: did not wait (negated) WAS_TENSE
-VU: waits IS_TENSE
-VU: wait IS_TENSE
-VU: waited WAS_TENSE
-VU: waited WAS_TENSE
-VU: has not waved (negated) HASBEEN_TENSE
-VU: have not waved (negated) HASBEEN_TENSE
-VU: had not waved (negated) HADBEEN_TENSE
-VU: had not waved (negated) HADBEEN_TENSE
-VU: has waved HASBEEN_TENSE
-VU: have waved HASBEEN_TENSE
-VU: had waved HADBEEN_TENSE
-VU: had waved HADBEEN_TENSE
-VU: does not wave (negated) IS_TENSE
-VU: do not wave (negated) IS_TENSE
-VU: did not wave (negated) WAS_TENSE
-VU: did not wave (negated) WAS_TENSE
-VU: waves IS_TENSE
-VU: wave IS_TENSE
-VU: waved WAS_TENSE
-VU: waved WAS_TENSE
-VU: has not won (negated) HASBEEN_TENSE
-VU: have not won (negated) HASBEEN_TENSE
-VU: had not won (negated) HADBEEN_TENSE
-VU: had not won (negated) HADBEEN_TENSE
-VU: has won HASBEEN_TENSE
-VU: have won HASBEEN_TENSE
-VU: had won HADBEEN_TENSE
-VU: had won HADBEEN_TENSE
-VU: does not win (negated) IS_TENSE
-VU: do not win (negated) IS_TENSE
-VU: did not win (negated) WAS_TENSE
-VU: did not win (negated) WAS_TENSE
-VU: wins IS_TENSE
-VU: win IS_TENSE
-VU: won WAS_TENSE
-VU: won WAS_TENSE
-VU: has not protected (negated) HASBEEN_TENSE
-VU: have not protected (negated) HASBEEN_TENSE
-VU: had not protected (negated) HADBEEN_TENSE
-VU: had not protected (negated) HADBEEN_TENSE
-VU: has protected HASBEEN_TENSE
-VU: have protected HASBEEN_TENSE
-VU: had protected HADBEEN_TENSE
-VU: had protected HADBEEN_TENSE
-VU: does not protect (negated) IS_TENSE
-VU: do not protect (negated) IS_TENSE
-VU: did not protect (negated) WAS_TENSE
-VU: did not protect (negated) WAS_TENSE
-VU: protects IS_TENSE
-VU: protect IS_TENSE
-VU: protected WAS_TENSE
-VU: protected WAS_TENSE
-VU: has not owned (negated) HASBEEN_TENSE
-VU: have not owned (negated) HASBEEN_TENSE
-VU: had not owned (negated) HADBEEN_TENSE
-VU: had not owned (negated) HADBEEN_TENSE
-VU: has owned HASBEEN_TENSE
-VU: have owned HASBEEN_TENSE
-VU: had owned HADBEEN_TENSE
-VU: had owned HADBEEN_TENSE
-VU: does not own (negated) IS_TENSE
-VU: do not own (negated) IS_TENSE
-VU: did not own (negated) WAS_TENSE
-VU: did not own (negated) WAS_TENSE
-VU: owns IS_TENSE
-VU: own IS_TENSE
-VU: owned WAS_TENSE
-VU: owned WAS_TENSE
-VU: has not fitted (negated) HASBEEN_TENSE
-VU: have not fitted (negated) HASBEEN_TENSE
-VU: had not fitted (negated) HADBEEN_TENSE
-VU: had not fitted (negated) HADBEEN_TENSE
-VU: has fitted HASBEEN_TENSE
-VU: have fitted HASBEEN_TENSE
-VU: had fitted HADBEEN_TENSE
-VU: had fitted HADBEEN_TENSE
-VU: does not fit (negated) IS_TENSE
-VU: do not fit (negated) IS_TENSE
-VU: did not fit (negated) WAS_TENSE
-VU: did not fit (negated) WAS_TENSE
-VU: fits IS_TENSE
-VU: fit IS_TENSE
-VU: fitted WAS_TENSE
-VU: fitted WAS_TENSE
-VU: has not unbolted (negated) HASBEEN_TENSE
-VU: have not unbolted (negated) HASBEEN_TENSE
-VU: had not unbolted (negated) HADBEEN_TENSE
-VU: had not unbolted (negated) HADBEEN_TENSE
-VU: has unbolted HASBEEN_TENSE
-VU: have unbolted HASBEEN_TENSE
-VU: had unbolted HADBEEN_TENSE
-VU: had unbolted HADBEEN_TENSE
-VU: does not unbolt (negated) IS_TENSE
-VU: do not unbolt (negated) IS_TENSE
-VU: did not unbolt (negated) WAS_TENSE
-VU: did not unbolt (negated) WAS_TENSE
-VU: unbolts IS_TENSE
-VU: unbolt IS_TENSE
-VU: unbolted WAS_TENSE
-VU: unbolted WAS_TENSE
+vu: < +ve act IS_TENSE3p s
+vu: > +ve act IS_TENSE3p s
+vu: <= +ve act IS_TENSE3p s
+vu: >= +ve act IS_TENSE3p s
+vu: has not been -ve act HASBEEN_TENSE3p s
+vu: have not been -ve act HASBEEN_TENSE3p p
+vu: had not been -ve act HADBEEN_TENSE3p s
+vu: had not been -ve act HADBEEN_TENSE3p p
+vu: has been +ve act HASBEEN_TENSE3p s
+vu: have been +ve act HASBEEN_TENSE3p p
+vu: had been +ve act HADBEEN_TENSE3p s
+vu: had been +ve act HADBEEN_TENSE3p p
+vu: is not -ve act IS_TENSE3p s
+vu: are not -ve act IS_TENSE3p p
+vu: was not -ve act WAS_TENSE3p s
+vu: were not -ve act WAS_TENSE3p p
+vu: is +ve act IS_TENSE3p s
+vu: are +ve act IS_TENSE3p p
+vu: was +ve act WAS_TENSE3p s
+vu: were +ve act WAS_TENSE3p p
+vu: has not meant -ve act HASBEEN_TENSE3p s
+vu: have not meant -ve act HASBEEN_TENSE3p p
+vu: had not meant -ve act HADBEEN_TENSE3p s
+vu: had not meant -ve act HADBEEN_TENSE3p p
+vu: has meant +ve act HASBEEN_TENSE3p s
+vu: have meant +ve act HASBEEN_TENSE3p p
+vu: had meant +ve act HADBEEN_TENSE3p s
+vu: had meant +ve act HADBEEN_TENSE3p p
+vu: does not mean -ve act IS_TENSE3p s
+vu: do not mean -ve act IS_TENSE3p p
+vu: did not mean -ve act WAS_TENSE3p s
+vu: did not mean -ve act WAS_TENSE3p p
+vu: means +ve act IS_TENSE3p s
+vu: mean +ve act IS_TENSE3p p
+vu: meant +ve act WAS_TENSE3p s
+vu: meant +ve act WAS_TENSE3p p
+vu: has not implied -ve act HASBEEN_TENSE3p s
+vu: have not implied -ve act HASBEEN_TENSE3p p
+vu: had not implied -ve act HADBEEN_TENSE3p s
+vu: had not implied -ve act HADBEEN_TENSE3p p
+vu: has implied +ve act HASBEEN_TENSE3p s
+vu: have implied +ve act HASBEEN_TENSE3p p
+vu: had implied +ve act HADBEEN_TENSE3p s
+vu: had implied +ve act HADBEEN_TENSE3p p
+vu: does not imply -ve act IS_TENSE3p s
+vu: do not imply -ve act IS_TENSE3p p
+vu: did not imply -ve act WAS_TENSE3p s
+vu: did not imply -ve act WAS_TENSE3p p
+vu: implies +ve act IS_TENSE3p s
+vu: imply +ve act IS_TENSE3p p
+vu: implied +ve act WAS_TENSE3p s
+vu: implied +ve act WAS_TENSE3p p
+vu: has not been able to be -ve act HASBEEN_TENSE3p s
+vu: have not been able to be -ve act HASBEEN_TENSE3p p
+vu: had not been able to be -ve act HADBEEN_TENSE3p s
+vu: had not been able to be -ve act HADBEEN_TENSE3p p
+vu: has been able to be +ve act HASBEEN_TENSE3p s
+vu: have been able to be +ve act HASBEEN_TENSE3p p
+vu: had been able to be +ve act HADBEEN_TENSE3p s
+vu: had been able to be +ve act HADBEEN_TENSE3p p
+vu: cannot be -ve act IS_TENSE3p s
+vu: cannot be -ve act IS_TENSE3p p
+vu: could not be -ve act WAS_TENSE3p s
+vu: could not be -ve act WAS_TENSE3p p
+vu: can be +ve act IS_TENSE3p s
+vu: can be +ve act IS_TENSE3p p
+vu: could be +ve act WAS_TENSE3p s
+vu: could be +ve act WAS_TENSE3p p
+vu: has not been able to be been by -ve pass HASBEEN_TENSE3p s
+vu: have not been able to be been by -ve pass HASBEEN_TENSE3p p
+vu: had not been able to be been by -ve pass HADBEEN_TENSE3p s
+vu: had not been able to be been by -ve pass HADBEEN_TENSE3p p
+vu: has been able to be been by +ve pass HASBEEN_TENSE3p s
+vu: have been able to be been by +ve pass HASBEEN_TENSE3p p
+vu: had been able to be been by +ve pass HADBEEN_TENSE3p s
+vu: had been able to be been by +ve pass HADBEEN_TENSE3p p
+vu: cannot be been by -ve pass IS_TENSE3p s
+vu: cannot be been by -ve pass IS_TENSE3p p
+vu: could not be been by -ve pass WAS_TENSE3p s
+vu: could not be been by -ve pass WAS_TENSE3p p
+vu: can be been by +ve pass IS_TENSE3p s
+vu: can be been by +ve pass IS_TENSE3p p
+vu: could be been by +ve pass WAS_TENSE3p s
+vu: could be been by +ve pass WAS_TENSE3p p
+vu: has not had -ve act HASBEEN_TENSE3p s
+vu: have not had -ve act HASBEEN_TENSE3p p
+vu: had not had -ve act HADBEEN_TENSE3p s
+vu: had not had -ve act HADBEEN_TENSE3p p
+vu: has had +ve act HASBEEN_TENSE3p s
+vu: have had +ve act HASBEEN_TENSE3p p
+vu: had had +ve act HADBEEN_TENSE3p s
+vu: had had +ve act HADBEEN_TENSE3p p
+vu: does not have -ve act IS_TENSE3p s
+vu: do not have -ve act IS_TENSE3p p
+vu: did not have -ve act WAS_TENSE3p s
+vu: did not have -ve act WAS_TENSE3p p
+vu: has +ve act IS_TENSE3p s
+vu: have +ve act IS_TENSE3p p
+vu: had +ve act WAS_TENSE3p s
+vu: had +ve act WAS_TENSE3p p
+vu: has not specified -ve act HASBEEN_TENSE3p s
+vu: have not specified -ve act HASBEEN_TENSE3p p
+vu: had not specified -ve act HADBEEN_TENSE3p s
+vu: had not specified -ve act HADBEEN_TENSE3p p
+vu: has specified +ve act HASBEEN_TENSE3p s
+vu: have specified +ve act HASBEEN_TENSE3p p
+vu: had specified +ve act HADBEEN_TENSE3p s
+vu: had specified +ve act HADBEEN_TENSE3p p
+vu: does not specify -ve act IS_TENSE3p s
+vu: do not specify -ve act IS_TENSE3p p
+vu: did not specify -ve act WAS_TENSE3p s
+vu: did not specify -ve act WAS_TENSE3p p
+vu: specifies +ve act IS_TENSE3p s
+vu: specify +ve act IS_TENSE3p p
+vu: specified +ve act WAS_TENSE3p s
+vu: specified +ve act WAS_TENSE3p p
+vu: has not related -ve act HASBEEN_TENSE3p s
+vu: have not related -ve act HASBEEN_TENSE3p p
+vu: had not related -ve act HADBEEN_TENSE3p s
+vu: had not related -ve act HADBEEN_TENSE3p p
+vu: has related +ve act HASBEEN_TENSE3p s
+vu: have related +ve act HASBEEN_TENSE3p p
+vu: had related +ve act HADBEEN_TENSE3p s
+vu: had related +ve act HADBEEN_TENSE3p p
+vu: does not relate -ve act IS_TENSE3p s
+vu: do not relate -ve act IS_TENSE3p p
+vu: did not relate -ve act WAS_TENSE3p s
+vu: did not relate -ve act WAS_TENSE3p p
+vu: relates +ve act IS_TENSE3p s
+vu: relate +ve act IS_TENSE3p p
+vu: related +ve act WAS_TENSE3p s
+vu: related +ve act WAS_TENSE3p p
+vu: has not substituted -ve act HASBEEN_TENSE3p s
+vu: have not substituted -ve act HASBEEN_TENSE3p p
+vu: had not substituted -ve act HADBEEN_TENSE3p s
+vu: had not substituted -ve act HADBEEN_TENSE3p p
+vu: has substituted +ve act HASBEEN_TENSE3p s
+vu: have substituted +ve act HASBEEN_TENSE3p p
+vu: had substituted +ve act HADBEEN_TENSE3p s
+vu: had substituted +ve act HADBEEN_TENSE3p p
+vu: does not substitute -ve act IS_TENSE3p s
+vu: do not substitute -ve act IS_TENSE3p p
+vu: did not substitute -ve act WAS_TENSE3p s
+vu: did not substitute -ve act WAS_TENSE3p p
+vu: substitutes +ve act IS_TENSE3p s
+vu: substitute +ve act IS_TENSE3p p
+vu: substituted +ve act WAS_TENSE3p s
+vu: substituted +ve act WAS_TENSE3p p
+vu: has not done -ve act HASBEEN_TENSE3p s
+vu: have not done -ve act HASBEEN_TENSE3p p
+vu: had not done -ve act HADBEEN_TENSE3p s
+vu: had not done -ve act HADBEEN_TENSE3p p
+vu: has done +ve act HASBEEN_TENSE3p s
+vu: have done +ve act HASBEEN_TENSE3p p
+vu: had done +ve act HADBEEN_TENSE3p s
+vu: had done +ve act HADBEEN_TENSE3p p
+vu: does not -ve act IS_TENSE3p s
+vu: do not -ve act IS_TENSE3p p
+vu: did not -ve act WAS_TENSE3p s
+vu: did not -ve act WAS_TENSE3p p
+vu: does +ve act IS_TENSE3p s
+vu: do +ve act IS_TENSE3p p
+vu: did +ve act WAS_TENSE3p s
+vu: did +ve act WAS_TENSE3p p
+vu: has not translated -ve act HASBEEN_TENSE3p s
+vu: have not translated -ve act HASBEEN_TENSE3p p
+vu: had not translated -ve act HADBEEN_TENSE3p s
+vu: had not translated -ve act HADBEEN_TENSE3p p
+vu: has translated +ve act HASBEEN_TENSE3p s
+vu: have translated +ve act HASBEEN_TENSE3p p
+vu: had translated +ve act HADBEEN_TENSE3p s
+vu: had translated +ve act HADBEEN_TENSE3p p
+vu: does not translate -ve act IS_TENSE3p s
+vu: do not translate -ve act IS_TENSE3p p
+vu: did not translate -ve act WAS_TENSE3p s
+vu: did not translate -ve act WAS_TENSE3p p
+vu: translates +ve act IS_TENSE3p s
+vu: translate +ve act IS_TENSE3p p
+vu: translated +ve act WAS_TENSE3p s
+vu: translated +ve act WAS_TENSE3p p
+vu: has not provided -ve act HASBEEN_TENSE3p s
+vu: have not provided -ve act HASBEEN_TENSE3p p
+vu: had not provided -ve act HADBEEN_TENSE3p s
+vu: had not provided -ve act HADBEEN_TENSE3p p
+vu: has provided +ve act HASBEEN_TENSE3p s
+vu: have provided +ve act HASBEEN_TENSE3p p
+vu: had provided +ve act HADBEEN_TENSE3p s
+vu: had provided +ve act HADBEEN_TENSE3p p
+vu: does not provide -ve act IS_TENSE3p s
+vu: do not provide -ve act IS_TENSE3p p
+vu: did not provide -ve act WAS_TENSE3p s
+vu: did not provide -ve act WAS_TENSE3p p
+vu: provides +ve act IS_TENSE3p s
+vu: provide +ve act IS_TENSE3p p
+vu: provided +ve act WAS_TENSE3p s
+vu: provided +ve act WAS_TENSE3p p
+vu: has not used -ve act HASBEEN_TENSE3p s
+vu: have not used -ve act HASBEEN_TENSE3p p
+vu: had not used -ve act HADBEEN_TENSE3p s
+vu: had not used -ve act HADBEEN_TENSE3p p
+vu: has used +ve act HASBEEN_TENSE3p s
+vu: have used +ve act HASBEEN_TENSE3p p
+vu: had used +ve act HADBEEN_TENSE3p s
+vu: had used +ve act HADBEEN_TENSE3p p
+vu: does not use -ve act IS_TENSE3p s
+vu: do not use -ve act IS_TENSE3p p
+vu: did not use -ve act WAS_TENSE3p s
+vu: did not use -ve act WAS_TENSE3p p
+vu: uses +ve act IS_TENSE3p s
+vu: use +ve act IS_TENSE3p p
+vu: used +ve act WAS_TENSE3p s
+vu: used +ve act WAS_TENSE3p p
+vu: has not included -ve act HASBEEN_TENSE3p s
+vu: have not included -ve act HASBEEN_TENSE3p p
+vu: had not included -ve act HADBEEN_TENSE3p s
+vu: had not included -ve act HADBEEN_TENSE3p p
+vu: has included +ve act HASBEEN_TENSE3p s
+vu: have included +ve act HASBEEN_TENSE3p p
+vu: had included +ve act HADBEEN_TENSE3p s
+vu: had included +ve act HADBEEN_TENSE3p p
+vu: does not include -ve act IS_TENSE3p s
+vu: do not include -ve act IS_TENSE3p p
+vu: did not include -ve act WAS_TENSE3p s
+vu: did not include -ve act WAS_TENSE3p p
+vu: includes +ve act IS_TENSE3p s
+vu: include +ve act IS_TENSE3p p
+vu: included +ve act WAS_TENSE3p s
+vu: included +ve act WAS_TENSE3p p
+vu: has not omitted -ve act HASBEEN_TENSE3p s
+vu: have not omitted -ve act HASBEEN_TENSE3p p
+vu: had not omitted -ve act HADBEEN_TENSE3p s
+vu: had not omitted -ve act HADBEEN_TENSE3p p
+vu: has omitted +ve act HASBEEN_TENSE3p s
+vu: have omitted +ve act HASBEEN_TENSE3p p
+vu: had omitted +ve act HADBEEN_TENSE3p s
+vu: had omitted +ve act HADBEEN_TENSE3p p
+vu: does not omit -ve act IS_TENSE3p s
+vu: do not omit -ve act IS_TENSE3p p
+vu: did not omit -ve act WAS_TENSE3p s
+vu: did not omit -ve act WAS_TENSE3p p
+vu: omits +ve act IS_TENSE3p s
+vu: omit +ve act IS_TENSE3p p
+vu: omitted +ve act WAS_TENSE3p s
+vu: omitted +ve act WAS_TENSE3p p
+vu: has not been able to -ve act HASBEEN_TENSE3p s
+vu: have not been able to -ve act HASBEEN_TENSE3p p
+vu: had not been able to -ve act HADBEEN_TENSE3p s
+vu: had not been able to -ve act HADBEEN_TENSE3p p
+vu: has been able to +ve act HASBEEN_TENSE3p s
+vu: have been able to +ve act HASBEEN_TENSE3p p
+vu: had been able to +ve act HADBEEN_TENSE3p s
+vu: had been able to +ve act HADBEEN_TENSE3p p
+vu: cannot -ve act IS_TENSE3p s
+vu: cannot -ve act IS_TENSE3p p
+vu: could not -ve act WAS_TENSE3p s
+vu: could not -ve act WAS_TENSE3p p
+vu: can +ve act IS_TENSE3p s
+vu: can +ve act IS_TENSE3p p
+vu: could +ve act WAS_TENSE3p s
+vu: could +ve act WAS_TENSE3p p
+vu: could not have -ve act HASBEEN_TENSE3p s
+vu: could not have -ve act HASBEEN_TENSE3p p
+vu: could not have -ve act HADBEEN_TENSE3p s
+vu: could not have -ve act HADBEEN_TENSE3p p
+vu: could have +ve act HASBEEN_TENSE3p s
+vu: could have +ve act HASBEEN_TENSE3p p
+vu: could have +ve act HADBEEN_TENSE3p s
+vu: could have +ve act HADBEEN_TENSE3p p
+vu: could not -ve act IS_TENSE3p s
+vu: could not -ve act IS_TENSE3p p
+vu: could not have -ve act WAS_TENSE3p s
+vu: could not have -ve act WAS_TENSE3p p
+vu: could +ve act IS_TENSE3p s
+vu: could +ve act IS_TENSE3p p
+vu: could have +ve act WAS_TENSE3p s
+vu: could have +ve act WAS_TENSE3p p
+vu: may not have -ve act HASBEEN_TENSE3p s
+vu: may not have -ve act HASBEEN_TENSE3p p
+vu: may not have -ve act HADBEEN_TENSE3p s
+vu: may not have -ve act HADBEEN_TENSE3p p
+vu: may have +ve act HASBEEN_TENSE3p s
+vu: may have +ve act HASBEEN_TENSE3p p
+vu: may have +ve act HADBEEN_TENSE3p s
+vu: may have +ve act HADBEEN_TENSE3p p
+vu: may not -ve act IS_TENSE3p s
+vu: may not -ve act IS_TENSE3p p
+vu: may not have -ve act WAS_TENSE3p s
+vu: may not have -ve act WAS_TENSE3p p
+vu: may +ve act IS_TENSE3p s
+vu: may +ve act IS_TENSE3p p
+vu: may have +ve act WAS_TENSE3p s
+vu: may have +ve act WAS_TENSE3p p
+vu: might not have -ve act HASBEEN_TENSE3p s
+vu: might not have -ve act HASBEEN_TENSE3p p
+vu: might not have -ve act HADBEEN_TENSE3p s
+vu: might not have -ve act HADBEEN_TENSE3p p
+vu: might have +ve act HASBEEN_TENSE3p s
+vu: might have +ve act HASBEEN_TENSE3p p
+vu: might have +ve act HADBEEN_TENSE3p s
+vu: might have +ve act HADBEEN_TENSE3p p
+vu: might not -ve act IS_TENSE3p s
+vu: might not -ve act IS_TENSE3p p
+vu: might not have -ve act WAS_TENSE3p s
+vu: might not have -ve act WAS_TENSE3p p
+vu: might +ve act IS_TENSE3p s
+vu: might +ve act IS_TENSE3p p
+vu: might have +ve act WAS_TENSE3p s
+vu: might have +ve act WAS_TENSE3p p
+vu: must not have -ve act HASBEEN_TENSE3p s
+vu: must not have -ve act HASBEEN_TENSE3p p
+vu: must not have -ve act HADBEEN_TENSE3p s
+vu: must not have -ve act HADBEEN_TENSE3p p
+vu: must have +ve act HASBEEN_TENSE3p s
+vu: must have +ve act HASBEEN_TENSE3p p
+vu: must have +ve act HADBEEN_TENSE3p s
+vu: must have +ve act HADBEEN_TENSE3p p
+vu: must not -ve act IS_TENSE3p s
+vu: must not -ve act IS_TENSE3p p
+vu: must not have -ve act WAS_TENSE3p s
+vu: must not have -ve act WAS_TENSE3p p
+vu: must +ve act IS_TENSE3p s
+vu: must +ve act IS_TENSE3p p
+vu: must have +ve act WAS_TENSE3p s
+vu: must have +ve act WAS_TENSE3p p
+vu: should not have -ve act HASBEEN_TENSE3p s
+vu: should not have -ve act HASBEEN_TENSE3p p
+vu: should not have -ve act HADBEEN_TENSE3p s
+vu: should not have -ve act HADBEEN_TENSE3p p
+vu: should have +ve act HASBEEN_TENSE3p s
+vu: should have +ve act HASBEEN_TENSE3p p
+vu: should have +ve act HADBEEN_TENSE3p s
+vu: should have +ve act HADBEEN_TENSE3p p
+vu: should not -ve act IS_TENSE3p s
+vu: should not -ve act IS_TENSE3p p
+vu: should not have -ve act WAS_TENSE3p s
+vu: should not have -ve act WAS_TENSE3p p
+vu: should +ve act IS_TENSE3p s
+vu: should +ve act IS_TENSE3p p
+vu: should have +ve act WAS_TENSE3p s
+vu: should have +ve act WAS_TENSE3p p
+vu: would not have -ve act HASBEEN_TENSE3p s
+vu: would not have -ve act HASBEEN_TENSE3p p
+vu: would not have -ve act HADBEEN_TENSE3p s
+vu: would not have -ve act HADBEEN_TENSE3p p
+vu: would have +ve act HASBEEN_TENSE3p s
+vu: would have +ve act HASBEEN_TENSE3p p
+vu: would have +ve act HADBEEN_TENSE3p s
+vu: would have +ve act HADBEEN_TENSE3p p
+vu: would not -ve act IS_TENSE3p s
+vu: would not -ve act IS_TENSE3p p
+vu: would not have -ve act WAS_TENSE3p s
+vu: would not have -ve act WAS_TENSE3p p
+vu: would +ve act IS_TENSE3p s
+vu: would +ve act IS_TENSE3p p
+vu: would have +ve act WAS_TENSE3p s
+vu: would have +ve act WAS_TENSE3p p
+vu: 's not been -ve act HASBEEN_TENSE3p s
+vu: 've not been -ve act HASBEEN_TENSE3p p
+vu: 'd not been -ve act HADBEEN_TENSE3p s
+vu: 'd not been -ve act HADBEEN_TENSE3p p
+vu: 's been +ve act HASBEEN_TENSE3p s
+vu: 've been +ve act HASBEEN_TENSE3p p
+vu: 'd been +ve act HADBEEN_TENSE3p s
+vu: 'd been +ve act HADBEEN_TENSE3p p
+vu: 's not -ve act IS_TENSE3p s
+vu: 're not -ve act IS_TENSE3p p
+vu: wasn't -ve act WAS_TENSE3p s
+vu: weren't -ve act WAS_TENSE3p p
+vu: 's +ve act IS_TENSE3p s
+vu: 're +ve act IS_TENSE3p p
+vu: was +ve act WAS_TENSE3p s
+vu: were +ve act WAS_TENSE3p p
+vu: 's not had -ve act HASBEEN_TENSE3p s
+vu: 've not had -ve act HASBEEN_TENSE3p p
+vu: 'd not had -ve act HADBEEN_TENSE3p s
+vu: 'd not had -ve act HADBEEN_TENSE3p p
+vu: 's had +ve act HASBEEN_TENSE3p s
+vu: 've had +ve act HASBEEN_TENSE3p p
+vu: 'd had +ve act HADBEEN_TENSE3p s
+vu: 'd had +ve act HADBEEN_TENSE3p p
+vu: 's not -ve act IS_TENSE3p s
+vu: 've not -ve act IS_TENSE3p p
+vu: hadn't -ve act WAS_TENSE3p s
+vu: hadn't -ve act WAS_TENSE3p p
+vu: 's +ve act IS_TENSE3p s
+vu: 've +ve act IS_TENSE3p p
+vu: had +ve act WAS_TENSE3p s
+vu: had +ve act WAS_TENSE3p p
+vu: hasn't been +ve act HASBEEN_TENSE3p s
+vu: haven't been +ve act HASBEEN_TENSE3p p
+vu: hadn't been +ve act HADBEEN_TENSE3p s
+vu: hadn't been +ve act HADBEEN_TENSE3p p
+vu: isn't +ve act IS_TENSE3p s
+vu: aren't +ve act IS_TENSE3p p
+vu: wasn't +ve act WAS_TENSE3p s
+vu: weren't +ve act WAS_TENSE3p p
+vu: hasn't been able to +ve act HASBEEN_TENSE3p s
+vu: haven't been able to +ve act HASBEEN_TENSE3p p
+vu: hadn't been able to +ve act HADBEEN_TENSE3p s
+vu: hadn't been able to +ve act HADBEEN_TENSE3p p
+vu: can't +ve act IS_TENSE3p s
+vu: can't +ve act IS_TENSE3p p
+vu: couldn't +ve act WAS_TENSE3p s
+vu: couldn't +ve act WAS_TENSE3p p
+vu: didn't +ve act HASBEEN_TENSE3p s
+vu: didn't +ve act HASBEEN_TENSE3p p
+vu: didn't +ve act HADBEEN_TENSE3p s
+vu: didn't +ve act HADBEEN_TENSE3p p
+vu: doesn't +ve act IS_TENSE3p s
+vu: don't +ve act IS_TENSE3p p
+vu: didn't +ve act WAS_TENSE3p s
+vu: didn't +ve act WAS_TENSE3p p
+vu: hadn't +ve act HASBEEN_TENSE3p s
+vu: hadn't +ve act HASBEEN_TENSE3p p
+vu: hadn't +ve act HADBEEN_TENSE3p s
+vu: hadn't +ve act HADBEEN_TENSE3p p
+vu: hasn't +ve act IS_TENSE3p s
+vu: haven't +ve act IS_TENSE3p p
+vu: hadn't +ve act WAS_TENSE3p s
+vu: hadn't +ve act WAS_TENSE3p p
+vu: mustn't have +ve act HASBEEN_TENSE3p s
+vu: mustn't have +ve act HASBEEN_TENSE3p p
+vu: mustn't have +ve act HADBEEN_TENSE3p s
+vu: mustn't have +ve act HADBEEN_TENSE3p p
+vu: mustn't +ve act IS_TENSE3p s
+vu: mustn't +ve act IS_TENSE3p p
+vu: mustn't have +ve act WAS_TENSE3p s
+vu: mustn't have +ve act WAS_TENSE3p p
+vu: mightn't have +ve act HASBEEN_TENSE3p s
+vu: mightn't have +ve act HASBEEN_TENSE3p p
+vu: mightn't have +ve act HADBEEN_TENSE3p s
+vu: mightn't have +ve act HADBEEN_TENSE3p p
+vu: mightn't +ve act IS_TENSE3p s
+vu: mightn't +ve act IS_TENSE3p p
+vu: mightn't have +ve act WAS_TENSE3p s
+vu: mightn't have +ve act WAS_TENSE3p p
+vu: mayn't have +ve act HASBEEN_TENSE3p s
+vu: mayn't have +ve act HASBEEN_TENSE3p p
+vu: mayn't have +ve act HADBEEN_TENSE3p s
+vu: mayn't have +ve act HADBEEN_TENSE3p p
+vu: mayn't +ve act IS_TENSE3p s
+vu: mayn't +ve act IS_TENSE3p p
+vu: mayn't have +ve act WAS_TENSE3p s
+vu: mayn't have +ve act WAS_TENSE3p p
+vu: wouldn't have +ve act HASBEEN_TENSE3p s
+vu: wouldn't have +ve act HASBEEN_TENSE3p p
+vu: wouldn't have +ve act HADBEEN_TENSE3p s
+vu: wouldn't have +ve act HADBEEN_TENSE3p p
+vu: wouldn't +ve act IS_TENSE3p s
+vu: wouldn't +ve act IS_TENSE3p p
+vu: wouldn't have +ve act WAS_TENSE3p s
+vu: wouldn't have +ve act WAS_TENSE3p p
+vu: couldn't have +ve act HASBEEN_TENSE3p s
+vu: couldn't have +ve act HASBEEN_TENSE3p p
+vu: couldn't have +ve act HADBEEN_TENSE3p s
+vu: couldn't have +ve act HADBEEN_TENSE3p p
+vu: couldn't +ve act IS_TENSE3p s
+vu: couldn't +ve act IS_TENSE3p p
+vu: couldn't have +ve act WAS_TENSE3p s
+vu: couldn't have +ve act WAS_TENSE3p p
+vu: shouldn't have +ve act HASBEEN_TENSE3p s
+vu: shouldn't have +ve act HASBEEN_TENSE3p p
+vu: shouldn't have +ve act HADBEEN_TENSE3p s
+vu: shouldn't have +ve act HADBEEN_TENSE3p p
+vu: shouldn't +ve act IS_TENSE3p s
+vu: shouldn't +ve act IS_TENSE3p p
+vu: shouldn't have +ve act WAS_TENSE3p s
+vu: shouldn't have +ve act WAS_TENSE3p p
+vu: wouldn't +ve act HASBEEN_TENSE3p s
+vu: wouldn't +ve act HASBEEN_TENSE3p p
+vu: wouldn't +ve act HADBEEN_TENSE3p s
+vu: wouldn't +ve act HADBEEN_TENSE3p p
+vu: won't +ve act IS_TENSE3p s
+vu: won't +ve act IS_TENSE3p p
+vu: wouldn't +ve act WAS_TENSE3p s
+vu: wouldn't +ve act WAS_TENSE3p p
+vu: has not begun -ve act HASBEEN_TENSE3p s
+vu: have not begun -ve act HASBEEN_TENSE3p p
+vu: had not begun -ve act HADBEEN_TENSE3p s
+vu: had not begun -ve act HADBEEN_TENSE3p p
+vu: has begun +ve act HASBEEN_TENSE3p s
+vu: have begun +ve act HASBEEN_TENSE3p p
+vu: had begun +ve act HADBEEN_TENSE3p s
+vu: had begun +ve act HADBEEN_TENSE3p p
+vu: does not begin -ve act IS_TENSE3p s
+vu: do not begin -ve act IS_TENSE3p p
+vu: did not begin -ve act WAS_TENSE3p s
+vu: did not begin -ve act WAS_TENSE3p p
+vu: begins +ve act IS_TENSE3p s
+vu: begin +ve act IS_TENSE3p p
+vu: began +ve act WAS_TENSE3p s
+vu: began +ve act WAS_TENSE3p p
+vu: has not ended -ve act HASBEEN_TENSE3p s
+vu: have not ended -ve act HASBEEN_TENSE3p p
+vu: had not ended -ve act HADBEEN_TENSE3p s
+vu: had not ended -ve act HADBEEN_TENSE3p p
+vu: has ended +ve act HASBEEN_TENSE3p s
+vu: have ended +ve act HASBEEN_TENSE3p p
+vu: had ended +ve act HADBEEN_TENSE3p s
+vu: had ended +ve act HADBEEN_TENSE3p p
+vu: does not end -ve act IS_TENSE3p s
+vu: do not end -ve act IS_TENSE3p p
+vu: did not end -ve act WAS_TENSE3p s
+vu: did not end -ve act WAS_TENSE3p p
+vu: ends +ve act IS_TENSE3p s
+vu: end +ve act IS_TENSE3p p
+vu: ended +ve act WAS_TENSE3p s
+vu: ended +ve act WAS_TENSE3p p
+vu: has not tested -ve act HASBEEN_TENSE3p s
+vu: have not tested -ve act HASBEEN_TENSE3p p
+vu: had not tested -ve act HADBEEN_TENSE3p s
+vu: had not tested -ve act HADBEEN_TENSE3p p
+vu: has tested +ve act HASBEEN_TENSE3p s
+vu: have tested +ve act HASBEEN_TENSE3p p
+vu: had tested +ve act HADBEEN_TENSE3p s
+vu: had tested +ve act HADBEEN_TENSE3p p
+vu: does not test -ve act IS_TENSE3p s
+vu: do not test -ve act IS_TENSE3p p
+vu: did not test -ve act WAS_TENSE3p s
+vu: did not test -ve act WAS_TENSE3p p
+vu: tests +ve act IS_TENSE3p s
+vu: test +ve act IS_TENSE3p p
+vu: tested +ve act WAS_TENSE3p s
+vu: tested +ve act WAS_TENSE3p p
+vu: has not understood -ve act HASBEEN_TENSE3p s
+vu: have not understood -ve act HASBEEN_TENSE3p p
+vu: had not understood -ve act HADBEEN_TENSE3p s
+vu: had not understood -ve act HADBEEN_TENSE3p p
+vu: has understood +ve act HASBEEN_TENSE3p s
+vu: have understood +ve act HASBEEN_TENSE3p p
+vu: had understood +ve act HADBEEN_TENSE3p s
+vu: had understood +ve act HADBEEN_TENSE3p p
+vu: does not understand -ve act IS_TENSE3p s
+vu: do not understand -ve act IS_TENSE3p p
+vu: did not understand -ve act WAS_TENSE3p s
+vu: did not understand -ve act WAS_TENSE3p p
+vu: understands +ve act IS_TENSE3p s
+vu: understand +ve act IS_TENSE3p p
+vu: understood +ve act WAS_TENSE3p s
+vu: understood +ve act WAS_TENSE3p p
+vu: has not released -ve act HASBEEN_TENSE3p s
+vu: have not released -ve act HASBEEN_TENSE3p p
+vu: had not released -ve act HADBEEN_TENSE3p s
+vu: had not released -ve act HADBEEN_TENSE3p p
+vu: has released +ve act HASBEEN_TENSE3p s
+vu: have released +ve act HASBEEN_TENSE3p p
+vu: had released +ve act HADBEEN_TENSE3p s
+vu: had released +ve act HADBEEN_TENSE3p p
+vu: does not release -ve act IS_TENSE3p s
+vu: do not release -ve act IS_TENSE3p p
+vu: did not release -ve act WAS_TENSE3p s
+vu: did not release -ve act WAS_TENSE3p p
+vu: releases +ve act IS_TENSE3p s
+vu: release +ve act IS_TENSE3p p
+vu: released +ve act WAS_TENSE3p s
+vu: released +ve act WAS_TENSE3p p
+vu: has not indexed -ve act HASBEEN_TENSE3p s
+vu: have not indexed -ve act HASBEEN_TENSE3p p
+vu: had not indexed -ve act HADBEEN_TENSE3p s
+vu: had not indexed -ve act HADBEEN_TENSE3p p
+vu: has indexed +ve act HASBEEN_TENSE3p s
+vu: have indexed +ve act HASBEEN_TENSE3p p
+vu: had indexed +ve act HADBEEN_TENSE3p s
+vu: had indexed +ve act HADBEEN_TENSE3p p
+vu: does not index -ve act IS_TENSE3p s
+vu: do not index -ve act IS_TENSE3p p
+vu: did not index -ve act WAS_TENSE3p s
+vu: did not index -ve act WAS_TENSE3p p
+vu: indexes +ve act IS_TENSE3p s
+vu: index +ve act IS_TENSE3p p
+vu: indexed +ve act WAS_TENSE3p s
+vu: indexed +ve act WAS_TENSE3p p
+vu: has not contained -ve act HASBEEN_TENSE3p s
+vu: have not contained -ve act HASBEEN_TENSE3p p
+vu: had not contained -ve act HADBEEN_TENSE3p s
+vu: had not contained -ve act HADBEEN_TENSE3p p
+vu: has contained +ve act HASBEEN_TENSE3p s
+vu: have contained +ve act HASBEEN_TENSE3p p
+vu: had contained +ve act HADBEEN_TENSE3p s
+vu: had contained +ve act HADBEEN_TENSE3p p
+vu: does not contain -ve act IS_TENSE3p s
+vu: do not contain -ve act IS_TENSE3p p
+vu: did not contain -ve act WAS_TENSE3p s
+vu: did not contain -ve act WAS_TENSE3p p
+vu: contains +ve act IS_TENSE3p s
+vu: contain +ve act IS_TENSE3p p
+vu: contained +ve act WAS_TENSE3p s
+vu: contained +ve act WAS_TENSE3p p
+vu: has not supported -ve act HASBEEN_TENSE3p s
+vu: have not supported -ve act HASBEEN_TENSE3p p
+vu: had not supported -ve act HADBEEN_TENSE3p s
+vu: had not supported -ve act HADBEEN_TENSE3p p
+vu: has supported +ve act HASBEEN_TENSE3p s
+vu: have supported +ve act HASBEEN_TENSE3p p
+vu: had supported +ve act HADBEEN_TENSE3p s
+vu: had supported +ve act HADBEEN_TENSE3p p
+vu: does not support -ve act IS_TENSE3p s
+vu: do not support -ve act IS_TENSE3p p
+vu: did not support -ve act WAS_TENSE3p s
+vu: did not support -ve act WAS_TENSE3p p
+vu: supports +ve act IS_TENSE3p s
+vu: support +ve act IS_TENSE3p p
+vu: supported +ve act WAS_TENSE3p s
+vu: supported +ve act WAS_TENSE3p p
+vu: has not incorporated -ve act HASBEEN_TENSE3p s
+vu: have not incorporated -ve act HASBEEN_TENSE3p p
+vu: had not incorporated -ve act HADBEEN_TENSE3p s
+vu: had not incorporated -ve act HADBEEN_TENSE3p p
+vu: has incorporated +ve act HASBEEN_TENSE3p s
+vu: have incorporated +ve act HASBEEN_TENSE3p p
+vu: had incorporated +ve act HADBEEN_TENSE3p s
+vu: had incorporated +ve act HADBEEN_TENSE3p p
+vu: does not incorporate -ve act IS_TENSE3p s
+vu: do not incorporate -ve act IS_TENSE3p p
+vu: did not incorporate -ve act WAS_TENSE3p s
+vu: did not incorporate -ve act WAS_TENSE3p p
+vu: incorporates +ve act IS_TENSE3p s
+vu: incorporate +ve act IS_TENSE3p p
+vu: incorporated +ve act WAS_TENSE3p s
+vu: incorporated +ve act WAS_TENSE3p p
+vu: has not enclosed -ve act HASBEEN_TENSE3p s
+vu: have not enclosed -ve act HASBEEN_TENSE3p p
+vu: had not enclosed -ve act HADBEEN_TENSE3p s
+vu: had not enclosed -ve act HADBEEN_TENSE3p p
+vu: has enclosed +ve act HASBEEN_TENSE3p s
+vu: have enclosed +ve act HASBEEN_TENSE3p p
+vu: had enclosed +ve act HADBEEN_TENSE3p s
+vu: had enclosed +ve act HADBEEN_TENSE3p p
+vu: does not enclose -ve act IS_TENSE3p s
+vu: do not enclose -ve act IS_TENSE3p p
+vu: did not enclose -ve act WAS_TENSE3p s
+vu: did not enclose -ve act WAS_TENSE3p p
+vu: encloses +ve act IS_TENSE3p s
+vu: enclose +ve act IS_TENSE3p p
+vu: enclosed +ve act WAS_TENSE3p s
+vu: enclosed +ve act WAS_TENSE3p p
+vu: has not carried -ve act HASBEEN_TENSE3p s
+vu: have not carried -ve act HASBEEN_TENSE3p p
+vu: had not carried -ve act HADBEEN_TENSE3p s
+vu: had not carried -ve act HADBEEN_TENSE3p p
+vu: has carried +ve act HASBEEN_TENSE3p s
+vu: have carried +ve act HASBEEN_TENSE3p p
+vu: had carried +ve act HADBEEN_TENSE3p s
+vu: had carried +ve act HADBEEN_TENSE3p p
+vu: does not carry -ve act IS_TENSE3p s
+vu: do not carry -ve act IS_TENSE3p p
+vu: did not carry -ve act WAS_TENSE3p s
+vu: did not carry -ve act WAS_TENSE3p p
+vu: carries +ve act IS_TENSE3p s
+vu: carry +ve act IS_TENSE3p p
+vu: carried +ve act WAS_TENSE3p s
+vu: carried +ve act WAS_TENSE3p p
+vu: has not held -ve act HASBEEN_TENSE3p s
+vu: have not held -ve act HASBEEN_TENSE3p p
+vu: had not held -ve act HADBEEN_TENSE3p s
+vu: had not held -ve act HADBEEN_TENSE3p p
+vu: has held +ve act HASBEEN_TENSE3p s
+vu: have held +ve act HASBEEN_TENSE3p p
+vu: had held +ve act HADBEEN_TENSE3p s
+vu: had held +ve act HADBEEN_TENSE3p p
+vu: does not hold -ve act IS_TENSE3p s
+vu: do not hold -ve act IS_TENSE3p p
+vu: did not hold -ve act WAS_TENSE3p s
+vu: did not hold -ve act WAS_TENSE3p p
+vu: holds +ve act IS_TENSE3p s
+vu: hold +ve act IS_TENSE3p p
+vu: held +ve act WAS_TENSE3p s
+vu: held +ve act WAS_TENSE3p p
+vu: has not worn -ve act HASBEEN_TENSE3p s
+vu: have not worn -ve act HASBEEN_TENSE3p p
+vu: had not worn -ve act HADBEEN_TENSE3p s
+vu: had not worn -ve act HADBEEN_TENSE3p p
+vu: has worn +ve act HASBEEN_TENSE3p s
+vu: have worn +ve act HASBEEN_TENSE3p p
+vu: had worn +ve act HADBEEN_TENSE3p s
+vu: had worn +ve act HADBEEN_TENSE3p p
+vu: does not wear -ve act IS_TENSE3p s
+vu: do not wear -ve act IS_TENSE3p p
+vu: did not wear -ve act WAS_TENSE3p s
+vu: did not wear -ve act WAS_TENSE3p p
+vu: wears +ve act IS_TENSE3p s
+vu: wear +ve act IS_TENSE3p p
+vu: wore +ve act WAS_TENSE3p s
+vu: wore +ve act WAS_TENSE3p p
+vu: has not been able to see -ve act HASBEEN_TENSE3p s
+vu: have not been able to see -ve act HASBEEN_TENSE3p p
+vu: had not been able to see -ve act HADBEEN_TENSE3p s
+vu: had not been able to see -ve act HADBEEN_TENSE3p p
+vu: has been able to see +ve act HASBEEN_TENSE3p s
+vu: have been able to see +ve act HASBEEN_TENSE3p p
+vu: had been able to see +ve act HADBEEN_TENSE3p s
+vu: had been able to see +ve act HADBEEN_TENSE3p p
+vu: cannot see -ve act IS_TENSE3p s
+vu: cannot see -ve act IS_TENSE3p p
+vu: could not see -ve act WAS_TENSE3p s
+vu: could not see -ve act WAS_TENSE3p p
+vu: can see +ve act IS_TENSE3p s
+vu: can see +ve act IS_TENSE3p p
+vu: could see +ve act WAS_TENSE3p s
+vu: could see +ve act WAS_TENSE3p p
+vu: has not been able to be seen by -ve pass HASBEEN_TENSE3p s
+vu: have not been able to be seen by -ve pass HASBEEN_TENSE3p p
+vu: had not been able to be seen by -ve pass HADBEEN_TENSE3p s
+vu: had not been able to be seen by -ve pass HADBEEN_TENSE3p p
+vu: has been able to be seen by +ve pass HASBEEN_TENSE3p s
+vu: have been able to be seen by +ve pass HASBEEN_TENSE3p p
+vu: had been able to be seen by +ve pass HADBEEN_TENSE3p s
+vu: had been able to be seen by +ve pass HADBEEN_TENSE3p p
+vu: cannot be seen by -ve pass IS_TENSE3p s
+vu: cannot be seen by -ve pass IS_TENSE3p p
+vu: could not be seen by -ve pass WAS_TENSE3p s
+vu: could not be seen by -ve pass WAS_TENSE3p p
+vu: can be seen by +ve pass IS_TENSE3p s
+vu: can be seen by +ve pass IS_TENSE3p p
+vu: could be seen by +ve pass WAS_TENSE3p s
+vu: could be seen by +ve pass WAS_TENSE3p p
+vu: has not been able to touch -ve act HASBEEN_TENSE3p s
+vu: have not been able to touch -ve act HASBEEN_TENSE3p p
+vu: had not been able to touch -ve act HADBEEN_TENSE3p s
+vu: had not been able to touch -ve act HADBEEN_TENSE3p p
+vu: has been able to touch +ve act HASBEEN_TENSE3p s
+vu: have been able to touch +ve act HASBEEN_TENSE3p p
+vu: had been able to touch +ve act HADBEEN_TENSE3p s
+vu: had been able to touch +ve act HADBEEN_TENSE3p p
+vu: cannot touch -ve act IS_TENSE3p s
+vu: cannot touch -ve act IS_TENSE3p p
+vu: could not touch -ve act WAS_TENSE3p s
+vu: could not touch -ve act WAS_TENSE3p p
+vu: can touch +ve act IS_TENSE3p s
+vu: can touch +ve act IS_TENSE3p p
+vu: could touch +ve act WAS_TENSE3p s
+vu: could touch +ve act WAS_TENSE3p p
+vu: has not been able to be touched by -ve pass HASBEEN_TENSE3p s
+vu: have not been able to be touched by -ve pass HASBEEN_TENSE3p p
+vu: had not been able to be touched by -ve pass HADBEEN_TENSE3p s
+vu: had not been able to be touched by -ve pass HADBEEN_TENSE3p p
+vu: has been able to be touched by +ve pass HASBEEN_TENSE3p s
+vu: have been able to be touched by +ve pass HASBEEN_TENSE3p p
+vu: had been able to be touched by +ve pass HADBEEN_TENSE3p s
+vu: had been able to be touched by +ve pass HADBEEN_TENSE3p p
+vu: cannot be touched by -ve pass IS_TENSE3p s
+vu: cannot be touched by -ve pass IS_TENSE3p p
+vu: could not be touched by -ve pass WAS_TENSE3p s
+vu: could not be touched by -ve pass WAS_TENSE3p p
+vu: can be touched by +ve pass IS_TENSE3p s
+vu: can be touched by +ve pass IS_TENSE3p p
+vu: could be touched by +ve pass WAS_TENSE3p s
+vu: could be touched by +ve pass WAS_TENSE3p p
+vu: has not concealed -ve act HASBEEN_TENSE3p s
+vu: have not concealed -ve act HASBEEN_TENSE3p p
+vu: had not concealed -ve act HADBEEN_TENSE3p s
+vu: had not concealed -ve act HADBEEN_TENSE3p p
+vu: has concealed +ve act HASBEEN_TENSE3p s
+vu: have concealed +ve act HASBEEN_TENSE3p p
+vu: had concealed +ve act HADBEEN_TENSE3p s
+vu: had concealed +ve act HADBEEN_TENSE3p p
+vu: does not conceal -ve act IS_TENSE3p s
+vu: do not conceal -ve act IS_TENSE3p p
+vu: did not conceal -ve act WAS_TENSE3p s
+vu: did not conceal -ve act WAS_TENSE3p p
+vu: conceals +ve act IS_TENSE3p s
+vu: conceal +ve act IS_TENSE3p p
+vu: concealed +ve act WAS_TENSE3p s
+vu: concealed +ve act WAS_TENSE3p p
+vu: has not unlocked -ve act HASBEEN_TENSE3p s
+vu: have not unlocked -ve act HASBEEN_TENSE3p p
+vu: had not unlocked -ve act HADBEEN_TENSE3p s
+vu: had not unlocked -ve act HADBEEN_TENSE3p p
+vu: has unlocked +ve act HASBEEN_TENSE3p s
+vu: have unlocked +ve act HASBEEN_TENSE3p p
+vu: had unlocked +ve act HADBEEN_TENSE3p s
+vu: had unlocked +ve act HADBEEN_TENSE3p p
+vu: does not unlock -ve act IS_TENSE3p s
+vu: do not unlock -ve act IS_TENSE3p p
+vu: did not unlock -ve act WAS_TENSE3p s
+vu: did not unlock -ve act WAS_TENSE3p p
+vu: unlocks +ve act IS_TENSE3p s
+vu: unlock +ve act IS_TENSE3p p
+vu: unlocked +ve act WAS_TENSE3p s
+vu: unlocked +ve act WAS_TENSE3p p
+vu: has not achieved -ve act HASBEEN_TENSE3p s
+vu: have not achieved -ve act HASBEEN_TENSE3p p
+vu: had not achieved -ve act HADBEEN_TENSE3p s
+vu: had not achieved -ve act HADBEEN_TENSE3p p
+vu: has achieved +ve act HASBEEN_TENSE3p s
+vu: have achieved +ve act HASBEEN_TENSE3p p
+vu: had achieved +ve act HADBEEN_TENSE3p s
+vu: had achieved +ve act HADBEEN_TENSE3p p
+vu: does not achieve -ve act IS_TENSE3p s
+vu: do not achieve -ve act IS_TENSE3p p
+vu: did not achieve -ve act WAS_TENSE3p s
+vu: did not achieve -ve act WAS_TENSE3p p
+vu: achieves +ve act IS_TENSE3p s
+vu: achieve +ve act IS_TENSE3p p
+vu: achieved +ve act WAS_TENSE3p s
+vu: achieved +ve act WAS_TENSE3p p
+vu: has not appreciated -ve act HASBEEN_TENSE3p s
+vu: have not appreciated -ve act HASBEEN_TENSE3p p
+vu: had not appreciated -ve act HADBEEN_TENSE3p s
+vu: had not appreciated -ve act HADBEEN_TENSE3p p
+vu: has appreciated +ve act HASBEEN_TENSE3p s
+vu: have appreciated +ve act HASBEEN_TENSE3p p
+vu: had appreciated +ve act HADBEEN_TENSE3p s
+vu: had appreciated +ve act HADBEEN_TENSE3p p
+vu: does not appreciate -ve act IS_TENSE3p s
+vu: do not appreciate -ve act IS_TENSE3p p
+vu: did not appreciate -ve act WAS_TENSE3p s
+vu: did not appreciate -ve act WAS_TENSE3p p
+vu: appreciates +ve act IS_TENSE3p s
+vu: appreciate +ve act IS_TENSE3p p
+vu: appreciated +ve act WAS_TENSE3p s
+vu: appreciated +ve act WAS_TENSE3p p
+vu: has not arrived -ve act HASBEEN_TENSE3p s
+vu: have not arrived -ve act HASBEEN_TENSE3p p
+vu: had not arrived -ve act HADBEEN_TENSE3p s
+vu: had not arrived -ve act HADBEEN_TENSE3p p
+vu: has arrived +ve act HASBEEN_TENSE3p s
+vu: have arrived +ve act HASBEEN_TENSE3p p
+vu: had arrived +ve act HADBEEN_TENSE3p s
+vu: had arrived +ve act HADBEEN_TENSE3p p
+vu: does not arrive -ve act IS_TENSE3p s
+vu: do not arrive -ve act IS_TENSE3p p
+vu: did not arrive -ve act WAS_TENSE3p s
+vu: did not arrive -ve act WAS_TENSE3p p
+vu: arrives +ve act IS_TENSE3p s
+vu: arrive +ve act IS_TENSE3p p
+vu: arrived +ve act WAS_TENSE3p s
+vu: arrived +ve act WAS_TENSE3p p
+vu: has not cared -ve act HASBEEN_TENSE3p s
+vu: have not cared -ve act HASBEEN_TENSE3p p
+vu: had not cared -ve act HADBEEN_TENSE3p s
+vu: had not cared -ve act HADBEEN_TENSE3p p
+vu: has cared +ve act HASBEEN_TENSE3p s
+vu: have cared +ve act HASBEEN_TENSE3p p
+vu: had cared +ve act HADBEEN_TENSE3p s
+vu: had cared +ve act HADBEEN_TENSE3p p
+vu: does not care -ve act IS_TENSE3p s
+vu: do not care -ve act IS_TENSE3p p
+vu: did not care -ve act WAS_TENSE3p s
+vu: did not care -ve act WAS_TENSE3p p
+vu: cares +ve act IS_TENSE3p s
+vu: care +ve act IS_TENSE3p p
+vu: cared +ve act WAS_TENSE3p s
+vu: cared +ve act WAS_TENSE3p p
+vu: has not closed -ve act HASBEEN_TENSE3p s
+vu: have not closed -ve act HASBEEN_TENSE3p p
+vu: had not closed -ve act HADBEEN_TENSE3p s
+vu: had not closed -ve act HADBEEN_TENSE3p p
+vu: has closed +ve act HASBEEN_TENSE3p s
+vu: have closed +ve act HASBEEN_TENSE3p p
+vu: had closed +ve act HADBEEN_TENSE3p s
+vu: had closed +ve act HADBEEN_TENSE3p p
+vu: does not close -ve act IS_TENSE3p s
+vu: do not close -ve act IS_TENSE3p p
+vu: did not close -ve act WAS_TENSE3p s
+vu: did not close -ve act WAS_TENSE3p p
+vu: closes +ve act IS_TENSE3p s
+vu: close +ve act IS_TENSE3p p
+vu: closed +ve act WAS_TENSE3p s
+vu: closed +ve act WAS_TENSE3p p
+vu: has not died -ve act HASBEEN_TENSE3p s
+vu: have not died -ve act HASBEEN_TENSE3p p
+vu: had not died -ve act HADBEEN_TENSE3p s
+vu: had not died -ve act HADBEEN_TENSE3p p
+vu: has died +ve act HASBEEN_TENSE3p s
+vu: have died +ve act HASBEEN_TENSE3p p
+vu: had died +ve act HADBEEN_TENSE3p s
+vu: had died +ve act HADBEEN_TENSE3p p
+vu: does not die -ve act IS_TENSE3p s
+vu: do not die -ve act IS_TENSE3p p
+vu: did not die -ve act WAS_TENSE3p s
+vu: did not die -ve act WAS_TENSE3p p
+vu: dies +ve act IS_TENSE3p s
+vu: die +ve act IS_TENSE3p p
+vu: died +ve act WAS_TENSE3p s
+vu: died +ve act WAS_TENSE3p p
+vu: has not discovered -ve act HASBEEN_TENSE3p s
+vu: have not discovered -ve act HASBEEN_TENSE3p p
+vu: had not discovered -ve act HADBEEN_TENSE3p s
+vu: had not discovered -ve act HADBEEN_TENSE3p p
+vu: has discovered +ve act HASBEEN_TENSE3p s
+vu: have discovered +ve act HASBEEN_TENSE3p p
+vu: had discovered +ve act HADBEEN_TENSE3p s
+vu: had discovered +ve act HADBEEN_TENSE3p p
+vu: does not discover -ve act IS_TENSE3p s
+vu: do not discover -ve act IS_TENSE3p p
+vu: did not discover -ve act WAS_TENSE3p s
+vu: did not discover -ve act WAS_TENSE3p p
+vu: discovers +ve act IS_TENSE3p s
+vu: discover +ve act IS_TENSE3p p
+vu: discovered +ve act WAS_TENSE3p s
+vu: discovered +ve act WAS_TENSE3p p
+vu: has not dropped -ve act HASBEEN_TENSE3p s
+vu: have not dropped -ve act HASBEEN_TENSE3p p
+vu: had not dropped -ve act HADBEEN_TENSE3p s
+vu: had not dropped -ve act HADBEEN_TENSE3p p
+vu: has dropped +ve act HASBEEN_TENSE3p s
+vu: have dropped +ve act HASBEEN_TENSE3p p
+vu: had dropped +ve act HADBEEN_TENSE3p s
+vu: had dropped +ve act HADBEEN_TENSE3p p
+vu: does not drop -ve act IS_TENSE3p s
+vu: do not drop -ve act IS_TENSE3p p
+vu: did not drop -ve act WAS_TENSE3p s
+vu: did not drop -ve act WAS_TENSE3p p
+vu: drops +ve act IS_TENSE3p s
+vu: drop +ve act IS_TENSE3p p
+vu: dropped +ve act WAS_TENSE3p s
+vu: dropped +ve act WAS_TENSE3p p
+vu: has not eaten -ve act HASBEEN_TENSE3p s
+vu: have not eaten -ve act HASBEEN_TENSE3p p
+vu: had not eaten -ve act HADBEEN_TENSE3p s
+vu: had not eaten -ve act HADBEEN_TENSE3p p
+vu: has eaten +ve act HASBEEN_TENSE3p s
+vu: have eaten +ve act HASBEEN_TENSE3p p
+vu: had eaten +ve act HADBEEN_TENSE3p s
+vu: had eaten +ve act HADBEEN_TENSE3p p
+vu: does not eat -ve act IS_TENSE3p s
+vu: do not eat -ve act IS_TENSE3p p
+vu: did not eat -ve act WAS_TENSE3p s
+vu: did not eat -ve act WAS_TENSE3p p
+vu: eats +ve act IS_TENSE3p s
+vu: eat +ve act IS_TENSE3p p
+vu: ate +ve act WAS_TENSE3p s
+vu: ate +ve act WAS_TENSE3p p
+vu: has not felt -ve act HASBEEN_TENSE3p s
+vu: have not felt -ve act HASBEEN_TENSE3p p
+vu: had not felt -ve act HADBEEN_TENSE3p s
+vu: had not felt -ve act HADBEEN_TENSE3p p
+vu: has felt +ve act HASBEEN_TENSE3p s
+vu: have felt +ve act HASBEEN_TENSE3p p
+vu: had felt +ve act HADBEEN_TENSE3p s
+vu: had felt +ve act HADBEEN_TENSE3p p
+vu: does not feel -ve act IS_TENSE3p s
+vu: do not feel -ve act IS_TENSE3p p
+vu: did not feel -ve act WAS_TENSE3p s
+vu: did not feel -ve act WAS_TENSE3p p
+vu: feels +ve act IS_TENSE3p s
+vu: feel +ve act IS_TENSE3p p
+vu: felt +ve act WAS_TENSE3p s
+vu: felt +ve act WAS_TENSE3p p
+vu: has not found -ve act HASBEEN_TENSE3p s
+vu: have not found -ve act HASBEEN_TENSE3p p
+vu: had not found -ve act HADBEEN_TENSE3p s
+vu: had not found -ve act HADBEEN_TENSE3p p
+vu: has found +ve act HASBEEN_TENSE3p s
+vu: have found +ve act HASBEEN_TENSE3p p
+vu: had found +ve act HADBEEN_TENSE3p s
+vu: had found +ve act HADBEEN_TENSE3p p
+vu: does not find -ve act IS_TENSE3p s
+vu: do not find -ve act IS_TENSE3p p
+vu: did not find -ve act WAS_TENSE3p s
+vu: did not find -ve act WAS_TENSE3p p
+vu: finds +ve act IS_TENSE3p s
+vu: find +ve act IS_TENSE3p p
+vu: found +ve act WAS_TENSE3p s
+vu: found +ve act WAS_TENSE3p p
+vu: has not got -ve act HASBEEN_TENSE3p s
+vu: have not got -ve act HASBEEN_TENSE3p p
+vu: had not got -ve act HADBEEN_TENSE3p s
+vu: had not got -ve act HADBEEN_TENSE3p p
+vu: has got +ve act HASBEEN_TENSE3p s
+vu: have got +ve act HASBEEN_TENSE3p p
+vu: had got +ve act HADBEEN_TENSE3p s
+vu: had got +ve act HADBEEN_TENSE3p p
+vu: does not get -ve act IS_TENSE3p s
+vu: do not get -ve act IS_TENSE3p p
+vu: did not get -ve act WAS_TENSE3p s
+vu: did not get -ve act WAS_TENSE3p p
+vu: gets +ve act IS_TENSE3p s
+vu: get +ve act IS_TENSE3p p
+vu: got +ve act WAS_TENSE3p s
+vu: got +ve act WAS_TENSE3p p
+vu: has not given -ve act HASBEEN_TENSE3p s
+vu: have not given -ve act HASBEEN_TENSE3p p
+vu: had not given -ve act HADBEEN_TENSE3p s
+vu: had not given -ve act HADBEEN_TENSE3p p
+vu: has given +ve act HASBEEN_TENSE3p s
+vu: have given +ve act HASBEEN_TENSE3p p
+vu: had given +ve act HADBEEN_TENSE3p s
+vu: had given +ve act HADBEEN_TENSE3p p
+vu: does not give -ve act IS_TENSE3p s
+vu: do not give -ve act IS_TENSE3p p
+vu: did not give -ve act WAS_TENSE3p s
+vu: did not give -ve act WAS_TENSE3p p
+vu: gives +ve act IS_TENSE3p s
+vu: give +ve act IS_TENSE3p p
+vu: gave +ve act WAS_TENSE3p s
+vu: gave +ve act WAS_TENSE3p p
+vu: has not gone -ve act HASBEEN_TENSE3p s
+vu: have not gone -ve act HASBEEN_TENSE3p p
+vu: had not gone -ve act HADBEEN_TENSE3p s
+vu: had not gone -ve act HADBEEN_TENSE3p p
+vu: has gone +ve act HASBEEN_TENSE3p s
+vu: have gone +ve act HASBEEN_TENSE3p p
+vu: had gone +ve act HADBEEN_TENSE3p s
+vu: had gone +ve act HADBEEN_TENSE3p p
+vu: does not go -ve act IS_TENSE3p s
+vu: do not go -ve act IS_TENSE3p p
+vu: did not go -ve act WAS_TENSE3p s
+vu: did not go -ve act WAS_TENSE3p p
+vu: goes +ve act IS_TENSE3p s
+vu: go +ve act IS_TENSE3p p
+vu: went +ve act WAS_TENSE3p s
+vu: went +ve act WAS_TENSE3p p
+vu: has not happened -ve act HASBEEN_TENSE3p s
+vu: have not happened -ve act HASBEEN_TENSE3p p
+vu: had not happened -ve act HADBEEN_TENSE3p s
+vu: had not happened -ve act HADBEEN_TENSE3p p
+vu: has happened +ve act HASBEEN_TENSE3p s
+vu: have happened +ve act HASBEEN_TENSE3p p
+vu: had happened +ve act HADBEEN_TENSE3p s
+vu: had happened +ve act HADBEEN_TENSE3p p
+vu: does not happen -ve act IS_TENSE3p s
+vu: do not happen -ve act IS_TENSE3p p
+vu: did not happen -ve act WAS_TENSE3p s
+vu: did not happen -ve act WAS_TENSE3p p
+vu: happens +ve act IS_TENSE3p s
+vu: happen +ve act IS_TENSE3p p
+vu: happened +ve act WAS_TENSE3p s
+vu: happened +ve act WAS_TENSE3p p
+vu: has not heard -ve act HASBEEN_TENSE3p s
+vu: have not heard -ve act HASBEEN_TENSE3p p
+vu: had not heard -ve act HADBEEN_TENSE3p s
+vu: had not heard -ve act HADBEEN_TENSE3p p
+vu: has heard +ve act HASBEEN_TENSE3p s
+vu: have heard +ve act HASBEEN_TENSE3p p
+vu: had heard +ve act HADBEEN_TENSE3p s
+vu: had heard +ve act HADBEEN_TENSE3p p
+vu: does not hear -ve act IS_TENSE3p s
+vu: do not hear -ve act IS_TENSE3p p
+vu: did not hear -ve act WAS_TENSE3p s
+vu: did not hear -ve act WAS_TENSE3p p
+vu: hears +ve act IS_TENSE3p s
+vu: hear +ve act IS_TENSE3p p
+vu: heard +ve act WAS_TENSE3p s
+vu: heard +ve act WAS_TENSE3p p
+vu: has not jumped -ve act HASBEEN_TENSE3p s
+vu: have not jumped -ve act HASBEEN_TENSE3p p
+vu: had not jumped -ve act HADBEEN_TENSE3p s
+vu: had not jumped -ve act HADBEEN_TENSE3p p
+vu: has jumped +ve act HASBEEN_TENSE3p s
+vu: have jumped +ve act HASBEEN_TENSE3p p
+vu: had jumped +ve act HADBEEN_TENSE3p s
+vu: had jumped +ve act HADBEEN_TENSE3p p
+vu: does not jump -ve act IS_TENSE3p s
+vu: do not jump -ve act IS_TENSE3p p
+vu: did not jump -ve act WAS_TENSE3p s
+vu: did not jump -ve act WAS_TENSE3p p
+vu: jumps +ve act IS_TENSE3p s
+vu: jump +ve act IS_TENSE3p p
+vu: jumped +ve act WAS_TENSE3p s
+vu: jumped +ve act WAS_TENSE3p p
+vu: has not lacked -ve act HASBEEN_TENSE3p s
+vu: have not lacked -ve act HASBEEN_TENSE3p p
+vu: had not lacked -ve act HADBEEN_TENSE3p s
+vu: had not lacked -ve act HADBEEN_TENSE3p p
+vu: has lacked +ve act HASBEEN_TENSE3p s
+vu: have lacked +ve act HASBEEN_TENSE3p p
+vu: had lacked +ve act HADBEEN_TENSE3p s
+vu: had lacked +ve act HADBEEN_TENSE3p p
+vu: does not lack -ve act IS_TENSE3p s
+vu: do not lack -ve act IS_TENSE3p p
+vu: did not lack -ve act WAS_TENSE3p s
+vu: did not lack -ve act WAS_TENSE3p p
+vu: lacks +ve act IS_TENSE3p s
+vu: lack +ve act IS_TENSE3p p
+vu: lacked +ve act WAS_TENSE3p s
+vu: lacked +ve act WAS_TENSE3p p
+vu: has not led -ve act HASBEEN_TENSE3p s
+vu: have not led -ve act HASBEEN_TENSE3p p
+vu: had not led -ve act HADBEEN_TENSE3p s
+vu: had not led -ve act HADBEEN_TENSE3p p
+vu: has led +ve act HASBEEN_TENSE3p s
+vu: have led +ve act HASBEEN_TENSE3p p
+vu: had led +ve act HADBEEN_TENSE3p s
+vu: had led +ve act HADBEEN_TENSE3p p
+vu: does not lead -ve act IS_TENSE3p s
+vu: do not lead -ve act IS_TENSE3p p
+vu: did not lead -ve act WAS_TENSE3p s
+vu: did not lead -ve act WAS_TENSE3p p
+vu: leads +ve act IS_TENSE3p s
+vu: lead +ve act IS_TENSE3p p
+vu: led +ve act WAS_TENSE3p s
+vu: led +ve act WAS_TENSE3p p
+vu: has not liked -ve act HASBEEN_TENSE3p s
+vu: have not liked -ve act HASBEEN_TENSE3p p
+vu: had not liked -ve act HADBEEN_TENSE3p s
+vu: had not liked -ve act HADBEEN_TENSE3p p
+vu: has liked +ve act HASBEEN_TENSE3p s
+vu: have liked +ve act HASBEEN_TENSE3p p
+vu: had liked +ve act HADBEEN_TENSE3p s
+vu: had liked +ve act HADBEEN_TENSE3p p
+vu: does not like -ve act IS_TENSE3p s
+vu: do not like -ve act IS_TENSE3p p
+vu: did not like -ve act WAS_TENSE3p s
+vu: did not like -ve act WAS_TENSE3p p
+vu: likes +ve act IS_TENSE3p s
+vu: like +ve act IS_TENSE3p p
+vu: liked +ve act WAS_TENSE3p s
+vu: liked +ve act WAS_TENSE3p p
+vu: has not listened -ve act HASBEEN_TENSE3p s
+vu: have not listened -ve act HASBEEN_TENSE3p p
+vu: had not listened -ve act HADBEEN_TENSE3p s
+vu: had not listened -ve act HADBEEN_TENSE3p p
+vu: has listened +ve act HASBEEN_TENSE3p s
+vu: have listened +ve act HASBEEN_TENSE3p p
+vu: had listened +ve act HADBEEN_TENSE3p s
+vu: had listened +ve act HADBEEN_TENSE3p p
+vu: does not listen -ve act IS_TENSE3p s
+vu: do not listen -ve act IS_TENSE3p p
+vu: did not listen -ve act WAS_TENSE3p s
+vu: did not listen -ve act WAS_TENSE3p p
+vu: listens +ve act IS_TENSE3p s
+vu: listen +ve act IS_TENSE3p p
+vu: listened +ve act WAS_TENSE3p s
+vu: listened +ve act WAS_TENSE3p p
+vu: has not locked -ve act HASBEEN_TENSE3p s
+vu: have not locked -ve act HASBEEN_TENSE3p p
+vu: had not locked -ve act HADBEEN_TENSE3p s
+vu: had not locked -ve act HADBEEN_TENSE3p p
+vu: has locked +ve act HASBEEN_TENSE3p s
+vu: have locked +ve act HASBEEN_TENSE3p p
+vu: had locked +ve act HADBEEN_TENSE3p s
+vu: had locked +ve act HADBEEN_TENSE3p p
+vu: does not lock -ve act IS_TENSE3p s
+vu: do not lock -ve act IS_TENSE3p p
+vu: did not lock -ve act WAS_TENSE3p s
+vu: did not lock -ve act WAS_TENSE3p p
+vu: locks +ve act IS_TENSE3p s
+vu: lock +ve act IS_TENSE3p p
+vu: locked +ve act WAS_TENSE3p s
+vu: locked +ve act WAS_TENSE3p p
+vu: has not looked -ve act HASBEEN_TENSE3p s
+vu: have not looked -ve act HASBEEN_TENSE3p p
+vu: had not looked -ve act HADBEEN_TENSE3p s
+vu: had not looked -ve act HADBEEN_TENSE3p p
+vu: has looked +ve act HASBEEN_TENSE3p s
+vu: have looked +ve act HASBEEN_TENSE3p p
+vu: had looked +ve act HADBEEN_TENSE3p s
+vu: had looked +ve act HADBEEN_TENSE3p p
+vu: does not look -ve act IS_TENSE3p s
+vu: do not look -ve act IS_TENSE3p p
+vu: did not look -ve act WAS_TENSE3p s
+vu: did not look -ve act WAS_TENSE3p p
+vu: looks +ve act IS_TENSE3p s
+vu: look +ve act IS_TENSE3p p
+vu: looked +ve act WAS_TENSE3p s
+vu: looked +ve act WAS_TENSE3p p
+vu: has not needed -ve act HASBEEN_TENSE3p s
+vu: have not needed -ve act HASBEEN_TENSE3p p
+vu: had not needed -ve act HADBEEN_TENSE3p s
+vu: had not needed -ve act HADBEEN_TENSE3p p
+vu: has needed +ve act HASBEEN_TENSE3p s
+vu: have needed +ve act HASBEEN_TENSE3p p
+vu: had needed +ve act HADBEEN_TENSE3p s
+vu: had needed +ve act HADBEEN_TENSE3p p
+vu: does not need -ve act IS_TENSE3p s
+vu: do not need -ve act IS_TENSE3p p
+vu: did not need -ve act WAS_TENSE3p s
+vu: did not need -ve act WAS_TENSE3p p
+vu: needs +ve act IS_TENSE3p s
+vu: need +ve act IS_TENSE3p p
+vu: needed +ve act WAS_TENSE3p s
+vu: needed +ve act WAS_TENSE3p p
+vu: has not opened -ve act HASBEEN_TENSE3p s
+vu: have not opened -ve act HASBEEN_TENSE3p p
+vu: had not opened -ve act HADBEEN_TENSE3p s
+vu: had not opened -ve act HADBEEN_TENSE3p p
+vu: has opened +ve act HASBEEN_TENSE3p s
+vu: have opened +ve act HASBEEN_TENSE3p p
+vu: had opened +ve act HADBEEN_TENSE3p s
+vu: had opened +ve act HADBEEN_TENSE3p p
+vu: does not open -ve act IS_TENSE3p s
+vu: do not open -ve act IS_TENSE3p p
+vu: did not open -ve act WAS_TENSE3p s
+vu: did not open -ve act WAS_TENSE3p p
+vu: opens +ve act IS_TENSE3p s
+vu: open +ve act IS_TENSE3p p
+vu: opened +ve act WAS_TENSE3p s
+vu: opened +ve act WAS_TENSE3p p
+vu: has not passed -ve act HASBEEN_TENSE3p s
+vu: have not passed -ve act HASBEEN_TENSE3p p
+vu: had not passed -ve act HADBEEN_TENSE3p s
+vu: had not passed -ve act HADBEEN_TENSE3p p
+vu: has passed +ve act HASBEEN_TENSE3p s
+vu: have passed +ve act HASBEEN_TENSE3p p
+vu: had passed +ve act HADBEEN_TENSE3p s
+vu: had passed +ve act HADBEEN_TENSE3p p
+vu: does not pass -ve act IS_TENSE3p s
+vu: do not pass -ve act IS_TENSE3p p
+vu: did not pass -ve act WAS_TENSE3p s
+vu: did not pass -ve act WAS_TENSE3p p
+vu: passes +ve act IS_TENSE3p s
+vu: pass +ve act IS_TENSE3p p
+vu: passed +ve act WAS_TENSE3p s
+vu: passed +ve act WAS_TENSE3p p
+vu: has not picked -ve act HASBEEN_TENSE3p s
+vu: have not picked -ve act HASBEEN_TENSE3p p
+vu: had not picked -ve act HADBEEN_TENSE3p s
+vu: had not picked -ve act HADBEEN_TENSE3p p
+vu: has picked +ve act HASBEEN_TENSE3p s
+vu: have picked +ve act HASBEEN_TENSE3p p
+vu: had picked +ve act HADBEEN_TENSE3p s
+vu: had picked +ve act HADBEEN_TENSE3p p
+vu: does not pick -ve act IS_TENSE3p s
+vu: do not pick -ve act IS_TENSE3p p
+vu: did not pick -ve act WAS_TENSE3p s
+vu: did not pick -ve act WAS_TENSE3p p
+vu: picks +ve act IS_TENSE3p s
+vu: pick +ve act IS_TENSE3p p
+vu: picked +ve act WAS_TENSE3p s
+vu: picked +ve act WAS_TENSE3p p
+vu: has not provoked -ve act HASBEEN_TENSE3p s
+vu: have not provoked -ve act HASBEEN_TENSE3p p
+vu: had not provoked -ve act HADBEEN_TENSE3p s
+vu: had not provoked -ve act HADBEEN_TENSE3p p
+vu: has provoked +ve act HASBEEN_TENSE3p s
+vu: have provoked +ve act HASBEEN_TENSE3p p
+vu: had provoked +ve act HADBEEN_TENSE3p s
+vu: had provoked +ve act HADBEEN_TENSE3p p
+vu: does not provoke -ve act IS_TENSE3p s
+vu: do not provoke -ve act IS_TENSE3p p
+vu: did not provoke -ve act WAS_TENSE3p s
+vu: did not provoke -ve act WAS_TENSE3p p
+vu: provokes +ve act IS_TENSE3p s
+vu: provoke +ve act IS_TENSE3p p
+vu: provoked +ve act WAS_TENSE3p s
+vu: provoked +ve act WAS_TENSE3p p
+vu: has not pulled -ve act HASBEEN_TENSE3p s
+vu: have not pulled -ve act HASBEEN_TENSE3p p
+vu: had not pulled -ve act HADBEEN_TENSE3p s
+vu: had not pulled -ve act HADBEEN_TENSE3p p
+vu: has pulled +ve act HASBEEN_TENSE3p s
+vu: have pulled +ve act HASBEEN_TENSE3p p
+vu: had pulled +ve act HADBEEN_TENSE3p s
+vu: had pulled +ve act HADBEEN_TENSE3p p
+vu: does not pull -ve act IS_TENSE3p s
+vu: do not pull -ve act IS_TENSE3p p
+vu: did not pull -ve act WAS_TENSE3p s
+vu: did not pull -ve act WAS_TENSE3p p
+vu: pulls +ve act IS_TENSE3p s
+vu: pull +ve act IS_TENSE3p p
+vu: pulled +ve act WAS_TENSE3p s
+vu: pulled +ve act WAS_TENSE3p p
+vu: has not pushed -ve act HASBEEN_TENSE3p s
+vu: have not pushed -ve act HASBEEN_TENSE3p p
+vu: had not pushed -ve act HADBEEN_TENSE3p s
+vu: had not pushed -ve act HADBEEN_TENSE3p p
+vu: has pushed +ve act HASBEEN_TENSE3p s
+vu: have pushed +ve act HASBEEN_TENSE3p p
+vu: had pushed +ve act HADBEEN_TENSE3p s
+vu: had pushed +ve act HADBEEN_TENSE3p p
+vu: does not push -ve act IS_TENSE3p s
+vu: do not push -ve act IS_TENSE3p p
+vu: did not push -ve act WAS_TENSE3p s
+vu: did not push -ve act WAS_TENSE3p p
+vu: pushes +ve act IS_TENSE3p s
+vu: push +ve act IS_TENSE3p p
+vu: pushed +ve act WAS_TENSE3p s
+vu: pushed +ve act WAS_TENSE3p p
+vu: has not put -ve act HASBEEN_TENSE3p s
+vu: have not put -ve act HASBEEN_TENSE3p p
+vu: had not put -ve act HADBEEN_TENSE3p s
+vu: had not put -ve act HADBEEN_TENSE3p p
+vu: has put +ve act HASBEEN_TENSE3p s
+vu: have put +ve act HASBEEN_TENSE3p p
+vu: had put +ve act HADBEEN_TENSE3p s
+vu: had put +ve act HADBEEN_TENSE3p p
+vu: does not put -ve act IS_TENSE3p s
+vu: do not put -ve act IS_TENSE3p p
+vu: did not put -ve act WAS_TENSE3p s
+vu: did not put -ve act WAS_TENSE3p p
+vu: puts +ve act IS_TENSE3p s
+vu: put +ve act IS_TENSE3p p
+vu: put +ve act WAS_TENSE3p s
+vu: put +ve act WAS_TENSE3p p
+vu: has not rubbed -ve act HASBEEN_TENSE3p s
+vu: have not rubbed -ve act HASBEEN_TENSE3p p
+vu: had not rubbed -ve act HADBEEN_TENSE3p s
+vu: had not rubbed -ve act HADBEEN_TENSE3p p
+vu: has rubbed +ve act HASBEEN_TENSE3p s
+vu: have rubbed +ve act HASBEEN_TENSE3p p
+vu: had rubbed +ve act HADBEEN_TENSE3p s
+vu: had rubbed +ve act HADBEEN_TENSE3p p
+vu: does not rub -ve act IS_TENSE3p s
+vu: do not rub -ve act IS_TENSE3p p
+vu: did not rub -ve act WAS_TENSE3p s
+vu: did not rub -ve act WAS_TENSE3p p
+vu: rubs +ve act IS_TENSE3p s
+vu: rub +ve act IS_TENSE3p p
+vu: rubbed +ve act WAS_TENSE3p s
+vu: rubbed +ve act WAS_TENSE3p p
+vu: has not said -ve act HASBEEN_TENSE3p s
+vu: have not said -ve act HASBEEN_TENSE3p p
+vu: had not said -ve act HADBEEN_TENSE3p s
+vu: had not said -ve act HADBEEN_TENSE3p p
+vu: has said +ve act HASBEEN_TENSE3p s
+vu: have said +ve act HASBEEN_TENSE3p p
+vu: had said +ve act HADBEEN_TENSE3p s
+vu: had said +ve act HADBEEN_TENSE3p p
+vu: does not say -ve act IS_TENSE3p s
+vu: do not say -ve act IS_TENSE3p p
+vu: did not say -ve act WAS_TENSE3p s
+vu: did not say -ve act WAS_TENSE3p p
+vu: says +ve act IS_TENSE3p s
+vu: say +ve act IS_TENSE3p p
+vu: said +ve act WAS_TENSE3p s
+vu: said +ve act WAS_TENSE3p p
+vu: has not searched -ve act HASBEEN_TENSE3p s
+vu: have not searched -ve act HASBEEN_TENSE3p p
+vu: had not searched -ve act HADBEEN_TENSE3p s
+vu: had not searched -ve act HADBEEN_TENSE3p p
+vu: has searched +ve act HASBEEN_TENSE3p s
+vu: have searched +ve act HASBEEN_TENSE3p p
+vu: had searched +ve act HADBEEN_TENSE3p s
+vu: had searched +ve act HADBEEN_TENSE3p p
+vu: does not search -ve act IS_TENSE3p s
+vu: do not search -ve act IS_TENSE3p p
+vu: did not search -ve act WAS_TENSE3p s
+vu: did not search -ve act WAS_TENSE3p p
+vu: searches +ve act IS_TENSE3p s
+vu: search +ve act IS_TENSE3p p
+vu: searched +ve act WAS_TENSE3p s
+vu: searched +ve act WAS_TENSE3p p
+vu: has not seen -ve act HASBEEN_TENSE3p s
+vu: have not seen -ve act HASBEEN_TENSE3p p
+vu: had not seen -ve act HADBEEN_TENSE3p s
+vu: had not seen -ve act HADBEEN_TENSE3p p
+vu: has seen +ve act HASBEEN_TENSE3p s
+vu: have seen +ve act HASBEEN_TENSE3p p
+vu: had seen +ve act HADBEEN_TENSE3p s
+vu: had seen +ve act HADBEEN_TENSE3p p
+vu: does not see -ve act IS_TENSE3p s
+vu: do not see -ve act IS_TENSE3p p
+vu: did not see -ve act WAS_TENSE3p s
+vu: did not see -ve act WAS_TENSE3p p
+vu: sees +ve act IS_TENSE3p s
+vu: see +ve act IS_TENSE3p p
+vu: saw +ve act WAS_TENSE3p s
+vu: saw +ve act WAS_TENSE3p p
+vu: has not seemed -ve act HASBEEN_TENSE3p s
+vu: have not seemed -ve act HASBEEN_TENSE3p p
+vu: had not seemed -ve act HADBEEN_TENSE3p s
+vu: had not seemed -ve act HADBEEN_TENSE3p p
+vu: has seemed +ve act HASBEEN_TENSE3p s
+vu: have seemed +ve act HASBEEN_TENSE3p p
+vu: had seemed +ve act HADBEEN_TENSE3p s
+vu: had seemed +ve act HADBEEN_TENSE3p p
+vu: does not seem -ve act IS_TENSE3p s
+vu: do not seem -ve act IS_TENSE3p p
+vu: did not seem -ve act WAS_TENSE3p s
+vu: did not seem -ve act WAS_TENSE3p p
+vu: seems +ve act IS_TENSE3p s
+vu: seem +ve act IS_TENSE3p p
+vu: seemed +ve act WAS_TENSE3p s
+vu: seemed +ve act WAS_TENSE3p p
+vu: has not set -ve act HASBEEN_TENSE3p s
+vu: have not set -ve act HASBEEN_TENSE3p p
+vu: had not set -ve act HADBEEN_TENSE3p s
+vu: had not set -ve act HADBEEN_TENSE3p p
+vu: has set +ve act HASBEEN_TENSE3p s
+vu: have set +ve act HASBEEN_TENSE3p p
+vu: had set +ve act HADBEEN_TENSE3p s
+vu: had set +ve act HADBEEN_TENSE3p p
+vu: does not set -ve act IS_TENSE3p s
+vu: do not set -ve act IS_TENSE3p p
+vu: did not set -ve act WAS_TENSE3p s
+vu: did not set -ve act WAS_TENSE3p p
+vu: sets +ve act IS_TENSE3p s
+vu: set +ve act IS_TENSE3p p
+vu: set +ve act WAS_TENSE3p s
+vu: set +ve act WAS_TENSE3p p
+vu: has not smelled -ve act HASBEEN_TENSE3p s
+vu: have not smelled -ve act HASBEEN_TENSE3p p
+vu: had not smelled -ve act HADBEEN_TENSE3p s
+vu: had not smelled -ve act HADBEEN_TENSE3p p
+vu: has smelled +ve act HASBEEN_TENSE3p s
+vu: have smelled +ve act HASBEEN_TENSE3p p
+vu: had smelled +ve act HADBEEN_TENSE3p s
+vu: had smelled +ve act HADBEEN_TENSE3p p
+vu: does not smell -ve act IS_TENSE3p s
+vu: do not smell -ve act IS_TENSE3p p
+vu: did not smell -ve act WAS_TENSE3p s
+vu: did not smell -ve act WAS_TENSE3p p
+vu: smells +ve act IS_TENSE3p s
+vu: smell +ve act IS_TENSE3p p
+vu: smelled +ve act WAS_TENSE3p s
+vu: smelled +ve act WAS_TENSE3p p
+vu: has not sniffed -ve act HASBEEN_TENSE3p s
+vu: have not sniffed -ve act HASBEEN_TENSE3p p
+vu: had not sniffed -ve act HADBEEN_TENSE3p s
+vu: had not sniffed -ve act HADBEEN_TENSE3p p
+vu: has sniffed +ve act HASBEEN_TENSE3p s
+vu: have sniffed +ve act HASBEEN_TENSE3p p
+vu: had sniffed +ve act HADBEEN_TENSE3p s
+vu: had sniffed +ve act HADBEEN_TENSE3p p
+vu: does not sniff -ve act IS_TENSE3p s
+vu: do not sniff -ve act IS_TENSE3p p
+vu: did not sniff -ve act WAS_TENSE3p s
+vu: did not sniff -ve act WAS_TENSE3p p
+vu: sniffs +ve act IS_TENSE3p s
+vu: sniff +ve act IS_TENSE3p p
+vu: sniffed +ve act WAS_TENSE3p s
+vu: sniffed +ve act WAS_TENSE3p p
+vu: has not squeezed -ve act HASBEEN_TENSE3p s
+vu: have not squeezed -ve act HASBEEN_TENSE3p p
+vu: had not squeezed -ve act HADBEEN_TENSE3p s
+vu: had not squeezed -ve act HADBEEN_TENSE3p p
+vu: has squeezed +ve act HASBEEN_TENSE3p s
+vu: have squeezed +ve act HASBEEN_TENSE3p p
+vu: had squeezed +ve act HADBEEN_TENSE3p s
+vu: had squeezed +ve act HADBEEN_TENSE3p p
+vu: does not squeeze -ve act IS_TENSE3p s
+vu: do not squeeze -ve act IS_TENSE3p p
+vu: did not squeeze -ve act WAS_TENSE3p s
+vu: did not squeeze -ve act WAS_TENSE3p p
+vu: squeezes +ve act IS_TENSE3p s
+vu: squeeze +ve act IS_TENSE3p p
+vu: squeezed +ve act WAS_TENSE3p s
+vu: squeezed +ve act WAS_TENSE3p p
+vu: has not switched -ve act HASBEEN_TENSE3p s
+vu: have not switched -ve act HASBEEN_TENSE3p p
+vu: had not switched -ve act HADBEEN_TENSE3p s
+vu: had not switched -ve act HADBEEN_TENSE3p p
+vu: has switched +ve act HASBEEN_TENSE3p s
+vu: have switched +ve act HASBEEN_TENSE3p p
+vu: had switched +ve act HADBEEN_TENSE3p s
+vu: had switched +ve act HADBEEN_TENSE3p p
+vu: does not switch -ve act IS_TENSE3p s
+vu: do not switch -ve act IS_TENSE3p p
+vu: did not switch -ve act WAS_TENSE3p s
+vu: did not switch -ve act WAS_TENSE3p p
+vu: switches +ve act IS_TENSE3p s
+vu: switch +ve act IS_TENSE3p p
+vu: switched +ve act WAS_TENSE3p s
+vu: switched +ve act WAS_TENSE3p p
+vu: has not taken -ve act HASBEEN_TENSE3p s
+vu: have not taken -ve act HASBEEN_TENSE3p p
+vu: had not taken -ve act HADBEEN_TENSE3p s
+vu: had not taken -ve act HADBEEN_TENSE3p p
+vu: has taken +ve act HASBEEN_TENSE3p s
+vu: have taken +ve act HASBEEN_TENSE3p p
+vu: had taken +ve act HADBEEN_TENSE3p s
+vu: had taken +ve act HADBEEN_TENSE3p p
+vu: does not take -ve act IS_TENSE3p s
+vu: do not take -ve act IS_TENSE3p p
+vu: did not take -ve act WAS_TENSE3p s
+vu: did not take -ve act WAS_TENSE3p p
+vu: takes +ve act IS_TENSE3p s
+vu: take +ve act IS_TENSE3p p
+vu: took +ve act WAS_TENSE3p s
+vu: took +ve act WAS_TENSE3p p
+vu: has not talked -ve act HASBEEN_TENSE3p s
+vu: have not talked -ve act HASBEEN_TENSE3p p
+vu: had not talked -ve act HADBEEN_TENSE3p s
+vu: had not talked -ve act HADBEEN_TENSE3p p
+vu: has talked +ve act HASBEEN_TENSE3p s
+vu: have talked +ve act HASBEEN_TENSE3p p
+vu: had talked +ve act HADBEEN_TENSE3p s
+vu: had talked +ve act HADBEEN_TENSE3p p
+vu: does not talk -ve act IS_TENSE3p s
+vu: do not talk -ve act IS_TENSE3p p
+vu: did not talk -ve act WAS_TENSE3p s
+vu: did not talk -ve act WAS_TENSE3p p
+vu: talks +ve act IS_TENSE3p s
+vu: talk +ve act IS_TENSE3p p
+vu: talked +ve act WAS_TENSE3p s
+vu: talked +ve act WAS_TENSE3p p
+vu: has not tasted -ve act HASBEEN_TENSE3p s
+vu: have not tasted -ve act HASBEEN_TENSE3p p
+vu: had not tasted -ve act HADBEEN_TENSE3p s
+vu: had not tasted -ve act HADBEEN_TENSE3p p
+vu: has tasted +ve act HASBEEN_TENSE3p s
+vu: have tasted +ve act HASBEEN_TENSE3p p
+vu: had tasted +ve act HADBEEN_TENSE3p s
+vu: had tasted +ve act HADBEEN_TENSE3p p
+vu: does not taste -ve act IS_TENSE3p s
+vu: do not taste -ve act IS_TENSE3p p
+vu: did not taste -ve act WAS_TENSE3p s
+vu: did not taste -ve act WAS_TENSE3p p
+vu: tastes +ve act IS_TENSE3p s
+vu: taste +ve act IS_TENSE3p p
+vu: tasted +ve act WAS_TENSE3p s
+vu: tasted +ve act WAS_TENSE3p p
+vu: has not touched -ve act HASBEEN_TENSE3p s
+vu: have not touched -ve act HASBEEN_TENSE3p p
+vu: had not touched -ve act HADBEEN_TENSE3p s
+vu: had not touched -ve act HADBEEN_TENSE3p p
+vu: has touched +ve act HASBEEN_TENSE3p s
+vu: have touched +ve act HASBEEN_TENSE3p p
+vu: had touched +ve act HADBEEN_TENSE3p s
+vu: had touched +ve act HADBEEN_TENSE3p p
+vu: does not touch -ve act IS_TENSE3p s
+vu: do not touch -ve act IS_TENSE3p p
+vu: did not touch -ve act WAS_TENSE3p s
+vu: did not touch -ve act WAS_TENSE3p p
+vu: touches +ve act IS_TENSE3p s
+vu: touch +ve act IS_TENSE3p p
+vu: touched +ve act WAS_TENSE3p s
+vu: touched +ve act WAS_TENSE3p p
+vu: has not turned -ve act HASBEEN_TENSE3p s
+vu: have not turned -ve act HASBEEN_TENSE3p p
+vu: had not turned -ve act HADBEEN_TENSE3p s
+vu: had not turned -ve act HADBEEN_TENSE3p p
+vu: has turned +ve act HASBEEN_TENSE3p s
+vu: have turned +ve act HASBEEN_TENSE3p p
+vu: had turned +ve act HADBEEN_TENSE3p s
+vu: had turned +ve act HADBEEN_TENSE3p p
+vu: does not turn -ve act IS_TENSE3p s
+vu: do not turn -ve act IS_TENSE3p p
+vu: did not turn -ve act WAS_TENSE3p s
+vu: did not turn -ve act WAS_TENSE3p p
+vu: turns +ve act IS_TENSE3p s
+vu: turn +ve act IS_TENSE3p p
+vu: turned +ve act WAS_TENSE3p s
+vu: turned +ve act WAS_TENSE3p p
+vu: has not waited -ve act HASBEEN_TENSE3p s
+vu: have not waited -ve act HASBEEN_TENSE3p p
+vu: had not waited -ve act HADBEEN_TENSE3p s
+vu: had not waited -ve act HADBEEN_TENSE3p p
+vu: has waited +ve act HASBEEN_TENSE3p s
+vu: have waited +ve act HASBEEN_TENSE3p p
+vu: had waited +ve act HADBEEN_TENSE3p s
+vu: had waited +ve act HADBEEN_TENSE3p p
+vu: does not wait -ve act IS_TENSE3p s
+vu: do not wait -ve act IS_TENSE3p p
+vu: did not wait -ve act WAS_TENSE3p s
+vu: did not wait -ve act WAS_TENSE3p p
+vu: waits +ve act IS_TENSE3p s
+vu: wait +ve act IS_TENSE3p p
+vu: waited +ve act WAS_TENSE3p s
+vu: waited +ve act WAS_TENSE3p p
+vu: has not waved -ve act HASBEEN_TENSE3p s
+vu: have not waved -ve act HASBEEN_TENSE3p p
+vu: had not waved -ve act HADBEEN_TENSE3p s
+vu: had not waved -ve act HADBEEN_TENSE3p p
+vu: has waved +ve act HASBEEN_TENSE3p s
+vu: have waved +ve act HASBEEN_TENSE3p p
+vu: had waved +ve act HADBEEN_TENSE3p s
+vu: had waved +ve act HADBEEN_TENSE3p p
+vu: does not wave -ve act IS_TENSE3p s
+vu: do not wave -ve act IS_TENSE3p p
+vu: did not wave -ve act WAS_TENSE3p s
+vu: did not wave -ve act WAS_TENSE3p p
+vu: waves +ve act IS_TENSE3p s
+vu: wave +ve act IS_TENSE3p p
+vu: waved +ve act WAS_TENSE3p s
+vu: waved +ve act WAS_TENSE3p p
+vu: has not won -ve act HASBEEN_TENSE3p s
+vu: have not won -ve act HASBEEN_TENSE3p p
+vu: had not won -ve act HADBEEN_TENSE3p s
+vu: had not won -ve act HADBEEN_TENSE3p p
+vu: has won +ve act HASBEEN_TENSE3p s
+vu: have won +ve act HASBEEN_TENSE3p p
+vu: had won +ve act HADBEEN_TENSE3p s
+vu: had won +ve act HADBEEN_TENSE3p p
+vu: does not win -ve act IS_TENSE3p s
+vu: do not win -ve act IS_TENSE3p p
+vu: did not win -ve act WAS_TENSE3p s
+vu: did not win -ve act WAS_TENSE3p p
+vu: wins +ve act IS_TENSE3p s
+vu: win +ve act IS_TENSE3p p
+vu: won +ve act WAS_TENSE3p s
+vu: won +ve act WAS_TENSE3p p
+vu: has not protected -ve act HASBEEN_TENSE3p s
+vu: have not protected -ve act HASBEEN_TENSE3p p
+vu: had not protected -ve act HADBEEN_TENSE3p s
+vu: had not protected -ve act HADBEEN_TENSE3p p
+vu: has protected +ve act HASBEEN_TENSE3p s
+vu: have protected +ve act HASBEEN_TENSE3p p
+vu: had protected +ve act HADBEEN_TENSE3p s
+vu: had protected +ve act HADBEEN_TENSE3p p
+vu: does not protect -ve act IS_TENSE3p s
+vu: do not protect -ve act IS_TENSE3p p
+vu: did not protect -ve act WAS_TENSE3p s
+vu: did not protect -ve act WAS_TENSE3p p
+vu: protects +ve act IS_TENSE3p s
+vu: protect +ve act IS_TENSE3p p
+vu: protected +ve act WAS_TENSE3p s
+vu: protected +ve act WAS_TENSE3p p
+vu: has not owned -ve act HASBEEN_TENSE3p s
+vu: have not owned -ve act HASBEEN_TENSE3p p
+vu: had not owned -ve act HADBEEN_TENSE3p s
+vu: had not owned -ve act HADBEEN_TENSE3p p
+vu: has owned +ve act HASBEEN_TENSE3p s
+vu: have owned +ve act HASBEEN_TENSE3p p
+vu: had owned +ve act HADBEEN_TENSE3p s
+vu: had owned +ve act HADBEEN_TENSE3p p
+vu: does not own -ve act IS_TENSE3p s
+vu: do not own -ve act IS_TENSE3p p
+vu: did not own -ve act WAS_TENSE3p s
+vu: did not own -ve act WAS_TENSE3p p
+vu: owns +ve act IS_TENSE3p s
+vu: own +ve act IS_TENSE3p p
+vu: owned +ve act WAS_TENSE3p s
+vu: owned +ve act WAS_TENSE3p p
+vu: has not fitted -ve act HASBEEN_TENSE3p s
+vu: have not fitted -ve act HASBEEN_TENSE3p p
+vu: had not fitted -ve act HADBEEN_TENSE3p s
+vu: had not fitted -ve act HADBEEN_TENSE3p p
+vu: has fitted +ve act HASBEEN_TENSE3p s
+vu: have fitted +ve act HASBEEN_TENSE3p p
+vu: had fitted +ve act HADBEEN_TENSE3p s
+vu: had fitted +ve act HADBEEN_TENSE3p p
+vu: does not fit -ve act IS_TENSE3p s
+vu: do not fit -ve act IS_TENSE3p p
+vu: did not fit -ve act WAS_TENSE3p s
+vu: did not fit -ve act WAS_TENSE3p p
+vu: fits +ve act IS_TENSE3p s
+vu: fit +ve act IS_TENSE3p p
+vu: fitted +ve act WAS_TENSE3p s
+vu: fitted +ve act WAS_TENSE3p p
+vu: has not unbolted -ve act HASBEEN_TENSE3p s
+vu: have not unbolted -ve act HASBEEN_TENSE3p p
+vu: had not unbolted -ve act HADBEEN_TENSE3p s
+vu: had not unbolted -ve act HADBEEN_TENSE3p p
+vu: has unbolted +ve act HASBEEN_TENSE3p s
+vu: have unbolted +ve act HASBEEN_TENSE3p p
+vu: had unbolted +ve act HADBEEN_TENSE3p s
+vu: had unbolted +ve act HADBEEN_TENSE3p p
+vu: does not unbolt -ve act IS_TENSE3p s
+vu: do not unbolt -ve act IS_TENSE3p p
+vu: did not unbolt -ve act WAS_TENSE3p s
+vu: did not unbolt -ve act WAS_TENSE3p p
+vu: unbolts +ve act IS_TENSE3p s
+vu: unbolt +ve act IS_TENSE3p p
+vu: unbolted +ve act WAS_TENSE3p s
+vu: unbolted +ve act WAS_TENSE3p p
 meant by
 meaning
 implied by

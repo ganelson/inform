@@ -28,7 +28,7 @@ umbrella, the "lexicon entry" structure:
 any collation of up to 5 vocabulary entries.
 
 =
-typedef struct lexicon_entry {
+typedef struct index_lexicon_entry {
 	struct wording wording_of_entry; /* either the text of the entry, or empty, in which case... */
 	struct word_assemblage text_of_entry;
 
@@ -39,21 +39,21 @@ typedef struct lexicon_entry {
 	char *gloss_note; /* gloss on the definition, or |NULL| if none is provided */
 
 	struct text_stream *reduced_to_lower_case; /* text converted to lower case for sorting */
-	struct lexicon_entry *sorted_next; /* next in lexicographic order */
+	struct index_lexicon_entry *sorted_next; /* next in lexicographic order */
 	CLASS_DEFINITION
-} lexicon_entry;
+} index_lexicon_entry;
 
 @
 
 = (early code)
-lexicon_entry *sorted_lexicon = NULL; /* head of list in lexicographic order */
-lexicon_entry *current_main_verb = NULL; /* when parsing verb declarations */
+index_lexicon_entry *sorted_lexicon = NULL; /* head of list in lexicographic order */
+index_lexicon_entry *current_main_verb = NULL; /* when parsing verb declarations */
 
 @ Lexicon entries are created by the following routine:
 
 =
-lexicon_entry *IndexLexicon::lexicon_new_entry(wording W) {
-	lexicon_entry *lex = CREATE(lexicon_entry);
+index_lexicon_entry *IndexLexicon::lexicon_new_entry(wording W) {
+	index_lexicon_entry *lex = CREATE(index_lexicon_entry);
 	lex->wording_of_entry = W;
 	lex->text_of_entry = WordAssemblages::lit_0();
 	lex->part_of_speech = MISCELLANEOUS_LEXE;
@@ -68,17 +68,17 @@ The |current_main_verb| setting is used to ensure that inflected forms of the
 same verb are grouped together in the verbs table.
 
 =
-lexicon_entry *IndexLexicon::new_entry_with_details(wording W, int pos,
+index_lexicon_entry *IndexLexicon::new_entry_with_details(wording W, int pos,
 	word_assemblage wa, char *category, char *gloss) {
-	lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
+	index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
 	lex->part_of_speech = pos;
 	lex->text_of_entry = wa;
 	lex->category = category; lex->gloss_note = gloss;
 	return lex;
 }
 
-lexicon_entry *IndexLexicon::new_main_verb(word_assemblage infinitive, int part) {
-	lexicon_entry *lex = IndexLexicon::lexicon_new_entry(EMPTY_WORDING);
+index_lexicon_entry *IndexLexicon::new_main_verb(word_assemblage infinitive, int part) {
+	index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(EMPTY_WORDING);
 	lex->text_of_entry = infinitive;
 	lex->part_of_speech = part;
 	lex->category = "verb";
@@ -92,7 +92,7 @@ collection of vocabulary words, and it's therefore convenient to have a utility
 routine which extracts the name in plain text from either source.
 
 =
-void IndexLexicon::lexicon_copy_to_stream(lexicon_entry *lex, text_stream *text) {
+void IndexLexicon::lexicon_copy_to_stream(index_lexicon_entry *lex, text_stream *text) {
 	if (Wordings::nonempty(lex->wording_of_entry))
 		WRITE_TO(text, "%+W", lex->wording_of_entry);
 	else
@@ -138,7 +138,7 @@ void IndexLexicon::index_common_nouns(OUTPUT_STREAM) {
 	LOOP_OVER_OBJECT_INSTANCES(I) {
 		wording W = Instances::get_name(I, FALSE);
 		if (Wordings::nonempty(W)) {
-			lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
+			index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
 			lex->part_of_speech = PROPER_NOUN_LEXE;
 			lex->category = "noun";
 			lex->entry_refers_to = STORE_POINTER_instance(I);
@@ -155,7 +155,7 @@ source text.
 		if (Kinds::Compare::lt(K, K_object)) {
 			wording W = Kinds::Behaviour::get_name(K, FALSE);
 			if (Wordings::nonempty(W)) {
-				lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
+				index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
 				lex->part_of_speech = NOUN_LEXE;
 				lex->category = "noun";
 				lex->entry_refers_to = STORE_POINTER_kind(K);
@@ -165,7 +165,7 @@ source text.
 @ These are adjectives set up by "Definition:".
 
 @<Stock the lexicon with adjectives from names of adjectival phrases@> =
-	lexicon_entry *lex;
+	index_lexicon_entry *lex;
 	adjective *adj;
 	LOOP_OVER(adj, adjective) {
 		wording W = Adjectives::get_nominative_singular(adj);
@@ -182,7 +182,7 @@ then its values should be indexed as nouns -- "red", "blue" and so
 on. (Sometimes these will also be listed separately with an adjectival sense.)
 
 @<Stock the lexicon with nouns from named values@> =
-	lexicon_entry *lex;
+	index_lexicon_entry *lex;
 	instance *qn;
 	LOOP_OVER_ENUMERATION_INSTANCES(qn) {
 		property *prn =
@@ -219,8 +219,8 @@ Before we can sort the lexicon, we need to turn its disparate forms of name
 into a single, canonical, lower-case representation.
 
 @<Create lower-case forms of all lexicon entries@> =
-	lexicon_entry *lex;
-	LOOP_OVER(lex, lexicon_entry) {
+	index_lexicon_entry *lex;
+	LOOP_OVER(lex, index_lexicon_entry) {
 		IndexLexicon::lexicon_copy_to_stream(lex, lex->reduced_to_lower_case);
 		LOOP_THROUGH_TEXT(pos, lex->reduced_to_lower_case)
 			Str::put(pos, Characters::tolower(Str::get(pos)));
@@ -232,9 +232,9 @@ more than 1000 or so entries, so the speed penalty for insertion rather
 than (say) quicksort is not great.
 
 @<Sort the lexicon into alphabetical order@> =
-	lexicon_entry *lex;
-	LOOP_OVER(lex, lexicon_entry) {
-		lexicon_entry *lex2, *last_lex;
+	index_lexicon_entry *lex;
+	LOOP_OVER(lex, index_lexicon_entry) {
+		index_lexicon_entry *lex2, *last_lex;
 		if (sorted_lexicon == NULL) {
 			sorted_lexicon = lex; lex->sorted_next = NULL; continue;
 		}
@@ -275,7 +275,7 @@ explanation of what it is: for instance,
 In a few cases, there is a further textual gloss to add.
 
 @<Main body of the lexicon@> =
-	lexicon_entry *lex;
+	index_lexicon_entry *lex;
 	wchar_t current_initial_letter = '?';
 	int verb_count = 0, entry_count = 0, c;
 	for (lex = sorted_lexicon; lex; lex = lex->sorted_next)
@@ -439,7 +439,7 @@ void IndexLexicon::index_verbs(OUTPUT_STREAM) {
 		"and can be used in adaptive text, but they have no meaning to Inform, so "
 		"they can't be used in sentences about what's in the story.");
 	HTML_CLOSE("p");
-	lexicon_entry *lex = sorted_lexicon;
+	index_lexicon_entry *lex = sorted_lexicon;
 	int verb_count = 0;
 	for (lex = sorted_lexicon; lex; lex = lex->sorted_next)
 		if ((lex->part_of_speech == VERB_LEXE) ||
@@ -475,8 +475,8 @@ be able to print out a table of just those verbs created in that extension.
 =
 void IndexLexicon::list_verbs_in_file(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
 	int verb_count = 0;
-	lexicon_entry *lex;
-	LOOP_OVER(lex, lexicon_entry)
+	index_lexicon_entry *lex;
+	LOOP_OVER(lex, index_lexicon_entry)
 		if (((lex->part_of_speech == VERB_LEXE) || (lex->part_of_speech == ABLE_VERB_LEXE))
 			&& (lex->verb_defined_at)
 			&& (Lexer::file_of_origin(Wordings::first_wn(Node::get_text(lex->verb_defined_at))) == sf)) {

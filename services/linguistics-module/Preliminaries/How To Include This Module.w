@@ -67,7 +67,8 @@ following alphabetical list has references to fuller explanations:
 
 (*) |ADAPTIVE_PERSON_LINGUISTICS_CALLBACK| returns the default person for adaptive
 text generation; in Inform, this tends to be the value of the adaptive text viewpoint
-property for the natural language of play. See //VerbUsages::adaptive_person//.
+property for the natural language of play. Similarly, |ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK|
+returns the number (singular or plural). See //VerbUsages::adaptive_person//.
 
 (*) |ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK| should return |TRUE| if the given
 name is acceptable as an adjective, and should otherwise print some sort of

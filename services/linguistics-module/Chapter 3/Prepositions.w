@@ -23,7 +23,7 @@ will vary depending on the verb it's coupled with.
 typedef struct preposition {
 	struct word_assemblage prep_text;
 	#ifdef CORE_MODULE
-	struct lexicon_entry *prep_lex_entry; /* for use when indexing */
+	struct index_lexicon_entry *prep_lex_entry; /* for use when indexing */
 	#endif
 	struct parse_node *where_prep_created; /* for use if problem messages needed */
 	int allow_unexpected_upper_case; /* for preps like "in Cahoots With" */
