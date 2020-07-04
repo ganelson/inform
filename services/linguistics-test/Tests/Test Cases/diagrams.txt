@@ -1,14 +1,24 @@
 Chapter 1
 
-verb 2 be
+be = verb 2
 
-verb 1 have
+have = verb 1
 
-verb 3 carry
+carry = verb 3
 
-verb 3 mean
+mean = verb 3
 
-verb 3 see
+see = verb 3
+
+Peter = neuter proper noun
+
+Jane = neuter proper noun
+
+woman = neuter common noun
+
+person = neuter common noun
+
+sailor = neuter common noun
 
 Chapter 2
 

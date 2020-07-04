@@ -96,6 +96,7 @@ syntax tree.
 @e inverted_verb_ANNOT           /* |int|: an inversion of subject and object has occurred */
 @e possessive_verb_ANNOT         /* |int|: this is a non-relative use of "to have" */
 @e verb_ANNOT                    /* |verb_usage|: what's being done here */
+@e noun_ANNOT                    /* |noun_usage|: what's being done here */
 @e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
 @e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
 @e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
@@ -109,11 +110,13 @@ syntax tree.
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
+DECLARE_ANNOTATION_FUNCTIONS(noun, noun_usage)
 DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
 
 MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
+MAKE_ANNOTATION_FUNCTIONS(noun, noun_usage)
 MAKE_ANNOTATION_FUNCTIONS(preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)

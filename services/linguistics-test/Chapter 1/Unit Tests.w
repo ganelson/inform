@@ -24,7 +24,7 @@ int Unit::allow_generally(verb_conjugation *vc, int tense, int sense, int person
 }
 
 @h Minimal Preform grammar.
-Only |<dividing-sentence>| can ever match, since the others are wired to match
+Only <dividing-sentence> can ever match, since the others are wired to match
 any text but then fail.
 
 =
@@ -54,8 +54,18 @@ any text but then fail.
 	*XP = VP_PN;
 
 @ =
-<stock> ::=
-	verb <cardinal-number> ...	==> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), DefaultLanguage::get(NULL));
+<verb-stock> ::=
+	... = verb <cardinal-number> ==> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), DefaultLanguage::get(NULL));
+
+<common-noun-stock> ::=
+	... = neuter common noun | ==> NEUTER_GENDER
+	... = masculine common noun | ==> MASCULINE_GENDER
+	... = feminine common noun ==> FEMININE_GENDER
+
+<proper-noun-stock> ::=
+	... = neuter proper noun | ==> NEUTER_GENDER
+	... = masculine proper noun | ==> MASCULINE_GENDER
+	... = feminine proper noun ==> FEMININE_GENDER
 
 @h Syntax tree.
 
@@ -71,7 +81,6 @@ void Unit::test_diagrams(text_stream *arg) {
 	wording W = Feeds::end(FD);
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
 	syntax_tree = SyntaxTree::new();
-	PRINT("Read %d words\n", Wordings::length(W));
 	Sentences::break(syntax_tree, W);
 
 	text_stream *save_DL = DL;
@@ -79,6 +88,7 @@ void Unit::test_diagrams(text_stream *arg) {
 	Streams::enable_debugging(DL);
 	SyntaxTree::clear_trace(syntax_tree);
 	SyntaxTree::traverse(syntax_tree, Unit::diagram);
+	Unit::parse_noun_phrases(syntax_tree->root_node);
 	Node::log_tree(DL, syntax_tree->root_node);
 	DL = save_DL;
 }
@@ -86,7 +96,7 @@ void Unit::test_diagrams(text_stream *arg) {
 void Unit::diagram(parse_node *p) {
 	if (Node::get_type(p) == SENTENCE_NT) {
 		wording W = Node::get_text(p);
-		if (<stock>(W)) {
+		if (<verb-stock>(W)) {
 			verb_conjugation *vc = <<rp>>;
 			int cop = FALSE;
 			if (my_first_verb) { cop = TRUE; }
@@ -96,13 +106,32 @@ void Unit::diagram(parse_node *p) {
 			VerbUsages::register_all_usages_of_verb(vi, FALSE, <<r>>);
 			if (vc_be == NULL) vc_be = vc;
 			else if (vc_have == NULL) vc_have = vc;
-			Verbs::add_form(vi, NULL, NULL, VerbMeanings::new(vc, NULL), SVO_FS_BIT);
+			Verbs::add_form(vi, NULL, NULL, VerbMeanings::regular(vc), SVO_FS_BIT);
+		} else if (<common-noun-stock>(W)) {
+			wording W = GET_RW(<common-noun-stock>, 1);
+			Nouns::new_common_noun(W, <<r>>, ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
+				NOUN_MC, NULL_GENERAL_POINTER, DefaultLanguage::get(NULL));
+		} else if (<proper-noun-stock>(W)) {
+			wording W = GET_RW(<proper-noun-stock>, 1);
+			Nouns::new_proper_noun(W, <<r>>, ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
+				NOUN_MC, NULL, DefaultLanguage::get(NULL));
 		} else {
 			if (<unexceptional-sentence>(W)) {
-				SyntaxTree::graft(syntax_tree, <<rp>>, p);
+				parse_node *n = <<rp>>;
+				SyntaxTree::graft(syntax_tree, n, p);
 			} else {
 				PRINT("Failed: %W\n", W);
 			}
 		}
+	}
+}
+
+void Unit::parse_noun_phrases(parse_node *p) {
+	for (; p; p = p->next) {
+		if (Node::get_type(p) == PROPER_NOUN_NT) {
+			parse_node *q = Lexicon::retrieve(NOUN_MC, Node::get_text(p));
+			if (q) Nouns::set_node_to_be_usage_of_noun(p, Nouns::disambiguate(q, FALSE));
+		}
+		Unit::parse_noun_phrases(p->down);
 	}
 }

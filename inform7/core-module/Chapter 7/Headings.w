@@ -328,16 +328,21 @@ important.
 @d NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK Sentences::Headings::choose_highest_scoring_noun
 
 =
-noun *Sentences::Headings::choose_highest_scoring_noun(parse_node *p, int common_only) {
+noun_usage *Sentences::Headings::choose_highest_scoring_noun(parse_node *p, int common_only) {
 	Sentences::Headings::construct_noun_search_list();
 	noun *nt;
 	LOOP_OVER(nt, noun) Sentences::Headings::set_noun_search_score(nt, 0);
 	for (parse_node *p2 = p; p2; p2 = p2->next_alternative) {
-		noun *nt = Nouns::from_excerpt_meaning(Node::get_meaning(p2));
-		if (Nouns::is_eligible_match(nt, common_only))
-			Sentences::Headings::set_noun_search_score(nt, Node::get_score(p2));
+		noun_usage *nu = Nouns::usage_from_excerpt_meaning(Node::get_meaning(p2));
+		if (Nouns::is_eligible_match(nu->noun_used, common_only))
+			Sentences::Headings::set_noun_search_score(nu->noun_used, Node::get_score(p2));
 	}
-	return Sentences::Headings::highest_scoring_noun_searched();
+	nt = Sentences::Headings::highest_scoring_noun_searched();
+	for (parse_node *p2 = p; p2; p2 = p2->next_alternative) {
+		noun_usage *nu = Nouns::usage_from_excerpt_meaning(Node::get_meaning(p2));
+		if (nu->noun_used == nt) return nu;
+	}
+	return NULL; /* should never in fact happen */
 }
 
 @h Handling headings during the main traverses.

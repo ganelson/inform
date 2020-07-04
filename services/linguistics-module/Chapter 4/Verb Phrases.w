@@ -433,7 +433,7 @@ representing the verb.
 
 @<Check whether any sense of this verb form will accept this usage and succeed if so@> =
 	int possessive = FALSE;
-	if (VerbMeanings::get_relational_meaning(vm) == VERB_MEANING_POSSESSION)
+	if (VerbMeanings::get_regular_meaning(vm) == VERB_MEANING_POSSESSION)
 		possessive = TRUE;
 	parse_node *VP_PN = Node::new(VERB_NT);
 	if (certainty != UNKNOWN_CE)
@@ -483,9 +483,9 @@ parse_node *VerbPhrases::accept(verb_form *vf, parse_node *VP_PN, wording SW, wo
 	for (verb_sense *vs = (vf)?vf->list_of_senses:NULL; vs; vs = vs->next_sense) {
 		verb_meaning *vm = &(vs->vm);
 		Node::set_verb_meaning(VP_PN, vm);
-		int rev = FALSE;
-		special_meaning_fn soa = VerbMeanings::get_special_meaning(vm, &rev);
+		special_meaning_fn soa = VerbMeanings::get_special_meaning_fn(vm);
 		if (soa) {
+			int rev = VerbMeanings::get_reversal_status_of_smf(vm);
 			if (rev) { wording W = NPs[0]; NPs[0] = NPs[1]; NPs[1] = W; }
 			if ((*soa)(ACCEPT_SMFT, VP_PN, NPs)) {
 				return VP_PN;
@@ -543,7 +543,7 @@ the exactly equivalent idea of the hat being worn by Darcy.
 
 @<Insert a relationship subtree if the verb creates one without a relative phrase@> =
 	verb_meaning *vm = Node::get_verb_meaning(V);
-	VERB_MEANING_LINGUISTICS_TYPE *meaning = VerbMeanings::get_relational_meaning(vm);
+	VERB_MEANING_LINGUISTICS_TYPE *meaning = VerbMeanings::get_regular_meaning(vm);
 	if (meaning == NULL) return FALSE;
 	Node::set_verb_meaning(V, vm);
 	if ((Annotations::read_int(V, possessive_verb_ANNOT) == FALSE) && (meaning != VERB_MEANING_EQUALITY)) {

@@ -108,7 +108,7 @@ void NewVerbs::add_inequalities_inner(verb_meaning lt, verb_meaning gt, verb_mea
 }
 
 verb_meaning NewVerbs::ineq_vm(binary_predicate *bp) {
-	return VerbMeanings::new(bp, NULL);
+	return VerbMeanings::regular(bp);
 }
 
 @h Parsing new verb declarations.
@@ -216,7 +216,7 @@ now absolutely any non-empty word range is accepted as the property name.
 @<Use verb infinitive as shorthand@> =
 	*X = VM_VERBM;
 	verb_form *vf = RP[1];
-	verb_meaning *vm = VerbMeanings::get_regular_meaning_of_verb_form(vf);
+	verb_meaning *vm = VerbMeanings::first_unspecial_meaning_of_verb_form(vf);
 	if (vm) {
 		*XP = vm;
 	} else {
@@ -347,7 +347,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 				unexpected_upper_casing_used);
 
 		if (meaning_given) {
-			verb_meaning *current = VerbMeanings::get_regular_meaning_of_verb(vi, prep, second_prep);
+			verb_meaning *current = VerbMeanings::first_unspecial_meaning_of_verb_form(Verbs::find_form(vi, prep, second_prep));
 			if (VerbMeanings::is_meaningless(current) == FALSE) {
 				LOG("Currently $w means $y\n", vi, current);
 				parse_node *where = VerbMeanings::get_where_assigned(current);
@@ -375,10 +375,10 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 	switch (<<r>>) {
 		case PROP_VERBM: {
 			wording RW = GET_RW(<verb-implies-sentence-object>, 1);
-			vm = VerbMeanings::new(Properties::SettingRelations::make_set_property_BP(RW), NULL); break;
+			vm = VerbMeanings::regular(Properties::SettingRelations::make_set_property_BP(RW)); break;
 		}
 		case REL_VERBM:
-			vm = VerbMeanings::new(<<rp>>, NULL);
+			vm = VerbMeanings::regular(<<rp>>);
 			break;
 		case BUILTIN_VERBM: {
 			wording MW = GET_RW(<verb-implies-sentence-object>, 1);
@@ -393,7 +393,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 					"that's not one of the built-in meanings I know",
 					"and should be one of the ones used in the Preamble to the "
 					"Standard Rules.");
-				vm = VerbMeanings::new(R_equality, NULL);
+				vm = VerbMeanings::regular(R_equality);
 			}
 			break;
 		}
@@ -594,7 +594,7 @@ foreign verbs (4).
 
 @<Register the new verb's usage@> =
 	int p = 4;
-	binary_predicate *bp = VerbMeanings::get_relational_meaning(&vm);
+	binary_predicate *bp = VerbMeanings::get_regular_meaning(&vm);
 	if (bp == a_has_b_predicate) p = 1;
 	if (bp == R_equality) p = 2;
 	if ((nl) && (nl != DefaultLanguage::get(NULL))) p = 5;
@@ -828,8 +828,8 @@ void NewVerbs::ConjugateVerb(void) {
 	@<Check for modality@>;
 
 	verb *vi = vc->vc_conjugates;
-	verb_meaning *vm = (vi)?VerbMeanings::get_regular_meaning_of_verb(vi, NULL, NULL):NULL;
-	binary_predicate *meaning = VerbMeanings::get_relational_meaning(vm);
+	verb_meaning *vm = (vi)?VerbMeanings::first_unspecial_meaning_of_verb_form(Verbs::base_form(vi)):NULL;
+	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
 	inter_name *rel_iname = default_rr;
 	if (meaning) {
 		BinaryPredicates::mark_as_needed(meaning);
@@ -924,7 +924,7 @@ void NewVerbs::ConjugateVerb(void) {
 
 	verb_meaning *vm = &(vf->list_of_senses->vm);
 	inter_name *rel_iname = default_rr;
-	binary_predicate *meaning = VerbMeanings::get_relational_meaning(vm);
+	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
 	if (meaning) {
 		BinaryPredicates::mark_as_needed(meaning);
 		rel_iname = meaning->bp_iname;
@@ -1226,11 +1226,8 @@ void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
 		if (vu->vu_lex_entry == lex) {
 			if (vu->where_vu_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
-			verb_meaning *vm = VerbMeanings::get_regular_meaning_of_verb(vu->verb_used, NULL, NULL);
-			if (vm) {
-				binary_predicate *bp = VerbMeanings::get_relational_meaning(vm);
-				if (bp) Relations::index_for_verbs(OUT, bp);
-			}
+			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(vu->verb_used));
+			if (bp) Relations::index_for_verbs(OUT, bp);
 			return;
 		}
 	preposition *prep;
@@ -1238,11 +1235,8 @@ void NewVerbs::tabulate_meaning(OUTPUT_STREAM, lexicon_entry *lex) {
 		if (prep->prep_lex_entry == lex) {
 			if (prep->where_prep_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
-			verb_meaning *vm = VerbMeanings::get_regular_meaning_of_verb(copular_verb, prep, NULL);
-			if (vm) {
-				binary_predicate *bp = VerbMeanings::get_relational_meaning(vm);
-				if (bp) Relations::index_for_verbs(OUT, bp);
-			}
+			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
+			if (bp) Relations::index_for_verbs(OUT, bp);
 			return;
 		}
 }

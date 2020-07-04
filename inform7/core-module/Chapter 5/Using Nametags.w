@@ -90,7 +90,8 @@ void UseNouns::visit_to_name(parse_node *p) {
 	wording W = Wordings::trim_last_word(Node::get_text(p->down->next));
 	parse_node *res = Lexicon::retrieve(NOUN_MC, W);
 	if (res) {
-		noun *nt = Nouns::disambiguate(res, FALSE);
+		noun_usage *nu = Nouns::disambiguate(res, FALSE);
+		noun *nt = (nu)?(nu->noun_used):NULL;
 		if (nt) {
 			TEMPORARY_TEXT(i6r)
 			WRITE_TO(i6r, "%N", Wordings::first_wn(Node::get_text(p->down->next->next)));

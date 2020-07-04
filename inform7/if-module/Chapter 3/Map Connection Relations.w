@@ -145,7 +145,7 @@ this to other languages.)
 			WordAssemblages::from_wording(W)),
 		FALSE);
 
-	verb_meaning vm = VerbMeanings::new(bp, NULL);
+	verb_meaning vm = VerbMeanings::regular(bp);
 	Verbs::add_form(copular_verb, prep1, NULL, vm, SVO_FS_BIT);
 	Verbs::add_form(copular_verb, prep2, NULL, vm, SVO_FS_BIT);
 	Verbs::add_form(copular_verb, prep3, NULL, vm, SVO_FS_BIT);

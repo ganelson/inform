@@ -1,24 +1,28 @@
-Read 96 words
 ROOT_NT
     HEADING_NT'chapter 1' (level 0)
         HEADING_NT'chapter 1' (level 1)
-            SENTENCE_NT'verb 2 be'
-            SENTENCE_NT'verb 1 have'
-            SENTENCE_NT'verb 3 carry'
-            SENTENCE_NT'verb 3 mean'
-            SENTENCE_NT'verb 3 see'
+            SENTENCE_NT'be = verb 2'
+            SENTENCE_NT'have = verb 1'
+            SENTENCE_NT'carry = verb 3'
+            SENTENCE_NT'mean = verb 3'
+            SENTENCE_NT'see = verb 3'
+            SENTENCE_NT'peter = neuter proper noun'
+            SENTENCE_NT'jane = neuter proper noun'
+            SENTENCE_NT'woman = neuter common noun'
+            SENTENCE_NT'person = neuter common noun'
+            SENTENCE_NT'sailor = neuter common noun'
         HEADING_NT'chapter 2' (level 1)
             SENTENCE_NT'jane is a woman'
                 VERB_NT'is' (relation)
-                PROPER_NOUN_NT'jane'
-                PROPER_NOUN_NT'woman' indefinite article s(n)
+                PROPER_NOUN_NT'jane' (proper)
+                COMMON_NOUN_NT'woman' (common)
             SENTENCE_NT'she is a person'
                 VERB_NT'is' (relation)
                 PROPER_NOUN_NT'she' subject pronoun 3ps(f)
-                PROPER_NOUN_NT'person' indefinite article s(n)
+                COMMON_NOUN_NT'person' (common)
             SENTENCE_NT'peter carries the torch'
                 VERB_NT'carries' (relation)
-                PROPER_NOUN_NT'peter'
+                PROPER_NOUN_NT'peter' (proper)
                 RELATIONSHIP_NT'carries'
                     PROPER_NOUN_NT'torch' definite article s(n)
             SENTENCE_NT'he sees her'
@@ -37,7 +41,7 @@ ROOT_NT
                 PROPER_NOUN_NT'door' indefinite article s(n)
             SENTENCE_NT'the sailors carry a cask of rum'
                 VERB_NT'carry' (relation)
-                PROPER_NOUN_NT'sailors' definite article s(n)
+                COMMON_NOUN_NT'sailors' (common)
                 RELATIONSHIP_NT'carry'
                     PROPER_NOUN_NT'cask of rum' indefinite article s(n)
             SENTENCE_NT'the shovel has a handle'

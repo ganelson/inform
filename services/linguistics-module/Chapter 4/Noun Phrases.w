@@ -297,8 +297,8 @@ directions, in particular, a little better.
 	<permitted-preposition> <np-inner-without-rp>		==> 0; @<Work out a meaning@>;
 
 @<Work out a meaning@> =
-	VERB_MEANING_LINGUISTICS_TYPE *R = VerbMeanings::get_relational_meaning(
-		VerbMeanings::get_regular_meaning_of_verb(permitted_verb, RP[1], NULL));
+	VERB_MEANING_LINGUISTICS_TYPE *R = VerbMeanings::get_regular_meaning_of_form(
+		Verbs::find_form(permitted_verb, RP[1], NULL));
 	if (R == NULL) return FALSE;
 	*XP = NounPhrases::PN_rel(W, VerbMeanings::reverse_VMT(R), -1, RP[2]);
 

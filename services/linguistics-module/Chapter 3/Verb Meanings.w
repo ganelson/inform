@@ -2,13 +2,22 @@
 
 To abstract the meaning of a verb.
 
+@h What we abstract.
+Because this module is concerned with the structure of sentences and not
+their meanings, we don't really want to get into what verbs "mean". Instead,
+we assume that the tool using this module will assign meanings in some way
+that it understands and we do not: the data for the meaning of a verb will
+be a pointer to |VERB_MEANING_LINGUISTICS_TYPE|. (In Inform, this will be
+a binary predicate.)
 
-@h Other modukes.
-We allow the modules using us to have their own data about the semantics of
-a verb, which we will attach to our own |verb_meaning| structure. It has to
-be a pointer to the type |VERB_MEANING_LINGUISTICS_TYPE|, and by default, there's none:
+By default, there's no meaning at all:
 
 @default VERB_MEANING_LINGUISTICS_TYPE void
+
+@ The "reversal" of a verb is the meaning which exchanges its object and
+subject. So the reverse meaning to "A likes B" is "A is liked by B", or
+equivalent, "B likes A". We use the |VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK|
+to ask for a reversal to be performed when needed.
 
 =
 VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::reverse_VMT(VERB_MEANING_LINGUISTICS_TYPE *recto) {
@@ -20,44 +29,11 @@ VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::reverse_VMT(VERB_MEANING_LINGUISTIC
 	#endif
 }
 
-@h Abstracting meaning.
-Recall that each verb can have multiple forms: for example, "to go"
-might occur in three forms -- "go" alone, "go to", or "go from", which
-are distinguished in English by the use of prepositions such as "to" and
-"from". Each of these three verb forms has its own meaning.
+@ We will, however, allow for a little more complication, in that the code
+using this module can instead provide a function of the following type.
 
-However, we can also use indirection to tie one meaning to another. This is
-used, for example, to specify the meaning of "A is liking B". We regard
-this as "to be" plus copular preposition "liking"; or sometimes the verb
-is invisible, as in "someone liking B", which implicitly means "someone
-who is liking B". The meaning of "to be" plus "liking" is set by
-indirection so that it is always the same as "likes". Similarly, the
-meaning of "liked by" is set to be the same as "likes", but reversed
-(in that its subject and object must be switched). This ensures that
-if the meaning of "likes" changes, its associated usages "is liking"
-and "is liked by" automatically change with it.
-
-@ The "meaning" is what state or change a verb describes. In Inform, some
-verbs used in assertion sentences have special meanings, instructing the
-compiler to do something: for example,
-
->> To disavow is a verb.
-
-But most sentences set the state of some relation:
-
->> The bag is on the table.
-
-Our abstraction stays close to that. We're going to assume that most
-verbs have a regular meaning which can be represented in a piece of
-data (of type |VERB_MEANING_LINGUISTICS_TYPE|, which for Inform 7 means a binary
-predicate), while a few have special meanings which can only be handled
-ad-hoc by a function. Here's the type for such a function:
-
-=
-typedef int (*special_meaning_fn)(int, parse_node *, wording *);
-
-@ The first parameter is the task to be performed on the verb node pointed
-to by the second. The task number must belong to the following enumeration,
+The first parameter is the task to be performed on the verb node pointed
+to by the second. The task number must belong to the |*_SMFT| enumeration,
 and the only task used by the Linguistics module is |ACCEPT_SMFT|. This should
 look at the array of wordings and either accept this as a valid usage, build
 a subtree from the verb node, and return |TRUE|, or else return |FALSE| to
@@ -66,25 +42,19 @@ say that the usage is invalid: see Verb Phrases for more.
 @e ACCEPT_SMFT from 0
 
 =
-typedef struct verb_meaning {
-	int reversed;
-	VERB_MEANING_LINGUISTICS_TYPE *regular_meaning; /* in I7, this will be a binary predicate */
-	int (*special_meaning)(int, parse_node *, wording *); /* (for tangling reasons, can't use typedef here) */
-	struct verb *take_meaning_from; /* "to like", in the example above */
-	struct parse_node *where_assigned; /* at which sentence this is assigned to a form */
-} verb_meaning;
+typedef int (*special_meaning_fn)(int, parse_node *, wording *);
 
-@ Here's how the indirection trick is done: if |vm| takes meaning from,
-say, "to like", then we replace it with the meaning of "likes" plus no
-preposition
+@h How this module stores verb meanings.
+We can now define an object to wrap up this abstracted idea of verb meaning:
 
 =
-verb_meaning *VerbMeanings::indirect_meaning(verb_meaning *vm) {
-	if ((vm) && (vm->take_meaning_from)) {
-		return VerbMeanings::get_regular_meaning_of_verb(vm->take_meaning_from, NULL, NULL);
-	}
-	return vm;
-}
+typedef struct verb_meaning {
+	int take_meaning_reversed; /* |TRUE| if this has been reversed */
+	VERB_MEANING_LINGUISTICS_TYPE *regular_meaning; /* in I7, this will be a binary predicate */
+	int (*special_meaning)(int, parse_node *, wording *); /* (for tangling reasons, can't use typedef) */
+	struct verb *take_meaning_from;
+	struct parse_node *where_assigned; /* at which sentence this is assigned to a form */
+} verb_meaning;
 
 @ All VMs begin as meaningless, which indicates (e.g.) that no meaning
 has been specified.
@@ -94,23 +64,26 @@ verb_meaning VerbMeanings::meaninglessness(void) {
 	verb_meaning vm;
 	vm.regular_meaning = NULL;
 	vm.special_meaning = NULL;
-	vm.reversed = FALSE;
+	vm.take_meaning_reversed = FALSE;
 	vm.take_meaning_from = NULL;
 	vm.where_assigned = current_sentence;
 	return vm;
 }
 
 int VerbMeanings::is_meaningless(verb_meaning *vm) {
-	vm = VerbMeanings::indirect_meaning(vm);
+	vm = VerbMeanings::follow_indirection(vm);
 	if (vm == NULL) return TRUE;
 	if ((vm->regular_meaning == NULL) && (vm->special_meaning == NULL)) return TRUE;
 	return FALSE;
 }
 
-verb_meaning VerbMeanings::new(VERB_MEANING_LINGUISTICS_TYPE *rel, special_meaning_fn soa) {
+@ In practice, we create VMs here. Note that regular and special meanings are
+alternatives to each other: you can't have both.
+
+=
+verb_meaning VerbMeanings::regular(VERB_MEANING_LINGUISTICS_TYPE *rel) {
 	verb_meaning vm = VerbMeanings::meaninglessness();
 	vm.regular_meaning = rel;
-	vm.special_meaning = soa;
 	return vm;
 }
 
@@ -120,40 +93,50 @@ verb_meaning VerbMeanings::special(special_meaning_fn soa) {
 	return vm;
 }
 
-verb_meaning VerbMeanings::new_indirection(verb *from, int reversed) {
+@ You can, however, have neither one, if you instead choose to "indirect" the
+meaning -- this means saying "the same meaning as the regular sense of the base
+form of a given verb", possibly reversed. Note that
+(a) An indirected VM must never be used as the meaning for the base form of a
+verb, and therefore
+(b) We can never have a situation where a VM indirects to a verb whose meaning
+then indirects to something else.
+
+=
+verb_meaning VerbMeanings::indirected(verb *from, int reversed) {
 	verb_meaning vm = VerbMeanings::meaninglessness();
-	vm.reversed = reversed;
+	vm.take_meaning_reversed = reversed;
 	vm.take_meaning_from = from;
 	return vm;
 }
 
-VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::get_relational_meaning(verb_meaning *vm) {
-	if (vm == NULL) return NULL;
-	int rev = vm->reversed;
-	vm = VerbMeanings::indirect_meaning(vm);
-	if (vm == NULL) return NULL;
-	if (VerbMeanings::is_meaningless(vm)) return NULL;
-	VERB_MEANING_LINGUISTICS_TYPE *rel = vm->regular_meaning;
-	if (rel == NULL) return NULL;
-	if (vm->reversed) rev = (rev)?FALSE:TRUE;
-	if (rev) rel = VerbMeanings::reverse_VMT(rel);
-	return rel;
+@ So the following function only needs to be used once.
+
+=
+verb_meaning *VerbMeanings::follow_indirection(verb_meaning *vm) {
+	if ((vm) && (vm->take_meaning_from))
+		return VerbMeanings::first_unspecial_meaning_of_verb_form(
+			Verbs::base_form(
+				vm->take_meaning_from));
+	return vm;
 }
 
-special_meaning_fn VerbMeanings::get_special_meaning(verb_meaning *vm, int *rev) {
-	if (vm == NULL) return NULL;
-	*rev = vm->reversed;
-	vm = VerbMeanings::indirect_meaning(vm);
-	if (vm == NULL) return NULL;
-	if (vm->reversed) *rev = (*rev)?FALSE:TRUE;
-	return vm->special_meaning;
+@ The following function may seem curious -- what's so great about the first
+regular sense of a verb? The answer is that Inform generally gives a verb at
+most one regular sense.
+
+=
+verb_meaning *VerbMeanings::first_unspecial_meaning_of_verb_form(verb_form *vf) {
+	if (vf)
+		for (verb_sense *vs = vf->list_of_senses; vs; vs = vs->next_sense)
+			if (VerbMeanings::get_special_meaning_fn(&(vs->vm)) == NULL)
+				return &(vs->vm);
+	return NULL;
 }
 
-void VerbMeanings::add_special(verb_meaning *vm, special_meaning_fn spec) {
-	if (vm) vm->special_meaning = spec;
-	else internal_error("assigned special to null meaning");
-}
+@h Recording where assigned.
+This helps Inform with correctly locating problem messages.
 
+=
 parse_node *VerbMeanings::get_where_assigned(verb_meaning *vm) {
 	if (vm) return vm->where_assigned;
 	return NULL;
@@ -164,41 +147,59 @@ void VerbMeanings::set_where_assigned(verb_meaning *vm, parse_node *pn) {
 	else internal_error("assigned location to null meaning");
 }
 
+@h The regular meaning.
+This is not as simple as returning the |regular_meaning| field, because we
+have to follow any indirection, and reverse if necessary.
+
+=
+VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::get_regular_meaning(verb_meaning *vm) {
+	if (vm == NULL) return NULL;
+	int rev = vm->take_meaning_reversed;
+	vm = VerbMeanings::follow_indirection(vm);
+	if (vm == NULL) return NULL;
+	VERB_MEANING_LINGUISTICS_TYPE *rel = vm->regular_meaning;
+	if ((rev) && (rel)) return VerbMeanings::reverse_VMT(rel);
+	return rel;
+}
+
+VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::get_regular_meaning_of_form(verb_form *vf) {
+	return VerbMeanings::get_regular_meaning(
+		VerbMeanings::first_unspecial_meaning_of_verb_form(vf));
+}
+
+@h The special meaning.
+This is also not as simple as returning the |regular_meaning| field, because
+again we have to follow any indirection. Since we have no good way to modify
+a special meaning function, we have to provide a function to tell the user
+whether to reverse what that function does.
+
+=
+special_meaning_fn VerbMeanings::get_special_meaning_fn(verb_meaning *vm) {
+	vm = VerbMeanings::follow_indirection(vm);
+	if (vm == NULL) return NULL;
+	return vm->special_meaning;
+}
+
+int VerbMeanings::get_reversal_status_of_smf(verb_meaning *vm) {
+	if (vm == NULL) return FALSE;
+	return vm->take_meaning_reversed;
+}
+
+@h Logging.
+
+=
 void VerbMeanings::log(OUTPUT_STREAM, void *vvm) {
 	verb_meaning *vm = (verb_meaning *) vvm;
 	if (vm == NULL) { WRITE("<none>"); return; }
-	if (vm->reversed) WRITE("reversed-");
+	if (vm->take_meaning_reversed) WRITE("reversed-");
 	if (vm->take_meaning_from) WRITE("<$w>=", vm->take_meaning_from);
-	if (VerbMeanings::get_relational_meaning(vm)) {
+	VERB_MEANING_LINGUISTICS_TYPE *m = VerbMeanings::get_regular_meaning(vm);
+	if (m) {
 		#ifdef CORE_MODULE
-		WRITE("(%S)", VerbMeanings::get_relational_meaning(vm)->debugging_log_name);
+		WRITE("(%S)", m->debugging_log_name);
 		#else
-		WRITE("(relation)");
+		WRITE("(regular)");
 		#endif
-	}
-	if (vm->special_meaning) {
-		if (VerbMeanings::get_relational_meaning(vm)) WRITE("/");
-		WRITE("(special)");
-	}
-	if ((VerbMeanings::get_relational_meaning(vm) == NULL) && (vm->special_meaning == NULL))
-		WRITE("(meaningless)");
-}
-
-@ Where:
-
-=
-verb_meaning *VerbMeanings::get_regular_meaning_of_verb(verb *V,
-	preposition *prep, preposition *second_prep) {
-	verb_form *vf = Verbs::find_form(V, prep, second_prep);
-	return VerbMeanings::get_regular_meaning_of_verb_form(vf);
-}
-
-verb_meaning *VerbMeanings::get_regular_meaning_of_verb_form(verb_form *vf) {
-	if (vf)
-		for (verb_sense *vs = vf->list_of_senses; vs; vs = vs->next_sense) {
-			int rev = 0;
-			if (VerbMeanings::get_special_meaning(&(vs->vm), &rev) == NULL)
-				return &(vs->vm);
-		}
-	return NULL;
+	} else if (vm->special_meaning) WRITE("(special)");
+	else WRITE("(meaningless)");
 }

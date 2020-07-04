@@ -138,7 +138,7 @@ noun *Nouns::new_common_noun(wording W, int gender, int options,
 	return Nouns::new_inner(W, owner, COMMON_NOUN, options, mc, lang, gender);
 }
 
-@ Note that 
+@ Each using:
 
 =
 noun *Nouns::new_inner(wording W, general_pointer owner, int p, int options,
@@ -273,8 +273,8 @@ Within Inform, this "likely" consideration is a matter of context -- of which
 heading the noun appears under.
 
 =
-noun *Nouns::disambiguate(parse_node *p, int common_only) {
-	noun *first_nt = NULL;
+noun_usage *Nouns::disambiguate(parse_node *p, int common_only) {
+	noun_usage *first_nt = NULL;
 	@<If only one of the possible matches is eligible, return that@>;
 	@<If the matches can be scored, return the highest-scoring one@>;
 	/* and otherwise... */
@@ -284,16 +284,16 @@ noun *Nouns::disambiguate(parse_node *p, int common_only) {
 @<If only one of the possible matches is eligible, return that@> =
 	int candidates = 0; 
 	for (parse_node *p2 = p; p2; p2 = p2->next_alternative) {
-		noun *nt = Nouns::from_excerpt_meaning(Node::get_meaning(p2));
-		if (Nouns::is_eligible_match(nt, common_only)) {
-			first_nt = nt; candidates++;
+		noun_usage *nu = Nouns::usage_from_excerpt_meaning(Node::get_meaning(p2));
+		if (Nouns::is_eligible_match(nu->noun_used, common_only)) {
+			first_nt = nu; candidates++;
 		}
 	}
 	if (candidates <= 1) return first_nt;
 
 @<If the matches can be scored, return the highest-scoring one@> =
 	#ifdef NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK
-	noun *best_nt = NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK(p, common_only);
+	noun_usage *best_nt = NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK(p, common_only);
 	if (best_nt) return best_nt;
 	#endif
 
@@ -303,9 +303,25 @@ int Nouns::is_eligible_match(noun *nt, int common_only) {
 	return TRUE;
 }
 
+@h Actual usage.
+
+=
+void Nouns::set_node_to_be_usage_of_noun(parse_node *p, noun_usage *nu) {
+	if (nu->noun_used->noun_subclass == COMMON_NOUN)
+		Node::set_type_and_clear_annotations(p, COMMON_NOUN_NT);
+	else
+		Node::set_type_and_clear_annotations(p, PROPER_NOUN_NT);
+	Node::set_noun(p, nu);
+}
+
 noun *Nouns::from_excerpt_meaning(excerpt_meaning *em) {
 	noun_usage *nu = RETRIEVE_POINTER_noun_usage(Lexicon::get_data(em));
 	return nu->noun_used;
+}
+
+noun_usage *Nouns::usage_from_excerpt_meaning(excerpt_meaning *em) {
+	noun_usage *nu = RETRIEVE_POINTER_noun_usage(Lexicon::get_data(em));
+	return nu;
 }
 
 @ The following function is so called because Inform registers many constant

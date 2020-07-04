@@ -547,9 +547,7 @@ void Assertions::Traverse::try_special_meaning(int task, parse_node *pn) {
 	if (Annotations::read_int(pn, verb_id_ANNOT) == SPECIAL_MEANING_VB) {
 		verb_meaning *vm = Node::get_verb_meaning(pn);
 		if (VerbMeanings::is_meaningless(vm)) return;
-
-		int rev = FALSE;
-		special_meaning_fn soa = VerbMeanings::get_special_meaning(vm, &rev);
+		special_meaning_fn soa = VerbMeanings::get_special_meaning_fn(vm);
 		if (soa) {
 			(*soa)(task, pn, NULL);
 		}

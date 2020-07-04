@@ -195,6 +195,14 @@ Forms are stored in a linked list, and are uniquely identified by the triplet
 of verb and two prepositions:
 
 =
+verb_form *Verbs::base_form(verb *V) {
+	if (V)
+		for (verb_form *vf = V->first_form; vf; vf = vf->next_form)
+			if ((vf->preposition == NULL) && (vf->second_clause_preposition == NULL))
+				return vf;
+	return NULL;
+}
+
 verb_form *Verbs::find_form(verb *V, preposition *prep, preposition *second_prep) {
 	if (V)
 		for (verb_form *vf = V->first_form; vf; vf = vf->next_form)
@@ -256,18 +264,28 @@ in a canonical verbal form. For example, "translate into |+| as".
 		vf->pos_reference_text = we_form;
 		vf->neg_reference_text = we_dont_form;
 		if (prep) {
-			vf->infinitive_reference_text = WordAssemblages::join(vf->infinitive_reference_text, prep->prep_text);
-			vf->pos_reference_text = WordAssemblages::join(vf->pos_reference_text, prep->prep_text);
-			vf->neg_reference_text = WordAssemblages::join(vf->neg_reference_text, prep->prep_text);
+			vf->infinitive_reference_text =
+				WordAssemblages::join(vf->infinitive_reference_text, prep->prep_text);
+			vf->pos_reference_text =
+				WordAssemblages::join(vf->pos_reference_text, prep->prep_text);
+			vf->neg_reference_text =
+				WordAssemblages::join(vf->neg_reference_text, prep->prep_text);
 		}
 		if (second_prep) {
-			word_assemblage plus = WordAssemblages::lit_1(PLUS_V);
-			vf->infinitive_reference_text = WordAssemblages::join(vf->infinitive_reference_text, plus);
-			vf->pos_reference_text = WordAssemblages::join(vf->pos_reference_text, plus);
-			vf->neg_reference_text = WordAssemblages::join(vf->neg_reference_text, plus);
-			vf->infinitive_reference_text = WordAssemblages::join(vf->infinitive_reference_text, second_prep->prep_text);
-			vf->pos_reference_text = WordAssemblages::join(vf->pos_reference_text, second_prep->prep_text);
-			vf->neg_reference_text = WordAssemblages::join(vf->neg_reference_text, second_prep->prep_text);
+			word_assemblage plus =
+				WordAssemblages::lit_1(PLUS_V);
+			vf->infinitive_reference_text =
+				WordAssemblages::join(vf->infinitive_reference_text, plus);
+			vf->pos_reference_text =
+				WordAssemblages::join(vf->pos_reference_text, plus);
+			vf->neg_reference_text =
+				WordAssemblages::join(vf->neg_reference_text, plus);
+			vf->infinitive_reference_text =
+				WordAssemblages::join(vf->infinitive_reference_text, second_prep->prep_text);
+			vf->pos_reference_text =
+				WordAssemblages::join(vf->pos_reference_text, second_prep->prep_text);
+			vf->neg_reference_text =
+				WordAssemblages::join(vf->neg_reference_text, second_prep->prep_text);
 		}
 	} else {
 		vf->infinitive_reference_text = WordAssemblages::new_assemblage();

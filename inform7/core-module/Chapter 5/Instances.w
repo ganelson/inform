@@ -352,7 +352,8 @@ instance *Instances::parse_object(wording W) {
 	if (<s-literal>(W)) return NULL;
 	p = Lexicon::retrieve(NOUN_MC, W);
 	if (p == NULL) return NULL;
-	noun *nt = Nouns::disambiguate(p, FALSE);
+	noun_usage *nu = Nouns::disambiguate(p, FALSE);
+	noun *nt = nu->noun_used;
 	if (Nouns::is_proper(nt)) {
 		parse_node *pn = RETRIEVE_POINTER_parse_node(Nouns::meaning(nt));
 		if (Node::is(pn, CONSTANT_NT)) {

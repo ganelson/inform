@@ -173,7 +173,7 @@ an unfortunate mock-Indian sound to it.
 		preposition *prep =
 			Prepositions::make(vc->present_participle, unexpected_upper_casing_used);
 		Verbs::add_form(copular_verb, prep, NULL,
-			VerbMeanings::new_indirection(vi, FALSE), SVO_FS_BIT);
+			VerbMeanings::indirected(vi, FALSE), SVO_FS_BIT);
 	}
 
 @ Note that forms using the auxiliary "to be" are given meanings which indirect
@@ -190,7 +190,7 @@ void VerbUsages::register_moods_of_verb(verb_conjugation *vc, int mood,
 		preposition *prep =
 			Prepositions::make(vt->to_be_auxiliary, unexpected_upper_casing_used);
 		Verbs::add_form(copular_verb, prep, NULL,
-			VerbMeanings::new_indirection(vi, (mood == PASSIVE_MOOD)?TRUE:FALSE),
+			VerbMeanings::indirected(vi, (mood == PASSIVE_MOOD)?TRUE:FALSE),
 			SVO_FS_BIT);
 		return;
 	}
@@ -337,11 +337,8 @@ int VerbUsages::is_foreign(verb_usage *vu) {
 =
 VERB_MEANING_LINGUISTICS_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition *prep, preposition *second_prep) {
 	if (vu == NULL) return NULL;
-	verb_meaning *uvm = VerbMeanings::get_regular_meaning_of_verb(vu->verb_used, prep, second_prep);
-
-	if (uvm == NULL) return NULL;
-	VERB_MEANING_LINGUISTICS_TYPE *root = VerbMeanings::get_relational_meaning(uvm);
-	if ((vu->mood == PASSIVE_MOOD) && (root != VERB_MEANING_EQUALITY))
+	VERB_MEANING_LINGUISTICS_TYPE *root = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(vu->verb_used, prep, second_prep));
+	if ((root) && (vu->mood == PASSIVE_MOOD) && (root != VERB_MEANING_EQUALITY))
 		root = VerbMeanings::reverse_VMT(root);
 	return root;
 }

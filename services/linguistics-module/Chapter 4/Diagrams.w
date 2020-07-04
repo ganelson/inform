@@ -4,7 +4,8 @@ To construct standard verb-phrase nodes in the parse tree.
 
 @h Node types.
 
-@e VERB_NT             			/* "is" */
+@e VERB_NT             				/* "is" */
+@e COMMON_NOUN_NT       			/* "a container" */
 @e PROPER_NOUN_NT       			/* "the red handkerchief" */
 
 @e RELATIONSHIP_NT      			/* "on" */
@@ -30,6 +31,7 @@ void Diagrams::setup(void) {
 	NodeType::new(AND_NT, I"AND_NT",                     2, 2,	  L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(KIND_NT, I"KIND_NT",                   0, 1,     L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(PROPER_NOUN_NT, I"PROPER_NOUN_NT",     0, 0,	  L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(COMMON_NOUN_NT, I"COMMON_NOUN_NT",	 0, INFTY,	L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(PROPERTY_LIST_NT, I"PROPERTY_LIST_NT", 0, INFTY, L3_NCAT, ASSERT_NFLAG);
 }
 
@@ -42,6 +44,9 @@ void Diagrams::permissions(void) {
 	Annotations::allow(VERB_NT, preposition_ANNOT);
 	Annotations::allow(VERB_NT, second_preposition_ANNOT);
 	Annotations::allow(VERB_NT, verb_meaning_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, noun_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, pronoun_ANNOT);
+	Annotations::allow(COMMON_NOUN_NT, noun_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, preposition_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, relationship_node_type_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, linguistic_error_here_ANNOT);
@@ -68,7 +73,12 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				WRITE(" $y", Node::get_verb_meaning(pn));
 			}
 			break;
+		case COMMON_NOUN_NT:
 		case PROPER_NOUN_NT:
+			if (Node::get_noun(pn)) {
+				if (pn->node_type == COMMON_NOUN_NT) WRITE(" (common)");
+				if (pn->node_type == PROPER_NOUN_NT) WRITE(" (proper)");
+			}
 			if (Annotations::read_int(pn, pronoun_ANNOT) != 0)
 				Pronouns::write_lcon(OUT, Annotations::read_int(pn, pronoun_ANNOT));
 			if (Annotations::read_int(pn, nounphrase_article_ANNOT) != 0)

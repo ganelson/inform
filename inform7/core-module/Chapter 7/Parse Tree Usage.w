@@ -22,7 +22,6 @@ void ParseTreeUsage::copy_annotations(parse_node_annotation *to, parse_node_anno
 
 @e ALLOWED_NT           			/* "An animal is allowed to have a description" */
 @e EVERY_NT             			/* "every container" */
-@e COMMON_NOUN_NT       			/* "a container" */
 @e ACTION_NT            			/* "taking something closed" */
 @e ADJECTIVE_NT         			/* "open" */
 @e PROPERTYCALLED_NT    			/* "A man has a number called age" */
@@ -99,7 +98,6 @@ void ParseTreeUsage::md(void) {
     /* first, the structural nodes: */
 	NodeType::new(ALLOWED_NT, I"ALLOWED_NT",				   				1, 1,		L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(EVERY_NT, I"EVERY_NT", 				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(COMMON_NOUN_NT, I"COMMON_NOUN_NT",		   				0, INFTY,	L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(ACTION_NT, I"ACTION_NT",				   					0, INFTY,	L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(ADJECTIVE_NT, I"ADJECTIVE_NT",			   				0, INFTY,	L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(PROPERTYCALLED_NT, I"PROPERTYCALLED_NT",  				2, 2,		L3_NCAT, 0);
@@ -226,7 +224,6 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, negated_boolean_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, new_relation_here_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, nowhere_ANNOT);
-	Annotations::allow(PROPER_NOUN_NT, pronoun_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, quant_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, quantification_parameter_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, row_amendable_ANNOT);

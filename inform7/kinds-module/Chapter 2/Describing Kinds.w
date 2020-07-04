@@ -128,7 +128,8 @@ make two further checks:
 		} else {
 			p = Lexicon::retrieve(NOUN_MC, W);
 			if (p) {
-				noun *nt = Nouns::disambiguate(p, TRUE);
+				noun_usage *nu = Nouns::disambiguate(p, TRUE);
+				noun *nt = (nu)?(nu->noun_used):NULL;
 				if (nt) K = Kinds::base_construction(
 					RETRIEVE_POINTER_kind_constructor(Nouns::meaning(nt)));
 			}
