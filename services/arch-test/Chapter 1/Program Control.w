@@ -10,8 +10,7 @@ What shall we test?
 
 =
 int main(int argc, char **argv) {
-	Foundation::start();
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv);
 	ArchModule::start();
 
 	CommandLine::declare_heading(L"inexample: a tool for testing foundation facilities\n");

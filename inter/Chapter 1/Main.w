@@ -53,8 +53,7 @@ int main(int argc, char **argv) {
 }
 
 @<Start up the modules@> =
-	Foundation::start(); /* must be started first */
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv); /* must be started first */
 	ArchModule::start();
 	BytecodeModule::start();
 	BuildingModule::start();

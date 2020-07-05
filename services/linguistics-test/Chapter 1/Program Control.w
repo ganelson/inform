@@ -13,8 +13,7 @@ What shall we test?
 
 =
 int main(int argc, char **argv) {
-	Foundation::start();
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv);
 	WordsModule::start();
 	InflectionsModule::start();
 	SyntaxModule::start();

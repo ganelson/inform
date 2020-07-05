@@ -77,16 +77,16 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     67.4% in compilation to Inter</span>
-<span class="plain-syntax">         27.5% in </span><a href="../core-module/22-cs.html#SP10" class="internal">Phrases::Manager::compile_first_block</a>
-<span class="plain-syntax">          8.5% in </span><a href="../core-module/22-cs.html#SP14" class="internal">Phrases::Manager::compile_as_needed</a>
-<span class="plain-syntax">          6.8% in </span><a href="../core-module/17-rs.html#SP7" class="internal">Strings::compile_responses</a>
-<span class="plain-syntax">          5.7% in </span><a href="../core-module/16-cmw2.html#SP2" class="internal">World::Compile::compile</a>
-<span class="plain-syntax">          3.1% in </span><a href="../core-module/9-tfa.html#SP7" class="internal">Assertions::Traverse::traverse1</a>
-<span class="plain-syntax">          2.9% in </span><a href="../core-module/7-ns.html#SP8" class="internal">Sentences::VPs::traverse</a>
-<span class="plain-syntax">          2.2% in </span><a href="../core-module/22-cs.html#SP13" class="internal">Phrases::Manager::RulePrintingRule_routine</a>
-<span class="plain-syntax">          1.8% in </span><a href="../core-module/22-cs.html#SP12" class="internal">Phrases::Manager::rulebooks_array</a>
-<span class="plain-syntax">          1.1% in </span><a href="../core-module/6-nv.html#SP20" class="internal">NewVerbs::ConjugateVerb</a>
+<span class="plain-syntax">     66.9% in compilation to Inter</span>
+<span class="plain-syntax">         27.6% in </span><a href="../core-module/22-cs.html#SP10" class="internal">Phrases::Manager::compile_first_block</a>
+<span class="plain-syntax">          8.2% in </span><a href="../core-module/22-cs.html#SP14" class="internal">Phrases::Manager::compile_as_needed</a>
+<span class="plain-syntax">          6.6% in </span><a href="../core-module/17-rs.html#SP7" class="internal">Strings::compile_responses</a>
+<span class="plain-syntax">          5.9% in </span><a href="../core-module/16-cmw2.html#SP2" class="internal">World::Compile::compile</a>
+<span class="plain-syntax">          3.4% in </span><a href="../core-module/9-tfa.html#SP7" class="internal">Assertions::Traverse::traverse1</a>
+<span class="plain-syntax">          3.0% in </span><a href="../core-module/7-ns.html#SP8" class="internal">Sentences::VPs::traverse</a>
+<span class="plain-syntax">          1.9% in </span><a href="../core-module/22-cs.html#SP13" class="internal">Phrases::Manager::RulePrintingRule_routine</a>
+<span class="plain-syntax">          1.7% in </span><a href="../core-module/22-cs.html#SP12" class="internal">Phrases::Manager::rulebooks_array</a>
+<span class="plain-syntax">          1.0% in </span><a href="../core-module/6-nv.html#SP20" class="internal">NewVerbs::ConjugateVerb</a>
 <span class="plain-syntax">          0.7% in </span><a href="../core-module/22-cs.html#SP7" class="internal">Phrases::Manager::parse_rule_parameters</a>
 <span class="plain-syntax">          0.7% in </span><a href="../core-module/22-cs.html#SP4" class="internal">Phrases::Manager::traverse</a>
 <span class="plain-syntax">          0.3% in </span><a href="../core-module/22-cs.html#SP12" class="internal">Phrases::Manager::compile_rulebooks</a>
@@ -97,20 +97,21 @@ which take more than 1/1000th of the total running time.
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/7-rs.html#SP3" class="internal">Sentences::RuleSubtrees::register_recently_lexed_phrases</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP8" class="internal">Task::load_types</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/16-cmw.html#SP1" class="internal">World::complete</a>
-<span class="plain-syntax">          3.9% not specifically accounted for</span>
-<span class="plain-syntax">     30.1% in running Inter pipeline</span>
-<span class="plain-syntax">          9.8% in step preparation</span>
-<span class="plain-syntax">          9.6% in inter step 2/12: link</span>
-<span class="plain-syntax">          7.0% in inter step 12/12: generate inform6 -&gt; auto.inf</span>
+<span class="plain-syntax">          3.8% not specifically accounted for</span>
+<span class="plain-syntax">     30.7% in running Inter pipeline</span>
+<span class="plain-syntax">         10.0% in step preparation</span>
+<span class="plain-syntax">          9.5% in inter step 2/12: link</span>
+<span class="plain-syntax">          7.5% in inter step 12/12: generate inform6 -&gt; auto.inf</span>
 <span class="plain-syntax">          0.3% in inter step 9/12: make-identifiers-unique</span>
 <span class="plain-syntax">          0.1% in inter step 10/12: reconcile-verbs</span>
 <span class="plain-syntax">          0.1% in inter step 11/12: eliminate-redundant-labels</span>
+<span class="plain-syntax">          0.1% in inter step 4/12: parse-linked-matter</span>
 <span class="plain-syntax">          0.1% in inter step 5/12: resolve-conditional-compilation</span>
 <span class="plain-syntax">          0.1% in inter step 6/12: assimilate</span>
 <span class="plain-syntax">          0.1% in inter step 7/12: resolve-external-symbols</span>
 <span class="plain-syntax">          0.1% in inter step 8/12: inspect-plugs</span>
-<span class="plain-syntax">          2.1% not specifically accounted for</span>
-<span class="plain-syntax">      2.0% in supervisor</span>
+<span class="plain-syntax">          2.0% not specifically accounted for</span>
+<span class="plain-syntax">      1.9% in supervisor</span>
 <span class="plain-syntax">      0.4% not specifically accounted for</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Memory consumption. </b>The following gives some idea of which classes of object have the most

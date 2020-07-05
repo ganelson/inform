@@ -15,8 +15,7 @@ pathname *path_to_inpolicy_workspace = NULL; /* the materials pathname */
 int return_happy = TRUE, silence_mode = FALSE, verbose_mode = FALSE;
 
 int main(int argc, char **argv) {
-	Foundation::start();
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv);
 	
 	CommandLine::declare_heading(
 		L"[[Purpose]]\n\n"

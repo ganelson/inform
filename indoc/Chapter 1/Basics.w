@@ -10,8 +10,7 @@ definition we need to make is:
 
 =
 void Basics::start(int argc, char **argv) {
-	Foundation::start();
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv);
 	@<Declare the debugging log aspects@>;
 }
 

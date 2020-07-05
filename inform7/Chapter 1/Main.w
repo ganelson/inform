@@ -34,8 +34,7 @@ int Main::deputy(int argc, char *argv[]) {
 }
 
 @<Start up the modules@> =
-	Foundation::start(); /* must be started first */
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv); /* must be started first */
 	WordsModule::start();
 	InflectionsModule::start();
 	SyntaxModule::start();
