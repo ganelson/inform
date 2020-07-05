@@ -9,8 +9,9 @@ definition we need to make is:
 @d PROGRAM_NAME "indoc"
 
 =
-void Basics::start(void) {
+void Basics::start(int argc, char **argv) {
 	Foundation::start();
+	CommandLine::set_locale(argc, argv);
 	@<Declare the debugging log aspects@>;
 }
 

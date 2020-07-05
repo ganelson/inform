@@ -55,6 +55,7 @@ filename *blorb_filename = NULL;
 
 int main(int argc, char *argv[]) {
 	Foundation::start();
+	CommandLine::set_locale(argc, argv);
 	Basics::register_mreasons();
 	blurb_filename = Filenames::in(NULL, I"Release.blurb");
 	blorb_filename = Filenames::in(NULL, I"story.zblorb");

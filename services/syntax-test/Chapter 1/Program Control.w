@@ -11,6 +11,7 @@ What shall we test?
 =
 int main(int argc, char **argv) {
 	Foundation::start();
+	CommandLine::set_locale(argc, argv);
 	WordsModule::start();
 	SyntaxModule::start();
 

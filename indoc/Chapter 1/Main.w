@@ -15,7 +15,7 @@ int no_volumes = 0;
 int no_examples = 0;
 
 int main(int argc, char **argv) {
-	Basics::start();
+	Basics::start(argc, argv);
 	@<Start up indoc@>;
 	@<Make a first-pass scan of the rawtext@>;
 	@<Render the rawtext as documentation@>;

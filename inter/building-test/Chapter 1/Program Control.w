@@ -19,6 +19,7 @@ kind *K_value = NULL;
 =
 int main(int argc, char **argv) {
 	Foundation::start();
+	CommandLine::set_locale(argc, argv);
 	WordsModule::start();
 	BuildingModule::start();
 	BytecodeModule::start();

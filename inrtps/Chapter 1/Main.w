@@ -15,6 +15,7 @@ int font_setting = TRUE;
 
 int main(int argc, char **argv) {
 	Foundation::start();
+	CommandLine::set_locale(argc, argv);
 	@<Read the command line@>;
 	if (from_folder) {
 		if (to_folder == NULL)
