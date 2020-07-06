@@ -529,7 +529,7 @@ home folder, |~~| means the book folder.
 pathname *Instructions::set_path(text_stream *val, settings_block *settings) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {
-			if ((Str::get_at(val, 2) == '/') || (Str::get_at(val, 2) == FOLDER_SEPARATOR)) {
+			if ((Str::get_at(val, 2) == '/') || (Platform::is_folder_separator(Str::get_at(val, 2)))) {
 				TEMPORARY_TEXT(t)
 				Str::copy_tail(t, val, 3);
 				pathname *P = Pathnames::from_text_relative(settings->book_folder, t);
@@ -537,7 +537,7 @@ pathname *Instructions::set_path(text_stream *val, settings_block *settings) {
 				return P;
 			} else if (Str::get_at(val, 2) == 0) return settings->book_folder;
 		}
-		if ((Str::get_at(val, 1) == '/') || (Str::get_at(val, 1) == FOLDER_SEPARATOR)) {
+		if ((Str::get_at(val, 1) == '/') || (Platform::is_folder_separator(Str::get_at(val, 1)))) {
 			TEMPORARY_TEXT(t)
 			Str::copy_tail(t, val, 2);
 			pathname *P = Pathnames::from_text_relative(home_path, t);
@@ -552,7 +552,7 @@ pathname *Instructions::set_path(text_stream *val, settings_block *settings) {
 filename *Instructions::set_file(text_stream *val, settings_block *settings) {
 	if (Str::get_at(val, 0) == '~') {
 		if (Str::get_at(val, 1) == '~') {
-			if ((Str::get_at(val, 2) == '/') || (Str::get_at(val, 2) == FOLDER_SEPARATOR)) {
+			if ((Str::get_at(val, 2) == '/') || (Platform::is_folder_separator(Str::get_at(val, 2)))) {
 				TEMPORARY_TEXT(t)
 				Str::copy_tail(t, val, 3);
 				filename *F = Filenames::from_text_relative(settings->book_folder, t);
@@ -560,7 +560,7 @@ filename *Instructions::set_file(text_stream *val, settings_block *settings) {
 				return F;
 			}
 		}
-		if ((Str::get_at(val, 1) == '/') || (Str::get_at(val, 1) == FOLDER_SEPARATOR)) {
+		if ((Str::get_at(val, 1) == '/') || (Platform::is_folder_separator(Str::get_at(val, 1)))) {
 			TEMPORARY_TEXT(t)
 			Str::copy_tail(t, val, 2);
 			filename *F = Filenames::from_text_relative(home_path, t);

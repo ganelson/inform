@@ -89,7 +89,7 @@ void TemplateManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	if (D) {
 		TEMPORARY_TEXT(LEAFNAME)
 		while (Directories::next(D, LEAFNAME)) {
-			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
+			if (Platform::is_folder_separator(Str::get_last_char(LEAFNAME))) {
 				Str::delete_last_character(LEAFNAME);
 				pathname *Q = Pathnames::down(P, LEAFNAME);
 				inbuild_copy *C = TemplateManager::claim_folder_as_copy(Q);

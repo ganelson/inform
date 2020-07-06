@@ -73,5 +73,5 @@ void SourceLinks::link(OUTPUT_STREAM, source_location sl, int nonbreaking_space)
 
 @<Remove indication that the path is inside the Source directory@> =
 	if ((Str::begins_with_wide_string(fn, L"Source")) &&
-		(Str::get_at(fn, 6) == FOLDER_SEPARATOR))
+		(Platform::is_folder_separator(Str::get_at(fn, 6))))
 		Str::delete_n_characters(fn, 7);

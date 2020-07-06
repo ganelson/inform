@@ -90,7 +90,7 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	if (D) {
 		TEMPORARY_TEXT(LEAFNAME)
 		while (Directories::next(D, LEAFNAME)) {
-			if (Str::get_last_char(LEAFNAME) != FOLDER_SEPARATOR) {
+			if (Platform::is_folder_separator(Str::get_last_char(LEAFNAME)) == FALSE) {
 				filename *F = Filenames::in(P, LEAFNAME);
 				inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL);
 				if ((C) && (Requirements::meets(C->edition, req))) {

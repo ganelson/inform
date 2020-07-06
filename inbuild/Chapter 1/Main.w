@@ -229,14 +229,14 @@ void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {
 	int pos = Str::len(arg) - 1, dotpos = -1;
 	while (pos >= 0) {
 		wchar_t c = Str::get_at(arg, pos);
-		if (c == FOLDER_SEPARATOR) break;
+		if (Platform::is_folder_separator(c)) break;
 		if (c == '.') dotpos = pos;
 		pos--;
 	}
 	if (dotpos >= 0)
 		Str::substr(ext, Str::at(arg, dotpos+1), Str::end(arg));
 	int directory_status = NOT_APPLICABLE;
-	if (Str::get_last_char(arg) == FOLDER_SEPARATOR) {
+	if (Platform::is_folder_separator(Str::get_last_char(arg))) {
 		Str::delete_last_character(arg);
 		directory_status = TRUE;
 	}

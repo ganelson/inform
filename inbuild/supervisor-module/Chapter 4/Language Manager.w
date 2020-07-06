@@ -82,7 +82,7 @@ void LanguageManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	LOOP_THROUGH_TEXT(pos, name) {
 		int c = Str::get(pos);
 		if ((c < 32) || (c > 126)) acceptable = FALSE; /* contains non-ASCII */
-		if (c == FOLDER_SEPARATOR) { Str::put(pos, 0); break; }
+		if (Platform::is_folder_separator(c)) { Str::put(pos, 0); break; }
 	}
 	if (Str::len(name) == 0) acceptable = FALSE; /* i.e., an empty text */
 	if (acceptable) {
@@ -109,7 +109,7 @@ void LanguageManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	if (D) {
 		TEMPORARY_TEXT(LEAFNAME)
 		while (Directories::next(D, LEAFNAME)) {
-			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
+			if (Platform::is_folder_separator(Str::get_last_char(LEAFNAME))) {
 				Str::delete_last_character(LEAFNAME);
 				pathname *Q = Pathnames::down(P, LEAFNAME);
 				inbuild_copy *C = LanguageManager::claim_folder_as_copy(Q);

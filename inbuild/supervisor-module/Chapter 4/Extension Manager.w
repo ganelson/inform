@@ -129,7 +129,7 @@ void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 	if (D) {
 		TEMPORARY_TEXT(LEAFNAME)
 		while (Directories::next(D, LEAFNAME)) {
-			if (Str::get_last_char(LEAFNAME) == FOLDER_SEPARATOR) {
+			if (Platform::is_folder_separator(Str::get_last_char(LEAFNAME))) {
 				Str::delete_last_character(LEAFNAME);
 				if (Str::ne(LEAFNAME, I"Reserved")) {
 					pathname *Q = Pathnames::down(P, LEAFNAME);

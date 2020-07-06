@@ -54,15 +54,15 @@ void Links::create_auxiliary_file(text_stream *fn, text_stream *description, tex
 void Links::get_extension_from_textual_filename(OUTPUT_STREAM, text_stream *filename) {
 	int i = Str::len(filename) - 1;
 	while ((i>=0) && ((Str::get_at(filename, i) == '.') || (Str::get_at(filename, i) == ' '))) i--;
-	while ((i>=0) && (Str::get_at(filename, i) != '.') && (Str::get_at(filename, i) != FOLDER_SEPARATOR)) i--;
-	if ((i<0) || (Str::get_at(filename, i) == FOLDER_SEPARATOR)) return;
+	while ((i>=0) && (Str::get_at(filename, i) != '.') && (Platform::is_folder_separator(Str::get_at(filename, i)) == FALSE)) i--;
+	if ((i<0) || (Platform::is_folder_separator(Str::get_at(filename, i)))) return;
 	Str::copy_tail(OUT, filename, i);
 }
 
 @ =
 void Links::get_leafname_from_textual_filename(OUTPUT_STREAM, text_stream *filename) {
 	int i = Str::len(filename) - 1;
-	while ((i>=0) && (Str::get_at(filename, i) != FOLDER_SEPARATOR)) i--;
+	while ((i>=0) && (Platform::is_folder_separator(Str::get_at(filename, i)) == FALSE)) i--;
 	Str::copy_tail(OUT, filename, i+1);
 }
 
