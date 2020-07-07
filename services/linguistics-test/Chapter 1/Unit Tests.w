@@ -135,3 +135,8 @@ void Unit::parse_noun_phrases(parse_node *p) {
 		Unit::parse_noun_phrases(p->down);
 	}
 }
+
+void Unit::test_pronouns(text_stream *arg) {
+	Pronouns::create_small_word_sets();
+	Pronouns::test(STDOUT);
+}

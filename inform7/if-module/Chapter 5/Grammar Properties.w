@@ -198,8 +198,8 @@ for the kinds we inherit from.
 		LOOP_THROUGH_WORDING(j, W) {
 			vocabulary_entry *ve = Lexer::word(j);
 			ve = PreformUtilities::find_corresponding_word(ve,
-				<possessive-second-person>,
-				<possessive-first-person>);
+				<second-person-possessive-pronoun-table>,
+				<first-person-possessive-pronoun-table>);
 			wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
 			TEMPORARY_TEXT(content)
 			WRITE_TO(content, "%w", p);

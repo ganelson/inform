@@ -24,14 +24,14 @@ To construct standard verb-phrase nodes in the parse tree.
 
 =
 void Diagrams::setup(void) {
-	NodeType::new(VERB_NT, I"VERB_NT",                 0, 0,     L3_NCAT, 0);
-	NodeType::new(RELATIONSHIP_NT, I"RELATIONSHIP_NT",   0, 2,	  L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(CALLED_NT, I"CALLED_NT",               2, 2,	  L3_NCAT, 0);
-	NodeType::new(WITH_NT, I"WITH_NT",                   2, 2,	  L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(AND_NT, I"AND_NT",                     2, 2,	  L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(VERB_NT, I"VERB_NT",                   0, 0,     L3_NCAT, 0);
+	NodeType::new(RELATIONSHIP_NT, I"RELATIONSHIP_NT",   0, 2,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(CALLED_NT, I"CALLED_NT",               2, 2,	   L3_NCAT, 0);
+	NodeType::new(WITH_NT, I"WITH_NT",                   2, 2,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(AND_NT, I"AND_NT",                     2, 2,	   L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(KIND_NT, I"KIND_NT",                   0, 1,     L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(PROPER_NOUN_NT, I"PROPER_NOUN_NT",     0, 0,	  L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(COMMON_NOUN_NT, I"COMMON_NOUN_NT",	 0, INFTY,	L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(PROPER_NOUN_NT, I"PROPER_NOUN_NT",     0, 0,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(COMMON_NOUN_NT, I"COMMON_NOUN_NT",	 0, INFTY, L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(PROPERTY_LIST_NT, I"PROPERTY_LIST_NT", 0, INFTY, L3_NCAT, ASSERT_NFLAG);
 }
 

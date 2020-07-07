@@ -29,6 +29,7 @@ which use this module:
 @e noun_usage_CLASS
 @e pronoun_CLASS
 @e pronoun_usage_CLASS
+@e small_word_set_CLASS
 
 =
 DECLARE_CLASS(adjective)
@@ -50,6 +51,7 @@ DECLARE_CLASS(noun)
 DECLARE_CLASS(noun_usage)
 DECLARE_CLASS(pronoun)
 DECLARE_CLASS(pronoun_usage)
+DECLARE_CLASS(small_word_set)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
@@ -87,9 +89,11 @@ void LinguisticsModule::end(void) {
 we need to use the equivalent of traditional |malloc| and |calloc| routines.
 
 @e STOCK_MREASON
+@e SWS_MREASON
 
 @<Declare new memory allocation reasons@> =
 	Memory::reason_name(STOCK_MREASON, "linguistic stock array");
+	Memory::reason_name(SWS_MREASON, "small word set array");
 
 @ This module uses //syntax//, and adds the following annotations to the
 syntax tree.

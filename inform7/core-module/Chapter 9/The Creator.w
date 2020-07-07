@@ -966,9 +966,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 			LOOP_THROUGH_WORDING(j, CW) {
 				if (<possessive-third-person>(Wordings::one_word(j)))
 					@<Insert the appropriate possessive@>
-				else if (<subject-pronoun>(Wordings::one_word(j)))
-					@<Insert the appropriate name@>
-				else if (<object-pronoun>(Wordings::one_word(j)))
+				else if (<agent-pronoun>(Wordings::one_word(j)))
 					@<Insert the appropriate name@>
 				else Feeds::feed_wording(Wordings::one_word(j));
 			}

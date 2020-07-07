@@ -19,6 +19,10 @@ typedef struct pronoun {
 	CLASS_DEFINITION
 } pronoun;
 
+@ A //pronoun_usage// object is what a lexicon search returns when text is
+matched against some form of a pronoun.
+
+=
 typedef struct pronoun_usage {
 	struct pronoun *pronoun_used;
 	struct grammatical_usage *usage;
@@ -31,20 +35,29 @@ void Pronouns::write_usage(OUTPUT_STREAM, pronoun_usage *pu) {
 	Stock::write_usage(OUT, pu->usage, GENDER_LCW+NUMBER_LCW+CASE_LCW);
 }
 
-@ The stock of pronouns is fixed at three:
+@ The stock of pronouns is fixed at six. We are going to regard the three
+persons as being different pronouns, since they make different references,
+though not every grammarian would agree. So we have three "agent pronouns" --
+those standing for subject or object -- and then three possessives.
 
 =
 grammatical_category *pronouns_category = NULL;
-pronoun *subject_pronoun = NULL;
-pronoun *object_pronoun = NULL;
-pronoun *possessive_pronoun = NULL;
+pronoun *first_person_pronoun = NULL;
+pronoun *second_person_pronoun = NULL;
+pronoun *third_person_pronoun = NULL;
+pronoun *first_person_possessive_pronoun = NULL;
+pronoun *second_person_possessive_pronoun = NULL;
+pronoun *third_person_possessive_pronoun = NULL;
 
 void Pronouns::create_category(void) {
 	pronouns_category = Stock::new_category(I"pronoun");
 	METHOD_ADD(pronouns_category, LOG_GRAMMATICAL_CATEGORY_MTID, Pronouns::log_item);
-	subject_pronoun = Pronouns::new(I"subject pronoun");
-	object_pronoun = Pronouns::new(I"object pronoun");
-	possessive_pronoun = Pronouns::new(I"possessive pronoun");
+	first_person_pronoun = Pronouns::new(I"first person pronoun");
+	second_person_pronoun = Pronouns::new(I"second person pronoun");
+	third_person_pronoun = Pronouns::new(I"third person pronoun");
+	first_person_possessive_pronoun = Pronouns::new(I"first person possessive pronoun");
+	second_person_possessive_pronoun = Pronouns::new(I"second person possessive pronoun");
+	third_person_possessive_pronoun = Pronouns::new(I"third person possessive pronoun");
 }
 
 pronoun *Pronouns::new(text_stream *name) {
@@ -59,108 +72,237 @@ void Pronouns::log_item(grammatical_category *cat, general_pointer data) {
 	LOG("%S", P->name);
 }
 
-@h Stock references.
-We ignore case and gender in pronouns, but do take note of number and person.
+@h Parsing.
+Pronouns are ideal for small word sets, because even when their tables of
+inflected forms are in theory large, there are in practice few distinguishable
+words in them. For example, there are in theory twelve second-person pronouns
+in English, but all twelve of them are "you".
+
+The following sets turn out to be convenient for parsing purposes, but it
+would be easy to form other subsets of the pronouns.
 
 =
-lcon_ti Pronouns::use(pronoun *P, int n, int p, int g) {
-	lcon_ti lcon = Stock::to_lcon(P->in_stock);
-	lcon = Lcon::set_person(lcon, p);
-	lcon = Lcon::set_number(lcon, n);
-	if (P == subject_pronoun) lcon = Lcon::set_case(lcon, NOMINATIVE_CASE);
-	if (P == object_pronoun) lcon = Lcon::set_case(lcon, ACCUSATIVE_CASE);
-	if (g >= 0) lcon = Lcon::set_gender(lcon, g);
-	return lcon;
+small_word_set *pronouns_sws = NULL, /* all agent pronouns of any case */
+	*subject_pronouns_sws = NULL, /* just those in the nominative */
+	*object_pronouns_sws = NULL; /* just those in the accusative */
+
+small_word_set *possessive_pronouns_sws = NULL, /* all possessive pronouns of any person */
+	*first_person_possessive_pronouns_sws = NULL,
+	*second_person_possessive_pronouns_sws = NULL,
+	*third_person_possessive_pronouns_sws = NULL;
+
+@ And now we have to make them. The following capacity would be enough even if
+we were simultaneously dealing with four languages in which every inflection
+produced a different word. So it really is not going to run out.
+
+@d PRONOUN_SWS_CAPACITY 4*NO_KNOWN_GENDERS*NO_KNOWN_NUMBERS*MAX_GRAMMATICAL_CASES
+
+=
+void Pronouns::create_small_word_sets(void) {
+	pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
+	Pronouns::add(pronouns_sws, <first-person-pronoun-table>,
+		-1, FIRST_PERSON, first_person_pronoun);
+	Pronouns::add(pronouns_sws, <second-person-pronoun-table>,
+		-1, SECOND_PERSON, second_person_pronoun);
+	Pronouns::add(pronouns_sws, <third-person-pronoun-table>,
+		-1, THIRD_PERSON, third_person_pronoun);
+
+	subject_pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
+	Pronouns::add(subject_pronouns_sws, <first-person-pronoun-table>,
+		NOMINATIVE_CASE, FIRST_PERSON, first_person_pronoun);
+	Pronouns::add(subject_pronouns_sws, <second-person-pronoun-table>,
+		NOMINATIVE_CASE, SECOND_PERSON, second_person_pronoun);
+	Pronouns::add(subject_pronouns_sws, <third-person-pronoun-table>,
+		NOMINATIVE_CASE, THIRD_PERSON, third_person_pronoun);
+
+	object_pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
+	Pronouns::add(object_pronouns_sws, <first-person-pronoun-table>,
+		ACCUSATIVE_CASE, FIRST_PERSON, first_person_pronoun);
+	Pronouns::add(object_pronouns_sws, <second-person-pronoun-table>,
+		ACCUSATIVE_CASE,  SECOND_PERSON, second_person_pronoun);
+	Pronouns::add(object_pronouns_sws, <third-person-pronoun-table>,
+		ACCUSATIVE_CASE, THIRD_PERSON, third_person_pronoun);
+
+	possessive_pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
+	Pronouns::add(possessive_pronouns_sws, <first-person-possessive-pronoun-table>,
+		-1, FIRST_PERSON, first_person_possessive_pronoun);
+	Pronouns::add(possessive_pronouns_sws, <second-person-possessive-pronoun-table>,
+		-1, SECOND_PERSON, second_person_possessive_pronoun);
+	Pronouns::add(possessive_pronouns_sws, <third-person-possessive-pronoun-table>,
+		-1, THIRD_PERSON, third_person_possessive_pronoun);
+
+	first_person_possessive_pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
+	Pronouns::add(first_person_possessive_pronouns_sws, <first-person-possessive-pronoun-table>,
+		-1, FIRST_PERSON, first_person_possessive_pronoun);
+
+	second_person_possessive_pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
+	Pronouns::add(second_person_possessive_pronouns_sws, <second-person-possessive-pronoun-table>,
+		-1, SECOND_PERSON, second_person_possessive_pronoun);
+
+	third_person_possessive_pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
+	Pronouns::add(third_person_possessive_pronouns_sws, <third-person-possessive-pronoun-table>,
+		-1, THIRD_PERSON, third_person_possessive_pronoun);
 }
 
-pronoun *Pronouns::from_lcon(lcon_ti lcon) {
-	linguistic_stock_item *item = Stock::from_lcon(lcon);
-	if (item == NULL) return NULL;
-	return RETRIEVE_POINTER_pronoun(item->data);
+void Pronouns::write_sws(OUTPUT_STREAM, small_word_set *sws) {
+	for (int i=0; i<sws->used; i++) {
+		WRITE("(%d) %V:", i, sws->word_ve[i]);
+		pronoun_usage *pu = (pronoun_usage *) sws->results[i];
+		Pronouns::write_usage(OUT, pu);
+		WRITE("\n");
+	}
 }
 
-pronoun_usage *Pronouns::usage_from_lcon(lcon_ti lcon) {
-	pronoun *P = Pronouns::from_lcon(lcon);
-	grammatical_usage *gu = Stock::new_usage(P->in_stock, NULL);
-	Stock::add_form_to_usage(gu, lcon);
-	pronoun_usage *pu = CREATE(pronoun_usage);
-	pu->pronoun_used = P;
-	pu->usage = gu;
-	return pu;
+void Pronouns::test(OUTPUT_STREAM) {
+	WRITE("pronouns_sws:\n");
+	Pronouns::write_sws(OUT, pronouns_sws);
+	WRITE("subject_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, subject_pronouns_sws);
+	WRITE("object_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, object_pronouns_sws);
+	WRITE("possessive_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, possessive_pronouns_sws);
+	WRITE("first_person_possessive_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, first_person_possessive_pronouns_sws);
+	WRITE("second_person_possessive_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, second_person_possessive_pronouns_sws);
+	WRITE("third_person_possessive_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, third_person_possessive_pronouns_sws);
 }
 
-void Pronouns::write_lcon(OUTPUT_STREAM, lcon_ti lcon) {
-	pronoun *P = Pronouns::from_lcon(lcon);
-	WRITE(" %S ", P->name);
-	Lcon::write_person(OUT, Lcon::get_person(lcon));
-	Lcon::write_number(OUT, Lcon::get_number(lcon));
-	Lcon::write_gender(OUT, Lcon::get_gender(lcon));
+@ All of which use the following, which extracts inflected forms from the
+nonterminal tables (see below for their English versions and layout).
+
+=
+small_word_set *Pronouns::add(small_word_set *sws, nonterminal *nt, int filter_case,
+	int person, pronoun *p) {
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
+		int c = 0;
+		for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
+			if ((filter_case < 0) || (filter_case == c)) {
+				int t = 0;
+				for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt) {
+					if (pt->ptoken_category != FIXED_WORD_PTC)
+						PreformUtilities::production_error(nt, pr,
+							"pronoun sets must contain single fixed words");
+					else {
+						pronoun_usage *pu =
+							(pronoun_usage *) Stock::find_in_sws(sws, pt->ve_pt);
+						if (pu == NULL) {
+							pu = CREATE(pronoun_usage);
+							pu->pronoun_used = p;
+							pu->usage = Stock::new_usage(p->in_stock, NULL);
+							Stock::add_to_sws(sws, pt->ve_pt, pu);
+						}
+						lcon_ti lcon = Stock::to_lcon(p->in_stock);
+						lcon = Lcon::set_number(lcon, t%2);
+						lcon = Lcon::set_gender(lcon, 1 + t/2);
+						lcon = Lcon::set_case(lcon, c);
+						lcon = Lcon::set_person(lcon, person);
+						Stock::add_form_to_usage(pu->usage, lcon);
+					}
+					t++;
+				}
+			}
+			c++;
+		}
+		if (c != Declensions::no_cases(pl->definition_language))
+			PreformUtilities::production_error(nt, NULL,
+				"wrong number of cases in pronoun set");
+	}
+	return sws;
+}
+
+@ The following, then, parse pronouns simply by testing whether the word being
+parsed lies in the relevant small word set.
+
+=
+<agent-pronoun> internal 1 {
+	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (pronoun_usage *) Stock::find_in_sws(pronouns_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+<subject-pronoun> internal 1 {
+	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (pronoun_usage *) Stock::find_in_sws(subject_pronouns_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+<object-pronoun> internal 1 {
+	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (pronoun_usage *) Stock::find_in_sws(object_pronouns_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+<possessive-pronoun> internal 1 {
+	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (pronoun_usage *) Stock::find_in_sws(possessive_pronouns_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+<possessive-first-person> internal 1 {
+	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (pronoun_usage *) Stock::find_in_sws(first_person_possessive_pronouns_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+<possessive-second-person> internal 1 {
+	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (pronoun_usage *) Stock::find_in_sws(second_person_possessive_pronouns_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+<possessive-third-person> internal 1 {
+	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (pronoun_usage *) Stock::find_in_sws(third_person_possessive_pronouns_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
 }
 
 @h English pronouns.
-Rather than giving pronouns declensions as if they were nouns, we store their
-different forms in Preform grammar directly, as follows.
+So, then, these nonterminals are not parsed by Preform but are instead used
+to stock small word sets above.
+
+Each row represents one case: so for English, there are two rows, nominative
+(i.e. for subject pronouns) and then accusative (object). Within a row, the
+sequence is neuter singular, neuter plural, masculine singular, masculine plural,
+feminine singular, feminine plural.
 
 =
-<subject-pronoun> ::=
-	<subject-pronoun-first-person> |   ==> R[1]
-	<subject-pronoun-second-person> |  ==> R[1]
-	<subject-pronoun-third-person>     ==> R[1]
+<first-person-pronoun-table> ::=
+	i we i we i we |
+	me us me us me us
 
-<subject-pronoun-first-person> ::=
-	i |     ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, FIRST_PERSON, -1)
-	we      ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, FIRST_PERSON, -1)
+<second-person-pronoun-table> ::=
+	you you you you you you |
+	you you you you you you
 
-<subject-pronoun-second-person> ::=
-	you |   ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, SECOND_PERSON, -1)
-	you     ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, SECOND_PERSON, -1)
+<third-person-pronoun-table> ::=
+	it they he they she they |
+	it them him them her them
 
-<subject-pronoun-third-person> ::=
-	it |    ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, THIRD_PERSON, NEUTER_GENDER)
-	he |    ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, THIRD_PERSON, MASCULINE_GENDER)
-	she |   ==> Pronouns::use(subject_pronoun, SINGULAR_NUMBER, THIRD_PERSON, FEMININE_GENDER)
-	they    ==> Pronouns::use(subject_pronoun, PLURAL_NUMBER, THIRD_PERSON, -1)
+<first-person-possessive-pronoun-table> ::=
+	my our my our my our |
+	my our my our my our
 
-@
+<second-person-possessive-pronoun-table> ::=
+	your your your your your your |
+	your your your your your your
 
-=
-<object-pronoun> ::=
-	<object-pronoun-first-person> |   ==> R[1]
-	<object-pronoun-second-person> |  ==> R[1]
-	<object-pronoun-third-person>     ==> R[1]
-
-<object-pronoun-first-person> ::=
-	me |    ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, FIRST_PERSON, -1)
-	us      ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, FIRST_PERSON, -1)
-
-<object-pronoun-second-person> ::=
-	you |   ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, SECOND_PERSON, -1)
-	you     ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, SECOND_PERSON, -1)
-
-<object-pronoun-third-person> ::=
-	it |    ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, THIRD_PERSON, NEUTER_GENDER)
-	him |   ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, THIRD_PERSON, MASCULINE_GENDER)
-	her |   ==> Pronouns::use(object_pronoun, SINGULAR_NUMBER, THIRD_PERSON, FEMININE_GENDER)
-	them    ==> Pronouns::use(object_pronoun, PLURAL_NUMBER, THIRD_PERSON, -1)
-
-@
-
-=
-<possessive-pronoun> ::=
-	<possessive-first-person> |   ==> R[1]
-	<possessive-second-person> |  ==> R[1]
-	<possessive-third-person>     ==> R[1]
-
-<possessive-first-person> ::=
-	my |    ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, FIRST_PERSON, -1)
-	our     ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, FIRST_PERSON, -1)
-
-<possessive-second-person> ::=
-	your |  ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, SECOND_PERSON, -1)
-	your    ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, SECOND_PERSON, -1)
-
-<possessive-third-person> ::=
-	its |   ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, THIRD_PERSON, NEUTER_GENDER)
-	his |   ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, THIRD_PERSON, MASCULINE_GENDER)
-	her |   ==> Pronouns::use(possessive_pronoun, SINGULAR_NUMBER, THIRD_PERSON, FEMININE_GENDER)
-	their   ==> Pronouns::use(possessive_pronoun, PLURAL_NUMBER, THIRD_PERSON, -1)
+<third-person-possessive-pronoun-table> ::=
+	its their his their her their |
+	its their his their her their

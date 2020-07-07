@@ -379,8 +379,7 @@ speed optimisation, and doesn't affect the language's definition.
 	<np-inner> <np-with-or-having-tail> |    ==> 0; *XP = NounPhrases::PN_pair(WITH_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-inner> <np-and-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-kind-phrase> |    ==> 0; *XP = RP[1]
-	<subject-pronoun> |    ==> GENERATE_RAW_NP; Node::set_pronoun(*XP, Pronouns::usage_from_lcon(R[1]));
-	<object-pronoun> |    ==> GENERATE_RAW_NP; Node::set_pronoun(*XP, Pronouns::usage_from_lcon(R[1]));
+	<agent-pronoun> |    ==> GENERATE_RAW_NP; Node::set_pronoun(*XP, RP[1]);
 	<np-articled-balanced>							==> 0; *XP = RP[1]
 
 @ The tail of with-or-having parses for instance "with carrying capacity 5"

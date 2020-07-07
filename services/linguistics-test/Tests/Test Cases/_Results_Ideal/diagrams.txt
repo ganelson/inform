@@ -22,7 +22,7 @@ ROOT_NT
                 COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
             SENTENCE_NT'she is a person'
                 VERB_NT'is'verb 'is' 3p s act IS_TENSE +ve (regular)
-                PROPER_NOUN_NT'she' subject pronoun (f) s nom
+                PROPER_NOUN_NT'she' third person pronoun (f) s nom
                 COMMON_NOUN_NT'person' (common) ( (n) s nom ) + ( (n) s acc )
             SENTENCE_NT'peter carries the torch'
                 VERB_NT'carries'verb 'carries' 3p s act IS_TENSE +ve (regular)
@@ -31,14 +31,14 @@ ROOT_NT
                     PROPER_NOUN_NT'torch' definite article  s (n)
             SENTENCE_NT'he sees her'
                 VERB_NT'sees'verb 'sees' 3p s act IS_TENSE +ve (regular)
-                PROPER_NOUN_NT'he' subject pronoun (m) s nom
+                PROPER_NOUN_NT'he' third person pronoun (m) s nom
                 RELATIONSHIP_NT'sees'
-                    PROPER_NOUN_NT'her' object pronoun (f) s acc
+                    PROPER_NOUN_NT'her' third person pronoun (f) s acc
             SENTENCE_NT'she sees him'
                 VERB_NT'sees'verb 'sees' 3p s act IS_TENSE +ve (regular)
-                PROPER_NOUN_NT'she' subject pronoun (f) s nom
+                PROPER_NOUN_NT'she' third person pronoun (f) s nom
                 RELATIONSHIP_NT'sees'
-                    PROPER_NOUN_NT'him' object pronoun (m) s acc
+                    PROPER_NOUN_NT'him' third person pronoun (m) s acc
             SENTENCE_NT'there is a door'
                 VERB_NT'is'verb 'is' 3p s act IS_TENSE +ve (existential) (regular)
                 PROPER_NOUN_NT'there'

@@ -201,3 +201,62 @@ int Stock::usage_might_be_singular(grammatical_usage *gu) {
 				return TRUE;
 	return FALSE;			
 }
+
+int Stock::usage_might_be_third_person(grammatical_usage *gu) {
+	if (gu)
+		for (int i=0; i<gu->no_possible_forms; i++)
+			if (Lcon::get_person(gu->possible_forms[i]) == THIRD_PERSON)
+				return TRUE;
+	return FALSE;			
+}
+
+@h Small word sets.
+Sometimes we want a very fast way to parse a single word to see if it belongs
+to a small set of possibilities -- for example, to see if it is a pronoun.
+If there are very few such, even using Preform is unnecessary overhead. The
+following is a lightweight alternative:
+
+=
+typedef struct small_word_set {
+	int extent;
+	int used;
+	struct vocabulary_entry **word_ve;
+	void **results;
+
+	CLASS_DEFINITION
+} small_word_set;
+
+@ Small word sets do not expand: they must be created large enough. But really,
+if we expect them to contain more than about 20 words at the outside, then
+we ought to be using standard Preform nonterminals instead.
+
+Small word sets are, however, initially empty -- i.e., no capacity is used.
+
+=
+small_word_set *Stock::new_sws(int capacity) {
+	small_word_set *sws = CREATE(small_word_set);
+	sws->used = 0;
+	sws->extent = capacity;
+	sws->word_ve = (vocabulary_entry **)
+		(Memory::calloc(sws->extent, sizeof(vocabulary_entry *), SWS_MREASON));
+	sws->results = (void **)
+		(Memory::calloc(sws->extent, sizeof(void *), SWS_MREASON));
+	return sws;
+}
+
+@ The following adds a word.
+
+=
+void *Stock::find_in_sws(small_word_set *sws, vocabulary_entry *ve) {
+	for (int i=0; i<sws->used; i++)
+		if (ve == sws->word_ve[i])
+			return sws->results[i];
+	return NULL;
+}
+
+void Stock::add_to_sws(small_word_set *sws, vocabulary_entry *ve, void *res) {
+	if (sws->used >= sws->extent) internal_error("small word set exhausted");
+	sws->word_ve[sws->used] = ve;
+	sws->results[sws->used] = res;
+	sws->used++;
+}

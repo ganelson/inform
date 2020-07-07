@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
 noun: 2381 items
-pronoun: 3 items
+pronoun: 6 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3312
+total in all categories: 3315
 
 adjective: A0'even'
 adjective: A1'odd'
@@ -2531,9 +2531,12 @@ noun: proper: 'same-ownership-relation-storage-as relation'
 noun: proper: 'same-infection-color-as relation'
 noun: proper: 'same-unbolting-relation-storage-as relation'
 
-pronoun: subject pronoun
-pronoun: object pronoun
-pronoun: possessive pronoun
+pronoun: first person pronoun
+pronoun: second person pronoun
+pronoun: third person pronoun
+pronoun: first person possessive pronoun
+pronoun: second person possessive pronoun
+pronoun: third person possessive pronoun
 
 preposition: meant by
 preposition: meaning

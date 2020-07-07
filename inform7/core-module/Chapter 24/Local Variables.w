@@ -531,8 +531,11 @@ local_variable *LocalVariables::parse(ph_stack_frame *phsf, wording W) {
 
 local_variable *LocalVariables::parse_inner(ph_stack_frame *phsf, wording W) {
 	if (phsf->local_value_variables.it_variable_exists)
-		if ((<object-pronoun-third-person>(W)) || (<subject-pronoun-third-person>(W)))
-			return LocalVariables::it_variable();
+		if (<agent-pronoun>(W)) {
+			pronoun_usage *pu = <<rp>>;
+			if (Stock::usage_might_be_third_person(pu->usage))
+				return LocalVariables::it_variable();
+		}
 
 	if (<definite-article>(W)) return NULL;
 	W = Articles::remove_the(W);

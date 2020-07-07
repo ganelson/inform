@@ -164,8 +164,8 @@ of the verb. Each one is matched against this:
 
 =
 <conjugation> ::=
-	<subject-pronoun> is/are ... |    ==> R[1]; <<is-participle>> = TRUE
-	<subject-pronoun> ...			==> R[1]; <<is-participle>> = FALSE
+	<subject-pronoun> is/are ... |    ==> 0; *XP = RP[1]; <<is-participle>> = TRUE
+	<subject-pronoun> ...			==> 0; *XP = RP[1]; <<is-participle>> = FALSE
 
 @ This syntax was a design mistake. It generalises badly to other languages,
 and doesn't even work perfectly for English. The problem is that the source
@@ -518,7 +518,9 @@ infinitive for that -- the two are the same in most regular English verbs
 	if ((<conjugation>(CW)) == FALSE)
 		@<Give up on verb definition as malformed@>;
 	CW = GET_RW(<conjugation>, 1);
-	int number = Lcon::get_number(<<r>>);
+	pronoun_usage *pu = (pronoun_usage *) <<rp>>;
+	int number = PLURAL_NUMBER;
+	if (Stock::usage_might_be_singular(pu->usage)) number = SINGULAR_NUMBER;
 	int is_a_participle = <<is-participle>>;
 
 	if (Wordings::nonempty(P)) {
