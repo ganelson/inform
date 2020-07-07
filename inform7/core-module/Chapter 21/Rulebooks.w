@@ -673,9 +673,9 @@ of the two outer words and is discontiguous.
 
 =
 <rulebook-stem-inner> ::=
-	<indefinite-article> <rulebook-stem-inner-unarticled> |    ==> R[1]; <<place>> = R[2]
-	<definite-article> <rulebook-stem-inner-unarticled> |    ==> R[1]; <<place>> = R[2]
-	<rulebook-stem-inner-unarticled>						==> 0; <<place>> = R[1]
+	<indefinite-article> <rulebook-stem-inner-unarticled> |    ==> 0; *XP = RP[1]; <<place>> = R[2]
+	<definite-article> <rulebook-stem-inner-unarticled> |    ==> 0; *XP = RP[1]; <<place>> = R[2]
+	<rulebook-stem-inner-unarticled>						==> 0; *XP = NULL; <<place>> = R[1]
 
 <rulebook-stem-inner-unarticled> ::=
 	rule for/about/on <rulebook-stem-name> |    ==> MIDDLE_PLACEMENT; <<len>> = R[1]
@@ -694,13 +694,13 @@ of the two outer words and is discontiguous.
 @ =
 rulebook_match Rulebooks::rb_match_from_description(wording W) {
 	int initial_w1 = Wordings::first_wn(W), modifier_words;
-	int art = 0, pl = MIDDLE_PLACEMENT;
+	int pl = MIDDLE_PLACEMENT;
 	rulebook *rb;
 	rulebook_match rm;
 
 	<rulebook-stem-inner>(W);
 	W = GET_RW(<rulebook-stem-name>, 1);
-	art = <<r>>; pl = <<place>>;
+	article_usage *au = (article_usage *) <<rp>>; pl = <<place>>;
 
 	modifier_words = Wordings::first_wn(W) - initial_w1;
 
@@ -709,7 +709,7 @@ rulebook_match Rulebooks::rb_match_from_description(wording W) {
 	rm.match_from = initial_w1;
 	rm.tail_words = 0;
 	rm.matched_rulebook = NULL;
-	rm.article_used = Articles::from_lcon(art);
+	rm.article_used = (au)?(au->article_used):NULL;
 	rm.placement_requested = pl;
 
 	LOOP_OVER(rb, rulebook) {

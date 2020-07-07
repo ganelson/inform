@@ -1,47 +1,47 @@
 pronouns_sws:
-(0) i: first person pronoun ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom )
-(1) we: first person pronoun ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom )
-(2) me: first person pronoun ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
-(3) us: first person pronoun ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
-(4) you: second person pronoun ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
-(5) it: third person pronoun ( (n) s nom ) + ( (n) s acc )
-(6) they: third person pronoun ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom )
-(7) he: third person pronoun (m) s nom
-(8) she: third person pronoun (f) s nom
-(9) them: third person pronoun ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
-(10) him: third person pronoun (m) s acc
-(11) her: third person pronoun (f) s acc
+(0) i: first person pronoun ( (n) 1p s nom ) + ( (m) 1p s nom ) + ( (f) 1p s nom )
+(1) we: first person pronoun ( (n) 1p p nom ) + ( (m) 1p p nom ) + ( (f) 1p p nom )
+(2) me: first person pronoun ( (n) 1p s acc ) + ( (m) 1p s acc ) + ( (f) 1p s acc )
+(3) us: first person pronoun ( (n) 1p p acc ) + ( (m) 1p p acc ) + ( (f) 1p p acc )
+(4) you: second person pronoun ( (n) 2p s nom ) + ( (n) 2p p nom ) + ( (m) 2p s nom ) + ( (m) 2p p nom ) + ( (f) 2p s nom ) + ( (f) 2p p nom ) + ( (n) 2p s acc ) + ( (n) 2p p acc ) + ( (m) 2p s acc ) + ( (m) 2p p acc ) + ( (f) 2p s acc ) + ( (f) 2p p acc )
+(5) it: third person pronoun ( (n) 3p s nom ) + ( (n) 3p s acc )
+(6) they: third person pronoun ( (n) 3p p nom ) + ( (m) 3p p nom ) + ( (f) 3p p nom )
+(7) he: third person pronoun (m) 3p s nom
+(8) she: third person pronoun (f) 3p s nom
+(9) them: third person pronoun ( (n) 3p p acc ) + ( (m) 3p p acc ) + ( (f) 3p p acc )
+(10) him: third person pronoun (m) 3p s acc
+(11) her: third person pronoun (f) 3p s acc
 subject_pronouns_sws:
-(0) i: first person pronoun ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom )
-(1) we: first person pronoun ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom )
-(2) you: second person pronoun ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom )
-(3) it: third person pronoun (n) s nom
-(4) they: third person pronoun ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom )
-(5) he: third person pronoun (m) s nom
-(6) she: third person pronoun (f) s nom
+(0) i: first person pronoun ( (n) 1p s nom ) + ( (m) 1p s nom ) + ( (f) 1p s nom )
+(1) we: first person pronoun ( (n) 1p p nom ) + ( (m) 1p p nom ) + ( (f) 1p p nom )
+(2) you: second person pronoun ( (n) 2p s nom ) + ( (n) 2p p nom ) + ( (m) 2p s nom ) + ( (m) 2p p nom ) + ( (f) 2p s nom ) + ( (f) 2p p nom )
+(3) it: third person pronoun (n) 3p s nom
+(4) they: third person pronoun ( (n) 3p p nom ) + ( (m) 3p p nom ) + ( (f) 3p p nom )
+(5) he: third person pronoun (m) 3p s nom
+(6) she: third person pronoun (f) 3p s nom
 object_pronouns_sws:
-(0) me: first person pronoun ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
-(1) us: first person pronoun ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
-(2) you: second person pronoun ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
-(3) it: third person pronoun (n) s acc
-(4) them: third person pronoun ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
-(5) him: third person pronoun (m) s acc
-(6) her: third person pronoun (f) s acc
+(0) me: first person pronoun ( (n) 1p s acc ) + ( (m) 1p s acc ) + ( (f) 1p s acc )
+(1) us: first person pronoun ( (n) 1p p acc ) + ( (m) 1p p acc ) + ( (f) 1p p acc )
+(2) you: second person pronoun ( (n) 2p s acc ) + ( (n) 2p p acc ) + ( (m) 2p s acc ) + ( (m) 2p p acc ) + ( (f) 2p s acc ) + ( (f) 2p p acc )
+(3) it: third person pronoun (n) 3p s acc
+(4) them: third person pronoun ( (n) 3p p acc ) + ( (m) 3p p acc ) + ( (f) 3p p acc )
+(5) him: third person pronoun (m) 3p s acc
+(6) her: third person pronoun (f) 3p s acc
 possessive_pronouns_sws:
-(0) my: first person possessive pronoun ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
-(1) our: first person possessive pronoun ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
-(2) your: second person possessive pronoun ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
-(3) its: third person possessive pronoun ( (n) s nom ) + ( (n) s acc )
-(4) their: third person possessive pronoun ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
-(5) his: third person possessive pronoun ( (m) s nom ) + ( (m) s acc )
-(6) her: third person possessive pronoun ( (f) s nom ) + ( (f) s acc )
+(0) my: first person possessive pronoun ( (n) 1p s nom ) + ( (m) 1p s nom ) + ( (f) 1p s nom ) + ( (n) 1p s acc ) + ( (m) 1p s acc ) + ( (f) 1p s acc )
+(1) our: first person possessive pronoun ( (n) 1p p nom ) + ( (m) 1p p nom ) + ( (f) 1p p nom ) + ( (n) 1p p acc ) + ( (m) 1p p acc ) + ( (f) 1p p acc )
+(2) your: second person possessive pronoun ( (n) 2p s nom ) + ( (n) 2p p nom ) + ( (m) 2p s nom ) + ( (m) 2p p nom ) + ( (f) 2p s nom ) + ( (f) 2p p nom ) + ( (n) 2p s acc ) + ( (n) 2p p acc ) + ( (m) 2p s acc ) + ( (m) 2p p acc ) + ( (f) 2p s acc ) + ( (f) 2p p acc )
+(3) its: third person possessive pronoun ( (n) 3p s nom ) + ( (n) 3p s acc )
+(4) their: third person possessive pronoun ( (n) 3p p nom ) + ( (m) 3p p nom ) + ( (f) 3p p nom ) + ( (n) 3p p acc ) + ( (m) 3p p acc ) + ( (f) 3p p acc )
+(5) his: third person possessive pronoun ( (m) 3p s nom ) + ( (m) 3p s acc )
+(6) her: third person possessive pronoun ( (f) 3p s nom ) + ( (f) 3p s acc )
 first_person_possessive_pronouns_sws:
-(0) my: first person possessive pronoun ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
-(1) our: first person possessive pronoun ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
+(0) my: first person possessive pronoun ( (n) 1p s nom ) + ( (m) 1p s nom ) + ( (f) 1p s nom ) + ( (n) 1p s acc ) + ( (m) 1p s acc ) + ( (f) 1p s acc )
+(1) our: first person possessive pronoun ( (n) 1p p nom ) + ( (m) 1p p nom ) + ( (f) 1p p nom ) + ( (n) 1p p acc ) + ( (m) 1p p acc ) + ( (f) 1p p acc )
 second_person_possessive_pronouns_sws:
-(0) your: second person possessive pronoun ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
+(0) your: second person possessive pronoun ( (n) 2p s nom ) + ( (n) 2p p nom ) + ( (m) 2p s nom ) + ( (m) 2p p nom ) + ( (f) 2p s nom ) + ( (f) 2p p nom ) + ( (n) 2p s acc ) + ( (n) 2p p acc ) + ( (m) 2p s acc ) + ( (m) 2p p acc ) + ( (f) 2p s acc ) + ( (f) 2p p acc )
 third_person_possessive_pronouns_sws:
-(0) its: third person possessive pronoun ( (n) s nom ) + ( (n) s acc )
-(1) their: third person possessive pronoun ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
-(2) his: third person possessive pronoun ( (m) s nom ) + ( (m) s acc )
-(3) her: third person possessive pronoun ( (f) s nom ) + ( (f) s acc )
+(0) its: third person possessive pronoun ( (n) 3p s nom ) + ( (n) 3p s acc )
+(1) their: third person possessive pronoun ( (n) 3p p nom ) + ( (m) 3p p nom ) + ( (f) 3p p nom ) + ( (n) 3p p acc ) + ( (m) 3p p acc ) + ( (f) 3p p acc )
+(2) his: third person possessive pronoun ( (m) 3p s nom ) + ( (m) 3p s acc )
+(3) her: third person possessive pronoun ( (f) 3p s nom ) + ( (f) 3p s acc )

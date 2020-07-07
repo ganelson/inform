@@ -13,50 +13,50 @@ ROOT_NT
             SENTENCE_NT'sailor = neuter common noun'
         HEADING_NT'chapter 2' (level 1)
             SENTENCE_NT'jane is a woman'
-                VERB_NT'is'verb 'is' 3p s act IS_TENSE +ve (regular)
+                VERB_NT'is'verb 'is'  3p s act IS_TENSE +ve (regular)
                 PROPER_NOUN_NT'jane' (proper) ( (n) s nom ) + ( (n) s acc )
                 COMMON_NOUN_NT'woman' (common) ( (n) s nom ) + ( (n) s acc )
             SENTENCE_NT'jane is not a sailor'
-                VERB_NT'is not'verb 'is not' 3p s act IS_TENSE -ve (regular)
+                VERB_NT'is not'verb 'is not'  3p s act IS_TENSE -ve (regular)
                 PROPER_NOUN_NT'jane' (proper) ( (n) s nom ) + ( (n) s acc )
                 COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
             SENTENCE_NT'she is a person'
-                VERB_NT'is'verb 'is' 3p s act IS_TENSE +ve (regular)
-                PROPER_NOUN_NT'she' third person pronoun (f) s nom
+                VERB_NT'is'verb 'is'  3p s act IS_TENSE +ve (regular)
+                PROPER_NOUN_NT'she' third person pronoun (f) 3p s nom
                 COMMON_NOUN_NT'person' (common) ( (n) s nom ) + ( (n) s acc )
             SENTENCE_NT'peter carries the torch'
-                VERB_NT'carries'verb 'carries' 3p s act IS_TENSE +ve (regular)
+                VERB_NT'carries'verb 'carries'  3p s act IS_TENSE +ve (regular)
                 PROPER_NOUN_NT'peter' (proper) ( (n) s nom ) + ( (n) s acc )
                 RELATIONSHIP_NT'carries'
-                    PROPER_NOUN_NT'torch' definite article  s (n)
+                    PROPER_NOUN_NT'torch' definite article ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
             SENTENCE_NT'he sees her'
-                VERB_NT'sees'verb 'sees' 3p s act IS_TENSE +ve (regular)
-                PROPER_NOUN_NT'he' third person pronoun (m) s nom
+                VERB_NT'sees'verb 'sees'  3p s act IS_TENSE +ve (regular)
+                PROPER_NOUN_NT'he' third person pronoun (m) 3p s nom
                 RELATIONSHIP_NT'sees'
-                    PROPER_NOUN_NT'her' third person pronoun (f) s acc
+                    PROPER_NOUN_NT'her' third person pronoun (f) 3p s acc
             SENTENCE_NT'she sees him'
-                VERB_NT'sees'verb 'sees' 3p s act IS_TENSE +ve (regular)
-                PROPER_NOUN_NT'she' third person pronoun (f) s nom
+                VERB_NT'sees'verb 'sees'  3p s act IS_TENSE +ve (regular)
+                PROPER_NOUN_NT'she' third person pronoun (f) 3p s nom
                 RELATIONSHIP_NT'sees'
-                    PROPER_NOUN_NT'him' third person pronoun (m) s acc
+                    PROPER_NOUN_NT'him' third person pronoun (m) 3p s acc
             SENTENCE_NT'there is a door'
-                VERB_NT'is'verb 'is' 3p s act IS_TENSE +ve (existential) (regular)
+                VERB_NT'is'verb 'is'  3p s act IS_TENSE +ve (existential) (regular)
                 PROPER_NOUN_NT'there'
-                PROPER_NOUN_NT'door' indefinite article  s (n)
+                PROPER_NOUN_NT'door' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
             SENTENCE_NT'the sailors carry a cask of rum'
-                VERB_NT'carry'verb 'carry' 3p p act IS_TENSE +ve (regular)
+                VERB_NT'carry'verb 'carry'  3p p act IS_TENSE +ve (regular)
                 COMMON_NOUN_NT'sailors' (common) ( (n) p nom ) + ( (n) p acc )
                 RELATIONSHIP_NT'carry'
-                    PROPER_NOUN_NT'cask of rum' indefinite article  s (n)
+                    PROPER_NOUN_NT'cask of rum' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
             SENTENCE_NT'the shovel has a handle'
-                VERB_NT'has'verb 'has' 3p s act IS_TENSE +ve (possessive) (regular)
-                PROPER_NOUN_NT'shovel' definite article  s (n)
-                PROPER_NOUN_NT'handle' indefinite article  s (n)
+                VERB_NT'has'verb 'has'  3p s act IS_TENSE +ve (possessive) (regular)
+                PROPER_NOUN_NT'shovel' definite article ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
+                PROPER_NOUN_NT'handle' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
             SENTENCE_NT'the does the player mean rules is a rulebook'
-                VERB_NT'is'verb 'is' 3p s act IS_TENSE +ve (regular)
-                PROPER_NOUN_NT'does the player mean rules' definite article  s (n)
-                PROPER_NOUN_NT'rulebook' indefinite article  s (n)
+                VERB_NT'is'verb 'is'  3p s act IS_TENSE +ve (regular)
+                PROPER_NOUN_NT'does the player mean rules' definite article ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
+                PROPER_NOUN_NT'rulebook' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
             SENTENCE_NT'some people are here'
-                VERB_NT'are'verb 'are' 3p p act IS_TENSE +ve (regular)
-                PROPER_NOUN_NT'people' indefinite article  p (n)
+                VERB_NT'are'verb 'are'  3p p act IS_TENSE +ve (regular)
+                PROPER_NOUN_NT'people' indefinite article ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
                 PROPER_NOUN_NT'here'

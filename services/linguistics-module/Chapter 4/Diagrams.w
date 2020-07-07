@@ -50,9 +50,8 @@ void Diagrams::permissions(void) {
 	Annotations::allow(RELATIONSHIP_NT, preposition_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, relationship_node_type_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, linguistic_error_here_ANNOT);
-	Annotations::allow_for_category(L3_NCAT, gender_reference_ANNOT);
-	Annotations::allow_for_category(L3_NCAT, nounphrase_article_ANNOT);
-	Annotations::allow_for_category(L3_NCAT, plural_reference_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, explicit_gender_marker_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, article_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, implicitly_refers_to_ANNOT);
 }
 
@@ -80,8 +79,8 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				Nouns::write_usage(OUT, Node::get_noun(pn));
 			if (Node::get_pronoun(pn))
 				Pronouns::write_usage(OUT, Node::get_pronoun(pn));
-			if (Annotations::read_int(pn, nounphrase_article_ANNOT) != 0)
-				Articles::write_lcon(OUT, Annotations::read_int(pn, nounphrase_article_ANNOT));
+			if (Node::get_article(pn))
+				Articles::write_usage(OUT, Node::get_article(pn));
 			break;
 		case RELATIONSHIP_NT:
 			switch (Annotations::read_int(pn, relationship_node_type_ANNOT)) {

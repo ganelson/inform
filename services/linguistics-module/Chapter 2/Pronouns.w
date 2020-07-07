@@ -32,7 +32,7 @@ typedef struct pronoun_usage {
 @ =
 void Pronouns::write_usage(OUTPUT_STREAM, pronoun_usage *pu) {
 	WRITE(" %S", pu->pronoun_used->name);
-	Stock::write_usage(OUT, pu->usage, GENDER_LCW+NUMBER_LCW+CASE_LCW);
+	Stock::write_usage(OUT, pu->usage, PERSON_LCW + GENDER_LCW + NUMBER_LCW + CASE_LCW);
 }
 
 @ The stock of pronouns is fixed at six. We are going to regard the three
@@ -144,32 +144,6 @@ void Pronouns::create_small_word_sets(void) {
 		-1, THIRD_PERSON, third_person_possessive_pronoun);
 }
 
-void Pronouns::write_sws(OUTPUT_STREAM, small_word_set *sws) {
-	for (int i=0; i<sws->used; i++) {
-		WRITE("(%d) %V:", i, sws->word_ve[i]);
-		pronoun_usage *pu = (pronoun_usage *) sws->results[i];
-		Pronouns::write_usage(OUT, pu);
-		WRITE("\n");
-	}
-}
-
-void Pronouns::test(OUTPUT_STREAM) {
-	WRITE("pronouns_sws:\n");
-	Pronouns::write_sws(OUT, pronouns_sws);
-	WRITE("subject_pronouns_sws:\n");
-	Pronouns::write_sws(OUT, subject_pronouns_sws);
-	WRITE("object_pronouns_sws:\n");
-	Pronouns::write_sws(OUT, object_pronouns_sws);
-	WRITE("possessive_pronouns_sws:\n");
-	Pronouns::write_sws(OUT, possessive_pronouns_sws);
-	WRITE("first_person_possessive_pronouns_sws:\n");
-	Pronouns::write_sws(OUT, first_person_possessive_pronouns_sws);
-	WRITE("second_person_possessive_pronouns_sws:\n");
-	Pronouns::write_sws(OUT, second_person_possessive_pronouns_sws);
-	WRITE("third_person_possessive_pronouns_sws:\n");
-	Pronouns::write_sws(OUT, third_person_possessive_pronouns_sws);
-}
-
 @ All of which use the following, which extracts inflected forms from the
 nonterminal tables (see below for their English versions and layout).
 
@@ -182,24 +156,26 @@ small_word_set *Pronouns::add(small_word_set *sws, nonterminal *nt, int filter_c
 			if ((filter_case < 0) || (filter_case == c)) {
 				int t = 0;
 				for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt) {
-					if (pt->ptoken_category != FIXED_WORD_PTC)
-						PreformUtilities::production_error(nt, pr,
-							"pronoun sets must contain single fixed words");
-					else {
-						pronoun_usage *pu =
-							(pronoun_usage *) Stock::find_in_sws(sws, pt->ve_pt);
-						if (pu == NULL) {
-							pu = CREATE(pronoun_usage);
-							pu->pronoun_used = p;
-							pu->usage = Stock::new_usage(p->in_stock, NULL);
-							Stock::add_to_sws(sws, pt->ve_pt, pu);
+					for (ptoken *alt = pt; alt; alt = alt->alternative_ptoken) {
+						if (alt->ptoken_category != FIXED_WORD_PTC)
+							PreformUtilities::production_error(nt, pr,
+								"pronoun sets must contain single fixed words");
+						else {
+							pronoun_usage *pu =
+								(pronoun_usage *) Stock::find_in_sws(sws, alt->ve_pt);
+							if (pu == NULL) {
+								pu = CREATE(pronoun_usage);
+								pu->pronoun_used = p;
+								pu->usage = Stock::new_usage(p->in_stock, NULL);
+								Stock::add_to_sws(sws, alt->ve_pt, pu);
+							}
+							lcon_ti lcon = Stock::to_lcon(p->in_stock);
+							lcon = Lcon::set_number(lcon, t%2);
+							lcon = Lcon::set_gender(lcon, 1 + t/2);
+							lcon = Lcon::set_case(lcon, c);
+							lcon = Lcon::set_person(lcon, person);
+							Stock::add_form_to_usage(pu->usage, lcon);
 						}
-						lcon_ti lcon = Stock::to_lcon(p->in_stock);
-						lcon = Lcon::set_number(lcon, t%2);
-						lcon = Lcon::set_gender(lcon, 1 + t/2);
-						lcon = Lcon::set_case(lcon, c);
-						lcon = Lcon::set_person(lcon, person);
-						Stock::add_form_to_usage(pu->usage, lcon);
 					}
 					t++;
 				}
@@ -306,3 +282,33 @@ feminine singular, feminine plural.
 <third-person-possessive-pronoun-table> ::=
 	its their his their her their |
 	its their his their her their
+
+@h Unit testing.
+The //linguistics-test// test case |pronouns| calls this.
+
+=
+void Pronouns::test(OUTPUT_STREAM) {
+	WRITE("pronouns_sws:\n");
+	Pronouns::write_sws(OUT, pronouns_sws);
+	WRITE("subject_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, subject_pronouns_sws);
+	WRITE("object_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, object_pronouns_sws);
+	WRITE("possessive_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, possessive_pronouns_sws);
+	WRITE("first_person_possessive_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, first_person_possessive_pronouns_sws);
+	WRITE("second_person_possessive_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, second_person_possessive_pronouns_sws);
+	WRITE("third_person_possessive_pronouns_sws:\n");
+	Pronouns::write_sws(OUT, third_person_possessive_pronouns_sws);
+}
+
+void Pronouns::write_sws(OUTPUT_STREAM, small_word_set *sws) {
+	for (int i=0; i<sws->used; i++) {
+		WRITE("(%d) %V:", i, sws->word_ve[i]);
+		pronoun_usage *pu = (pronoun_usage *) sws->results[i];
+		Pronouns::write_usage(OUT, pu);
+		WRITE("\n");
+	}
+}

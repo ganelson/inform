@@ -539,7 +539,7 @@ here, given that we know we are looking for a noun.
 
 @<Act on an action pattern used as a noun phrase@> =
 	#ifdef IF_MODULE
-	if (Annotations::read_int(p, nounphrase_article_ANNOT) == 0) {
+	if (Node::get_article(p) == NULL) {
 		if (<action-pattern>(Node::get_text(p))) {
 			Node::set_type(p, ACTION_NT);
 			Node::set_action_meaning(p, <<rp>>);
@@ -594,7 +594,7 @@ sentence.
 @<Act on a simple description@> =
 	if (!((Descriptions::to_instance(spec)) &&
 		((Descriptions::number_of_adjectives_applied_to(spec) > 0) ||
-			(Articles::from_lcon(Annotations::read_int(p, nounphrase_article_ANNOT)) != definite_article)))) {
+			(Articles::may_be_definite(Node::get_article(p)) == FALSE)))) {
 		Assertions::Refiner::refine_from_simple_description(p, spec);
 		return;
 	}

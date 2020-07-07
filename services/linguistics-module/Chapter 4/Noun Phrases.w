@@ -34,7 +34,7 @@ The following macro is useful in the grammar below:
 =
 parse_node *NounPhrases::new_raw(wording W) {
 	parse_node *PN = Node::new(PROPER_NOUN_NT);
-	Annotations::write_int(PN, nounphrase_article_ANNOT, 0);
+	Node::set_pronoun(PN, NULL);
 	Node::set_text(PN, W);
 	return PN;
 }
@@ -98,11 +98,8 @@ leave the text empty.
 	<nounphrase>															==> 0; *XP = RP[1]
 
 @<Annotate node by article@> =
-	Annotations::write_int(*XP, nounphrase_article_ANNOT, R[2]);
-	Annotations::write_int(*XP, plural_reference_ANNOT,
-		(Lcon::get_number(R[2]) == SINGULAR_NUMBER)?FALSE:TRUE);
-	Annotations::write_int(*XP, gender_reference_ANNOT,
-		Lcon::get_gender(R[2]));
+	article_usage *au = (article_usage *) RP[2];
+	Node::set_article(*XP, au);
 
 @ Sometimes we want to look at the article (if any) used in a raw NP, and
 absorb that into annotations, removing it from the wording. For instance, in
@@ -119,12 +116,7 @@ parse_node *NounPhrases::annotate_by_articles(parse_node *RAW_NP) {
 	<nounphrase-articled>(Node::get_text(RAW_NP));
 	parse_node *MODEL = <<rp>>;
 	Node::set_text(RAW_NP, Node::get_text(MODEL));
-	Annotations::write_int(RAW_NP, nounphrase_article_ANNOT,
-		Annotations::read_int(MODEL, nounphrase_article_ANNOT));
-	Annotations::write_int(RAW_NP, plural_reference_ANNOT,
-		Annotations::read_int(MODEL, plural_reference_ANNOT));
-	Annotations::write_int(RAW_NP, gender_reference_ANNOT,
-		Annotations::read_int(MODEL, gender_reference_ANNOT));
+	Node::set_article(RAW_NP, Node::get_article(MODEL));
 	return RAW_NP;
 }
 

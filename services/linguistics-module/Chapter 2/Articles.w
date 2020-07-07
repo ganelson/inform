@@ -14,7 +14,23 @@ typedef struct article {
 	CLASS_DEFINITION
 } article;
 
-@ The stock of articles is fixed at three:
+@ An //article_usage// object is what a lexicon search returns when text is
+matched against some form of a pronoun.
+
+=
+typedef struct article_usage {
+	struct article *article_used;
+	struct grammatical_usage *usage;
+	CLASS_DEFINITION
+} article_usage;
+
+@ =
+void Articles::write_usage(OUTPUT_STREAM, article_usage *au) {
+	WRITE(" %S", au->article_used->name);
+	Stock::write_usage(OUT, au->usage, GENDER_LCW + NUMBER_LCW + CASE_LCW);
+}
+
+@ The stock of articles is fixed at two:
 
 =
 grammatical_category *articles_category = NULL;
@@ -44,17 +60,6 @@ void Articles::log_item(grammatical_category *cat, general_pointer data) {
 We ignore case in articles, but do take note of number and gender.
 
 =
-lcon_ti Articles::use(article *P, int n, int g) {
-	lcon_ti lcon = Stock::to_lcon(P->in_stock);
-	lcon = Lcon::set_number(lcon, n);
-	lcon = Lcon::set_gender(lcon, g);
-	return lcon;
-}
-
-int Articles::use_a_to_f(article *P, int r) {
-	return Articles::use(P, (r >= 3)?PLURAL_NUMBER:SINGULAR_NUMBER, (r % 3) + 1);
-}
-
 article *Articles::from_lcon(lcon_ti lcon) {
 	linguistic_stock_item *item = Stock::from_lcon(lcon);
 	if (item == NULL) return NULL;
@@ -68,43 +73,10 @@ void Articles::write_lcon(OUTPUT_STREAM, lcon_ti lcon) {
 	Lcon::write_gender(OUT, Lcon::get_gender(lcon));
 }
 
-@h English articles.
-A small subterfuge is used here for efficiency's sake. In principle we should
-test and distinguish all six combined number/gender forms of the articles,
-but that would be fractionally slower in English where there are so few
-possibilities. The indirection below enables <definite-article-forms> and
-<indefinite-article-forms> to be only partially filled in, with the amount
-differing in different languages.
-
-=
-<article> ::=
-	<indefinite-article> |      ==> R[1]
-	<definite-article>          ==> R[1]
-
-<definite-article> ::=
-	<definite-article-forms>	==> Articles::use_a_to_f(definite_article, R[1])
-
-<indefinite-article> ::=
-	<indefinite-article-forms>	==> Articles::use_a_to_f(indefinite_article, R[1])
-
-@ The articles need to be single words, and the following two productions
-have an unusual convention: they are required to have production numbers
-which encode both the implied grammatical number and gender. These numbers
-mean:
-
-|/a/| singular, neuter; |/b/| singular, masculine; |/c/| singular, feminine;
-|/d/| plural, neuter; |/e/| plural, masculine; |/f/| plural, feminine.
-
-But since in English gender doesn't appear in articles, and "the" is ambiguous
-as to number in any case, we end up with something quite dull as the default:
-
-=
-<definite-article-forms> ::=
-	/a/ the
-
-<indefinite-article-forms> ::=
-	/a/ a/an |
-	/d/ some
+int Articles::may_be_definite(article_usage *au) {
+	if ((au) && (au->article_used == definite_article)) return TRUE;
+	return FALSE;			
+}
 
 @ It's very important to parse articles, which occur very often, rapidly. So
 we give these special priority in Preform optimisation; they have their very
@@ -115,8 +87,8 @@ void Articles::mark_for_preform(void) {
 	NTI::give_nt_reserved_incidence_bit(<article>, ARTICLE_RES_NT_BIT);
 	NTI::give_nt_reserved_incidence_bit(<definite-article>, ARTICLE_RES_NT_BIT);
 	NTI::give_nt_reserved_incidence_bit(<indefinite-article>, ARTICLE_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<definite-article-forms>, ARTICLE_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<indefinite-article-forms>, ARTICLE_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<definite-article-table>, ARTICLE_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<indefinite-article-table>, ARTICLE_RES_NT_BIT);
 }
 
 @h Removing articles.
@@ -124,19 +96,19 @@ These are useful for stripping optional articles from text:
 
 =
 <optional-definite-article> ::=
-	<definite-article> ... |	==> R[1]
+	<definite-article> ... |	==> 0; *XP = RP[1]
 	...
 
 <optional-indefinite-article> ::=
-	<indefinite-article> ... |	==> R[1]
+	<indefinite-article> ... |	==> 0; *XP = RP[1]
 	...
 
 <optional-article> ::=
-	<article> ... |	            ==> R[1]
+	<article> ... |	            ==> 0; *XP = RP[1]
 	...
 
 <compulsory-article> ::=
-	<article> ...	            ==> R[1]
+	<article> ...	            ==> 0; *XP = RP[1]
 
 @ =
 wording Articles::remove_the(wording W) {
@@ -151,4 +123,138 @@ wording Articles::remove_article(wording W) {
 		return GET_RW(<optional-article>, 1);
 	}
 	return W;
+}
+
+@h Parsing.
+Articles are ideal for small word sets, because even when their tables of
+inflected forms are in theory large, there are in practice few distinguishable
+words in them.
+
+=
+small_word_set *article_sws = NULL, *definite_article_sws = NULL, *indefinite_article_sws = NULL;
+
+@ And now we have to make them. The following capacity would be enough even if
+we were simultaneously dealing with four languages in which every inflection
+produced a different word. So it really is not going to run out.
+
+@d ARTICLE_SWS_CAPACITY 4*NO_KNOWN_GENDERS*NO_KNOWN_NUMBERS*MAX_GRAMMATICAL_CASES
+
+=
+void Articles::create_small_word_sets(void) {
+	article_sws = Stock::new_sws(ARTICLE_SWS_CAPACITY);
+	Articles::add(article_sws, <definite-article-table>, definite_article);
+	Articles::add(article_sws, <indefinite-article-table>, indefinite_article);
+
+	definite_article_sws = Stock::new_sws(ARTICLE_SWS_CAPACITY);
+	Articles::add(definite_article_sws, <definite-article-table>, definite_article);
+
+	indefinite_article_sws = Stock::new_sws(ARTICLE_SWS_CAPACITY);
+	Articles::add(indefinite_article_sws, <indefinite-article-table>, indefinite_article);
+}
+
+@ All of which use the following, which extracts inflected forms from the
+nonterminal tables (see below for their English versions and layout).
+
+=
+small_word_set *Articles::add(small_word_set *sws, nonterminal *nt, article *a) {
+	for (production_list *pl = nt->first_pl; pl; pl = pl->next_pl) {
+		int c = 0;
+		for (production *pr = pl->first_pr; pr; pr = pr->next_pr) {
+			int t = 0;
+			for (ptoken *pt = pr->first_pt; pt; pt = pt->next_pt) {
+				for (ptoken *alt = pt; alt; alt = alt->alternative_ptoken)  {
+					if (alt->ptoken_category != FIXED_WORD_PTC)
+						PreformUtilities::production_error(nt, pr,
+							"article sets must contain single fixed words");
+					else {
+						article_usage *au =
+							(article_usage *) Stock::find_in_sws(sws, alt->ve_pt);
+						if (au == NULL) {
+							au = CREATE(article_usage);
+							au->article_used = a;
+							au->usage = Stock::new_usage(a->in_stock, NULL);
+							Stock::add_to_sws(sws, alt->ve_pt, au);
+						}
+						lcon_ti lcon = Stock::to_lcon(a->in_stock);
+						lcon = Lcon::set_number(lcon, t%2);
+						lcon = Lcon::set_gender(lcon, 1 + t/2);
+						lcon = Lcon::set_case(lcon, c);
+						Stock::add_form_to_usage(au->usage, lcon);
+					}
+				}
+				t++;
+			}
+			c++;
+		}
+		if (c != Declensions::no_cases(pl->definition_language))
+			PreformUtilities::production_error(nt, NULL,
+				"wrong number of cases in article set");
+	}
+	return sws;
+}
+
+@ And here are the requisite nonterminals:
+
+=
+<article> internal 1 {
+	if (article_sws == NULL) Articles::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (article_usage *) Stock::find_in_sws(article_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+<definite-article> internal 1 {
+	if (article_sws == NULL) Articles::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (article_usage *) Stock::find_in_sws(definite_article_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+<indefinite-article> internal 1 {
+	if (article_sws == NULL) Articles::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (article_usage *) Stock::find_in_sws(indefinite_article_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
+@h English articles.
+So, then, these nonterminals are not parsed by Preform but are instead used
+to stock small word sets above. The fornat is the same as the one used in
+//Pronouns//: rows are cases, within which the sequence is neuter singular,
+neuter plural, masculine singular, masculine plural, feminine singular,
+feminine plural. In English, of course, articles hardly inflect at all,
+but German would be quite a bit more interesting.
+
+=
+<definite-article-table> ::=
+	the the the the the the |
+	the the the the the the
+
+<indefinite-article-table> ::=
+	a/an some a/an some a/an some |
+	a/an some a/an some a/an some
+
+@h Unit testing.
+The //linguistics-test// test case |articles| calls this.
+
+=
+void Articles::test(OUTPUT_STREAM) {
+	WRITE("article_sws:\n");
+	Articles::write_sws(OUT, article_sws);
+	WRITE("definite_article_sws:\n");
+	Articles::write_sws(OUT, definite_article_sws);
+	WRITE("indefinite_article_sws:\n");
+	Articles::write_sws(OUT, indefinite_article_sws);
+}
+
+void Articles::write_sws(OUTPUT_STREAM, small_word_set *sws) {
+	for (int i=0; i<sws->used; i++) {
+		WRITE("(%d) %V:", i, sws->word_ve[i]);
+		article_usage *au = (article_usage *) sws->results[i];
+		Articles::write_usage(OUT, au);
+		WRITE("\n");
+	}
 }

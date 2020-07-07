@@ -124,7 +124,7 @@ and is a somewhat provisional feature for now.
 void UseNouns::nl_translates(parse_node *pn) {
 	/* the object */
 	inform_language *nl = Node::get_defn_language(pn->next->next);
-	int g = Annotations::read_int(pn->next->next, gender_reference_ANNOT);
+	int g = Annotations::read_int(pn->next->next, explicit_gender_marker_ANNOT);
 	if (nl == NULL) internal_error("No such NL");
 	if (nl == DefaultLanguage::get(NULL)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantTranslateIntoEnglish),

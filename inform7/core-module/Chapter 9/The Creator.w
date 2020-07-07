@@ -364,7 +364,7 @@ is why the following only applies to those.)
 @<If the CALLED name used the definite article, make a note of that@> =
 	#ifdef IF_MODULE
 	if ((Node::get_type(called_name_node) == PROPER_NOUN_NT) &&
-		(Articles::from_lcon(Annotations::read_int(called_name_node, nounphrase_article_ANNOT)) == definite_article)) {
+		(Articles::may_be_definite(Node::get_article(called_name_node)))) {
 		inference_subject *subj = Node::get_subject(p);
 		if ((InferenceSubjects::is_an_object(subj)) ||
 			(InferenceSubjects::is_a_kind_of_object(subj)))
@@ -412,7 +412,7 @@ from the tree.
 	if (Wordings::empty(W)) internal_error("CREATED node without name");
 	if (<grammatical-gender-marker>(W)) {
 		W = GET_RW(<grammatical-gender-marker>, 1);
-		Annotations::write_int(p, gender_reference_ANNOT, -(<<r>> + 1));
+		Annotations::write_int(p, explicit_gender_marker_ANNOT, <<r>> + 1);
 	}
 	if (<creation-problem-diagnosis>(W)) W = EMPTY_WORDING;
 	Node::set_text(p, W);
@@ -606,22 +606,27 @@ to abbreviated forms of object names are normally allowed.
 
 	if (is_a_kind == FALSE) {
 		recent_creation = latest_instance;
+		article_usage *au = Node::get_article(p);
 		#ifdef IF_MODULE
-		if (Annotations::read_int(p, plural_reference_ANNOT))
-			PL::Naming::object_now_has_plural_name(recent_creation);
-		if (Annotations::read_int(p, nounphrase_article_ANNOT) == 0)
+		if (au == NULL)
 			PL::Naming::object_now_has_proper_name(recent_creation);
+		else if (Stock::usage_might_be_singular(au->usage) == FALSE)
+			PL::Naming::object_now_has_plural_name(recent_creation);
 		#endif
-		int g = Annotations::read_int(p, gender_reference_ANNOT);
-		if ((g != 0) &&
-			(P_grammatical_gender) &&
-			(no_ggs_recorded == NO_GRAMMATICAL_GENDERS)) {
-			int c = LIKELY_CE;
-			if (g < 0) { c = CERTAIN_CE; g = -g; }
+		int g = 0, gender_certainty = UNKNOWN_CE;
+		if (au) {
+			g = Lcon::get_gender(Stock::first_form_in_usage(au->usage));
+			gender_certainty = LIKELY_CE;
+		}
+		if (Annotations::read_int(p, explicit_gender_marker_ANNOT) != 0) {
+			g = Annotations::read_int(p, explicit_gender_marker_ANNOT);
+			gender_certainty = CERTAIN_CE;
+		}
+		if ((g != 0) && (P_grammatical_gender) && (no_ggs_recorded == NO_GRAMMATICAL_GENDERS)) {
 			Properties::Valued::assert(P_grammatical_gender,
 				Instances::as_subject(recent_creation),
 				Rvalues::from_instance(grammatical_genders[g-1]),
-				c);
+				gender_certainty);
 		}
 	} else {
 		parse_node *val = Specifications::from_kind(latest_base_kind_of_value);

@@ -12,6 +12,7 @@ which use this module:
 
 @e adjective_CLASS
 @e article_CLASS
+@e article_usage_CLASS
 @e quantifier_CLASS
 @e determiner_CLASS
 @e grammatical_category_CLASS
@@ -34,6 +35,7 @@ which use this module:
 =
 DECLARE_CLASS(adjective)
 DECLARE_CLASS(article)
+DECLARE_CLASS(article_usage)
 DECLARE_CLASS(quantifier)
 DECLARE_CLASS(determiner)
 DECLARE_CLASS(grammatical_category)
@@ -106,13 +108,12 @@ syntax tree.
 @e verb_ANNOT                    /* |verb_usage|: what's being done here */
 @e noun_ANNOT                    /* |noun_usage|: what's being done here */
 @e pronoun_ANNOT                 /* |pronoun_usage|: what's being done here */
+@e article_ANNOT                 /* |article_usage|: what's being done here */
 @e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
 @e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
 @e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
 
-@e nounphrase_article_ANNOT      /* |int|: definite or indefinite article: see below */
-@e plural_reference_ANNOT        /* |int|: used by PROPER NOUN nodes for evident plurals */
-@e gender_reference_ANNOT        /* |int|: used by PROPER NOUN nodes for evident genders */
+@e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
 @e relationship_node_type_ANNOT  /* |int|: what kind of inference this assertion makes */
 @e implicitly_refers_to_ANNOT    /* |int|: this will implicitly refer to something */
 
@@ -120,6 +121,7 @@ syntax tree.
 DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
 DECLARE_ANNOTATION_FUNCTIONS(noun, noun_usage)
 DECLARE_ANNOTATION_FUNCTIONS(pronoun, pronoun_usage)
+DECLARE_ANNOTATION_FUNCTIONS(article, article_usage)
 DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
@@ -127,6 +129,7 @@ DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
 MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
 MAKE_ANNOTATION_FUNCTIONS(noun, noun_usage)
 MAKE_ANNOTATION_FUNCTIONS(pronoun, pronoun_usage)
+MAKE_ANNOTATION_FUNCTIONS(article, article_usage)
 MAKE_ANNOTATION_FUNCTIONS(preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)

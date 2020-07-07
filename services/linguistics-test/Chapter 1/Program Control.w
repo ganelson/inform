@@ -10,6 +10,7 @@ What shall we test?
 @d VERB_MEANING_POSSESSION vc_have
 
 @e TEST_DIAGRAMS_CLSW
+@e TEST_ARTICLES_CLSW
 @e TEST_PRONOUNS_CLSW
 
 =
@@ -25,6 +26,8 @@ int main(int argc, char **argv) {
 
 	CommandLine::declare_switch(TEST_DIAGRAMS_CLSW, L"test-diagrams", 2,
 		L"test sentence diagrams (from text in X)");
+	CommandLine::declare_switch(TEST_ARTICLES_CLSW, L"test-articles", 2,
+		L"test pronoun stock (ignoring X)");
 	CommandLine::declare_switch(TEST_PRONOUNS_CLSW, L"test-pronouns", 2,
 		L"test pronoun stock (ignoring X)");
 
@@ -42,6 +45,7 @@ int main(int argc, char **argv) {
 void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case TEST_DIAGRAMS_CLSW: Main::load(I"Syntax.preform"); Unit::test_diagrams(arg); break;
+		case TEST_ARTICLES_CLSW: Main::load(I"Syntax.preform"); Unit::test_articles(arg); break;
 		case TEST_PRONOUNS_CLSW: Main::load(I"Syntax.preform"); Unit::test_pronouns(arg); break;
 	}
 }

@@ -149,9 +149,9 @@ void Lcon::write(OUTPUT_STREAM, lcon_ti l, int desiderata) {
 
 void Lcon::write_person(OUTPUT_STREAM, int p) {
 	switch (p) {
-		case FIRST_PERSON: WRITE("1p"); break;
-		case SECOND_PERSON: WRITE("2p"); break;
-		case THIRD_PERSON: WRITE("3p"); break;
+		case FIRST_PERSON: WRITE(" 1p"); break;
+		case SECOND_PERSON: WRITE(" 2p"); break;
+		case THIRD_PERSON: WRITE(" 3p"); break;
 	}
 }
 

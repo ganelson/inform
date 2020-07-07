@@ -140,3 +140,8 @@ void Unit::test_pronouns(text_stream *arg) {
 	Pronouns::create_small_word_sets();
 	Pronouns::test(STDOUT);
 }
+
+void Unit::test_articles(text_stream *arg) {
+	Articles::create_small_word_sets();
+	Articles::test(STDOUT);
+}
