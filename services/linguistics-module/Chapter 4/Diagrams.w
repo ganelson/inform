@@ -63,24 +63,23 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 	}
 	switch(pn->node_type) {
 		case VERB_NT:
+			if (Node::get_verb(pn))
+				VerbUsages::write_usage(OUT, Node::get_verb(pn));
 			if (Annotations::read_int(pn, sentence_is_existential_ANNOT))
 				WRITE(" (existential)");
 			if (Annotations::read_int(pn, possessive_verb_ANNOT))
 				WRITE(" (possessive)");
 			if (Annotations::read_int(pn, inverted_verb_ANNOT))
 				WRITE(" (inverted)");
-			if (Node::get_verb_meaning(pn)) {
+			if (Node::get_verb_meaning(pn))
 				WRITE(" $y", Node::get_verb_meaning(pn));
-			}
 			break;
 		case COMMON_NOUN_NT:
 		case PROPER_NOUN_NT:
-			if (Node::get_noun(pn)) {
-				if (pn->node_type == COMMON_NOUN_NT) WRITE(" (common)");
-				if (pn->node_type == PROPER_NOUN_NT) WRITE(" (proper)");
-			}
-			if (Annotations::read_int(pn, pronoun_ANNOT) != 0)
-				Pronouns::write_lcon(OUT, Annotations::read_int(pn, pronoun_ANNOT));
+			if (Node::get_noun(pn))
+				Nouns::write_usage(OUT, Node::get_noun(pn));
+			if (Node::get_pronoun(pn))
+				Pronouns::write_usage(OUT, Node::get_pronoun(pn));
 			if (Annotations::read_int(pn, nounphrase_article_ANNOT) != 0)
 				Articles::write_lcon(OUT, Annotations::read_int(pn, nounphrase_article_ANNOT));
 			break;

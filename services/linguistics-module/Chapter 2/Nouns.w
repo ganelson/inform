@@ -70,31 +70,19 @@ typedef struct noun {
 @ A //noun_usage// object is what a lexicon search returns when text is matched
 against some form of a noun.
 
-In many languages, declensions do not completely distinguish their cases.
-In English, for example, the accusative and nominative form of almost every
-noun are the same. So it would not be possible for this object to say for
-sure what case was used -- for example, the lexicon can't know that the
-use of "Jane" in the sentences "Peter knows Jane" and "Jane knows Peter" has
-a different case in those sentences: it's only looking at the word itself,
-and can't know the wider context. Instead, when the lexicon parses "Jane",
-it can return the following, which lists the nominative and accusative forms
-as both being possible.
-
-More inflected languages make for more interesting examples here. In German,
-for example, "Tische" could be any of the nominative, accusative or genitive
-plurals of "Tisch", table, but "Tischen" can only be the dative plural. Inform
-does not at present make any real use of this capability, but the //linguistics//
-module tries to leave the door open to better handling of e.g. German syntax
-in future.
-
 =
 typedef struct noun_usage {
 	struct noun *noun_used;
-	NATURAL_LANGUAGE_WORDS_TYPE *language_used;
-	int no_possible_forms;
-	lcon_ti possible_forms[2*MAX_GRAMMATICAL_CASES];
+	struct grammatical_usage *usage;
 	CLASS_DEFINITION
 } noun_usage;
+
+@ =
+void Nouns::write_usage(OUTPUT_STREAM, noun_usage *nu) {
+	if (nu->noun_used->noun_subclass == COMMON_NOUN) WRITE(" (common)");
+	if (nu->noun_used->noun_subclass == PROPER_NOUN) WRITE(" (proper)");
+	Stock::write_usage(OUT, nu->usage, GENDER_LCW+NUMBER_LCW+CASE_LCW);
+}
 
 @ Nouns are a grammatical category:
 
@@ -148,11 +136,13 @@ noun *Nouns::new_inner(wording W, general_pointer owner, int p, int options,
 	N->registration_category = mc;
 	N->noun_subclass = p;
 	N->names = Clusters::new();
+	N->in_stock = Stock::new(nouns_category, STORE_POINTER_noun(N));
+
 	if (Wordings::nonempty(W)) Nouns::supply_text(N, W, lang, gender, SINGULAR_NUMBER, options);
+
 	#ifdef NOUN_COMPILATION_LINGUISTICS_CALLBACK
 	NOUN_COMPILATION_LINGUISTICS_CALLBACK(N);
 	#endif
-	N->in_stock = Stock::new(nouns_category, STORE_POINTER_noun(N));
 	return N;
 }
 
@@ -212,13 +202,12 @@ say, the German plural form of "Tisch", then the declension of that would be
 	for (int i=0; i<c; i++) if (done[i] == FALSE) {
 		noun_usage *nu = CREATE(noun_usage);
 		nu->noun_used = N;
-		nu->language_used = lang;
-		nu->no_possible_forms = 0;
+		nu->usage = Stock::new_usage(N->in_stock, lang);
 		wording W = Declensions::in_case(&(in->declined), i);
 		for (int j=0; j<c; j++)
 			if (Wordings::match_cs(W, Declensions::in_case(&(in->declined), j))) {
 				done[j] = TRUE;
-				nu->possible_forms[nu->no_possible_forms++] = in->declined.lcon_cased[j];
+				Stock::add_form_to_usage(nu->usage, in->declined.lcon_cased[j]);
 			}
 		Lexicon::register(N->registration_category, W, STORE_POINTER_noun_usage(nu));				
 	}

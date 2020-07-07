@@ -14,7 +14,7 @@ be turned into one of the following structures:
 
 =
 typedef struct verb_usage {
-	lcon_ti grammatical_usage;              /* includes verb, mood, tense, sense */
+	struct grammatical_usage *usage;        /* includes verb, mood, tense, sense */
 	struct word_assemblage vu_text;			/* text to recognise */
 	int vu_allow_unexpected_upper_case; 	/* for verbs like "to Hoover" or "to Google" */
 	struct verb_usage *next_in_search_list; /* within a linked list of all usages in length order */
@@ -29,6 +29,9 @@ typedef struct verb_usage {
 	CLASS_DEFINITION
 } verb_usage;
 
+@
+
+=
 verb_usage *regular_to_be = NULL; /* "is" */
 verb_usage *negated_to_be = NULL; /* "is not" */
 
@@ -74,7 +77,7 @@ Here we create a single verb usage; note that the empty text cannot be used.
 =
 parse_node *set_where_created = NULL;
 verb_usage *VerbUsages::register_single_usage(word_assemblage wa,
-	int unexpected_upper_casing_used, lcon_ti semantics) {
+	int unexpected_upper_casing_used, grammatical_usage *usage) {
 	if (WordAssemblages::nonempty(wa) == FALSE) return NULL;
 	LOGIF(VERB_USAGES, "new usage: '%A'\n", &wa);
 	VerbUsages::mark_as_verb(WordAssemblages::first_word(&wa));
@@ -84,7 +87,7 @@ verb_usage *VerbUsages::register_single_usage(word_assemblage wa,
 	vu->vu_lex_entry = current_main_verb;
 	#endif
 	vu->where_vu_created = set_where_created;
-	vu->grammatical_usage = semantics;
+	vu->usage = usage;
 	vu->vu_allow_unexpected_upper_case = unexpected_upper_casing_used;
 	vu->next_within_tier = NULL;
 	vu->next_in_search_list = NULL;
@@ -115,15 +118,10 @@ first in the case of equal length:
 @
 
 =
-void VerbUsages::write(OUTPUT_STREAM, verb_usage *vu) {
+void VerbUsages::write_usage(OUTPUT_STREAM, verb_usage *vu) {
 	if (vu == NULL) { WRITE("(null verb usage)"); return; }
-	WRITE("vu: %A", &(vu->vu_text));
-	lcon_ti l = vu->grammatical_usage;
-	Lcon::write_sense(OUT, Lcon::get_sense(l));
-	Lcon::write_mood(OUT, Lcon::get_mood(l));
-	Lcon::write_tense(OUT, Lcon::get_tense(l));
-	Lcon::write_person(OUT, Lcon::get_person(l));
-	Lcon::write_number(OUT, Lcon::get_number(l));
+	WRITE("verb '%A' ", &(vu->vu_text));
+	Stock::write_usage(OUT, vu->usage, SENSE_LCW+MOOD_LCW+TENSE_LCW+PERSON_LCW+NUMBER_LCW);
 }
 
 @h Registration of regular verbs.
@@ -241,14 +239,16 @@ out whether it's needed.
 		}
 
 @<Actually register this usage@> =
+	grammatical_usage *gu = Stock::new_usage(vi->in_stock, DefaultLanguage::get(NULL));
 	lcon_ti l = Verbs::to_lcon(vi);
 	l = Lcon::set_mood(l, mood);
 	l = Lcon::set_tense(l, tense);
 	l = Lcon::set_sense(l, sense);
 	l = Lcon::set_person(l, person);
 	l = Lcon::set_number(l, number);
+	Stock::add_form_to_usage(gu, l);
 	verb_usage *vu = VerbUsages::register_single_usage(vt->vc_text[tense][sense][person][number],
-		unexpected_upper_casing_used, l);
+		unexpected_upper_casing_used, gu);
 	if (vu) VerbUsages::set_search_priority(vu, p);
 	if (vi == copular_verb) {
 		if ((tense == IS_TENSE) && (person == THIRD_PERSON) && (number == SINGULAR_NUMBER)) {
@@ -347,21 +347,20 @@ VERB_MEANING_LINGUISTICS_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, p
 }
 
 verb *VerbUsages::get_verb(verb_usage *vu) {
-//	if (vu) return vu->verb_used;
-	if (vu) return Verbs::from_lcon(vu->grammatical_usage);
+	if (vu) return Verbs::from_lcon(Stock::first_form_in_usage(vu->usage));
 	return NULL;
 }
 
 int VerbUsages::get_mood(verb_usage *vu) {
-	return Lcon::get_mood(vu->grammatical_usage);
+	return Lcon::get_mood(Stock::first_form_in_usage(vu->usage));
 }
 
 int VerbUsages::get_tense_used(verb_usage *vu) {
-	return Lcon::get_tense(vu->grammatical_usage);
+	return Lcon::get_tense(Stock::first_form_in_usage(vu->usage));
 }
 
 int VerbUsages::is_used_negatively(verb_usage *vu) {
-	if (Lcon::get_sense(vu->grammatical_usage) == NEGATIVE_SENSE) return TRUE;
+	if (Lcon::get_sense(Stock::first_form_in_usage(vu->usage)) == NEGATIVE_SENSE) return TRUE;
 	return FALSE;
 }
 

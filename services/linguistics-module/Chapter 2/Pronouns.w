@@ -19,6 +19,18 @@ typedef struct pronoun {
 	CLASS_DEFINITION
 } pronoun;
 
+typedef struct pronoun_usage {
+	struct pronoun *pronoun_used;
+	struct grammatical_usage *usage;
+	CLASS_DEFINITION
+} pronoun_usage;
+
+@ =
+void Pronouns::write_usage(OUTPUT_STREAM, pronoun_usage *pu) {
+	WRITE(" %S", pu->pronoun_used->name);
+	Stock::write_usage(OUT, pu->usage, GENDER_LCW+NUMBER_LCW+CASE_LCW);
+}
+
 @ The stock of pronouns is fixed at three:
 
 =
@@ -55,6 +67,8 @@ lcon_ti Pronouns::use(pronoun *P, int n, int p, int g) {
 	lcon_ti lcon = Stock::to_lcon(P->in_stock);
 	lcon = Lcon::set_person(lcon, p);
 	lcon = Lcon::set_number(lcon, n);
+	if (P == subject_pronoun) lcon = Lcon::set_case(lcon, NOMINATIVE_CASE);
+	if (P == object_pronoun) lcon = Lcon::set_case(lcon, ACCUSATIVE_CASE);
 	if (g >= 0) lcon = Lcon::set_gender(lcon, g);
 	return lcon;
 }
@@ -63,6 +77,16 @@ pronoun *Pronouns::from_lcon(lcon_ti lcon) {
 	linguistic_stock_item *item = Stock::from_lcon(lcon);
 	if (item == NULL) return NULL;
 	return RETRIEVE_POINTER_pronoun(item->data);
+}
+
+pronoun_usage *Pronouns::usage_from_lcon(lcon_ti lcon) {
+	pronoun *P = Pronouns::from_lcon(lcon);
+	grammatical_usage *gu = Stock::new_usage(P->in_stock, NULL);
+	Stock::add_form_to_usage(gu, lcon);
+	pronoun_usage *pu = CREATE(pronoun_usage);
+	pu->pronoun_used = P;
+	pu->usage = gu;
+	return pu;
 }
 
 void Pronouns::write_lcon(OUTPUT_STREAM, lcon_ti lcon) {

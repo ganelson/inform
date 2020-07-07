@@ -38,11 +38,12 @@ languages.
 @d NEGATIVE_SENSE 1
 
 @ 25 cases sounds like plenty, but some languages are pretty scary this
-way: Hungarian has 18. We only require one case to exist, the nominative,
-which is required to be case 0.
+way: Hungarian has 18. We only require two cases to exist, the nominative
+and accusative, which are required to be cases 0 and 1.
 
 @d MAX_GRAMMATICAL_CASES 25
 @d NOMINATIVE_CASE 0
+@d ACCUSATIVE_CASE 1
 
 @ There are at least five tenses, the first four of which are used by Inform
 in English. Some languages can use optional extras; French, for example, uses
@@ -127,7 +128,25 @@ lcon_ti Lcon::set_sense(lcon_ti l, int x)  { return (l & (~SENSE_LCMASK)) + x*SE
 
 @
 
+@d GENDER_LCW 1
+@d PERSON_LCW 2
+@d NUMBER_LCW 4
+@d MOOD_LCW   8
+@d CASE_LCW   16
+@d TENSE_LCW  32
+@d SENSE_LCW  64
+
 =
+void Lcon::write(OUTPUT_STREAM, lcon_ti l, int desiderata) {
+	if (desiderata & GENDER_LCW) Lcon::write_gender(OUT, Lcon::get_gender(l));
+	if (desiderata & PERSON_LCW) Lcon::write_person(OUT, Lcon::get_person(l));
+	if (desiderata & NUMBER_LCW) Lcon::write_number(OUT, Lcon::get_number(l));
+	if (desiderata & MOOD_LCW) Lcon::write_mood(OUT, Lcon::get_mood(l));
+	if (desiderata & CASE_LCW) Lcon::write_case(OUT, Lcon::get_case(l));
+	if (desiderata & TENSE_LCW) Lcon::write_tense(OUT, Lcon::get_tense(l));
+	if (desiderata & SENSE_LCW) Lcon::write_sense(OUT, Lcon::get_sense(l));
+}
+
 void Lcon::write_person(OUTPUT_STREAM, int p) {
 	switch (p) {
 		case FIRST_PERSON: WRITE("1p"); break;
@@ -172,5 +191,13 @@ void Lcon::write_tense(OUTPUT_STREAM, int t) {
 		case CUSTOM1_TENSE: WRITE("CUSTOM1_TENSE"); break;
 		case CUSTOM2_TENSE: WRITE("CUSTOM2_TENSE"); break;
 		default:            WRITE("<invalid-tense>"); break;
+	}
+}
+
+void Lcon::write_case(OUTPUT_STREAM, int c) {
+	switch (c) {
+		case NOMINATIVE_CASE: WRITE(" nom"); break;
+		case ACCUSATIVE_CASE: WRITE(" acc"); break;
+		default:              WRITE(" case%d", c); break;
 	}
 }

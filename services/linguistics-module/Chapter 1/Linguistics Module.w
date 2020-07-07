@@ -16,6 +16,7 @@ which use this module:
 @e determiner_CLASS
 @e grammatical_category_CLASS
 @e linguistic_stock_item_CLASS
+@e grammatical_usage_CLASS
 @e verb_CLASS
 @e verb_form_CLASS
 @e verb_meaning_CLASS
@@ -27,6 +28,7 @@ which use this module:
 @e noun_CLASS
 @e noun_usage_CLASS
 @e pronoun_CLASS
+@e pronoun_usage_CLASS
 
 =
 DECLARE_CLASS(adjective)
@@ -35,6 +37,7 @@ DECLARE_CLASS(quantifier)
 DECLARE_CLASS(determiner)
 DECLARE_CLASS(grammatical_category)
 DECLARE_CLASS(linguistic_stock_item)
+DECLARE_CLASS(grammatical_usage)
 DECLARE_CLASS(verb)
 DECLARE_CLASS(verb_form)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(verb_meaning, 100)
@@ -46,6 +49,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(time_period, 100)
 DECLARE_CLASS(noun)
 DECLARE_CLASS(noun_usage)
 DECLARE_CLASS(pronoun)
+DECLARE_CLASS(pronoun_usage)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
@@ -97,10 +101,10 @@ syntax tree.
 @e possessive_verb_ANNOT         /* |int|: this is a non-relative use of "to have" */
 @e verb_ANNOT                    /* |verb_usage|: what's being done here */
 @e noun_ANNOT                    /* |noun_usage|: what's being done here */
+@e pronoun_ANNOT                 /* |pronoun_usage|: what's being done here */
 @e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
 @e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
 @e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
-@e pronoun_ANNOT                 /* |int|: an lcon, for NPs where a pronoun was used */
 
 @e nounphrase_article_ANNOT      /* |int|: definite or indefinite article: see below */
 @e plural_reference_ANNOT        /* |int|: used by PROPER NOUN nodes for evident plurals */
@@ -111,12 +115,14 @@ syntax tree.
 =
 DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
 DECLARE_ANNOTATION_FUNCTIONS(noun, noun_usage)
+DECLARE_ANNOTATION_FUNCTIONS(pronoun, pronoun_usage)
 DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
 
 MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
 MAKE_ANNOTATION_FUNCTIONS(noun, noun_usage)
+MAKE_ANNOTATION_FUNCTIONS(pronoun, pronoun_usage)
 MAKE_ANNOTATION_FUNCTIONS(preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)

@@ -66,7 +66,8 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#6">Chapter 6: Verbs</a></li><li><b>Unary Predicates</b></li></ul></div>
 <p class="purpose">A lightweight structure to record uses of an adjective, either positively or negatively.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This really is just an ordered pair of an adjective and a boolean:
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>We store this as a linguistic constant, which points to the adjective and
+also records its sense, i.e., positive or negative:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

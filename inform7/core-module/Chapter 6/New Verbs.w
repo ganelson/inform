@@ -106,14 +106,16 @@ void NewVerbs::add_inequalities_inner(verb_meaning lt, verb_meaning gt, verb_mea
 			case 2: v = Verbs::new_operator_verb(le); break;
 			case 3: v = Verbs::new_operator_verb(ge); break;
 		}
+		grammatical_usage *gu = Stock::new_usage(v->in_stock, Task::language_of_syntax());
 		lcon_ti l = Verbs::to_lcon(v);
 		l = Lcon::set_mood(l, ACTIVE_MOOD);
 		l = Lcon::set_tense(l, IS_TENSE);
 		l = Lcon::set_sense(l, POSITIVE_SENSE);
 		l = Lcon::set_person(l, THIRD_PERSON);
 		l = Lcon::set_number(l, SINGULAR_NUMBER);
+		Stock::add_form_to_usage(gu, l);
 		VerbUsages::register_single_usage(
-			PreformUtilities::wording(<inequality-conjugations>, i), FALSE, l);
+			PreformUtilities::wording(<inequality-conjugations>, i), FALSE, gu);
 	}
 }
 
@@ -1192,7 +1194,7 @@ usages to the debugging log.
 
 =
 void NewVerbs::log(verb_usage *vu) {
-	VerbUsages::write(DL, vu);
+	VerbUsages::write_usage(DL, vu);
 }
 
 void NewVerbs::log_all(void) {

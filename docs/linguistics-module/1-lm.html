@@ -74,6 +74,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">determiner_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">grammatical_category_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">linguistic_stock_item_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">grammatical_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_form_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_meaning_CLASS</span>
@@ -85,6 +86,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">noun_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">noun_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pronoun_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">pronoun_usage_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective</span><span class="plain-syntax">)</span>
@@ -93,6 +95,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">determiner</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">grammatical_category</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">grammatical_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_form</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
@@ -104,6 +107,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pronoun</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pronoun_usage</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
 </p>
@@ -170,10 +174,10 @@ syntax tree.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">possessive_verb_ANNOT</span><span class="plain-syntax">         </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: this is a non-relative use of "to have"</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_ANNOT</span><span class="plain-syntax">                    </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">verb_usage</span></span><span class="comment-syntax">: what's being done here</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">noun_ANNOT</span><span class="plain-syntax">                    </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">noun_usage</span></span><span class="comment-syntax">: what's being done here</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">pronoun_ANNOT</span><span class="plain-syntax">                 </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">pronoun_usage</span></span><span class="comment-syntax">: what's being done here</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">preposition_ANNOT</span><span class="plain-syntax">             </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">preposition</span></span><span class="comment-syntax">: which preposition, if any, qualifies it</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">second_preposition_ANNOT</span><span class="plain-syntax">      </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">preposition</span></span><span class="comment-syntax">: which further preposition, if any, qualifies it</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_meaning_ANNOT</span><span class="plain-syntax">            </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">verb_meaning</span></span><span class="comment-syntax">: what it means</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">pronoun_ANNOT</span><span class="plain-syntax">                 </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: an lcon, for NPs where a pronoun was used</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">nounphrase_article_ANNOT</span><span class="plain-syntax">      </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: definite or indefinite article: see below</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">plural_reference_ANNOT</span><span class="plain-syntax">        </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: used by PROPER NOUN nodes for evident plurals</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">gender_reference_ANNOT</span><span class="plain-syntax">        </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">int</span></span><span class="comment-syntax">: used by PROPER NOUN nodes for evident genders</span>
@@ -183,12 +187,14 @@ syntax tree.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax">, </span><span class="reserved-syntax">noun_usage</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pronoun</span><span class="plain-syntax">, </span><span class="reserved-syntax">pronoun_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">second_preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">)</span>
 
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax">, </span><span class="reserved-syntax">noun_usage</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pronoun</span><span class="plain-syntax">, </span><span class="reserved-syntax">pronoun_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">second_preposition</span><span class="plain-syntax">, </span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">)</span>
@@ -203,7 +209,7 @@ initialises, it calls the following routine to improve its performance.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first_round_of_nt_optimisation_made</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LinguisticsModule::preform_optimiser</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="1-cao.html#SP3" class="function-link"><span class="function-syntax">Cardinals::preform_optimiser</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="3-vu.html#SP23" class="function-link"><span class="function-syntax">VerbUsages::preform_optimiser</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="3-vu.html#SP24" class="function-link"><span class="function-syntax">VerbUsages::preform_optimiser</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="3-prp.html#SP12" class="function-link"><span class="function-syntax">Prepositions::preform_optimiser</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first_round_of_nt_optimisation_made</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">first_round_of_nt_optimisation_made</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>

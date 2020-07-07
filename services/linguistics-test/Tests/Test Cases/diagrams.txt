@@ -24,6 +24,8 @@ Chapter 2
 
 Jane is a woman.
 
+Jane is not a sailor.
+
 She is a person.
 
 Peter carries the torch.

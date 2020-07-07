@@ -138,3 +138,66 @@ linguistic_stock_item *Stock::from_lcon(lcon_ti l) {
 	if ((id < 0) || (id >= flat_array_of_stock_extent)) return NULL;
 	return flat_array_of_stock[id];
 }
+
+@ Grammatical usages.
+Consider nouns, for example. In many languages, declensions do not distinguish
+cases fully. In English, the accusative and nominative form of almost every
+noun are the same. So it would not be possible for this object to say for
+sure what case was used -- for example, the lexicon can't know that the
+use of "Jane" in the sentences "Peter knows Jane" and "Jane knows Peter" has
+a different case in those sentences: it's only looking at the word itself,
+and can't know the wider context. If we parse the word "Jane" the best we can
+do is say "it's Jane, in either the nominative or accusative case".
+
+More inflected languages make for more interesting examples here. In German,
+for example, "Tische" could be any of the nominative, accusative or genitive
+plurals of "Tisch", table, but "Tischen" can only be the dative plural.
+
+The following object represents awkward disjunctions like "either the nominative
+or accusative case".
+
+=
+typedef struct grammatical_usage {
+	struct linguistic_stock_item *used;
+	NATURAL_LANGUAGE_WORDS_TYPE *language;
+	int no_possible_forms;
+	lcon_ti possible_forms[2*MAX_GRAMMATICAL_CASES];
+	CLASS_DEFINITION
+} grammatical_usage;
+
+grammatical_usage *Stock::new_usage(linguistic_stock_item *item, NATURAL_LANGUAGE_WORDS_TYPE *L) {
+	grammatical_usage *gu = CREATE(grammatical_usage);
+	gu->used = item;
+	gu->language = L;
+	gu->no_possible_forms = 0;
+	return gu;
+}
+
+void Stock::add_form_to_usage(grammatical_usage *gu, lcon_ti f) {
+	f = Lcon::set_id(f, 1 + gu->used->allocation_id);
+	if (gu->no_possible_forms >= 2*MAX_GRAMMATICAL_CASES) internal_error("too many forms");
+	gu->possible_forms[gu->no_possible_forms++] = f;
+}
+
+lcon_ti Stock::first_form_in_usage(grammatical_usage *gu) {
+	if (gu->no_possible_forms == 0) internal_error("unformed usage");
+	return gu->possible_forms[0];
+}
+
+void Stock::write_usage(OUTPUT_STREAM, grammatical_usage *gu, int desiderata) {
+	if (gu->no_possible_forms == 0) WRITE("<unformed usage>");
+	for (int i=0; i<gu->no_possible_forms; i++) {
+		if (i>0) WRITE(" +");
+		if (gu->no_possible_forms > 1) WRITE(" (");
+		Lcon::write(OUT, gu->possible_forms[i], desiderata);
+		if (gu->no_possible_forms > 1) WRITE(" )");
+	}
+}
+
+int Stock::usage_might_be_singular(grammatical_usage *gu) {
+	if (gu)
+		for (int i=0; i<gu->no_possible_forms; i++)
+			if (Lcon::get_number(gu->possible_forms[i]) == SINGULAR_NUMBER)
+				return TRUE;
+	return FALSE;			
+}

@@ -1,1632 +1,1632 @@
 The current S-grammar has the following verb and preposition usages:
-vu: < +ve act IS_TENSE3p s
-vu: > +ve act IS_TENSE3p s
-vu: <= +ve act IS_TENSE3p s
-vu: >= +ve act IS_TENSE3p s
-vu: has not been -ve act HASBEEN_TENSE3p s
-vu: have not been -ve act HASBEEN_TENSE3p p
-vu: had not been -ve act HADBEEN_TENSE3p s
-vu: had not been -ve act HADBEEN_TENSE3p p
-vu: has been +ve act HASBEEN_TENSE3p s
-vu: have been +ve act HASBEEN_TENSE3p p
-vu: had been +ve act HADBEEN_TENSE3p s
-vu: had been +ve act HADBEEN_TENSE3p p
-vu: is not -ve act IS_TENSE3p s
-vu: are not -ve act IS_TENSE3p p
-vu: was not -ve act WAS_TENSE3p s
-vu: were not -ve act WAS_TENSE3p p
-vu: is +ve act IS_TENSE3p s
-vu: are +ve act IS_TENSE3p p
-vu: was +ve act WAS_TENSE3p s
-vu: were +ve act WAS_TENSE3p p
-vu: has not meant -ve act HASBEEN_TENSE3p s
-vu: have not meant -ve act HASBEEN_TENSE3p p
-vu: had not meant -ve act HADBEEN_TENSE3p s
-vu: had not meant -ve act HADBEEN_TENSE3p p
-vu: has meant +ve act HASBEEN_TENSE3p s
-vu: have meant +ve act HASBEEN_TENSE3p p
-vu: had meant +ve act HADBEEN_TENSE3p s
-vu: had meant +ve act HADBEEN_TENSE3p p
-vu: does not mean -ve act IS_TENSE3p s
-vu: do not mean -ve act IS_TENSE3p p
-vu: did not mean -ve act WAS_TENSE3p s
-vu: did not mean -ve act WAS_TENSE3p p
-vu: means +ve act IS_TENSE3p s
-vu: mean +ve act IS_TENSE3p p
-vu: meant +ve act WAS_TENSE3p s
-vu: meant +ve act WAS_TENSE3p p
-vu: has not implied -ve act HASBEEN_TENSE3p s
-vu: have not implied -ve act HASBEEN_TENSE3p p
-vu: had not implied -ve act HADBEEN_TENSE3p s
-vu: had not implied -ve act HADBEEN_TENSE3p p
-vu: has implied +ve act HASBEEN_TENSE3p s
-vu: have implied +ve act HASBEEN_TENSE3p p
-vu: had implied +ve act HADBEEN_TENSE3p s
-vu: had implied +ve act HADBEEN_TENSE3p p
-vu: does not imply -ve act IS_TENSE3p s
-vu: do not imply -ve act IS_TENSE3p p
-vu: did not imply -ve act WAS_TENSE3p s
-vu: did not imply -ve act WAS_TENSE3p p
-vu: implies +ve act IS_TENSE3p s
-vu: imply +ve act IS_TENSE3p p
-vu: implied +ve act WAS_TENSE3p s
-vu: implied +ve act WAS_TENSE3p p
-vu: has not been able to be -ve act HASBEEN_TENSE3p s
-vu: have not been able to be -ve act HASBEEN_TENSE3p p
-vu: had not been able to be -ve act HADBEEN_TENSE3p s
-vu: had not been able to be -ve act HADBEEN_TENSE3p p
-vu: has been able to be +ve act HASBEEN_TENSE3p s
-vu: have been able to be +ve act HASBEEN_TENSE3p p
-vu: had been able to be +ve act HADBEEN_TENSE3p s
-vu: had been able to be +ve act HADBEEN_TENSE3p p
-vu: cannot be -ve act IS_TENSE3p s
-vu: cannot be -ve act IS_TENSE3p p
-vu: could not be -ve act WAS_TENSE3p s
-vu: could not be -ve act WAS_TENSE3p p
-vu: can be +ve act IS_TENSE3p s
-vu: can be +ve act IS_TENSE3p p
-vu: could be +ve act WAS_TENSE3p s
-vu: could be +ve act WAS_TENSE3p p
-vu: has not been able to be been by -ve pass HASBEEN_TENSE3p s
-vu: have not been able to be been by -ve pass HASBEEN_TENSE3p p
-vu: had not been able to be been by -ve pass HADBEEN_TENSE3p s
-vu: had not been able to be been by -ve pass HADBEEN_TENSE3p p
-vu: has been able to be been by +ve pass HASBEEN_TENSE3p s
-vu: have been able to be been by +ve pass HASBEEN_TENSE3p p
-vu: had been able to be been by +ve pass HADBEEN_TENSE3p s
-vu: had been able to be been by +ve pass HADBEEN_TENSE3p p
-vu: cannot be been by -ve pass IS_TENSE3p s
-vu: cannot be been by -ve pass IS_TENSE3p p
-vu: could not be been by -ve pass WAS_TENSE3p s
-vu: could not be been by -ve pass WAS_TENSE3p p
-vu: can be been by +ve pass IS_TENSE3p s
-vu: can be been by +ve pass IS_TENSE3p p
-vu: could be been by +ve pass WAS_TENSE3p s
-vu: could be been by +ve pass WAS_TENSE3p p
-vu: has not had -ve act HASBEEN_TENSE3p s
-vu: have not had -ve act HASBEEN_TENSE3p p
-vu: had not had -ve act HADBEEN_TENSE3p s
-vu: had not had -ve act HADBEEN_TENSE3p p
-vu: has had +ve act HASBEEN_TENSE3p s
-vu: have had +ve act HASBEEN_TENSE3p p
-vu: had had +ve act HADBEEN_TENSE3p s
-vu: had had +ve act HADBEEN_TENSE3p p
-vu: does not have -ve act IS_TENSE3p s
-vu: do not have -ve act IS_TENSE3p p
-vu: did not have -ve act WAS_TENSE3p s
-vu: did not have -ve act WAS_TENSE3p p
-vu: has +ve act IS_TENSE3p s
-vu: have +ve act IS_TENSE3p p
-vu: had +ve act WAS_TENSE3p s
-vu: had +ve act WAS_TENSE3p p
-vu: has not specified -ve act HASBEEN_TENSE3p s
-vu: have not specified -ve act HASBEEN_TENSE3p p
-vu: had not specified -ve act HADBEEN_TENSE3p s
-vu: had not specified -ve act HADBEEN_TENSE3p p
-vu: has specified +ve act HASBEEN_TENSE3p s
-vu: have specified +ve act HASBEEN_TENSE3p p
-vu: had specified +ve act HADBEEN_TENSE3p s
-vu: had specified +ve act HADBEEN_TENSE3p p
-vu: does not specify -ve act IS_TENSE3p s
-vu: do not specify -ve act IS_TENSE3p p
-vu: did not specify -ve act WAS_TENSE3p s
-vu: did not specify -ve act WAS_TENSE3p p
-vu: specifies +ve act IS_TENSE3p s
-vu: specify +ve act IS_TENSE3p p
-vu: specified +ve act WAS_TENSE3p s
-vu: specified +ve act WAS_TENSE3p p
-vu: has not related -ve act HASBEEN_TENSE3p s
-vu: have not related -ve act HASBEEN_TENSE3p p
-vu: had not related -ve act HADBEEN_TENSE3p s
-vu: had not related -ve act HADBEEN_TENSE3p p
-vu: has related +ve act HASBEEN_TENSE3p s
-vu: have related +ve act HASBEEN_TENSE3p p
-vu: had related +ve act HADBEEN_TENSE3p s
-vu: had related +ve act HADBEEN_TENSE3p p
-vu: does not relate -ve act IS_TENSE3p s
-vu: do not relate -ve act IS_TENSE3p p
-vu: did not relate -ve act WAS_TENSE3p s
-vu: did not relate -ve act WAS_TENSE3p p
-vu: relates +ve act IS_TENSE3p s
-vu: relate +ve act IS_TENSE3p p
-vu: related +ve act WAS_TENSE3p s
-vu: related +ve act WAS_TENSE3p p
-vu: has not substituted -ve act HASBEEN_TENSE3p s
-vu: have not substituted -ve act HASBEEN_TENSE3p p
-vu: had not substituted -ve act HADBEEN_TENSE3p s
-vu: had not substituted -ve act HADBEEN_TENSE3p p
-vu: has substituted +ve act HASBEEN_TENSE3p s
-vu: have substituted +ve act HASBEEN_TENSE3p p
-vu: had substituted +ve act HADBEEN_TENSE3p s
-vu: had substituted +ve act HADBEEN_TENSE3p p
-vu: does not substitute -ve act IS_TENSE3p s
-vu: do not substitute -ve act IS_TENSE3p p
-vu: did not substitute -ve act WAS_TENSE3p s
-vu: did not substitute -ve act WAS_TENSE3p p
-vu: substitutes +ve act IS_TENSE3p s
-vu: substitute +ve act IS_TENSE3p p
-vu: substituted +ve act WAS_TENSE3p s
-vu: substituted +ve act WAS_TENSE3p p
-vu: has not done -ve act HASBEEN_TENSE3p s
-vu: have not done -ve act HASBEEN_TENSE3p p
-vu: had not done -ve act HADBEEN_TENSE3p s
-vu: had not done -ve act HADBEEN_TENSE3p p
-vu: has done +ve act HASBEEN_TENSE3p s
-vu: have done +ve act HASBEEN_TENSE3p p
-vu: had done +ve act HADBEEN_TENSE3p s
-vu: had done +ve act HADBEEN_TENSE3p p
-vu: does not -ve act IS_TENSE3p s
-vu: do not -ve act IS_TENSE3p p
-vu: did not -ve act WAS_TENSE3p s
-vu: did not -ve act WAS_TENSE3p p
-vu: does +ve act IS_TENSE3p s
-vu: do +ve act IS_TENSE3p p
-vu: did +ve act WAS_TENSE3p s
-vu: did +ve act WAS_TENSE3p p
-vu: has not translated -ve act HASBEEN_TENSE3p s
-vu: have not translated -ve act HASBEEN_TENSE3p p
-vu: had not translated -ve act HADBEEN_TENSE3p s
-vu: had not translated -ve act HADBEEN_TENSE3p p
-vu: has translated +ve act HASBEEN_TENSE3p s
-vu: have translated +ve act HASBEEN_TENSE3p p
-vu: had translated +ve act HADBEEN_TENSE3p s
-vu: had translated +ve act HADBEEN_TENSE3p p
-vu: does not translate -ve act IS_TENSE3p s
-vu: do not translate -ve act IS_TENSE3p p
-vu: did not translate -ve act WAS_TENSE3p s
-vu: did not translate -ve act WAS_TENSE3p p
-vu: translates +ve act IS_TENSE3p s
-vu: translate +ve act IS_TENSE3p p
-vu: translated +ve act WAS_TENSE3p s
-vu: translated +ve act WAS_TENSE3p p
-vu: has not provided -ve act HASBEEN_TENSE3p s
-vu: have not provided -ve act HASBEEN_TENSE3p p
-vu: had not provided -ve act HADBEEN_TENSE3p s
-vu: had not provided -ve act HADBEEN_TENSE3p p
-vu: has provided +ve act HASBEEN_TENSE3p s
-vu: have provided +ve act HASBEEN_TENSE3p p
-vu: had provided +ve act HADBEEN_TENSE3p s
-vu: had provided +ve act HADBEEN_TENSE3p p
-vu: does not provide -ve act IS_TENSE3p s
-vu: do not provide -ve act IS_TENSE3p p
-vu: did not provide -ve act WAS_TENSE3p s
-vu: did not provide -ve act WAS_TENSE3p p
-vu: provides +ve act IS_TENSE3p s
-vu: provide +ve act IS_TENSE3p p
-vu: provided +ve act WAS_TENSE3p s
-vu: provided +ve act WAS_TENSE3p p
-vu: has not used -ve act HASBEEN_TENSE3p s
-vu: have not used -ve act HASBEEN_TENSE3p p
-vu: had not used -ve act HADBEEN_TENSE3p s
-vu: had not used -ve act HADBEEN_TENSE3p p
-vu: has used +ve act HASBEEN_TENSE3p s
-vu: have used +ve act HASBEEN_TENSE3p p
-vu: had used +ve act HADBEEN_TENSE3p s
-vu: had used +ve act HADBEEN_TENSE3p p
-vu: does not use -ve act IS_TENSE3p s
-vu: do not use -ve act IS_TENSE3p p
-vu: did not use -ve act WAS_TENSE3p s
-vu: did not use -ve act WAS_TENSE3p p
-vu: uses +ve act IS_TENSE3p s
-vu: use +ve act IS_TENSE3p p
-vu: used +ve act WAS_TENSE3p s
-vu: used +ve act WAS_TENSE3p p
-vu: has not included -ve act HASBEEN_TENSE3p s
-vu: have not included -ve act HASBEEN_TENSE3p p
-vu: had not included -ve act HADBEEN_TENSE3p s
-vu: had not included -ve act HADBEEN_TENSE3p p
-vu: has included +ve act HASBEEN_TENSE3p s
-vu: have included +ve act HASBEEN_TENSE3p p
-vu: had included +ve act HADBEEN_TENSE3p s
-vu: had included +ve act HADBEEN_TENSE3p p
-vu: does not include -ve act IS_TENSE3p s
-vu: do not include -ve act IS_TENSE3p p
-vu: did not include -ve act WAS_TENSE3p s
-vu: did not include -ve act WAS_TENSE3p p
-vu: includes +ve act IS_TENSE3p s
-vu: include +ve act IS_TENSE3p p
-vu: included +ve act WAS_TENSE3p s
-vu: included +ve act WAS_TENSE3p p
-vu: has not omitted -ve act HASBEEN_TENSE3p s
-vu: have not omitted -ve act HASBEEN_TENSE3p p
-vu: had not omitted -ve act HADBEEN_TENSE3p s
-vu: had not omitted -ve act HADBEEN_TENSE3p p
-vu: has omitted +ve act HASBEEN_TENSE3p s
-vu: have omitted +ve act HASBEEN_TENSE3p p
-vu: had omitted +ve act HADBEEN_TENSE3p s
-vu: had omitted +ve act HADBEEN_TENSE3p p
-vu: does not omit -ve act IS_TENSE3p s
-vu: do not omit -ve act IS_TENSE3p p
-vu: did not omit -ve act WAS_TENSE3p s
-vu: did not omit -ve act WAS_TENSE3p p
-vu: omits +ve act IS_TENSE3p s
-vu: omit +ve act IS_TENSE3p p
-vu: omitted +ve act WAS_TENSE3p s
-vu: omitted +ve act WAS_TENSE3p p
-vu: has not been able to -ve act HASBEEN_TENSE3p s
-vu: have not been able to -ve act HASBEEN_TENSE3p p
-vu: had not been able to -ve act HADBEEN_TENSE3p s
-vu: had not been able to -ve act HADBEEN_TENSE3p p
-vu: has been able to +ve act HASBEEN_TENSE3p s
-vu: have been able to +ve act HASBEEN_TENSE3p p
-vu: had been able to +ve act HADBEEN_TENSE3p s
-vu: had been able to +ve act HADBEEN_TENSE3p p
-vu: cannot -ve act IS_TENSE3p s
-vu: cannot -ve act IS_TENSE3p p
-vu: could not -ve act WAS_TENSE3p s
-vu: could not -ve act WAS_TENSE3p p
-vu: can +ve act IS_TENSE3p s
-vu: can +ve act IS_TENSE3p p
-vu: could +ve act WAS_TENSE3p s
-vu: could +ve act WAS_TENSE3p p
-vu: could not have -ve act HASBEEN_TENSE3p s
-vu: could not have -ve act HASBEEN_TENSE3p p
-vu: could not have -ve act HADBEEN_TENSE3p s
-vu: could not have -ve act HADBEEN_TENSE3p p
-vu: could have +ve act HASBEEN_TENSE3p s
-vu: could have +ve act HASBEEN_TENSE3p p
-vu: could have +ve act HADBEEN_TENSE3p s
-vu: could have +ve act HADBEEN_TENSE3p p
-vu: could not -ve act IS_TENSE3p s
-vu: could not -ve act IS_TENSE3p p
-vu: could not have -ve act WAS_TENSE3p s
-vu: could not have -ve act WAS_TENSE3p p
-vu: could +ve act IS_TENSE3p s
-vu: could +ve act IS_TENSE3p p
-vu: could have +ve act WAS_TENSE3p s
-vu: could have +ve act WAS_TENSE3p p
-vu: may not have -ve act HASBEEN_TENSE3p s
-vu: may not have -ve act HASBEEN_TENSE3p p
-vu: may not have -ve act HADBEEN_TENSE3p s
-vu: may not have -ve act HADBEEN_TENSE3p p
-vu: may have +ve act HASBEEN_TENSE3p s
-vu: may have +ve act HASBEEN_TENSE3p p
-vu: may have +ve act HADBEEN_TENSE3p s
-vu: may have +ve act HADBEEN_TENSE3p p
-vu: may not -ve act IS_TENSE3p s
-vu: may not -ve act IS_TENSE3p p
-vu: may not have -ve act WAS_TENSE3p s
-vu: may not have -ve act WAS_TENSE3p p
-vu: may +ve act IS_TENSE3p s
-vu: may +ve act IS_TENSE3p p
-vu: may have +ve act WAS_TENSE3p s
-vu: may have +ve act WAS_TENSE3p p
-vu: might not have -ve act HASBEEN_TENSE3p s
-vu: might not have -ve act HASBEEN_TENSE3p p
-vu: might not have -ve act HADBEEN_TENSE3p s
-vu: might not have -ve act HADBEEN_TENSE3p p
-vu: might have +ve act HASBEEN_TENSE3p s
-vu: might have +ve act HASBEEN_TENSE3p p
-vu: might have +ve act HADBEEN_TENSE3p s
-vu: might have +ve act HADBEEN_TENSE3p p
-vu: might not -ve act IS_TENSE3p s
-vu: might not -ve act IS_TENSE3p p
-vu: might not have -ve act WAS_TENSE3p s
-vu: might not have -ve act WAS_TENSE3p p
-vu: might +ve act IS_TENSE3p s
-vu: might +ve act IS_TENSE3p p
-vu: might have +ve act WAS_TENSE3p s
-vu: might have +ve act WAS_TENSE3p p
-vu: must not have -ve act HASBEEN_TENSE3p s
-vu: must not have -ve act HASBEEN_TENSE3p p
-vu: must not have -ve act HADBEEN_TENSE3p s
-vu: must not have -ve act HADBEEN_TENSE3p p
-vu: must have +ve act HASBEEN_TENSE3p s
-vu: must have +ve act HASBEEN_TENSE3p p
-vu: must have +ve act HADBEEN_TENSE3p s
-vu: must have +ve act HADBEEN_TENSE3p p
-vu: must not -ve act IS_TENSE3p s
-vu: must not -ve act IS_TENSE3p p
-vu: must not have -ve act WAS_TENSE3p s
-vu: must not have -ve act WAS_TENSE3p p
-vu: must +ve act IS_TENSE3p s
-vu: must +ve act IS_TENSE3p p
-vu: must have +ve act WAS_TENSE3p s
-vu: must have +ve act WAS_TENSE3p p
-vu: should not have -ve act HASBEEN_TENSE3p s
-vu: should not have -ve act HASBEEN_TENSE3p p
-vu: should not have -ve act HADBEEN_TENSE3p s
-vu: should not have -ve act HADBEEN_TENSE3p p
-vu: should have +ve act HASBEEN_TENSE3p s
-vu: should have +ve act HASBEEN_TENSE3p p
-vu: should have +ve act HADBEEN_TENSE3p s
-vu: should have +ve act HADBEEN_TENSE3p p
-vu: should not -ve act IS_TENSE3p s
-vu: should not -ve act IS_TENSE3p p
-vu: should not have -ve act WAS_TENSE3p s
-vu: should not have -ve act WAS_TENSE3p p
-vu: should +ve act IS_TENSE3p s
-vu: should +ve act IS_TENSE3p p
-vu: should have +ve act WAS_TENSE3p s
-vu: should have +ve act WAS_TENSE3p p
-vu: would not have -ve act HASBEEN_TENSE3p s
-vu: would not have -ve act HASBEEN_TENSE3p p
-vu: would not have -ve act HADBEEN_TENSE3p s
-vu: would not have -ve act HADBEEN_TENSE3p p
-vu: would have +ve act HASBEEN_TENSE3p s
-vu: would have +ve act HASBEEN_TENSE3p p
-vu: would have +ve act HADBEEN_TENSE3p s
-vu: would have +ve act HADBEEN_TENSE3p p
-vu: would not -ve act IS_TENSE3p s
-vu: would not -ve act IS_TENSE3p p
-vu: would not have -ve act WAS_TENSE3p s
-vu: would not have -ve act WAS_TENSE3p p
-vu: would +ve act IS_TENSE3p s
-vu: would +ve act IS_TENSE3p p
-vu: would have +ve act WAS_TENSE3p s
-vu: would have +ve act WAS_TENSE3p p
-vu: 's not been -ve act HASBEEN_TENSE3p s
-vu: 've not been -ve act HASBEEN_TENSE3p p
-vu: 'd not been -ve act HADBEEN_TENSE3p s
-vu: 'd not been -ve act HADBEEN_TENSE3p p
-vu: 's been +ve act HASBEEN_TENSE3p s
-vu: 've been +ve act HASBEEN_TENSE3p p
-vu: 'd been +ve act HADBEEN_TENSE3p s
-vu: 'd been +ve act HADBEEN_TENSE3p p
-vu: 's not -ve act IS_TENSE3p s
-vu: 're not -ve act IS_TENSE3p p
-vu: wasn't -ve act WAS_TENSE3p s
-vu: weren't -ve act WAS_TENSE3p p
-vu: 's +ve act IS_TENSE3p s
-vu: 're +ve act IS_TENSE3p p
-vu: was +ve act WAS_TENSE3p s
-vu: were +ve act WAS_TENSE3p p
-vu: 's not had -ve act HASBEEN_TENSE3p s
-vu: 've not had -ve act HASBEEN_TENSE3p p
-vu: 'd not had -ve act HADBEEN_TENSE3p s
-vu: 'd not had -ve act HADBEEN_TENSE3p p
-vu: 's had +ve act HASBEEN_TENSE3p s
-vu: 've had +ve act HASBEEN_TENSE3p p
-vu: 'd had +ve act HADBEEN_TENSE3p s
-vu: 'd had +ve act HADBEEN_TENSE3p p
-vu: 's not -ve act IS_TENSE3p s
-vu: 've not -ve act IS_TENSE3p p
-vu: hadn't -ve act WAS_TENSE3p s
-vu: hadn't -ve act WAS_TENSE3p p
-vu: 's +ve act IS_TENSE3p s
-vu: 've +ve act IS_TENSE3p p
-vu: had +ve act WAS_TENSE3p s
-vu: had +ve act WAS_TENSE3p p
-vu: hasn't been +ve act HASBEEN_TENSE3p s
-vu: haven't been +ve act HASBEEN_TENSE3p p
-vu: hadn't been +ve act HADBEEN_TENSE3p s
-vu: hadn't been +ve act HADBEEN_TENSE3p p
-vu: isn't +ve act IS_TENSE3p s
-vu: aren't +ve act IS_TENSE3p p
-vu: wasn't +ve act WAS_TENSE3p s
-vu: weren't +ve act WAS_TENSE3p p
-vu: hasn't been able to +ve act HASBEEN_TENSE3p s
-vu: haven't been able to +ve act HASBEEN_TENSE3p p
-vu: hadn't been able to +ve act HADBEEN_TENSE3p s
-vu: hadn't been able to +ve act HADBEEN_TENSE3p p
-vu: can't +ve act IS_TENSE3p s
-vu: can't +ve act IS_TENSE3p p
-vu: couldn't +ve act WAS_TENSE3p s
-vu: couldn't +ve act WAS_TENSE3p p
-vu: didn't +ve act HASBEEN_TENSE3p s
-vu: didn't +ve act HASBEEN_TENSE3p p
-vu: didn't +ve act HADBEEN_TENSE3p s
-vu: didn't +ve act HADBEEN_TENSE3p p
-vu: doesn't +ve act IS_TENSE3p s
-vu: don't +ve act IS_TENSE3p p
-vu: didn't +ve act WAS_TENSE3p s
-vu: didn't +ve act WAS_TENSE3p p
-vu: hadn't +ve act HASBEEN_TENSE3p s
-vu: hadn't +ve act HASBEEN_TENSE3p p
-vu: hadn't +ve act HADBEEN_TENSE3p s
-vu: hadn't +ve act HADBEEN_TENSE3p p
-vu: hasn't +ve act IS_TENSE3p s
-vu: haven't +ve act IS_TENSE3p p
-vu: hadn't +ve act WAS_TENSE3p s
-vu: hadn't +ve act WAS_TENSE3p p
-vu: mustn't have +ve act HASBEEN_TENSE3p s
-vu: mustn't have +ve act HASBEEN_TENSE3p p
-vu: mustn't have +ve act HADBEEN_TENSE3p s
-vu: mustn't have +ve act HADBEEN_TENSE3p p
-vu: mustn't +ve act IS_TENSE3p s
-vu: mustn't +ve act IS_TENSE3p p
-vu: mustn't have +ve act WAS_TENSE3p s
-vu: mustn't have +ve act WAS_TENSE3p p
-vu: mightn't have +ve act HASBEEN_TENSE3p s
-vu: mightn't have +ve act HASBEEN_TENSE3p p
-vu: mightn't have +ve act HADBEEN_TENSE3p s
-vu: mightn't have +ve act HADBEEN_TENSE3p p
-vu: mightn't +ve act IS_TENSE3p s
-vu: mightn't +ve act IS_TENSE3p p
-vu: mightn't have +ve act WAS_TENSE3p s
-vu: mightn't have +ve act WAS_TENSE3p p
-vu: mayn't have +ve act HASBEEN_TENSE3p s
-vu: mayn't have +ve act HASBEEN_TENSE3p p
-vu: mayn't have +ve act HADBEEN_TENSE3p s
-vu: mayn't have +ve act HADBEEN_TENSE3p p
-vu: mayn't +ve act IS_TENSE3p s
-vu: mayn't +ve act IS_TENSE3p p
-vu: mayn't have +ve act WAS_TENSE3p s
-vu: mayn't have +ve act WAS_TENSE3p p
-vu: wouldn't have +ve act HASBEEN_TENSE3p s
-vu: wouldn't have +ve act HASBEEN_TENSE3p p
-vu: wouldn't have +ve act HADBEEN_TENSE3p s
-vu: wouldn't have +ve act HADBEEN_TENSE3p p
-vu: wouldn't +ve act IS_TENSE3p s
-vu: wouldn't +ve act IS_TENSE3p p
-vu: wouldn't have +ve act WAS_TENSE3p s
-vu: wouldn't have +ve act WAS_TENSE3p p
-vu: couldn't have +ve act HASBEEN_TENSE3p s
-vu: couldn't have +ve act HASBEEN_TENSE3p p
-vu: couldn't have +ve act HADBEEN_TENSE3p s
-vu: couldn't have +ve act HADBEEN_TENSE3p p
-vu: couldn't +ve act IS_TENSE3p s
-vu: couldn't +ve act IS_TENSE3p p
-vu: couldn't have +ve act WAS_TENSE3p s
-vu: couldn't have +ve act WAS_TENSE3p p
-vu: shouldn't have +ve act HASBEEN_TENSE3p s
-vu: shouldn't have +ve act HASBEEN_TENSE3p p
-vu: shouldn't have +ve act HADBEEN_TENSE3p s
-vu: shouldn't have +ve act HADBEEN_TENSE3p p
-vu: shouldn't +ve act IS_TENSE3p s
-vu: shouldn't +ve act IS_TENSE3p p
-vu: shouldn't have +ve act WAS_TENSE3p s
-vu: shouldn't have +ve act WAS_TENSE3p p
-vu: wouldn't +ve act HASBEEN_TENSE3p s
-vu: wouldn't +ve act HASBEEN_TENSE3p p
-vu: wouldn't +ve act HADBEEN_TENSE3p s
-vu: wouldn't +ve act HADBEEN_TENSE3p p
-vu: won't +ve act IS_TENSE3p s
-vu: won't +ve act IS_TENSE3p p
-vu: wouldn't +ve act WAS_TENSE3p s
-vu: wouldn't +ve act WAS_TENSE3p p
-vu: has not begun -ve act HASBEEN_TENSE3p s
-vu: have not begun -ve act HASBEEN_TENSE3p p
-vu: had not begun -ve act HADBEEN_TENSE3p s
-vu: had not begun -ve act HADBEEN_TENSE3p p
-vu: has begun +ve act HASBEEN_TENSE3p s
-vu: have begun +ve act HASBEEN_TENSE3p p
-vu: had begun +ve act HADBEEN_TENSE3p s
-vu: had begun +ve act HADBEEN_TENSE3p p
-vu: does not begin -ve act IS_TENSE3p s
-vu: do not begin -ve act IS_TENSE3p p
-vu: did not begin -ve act WAS_TENSE3p s
-vu: did not begin -ve act WAS_TENSE3p p
-vu: begins +ve act IS_TENSE3p s
-vu: begin +ve act IS_TENSE3p p
-vu: began +ve act WAS_TENSE3p s
-vu: began +ve act WAS_TENSE3p p
-vu: has not ended -ve act HASBEEN_TENSE3p s
-vu: have not ended -ve act HASBEEN_TENSE3p p
-vu: had not ended -ve act HADBEEN_TENSE3p s
-vu: had not ended -ve act HADBEEN_TENSE3p p
-vu: has ended +ve act HASBEEN_TENSE3p s
-vu: have ended +ve act HASBEEN_TENSE3p p
-vu: had ended +ve act HADBEEN_TENSE3p s
-vu: had ended +ve act HADBEEN_TENSE3p p
-vu: does not end -ve act IS_TENSE3p s
-vu: do not end -ve act IS_TENSE3p p
-vu: did not end -ve act WAS_TENSE3p s
-vu: did not end -ve act WAS_TENSE3p p
-vu: ends +ve act IS_TENSE3p s
-vu: end +ve act IS_TENSE3p p
-vu: ended +ve act WAS_TENSE3p s
-vu: ended +ve act WAS_TENSE3p p
-vu: has not tested -ve act HASBEEN_TENSE3p s
-vu: have not tested -ve act HASBEEN_TENSE3p p
-vu: had not tested -ve act HADBEEN_TENSE3p s
-vu: had not tested -ve act HADBEEN_TENSE3p p
-vu: has tested +ve act HASBEEN_TENSE3p s
-vu: have tested +ve act HASBEEN_TENSE3p p
-vu: had tested +ve act HADBEEN_TENSE3p s
-vu: had tested +ve act HADBEEN_TENSE3p p
-vu: does not test -ve act IS_TENSE3p s
-vu: do not test -ve act IS_TENSE3p p
-vu: did not test -ve act WAS_TENSE3p s
-vu: did not test -ve act WAS_TENSE3p p
-vu: tests +ve act IS_TENSE3p s
-vu: test +ve act IS_TENSE3p p
-vu: tested +ve act WAS_TENSE3p s
-vu: tested +ve act WAS_TENSE3p p
-vu: has not understood -ve act HASBEEN_TENSE3p s
-vu: have not understood -ve act HASBEEN_TENSE3p p
-vu: had not understood -ve act HADBEEN_TENSE3p s
-vu: had not understood -ve act HADBEEN_TENSE3p p
-vu: has understood +ve act HASBEEN_TENSE3p s
-vu: have understood +ve act HASBEEN_TENSE3p p
-vu: had understood +ve act HADBEEN_TENSE3p s
-vu: had understood +ve act HADBEEN_TENSE3p p
-vu: does not understand -ve act IS_TENSE3p s
-vu: do not understand -ve act IS_TENSE3p p
-vu: did not understand -ve act WAS_TENSE3p s
-vu: did not understand -ve act WAS_TENSE3p p
-vu: understands +ve act IS_TENSE3p s
-vu: understand +ve act IS_TENSE3p p
-vu: understood +ve act WAS_TENSE3p s
-vu: understood +ve act WAS_TENSE3p p
-vu: has not released -ve act HASBEEN_TENSE3p s
-vu: have not released -ve act HASBEEN_TENSE3p p
-vu: had not released -ve act HADBEEN_TENSE3p s
-vu: had not released -ve act HADBEEN_TENSE3p p
-vu: has released +ve act HASBEEN_TENSE3p s
-vu: have released +ve act HASBEEN_TENSE3p p
-vu: had released +ve act HADBEEN_TENSE3p s
-vu: had released +ve act HADBEEN_TENSE3p p
-vu: does not release -ve act IS_TENSE3p s
-vu: do not release -ve act IS_TENSE3p p
-vu: did not release -ve act WAS_TENSE3p s
-vu: did not release -ve act WAS_TENSE3p p
-vu: releases +ve act IS_TENSE3p s
-vu: release +ve act IS_TENSE3p p
-vu: released +ve act WAS_TENSE3p s
-vu: released +ve act WAS_TENSE3p p
-vu: has not indexed -ve act HASBEEN_TENSE3p s
-vu: have not indexed -ve act HASBEEN_TENSE3p p
-vu: had not indexed -ve act HADBEEN_TENSE3p s
-vu: had not indexed -ve act HADBEEN_TENSE3p p
-vu: has indexed +ve act HASBEEN_TENSE3p s
-vu: have indexed +ve act HASBEEN_TENSE3p p
-vu: had indexed +ve act HADBEEN_TENSE3p s
-vu: had indexed +ve act HADBEEN_TENSE3p p
-vu: does not index -ve act IS_TENSE3p s
-vu: do not index -ve act IS_TENSE3p p
-vu: did not index -ve act WAS_TENSE3p s
-vu: did not index -ve act WAS_TENSE3p p
-vu: indexes +ve act IS_TENSE3p s
-vu: index +ve act IS_TENSE3p p
-vu: indexed +ve act WAS_TENSE3p s
-vu: indexed +ve act WAS_TENSE3p p
-vu: has not contained -ve act HASBEEN_TENSE3p s
-vu: have not contained -ve act HASBEEN_TENSE3p p
-vu: had not contained -ve act HADBEEN_TENSE3p s
-vu: had not contained -ve act HADBEEN_TENSE3p p
-vu: has contained +ve act HASBEEN_TENSE3p s
-vu: have contained +ve act HASBEEN_TENSE3p p
-vu: had contained +ve act HADBEEN_TENSE3p s
-vu: had contained +ve act HADBEEN_TENSE3p p
-vu: does not contain -ve act IS_TENSE3p s
-vu: do not contain -ve act IS_TENSE3p p
-vu: did not contain -ve act WAS_TENSE3p s
-vu: did not contain -ve act WAS_TENSE3p p
-vu: contains +ve act IS_TENSE3p s
-vu: contain +ve act IS_TENSE3p p
-vu: contained +ve act WAS_TENSE3p s
-vu: contained +ve act WAS_TENSE3p p
-vu: has not supported -ve act HASBEEN_TENSE3p s
-vu: have not supported -ve act HASBEEN_TENSE3p p
-vu: had not supported -ve act HADBEEN_TENSE3p s
-vu: had not supported -ve act HADBEEN_TENSE3p p
-vu: has supported +ve act HASBEEN_TENSE3p s
-vu: have supported +ve act HASBEEN_TENSE3p p
-vu: had supported +ve act HADBEEN_TENSE3p s
-vu: had supported +ve act HADBEEN_TENSE3p p
-vu: does not support -ve act IS_TENSE3p s
-vu: do not support -ve act IS_TENSE3p p
-vu: did not support -ve act WAS_TENSE3p s
-vu: did not support -ve act WAS_TENSE3p p
-vu: supports +ve act IS_TENSE3p s
-vu: support +ve act IS_TENSE3p p
-vu: supported +ve act WAS_TENSE3p s
-vu: supported +ve act WAS_TENSE3p p
-vu: has not incorporated -ve act HASBEEN_TENSE3p s
-vu: have not incorporated -ve act HASBEEN_TENSE3p p
-vu: had not incorporated -ve act HADBEEN_TENSE3p s
-vu: had not incorporated -ve act HADBEEN_TENSE3p p
-vu: has incorporated +ve act HASBEEN_TENSE3p s
-vu: have incorporated +ve act HASBEEN_TENSE3p p
-vu: had incorporated +ve act HADBEEN_TENSE3p s
-vu: had incorporated +ve act HADBEEN_TENSE3p p
-vu: does not incorporate -ve act IS_TENSE3p s
-vu: do not incorporate -ve act IS_TENSE3p p
-vu: did not incorporate -ve act WAS_TENSE3p s
-vu: did not incorporate -ve act WAS_TENSE3p p
-vu: incorporates +ve act IS_TENSE3p s
-vu: incorporate +ve act IS_TENSE3p p
-vu: incorporated +ve act WAS_TENSE3p s
-vu: incorporated +ve act WAS_TENSE3p p
-vu: has not enclosed -ve act HASBEEN_TENSE3p s
-vu: have not enclosed -ve act HASBEEN_TENSE3p p
-vu: had not enclosed -ve act HADBEEN_TENSE3p s
-vu: had not enclosed -ve act HADBEEN_TENSE3p p
-vu: has enclosed +ve act HASBEEN_TENSE3p s
-vu: have enclosed +ve act HASBEEN_TENSE3p p
-vu: had enclosed +ve act HADBEEN_TENSE3p s
-vu: had enclosed +ve act HADBEEN_TENSE3p p
-vu: does not enclose -ve act IS_TENSE3p s
-vu: do not enclose -ve act IS_TENSE3p p
-vu: did not enclose -ve act WAS_TENSE3p s
-vu: did not enclose -ve act WAS_TENSE3p p
-vu: encloses +ve act IS_TENSE3p s
-vu: enclose +ve act IS_TENSE3p p
-vu: enclosed +ve act WAS_TENSE3p s
-vu: enclosed +ve act WAS_TENSE3p p
-vu: has not carried -ve act HASBEEN_TENSE3p s
-vu: have not carried -ve act HASBEEN_TENSE3p p
-vu: had not carried -ve act HADBEEN_TENSE3p s
-vu: had not carried -ve act HADBEEN_TENSE3p p
-vu: has carried +ve act HASBEEN_TENSE3p s
-vu: have carried +ve act HASBEEN_TENSE3p p
-vu: had carried +ve act HADBEEN_TENSE3p s
-vu: had carried +ve act HADBEEN_TENSE3p p
-vu: does not carry -ve act IS_TENSE3p s
-vu: do not carry -ve act IS_TENSE3p p
-vu: did not carry -ve act WAS_TENSE3p s
-vu: did not carry -ve act WAS_TENSE3p p
-vu: carries +ve act IS_TENSE3p s
-vu: carry +ve act IS_TENSE3p p
-vu: carried +ve act WAS_TENSE3p s
-vu: carried +ve act WAS_TENSE3p p
-vu: has not held -ve act HASBEEN_TENSE3p s
-vu: have not held -ve act HASBEEN_TENSE3p p
-vu: had not held -ve act HADBEEN_TENSE3p s
-vu: had not held -ve act HADBEEN_TENSE3p p
-vu: has held +ve act HASBEEN_TENSE3p s
-vu: have held +ve act HASBEEN_TENSE3p p
-vu: had held +ve act HADBEEN_TENSE3p s
-vu: had held +ve act HADBEEN_TENSE3p p
-vu: does not hold -ve act IS_TENSE3p s
-vu: do not hold -ve act IS_TENSE3p p
-vu: did not hold -ve act WAS_TENSE3p s
-vu: did not hold -ve act WAS_TENSE3p p
-vu: holds +ve act IS_TENSE3p s
-vu: hold +ve act IS_TENSE3p p
-vu: held +ve act WAS_TENSE3p s
-vu: held +ve act WAS_TENSE3p p
-vu: has not worn -ve act HASBEEN_TENSE3p s
-vu: have not worn -ve act HASBEEN_TENSE3p p
-vu: had not worn -ve act HADBEEN_TENSE3p s
-vu: had not worn -ve act HADBEEN_TENSE3p p
-vu: has worn +ve act HASBEEN_TENSE3p s
-vu: have worn +ve act HASBEEN_TENSE3p p
-vu: had worn +ve act HADBEEN_TENSE3p s
-vu: had worn +ve act HADBEEN_TENSE3p p
-vu: does not wear -ve act IS_TENSE3p s
-vu: do not wear -ve act IS_TENSE3p p
-vu: did not wear -ve act WAS_TENSE3p s
-vu: did not wear -ve act WAS_TENSE3p p
-vu: wears +ve act IS_TENSE3p s
-vu: wear +ve act IS_TENSE3p p
-vu: wore +ve act WAS_TENSE3p s
-vu: wore +ve act WAS_TENSE3p p
-vu: has not been able to see -ve act HASBEEN_TENSE3p s
-vu: have not been able to see -ve act HASBEEN_TENSE3p p
-vu: had not been able to see -ve act HADBEEN_TENSE3p s
-vu: had not been able to see -ve act HADBEEN_TENSE3p p
-vu: has been able to see +ve act HASBEEN_TENSE3p s
-vu: have been able to see +ve act HASBEEN_TENSE3p p
-vu: had been able to see +ve act HADBEEN_TENSE3p s
-vu: had been able to see +ve act HADBEEN_TENSE3p p
-vu: cannot see -ve act IS_TENSE3p s
-vu: cannot see -ve act IS_TENSE3p p
-vu: could not see -ve act WAS_TENSE3p s
-vu: could not see -ve act WAS_TENSE3p p
-vu: can see +ve act IS_TENSE3p s
-vu: can see +ve act IS_TENSE3p p
-vu: could see +ve act WAS_TENSE3p s
-vu: could see +ve act WAS_TENSE3p p
-vu: has not been able to be seen by -ve pass HASBEEN_TENSE3p s
-vu: have not been able to be seen by -ve pass HASBEEN_TENSE3p p
-vu: had not been able to be seen by -ve pass HADBEEN_TENSE3p s
-vu: had not been able to be seen by -ve pass HADBEEN_TENSE3p p
-vu: has been able to be seen by +ve pass HASBEEN_TENSE3p s
-vu: have been able to be seen by +ve pass HASBEEN_TENSE3p p
-vu: had been able to be seen by +ve pass HADBEEN_TENSE3p s
-vu: had been able to be seen by +ve pass HADBEEN_TENSE3p p
-vu: cannot be seen by -ve pass IS_TENSE3p s
-vu: cannot be seen by -ve pass IS_TENSE3p p
-vu: could not be seen by -ve pass WAS_TENSE3p s
-vu: could not be seen by -ve pass WAS_TENSE3p p
-vu: can be seen by +ve pass IS_TENSE3p s
-vu: can be seen by +ve pass IS_TENSE3p p
-vu: could be seen by +ve pass WAS_TENSE3p s
-vu: could be seen by +ve pass WAS_TENSE3p p
-vu: has not been able to touch -ve act HASBEEN_TENSE3p s
-vu: have not been able to touch -ve act HASBEEN_TENSE3p p
-vu: had not been able to touch -ve act HADBEEN_TENSE3p s
-vu: had not been able to touch -ve act HADBEEN_TENSE3p p
-vu: has been able to touch +ve act HASBEEN_TENSE3p s
-vu: have been able to touch +ve act HASBEEN_TENSE3p p
-vu: had been able to touch +ve act HADBEEN_TENSE3p s
-vu: had been able to touch +ve act HADBEEN_TENSE3p p
-vu: cannot touch -ve act IS_TENSE3p s
-vu: cannot touch -ve act IS_TENSE3p p
-vu: could not touch -ve act WAS_TENSE3p s
-vu: could not touch -ve act WAS_TENSE3p p
-vu: can touch +ve act IS_TENSE3p s
-vu: can touch +ve act IS_TENSE3p p
-vu: could touch +ve act WAS_TENSE3p s
-vu: could touch +ve act WAS_TENSE3p p
-vu: has not been able to be touched by -ve pass HASBEEN_TENSE3p s
-vu: have not been able to be touched by -ve pass HASBEEN_TENSE3p p
-vu: had not been able to be touched by -ve pass HADBEEN_TENSE3p s
-vu: had not been able to be touched by -ve pass HADBEEN_TENSE3p p
-vu: has been able to be touched by +ve pass HASBEEN_TENSE3p s
-vu: have been able to be touched by +ve pass HASBEEN_TENSE3p p
-vu: had been able to be touched by +ve pass HADBEEN_TENSE3p s
-vu: had been able to be touched by +ve pass HADBEEN_TENSE3p p
-vu: cannot be touched by -ve pass IS_TENSE3p s
-vu: cannot be touched by -ve pass IS_TENSE3p p
-vu: could not be touched by -ve pass WAS_TENSE3p s
-vu: could not be touched by -ve pass WAS_TENSE3p p
-vu: can be touched by +ve pass IS_TENSE3p s
-vu: can be touched by +ve pass IS_TENSE3p p
-vu: could be touched by +ve pass WAS_TENSE3p s
-vu: could be touched by +ve pass WAS_TENSE3p p
-vu: has not concealed -ve act HASBEEN_TENSE3p s
-vu: have not concealed -ve act HASBEEN_TENSE3p p
-vu: had not concealed -ve act HADBEEN_TENSE3p s
-vu: had not concealed -ve act HADBEEN_TENSE3p p
-vu: has concealed +ve act HASBEEN_TENSE3p s
-vu: have concealed +ve act HASBEEN_TENSE3p p
-vu: had concealed +ve act HADBEEN_TENSE3p s
-vu: had concealed +ve act HADBEEN_TENSE3p p
-vu: does not conceal -ve act IS_TENSE3p s
-vu: do not conceal -ve act IS_TENSE3p p
-vu: did not conceal -ve act WAS_TENSE3p s
-vu: did not conceal -ve act WAS_TENSE3p p
-vu: conceals +ve act IS_TENSE3p s
-vu: conceal +ve act IS_TENSE3p p
-vu: concealed +ve act WAS_TENSE3p s
-vu: concealed +ve act WAS_TENSE3p p
-vu: has not unlocked -ve act HASBEEN_TENSE3p s
-vu: have not unlocked -ve act HASBEEN_TENSE3p p
-vu: had not unlocked -ve act HADBEEN_TENSE3p s
-vu: had not unlocked -ve act HADBEEN_TENSE3p p
-vu: has unlocked +ve act HASBEEN_TENSE3p s
-vu: have unlocked +ve act HASBEEN_TENSE3p p
-vu: had unlocked +ve act HADBEEN_TENSE3p s
-vu: had unlocked +ve act HADBEEN_TENSE3p p
-vu: does not unlock -ve act IS_TENSE3p s
-vu: do not unlock -ve act IS_TENSE3p p
-vu: did not unlock -ve act WAS_TENSE3p s
-vu: did not unlock -ve act WAS_TENSE3p p
-vu: unlocks +ve act IS_TENSE3p s
-vu: unlock +ve act IS_TENSE3p p
-vu: unlocked +ve act WAS_TENSE3p s
-vu: unlocked +ve act WAS_TENSE3p p
-vu: has not achieved -ve act HASBEEN_TENSE3p s
-vu: have not achieved -ve act HASBEEN_TENSE3p p
-vu: had not achieved -ve act HADBEEN_TENSE3p s
-vu: had not achieved -ve act HADBEEN_TENSE3p p
-vu: has achieved +ve act HASBEEN_TENSE3p s
-vu: have achieved +ve act HASBEEN_TENSE3p p
-vu: had achieved +ve act HADBEEN_TENSE3p s
-vu: had achieved +ve act HADBEEN_TENSE3p p
-vu: does not achieve -ve act IS_TENSE3p s
-vu: do not achieve -ve act IS_TENSE3p p
-vu: did not achieve -ve act WAS_TENSE3p s
-vu: did not achieve -ve act WAS_TENSE3p p
-vu: achieves +ve act IS_TENSE3p s
-vu: achieve +ve act IS_TENSE3p p
-vu: achieved +ve act WAS_TENSE3p s
-vu: achieved +ve act WAS_TENSE3p p
-vu: has not appreciated -ve act HASBEEN_TENSE3p s
-vu: have not appreciated -ve act HASBEEN_TENSE3p p
-vu: had not appreciated -ve act HADBEEN_TENSE3p s
-vu: had not appreciated -ve act HADBEEN_TENSE3p p
-vu: has appreciated +ve act HASBEEN_TENSE3p s
-vu: have appreciated +ve act HASBEEN_TENSE3p p
-vu: had appreciated +ve act HADBEEN_TENSE3p s
-vu: had appreciated +ve act HADBEEN_TENSE3p p
-vu: does not appreciate -ve act IS_TENSE3p s
-vu: do not appreciate -ve act IS_TENSE3p p
-vu: did not appreciate -ve act WAS_TENSE3p s
-vu: did not appreciate -ve act WAS_TENSE3p p
-vu: appreciates +ve act IS_TENSE3p s
-vu: appreciate +ve act IS_TENSE3p p
-vu: appreciated +ve act WAS_TENSE3p s
-vu: appreciated +ve act WAS_TENSE3p p
-vu: has not arrived -ve act HASBEEN_TENSE3p s
-vu: have not arrived -ve act HASBEEN_TENSE3p p
-vu: had not arrived -ve act HADBEEN_TENSE3p s
-vu: had not arrived -ve act HADBEEN_TENSE3p p
-vu: has arrived +ve act HASBEEN_TENSE3p s
-vu: have arrived +ve act HASBEEN_TENSE3p p
-vu: had arrived +ve act HADBEEN_TENSE3p s
-vu: had arrived +ve act HADBEEN_TENSE3p p
-vu: does not arrive -ve act IS_TENSE3p s
-vu: do not arrive -ve act IS_TENSE3p p
-vu: did not arrive -ve act WAS_TENSE3p s
-vu: did not arrive -ve act WAS_TENSE3p p
-vu: arrives +ve act IS_TENSE3p s
-vu: arrive +ve act IS_TENSE3p p
-vu: arrived +ve act WAS_TENSE3p s
-vu: arrived +ve act WAS_TENSE3p p
-vu: has not cared -ve act HASBEEN_TENSE3p s
-vu: have not cared -ve act HASBEEN_TENSE3p p
-vu: had not cared -ve act HADBEEN_TENSE3p s
-vu: had not cared -ve act HADBEEN_TENSE3p p
-vu: has cared +ve act HASBEEN_TENSE3p s
-vu: have cared +ve act HASBEEN_TENSE3p p
-vu: had cared +ve act HADBEEN_TENSE3p s
-vu: had cared +ve act HADBEEN_TENSE3p p
-vu: does not care -ve act IS_TENSE3p s
-vu: do not care -ve act IS_TENSE3p p
-vu: did not care -ve act WAS_TENSE3p s
-vu: did not care -ve act WAS_TENSE3p p
-vu: cares +ve act IS_TENSE3p s
-vu: care +ve act IS_TENSE3p p
-vu: cared +ve act WAS_TENSE3p s
-vu: cared +ve act WAS_TENSE3p p
-vu: has not closed -ve act HASBEEN_TENSE3p s
-vu: have not closed -ve act HASBEEN_TENSE3p p
-vu: had not closed -ve act HADBEEN_TENSE3p s
-vu: had not closed -ve act HADBEEN_TENSE3p p
-vu: has closed +ve act HASBEEN_TENSE3p s
-vu: have closed +ve act HASBEEN_TENSE3p p
-vu: had closed +ve act HADBEEN_TENSE3p s
-vu: had closed +ve act HADBEEN_TENSE3p p
-vu: does not close -ve act IS_TENSE3p s
-vu: do not close -ve act IS_TENSE3p p
-vu: did not close -ve act WAS_TENSE3p s
-vu: did not close -ve act WAS_TENSE3p p
-vu: closes +ve act IS_TENSE3p s
-vu: close +ve act IS_TENSE3p p
-vu: closed +ve act WAS_TENSE3p s
-vu: closed +ve act WAS_TENSE3p p
-vu: has not died -ve act HASBEEN_TENSE3p s
-vu: have not died -ve act HASBEEN_TENSE3p p
-vu: had not died -ve act HADBEEN_TENSE3p s
-vu: had not died -ve act HADBEEN_TENSE3p p
-vu: has died +ve act HASBEEN_TENSE3p s
-vu: have died +ve act HASBEEN_TENSE3p p
-vu: had died +ve act HADBEEN_TENSE3p s
-vu: had died +ve act HADBEEN_TENSE3p p
-vu: does not die -ve act IS_TENSE3p s
-vu: do not die -ve act IS_TENSE3p p
-vu: did not die -ve act WAS_TENSE3p s
-vu: did not die -ve act WAS_TENSE3p p
-vu: dies +ve act IS_TENSE3p s
-vu: die +ve act IS_TENSE3p p
-vu: died +ve act WAS_TENSE3p s
-vu: died +ve act WAS_TENSE3p p
-vu: has not discovered -ve act HASBEEN_TENSE3p s
-vu: have not discovered -ve act HASBEEN_TENSE3p p
-vu: had not discovered -ve act HADBEEN_TENSE3p s
-vu: had not discovered -ve act HADBEEN_TENSE3p p
-vu: has discovered +ve act HASBEEN_TENSE3p s
-vu: have discovered +ve act HASBEEN_TENSE3p p
-vu: had discovered +ve act HADBEEN_TENSE3p s
-vu: had discovered +ve act HADBEEN_TENSE3p p
-vu: does not discover -ve act IS_TENSE3p s
-vu: do not discover -ve act IS_TENSE3p p
-vu: did not discover -ve act WAS_TENSE3p s
-vu: did not discover -ve act WAS_TENSE3p p
-vu: discovers +ve act IS_TENSE3p s
-vu: discover +ve act IS_TENSE3p p
-vu: discovered +ve act WAS_TENSE3p s
-vu: discovered +ve act WAS_TENSE3p p
-vu: has not dropped -ve act HASBEEN_TENSE3p s
-vu: have not dropped -ve act HASBEEN_TENSE3p p
-vu: had not dropped -ve act HADBEEN_TENSE3p s
-vu: had not dropped -ve act HADBEEN_TENSE3p p
-vu: has dropped +ve act HASBEEN_TENSE3p s
-vu: have dropped +ve act HASBEEN_TENSE3p p
-vu: had dropped +ve act HADBEEN_TENSE3p s
-vu: had dropped +ve act HADBEEN_TENSE3p p
-vu: does not drop -ve act IS_TENSE3p s
-vu: do not drop -ve act IS_TENSE3p p
-vu: did not drop -ve act WAS_TENSE3p s
-vu: did not drop -ve act WAS_TENSE3p p
-vu: drops +ve act IS_TENSE3p s
-vu: drop +ve act IS_TENSE3p p
-vu: dropped +ve act WAS_TENSE3p s
-vu: dropped +ve act WAS_TENSE3p p
-vu: has not eaten -ve act HASBEEN_TENSE3p s
-vu: have not eaten -ve act HASBEEN_TENSE3p p
-vu: had not eaten -ve act HADBEEN_TENSE3p s
-vu: had not eaten -ve act HADBEEN_TENSE3p p
-vu: has eaten +ve act HASBEEN_TENSE3p s
-vu: have eaten +ve act HASBEEN_TENSE3p p
-vu: had eaten +ve act HADBEEN_TENSE3p s
-vu: had eaten +ve act HADBEEN_TENSE3p p
-vu: does not eat -ve act IS_TENSE3p s
-vu: do not eat -ve act IS_TENSE3p p
-vu: did not eat -ve act WAS_TENSE3p s
-vu: did not eat -ve act WAS_TENSE3p p
-vu: eats +ve act IS_TENSE3p s
-vu: eat +ve act IS_TENSE3p p
-vu: ate +ve act WAS_TENSE3p s
-vu: ate +ve act WAS_TENSE3p p
-vu: has not felt -ve act HASBEEN_TENSE3p s
-vu: have not felt -ve act HASBEEN_TENSE3p p
-vu: had not felt -ve act HADBEEN_TENSE3p s
-vu: had not felt -ve act HADBEEN_TENSE3p p
-vu: has felt +ve act HASBEEN_TENSE3p s
-vu: have felt +ve act HASBEEN_TENSE3p p
-vu: had felt +ve act HADBEEN_TENSE3p s
-vu: had felt +ve act HADBEEN_TENSE3p p
-vu: does not feel -ve act IS_TENSE3p s
-vu: do not feel -ve act IS_TENSE3p p
-vu: did not feel -ve act WAS_TENSE3p s
-vu: did not feel -ve act WAS_TENSE3p p
-vu: feels +ve act IS_TENSE3p s
-vu: feel +ve act IS_TENSE3p p
-vu: felt +ve act WAS_TENSE3p s
-vu: felt +ve act WAS_TENSE3p p
-vu: has not found -ve act HASBEEN_TENSE3p s
-vu: have not found -ve act HASBEEN_TENSE3p p
-vu: had not found -ve act HADBEEN_TENSE3p s
-vu: had not found -ve act HADBEEN_TENSE3p p
-vu: has found +ve act HASBEEN_TENSE3p s
-vu: have found +ve act HASBEEN_TENSE3p p
-vu: had found +ve act HADBEEN_TENSE3p s
-vu: had found +ve act HADBEEN_TENSE3p p
-vu: does not find -ve act IS_TENSE3p s
-vu: do not find -ve act IS_TENSE3p p
-vu: did not find -ve act WAS_TENSE3p s
-vu: did not find -ve act WAS_TENSE3p p
-vu: finds +ve act IS_TENSE3p s
-vu: find +ve act IS_TENSE3p p
-vu: found +ve act WAS_TENSE3p s
-vu: found +ve act WAS_TENSE3p p
-vu: has not got -ve act HASBEEN_TENSE3p s
-vu: have not got -ve act HASBEEN_TENSE3p p
-vu: had not got -ve act HADBEEN_TENSE3p s
-vu: had not got -ve act HADBEEN_TENSE3p p
-vu: has got +ve act HASBEEN_TENSE3p s
-vu: have got +ve act HASBEEN_TENSE3p p
-vu: had got +ve act HADBEEN_TENSE3p s
-vu: had got +ve act HADBEEN_TENSE3p p
-vu: does not get -ve act IS_TENSE3p s
-vu: do not get -ve act IS_TENSE3p p
-vu: did not get -ve act WAS_TENSE3p s
-vu: did not get -ve act WAS_TENSE3p p
-vu: gets +ve act IS_TENSE3p s
-vu: get +ve act IS_TENSE3p p
-vu: got +ve act WAS_TENSE3p s
-vu: got +ve act WAS_TENSE3p p
-vu: has not given -ve act HASBEEN_TENSE3p s
-vu: have not given -ve act HASBEEN_TENSE3p p
-vu: had not given -ve act HADBEEN_TENSE3p s
-vu: had not given -ve act HADBEEN_TENSE3p p
-vu: has given +ve act HASBEEN_TENSE3p s
-vu: have given +ve act HASBEEN_TENSE3p p
-vu: had given +ve act HADBEEN_TENSE3p s
-vu: had given +ve act HADBEEN_TENSE3p p
-vu: does not give -ve act IS_TENSE3p s
-vu: do not give -ve act IS_TENSE3p p
-vu: did not give -ve act WAS_TENSE3p s
-vu: did not give -ve act WAS_TENSE3p p
-vu: gives +ve act IS_TENSE3p s
-vu: give +ve act IS_TENSE3p p
-vu: gave +ve act WAS_TENSE3p s
-vu: gave +ve act WAS_TENSE3p p
-vu: has not gone -ve act HASBEEN_TENSE3p s
-vu: have not gone -ve act HASBEEN_TENSE3p p
-vu: had not gone -ve act HADBEEN_TENSE3p s
-vu: had not gone -ve act HADBEEN_TENSE3p p
-vu: has gone +ve act HASBEEN_TENSE3p s
-vu: have gone +ve act HASBEEN_TENSE3p p
-vu: had gone +ve act HADBEEN_TENSE3p s
-vu: had gone +ve act HADBEEN_TENSE3p p
-vu: does not go -ve act IS_TENSE3p s
-vu: do not go -ve act IS_TENSE3p p
-vu: did not go -ve act WAS_TENSE3p s
-vu: did not go -ve act WAS_TENSE3p p
-vu: goes +ve act IS_TENSE3p s
-vu: go +ve act IS_TENSE3p p
-vu: went +ve act WAS_TENSE3p s
-vu: went +ve act WAS_TENSE3p p
-vu: has not happened -ve act HASBEEN_TENSE3p s
-vu: have not happened -ve act HASBEEN_TENSE3p p
-vu: had not happened -ve act HADBEEN_TENSE3p s
-vu: had not happened -ve act HADBEEN_TENSE3p p
-vu: has happened +ve act HASBEEN_TENSE3p s
-vu: have happened +ve act HASBEEN_TENSE3p p
-vu: had happened +ve act HADBEEN_TENSE3p s
-vu: had happened +ve act HADBEEN_TENSE3p p
-vu: does not happen -ve act IS_TENSE3p s
-vu: do not happen -ve act IS_TENSE3p p
-vu: did not happen -ve act WAS_TENSE3p s
-vu: did not happen -ve act WAS_TENSE3p p
-vu: happens +ve act IS_TENSE3p s
-vu: happen +ve act IS_TENSE3p p
-vu: happened +ve act WAS_TENSE3p s
-vu: happened +ve act WAS_TENSE3p p
-vu: has not heard -ve act HASBEEN_TENSE3p s
-vu: have not heard -ve act HASBEEN_TENSE3p p
-vu: had not heard -ve act HADBEEN_TENSE3p s
-vu: had not heard -ve act HADBEEN_TENSE3p p
-vu: has heard +ve act HASBEEN_TENSE3p s
-vu: have heard +ve act HASBEEN_TENSE3p p
-vu: had heard +ve act HADBEEN_TENSE3p s
-vu: had heard +ve act HADBEEN_TENSE3p p
-vu: does not hear -ve act IS_TENSE3p s
-vu: do not hear -ve act IS_TENSE3p p
-vu: did not hear -ve act WAS_TENSE3p s
-vu: did not hear -ve act WAS_TENSE3p p
-vu: hears +ve act IS_TENSE3p s
-vu: hear +ve act IS_TENSE3p p
-vu: heard +ve act WAS_TENSE3p s
-vu: heard +ve act WAS_TENSE3p p
-vu: has not jumped -ve act HASBEEN_TENSE3p s
-vu: have not jumped -ve act HASBEEN_TENSE3p p
-vu: had not jumped -ve act HADBEEN_TENSE3p s
-vu: had not jumped -ve act HADBEEN_TENSE3p p
-vu: has jumped +ve act HASBEEN_TENSE3p s
-vu: have jumped +ve act HASBEEN_TENSE3p p
-vu: had jumped +ve act HADBEEN_TENSE3p s
-vu: had jumped +ve act HADBEEN_TENSE3p p
-vu: does not jump -ve act IS_TENSE3p s
-vu: do not jump -ve act IS_TENSE3p p
-vu: did not jump -ve act WAS_TENSE3p s
-vu: did not jump -ve act WAS_TENSE3p p
-vu: jumps +ve act IS_TENSE3p s
-vu: jump +ve act IS_TENSE3p p
-vu: jumped +ve act WAS_TENSE3p s
-vu: jumped +ve act WAS_TENSE3p p
-vu: has not lacked -ve act HASBEEN_TENSE3p s
-vu: have not lacked -ve act HASBEEN_TENSE3p p
-vu: had not lacked -ve act HADBEEN_TENSE3p s
-vu: had not lacked -ve act HADBEEN_TENSE3p p
-vu: has lacked +ve act HASBEEN_TENSE3p s
-vu: have lacked +ve act HASBEEN_TENSE3p p
-vu: had lacked +ve act HADBEEN_TENSE3p s
-vu: had lacked +ve act HADBEEN_TENSE3p p
-vu: does not lack -ve act IS_TENSE3p s
-vu: do not lack -ve act IS_TENSE3p p
-vu: did not lack -ve act WAS_TENSE3p s
-vu: did not lack -ve act WAS_TENSE3p p
-vu: lacks +ve act IS_TENSE3p s
-vu: lack +ve act IS_TENSE3p p
-vu: lacked +ve act WAS_TENSE3p s
-vu: lacked +ve act WAS_TENSE3p p
-vu: has not led -ve act HASBEEN_TENSE3p s
-vu: have not led -ve act HASBEEN_TENSE3p p
-vu: had not led -ve act HADBEEN_TENSE3p s
-vu: had not led -ve act HADBEEN_TENSE3p p
-vu: has led +ve act HASBEEN_TENSE3p s
-vu: have led +ve act HASBEEN_TENSE3p p
-vu: had led +ve act HADBEEN_TENSE3p s
-vu: had led +ve act HADBEEN_TENSE3p p
-vu: does not lead -ve act IS_TENSE3p s
-vu: do not lead -ve act IS_TENSE3p p
-vu: did not lead -ve act WAS_TENSE3p s
-vu: did not lead -ve act WAS_TENSE3p p
-vu: leads +ve act IS_TENSE3p s
-vu: lead +ve act IS_TENSE3p p
-vu: led +ve act WAS_TENSE3p s
-vu: led +ve act WAS_TENSE3p p
-vu: has not liked -ve act HASBEEN_TENSE3p s
-vu: have not liked -ve act HASBEEN_TENSE3p p
-vu: had not liked -ve act HADBEEN_TENSE3p s
-vu: had not liked -ve act HADBEEN_TENSE3p p
-vu: has liked +ve act HASBEEN_TENSE3p s
-vu: have liked +ve act HASBEEN_TENSE3p p
-vu: had liked +ve act HADBEEN_TENSE3p s
-vu: had liked +ve act HADBEEN_TENSE3p p
-vu: does not like -ve act IS_TENSE3p s
-vu: do not like -ve act IS_TENSE3p p
-vu: did not like -ve act WAS_TENSE3p s
-vu: did not like -ve act WAS_TENSE3p p
-vu: likes +ve act IS_TENSE3p s
-vu: like +ve act IS_TENSE3p p
-vu: liked +ve act WAS_TENSE3p s
-vu: liked +ve act WAS_TENSE3p p
-vu: has not listened -ve act HASBEEN_TENSE3p s
-vu: have not listened -ve act HASBEEN_TENSE3p p
-vu: had not listened -ve act HADBEEN_TENSE3p s
-vu: had not listened -ve act HADBEEN_TENSE3p p
-vu: has listened +ve act HASBEEN_TENSE3p s
-vu: have listened +ve act HASBEEN_TENSE3p p
-vu: had listened +ve act HADBEEN_TENSE3p s
-vu: had listened +ve act HADBEEN_TENSE3p p
-vu: does not listen -ve act IS_TENSE3p s
-vu: do not listen -ve act IS_TENSE3p p
-vu: did not listen -ve act WAS_TENSE3p s
-vu: did not listen -ve act WAS_TENSE3p p
-vu: listens +ve act IS_TENSE3p s
-vu: listen +ve act IS_TENSE3p p
-vu: listened +ve act WAS_TENSE3p s
-vu: listened +ve act WAS_TENSE3p p
-vu: has not locked -ve act HASBEEN_TENSE3p s
-vu: have not locked -ve act HASBEEN_TENSE3p p
-vu: had not locked -ve act HADBEEN_TENSE3p s
-vu: had not locked -ve act HADBEEN_TENSE3p p
-vu: has locked +ve act HASBEEN_TENSE3p s
-vu: have locked +ve act HASBEEN_TENSE3p p
-vu: had locked +ve act HADBEEN_TENSE3p s
-vu: had locked +ve act HADBEEN_TENSE3p p
-vu: does not lock -ve act IS_TENSE3p s
-vu: do not lock -ve act IS_TENSE3p p
-vu: did not lock -ve act WAS_TENSE3p s
-vu: did not lock -ve act WAS_TENSE3p p
-vu: locks +ve act IS_TENSE3p s
-vu: lock +ve act IS_TENSE3p p
-vu: locked +ve act WAS_TENSE3p s
-vu: locked +ve act WAS_TENSE3p p
-vu: has not looked -ve act HASBEEN_TENSE3p s
-vu: have not looked -ve act HASBEEN_TENSE3p p
-vu: had not looked -ve act HADBEEN_TENSE3p s
-vu: had not looked -ve act HADBEEN_TENSE3p p
-vu: has looked +ve act HASBEEN_TENSE3p s
-vu: have looked +ve act HASBEEN_TENSE3p p
-vu: had looked +ve act HADBEEN_TENSE3p s
-vu: had looked +ve act HADBEEN_TENSE3p p
-vu: does not look -ve act IS_TENSE3p s
-vu: do not look -ve act IS_TENSE3p p
-vu: did not look -ve act WAS_TENSE3p s
-vu: did not look -ve act WAS_TENSE3p p
-vu: looks +ve act IS_TENSE3p s
-vu: look +ve act IS_TENSE3p p
-vu: looked +ve act WAS_TENSE3p s
-vu: looked +ve act WAS_TENSE3p p
-vu: has not needed -ve act HASBEEN_TENSE3p s
-vu: have not needed -ve act HASBEEN_TENSE3p p
-vu: had not needed -ve act HADBEEN_TENSE3p s
-vu: had not needed -ve act HADBEEN_TENSE3p p
-vu: has needed +ve act HASBEEN_TENSE3p s
-vu: have needed +ve act HASBEEN_TENSE3p p
-vu: had needed +ve act HADBEEN_TENSE3p s
-vu: had needed +ve act HADBEEN_TENSE3p p
-vu: does not need -ve act IS_TENSE3p s
-vu: do not need -ve act IS_TENSE3p p
-vu: did not need -ve act WAS_TENSE3p s
-vu: did not need -ve act WAS_TENSE3p p
-vu: needs +ve act IS_TENSE3p s
-vu: need +ve act IS_TENSE3p p
-vu: needed +ve act WAS_TENSE3p s
-vu: needed +ve act WAS_TENSE3p p
-vu: has not opened -ve act HASBEEN_TENSE3p s
-vu: have not opened -ve act HASBEEN_TENSE3p p
-vu: had not opened -ve act HADBEEN_TENSE3p s
-vu: had not opened -ve act HADBEEN_TENSE3p p
-vu: has opened +ve act HASBEEN_TENSE3p s
-vu: have opened +ve act HASBEEN_TENSE3p p
-vu: had opened +ve act HADBEEN_TENSE3p s
-vu: had opened +ve act HADBEEN_TENSE3p p
-vu: does not open -ve act IS_TENSE3p s
-vu: do not open -ve act IS_TENSE3p p
-vu: did not open -ve act WAS_TENSE3p s
-vu: did not open -ve act WAS_TENSE3p p
-vu: opens +ve act IS_TENSE3p s
-vu: open +ve act IS_TENSE3p p
-vu: opened +ve act WAS_TENSE3p s
-vu: opened +ve act WAS_TENSE3p p
-vu: has not passed -ve act HASBEEN_TENSE3p s
-vu: have not passed -ve act HASBEEN_TENSE3p p
-vu: had not passed -ve act HADBEEN_TENSE3p s
-vu: had not passed -ve act HADBEEN_TENSE3p p
-vu: has passed +ve act HASBEEN_TENSE3p s
-vu: have passed +ve act HASBEEN_TENSE3p p
-vu: had passed +ve act HADBEEN_TENSE3p s
-vu: had passed +ve act HADBEEN_TENSE3p p
-vu: does not pass -ve act IS_TENSE3p s
-vu: do not pass -ve act IS_TENSE3p p
-vu: did not pass -ve act WAS_TENSE3p s
-vu: did not pass -ve act WAS_TENSE3p p
-vu: passes +ve act IS_TENSE3p s
-vu: pass +ve act IS_TENSE3p p
-vu: passed +ve act WAS_TENSE3p s
-vu: passed +ve act WAS_TENSE3p p
-vu: has not picked -ve act HASBEEN_TENSE3p s
-vu: have not picked -ve act HASBEEN_TENSE3p p
-vu: had not picked -ve act HADBEEN_TENSE3p s
-vu: had not picked -ve act HADBEEN_TENSE3p p
-vu: has picked +ve act HASBEEN_TENSE3p s
-vu: have picked +ve act HASBEEN_TENSE3p p
-vu: had picked +ve act HADBEEN_TENSE3p s
-vu: had picked +ve act HADBEEN_TENSE3p p
-vu: does not pick -ve act IS_TENSE3p s
-vu: do not pick -ve act IS_TENSE3p p
-vu: did not pick -ve act WAS_TENSE3p s
-vu: did not pick -ve act WAS_TENSE3p p
-vu: picks +ve act IS_TENSE3p s
-vu: pick +ve act IS_TENSE3p p
-vu: picked +ve act WAS_TENSE3p s
-vu: picked +ve act WAS_TENSE3p p
-vu: has not provoked -ve act HASBEEN_TENSE3p s
-vu: have not provoked -ve act HASBEEN_TENSE3p p
-vu: had not provoked -ve act HADBEEN_TENSE3p s
-vu: had not provoked -ve act HADBEEN_TENSE3p p
-vu: has provoked +ve act HASBEEN_TENSE3p s
-vu: have provoked +ve act HASBEEN_TENSE3p p
-vu: had provoked +ve act HADBEEN_TENSE3p s
-vu: had provoked +ve act HADBEEN_TENSE3p p
-vu: does not provoke -ve act IS_TENSE3p s
-vu: do not provoke -ve act IS_TENSE3p p
-vu: did not provoke -ve act WAS_TENSE3p s
-vu: did not provoke -ve act WAS_TENSE3p p
-vu: provokes +ve act IS_TENSE3p s
-vu: provoke +ve act IS_TENSE3p p
-vu: provoked +ve act WAS_TENSE3p s
-vu: provoked +ve act WAS_TENSE3p p
-vu: has not pulled -ve act HASBEEN_TENSE3p s
-vu: have not pulled -ve act HASBEEN_TENSE3p p
-vu: had not pulled -ve act HADBEEN_TENSE3p s
-vu: had not pulled -ve act HADBEEN_TENSE3p p
-vu: has pulled +ve act HASBEEN_TENSE3p s
-vu: have pulled +ve act HASBEEN_TENSE3p p
-vu: had pulled +ve act HADBEEN_TENSE3p s
-vu: had pulled +ve act HADBEEN_TENSE3p p
-vu: does not pull -ve act IS_TENSE3p s
-vu: do not pull -ve act IS_TENSE3p p
-vu: did not pull -ve act WAS_TENSE3p s
-vu: did not pull -ve act WAS_TENSE3p p
-vu: pulls +ve act IS_TENSE3p s
-vu: pull +ve act IS_TENSE3p p
-vu: pulled +ve act WAS_TENSE3p s
-vu: pulled +ve act WAS_TENSE3p p
-vu: has not pushed -ve act HASBEEN_TENSE3p s
-vu: have not pushed -ve act HASBEEN_TENSE3p p
-vu: had not pushed -ve act HADBEEN_TENSE3p s
-vu: had not pushed -ve act HADBEEN_TENSE3p p
-vu: has pushed +ve act HASBEEN_TENSE3p s
-vu: have pushed +ve act HASBEEN_TENSE3p p
-vu: had pushed +ve act HADBEEN_TENSE3p s
-vu: had pushed +ve act HADBEEN_TENSE3p p
-vu: does not push -ve act IS_TENSE3p s
-vu: do not push -ve act IS_TENSE3p p
-vu: did not push -ve act WAS_TENSE3p s
-vu: did not push -ve act WAS_TENSE3p p
-vu: pushes +ve act IS_TENSE3p s
-vu: push +ve act IS_TENSE3p p
-vu: pushed +ve act WAS_TENSE3p s
-vu: pushed +ve act WAS_TENSE3p p
-vu: has not put -ve act HASBEEN_TENSE3p s
-vu: have not put -ve act HASBEEN_TENSE3p p
-vu: had not put -ve act HADBEEN_TENSE3p s
-vu: had not put -ve act HADBEEN_TENSE3p p
-vu: has put +ve act HASBEEN_TENSE3p s
-vu: have put +ve act HASBEEN_TENSE3p p
-vu: had put +ve act HADBEEN_TENSE3p s
-vu: had put +ve act HADBEEN_TENSE3p p
-vu: does not put -ve act IS_TENSE3p s
-vu: do not put -ve act IS_TENSE3p p
-vu: did not put -ve act WAS_TENSE3p s
-vu: did not put -ve act WAS_TENSE3p p
-vu: puts +ve act IS_TENSE3p s
-vu: put +ve act IS_TENSE3p p
-vu: put +ve act WAS_TENSE3p s
-vu: put +ve act WAS_TENSE3p p
-vu: has not rubbed -ve act HASBEEN_TENSE3p s
-vu: have not rubbed -ve act HASBEEN_TENSE3p p
-vu: had not rubbed -ve act HADBEEN_TENSE3p s
-vu: had not rubbed -ve act HADBEEN_TENSE3p p
-vu: has rubbed +ve act HASBEEN_TENSE3p s
-vu: have rubbed +ve act HASBEEN_TENSE3p p
-vu: had rubbed +ve act HADBEEN_TENSE3p s
-vu: had rubbed +ve act HADBEEN_TENSE3p p
-vu: does not rub -ve act IS_TENSE3p s
-vu: do not rub -ve act IS_TENSE3p p
-vu: did not rub -ve act WAS_TENSE3p s
-vu: did not rub -ve act WAS_TENSE3p p
-vu: rubs +ve act IS_TENSE3p s
-vu: rub +ve act IS_TENSE3p p
-vu: rubbed +ve act WAS_TENSE3p s
-vu: rubbed +ve act WAS_TENSE3p p
-vu: has not said -ve act HASBEEN_TENSE3p s
-vu: have not said -ve act HASBEEN_TENSE3p p
-vu: had not said -ve act HADBEEN_TENSE3p s
-vu: had not said -ve act HADBEEN_TENSE3p p
-vu: has said +ve act HASBEEN_TENSE3p s
-vu: have said +ve act HASBEEN_TENSE3p p
-vu: had said +ve act HADBEEN_TENSE3p s
-vu: had said +ve act HADBEEN_TENSE3p p
-vu: does not say -ve act IS_TENSE3p s
-vu: do not say -ve act IS_TENSE3p p
-vu: did not say -ve act WAS_TENSE3p s
-vu: did not say -ve act WAS_TENSE3p p
-vu: says +ve act IS_TENSE3p s
-vu: say +ve act IS_TENSE3p p
-vu: said +ve act WAS_TENSE3p s
-vu: said +ve act WAS_TENSE3p p
-vu: has not searched -ve act HASBEEN_TENSE3p s
-vu: have not searched -ve act HASBEEN_TENSE3p p
-vu: had not searched -ve act HADBEEN_TENSE3p s
-vu: had not searched -ve act HADBEEN_TENSE3p p
-vu: has searched +ve act HASBEEN_TENSE3p s
-vu: have searched +ve act HASBEEN_TENSE3p p
-vu: had searched +ve act HADBEEN_TENSE3p s
-vu: had searched +ve act HADBEEN_TENSE3p p
-vu: does not search -ve act IS_TENSE3p s
-vu: do not search -ve act IS_TENSE3p p
-vu: did not search -ve act WAS_TENSE3p s
-vu: did not search -ve act WAS_TENSE3p p
-vu: searches +ve act IS_TENSE3p s
-vu: search +ve act IS_TENSE3p p
-vu: searched +ve act WAS_TENSE3p s
-vu: searched +ve act WAS_TENSE3p p
-vu: has not seen -ve act HASBEEN_TENSE3p s
-vu: have not seen -ve act HASBEEN_TENSE3p p
-vu: had not seen -ve act HADBEEN_TENSE3p s
-vu: had not seen -ve act HADBEEN_TENSE3p p
-vu: has seen +ve act HASBEEN_TENSE3p s
-vu: have seen +ve act HASBEEN_TENSE3p p
-vu: had seen +ve act HADBEEN_TENSE3p s
-vu: had seen +ve act HADBEEN_TENSE3p p
-vu: does not see -ve act IS_TENSE3p s
-vu: do not see -ve act IS_TENSE3p p
-vu: did not see -ve act WAS_TENSE3p s
-vu: did not see -ve act WAS_TENSE3p p
-vu: sees +ve act IS_TENSE3p s
-vu: see +ve act IS_TENSE3p p
-vu: saw +ve act WAS_TENSE3p s
-vu: saw +ve act WAS_TENSE3p p
-vu: has not seemed -ve act HASBEEN_TENSE3p s
-vu: have not seemed -ve act HASBEEN_TENSE3p p
-vu: had not seemed -ve act HADBEEN_TENSE3p s
-vu: had not seemed -ve act HADBEEN_TENSE3p p
-vu: has seemed +ve act HASBEEN_TENSE3p s
-vu: have seemed +ve act HASBEEN_TENSE3p p
-vu: had seemed +ve act HADBEEN_TENSE3p s
-vu: had seemed +ve act HADBEEN_TENSE3p p
-vu: does not seem -ve act IS_TENSE3p s
-vu: do not seem -ve act IS_TENSE3p p
-vu: did not seem -ve act WAS_TENSE3p s
-vu: did not seem -ve act WAS_TENSE3p p
-vu: seems +ve act IS_TENSE3p s
-vu: seem +ve act IS_TENSE3p p
-vu: seemed +ve act WAS_TENSE3p s
-vu: seemed +ve act WAS_TENSE3p p
-vu: has not set -ve act HASBEEN_TENSE3p s
-vu: have not set -ve act HASBEEN_TENSE3p p
-vu: had not set -ve act HADBEEN_TENSE3p s
-vu: had not set -ve act HADBEEN_TENSE3p p
-vu: has set +ve act HASBEEN_TENSE3p s
-vu: have set +ve act HASBEEN_TENSE3p p
-vu: had set +ve act HADBEEN_TENSE3p s
-vu: had set +ve act HADBEEN_TENSE3p p
-vu: does not set -ve act IS_TENSE3p s
-vu: do not set -ve act IS_TENSE3p p
-vu: did not set -ve act WAS_TENSE3p s
-vu: did not set -ve act WAS_TENSE3p p
-vu: sets +ve act IS_TENSE3p s
-vu: set +ve act IS_TENSE3p p
-vu: set +ve act WAS_TENSE3p s
-vu: set +ve act WAS_TENSE3p p
-vu: has not smelled -ve act HASBEEN_TENSE3p s
-vu: have not smelled -ve act HASBEEN_TENSE3p p
-vu: had not smelled -ve act HADBEEN_TENSE3p s
-vu: had not smelled -ve act HADBEEN_TENSE3p p
-vu: has smelled +ve act HASBEEN_TENSE3p s
-vu: have smelled +ve act HASBEEN_TENSE3p p
-vu: had smelled +ve act HADBEEN_TENSE3p s
-vu: had smelled +ve act HADBEEN_TENSE3p p
-vu: does not smell -ve act IS_TENSE3p s
-vu: do not smell -ve act IS_TENSE3p p
-vu: did not smell -ve act WAS_TENSE3p s
-vu: did not smell -ve act WAS_TENSE3p p
-vu: smells +ve act IS_TENSE3p s
-vu: smell +ve act IS_TENSE3p p
-vu: smelled +ve act WAS_TENSE3p s
-vu: smelled +ve act WAS_TENSE3p p
-vu: has not sniffed -ve act HASBEEN_TENSE3p s
-vu: have not sniffed -ve act HASBEEN_TENSE3p p
-vu: had not sniffed -ve act HADBEEN_TENSE3p s
-vu: had not sniffed -ve act HADBEEN_TENSE3p p
-vu: has sniffed +ve act HASBEEN_TENSE3p s
-vu: have sniffed +ve act HASBEEN_TENSE3p p
-vu: had sniffed +ve act HADBEEN_TENSE3p s
-vu: had sniffed +ve act HADBEEN_TENSE3p p
-vu: does not sniff -ve act IS_TENSE3p s
-vu: do not sniff -ve act IS_TENSE3p p
-vu: did not sniff -ve act WAS_TENSE3p s
-vu: did not sniff -ve act WAS_TENSE3p p
-vu: sniffs +ve act IS_TENSE3p s
-vu: sniff +ve act IS_TENSE3p p
-vu: sniffed +ve act WAS_TENSE3p s
-vu: sniffed +ve act WAS_TENSE3p p
-vu: has not squeezed -ve act HASBEEN_TENSE3p s
-vu: have not squeezed -ve act HASBEEN_TENSE3p p
-vu: had not squeezed -ve act HADBEEN_TENSE3p s
-vu: had not squeezed -ve act HADBEEN_TENSE3p p
-vu: has squeezed +ve act HASBEEN_TENSE3p s
-vu: have squeezed +ve act HASBEEN_TENSE3p p
-vu: had squeezed +ve act HADBEEN_TENSE3p s
-vu: had squeezed +ve act HADBEEN_TENSE3p p
-vu: does not squeeze -ve act IS_TENSE3p s
-vu: do not squeeze -ve act IS_TENSE3p p
-vu: did not squeeze -ve act WAS_TENSE3p s
-vu: did not squeeze -ve act WAS_TENSE3p p
-vu: squeezes +ve act IS_TENSE3p s
-vu: squeeze +ve act IS_TENSE3p p
-vu: squeezed +ve act WAS_TENSE3p s
-vu: squeezed +ve act WAS_TENSE3p p
-vu: has not switched -ve act HASBEEN_TENSE3p s
-vu: have not switched -ve act HASBEEN_TENSE3p p
-vu: had not switched -ve act HADBEEN_TENSE3p s
-vu: had not switched -ve act HADBEEN_TENSE3p p
-vu: has switched +ve act HASBEEN_TENSE3p s
-vu: have switched +ve act HASBEEN_TENSE3p p
-vu: had switched +ve act HADBEEN_TENSE3p s
-vu: had switched +ve act HADBEEN_TENSE3p p
-vu: does not switch -ve act IS_TENSE3p s
-vu: do not switch -ve act IS_TENSE3p p
-vu: did not switch -ve act WAS_TENSE3p s
-vu: did not switch -ve act WAS_TENSE3p p
-vu: switches +ve act IS_TENSE3p s
-vu: switch +ve act IS_TENSE3p p
-vu: switched +ve act WAS_TENSE3p s
-vu: switched +ve act WAS_TENSE3p p
-vu: has not taken -ve act HASBEEN_TENSE3p s
-vu: have not taken -ve act HASBEEN_TENSE3p p
-vu: had not taken -ve act HADBEEN_TENSE3p s
-vu: had not taken -ve act HADBEEN_TENSE3p p
-vu: has taken +ve act HASBEEN_TENSE3p s
-vu: have taken +ve act HASBEEN_TENSE3p p
-vu: had taken +ve act HADBEEN_TENSE3p s
-vu: had taken +ve act HADBEEN_TENSE3p p
-vu: does not take -ve act IS_TENSE3p s
-vu: do not take -ve act IS_TENSE3p p
-vu: did not take -ve act WAS_TENSE3p s
-vu: did not take -ve act WAS_TENSE3p p
-vu: takes +ve act IS_TENSE3p s
-vu: take +ve act IS_TENSE3p p
-vu: took +ve act WAS_TENSE3p s
-vu: took +ve act WAS_TENSE3p p
-vu: has not talked -ve act HASBEEN_TENSE3p s
-vu: have not talked -ve act HASBEEN_TENSE3p p
-vu: had not talked -ve act HADBEEN_TENSE3p s
-vu: had not talked -ve act HADBEEN_TENSE3p p
-vu: has talked +ve act HASBEEN_TENSE3p s
-vu: have talked +ve act HASBEEN_TENSE3p p
-vu: had talked +ve act HADBEEN_TENSE3p s
-vu: had talked +ve act HADBEEN_TENSE3p p
-vu: does not talk -ve act IS_TENSE3p s
-vu: do not talk -ve act IS_TENSE3p p
-vu: did not talk -ve act WAS_TENSE3p s
-vu: did not talk -ve act WAS_TENSE3p p
-vu: talks +ve act IS_TENSE3p s
-vu: talk +ve act IS_TENSE3p p
-vu: talked +ve act WAS_TENSE3p s
-vu: talked +ve act WAS_TENSE3p p
-vu: has not tasted -ve act HASBEEN_TENSE3p s
-vu: have not tasted -ve act HASBEEN_TENSE3p p
-vu: had not tasted -ve act HADBEEN_TENSE3p s
-vu: had not tasted -ve act HADBEEN_TENSE3p p
-vu: has tasted +ve act HASBEEN_TENSE3p s
-vu: have tasted +ve act HASBEEN_TENSE3p p
-vu: had tasted +ve act HADBEEN_TENSE3p s
-vu: had tasted +ve act HADBEEN_TENSE3p p
-vu: does not taste -ve act IS_TENSE3p s
-vu: do not taste -ve act IS_TENSE3p p
-vu: did not taste -ve act WAS_TENSE3p s
-vu: did not taste -ve act WAS_TENSE3p p
-vu: tastes +ve act IS_TENSE3p s
-vu: taste +ve act IS_TENSE3p p
-vu: tasted +ve act WAS_TENSE3p s
-vu: tasted +ve act WAS_TENSE3p p
-vu: has not touched -ve act HASBEEN_TENSE3p s
-vu: have not touched -ve act HASBEEN_TENSE3p p
-vu: had not touched -ve act HADBEEN_TENSE3p s
-vu: had not touched -ve act HADBEEN_TENSE3p p
-vu: has touched +ve act HASBEEN_TENSE3p s
-vu: have touched +ve act HASBEEN_TENSE3p p
-vu: had touched +ve act HADBEEN_TENSE3p s
-vu: had touched +ve act HADBEEN_TENSE3p p
-vu: does not touch -ve act IS_TENSE3p s
-vu: do not touch -ve act IS_TENSE3p p
-vu: did not touch -ve act WAS_TENSE3p s
-vu: did not touch -ve act WAS_TENSE3p p
-vu: touches +ve act IS_TENSE3p s
-vu: touch +ve act IS_TENSE3p p
-vu: touched +ve act WAS_TENSE3p s
-vu: touched +ve act WAS_TENSE3p p
-vu: has not turned -ve act HASBEEN_TENSE3p s
-vu: have not turned -ve act HASBEEN_TENSE3p p
-vu: had not turned -ve act HADBEEN_TENSE3p s
-vu: had not turned -ve act HADBEEN_TENSE3p p
-vu: has turned +ve act HASBEEN_TENSE3p s
-vu: have turned +ve act HASBEEN_TENSE3p p
-vu: had turned +ve act HADBEEN_TENSE3p s
-vu: had turned +ve act HADBEEN_TENSE3p p
-vu: does not turn -ve act IS_TENSE3p s
-vu: do not turn -ve act IS_TENSE3p p
-vu: did not turn -ve act WAS_TENSE3p s
-vu: did not turn -ve act WAS_TENSE3p p
-vu: turns +ve act IS_TENSE3p s
-vu: turn +ve act IS_TENSE3p p
-vu: turned +ve act WAS_TENSE3p s
-vu: turned +ve act WAS_TENSE3p p
-vu: has not waited -ve act HASBEEN_TENSE3p s
-vu: have not waited -ve act HASBEEN_TENSE3p p
-vu: had not waited -ve act HADBEEN_TENSE3p s
-vu: had not waited -ve act HADBEEN_TENSE3p p
-vu: has waited +ve act HASBEEN_TENSE3p s
-vu: have waited +ve act HASBEEN_TENSE3p p
-vu: had waited +ve act HADBEEN_TENSE3p s
-vu: had waited +ve act HADBEEN_TENSE3p p
-vu: does not wait -ve act IS_TENSE3p s
-vu: do not wait -ve act IS_TENSE3p p
-vu: did not wait -ve act WAS_TENSE3p s
-vu: did not wait -ve act WAS_TENSE3p p
-vu: waits +ve act IS_TENSE3p s
-vu: wait +ve act IS_TENSE3p p
-vu: waited +ve act WAS_TENSE3p s
-vu: waited +ve act WAS_TENSE3p p
-vu: has not waved -ve act HASBEEN_TENSE3p s
-vu: have not waved -ve act HASBEEN_TENSE3p p
-vu: had not waved -ve act HADBEEN_TENSE3p s
-vu: had not waved -ve act HADBEEN_TENSE3p p
-vu: has waved +ve act HASBEEN_TENSE3p s
-vu: have waved +ve act HASBEEN_TENSE3p p
-vu: had waved +ve act HADBEEN_TENSE3p s
-vu: had waved +ve act HADBEEN_TENSE3p p
-vu: does not wave -ve act IS_TENSE3p s
-vu: do not wave -ve act IS_TENSE3p p
-vu: did not wave -ve act WAS_TENSE3p s
-vu: did not wave -ve act WAS_TENSE3p p
-vu: waves +ve act IS_TENSE3p s
-vu: wave +ve act IS_TENSE3p p
-vu: waved +ve act WAS_TENSE3p s
-vu: waved +ve act WAS_TENSE3p p
-vu: has not won -ve act HASBEEN_TENSE3p s
-vu: have not won -ve act HASBEEN_TENSE3p p
-vu: had not won -ve act HADBEEN_TENSE3p s
-vu: had not won -ve act HADBEEN_TENSE3p p
-vu: has won +ve act HASBEEN_TENSE3p s
-vu: have won +ve act HASBEEN_TENSE3p p
-vu: had won +ve act HADBEEN_TENSE3p s
-vu: had won +ve act HADBEEN_TENSE3p p
-vu: does not win -ve act IS_TENSE3p s
-vu: do not win -ve act IS_TENSE3p p
-vu: did not win -ve act WAS_TENSE3p s
-vu: did not win -ve act WAS_TENSE3p p
-vu: wins +ve act IS_TENSE3p s
-vu: win +ve act IS_TENSE3p p
-vu: won +ve act WAS_TENSE3p s
-vu: won +ve act WAS_TENSE3p p
-vu: has not protected -ve act HASBEEN_TENSE3p s
-vu: have not protected -ve act HASBEEN_TENSE3p p
-vu: had not protected -ve act HADBEEN_TENSE3p s
-vu: had not protected -ve act HADBEEN_TENSE3p p
-vu: has protected +ve act HASBEEN_TENSE3p s
-vu: have protected +ve act HASBEEN_TENSE3p p
-vu: had protected +ve act HADBEEN_TENSE3p s
-vu: had protected +ve act HADBEEN_TENSE3p p
-vu: does not protect -ve act IS_TENSE3p s
-vu: do not protect -ve act IS_TENSE3p p
-vu: did not protect -ve act WAS_TENSE3p s
-vu: did not protect -ve act WAS_TENSE3p p
-vu: protects +ve act IS_TENSE3p s
-vu: protect +ve act IS_TENSE3p p
-vu: protected +ve act WAS_TENSE3p s
-vu: protected +ve act WAS_TENSE3p p
-vu: has not owned -ve act HASBEEN_TENSE3p s
-vu: have not owned -ve act HASBEEN_TENSE3p p
-vu: had not owned -ve act HADBEEN_TENSE3p s
-vu: had not owned -ve act HADBEEN_TENSE3p p
-vu: has owned +ve act HASBEEN_TENSE3p s
-vu: have owned +ve act HASBEEN_TENSE3p p
-vu: had owned +ve act HADBEEN_TENSE3p s
-vu: had owned +ve act HADBEEN_TENSE3p p
-vu: does not own -ve act IS_TENSE3p s
-vu: do not own -ve act IS_TENSE3p p
-vu: did not own -ve act WAS_TENSE3p s
-vu: did not own -ve act WAS_TENSE3p p
-vu: owns +ve act IS_TENSE3p s
-vu: own +ve act IS_TENSE3p p
-vu: owned +ve act WAS_TENSE3p s
-vu: owned +ve act WAS_TENSE3p p
-vu: has not fitted -ve act HASBEEN_TENSE3p s
-vu: have not fitted -ve act HASBEEN_TENSE3p p
-vu: had not fitted -ve act HADBEEN_TENSE3p s
-vu: had not fitted -ve act HADBEEN_TENSE3p p
-vu: has fitted +ve act HASBEEN_TENSE3p s
-vu: have fitted +ve act HASBEEN_TENSE3p p
-vu: had fitted +ve act HADBEEN_TENSE3p s
-vu: had fitted +ve act HADBEEN_TENSE3p p
-vu: does not fit -ve act IS_TENSE3p s
-vu: do not fit -ve act IS_TENSE3p p
-vu: did not fit -ve act WAS_TENSE3p s
-vu: did not fit -ve act WAS_TENSE3p p
-vu: fits +ve act IS_TENSE3p s
-vu: fit +ve act IS_TENSE3p p
-vu: fitted +ve act WAS_TENSE3p s
-vu: fitted +ve act WAS_TENSE3p p
-vu: has not unbolted -ve act HASBEEN_TENSE3p s
-vu: have not unbolted -ve act HASBEEN_TENSE3p p
-vu: had not unbolted -ve act HADBEEN_TENSE3p s
-vu: had not unbolted -ve act HADBEEN_TENSE3p p
-vu: has unbolted +ve act HASBEEN_TENSE3p s
-vu: have unbolted +ve act HASBEEN_TENSE3p p
-vu: had unbolted +ve act HADBEEN_TENSE3p s
-vu: had unbolted +ve act HADBEEN_TENSE3p p
-vu: does not unbolt -ve act IS_TENSE3p s
-vu: do not unbolt -ve act IS_TENSE3p p
-vu: did not unbolt -ve act WAS_TENSE3p s
-vu: did not unbolt -ve act WAS_TENSE3p p
-vu: unbolts +ve act IS_TENSE3p s
-vu: unbolt +ve act IS_TENSE3p p
-vu: unbolted +ve act WAS_TENSE3p s
-vu: unbolted +ve act WAS_TENSE3p p
+verb '<' 3p s act IS_TENSE +ve
+verb '>' 3p s act IS_TENSE +ve
+verb '<=' 3p s act IS_TENSE +ve
+verb '>=' 3p s act IS_TENSE +ve
+verb 'has not been' 3p s act HASBEEN_TENSE -ve
+verb 'have not been' 3p p act HASBEEN_TENSE -ve
+verb 'had not been' 3p s act HADBEEN_TENSE -ve
+verb 'had not been' 3p p act HADBEEN_TENSE -ve
+verb 'has been' 3p s act HASBEEN_TENSE +ve
+verb 'have been' 3p p act HASBEEN_TENSE +ve
+verb 'had been' 3p s act HADBEEN_TENSE +ve
+verb 'had been' 3p p act HADBEEN_TENSE +ve
+verb 'is not' 3p s act IS_TENSE -ve
+verb 'are not' 3p p act IS_TENSE -ve
+verb 'was not' 3p s act WAS_TENSE -ve
+verb 'were not' 3p p act WAS_TENSE -ve
+verb 'is' 3p s act IS_TENSE +ve
+verb 'are' 3p p act IS_TENSE +ve
+verb 'was' 3p s act WAS_TENSE +ve
+verb 'were' 3p p act WAS_TENSE +ve
+verb 'has not meant' 3p s act HASBEEN_TENSE -ve
+verb 'have not meant' 3p p act HASBEEN_TENSE -ve
+verb 'had not meant' 3p s act HADBEEN_TENSE -ve
+verb 'had not meant' 3p p act HADBEEN_TENSE -ve
+verb 'has meant' 3p s act HASBEEN_TENSE +ve
+verb 'have meant' 3p p act HASBEEN_TENSE +ve
+verb 'had meant' 3p s act HADBEEN_TENSE +ve
+verb 'had meant' 3p p act HADBEEN_TENSE +ve
+verb 'does not mean' 3p s act IS_TENSE -ve
+verb 'do not mean' 3p p act IS_TENSE -ve
+verb 'did not mean' 3p s act WAS_TENSE -ve
+verb 'did not mean' 3p p act WAS_TENSE -ve
+verb 'means' 3p s act IS_TENSE +ve
+verb 'mean' 3p p act IS_TENSE +ve
+verb 'meant' 3p s act WAS_TENSE +ve
+verb 'meant' 3p p act WAS_TENSE +ve
+verb 'has not implied' 3p s act HASBEEN_TENSE -ve
+verb 'have not implied' 3p p act HASBEEN_TENSE -ve
+verb 'had not implied' 3p s act HADBEEN_TENSE -ve
+verb 'had not implied' 3p p act HADBEEN_TENSE -ve
+verb 'has implied' 3p s act HASBEEN_TENSE +ve
+verb 'have implied' 3p p act HASBEEN_TENSE +ve
+verb 'had implied' 3p s act HADBEEN_TENSE +ve
+verb 'had implied' 3p p act HADBEEN_TENSE +ve
+verb 'does not imply' 3p s act IS_TENSE -ve
+verb 'do not imply' 3p p act IS_TENSE -ve
+verb 'did not imply' 3p s act WAS_TENSE -ve
+verb 'did not imply' 3p p act WAS_TENSE -ve
+verb 'implies' 3p s act IS_TENSE +ve
+verb 'imply' 3p p act IS_TENSE +ve
+verb 'implied' 3p s act WAS_TENSE +ve
+verb 'implied' 3p p act WAS_TENSE +ve
+verb 'has not been able to be' 3p s act HASBEEN_TENSE -ve
+verb 'have not been able to be' 3p p act HASBEEN_TENSE -ve
+verb 'had not been able to be' 3p s act HADBEEN_TENSE -ve
+verb 'had not been able to be' 3p p act HADBEEN_TENSE -ve
+verb 'has been able to be' 3p s act HASBEEN_TENSE +ve
+verb 'have been able to be' 3p p act HASBEEN_TENSE +ve
+verb 'had been able to be' 3p s act HADBEEN_TENSE +ve
+verb 'had been able to be' 3p p act HADBEEN_TENSE +ve
+verb 'cannot be' 3p s act IS_TENSE -ve
+verb 'cannot be' 3p p act IS_TENSE -ve
+verb 'could not be' 3p s act WAS_TENSE -ve
+verb 'could not be' 3p p act WAS_TENSE -ve
+verb 'can be' 3p s act IS_TENSE +ve
+verb 'can be' 3p p act IS_TENSE +ve
+verb 'could be' 3p s act WAS_TENSE +ve
+verb 'could be' 3p p act WAS_TENSE +ve
+verb 'has not been able to be been by' 3p s pass HASBEEN_TENSE -ve
+verb 'have not been able to be been by' 3p p pass HASBEEN_TENSE -ve
+verb 'had not been able to be been by' 3p s pass HADBEEN_TENSE -ve
+verb 'had not been able to be been by' 3p p pass HADBEEN_TENSE -ve
+verb 'has been able to be been by' 3p s pass HASBEEN_TENSE +ve
+verb 'have been able to be been by' 3p p pass HASBEEN_TENSE +ve
+verb 'had been able to be been by' 3p s pass HADBEEN_TENSE +ve
+verb 'had been able to be been by' 3p p pass HADBEEN_TENSE +ve
+verb 'cannot be been by' 3p s pass IS_TENSE -ve
+verb 'cannot be been by' 3p p pass IS_TENSE -ve
+verb 'could not be been by' 3p s pass WAS_TENSE -ve
+verb 'could not be been by' 3p p pass WAS_TENSE -ve
+verb 'can be been by' 3p s pass IS_TENSE +ve
+verb 'can be been by' 3p p pass IS_TENSE +ve
+verb 'could be been by' 3p s pass WAS_TENSE +ve
+verb 'could be been by' 3p p pass WAS_TENSE +ve
+verb 'has not had' 3p s act HASBEEN_TENSE -ve
+verb 'have not had' 3p p act HASBEEN_TENSE -ve
+verb 'had not had' 3p s act HADBEEN_TENSE -ve
+verb 'had not had' 3p p act HADBEEN_TENSE -ve
+verb 'has had' 3p s act HASBEEN_TENSE +ve
+verb 'have had' 3p p act HASBEEN_TENSE +ve
+verb 'had had' 3p s act HADBEEN_TENSE +ve
+verb 'had had' 3p p act HADBEEN_TENSE +ve
+verb 'does not have' 3p s act IS_TENSE -ve
+verb 'do not have' 3p p act IS_TENSE -ve
+verb 'did not have' 3p s act WAS_TENSE -ve
+verb 'did not have' 3p p act WAS_TENSE -ve
+verb 'has' 3p s act IS_TENSE +ve
+verb 'have' 3p p act IS_TENSE +ve
+verb 'had' 3p s act WAS_TENSE +ve
+verb 'had' 3p p act WAS_TENSE +ve
+verb 'has not specified' 3p s act HASBEEN_TENSE -ve
+verb 'have not specified' 3p p act HASBEEN_TENSE -ve
+verb 'had not specified' 3p s act HADBEEN_TENSE -ve
+verb 'had not specified' 3p p act HADBEEN_TENSE -ve
+verb 'has specified' 3p s act HASBEEN_TENSE +ve
+verb 'have specified' 3p p act HASBEEN_TENSE +ve
+verb 'had specified' 3p s act HADBEEN_TENSE +ve
+verb 'had specified' 3p p act HADBEEN_TENSE +ve
+verb 'does not specify' 3p s act IS_TENSE -ve
+verb 'do not specify' 3p p act IS_TENSE -ve
+verb 'did not specify' 3p s act WAS_TENSE -ve
+verb 'did not specify' 3p p act WAS_TENSE -ve
+verb 'specifies' 3p s act IS_TENSE +ve
+verb 'specify' 3p p act IS_TENSE +ve
+verb 'specified' 3p s act WAS_TENSE +ve
+verb 'specified' 3p p act WAS_TENSE +ve
+verb 'has not related' 3p s act HASBEEN_TENSE -ve
+verb 'have not related' 3p p act HASBEEN_TENSE -ve
+verb 'had not related' 3p s act HADBEEN_TENSE -ve
+verb 'had not related' 3p p act HADBEEN_TENSE -ve
+verb 'has related' 3p s act HASBEEN_TENSE +ve
+verb 'have related' 3p p act HASBEEN_TENSE +ve
+verb 'had related' 3p s act HADBEEN_TENSE +ve
+verb 'had related' 3p p act HADBEEN_TENSE +ve
+verb 'does not relate' 3p s act IS_TENSE -ve
+verb 'do not relate' 3p p act IS_TENSE -ve
+verb 'did not relate' 3p s act WAS_TENSE -ve
+verb 'did not relate' 3p p act WAS_TENSE -ve
+verb 'relates' 3p s act IS_TENSE +ve
+verb 'relate' 3p p act IS_TENSE +ve
+verb 'related' 3p s act WAS_TENSE +ve
+verb 'related' 3p p act WAS_TENSE +ve
+verb 'has not substituted' 3p s act HASBEEN_TENSE -ve
+verb 'have not substituted' 3p p act HASBEEN_TENSE -ve
+verb 'had not substituted' 3p s act HADBEEN_TENSE -ve
+verb 'had not substituted' 3p p act HADBEEN_TENSE -ve
+verb 'has substituted' 3p s act HASBEEN_TENSE +ve
+verb 'have substituted' 3p p act HASBEEN_TENSE +ve
+verb 'had substituted' 3p s act HADBEEN_TENSE +ve
+verb 'had substituted' 3p p act HADBEEN_TENSE +ve
+verb 'does not substitute' 3p s act IS_TENSE -ve
+verb 'do not substitute' 3p p act IS_TENSE -ve
+verb 'did not substitute' 3p s act WAS_TENSE -ve
+verb 'did not substitute' 3p p act WAS_TENSE -ve
+verb 'substitutes' 3p s act IS_TENSE +ve
+verb 'substitute' 3p p act IS_TENSE +ve
+verb 'substituted' 3p s act WAS_TENSE +ve
+verb 'substituted' 3p p act WAS_TENSE +ve
+verb 'has not done' 3p s act HASBEEN_TENSE -ve
+verb 'have not done' 3p p act HASBEEN_TENSE -ve
+verb 'had not done' 3p s act HADBEEN_TENSE -ve
+verb 'had not done' 3p p act HADBEEN_TENSE -ve
+verb 'has done' 3p s act HASBEEN_TENSE +ve
+verb 'have done' 3p p act HASBEEN_TENSE +ve
+verb 'had done' 3p s act HADBEEN_TENSE +ve
+verb 'had done' 3p p act HADBEEN_TENSE +ve
+verb 'does not' 3p s act IS_TENSE -ve
+verb 'do not' 3p p act IS_TENSE -ve
+verb 'did not' 3p s act WAS_TENSE -ve
+verb 'did not' 3p p act WAS_TENSE -ve
+verb 'does' 3p s act IS_TENSE +ve
+verb 'do' 3p p act IS_TENSE +ve
+verb 'did' 3p s act WAS_TENSE +ve
+verb 'did' 3p p act WAS_TENSE +ve
+verb 'has not translated' 3p s act HASBEEN_TENSE -ve
+verb 'have not translated' 3p p act HASBEEN_TENSE -ve
+verb 'had not translated' 3p s act HADBEEN_TENSE -ve
+verb 'had not translated' 3p p act HADBEEN_TENSE -ve
+verb 'has translated' 3p s act HASBEEN_TENSE +ve
+verb 'have translated' 3p p act HASBEEN_TENSE +ve
+verb 'had translated' 3p s act HADBEEN_TENSE +ve
+verb 'had translated' 3p p act HADBEEN_TENSE +ve
+verb 'does not translate' 3p s act IS_TENSE -ve
+verb 'do not translate' 3p p act IS_TENSE -ve
+verb 'did not translate' 3p s act WAS_TENSE -ve
+verb 'did not translate' 3p p act WAS_TENSE -ve
+verb 'translates' 3p s act IS_TENSE +ve
+verb 'translate' 3p p act IS_TENSE +ve
+verb 'translated' 3p s act WAS_TENSE +ve
+verb 'translated' 3p p act WAS_TENSE +ve
+verb 'has not provided' 3p s act HASBEEN_TENSE -ve
+verb 'have not provided' 3p p act HASBEEN_TENSE -ve
+verb 'had not provided' 3p s act HADBEEN_TENSE -ve
+verb 'had not provided' 3p p act HADBEEN_TENSE -ve
+verb 'has provided' 3p s act HASBEEN_TENSE +ve
+verb 'have provided' 3p p act HASBEEN_TENSE +ve
+verb 'had provided' 3p s act HADBEEN_TENSE +ve
+verb 'had provided' 3p p act HADBEEN_TENSE +ve
+verb 'does not provide' 3p s act IS_TENSE -ve
+verb 'do not provide' 3p p act IS_TENSE -ve
+verb 'did not provide' 3p s act WAS_TENSE -ve
+verb 'did not provide' 3p p act WAS_TENSE -ve
+verb 'provides' 3p s act IS_TENSE +ve
+verb 'provide' 3p p act IS_TENSE +ve
+verb 'provided' 3p s act WAS_TENSE +ve
+verb 'provided' 3p p act WAS_TENSE +ve
+verb 'has not used' 3p s act HASBEEN_TENSE -ve
+verb 'have not used' 3p p act HASBEEN_TENSE -ve
+verb 'had not used' 3p s act HADBEEN_TENSE -ve
+verb 'had not used' 3p p act HADBEEN_TENSE -ve
+verb 'has used' 3p s act HASBEEN_TENSE +ve
+verb 'have used' 3p p act HASBEEN_TENSE +ve
+verb 'had used' 3p s act HADBEEN_TENSE +ve
+verb 'had used' 3p p act HADBEEN_TENSE +ve
+verb 'does not use' 3p s act IS_TENSE -ve
+verb 'do not use' 3p p act IS_TENSE -ve
+verb 'did not use' 3p s act WAS_TENSE -ve
+verb 'did not use' 3p p act WAS_TENSE -ve
+verb 'uses' 3p s act IS_TENSE +ve
+verb 'use' 3p p act IS_TENSE +ve
+verb 'used' 3p s act WAS_TENSE +ve
+verb 'used' 3p p act WAS_TENSE +ve
+verb 'has not included' 3p s act HASBEEN_TENSE -ve
+verb 'have not included' 3p p act HASBEEN_TENSE -ve
+verb 'had not included' 3p s act HADBEEN_TENSE -ve
+verb 'had not included' 3p p act HADBEEN_TENSE -ve
+verb 'has included' 3p s act HASBEEN_TENSE +ve
+verb 'have included' 3p p act HASBEEN_TENSE +ve
+verb 'had included' 3p s act HADBEEN_TENSE +ve
+verb 'had included' 3p p act HADBEEN_TENSE +ve
+verb 'does not include' 3p s act IS_TENSE -ve
+verb 'do not include' 3p p act IS_TENSE -ve
+verb 'did not include' 3p s act WAS_TENSE -ve
+verb 'did not include' 3p p act WAS_TENSE -ve
+verb 'includes' 3p s act IS_TENSE +ve
+verb 'include' 3p p act IS_TENSE +ve
+verb 'included' 3p s act WAS_TENSE +ve
+verb 'included' 3p p act WAS_TENSE +ve
+verb 'has not omitted' 3p s act HASBEEN_TENSE -ve
+verb 'have not omitted' 3p p act HASBEEN_TENSE -ve
+verb 'had not omitted' 3p s act HADBEEN_TENSE -ve
+verb 'had not omitted' 3p p act HADBEEN_TENSE -ve
+verb 'has omitted' 3p s act HASBEEN_TENSE +ve
+verb 'have omitted' 3p p act HASBEEN_TENSE +ve
+verb 'had omitted' 3p s act HADBEEN_TENSE +ve
+verb 'had omitted' 3p p act HADBEEN_TENSE +ve
+verb 'does not omit' 3p s act IS_TENSE -ve
+verb 'do not omit' 3p p act IS_TENSE -ve
+verb 'did not omit' 3p s act WAS_TENSE -ve
+verb 'did not omit' 3p p act WAS_TENSE -ve
+verb 'omits' 3p s act IS_TENSE +ve
+verb 'omit' 3p p act IS_TENSE +ve
+verb 'omitted' 3p s act WAS_TENSE +ve
+verb 'omitted' 3p p act WAS_TENSE +ve
+verb 'has not been able to' 3p s act HASBEEN_TENSE -ve
+verb 'have not been able to' 3p p act HASBEEN_TENSE -ve
+verb 'had not been able to' 3p s act HADBEEN_TENSE -ve
+verb 'had not been able to' 3p p act HADBEEN_TENSE -ve
+verb 'has been able to' 3p s act HASBEEN_TENSE +ve
+verb 'have been able to' 3p p act HASBEEN_TENSE +ve
+verb 'had been able to' 3p s act HADBEEN_TENSE +ve
+verb 'had been able to' 3p p act HADBEEN_TENSE +ve
+verb 'cannot' 3p s act IS_TENSE -ve
+verb 'cannot' 3p p act IS_TENSE -ve
+verb 'could not' 3p s act WAS_TENSE -ve
+verb 'could not' 3p p act WAS_TENSE -ve
+verb 'can' 3p s act IS_TENSE +ve
+verb 'can' 3p p act IS_TENSE +ve
+verb 'could' 3p s act WAS_TENSE +ve
+verb 'could' 3p p act WAS_TENSE +ve
+verb 'could not have' 3p s act HASBEEN_TENSE -ve
+verb 'could not have' 3p p act HASBEEN_TENSE -ve
+verb 'could not have' 3p s act HADBEEN_TENSE -ve
+verb 'could not have' 3p p act HADBEEN_TENSE -ve
+verb 'could have' 3p s act HASBEEN_TENSE +ve
+verb 'could have' 3p p act HASBEEN_TENSE +ve
+verb 'could have' 3p s act HADBEEN_TENSE +ve
+verb 'could have' 3p p act HADBEEN_TENSE +ve
+verb 'could not' 3p s act IS_TENSE -ve
+verb 'could not' 3p p act IS_TENSE -ve
+verb 'could not have' 3p s act WAS_TENSE -ve
+verb 'could not have' 3p p act WAS_TENSE -ve
+verb 'could' 3p s act IS_TENSE +ve
+verb 'could' 3p p act IS_TENSE +ve
+verb 'could have' 3p s act WAS_TENSE +ve
+verb 'could have' 3p p act WAS_TENSE +ve
+verb 'may not have' 3p s act HASBEEN_TENSE -ve
+verb 'may not have' 3p p act HASBEEN_TENSE -ve
+verb 'may not have' 3p s act HADBEEN_TENSE -ve
+verb 'may not have' 3p p act HADBEEN_TENSE -ve
+verb 'may have' 3p s act HASBEEN_TENSE +ve
+verb 'may have' 3p p act HASBEEN_TENSE +ve
+verb 'may have' 3p s act HADBEEN_TENSE +ve
+verb 'may have' 3p p act HADBEEN_TENSE +ve
+verb 'may not' 3p s act IS_TENSE -ve
+verb 'may not' 3p p act IS_TENSE -ve
+verb 'may not have' 3p s act WAS_TENSE -ve
+verb 'may not have' 3p p act WAS_TENSE -ve
+verb 'may' 3p s act IS_TENSE +ve
+verb 'may' 3p p act IS_TENSE +ve
+verb 'may have' 3p s act WAS_TENSE +ve
+verb 'may have' 3p p act WAS_TENSE +ve
+verb 'might not have' 3p s act HASBEEN_TENSE -ve
+verb 'might not have' 3p p act HASBEEN_TENSE -ve
+verb 'might not have' 3p s act HADBEEN_TENSE -ve
+verb 'might not have' 3p p act HADBEEN_TENSE -ve
+verb 'might have' 3p s act HASBEEN_TENSE +ve
+verb 'might have' 3p p act HASBEEN_TENSE +ve
+verb 'might have' 3p s act HADBEEN_TENSE +ve
+verb 'might have' 3p p act HADBEEN_TENSE +ve
+verb 'might not' 3p s act IS_TENSE -ve
+verb 'might not' 3p p act IS_TENSE -ve
+verb 'might not have' 3p s act WAS_TENSE -ve
+verb 'might not have' 3p p act WAS_TENSE -ve
+verb 'might' 3p s act IS_TENSE +ve
+verb 'might' 3p p act IS_TENSE +ve
+verb 'might have' 3p s act WAS_TENSE +ve
+verb 'might have' 3p p act WAS_TENSE +ve
+verb 'must not have' 3p s act HASBEEN_TENSE -ve
+verb 'must not have' 3p p act HASBEEN_TENSE -ve
+verb 'must not have' 3p s act HADBEEN_TENSE -ve
+verb 'must not have' 3p p act HADBEEN_TENSE -ve
+verb 'must have' 3p s act HASBEEN_TENSE +ve
+verb 'must have' 3p p act HASBEEN_TENSE +ve
+verb 'must have' 3p s act HADBEEN_TENSE +ve
+verb 'must have' 3p p act HADBEEN_TENSE +ve
+verb 'must not' 3p s act IS_TENSE -ve
+verb 'must not' 3p p act IS_TENSE -ve
+verb 'must not have' 3p s act WAS_TENSE -ve
+verb 'must not have' 3p p act WAS_TENSE -ve
+verb 'must' 3p s act IS_TENSE +ve
+verb 'must' 3p p act IS_TENSE +ve
+verb 'must have' 3p s act WAS_TENSE +ve
+verb 'must have' 3p p act WAS_TENSE +ve
+verb 'should not have' 3p s act HASBEEN_TENSE -ve
+verb 'should not have' 3p p act HASBEEN_TENSE -ve
+verb 'should not have' 3p s act HADBEEN_TENSE -ve
+verb 'should not have' 3p p act HADBEEN_TENSE -ve
+verb 'should have' 3p s act HASBEEN_TENSE +ve
+verb 'should have' 3p p act HASBEEN_TENSE +ve
+verb 'should have' 3p s act HADBEEN_TENSE +ve
+verb 'should have' 3p p act HADBEEN_TENSE +ve
+verb 'should not' 3p s act IS_TENSE -ve
+verb 'should not' 3p p act IS_TENSE -ve
+verb 'should not have' 3p s act WAS_TENSE -ve
+verb 'should not have' 3p p act WAS_TENSE -ve
+verb 'should' 3p s act IS_TENSE +ve
+verb 'should' 3p p act IS_TENSE +ve
+verb 'should have' 3p s act WAS_TENSE +ve
+verb 'should have' 3p p act WAS_TENSE +ve
+verb 'would not have' 3p s act HASBEEN_TENSE -ve
+verb 'would not have' 3p p act HASBEEN_TENSE -ve
+verb 'would not have' 3p s act HADBEEN_TENSE -ve
+verb 'would not have' 3p p act HADBEEN_TENSE -ve
+verb 'would have' 3p s act HASBEEN_TENSE +ve
+verb 'would have' 3p p act HASBEEN_TENSE +ve
+verb 'would have' 3p s act HADBEEN_TENSE +ve
+verb 'would have' 3p p act HADBEEN_TENSE +ve
+verb 'would not' 3p s act IS_TENSE -ve
+verb 'would not' 3p p act IS_TENSE -ve
+verb 'would not have' 3p s act WAS_TENSE -ve
+verb 'would not have' 3p p act WAS_TENSE -ve
+verb 'would' 3p s act IS_TENSE +ve
+verb 'would' 3p p act IS_TENSE +ve
+verb 'would have' 3p s act WAS_TENSE +ve
+verb 'would have' 3p p act WAS_TENSE +ve
+verb ''s not been' 3p s act HASBEEN_TENSE -ve
+verb ''ve not been' 3p p act HASBEEN_TENSE -ve
+verb ''d not been' 3p s act HADBEEN_TENSE -ve
+verb ''d not been' 3p p act HADBEEN_TENSE -ve
+verb ''s been' 3p s act HASBEEN_TENSE +ve
+verb ''ve been' 3p p act HASBEEN_TENSE +ve
+verb ''d been' 3p s act HADBEEN_TENSE +ve
+verb ''d been' 3p p act HADBEEN_TENSE +ve
+verb ''s not' 3p s act IS_TENSE -ve
+verb ''re not' 3p p act IS_TENSE -ve
+verb 'wasn't' 3p s act WAS_TENSE -ve
+verb 'weren't' 3p p act WAS_TENSE -ve
+verb ''s' 3p s act IS_TENSE +ve
+verb ''re' 3p p act IS_TENSE +ve
+verb 'was' 3p s act WAS_TENSE +ve
+verb 'were' 3p p act WAS_TENSE +ve
+verb ''s not had' 3p s act HASBEEN_TENSE -ve
+verb ''ve not had' 3p p act HASBEEN_TENSE -ve
+verb ''d not had' 3p s act HADBEEN_TENSE -ve
+verb ''d not had' 3p p act HADBEEN_TENSE -ve
+verb ''s had' 3p s act HASBEEN_TENSE +ve
+verb ''ve had' 3p p act HASBEEN_TENSE +ve
+verb ''d had' 3p s act HADBEEN_TENSE +ve
+verb ''d had' 3p p act HADBEEN_TENSE +ve
+verb ''s not' 3p s act IS_TENSE -ve
+verb ''ve not' 3p p act IS_TENSE -ve
+verb 'hadn't' 3p s act WAS_TENSE -ve
+verb 'hadn't' 3p p act WAS_TENSE -ve
+verb ''s' 3p s act IS_TENSE +ve
+verb ''ve' 3p p act IS_TENSE +ve
+verb 'had' 3p s act WAS_TENSE +ve
+verb 'had' 3p p act WAS_TENSE +ve
+verb 'hasn't been' 3p s act HASBEEN_TENSE +ve
+verb 'haven't been' 3p p act HASBEEN_TENSE +ve
+verb 'hadn't been' 3p s act HADBEEN_TENSE +ve
+verb 'hadn't been' 3p p act HADBEEN_TENSE +ve
+verb 'isn't' 3p s act IS_TENSE +ve
+verb 'aren't' 3p p act IS_TENSE +ve
+verb 'wasn't' 3p s act WAS_TENSE +ve
+verb 'weren't' 3p p act WAS_TENSE +ve
+verb 'hasn't been able to' 3p s act HASBEEN_TENSE +ve
+verb 'haven't been able to' 3p p act HASBEEN_TENSE +ve
+verb 'hadn't been able to' 3p s act HADBEEN_TENSE +ve
+verb 'hadn't been able to' 3p p act HADBEEN_TENSE +ve
+verb 'can't' 3p s act IS_TENSE +ve
+verb 'can't' 3p p act IS_TENSE +ve
+verb 'couldn't' 3p s act WAS_TENSE +ve
+verb 'couldn't' 3p p act WAS_TENSE +ve
+verb 'didn't' 3p s act HASBEEN_TENSE +ve
+verb 'didn't' 3p p act HASBEEN_TENSE +ve
+verb 'didn't' 3p s act HADBEEN_TENSE +ve
+verb 'didn't' 3p p act HADBEEN_TENSE +ve
+verb 'doesn't' 3p s act IS_TENSE +ve
+verb 'don't' 3p p act IS_TENSE +ve
+verb 'didn't' 3p s act WAS_TENSE +ve
+verb 'didn't' 3p p act WAS_TENSE +ve
+verb 'hadn't' 3p s act HASBEEN_TENSE +ve
+verb 'hadn't' 3p p act HASBEEN_TENSE +ve
+verb 'hadn't' 3p s act HADBEEN_TENSE +ve
+verb 'hadn't' 3p p act HADBEEN_TENSE +ve
+verb 'hasn't' 3p s act IS_TENSE +ve
+verb 'haven't' 3p p act IS_TENSE +ve
+verb 'hadn't' 3p s act WAS_TENSE +ve
+verb 'hadn't' 3p p act WAS_TENSE +ve
+verb 'mustn't have' 3p s act HASBEEN_TENSE +ve
+verb 'mustn't have' 3p p act HASBEEN_TENSE +ve
+verb 'mustn't have' 3p s act HADBEEN_TENSE +ve
+verb 'mustn't have' 3p p act HADBEEN_TENSE +ve
+verb 'mustn't' 3p s act IS_TENSE +ve
+verb 'mustn't' 3p p act IS_TENSE +ve
+verb 'mustn't have' 3p s act WAS_TENSE +ve
+verb 'mustn't have' 3p p act WAS_TENSE +ve
+verb 'mightn't have' 3p s act HASBEEN_TENSE +ve
+verb 'mightn't have' 3p p act HASBEEN_TENSE +ve
+verb 'mightn't have' 3p s act HADBEEN_TENSE +ve
+verb 'mightn't have' 3p p act HADBEEN_TENSE +ve
+verb 'mightn't' 3p s act IS_TENSE +ve
+verb 'mightn't' 3p p act IS_TENSE +ve
+verb 'mightn't have' 3p s act WAS_TENSE +ve
+verb 'mightn't have' 3p p act WAS_TENSE +ve
+verb 'mayn't have' 3p s act HASBEEN_TENSE +ve
+verb 'mayn't have' 3p p act HASBEEN_TENSE +ve
+verb 'mayn't have' 3p s act HADBEEN_TENSE +ve
+verb 'mayn't have' 3p p act HADBEEN_TENSE +ve
+verb 'mayn't' 3p s act IS_TENSE +ve
+verb 'mayn't' 3p p act IS_TENSE +ve
+verb 'mayn't have' 3p s act WAS_TENSE +ve
+verb 'mayn't have' 3p p act WAS_TENSE +ve
+verb 'wouldn't have' 3p s act HASBEEN_TENSE +ve
+verb 'wouldn't have' 3p p act HASBEEN_TENSE +ve
+verb 'wouldn't have' 3p s act HADBEEN_TENSE +ve
+verb 'wouldn't have' 3p p act HADBEEN_TENSE +ve
+verb 'wouldn't' 3p s act IS_TENSE +ve
+verb 'wouldn't' 3p p act IS_TENSE +ve
+verb 'wouldn't have' 3p s act WAS_TENSE +ve
+verb 'wouldn't have' 3p p act WAS_TENSE +ve
+verb 'couldn't have' 3p s act HASBEEN_TENSE +ve
+verb 'couldn't have' 3p p act HASBEEN_TENSE +ve
+verb 'couldn't have' 3p s act HADBEEN_TENSE +ve
+verb 'couldn't have' 3p p act HADBEEN_TENSE +ve
+verb 'couldn't' 3p s act IS_TENSE +ve
+verb 'couldn't' 3p p act IS_TENSE +ve
+verb 'couldn't have' 3p s act WAS_TENSE +ve
+verb 'couldn't have' 3p p act WAS_TENSE +ve
+verb 'shouldn't have' 3p s act HASBEEN_TENSE +ve
+verb 'shouldn't have' 3p p act HASBEEN_TENSE +ve
+verb 'shouldn't have' 3p s act HADBEEN_TENSE +ve
+verb 'shouldn't have' 3p p act HADBEEN_TENSE +ve
+verb 'shouldn't' 3p s act IS_TENSE +ve
+verb 'shouldn't' 3p p act IS_TENSE +ve
+verb 'shouldn't have' 3p s act WAS_TENSE +ve
+verb 'shouldn't have' 3p p act WAS_TENSE +ve
+verb 'wouldn't' 3p s act HASBEEN_TENSE +ve
+verb 'wouldn't' 3p p act HASBEEN_TENSE +ve
+verb 'wouldn't' 3p s act HADBEEN_TENSE +ve
+verb 'wouldn't' 3p p act HADBEEN_TENSE +ve
+verb 'won't' 3p s act IS_TENSE +ve
+verb 'won't' 3p p act IS_TENSE +ve
+verb 'wouldn't' 3p s act WAS_TENSE +ve
+verb 'wouldn't' 3p p act WAS_TENSE +ve
+verb 'has not begun' 3p s act HASBEEN_TENSE -ve
+verb 'have not begun' 3p p act HASBEEN_TENSE -ve
+verb 'had not begun' 3p s act HADBEEN_TENSE -ve
+verb 'had not begun' 3p p act HADBEEN_TENSE -ve
+verb 'has begun' 3p s act HASBEEN_TENSE +ve
+verb 'have begun' 3p p act HASBEEN_TENSE +ve
+verb 'had begun' 3p s act HADBEEN_TENSE +ve
+verb 'had begun' 3p p act HADBEEN_TENSE +ve
+verb 'does not begin' 3p s act IS_TENSE -ve
+verb 'do not begin' 3p p act IS_TENSE -ve
+verb 'did not begin' 3p s act WAS_TENSE -ve
+verb 'did not begin' 3p p act WAS_TENSE -ve
+verb 'begins' 3p s act IS_TENSE +ve
+verb 'begin' 3p p act IS_TENSE +ve
+verb 'began' 3p s act WAS_TENSE +ve
+verb 'began' 3p p act WAS_TENSE +ve
+verb 'has not ended' 3p s act HASBEEN_TENSE -ve
+verb 'have not ended' 3p p act HASBEEN_TENSE -ve
+verb 'had not ended' 3p s act HADBEEN_TENSE -ve
+verb 'had not ended' 3p p act HADBEEN_TENSE -ve
+verb 'has ended' 3p s act HASBEEN_TENSE +ve
+verb 'have ended' 3p p act HASBEEN_TENSE +ve
+verb 'had ended' 3p s act HADBEEN_TENSE +ve
+verb 'had ended' 3p p act HADBEEN_TENSE +ve
+verb 'does not end' 3p s act IS_TENSE -ve
+verb 'do not end' 3p p act IS_TENSE -ve
+verb 'did not end' 3p s act WAS_TENSE -ve
+verb 'did not end' 3p p act WAS_TENSE -ve
+verb 'ends' 3p s act IS_TENSE +ve
+verb 'end' 3p p act IS_TENSE +ve
+verb 'ended' 3p s act WAS_TENSE +ve
+verb 'ended' 3p p act WAS_TENSE +ve
+verb 'has not tested' 3p s act HASBEEN_TENSE -ve
+verb 'have not tested' 3p p act HASBEEN_TENSE -ve
+verb 'had not tested' 3p s act HADBEEN_TENSE -ve
+verb 'had not tested' 3p p act HADBEEN_TENSE -ve
+verb 'has tested' 3p s act HASBEEN_TENSE +ve
+verb 'have tested' 3p p act HASBEEN_TENSE +ve
+verb 'had tested' 3p s act HADBEEN_TENSE +ve
+verb 'had tested' 3p p act HADBEEN_TENSE +ve
+verb 'does not test' 3p s act IS_TENSE -ve
+verb 'do not test' 3p p act IS_TENSE -ve
+verb 'did not test' 3p s act WAS_TENSE -ve
+verb 'did not test' 3p p act WAS_TENSE -ve
+verb 'tests' 3p s act IS_TENSE +ve
+verb 'test' 3p p act IS_TENSE +ve
+verb 'tested' 3p s act WAS_TENSE +ve
+verb 'tested' 3p p act WAS_TENSE +ve
+verb 'has not understood' 3p s act HASBEEN_TENSE -ve
+verb 'have not understood' 3p p act HASBEEN_TENSE -ve
+verb 'had not understood' 3p s act HADBEEN_TENSE -ve
+verb 'had not understood' 3p p act HADBEEN_TENSE -ve
+verb 'has understood' 3p s act HASBEEN_TENSE +ve
+verb 'have understood' 3p p act HASBEEN_TENSE +ve
+verb 'had understood' 3p s act HADBEEN_TENSE +ve
+verb 'had understood' 3p p act HADBEEN_TENSE +ve
+verb 'does not understand' 3p s act IS_TENSE -ve
+verb 'do not understand' 3p p act IS_TENSE -ve
+verb 'did not understand' 3p s act WAS_TENSE -ve
+verb 'did not understand' 3p p act WAS_TENSE -ve
+verb 'understands' 3p s act IS_TENSE +ve
+verb 'understand' 3p p act IS_TENSE +ve
+verb 'understood' 3p s act WAS_TENSE +ve
+verb 'understood' 3p p act WAS_TENSE +ve
+verb 'has not released' 3p s act HASBEEN_TENSE -ve
+verb 'have not released' 3p p act HASBEEN_TENSE -ve
+verb 'had not released' 3p s act HADBEEN_TENSE -ve
+verb 'had not released' 3p p act HADBEEN_TENSE -ve
+verb 'has released' 3p s act HASBEEN_TENSE +ve
+verb 'have released' 3p p act HASBEEN_TENSE +ve
+verb 'had released' 3p s act HADBEEN_TENSE +ve
+verb 'had released' 3p p act HADBEEN_TENSE +ve
+verb 'does not release' 3p s act IS_TENSE -ve
+verb 'do not release' 3p p act IS_TENSE -ve
+verb 'did not release' 3p s act WAS_TENSE -ve
+verb 'did not release' 3p p act WAS_TENSE -ve
+verb 'releases' 3p s act IS_TENSE +ve
+verb 'release' 3p p act IS_TENSE +ve
+verb 'released' 3p s act WAS_TENSE +ve
+verb 'released' 3p p act WAS_TENSE +ve
+verb 'has not indexed' 3p s act HASBEEN_TENSE -ve
+verb 'have not indexed' 3p p act HASBEEN_TENSE -ve
+verb 'had not indexed' 3p s act HADBEEN_TENSE -ve
+verb 'had not indexed' 3p p act HADBEEN_TENSE -ve
+verb 'has indexed' 3p s act HASBEEN_TENSE +ve
+verb 'have indexed' 3p p act HASBEEN_TENSE +ve
+verb 'had indexed' 3p s act HADBEEN_TENSE +ve
+verb 'had indexed' 3p p act HADBEEN_TENSE +ve
+verb 'does not index' 3p s act IS_TENSE -ve
+verb 'do not index' 3p p act IS_TENSE -ve
+verb 'did not index' 3p s act WAS_TENSE -ve
+verb 'did not index' 3p p act WAS_TENSE -ve
+verb 'indexes' 3p s act IS_TENSE +ve
+verb 'index' 3p p act IS_TENSE +ve
+verb 'indexed' 3p s act WAS_TENSE +ve
+verb 'indexed' 3p p act WAS_TENSE +ve
+verb 'has not contained' 3p s act HASBEEN_TENSE -ve
+verb 'have not contained' 3p p act HASBEEN_TENSE -ve
+verb 'had not contained' 3p s act HADBEEN_TENSE -ve
+verb 'had not contained' 3p p act HADBEEN_TENSE -ve
+verb 'has contained' 3p s act HASBEEN_TENSE +ve
+verb 'have contained' 3p p act HASBEEN_TENSE +ve
+verb 'had contained' 3p s act HADBEEN_TENSE +ve
+verb 'had contained' 3p p act HADBEEN_TENSE +ve
+verb 'does not contain' 3p s act IS_TENSE -ve
+verb 'do not contain' 3p p act IS_TENSE -ve
+verb 'did not contain' 3p s act WAS_TENSE -ve
+verb 'did not contain' 3p p act WAS_TENSE -ve
+verb 'contains' 3p s act IS_TENSE +ve
+verb 'contain' 3p p act IS_TENSE +ve
+verb 'contained' 3p s act WAS_TENSE +ve
+verb 'contained' 3p p act WAS_TENSE +ve
+verb 'has not supported' 3p s act HASBEEN_TENSE -ve
+verb 'have not supported' 3p p act HASBEEN_TENSE -ve
+verb 'had not supported' 3p s act HADBEEN_TENSE -ve
+verb 'had not supported' 3p p act HADBEEN_TENSE -ve
+verb 'has supported' 3p s act HASBEEN_TENSE +ve
+verb 'have supported' 3p p act HASBEEN_TENSE +ve
+verb 'had supported' 3p s act HADBEEN_TENSE +ve
+verb 'had supported' 3p p act HADBEEN_TENSE +ve
+verb 'does not support' 3p s act IS_TENSE -ve
+verb 'do not support' 3p p act IS_TENSE -ve
+verb 'did not support' 3p s act WAS_TENSE -ve
+verb 'did not support' 3p p act WAS_TENSE -ve
+verb 'supports' 3p s act IS_TENSE +ve
+verb 'support' 3p p act IS_TENSE +ve
+verb 'supported' 3p s act WAS_TENSE +ve
+verb 'supported' 3p p act WAS_TENSE +ve
+verb 'has not incorporated' 3p s act HASBEEN_TENSE -ve
+verb 'have not incorporated' 3p p act HASBEEN_TENSE -ve
+verb 'had not incorporated' 3p s act HADBEEN_TENSE -ve
+verb 'had not incorporated' 3p p act HADBEEN_TENSE -ve
+verb 'has incorporated' 3p s act HASBEEN_TENSE +ve
+verb 'have incorporated' 3p p act HASBEEN_TENSE +ve
+verb 'had incorporated' 3p s act HADBEEN_TENSE +ve
+verb 'had incorporated' 3p p act HADBEEN_TENSE +ve
+verb 'does not incorporate' 3p s act IS_TENSE -ve
+verb 'do not incorporate' 3p p act IS_TENSE -ve
+verb 'did not incorporate' 3p s act WAS_TENSE -ve
+verb 'did not incorporate' 3p p act WAS_TENSE -ve
+verb 'incorporates' 3p s act IS_TENSE +ve
+verb 'incorporate' 3p p act IS_TENSE +ve
+verb 'incorporated' 3p s act WAS_TENSE +ve
+verb 'incorporated' 3p p act WAS_TENSE +ve
+verb 'has not enclosed' 3p s act HASBEEN_TENSE -ve
+verb 'have not enclosed' 3p p act HASBEEN_TENSE -ve
+verb 'had not enclosed' 3p s act HADBEEN_TENSE -ve
+verb 'had not enclosed' 3p p act HADBEEN_TENSE -ve
+verb 'has enclosed' 3p s act HASBEEN_TENSE +ve
+verb 'have enclosed' 3p p act HASBEEN_TENSE +ve
+verb 'had enclosed' 3p s act HADBEEN_TENSE +ve
+verb 'had enclosed' 3p p act HADBEEN_TENSE +ve
+verb 'does not enclose' 3p s act IS_TENSE -ve
+verb 'do not enclose' 3p p act IS_TENSE -ve
+verb 'did not enclose' 3p s act WAS_TENSE -ve
+verb 'did not enclose' 3p p act WAS_TENSE -ve
+verb 'encloses' 3p s act IS_TENSE +ve
+verb 'enclose' 3p p act IS_TENSE +ve
+verb 'enclosed' 3p s act WAS_TENSE +ve
+verb 'enclosed' 3p p act WAS_TENSE +ve
+verb 'has not carried' 3p s act HASBEEN_TENSE -ve
+verb 'have not carried' 3p p act HASBEEN_TENSE -ve
+verb 'had not carried' 3p s act HADBEEN_TENSE -ve
+verb 'had not carried' 3p p act HADBEEN_TENSE -ve
+verb 'has carried' 3p s act HASBEEN_TENSE +ve
+verb 'have carried' 3p p act HASBEEN_TENSE +ve
+verb 'had carried' 3p s act HADBEEN_TENSE +ve
+verb 'had carried' 3p p act HADBEEN_TENSE +ve
+verb 'does not carry' 3p s act IS_TENSE -ve
+verb 'do not carry' 3p p act IS_TENSE -ve
+verb 'did not carry' 3p s act WAS_TENSE -ve
+verb 'did not carry' 3p p act WAS_TENSE -ve
+verb 'carries' 3p s act IS_TENSE +ve
+verb 'carry' 3p p act IS_TENSE +ve
+verb 'carried' 3p s act WAS_TENSE +ve
+verb 'carried' 3p p act WAS_TENSE +ve
+verb 'has not held' 3p s act HASBEEN_TENSE -ve
+verb 'have not held' 3p p act HASBEEN_TENSE -ve
+verb 'had not held' 3p s act HADBEEN_TENSE -ve
+verb 'had not held' 3p p act HADBEEN_TENSE -ve
+verb 'has held' 3p s act HASBEEN_TENSE +ve
+verb 'have held' 3p p act HASBEEN_TENSE +ve
+verb 'had held' 3p s act HADBEEN_TENSE +ve
+verb 'had held' 3p p act HADBEEN_TENSE +ve
+verb 'does not hold' 3p s act IS_TENSE -ve
+verb 'do not hold' 3p p act IS_TENSE -ve
+verb 'did not hold' 3p s act WAS_TENSE -ve
+verb 'did not hold' 3p p act WAS_TENSE -ve
+verb 'holds' 3p s act IS_TENSE +ve
+verb 'hold' 3p p act IS_TENSE +ve
+verb 'held' 3p s act WAS_TENSE +ve
+verb 'held' 3p p act WAS_TENSE +ve
+verb 'has not worn' 3p s act HASBEEN_TENSE -ve
+verb 'have not worn' 3p p act HASBEEN_TENSE -ve
+verb 'had not worn' 3p s act HADBEEN_TENSE -ve
+verb 'had not worn' 3p p act HADBEEN_TENSE -ve
+verb 'has worn' 3p s act HASBEEN_TENSE +ve
+verb 'have worn' 3p p act HASBEEN_TENSE +ve
+verb 'had worn' 3p s act HADBEEN_TENSE +ve
+verb 'had worn' 3p p act HADBEEN_TENSE +ve
+verb 'does not wear' 3p s act IS_TENSE -ve
+verb 'do not wear' 3p p act IS_TENSE -ve
+verb 'did not wear' 3p s act WAS_TENSE -ve
+verb 'did not wear' 3p p act WAS_TENSE -ve
+verb 'wears' 3p s act IS_TENSE +ve
+verb 'wear' 3p p act IS_TENSE +ve
+verb 'wore' 3p s act WAS_TENSE +ve
+verb 'wore' 3p p act WAS_TENSE +ve
+verb 'has not been able to see' 3p s act HASBEEN_TENSE -ve
+verb 'have not been able to see' 3p p act HASBEEN_TENSE -ve
+verb 'had not been able to see' 3p s act HADBEEN_TENSE -ve
+verb 'had not been able to see' 3p p act HADBEEN_TENSE -ve
+verb 'has been able to see' 3p s act HASBEEN_TENSE +ve
+verb 'have been able to see' 3p p act HASBEEN_TENSE +ve
+verb 'had been able to see' 3p s act HADBEEN_TENSE +ve
+verb 'had been able to see' 3p p act HADBEEN_TENSE +ve
+verb 'cannot see' 3p s act IS_TENSE -ve
+verb 'cannot see' 3p p act IS_TENSE -ve
+verb 'could not see' 3p s act WAS_TENSE -ve
+verb 'could not see' 3p p act WAS_TENSE -ve
+verb 'can see' 3p s act IS_TENSE +ve
+verb 'can see' 3p p act IS_TENSE +ve
+verb 'could see' 3p s act WAS_TENSE +ve
+verb 'could see' 3p p act WAS_TENSE +ve
+verb 'has not been able to be seen by' 3p s pass HASBEEN_TENSE -ve
+verb 'have not been able to be seen by' 3p p pass HASBEEN_TENSE -ve
+verb 'had not been able to be seen by' 3p s pass HADBEEN_TENSE -ve
+verb 'had not been able to be seen by' 3p p pass HADBEEN_TENSE -ve
+verb 'has been able to be seen by' 3p s pass HASBEEN_TENSE +ve
+verb 'have been able to be seen by' 3p p pass HASBEEN_TENSE +ve
+verb 'had been able to be seen by' 3p s pass HADBEEN_TENSE +ve
+verb 'had been able to be seen by' 3p p pass HADBEEN_TENSE +ve
+verb 'cannot be seen by' 3p s pass IS_TENSE -ve
+verb 'cannot be seen by' 3p p pass IS_TENSE -ve
+verb 'could not be seen by' 3p s pass WAS_TENSE -ve
+verb 'could not be seen by' 3p p pass WAS_TENSE -ve
+verb 'can be seen by' 3p s pass IS_TENSE +ve
+verb 'can be seen by' 3p p pass IS_TENSE +ve
+verb 'could be seen by' 3p s pass WAS_TENSE +ve
+verb 'could be seen by' 3p p pass WAS_TENSE +ve
+verb 'has not been able to touch' 3p s act HASBEEN_TENSE -ve
+verb 'have not been able to touch' 3p p act HASBEEN_TENSE -ve
+verb 'had not been able to touch' 3p s act HADBEEN_TENSE -ve
+verb 'had not been able to touch' 3p p act HADBEEN_TENSE -ve
+verb 'has been able to touch' 3p s act HASBEEN_TENSE +ve
+verb 'have been able to touch' 3p p act HASBEEN_TENSE +ve
+verb 'had been able to touch' 3p s act HADBEEN_TENSE +ve
+verb 'had been able to touch' 3p p act HADBEEN_TENSE +ve
+verb 'cannot touch' 3p s act IS_TENSE -ve
+verb 'cannot touch' 3p p act IS_TENSE -ve
+verb 'could not touch' 3p s act WAS_TENSE -ve
+verb 'could not touch' 3p p act WAS_TENSE -ve
+verb 'can touch' 3p s act IS_TENSE +ve
+verb 'can touch' 3p p act IS_TENSE +ve
+verb 'could touch' 3p s act WAS_TENSE +ve
+verb 'could touch' 3p p act WAS_TENSE +ve
+verb 'has not been able to be touched by' 3p s pass HASBEEN_TENSE -ve
+verb 'have not been able to be touched by' 3p p pass HASBEEN_TENSE -ve
+verb 'had not been able to be touched by' 3p s pass HADBEEN_TENSE -ve
+verb 'had not been able to be touched by' 3p p pass HADBEEN_TENSE -ve
+verb 'has been able to be touched by' 3p s pass HASBEEN_TENSE +ve
+verb 'have been able to be touched by' 3p p pass HASBEEN_TENSE +ve
+verb 'had been able to be touched by' 3p s pass HADBEEN_TENSE +ve
+verb 'had been able to be touched by' 3p p pass HADBEEN_TENSE +ve
+verb 'cannot be touched by' 3p s pass IS_TENSE -ve
+verb 'cannot be touched by' 3p p pass IS_TENSE -ve
+verb 'could not be touched by' 3p s pass WAS_TENSE -ve
+verb 'could not be touched by' 3p p pass WAS_TENSE -ve
+verb 'can be touched by' 3p s pass IS_TENSE +ve
+verb 'can be touched by' 3p p pass IS_TENSE +ve
+verb 'could be touched by' 3p s pass WAS_TENSE +ve
+verb 'could be touched by' 3p p pass WAS_TENSE +ve
+verb 'has not concealed' 3p s act HASBEEN_TENSE -ve
+verb 'have not concealed' 3p p act HASBEEN_TENSE -ve
+verb 'had not concealed' 3p s act HADBEEN_TENSE -ve
+verb 'had not concealed' 3p p act HADBEEN_TENSE -ve
+verb 'has concealed' 3p s act HASBEEN_TENSE +ve
+verb 'have concealed' 3p p act HASBEEN_TENSE +ve
+verb 'had concealed' 3p s act HADBEEN_TENSE +ve
+verb 'had concealed' 3p p act HADBEEN_TENSE +ve
+verb 'does not conceal' 3p s act IS_TENSE -ve
+verb 'do not conceal' 3p p act IS_TENSE -ve
+verb 'did not conceal' 3p s act WAS_TENSE -ve
+verb 'did not conceal' 3p p act WAS_TENSE -ve
+verb 'conceals' 3p s act IS_TENSE +ve
+verb 'conceal' 3p p act IS_TENSE +ve
+verb 'concealed' 3p s act WAS_TENSE +ve
+verb 'concealed' 3p p act WAS_TENSE +ve
+verb 'has not unlocked' 3p s act HASBEEN_TENSE -ve
+verb 'have not unlocked' 3p p act HASBEEN_TENSE -ve
+verb 'had not unlocked' 3p s act HADBEEN_TENSE -ve
+verb 'had not unlocked' 3p p act HADBEEN_TENSE -ve
+verb 'has unlocked' 3p s act HASBEEN_TENSE +ve
+verb 'have unlocked' 3p p act HASBEEN_TENSE +ve
+verb 'had unlocked' 3p s act HADBEEN_TENSE +ve
+verb 'had unlocked' 3p p act HADBEEN_TENSE +ve
+verb 'does not unlock' 3p s act IS_TENSE -ve
+verb 'do not unlock' 3p p act IS_TENSE -ve
+verb 'did not unlock' 3p s act WAS_TENSE -ve
+verb 'did not unlock' 3p p act WAS_TENSE -ve
+verb 'unlocks' 3p s act IS_TENSE +ve
+verb 'unlock' 3p p act IS_TENSE +ve
+verb 'unlocked' 3p s act WAS_TENSE +ve
+verb 'unlocked' 3p p act WAS_TENSE +ve
+verb 'has not achieved' 3p s act HASBEEN_TENSE -ve
+verb 'have not achieved' 3p p act HASBEEN_TENSE -ve
+verb 'had not achieved' 3p s act HADBEEN_TENSE -ve
+verb 'had not achieved' 3p p act HADBEEN_TENSE -ve
+verb 'has achieved' 3p s act HASBEEN_TENSE +ve
+verb 'have achieved' 3p p act HASBEEN_TENSE +ve
+verb 'had achieved' 3p s act HADBEEN_TENSE +ve
+verb 'had achieved' 3p p act HADBEEN_TENSE +ve
+verb 'does not achieve' 3p s act IS_TENSE -ve
+verb 'do not achieve' 3p p act IS_TENSE -ve
+verb 'did not achieve' 3p s act WAS_TENSE -ve
+verb 'did not achieve' 3p p act WAS_TENSE -ve
+verb 'achieves' 3p s act IS_TENSE +ve
+verb 'achieve' 3p p act IS_TENSE +ve
+verb 'achieved' 3p s act WAS_TENSE +ve
+verb 'achieved' 3p p act WAS_TENSE +ve
+verb 'has not appreciated' 3p s act HASBEEN_TENSE -ve
+verb 'have not appreciated' 3p p act HASBEEN_TENSE -ve
+verb 'had not appreciated' 3p s act HADBEEN_TENSE -ve
+verb 'had not appreciated' 3p p act HADBEEN_TENSE -ve
+verb 'has appreciated' 3p s act HASBEEN_TENSE +ve
+verb 'have appreciated' 3p p act HASBEEN_TENSE +ve
+verb 'had appreciated' 3p s act HADBEEN_TENSE +ve
+verb 'had appreciated' 3p p act HADBEEN_TENSE +ve
+verb 'does not appreciate' 3p s act IS_TENSE -ve
+verb 'do not appreciate' 3p p act IS_TENSE -ve
+verb 'did not appreciate' 3p s act WAS_TENSE -ve
+verb 'did not appreciate' 3p p act WAS_TENSE -ve
+verb 'appreciates' 3p s act IS_TENSE +ve
+verb 'appreciate' 3p p act IS_TENSE +ve
+verb 'appreciated' 3p s act WAS_TENSE +ve
+verb 'appreciated' 3p p act WAS_TENSE +ve
+verb 'has not arrived' 3p s act HASBEEN_TENSE -ve
+verb 'have not arrived' 3p p act HASBEEN_TENSE -ve
+verb 'had not arrived' 3p s act HADBEEN_TENSE -ve
+verb 'had not arrived' 3p p act HADBEEN_TENSE -ve
+verb 'has arrived' 3p s act HASBEEN_TENSE +ve
+verb 'have arrived' 3p p act HASBEEN_TENSE +ve
+verb 'had arrived' 3p s act HADBEEN_TENSE +ve
+verb 'had arrived' 3p p act HADBEEN_TENSE +ve
+verb 'does not arrive' 3p s act IS_TENSE -ve
+verb 'do not arrive' 3p p act IS_TENSE -ve
+verb 'did not arrive' 3p s act WAS_TENSE -ve
+verb 'did not arrive' 3p p act WAS_TENSE -ve
+verb 'arrives' 3p s act IS_TENSE +ve
+verb 'arrive' 3p p act IS_TENSE +ve
+verb 'arrived' 3p s act WAS_TENSE +ve
+verb 'arrived' 3p p act WAS_TENSE +ve
+verb 'has not cared' 3p s act HASBEEN_TENSE -ve
+verb 'have not cared' 3p p act HASBEEN_TENSE -ve
+verb 'had not cared' 3p s act HADBEEN_TENSE -ve
+verb 'had not cared' 3p p act HADBEEN_TENSE -ve
+verb 'has cared' 3p s act HASBEEN_TENSE +ve
+verb 'have cared' 3p p act HASBEEN_TENSE +ve
+verb 'had cared' 3p s act HADBEEN_TENSE +ve
+verb 'had cared' 3p p act HADBEEN_TENSE +ve
+verb 'does not care' 3p s act IS_TENSE -ve
+verb 'do not care' 3p p act IS_TENSE -ve
+verb 'did not care' 3p s act WAS_TENSE -ve
+verb 'did not care' 3p p act WAS_TENSE -ve
+verb 'cares' 3p s act IS_TENSE +ve
+verb 'care' 3p p act IS_TENSE +ve
+verb 'cared' 3p s act WAS_TENSE +ve
+verb 'cared' 3p p act WAS_TENSE +ve
+verb 'has not closed' 3p s act HASBEEN_TENSE -ve
+verb 'have not closed' 3p p act HASBEEN_TENSE -ve
+verb 'had not closed' 3p s act HADBEEN_TENSE -ve
+verb 'had not closed' 3p p act HADBEEN_TENSE -ve
+verb 'has closed' 3p s act HASBEEN_TENSE +ve
+verb 'have closed' 3p p act HASBEEN_TENSE +ve
+verb 'had closed' 3p s act HADBEEN_TENSE +ve
+verb 'had closed' 3p p act HADBEEN_TENSE +ve
+verb 'does not close' 3p s act IS_TENSE -ve
+verb 'do not close' 3p p act IS_TENSE -ve
+verb 'did not close' 3p s act WAS_TENSE -ve
+verb 'did not close' 3p p act WAS_TENSE -ve
+verb 'closes' 3p s act IS_TENSE +ve
+verb 'close' 3p p act IS_TENSE +ve
+verb 'closed' 3p s act WAS_TENSE +ve
+verb 'closed' 3p p act WAS_TENSE +ve
+verb 'has not died' 3p s act HASBEEN_TENSE -ve
+verb 'have not died' 3p p act HASBEEN_TENSE -ve
+verb 'had not died' 3p s act HADBEEN_TENSE -ve
+verb 'had not died' 3p p act HADBEEN_TENSE -ve
+verb 'has died' 3p s act HASBEEN_TENSE +ve
+verb 'have died' 3p p act HASBEEN_TENSE +ve
+verb 'had died' 3p s act HADBEEN_TENSE +ve
+verb 'had died' 3p p act HADBEEN_TENSE +ve
+verb 'does not die' 3p s act IS_TENSE -ve
+verb 'do not die' 3p p act IS_TENSE -ve
+verb 'did not die' 3p s act WAS_TENSE -ve
+verb 'did not die' 3p p act WAS_TENSE -ve
+verb 'dies' 3p s act IS_TENSE +ve
+verb 'die' 3p p act IS_TENSE +ve
+verb 'died' 3p s act WAS_TENSE +ve
+verb 'died' 3p p act WAS_TENSE +ve
+verb 'has not discovered' 3p s act HASBEEN_TENSE -ve
+verb 'have not discovered' 3p p act HASBEEN_TENSE -ve
+verb 'had not discovered' 3p s act HADBEEN_TENSE -ve
+verb 'had not discovered' 3p p act HADBEEN_TENSE -ve
+verb 'has discovered' 3p s act HASBEEN_TENSE +ve
+verb 'have discovered' 3p p act HASBEEN_TENSE +ve
+verb 'had discovered' 3p s act HADBEEN_TENSE +ve
+verb 'had discovered' 3p p act HADBEEN_TENSE +ve
+verb 'does not discover' 3p s act IS_TENSE -ve
+verb 'do not discover' 3p p act IS_TENSE -ve
+verb 'did not discover' 3p s act WAS_TENSE -ve
+verb 'did not discover' 3p p act WAS_TENSE -ve
+verb 'discovers' 3p s act IS_TENSE +ve
+verb 'discover' 3p p act IS_TENSE +ve
+verb 'discovered' 3p s act WAS_TENSE +ve
+verb 'discovered' 3p p act WAS_TENSE +ve
+verb 'has not dropped' 3p s act HASBEEN_TENSE -ve
+verb 'have not dropped' 3p p act HASBEEN_TENSE -ve
+verb 'had not dropped' 3p s act HADBEEN_TENSE -ve
+verb 'had not dropped' 3p p act HADBEEN_TENSE -ve
+verb 'has dropped' 3p s act HASBEEN_TENSE +ve
+verb 'have dropped' 3p p act HASBEEN_TENSE +ve
+verb 'had dropped' 3p s act HADBEEN_TENSE +ve
+verb 'had dropped' 3p p act HADBEEN_TENSE +ve
+verb 'does not drop' 3p s act IS_TENSE -ve
+verb 'do not drop' 3p p act IS_TENSE -ve
+verb 'did not drop' 3p s act WAS_TENSE -ve
+verb 'did not drop' 3p p act WAS_TENSE -ve
+verb 'drops' 3p s act IS_TENSE +ve
+verb 'drop' 3p p act IS_TENSE +ve
+verb 'dropped' 3p s act WAS_TENSE +ve
+verb 'dropped' 3p p act WAS_TENSE +ve
+verb 'has not eaten' 3p s act HASBEEN_TENSE -ve
+verb 'have not eaten' 3p p act HASBEEN_TENSE -ve
+verb 'had not eaten' 3p s act HADBEEN_TENSE -ve
+verb 'had not eaten' 3p p act HADBEEN_TENSE -ve
+verb 'has eaten' 3p s act HASBEEN_TENSE +ve
+verb 'have eaten' 3p p act HASBEEN_TENSE +ve
+verb 'had eaten' 3p s act HADBEEN_TENSE +ve
+verb 'had eaten' 3p p act HADBEEN_TENSE +ve
+verb 'does not eat' 3p s act IS_TENSE -ve
+verb 'do not eat' 3p p act IS_TENSE -ve
+verb 'did not eat' 3p s act WAS_TENSE -ve
+verb 'did not eat' 3p p act WAS_TENSE -ve
+verb 'eats' 3p s act IS_TENSE +ve
+verb 'eat' 3p p act IS_TENSE +ve
+verb 'ate' 3p s act WAS_TENSE +ve
+verb 'ate' 3p p act WAS_TENSE +ve
+verb 'has not felt' 3p s act HASBEEN_TENSE -ve
+verb 'have not felt' 3p p act HASBEEN_TENSE -ve
+verb 'had not felt' 3p s act HADBEEN_TENSE -ve
+verb 'had not felt' 3p p act HADBEEN_TENSE -ve
+verb 'has felt' 3p s act HASBEEN_TENSE +ve
+verb 'have felt' 3p p act HASBEEN_TENSE +ve
+verb 'had felt' 3p s act HADBEEN_TENSE +ve
+verb 'had felt' 3p p act HADBEEN_TENSE +ve
+verb 'does not feel' 3p s act IS_TENSE -ve
+verb 'do not feel' 3p p act IS_TENSE -ve
+verb 'did not feel' 3p s act WAS_TENSE -ve
+verb 'did not feel' 3p p act WAS_TENSE -ve
+verb 'feels' 3p s act IS_TENSE +ve
+verb 'feel' 3p p act IS_TENSE +ve
+verb 'felt' 3p s act WAS_TENSE +ve
+verb 'felt' 3p p act WAS_TENSE +ve
+verb 'has not found' 3p s act HASBEEN_TENSE -ve
+verb 'have not found' 3p p act HASBEEN_TENSE -ve
+verb 'had not found' 3p s act HADBEEN_TENSE -ve
+verb 'had not found' 3p p act HADBEEN_TENSE -ve
+verb 'has found' 3p s act HASBEEN_TENSE +ve
+verb 'have found' 3p p act HASBEEN_TENSE +ve
+verb 'had found' 3p s act HADBEEN_TENSE +ve
+verb 'had found' 3p p act HADBEEN_TENSE +ve
+verb 'does not find' 3p s act IS_TENSE -ve
+verb 'do not find' 3p p act IS_TENSE -ve
+verb 'did not find' 3p s act WAS_TENSE -ve
+verb 'did not find' 3p p act WAS_TENSE -ve
+verb 'finds' 3p s act IS_TENSE +ve
+verb 'find' 3p p act IS_TENSE +ve
+verb 'found' 3p s act WAS_TENSE +ve
+verb 'found' 3p p act WAS_TENSE +ve
+verb 'has not got' 3p s act HASBEEN_TENSE -ve
+verb 'have not got' 3p p act HASBEEN_TENSE -ve
+verb 'had not got' 3p s act HADBEEN_TENSE -ve
+verb 'had not got' 3p p act HADBEEN_TENSE -ve
+verb 'has got' 3p s act HASBEEN_TENSE +ve
+verb 'have got' 3p p act HASBEEN_TENSE +ve
+verb 'had got' 3p s act HADBEEN_TENSE +ve
+verb 'had got' 3p p act HADBEEN_TENSE +ve
+verb 'does not get' 3p s act IS_TENSE -ve
+verb 'do not get' 3p p act IS_TENSE -ve
+verb 'did not get' 3p s act WAS_TENSE -ve
+verb 'did not get' 3p p act WAS_TENSE -ve
+verb 'gets' 3p s act IS_TENSE +ve
+verb 'get' 3p p act IS_TENSE +ve
+verb 'got' 3p s act WAS_TENSE +ve
+verb 'got' 3p p act WAS_TENSE +ve
+verb 'has not given' 3p s act HASBEEN_TENSE -ve
+verb 'have not given' 3p p act HASBEEN_TENSE -ve
+verb 'had not given' 3p s act HADBEEN_TENSE -ve
+verb 'had not given' 3p p act HADBEEN_TENSE -ve
+verb 'has given' 3p s act HASBEEN_TENSE +ve
+verb 'have given' 3p p act HASBEEN_TENSE +ve
+verb 'had given' 3p s act HADBEEN_TENSE +ve
+verb 'had given' 3p p act HADBEEN_TENSE +ve
+verb 'does not give' 3p s act IS_TENSE -ve
+verb 'do not give' 3p p act IS_TENSE -ve
+verb 'did not give' 3p s act WAS_TENSE -ve
+verb 'did not give' 3p p act WAS_TENSE -ve
+verb 'gives' 3p s act IS_TENSE +ve
+verb 'give' 3p p act IS_TENSE +ve
+verb 'gave' 3p s act WAS_TENSE +ve
+verb 'gave' 3p p act WAS_TENSE +ve
+verb 'has not gone' 3p s act HASBEEN_TENSE -ve
+verb 'have not gone' 3p p act HASBEEN_TENSE -ve
+verb 'had not gone' 3p s act HADBEEN_TENSE -ve
+verb 'had not gone' 3p p act HADBEEN_TENSE -ve
+verb 'has gone' 3p s act HASBEEN_TENSE +ve
+verb 'have gone' 3p p act HASBEEN_TENSE +ve
+verb 'had gone' 3p s act HADBEEN_TENSE +ve
+verb 'had gone' 3p p act HADBEEN_TENSE +ve
+verb 'does not go' 3p s act IS_TENSE -ve
+verb 'do not go' 3p p act IS_TENSE -ve
+verb 'did not go' 3p s act WAS_TENSE -ve
+verb 'did not go' 3p p act WAS_TENSE -ve
+verb 'goes' 3p s act IS_TENSE +ve
+verb 'go' 3p p act IS_TENSE +ve
+verb 'went' 3p s act WAS_TENSE +ve
+verb 'went' 3p p act WAS_TENSE +ve
+verb 'has not happened' 3p s act HASBEEN_TENSE -ve
+verb 'have not happened' 3p p act HASBEEN_TENSE -ve
+verb 'had not happened' 3p s act HADBEEN_TENSE -ve
+verb 'had not happened' 3p p act HADBEEN_TENSE -ve
+verb 'has happened' 3p s act HASBEEN_TENSE +ve
+verb 'have happened' 3p p act HASBEEN_TENSE +ve
+verb 'had happened' 3p s act HADBEEN_TENSE +ve
+verb 'had happened' 3p p act HADBEEN_TENSE +ve
+verb 'does not happen' 3p s act IS_TENSE -ve
+verb 'do not happen' 3p p act IS_TENSE -ve
+verb 'did not happen' 3p s act WAS_TENSE -ve
+verb 'did not happen' 3p p act WAS_TENSE -ve
+verb 'happens' 3p s act IS_TENSE +ve
+verb 'happen' 3p p act IS_TENSE +ve
+verb 'happened' 3p s act WAS_TENSE +ve
+verb 'happened' 3p p act WAS_TENSE +ve
+verb 'has not heard' 3p s act HASBEEN_TENSE -ve
+verb 'have not heard' 3p p act HASBEEN_TENSE -ve
+verb 'had not heard' 3p s act HADBEEN_TENSE -ve
+verb 'had not heard' 3p p act HADBEEN_TENSE -ve
+verb 'has heard' 3p s act HASBEEN_TENSE +ve
+verb 'have heard' 3p p act HASBEEN_TENSE +ve
+verb 'had heard' 3p s act HADBEEN_TENSE +ve
+verb 'had heard' 3p p act HADBEEN_TENSE +ve
+verb 'does not hear' 3p s act IS_TENSE -ve
+verb 'do not hear' 3p p act IS_TENSE -ve
+verb 'did not hear' 3p s act WAS_TENSE -ve
+verb 'did not hear' 3p p act WAS_TENSE -ve
+verb 'hears' 3p s act IS_TENSE +ve
+verb 'hear' 3p p act IS_TENSE +ve
+verb 'heard' 3p s act WAS_TENSE +ve
+verb 'heard' 3p p act WAS_TENSE +ve
+verb 'has not jumped' 3p s act HASBEEN_TENSE -ve
+verb 'have not jumped' 3p p act HASBEEN_TENSE -ve
+verb 'had not jumped' 3p s act HADBEEN_TENSE -ve
+verb 'had not jumped' 3p p act HADBEEN_TENSE -ve
+verb 'has jumped' 3p s act HASBEEN_TENSE +ve
+verb 'have jumped' 3p p act HASBEEN_TENSE +ve
+verb 'had jumped' 3p s act HADBEEN_TENSE +ve
+verb 'had jumped' 3p p act HADBEEN_TENSE +ve
+verb 'does not jump' 3p s act IS_TENSE -ve
+verb 'do not jump' 3p p act IS_TENSE -ve
+verb 'did not jump' 3p s act WAS_TENSE -ve
+verb 'did not jump' 3p p act WAS_TENSE -ve
+verb 'jumps' 3p s act IS_TENSE +ve
+verb 'jump' 3p p act IS_TENSE +ve
+verb 'jumped' 3p s act WAS_TENSE +ve
+verb 'jumped' 3p p act WAS_TENSE +ve
+verb 'has not lacked' 3p s act HASBEEN_TENSE -ve
+verb 'have not lacked' 3p p act HASBEEN_TENSE -ve
+verb 'had not lacked' 3p s act HADBEEN_TENSE -ve
+verb 'had not lacked' 3p p act HADBEEN_TENSE -ve
+verb 'has lacked' 3p s act HASBEEN_TENSE +ve
+verb 'have lacked' 3p p act HASBEEN_TENSE +ve
+verb 'had lacked' 3p s act HADBEEN_TENSE +ve
+verb 'had lacked' 3p p act HADBEEN_TENSE +ve
+verb 'does not lack' 3p s act IS_TENSE -ve
+verb 'do not lack' 3p p act IS_TENSE -ve
+verb 'did not lack' 3p s act WAS_TENSE -ve
+verb 'did not lack' 3p p act WAS_TENSE -ve
+verb 'lacks' 3p s act IS_TENSE +ve
+verb 'lack' 3p p act IS_TENSE +ve
+verb 'lacked' 3p s act WAS_TENSE +ve
+verb 'lacked' 3p p act WAS_TENSE +ve
+verb 'has not led' 3p s act HASBEEN_TENSE -ve
+verb 'have not led' 3p p act HASBEEN_TENSE -ve
+verb 'had not led' 3p s act HADBEEN_TENSE -ve
+verb 'had not led' 3p p act HADBEEN_TENSE -ve
+verb 'has led' 3p s act HASBEEN_TENSE +ve
+verb 'have led' 3p p act HASBEEN_TENSE +ve
+verb 'had led' 3p s act HADBEEN_TENSE +ve
+verb 'had led' 3p p act HADBEEN_TENSE +ve
+verb 'does not lead' 3p s act IS_TENSE -ve
+verb 'do not lead' 3p p act IS_TENSE -ve
+verb 'did not lead' 3p s act WAS_TENSE -ve
+verb 'did not lead' 3p p act WAS_TENSE -ve
+verb 'leads' 3p s act IS_TENSE +ve
+verb 'lead' 3p p act IS_TENSE +ve
+verb 'led' 3p s act WAS_TENSE +ve
+verb 'led' 3p p act WAS_TENSE +ve
+verb 'has not liked' 3p s act HASBEEN_TENSE -ve
+verb 'have not liked' 3p p act HASBEEN_TENSE -ve
+verb 'had not liked' 3p s act HADBEEN_TENSE -ve
+verb 'had not liked' 3p p act HADBEEN_TENSE -ve
+verb 'has liked' 3p s act HASBEEN_TENSE +ve
+verb 'have liked' 3p p act HASBEEN_TENSE +ve
+verb 'had liked' 3p s act HADBEEN_TENSE +ve
+verb 'had liked' 3p p act HADBEEN_TENSE +ve
+verb 'does not like' 3p s act IS_TENSE -ve
+verb 'do not like' 3p p act IS_TENSE -ve
+verb 'did not like' 3p s act WAS_TENSE -ve
+verb 'did not like' 3p p act WAS_TENSE -ve
+verb 'likes' 3p s act IS_TENSE +ve
+verb 'like' 3p p act IS_TENSE +ve
+verb 'liked' 3p s act WAS_TENSE +ve
+verb 'liked' 3p p act WAS_TENSE +ve
+verb 'has not listened' 3p s act HASBEEN_TENSE -ve
+verb 'have not listened' 3p p act HASBEEN_TENSE -ve
+verb 'had not listened' 3p s act HADBEEN_TENSE -ve
+verb 'had not listened' 3p p act HADBEEN_TENSE -ve
+verb 'has listened' 3p s act HASBEEN_TENSE +ve
+verb 'have listened' 3p p act HASBEEN_TENSE +ve
+verb 'had listened' 3p s act HADBEEN_TENSE +ve
+verb 'had listened' 3p p act HADBEEN_TENSE +ve
+verb 'does not listen' 3p s act IS_TENSE -ve
+verb 'do not listen' 3p p act IS_TENSE -ve
+verb 'did not listen' 3p s act WAS_TENSE -ve
+verb 'did not listen' 3p p act WAS_TENSE -ve
+verb 'listens' 3p s act IS_TENSE +ve
+verb 'listen' 3p p act IS_TENSE +ve
+verb 'listened' 3p s act WAS_TENSE +ve
+verb 'listened' 3p p act WAS_TENSE +ve
+verb 'has not locked' 3p s act HASBEEN_TENSE -ve
+verb 'have not locked' 3p p act HASBEEN_TENSE -ve
+verb 'had not locked' 3p s act HADBEEN_TENSE -ve
+verb 'had not locked' 3p p act HADBEEN_TENSE -ve
+verb 'has locked' 3p s act HASBEEN_TENSE +ve
+verb 'have locked' 3p p act HASBEEN_TENSE +ve
+verb 'had locked' 3p s act HADBEEN_TENSE +ve
+verb 'had locked' 3p p act HADBEEN_TENSE +ve
+verb 'does not lock' 3p s act IS_TENSE -ve
+verb 'do not lock' 3p p act IS_TENSE -ve
+verb 'did not lock' 3p s act WAS_TENSE -ve
+verb 'did not lock' 3p p act WAS_TENSE -ve
+verb 'locks' 3p s act IS_TENSE +ve
+verb 'lock' 3p p act IS_TENSE +ve
+verb 'locked' 3p s act WAS_TENSE +ve
+verb 'locked' 3p p act WAS_TENSE +ve
+verb 'has not looked' 3p s act HASBEEN_TENSE -ve
+verb 'have not looked' 3p p act HASBEEN_TENSE -ve
+verb 'had not looked' 3p s act HADBEEN_TENSE -ve
+verb 'had not looked' 3p p act HADBEEN_TENSE -ve
+verb 'has looked' 3p s act HASBEEN_TENSE +ve
+verb 'have looked' 3p p act HASBEEN_TENSE +ve
+verb 'had looked' 3p s act HADBEEN_TENSE +ve
+verb 'had looked' 3p p act HADBEEN_TENSE +ve
+verb 'does not look' 3p s act IS_TENSE -ve
+verb 'do not look' 3p p act IS_TENSE -ve
+verb 'did not look' 3p s act WAS_TENSE -ve
+verb 'did not look' 3p p act WAS_TENSE -ve
+verb 'looks' 3p s act IS_TENSE +ve
+verb 'look' 3p p act IS_TENSE +ve
+verb 'looked' 3p s act WAS_TENSE +ve
+verb 'looked' 3p p act WAS_TENSE +ve
+verb 'has not needed' 3p s act HASBEEN_TENSE -ve
+verb 'have not needed' 3p p act HASBEEN_TENSE -ve
+verb 'had not needed' 3p s act HADBEEN_TENSE -ve
+verb 'had not needed' 3p p act HADBEEN_TENSE -ve
+verb 'has needed' 3p s act HASBEEN_TENSE +ve
+verb 'have needed' 3p p act HASBEEN_TENSE +ve
+verb 'had needed' 3p s act HADBEEN_TENSE +ve
+verb 'had needed' 3p p act HADBEEN_TENSE +ve
+verb 'does not need' 3p s act IS_TENSE -ve
+verb 'do not need' 3p p act IS_TENSE -ve
+verb 'did not need' 3p s act WAS_TENSE -ve
+verb 'did not need' 3p p act WAS_TENSE -ve
+verb 'needs' 3p s act IS_TENSE +ve
+verb 'need' 3p p act IS_TENSE +ve
+verb 'needed' 3p s act WAS_TENSE +ve
+verb 'needed' 3p p act WAS_TENSE +ve
+verb 'has not opened' 3p s act HASBEEN_TENSE -ve
+verb 'have not opened' 3p p act HASBEEN_TENSE -ve
+verb 'had not opened' 3p s act HADBEEN_TENSE -ve
+verb 'had not opened' 3p p act HADBEEN_TENSE -ve
+verb 'has opened' 3p s act HASBEEN_TENSE +ve
+verb 'have opened' 3p p act HASBEEN_TENSE +ve
+verb 'had opened' 3p s act HADBEEN_TENSE +ve
+verb 'had opened' 3p p act HADBEEN_TENSE +ve
+verb 'does not open' 3p s act IS_TENSE -ve
+verb 'do not open' 3p p act IS_TENSE -ve
+verb 'did not open' 3p s act WAS_TENSE -ve
+verb 'did not open' 3p p act WAS_TENSE -ve
+verb 'opens' 3p s act IS_TENSE +ve
+verb 'open' 3p p act IS_TENSE +ve
+verb 'opened' 3p s act WAS_TENSE +ve
+verb 'opened' 3p p act WAS_TENSE +ve
+verb 'has not passed' 3p s act HASBEEN_TENSE -ve
+verb 'have not passed' 3p p act HASBEEN_TENSE -ve
+verb 'had not passed' 3p s act HADBEEN_TENSE -ve
+verb 'had not passed' 3p p act HADBEEN_TENSE -ve
+verb 'has passed' 3p s act HASBEEN_TENSE +ve
+verb 'have passed' 3p p act HASBEEN_TENSE +ve
+verb 'had passed' 3p s act HADBEEN_TENSE +ve
+verb 'had passed' 3p p act HADBEEN_TENSE +ve
+verb 'does not pass' 3p s act IS_TENSE -ve
+verb 'do not pass' 3p p act IS_TENSE -ve
+verb 'did not pass' 3p s act WAS_TENSE -ve
+verb 'did not pass' 3p p act WAS_TENSE -ve
+verb 'passes' 3p s act IS_TENSE +ve
+verb 'pass' 3p p act IS_TENSE +ve
+verb 'passed' 3p s act WAS_TENSE +ve
+verb 'passed' 3p p act WAS_TENSE +ve
+verb 'has not picked' 3p s act HASBEEN_TENSE -ve
+verb 'have not picked' 3p p act HASBEEN_TENSE -ve
+verb 'had not picked' 3p s act HADBEEN_TENSE -ve
+verb 'had not picked' 3p p act HADBEEN_TENSE -ve
+verb 'has picked' 3p s act HASBEEN_TENSE +ve
+verb 'have picked' 3p p act HASBEEN_TENSE +ve
+verb 'had picked' 3p s act HADBEEN_TENSE +ve
+verb 'had picked' 3p p act HADBEEN_TENSE +ve
+verb 'does not pick' 3p s act IS_TENSE -ve
+verb 'do not pick' 3p p act IS_TENSE -ve
+verb 'did not pick' 3p s act WAS_TENSE -ve
+verb 'did not pick' 3p p act WAS_TENSE -ve
+verb 'picks' 3p s act IS_TENSE +ve
+verb 'pick' 3p p act IS_TENSE +ve
+verb 'picked' 3p s act WAS_TENSE +ve
+verb 'picked' 3p p act WAS_TENSE +ve
+verb 'has not provoked' 3p s act HASBEEN_TENSE -ve
+verb 'have not provoked' 3p p act HASBEEN_TENSE -ve
+verb 'had not provoked' 3p s act HADBEEN_TENSE -ve
+verb 'had not provoked' 3p p act HADBEEN_TENSE -ve
+verb 'has provoked' 3p s act HASBEEN_TENSE +ve
+verb 'have provoked' 3p p act HASBEEN_TENSE +ve
+verb 'had provoked' 3p s act HADBEEN_TENSE +ve
+verb 'had provoked' 3p p act HADBEEN_TENSE +ve
+verb 'does not provoke' 3p s act IS_TENSE -ve
+verb 'do not provoke' 3p p act IS_TENSE -ve
+verb 'did not provoke' 3p s act WAS_TENSE -ve
+verb 'did not provoke' 3p p act WAS_TENSE -ve
+verb 'provokes' 3p s act IS_TENSE +ve
+verb 'provoke' 3p p act IS_TENSE +ve
+verb 'provoked' 3p s act WAS_TENSE +ve
+verb 'provoked' 3p p act WAS_TENSE +ve
+verb 'has not pulled' 3p s act HASBEEN_TENSE -ve
+verb 'have not pulled' 3p p act HASBEEN_TENSE -ve
+verb 'had not pulled' 3p s act HADBEEN_TENSE -ve
+verb 'had not pulled' 3p p act HADBEEN_TENSE -ve
+verb 'has pulled' 3p s act HASBEEN_TENSE +ve
+verb 'have pulled' 3p p act HASBEEN_TENSE +ve
+verb 'had pulled' 3p s act HADBEEN_TENSE +ve
+verb 'had pulled' 3p p act HADBEEN_TENSE +ve
+verb 'does not pull' 3p s act IS_TENSE -ve
+verb 'do not pull' 3p p act IS_TENSE -ve
+verb 'did not pull' 3p s act WAS_TENSE -ve
+verb 'did not pull' 3p p act WAS_TENSE -ve
+verb 'pulls' 3p s act IS_TENSE +ve
+verb 'pull' 3p p act IS_TENSE +ve
+verb 'pulled' 3p s act WAS_TENSE +ve
+verb 'pulled' 3p p act WAS_TENSE +ve
+verb 'has not pushed' 3p s act HASBEEN_TENSE -ve
+verb 'have not pushed' 3p p act HASBEEN_TENSE -ve
+verb 'had not pushed' 3p s act HADBEEN_TENSE -ve
+verb 'had not pushed' 3p p act HADBEEN_TENSE -ve
+verb 'has pushed' 3p s act HASBEEN_TENSE +ve
+verb 'have pushed' 3p p act HASBEEN_TENSE +ve
+verb 'had pushed' 3p s act HADBEEN_TENSE +ve
+verb 'had pushed' 3p p act HADBEEN_TENSE +ve
+verb 'does not push' 3p s act IS_TENSE -ve
+verb 'do not push' 3p p act IS_TENSE -ve
+verb 'did not push' 3p s act WAS_TENSE -ve
+verb 'did not push' 3p p act WAS_TENSE -ve
+verb 'pushes' 3p s act IS_TENSE +ve
+verb 'push' 3p p act IS_TENSE +ve
+verb 'pushed' 3p s act WAS_TENSE +ve
+verb 'pushed' 3p p act WAS_TENSE +ve
+verb 'has not put' 3p s act HASBEEN_TENSE -ve
+verb 'have not put' 3p p act HASBEEN_TENSE -ve
+verb 'had not put' 3p s act HADBEEN_TENSE -ve
+verb 'had not put' 3p p act HADBEEN_TENSE -ve
+verb 'has put' 3p s act HASBEEN_TENSE +ve
+verb 'have put' 3p p act HASBEEN_TENSE +ve
+verb 'had put' 3p s act HADBEEN_TENSE +ve
+verb 'had put' 3p p act HADBEEN_TENSE +ve
+verb 'does not put' 3p s act IS_TENSE -ve
+verb 'do not put' 3p p act IS_TENSE -ve
+verb 'did not put' 3p s act WAS_TENSE -ve
+verb 'did not put' 3p p act WAS_TENSE -ve
+verb 'puts' 3p s act IS_TENSE +ve
+verb 'put' 3p p act IS_TENSE +ve
+verb 'put' 3p s act WAS_TENSE +ve
+verb 'put' 3p p act WAS_TENSE +ve
+verb 'has not rubbed' 3p s act HASBEEN_TENSE -ve
+verb 'have not rubbed' 3p p act HASBEEN_TENSE -ve
+verb 'had not rubbed' 3p s act HADBEEN_TENSE -ve
+verb 'had not rubbed' 3p p act HADBEEN_TENSE -ve
+verb 'has rubbed' 3p s act HASBEEN_TENSE +ve
+verb 'have rubbed' 3p p act HASBEEN_TENSE +ve
+verb 'had rubbed' 3p s act HADBEEN_TENSE +ve
+verb 'had rubbed' 3p p act HADBEEN_TENSE +ve
+verb 'does not rub' 3p s act IS_TENSE -ve
+verb 'do not rub' 3p p act IS_TENSE -ve
+verb 'did not rub' 3p s act WAS_TENSE -ve
+verb 'did not rub' 3p p act WAS_TENSE -ve
+verb 'rubs' 3p s act IS_TENSE +ve
+verb 'rub' 3p p act IS_TENSE +ve
+verb 'rubbed' 3p s act WAS_TENSE +ve
+verb 'rubbed' 3p p act WAS_TENSE +ve
+verb 'has not said' 3p s act HASBEEN_TENSE -ve
+verb 'have not said' 3p p act HASBEEN_TENSE -ve
+verb 'had not said' 3p s act HADBEEN_TENSE -ve
+verb 'had not said' 3p p act HADBEEN_TENSE -ve
+verb 'has said' 3p s act HASBEEN_TENSE +ve
+verb 'have said' 3p p act HASBEEN_TENSE +ve
+verb 'had said' 3p s act HADBEEN_TENSE +ve
+verb 'had said' 3p p act HADBEEN_TENSE +ve
+verb 'does not say' 3p s act IS_TENSE -ve
+verb 'do not say' 3p p act IS_TENSE -ve
+verb 'did not say' 3p s act WAS_TENSE -ve
+verb 'did not say' 3p p act WAS_TENSE -ve
+verb 'says' 3p s act IS_TENSE +ve
+verb 'say' 3p p act IS_TENSE +ve
+verb 'said' 3p s act WAS_TENSE +ve
+verb 'said' 3p p act WAS_TENSE +ve
+verb 'has not searched' 3p s act HASBEEN_TENSE -ve
+verb 'have not searched' 3p p act HASBEEN_TENSE -ve
+verb 'had not searched' 3p s act HADBEEN_TENSE -ve
+verb 'had not searched' 3p p act HADBEEN_TENSE -ve
+verb 'has searched' 3p s act HASBEEN_TENSE +ve
+verb 'have searched' 3p p act HASBEEN_TENSE +ve
+verb 'had searched' 3p s act HADBEEN_TENSE +ve
+verb 'had searched' 3p p act HADBEEN_TENSE +ve
+verb 'does not search' 3p s act IS_TENSE -ve
+verb 'do not search' 3p p act IS_TENSE -ve
+verb 'did not search' 3p s act WAS_TENSE -ve
+verb 'did not search' 3p p act WAS_TENSE -ve
+verb 'searches' 3p s act IS_TENSE +ve
+verb 'search' 3p p act IS_TENSE +ve
+verb 'searched' 3p s act WAS_TENSE +ve
+verb 'searched' 3p p act WAS_TENSE +ve
+verb 'has not seen' 3p s act HASBEEN_TENSE -ve
+verb 'have not seen' 3p p act HASBEEN_TENSE -ve
+verb 'had not seen' 3p s act HADBEEN_TENSE -ve
+verb 'had not seen' 3p p act HADBEEN_TENSE -ve
+verb 'has seen' 3p s act HASBEEN_TENSE +ve
+verb 'have seen' 3p p act HASBEEN_TENSE +ve
+verb 'had seen' 3p s act HADBEEN_TENSE +ve
+verb 'had seen' 3p p act HADBEEN_TENSE +ve
+verb 'does not see' 3p s act IS_TENSE -ve
+verb 'do not see' 3p p act IS_TENSE -ve
+verb 'did not see' 3p s act WAS_TENSE -ve
+verb 'did not see' 3p p act WAS_TENSE -ve
+verb 'sees' 3p s act IS_TENSE +ve
+verb 'see' 3p p act IS_TENSE +ve
+verb 'saw' 3p s act WAS_TENSE +ve
+verb 'saw' 3p p act WAS_TENSE +ve
+verb 'has not seemed' 3p s act HASBEEN_TENSE -ve
+verb 'have not seemed' 3p p act HASBEEN_TENSE -ve
+verb 'had not seemed' 3p s act HADBEEN_TENSE -ve
+verb 'had not seemed' 3p p act HADBEEN_TENSE -ve
+verb 'has seemed' 3p s act HASBEEN_TENSE +ve
+verb 'have seemed' 3p p act HASBEEN_TENSE +ve
+verb 'had seemed' 3p s act HADBEEN_TENSE +ve
+verb 'had seemed' 3p p act HADBEEN_TENSE +ve
+verb 'does not seem' 3p s act IS_TENSE -ve
+verb 'do not seem' 3p p act IS_TENSE -ve
+verb 'did not seem' 3p s act WAS_TENSE -ve
+verb 'did not seem' 3p p act WAS_TENSE -ve
+verb 'seems' 3p s act IS_TENSE +ve
+verb 'seem' 3p p act IS_TENSE +ve
+verb 'seemed' 3p s act WAS_TENSE +ve
+verb 'seemed' 3p p act WAS_TENSE +ve
+verb 'has not set' 3p s act HASBEEN_TENSE -ve
+verb 'have not set' 3p p act HASBEEN_TENSE -ve
+verb 'had not set' 3p s act HADBEEN_TENSE -ve
+verb 'had not set' 3p p act HADBEEN_TENSE -ve
+verb 'has set' 3p s act HASBEEN_TENSE +ve
+verb 'have set' 3p p act HASBEEN_TENSE +ve
+verb 'had set' 3p s act HADBEEN_TENSE +ve
+verb 'had set' 3p p act HADBEEN_TENSE +ve
+verb 'does not set' 3p s act IS_TENSE -ve
+verb 'do not set' 3p p act IS_TENSE -ve
+verb 'did not set' 3p s act WAS_TENSE -ve
+verb 'did not set' 3p p act WAS_TENSE -ve
+verb 'sets' 3p s act IS_TENSE +ve
+verb 'set' 3p p act IS_TENSE +ve
+verb 'set' 3p s act WAS_TENSE +ve
+verb 'set' 3p p act WAS_TENSE +ve
+verb 'has not smelled' 3p s act HASBEEN_TENSE -ve
+verb 'have not smelled' 3p p act HASBEEN_TENSE -ve
+verb 'had not smelled' 3p s act HADBEEN_TENSE -ve
+verb 'had not smelled' 3p p act HADBEEN_TENSE -ve
+verb 'has smelled' 3p s act HASBEEN_TENSE +ve
+verb 'have smelled' 3p p act HASBEEN_TENSE +ve
+verb 'had smelled' 3p s act HADBEEN_TENSE +ve
+verb 'had smelled' 3p p act HADBEEN_TENSE +ve
+verb 'does not smell' 3p s act IS_TENSE -ve
+verb 'do not smell' 3p p act IS_TENSE -ve
+verb 'did not smell' 3p s act WAS_TENSE -ve
+verb 'did not smell' 3p p act WAS_TENSE -ve
+verb 'smells' 3p s act IS_TENSE +ve
+verb 'smell' 3p p act IS_TENSE +ve
+verb 'smelled' 3p s act WAS_TENSE +ve
+verb 'smelled' 3p p act WAS_TENSE +ve
+verb 'has not sniffed' 3p s act HASBEEN_TENSE -ve
+verb 'have not sniffed' 3p p act HASBEEN_TENSE -ve
+verb 'had not sniffed' 3p s act HADBEEN_TENSE -ve
+verb 'had not sniffed' 3p p act HADBEEN_TENSE -ve
+verb 'has sniffed' 3p s act HASBEEN_TENSE +ve
+verb 'have sniffed' 3p p act HASBEEN_TENSE +ve
+verb 'had sniffed' 3p s act HADBEEN_TENSE +ve
+verb 'had sniffed' 3p p act HADBEEN_TENSE +ve
+verb 'does not sniff' 3p s act IS_TENSE -ve
+verb 'do not sniff' 3p p act IS_TENSE -ve
+verb 'did not sniff' 3p s act WAS_TENSE -ve
+verb 'did not sniff' 3p p act WAS_TENSE -ve
+verb 'sniffs' 3p s act IS_TENSE +ve
+verb 'sniff' 3p p act IS_TENSE +ve
+verb 'sniffed' 3p s act WAS_TENSE +ve
+verb 'sniffed' 3p p act WAS_TENSE +ve
+verb 'has not squeezed' 3p s act HASBEEN_TENSE -ve
+verb 'have not squeezed' 3p p act HASBEEN_TENSE -ve
+verb 'had not squeezed' 3p s act HADBEEN_TENSE -ve
+verb 'had not squeezed' 3p p act HADBEEN_TENSE -ve
+verb 'has squeezed' 3p s act HASBEEN_TENSE +ve
+verb 'have squeezed' 3p p act HASBEEN_TENSE +ve
+verb 'had squeezed' 3p s act HADBEEN_TENSE +ve
+verb 'had squeezed' 3p p act HADBEEN_TENSE +ve
+verb 'does not squeeze' 3p s act IS_TENSE -ve
+verb 'do not squeeze' 3p p act IS_TENSE -ve
+verb 'did not squeeze' 3p s act WAS_TENSE -ve
+verb 'did not squeeze' 3p p act WAS_TENSE -ve
+verb 'squeezes' 3p s act IS_TENSE +ve
+verb 'squeeze' 3p p act IS_TENSE +ve
+verb 'squeezed' 3p s act WAS_TENSE +ve
+verb 'squeezed' 3p p act WAS_TENSE +ve
+verb 'has not switched' 3p s act HASBEEN_TENSE -ve
+verb 'have not switched' 3p p act HASBEEN_TENSE -ve
+verb 'had not switched' 3p s act HADBEEN_TENSE -ve
+verb 'had not switched' 3p p act HADBEEN_TENSE -ve
+verb 'has switched' 3p s act HASBEEN_TENSE +ve
+verb 'have switched' 3p p act HASBEEN_TENSE +ve
+verb 'had switched' 3p s act HADBEEN_TENSE +ve
+verb 'had switched' 3p p act HADBEEN_TENSE +ve
+verb 'does not switch' 3p s act IS_TENSE -ve
+verb 'do not switch' 3p p act IS_TENSE -ve
+verb 'did not switch' 3p s act WAS_TENSE -ve
+verb 'did not switch' 3p p act WAS_TENSE -ve
+verb 'switches' 3p s act IS_TENSE +ve
+verb 'switch' 3p p act IS_TENSE +ve
+verb 'switched' 3p s act WAS_TENSE +ve
+verb 'switched' 3p p act WAS_TENSE +ve
+verb 'has not taken' 3p s act HASBEEN_TENSE -ve
+verb 'have not taken' 3p p act HASBEEN_TENSE -ve
+verb 'had not taken' 3p s act HADBEEN_TENSE -ve
+verb 'had not taken' 3p p act HADBEEN_TENSE -ve
+verb 'has taken' 3p s act HASBEEN_TENSE +ve
+verb 'have taken' 3p p act HASBEEN_TENSE +ve
+verb 'had taken' 3p s act HADBEEN_TENSE +ve
+verb 'had taken' 3p p act HADBEEN_TENSE +ve
+verb 'does not take' 3p s act IS_TENSE -ve
+verb 'do not take' 3p p act IS_TENSE -ve
+verb 'did not take' 3p s act WAS_TENSE -ve
+verb 'did not take' 3p p act WAS_TENSE -ve
+verb 'takes' 3p s act IS_TENSE +ve
+verb 'take' 3p p act IS_TENSE +ve
+verb 'took' 3p s act WAS_TENSE +ve
+verb 'took' 3p p act WAS_TENSE +ve
+verb 'has not talked' 3p s act HASBEEN_TENSE -ve
+verb 'have not talked' 3p p act HASBEEN_TENSE -ve
+verb 'had not talked' 3p s act HADBEEN_TENSE -ve
+verb 'had not talked' 3p p act HADBEEN_TENSE -ve
+verb 'has talked' 3p s act HASBEEN_TENSE +ve
+verb 'have talked' 3p p act HASBEEN_TENSE +ve
+verb 'had talked' 3p s act HADBEEN_TENSE +ve
+verb 'had talked' 3p p act HADBEEN_TENSE +ve
+verb 'does not talk' 3p s act IS_TENSE -ve
+verb 'do not talk' 3p p act IS_TENSE -ve
+verb 'did not talk' 3p s act WAS_TENSE -ve
+verb 'did not talk' 3p p act WAS_TENSE -ve
+verb 'talks' 3p s act IS_TENSE +ve
+verb 'talk' 3p p act IS_TENSE +ve
+verb 'talked' 3p s act WAS_TENSE +ve
+verb 'talked' 3p p act WAS_TENSE +ve
+verb 'has not tasted' 3p s act HASBEEN_TENSE -ve
+verb 'have not tasted' 3p p act HASBEEN_TENSE -ve
+verb 'had not tasted' 3p s act HADBEEN_TENSE -ve
+verb 'had not tasted' 3p p act HADBEEN_TENSE -ve
+verb 'has tasted' 3p s act HASBEEN_TENSE +ve
+verb 'have tasted' 3p p act HASBEEN_TENSE +ve
+verb 'had tasted' 3p s act HADBEEN_TENSE +ve
+verb 'had tasted' 3p p act HADBEEN_TENSE +ve
+verb 'does not taste' 3p s act IS_TENSE -ve
+verb 'do not taste' 3p p act IS_TENSE -ve
+verb 'did not taste' 3p s act WAS_TENSE -ve
+verb 'did not taste' 3p p act WAS_TENSE -ve
+verb 'tastes' 3p s act IS_TENSE +ve
+verb 'taste' 3p p act IS_TENSE +ve
+verb 'tasted' 3p s act WAS_TENSE +ve
+verb 'tasted' 3p p act WAS_TENSE +ve
+verb 'has not touched' 3p s act HASBEEN_TENSE -ve
+verb 'have not touched' 3p p act HASBEEN_TENSE -ve
+verb 'had not touched' 3p s act HADBEEN_TENSE -ve
+verb 'had not touched' 3p p act HADBEEN_TENSE -ve
+verb 'has touched' 3p s act HASBEEN_TENSE +ve
+verb 'have touched' 3p p act HASBEEN_TENSE +ve
+verb 'had touched' 3p s act HADBEEN_TENSE +ve
+verb 'had touched' 3p p act HADBEEN_TENSE +ve
+verb 'does not touch' 3p s act IS_TENSE -ve
+verb 'do not touch' 3p p act IS_TENSE -ve
+verb 'did not touch' 3p s act WAS_TENSE -ve
+verb 'did not touch' 3p p act WAS_TENSE -ve
+verb 'touches' 3p s act IS_TENSE +ve
+verb 'touch' 3p p act IS_TENSE +ve
+verb 'touched' 3p s act WAS_TENSE +ve
+verb 'touched' 3p p act WAS_TENSE +ve
+verb 'has not turned' 3p s act HASBEEN_TENSE -ve
+verb 'have not turned' 3p p act HASBEEN_TENSE -ve
+verb 'had not turned' 3p s act HADBEEN_TENSE -ve
+verb 'had not turned' 3p p act HADBEEN_TENSE -ve
+verb 'has turned' 3p s act HASBEEN_TENSE +ve
+verb 'have turned' 3p p act HASBEEN_TENSE +ve
+verb 'had turned' 3p s act HADBEEN_TENSE +ve
+verb 'had turned' 3p p act HADBEEN_TENSE +ve
+verb 'does not turn' 3p s act IS_TENSE -ve
+verb 'do not turn' 3p p act IS_TENSE -ve
+verb 'did not turn' 3p s act WAS_TENSE -ve
+verb 'did not turn' 3p p act WAS_TENSE -ve
+verb 'turns' 3p s act IS_TENSE +ve
+verb 'turn' 3p p act IS_TENSE +ve
+verb 'turned' 3p s act WAS_TENSE +ve
+verb 'turned' 3p p act WAS_TENSE +ve
+verb 'has not waited' 3p s act HASBEEN_TENSE -ve
+verb 'have not waited' 3p p act HASBEEN_TENSE -ve
+verb 'had not waited' 3p s act HADBEEN_TENSE -ve
+verb 'had not waited' 3p p act HADBEEN_TENSE -ve
+verb 'has waited' 3p s act HASBEEN_TENSE +ve
+verb 'have waited' 3p p act HASBEEN_TENSE +ve
+verb 'had waited' 3p s act HADBEEN_TENSE +ve
+verb 'had waited' 3p p act HADBEEN_TENSE +ve
+verb 'does not wait' 3p s act IS_TENSE -ve
+verb 'do not wait' 3p p act IS_TENSE -ve
+verb 'did not wait' 3p s act WAS_TENSE -ve
+verb 'did not wait' 3p p act WAS_TENSE -ve
+verb 'waits' 3p s act IS_TENSE +ve
+verb 'wait' 3p p act IS_TENSE +ve
+verb 'waited' 3p s act WAS_TENSE +ve
+verb 'waited' 3p p act WAS_TENSE +ve
+verb 'has not waved' 3p s act HASBEEN_TENSE -ve
+verb 'have not waved' 3p p act HASBEEN_TENSE -ve
+verb 'had not waved' 3p s act HADBEEN_TENSE -ve
+verb 'had not waved' 3p p act HADBEEN_TENSE -ve
+verb 'has waved' 3p s act HASBEEN_TENSE +ve
+verb 'have waved' 3p p act HASBEEN_TENSE +ve
+verb 'had waved' 3p s act HADBEEN_TENSE +ve
+verb 'had waved' 3p p act HADBEEN_TENSE +ve
+verb 'does not wave' 3p s act IS_TENSE -ve
+verb 'do not wave' 3p p act IS_TENSE -ve
+verb 'did not wave' 3p s act WAS_TENSE -ve
+verb 'did not wave' 3p p act WAS_TENSE -ve
+verb 'waves' 3p s act IS_TENSE +ve
+verb 'wave' 3p p act IS_TENSE +ve
+verb 'waved' 3p s act WAS_TENSE +ve
+verb 'waved' 3p p act WAS_TENSE +ve
+verb 'has not won' 3p s act HASBEEN_TENSE -ve
+verb 'have not won' 3p p act HASBEEN_TENSE -ve
+verb 'had not won' 3p s act HADBEEN_TENSE -ve
+verb 'had not won' 3p p act HADBEEN_TENSE -ve
+verb 'has won' 3p s act HASBEEN_TENSE +ve
+verb 'have won' 3p p act HASBEEN_TENSE +ve
+verb 'had won' 3p s act HADBEEN_TENSE +ve
+verb 'had won' 3p p act HADBEEN_TENSE +ve
+verb 'does not win' 3p s act IS_TENSE -ve
+verb 'do not win' 3p p act IS_TENSE -ve
+verb 'did not win' 3p s act WAS_TENSE -ve
+verb 'did not win' 3p p act WAS_TENSE -ve
+verb 'wins' 3p s act IS_TENSE +ve
+verb 'win' 3p p act IS_TENSE +ve
+verb 'won' 3p s act WAS_TENSE +ve
+verb 'won' 3p p act WAS_TENSE +ve
+verb 'has not protected' 3p s act HASBEEN_TENSE -ve
+verb 'have not protected' 3p p act HASBEEN_TENSE -ve
+verb 'had not protected' 3p s act HADBEEN_TENSE -ve
+verb 'had not protected' 3p p act HADBEEN_TENSE -ve
+verb 'has protected' 3p s act HASBEEN_TENSE +ve
+verb 'have protected' 3p p act HASBEEN_TENSE +ve
+verb 'had protected' 3p s act HADBEEN_TENSE +ve
+verb 'had protected' 3p p act HADBEEN_TENSE +ve
+verb 'does not protect' 3p s act IS_TENSE -ve
+verb 'do not protect' 3p p act IS_TENSE -ve
+verb 'did not protect' 3p s act WAS_TENSE -ve
+verb 'did not protect' 3p p act WAS_TENSE -ve
+verb 'protects' 3p s act IS_TENSE +ve
+verb 'protect' 3p p act IS_TENSE +ve
+verb 'protected' 3p s act WAS_TENSE +ve
+verb 'protected' 3p p act WAS_TENSE +ve
+verb 'has not owned' 3p s act HASBEEN_TENSE -ve
+verb 'have not owned' 3p p act HASBEEN_TENSE -ve
+verb 'had not owned' 3p s act HADBEEN_TENSE -ve
+verb 'had not owned' 3p p act HADBEEN_TENSE -ve
+verb 'has owned' 3p s act HASBEEN_TENSE +ve
+verb 'have owned' 3p p act HASBEEN_TENSE +ve
+verb 'had owned' 3p s act HADBEEN_TENSE +ve
+verb 'had owned' 3p p act HADBEEN_TENSE +ve
+verb 'does not own' 3p s act IS_TENSE -ve
+verb 'do not own' 3p p act IS_TENSE -ve
+verb 'did not own' 3p s act WAS_TENSE -ve
+verb 'did not own' 3p p act WAS_TENSE -ve
+verb 'owns' 3p s act IS_TENSE +ve
+verb 'own' 3p p act IS_TENSE +ve
+verb 'owned' 3p s act WAS_TENSE +ve
+verb 'owned' 3p p act WAS_TENSE +ve
+verb 'has not fitted' 3p s act HASBEEN_TENSE -ve
+verb 'have not fitted' 3p p act HASBEEN_TENSE -ve
+verb 'had not fitted' 3p s act HADBEEN_TENSE -ve
+verb 'had not fitted' 3p p act HADBEEN_TENSE -ve
+verb 'has fitted' 3p s act HASBEEN_TENSE +ve
+verb 'have fitted' 3p p act HASBEEN_TENSE +ve
+verb 'had fitted' 3p s act HADBEEN_TENSE +ve
+verb 'had fitted' 3p p act HADBEEN_TENSE +ve
+verb 'does not fit' 3p s act IS_TENSE -ve
+verb 'do not fit' 3p p act IS_TENSE -ve
+verb 'did not fit' 3p s act WAS_TENSE -ve
+verb 'did not fit' 3p p act WAS_TENSE -ve
+verb 'fits' 3p s act IS_TENSE +ve
+verb 'fit' 3p p act IS_TENSE +ve
+verb 'fitted' 3p s act WAS_TENSE +ve
+verb 'fitted' 3p p act WAS_TENSE +ve
+verb 'has not unbolted' 3p s act HASBEEN_TENSE -ve
+verb 'have not unbolted' 3p p act HASBEEN_TENSE -ve
+verb 'had not unbolted' 3p s act HADBEEN_TENSE -ve
+verb 'had not unbolted' 3p p act HADBEEN_TENSE -ve
+verb 'has unbolted' 3p s act HASBEEN_TENSE +ve
+verb 'have unbolted' 3p p act HASBEEN_TENSE +ve
+verb 'had unbolted' 3p s act HADBEEN_TENSE +ve
+verb 'had unbolted' 3p p act HADBEEN_TENSE +ve
+verb 'does not unbolt' 3p s act IS_TENSE -ve
+verb 'do not unbolt' 3p p act IS_TENSE -ve
+verb 'did not unbolt' 3p s act WAS_TENSE -ve
+verb 'did not unbolt' 3p p act WAS_TENSE -ve
+verb 'unbolts' 3p s act IS_TENSE +ve
+verb 'unbolt' 3p p act IS_TENSE +ve
+verb 'unbolted' 3p s act WAS_TENSE +ve
+verb 'unbolted' 3p p act WAS_TENSE +ve
 meant by
 meaning
 implied by

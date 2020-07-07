@@ -3,7 +3,8 @@
 A lightweight structure to record uses of an adjective, either
 positively or negatively.
 
-@ This really is just an ordered pair of an adjective and a boolean:
+@ We store this as a linguistic constant, which points to the adjective and
+also records its sense, i.e., positive or negative:
 
 =
 typedef struct unary_predicate {

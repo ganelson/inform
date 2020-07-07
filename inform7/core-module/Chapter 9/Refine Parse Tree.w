@@ -402,9 +402,9 @@ property of something.
 thing. (If we had more and better pronouns, they would go here.)
 
 @<Act on the special noun phrases "it" and "they"@> =
-	int pro = Annotations::read_int(p, pronoun_ANNOT);
-	if (pro != 0) {
-		if ((Lcon::get_number(pro) == PLURAL_NUMBER) &&
+	pronoun_usage *pro = Node::get_pronoun(p);
+	if (pro) {
+		if ((Stock::usage_might_be_singular(pro->usage) == FALSE) &&
 			(Assertions::Traverse::get_current_subject_plurality())) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticThey),
 				"I'm unable to handle 'they' here",
