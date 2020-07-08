@@ -303,7 +303,7 @@ exceptional case.
 
 =
 int CompiledText::alphabetic(int letter) {
-	return isalpha(Characters::remove_accent(letter));
+	return Characters::isalpha((wchar_t) Characters::remove_accent(letter));
 }
 
 @ This looks for "[unicode 8212]" and turns it into an em-dash, for example.

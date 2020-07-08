@@ -107,11 +107,11 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 		ExamplesIndex::sort_comparison);
 
 	TEMPORARY_TEXT(current_subtitle)
-	int current_letter = -1;
+	wchar_t current_letter = 0;
 	int first_letter_block = TRUE;
 	for (int i=0; i<NUMBER_CREATED(example_index_data); i++) {
 		example_index_data *eid = eid_list[i];
-		int initial = Str::get_first_char(eid->sort_key);
+		wchar_t initial = Str::get_first_char(eid->sort_key);
 		if (Characters::isdigit(initial)) initial = '#';
 		if (initial != current_letter) @<Start a new letter block@>;
 		TEMPORARY_TEXT(url)
@@ -143,7 +143,7 @@ void ExamplesIndex::write_alphabetical_examples_index(void) {
 @<Start a new letter block@> =
 	current_letter = initial;
 	if (first_letter_block == FALSE) { HTML_TAG("br"); @<End a letter block@>; }
-	int uc_current_letter = Characters::toupper(current_letter);
+	wchar_t uc_current_letter = Characters::toupper(current_letter);
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "class=\"letterblock\"");
 	TEMPORARY_TEXT(inc)

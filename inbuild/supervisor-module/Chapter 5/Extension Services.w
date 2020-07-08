@@ -389,7 +389,8 @@ range, we flatten them from general ISO to plain ASCII.
 		E->as_copy->edition->work->author_name);
 	LOOP_THROUGH_TEXT(pos, synopsis)
 		Str::put(pos,
-			Characters::make_filename_safe(Str::get(pos)));
+			Characters::make_wchar_t_filename_safe(
+				Str::get(pos)));
 
 @ Note that if there is an active project, then we are reading the extension
 in order to include it in that, and so we send it to the project's syntax tree,

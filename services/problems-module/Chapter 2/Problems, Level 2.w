@@ -369,7 +369,7 @@ on when the shortened form is the one being issued).
 			case 'P': PUT_TO(PBUFF, FORCE_NEW_PARA_CHAR); i++; continue;
 			case '%': PUT_TO(PBUFF, '%'); i++; continue;
 		}
-		if (Characters::isdigit(message[i+1])) {
+		if (Characters::isdigit((wchar_t) message[i+1])) {
 			int t = ((int) (message[i+1]))-((int) '0'); i++;
 			if ((t>=1) && (t<=9)) {
 				if (problem_quotations[t].wording_based)

@@ -80,7 +80,7 @@ void LanguageManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	text_stream *name = Pathnames::directory_name(P);
 	int acceptable = TRUE;
 	LOOP_THROUGH_TEXT(pos, name) {
-		int c = Str::get(pos);
+		wchar_t c = Str::get(pos);
 		if ((c < 32) || (c > 126)) acceptable = FALSE; /* contains non-ASCII */
 		if (Platform::is_folder_separator(c)) { Str::put(pos, 0); break; }
 	}

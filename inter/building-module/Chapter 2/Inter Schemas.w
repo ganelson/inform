@@ -1090,7 +1090,7 @@ scanned through since the last time.
 	int L = Str::len(current_raw);
 	int c_start = 0, escaped = FALSE;
 	for (int p = 0; p < L; p++) {
-		int c1 = Str::get_at(current_raw, p), c2 = 0, c3 = 0;
+		wchar_t c1 = Str::get_at(current_raw, p), c2 = 0, c3 = 0;
 		if (p < L-1) c2 = Str::get_at(current_raw, p+1);
 		if (p < L-2) c3 = Str::get_at(current_raw, p+2);
 
@@ -1272,7 +1272,7 @@ inclusive; we ignore an empty token.
 	if ((Str::get_at(T, 0) == '#') && (Str::get_at(T, 1) == '#') && (Characters::isalpha(Str::get_at(T, 2)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			int c = Str::get(P);
+			wchar_t c = Str::get(P);
 			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
 				is = RAW_ISTT;
 		}
@@ -1280,7 +1280,7 @@ inclusive; we ignore an empty token.
 	if ((Str::get_at(T, 0) == '#') && (Characters::isalpha(Str::get_at(T, 1)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			int c = Str::get(P);
+			wchar_t c = Str::get(P);
 			if ((c != '_') && (c != '#') && (c != '$') && (!Characters::isalnum(c)))
 				is = RAW_ISTT;
 		}
@@ -1288,7 +1288,7 @@ inclusive; we ignore an empty token.
 	if ((Str::get_at(T, 0) == '_') && (Characters::isalpha(Str::get_at(T, 1)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			int c = Str::get(P);
+			wchar_t c = Str::get(P);
 			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
 				is = RAW_ISTT;
 		}
@@ -1296,7 +1296,7 @@ inclusive; we ignore an empty token.
 	if (Characters::isalpha(Str::get_at(T, 0))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			int c = Str::get(P);
+			wchar_t c = Str::get(P);
 			if ((c != '_') && (!Characters::isalnum(c)))
 				is = RAW_ISTT;
 		}
@@ -1308,7 +1308,7 @@ inclusive; we ignore an empty token.
 	if (Characters::isdigit(Str::get_at(T, 0))) {
 		is = NUMBER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
-			int c = Str::get(P);
+			wchar_t c = Str::get(P);
 			if (!Characters::isdigit(c))
 				is = RAW_ISTT;
 		}

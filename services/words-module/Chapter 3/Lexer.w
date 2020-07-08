@@ -688,9 +688,9 @@ void Lexer::feed_triplet(int last_cr, int cr, int next_cr) {
 		if ((space) && (next_cr == '/')) space = FALSE;
 		if (space) {
 			int lc = 0, nc = 0;
-			if (Characters::isdigit(last_cr)) lc = 1;
+			if (Characters::isdigit((wchar_t) last_cr)) lc = 1;
 			if ((last_cr >= 'a') && (last_cr <= 'z')) lc = 2;
-			if (Characters::isdigit(next_cr)) nc = 1;
+			if (Characters::isdigit((wchar_t) next_cr)) nc = 1;
 			if (next_cr == '-') nc = 1;
 			if ((next_cr >= 'a') && (next_cr <= 'z')) nc = 2;
 			if ((lc == 1) && (nc == 1)) space = FALSE;
@@ -726,14 +726,13 @@ has completed one batch, and moves on to dropping marbles into the next
 bucket.
 
 The marbles are characters; transparent glass ones are whitespace, which
-will always now be |' '|, |'\t'| or |'\n'|; the routine
-|Lexer::feed_triplet| above was the hopper; the routine
-|Lexer::feed_char_into_lexer|, which occupies the whole of the rest of this
-section, is the mechanism which takes each marble in turn. (On occasion it
-calls itself recursively to cause extra characters of its choice to drop
-in.) The batches are words, and the bucket receiving the surviving marbles
-is the sequence of characters starting at |lexer_word| and extending to
-|lexer_hwm-1|.
+will always now be |' '|, |'\t'| or |'\n'|; the routine |Lexer::feed_triplet|
+above was the hopper; the routine |Lexer::feed_char_into_lexer|, which occupies
+the whole of the rest of this section, is the mechanism which takes each marble
+in turn. (On occasion it calls itself recursively to cause extra characters of
+its choice to drop in.) The batches are words, and the bucket receiving the
+surviving marbles is the sequence of characters starting at |lexer_word| and
+extending to |lexer_hwm-1|.
 
 =
 void Lexer::feed_char_into_lexer(int c) {
@@ -756,7 +755,7 @@ void Lexer::feed_char_into_lexer(int c) {
 	}
 
     /* otherwise record the current character as part of the word being built */
-	*(lexer_hwm++) = c;
+	*(lexer_hwm++) = (wchar_t) c;
 
     if (lxs_scanning_text_substitution) {
         @<Force string division at the end of a text substitution, if necessary@>;
@@ -1009,7 +1008,7 @@ finished.
         case STRING_KW:
             if (c == STRING_END) {
                 lxs_string_soak_up_spaces_mode = FALSE;
-                *(lexer_hwm++) = c; /* record the |STRING_END| character as part of the word */
+                *(lexer_hwm++) = (wchar_t) c; /* record the |STRING_END| character as part of the word */
                 lxs_literal_mode = FALSE;
             }
             break;

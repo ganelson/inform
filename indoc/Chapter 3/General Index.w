@@ -508,10 +508,10 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 @<Render the index in sorted order@> =
 	IndexUtilities::alphabet_row(OUT, 1);
 	HTML_OPEN_WITH("table", "class=\"indextable\"");
-	int current_incipit = 0;
+	wchar_t current_incipit = 0;
 	for (int i=0; i<NUMBER_CREATED(index_lemma); i++) {
 		index_lemma *il = lemma_list[i];
-		int incipit = Str::get_first_char(il->sorting_key);
+		wchar_t incipit = Str::get_first_char(il->sorting_key);
 		if (Characters::isalpha(incipit)) incipit = Characters::toupper(incipit);
 		else incipit = '#';
 		if (incipit != current_incipit) {

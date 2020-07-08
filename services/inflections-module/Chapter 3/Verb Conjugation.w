@@ -735,7 +735,7 @@ and we construe "y" (but not "h" or "w") as a vowel.
 
 @<Decide whether a contraction is needed here@> =
 	int incipit = q[0];
-	int first = tolower(Characters::remove_accent(incipit));
+	int first = Characters::tolower((wchar_t) Characters::remove_accent(incipit));
 	if ((first == 'a') || (first == 'e') || (first == 'i') ||
 		(first == 'o') || (first == 'u') || (first == 'y'))
 		contract_this = TRUE;

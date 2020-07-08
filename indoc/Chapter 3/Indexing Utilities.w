@@ -77,7 +77,7 @@ void IndexUtilities::improve_alphabetisation(text_stream *sort_key) {
 		Regexp::replace(sort_key, L"an ", NULL, REP_ATSTART);
 		Regexp::replace(sort_key, L"the ", NULL, REP_ATSTART);
 		LOOP_THROUGH_TEXT(pos, sort_key)
-			Str::put(pos, Characters::tolower(Characters::remove_accent(Str::get(pos))));
+			Str::put(pos, Characters::tolower(Characters::remove_wchar_t_accent(Str::get(pos))));
 		Regexp::replace(sort_key, L"%[ *%]", L"____SQUARES____", REP_REPEATING);
 		Regexp::replace(sort_key, L"%[", NULL, REP_REPEATING);
 		Regexp::replace(sort_key, L"%]", NULL, REP_REPEATING);
@@ -112,8 +112,8 @@ void IndexUtilities::improve_alphabetisation(text_stream *sort_key) {
 
 @ =
 int letters_taken[26];
-void IndexUtilities::note_letter(int c) {
-	int i = c - 'A';
+void IndexUtilities::note_letter(wchar_t c) {
+	int i = c - (wchar_t) 'A';
 	if ((i>=0) && (i<26)) letters_taken[i] = TRUE;
 }
 void IndexUtilities::alphabet_row(OUTPUT_STREAM, int sequence) {

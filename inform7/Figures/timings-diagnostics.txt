@@ -1,36 +1,44 @@
 100.0% in inform7 run
-     68.6% in compilation to Inter
-         28.1% in //Phrases::Manager::compile_first_block//
-          9.3% in //Phrases::Manager::compile_as_needed//
-          6.8% in //Strings::compile_responses//
-          5.7% in //World::Compile::compile//
-          3.5% in //Sentences::VPs::traverse//
-          3.2% in //Assertions::Traverse::traverse1//
-          1.9% in //Phrases::Manager::RulePrintingRule_routine//
-          1.7% in //Phrases::Manager::rulebooks_array//
-          1.0% in //NewVerbs::ConjugateVerb//
-          0.7% in //Phrases::Manager::traverse//
+     68.0% in compilation to Inter
+         27.0% in //Phrases::Manager::compile_first_block//
+          8.8% in //Phrases::Manager::compile_as_needed//
+          7.0% in //Strings::compile_responses//
+          6.3% in //World::Compile::compile//
+          3.6% in //Sentences::VPs::traverse//
+          3.3% in //Assertions::Traverse::traverse1//
+          2.0% in //Phrases::Manager::RulePrintingRule_routine//
+          1.9% in //Phrases::Manager::rulebooks_array//
+          0.9% in //NewVerbs::ConjugateVerb//
+          0.8% in //Phrases::Manager::traverse//
           0.5% in //Phrases::Manager::parse_rule_parameters//
           0.3% in //Phrases::Manager::compile_rulebooks//
           0.3% in //Phrases::Manager::traverse_for_names//
           0.3% in //Relations::compile_defined_relations//
-          0.1% in //Assertions::Traverse::traverse2//
+          0.2% in //Assertions::Traverse::traverse2//
+          0.2% in //Task::load_types//
+          0.2% in //World::complete//
+          0.1% in //Emit::begin//
+          0.1% in //Index::DocReferences::read_xrefs//
+          0.1% in //Kinds::Knowledge::include_templates_for_kinds//
           0.1% in //PL::Parsing::Verbs::compile_all//
+          0.1% in //PL::Parsing::traverse//
+          0.1% in //Phrases::Manager::add_rules_to_rulebooks//
+          0.1% in //Sentences::Rearrangement::tidy_up_ofs_and_froms//
           0.1% in //Sentences::RuleSubtrees::register_recently_lexed_phrases//
-          0.1% in //Task::load_types//
-          0.1% in //World::complete//
-          3.8% not specifically accounted for
-     29.2% in running Inter pipeline
-          9.4% in inter step 2/12: link
-          9.4% in step preparation
-          6.8% in inter step 12/12: generate inform6 -> auto.inf
+          0.1% in //World::complete_additions//
+          2.8% not specifically accounted for
+     29.7% in running Inter pipeline
+         10.2% in step preparation
+          9.8% in inter step 2/12: link
+          6.9% in inter step 12/12: generate inform6 -> auto.inf
+          0.3% in inter step 10/12: reconcile-verbs
           0.3% in inter step 9/12: make-identifiers-unique
-          0.1% in inter step 10/12: reconcile-verbs
-          0.1% in inter step 11/12: eliminate-redundant-labels
+          0.2% in inter step 11/12: eliminate-redundant-labels
+          0.2% in inter step 6/12: assimilate
+          0.2% in inter step 7/12: resolve-external-symbols
+          0.1% in inter step 4/12: parse-linked-matter
           0.1% in inter step 5/12: resolve-conditional-compilation
-          0.1% in inter step 6/12: assimilate
-          0.1% in inter step 7/12: resolve-external-symbols
           0.1% in inter step 8/12: inspect-plugs
-          2.0% not specifically accounted for
-      1.9% in supervisor
+          1.1% not specifically accounted for
+      2.0% in supervisor
       0.2% not specifically accounted for
