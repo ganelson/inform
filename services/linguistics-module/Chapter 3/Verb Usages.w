@@ -200,28 +200,47 @@ then the imperfect; within that, we take negated forms first, then positive;
 within that, we take present before past tense; within that, we run through
 the persons from 1PS to 3PP.
 
+Moreover, we need to group together identical wordings, so that each is
+registered only once, but with an accumulated grammatical usage marker.
+For example, consider the regular English verb "to carry". Of the six present
+tense active mood forms, only one -- "carries" -- uniquely identifies its
+number and person (i.e., as third person singular); the other five are all
+"carry". So we make two registrations, one with a //grammatical_usage//
+containing a single linguistic constant, the other with one containing five.
+
+We do this by accumulating a to-do list of forms we are interested in --
+callback functions can tell us to ignore certain forms -- and the worst-case
+scenario is if every imaginable form is different, so the to-do list needs
+to be this long just in case:
+
+@d MAX_POSSIBLE_VERB_USAGES NO_KNOWN_NUMBERS*NO_KNOWN_PERSONS*NO_KNOWN_TENSES*NO_KNOWN_SENSES
+
 @<Register usages@> =
+	int to_do = 0,
+		lcons_to_do[MAX_POSSIBLE_VERB_USAGES],
+		priorities_to_do[MAX_POSSIBLE_VERB_USAGES],
+		copular_marker[MAX_POSSIBLE_VERB_USAGES],
+		done[MAX_POSSIBLE_VERB_USAGES];
+	word_assemblage wa_to_do[MAX_POSSIBLE_VERB_USAGES];
 	for (int tense = WILLBE_TENSE; tense < NO_KNOWN_TENSES; tense++)
 		for (int sense = 1; sense >= 0; sense--)
-			@<Register usages in this combination@>;
+			@<Make to-do list of usages in this combination@>;
 
 	int t1 = HASBEEN_TENSE, t2 = HADBEEN_TENSE;
-	@<Register usages in these tenses@>;
+	@<Make to-do list of usages in these tenses@>;
 	t1 = IS_TENSE; t2 = WAS_TENSE;
-	@<Register usages in these tenses@>;
+	@<Make to-do list of usages in these tenses@>;
+	@<Register each equivalence class of to-do list entries@>;
 
-@<Register usages in these tenses@> =
+@<Make to-do list of usages in these tenses@> =
 	for (int sense = 1; sense >= 0; sense--) {
 		int tense = t1;
-		@<Register usages in this combination@>;
+		@<Make to-do list of usages in this combination@>;
 		tense = t2;
-		@<Register usages in this combination@>;
+		@<Make to-do list of usages in this combination@>;
 	}
 
-@ Note that before a usage is registered, we call out to the client to find
-out whether it's needed.
-
-@<Register usages in this combination@> =
+@<Make to-do list of usages in this combination@> =
 	for (int number = 0; number < NO_KNOWN_NUMBERS; number++)
 		for (int person = 0; person < NO_KNOWN_PERSONS; person++) {
 			int p = priority;
@@ -235,27 +254,53 @@ out whether it's needed.
 			#else
 			if (VerbUsages::allow_generally(vc, tense, sense, person) == FALSE) p = -1;
 			#endif
-			if (p >= 0) @<Actually register this usage@>;
+			if (p >= 0) @<Add this form to the to-do list@>;
 		}
 
-@<Actually register this usage@> =
-	grammatical_usage *gu = Stock::new_usage(vi->in_stock, DefaultLanguage::get(NULL));
+@<Add this form to the to-do list@> =
 	lcon_ti l = Verbs::to_lcon(vi);
 	l = Lcon::set_mood(l, mood);
 	l = Lcon::set_tense(l, tense);
 	l = Lcon::set_sense(l, sense);
 	l = Lcon::set_person(l, person);
 	l = Lcon::set_number(l, number);
-	Stock::add_form_to_usage(gu, l);
-	verb_usage *vu = VerbUsages::register_single_usage(vt->vc_text[tense][sense][person][number],
-		unexpected_upper_casing_used, gu);
-	if (vu) VerbUsages::set_search_priority(vu, p);
+	lcons_to_do[to_do] = l;
+	priorities_to_do[to_do] = p;
+	done[to_do] = FALSE;
+	wa_to_do[to_do] = vt->vc_text[tense][sense][person][number];
+	copular_marker[to_do] = 0;
 	if (vi == copular_verb) {
 		if ((tense == IS_TENSE) && (person == THIRD_PERSON) && (number == SINGULAR_NUMBER)) {
-			if (sense == 1) negated_to_be = vu;
-			else regular_to_be = vu;
+			if (sense == 1) copular_marker[to_do] = -1;
+			else copular_marker[to_do] = 1;
 		}
 	}
+	to_do++;
+
+@ Two entries on the to-do list are "equivalent" if they have the same wording.
+For example, "carry" first person singular present tense is equivalent to
+the same thing in the second person, and so on. The priority for an equivalence
+class is the maximum priority for any of its members; this ensures, for example,
+that "carry" (1ps) which has priority 0 will not hold back "carry" (3pp) which
+needs to have priority 1.
+
+@<Register each equivalence class of to-do list entries@> =
+	for (int i=0; i<to_do; i++)
+		if (done[i] == FALSE) {
+			int max_priority = -1;
+			grammatical_usage *gu = Stock::new_usage(vi->in_stock, DefaultLanguage::get(NULL));
+			for (int j=0; j<to_do; j++)
+				if (WordAssemblages::eq(&(wa_to_do[i]), &(wa_to_do[j]))) {
+					done[j] = TRUE;
+					Stock::add_form_to_usage(gu, lcons_to_do[j]);
+					if (priorities_to_do[j] > max_priority) max_priority = priorities_to_do[j];
+				}
+			verb_usage *vu = VerbUsages::register_single_usage(wa_to_do[i],
+				unexpected_upper_casing_used, gu);
+			if (vu) VerbUsages::set_search_priority(vu, max_priority);
+			if (copular_marker[i] == 1) regular_to_be = vu;
+			if (copular_marker[i] == -1) negated_to_be = vu;
+		}
 
 @ Here are the default decisions on what usages are allowed; the defaults are
 what are used by Inform. In assertions:

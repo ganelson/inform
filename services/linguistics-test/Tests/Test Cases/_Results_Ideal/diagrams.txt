@@ -44,7 +44,7 @@ ROOT_NT
                 PROPER_NOUN_NT'there'
                 PROPER_NOUN_NT'door' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
             SENTENCE_NT'the sailors carry a cask of rum'
-                VERB_NT'carry'verb 'carry'  3p p act IS_TENSE +ve (regular)
+                VERB_NT'carry'verb 'carry'  ( 1p s act IS_TENSE +ve ) + ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) (regular)
                 COMMON_NOUN_NT'sailors' (common) ( (n) p nom ) + ( (n) p acc )
                 RELATIONSHIP_NT'carry'
                     PROPER_NOUN_NT'cask of rum' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
@@ -57,6 +57,6 @@ ROOT_NT
                 PROPER_NOUN_NT'does the player mean rules' definite article ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
                 PROPER_NOUN_NT'rulebook' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
             SENTENCE_NT'some people are here'
-                VERB_NT'are'verb 'are'  3p p act IS_TENSE +ve (regular)
+                VERB_NT'are'verb 'are'  ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) (regular)
                 PROPER_NOUN_NT'people' indefinite article ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
                 PROPER_NOUN_NT'here'
