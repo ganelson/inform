@@ -136,7 +136,7 @@ following alphabetical list has references to fuller explanations:
 <ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">ADAPTIVE_PERSON_LINGUISTICS_CALLBACK</span></span> returns the default person for adaptive
 text generation; in Inform, this tends to be the value of the adaptive text viewpoint
 property for the natural language of play. Similarly, <span class="extract"><span class="extract-syntax">ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK</span></span>
-returns the number (singular or plural). See <a href="3-vu.html#SP25" class="internal">VerbUsages::adaptive_person</a>.
+returns the number (singular or plural). See <a href="3-vu.html#SP24" class="internal">VerbUsages::adaptive_person</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">ADJECTIVE_NAME_VETTING_LINGUISTICS_CALLBACK</span></span> should return <span class="extract"><span class="extract-syntax">TRUE</span></span> if the given
 name is acceptable as an adjective, and should otherwise print some sort of
 error message and return <span class="extract"><span class="extract-syntax">FALSE</span></span>. If this callback is not provided, all non-empty
@@ -145,7 +145,7 @@ names are acceptable. See <a href="2-adj.html#SP3" class="internal">Adjectives::
 give the parent control over which forms of verbs are allowed: for examole, <a href="../core-module/index.html" class="internal">core</a>
 allows them in assertions only in the third person (singular or plural), whereas
 it allows them in any form in non-assertion contexts. See
-<a href="3-vu.html#SP8" class="internal">VerbUsages::register_moods_of_verb</a>.
+<a href="3-vu.html#SP7" class="internal">VerbUsages::register_moods_of_verb</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK</span></span>, if provided, should accompany a
 declaration of a structure called <span class="extract"><span class="extract-syntax">adjecttve_compilation_data</span></span>; this function should
 then set up that data for the given adjective &mdash; see <a href="2-adj.html#SP3" class="internal">Adjectives::declare</a>.

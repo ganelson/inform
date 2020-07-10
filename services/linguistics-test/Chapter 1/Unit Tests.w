@@ -103,7 +103,7 @@ void Unit::diagram(parse_node *p) {
 			verb *vi = Verbs::new_verb(vc, cop);
 			my_first_verb = FALSE;
 			vc->vc_conjugates = vi;
-			VerbUsages::register_all_usages_of_verb(vi, FALSE, <<r>>);
+			VerbUsages::register_all_usages_of_verb(vi, FALSE, <<r>>, p);
 			if (vc_be == NULL) vc_be = vc;
 			else if (vc_have == NULL) vc_have = vc;
 			Verbs::add_form(vi, NULL, NULL, VerbMeanings::regular(vc), SVO_FS_BIT);

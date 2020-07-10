@@ -1,6 +1,6 @@
 # Inform 7
 
-v10.1.0-alpha.1+6Q71 'Krypton' (9 July 2020)
+v10.1.0-alpha.1+6Q72 'Krypton' (10 July 2020)
 
 ## About Inform 7
 

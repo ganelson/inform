@@ -95,7 +95,6 @@ void NewVerbs::add_inequalities(void) {
 }
 
 void NewVerbs::add_inequalities_inner(verb_meaning lt, verb_meaning gt, verb_meaning le, verb_meaning ge) {
-	set_where_created = NULL;
 	current_main_verb = NULL;
 
 	for (int i=0; i<=3; i++) {
@@ -114,8 +113,8 @@ void NewVerbs::add_inequalities_inner(verb_meaning lt, verb_meaning gt, verb_mea
 		l = Lcon::set_person(l, THIRD_PERSON);
 		l = Lcon::set_number(l, SINGULAR_NUMBER);
 		Stock::add_form_to_usage(gu, l);
-		VerbUsages::register_single_usage(
-			PreformUtilities::wording(<inequality-conjugations>, i), FALSE, gu);
+		VerbUsages::new(
+			PreformUtilities::wording(<inequality-conjugations>, i), FALSE, gu, NULL);
 	}
 }
 
@@ -308,7 +307,6 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 	wording PW = EMPTY_WORDING; /* wording of the parts of speech */
 	verb_meaning vm = VerbMeanings::meaninglessness(); int meaning_given = FALSE;
 	int priority = -1;
-	set_where_created = current_sentence;
 
 	if (PN->next->next)
 		@<Find the underlying relation of the new verb or preposition@>;
@@ -353,10 +351,10 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 		if (Wordings::nonempty(V)) @<Find or create a new verb@>;
 		if (Wordings::nonempty(P))
 			prep = Prepositions::make(WordAssemblages::from_wording(P),
-				unexpected_upper_casing_used);
+				unexpected_upper_casing_used, current_sentence);
 		if (Wordings::nonempty(SP))
 			second_prep = Prepositions::make(WordAssemblages::from_wording(SP),
-				unexpected_upper_casing_used);
+				unexpected_upper_casing_used, current_sentence);
 
 		if (meaning_given) {
 			verb_meaning *current = VerbMeanings::first_unspecial_meaning_of_verb_form(Verbs::find_form(vi, prep, second_prep));
@@ -616,7 +614,7 @@ foreign verbs (4).
 	vi = Verbs::new_verb(vc, FALSE);
 	vc->vc_conjugates = vi;
 	if (priority >= 1) p = priority;
-	VerbUsages::register_all_usages_of_verb(vi, unexpected_upper_casing_used, p);
+	VerbUsages::register_all_usages_of_verb(vi, unexpected_upper_casing_used, p, current_sentence);
 
 @h Bootstrapping.
 
@@ -696,13 +694,13 @@ void NewVerbs::bootstrap(void) {
 	verb_conjugation *vc = Conjugation::conjugate(infinitive, DefaultLanguage::get(NULL));
 	verb *vi = Verbs::new_verb(vc, TRUE);
 	vc->vc_conjugates = vi;
-	VerbUsages::register_all_usages_of_verb(vi, FALSE, 2);
+	VerbUsages::register_all_usages_of_verb(vi, FALSE, 2, NULL);
 
 	infinitive = PreformUtilities::wording(<bootstrap-verb>, 1);
 	vc = Conjugation::conjugate(infinitive, DefaultLanguage::get(NULL));
 	vi = Verbs::new_verb(vc, FALSE);
 	vc->vc_conjugates = vi;
-	VerbUsages::register_all_usages_of_verb(vi, FALSE, 3);
+	VerbUsages::register_all_usages_of_verb(vi, FALSE, 3, NULL);
 
 	Verbs::add_form(vi, NULL, NULL, NewVerbs::sm_by_name(L"verb-means", NULL), SVO_FS_BIT);
 }

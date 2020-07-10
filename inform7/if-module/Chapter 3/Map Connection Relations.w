@@ -135,15 +135,15 @@ this to other languages.)
 	preposition *prep1 = Prepositions::make(
 		PreformUtilities::merge(<mapping-preposition-construction>, mpc_form,
 			WordAssemblages::from_wording(W)),
-		FALSE);
+		FALSE, current_sentence);
 	preposition *prep2 = Prepositions::make(
 		PreformUtilities::merge(<mapping-preposition-construction>, 2,
 			WordAssemblages::from_wording(W)),
-		FALSE);
+		FALSE, current_sentence);
 	preposition *prep3 = Prepositions::make(
 		PreformUtilities::merge(<mapping-preposition-construction>, 3,
 			WordAssemblages::from_wording(W)),
-		FALSE);
+		FALSE, current_sentence);
 
 	verb_meaning vm = VerbMeanings::regular(bp);
 	Verbs::add_form(copular_verb, prep1, NULL, vm, SVO_FS_BIT);

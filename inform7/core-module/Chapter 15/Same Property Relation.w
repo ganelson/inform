@@ -53,12 +53,11 @@ void Properties::SameRelations::REL_create_second_stock(void) {
 
 void Properties::SameRelations::register_same_property_as(binary_predicate *root, wording W) {
 	if (Wordings::empty(W)) return;
-	set_where_created = current_sentence;
 	verb_meaning vm = VerbMeanings::regular(root);
 	preposition *prep =
 		Prepositions::make(
 			PreformUtilities::merge(<same-property-as-construction>, 0,
-				WordAssemblages::from_wording(W)), FALSE);
+				WordAssemblages::from_wording(W)), FALSE, current_sentence);
 	Verbs::add_form(copular_verb, prep, NULL, vm, SVO_FS_BIT);
 }
 

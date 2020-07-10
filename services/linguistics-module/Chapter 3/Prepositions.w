@@ -67,7 +67,8 @@ Prepositions are completely determined by their wording: the "for" attached
 to one verb is the same preposition as the "for" attached to another one.
 
 =
-preposition *Prepositions::make(word_assemblage wa, int unexpected_upper_casing_used) {
+preposition *Prepositions::make(word_assemblage wa, int unexpected_upper_casing_used,
+	parse_node *where) {
 	preposition *prep = NULL;
 	LOOP_OVER(prep, preposition)
 		if (WordAssemblages::eq(&(prep->prep_text), &wa))
@@ -75,7 +76,7 @@ preposition *Prepositions::make(word_assemblage wa, int unexpected_upper_casing_
 
 	prep = CREATE(preposition);
 	prep->prep_text = wa;
-	prep->where_prep_created = set_where_created;
+	prep->where_prep_created = where;
 	prep->allow_unexpected_upper_case = unexpected_upper_casing_used;
 	Prepositions::mark_as_preposition(WordAssemblages::first_word(&wa));
 

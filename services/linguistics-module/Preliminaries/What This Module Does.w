@@ -168,7 +168,7 @@ stock of these, at five certainty levels. See //Adverbs of Certainty//.
 @ Prepositions are phrases like "over" or "on top of". Each is an instance of
 the //preposition// class. See //Prepositions//.
 
-The user creates the stock of adjectives by calling //Prepositions::make//,
+The user creates the stock of prepositions by calling //Prepositions::make//,
 but note that this function is also called when verbs are created, in order
 to implement participles like "carrying" as prepositions -- which is not
 linguistically ideal, but makes it possible to parse auxiliary uses of 

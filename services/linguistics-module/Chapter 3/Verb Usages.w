@@ -29,13 +29,16 @@ typedef struct verb_usage {
 	CLASS_DEFINITION
 } verb_usage;
 
-@
+@ =
+void VerbUsages::write_usage(OUTPUT_STREAM, verb_usage *vu) {
+	if (vu == NULL) { WRITE("(null verb usage)"); return; }
+	WRITE("verb '%A' ", &(vu->vu_text));
+	Stock::write_usage(OUT, vu->usage, SENSE_LCW+MOOD_LCW+TENSE_LCW+PERSON_LCW+NUMBER_LCW);
+}
 
-=
-verb_usage *regular_to_be = NULL; /* "is" */
-verb_usage *negated_to_be = NULL; /* "is not" */
-
-@ One simple search list arranges these in order of (word count) length:
+@h Search list and tiers.
+A "search list" of verb usages indicates what order the possibilities should be
+checked in. The simpler list is in order of word count:
 
 =
 verb_usage *vu_search_list = NULL; /* head of linked list of usages in length order */
@@ -43,7 +46,8 @@ verb_usage *vu_search_list = NULL; /* head of linked list of usages in length or
 @d LOOP_OVER_USAGES(vu)
 	for (vu = vu_search_list; vu; vu = vu->next_in_search_list)
 
-@h Verb usage tiers.
+@ The more complex list involves "tiers" of verbs with different priorities.
+
 A particular challenge of parsing natural language is to decide the most likely
 word in a sentence to be its primary verb. (The verb in "Heatwave Bone Breaks
 Clog Hospital" is not "to break".) This is especially challenging when the
@@ -55,9 +59,10 @@ understand it.
 
 The model we use is to sort verb usages into "tiers", each with a numerical
 "priority", which is a non-negative number. Tier 0 verb usages are never
-recognised. Otherwise, the lower the priority number, the more likely it
-is that this verb is meant. If two usages belong to the same tier, then
-the earlier one in the sentence is preferred.
+recognised. (This does not make them useless: Inform can generate adaptive
+text using them, and they can exist as run-time values in Inform.) Otherwise,
+the lower the priority number, the more likely it is that this verb is meant.
+If two usages belong to the same tier, the earlier in a sentence is preferred.
 
 The tiers are stored as a linked list, in priority order:
 
@@ -71,13 +76,12 @@ typedef struct verb_usage_tier {
 
 verb_usage_tier *first_search_tier = NULL; /* head of linked list of tiers */
 
-@h Registration.
+@h Creation.
 Here we create a single verb usage; note that the empty text cannot be used.
 
 =
-parse_node *set_where_created = NULL;
-verb_usage *VerbUsages::register_single_usage(word_assemblage wa,
-	int unexpected_upper_casing_used, grammatical_usage *usage) {
+verb_usage *VerbUsages::new(word_assemblage wa, int unexpected_upper_casing_used,
+	grammatical_usage *usage, parse_node *where) {
 	if (WordAssemblages::nonempty(wa) == FALSE) return NULL;
 	LOGIF(VERB_USAGES, "new usage: '%A'\n", &wa);
 	VerbUsages::mark_as_verb(WordAssemblages::first_word(&wa));
@@ -86,7 +90,7 @@ verb_usage *VerbUsages::register_single_usage(word_assemblage wa,
 	#ifdef CORE_MODULE
 	vu->vu_lex_entry = current_main_verb;
 	#endif
-	vu->where_vu_created = set_where_created;
+	vu->where_vu_created = where;
 	vu->usage = usage;
 	vu->vu_allow_unexpected_upper_case = unexpected_upper_casing_used;
 	vu->next_within_tier = NULL;
@@ -95,13 +99,14 @@ verb_usage *VerbUsages::register_single_usage(word_assemblage wa,
 	return vu;
 }
 
-@ These are insertion-sorted into a list in order of word count, with oldest
-first in the case of equal length:
+@ These are insertion-sorted into a list in decreasing order of word count,
+with oldest first in the case of equal length:
 
 @<Add to the length-order search list@> =
 	if (vu_search_list == NULL) vu_search_list = vu;
 	else {
-		for (verb_usage *evu = vu_search_list, *prev = NULL; evu; prev = evu, evu = evu->next_in_search_list) {
+		for (verb_usage *evu = vu_search_list, *prev = NULL; evu;
+			prev = evu, evu = evu->next_in_search_list) {
 			if (WordAssemblages::longer(&wa, &(evu->vu_text)) > 0) {
 				vu->next_in_search_list = evu;
 				if (prev == NULL) vu_search_list = vu;
@@ -115,15 +120,6 @@ first in the case of equal length:
 		}
 	}
 
-@
-
-=
-void VerbUsages::write_usage(OUTPUT_STREAM, verb_usage *vu) {
-	if (vu == NULL) { WRITE("(null verb usage)"); return; }
-	WRITE("verb '%A' ", &(vu->vu_text));
-	Stock::write_usage(OUT, vu->usage, SENSE_LCW+MOOD_LCW+TENSE_LCW+PERSON_LCW+NUMBER_LCW);
-}
-
 @h Registration of regular verbs.
 It would be tiresome to have to call the above routine for every possible
 conjugated form of a verb individually, so the following takes care of
@@ -135,8 +131,11 @@ as equivalent to "Peter wears the hat", but not "1 is been by X" as
 equivalent to "X is 1".
 
 =
+verb_usage *regular_to_be = NULL; /* "is" */
+verb_usage *negated_to_be = NULL; /* "is not" */
+
 void VerbUsages::register_all_usages_of_verb(verb *vi,
-	int unexpected_upper_casing_used, int priority) {
+	int unexpected_upper_casing_used, int priority, parse_node *where) {
 	verb_conjugation *vc = vi->conjugation;
 	if (vc == NULL) return;
 	#ifdef CORE_MODULE
@@ -144,11 +143,11 @@ void VerbUsages::register_all_usages_of_verb(verb *vi,
 	#endif
 
 	VerbUsages::register_moods_of_verb(vc, ACTIVE_MOOD, vi,
-		unexpected_upper_casing_used, priority);
+		unexpected_upper_casing_used, priority, where);
 
 	if (vi != copular_verb) {
 		VerbUsages::register_moods_of_verb(vc, PASSIVE_MOOD, vi,
-			unexpected_upper_casing_used, priority);
+			unexpected_upper_casing_used, priority, where);
 		@<Add present participle forms@>;
 	}
 }
@@ -167,7 +166,8 @@ an unfortunate mock-Indian sound to it.
 @<Add present participle forms@> =
 	if (WordAssemblages::nonempty(vc->present_participle)) {
 		preposition *prep =
-			Prepositions::make(vc->present_participle, unexpected_upper_casing_used);
+			Prepositions::make(vc->present_participle, unexpected_upper_casing_used,
+			where);
 		Verbs::add_form(copular_verb, prep, NULL,
 			VerbMeanings::indirected(vi, FALSE), SVO_FS_BIT);
 	}
@@ -180,11 +180,12 @@ of "to be", which is convenient however dubious in linguistic terms.
 
 =
 void VerbUsages::register_moods_of_verb(verb_conjugation *vc, int mood,
-	verb *vi, int unexpected_upper_casing_used, int priority) {
+	verb *vi, int unexpected_upper_casing_used, int priority, parse_node *where) {
 	verb_tabulation *vt = &(vc->tabulations[mood]);
 	if (WordAssemblages::nonempty(vt->to_be_auxiliary)) {
 		preposition *prep =
-			Prepositions::make(vt->to_be_auxiliary, unexpected_upper_casing_used);
+			Prepositions::make(vt->to_be_auxiliary, unexpected_upper_casing_used,
+			where);
 		Verbs::add_form(copular_verb, prep, NULL,
 			VerbMeanings::indirected(vi, (mood == PASSIVE_MOOD)?TRUE:FALSE),
 			SVO_FS_BIT);
@@ -295,8 +296,8 @@ needs to have priority 1.
 					Stock::add_form_to_usage(gu, lcons_to_do[j]);
 					if (priorities_to_do[j] > max_priority) max_priority = priorities_to_do[j];
 				}
-			verb_usage *vu = VerbUsages::register_single_usage(wa_to_do[i],
-				unexpected_upper_casing_used, gu);
+			verb_usage *vu = VerbUsages::new(wa_to_do[i],
+				unexpected_upper_casing_used, gu, where);
 			if (vu) VerbUsages::set_search_priority(vu, max_priority);
 			if (copular_marker[i] == 1) regular_to_be = vu;
 			if (copular_marker[i] == -1) negated_to_be = vu;
@@ -514,7 +515,7 @@ not carry" qualifies; "is not" or "supports" don't qualify.
 	return FALSE;
 }
 
-@ A universal verb is one which implies the universal relation: in practice,
+@ A universal verb is one which implies the universal relation: in Inform,
 that means it's "to relate".
 
 =
