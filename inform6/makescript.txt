@@ -27,7 +27,7 @@ force:
 
 define make-me
 	cd $(SANDBOX); $(INDULGENTCC) -std=c99 *.c -D$(INFORM6OS)
-	$(LINK) -o $(ME)/Tangled/$(ME) $(I6SOURCE) $(LINKEROPTS)
+	$(LINK) -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(I6SOURCE) $(LINKEROPTS)
 endef
 
 # Testing the program:
@@ -82,7 +82,7 @@ $(INTERPRETERS)/dumb-frotz/dumb-frotz: \
 	cd $(INTERPRETERS)/dumb-frotz; $(INDULGENTCC) variable.c
 	cd $(INTERPRETERS)/dumb-frotz; $(INDULGENTCC) profiling.c
 	cd $(INTERPRETERS)/dumb-frotz; $(INDULGENTCC) main.c
-	cd $(INTERPRETERS)/dumb-frotz; $(LINK) -o dumb-frotz *.o $(LINKEROPTS)
+	cd $(INTERPRETERS)/dumb-frotz; $(LINK) -o dumb-frotz$(EXEEXTENSION) *.o $(LINKEROPTS)
 
 # "dumb-glulxe" is the analogous thing for Glulx-format story files.
 

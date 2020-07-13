@@ -18,7 +18,7 @@ force:
 define make-me
 	$(INWEB) $(ME) -tangle
 	$(CC) -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
-	$(LINK) -o $(ME)/Tangled/$(ME) $(ME)/Tangled/$(ME).o $(LINKEROPTS)
+	$(LINK) -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o $(LINKEROPTS)
 endef
 
 # Testing the program:
@@ -30,7 +30,7 @@ test: $(BLORBLIB)/blorbscan
 $(BLORBLIB)/blorbscan: $(BLORBLIB)/*.c $(BLORBLIB)/*.h
 	cd $(BLORBLIB); $(INDULGENTCC) blorblib.c
 	cd $(BLORBLIB); $(INDULGENTCC) blorbscan.c
-	cd $(BLORBLIB); $(LINK) -o blorbscan *.o $(LINKEROPTS)
+	cd $(BLORBLIB); $(LINK) -o blorbscan$(EXEEXTENSION) *.o $(LINKEROPTS)
 
 # Cleaning up:
 
