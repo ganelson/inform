@@ -206,15 +206,15 @@ void CompiledText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
 	}
 	if (options & CT_RAW) {
 		for (i=from; i<to; i++) {
-			int c = Str::get_at(p, i);
+			wchar_t c = Str::get_at(p, i);
 			if ((i == from) && (options & CT_CAPITALISE))
-				WRITE("%c", Characters::toupper(c));
+				WRITE("%c", (int) Characters::toupper(c));
 			else
-				WRITE("%c", c);
+				WRITE("%c", (int) c);
 		}
 	} else {
 		for (i=from; i<to; i++) {
-			int c = Str::get_at(p, i);
+			wchar_t c = Str::get_at(p, i);
 			switch(c) {
 				case '\n':
 					if (options & CT_BOX_QUOTATION) WRITE("\"\n\"");
@@ -229,31 +229,31 @@ void CompiledText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
 					else WRITE("^"); break;
 				case '"':
 					if (options & CT_I6) WRITE("~");
-					else WRITE("%c", c);
+					else WRITE("%c", (int) c);
 					break;
 				case '@':
 					if (options & CT_I6) {
 						if (options & CT_FOR_ARRAY) WRITE("@{40}");
 						else { WRITE("@@64"); esc_digit = TRUE; continue; }
-					} else WRITE("%c", c);
+					} else WRITE("%c", (int) c);
 					break;
 				case '^':
 					if (options & CT_I6) {
 						if (options & CT_BOX_QUOTATION) WRITE("\"\n\"");
 						else if (options & CT_FOR_ARRAY) WRITE("@{5E}");
 						else { WRITE("@@94"); esc_digit = TRUE; continue; }
-					} else WRITE("%c", c);
+					} else WRITE("%c", (int) c);
 					break;
 				case '~':
 					if (options & CT_I6) {
 						if (options & CT_FOR_ARRAY) WRITE("@{7E}");
 						else { WRITE("@@126"); esc_digit = TRUE; continue; }
-					} else WRITE("%c", c);
+					} else WRITE("%c", (int) c);
 					break;
 				case '\\':
 					if (options & CT_I6) {
 						WRITE("@{5C}");
-					} else WRITE("%c", c);
+					} else WRITE("%c", (int) c);
 					break;
 				case '\'':
 					if (options & CT_EXPAND_APOSTROPHES)
@@ -262,19 +262,20 @@ void CompiledText::from_stream(OUTPUT_STREAM, text_stream *p, int options) {
 					break;
 				case '[':
 					if ((options & CT_RECOGNISE_APOSTROPHE_SUBSTITUTION) &&
-						(Str::get_at(p, i+1) == '\'') && (Str::get_at(p, i+2) == ']')) { i += 2; WRITE("'"); }
-					else if (options & CT_RECOGNISE_UNICODE_SUBSTITUTION) {
+						(Str::get_at(p, i+1) == '\'') && (Str::get_at(p, i+2) == ']')) {
+							i += 2; WRITE("'");
+					} else if (options & CT_RECOGNISE_UNICODE_SUBSTITUTION) {
 						int n = CompiledText::expand_unisub_S(OUT, p, i);
 						if (n == -1) WRITE("["); else i = n;
 					} else WRITE("[");
 					break;
 				default:
 					if ((i==from) && (options & CT_CAPITALISE))
-						WRITE("%c", Characters::toupper(c));
+						WRITE("%c", (int) Characters::toupper(c));
 					else if ((esc_digit) && (Characters::isdigit(c)))
-						WRITE("@{%02x}", c);
+						WRITE("@{%02x}", (int) c);
 					else
-						WRITE("%c", c);
+						WRITE("%c", (int) c);
 					break;
 			}
 			esc_digit = FALSE;

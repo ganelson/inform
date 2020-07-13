@@ -513,9 +513,9 @@ void Properties::set_translation_S(property *prn, text_stream *t) {
 	Properties::iname(prn);
 	TEMPORARY_TEXT(T)
 	LOOP_THROUGH_TEXT(pos, t) {
-		int c = Str::get(pos);
+		wchar_t c = Str::get(pos);
 		if ((isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
-			PUT_TO(T, c);
+			PUT_TO(T, (int) c);
 		else
 			PUT_TO(T, '_');
 	}

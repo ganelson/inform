@@ -29,7 +29,7 @@ text_stream *PL::Bibliographic::IFID::read_uuid(void) {
 	int c;
 	while (((c = fgetc(xf)) != EOF) /* the UUID file is plain text, not Unicode */
 		&& (uuid_read++ < MAX_UUID_LENGTH-1))
-		PUT_TO(uuid_text, Characters::toupper(c));
+		PUT_TO(uuid_text, (int) Characters::toupper((wchar_t) c));
 	fclose(xf);
 	return uuid_text;
 }

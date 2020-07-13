@@ -231,7 +231,7 @@ void Solution::undo_XML_escapes_in_string(text_stream *p) {
 @ Note that all other ampersand-escapes are passed through verbatim.
 
 @<We have identified an XML escape@> =
-	int c = 0;
+	wchar_t c = 0;
 	if (Str::eq_wide_string(xml_escape, L"&lt;")) c = '<';
 	if (Str::eq_wide_string(xml_escape, L"&gt;")) c = '>';
 	if (Str::eq_wide_string(xml_escape, L"&amp;")) c = '&';

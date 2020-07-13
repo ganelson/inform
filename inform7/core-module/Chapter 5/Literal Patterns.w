@@ -104,7 +104,7 @@ match those in the specification, so this notation does not match the text
 typedef struct literal_pattern_token {
 	int new_word_at; /* does token start a new word? */
 	int lpt_type; /* one of the three constants defined above */
-	int token_char; /* |CHARACTER_LPT| only; the character to match */
+	wchar_t token_char; /* |CHARACTER_LPT| only; the character to match */
 	int token_wn; /* |WORD_LPT| only; word number in source text of the prototype */
 } literal_pattern_token;
 
@@ -698,7 +698,7 @@ void LiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 	for (tc=0, ec=0; tc<lp->no_lp_tokens; tc++) {
 		int lookahead = -1;
 		if ((tc+1<lp->no_lp_tokens) && (lp->lp_tokens[tc+1].lpt_type == CHARACTER_LPT))
-			lookahead = lp->lp_tokens[tc+1].token_char;
+			lookahead = (int) (lp->lp_tokens[tc+1].token_char);
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
@@ -1900,7 +1900,7 @@ note that the following uses the raw text of the word.
 	WRITE("%<N", lp->lp_tokens[tc].token_wn);
 
 @<Index a character token within a literal pattern@> =
-	HTML::put(OUT, lp->lp_tokens[tc].token_char);
+	HTML::put(OUT, (int) lp->lp_tokens[tc].token_char);
 
 @<Index an element token within a literal pattern@> =
 	if (Kinds::FloatingPoint::uses_floating_point(lp->kind_specified)) {
@@ -2115,7 +2115,7 @@ the sorting measure.
 @<Compile I6 code to print a character token within a literal pattern@> =
 	TEMPORARY_TEXT(T)
 	TEMPORARY_TEXT(tiny_string)
-	PUT_TO(tiny_string, lp->lp_tokens[tc].token_char);
+	PUT_TO(tiny_string, (int) lp->lp_tokens[tc].token_char);
 	CompiledText::from_stream(T, tiny_string, CT_RAW);
 	DISCARD_TEXT(tiny_string)
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);

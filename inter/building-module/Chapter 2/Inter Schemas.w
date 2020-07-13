@@ -1018,7 +1018,7 @@ optional, operand in |operand2|.
 
 @<Look for a possible abbreviated command@> =
 	int at = pos;
-	int c = Str::get_at(from, ++at);
+	wchar_t c = Str::get_at(from, ++at);
 	int iss_bitmap = 0;
 	switch (c) {
 		case '!': iss_bitmap = iss_bitmap | PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM; c = Str::get_at(from, ++at); break;
@@ -1041,7 +1041,7 @@ optional, operand in |operand2|.
 		t->bracing = Str::duplicate(T);
 		t->inline_command = substitute_ISINC;
 		t->inline_modifiers = iss_bitmap;
-		t->constant_number = c - '1';
+		t->constant_number = (int) c - (int) '1';
 		InterSchemas::add_token(sch, t);
 		preceding_token = t;
 		DISCARD_TEXT(T)
