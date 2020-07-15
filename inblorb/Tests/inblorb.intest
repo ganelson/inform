@@ -70,7 +70,7 @@
 	step: $INBLORB `$CBLORBOPTIONS $BLURB $BLORBFILE >$CA 2>&1
 	or: 'failed inblorb' $CA
 	show: $CA
-	match text: $CA $CI
+	match platform text: $CA $CI
 	or: 'produced the wrong inblorb console output'
 
 	mkdir: $PATH/_Tree_Actual
