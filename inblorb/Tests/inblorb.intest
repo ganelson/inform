@@ -48,7 +48,7 @@
 	or: 'failed with Problem message(s)' $I7CONSOLE
 
 	set: $BLURB = $WORK/Example.inform/Release.blurb
-	match text: $BLURB $PATH/_Blurb_Ideal/$CASE.blurb
+	match platform text: $BLURB $PATH/_Blurb_Ideal/$CASE.blurb
 	or: 'produced the wrong release blurb'
 	match text: $WORK/Example.inform/Metadata.iFiction $PATH/_Metadata_Ideal/$CASE.iFiction
 	or: 'produced the wrong iFiction metadata'
