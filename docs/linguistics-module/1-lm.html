@@ -83,12 +83,12 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verb_usage_tier_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">preposition_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">time_period_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">noun_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">noun_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pronoun_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pronoun_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">small_word_set_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">time_period_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective</span><span class="plain-syntax">)</span>
@@ -106,7 +106,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_usage_tier</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preposition</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">time_period</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">time_period</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun_usage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pronoun</span><span class="plain-syntax">)</span>
@@ -148,7 +148,7 @@ which use this module:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'t'</span><span class="plain-syntax">, </span><a href="3-apoo.html#SP3" class="function-link"><span class="function-syntax">Occurrence::log</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'t'</span><span class="plain-syntax">, </span><a href="3-apoo.html#SP4" class="function-link"><span class="function-syntax">Occurrence::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'p'</span><span class="plain-syntax">, </span><a href="3-prp.html#SP5" class="function-link"><span class="function-syntax">Prepositions::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'w'</span><span class="plain-syntax">, </span><a href="3-vrb.html#SP4" class="function-link"><span class="function-syntax">Verbs::log_verb</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'y'</span><span class="plain-syntax">, </span><a href="3-vm.html#SP13" class="function-link"><span class="function-syntax">VerbMeanings::log</span></a><span class="plain-syntax">);</span>

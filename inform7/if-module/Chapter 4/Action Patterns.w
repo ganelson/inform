@@ -48,7 +48,7 @@ typedef struct action_pattern {
 	int nowhere_flag; /* ditto: a flag for "going nowhere" */
 	struct ap_optional_clause *optional_clauses;
 	int chief_action_owner_id; /* stacked variable ID number of main action */
-	struct time_period duration; /* to hold "for the third time", etc. */
+	struct time_period *duration; /* to hold "for the third time", etc. */
 
 	struct parse_node *parameter_spec; /* alternatively, just this */
 	struct kind *parameter_kind; /* of this expected kind */
@@ -116,7 +116,7 @@ action_pattern PL::Actions::Patterns::new(void) {
 	ap.nowhere_flag = FALSE;
 	ap.request = FALSE;
 	ap.applies_to_any_actor = FALSE;
-	ap.duration = Occurrence::new();
+	ap.duration = NULL;
 	ap.optional_clauses = NULL;
 	ap.chief_action_owner_id = 0;
 	ap.entered_into_NAP_here = NULL;
@@ -230,10 +230,8 @@ void PL::Actions::Patterns::log(action_pattern *ap) {
 		if (ap->parameter_spec) LOG("  Parameter: $P", ap->parameter_spec);
 		if (ap->presence_spec) LOG("  Presence: $P", ap->presence_spec);
 		if (ap->nowhere_flag) LOG("  Nowhere  ");
-		if (ap->when)
-			LOG("  When: $P  ", ap->when);
-		if (Occurrence::is_valid(&(ap->duration)))
-			LOG("  Duration: $t  ", &(ap->duration));
+		if (ap->when) LOG("  When: $P  ", ap->when);
+		if (ap->duration) LOG("  Duration: $t  ", ap->duration);
 	}
 	LOG("\n");
 }
@@ -316,12 +314,12 @@ int PL::Actions::Patterns::is_overspecific(action_pattern *ap) {
 	if (ap->optional_clauses != NULL) return TRUE;
 	if (ap->nowhere_flag) return TRUE;
 	if (ap->applies_to_any_actor) return TRUE;
-	if (Occurrence::is_valid(&(ap->duration))) return TRUE;
+	if (ap->duration) return TRUE;
 	return FALSE;
 }
 
 void PL::Actions::Patterns::suppress_action_testing(action_pattern *ap) {
-	if (Occurrence::is_valid(&(ap->duration)) == FALSE) ap->test_anl = FALSE;
+	if (ap->duration == NULL) ap->test_anl = FALSE;
 }
 
 @ We are allowed to give names to certain kinds of behaviour by "categorising"
@@ -662,9 +660,9 @@ action_pattern *PL::Actions::Patterns::ap_parse_inner(wording W, int tense) {
 	}
 	LOGIF(ACTION_PATTERN_PARSING, "Parse action pattern (tense %d): %W\n", tense, W);
 	int duration_set = FALSE;
-	time_period duration = Occurrence::parse(W);
-	if (Occurrence::is_valid(&duration)) {
-		W = Wordings::up_to(W, Occurrence::is_valid(&duration));
+	time_period *duration = Occurrence::parse(W);
+	if (duration) {
+		W = Occurrence::unused_wording(duration);
 		duration_set = TRUE;
 	}
 	int s = prevailing_ap_tense;
@@ -686,7 +684,7 @@ action_pattern *PL::Actions::Patterns::ap_parse_inner(wording W, int tense) {
 		}
 	}
 	prevailing_ap_tense = s;
-	if ((duration_set) && (ap)) ap->duration = duration;
+	if (ap) ap->duration = duration;
 	LOGIF(ACTION_PATTERN_PARSING, "PAP result (pfr %d): $A\n", pap_failure_reason, ap);
 	return ap;
 }
@@ -1212,8 +1210,7 @@ int PL::Actions::Patterns::count_aspects(action_pattern *ap) {
 		(ap->actor_spec))
 		c++;
 	if (ap->presence_spec) c++;
-	if ((Occurrence::is_valid(&(ap->duration))) || (ap->when))
-		c++;
+	if ((ap->duration) || (ap->when)) c++;
 	if (ap->parameter_spec) c++;
 	return c;
 }
@@ -1319,7 +1316,7 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 
 	c_s_stage_law = I"III.5.1 - Action/When/Duration";
 
-	rv = Occurrence::compare_specificity(&(ap1->duration), &(ap2->duration));
+	rv = Occurrence::compare_specificity(ap1->duration, ap2->duration);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.5.2 - Action/When/Circumstances";
@@ -1725,7 +1722,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	ap_optional_clause *needed_apoc[MAX_CPM_CLAUSES];
 	LOGIF(ACTION_PATTERN_COMPILATION, "Compiling action pattern:\n  $A", &ap);
 
-	if (Occurrence::is_valid(&(ap.duration))) {
+	if (ap.duration) {
 		Chronology::compile_past_action_pattern(VH, ap.duration, ap);
 	} else {
 		kind *kind_of_noun = K_object;
@@ -2207,12 +2204,12 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 
 @ =
 int PL::Actions::Patterns::refers_to_past(action_pattern *ap) {
-	if (Occurrence::is_valid(&(ap->duration))) return TRUE;
+	if (ap->duration) return TRUE;
 	return FALSE;
 }
 
 void PL::Actions::Patterns::convert_to_present_tense(action_pattern *ap) {
-	Occurrence::make_invalid(&(ap->duration));
+	ap->duration = NULL;
 }
 
 int PL::Actions::Patterns::pta_acceptable(parse_node *spec) {

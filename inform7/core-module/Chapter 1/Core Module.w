@@ -500,6 +500,7 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e subject_term_ANNOT /* |pcalc_term|: what the subject of the subtree was */
 @e suppress_newlines_ANNOT /* |int|: whether the next say term runs on */
 @e table_cell_unspecified_ANNOT /* int: used to mark table entries as unset */
+@e tense_marker_ANNOT /* |grammatical_usage|: for specification nodes */
 @e text_unescaped_ANNOT /* |int|: flag used only for literal texts */
 @e token_as_parsed_ANNOT /* |parse_node|: what if anything is returned */
 @e token_check_to_do_ANNOT /* |parse_node|: what if anything is returned */
@@ -559,6 +560,7 @@ DECLARE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 DECLARE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
 DECLARE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
 DECLARE_ANNOTATION_FUNCTIONS(subject, inference_subject)
+DECLARE_ANNOTATION_FUNCTIONS(tense_marker, grammatical_usage)
 DECLARE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
@@ -613,6 +615,7 @@ MAKE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 MAKE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
 MAKE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
 MAKE_ANNOTATION_FUNCTIONS(subject, inference_subject)
+MAKE_ANNOTATION_FUNCTIONS(tense_marker, grammatical_usage)
 MAKE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)

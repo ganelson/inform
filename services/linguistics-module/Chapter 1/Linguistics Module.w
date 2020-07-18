@@ -25,12 +25,12 @@ which use this module:
 @e verb_usage_CLASS
 @e verb_usage_tier_CLASS
 @e preposition_CLASS
-@e time_period_CLASS
 @e noun_CLASS
 @e noun_usage_CLASS
 @e pronoun_CLASS
 @e pronoun_usage_CLASS
 @e small_word_set_CLASS
+@e time_period_CLASS
 
 =
 DECLARE_CLASS(adjective)
@@ -48,7 +48,7 @@ DECLARE_CLASS(verb_sense)
 DECLARE_CLASS(verb_usage)
 DECLARE_CLASS(verb_usage_tier)
 DECLARE_CLASS(preposition)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(time_period, 100)
+DECLARE_CLASS(time_period)
 DECLARE_CLASS(noun)
 DECLARE_CLASS(noun_usage)
 DECLARE_CLASS(pronoun)

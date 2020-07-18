@@ -43,12 +43,13 @@ void Chronology::ap_compile_forced_to_present(action_pattern ap) {
 #endif
 
 #ifdef IF_MODULE
-void Chronology::compile_past_action_pattern(value_holster *VH, time_period duration, action_pattern ap) {
-	char *op = duration.inform6_operator;
+void Chronology::compile_past_action_pattern(value_holster *VH, time_period *duration, action_pattern ap) {
+	int op = Occurrence::operator(duration);
+	if (op == NO_REPM) op = EQ_REPM;
 	package_request *PR = Hierarchy::local_package(PAST_ACTION_PATTERNS_HAP);
 	inter_name *pta_routine = Hierarchy::make_iname_in(PAP_FN_HL, PR);
 	LOGIF(TIME_PERIODS,
-		"Chronology::compile_past_action_pattern on: $A\nat: $t\n", &ap, &duration);
+		"Chronology::compile_past_action_pattern on: $A\nat: $t\n", &ap, duration);
 	if (PL::Actions::Patterns::makes_callings(&ap)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PTAPMakesCallings),
 			"a description of an action cannot both refer to past history "
@@ -57,7 +58,6 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 			"too much information about past events.");
 	}
 	if (too_late_for_past_tenses) internal_error("too late for a PAP");
-	if (op == NULL) op = "==";
 
 	Produce::inv_primitive(Emit::tree(), AND_BIP);
 	Produce::down(Emit::tree());
@@ -66,9 +66,11 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 			Produce::val_iname(Emit::tree(), K_value, pta_routine);
 		Produce::up(Emit::tree());
 
-	int L = duration.length; if (L < 0) L = 0;
-	if (duration.until >= 0) {
-		if (duration.units == TIMES_UNIT) {
+	int L = Occurrence::length(duration), U = Occurrence::until(duration),
+		units = Occurrence::units(duration);
+	if (L < 0) L = 0;
+	if (U >= 0) {
+		if (units == TIMES_UNIT) {
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), LE_BIP);
@@ -84,7 +86,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), GE_BIP);
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) duration.until);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) U);
 						Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(TIMESACTIONHASHAPPENED_HL));
@@ -112,7 +114,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), GE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) duration.until);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) U);
 					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(TURNSACTIONHASBEENHAPPENING_HL));
@@ -122,7 +124,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 			Produce::up(Emit::tree());
 		}
 	} else {
-		if (duration.units == TIMES_UNIT) {
+		if (units == TIMES_UNIT) {
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
 				@<Emit the op@>;
@@ -163,30 +165,34 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period dura
 #endif
 
 @<Emit the op@> =
-	if (strcmp(op, "==") == 0) Produce::inv_primitive(Emit::tree(), EQ_BIP);
-	else if (strcmp(op, "~=") == 0) Produce::inv_primitive(Emit::tree(), NE_BIP);
-	else if (strcmp(op, ">") == 0) Produce::inv_primitive(Emit::tree(), GT_BIP);
-	else if (strcmp(op, ">=") == 0) Produce::inv_primitive(Emit::tree(), GE_BIP);
-	else if (strcmp(op, "<") == 0) Produce::inv_primitive(Emit::tree(), LT_BIP);
-	else if (strcmp(op, "<=") == 0) Produce::inv_primitive(Emit::tree(), LE_BIP);
-	else internal_error("can't find operator");
+	switch (op) {
+		case EQ_REPM: Produce::inv_primitive(Emit::tree(), EQ_BIP); break;
+		case LT_REPM: Produce::inv_primitive(Emit::tree(), LT_BIP); break;
+		case LE_REPM: Produce::inv_primitive(Emit::tree(), LE_BIP); break;
+		case GT_REPM: Produce::inv_primitive(Emit::tree(), GT_BIP); break;
+		case GE_REPM: Produce::inv_primitive(Emit::tree(), GE_BIP); break;
+		default: internal_error("unimplemented operator");
+	}
 
 @ =
 void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spec) {
-	time_period duration = *(Node::get_condition_tense(spec));
+	time_period *duration = Node::get_condition_tense(spec);
+	int tense = IS_TENSE;
+	grammatical_usage *gu = Node::get_tense_marker(spec);
+	if (gu) tense = Lcon::get_tense(Stock::first_form_in_usage(gu));
 	spec = spec->down;
 
 	LOGIF(TIME_PERIODS,
 		"Chronology::compile_past_tense_condition on:\n$T\nat: $t\nNPT: %d\n",
-			spec, &duration, no_past_tenses);
+			spec, duration, no_past_tenses);
 
 	int pasturise = FALSE;
 
 	#ifdef IF_MODULE
 	action_pattern *ap = NULL;
 	if (Node::is(spec, TEST_VALUE_NT)) ap = Rvalues::to_action_pattern(spec->down);
-	if ((ap) && (duration.tense != IS_TENSE)) {
-		if ((duration.units == TIMES_UNIT) && (duration.length >= 2)) {
+	if ((ap) && (tense != IS_TENSE)) {
+		if ((duration) && (Occurrence::units(duration) == TIMES_UNIT) && (Occurrence::length(duration) >= 2)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NoMoreRonNewcombMoment),
 				"a condition like 'we have X', where X is an action, has either "
 				"happened for one spell or never happened at all",
@@ -199,35 +205,34 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 				"impossible.");
 			return;
 		}
-		if ((duration.length == -1) && (duration.until == -1)) {
+		if ((duration == NULL) ||
+			((Occurrence::length(duration) == -1) && (Occurrence::until(duration) == -1))) {
 			PL::Actions::Patterns::emit_past_tense(ap);
 			return;
 		}
 		pasturise = TRUE;
-		duration.tense = IS_TENSE;
+		tense = IS_TENSE;
 	}
 	#endif
 
 	int turns_flag = 0,
-		perfect_flag = ((duration.tense)/2)%2,
-		past_flag = (duration.tense)%2;
-	char *op = duration.inform6_operator;
+		perfect_flag = ((tense)/2)%2,
+		past_flag = (tense)%2;
 	past_tense_condition_record *ptc;
 
 	if (too_late_for_past_tenses) internal_error("too late for a PTC");
-	if (duration.units == TURNS_UNIT) turns_flag = 1;
+	if (Occurrence::units(duration) == TURNS_UNIT) turns_flag = 1;
 
-	if ((past_flag == 0) && (perfect_flag == 0) && (op == NULL)) op = "==";
-	else if (op == NULL) op = ">=";
+	int op = Occurrence::operator(duration);
+	if (op == NO_REPM) {
+		if ((past_flag == 0) && (perfect_flag == 0)) op = EQ_REPM;
+		else op = GE_REPM;
+	}
 
 	parse_node *cond = spec;
 
 	int output_wanted = 1 + turns_flag;
-	int operate = FALSE;
-	if (Occurrence::is_valid(&duration))
-		if ((duration.inform6_operator != NULL) || (duration.length >= 0))
-			operate = TRUE;
-	if (operate) {
+	if (duration) {
 		@<Emit the op@>;
 		Produce::down(Emit::tree());
 	}
@@ -238,8 +243,8 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (output_wanted + 4*perfect_flag));
 	Produce::up(Emit::tree());
-	if (operate) {
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) duration.length);
+	if (duration) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Occurrence::length(duration));
 		Produce::up(Emit::tree());
 	}
 

@@ -56,7 +56,6 @@ in any other way.)
 =
 parse_node *Conditions::new(time_period *tp) {
 	parse_node *spec = Node::new(TEST_PROPOSITION_NT);
-	if (Occurrence::get_tense(tp) != IS_TENSE) internal_error("tense improperly applied");
 	Conditions::attach_historic_requirement(spec, tp);
 	return spec;
 }
@@ -150,14 +149,15 @@ created condition:
 =
 parse_node *Conditions::attach_tense(parse_node *cond, int t) {
 	parse_node *spec = NULL;
+	grammatical_usage *gu = Stock::new_usage(NULL, Task::language_of_syntax());
+	Stock::add_form_to_usage(gu, Lcon::set_tense(Lcon::base(), t));
 	if (Node::is(cond, LOGICAL_TENSE_NT)) {
 		spec = cond;
-		Occurrence::set_tense(Node::get_condition_tense(spec), t);
 	} else {
 		spec = Node::new_with_words(LOGICAL_TENSE_NT, Node::get_text(cond));
-		Node::set_condition_tense(spec, Occurrence::store(Occurrence::new_tense_marker(t)));
 		spec->down = cond;
 	}
+	Node::set_tense_marker(spec, gu);
 	return spec;
 }
 
@@ -174,18 +174,14 @@ parse_node *Conditions::attach_historic_requirement(parse_node *cond, time_perio
 		}
 		return amb;
 	}
-	int t = IS_TENSE;
 	parse_node *spec = NULL;
 	if (Node::is(cond, LOGICAL_TENSE_NT)) {
 		spec = cond;
-		t = Occurrence::get_tense(Node::get_condition_tense(cond));
 	} else {
 		spec = Node::new_with_words(LOGICAL_TENSE_NT, Node::get_text(cond));
 		spec->down = cond;
-		t = IS_TENSE;
 	}
 	Node::set_condition_tense(spec, tp);
-	Occurrence::set_tense(Node::get_condition_tense(spec), t);
 	return spec;
 }
 

@@ -174,7 +174,7 @@ grammatical_usage *Stock::new_usage(linguistic_stock_item *item, NATURAL_LANGUAG
 }
 
 void Stock::add_form_to_usage(grammatical_usage *gu, lcon_ti f) {
-	f = Lcon::set_id(f, 1 + gu->used->allocation_id);
+	if (gu->used) f = Lcon::set_id(f, 1 + gu->used->allocation_id);
 	if (gu->no_possible_forms >= 2*MAX_GRAMMATICAL_CASES) internal_error("too many forms");
 	gu->possible_forms[gu->no_possible_forms++] = f;
 }

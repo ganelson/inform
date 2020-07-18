@@ -51,19 +51,19 @@ implemented this as a hand-coded nonterminal instead.
 =
 <s-condition-with-chronology> internal {
 	#ifdef IF_MODULE
-	time_period tp = Occurrence::parse(W);
-	int end_of_non_time_part = Occurrence::is_valid(&tp);
-	if ((end_of_non_time_part >= Wordings::first_wn(W)) &&
-		(<s-condition-atomic>(Wordings::up_to(W, end_of_non_time_part)))) {
-		parse_node *atomic_cnd = <<rp>>;
-		parse_node *spec = atomic_cnd;
-		if (Node::is(spec, CONSTANT_NT)) {
-			action_pattern *ap = Rvalues::to_action_pattern(spec);
-			spec = Conditions::new_TEST_ACTION(ap, W);
+	time_period *tp = Occurrence::parse(W);
+	if (tp) {
+		wording RW = Occurrence::unused_wording(tp);
+		if ((Wordings::nonempty(RW)) && (<s-condition-atomic>(RW))) {
+			parse_node *atomic_cnd = <<rp>>;
+			parse_node *spec = atomic_cnd;
+			if (Node::is(spec, CONSTANT_NT)) {
+				action_pattern *ap = Rvalues::to_action_pattern(spec);
+				spec = Conditions::new_TEST_ACTION(ap, W);
+			}
+			*XP = Conditions::attach_historic_requirement(spec, tp);
+			return TRUE;
 		}
-		*XP = Conditions::attach_historic_requirement(spec,
-			Occurrence::store(tp));
-		return TRUE;
 	}
 	#endif
 	return FALSE;

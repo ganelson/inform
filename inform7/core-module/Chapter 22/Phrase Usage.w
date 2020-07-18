@@ -857,11 +857,9 @@ parser, recording how it most recently failed.
 
 @<See if this might be a when-for confusion@> =
 	if (pap_failure_reason == WHENOKAY_PAPF) {
-		time_period duration = Occurrence::parse(phud->rule_preamble);
-		LOG("Checking %W\n", phud->rule_preamble);
-		if (Occurrence::is_valid(&duration)) {
-			Problems::quote_wording(3,
-				Wordings::from(phud->rule_preamble, Occurrence::is_valid(&duration) + 1));
+		time_period *duration = Occurrence::parse(phud->rule_preamble);
+		if (duration) {
+			Problems::quote_wording(3, Occurrence::used_wording(duration));
 			Problems::issue_problem_segment(
 				" (I wonder if this might be because '%3', which looks like a "
 				"condition on the timing, is the wrong side of the 'when...' "

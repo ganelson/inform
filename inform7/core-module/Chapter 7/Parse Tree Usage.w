@@ -309,6 +309,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(LOCAL_VARIABLE_NT, constant_local_variable_ANNOT);
 	Annotations::allow(LOCAL_VARIABLE_NT, kind_of_value_ANNOT);
 	Annotations::allow(LOGICAL_TENSE_NT, condition_tense_ANNOT);
+	Annotations::allow(LOGICAL_TENSE_NT, tense_marker_ANNOT);
 	Annotations::allow(NONLOCAL_VARIABLE_NT, constant_nonlocal_variable_ANNOT);
 	Annotations::allow(NONLOCAL_VARIABLE_NT, kind_of_value_ANNOT);
 	Annotations::allow(PROPERTY_VALUE_NT, record_as_self_ANNOT);
