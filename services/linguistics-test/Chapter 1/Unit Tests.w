@@ -55,17 +55,20 @@ any text but then fail.
 
 @ =
 <verb-stock> ::=
-	... = verb <cardinal-number> ==> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), DefaultLanguage::get(NULL));
+	... = verb <cardinal-number>  ==> R[1]; *XP = Conjugation::conjugate(WordAssemblages::from_wording(FW[1]), DefaultLanguage::get(NULL));
+
+<preposition-stock> ::=
+	... = preposition
 
 <common-noun-stock> ::=
-	... = neuter common noun | ==> NEUTER_GENDER
+	... = neuter common noun |    ==> NEUTER_GENDER
 	... = masculine common noun | ==> MASCULINE_GENDER
-	... = feminine common noun ==> FEMININE_GENDER
+	... = feminine common noun    ==> FEMININE_GENDER
 
 <proper-noun-stock> ::=
-	... = neuter proper noun | ==> NEUTER_GENDER
+	... = neuter proper noun |    ==> NEUTER_GENDER
 	... = masculine proper noun | ==> MASCULINE_GENDER
-	... = feminine proper noun ==> FEMININE_GENDER
+	... = feminine proper noun    ==> FEMININE_GENDER
 
 @h Syntax tree.
 
@@ -107,6 +110,11 @@ void Unit::diagram(parse_node *p) {
 			if (vc_be == NULL) vc_be = vc;
 			else if (vc_have == NULL) vc_have = vc;
 			Verbs::add_form(vi, NULL, NULL, VerbMeanings::regular(vc), SVO_FS_BIT);
+		} else if (<preposition-stock>(W)) {
+			word_assemblage wa = WordAssemblages::from_wording(GET_RW(<preposition-stock>, 1));
+			preposition *prep = Prepositions::make(wa, FALSE, NULL);
+			if (vc_be)
+				Verbs::add_form(vc_be->vc_conjugates, prep, NULL, VerbMeanings::regular(vc_be), SVO_FS_BIT);
 		} else if (<common-noun-stock>(W)) {
 			wording W = GET_RW(<common-noun-stock>, 1);
 			Nouns::new_common_noun(W, <<r>>, ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,

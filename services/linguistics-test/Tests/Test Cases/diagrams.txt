@@ -10,6 +10,8 @@ mean = verb 3
 
 see = verb 3
 
+on = preposition
+
 Peter = neuter proper noun
 
 Jane = neuter proper noun
@@ -47,3 +49,7 @@ Some people are here.
 Peter always carries the torch.
 
 Peter carries the torch for the third time.
+
+On the table is a ball.
+
+A ball is on the table.
