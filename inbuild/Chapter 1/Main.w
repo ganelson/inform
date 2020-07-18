@@ -191,9 +191,29 @@ void Main::add_target(inbuild_copy *to_add) {
 	if (found == FALSE) ADD_TO_LINKED_LIST(to_add, inbuild_copy, targets);
 }
 
+@ The following sorts the list of targets before returning it. This is partly
+to improve the quality of the output of |-inspect|, but also to make the
+behaviour of //inbuild// more predictable across platforms -- the raw target
+list tends to be in order of discovery of the copies, which in turn depends on
+the order in which filenames are read from a directory listing.
+
+=
 linked_list *Main::list_of_targets(void) {
 	if (targets == NULL) targets = NEW_LINKED_LIST(inbuild_copy);
-	return targets;
+	int no_entries = LinkedLists::len(targets);
+	if (no_entries == 0) return targets;
+	inbuild_copy **sorted_targets =
+		Memory::calloc(no_entries, sizeof(inbuild_copy *), EXTENSION_DICTIONARY_MREASON);
+	int i=0;
+	inbuild_copy *C;
+	LOOP_OVER_LINKED_LIST(C, inbuild_copy, targets) sorted_targets[i++] = C;
+	qsort(sorted_targets, (size_t) no_entries, sizeof(inbuild_copy *), Copies::cmp);
+	linked_list *result = NEW_LINKED_LIST(inbuild_copy);
+	for (int i=0; i<no_entries; i++)
+		ADD_TO_LINKED_LIST(sorted_targets[i], inbuild_copy, result);
+	Memory::I7_array_free(sorted_targets, EXTENSION_DICTIONARY_MREASON,
+		no_entries, sizeof(inbuild_copy *));
+	return result;
 }
 
 void Main::add_search_results_as_targets(text_stream *req_text) {	

@@ -266,7 +266,7 @@ text_stream *Extensions::get_sort_word_count(inform_extension *E) {
 
 int Extensions::compare_by_edition(inform_extension *E1, inform_extension *E2) {
 	if ((E1 == NULL) || (E2 == NULL)) internal_error("bad work match");
-	int d = Works::compare(E1->as_copy->edition->work, E2->as_copy->edition->work);
+	int d = Works::cmp(E1->as_copy->edition->work, E2->as_copy->edition->work);
 	if (d != 0) return d;
 	return VersionNumbers::cmp(
 		E1->as_copy->edition->version, E2->as_copy->edition->version);

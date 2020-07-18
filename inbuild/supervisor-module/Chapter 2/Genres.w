@@ -57,6 +57,16 @@ inbuild_genre *Genres::by_name(text_stream *name) {
 	return NULL;
 }
 
+@ For sorting of search results:
+
+=
+int Genres::cmp(inbuild_genre *G1, inbuild_genre *G2) {
+	if ((G1 == NULL) || (G2 == NULL)) internal_error("bad genre match");
+	if (G1->allocation_id < G2->allocation_id) return -1;
+	if (G1->allocation_id > G2->allocation_id) return 1;
+	return 0;
+}
+
 @h Method functions.
 And here are the method functions which a genre can, optionally, provide.
 All of these act on a given work, or a given copy of a work, having the

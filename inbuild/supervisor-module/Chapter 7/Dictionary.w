@@ -536,7 +536,7 @@ void ExtensionDictionary::extension_clash(extension_dictionary_entry *ede1,
 	known_extension_clash *kec;
 	if ((ede1 == NULL) || (ede2 == NULL)) internal_error("bad extension clash");
 
-	int d = Works::compare(ede1->ede_work, ede2->ede_work); /* compare source extensions */
+	int d = Works::cmp(ede1->ede_work, ede2->ede_work); /* compare source extensions */
 
 	@<Ignore apparent clashes which are in fact not troublesome@>;
 

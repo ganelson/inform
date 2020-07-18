@@ -121,6 +121,28 @@ void Copies::construct_graph(inbuild_copy *C) {
 	VOID_METHOD_CALL(C->edition->work->genre, GENRE_CONSTRUCT_GRAPH_MTID, C);
 }
 
+@h Sorting.
+The command-line //inbuild// uses this when sorting search results.
+
+=
+int Copies::cmp(const void *v1, const void *v2) {
+	const inbuild_copy **C1 = (const inbuild_copy **) v1;
+	const inbuild_copy **C2 = (const inbuild_copy **) v2;
+	if ((*C1 == NULL) || (*C2 == NULL)) internal_error("sort on null search results");
+	if (*C1 == *C2) return 0;
+	int r = Editions::cmp((*C1)->edition, (*C2)->edition);
+	if (r == 0) {
+		TEMPORARY_TEXT(L1)
+		TEMPORARY_TEXT(L2)
+		WRITE_TO(L1, "%f ___ %p", (*C1)->location_if_file, (*C1)->location_if_path);
+		WRITE_TO(L2, "%f ___ %p", (*C2)->location_if_file, (*C2)->location_if_path);
+		r = Str::cmp(L1, L2);
+		DISCARD_TEXT(L1)
+		DISCARD_TEXT(L2)
+	}
+	return r;
+}
+
 @h Miscellaneous Inbuild commands.
 This function implements the command-line instruction to |-inspect|.
 

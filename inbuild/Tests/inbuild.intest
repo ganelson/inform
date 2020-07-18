@@ -13,6 +13,6 @@
 
 	show: $A
 
-	match text: $A $I
+	match platform text: $A $I
 	or: 'produced incorrect output'
 -end

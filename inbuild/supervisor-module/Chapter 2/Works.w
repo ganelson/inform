@@ -165,22 +165,23 @@ order-preserving. To emphasise this we return true or false rather than a
 |strcmp|-style delta value.)
 
 =
-int Works::match(inbuild_work *eid1, inbuild_work *eid2) {
-	if ((eid1 == NULL) || (eid2 == NULL)) internal_error("bad work match");
-	if (eid1->inbuild_work_hash_code != eid2->inbuild_work_hash_code) return FALSE;
-	if (Str::eq(eid1->author_name, eid2->author_name) == FALSE) return FALSE;
-	if (Str::eq(eid1->title, eid2->title) == FALSE) return FALSE;
+int Works::match(inbuild_work *w1, inbuild_work *w2) {
+	if ((w1 == NULL) || (w2 == NULL)) internal_error("bad work match");
+	if (w1->inbuild_work_hash_code != w2->inbuild_work_hash_code) return FALSE;
+	if (Str::eq(w1->author_name, w2->author_name) == FALSE) return FALSE;
+	if (Str::eq(w1->title, w2->title) == FALSE) return FALSE;
 	return TRUE;
 }
 
 @ This is quite a deal slower, but is trichotomous and can be used for sorting.
 
 =
-int Works::compare(inbuild_work *eid1, inbuild_work *eid2) {
-	if ((eid1 == NULL) || (eid2 == NULL)) internal_error("bad work match");
-	int d = Str::cmp(eid1->author_name, eid2->author_name);
-	if (d != 0) return d;
-	return Str::cmp(eid1->title, eid2->title);
+int Works::cmp(inbuild_work *w1, inbuild_work *w2) {
+	if ((w1 == NULL) || (w2 == NULL)) internal_error("bad work match");
+	int d = Genres::cmp(w1->genre, w2->genre);
+	if (d == 0) d = Str::cmp(w1->author_name, w2->author_name);
+	if (d == 0) d = Str::cmp(w1->title, w2->title);
+	return d;
 }
 
 @ Because Basic Inform and the Standard Rules extensions are treated slightly

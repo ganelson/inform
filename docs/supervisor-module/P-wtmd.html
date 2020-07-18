@@ -118,7 +118,7 @@ The Supervisor is now ready for use!
 <p class="commentary">There is no single "go" button: instead, the Supervisor provides a suite
 of functions to call, each acting on a "copy" &mdash; an instance of some software
 at a given filing system location. When <a href="../inform7/index.html" class="internal">inform7</a> is the parent, it follows
-the call to <a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP10" class="internal">Copies::build</a>
+the call to <a href="1-ic.html#SP10" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP11" class="internal">Copies::build</a>
 on the copy representing the current Inform 7 project. But when <a href="../inbuild/index.html" class="internal">inbuild</a>
 is the parent, a variety of other functions may be made.
 </p>
@@ -494,11 +494,11 @@ and so forth: and also on the files it draws its source text from. See
 The parent can do several things:
 </p>
 
-<ul class="items"><li>(a) Call <a href="2-cps.html#SP11" class="internal">Copies::show_graph</a>, or <a href="2-cps.html#SP11" class="internal">Copies::show_needs</a>, or <a href="2-cps.html#SP11" class="internal">Copies::show_missing</a>,
+<ul class="items"><li>(a) Call <a href="2-cps.html#SP12" class="internal">Copies::show_graph</a>, or <a href="2-cps.html#SP12" class="internal">Copies::show_needs</a>, or <a href="2-cps.html#SP12" class="internal">Copies::show_missing</a>,
 to print out the graph, show what a project needs in order to be built, or
 show what it needs but doesn't currently have;
-</li><li>(b) Call <a href="2-cps.html#SP12" class="internal">Copies::archive</a> to make archived copies of all dependent resources;
-</li><li>(c) Or, the big one, call <a href="2-cps.html#SP10" class="internal">Copies::build</a> or <a href="2-cps.html#SP10" class="internal">Copies::rebuild</a> to perform
+</li><li>(b) Call <a href="2-cps.html#SP13" class="internal">Copies::archive</a> to make archived copies of all dependent resources;
+</li><li>(c) Or, the big one, call <a href="2-cps.html#SP11" class="internal">Copies::build</a> or <a href="2-cps.html#SP11" class="internal">Copies::rebuild</a> to perform
 a build.
 </li></ul>
 <p class="commentary">A "build" is incremental, and uses time-stamps of files to avoid unnecessary
