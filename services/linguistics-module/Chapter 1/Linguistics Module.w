@@ -97,43 +97,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Memory::reason_name(STOCK_MREASON, "linguistic stock array");
 	Memory::reason_name(SWS_MREASON, "small word set array");
 
-@ This module uses //syntax//, and adds the following annotations to the
-syntax tree.
-
-@e verbal_certainty_ANNOT        /* |int|: certainty level if known */
-@e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
-@e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
-@e inverted_verb_ANNOT           /* |int|: an inversion of subject and object has occurred */
-@e possessive_verb_ANNOT         /* |int|: this is a non-relative use of "to have" */
-@e verb_ANNOT                    /* |verb_usage|: what's being done here */
-@e noun_ANNOT                    /* |noun_usage|: what's being done here */
-@e pronoun_ANNOT                 /* |pronoun_usage|: what's being done here */
-@e article_ANNOT                 /* |article_usage|: what's being done here */
-@e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
-@e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
-@e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
-
-@e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
-@e relationship_node_type_ANNOT  /* |int|: what kind of inference this assertion makes */
-@e implicitly_refers_to_ANNOT    /* |int|: this will implicitly refer to something */
-
-=
-DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
-DECLARE_ANNOTATION_FUNCTIONS(noun, noun_usage)
-DECLARE_ANNOTATION_FUNCTIONS(pronoun, pronoun_usage)
-DECLARE_ANNOTATION_FUNCTIONS(article, article_usage)
-DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition)
-DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
-DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
-
-MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
-MAKE_ANNOTATION_FUNCTIONS(noun, noun_usage)
-MAKE_ANNOTATION_FUNCTIONS(pronoun, pronoun_usage)
-MAKE_ANNOTATION_FUNCTIONS(article, article_usage)
-MAKE_ANNOTATION_FUNCTIONS(preposition, preposition)
-MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
-MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
-
 @ This module requires //words//, which contains the Preform parser. When that
 initialises, it calls the following routine to improve its performance.
 

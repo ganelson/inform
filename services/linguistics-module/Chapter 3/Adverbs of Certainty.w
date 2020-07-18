@@ -15,6 +15,18 @@ is true:
 
 @d INITIALLY_CE 3
 
+@ =
+void Certainty::write(OUTPUT_STREAM, int level) {
+	switch (level) {
+		case IMPOSSIBLE_CE: WRITE("impossible"); break;
+		case UNLIKELY_CE: WRITE("unlikely"); break;
+		case UNKNOWN_CE: WRITE("(no certainty level)"); break;
+		case LIKELY_CE: WRITE("likely"); break;
+		case CERTAIN_CE: WRITE("certain"); break;
+		case INITIALLY_CE: WRITE("initial"); break;
+	}
+}
+
 @ Certainty adverbs are found mainly in regular sentences:
 
 >> A door is usually open.

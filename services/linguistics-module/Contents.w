@@ -10,6 +10,7 @@ Preliminaries
 
 Chapter 1: Setting Up
 	Linguistics Module
+	Diagrams
 	Stock Control
 	Cardinals and Ordinals
 
@@ -29,6 +30,5 @@ Chapter 3: VP Categories
 	Adverb Phrases of Occurrence
 
 Chapter 4: Diagramming Sentences
-	Diagrams
 	Noun Phrases
 	Verb Phrases

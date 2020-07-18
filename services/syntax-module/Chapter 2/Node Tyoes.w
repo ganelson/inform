@@ -87,10 +87,13 @@ void NodeType::allow_parentage_for_categories(int A, int B) {
 	parentage_allowed[A][B] = TRUE;
 }
 
-@ The bitmap of node flags currently contains only two:
+@ The bitmap of node flags currently contains only two which are used by
+the syntax module, but we'll reserve two others for use by other modules:
 
 @d DONT_VISIT_NFLAG 0x00000001 /* not visited in traverses */
 @d TABBED_NFLAG     0x00000002 /* contains tab-delimited lists */
+@d PHRASAL_NFLAG    0x00000004 /* compiles to a function call */
+@d ASSERT_NFLAG     0x00000008 /* allow this on either side of an assertion? */
 
 @ And the metadata is stored in this table, whose indexes are offset by
 |ENUMERATED_NT_BASE|. We can therefore only retrieve metadata on

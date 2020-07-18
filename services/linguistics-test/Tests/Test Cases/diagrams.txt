@@ -43,3 +43,7 @@ The shovel has a handle.
 The does the player mean rules is a rulebook.
 
 Some people are here.
+
+Peter always carries the torch.
+
+Peter carries the torch for the third time.

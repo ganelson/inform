@@ -87,7 +87,6 @@ also makes it easier for us to manipulate the results.
 @e RVALUE_NCAT
 @e COND_NCAT
 
-@d PHRASAL_NFLAG        	0x00000004 /* compiles to a function call */
 
 @
 

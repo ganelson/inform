@@ -99,10 +99,28 @@ and early 2016, this was implemented in straight Preform rather than as an
 internal, but that became simply too complicated to maintain once imperative
 verbs were added to the grammar. Still, it was a pity.
 
+Inform itself parses assertion sentences (but not conditions) with adverbs of
+occurrence turned off: it does detect them later, but lower down in the
+compiler. This reduces the nunber of false negatives, usually involving
+ambiguity between "time", the kind of value, and "time", the measure of how
+often something has happened.
+
 =
+<sentence-without-occurrences> internal {
+	if (VerbPhrases::tracing()) { LOG("Parsing the sentence: %W\n", W); LOG_INDENT; }
+	int rv = VerbPhrases::seek(W, X, XP, 0, FALSE);
+	@<Trace diagram@>;
+	return rv;
+}
+
 <sentence> internal {
 	if (VerbPhrases::tracing()) { LOG("Parsing the sentence: %W\n", W); LOG_INDENT; }
-	int rv = VerbPhrases::seek(W, X, XP, 0);
+	int rv = VerbPhrases::seek(W, X, XP, 0, TRUE);
+	@<Trace diagram@>;
+	return rv;
+}
+
+@<Trace diagram@> =
 	if (VerbPhrases::tracing()) {
 		LOG_OUTDENT;
 		if (rv) {
@@ -111,8 +129,6 @@ verbs were added to the grammar. Still, it was a pity.
 			LOG_OUTDENT;
 		} else LOG("Failed\n");
 	}
-	return rv;
-}
 
 @ The following routine is only very slightly recursive. It's used either
 as above, to parse a whole sentence like "The coral snake is in the green
@@ -134,7 +150,8 @@ which word positions might be the beginning of verb phrases.
 @d VIABILITY_MAP_SIZE 100
 
 =
-int VerbPhrases::seek(wording W, int *X, void **XP, int existential_OP_edge) {
+int VerbPhrases::seek(wording W, int *X, void **XP, int existential_OP_edge,
+	int detect_occurrences) {
 	int viable[VIABILITY_MAP_SIZE];
 	@<Calculate the viability map@>;
 	if (VerbPhrases::tracing()) @<Log the viability map@>;
@@ -369,7 +386,7 @@ who is in the Dining Room" (note the additional "is"), it would.
 		(<s-existential-np>(SW))) {
 		if (<phrase-with-calling>(OW))
 			last_preposition_position = Wordings::last_wn(GET_RW(<phrase-with-calling>, 1));
-		int rv = VerbPhrases::seek(OW, X, XP, last_preposition_position);
+		int rv = VerbPhrases::seek(OW, X, XP, last_preposition_position, detect_occurrences);
 		if (rv) return rv;
 		existential = TRUE; structures = SVOO_FS_BIT; required_first = NULL; required_second = prep;
 	}
@@ -447,7 +464,13 @@ representing the verb.
 	if (existential) Annotations::write_int(VP_PN, sentence_is_existential_ANNOT, TRUE);
 	if ((pre_certainty != UNKNOWN_CE) && (post_certainty != UNKNOWN_CE))
 		Annotations::write_int(VP_PN, linguistic_error_here_ANNOT, TwoLikelihoods_LINERROR);
-
+	if (detect_occurrences) {
+		time_period *tp = Occurrence::parse(OW);
+		if (tp) {
+			OW = Occurrence::unused_wording(tp);
+			Node::set_occurrence(VP_PN, tp);
+		}
+	}
 	VP_PN = VerbPhrases::accept(vf, VP_PN, SW, OW, O2W);
 	if (VP_PN) {
 		*XP = VP_PN;

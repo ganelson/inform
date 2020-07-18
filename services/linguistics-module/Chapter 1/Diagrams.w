@@ -1,13 +1,15 @@
 [Diagrams::] Diagrams.
 
-To construct standard verb-phrase nodes in the parse tree.
+To specify standard verb-phrase nodes in the parse tree.
 
-@h Node types.
+@ This section lays out a sort of specification for what we ultinately want
+to turn sentences into: i.e., little sentence diagrams made up of parse nodes.
+We do that with the aid of the //syntax// module. So we must first set up
+some new node types:
 
 @e VERB_NT             				/* "is" */
 @e COMMON_NOUN_NT       			/* "a container" */
 @e PROPER_NOUN_NT       			/* "the red handkerchief" */
-
 @e RELATIONSHIP_NT      			/* "on" */
 @e CALLED_NT            			/* "On the table is a container called the box" */
 @e WITH_NT              			/* "The footstool is a supporter with capacity 2" */
@@ -15,9 +17,51 @@ To construct standard verb-phrase nodes in the parse tree.
 @e KIND_NT              			/* "A woman is a kind of person" */
 @e PROPERTY_LIST_NT     			/* "capacity 2" */
 
-@d ASSERT_NFLAG		0x00000008 /* allow this on either side of an assertion? */
+@ These nodes are annotated with the following:
+
+@e verbal_certainty_ANNOT        /* |int|: certainty level if known */
+@e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
+@e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
+@e inverted_verb_ANNOT           /* |int|: an inversion of subject and object has occurred */
+@e possessive_verb_ANNOT         /* |int|: this is a non-relative use of "to have" */
+@e verb_ANNOT                    /* |verb_usage|: what's being done here */
+@e noun_ANNOT                    /* |noun_usage|: what's being done here */
+@e pronoun_ANNOT                 /* |pronoun_usage|: what's being done here */
+@e article_ANNOT                 /* |article_usage|: what's being done here */
+@e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
+@e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
+@e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
+@e occurrence_ANNOT              /* |time_period|: any stipulation on occurrence */
+@e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
+@e relationship_node_type_ANNOT  /* |int|: what kind of inference this assertion makes */
+@e implicitly_refers_to_ANNOT    /* |int|: this will implicitly refer to something */
+
+=
+DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
+DECLARE_ANNOTATION_FUNCTIONS(noun, noun_usage)
+DECLARE_ANNOTATION_FUNCTIONS(pronoun, pronoun_usage)
+DECLARE_ANNOTATION_FUNCTIONS(article, article_usage)
+DECLARE_ANNOTATION_FUNCTIONS(preposition, preposition)
+DECLARE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
+DECLARE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
+DECLARE_ANNOTATION_FUNCTIONS(occurrence, time_period)
+
+MAKE_ANNOTATION_FUNCTIONS(verb, verb_usage)
+MAKE_ANNOTATION_FUNCTIONS(noun, noun_usage)
+MAKE_ANNOTATION_FUNCTIONS(pronoun, pronoun_usage)
+MAKE_ANNOTATION_FUNCTIONS(article, article_usage)
+MAKE_ANNOTATION_FUNCTIONS(preposition, preposition)
+MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
+MAKE_ANNOTATION_FUNCTIONS(verb_meaning, verb_meaning)
+MAKE_ANNOTATION_FUNCTIONS(occurrence, time_period)
+
+@ The |linguistic_error_here_ANNOT| annotation is for any errors we find,
+though at present there is just one:
 
 @e TwoLikelihoods_LINERROR from 1
+
+@ Two callbacks are needed so that the //syntax// module will create the above
+nodes and annotations correctly:
 
 @d EVEN_MORE_NODE_METADATA_SETUP_SYNTAX_CALLBACK Diagrams::setup
 @d EVEN_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK Diagrams::permissions
@@ -44,6 +88,7 @@ void Diagrams::permissions(void) {
 	Annotations::allow(VERB_NT, preposition_ANNOT);
 	Annotations::allow(VERB_NT, second_preposition_ANNOT);
 	Annotations::allow(VERB_NT, verb_meaning_ANNOT);
+	Annotations::allow(VERB_NT, occurrence_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, noun_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, pronoun_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, noun_ANNOT);
@@ -55,7 +100,10 @@ void Diagrams::permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, implicitly_refers_to_ANNOT);
 }
 
-@ =
+@ And the following conveniently prints out a sentence in diagram form; this
+is used by //linguistics-test// to keep us on the straight and narrow.
+
+=
 void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 	switch (Annotations::read_int(pn, linguistic_error_here_ANNOT)) {
 		case TwoLikelihoods_LINERROR: WRITE(" (*** TwoLikelihoods_LINERROR ***)"); break;
@@ -72,6 +120,14 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				WRITE(" (inverted)");
 			if (Node::get_verb_meaning(pn))
 				WRITE(" $y", Node::get_verb_meaning(pn));
+			if (Annotations::read_int(pn, verbal_certainty_ANNOT) != UNKNOWN_CE) {
+				WRITE(" certainty:");
+				Certainty::write(OUT, Annotations::read_int(pn, verbal_certainty_ANNOT));
+			}
+			if (Node::get_occurrence(pn)) {
+				WRITE(" occurrence:");
+				Occurrence::log(OUT, Node::get_occurrence(pn));
+			}
 			break;
 		case COMMON_NOUN_NT:
 		case PROPER_NOUN_NT:

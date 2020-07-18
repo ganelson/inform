@@ -319,7 +319,7 @@ action declarations continue with usually extensive further text:
 
 =
 <nonstructural-sentence> ::=
-	<sentence>								==> @<Construct NSS subtree for regular sentence@>
+	<sentence-without-occurrences>								==> @<Construct NSS subtree for regular sentence@>
 
 @<Construct NSS subtree for regular sentence@> =
 	*X = 0;

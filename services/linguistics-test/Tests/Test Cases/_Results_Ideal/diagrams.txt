@@ -60,3 +60,13 @@ ROOT_NT
                 VERB_NT'are'verb 'are'  ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) (regular)
                 PROPER_NOUN_NT'people' indefinite article ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
                 PROPER_NOUN_NT'here'
+            SENTENCE_NT'peter always carries the torch'
+                VERB_NT'carries'verb 'carries'  3p s act IS_TENSE +ve (regular) certainty:certain
+                PROPER_NOUN_NT'peter' (proper) ( (n) s nom ) + ( (n) s acc )
+                RELATIONSHIP_NT'carries'
+                    PROPER_NOUN_NT'torch' definite article ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
+            SENTENCE_NT'peter carries the torch for the third time'
+                VERB_NT'carries'verb 'carries'  3p s act IS_TENSE +ve (regular) occurrence:<3 times>
+                PROPER_NOUN_NT'peter' (proper) ( (n) s nom ) + ( (n) s acc )
+                RELATIONSHIP_NT'carries'
+                    PROPER_NOUN_NT'torch' definite article ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
