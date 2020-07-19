@@ -156,12 +156,14 @@ plurals of "Tisch", table, but "Tischen" can only be the dative plural.
 The following object represents awkward disjunctions like "either the nominative
 or accusative case".
 
+@d MAX_GU_FORMS 2*MAX_GRAMMATICAL_CASES
+
 =
 typedef struct grammatical_usage {
 	struct linguistic_stock_item *used;
 	NATURAL_LANGUAGE_WORDS_TYPE *language;
 	int no_possible_forms;
-	lcon_ti possible_forms[2*MAX_GRAMMATICAL_CASES];
+	lcon_ti possible_forms[MAX_GU_FORMS];
 	CLASS_DEFINITION
 } grammatical_usage;
 
@@ -175,7 +177,7 @@ grammatical_usage *Stock::new_usage(linguistic_stock_item *item, NATURAL_LANGUAG
 
 void Stock::add_form_to_usage(grammatical_usage *gu, lcon_ti f) {
 	if (gu->used) f = Lcon::set_id(f, 1 + gu->used->allocation_id);
-	if (gu->no_possible_forms >= 2*MAX_GRAMMATICAL_CASES) internal_error("too many forms");
+	if (gu->no_possible_forms >= MAX_GU_FORMS) internal_error("too many forms");
 	gu->possible_forms[gu->no_possible_forms++] = f;
 }
 
@@ -186,12 +188,7 @@ lcon_ti Stock::first_form_in_usage(grammatical_usage *gu) {
 
 void Stock::write_usage(OUTPUT_STREAM, grammatical_usage *gu, int desiderata) {
 	if (gu->no_possible_forms == 0) WRITE("<unformed usage>");
-	for (int i=0; i<gu->no_possible_forms; i++) {
-		if (i>0) WRITE(" +");
-		if (gu->no_possible_forms > 1) WRITE(" (");
-		Lcon::write(OUT, gu->possible_forms[i], desiderata);
-		if (gu->no_possible_forms > 1) WRITE(" )");
-	}
+	Lcon::write_set(OUT, gu->possible_forms, gu->no_possible_forms, desiderata);
 }
 
 int Stock::usage_might_be_singular(grammatical_usage *gu) {

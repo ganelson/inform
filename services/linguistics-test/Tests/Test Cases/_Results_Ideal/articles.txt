@@ -1,11 +1,11 @@
 article_sws:
-(0) the: definite article ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
-(1) a: indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
-(2) an: indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
-(3) some: indefinite article ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
+(0) the: definite article n/m/f s/p nom/acc
+(1) a: indefinite article n/m/f nom/acc s
+(2) an: indefinite article n/m/f nom/acc s
+(3) some: indefinite article n/m/f nom/acc p
 definite_article_sws:
-(0) the: definite article ( (n) s nom ) + ( (n) p nom ) + ( (m) s nom ) + ( (m) p nom ) + ( (f) s nom ) + ( (f) p nom ) + ( (n) s acc ) + ( (n) p acc ) + ( (m) s acc ) + ( (m) p acc ) + ( (f) s acc ) + ( (f) p acc )
+(0) the: definite article n/m/f s/p nom/acc
 indefinite_article_sws:
-(0) a: indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
-(1) an: indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
-(2) some: indefinite article ( (n) p nom ) + ( (m) p nom ) + ( (f) p nom ) + ( (n) p acc ) + ( (m) p acc ) + ( (f) p acc )
+(0) a: indefinite article n/m/f nom/acc s
+(1) an: indefinite article n/m/f nom/acc s
+(2) some: indefinite article n/m/f nom/acc p

@@ -2,39 +2,39 @@
 
 SENTENCE_NT'he knows her'
     VERB_NT'knows' verb 'knows' 3p s act IS_TENSE +ve rel:knows
-    PRONOUN_NT'he' third person pronoun (m) 3p s nom
+    PRONOUN_NT'he' third person pronoun m 3p s nom
     RELATIONSHIP_NT'knows' rel:knows-reversed
-        PRONOUN_NT'her' third person pronoun (f) 3p s acc
+        PRONOUN_NT'her' third person pronoun f 3p s acc
 
 (2) she knows him
 
 SENTENCE_NT'she knows him'
     VERB_NT'knows' verb 'knows' 3p s act IS_TENSE +ve rel:knows
-    PRONOUN_NT'she' third person pronoun (f) 3p s nom
+    PRONOUN_NT'she' third person pronoun f 3p s nom
     RELATIONSHIP_NT'knows' rel:knows-reversed
-        PRONOUN_NT'him' third person pronoun (m) 3p s acc
+        PRONOUN_NT'him' third person pronoun m 3p s acc
 
 (3) i carry the ming vase
 
 SENTENCE_NT'i carry the ming vase'
-    VERB_NT'carry' verb 'carry' ( 1p s act IS_TENSE +ve ) + ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) rel:carries
-    PRONOUN_NT'i' first person pronoun ( (n) 1p s nom ) + ( (m) 1p s nom ) + ( (f) 1p s nom )
+    VERB_NT'carry' verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve rel:carries
+    PRONOUN_NT'i' first person pronoun n/m/f 1p s nom
     RELATIONSHIP_NT'carry' rel:carries-reversed
-        COMMON_NOUN_NT'ming vase' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'ming vase' (common) nom/acc n s
 
 (4) the sailors know them
 
 SENTENCE_NT'the sailors know them'
-    VERB_NT'know' verb 'know' ( 1p s act IS_TENSE +ve ) + ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) rel:knows
-    COMMON_NOUN_NT'sailors' (common) ( (n) p nom ) + ( (n) p acc )
+    VERB_NT'know' verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve rel:knows
+    COMMON_NOUN_NT'sailors' (common) nom/acc n p
     RELATIONSHIP_NT'know' rel:knows-reversed
-        PRONOUN_NT'them' third person pronoun ( (n) 3p p acc ) + ( (m) 3p p acc ) + ( (f) 3p p acc )
+        PRONOUN_NT'them' third person pronoun n/m/f 3p p acc
 
 (5) you know us
 
 SENTENCE_NT'you know us'
-    VERB_NT'know' verb 'know' ( 1p s act IS_TENSE +ve ) + ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) rel:knows
-    PRONOUN_NT'you' second person pronoun ( (n) 2p s nom ) + ( (n) 2p p nom ) + ( (m) 2p s nom ) + ( (m) 2p p nom ) + ( (f) 2p s nom ) + ( (f) 2p p nom ) + ( (n) 2p s acc ) + ( (n) 2p p acc ) + ( (m) 2p s acc ) + ( (m) 2p p acc ) + ( (f) 2p s acc ) + ( (f) 2p p acc )
+    VERB_NT'know' verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve rel:knows
+    PRONOUN_NT'you' second person pronoun n/m/f s/p nom/acc 2p
     RELATIONSHIP_NT'know' rel:knows-reversed
-        PRONOUN_NT'us' first person pronoun ( (n) 1p p acc ) + ( (m) 1p p acc ) + ( (f) 1p p acc )
+        PRONOUN_NT'us' first person pronoun n/m/f 1p p acc
 

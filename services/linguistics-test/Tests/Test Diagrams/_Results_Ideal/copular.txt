@@ -2,27 +2,27 @@
 
 SENTENCE_NT'anna is a woman'
     VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve rel:is
-    PROPER_NOUN_NT'anna' (proper) ( (f) s nom ) + ( (f) s acc )
-    COMMON_NOUN_NT'woman' (common) ( (n) s nom ) + ( (n) s acc )
+    PROPER_NOUN_NT'anna' (proper) nom/acc f s
+    COMMON_NOUN_NT'woman' (common) nom/acc n s
 
 (2) anna is not charles
 
 SENTENCE_NT'anna is not charles'
     VERB_NT'is not' verb 'is not' 3p s act IS_TENSE -ve rel:is
-    PROPER_NOUN_NT'anna' (proper) ( (f) s nom ) + ( (f) s acc )
-    PROPER_NOUN_NT'charles' (proper) ( (m) s nom ) + ( (m) s acc )
+    PROPER_NOUN_NT'anna' (proper) nom/acc f s
+    PROPER_NOUN_NT'charles' (proper) nom/acc m s
 
 (3) she is a person
 
 SENTENCE_NT'she is a person'
     VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve rel:is
-    PRONOUN_NT'she' third person pronoun (f) 3p s nom
-    COMMON_NOUN_NT'person' (common) ( (n) s nom ) + ( (n) s acc )
+    PRONOUN_NT'she' third person pronoun f 3p s nom
+    COMMON_NOUN_NT'person' (common) nom/acc n s
 
 (4) there is a table
 
 SENTENCE_NT'there is a table'
     VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve (existential) rel:is
     DEFECTIVE_NOUN_NT'there'
-    COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
+    COMMON_NOUN_NT'table' (common) nom/acc n s
 

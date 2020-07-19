@@ -3,9 +3,9 @@
 SENTENCE_NT'on the table is a sailor with carrying capacity 10'
     VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve rel:is
     RELATIONSHIP_NT'on the table' rel:carries-reversed
-        COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'table' (common) nom/acc n s
     WITH_NT'with'
-        COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'sailor' (common) nom/acc n s
         PROPERTY_LIST_NT'carrying capacity 10'
 
 (2) a sailor with carrying capacity 10 is on the table
@@ -13,19 +13,19 @@ SENTENCE_NT'on the table is a sailor with carrying capacity 10'
 SENTENCE_NT'a sailor with carrying capacity 10 is on the table'
     VERB_NT'is on' verb 'is' 3p s act IS_TENSE +ve rel:carries
     WITH_NT'with'
-        COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'sailor' (common) nom/acc n s
         PROPERTY_LIST_NT'carrying capacity 10'
     RELATIONSHIP_NT'is on' rel:carries-reversed
-        COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'table' (common) nom/acc n s
 
 (3) on the table is a sailor with carrying capacity 10 and wealth 12
 
 SENTENCE_NT'on the table is a sailor with carrying capacity 10 and wealt'
     VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve rel:is
     RELATIONSHIP_NT'on the table' rel:carries-reversed
-        COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'table' (common) nom/acc n s
     WITH_NT'with'
-        COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'sailor' (common) nom/acc n s
         AND_NT'and'
             PROPERTY_LIST_NT'carrying capacity 10'
             PROPERTY_LIST_NT'wealth 12'
@@ -35,9 +35,9 @@ SENTENCE_NT'on the table is a sailor with carrying capacity 10 and wealt'
 SENTENCE_NT'on the table is a sailor with carrying capacity 10 , wealth '
     VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve rel:is
     RELATIONSHIP_NT'on the table' rel:carries-reversed
-        COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'table' (common) nom/acc n s
     WITH_NT'with'
-        COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'sailor' (common) nom/acc n s
         AND_NT','
             PROPERTY_LIST_NT'carrying capacity 10'
             AND_NT','
@@ -51,24 +51,24 @@ SENTENCE_NT'there is a kind of sailor called an admiral'
     DEFECTIVE_NOUN_NT'there'
     CALLED_NT'called'
         KIND_NT'kind of sailor'
-            COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
-        UNPARSED_NOUN_NT'admiral' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
+            COMMON_NOUN_NT'sailor' (common) nom/acc n s
+        UNPARSED_NOUN_NT'admiral' indefinite article n/m/f nom/acc s
 
 (6) an admiral is a kind of sailor
 
 SENTENCE_NT'an admiral is a kind of sailor'
     VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve rel:is
-    UNPARSED_NOUN_NT'admiral' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
+    UNPARSED_NOUN_NT'admiral' indefinite article n/m/f nom/acc s
     KIND_NT'kind of sailor'
-        COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
+        COMMON_NOUN_NT'sailor' (common) nom/acc n s
 
 (7) an admiral is a kind of sailor with wealth 50
 
 SENTENCE_NT'an admiral is a kind of sailor with wealth 50'
     VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve rel:is
-    UNPARSED_NOUN_NT'admiral' indefinite article ( (n) s nom ) + ( (m) s nom ) + ( (f) s nom ) + ( (n) s acc ) + ( (m) s acc ) + ( (f) s acc )
+    UNPARSED_NOUN_NT'admiral' indefinite article n/m/f nom/acc s
     WITH_NT'with'
         KIND_NT'kind of sailor'
-            COMMON_NOUN_NT'sailor' (common) ( (n) s nom ) + ( (n) s acc )
+            COMMON_NOUN_NT'sailor' (common) nom/acc n s
         PROPERTY_LIST_NT'wealth 50'
 
