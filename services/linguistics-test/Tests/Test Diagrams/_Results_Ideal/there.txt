@@ -1,0 +1,14 @@
+(1) there is a table
+
+SENTENCE_NT'there is a table'
+    VERB_NT'is' verb 'is' 3p s act IS_TENSE +ve (existential) rel:is
+    DEFECTIVE_NOUN_NT'there'
+    COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
+
+(2) some sailors are there
+
+SENTENCE_NT'some sailors are there'
+    VERB_NT'are' verb 'are' ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) rel:is
+    COMMON_NOUN_NT'sailors' (common) ( (n) p nom ) + ( (n) p acc )
+    UNPARSED_NOUN_NT'there'
+

@@ -110,7 +110,6 @@ text_stream *Emit::main_render_unique(inter_symbols_table *T, text_stream *name)
 }
 
 inter_symbol *Emit::holding_symbol(inter_symbols_table *T, text_stream *name) {
-LOG("Holding %S\n", name);
 	inter_symbol *symb = Inter::SymbolsTables::symbol_from_name(T, name);
 	if (symb == NULL) {
 		symb = Produce::new_symbol(T, name);

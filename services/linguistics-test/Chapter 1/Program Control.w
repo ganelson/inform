@@ -2,13 +2,11 @@
 
 What shall we test?
 
-@h Main routine.
+@ A simple command line:
 
 @d PROGRAM_NAME "linguistics-test"
 
-@d VERB_MEANING_EQUALITY vc_be
-@d VERB_MEANING_POSSESSION vc_have
-
+@e VOCABULARY_CLSW
 @e TEST_DIAGRAMS_CLSW
 @e TEST_ARTICLES_CLSW
 @e TEST_PRONOUNS_CLSW
@@ -22,10 +20,19 @@ int main(int argc, char **argv) {
 	LexiconModule::start();
 	LinguisticsModule::start();
 
-	CommandLine::declare_heading(L"linguistics-test: a tool for testing the linguistics module\n");
+	pathname *P = Pathnames::from_text(I"services");
+	P = Pathnames::down(P, I"linguistics-test");
+	P = Pathnames::down(P, I"Tangled");
+	filename *S = Filenames::in(P, I"Syntax.preform");
+	LoadPreform::load(S, NULL);
 
-	CommandLine::declare_switch(TEST_DIAGRAMS_CLSW, L"test-diagrams", 2,
-		L"test sentence diagrams (from text in X)");
+	CommandLine::declare_heading(
+		L"linguistics-test: a tool for testing the linguistics module\n");
+
+	CommandLine::declare_switch(TEST_DIAGRAMS_CLSW, L"diagram", 2,
+		L"test sentence diagrams from text in X");
+	CommandLine::declare_switch(VOCABULARY_CLSW, L"vocabulary", 2,
+		L"read vocabulary from file X for use in -diagram tests");
 	CommandLine::declare_switch(TEST_ARTICLES_CLSW, L"test-articles", 2,
 		L"test pronoun stock (ignoring X)");
 	CommandLine::declare_switch(TEST_PRONOUNS_CLSW, L"test-pronouns", 2,
@@ -44,18 +51,19 @@ int main(int argc, char **argv) {
 
 void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
-		case TEST_DIAGRAMS_CLSW: Main::load(I"Syntax.preform"); Unit::test_diagrams(arg); break;
-		case TEST_ARTICLES_CLSW: Main::load(I"Syntax.preform"); Unit::test_articles(arg); break;
-		case TEST_PRONOUNS_CLSW: Main::load(I"Syntax.preform"); Unit::test_pronouns(arg); break;
+		case VOCABULARY_CLSW: Banking::load_from_file(arg); break;
+		case TEST_DIAGRAMS_CLSW:
+			Interpreting::go(Diagramming::test_diagrams(arg));
+			break;
+		case TEST_ARTICLES_CLSW:
+			Articles::create_small_word_sets();
+			Articles::test(STDOUT);
+			break;
+		case TEST_PRONOUNS_CLSW:
+			Pronouns::create_small_word_sets();
+			Pronouns::test(STDOUT);
+			break;
 	}
-}
-
-void Main::load(text_stream *leaf) {
-	pathname *P = Pathnames::from_text(I"services");
-	P = Pathnames::down(P, I"linguistics-test");
-	P = Pathnames::down(P, I"Tangled");
-	filename *S = Filenames::in(P, leaf);
-	LoadPreform::load(S, NULL);
 }
 
 void Main::ignore(int id, text_stream *arg, void *state) {

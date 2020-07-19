@@ -216,11 +216,13 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, aph_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, category_of_I6_translation_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, creation_site_ANNOT);
+	Annotations::allow(UNPARSED_NOUN_NT, defn_language_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, defn_language_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, log_inclusion_sense_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, lpe_options_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, multiplicity_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, negated_boolean_ANNOT);
+	Annotations::allow(UNPARSED_NOUN_NT, new_relation_here_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, new_relation_here_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, nowhere_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, quant_ANNOT);
@@ -230,7 +232,6 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, table_cell_unspecified_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, turned_already_ANNOT);
 	Annotations::allow(PROPERTY_LIST_NT, article_ANNOT);
-	Annotations::allow(RELATIONSHIP_NT, relationship_ANNOT);
 	Annotations::allow(TOKEN_NT, grammar_token_literal_ANNOT);
 	Annotations::allow(TOKEN_NT, grammar_token_relation_ANNOT);
 	Annotations::allow(TOKEN_NT, grammar_value_ANNOT);

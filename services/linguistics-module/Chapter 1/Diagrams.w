@@ -8,6 +8,9 @@ We do that with the aid of the //syntax// module. So we must first set up
 some new node types:
 
 @e VERB_NT             				/* "is" */
+@e UNPARSED_NOUN_NT       			/* "arfle barfle gloop" */
+@e PRONOUN_NT       			    /* "them" */
+@e DEFECTIVE_NOUN_NT       			/* "there" */
 @e COMMON_NOUN_NT       			/* "a container" */
 @e PROPER_NOUN_NT       			/* "the red handkerchief" */
 @e RELATIONSHIP_NT      			/* "on" */
@@ -33,6 +36,7 @@ some new node types:
 @e verb_meaning_ANNOT            /* |verb_meaning|: what it means */
 @e occurrence_ANNOT              /* |time_period|: any stipulation on occurrence */
 @e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
+@e relationship_ANNOT            /* |binary_predicate|: for RELATIONSHIP nodes */
 @e relationship_node_type_ANNOT  /* |int|: what kind of inference this assertion makes */
 @e implicitly_refers_to_ANNOT    /* |int|: this will implicitly refer to something */
 
@@ -68,15 +72,18 @@ nodes and annotations correctly:
 
 =
 void Diagrams::setup(void) {
-	NodeType::new(VERB_NT, I"VERB_NT",                   0, 0,     L3_NCAT, 0);
-	NodeType::new(RELATIONSHIP_NT, I"RELATIONSHIP_NT",   0, 2,	   L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(CALLED_NT, I"CALLED_NT",               2, 2,	   L3_NCAT, 0);
-	NodeType::new(WITH_NT, I"WITH_NT",                   2, 2,	   L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(AND_NT, I"AND_NT",                     2, 2,	   L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(KIND_NT, I"KIND_NT",                   0, 1,     L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(PROPER_NOUN_NT, I"PROPER_NOUN_NT",     0, 0,	   L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(COMMON_NOUN_NT, I"COMMON_NOUN_NT",	 0, INFTY, L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(PROPERTY_LIST_NT, I"PROPERTY_LIST_NT", 0, INFTY, L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(VERB_NT, I"VERB_NT",                     0, 0,     L3_NCAT, 0);
+	NodeType::new(RELATIONSHIP_NT, I"RELATIONSHIP_NT",     0, 2,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(CALLED_NT, I"CALLED_NT",                 2, 2,	   L3_NCAT, 0);
+	NodeType::new(WITH_NT, I"WITH_NT",                     2, 2,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(AND_NT, I"AND_NT",                       2, 2,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(KIND_NT, I"KIND_NT",                     0, 1,     L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(UNPARSED_NOUN_NT, I"UNPARSED_NOUN_NT",   0, 0,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(PRONOUN_NT, I"PRONOUN_NT",               0, 0,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(DEFECTIVE_NOUN_NT, I"DEFECTIVE_NOUN_NT", 0, 0,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(PROPER_NOUN_NT, I"PROPER_NOUN_NT",       0, 0,	   L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(COMMON_NOUN_NT, I"COMMON_NOUN_NT",	   0, INFTY, L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(PROPERTY_LIST_NT, I"PROPERTY_LIST_NT",   0, INFTY, L3_NCAT, ASSERT_NFLAG);
 }
 
 void Diagrams::permissions(void) {
@@ -89,14 +96,17 @@ void Diagrams::permissions(void) {
 	Annotations::allow(VERB_NT, second_preposition_ANNOT);
 	Annotations::allow(VERB_NT, verb_meaning_ANNOT);
 	Annotations::allow(VERB_NT, occurrence_ANNOT);
+	Annotations::allow(UNPARSED_NOUN_NT, noun_ANNOT);
+	Annotations::allow(PRONOUN_NT, pronoun_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, noun_ANNOT);
-	Annotations::allow(PROPER_NOUN_NT, pronoun_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, noun_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, preposition_ANNOT);
+	Annotations::allow(RELATIONSHIP_NT, relationship_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, relationship_node_type_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, linguistic_error_here_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, explicit_gender_marker_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, article_ANNOT);
+	Annotations::allow(UNPARSED_NOUN_NT, implicitly_refers_to_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, implicitly_refers_to_ANNOT);
 }
 
@@ -119,7 +129,7 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 			if (Annotations::read_int(pn, inverted_verb_ANNOT))
 				WRITE(" (inverted)");
 			if (Node::get_verb_meaning(pn))
-				WRITE(" $y", Node::get_verb_meaning(pn));
+				WRITE(" rel:%S", VerbMeanings::get_regular_meaning(Node::get_verb_meaning(pn))->debugging_log_name);
 			if (Annotations::read_int(pn, verbal_certainty_ANNOT) != UNKNOWN_CE) {
 				WRITE(" certainty:");
 				Certainty::write(OUT, Annotations::read_int(pn, verbal_certainty_ANNOT));
@@ -129,8 +139,11 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				Occurrence::log(OUT, Node::get_occurrence(pn));
 			}
 			break;
+		case UNPARSED_NOUN_NT:
 		case COMMON_NOUN_NT:
 		case PROPER_NOUN_NT:
+		case PRONOUN_NT:
+		case DEFECTIVE_NOUN_NT:
 			if (Node::get_noun(pn))
 				Nouns::write_usage(OUT, Node::get_noun(pn));
 			if (Node::get_pronoun(pn))
@@ -139,15 +152,14 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				Articles::write_usage(OUT, Node::get_article(pn));
 			break;
 		case RELATIONSHIP_NT:
+			WRITE(" rel:");
 			switch (Annotations::read_int(pn, relationship_node_type_ANNOT)) {
 				case STANDARD_RELN:
-					#ifdef CORE_MODULE
 					if (Node::get_relationship(pn))
-						LOG(" (%S)", Node::get_relationship(pn)->debugging_log_name);
-					#endif
+						WRITE("%S", Node::get_relationship(pn)->debugging_log_name);
 					break;
-				case PARENTAGE_HERE_RELN: WRITE(" (here)"); break;
-				case DIRECTION_RELN: WRITE(" (direction)"); break;
+				case PARENTAGE_HERE_RELN: WRITE("(here)"); break;
+				case DIRECTION_RELN: WRITE("(direction)"); break;
 			}
 			break;
 	}

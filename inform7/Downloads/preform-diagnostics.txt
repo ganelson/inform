@@ -4766,7 +4766,7 @@
 
 <definite-article> internal hits 21568/254272 nti r2 constraint (none) extremes [1, 1]
 
-<indefinite-article> internal hits 2361/40968 nti r2 constraint (none) extremes [1, 1]
+<indefinite-article> internal hits 2359/40964 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article-table> nti r2 constraint CS = {r2} extremes [6, 6]
     English:
@@ -5088,6 +5088,8 @@
 
 <nounphrase-as-subject> hits 471/942 nti 11 constraint (none) extremes [0, infinity)
     English:
+        <s-existential-np> 
+          (hits 0/7) constraint CS = {27} extremes [1, 1]
         <if-not-deliberately-capitalised> <np-relative-phrase-limited> 
           (hits 0/471) constraint (none) extremes [1, infinity)
         <np-inner-without-rp> 
@@ -5118,10 +5120,10 @@
         <np-relative-phrase-explicit> 
           (hits 0/711) constraint DS = {14} extremes [1, infinity)
 
-<non-participles> hits 61/898 nti 27 constraint CS = {27} extremes [1, 1]
+<non-participles> hits 61/898 nti 28 constraint CS = {28} extremes [1, 1]
     English:
         thing/something 
-          (hits 61/61) (matched: 'thing') constraint CS = {27} extremes [1, 1]
+          (hits 61/63) (matched: 'thing') constraint CS = {28} extremes [1, 1]
 
 <probable-participle> internal hits 388/16728 nti 15 constraint (none) extremes [1, 1]
 
@@ -5204,10 +5206,10 @@
         kind/kinds of <np-inner> 
           (hits 26/499) (matched: 'kind of supporter that is portable') constraint DS = {24} extremes [3, infinity)
 
-<s-existential-np> hits 33/113250 nti 28 constraint CS = {28} extremes [1, 1]
+<s-existential-np> hits 33/112548 nti 27 constraint CS = {27} extremes [1, 1]
     English:
         there 
-          (hits 33/146) (matched: 'there') constraint CS = {28} extremes [1, 1]
+          (hits 33/1020) (matched: 'there') constraint CS = {27} extremes [1, 1]
 
 <pre-verb-certainty> hits 0/2756 nti 19 constraint DS = {12} extremes [2, infinity)
     English:
@@ -6369,7 +6371,7 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<newfound-property-of> hits 104/2408 nti 16 constraint DS = {16} extremes [2, infinity)
+<newfound-property-of> hits 104/2400 nti 16 constraint DS = {16} extremes [2, infinity)
     English:
         in the presence of {...} 
           (hits 0/123) constraint DS = {16} extremes [5, infinity)
@@ -6499,12 +6501,12 @@
 <either-sentence-object> hits 0/856 nti 27 constraint DS = {27} extremes [2, infinity)
     English:
         either <nounphrase> 
-          (hits 0/157) constraint DS = {27} extremes [2, infinity)
+          (hits 0/155) constraint DS = {27} extremes [2, infinity)
 
 <forbidden-property-owners> hits 0/86 nti 28 constraint (none) extremes [1, 2]
     English:
         <article> kind 
-          constraint DS = {28} extremes [2, 2]
+          (hits 0/11) constraint DS = {28} extremes [2, 2]
         kind 
           constraint CS = {28} extremes [1, 1]
         <object-pronoun> 
@@ -7011,7 +7013,7 @@
 <s-sentence> hits 1074/2238 nti 22 constraint (none) extremes [3, infinity)
     English:
         <s-existential-np> <s-existential-verb-tail> 
-          (hits 0/1031) constraint DS = {28} extremes [3, infinity)
+          (hits 0/836) constraint DS = {27} extremes [3, infinity)
         <s-noun-phrase> <s-general-verb-tail> 
           (hits 1074/1108) (matched long text) constraint (none) extremes [3, infinity)
 
@@ -7131,7 +7133,7 @@
         <s-action-pattern-as-condition> 
           (hits 28/1373) (matched long text) constraint (none) extremes [1, infinity)
         <s-action-pattern-as-negated-condition> 
-          (hits 0/844) constraint DS = {27} extremes [2, infinity)
+          (hits 0/847) constraint DS = {27} extremes [2, infinity)
         <s-sentence> 
           (hits 1074/1119) (matched long text) constraint (none) extremes [3, infinity)
         <s-existential-phrase-to-decide> 
@@ -7140,7 +7142,7 @@
 <s-nonexistential-phrase-to-decide> hits 83/2912 nti 23 constraint (none) extremes [1, infinity)
     English:
         <existential-verb-phrase> 
-          (hits 0/1096) constraint DS = {22, 28} extremes [3, infinity)
+          (hits 0/882) constraint DS = {22, 27} extremes [3, infinity)
         <s-phrase-to-decide> 
           (hits 83/1445) (matched long text) constraint (none) extremes [1, infinity)
         not <s-phrase-to-decide> 
@@ -7155,10 +7157,10 @@
         not <s-phrase-to-decide> 
           constraint DS = {28} extremes [2, infinity)
 
-<existential-verb-phrase> hits 22/2756 nti 22 constraint DS = {22, 28} extremes [3, infinity)
+<existential-verb-phrase> hits 22/2328 nti 22 constraint DS = {22, 27} extremes [3, infinity)
     English:
         <s-existential-np> is/are {...} 
-          (hits 22/1119) (matched long text) constraint DS = {22, 28} extremes [3, infinity)
+          (hits 22/910) (matched long text) constraint DS = {22, 27} extremes [3, infinity)
 
 <s-phrase-to-decide> internal hits 94/2912 nti 7 constraint (none) extremes [1, infinity)
 
@@ -7169,10 +7171,10 @@
         <we-are-action-pattern> 
           (hits 28/1373) (matched long text) constraint (none) extremes [1, infinity)
 
-<s-action-pattern-as-negated-condition> hits 0/1688 nti 10 constraint DS = {27} extremes [2, infinity)
+<s-action-pattern-as-negated-condition> hits 0/1694 nti 10 constraint DS = {27} extremes [2, infinity)
     English:
         <action-pattern-negated> 
-          (hits 0/844) constraint DS = {27} extremes [2, infinity)
+          (hits 0/847) constraint DS = {27} extremes [2, infinity)
 
 <s-past-action-pattern-as-condition> hits 0/1720 nti 11 constraint DS = {24} extremes [3, infinity)
     English:
@@ -9202,14 +9204,14 @@
 <new-action-sentence-object> hits 90/1036 nti 29 constraint DS = {27} extremes [1, infinity)
     English:
         <indefinite-article> <new-action-sentence-object-unarticled> 
-          (hits 90/247) (matched long text) constraint DS = {27} extremes [2, infinity)
+          (hits 90/245) (matched long text) constraint DS = {27} extremes [2, infinity)
         <new-action-sentence-object-unarticled> 
-          (hits 0/162) constraint DS = {27} extremes [1, infinity)
+          (hits 0/160) constraint DS = {27} extremes [1, infinity)
 
-<new-action-sentence-object-unarticled> hits 90/620 nti 27 constraint DS = {27} extremes [1, infinity)
+<new-action-sentence-object-unarticled> hits 90/612 nti 27 constraint DS = {27} extremes [1, infinity)
     English:
         action <nounphrase-actionable> 
-          (hits 90/290) (matched long text) constraint DS = {27} extremes [1, infinity)
+          (hits 90/286) (matched long text) constraint DS = {27} extremes [1, infinity)
         action 
           (hits 0/5) constraint CS = {27} extremes [1, 1]
 
@@ -9414,26 +9416,26 @@
         <action-pattern-core-actor> 
           (hits 25/1370) (matched long text) constraint (none) extremes [1, infinity)
 
-<action-pattern-negated> hits 0/1688 nti 27 constraint DS = {27} extremes [2, infinity)
+<action-pattern-negated> hits 0/1694 nti 27 constraint DS = {27} extremes [2, infinity)
     English:
         we are not asking <action-parameter> to try <action-pattern-core> 
           (hits 0/133) constraint DS = {27} extremes [8, infinity)
         not asking <action-parameter> to try <action-pattern-core> 
-          (hits 0/378) constraint DS = {27} extremes [6, infinity)
+          (hits 0/386) constraint DS = {27} extremes [6, infinity)
         <action-parameter> not trying <action-pattern-core> 
-          (hits 0/816) constraint DS = {27} extremes [4, infinity)
+          (hits 0/820) constraint DS = {27} extremes [4, infinity)
         an actor not trying <action-pattern-core> 
-          (hits 0/521) constraint DS = {27} extremes [5, infinity)
+          (hits 0/528) constraint DS = {27} extremes [5, infinity)
         an actor not <action-pattern-core> 
-          (hits 0/816) constraint DS = {27} extremes [4, infinity)
+          (hits 0/820) constraint DS = {27} extremes [4, infinity)
         we are not trying <action-pattern-core> 
-          (hits 0/521) constraint DS = {27} extremes [5, infinity)
+          (hits 0/528) constraint DS = {27} extremes [5, infinity)
         not trying <action-pattern-core> 
-          (hits 0/844) constraint DS = {27} extremes [3, infinity)
+          (hits 0/847) constraint DS = {27} extremes [3, infinity)
         we are not <action-pattern-core> 
-          (hits 0/816) constraint DS = {27} extremes [4, infinity)
+          (hits 0/820) constraint DS = {27} extremes [4, infinity)
         not <action-pattern-core-actor> 
-          (hits 0/844) constraint DS = {27} extremes [2, infinity)
+          (hits 0/847) constraint DS = {27} extremes [2, infinity)
 
 <action-pattern-past> hits 0/1720 nti 24 constraint DS = {24} extremes [3, infinity)
     English:
@@ -9870,18 +9872,18 @@
         <definite-article> <external-file-sentence-subject> 
           (hits 0/513) constraint (none) extremes [2, infinity)
         text <external-file-name> 
-          (hits 0/58) constraint DS = {28, 29} extremes [3, infinity)
+          (hits 0/62) constraint DS = {28, 29} extremes [3, infinity)
         binary <external-file-name> 
-          (hits 0/58) constraint DS = {28, 29} extremes [3, infinity)
+          (hits 0/62) constraint DS = {28, 29} extremes [3, infinity)
         <external-file-name> 
-          (hits 0/66) constraint DS = {28} extremes [2, infinity)
+          (hits 0/78) constraint DS = {28} extremes [2, infinity)
 
-<external-file-name> hits 0/132 nti 28 constraint DS = {28} extremes [2, infinity)
+<external-file-name> hits 0/156 nti 28 constraint DS = {28} extremes [2, infinity)
     English:
         {file ...} ( owned by <external-file-owner> ) 
           (hits 0/38) constraint DS = {28} extremes [7, infinity)
         {file ...} 
-          (hits 0/66) constraint DS = {28} extremes [2, infinity)
+          (hits 0/78) constraint DS = {28} extremes [2, infinity)
 
 <external-file-owner> nti 27 constraint (none) extremes [1, infinity)
     English:

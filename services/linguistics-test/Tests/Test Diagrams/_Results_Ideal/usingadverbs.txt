@@ -1,0 +1,16 @@
+(1) beth always carries the ming vase
+
+SENTENCE_NT'beth always carries the ming vase'
+    VERB_NT'carries' verb 'carries' 3p s act IS_TENSE +ve rel:carries certainty:certain
+    PROPER_NOUN_NT'beth' (proper) ( (f) s nom ) + ( (f) s acc )
+    RELATIONSHIP_NT'carries' rel:carries-reversed
+        COMMON_NOUN_NT'ming vase' (common) ( (n) s nom ) + ( (n) s acc )
+
+(2) anna carries the ming vase for the third time
+
+SENTENCE_NT'anna carries the ming vase for the third time'
+    VERB_NT'carries' verb 'carries' 3p s act IS_TENSE +ve rel:carries occurrence:<3 times>
+    PROPER_NOUN_NT'anna' (proper) ( (f) s nom ) + ( (f) s acc )
+    RELATIONSHIP_NT'carries' rel:carries-reversed
+        COMMON_NOUN_NT'ming vase' (common) ( (n) s nom ) + ( (n) s acc )
+

@@ -33,8 +33,13 @@ The following macro is useful in the grammar below:
 
 =
 parse_node *NounPhrases::new_raw(wording W) {
+	parse_node *PN = Node::new(UNPARSED_NOUN_NT);
+	Node::set_text(PN, W);
+	return PN;
+}
+
+parse_node *NounPhrases::new_proper_noun(wording W) {
 	parse_node *PN = Node::new(PROPER_NOUN_NT);
-	Node::set_pronoun(PN, NULL);
 	Node::set_text(PN, W);
 	return PN;
 }
@@ -200,6 +205,7 @@ accusative.)
 	<nounphrase-articled>							==> 0; *XP = RP[1]
 
 <nounphrase-as-subject> ::=
+	<s-existential-np> |   ==> 0; *XP = RP[1]; Node::set_text(*XP, W);
 	<if-not-deliberately-capitalised> <np-relative-phrase-limited> |    ==> 0; *XP = RP[2]
 	<np-inner-without-rp> |    ==> 0; *XP = RP[1]
 	<nounphrase-articled>							==> 0; *XP = RP[1]
@@ -371,8 +377,8 @@ speed optimisation, and doesn't affect the language's definition.
 	<np-inner> <np-with-or-having-tail> |    ==> 0; *XP = NounPhrases::PN_pair(WITH_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-inner> <np-and-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-kind-phrase> |    ==> 0; *XP = RP[1]
-	<agent-pronoun> |    ==> GENERATE_RAW_NP; Node::set_pronoun(*XP, RP[1]);
-	<np-articled-balanced>							==> 0; *XP = RP[1]
+	<agent-pronoun> |    ==> GENERATE_RAW_NP; Node::set_type(*XP, PRONOUN_NT); Node::set_pronoun(*XP, RP[1]);
+	<np-articled-balanced>  ==> 0; *XP = RP[1]
 
 @ The tail of with-or-having parses for instance "with carrying capacity 5"
 in the NP
@@ -430,7 +436,7 @@ but definite articles are not.
 	kind/kinds of <np-inner>					==> 0; *XP = NounPhrases::PN_single(KIND_NT, W, RP[1])
 
 @h Relationship nodes.
-A modest utility routine to construct and annotation RELATIONSHIP nodes.
+A modest utility routine to construct and annotate RELATIONSHIP nodes.
 
 @d STANDARD_RELN 0 /* the default annotation value: never explicitly set */
 @d PARENTAGE_HERE_RELN 1 /* only ever set by the Spatial plugin */
@@ -441,12 +447,10 @@ parse_node *NounPhrases::PN_rel(wording W, VERB_MEANING_LINGUISTICS_TYPE *R, int
 	if (preform_lookahead_mode) return NULL;
 	parse_node *P = Node::new(RELATIONSHIP_NT);
 	Node::set_text(P, W);
-	#ifdef CORE_MODULE
 	if (R) Node::set_relationship(P, R);
 	else if (reln_type >= 0)
 		Annotations::write_int(P, relationship_node_type_ANNOT, reln_type);
 	else internal_error("undefined relationship node");
-	#endif
 	if (referent == NULL) {
 		referent = NounPhrases::new_raw(W);
 		Annotations::write_int(referent, implicitly_refers_to_ANNOT, TRUE);

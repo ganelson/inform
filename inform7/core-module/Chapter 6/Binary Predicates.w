@@ -560,7 +560,6 @@ binary_predicate *BinaryPredicates::make_single(int family,
 	text_stream *name, property *pn,
 	i6_schema *mtf, i6_schema *tf, word_assemblage rn) {
 	binary_predicate *bp = CREATE(binary_predicate);
-
 	bp->relation_family = family;
 	bp->form_of_relation = Relation_Implicit;
 	bp->relation_name = rn;

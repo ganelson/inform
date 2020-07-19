@@ -197,7 +197,7 @@ table_column_usage Tables::Columns::add_to_table(wording W, table *t) {
 				"same name in the same table.)");
 		}
 	tcu.column_identity = tc;
-	tcu.entries = NounPhrases::new_raw(W);
+	tcu.entries = NounPhrases::new_proper_noun(W);
 	tcu.kind_declaration_text = EXPW;
 	tcu.actual_constant_entries = 0;
 	tcu.observed_constant_cell = NULL;
@@ -280,7 +280,7 @@ text of any explicit kind declaration used within it.
 
 =
 table_column *Tables::Columns::find_table_column(wording W, table *t, wording *EXPW) {
-	table_cell_node = NounPhrases::new_raw(W);
+	table_cell_node = NounPhrases::new_proper_noun(W);
 	table_cell_row = -1;
 	table_cell_col = -1;
 	table_being_examined = t;

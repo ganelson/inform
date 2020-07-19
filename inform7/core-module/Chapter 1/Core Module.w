@@ -482,7 +482,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e quant_ANNOT /* |quantifier|: for quantified excerpts like "three baskets" */
 @e quantification_parameter_ANNOT /* |int|: e.g., 3 for "three baskets" */
 @e record_as_self_ANNOT /* |int|: record recipient as |self| when writing this */
-@e relationship_ANNOT /* |binary_predicate|: for RELATIONSHIP nodes */
 @e resolved_ANNOT /* int: temp storage when resolving NPs */
 @e response_code_ANNOT /* |int|: for responses only */
 @e results_from_splitting_ANNOT /* |int|: node in a routine's parse tree from comma block notation */
@@ -555,7 +554,6 @@ DECLARE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
 DECLARE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
 DECLARE_ANNOTATION_FUNCTIONS(prep, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(quant, quantifier)
-DECLARE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 DECLARE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
 DECLARE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
@@ -610,7 +608,6 @@ MAKE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
 MAKE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
 MAKE_ANNOTATION_FUNCTIONS(prep, preposition)
 MAKE_ANNOTATION_FUNCTIONS(quant, quantifier)
-MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 MAKE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
 MAKE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
@@ -620,3 +617,12 @@ MAKE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(vu, verb_usage)
+
+@ We also have to make annotation functions for one special annotation needed
+by //linguistics//:
+
+= (early code)
+DECLARE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
+
+@ =
+MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)

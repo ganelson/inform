@@ -1,0 +1,23 @@
+IS = relationship.
+HAS = relationship.
+CARRIES = relationship.
+KNOWS = relationship.
+
+be = verb meaning IS with priority 2.
+have = verb meaning HAS with priority 1.
+carry = verb meaning CARRIES with priority 3.
+know = verb meaning KNOWS with priority 3.
+
+be + on = preposition meaning CARRIES.
+be + under = preposition meaning CARRIES-reversed.
+
+Anna = feminine proper noun.
+Beth = feminine proper noun.
+Charles = masculine proper noun.
+
+man = neuter common noun.
+woman = neuter common noun.
+person = neuter common noun.
+sailor = neuter common noun.
+table = neuter common noun.
+Ming vase = neuter common noun.

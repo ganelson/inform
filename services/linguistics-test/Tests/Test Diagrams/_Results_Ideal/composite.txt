@@ -1,0 +1,41 @@
+(1) anna and beth are women
+
+SENTENCE_NT'anna and beth are women'
+    VERB_NT'are' verb 'are' ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) rel:is
+    AND_NT'and'
+        PROPER_NOUN_NT'anna' (proper) ( (f) s nom ) + ( (f) s acc )
+        PROPER_NOUN_NT'beth' (proper) ( (f) s nom ) + ( (f) s acc )
+    COMMON_NOUN_NT'women' (common) ( (n) p nom ) + ( (n) p acc )
+
+(2) anna , beth and charles are sailors
+
+SENTENCE_NT'anna , beth and charles are sailors'
+    VERB_NT'are' verb 'are' ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) rel:is
+    AND_NT','
+        PROPER_NOUN_NT'anna' (proper) ( (f) s nom ) + ( (f) s acc )
+        AND_NT'and'
+            PROPER_NOUN_NT'beth' (proper) ( (f) s nom ) + ( (f) s acc )
+            PROPER_NOUN_NT'charles' (proper) ( (m) s nom ) + ( (m) s acc )
+    COMMON_NOUN_NT'sailors' (common) ( (n) p nom ) + ( (n) p acc )
+
+(3) anna , beth , and charles are sailors
+
+SENTENCE_NT'anna , beth , and charles are sailors'
+    VERB_NT'are' verb 'are' ( 2p s act IS_TENSE +ve ) + ( 1p p act IS_TENSE +ve ) + ( 2p p act IS_TENSE +ve ) + ( 3p p act IS_TENSE +ve ) rel:is
+    AND_NT','
+        PROPER_NOUN_NT'anna' (proper) ( (f) s nom ) + ( (f) s acc )
+        AND_NT','
+            PROPER_NOUN_NT'beth' (proper) ( (f) s nom ) + ( (f) s acc )
+            PROPER_NOUN_NT'charles' (proper) ( (m) s nom ) + ( (m) s acc )
+    COMMON_NOUN_NT'sailors' (common) ( (n) p nom ) + ( (n) p acc )
+
+(4) anna carries the table and the ming vase
+
+SENTENCE_NT'anna carries the table and the ming vase'
+    VERB_NT'carries' verb 'carries' 3p s act IS_TENSE +ve rel:carries
+    PROPER_NOUN_NT'anna' (proper) ( (f) s nom ) + ( (f) s acc )
+    RELATIONSHIP_NT'carries' rel:carries-reversed
+        AND_NT'and'
+            COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
+            COMMON_NOUN_NT'ming vase' (common) ( (n) s nom ) + ( (n) s acc )
+

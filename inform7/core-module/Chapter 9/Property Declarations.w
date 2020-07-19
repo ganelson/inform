@@ -488,7 +488,7 @@ property *Assertions::Property::recursively_declare_properties(parse_node *owner
 			Assertions::Property::recursively_declare_properties(owner_ref, p->down->next);
 			break;
 		case PROPERTYCALLED_NT: @<This is a subtree citing a kind of value plus a name@>;
-		case PROPER_NOUN_NT: @<This is a leaf containing just a property name@>;
+		case UNPARSED_NOUN_NT: @<This is a leaf containing just a property name@>;
 		default:
 			internal_error("Assertions::Property::recursively_declare_properties on a node of unknown type");
 	}

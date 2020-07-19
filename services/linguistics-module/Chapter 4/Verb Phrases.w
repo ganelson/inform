@@ -57,7 +57,7 @@ The noun phrase of an existential sentence is recognised thus:
 
 =
 <s-existential-np> ::=
-	there							==> Node::new(UNKNOWN_NT);
+	there							==> Node::new(DEFECTIVE_NOUN_NT);
 
 @ We will want to spot adverbs of certainty adjacent to the verb itself;
 English allows these either side, so "A man is usually happy" and "Peter

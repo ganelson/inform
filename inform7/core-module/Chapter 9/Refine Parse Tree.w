@@ -159,7 +159,10 @@ void Assertions::Refiner::refine_parse_tree_inner(parse_node *p, int creation_ru
 		case RELATIONSHIP_NT: @<Refine a relationship subtree@>; return;
 		case CALLED_NT: @<Refine a calling subtree@>; return;
 		case KIND_NT: @<Refine a kind subtree@>; return;
-		case PROPER_NOUN_NT: @<Refine what seems to be a noun phrase@>; return;
+		case PRONOUN_NT: @<Refine a pronoun@>; return;
+		case DEFECTIVE_NOUN_NT:
+		case PROPER_NOUN_NT:
+		case UNPARSED_NOUN_NT: @<Refine what seems to be a noun phrase@>; return;
 	}
 }
 
@@ -324,6 +327,36 @@ inference subject representing the domain to which any new kind would belong.
 		"a kind of number' is not.");
 	kind_of_what = Kinds::Knowledge::as_subject(K_value);
 
+@ The following could clearly be improved.
+
+@<Refine a pronoun@> =
+	pronoun_usage *pro = Node::get_pronoun(p);
+	if (pro) {
+		Node::set_type(p, PROPER_NOUN_NT);
+		if ((Stock::usage_might_be_singular(pro->usage) == FALSE) &&
+			(Assertions::Traverse::get_current_subject_plurality())) {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticThey),
+				"I'm unable to handle 'they' here",
+				"since it looks as if it needs to refer to more than one "
+				"object here, and that's something I can't manage.");
+			return;
+		}
+		inference_subject *referent = Assertions::Traverse::get_current_object();
+		if (referent) Assertions::Refiner::noun_from_infs(p, referent);
+		else {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticPronoun),
+				"I'm not sure what to make of the pronoun here",
+				"since it is unclear what previously mentioned thing "
+				"is being referred to. In general, it's best only to use "
+				"'it' where it's unambiguous, and it may be worth noting "
+				"that 'they' is not allowed to stand for more than one "
+				"object at a time.");
+			return;
+		}
+		LOGIF(PRONOUNS, "Interpreting 'it' as $j\n$P", referent, current_sentence);
+		return;
+	} else internal_error("misconstrued pronoun");
+
 @ The simple description of what happens to a |PROPER_NOUN_NT| node is that
 if it's an existing object or value, then it should be annotated with a
 reference to that object or value; and if not, then a new object should be
@@ -332,9 +365,9 @@ such a noun phrase by changing its node type to |CREATED_NT|.) The more
 complicated description is as follows:
 
 @<Refine what seems to be a noun phrase@> =
+	Node::set_type(p, PROPER_NOUN_NT);
 	@<Act on the special no-words word range which implies the player@>;
 	@<Act on a newly-discovered property of something@>;
-	@<Act on the special noun phrases "it" and "they"@>;
 	if (forbid_nowhere == FALSE) @<Act on any special noun phrases significant to plugins@>;
 
 	if (creation_rule != MANDATE_CREATION)
@@ -395,36 +428,6 @@ property of something.
 		Annotations::write_int(p, resolved_ANNOT, FALSE);
 		LOGIF(NOUN_RESOLUTION, "Resolved new-property to:\n$T\n", p);
 		Assertions::Refiner::refine(p, creation_rule);
-		return;
-	}
-
-@ A noun phrase consisting of a pronoun has |refers| set to the relevant
-thing. (If we had more and better pronouns, they would go here.)
-
-@<Act on the special noun phrases "it" and "they"@> =
-	pronoun_usage *pro = Node::get_pronoun(p);
-	if (pro) {
-		if ((Stock::usage_might_be_singular(pro->usage) == FALSE) &&
-			(Assertions::Traverse::get_current_subject_plurality())) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticThey),
-				"I'm unable to handle 'they' here",
-				"since it looks as if it needs to refer to more than one "
-				"object here, and that's something I can't manage.");
-			return;
-		}
-		if (Assertions::Traverse::get_current_object() == NULL) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticPronoun),
-				"I'm not sure what to make of the pronoun here",
-				"since it is unclear what previously mentioned thing "
-				"is being referred to. In general, it's best only to use "
-				"'it' where it's unambiguous, and it may be worth noting "
-				"that 'they' is not allowed to stand for more than one "
-				"object at a time.");
-			return;
-		}
-		inference_subject *referent = Assertions::Traverse::get_current_object();
-		if (referent) Assertions::Refiner::noun_from_infs(p, referent);
-		LOGIF(PRONOUNS, "Interpreting 'it' as $j\n$P", referent, current_sentence);
 		return;
 	}
 

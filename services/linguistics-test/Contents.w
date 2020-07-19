@@ -13,4 +13,7 @@ Import: linguistics
 
 Chapter 1: Scaffolding
 	Program Control
-	Unit Tests
+	Relating
+	Banking
+	Diagramming
+	Interpreting

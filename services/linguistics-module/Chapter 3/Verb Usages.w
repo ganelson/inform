@@ -32,7 +32,7 @@ typedef struct verb_usage {
 @ =
 void VerbUsages::write_usage(OUTPUT_STREAM, verb_usage *vu) {
 	if (vu == NULL) { WRITE("(null verb usage)"); return; }
-	WRITE("verb '%A' ", &(vu->vu_text));
+	WRITE(" verb '%A'", &(vu->vu_text));
 	Stock::write_usage(OUT, vu->usage, SENSE_LCW+MOOD_LCW+TENSE_LCW+PERSON_LCW+NUMBER_LCW);
 }
 
@@ -250,11 +250,13 @@ to be this long just in case:
 			#else
 			if (VerbUsages::allow_in_assertions(vc, tense, sense, person) == FALSE) p = 0;
 			#endif
-			#ifdef ALLOW_VERB_LINGUISTICS_CALLBACK
-			if (ALLOW_VERB_LINGUISTICS_CALLBACK(vc, tense, sense, person) == FALSE) p = -1;
-			#else
-			if (VerbUsages::allow_generally(vc, tense, sense, person) == FALSE) p = -1;
-			#endif
+			if (p == 0) {
+				#ifdef ALLOW_VERB_LINGUISTICS_CALLBACK
+				if (ALLOW_VERB_LINGUISTICS_CALLBACK(vc, tense, sense, person) == FALSE) p = -1;
+				#else
+				if (VerbUsages::allow_generally(vc, tense, sense, person) == FALSE) p = -1;
+				#endif
+			}
 			if (p >= 0) @<Add this form to the to-do list@>;
 		}
 

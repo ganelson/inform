@@ -1,12 +1,33 @@
--cases 'services/linguistics-test/Tests/Test Cases'
+-cases [Main] 'services/linguistics-test/Tests/Test Cases'
+-cases [Diagram] 'services/linguistics-test/Tests/Test Diagrams'
 
--recipe
+-recipe [Main]
 
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 
 	mkdir: $PATH/_Results_Actual
 	step: services/linguistics-test/Tangled/linguistics-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
+	or: 'produced errors in linguistics-test' $A
+
+	show: $A
+
+	exists: $I
+	or: 'passed without errors but no blessed output existed'
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end
+
+-recipe [Diagram]
+
+	set: $V = services/linguistics-test/Tests/vocabulary.txt
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	mkdir: $PATH/_Results_Actual
+	step: services/linguistics-test/Tangled/linguistics-test -vocabulary $V -diagram $PATH/$CASE.txt >$A 2>&1
 	or: 'produced errors in linguistics-test' $A
 
 	show: $A

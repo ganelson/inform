@@ -98,8 +98,8 @@ void Sentences::Rearrangement::check_sentence_for_direction_creation(parse_node 
 	if (Node::get_type(pn) != SENTENCE_NT) return;
 	if ((pn->down == NULL) || (pn->down->next == NULL) || (pn->down->next->next == NULL)) return;
 	if (Node::get_type(pn->down) != VERB_NT) return;
-	if (Node::get_type(pn->down->next) != PROPER_NOUN_NT) return;
-	if (Node::get_type(pn->down->next->next) != PROPER_NOUN_NT) return;
+	if (Node::get_type(pn->down->next) != UNPARSED_NOUN_NT) return;
+	if (Node::get_type(pn->down->next->next) != UNPARSED_NOUN_NT) return;
 	current_sentence = pn;
 	pn = pn->down->next;
 	if (!((<notable-map-kinds>(Node::get_text(pn->next)))

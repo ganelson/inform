@@ -279,12 +279,12 @@ Any new activity variable name is vetted by being run through this:
 void Activities::add_variable(activity *av, parse_node *cnode) {
 	parse_node *spec;
 	if ((Node::get_type(cnode) != PROPERTYCALLED_NT) &&
-		(Node::get_type(cnode) != PROPER_NOUN_NT)) {
+		(Node::get_type(cnode) != UNPARSED_NOUN_NT)) {
 		LOG("Tree: $T\n", cnode);
 		internal_error("ac_add_variable on a node of unknown type");
 	}
 
-	if (Node::get_type(cnode) == PROPER_NOUN_NT) {
+	if (Node::get_type(cnode) == UNPARSED_NOUN_NT) {
 		Problems::quote_source(1, current_sentence);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVariableNameless));
 		Problems::issue_problem_segment(

@@ -526,7 +526,7 @@ a node in the parse tree representing the column's use within this table.
 
 @<This is a data cell@> =
 	wording CW = Wordings::new(pos, cell_end);
-	parse_node *cell = NounPhrases::new_raw(CW);
+	parse_node *cell = NounPhrases::new_proper_noun(CW);
 	if (col_count >= t->no_columns) {
 		current_sentence = PN;
 		Problems::quote_number(4, &(row_count));
@@ -783,7 +783,7 @@ columns and in the same order.
 
 @ =
 parse_node *Tables::empty_cell_node(void) {
-	return NounPhrases::new_raw(EMPTY_WORDING);
+	return NounPhrases::new_proper_noun(EMPTY_WORDING);
 }
 
 @h Table stocking.
