@@ -1,0 +1,15 @@
+[Testing "with" and "kind of".]
+
+On the table is a sailor with carrying capacity 10.
+
+A sailor with carrying capacity 10 is on the table.
+
+On the table is a sailor with carrying capacity 10 and wealth 12.
+
+On the table is a sailor with carrying capacity 10, wealth 12, and sea count 7.
+
+There is a kind of sailor called an admiral.
+
+An admiral is a kind of sailor.
+
+An admiral is a kind of sailor with wealth 50.

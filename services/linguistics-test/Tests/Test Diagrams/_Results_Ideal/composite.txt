@@ -39,3 +39,14 @@ SENTENCE_NT'anna carries the table and the ming vase'
             COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
             COMMON_NOUN_NT'ming vase' (common) ( (n) s nom ) + ( (n) s acc )
 
+(5) anna is on the table and under the ming vase
+
+SENTENCE_NT'anna is on the table and under the ming vase'
+    VERB_NT'is on' verb 'is' 3p s act IS_TENSE +ve rel:carries
+    PROPER_NOUN_NT'anna' (proper) ( (f) s nom ) + ( (f) s acc )
+    RELATIONSHIP_NT'is on' rel:carries-reversed
+        AND_NT'and'
+            COMMON_NOUN_NT'table' (common) ( (n) s nom ) + ( (n) s acc )
+            RELATIONSHIP_NT'under the ming vase' rel:carries
+                COMMON_NOUN_NT'ming vase' (common) ( (n) s nom ) + ( (n) s acc )
+

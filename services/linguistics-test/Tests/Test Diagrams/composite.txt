@@ -5,3 +5,5 @@ Anna, Beth and Charles are sailors.
 Anna, Beth, and Charles are sailors.
 
 Anna carries the table and the Ming Vase.
+
+Anna is on the table and under the Ming Vase.
