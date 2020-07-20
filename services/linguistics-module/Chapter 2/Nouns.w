@@ -79,9 +79,10 @@ typedef struct noun_usage {
 
 @ =
 void Nouns::write_usage(OUTPUT_STREAM, noun_usage *nu) {
-	if (nu->noun_used->noun_subclass == COMMON_NOUN) WRITE(" (common)");
-	if (nu->noun_used->noun_subclass == PROPER_NOUN) WRITE(" (proper)");
+	if (nu->noun_used->noun_subclass == COMMON_NOUN) WRITE(" {common");
+	if (nu->noun_used->noun_subclass == PROPER_NOUN) WRITE(" {proper");
 	Stock::write_usage(OUT, nu->usage, GENDER_LCW+NUMBER_LCW+CASE_LCW);
+	WRITE("}");
 }
 
 @ Nouns are a grammatical category:
@@ -295,11 +296,16 @@ int Nouns::is_eligible_match(noun *nt, int common_only) {
 @h Actual usage.
 
 =
+void Nouns::recognise(parse_node *p) {
+	parse_node *q = Lexicon::retrieve(NOUN_MC, Node::get_text(p));
+	if (q) Nouns::set_node_to_be_usage_of_noun(p, Nouns::disambiguate(q, FALSE));
+}
+
 void Nouns::set_node_to_be_usage_of_noun(parse_node *p, noun_usage *nu) {
 	if (nu->noun_used->noun_subclass == COMMON_NOUN)
-		Node::set_type_and_clear_annotations(p, COMMON_NOUN_NT);
+		Node::set_type(p, COMMON_NOUN_NT);
 	else
-		Node::set_type_and_clear_annotations(p, PROPER_NOUN_NT);
+		Node::set_type(p, PROPER_NOUN_NT);
 	Node::set_noun(p, nu);
 }
 

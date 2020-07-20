@@ -1,11 +1,11 @@
 article_sws:
-(0) the: definite article n/m/f s/p nom/acc
-(1) a: indefinite article n/m/f nom/acc s
-(2) an: indefinite article n/m/f nom/acc s
-(3) some: indefinite article n/m/f nom/acc p
+(0) the: {definite 'the' n/m/f s/p nom/acc}
+(1) a: {indefinite 'a' n/m/f nom/acc s}
+(2) an: {indefinite 'an' n/m/f nom/acc s}
+(3) some: {indefinite 'some' n/m/f nom/acc p}
 definite_article_sws:
-(0) the: definite article n/m/f s/p nom/acc
+(0) the: {definite 'the' n/m/f s/p nom/acc}
 indefinite_article_sws:
-(0) a: indefinite article n/m/f nom/acc s
-(1) an: indefinite article n/m/f nom/acc s
-(2) some: indefinite article n/m/f nom/acc p
+(0) a: {indefinite 'a' n/m/f nom/acc s}
+(1) an: {indefinite 'an' n/m/f nom/acc s}
+(2) some: {indefinite 'some' n/m/f nom/acc p}

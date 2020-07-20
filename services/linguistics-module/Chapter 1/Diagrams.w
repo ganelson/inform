@@ -25,7 +25,6 @@ some new node types:
 @e verbal_certainty_ANNOT        /* |int|: certainty level if known */
 @e sentence_is_existential_ANNOT /* |int|: such as "there is a man" */
 @e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
-@e inverted_verb_ANNOT           /* |int|: an inversion of subject and object has occurred */
 @e possessive_verb_ANNOT         /* |int|: this is a non-relative use of "to have" */
 @e verb_ANNOT                    /* |verb_usage|: what's being done here */
 @e noun_ANNOT                    /* |noun_usage|: what's being done here */
@@ -90,7 +89,6 @@ void Diagrams::permissions(void) {
 	Annotations::allow(VERB_NT, verbal_certainty_ANNOT);
 	Annotations::allow(VERB_NT, sentence_is_existential_ANNOT);
 	Annotations::allow(VERB_NT, possessive_verb_ANNOT);
-	Annotations::allow(VERB_NT, inverted_verb_ANNOT);
 	Annotations::allow(VERB_NT, verb_ANNOT);
 	Annotations::allow(VERB_NT, preposition_ANNOT);
 	Annotations::allow(VERB_NT, second_preposition_ANNOT);
@@ -123,20 +121,21 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 			if (Node::get_verb(pn))
 				VerbUsages::write_usage(OUT, Node::get_verb(pn));
 			if (Annotations::read_int(pn, sentence_is_existential_ANNOT))
-				WRITE(" (existential)");
+				WRITE(" {existential}");
 			if (Annotations::read_int(pn, possessive_verb_ANNOT))
-				WRITE(" (possessive)");
-			if (Annotations::read_int(pn, inverted_verb_ANNOT))
-				WRITE(" (inverted)");
+				WRITE(" {possessive}");
 			if (Node::get_verb_meaning(pn))
-				WRITE(" rel:%S", VerbMeanings::get_regular_meaning(Node::get_verb_meaning(pn))->debugging_log_name);
+				WRITE(" {meaning: %S}",
+					VerbMeanings::get_regular_meaning(Node::get_verb_meaning(pn))->debugging_log_name);
 			if (Annotations::read_int(pn, verbal_certainty_ANNOT) != UNKNOWN_CE) {
-				WRITE(" certainty:");
+				WRITE(" {certainty:");
 				Certainty::write(OUT, Annotations::read_int(pn, verbal_certainty_ANNOT));
+				WRITE("}");
 			}
 			if (Node::get_occurrence(pn)) {
-				WRITE(" occurrence:");
+				WRITE(" {occurrence: ");
 				Occurrence::log(OUT, Node::get_occurrence(pn));
+				WRITE("}");
 			}
 			break;
 		case UNPARSED_NOUN_NT:
@@ -152,7 +151,7 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				Articles::write_usage(OUT, Node::get_article(pn));
 			break;
 		case RELATIONSHIP_NT:
-			WRITE(" rel:");
+			WRITE(" {meaning: ");
 			switch (Annotations::read_int(pn, relationship_node_type_ANNOT)) {
 				case STANDARD_RELN:
 					if (Node::get_relationship(pn))
@@ -161,6 +160,7 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				case PARENTAGE_HERE_RELN: WRITE("(here)"); break;
 				case DIRECTION_RELN: WRITE("(direction)"); break;
 			}
+			WRITE("}");
 			break;
 	}
 }

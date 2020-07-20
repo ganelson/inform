@@ -19,7 +19,7 @@ int Diagramming::allow_in_assertions(verb_conjugation *vc, int tense, int sense,
 
 =
 parse_node_tree *syntax_tree = NULL;
-parse_node_tree *Diagramming::test_diagrams(text_stream *arg) {
+parse_node_tree *Diagramming::test_diagrams(text_stream *arg, int raw) {
 	syntax_tree = SyntaxTree::new();
 	@<Turn the file into a syntax tree@>;
 	@<Use the linguistics module on each sentence@>;
@@ -36,7 +36,7 @@ parse_node_tree *Diagramming::test_diagrams(text_stream *arg) {
 
 @<Use the linguistics module on each sentence@> =	
 	SyntaxTree::traverse(syntax_tree, Diagramming::diagram);
-	Diagramming::parse_noun_phrases(syntax_tree->root_node);
+	if (raw == FALSE) Diagramming::parse_noun_phrases(syntax_tree->root_node);
 
 @ The work of the //words// and //syntax// modules means that we now have a
 rudimentary syntax tree, in which each sentence is just a single |SENTENCE_NT|
@@ -67,10 +67,7 @@ by default parsed: they are simply left as |UNPARSED_NOUN_NT| nodes.
 =
 void Diagramming::parse_noun_phrases(parse_node *p) {
 	for (; p; p = p->next) {
-		if (Node::get_type(p) == UNPARSED_NOUN_NT) {
-			parse_node *q = Lexicon::retrieve(NOUN_MC, Node::get_text(p));
-			if (q) Nouns::set_node_to_be_usage_of_noun(p, Nouns::disambiguate(q, FALSE));
-		}
+		if (Node::get_type(p) == UNPARSED_NOUN_NT) Nouns::recognise(p);
 		Diagramming::parse_noun_phrases(p->down);
 	}
 }

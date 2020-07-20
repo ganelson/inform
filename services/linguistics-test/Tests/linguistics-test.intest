@@ -26,8 +26,13 @@
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 
+	set: $U = -diagram
+	if: $CASE %c*-raw
+		set: $U = -raw
+	endif
+
 	mkdir: $PATH/_Results_Actual
-	step: services/linguistics-test/Tangled/linguistics-test -vocabulary $V -diagram $PATH/$CASE.txt >$A 2>&1
+	step: services/linguistics-test/Tangled/linguistics-test -vocabulary $V $U $PATH/$CASE.txt >$A 2>&1
 	or: 'produced errors in linguistics-test' $A
 
 	show: $A

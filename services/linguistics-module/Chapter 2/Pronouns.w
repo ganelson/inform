@@ -31,8 +31,9 @@ typedef struct pronoun_usage {
 
 @ =
 void Pronouns::write_usage(OUTPUT_STREAM, pronoun_usage *pu) {
-	WRITE(" %S", pu->pronoun_used->name);
+	WRITE(" {%S", pu->pronoun_used->name);
 	Stock::write_usage(OUT, pu->usage, PERSON_LCW + GENDER_LCW + NUMBER_LCW + CASE_LCW);
+	WRITE("}");
 }
 
 @ The stock of pronouns is fixed at six. We are going to regard the three

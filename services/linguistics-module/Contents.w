@@ -6,6 +6,7 @@ Licence: Artistic License 2.0
 
 Preliminaries
 	What This Module Does
+	About Sentence Diagrams
 	How To Include This Module
 
 Chapter 1: Setting Up

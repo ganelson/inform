@@ -1,47 +1,47 @@
 pronouns_sws:
-(0) i: first person pronoun n/m/f 1p s nom
-(1) we: first person pronoun n/m/f 1p p nom
-(2) me: first person pronoun n/m/f 1p s acc
-(3) us: first person pronoun n/m/f 1p p acc
-(4) you: second person pronoun n/m/f s/p nom/acc 2p
-(5) it: third person pronoun nom/acc n 3p s
-(6) they: third person pronoun n/m/f 3p p nom
-(7) he: third person pronoun m 3p s nom
-(8) she: third person pronoun f 3p s nom
-(9) them: third person pronoun n/m/f 3p p acc
-(10) him: third person pronoun m 3p s acc
-(11) her: third person pronoun f 3p s acc
+(0) i: {first person pronoun n/m/f 1p s nom}
+(1) we: {first person pronoun n/m/f 1p p nom}
+(2) me: {first person pronoun n/m/f 1p s acc}
+(3) us: {first person pronoun n/m/f 1p p acc}
+(4) you: {second person pronoun n/m/f s/p nom/acc 2p}
+(5) it: {third person pronoun nom/acc n 3p s}
+(6) they: {third person pronoun n/m/f 3p p nom}
+(7) he: {third person pronoun m 3p s nom}
+(8) she: {third person pronoun f 3p s nom}
+(9) them: {third person pronoun n/m/f 3p p acc}
+(10) him: {third person pronoun m 3p s acc}
+(11) her: {third person pronoun f 3p s acc}
 subject_pronouns_sws:
-(0) i: first person pronoun n/m/f 1p s nom
-(1) we: first person pronoun n/m/f 1p p nom
-(2) you: second person pronoun n/m/f s/p 2p nom
-(3) it: third person pronoun n 3p s nom
-(4) they: third person pronoun n/m/f 3p p nom
-(5) he: third person pronoun m 3p s nom
-(6) she: third person pronoun f 3p s nom
+(0) i: {first person pronoun n/m/f 1p s nom}
+(1) we: {first person pronoun n/m/f 1p p nom}
+(2) you: {second person pronoun n/m/f s/p 2p nom}
+(3) it: {third person pronoun n 3p s nom}
+(4) they: {third person pronoun n/m/f 3p p nom}
+(5) he: {third person pronoun m 3p s nom}
+(6) she: {third person pronoun f 3p s nom}
 object_pronouns_sws:
-(0) me: first person pronoun n/m/f 1p s acc
-(1) us: first person pronoun n/m/f 1p p acc
-(2) you: second person pronoun n/m/f s/p 2p acc
-(3) it: third person pronoun n 3p s acc
-(4) them: third person pronoun n/m/f 3p p acc
-(5) him: third person pronoun m 3p s acc
-(6) her: third person pronoun f 3p s acc
+(0) me: {first person pronoun n/m/f 1p s acc}
+(1) us: {first person pronoun n/m/f 1p p acc}
+(2) you: {second person pronoun n/m/f s/p 2p acc}
+(3) it: {third person pronoun n 3p s acc}
+(4) them: {third person pronoun n/m/f 3p p acc}
+(5) him: {third person pronoun m 3p s acc}
+(6) her: {third person pronoun f 3p s acc}
 possessive_pronouns_sws:
-(0) my: first person possessive pronoun n/m/f nom/acc 1p s
-(1) our: first person possessive pronoun n/m/f nom/acc 1p p
-(2) your: second person possessive pronoun n/m/f s/p nom/acc 2p
-(3) its: third person possessive pronoun nom/acc n 3p s
-(4) their: third person possessive pronoun n/m/f nom/acc 3p p
-(5) his: third person possessive pronoun nom/acc m 3p s
-(6) her: third person possessive pronoun nom/acc f 3p s
+(0) my: {first person possessive pronoun n/m/f nom/acc 1p s}
+(1) our: {first person possessive pronoun n/m/f nom/acc 1p p}
+(2) your: {second person possessive pronoun n/m/f s/p nom/acc 2p}
+(3) its: {third person possessive pronoun nom/acc n 3p s}
+(4) their: {third person possessive pronoun n/m/f nom/acc 3p p}
+(5) his: {third person possessive pronoun nom/acc m 3p s}
+(6) her: {third person possessive pronoun nom/acc f 3p s}
 first_person_possessive_pronouns_sws:
-(0) my: first person possessive pronoun n/m/f nom/acc 1p s
-(1) our: first person possessive pronoun n/m/f nom/acc 1p p
+(0) my: {first person possessive pronoun n/m/f nom/acc 1p s}
+(1) our: {first person possessive pronoun n/m/f nom/acc 1p p}
 second_person_possessive_pronouns_sws:
-(0) your: second person possessive pronoun n/m/f s/p nom/acc 2p
+(0) your: {second person possessive pronoun n/m/f s/p nom/acc 2p}
 third_person_possessive_pronouns_sws:
-(0) its: third person possessive pronoun nom/acc n 3p s
-(1) their: third person possessive pronoun n/m/f nom/acc 3p p
-(2) his: third person possessive pronoun nom/acc m 3p s
-(3) her: third person possessive pronoun nom/acc f 3p s
+(0) its: {third person possessive pronoun nom/acc n 3p s}
+(1) their: {third person possessive pronoun n/m/f nom/acc 3p p}
+(2) his: {third person possessive pronoun nom/acc m 3p s}
+(3) her: {third person possessive pronoun nom/acc f 3p s}

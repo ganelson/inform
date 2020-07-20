@@ -32,8 +32,11 @@ typedef struct verb_usage {
 @ =
 void VerbUsages::write_usage(OUTPUT_STREAM, verb_usage *vu) {
 	if (vu == NULL) { WRITE("(null verb usage)"); return; }
-	WRITE(" verb '%A'", &(vu->vu_text));
+	WRITE(" {verb");
+	verb *V = VerbUsages::get_verb(vu);
+	if (V) WRITE(" '%A'", &(V->conjugation->infinitive));
 	Stock::write_usage(OUT, vu->usage, SENSE_LCW+MOOD_LCW+TENSE_LCW+PERSON_LCW+NUMBER_LCW);
+	WRITE("}");
 }
 
 @h Search list and tiers.

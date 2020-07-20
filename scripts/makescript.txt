@@ -319,7 +319,7 @@ commit:
 # -----------------------------------------------------------------------------
 
 .PHONY: pages
-pages: icon readmepage prepages {repeat-tools-span}@PAGES{end-span} \
+pages: icon readmepage diagrams prepages {repeat-tools-span}@PAGES{end-span} \
 	{repeat-modules-span}@MPAGES{end-span} morepages
 
 .PHONY: icon
@@ -329,12 +329,17 @@ icon:
 	cp -f docs-src/Inform.png docs/docs-assets
 
 .PHONY: forcepages
-forcepages: readmepage forceprepages {repeat-tools-span}@FORCEPAGES{end-span} \
+forcepages: readmepage diagrams forceprepages {repeat-tools-span}@FORCEPAGES{end-span} \
 	{repeat-modules-span}@FORCEMPAGES{end-span} forcemorepages
 
 .PHONY: readmepage
 readmepage:
 	$(INWEBX) -prototype scripts/READMEscript.txt -write-me README.md
+
+.PHONY: diagrams
+diagrams:
+	cp -f services/linguistics-test/Tests/Test\ Diagrams/_Results_Ideal/*.txt services/linguistics-module/Figures
+	cp -f services/linguistics-test/Tests/vocabulary.txt services/linguistics-module/Figures
 
 {repeat-tools-block:ctools}
 .PHONY: @PAGES

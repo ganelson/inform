@@ -63,7 +63,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">linguistics</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the linguistics module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Goals and non-goals</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Lcons</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Cardinals and ordinals</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Noun phrases</a></li><li><a href="P-wtmd.html#SP13">&#167;13. Verb phrases</a></li><li><a href="P-wtmd.html#SP17">&#167;17. Performance in practice</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Goals and non-goals</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Lcons</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Cardinals and ordinals</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Stock for noun phrases</a></li><li><a href="P-wtmd.html#SP13">&#167;13. Stock for verb phrases</a></li><li><a href="P-wtmd.html#SP17">&#167;17. Performance in practice</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The linguistics module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -89,11 +89,15 @@ the ones students draw in school grammar classes. For example,
 </blockquote>
 
 <p class="commentary">becomes a "diagram" &mdash; a fragment of the tree provided by the <a href="../syntax-module/index.html" class="internal">syntax</a>
-module &mdash; in which the relationship "to be on top of" appears as the root,
-with two noun phrases, "most of the heavy bricks" and "the wall", beneath it.
+module &mdash; showing the linguistic structure of the sentence.
 </p>
 
-<p class="commentary">To be in a position to do this, the module needs a way to accumulate
+<p class="commentary">This work is done by the nonterminal &lt;sentence&gt; &mdash; see <a href="4-vp.html" class="internal">Verb Phrases</a>.
+Many examples of sentence diagrams can be seen in <a href="P-asd.html" class="internal">About Sentence Diagrams</a>;
+read that first.
+</p>
+
+<p class="commentary">To be in a position to parse like this, the module needs a way to accumulate
 knowledge about the possible nouns, verbs, adjectives, prepositions and so on
 which might appear in such sentences. Where sensible, a design goal here is
 for each of these grammatical categories to correspond closely to an object
@@ -173,7 +177,7 @@ for them to be so: we would need a potentially infinite number of them to
 accommodate the possible range of integers which appear.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Noun phrases. </b>For convenience we will run through the stock in two sets: those grammatical
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Stock for noun phrases. </b>For convenience we will run through the stock in two sets: those grammatical
 categories used in noun phrases, and provided by <a href="2-adj.html" class="internal">Chapter 2: NP Categories</a>; and those
 used in verb phrases, <a href="3-vrb.html" class="internal">Chapter 3: VP Categories</a>. In alphabetical order:
 </p>
@@ -232,7 +236,7 @@ at three, all automatically created: the subject (he, she), object (him, her)
 and possessive (his, her) pronouns. See <a href="2-prn.html" class="internal">Pronouns</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Verb phrases. </b></p>
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Stock for verb phrases. </b></p>
 
 <p class="commentary">Adverb phrases of occurrence refers to wording such as "for the sixth time".
 The stock of these is fixed, though as with determiners, each is really a
@@ -442,8 +446,8 @@ Within each categpry, items are listed in order of creation.
 <span class="plain-syntax">adjective: A135''</span>
 <span class="plain-syntax">adjective: A136''</span>
 
-<span class="plain-syntax">article: definite article</span>
-<span class="plain-syntax">article: indefinite article</span>
+<span class="plain-syntax">article: definite</span>
+<span class="plain-syntax">article: indefinite</span>
 
 <span class="plain-syntax">noun: common: 'value'</span>
 <span class="plain-syntax">noun: common: 'pointer value'</span>
@@ -3628,7 +3632,7 @@ Within each categpry, items are listed in order of creation.
 <span class="plain-syntax">verb_form: be(4) + the same unbolting relation storage as + ___ SVO</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-adj.html">2</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-np.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-asd.html">asd</a></li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-adj.html">2</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-np.html">4</a></li><li class="progressnext"><a href="P-asd.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

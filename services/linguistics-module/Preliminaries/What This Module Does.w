@@ -23,10 +23,13 @@ the ones students draw in school grammar classes. For example,
 >> most of the heavy bricks have been on top of the wall
 
 becomes a "diagram" -- a fragment of the tree provided by the //syntax//
-module -- in which the relationship "to be on top of" appears as the root,
-with two noun phrases, "most of the heavy bricks" and "the wall", beneath it.
+module -- showing the linguistic structure of the sentence.
 
-To be in a position to do this, the module needs a way to accumulate
+This work is done by the nonterminal <sentence> -- see //Verb Phrases//.
+Many examples of sentence diagrams can be seen in //About Sentence Diagrams//;
+read that first.
+
+To be in a position to parse like this, the module needs a way to accumulate
 knowledge about the possible nouns, verbs, adjectives, prepositions and so on
 which might appear in such sentences. Where sensible, a design goal here is
 for each of these grammatical categories to correspond closely to an object
@@ -101,7 +104,7 @@ Note that these are not part of the stock. It wouldn't really make sense
 for them to be so: we would need a potentially infinite number of them to
 accommodate the possible range of integers which appear.
 
-@h Noun phrases.
+@h Stock for noun phrases.
 For convenience we will run through the stock in two sets: those grammatical
 categories used in noun phrases, and provided by //Chapter 2//; and those
 used in verb phrases, //Chapter 3//. In alphabetical order:
@@ -154,7 +157,7 @@ as referring to this one specific object, just as "Mary" will.
 at three, all automatically created: the subject (he, she), object (him, her)
 and possessive (his, her) pronouns. See //Pronouns//.
 
-@h Verb phrases.
+@h Stock for verb phrases.
 
 Adverb phrases of occurrence refers to wording such as "for the sixth time".
 The stock of these is fixed, though as with determiners, each is really a

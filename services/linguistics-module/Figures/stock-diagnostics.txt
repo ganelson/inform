@@ -146,8 +146,8 @@ adjective: A134''
 adjective: A135''
 adjective: A136''
 
-article: definite article
-article: indefinite article
+article: definite
+article: indefinite
 
 noun: common: 'value'
 noun: common: 'pointer value'

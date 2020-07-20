@@ -20,14 +20,16 @@ matched against some form of a pronoun.
 =
 typedef struct article_usage {
 	struct article *article_used;
+	struct vocabulary_entry *word_used;
 	struct grammatical_usage *usage;
 	CLASS_DEFINITION
 } article_usage;
 
 @ =
 void Articles::write_usage(OUTPUT_STREAM, article_usage *au) {
-	WRITE(" %S", au->article_used->name);
+	WRITE(" {%S '%V'", au->article_used->name, au->word_used);
 	Stock::write_usage(OUT, au->usage, GENDER_LCW + NUMBER_LCW + CASE_LCW);
+	WRITE("}");
 }
 
 @ The stock of articles is fixed at two:
@@ -40,8 +42,8 @@ article *indefinite_article = NULL;
 void Articles::create_category(void) {
 	articles_category = Stock::new_category(I"article");
 	METHOD_ADD(articles_category, LOG_GRAMMATICAL_CATEGORY_MTID, Articles::log_item);
-	definite_article = Articles::new(I"definite article");
-	indefinite_article = Articles::new(I"indefinite article");
+	definite_article = Articles::new(I"definite");
+	indefinite_article = Articles::new(I"indefinite");
 }
 
 article *Articles::new(text_stream *name) {
@@ -172,6 +174,7 @@ small_word_set *Articles::add(small_word_set *sws, nonterminal *nt, article *a) 
 						if (au == NULL) {
 							au = CREATE(article_usage);
 							au->article_used = a;
+							au->word_used = alt->ve_pt;
 							au->usage = Stock::new_usage(a->in_stock, NULL);
 							Stock::add_to_sws(sws, alt->ve_pt, au);
 						}
