@@ -147,3 +147,104 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 			break;
 	}
 }
+
+@h Creation.
+The following functions create leaves, or very minor twigs, used in sentence
+diagrams.
+
+=
+parse_node *Diagrams::new_arity0(node_type_t t, wording W) {
+	parse_node *P = Node::new(t);
+	Node::set_text(P, W);
+	return P;
+}
+
+parse_node *Diagrams::new_arity1(node_type_t t, wording W, parse_node *A) {
+	parse_node *P = Node::new(t);
+	Node::set_text(P, W);
+	if (A == NULL) internal_error("no child of arity-1 node");
+	P->down = A;
+	return P;
+}
+
+parse_node *Diagrams::new_arity2(node_type_t t, wording W, parse_node *A, parse_node *B) {
+	parse_node *P = Node::new(t);
+	Node::set_text(P, W);
+	if (A == NULL) internal_error("no first child of arity-2 node");
+	if (B == NULL) internal_error("no second child of arity-2 node");
+	P->down = A; P->down->next = B;
+	return P;
+}
+
+@ And those are then used to make the following.
+
+Note that if the variable |preform_lookahead_mode| is set, then all these
+functions return |NULL|: this optimisation prevents us from creating millions
+of useless nodes when all that's happening is that the sentence parser is
+looking ahead speculatively.[1]
+
+[1] At one time Inform used garbage collection to reclaim discarded nodes
+instead, but it turned out to be more efficient not to make garbage in the
+first place: a lesson there for all of us.
+
+=
+parse_node *Diagrams::new_UNPARSED_NOUN(wording W) {
+	if (preform_lookahead_mode) return NULL;
+	return Diagrams::new_arity0(UNPARSED_NOUN_NT, W);
+}
+
+parse_node *Diagrams::new_DEFECTIVE(wording W) {
+	if (preform_lookahead_mode) return NULL;
+	return Diagrams::new_arity0(DEFECTIVE_NOUN_NT, W);
+}
+
+parse_node *Diagrams::new_PROPER_NOUN(wording W) {
+	if (preform_lookahead_mode) return NULL;
+	return Diagrams::new_arity0(PROPER_NOUN_NT, W);
+}
+
+parse_node *Diagrams::new_PROPERTY_LIST(wording W) {
+	if (preform_lookahead_mode) return NULL;
+	return Diagrams::new_arity0(PROPERTY_LIST_NT, W);
+}
+
+parse_node *Diagrams::new_PRONOUN(wording W, pronoun_usage *pro) {
+	if (preform_lookahead_mode) return NULL;
+	parse_node *PN = Diagrams::new_arity0(PRONOUN_NT, W);
+	Node::set_pronoun(PN, pro);
+	return PN;
+}
+
+parse_node *Diagrams::new_KIND(wording W, parse_node *O) {
+	if (preform_lookahead_mode) return NULL;
+	if (O == NULL) return Diagrams::new_arity0(KIND_NT, W);
+	return Diagrams::new_arity1(KIND_NT, W, O);
+}
+
+parse_node *Diagrams::new_RELATIONSHIP(wording W, VERB_MEANING_LINGUISTICS_TYPE *R,
+	parse_node *O) {
+	if (preform_lookahead_mode) return NULL;
+	parse_node *P = Diagrams::new_arity1(RELATIONSHIP_NT, W, O);
+	Node::set_relationship(P, R);
+	return P;
+}
+
+parse_node *Diagrams::new_implied_RELATIONSHIP(wording W, VERB_MEANING_LINGUISTICS_TYPE *R) {
+	if (preform_lookahead_mode) return NULL;
+	return Diagrams::new_RELATIONSHIP(W, R, Diagrams::new_PRONOUN(W, Pronouns::get_implied()));
+}
+
+parse_node *Diagrams::new_AND(wording W, parse_node *X, parse_node *Y) {
+	if (preform_lookahead_mode) return NULL;
+	return Diagrams::new_arity2(AND_NT, W, X, Y);
+}
+
+parse_node *Diagrams::new_WITH(wording W, parse_node *X, parse_node *Y) {
+	if (preform_lookahead_mode) return NULL;
+	return Diagrams::new_arity2(WITH_NT, W, X, Y);
+}
+
+parse_node *Diagrams::new_CALLED(wording W, parse_node *X, parse_node *Y) {
+	if (preform_lookahead_mode) return NULL;
+	return Diagrams::new_arity2(CALLED_NT, W, X, Y);
+}

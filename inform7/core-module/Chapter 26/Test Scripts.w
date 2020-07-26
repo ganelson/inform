@@ -191,9 +191,9 @@ int PL::Parsing::TestScripts::test_with_SMF(int task, parse_node *V, wording *NP
 	switch (task) { /* "Test me with..." */
 		case ACCEPT_SMFT:
 			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-			<nounphrase>(O2W);
+			<np-unparsed>(O2W);
 			V->next = <<rp>>;
-			<nounphrase>(OW);
+			<np-unparsed>(OW);
 			V->next->next = <<rp>>;
 			return TRUE;
 		case TRAVERSE2_SMFT:

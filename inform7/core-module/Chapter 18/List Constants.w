@@ -128,7 +128,7 @@ kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
 	parse_node *cs = current_sentence;
 	if (issue_problems) {
 		if (ll->list_text == NULL)
-			ll->list_text = NounPhrases::new_raw(ll->unbraced_text);
+			ll->list_text = Diagrams::new_UNPARSED_NOUN(ll->unbraced_text);
 		current_sentence = ll->list_text;
 	}
 	kind *K = K_value;

@@ -9,8 +9,8 @@ which indicates that their results are S-nodes.
 
 The simplest nonterminal in the S-grammar is <s-plain-text>, which
 accepts any non-empty piece of text. (The same can be said exactly of
-<nounphrase>, and the difference is purely to do with how Inform stores
-the results: <nounphrase> makes nodes in the main parse tree, a rather
+<np-unparsed>, and the difference is purely to do with how Inform stores
+the results: <np-unparsed> makes nodes in the main parse tree, a rather
 permanent structure, whereas <s-plain-text> makes an S-node.)
 
 =

@@ -35,7 +35,7 @@ int problem_count_when_creator_started;
 
 int Assertions::Creator::consult_the_creator(parse_node *px, parse_node *py) {
 	problem_count_when_creator_started = problem_count;
-	if (<s-existential-np>(Node::get_text(px)))
+	if (<existential-np>(Node::get_text(px)))
 		@<Perform creation duties on a "There is..." sentence@>
 	else
 		@<Perform creation duties on a copular sentence@>;

@@ -132,7 +132,7 @@ testing the existence of something.
 	not <s-phrase-to-decide>								==> Conditions::negate(RP[1])
 
 <existential-verb-phrase> ::=
-	<s-existential-np> is/are ...
+	<existential-np> is/are ...
 
 <s-phrase-to-decide> internal {
 	parse_node *p = Lexicon::retrieve(COND_PHRASE_MC, W);

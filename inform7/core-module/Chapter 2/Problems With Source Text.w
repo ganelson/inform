@@ -143,7 +143,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 			case SYNTAX_CE:
 				switch (CE->error_subcategory) {
 					case UnexpectedSemicolon_SYNERROR:
-						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnexpectedSemicolon));
 						Problems::issue_problem_segment(
 							"The text %1 is followed by a semicolon ';', which only makes "
@@ -153,7 +153,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::issue_problem_end();
 						break;
 					case ParaEndsInColon_SYNERROR:
-						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ParaEndsInColon));
 						Problems::issue_problem_segment(
 							"The text %1 seems to end a paragraph with a colon. (Rule declarations "
@@ -162,7 +162,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::issue_problem_end();
 						break;
 					case SentenceEndsInColon_SYNERROR:
-						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SentenceEndsInColon));
 						Problems::issue_problem_segment(
 							"The text %1 seems to have a colon followed by a full stop, which is "
@@ -170,7 +170,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::issue_problem_end();
 						break;
 					case SentenceEndsInSemicolon_SYNERROR:
-						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SentenceEndsInSemicolon));
 						Problems::issue_problem_segment(
 							"The text %1 seems to have a semicolon followed by a full stop, which is "
@@ -178,7 +178,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::issue_problem_end();
 						break;
 					case SemicolonAfterColon_SYNERROR:
-						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SemicolonAfterColon));
 						Problems::issue_problem_segment(
 							"The text %1 seems to have a semicolon following a colon, which is "
@@ -186,7 +186,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::issue_problem_end();
 						break;
 					case SemicolonAfterStop_SYNERROR:
-						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SemicolonAfterStop));
 						Problems::issue_problem_segment(
 							"The text %1 seems to have a semicolon following a full stop, which is "
@@ -194,9 +194,9 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::issue_problem_end();
 						break;
 					case HeadingOverLine_SYNERROR:
-						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
-						Problems::quote_source(2, NounPhrases::new_raw(Wordings::up_to(CE->details_W, CE->details_N-1)));
-						Problems::quote_source(3, NounPhrases::new_raw(Wordings::from(CE->details_W, CE->details_N)));
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						Problems::quote_source(2, Diagrams::new_UNPARSED_NOUN(Wordings::up_to(CE->details_W, CE->details_N-1)));
+						Problems::quote_source(3, Diagrams::new_UNPARSED_NOUN(Wordings::from(CE->details_W, CE->details_N)));
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingOverLine));
 						Problems::issue_problem_segment(
 							"The text %1 seems to be a heading, but contains a "
@@ -208,9 +208,9 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::issue_problem_end();
 						break;
 					case HeadingStopsBeforeEndOfLine_SYNERROR:
-						Problems::quote_source(1, NounPhrases::new_raw(CE->details_W));
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
 						Problems::quote_source(2,
-							NounPhrases::new_raw(Wordings::new(Wordings::last_wn(CE->details_W)+1, CE->details_N-1)));
+							Diagrams::new_UNPARSED_NOUN(Wordings::new(Wordings::last_wn(CE->details_W)+1, CE->details_N-1)));
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_HeadingStopsBeforeEndOfLine));
 						Problems::issue_problem_segment(
 							"The text %1 seems to be a heading, but does not occupy "

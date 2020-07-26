@@ -1074,7 +1074,7 @@ changed progenitors at Stage II.)
 	instance *I3 = I;
 	while (TRUE) {
 		wording IW = Instances::get_name(I3, FALSE);
-		parse_node *creator = NounPhrases::new_raw(IW);
+		parse_node *creator = Diagrams::new_UNPARSED_NOUN(IW);
 		Problems::quote_object(2, I3);
 		Problems::quote_source(3, creator);
 		Problems::issue_problem_segment("%2 (created by %3) ");

@@ -238,7 +238,8 @@ now absolutely any non-empty word range is accepted as the property name.
 
 <new-verb-sentence-object-unarticled> ::=
 	verb |    ==> TRUE; *XP = NULL;
-	verb implying/meaning <nounphrase-definite>						==> TRUE; *XP = RP[1]
+	verb implying/meaning <definite-article> nounphrase-unparsed> |	==> TRUE; *XP = RP[2]
+	verb implying/meaning <np-unparsed>						==> TRUE; *XP = RP[1]
 
 @ =
 int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
@@ -250,7 +251,7 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 				if (<<r>> == FALSE) return FALSE;
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				NewVerbs::parse_new(V, FALSE);
@@ -270,8 +271,8 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 
 <verb-means-sentence-subject-unarticled> ::=
 	verb to |    ==> FALSE; return FAIL_NONTERMINAL;
-	verb <nounphrase> in the imperative |    ==> TRUE; *XP = RP[1]
-	verb <nounphrase>												==> FALSE; *XP = RP[1]
+	verb <np-unparsed> in the imperative |    ==> TRUE; *XP = RP[1]
+	verb <np-unparsed>												==> FALSE; *XP = RP[1]
 
 @ =
 int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
@@ -283,7 +284,7 @@ int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
 				int imperative_flag = <<r>>;
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				V->next = <<rp>>;
-				<nounphrase-articled>(OW);
+				<np-articled>(OW);
 				V->next->next = <<rp>>;
 				NewVerbs::parse_new(V, imperative_flag);
 				return TRUE;
@@ -1122,7 +1123,8 @@ int NewVerbs::takes_contraction_form(word_assemblage *wa) {
 
 <new-adjective-sentence-object-unarticled> ::=
 	adjective |    ==> TRUE; *XP = NULL
-	adjective implying/meaning <nounphrase-definite>					==> TRUE; *XP = RP[1]
+	adjective implying/meaning <definite-article> <np-unparsed>	| ==> TRUE; *XP = RP[2]
+	adjective implying/meaning <np-unparsed>					==> TRUE; *XP = RP[1]
 
 @ =
 int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
@@ -1133,8 +1135,8 @@ int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
 			if (<new-adjective-sentence-object>(OW)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
-				if (O == NULL) { <nounphrase>(OW); O = <<rp>>; }
-				<nounphrase>(SW);
+				if (O == NULL) { <np-unparsed>(OW); O = <<rp>>; }
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;

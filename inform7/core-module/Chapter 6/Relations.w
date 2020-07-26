@@ -97,7 +97,7 @@ parse tree.
 
 =
 <new-relation-sentence-object> ::=
-	<nounphrase> to <nounphrase>					==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	<np-unparsed> to <np-unparsed>					==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
 
 @ =
 int Relations::new_relation_SMF(int task, parse_node *V, wording *NPs) {
@@ -108,7 +108,7 @@ int Relations::new_relation_SMF(int task, parse_node *V, wording *NPs) {
 			if (<new-relation-sentence-object>(OW)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				Relations::parse_new(V);

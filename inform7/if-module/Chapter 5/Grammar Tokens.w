@@ -91,14 +91,14 @@ void PL::Parsing::Tokens::break_into_tokens(parse_node *pn, wording W) {
 			if (*(Lexer::word_text(Wordings::first_wn(W))) == 0) return;
 			W = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(W)), FALSE, GRAMMAR_PUNCTUATION_MARKS);
 			LOOP_THROUGH_WORDING(i, W) {
-				parse_node *newpn = NounPhrases::new_raw(Wordings::one_word(i));
+				parse_node *newpn = Diagrams::new_UNPARSED_NOUN(Wordings::one_word(i));
 				Node::set_type(newpn, TOKEN_NT);
 				Annotations::write_int(newpn, grammar_token_literal_ANNOT, TRUE);
 				SyntaxTree::graft(Task::syntax_tree(), newpn, pn);
 			}
 			break;
 		case FALSE: {
-			parse_node *newpn = NounPhrases::new_raw(W);
+			parse_node *newpn = Diagrams::new_UNPARSED_NOUN(W);
 			Node::set_type(newpn, TOKEN_NT);
 			Annotations::write_int(newpn, grammar_token_literal_ANNOT, FALSE);
 			SyntaxTree::graft(Task::syntax_tree(), newpn, pn);

@@ -1,14 +1,14 @@
 100.0% in inform7 run
-     66.1% in compilation to Inter
-         25.1% in //Phrases::Manager::compile_first_block//
-          9.0% in //Phrases::Manager::compile_as_needed//
+     66.9% in compilation to Inter
+         25.4% in //Phrases::Manager::compile_first_block//
+          9.1% in //Phrases::Manager::compile_as_needed//
           6.8% in //Strings::compile_responses//
-          5.9% in //World::Compile::compile//
+          5.8% in //World::Compile::compile//
+          3.6% in //Sentences::VPs::traverse//
           3.4% in //Assertions::Traverse::traverse1//
-          3.2% in //Sentences::VPs::traverse//
-          1.9% in //Phrases::Manager::RulePrintingRule_routine//
+          2.0% in //Phrases::Manager::RulePrintingRule_routine//
           1.8% in //Phrases::Manager::rulebooks_array//
-          1.0% in //NewVerbs::ConjugateVerb//
+          1.1% in //NewVerbs::ConjugateVerb//
           0.7% in //Phrases::Manager::traverse//
           0.5% in //Phrases::Manager::parse_rule_parameters//
           0.3% in //Phrases::Manager::compile_rulebooks//
@@ -19,19 +19,18 @@
           0.1% in //Sentences::RuleSubtrees::register_recently_lexed_phrases//
           0.1% in //Task::load_types//
           0.1% in //World::complete//
-          4.3% not specifically accounted for
-     31.4% in running Inter pipeline
-         10.4% in step preparation
-         10.3% in inter step 2/12: link
+          4.1% not specifically accounted for
+     30.5% in running Inter pipeline
+         10.0% in step preparation
+          9.8% in inter step 2/12: link
           7.0% in inter step 12/12: generate inform6 -> auto.inf
           0.3% in inter step 9/12: make-identifiers-unique
           0.1% in inter step 10/12: reconcile-verbs
           0.1% in inter step 11/12: eliminate-redundant-labels
-          0.1% in inter step 4/12: parse-linked-matter
           0.1% in inter step 5/12: resolve-conditional-compilation
           0.1% in inter step 6/12: assimilate
           0.1% in inter step 7/12: resolve-external-symbols
           0.1% in inter step 8/12: inspect-plugs
-          2.0% not specifically accounted for
-      2.1% in supervisor
+          2.1% not specifically accounted for
+      2.2% in supervisor
       0.2% not specifically accounted for

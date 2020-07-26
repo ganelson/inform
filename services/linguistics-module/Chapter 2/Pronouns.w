@@ -102,6 +102,10 @@ small_word_set *here_pronouns_sws = NULL;
 
 pronoun_usage *implied_pronoun_usage = NULL;
 
+pronoun_usage *Pronouns::get_implied(void) {
+	return implied_pronoun_usage;
+}
+
 @ And now we have to make them. The following capacity would be enough even if
 we were simultaneously dealing with four languages in which every inflection
 produced a different word. So it really is not going to run out.

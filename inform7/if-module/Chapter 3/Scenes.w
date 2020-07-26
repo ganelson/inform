@@ -299,9 +299,9 @@ int PL::Scenes::begins_when_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The Ballroom Scene begins when..." */
 		case ACCEPT_SMFT:
 			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-			<nounphrase>(OW);
+			<np-unparsed>(OW);
 			parse_node *O = <<rp>>;
-			<nounphrase>(SW);
+			<np-unparsed>(SW);
 			V->next = <<rp>>;
 			V->next->next = O;
 			return TRUE;
@@ -326,12 +326,12 @@ int PL::Scenes::ends_when_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The Ballroom Scene ends when..." */
 		case ACCEPT_SMFT:
 			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-			<nounphrase>(OW);
+			<np-unparsed>(OW);
 			parse_node *O = <<rp>>;
-			<nounphrase>(SW);
+			<np-unparsed>(SW);
 			V->next = <<rp>>;
 			if (Wordings::nonempty(O2W)) {
-				<nounphrase>(O2W);
+				<np-unparsed>(O2W);
 				V->next->next = <<rp>>;
 				V->next->next->next = O;
 			} else {

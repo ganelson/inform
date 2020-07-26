@@ -56,8 +56,8 @@ verb, such as:
 The noun phrase of an existential sentence is recognised thus:
 
 =
-<s-existential-np> ::=
-	there							==> Node::new(DEFECTIVE_NOUN_NT);
+<existential-np> ::=
+	there							==> 0; *XP = Diagrams::new_DEFECTIVE(W);
 
 @ We will want to spot adverbs of certainty adjacent to the verb itself;
 English allows these either side, so "A man is usually happy" and "Peter
@@ -383,7 +383,7 @@ who is in the Dining Room" (note the additional "is"), it would.
 	int existential = FALSE, structures = vf->form_structures, last_preposition_position = Wordings::last_wn(OW);
 
 	if ((existential_OP_edge == 0) && (vi == copular_verb) && (required_second == NULL) &&
-		(<s-existential-np>(SW))) {
+		(<existential-np>(SW))) {
 		if (<phrase-with-calling>(OW))
 			last_preposition_position = Wordings::last_wn(GET_RW(<phrase-with-calling>, 1));
 		int rv = VerbPhrases::seek(OW, X, XP, last_preposition_position, detect_occurrences);
@@ -534,10 +534,10 @@ int VerbPhrases::default_verb(int task, parse_node *V, verb_meaning *vm, wording
 			verb *vsave = permitted_verb;
 			permitted_verb = VerbUsages::get_verb(vu);
 
-			if (<nounphrase-as-object>(OW) == FALSE) internal_error("<nounphrase-as-object> failed");
+			if (<np-as-object>(OW) == FALSE) internal_error("<np-as-object> failed");
 			parse_node *O_PN = <<rp>>;
 
-			if (<nounphrase-as-subject>(SW) == FALSE) internal_error("<nounphrase-as-subject> failed");
+			if (<np-as-subject>(SW) == FALSE) internal_error("<np-as-subject> failed");
 			parse_node *S_PN = <<rp>>;
 
 			V->next = S_PN;
@@ -568,7 +568,7 @@ the exactly equivalent idea of the hat being worn by Darcy.
 	VERB_MEANING_LINGUISTICS_TYPE *meaning = VerbMeanings::get_regular_meaning(vm);
 	if (meaning == NULL) return FALSE;
 	if (meaning != VERB_MEANING_EQUALITY)
-		V->next->next = NounPhrases::PN_rel(
+		V->next->next = Diagrams::new_RELATIONSHIP(
 			Node::get_text(V), VerbMeanings::reverse_VMT(meaning), O_PN);
 
 @

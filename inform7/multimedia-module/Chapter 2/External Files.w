@@ -127,7 +127,7 @@ letters or digits, with the first being a letter.
 	<new-file-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
 
 <new-file-sentence-object-unarticled> ::=
-	called <nounphrase>												==> TRUE; *XP = RP[1];
+	called <np-unparsed>												==> TRUE; *XP = RP[1];
 
 @ =
 int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
@@ -138,7 +138,7 @@ int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
 			if ((<nounphrase-external-file>(SW)) && (<new-file-sentence-object>(OW))) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;

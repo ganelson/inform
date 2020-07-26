@@ -271,7 +271,7 @@ direction object for "north".
 @<Make the relation one which refers to a map direction@> =
 	LOGIF(NOUN_RESOLUTION, "Directional predicate with BP from $O\n", dir);
 	wording DW = Instances::get_name(dir, FALSE);
-	p->down->next = NounPhrases::new_raw(DW);
+	p->down->next = Diagrams::new_UNPARSED_NOUN(DW);
 	Assertions::Refiner::noun_from_infs(p->down->next, Instances::as_subject(dir));
 	Annotations::write_int(p->down->next, resolved_ANNOT, TRUE);
 
@@ -328,7 +328,7 @@ inference subject representing the domain to which any new kind would belong.
 	if (pro) {
 		if (pro->pronoun_used == here_pronoun) {
 			Node::set_type(p, RELATIONSHIP_NT);
-			p->down = NounPhrases::new_pronoun(Node::get_text(p), pro);
+			p->down = Diagrams::new_PRONOUN(Node::get_text(p), pro);
 			return;
 		}
 		if (pro->pronoun_used == implied_pronoun) {
@@ -406,9 +406,9 @@ property of something.
 		(Properties::Valued::coincides_with_kind(prn)) */) {
 		LOGIF(NOUN_RESOLUTION, "Resolving new-property of: $Y\n", prn);
 		Node::set_type(p, X_OF_Y_NT);
-		<nounphrase-articled>(OW);
+		<np-articled>(OW);
 		p->down = <<rp>>;
-		<nounphrase-as-object>(PW);
+		<np-as-object>(PW);
 		p->down->next = <<rp>>;
 		Annotations::write_int(p, resolved_ANNOT, FALSE);
 		LOGIF(NOUN_RESOLUTION, "Resolved new-property to:\n$T\n", p);

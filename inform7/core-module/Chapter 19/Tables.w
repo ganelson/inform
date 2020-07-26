@@ -305,7 +305,7 @@ void Tables::create_table(parse_node *PN) {
 
 	wording HW = Wordings::up_to(W, Wordings::last_word_of_formatted_text(W, FALSE));
 	if (Wordings::length(HW) == 1) @<Reject this lexically malformed table declaration@>;
-	t->headline_fragment = NounPhrases::new_raw(HW);
+	t->headline_fragment = Diagrams::new_UNPARSED_NOUN(HW);
 	Hierarchy::markup_wording(t->table_package, TABLE_NAME_HMD, HW);
 	current_sentence = t->headline_fragment;
 
@@ -507,7 +507,7 @@ a node in the parse tree representing the column's use within this table.
 	current_sentence = PN;
 	wording CW = Wordings::new(pos, cell_end);
 	if (col_count == MAX_COLUMNS_PER_TABLE) {
-		parse_node *overflow = NounPhrases::new_raw(CW);
+		parse_node *overflow = Diagrams::new_UNPARSED_NOUN(CW);
 		int limit = MAX_COLUMNS_PER_TABLE;
 		Problems::quote_number(4, &limit);
 		StandardProblems::table_problem(_p_(PM_TableTooManyColumns),
@@ -526,7 +526,7 @@ a node in the parse tree representing the column's use within this table.
 
 @<This is a data cell@> =
 	wording CW = Wordings::new(pos, cell_end);
-	parse_node *cell = NounPhrases::new_proper_noun(CW);
+	parse_node *cell = Diagrams::new_PROPER_NOUN(CW);
 	if (col_count >= t->no_columns) {
 		current_sentence = PN;
 		Problems::quote_number(4, &(row_count));
@@ -783,7 +783,7 @@ columns and in the same order.
 
 @ =
 parse_node *Tables::empty_cell_node(void) {
-	return NounPhrases::new_proper_noun(EMPTY_WORDING);
+	return Diagrams::new_PROPER_NOUN(EMPTY_WORDING);
 }
 
 @h Table stocking.

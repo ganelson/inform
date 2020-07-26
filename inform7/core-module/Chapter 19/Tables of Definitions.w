@@ -86,7 +86,7 @@ whatever is named in column 1.
 
 =
 <defined-by-sentence-object> ::=
-	defined by <nounphrase-as-object>			==> TRUE; *XP = RP[1]
+	defined by <np-as-object>			==> TRUE; *XP = RP[1]
 
 @ =
 int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
@@ -99,7 +99,7 @@ int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				Annotations::write_int(V, examine_for_ofs_ANNOT, TRUE);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;
@@ -261,8 +261,7 @@ have occurred, but if it does then the creation has worked.
 		if (<table-cell-blank>(NW))
 			@<Issue a problem for trying to create a blank name@>;
 		parse_node *evaluation = NULL;
-		if (<s-type-expression>(Node::get_text(name_entry)))
-			evaluation = <<rp>>;
+		if (<s-type-expression>(Node::get_text(name_entry))) evaluation = <<rp>>;
 		Assertions::Refiner::noun_from_value(name_entry, evaluation);
 		if (Specifications::is_kind_like(evaluation))
 			@<Issue a problem for trying to create an existing kind as a new instance@>;

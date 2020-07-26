@@ -176,7 +176,7 @@ parse the text to find what which property is referred to.
 			Problems::issue_problem_end();
 			return NULL;
 		}
-		<nounphrase-as-object>(VW);
+		<np-as-object>(VW);
 		parse_node *pn = <<rp>>;
 		Assertions::Refiner::refine(pn, FORBID_CREATION);
 		pcalc_prop *P = Calculus::Propositions::Abstract::from_property_subtree(prn, pn);

@@ -12,7 +12,7 @@ Y or Z...".
 
 =
 <either-sentence-object> ::=
-	either <nounphrase>					==> TRUE; *XP = RP[1]
+	either <np-unparsed>					==> TRUE; *XP = RP[1]
 
 @ =
 int Assertions::Property::either_SMF(int task, parse_node *V, wording *NPs) {
@@ -23,7 +23,7 @@ int Assertions::Property::either_SMF(int task, parse_node *V, wording *NPs) {
 			if (<either-sentence-object>(OW)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;
@@ -43,9 +43,9 @@ int Assertions::Property::optional_either_SMF(int task, parse_node *V, wording *
 	switch (task) { /* "A room can be dark or lighted." */
 		case ACCEPT_SMFT:
 			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-			<nounphrase>(OW);
+			<np-unparsed>(OW);
 			parse_node *O = <<rp>>;
-			<nounphrase>(SW);
+			<np-unparsed>(SW);
 			V->next = <<rp>>;
 			V->next->next = O;
 			return TRUE;
@@ -158,10 +158,10 @@ which might take forms such as:
 
 =
 <can-be-sentence-object> ::=
-	either <nounphrase-alternative-list> ( <condition-name> ) |    ==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	<nounphrase-alternative-list> ( <condition-name> ) |    ==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	either <nounphrase-alternative-list> |    ==> TRUE; *XP = RP[1]
-	<nounphrase-alternative-list>								==> FALSE; *XP = RP[1]
+	either <np-alternative-list> ( <condition-name> ) |    ==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	<np-alternative-list> ( <condition-name> ) |    ==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	either <np-alternative-list> |    ==> TRUE; *XP = RP[1]
+	<np-alternative-list>								==> FALSE; *XP = RP[1]
 
 <condition-name> ::=
 	this is <condition-name-inner> |    ==> 0; *XP = RP[1]
@@ -173,8 +173,8 @@ which might take forms such as:
 	<condition-name-innermost>								==> 0; *XP = RP[1]
 
 <condition-name-innermost> ::=
-	<nounphrase> property |    ==> 0; *XP = RP[1]
-	<nounphrase>							==> 0; *XP = RP[1]
+	<np-unparsed> property |    ==> 0; *XP = RP[1]
+	<np-unparsed>							==> 0; *XP = RP[1]
 
 @<An optional condition name can only be given to a condition@> =
 	if ((Wordings::nonempty(CNW)) && (count < 3)) {

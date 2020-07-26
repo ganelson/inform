@@ -51,7 +51,7 @@ will be required to pass |<extra-response>|.
 
 =
 <translates-into-i6-sentence-object> ::=
-	<quoted-text> with <nounphrase-articled-list> |    ==> R[1]; *XP = RP[2];
+	<quoted-text> with <np-articled-list> |    ==> R[1]; *XP = RP[2];
 	<quoted-text>									==> R[1]; *XP = NULL;
 
 @ =

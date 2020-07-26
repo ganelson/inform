@@ -72,7 +72,7 @@ blorb_sound *PL::Sounds::new_blorb_sound(instance *nc) {
 	<new-sound-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
 
 <new-sound-sentence-object-unarticled> ::=
-	file <nounphrase>												==> TRUE; *XP = RP[1]
+	file <np-unparsed>												==> TRUE; *XP = RP[1]
 
 @ =
 int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
@@ -83,7 +83,7 @@ int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 			if ((<nounphrase-sound>(SW)) && (<new-sound-sentence-object>(OW))) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;

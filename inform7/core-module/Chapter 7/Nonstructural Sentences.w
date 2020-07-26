@@ -162,7 +162,7 @@ int Sentences::VPs::include_in_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<the-debugging-log>(OW)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				<nounphrase-articled-list>(O2W);
+				<np-articled-list>(O2W);
 				V->next = <<rp>>;
 				Sentences::VPs::switch_dl_mode(V->next, TRUE);
 				return TRUE;
@@ -179,7 +179,7 @@ int Sentences::VPs::omit_from_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<the-debugging-log>(OW)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				<nounphrase-articled-list>(O2W);
+				<np-articled-list>(O2W);
 				V->next = <<rp>>;
 				Sentences::VPs::switch_dl_mode(V->next, FALSE);
 				return TRUE;
@@ -401,16 +401,16 @@ new action.
 
 =
 <nounphrase-figure> ::=
-	figure ...							==> GENERATE_RAW_NP
+	figure ...							==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
 
 <nounphrase-sound> ::=
-	sound ...							==> GENERATE_RAW_NP
+	sound ...							==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
 
 <nounphrase-external-file> ::=
-	<external-file-sentence-subject>						==> GENERATE_RAW_NP
+	<external-file-sentence-subject>						==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
 
 <nounphrase-actionable> ::=
-	^<variable-creation-tail>			==> GENERATE_RAW_NP
+	^<variable-creation-tail>			==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
 
 <variable-creation-tail> ::=
 	*** that/which vary/varies |
@@ -438,9 +438,9 @@ int Sentences::VPs::translates_into_unicode_as_SMF(int task, parse_node *V, word
 		case ACCEPT_SMFT:
 			if (<translation-target-unicode>(O2W)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				<nounphrase-definite>(SW);
+				<np-articled>(SW);
 				V->next = <<rp>>;
-				<nounphrase-articled>(OW);
+				<np-articled>(OW);
 				V->next->next = <<rp>>;
 				return TRUE;
 			}
@@ -460,9 +460,9 @@ int Sentences::VPs::translates_into_I6_as_SMF(int task, parse_node *V, wording *
 		case ACCEPT_SMFT:
 			if (<translation-target-i6>(O2W)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				<nounphrase-definite>(SW);
+				<np-articled>(SW);
 				V->next = <<rp>>;
-				<nounphrase-articled>(OW);
+				<np-articled>(OW);
 				V->next->next = <<rp>>;
 				return TRUE;
 			}
@@ -484,9 +484,9 @@ int Sentences::VPs::translates_into_language_as_SMF(int task, parse_node *V, wor
 			if (<translation-target-language>(O2W)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				inform_language *nl = (inform_language *) (<<rp>>);
-				<nounphrase-definite>(SW);
+				<np-articled>(SW);
 				V->next = <<rp>>;
-				<nounphrase-articled>(OW);
+				<np-articled>(OW);
 				V->next->next = <<rp>>;
 				Node::set_defn_language(V->next->next, nl);
 				return TRUE;

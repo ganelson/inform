@@ -7,8 +7,8 @@ The user gives us plurals with special sentences, whose subject is like so:
 
 =
 <plural-sentence-subject> ::=
-	<article> plural of <nounphrase-articled> |    ==> TRUE; *XP = RP[2]
-	plural of <nounphrase-articled>							==> TRUE; *XP = RP[1]
+	<article> plural of <np-articled> |    ==> TRUE; *XP = RP[2]
+	plural of <np-articled>							==> TRUE; *XP = RP[1]
 
 @ We take immediate action on parsing the sentence, and after that ignore it
 as having been dealt with.
@@ -27,7 +27,7 @@ int Plurals::plural_SMF(int task, parse_node *V, wording *NPs) {
 			if (<plural-sentence-subject>(SW)) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				V->next = <<rp>>;
-				<nounphrase>(OW);
+				<np-unparsed>(OW);
 				V->next->next = <<rp>>;
 				wording S = Node::get_text(V->next);
 				wording P = Node::get_text(V->next->next);

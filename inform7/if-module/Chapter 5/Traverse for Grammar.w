@@ -58,9 +58,9 @@ int PL::Parsing::understand_as_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Understand... as..." */
 		case ACCEPT_SMFT:
 			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-			<nounphrase>(O2W);
+			<np-unparsed>(O2W);
 			V->next = <<rp>>;
-			<nounphrase>(OW);
+			<np-unparsed>(OW);
 			V->next->next = <<rp>>;
 			return TRUE;
 		case TRAVERSE_FOR_GRAMMAR_SMFT:
@@ -753,7 +753,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 	}
 
 	XW = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(W)), TRUE, GRAMMAR_PUNCTUATION_MARKS);
-	to_pn = NounPhrases::new_raw(W);
+	to_pn = Diagrams::new_UNPARSED_NOUN(W);
 	PL::Parsing::Tokens::break_into_tokens(to_pn, XW);
 	if (to_pn->down == NULL) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandEmptyText),

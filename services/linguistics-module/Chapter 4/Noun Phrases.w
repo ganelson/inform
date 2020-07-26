@@ -8,291 +8,163 @@ Noun phrase nodes are built at four levels of elaboration, which we take in
 turn:
 
 (-NP1) Raw: where the text is entirely untouched and unannotated.
-(-NP2) Articled: where any initial English article is converted to an annotation.
+(-NP2) Articled: where any initial article is converted to an annotation.
 (-NP3) List-divided: where, in addition, a list is broken up into individual items.
-(-NP4) Worldly: where, in addition, pronouns, relative phrases establishing
-relationships and properties (and other grammar meaningful only for references
-to physical objects and kinds) are parsed.
-
-At levels (NP1) and (NP2), a NP produces a single |UNPARSED_NOUN_NT| node; at
-level (NP3), the result is a subtree contining |UNPARSED_NOUN_NT| and |AND_NT|
-nodes; but at level (NP4) this subtree may include any of |RELATIONSHIP_NT|,
-|CALLED_NT|, |WITH_NT|, |AND_NT|, |KIND_NT| or |UNPARSED_NOUN_NT|.
-
-Because a small proportion of noun phrase subtrees is thrown away, due to
-backtracking on mistaken guesses at parsing of sentences, it is important
-that creating an (NP) should have no side-effects beyond the construction
-of the tree itself (and, of course, the memory used up, but we won't worry
-about that: the proportion thrown away really is small).
-
-@h Creation.
-The following macro is useful in the grammar below:
-
-@d GENERATE_RAW_NP
-	0; *XP = (preform_lookahead_mode == FALSE)?(NounPhrases::new_raw(W)):NULL
-
-=
-parse_node *NounPhrases::new_raw(wording W) {
-	parse_node *PN = Node::new(UNPARSED_NOUN_NT);
-	Node::set_text(PN, W);
-	return PN;
-}
-
-parse_node *NounPhrases::new_proper_noun(wording W) {
-	parse_node *PN = Node::new(PROPER_NOUN_NT);
-	Node::set_text(PN, W);
-	return PN;
-}
-
-parse_node *NounPhrases::new_pronoun(wording W, pronoun_usage *pro) {
-	if (preform_lookahead_mode) return NULL;
-	parse_node *PN = Node::new(PRONOUN_NT);
-	Node::set_text(PN, W);
-	Node::set_pronoun(PN, pro);
-	return PN;
-}
-
-@ Other node types are generated as follows. Note that these make nothing in
-lookahead mode; this prevents needless memory allocation.
-
-=
-parse_node *NounPhrases::PN_void(node_type_t t, wording W) {
-	if (preform_lookahead_mode) return NULL;
-	parse_node *P = Node::new(t);
-	Node::set_text(P, W);
-	return P;
-}
-
-parse_node *NounPhrases::PN_single(node_type_t t, wording W, parse_node *A) {
-	if (preform_lookahead_mode) return NULL;
-	parse_node *P = Node::new(t);
-	Node::set_text(P, W);
-	P->down = A;
-	return P;
-}
-
-parse_node *NounPhrases::PN_pair(node_type_t t, wording W, parse_node *A, parse_node *B) {
-	if (preform_lookahead_mode) return NULL;
-	parse_node *P = Node::new(t);
-	Node::set_text(P, W);
-	P->down = A; P->down->next = B;
-	return P;
-}
+(-NP4) Full: where, in addition, pronouns, relative phrases establishing
+relationships and properties, and so on are parsed.
 
 @h Raw nounphrases (NP1).
-A raw noun phrase can in principle be any nonempty wording:
+A raw noun phrase is always a single |UNPARSED_NOUN_NT|. The following always
+matches any non-empty text:
 
 =
-<nounphrase> ::=
-	...									==> GENERATE_RAW_NP
+<np-unparsed> ::=
+	...                 ==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
+
+@ This "balanced" version, however, requires any brackets and braces to be
+used in a balanced way: thus |frogs ( and toads )| would match, but
+|frogs ( and| would not. It therefore does not always match.
+
+=
+<np-balanced> ::=
+	^<balanced-text> |  ==> 0; return FAIL_NONTERMINAL;
+	<np-unparsed>       ==> 0; *XP = RP[1]
 
 @h Articled nounphrases (NP2).
-Although, again, any text is acceptable, now we now take note of the definite
-or indefinite article, and also of whether it's used in the singular or the
-plural.
-
-Note that unexpectedly upper-case articles are left well alone: this is why
+Now an initial article becomes an annotation and is removed from the text.
+Note that
+(a) Unexpectedly upper-case articles are left well alone, as in the sentence:
 
 >> On the table is a thing called A Town Called Alice.
 
-creates an object called "A Town Called Alice", not an indefinitely-articled
-one called "Town Called Alice". Articles are not removed if that would
-leave the text empty.
+(b) Articles are not removed if that would leave the text empty.
+
+(c) If we are in a language where the same word might either be definite or
+indefinite, the latter has precedence.
 
 =
-<nounphrase-definite> ::=
-	<definite-article> <nounphrase> |    ==> 0; *XP = RP[2]
-	<nounphrase>						==> 0; *XP = RP[1]
-
-<nounphrase-articled> ::=
+<np-articled> ::=
 	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<if-not-deliberately-capitalised> <indefinite-article> <nounphrase> |    ==> 0; *XP = RP[3]; @<Annotate node by article@>;
-	<if-not-deliberately-capitalised> <definite-article> <nounphrase> |    ==> 0; *XP = RP[3]; @<Annotate node by article@>;
-	<nounphrase>															==> 0; *XP = RP[1]
+	<if-not-deliberately-capitalised> <indefinite-article> <np-unparsed> |  ==> 0; *XP = NounPhrases::add_article(RP[3], RP[2]);
+	<if-not-deliberately-capitalised> <definite-article> <np-unparsed> |    ==> 0; *XP = NounPhrases::add_article(RP[3], RP[2]);
+	<np-unparsed>															==> 0; *XP = RP[1]
 
-@<Annotate node by article@> =
-	article_usage *au = (article_usage *) RP[2];
-	Node::set_article(*XP, au);
+<np-articled-balanced> ::=
+	^<balanced-text> |                                                      ==> 0; return FAIL_NONTERMINAL;
+	<np-articled>								                            ==> 0; *XP = RP[1]
 
-@ Sometimes we want to look at the article (if any) used in a raw NP, and
-absorb that into annotations, removing it from the wording. For instance, in
+@ =
+parse_node *NounPhrases::add_article(parse_node *p, article_usage *au) {
+	Node::set_article(p, au);
+	return p;
+}
 
->> On the table is a thing called a part of the broken box.
-
-we want to remove the initial article from the calling-name to produce
-"part of the broken box". (If we handled this NP as other than raw, we might
-spuriously make a subtree with |RELATIONSHIP_NT| in thanks to the apparent
-"part of" clause.)
+@ The following function is only occasionally useful (for example, Inform
+uses it in //core: Tables of Definitions//); takes an existing raw node
+and retrospectively applies <np-articled> to it.
 
 =
 parse_node *NounPhrases::annotate_by_articles(parse_node *RAW_NP) {
-	<nounphrase-articled>(Node::get_text(RAW_NP));
+	<np-articled>(Node::get_text(RAW_NP));
 	parse_node *MODEL = <<rp>>;
 	Node::set_text(RAW_NP, Node::get_text(MODEL));
 	Node::set_article(RAW_NP, Node::get_article(MODEL));
 	return RAW_NP;
 }
 
-@h Balanced variants.
-The balanced versions match any text in which brackets and braces are used in
-a correctly paired way; otherwise they are the same.
-
-=
-<np-balanced> ::=
-	^<balanced-text> |    ==> 0; return FAIL_NONTERMINAL;
-	<nounphrase>										==> 0; *XP = RP[1]
-
-<np-articled-balanced> ::=
-	^<balanced-text> |    ==> 0; return FAIL_NONTERMINAL;
-	<nounphrase-articled>								==> 0; *XP = RP[1]
-
 @h List-divided nounphrases (NP3).
-An "articled list" matches text like
+An "articled list" matches text like "the lion, a witch, and some wardrobes"
+as a list of articled noun phrases.
 
->> the lion, a witch, and some wardrobes
-
-as a list of three articled noun phrases.
+Note that the requirement that non-final terms in the list have to be balanced
+means that an and or a comma inside brackets can never be a divider. Thus
+"the horse (and its boy)" would be one item, not two.
 
 =
-<nounphrase-articled-list> ::=
+<np-articled-list> ::=
 	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-articled-balanced> <np-articled-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
-	<nounphrase-articled>								==> 0; *XP = RP[1]
+	<np-articled-balanced> <np-articled-tail> |  ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
+	<np-articled>                                ==> 0; *XP = RP[1]
 
 <np-articled-tail> ::=
-	, {_and} <nounphrase-articled-list> |    ==> Wordings::first_wn(W); *XP= RP[1]
-	{_,/and} <nounphrase-articled-list>					==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <np-articled-list> |                ==> Wordings::first_wn(W); *XP = RP[1]
+	{_,/and} <np-articled-list>                  ==> Wordings::first_wn(W); *XP = RP[1]
 
-@ That builds into a lopsided binary tree: thus "the lion, a witch,
-and some wardrobes" becomes
-= (text)
-	AND_NT ","
-	    PROPERTY_LIST_NT "lion" article:definite
-	    AND_NT ", and"
-	        PROPERTY_LIST_NT "witch" article:indefinite
-	        PROPERTY_LIST_NT "wardrobe" article:indefinite pluralreference:true
-=
-The binary structure is chosen since it allows us to use a simple recursion
-to run through possibilities, and also to preserve each connective of the text
-in the |AND_NT| nodes.
-
-@ Alternative lists divide up at "or". Thus
-
->> voluminous, middling big or poky
-
-becomes a tree of three (raw) noun phrases.
+@ "Alternative lists" divide up at "or" rather than "and", thus matching text
+such as "voluminous, middling big or poky", and the individual entries are not
+articled.
 
 =
-<nounphrase-alternative-list> ::=
-	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-balanced> <np-alternative-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
-	<nounphrase>									==> 0; *XP = RP[1]
+<np-alternative-list> ::=
+	... |                                  ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
+	<np-balanced> <np-alternative-tail> |  ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
+	<np-unparsed>                          ==> 0; *XP = RP[1]
 
 <np-alternative-tail> ::=
-	, {_or} <nounphrase-alternative-list> |    ==> Wordings::first_wn(W); *XP= RP[1]
-	{_,/or} <nounphrase-alternative-list>			==> Wordings::first_wn(W); *XP= RP[1]
+	, {_or} <np-alternative-list> |  ==> Wordings::first_wn(W); *XP= RP[1]
+	{_,/or} <np-alternative-list>    ==> Wordings::first_wn(W); *XP= RP[1]
 
-@h Worldly nounphrases (NP4).
-That just leaves the big one. It comes in two versions, for the object and
-subject NPs of a regular sentence, but they are almost exactly the same. They
-differ slightly, as we'll see, in the handling of relative phrases; when
-parsing a sentence such as
+@h Full nounphrases (NP4).
+When fully parsing the structure of a nounphrase, we have five different
+constructions in play, and need to work out their precedence over each other:
+rather as |*| takes precedence over |+| in arithmetic expressions in C, so
+here we have --
+= (text)
+	RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT > KIND_NT
+=
+That is, relative clauses take precedence over callings, and so on. The
+above hierarchy is arrived at thus:
+(a) We need |RELATIONSHIP_NT > WITH_NT| so that "X is in a container with
+carrying capacity 10" will work.
+(b) We need |WITH_NT > AND_NT| so that "X is a container with carrying
+capacity 10 and diameter 12" will work.
+(c) We need |CALLED_NT > WITH_NT| so that "X is a container called the flask
+with flange" will work.
+(d) We need |RELATIONSHIP_NT > CALLED_NT| so that "A man called Horse is in
+the High Sierra" will work.
+(e) We want |KIND_NT| to be of low precedence because it is always either
+the word "kind" alone, or "kind of N" for some atomic noun N.
 
->> X is Y
+See //About Sentence Diagrams// for numerous examples.
 
-Inform uses <nounphrase-as-subject> on X and <nounphrase-as-object> on Y. Both
-of these make use of the recursive <np-inner> grammar, and the difference
-in effect is that at the topmost level of recursion the as-subject version
-allows only limited RPs, not unlimited ones. (In languages other than English,
-we might want bigger differences, with X read in the nominative and Y in the
-accusative.)
+@ Full nounphrase parsing varies slightly according to the position of the
+phrase, i.e., whether it is in the subject or object position. Thus "X is Y"
+or "X is in Y" would lead to X being parsed by <np-as-subject>, Y by <np-as-object>.
+They are identical except that:
+
+(a) In subject position, a full nounphrase can use "there" to indicate
+an existential sentence such as "there is a hair in my soup"; and
+
+(b) In subject position, a relative phrase cannot begin with a word which
+looks like a participle.
 
 =
-<nounphrase-as-object> ::=
-	<np-inner> |    ==> 0; *XP = RP[1]
-	<nounphrase-articled>							==> 0; *XP = RP[1]
-
-<nounphrase-as-subject> ::=
-	<s-existential-np> |   ==> 0; *XP = RP[1]; Node::set_text(*XP, W);
+<np-as-subject> ::=
+	<existential-np> |                                                  ==> 0; *XP = RP[1]
 	<if-not-deliberately-capitalised> <np-relative-phrase-limited> |    ==> 0; *XP = RP[2]
-	<np-inner-without-rp> |    ==> 0; *XP = RP[1]
-	<nounphrase-articled>							==> 0; *XP = RP[1]
+	<np-nonrelative>                                                  ==> 0; *XP = RP[1]
 
-<np-inner> ::=
-	<if-not-deliberately-capitalised> <np-relative-phrase-unlimited> |    ==> 0; *XP = RP[2]
-	<np-inner-without-rp>							==> 0; *XP = RP[1]
+<np-as-object> ::=
+	<if-not-deliberately-capitalised> <np-relative-phrase-unlimited> |  ==> 0; *XP = RP[2]
+	<np-nonrelative>							                        ==> 0; *XP = RP[1]
 
-@ So here we go with relative phrases. We've already seen that our two general
-forms of NP differ only in the range of RPs allowed at the top level: here we
-see, furthermore, that the only limitation is that in the subject of an
-assertion sentence, a RP can't be introduced with what seems to be a participle.
-
-It might seem grammatically odd to be parsing RPs as the subject side of a
-sentence, when they surely ought to belong to the VP rather than either of the
-NPs. But English is, in fact, odd this way: it allows indicative statements,
-but no other sentences, to use "subject-verb inversion". An assertion such as
-
->> In the Garden is a tortoise.
-
-is impossible to parse with a naive grammar for relative phrases, because
-the "in" is miles away from its governing verb "is". (This quirk is called an
-inversion since the sentence is equivalent to the easier to construe
-"A tortoise is in the Garden".) This is why we want to parse subject NPs
-and object NPs symmetrically, and allow either one to be an RP instead.
-
-And yet subject-verb inversion can't be allowed in all cases, though; we might
-pedantically argue that the Yoda-like utterance
-
->> Holding the light sabre is the young Jedi.
-
-is grammatically correct, but if so then we have to read
-
->> Holding Area is a room.
-
-as a statement that a room is holding something called "Area", which then
-causes Inform to throw problem messages about confusion between people and
-rooms (since only people can hold things). So we forbid subject-verb inversion
-in the case of a participle like "holding".
+@ To explain the limitation here: RPs only exist in the subject position due
+to subject-verb inversion in English. Thus, "In the Garden is a tortoise" is a
+legal inversion of "A tortoise is in the Garden". Following this logic we ought
+to accept Yoda-like inversions such as "Holding the light sabre is the young Jedi",
+but we don't want to do that, because then a sentence like "Holding Area is a room"
+might have to be read as saying that a nameless room is holding something
+called "Area".
 
 =
 <np-relative-phrase-limited> ::=
-	<np-relative-phrase-implicit> |    ==> 0; *XP = RP[1]
-	<probable-participle> *** |    ==> 0; return FAIL_NONTERMINAL;
-	<np-relative-phrase-explicit>								==> 0; *XP = RP[1]
+	<np-relative-phrase-implicit> |                                     ==> 0; *XP = RP[1]
+	<probable-participle> *** |                                         ==> 0; return FAIL_NONTERMINAL;
+	<np-relative-phrase-explicit>                                       ==> 0; *XP = RP[1]
 
 <np-relative-phrase-unlimited> ::=
-	<np-relative-phrase-implicit> |    ==> 0; *XP = RP[1]
-	<np-relative-phrase-explicit>								==> 0; *XP = RP[1]
-
-@ =
-<np-relative-phrase-implicit> ::=
-	worn |    ==> @<Act on the implicit RP worn@>; /* player\_plugin */
-	carried |    ==> @<Act on the implicit RP carried@>; /* player\_plugin */
-	initially carried    ==> @<Act on the implicit RP initially carried@>; /* player\_plugin */
-
-@<Act on the implicit RP worn@> =
-	#ifndef IF_MODULE
-	return FALSE;
-	#endif
-	#ifdef IF_MODULE
-	*X = 0; *XP = NounPhrases::PN_implied_rel(W, R_wearing);
-	#endif
-
-@<Act on the implicit RP carried@> =
-	#ifndef IF_MODULE
-	return FALSE;
-	#endif
-	#ifdef IF_MODULE
-	*X = 0; *XP = NounPhrases::PN_implied_rel(W, R_carrying);
-	#endif
-
-@<Act on the implicit RP initially carried@> =
-	#ifndef IF_MODULE
-	return FALSE;
-	#endif
-	#ifdef IF_MODULE
-	*X = 0; *XP = NounPhrases::PN_implied_rel(W, R_carrying);
-	#endif
+	<np-relative-phrase-implicit> |                                     ==> 0; *XP = RP[1]
+	<np-relative-phrase-explicit>                                       ==> 0; *XP = RP[1]
 
 @ Inform guesses above that most English words ending in "-ing" are present
 participles -- like guessing, bluffing, cheating, and so on. But there is
@@ -311,113 +183,90 @@ is never treated as a participle.
 	return FALSE;
 }
 
-@ Finally, we define what we mean by implicit and explicit relative phrases.
-As examples, the right-hand sides of:
+@ An implicit RP is a word like "carried", or "worn", on its own -- this
+implies a relation to some unspecified noun. We represent that in the tree
+using the "implied noun" pronoun. For now, these are fixed.
 
->> The lawnmower is in the Garden.
->> The giraffe is here.
+=
+<np-relative-phrase-implicit> ::=
+	worn |              ==> @<Act on the implicit RP worn@>
+	carried |           ==> @<Act on the implicit RP carried@>
+	initially carried   ==> @<Act on the implicit RP initially carried@>
 
-are explicit and implicit respectively. Implicit RPs are those where the
-relationship is with something unstated. For instance, "here" generally means
-a containment by the room currently being discussed; "carried" implies that
-the player does the carrying.
+@<Act on the implicit RP worn@> =
+	#ifndef IF_MODULE
+	return FALSE;
+	#endif
+	#ifdef IF_MODULE
+	*X = 0; *XP = Diagrams::new_implied_RELATIONSHIP(W, R_wearing);
+	#endif
+
+@<Act on the implicit RP carried@> =
+	#ifndef IF_MODULE
+	return FALSE;
+	#endif
+	#ifdef IF_MODULE
+	*X = 0; *XP = Diagrams::new_implied_RELATIONSHIP(W, R_carrying);
+	#endif
+
+@<Act on the implicit RP initially carried@> =
+	#ifndef IF_MODULE
+	return FALSE;
+	#endif
+	#ifdef IF_MODULE
+	*X = 0; *XP = Diagrams::new_implied_RELATIONSHIP(W, R_carrying);
+	#endif
+
+@ An explicit RP is one which uses a preposition and then a noun phrase: for
+example, "on the table" is explicit.
 
 Note that we throw out a relative phrase if the noun phrase within it would
 begin with "and" or a comma; this enables us to parse sentences concerning
-directions, in particular, a little better.
+directions, in particular, a little better. But it means we do not recognise
+"of, by and for the people" as an RP.
 
 =
 <np-relative-phrase-explicit> ::=
-	<permitted-preposition> _,/and ... |    ==> 0; return FAIL_NONTERMINAL;
-	<permitted-preposition> _,/and |    ==> 0; return FAIL_NONTERMINAL;
-	<permitted-preposition> <np-inner-without-rp>		==> 0; @<Work out a meaning@>;
+	<permitted-preposition> _,/and ... |       ==> 0; return FAIL_NONTERMINAL;
+	<permitted-preposition> _,/and |           ==> 0; return FAIL_NONTERMINAL;
+	<permitted-preposition> <np-nonrelative>   ==> @<Work out a meaning@>
 
 @<Work out a meaning@> =
 	VERB_MEANING_LINGUISTICS_TYPE *R = VerbMeanings::get_regular_meaning_of_form(
 		Verbs::find_form(permitted_verb, RP[1], NULL));
 	if (R == NULL) return FALSE;
-	*XP = NounPhrases::PN_rel(W, VerbMeanings::reverse_VMT(R), RP[2]);
+	*XP = Diagrams::new_RELATIONSHIP(W, VerbMeanings::reverse_VMT(R), RP[2]);
 
-@ Now the heart of it. There are basically seven constructions which can make
-complex NPs from simple ones: we've already seen one of these, the relative
-phrase. The sequence of checking these is very important, because it decides
-which clauses are represented higher in the parse tree when multiple structures
-are present within the NP. For instance, we want to turn
-
->> [A] in a container called the flask and cap with flange
-
-into the subtree:
+@ We have now disposed of |RELATIONSHIP_NT| and are left with the constructs:
 = (text)
-	RELATIONSHIP_NT "in" = containment
-	    CALLED_NT "called"
-	        UNPARSED_NOUN_NT "container" article:indefinite
-	        UNPARSED_NOUN_NT "flask and cap with flange" article:definite
+	CALLED_NT > WITH_NT > AND_NT > KIND_NT
 =
-but we also want:
-
->> [B] in a container with carrying capacity 10 and diameter 12
-= (text)
-	RELATIONSHIP_NT "in" = containment
-	    WITH_NT "with"
-	        UNPARSED_NOUN_NT "container" article:indefinite
-	        AND_NT "and"
-	            PROPERTY_LIST_NT "carrying capacity 10"
-	            PROPERTY_LIST_NT "diameter 12"
-=
-These two cases together force our conventions: from sentence [A] we see
-that initial relative clauses (in) must beat callings ("called") which
-must beat property clauses ("with"), while from [B] we see that property
-clauses must beat lists ("and"). These all have to beat "of" and
-"from", which seem to be about linguistically equal, because these
-constructions must be easily reversible, as we shall see, and the best way
-to ensure that is to make sure they can only appear right down close to
-leaves in the tree. This dictates
-= (text)
-	RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT
-=
-in the sense that a subtree construction higher in this chain will take
-precedence over (and therefore be higher up in the tree than) one that is
-lower. That leaves just the seventh construction: "kind of ...". To
-avoid misreading this as an "of", and to protect "called", we need
-= (text)
-	CALLED_NT > KIND_NT
-=
-but otherwise we are fairly free where to put it (though the resulting trees
-will take different shapes in some cases if we move it around, we could
-write code which handled any of the outcomes about equally well). In fact,
-we choose to make it lowest possible, so the final precedence order is:
-= (text)
-	RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT > KIND_NT
-=
-Once all possible constructions have been recursively exhausted, every leaf we
-end up at is treated as a balanced articled NP. (Thus <np-inner> fails on
-source text where brackets aren't balanced, such as "smile X-)". This is why
-<nounphrase-as-object> above resorts to using <nounphrase-articled> if
-<np-inner> should fail. The reason we want <np-inner> to require balance is
-that otherwise "called" clauses can be misread: "frog (called toad)" can be
-misread as saying that "frog (" is called "toad )".)
-
-Two technicalities to note about the following nonterminal. Production (a)
-exists to accept arbitrary text quickly and without allocating memory to hold
-parse nodes when the Preform parser is simply performing a lookahead (to see
-where it will eventually parse). This is a very important economy: without it,
-parsing a list of $n$ items will have running time and space requirements of
-order $2^n$. But during regular parsing, production (a) has no effect, and can
-be ignored. Secondly, note the ampersand notation: recall that
-|&whatever| at the start of production means "only try this production if the
-word |whatever| is somewhere in the text we're looking at". Again, it's a
-speed optimisation, and doesn't affect the language's definition.
+These are all handled by <np-nonrelative>. Two points to note:
+(a) The first production accepts arbitrary text quickly and without allocating
+memory if we're in lookahead mode -- an important economy since otherwise
+parsing a list of $n$ items would have running time and memory of order $2^n$.
+(b) If we regard the above constructs as being like operators in arithmetic,
+then the operands have to match <np-operand>, and this requires text which has
+balanced brackets. That ensures that, for example, "frog (called toad)"
+is not misread as saying that "frog (" is called "toad )". But note that
+the final <np-articled> production catches any unbalanced text, so even
+text like "smile X-)" will in fact match <np-nonrelative>.
 
 =
-<np-inner-without-rp> ::=
-	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-inner> {called} <np-articled-balanced> |    ==> 0; *XP = NounPhrases::PN_pair(CALLED_NT, WR[1], RP[1], RP[2])
-	<np-inner> <np-with-or-having-tail> |    ==> 0; *XP = NounPhrases::PN_pair(WITH_NT, Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-inner> <np-and-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-kind-phrase> |    ==> 0; *XP = RP[1]
-	<agent-pronoun> |    ==> 0; *XP = NounPhrases::new_pronoun(W, RP[1])
-	<here-pronoun> |    ==> 0; *XP = NounPhrases::new_pronoun(W, RP[1])
-	<np-articled-balanced>  ==> 0; *XP = RP[1]
+<np-nonrelative> ::=
+	... |                                           ==> 0; *XP = NULL; return preform_lookahead_mode;
+	<np-operand> {called} <np-articled-balanced> |  ==> 0; *XP = Diagrams::new_CALLED(WR[1], RP[1], RP[2])
+	<np-operand> <np-with-or-having-tail> |         ==> 0; *XP = Diagrams::new_WITH(Wordings::one_word(R[2]), RP[1], RP[2])
+	<np-operand> <np-and-tail> |                    ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
+	<np-kind-phrase> |                              ==> 0; *XP = RP[1]
+	<agent-pronoun> |                               ==> 0; *XP = Diagrams::new_PRONOUN(W, RP[1])
+	<here-pronoun> |                                ==> 0; *XP = Diagrams::new_PRONOUN(W, RP[1])
+	<np-articled>                                   ==> 0; *XP = RP[1]
+
+<np-operand> ::=
+	<if-not-deliberately-capitalised> <np-relative-phrase-unlimited> |  ==> 0; *XP = RP[2]
+	^<balanced-text> |                                                  ==> 0; return FAIL_NONTERMINAL;
+	<np-nonrelative>                                                    ==> 0; *XP = RP[1]
 
 @ The tail of with-or-having parses for instance "with carrying capacity 5"
 in the NP
@@ -434,29 +283,29 @@ bogus object called "locking it".)
 
 =
 <np-with-or-having-tail> ::=
-	it with action *** |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	{with/having} (/) *** |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	{with/having} ... ( <response-letter> ) |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	{with/having} <np-new-property-list>		==> Wordings::first_wn(WR[1]); *XP = RP[1]
+	it with action *** |                       ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	{with/having} (/) *** |                    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	{with/having} ... ( <response-letter> ) |  ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	{with/having} <np-new-property-list>       ==> Wordings::first_wn(WR[1]); *XP = RP[1]
 
 <np-new-property-list> ::=
-	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-new-property> <np-new-property-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-new-property>							==> 0; *XP = RP[1];
-
-<np-new-property> ::=
-	...											==> 0; *XP = NounPhrases::PN_void(PROPERTY_LIST_NT, W);
+	... |                                      ==> 0; *XP = NULL; return preform_lookahead_mode;
+	<np-new-property> <np-new-property-tail> | ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
+	<np-new-property>                          ==> 0; *XP = RP[1];
 
 <np-new-property-tail> ::=
-	, {_and} <np-new-property-list> |    ==> Wordings::first_wn(W); *XP= RP[1]
-	{_,/and} <np-new-property-list>				==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <np-new-property-list> |          ==> Wordings::first_wn(W); *XP= RP[1]
+	{_,/and} <np-new-property-list>            ==> Wordings::first_wn(W); *XP= RP[1]
+
+<np-new-property> ::=
+	...                                        ==> 0; *XP = Diagrams::new_PROPERTY_LIST(W);
 
 @ The "and" tail is much easier:
 
 =
 <np-and-tail> ::=
-	, {_and} <np-inner> |    ==> Wordings::first_wn(W); *XP= RP[1]
-	{_,/and} <np-inner>							==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <np-operand> |                    ==> Wordings::first_wn(W); *XP= RP[1]
+	{_,/and} <np-operand>                      ==> Wordings::first_wn(W); *XP= RP[1]
 
 @ Kind phrases are easier:
 
@@ -467,28 +316,9 @@ but definite articles are not.
 
 =
 <np-kind-phrase> ::=
-	<indefinite-article> <np-kind-phrase-unarticled> |    ==> 0; *XP = RP[2]
-	<np-kind-phrase-unarticled>							==> 0; *XP = RP[1]
+	<indefinite-article> <np-kind-phrase-unarticled> |  ==> 0; *XP = RP[2]
+	<np-kind-phrase-unarticled>                         ==> 0; *XP = RP[1]
 
 <np-kind-phrase-unarticled> ::=
-	kind/kinds |    ==> 0; *XP = NounPhrases::PN_void(KIND_NT, W)
-	kind/kinds of <np-inner>					==> 0; *XP = NounPhrases::PN_single(KIND_NT, W, RP[1])
-
-@h Relationship nodes.
-A modest utility routine to construct and annotate RELATIONSHIP nodes.
-
-=
-parse_node *NounPhrases::PN_rel(wording W, VERB_MEANING_LINGUISTICS_TYPE *R, parse_node *O) {
-	if (preform_lookahead_mode) return NULL;
-	if (O == NULL) internal_error("no object for relationship");
-	parse_node *P = Node::new(RELATIONSHIP_NT);
-	Node::set_text(P, W);
-	Node::set_relationship(P, R);
-	P->down = O;
-	return P;
-}
-parse_node *NounPhrases::PN_implied_rel(wording W, VERB_MEANING_LINGUISTICS_TYPE *R) {
-	if (preform_lookahead_mode) return NULL;
-	parse_node *O = NounPhrases::new_pronoun(W, implied_pronoun_usage);
-	return NounPhrases::PN_rel(W, R, O);
-}
+	kind/kinds |                                        ==> 0; *XP = Diagrams::new_KIND(W, NULL)
+	kind/kinds of <np-operand>                          ==> 0; *XP = Diagrams::new_KIND(W, RP[1])

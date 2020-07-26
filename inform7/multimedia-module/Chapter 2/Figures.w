@@ -80,7 +80,7 @@ blorb_figure *PL::Figures::new_blorb_figure(instance *nc) {
 	<new-figure-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
 
 <new-figure-sentence-object-unarticled> ::=
-	file <nounphrase>												==> TRUE; *XP = RP[1]
+	file <np-unparsed>												==> TRUE; *XP = RP[1]
 
 @ =
 int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
@@ -91,7 +91,7 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 			if ((<nounphrase-figure>(SW)) && (<new-figure-sentence-object>(OW))) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;

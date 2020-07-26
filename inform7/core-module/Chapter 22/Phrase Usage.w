@@ -323,7 +323,7 @@ mode, we can get that value back again if we look it up by name.
 		if (Kinds::Behaviour::definite(cphr->cphr_kind) == FALSE) {
 			phrase *ph = Phrases::Constants::as_phrase(cphr);
 			if (ph) current_sentence = Phrases::declaration_node(ph);
-			Problems::quote_source(1, NounPhrases::new_raw(Nouns::nominative_singular(cphr->name)));
+			Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(Nouns::nominative_singular(cphr->name)));
 			Problems::quote_wording(2, Nouns::nominative_singular(cphr->name));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedGeneric));
 			Problems::issue_problem_segment(

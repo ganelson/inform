@@ -211,7 +211,7 @@ void StandardProblems::subject_creation_problem(SIGIL_ARGUMENTS, inference_subje
 	Problems::quote_text(3, explanation);
 	wording W = InferenceSubjects::get_name_text(subj);
 	if (Wordings::nonempty(W)) {
-		Problems::quote_source(4, NounPhrases::new_raw(W));
+		Problems::quote_source(4, Diagrams::new_UNPARSED_NOUN(W));
 		Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 		Problems::issue_problem_segment(
 			"I've made something called %4 but it %2%S.%L, %3");

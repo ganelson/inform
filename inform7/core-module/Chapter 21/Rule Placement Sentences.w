@@ -47,8 +47,8 @@ optionally be used.)
 
 =
 <listed-in-sentence-object> ::=
-	listed <nounphrase> |    ==> TRUE; *XP = RP[1];
-	not listed <nounphrase>					==> FALSE; *XP = RP[1];
+	listed <np-unparsed> |    ==> TRUE; *XP = RP[1];
+	not listed <np-unparsed>					==> FALSE; *XP = RP[1];
 
 @ =
 int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
@@ -60,7 +60,7 @@ int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				Annotations::write_int(V, listing_sense_ANNOT, <<r>>);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;
@@ -83,7 +83,7 @@ following won't pick up many false positives.
 =
 <nounphrase-rule-list> ::=
 	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<nounphrase-rule> <np-rule-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
+	<nounphrase-rule> <np-rule-tail> |    ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
 	<nounphrase-rule>								==> 0; *XP = RP[1]
 
 <np-rule-tail> ::=
@@ -91,15 +91,15 @@ following won't pick up many false positives.
 	{_,/and} <nounphrase-rule-list>					==> Wordings::first_wn(W); *XP= RP[1]
 
 <nounphrase-rule> ::=
-	... rule										==> GENERATE_RAW_NP
+	... rule										==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
 
 @ This handles the special meaning "X substitutes for Y".
 
 =
 <substitutes-for-sentence-object> ::=
 	<nounphrase-rule> |    ==> NOT_APPLICABLE; *XP = RP[1];
-	<nounphrase-rule> if/when <nounphrase> |    ==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	<nounphrase-rule> unless <nounphrase>		==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	<nounphrase-rule> if/when <np-unparsed> |    ==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	<nounphrase-rule> unless <np-unparsed>		==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
 
 @ =
 int Rules::Placement::substitutes_for_SMF(int task, parse_node *V, wording *NPs) {
@@ -111,7 +111,7 @@ int Rules::Placement::substitutes_for_SMF(int task, parse_node *V, wording *NPs)
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				Annotations::write_int(V, listing_sense_ANNOT, <<r>>);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;
@@ -195,7 +195,7 @@ int Rules::Placement::does_nothing_SMF(int task, parse_node *V, wording *NPs) {
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				return TRUE;
@@ -217,9 +217,9 @@ int Rules::Placement::does_nothing_if_SMF(int task, parse_node *V, wording *NPs)
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
-				<nounphrase>(CW);
+				<np-unparsed>(CW);
 				parse_node *O = <<rp>>;
 				V->next->next = O;
 				return TRUE;
@@ -241,9 +241,9 @@ int Rules::Placement::does_nothing_unless_SMF(int task, parse_node *V, wording *
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-				<nounphrase>(SW);
+				<np-unparsed>(SW);
 				V->next = <<rp>>;
-				<nounphrase>(CW);
+				<np-unparsed>(CW);
 				parse_node *O = <<rp>>;
 				V->next->next = O;
 				return TRUE;

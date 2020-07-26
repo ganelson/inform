@@ -2335,9 +2335,9 @@ int LiteralPatterns::specifies_SMF(int task, parse_node *V, wording *NPs) {
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) {
 		case ACCEPT_SMFT: /* "10'23 specifies a running time." */
-			if (<nounphrase-alternative-list>(SW)) {
+			if (<np-alternative-list>(SW)) {
 				parse_node *S = <<rp>>;
-				if (<nounphrase>(OW)) {
+				if (<np-unparsed>(OW)) {
 					parse_node *O = <<rp>>;
 					V->next = S; V->next->next = O;
 					Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);

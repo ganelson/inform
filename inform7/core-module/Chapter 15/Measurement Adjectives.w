@@ -229,7 +229,7 @@ always to match <property-name>, and the text in the range must match
 
 @<Issue PM_GradingMisphrased problem@> =
 	StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingMisphrased),
-		NounPhrases::new_raw(W),
+		Diagrams::new_UNPARSED_NOUN(W),
 		"that definition is wrongly phrased",
 		"assuming it was meant to be a grading adjective like 'Definition: a "
 		"container is large if its carrying capacity is 10 or more.'");

@@ -135,7 +135,7 @@ as a |PROPERTYCALLED_NT| subtree and hang beneath an |ALLOWED_NT| node.
 		if (Node::get_type(py->down) == AND_NT) {
 			int L = Node::left_edge_of(py->down),
 				R = Node::right_edge_of(py->down);
-			<nounphrase-articled>(Wordings::new(L, R));
+			<np-articled>(Wordings::new(L, R));
 			parse_node *pn = <<rp>>;
 			pn->next = py->down->next;
 			py->down = pn;
@@ -145,7 +145,7 @@ as a |PROPERTYCALLED_NT| subtree and hang beneath an |ALLOWED_NT| node.
 		px->next->down = py;
 		int prohibited = <prohibited-property-owners>(Node::get_text(px));
 		if (!prohibited) {
-			<nounphrase-articled-list>(Node::get_text(py->down->next));
+			<np-articled-list>(Node::get_text(py->down->next));
 			py->down->next = <<rp>>;
 		}
 	}
@@ -191,7 +191,7 @@ In traverse 2, only (c) takes place; (a) and (b) are one-time events.
 void Assertions::Copular::make_assertion(parse_node *px, parse_node *py) {
 	if (traverse == 1) {
 		int pc = problem_count;
-		if (!(<s-existential-np>(Node::get_text(px))))
+		if (!(<existential-np>(Node::get_text(px))))
 			Assertions::Refiner::refine(px, ALLOW_CREATION);
 		Assertions::Refiner::refine(py, ALLOW_CREATION);
 		if (problem_count > pc) return;
@@ -199,7 +199,7 @@ void Assertions::Copular::make_assertion(parse_node *px, parse_node *py) {
 	}
 
 	if (SyntaxTree::is_trace_set(Task::syntax_tree())) LOG("$T", current_sentence);
-	if (<s-existential-np>(Node::get_text(px))) {
+	if (<existential-np>(Node::get_text(px))) {
 		if (traverse == 1) Assertions::Copular::make_existential_assertion(py);
 		px = py;
 	} else {

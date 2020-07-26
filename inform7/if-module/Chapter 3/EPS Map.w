@@ -309,7 +309,7 @@ int PL::EPSMap::index_map_with_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Index map with ..." */
 		case ACCEPT_SMFT:
 			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
-			<nounphrase-articled-list>(OW);
+			<np-articled-list>(OW);
 			V->next = <<rp>>;
 			return TRUE;
 		case TRAVERSE_FOR_MAP1_SMFT:
