@@ -42,7 +42,7 @@
 	show: $A
 	exists: $I
 	or: 'produced error(s), but no ideal transcript existed'
-	match text: $A $I
+	match platform text: $A $I
 	or: 'produced the wrong error message(s)'
 
 -end
