@@ -271,3 +271,13 @@ instance *PL::MapDirections::get_mapping_direction(binary_predicate *bp) {
 	return NULL;
 }
 
+instance *PL::MapDirections::get_mapping_relationship(parse_node *p) {
+	binary_predicate *bp = Node::get_relationship(p);
+	if ((bp) && (Plugins::Manage::plugged_in(map_plugin))) {
+		instance *dir = PL::MapDirections::get_mapping_direction(
+			BinaryPredicates::get_reversal(bp));
+		if (dir == NULL) dir = PL::MapDirections::get_mapping_direction(bp);
+		return dir;
+	}
+	return NULL;
+}

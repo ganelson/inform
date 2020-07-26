@@ -21,15 +21,15 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 		Assertions::Relational::assert_subtree_in_relationship(value->down->next, relationship_subtree);
 		return;
 	}
+	#ifdef IF_MODULE
+	if (PL::MapDirections::get_mapping_relationship(relationship_subtree))
+		@<Exceptional relationship nodes for map connections@>;
+	pronoun_usage *pro = Node::get_pronoun(relationship_subtree->down);
+	if ((pro) && (pro->pronoun_used == here_pronoun))
+		@<Exceptional relationship nodes for placing objects "here"@>;
+	#endif
 
-	switch(Annotations::read_int(relationship_subtree, relationship_node_type_ANNOT)) {
-		case STANDARD_RELN: @<Standard relationship nodes (the vast majority)@>;
-		#ifdef IF_MODULE
-		case PARENTAGE_HERE_RELN: @<Exceptional relationship nodes for placing objects "here"@>;
-		case DIRECTION_RELN: @<Exceptional relationship nodes for map connections@>;
-		#endif
-		default: internal_error("unknown RELATIONSHIP node type");
-	}
+	@<Standard relationship nodes (the vast majority)@>;
 }
 
 @<Standard relationship nodes (the vast majority)@> =
@@ -37,7 +37,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 	if (bp == NULL) internal_error("asserted bp-less relationship subtree");
 	Properties::SettingRelations::fix_property_bp(bp);
 	Assertions::Relational::assert_relation_between_subtrees(value, bp, relationship_subtree->down);
-	break;
+	return;
 
 @<Exceptional relationship nodes for placing objects "here"@> =
 	if (Node::get_subject(value) == NULL) {
@@ -51,7 +51,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 			Calculus::Propositions::Abstract::to_put_here(),
 			Node::get_subject(value), prevailing_mood);
 	}
-	break;
+	return;
 
 @<Exceptional relationship nodes for map connections@> =
 	@<Make some paranoid checks that the map subtree is valid@>;
@@ -71,7 +71,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 				"the source of a map connection has to be a room or door",
 				"so sentences like 'The pink door is south of 0.' are not "
 				"allowed.");
-		break;
+		return;
 	}
 	if ((iy == NULL) || (id == NULL))
 		internal_error("malformed directional subtree");
@@ -86,7 +86,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 			"a door or 'nowhere'",
 			"but here the destination doesn't even seem to be an object.");
 	}
-	break;
+	return;
 
 @<Make some paranoid checks that the map subtree is valid@> =
 	if ((relationship_subtree->down == NULL) ||
@@ -97,13 +97,13 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is not straightforward in saying which room (or door) leads away from",
 			"and should just name the source.");
-		break;
+		return;
 	}
 	if (Node::get_type(relationship_subtree->down->next) != PROPER_NOUN_NT) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is not straightforward in saying which direction the room (or door) lies in",
 			"and should just name the direction.");
-		break;
+		return;
 	}
 
 @ =

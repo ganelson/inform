@@ -68,6 +68,8 @@ int Assertions::Maker::which_assertion_case(parse_node *px, parse_node *py) {
 	}
 	int i, x=-1, y=-1;
 	node_type_t wx = Node::get_type(px), wy = Node::get_type(py);
+	if (wx == PRONOUN_NT) wx = PROPER_NOUN_NT;
+	if (wy == PRONOUN_NT) wy = PROPER_NOUN_NT;
 	for (i=0; i<ASSERTION_MATRIX_DIM; i++) {
 		if (assertion_matrix[i].row_node_type == wx) x=i;
 		if (assertion_matrix[i].row_node_type == wy) y=i;
@@ -909,18 +911,17 @@ in this case.
 >> (1) In the box is on the desk. (2) East of the Pitch is north of the Pavilion.
 
 @<Case 28 - RELATIONSHIP on both sides@> =
-	if ((Annotations::read_int(px, relationship_node_type_ANNOT) == DIRECTION_RELN) &&
-		(Annotations::read_int(py, relationship_node_type_ANNOT) == DIRECTION_RELN)) {
-		#ifdef IF_MODULE
+	#ifdef IF_MODULE
+	if ((PL::MapDirections::get_mapping_relationship(px)) &&
+		(PL::MapDirections::get_mapping_relationship(py))) {
 		PL::Map::enter_one_way_mode();
-		#endif
 		Assertions::Maker::make_assertion_recursive(px, py->down);
 		Assertions::Maker::make_assertion_recursive(px->down, py);
-		#ifdef IF_MODULE
 		PL::Map::exit_one_way_mode();
-		#endif
 		return;
 	}
+	#endif
+
 	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_RelationsEquated),
 		"this says that two different relations are the same",
 		"like saying that 'in the box is on the table'. (Sometimes this "

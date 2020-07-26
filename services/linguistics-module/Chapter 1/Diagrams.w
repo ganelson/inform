@@ -35,8 +35,6 @@ some new node types:
 @e occurrence_ANNOT              /* |time_period|: any stipulation on occurrence */
 @e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
 @e relationship_ANNOT            /* |binary_predicate|: for RELATIONSHIP nodes */
-@e relationship_node_type_ANNOT  /* |int|: what kind of inference this assertion makes */
-@e implicitly_refers_to_ANNOT    /* |int|: this will implicitly refer to something */
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(verb, verb_usage)
@@ -98,12 +96,9 @@ void Diagrams::permissions(void) {
 	Annotations::allow(COMMON_NOUN_NT, noun_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, preposition_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, relationship_ANNOT);
-	Annotations::allow(RELATIONSHIP_NT, relationship_node_type_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, linguistic_error_here_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, explicit_gender_marker_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, article_ANNOT);
-	Annotations::allow(UNPARSED_NOUN_NT, implicitly_refers_to_ANNOT);
-	Annotations::allow(PROPER_NOUN_NT, implicitly_refers_to_ANNOT);
 }
 
 @ And the following conveniently prints out a sentence in diagram form; this
@@ -147,16 +142,8 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				Articles::write_usage(OUT, Node::get_article(pn));
 			break;
 		case RELATIONSHIP_NT:
-			WRITE(" {meaning: ");
-			switch (Annotations::read_int(pn, relationship_node_type_ANNOT)) {
-				case STANDARD_RELN:
-					if (Node::get_relationship(pn))
-						WRITE("%S", Node::get_relationship(pn)->debugging_log_name);
-					break;
-				case PARENTAGE_HERE_RELN: WRITE("(here)"); break;
-				case DIRECTION_RELN: WRITE("(direction)"); break;
-			}
-			WRITE("}");
+			if (Node::get_relationship(pn))
+				WRITE(" {meaning: %S}", Node::get_relationship(pn)->debugging_log_name);
 			break;
 	}
 }

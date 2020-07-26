@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
 noun: 2381 items
-pronoun: 6 items
+pronoun: 8 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3315
+total in all categories: 3317
 
 adjective: A0'even'
 adjective: A1'odd'
@@ -2537,6 +2537,8 @@ pronoun: third person pronoun
 pronoun: first person possessive pronoun
 pronoun: second person possessive pronoun
 pronoun: third person possessive pronoun
+pronoun: location pronoun
+pronoun: implied pronoun
 
 preposition: meant by
 preposition: meaning

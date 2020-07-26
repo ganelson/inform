@@ -569,7 +569,7 @@ the exactly equivalent idea of the hat being worn by Darcy.
 	if (meaning == NULL) return FALSE;
 	if (meaning != VERB_MEANING_EQUALITY)
 		V->next->next = NounPhrases::PN_rel(
-			Node::get_text(V), VerbMeanings::reverse_VMT(meaning), STANDARD_RELN, O_PN);
+			Node::get_text(V), VerbMeanings::reverse_VMT(meaning), O_PN);
 
 @
 

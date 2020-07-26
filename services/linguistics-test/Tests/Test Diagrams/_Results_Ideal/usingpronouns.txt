@@ -38,3 +38,10 @@ SENTENCE_NT'you know us'
     RELATIONSHIP_NT'know' {meaning: knows-reversed}
         PRONOUN_NT'us' {first person pronoun n/m/f 1p p acc}
 
+(6) anna is here
+
+SENTENCE_NT'anna is here'
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+    PROPER_NOUN_NT'anna' {proper nom/acc f s}
+    PRONOUN_NT'here' {location pronoun n/m/f s/p nom/acc 3p}
+

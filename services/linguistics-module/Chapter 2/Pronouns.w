@@ -36,10 +36,12 @@ void Pronouns::write_usage(OUTPUT_STREAM, pronoun_usage *pu) {
 	WRITE("}");
 }
 
-@ The stock of pronouns is fixed at six. We are going to regard the three
+@ The stock of pronouns is fixed, as follows. We are going to regard the three
 persons as being different pronouns, since they make different references,
 though not every grammarian would agree. So we have three "agent pronouns" --
-those standing for subject or object -- and then three possessives.
+those standing for subject or object -- and then three possessives, and "here",
+which stands in the place of a noun referring to a location, and is thus also
+a pronoun.
 
 =
 grammatical_category *pronouns_category = NULL;
@@ -49,6 +51,8 @@ pronoun *third_person_pronoun = NULL;
 pronoun *first_person_possessive_pronoun = NULL;
 pronoun *second_person_possessive_pronoun = NULL;
 pronoun *third_person_possessive_pronoun = NULL;
+pronoun *here_pronoun = NULL;
+pronoun *implied_pronoun = NULL;
 
 void Pronouns::create_category(void) {
 	pronouns_category = Stock::new_category(I"pronoun");
@@ -59,6 +63,8 @@ void Pronouns::create_category(void) {
 	first_person_possessive_pronoun = Pronouns::new(I"first person possessive pronoun");
 	second_person_possessive_pronoun = Pronouns::new(I"second person possessive pronoun");
 	third_person_possessive_pronoun = Pronouns::new(I"third person possessive pronoun");
+	here_pronoun = Pronouns::new(I"location pronoun");
+	implied_pronoun = Pronouns::new(I"implied pronoun");
 }
 
 pronoun *Pronouns::new(text_stream *name) {
@@ -91,6 +97,10 @@ small_word_set *possessive_pronouns_sws = NULL, /* all possessive pronouns of an
 	*first_person_possessive_pronouns_sws = NULL,
 	*second_person_possessive_pronouns_sws = NULL,
 	*third_person_possessive_pronouns_sws = NULL;
+
+small_word_set *here_pronouns_sws = NULL;
+
+pronoun_usage *implied_pronoun_usage = NULL;
 
 @ And now we have to make them. The following capacity would be enough even if
 we were simultaneously dealing with four languages in which every inflection
@@ -143,6 +153,14 @@ void Pronouns::create_small_word_sets(void) {
 	third_person_possessive_pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
 	Pronouns::add(third_person_possessive_pronouns_sws, <third-person-possessive-pronoun-table>,
 		-1, THIRD_PERSON, third_person_possessive_pronoun);
+		
+	here_pronouns_sws = Stock::new_sws(PRONOUN_SWS_CAPACITY);
+	Pronouns::add(here_pronouns_sws, <here-pronoun-table>,
+		-1, THIRD_PERSON, here_pronoun);
+
+	implied_pronoun_usage = CREATE(pronoun_usage);
+	implied_pronoun_usage->pronoun_used = implied_pronoun;
+	implied_pronoun_usage->usage = Stock::new_usage(implied_pronoun->in_stock, NULL);	
 }
 
 @ All of which use the following, which extracts inflected forms from the
@@ -250,6 +268,14 @@ parsed lies in the relevant small word set.
 	return FALSE;
 }
 
+<here-pronoun> internal 1 {
+	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
+	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
+	*XP = (pronoun_usage *) Stock::find_in_sws(here_pronouns_sws, ve);
+	if (*XP) return TRUE;
+	return FALSE;
+}
+
 @h English pronouns.
 So, then, these nonterminals are not parsed by Preform but are instead used
 to stock small word sets above.
@@ -283,6 +309,10 @@ feminine singular, feminine plural.
 <third-person-possessive-pronoun-table> ::=
 	its their his their her their |
 	its their his their her their
+
+<here-pronoun-table> ::=
+	here here here here here here |
+	here here here here here here
 
 @h Unit testing.
 The //linguistics-test// test case |pronouns| calls this.

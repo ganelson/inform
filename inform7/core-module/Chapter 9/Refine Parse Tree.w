@@ -257,12 +257,8 @@ has the marble and the box as its children, the relationship being containment.
 	if (p->down) {
 		Assertions::Refiner::refine(p->down, creation_rule);
 		#ifdef IF_MODULE
-		binary_predicate *bp = Node::get_relationship(p);
-		if ((bp) && (Plugins::Manage::plugged_in(map_plugin))) {
-			instance *dir = PL::MapDirections::get_mapping_direction(BinaryPredicates::get_reversal(bp));
-			if (dir == NULL) dir = PL::MapDirections::get_mapping_direction(bp);
-			if (dir) @<Make the relation one which refers to a map direction@>;
-		}
+		instance *dir = PL::MapDirections::get_mapping_relationship(p);
+		if (dir) @<Make the relation one which refers to a map direction@>;
 		#endif
 		if (p->down->next) Assertions::Refiner::refine(p->down->next, creation_rule);
 	}
@@ -273,9 +269,7 @@ the relation is mapped-north-of, then the second child will become the
 direction object for "north".
 
 @<Make the relation one which refers to a map direction@> =
-	LOGIF(NOUN_RESOLUTION, "Directional predicate with BP %S ($O)\n",
-		BinaryPredicates::get_log_name(bp), dir);
-	Annotations::write_int(p, relationship_node_type_ANNOT, DIRECTION_RELN);
+	LOGIF(NOUN_RESOLUTION, "Directional predicate with BP from $O\n", dir);
 	wording DW = Instances::get_name(dir, FALSE);
 	p->down->next = NounPhrases::new_raw(DW);
 	Assertions::Refiner::noun_from_infs(p->down->next, Instances::as_subject(dir));
@@ -332,6 +326,15 @@ inference subject representing the domain to which any new kind would belong.
 @<Refine a pronoun@> =
 	pronoun_usage *pro = Node::get_pronoun(p);
 	if (pro) {
+		if (pro->pronoun_used == here_pronoun) {
+			Node::set_type(p, RELATIONSHIP_NT);
+			p->down = NounPhrases::new_pronoun(Node::get_text(p), pro);
+			return;
+		}
+		if (pro->pronoun_used == implied_pronoun) {
+			Plugins::Call::refine_implicit_noun(p);
+			return;
+		}
 		Node::set_type(p, PROPER_NOUN_NT);
 		if ((Stock::usage_might_be_singular(pro->usage) == FALSE) &&
 			(Assertions::Traverse::get_current_subject_plurality())) {
@@ -366,7 +369,6 @@ complicated description is as follows:
 
 @<Refine what seems to be a noun phrase@> =
 	Node::set_type(p, PROPER_NOUN_NT);
-	@<Act on the special no-words word range which implies the player@>;
 	@<Act on a newly-discovered property of something@>;
 	if (forbid_nowhere == FALSE) @<Act on any special noun phrases significant to plugins@>;
 
@@ -375,23 +377,6 @@ complicated description is as follows:
 
 	if (creation_rule != FORBID_CREATION) Node::set_type(p, CREATED_NT);
 	else Node::set_subject(p, NULL);
-
-@ There's just one case where an empty word range can be used as a noun
-phrase -- when it represents an implicit noun, as here, where the person
-doing the carrying is implicit:
-
->> The black box is carried.
-
-@<Act on the special no-words word range which implies the player@> =
-	if (Annotations::read_int(p, implicitly_refers_to_ANNOT)) {
-		Plugins::Call::refine_implicit_noun(p);
-		return;
-	}
-
-	if (Wordings::empty(Node::get_text(p))) {
-		LOG("$T", current_sentence);
-		internal_error("Tried to resolve malformed noun-phrase");
-	}
 
 @ The following is needed to handle something like "colour of the box",
 where "colour" is a property name. We must be careful, though, to avoid
@@ -865,8 +850,6 @@ void Assertions::Refiner::perform_called_surgery(parse_node *p) {
 	parse_node *x_pn = p->down->down->next; /* "north" in the example */
 	parse_node *name_pn = p->down->next; /* "hot and cold room" in the example */
 	Node::set_type(p, RELATIONSHIP_NT);
-	Annotations::write_int(p, relationship_node_type_ANNOT,
-		Annotations::read_int(p->down, relationship_node_type_ANNOT));
 	Node::set_type(p->down, CALLED_NT);
 	p->down->next = x_pn;
 	p->down->down->next = name_pn;

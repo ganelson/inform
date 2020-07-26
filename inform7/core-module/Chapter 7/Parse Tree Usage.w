@@ -209,7 +209,6 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(VERB_NT, listing_sense_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, creation_site_ANNOT);
-	Annotations::allow(COMMON_NOUN_NT, implicitly_refers_to_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, multiplicity_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, quant_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, quantification_parameter_ANNOT);
@@ -481,7 +480,6 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 	if (show_refers) {
 		if (Node::get_subject(pn)) { WRITE(" refers:$j", Node::get_subject(pn)); }
 		if (Node::get_evaluation(pn)) { WRITE(" eval:$P", Node::get_evaluation(pn)); }
-		if (Annotations::read_int(pn, implicitly_refers_to_ANNOT)) WRITE(" (implicit)");
 	}
 	if ((show_eval) && (Node::get_evaluation(pn))) {
 		WRITE(" eval:$P", Node::get_evaluation(pn));

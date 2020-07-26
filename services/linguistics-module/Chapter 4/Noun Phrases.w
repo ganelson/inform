@@ -14,10 +14,10 @@ turn:
 relationships and properties (and other grammar meaningful only for references
 to physical objects and kinds) are parsed.
 
-At levels (NP1) and (NP2), a NP produces a single |PROPER_NOUN_NT| node; at
-level (NP3), the result is a subtree contining |PROPER_NOUN_NT| and |AND_NT|
+At levels (NP1) and (NP2), a NP produces a single |UNPARSED_NOUN_NT| node; at
+level (NP3), the result is a subtree contining |UNPARSED_NOUN_NT| and |AND_NT|
 nodes; but at level (NP4) this subtree may include any of |RELATIONSHIP_NT|,
-|CALLED_NT|, |WITH_NT|, |AND_NT|, |KIND_NT| or |PROPER_NOUN_NT|.
+|CALLED_NT|, |WITH_NT|, |AND_NT|, |KIND_NT| or |UNPARSED_NOUN_NT|.
 
 Because a small proportion of noun phrase subtrees is thrown away, due to
 backtracking on mistaken guesses at parsing of sentences, it is important
@@ -41,6 +41,14 @@ parse_node *NounPhrases::new_raw(wording W) {
 parse_node *NounPhrases::new_proper_noun(wording W) {
 	parse_node *PN = Node::new(PROPER_NOUN_NT);
 	Node::set_text(PN, W);
+	return PN;
+}
+
+parse_node *NounPhrases::new_pronoun(wording W, pronoun_usage *pro) {
+	if (preform_lookahead_mode) return NULL;
+	parse_node *PN = Node::new(PRONOUN_NT);
+	Node::set_text(PN, W);
+	Node::set_pronoun(PN, pro);
 	return PN;
 }
 
@@ -256,6 +264,36 @@ in the case of a participle like "holding".
 	<np-relative-phrase-implicit> |    ==> 0; *XP = RP[1]
 	<np-relative-phrase-explicit>								==> 0; *XP = RP[1]
 
+@ =
+<np-relative-phrase-implicit> ::=
+	worn |    ==> @<Act on the implicit RP worn@>; /* player\_plugin */
+	carried |    ==> @<Act on the implicit RP carried@>; /* player\_plugin */
+	initially carried    ==> @<Act on the implicit RP initially carried@>; /* player\_plugin */
+
+@<Act on the implicit RP worn@> =
+	#ifndef IF_MODULE
+	return FALSE;
+	#endif
+	#ifdef IF_MODULE
+	*X = 0; *XP = NounPhrases::PN_implied_rel(W, R_wearing);
+	#endif
+
+@<Act on the implicit RP carried@> =
+	#ifndef IF_MODULE
+	return FALSE;
+	#endif
+	#ifdef IF_MODULE
+	*X = 0; *XP = NounPhrases::PN_implied_rel(W, R_carrying);
+	#endif
+
+@<Act on the implicit RP initially carried@> =
+	#ifndef IF_MODULE
+	return FALSE;
+	#endif
+	#ifdef IF_MODULE
+	*X = 0; *XP = NounPhrases::PN_implied_rel(W, R_carrying);
+	#endif
+
 @ Inform guesses above that most English words ending in "-ing" are present
 participles -- like guessing, bluffing, cheating, and so on. But there is
 a conspicuous exception to this; so any word found in <non-participles>
@@ -298,7 +336,7 @@ directions, in particular, a little better.
 	VERB_MEANING_LINGUISTICS_TYPE *R = VerbMeanings::get_regular_meaning_of_form(
 		Verbs::find_form(permitted_verb, RP[1], NULL));
 	if (R == NULL) return FALSE;
-	*XP = NounPhrases::PN_rel(W, VerbMeanings::reverse_VMT(R), -1, RP[2]);
+	*XP = NounPhrases::PN_rel(W, VerbMeanings::reverse_VMT(R), RP[2]);
 
 @ Now the heart of it. There are basically seven constructions which can make
 complex NPs from simple ones: we've already seen one of these, the relative
@@ -312,8 +350,8 @@ into the subtree:
 = (text)
 	RELATIONSHIP_NT "in" = containment
 	    CALLED_NT "called"
-	        PROPER_NOUN_NT "container" article:indefinite
-	        PROPER_NOUN_NT "flask and cap with flange" article:definite
+	        UNPARSED_NOUN_NT "container" article:indefinite
+	        UNPARSED_NOUN_NT "flask and cap with flange" article:definite
 =
 but we also want:
 
@@ -321,7 +359,7 @@ but we also want:
 = (text)
 	RELATIONSHIP_NT "in" = containment
 	    WITH_NT "with"
-	        PROPER_NOUN_NT "container" article:indefinite
+	        UNPARSED_NOUN_NT "container" article:indefinite
 	        AND_NT "and"
 	            PROPERTY_LIST_NT "carrying capacity 10"
 	            PROPERTY_LIST_NT "diameter 12"
@@ -377,7 +415,8 @@ speed optimisation, and doesn't affect the language's definition.
 	<np-inner> <np-with-or-having-tail> |    ==> 0; *XP = NounPhrases::PN_pair(WITH_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-inner> <np-and-tail> |    ==> 0; *XP = NounPhrases::PN_pair(AND_NT, Wordings::one_word(R[2]), RP[1], RP[2])
 	<np-kind-phrase> |    ==> 0; *XP = RP[1]
-	<agent-pronoun> |    ==> GENERATE_RAW_NP; Node::set_type(*XP, PRONOUN_NT); Node::set_pronoun(*XP, RP[1]);
+	<agent-pronoun> |    ==> 0; *XP = NounPhrases::new_pronoun(W, RP[1])
+	<here-pronoun> |    ==> 0; *XP = NounPhrases::new_pronoun(W, RP[1])
 	<np-articled-balanced>  ==> 0; *XP = RP[1]
 
 @ The tail of with-or-having parses for instance "with carrying capacity 5"
@@ -438,23 +477,18 @@ but definite articles are not.
 @h Relationship nodes.
 A modest utility routine to construct and annotate RELATIONSHIP nodes.
 
-@d STANDARD_RELN 0 /* the default annotation value: never explicitly set */
-@d PARENTAGE_HERE_RELN 1 /* only ever set by the Spatial plugin */
-@d DIRECTION_RELN 2
-
 =
-parse_node *NounPhrases::PN_rel(wording W, VERB_MEANING_LINGUISTICS_TYPE *R, int reln_type, parse_node *referent) {
+parse_node *NounPhrases::PN_rel(wording W, VERB_MEANING_LINGUISTICS_TYPE *R, parse_node *O) {
 	if (preform_lookahead_mode) return NULL;
+	if (O == NULL) internal_error("no object for relationship");
 	parse_node *P = Node::new(RELATIONSHIP_NT);
 	Node::set_text(P, W);
-	if (R) Node::set_relationship(P, R);
-	else if (reln_type >= 0)
-		Annotations::write_int(P, relationship_node_type_ANNOT, reln_type);
-	else internal_error("undefined relationship node");
-	if (referent == NULL) {
-		referent = NounPhrases::new_raw(W);
-		Annotations::write_int(referent, implicitly_refers_to_ANNOT, TRUE);
-	}
-	P->down = referent;
+	Node::set_relationship(P, R);
+	P->down = O;
 	return P;
+}
+parse_node *NounPhrases::PN_implied_rel(wording W, VERB_MEANING_LINGUISTICS_TYPE *R) {
+	if (preform_lookahead_mode) return NULL;
+	parse_node *O = NounPhrases::new_pronoun(W, implied_pronoun_usage);
+	return NounPhrases::PN_rel(W, R, O);
 }
