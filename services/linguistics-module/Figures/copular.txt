@@ -1,14 +1,14 @@
 (1) anna is a woman
 
 SENTENCE_NT'anna is a woman'
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {meaning: is}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     PROPER_NOUN_NT'anna' {proper nom/acc f s}
     COMMON_NOUN_NT'woman' {common nom/acc f s} {indefinite 'a' n/m/f nom/acc s}
 
 (2) anna is not charles
 
 SENTENCE_NT'anna is not charles'
-    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve} {meaning: is}
+    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve}
     PROPER_NOUN_NT'anna' {proper nom/acc f s}
     PROPER_NOUN_NT'charles' {proper nom/acc m s}
 

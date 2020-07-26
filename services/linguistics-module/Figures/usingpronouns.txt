@@ -1,7 +1,7 @@
 (1) he knows her
 
 SENTENCE_NT'he knows her'
-    VERB_NT'knows' {verb 'know' 3p s act IS_TENSE +ve} {meaning: knows}
+    VERB_NT'knows' {verb 'know' 3p s act IS_TENSE +ve}
     PRONOUN_NT'he' {third person pronoun m 3p s nom}
     RELATIONSHIP_NT'knows' {meaning: knows-reversed}
         PRONOUN_NT'her' {third person pronoun f 3p s acc}
@@ -9,7 +9,7 @@ SENTENCE_NT'he knows her'
 (2) she knows him
 
 SENTENCE_NT'she knows him'
-    VERB_NT'knows' {verb 'know' 3p s act IS_TENSE +ve} {meaning: knows}
+    VERB_NT'knows' {verb 'know' 3p s act IS_TENSE +ve}
     PRONOUN_NT'she' {third person pronoun f 3p s nom}
     RELATIONSHIP_NT'knows' {meaning: knows-reversed}
         PRONOUN_NT'him' {third person pronoun m 3p s acc}
@@ -17,7 +17,7 @@ SENTENCE_NT'she knows him'
 (3) i carry the ming vase
 
 SENTENCE_NT'i carry the ming vase'
-    VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {meaning: carries}
+    VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}
     PRONOUN_NT'i' {first person pronoun n/m/f 1p s nom}
     RELATIONSHIP_NT'carry' {meaning: carries-reversed}
         COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
@@ -25,7 +25,7 @@ SENTENCE_NT'i carry the ming vase'
 (4) the sailors know them
 
 SENTENCE_NT'the sailors know them'
-    VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {meaning: knows}
+    VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}
     COMMON_NOUN_NT'sailors' {common nom/acc m p} {definite 'the' n/m/f s/p nom/acc}
     RELATIONSHIP_NT'know' {meaning: knows-reversed}
         PRONOUN_NT'them' {third person pronoun n/m/f 3p p acc}
@@ -33,7 +33,7 @@ SENTENCE_NT'the sailors know them'
 (5) you know us
 
 SENTENCE_NT'you know us'
-    VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {meaning: knows}
+    VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}
     PRONOUN_NT'you' {second person pronoun n/m/f s/p nom/acc 2p}
     RELATIONSHIP_NT'know' {meaning: knows-reversed}
         PRONOUN_NT'us' {first person pronoun n/m/f 1p p acc}

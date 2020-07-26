@@ -12,14 +12,6 @@ implementation of it. But in practice they should never be reached.
 
 @d MAX_WORDS_IN_VERB (MAX_WORDS_IN_ASSEMBLAGE - 4)
 
-@ =
-typedef struct special_meaning_holder {
-	int (*sm_func)(int, parse_node *, wording *); /* (for tangling reasons, can't use typedef here) */
-	struct text_stream *sm_name;
-	int verb_priority;
-	CLASS_DEFINITION
-} special_meaning_holder;
-
 @
 
 =
@@ -392,7 +384,7 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 			break;
 		case BUILTIN_VERBM: {
 			wording MW = GET_RW(<verb-implies-sentence-object>, 1);
-			vm = NewVerbs::sm_by_name(Lexer::word_text(Wordings::first_wn(MW)), &priority);
+			vm = VerbMeanings::sm_by_name(Lexer::word_text(Wordings::first_wn(MW)), &priority);
 			if ((Wordings::length(MW) != 1) || (VerbMeanings::is_meaningless(&vm))) {
 				#ifndef IF_MODULE
 				source_file *pos = Lexer::file_of_origin(Wordings::first_wn(MW));
@@ -625,70 +617,54 @@ foreign verbs (4).
 	imply
 
 @ =
-void NewVerbs::declare_sm(int (*func)(int, parse_node *, wording *), text_stream *name, int p) {
-	special_meaning_holder *smh = CREATE(special_meaning_holder);
-	smh->sm_func = func;
-	smh->sm_name = Str::duplicate(name);
-	smh->verb_priority = p;
-}
-
-verb_meaning NewVerbs::sm_by_name(wchar_t *name, int *p) {
-	special_meaning_holder *smh;
-	LOOP_OVER(smh, special_meaning_holder)
-		if (Str::eq_wide_string(smh->sm_name, name)) {
-			if (p) *p = smh->verb_priority;
-			return VerbMeanings::special(smh->sm_func);
-		}
-	return VerbMeanings::meaninglessness();
-}
 
 void NewVerbs::bootstrap(void) {
-	NewVerbs::declare_sm(NewVerbs::verb_means_SMF, 							I"verb-means", 3);
+	VerbMeanings::declare_sm(NewVerbs::verb_means_SMF, 							I"verb-means", 3);
 
-	NewVerbs::declare_sm(NewVerbs::new_verb_SMF, 							I"new-verb", 2);
-	NewVerbs::declare_sm(Plurals::plural_SMF, 								I"new-plural", 2);
-	NewVerbs::declare_sm(Activities::new_activity_SMF, 						I"new-activity", 2);
+	VerbMeanings::declare_sm(NewVerbs::new_verb_SMF, 							I"new-verb", 2);
+	VerbMeanings::declare_sm(Plurals::plural_SMF, 								I"new-plural", 2);
+	VerbMeanings::declare_sm(Activities::new_activity_SMF, 						I"new-activity", 2);
 	#ifdef IF_MODULE
-	NewVerbs::declare_sm(PL::Actions::new_action_SMF, 						I"new-action", 2);
+	VerbMeanings::declare_sm(PL::Actions::new_action_SMF, 						I"new-action", 2);
 	#endif
-	NewVerbs::declare_sm(NewVerbs::new_adjective_SMF,						I"new-adjective", 2);
-	NewVerbs::declare_sm(Assertions::Property::either_SMF,					I"new-either-or", 2);
-	NewVerbs::declare_sm(Tables::Defining::defined_by_SMF,					I"defined-by-table", 2);
-	NewVerbs::declare_sm(Rules::Placement::listed_in_SMF,					I"rule-listed-in", 2);
+	VerbMeanings::declare_sm(NewVerbs::new_adjective_SMF,						I"new-adjective", 2);
+	VerbMeanings::declare_sm(Assertions::Property::either_SMF,					I"new-either-or", 2);
+	VerbMeanings::declare_sm(Tables::Defining::defined_by_SMF,					I"defined-by-table", 2);
+	VerbMeanings::declare_sm(Rules::Placement::listed_in_SMF,					I"rule-listed-in", 2);
 	#ifdef MULTIMEDIA_MODULE
-	NewVerbs::declare_sm(PL::Figures::new_figure_SMF,						I"new-figure", 2);
-	NewVerbs::declare_sm(PL::Sounds::new_sound_SMF,							I"new-sound", 2);
-	NewVerbs::declare_sm(PL::Files::new_file_SMF,							I"new-file", 2);
+	VerbMeanings::declare_sm(PL::Figures::new_figure_SMF,						I"new-figure", 2);
+	VerbMeanings::declare_sm(PL::Sounds::new_sound_SMF,							I"new-sound", 2);
+	VerbMeanings::declare_sm(PL::Files::new_file_SMF,							I"new-file", 2);
 	#endif
 	#ifdef IF_MODULE
-	NewVerbs::declare_sm(PL::Bibliographic::episode_SMF,					I"episode", 2);
+	VerbMeanings::declare_sm(PL::Bibliographic::episode_SMF,					I"episode", 2);
 	#endif
-	NewVerbs::declare_sm(Relations::new_relation_SMF,						I"new-relation", 1);
-	NewVerbs::declare_sm(Assertions::Property::optional_either_SMF,			I"can-be", 2);
-	NewVerbs::declare_sm(LiteralPatterns::specifies_SMF, 					I"specifies-notation", 4);
-	NewVerbs::declare_sm(Rules::Placement::substitutes_for_SMF,				I"rule-substitutes-for", 1);
+	VerbMeanings::declare_sm(Relations::new_relation_SMF,						I"new-relation", 1);
+	VerbMeanings::declare_sm(Assertions::Property::optional_either_SMF,			I"can-be", 2);
+	VerbMeanings::declare_sm(LiteralPatterns::specifies_SMF, 					I"specifies-notation", 4);
+	VerbMeanings::declare_sm(Rules::Placement::substitutes_for_SMF,				I"rule-substitutes-for", 1);
 	#ifdef IF_MODULE
-	NewVerbs::declare_sm(PL::Scenes::begins_when_SMF,						I"scene-begins-when", 1);
-	NewVerbs::declare_sm(PL::Scenes::ends_when_SMF,							I"scene-ends-when", 1);
+	VerbMeanings::declare_sm(PL::Scenes::begins_when_SMF,						I"scene-begins-when", 1);
+	VerbMeanings::declare_sm(PL::Scenes::ends_when_SMF,							I"scene-ends-when", 1);
 	#endif
-	NewVerbs::declare_sm(Rules::Placement::does_nothing_SMF,				I"rule-does-nothing", 1);
-	NewVerbs::declare_sm(Rules::Placement::does_nothing_if_SMF,				I"rule-does-nothing-if", 1);
-	NewVerbs::declare_sm(Rules::Placement::does_nothing_unless_SMF,			I"rule-does-nothing-unless", 1);
-	NewVerbs::declare_sm(Sentences::VPs::translates_into_unicode_as_SMF,	I"translates-into-unicode", 1);
-	NewVerbs::declare_sm(Sentences::VPs::translates_into_I6_as_SMF,			I"translates-into-i6", 1);
-	NewVerbs::declare_sm(Sentences::VPs::translates_into_language_as_SMF,	I"translates-into-language", 1);
-	NewVerbs::declare_sm(UseOptions::use_translates_as_SMF,					I"use-translates", 4);
+	VerbMeanings::declare_sm(Rules::Placement::does_nothing_SMF,				I"rule-does-nothing", 1);
+	VerbMeanings::declare_sm(Rules::Placement::does_nothing_if_SMF,				I"rule-does-nothing-if", 1);
+	VerbMeanings::declare_sm(Rules::Placement::does_nothing_unless_SMF,			I"rule-does-nothing-unless", 1);
+	VerbMeanings::declare_sm(Sentences::VPs::translates_into_unicode_as_SMF,	I"translates-into-unicode", 1);
+	VerbMeanings::declare_sm(Sentences::VPs::translates_into_I6_as_SMF,			I"translates-into-i6", 1);
+	VerbMeanings::declare_sm(Sentences::VPs::translates_into_language_as_SMF,	I"translates-into-language", 1);
+	VerbMeanings::declare_sm(UseOptions::use_translates_as_SMF,					I"use-translates", 4);
 	#ifdef IF_MODULE
-	NewVerbs::declare_sm(PL::Parsing::TestScripts::test_with_SMF,			I"test-with", 1);
-	NewVerbs::declare_sm(PL::Parsing::understand_as_SMF,					I"understand-as", 1);
+	VerbMeanings::declare_sm(PL::Parsing::TestScripts::test_with_SMF,			I"test-with", 1);
+	VerbMeanings::declare_sm(PL::Parsing::understand_as_SMF,					I"understand-as", 1);
 	#endif
-	NewVerbs::declare_sm(UseOptions::use_SMF,								I"use", 4);
+	VerbMeanings::declare_sm(UseOptions::use_SMF,								I"use", 4);
 	#ifdef IF_MODULE
-	NewVerbs::declare_sm(PL::Bibliographic::Release::release_along_with_SMF,I"release-along-with", 4);
-	NewVerbs::declare_sm(PL::EPSMap::index_map_with_SMF,					I"index-map-with", 4);
+	VerbMeanings::declare_sm(PL::Bibliographic::Release::release_along_with_SMF,I"release-along-with", 4);
+	VerbMeanings::declare_sm(PL::EPSMap::index_map_with_SMF,					I"index-map-with", 4);
 	#endif
-	NewVerbs::declare_sm(Sentences::VPs::include_in_SMF,					I"include-in", 4);
-	NewVerbs::declare_sm(Sentences::VPs::omit_from_SMF,						I"omit-from", 4);
+	VerbMeanings::declare_sm(Sentences::VPs::include_in_SMF,					I"include-in", 4);
+	VerbMeanings::declare_sm(Sentences::VPs::omit_from_SMF,						I"omit-from", 4);
 
 	word_assemblage infinitive = PreformUtilities::wording(<bootstrap-verb>, 0);
 	verb_conjugation *vc = Conjugation::conjugate(infinitive, DefaultLanguage::get(NULL));
@@ -702,7 +678,7 @@ void NewVerbs::bootstrap(void) {
 	vc->vc_conjugates = vi;
 	VerbUsages::register_all_usages_of_verb(vi, FALSE, 3, NULL);
 
-	Verbs::add_form(vi, NULL, NULL, NewVerbs::sm_by_name(L"verb-means", NULL), SVO_FS_BIT);
+	Verbs::add_form(vi, NULL, NULL, VerbMeanings::sm_by_name(L"verb-means", NULL), SVO_FS_BIT);
 }
 
 @h Runtime conjugation.

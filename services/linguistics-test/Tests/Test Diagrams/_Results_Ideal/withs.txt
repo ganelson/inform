@@ -1,8 +1,8 @@
 (1) on the table is a sailor with carrying capacity 10
 
 SENTENCE_NT'on the table is a sailor with carrying capacity 10'
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {meaning: is}
-    RELATIONSHIP_NT'on the table' {meaning: carries-reversed}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+    RELATIONSHIP_NT'on the table' {meaning: carries}
         COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
     WITH_NT'with'
         COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
@@ -11,18 +11,18 @@ SENTENCE_NT'on the table is a sailor with carrying capacity 10'
 (2) a sailor with carrying capacity 10 is on the table
 
 SENTENCE_NT'a sailor with carrying capacity 10 is on the table'
-    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {meaning: carries}
+    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}
     WITH_NT'with'
         COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
         PROPERTY_LIST_NT'carrying capacity 10'
-    RELATIONSHIP_NT'is on' {meaning: carries-reversed}
+    RELATIONSHIP_NT'is on' {meaning: carries}
         COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
 
 (3) on the table is a sailor with carrying capacity 10 and wealth 12
 
 SENTENCE_NT'on the table is a sailor with carrying capacity 10 and wealt'
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {meaning: is}
-    RELATIONSHIP_NT'on the table' {meaning: carries-reversed}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+    RELATIONSHIP_NT'on the table' {meaning: carries}
         COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
     WITH_NT'with'
         COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
@@ -33,8 +33,8 @@ SENTENCE_NT'on the table is a sailor with carrying capacity 10 and wealt'
 (4) on the table is a sailor with carrying capacity 10 , wealth 12 , and sea count 7
 
 SENTENCE_NT'on the table is a sailor with carrying capacity 10 , wealth '
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {meaning: is}
-    RELATIONSHIP_NT'on the table' {meaning: carries-reversed}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+    RELATIONSHIP_NT'on the table' {meaning: carries}
         COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
     WITH_NT'with'
         COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
@@ -47,7 +47,7 @@ SENTENCE_NT'on the table is a sailor with carrying capacity 10 , wealth '
 (5) there is a kind of sailor called an admiral
 
 SENTENCE_NT'there is a kind of sailor called an admiral'
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential} {meaning: is}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}
     DEFECTIVE_NOUN_NT'there'
     CALLED_NT'called'
         KIND_NT'kind of sailor'
@@ -57,7 +57,7 @@ SENTENCE_NT'there is a kind of sailor called an admiral'
 (6) an admiral is a kind of sailor
 
 SENTENCE_NT'an admiral is a kind of sailor'
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {meaning: is}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     UNPARSED_NOUN_NT'admiral' {indefinite 'an' n/m/f nom/acc s}
     KIND_NT'kind of sailor'
         COMMON_NOUN_NT'sailor' {common nom/acc m s}
@@ -65,7 +65,7 @@ SENTENCE_NT'an admiral is a kind of sailor'
 (7) an admiral is a kind of sailor with wealth 50
 
 SENTENCE_NT'an admiral is a kind of sailor with wealth 50'
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {meaning: is}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     UNPARSED_NOUN_NT'admiral' {indefinite 'an' n/m/f nom/acc s}
     WITH_NT'with'
         KIND_NT'kind of sailor'

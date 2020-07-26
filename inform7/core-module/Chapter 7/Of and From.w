@@ -142,12 +142,12 @@ the new property.
 
 @<See if this assertion creates property names with "... has ... called ..."@> =
 	if ((Annotations::read_int(pn, verb_id_ANNOT) == ASSERT_VB)
-		&& (Annotations::read_int(pn, possessive_verb_ANNOT))
 		&& (pn->next)
 		&& (pn->next->next)
-		&& (Node::get_type(pn->next->next) == CALLED_NT)
-		&& (pn->next->next->down)
-		&& (pn->next->next->down->next)) {
+		&& (Assertions::Copular::possessive(pn->next->next))
+		&& (Node::get_type(pn->next->next->down) == CALLED_NT)
+		&& (pn->next->next->down->down)
+		&& (pn->next->next->down->down->next)) {
 		parse_node *apparent_subject = pn->next;
 		wording SW = Node::get_text(apparent_subject);
 		if (Node::get_type(apparent_subject) == WITH_NT)
@@ -160,7 +160,7 @@ the new property.
 			}
 
 		if (<prohibited-property-owners>(SW) == FALSE) {
-			<has-properties-called-sentence-object>(Node::get_text(pn->next->next->down->next));
+			<has-properties-called-sentence-object>(Node::get_text(pn->next->next->down->down->next));
 		}
 	}
 

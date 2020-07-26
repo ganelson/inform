@@ -122,8 +122,7 @@ int PL::Bibliographic::Release::release_along_with_SMF(int task, parse_node *V, 
 @ =
 void PL::Bibliographic::Release::visit_to_quote(OUTPUT_STREAM, parse_node *p) {
 	if ((Node::get_type(p) == SENTENCE_NT) && (p->down)) {
-		verb_meaning *vm = Node::get_verb_meaning(p->down);
-		special_meaning_fn soa = VerbMeanings::get_special_meaning_fn(vm);
+		special_meaning_fn soa = VerbMeanings::sm_of_verb_node(p->down);
 		if (soa == PL::Bibliographic::Release::release_along_with_SMF) {
 			TEMPORARY_TEXT(TEMP)
 			Index::link_to(TEMP, Wordings::first_wn(Node::get_text(p)), TRUE);

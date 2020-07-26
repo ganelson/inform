@@ -1,7 +1,7 @@
 (1) beth carries the ming vase
 
 SENTENCE_NT'beth carries the ming vase'
-    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve} {meaning: carries}
+    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
     PROPER_NOUN_NT'beth' {proper nom/acc f s}
     RELATIONSHIP_NT'carries' {meaning: carries-reversed}
         COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
@@ -9,7 +9,7 @@ SENTENCE_NT'beth carries the ming vase'
 (2) the sailors carry the table
 
 SENTENCE_NT'the sailors carry the table'
-    VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {meaning: carries}
+    VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}
     COMMON_NOUN_NT'sailors' {common nom/acc m p} {definite 'the' n/m/f s/p nom/acc}
     RELATIONSHIP_NT'carry' {meaning: carries-reversed}
         COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
@@ -17,7 +17,7 @@ SENTENCE_NT'the sailors carry the table'
 (3) the ming vase is carried by beth
 
 SENTENCE_NT'the ming vase is carried by beth'
-    VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve} {meaning: carries-reversed}
+    VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve}
     COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
     RELATIONSHIP_NT'is carried by' {meaning: carries}
         PROPER_NOUN_NT'beth' {proper nom/acc f s}
@@ -25,8 +25,8 @@ SENTENCE_NT'the ming vase is carried by beth'
 (4) a woman is on the table
 
 SENTENCE_NT'a woman is on the table'
-    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {meaning: carries}
+    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}
     COMMON_NOUN_NT'woman' {common nom/acc f s} {indefinite 'a' n/m/f nom/acc s}
-    RELATIONSHIP_NT'is on' {meaning: carries-reversed}
+    RELATIONSHIP_NT'is on' {meaning: carries}
         COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
 

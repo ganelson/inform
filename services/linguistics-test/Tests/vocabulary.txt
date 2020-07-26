@@ -8,8 +8,8 @@ have = verb meaning HAS with priority 1.
 carry = verb meaning CARRIES with priority 3.
 know = verb meaning KNOWS with priority 3.
 
-be + on = preposition meaning CARRIES.
-be + under = preposition meaning CARRIES-reversed.
+be + on = preposition meaning CARRIES-reversed.
+be + under = preposition meaning CARRIES.
 
 Anna = feminine proper noun.
 Beth = feminine proper noun.

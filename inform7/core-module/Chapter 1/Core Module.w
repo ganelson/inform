@@ -79,7 +79,6 @@ which use this module:
 @e local_variable_CLASS
 @e relation_guard_CLASS
 @e pcalc_term_CLASS
-@e special_meaning_holder_CLASS
 @e runtime_kind_structure_CLASS
 @e internal_test_case_CLASS
 @e test_scenario_CLASS
@@ -144,7 +143,6 @@ DECLARE_CLASS(response_message)
 DECLARE_CLASS(rule)
 DECLARE_CLASS(rulebook_outcome)
 DECLARE_CLASS(rulebook)
-DECLARE_CLASS(special_meaning_holder)
 DECLARE_CLASS(table_column)
 DECLARE_CLASS(table)
 DECLARE_CLASS(test_scenario)

@@ -1,0 +1,18 @@
+(1) beth has a ming vase
+
+SENTENCE_NT'beth has a ming vase'
+    VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
+    PROPER_NOUN_NT'beth' {proper nom/acc f s}
+    RELATIONSHIP_NT'has' {meaning: has-reversed}
+        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}
+
+(2) sailors have a drink called rum
+
+SENTENCE_NT'sailors have a drink called rum'
+    VERB_NT'have' {verb 'have' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}
+    COMMON_NOUN_NT'sailors' {common nom/acc m p}
+    RELATIONSHIP_NT'have' {meaning: has-reversed}
+        CALLED_NT'called'
+            UNPARSED_NOUN_NT'drink' {indefinite 'a' n/m/f nom/acc s}
+            UNPARSED_NOUN_NT'rum'
+

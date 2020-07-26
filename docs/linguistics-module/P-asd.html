@@ -82,7 +82,7 @@ nonterminal, and the trees displayed below were the result. For example:
 <span class="plain-syntax">(2) beth is not a sailor</span>
 
 <span class="plain-syntax">SENTENCE_NT'beth is not a sailor'</span>
-<span class="plain-syntax">    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve} {meaning: is}</span>
+<span class="plain-syntax">    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve}</span>
 <span class="plain-syntax">    UNPARSED_NOUN_NT'beth'</span>
 <span class="plain-syntax">    UNPARSED_NOUN_NT'sailor' {indefinite 'a' n/m/f nom/acc s}</span>
 </pre>
@@ -108,12 +108,12 @@ certainly singular.
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Since "to be" is a copular verb, in sentence (2) we really mean "the
 phrase in the object position".
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Since the 1850s a variety of tree-diagram schemes for sentence structure
-have been proposed: see <a href="https://en.wikipedia.org/wiki/Sentence_diagram" class="external">Wikipedia</a>.
+has been proposed: see <a href="https://en.wikipedia.org/wiki/Sentence_diagram" class="external">Wikipedia</a>.
 These tend to be quite large, with many optional features &mdash; no bad thing when
 the aim is to explain. But our aim is to process, not to illustrate, and
 whereas a typical dependency tree would have nodes for both "not" and "a",
-we use annotations instead. The aim is to have flattish sentence trees
-with a simple, predictable shape.
+we use annotations instead. We want fairly flat sentence trees with a simple,
+predictable shape.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Using &lt;sentence&gt; alone tends to result in a lot of <span class="extract"><span class="extract-syntax">UNPARSED_NOUN_NT</span></span> nodes.
 This is unsatisfying, but useful, because sometimes the meaning of a verb
@@ -131,7 +131,7 @@ all examples shown will have that operation done. For example:
 <span class="plain-syntax">(1) beth is not a sailor</span>
 
 <span class="plain-syntax">SENTENCE_NT'beth is not a sailor'</span>
-<span class="plain-syntax">    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve} {meaning: is}</span>
+<span class="plain-syntax">    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve}</span>
 <span class="plain-syntax">    PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
 <span class="plain-syntax">    COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}</span>
 </pre>
@@ -157,8 +157,8 @@ very limited stock of nouns, verbs and prepositions as follows:
 <span class="plain-syntax">carry = verb meaning CARRIES with priority 3.</span>
 <span class="plain-syntax">know = verb meaning KNOWS with priority 3.</span>
 
-<span class="plain-syntax">be + on = preposition meaning CARRIES.</span>
-<span class="plain-syntax">be + under = preposition meaning CARRIES-reversed.</span>
+<span class="plain-syntax">be + on = preposition meaning CARRIES-reversed.</span>
+<span class="plain-syntax">be + under = preposition meaning CARRIES.</span>
 
 <span class="plain-syntax">Anna = feminine proper noun.</span>
 <span class="plain-syntax">Beth = feminine proper noun.</span>
@@ -193,14 +193,14 @@ than having a subject act upon an object. This is why one "ought to" say
 <span class="plain-syntax">(1) anna is a woman</span>
 
 <span class="plain-syntax">SENTENCE_NT'anna is a woman'</span>
-<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {meaning: is}</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">    PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
 <span class="plain-syntax">    COMMON_NOUN_NT'woman' {common nom/acc f s} {indefinite 'a' n/m/f nom/acc s}</span>
 
 <span class="plain-syntax">(2) anna is not charles</span>
 
 <span class="plain-syntax">SENTENCE_NT'anna is not charles'</span>
-<span class="plain-syntax">    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve} {meaning: is}</span>
+<span class="plain-syntax">    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve}</span>
 <span class="plain-syntax">    PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
 <span class="plain-syntax">    PROPER_NOUN_NT'charles' {proper nom/acc m s}</span>
 </pre>
@@ -213,7 +213,7 @@ which play different roles.
 <span class="plain-syntax">(1) beth carries the ming vase</span>
 
 <span class="plain-syntax">SENTENCE_NT'beth carries the ming vase'</span>
-<span class="plain-syntax">    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve} {meaning: carries}</span>
+<span class="plain-syntax">    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">    PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'carries' {meaning: carries-reversed}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
@@ -221,7 +221,7 @@ which play different roles.
 <span class="plain-syntax">(2) the sailors carry the table</span>
 
 <span class="plain-syntax">SENTENCE_NT'the sailors carry the table'</span>
-<span class="plain-syntax">    VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {meaning: carries}</span>
+<span class="plain-syntax">    VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">    COMMON_NOUN_NT'sailors' {common nom/acc m p} {definite 'the' n/m/f s/p nom/acc}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'carry' {meaning: carries-reversed}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
@@ -229,7 +229,7 @@ which play different roles.
 <span class="plain-syntax">(3) the ming vase is carried by beth</span>
 
 <span class="plain-syntax">SENTENCE_NT'the ming vase is carried by beth'</span>
-<span class="plain-syntax">    VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve} {meaning: carries-reversed}</span>
+<span class="plain-syntax">    VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">    COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'is carried by' {meaning: carries}</span>
 <span class="plain-syntax">        PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
@@ -237,30 +237,63 @@ which play different roles.
 <span class="plain-syntax">(4) a woman is on the table</span>
 
 <span class="plain-syntax">SENTENCE_NT'a woman is on the table'</span>
-<span class="plain-syntax">    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {meaning: carries}</span>
+<span class="plain-syntax">    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">    COMMON_NOUN_NT'woman' {common nom/acc f s} {indefinite 'a' n/m/f nom/acc s}</span>
-<span class="plain-syntax">    RELATIONSHIP_NT'is on' {meaning: carries-reversed}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'is on' {meaning: carries}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>An unusual feature of English is its use of subject-verb inversion:
+<p class="commentary">Each <span class="extract"><span class="extract-syntax">RELATIONSHIP_NT</span></span> node expresses that it, and the other term, are
+in some non-copular relation to each other. The annotation gives that
+relation from the point of view of the node, not from the point of view
+of the subject of the sentence. For example, in (4), the subject of the
+sentence (woman) is carried by the object (table), but the <span class="extract"><span class="extract-syntax">RELATIONSHIP_NT</span></span>
+node is for the table, and so the meaning is "carries", not "carried-by".
+</p>
+
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Possessive verbs need careful handling because of the wide range of
+meanings they can carry which may not involve ownership as such (cf. French
+"j'ai trente ans", or English "I have mumps"). But syntactically they are
+just like other non-copular verbs, and we parse them as such.
+</p>
+
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">(1) beth has a ming vase</span>
+
+<span class="plain-syntax">SENTENCE_NT'beth has a ming vase'</span>
+<span class="plain-syntax">    VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'has' {meaning: has-reversed}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}</span>
+
+<span class="plain-syntax">(2) sailors have a drink called rum</span>
+
+<span class="plain-syntax">SENTENCE_NT'sailors have a drink called rum'</span>
+<span class="plain-syntax">    VERB_NT'have' {verb 'have' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'sailors' {common nom/acc m p}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'have' {meaning: has-reversed}</span>
+<span class="plain-syntax">        CALLED_NT'called'</span>
+<span class="plain-syntax">            UNPARSED_NOUN_NT'drink' {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">            UNPARSED_NOUN_NT'rum'</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>An unusual feature of English is its use of subject-verb inversion:
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">(1) on the table is the ming vase</span>
 
 <span class="plain-syntax">SENTENCE_NT'on the table is the ming vase'</span>
-<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {meaning: is}</span>
-<span class="plain-syntax">    RELATIONSHIP_NT'on the table' {meaning: carries-reversed}</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'on the table' {meaning: carries}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
 <span class="plain-syntax">    COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
 
 <span class="plain-syntax">(2) on the table is under the ming vase</span>
 
 <span class="plain-syntax">SENTENCE_NT'on the table is under the ming vase'</span>
-<span class="plain-syntax">    VERB_NT'is under' {verb 'be' 3p s act IS_TENSE +ve} {meaning: carries-reversed}</span>
-<span class="plain-syntax">    RELATIONSHIP_NT'on the table' {meaning: carries-reversed}</span>
+<span class="plain-syntax">    VERB_NT'is under' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'on the table' {meaning: carries}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
-<span class="plain-syntax">    RELATIONSHIP_NT'is under' {meaning: carries}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'is under' {meaning: carries-reversed}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
 </pre>
 <p class="commentary">It would be easy to auto-fix the inversion in sentence (1), by simply
@@ -272,7 +305,135 @@ to preserve the distinction because Inform will make some use of it.
 allow that sort of thing in Inform (for e.g. "east of X is south of Y").
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Now we introduce pronouns to the mix. These are detected automatically
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Existential sentences, using the defective subject nounphrase "there", are
+marked with an additional annotation.
+</p>
+
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">(1) there is a table</span>
+
+<span class="plain-syntax">SENTENCE_NT'there is a table'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}</span>
+<span class="plain-syntax">    DEFECTIVE_NOUN_NT'there'</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'table' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}</span>
+
+<span class="plain-syntax">(2) some sailors are there</span>
+
+<span class="plain-syntax">SENTENCE_NT'some sailors are there'</span>
+<span class="plain-syntax">    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'sailors' {common nom/acc m p} {indefinite 'some' n/m/f nom/acc p}</span>
+<span class="plain-syntax">    UNPARSED_NOUN_NT'there'</span>
+
+<span class="plain-syntax">(3) there is a ming vase on the table</span>
+
+<span class="plain-syntax">SENTENCE_NT'there is a ming vase on the table'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'ming vase' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'is' {meaning: carries}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+
+<span class="plain-syntax">(4) a ming vase is on the table</span>
+
+<span class="plain-syntax">SENTENCE_NT'a ming vase is on the table'</span>
+<span class="plain-syntax">    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'ming vase' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'is on' {meaning: carries}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+</pre>
+<p class="commentary">In sentences (3) and (4) here, the resulting trees are essentially identical
+except for the existential annotation.
+</p>
+
+<p class="commentary">Note that "there" as an object phrase is also defective, but not considered
+existential (it is more likely an anaphora &mdash; "A woman is there" implies a
+reference to a location already being discussed, whereas "There is a woman"
+does not).
+</p>
+
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Two sorts of adverbs are recognised, for certainty and occurrence, and they
+are handled by making additional annotations to the verb node, not by adding
+fresh nodes:
+</p>
+
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">(1) beth always carries the ming vase</span>
+
+<span class="plain-syntax">SENTENCE_NT'beth always carries the ming vase'</span>
+<span class="plain-syntax">    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve} {certainty:certain}</span>
+<span class="plain-syntax">    PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'carries' {meaning: carries-reversed}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+
+<span class="plain-syntax">(2) anna carries the ming vase for the third time</span>
+
+<span class="plain-syntax">SENTENCE_NT'anna carries the ming vase for the third time'</span>
+<span class="plain-syntax">    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve} {occurrence: &lt;3 times&gt;}</span>
+<span class="plain-syntax">    PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'carries' {meaning: carries-reversed}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>That shows the full range of what happens with verb nodes. Turning back
+to noun phrases, we can have serial lists:
+</p>
+
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">(1) anna and beth are women</span>
+
+<span class="plain-syntax">SENTENCE_NT'anna and beth are women'</span>
+<span class="plain-syntax">    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve}</span>
+<span class="plain-syntax">    AND_NT'and'</span>
+<span class="plain-syntax">        PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
+<span class="plain-syntax">        PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'women' {common nom/acc f p}</span>
+
+<span class="plain-syntax">(2) anna , beth and charles are sailors</span>
+
+<span class="plain-syntax">SENTENCE_NT'anna , beth and charles are sailors'</span>
+<span class="plain-syntax">    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve}</span>
+<span class="plain-syntax">    AND_NT','</span>
+<span class="plain-syntax">        PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
+<span class="plain-syntax">        AND_NT'and'</span>
+<span class="plain-syntax">            PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
+<span class="plain-syntax">            PROPER_NOUN_NT'charles' {proper nom/acc m s}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'sailors' {common nom/acc m p}</span>
+
+<span class="plain-syntax">(3) anna , beth , and charles are sailors</span>
+
+<span class="plain-syntax">SENTENCE_NT'anna , beth , and charles are sailors'</span>
+<span class="plain-syntax">    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve}</span>
+<span class="plain-syntax">    AND_NT','</span>
+<span class="plain-syntax">        PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
+<span class="plain-syntax">        AND_NT','</span>
+<span class="plain-syntax">            PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
+<span class="plain-syntax">            PROPER_NOUN_NT'charles' {proper nom/acc m s}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'sailors' {common nom/acc m p}</span>
+
+<span class="plain-syntax">(4) anna carries the table and the ming vase</span>
+
+<span class="plain-syntax">SENTENCE_NT'anna carries the table and the ming vase'</span>
+<span class="plain-syntax">    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'carries' {meaning: carries-reversed}</span>
+<span class="plain-syntax">        AND_NT'and'</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+
+<span class="plain-syntax">(5) anna is on the table and under the ming vase</span>
+
+<span class="plain-syntax">SENTENCE_NT'anna is on the table and under the ming vase'</span>
+<span class="plain-syntax">    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'is on' {meaning: carries}</span>
+<span class="plain-syntax">        AND_NT'and'</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+<span class="plain-syntax">            RELATIONSHIP_NT'under the ming vase' {meaning: carries-reversed}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+</pre>
+<p class="commentary">Note that <span class="extract"><span class="extract-syntax">AND_NT</span></span> nodes always have exactly two children, and that the serial
+comma is allowed but not required.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Now we introduce pronouns to the mix. These are detected automatically
 by <a href="index.html" class="internal">linguistics</a>, and exist in nominative and accusative cases in
 English. Note the difference in annotations between "them" and "you",
 for example.
@@ -282,7 +443,7 @@ for example.
 <span class="plain-syntax">(1) he knows her</span>
 
 <span class="plain-syntax">SENTENCE_NT'he knows her'</span>
-<span class="plain-syntax">    VERB_NT'knows' {verb 'know' 3p s act IS_TENSE +ve} {meaning: knows}</span>
+<span class="plain-syntax">    VERB_NT'knows' {verb 'know' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">    PRONOUN_NT'he' {third person pronoun m 3p s nom}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'knows' {meaning: knows-reversed}</span>
 <span class="plain-syntax">        PRONOUN_NT'her' {third person pronoun f 3p s acc}</span>
@@ -290,7 +451,7 @@ for example.
 <span class="plain-syntax">(2) she knows him</span>
 
 <span class="plain-syntax">SENTENCE_NT'she knows him'</span>
-<span class="plain-syntax">    VERB_NT'knows' {verb 'know' 3p s act IS_TENSE +ve} {meaning: knows}</span>
+<span class="plain-syntax">    VERB_NT'knows' {verb 'know' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">    PRONOUN_NT'she' {third person pronoun f 3p s nom}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'knows' {meaning: knows-reversed}</span>
 <span class="plain-syntax">        PRONOUN_NT'him' {third person pronoun m 3p s acc}</span>
@@ -298,7 +459,7 @@ for example.
 <span class="plain-syntax">(3) i carry the ming vase</span>
 
 <span class="plain-syntax">SENTENCE_NT'i carry the ming vase'</span>
-<span class="plain-syntax">    VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {meaning: carries}</span>
+<span class="plain-syntax">    VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">    PRONOUN_NT'i' {first person pronoun n/m/f 1p s nom}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'carry' {meaning: carries-reversed}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
@@ -306,7 +467,7 @@ for example.
 <span class="plain-syntax">(4) the sailors know them</span>
 
 <span class="plain-syntax">SENTENCE_NT'the sailors know them'</span>
-<span class="plain-syntax">    VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {meaning: knows}</span>
+<span class="plain-syntax">    VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">    COMMON_NOUN_NT'sailors' {common nom/acc m p} {definite 'the' n/m/f s/p nom/acc}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'know' {meaning: knows-reversed}</span>
 <span class="plain-syntax">        PRONOUN_NT'them' {third person pronoun n/m/f 3p p acc}</span>
@@ -314,10 +475,142 @@ for example.
 <span class="plain-syntax">(5) you know us</span>
 
 <span class="plain-syntax">SENTENCE_NT'you know us'</span>
-<span class="plain-syntax">    VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {meaning: knows}</span>
+<span class="plain-syntax">    VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">    PRONOUN_NT'you' {second person pronoun n/m/f s/p nom/acc 2p}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'know' {meaning: knows-reversed}</span>
 <span class="plain-syntax">        PRONOUN_NT'us' {first person pronoun n/m/f 1p p acc}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>"Callings" use the special syntax "X called Y", which has to be handled
+here in the <a href="index.html" class="internal">linguistics</a> module so that Y can safely wording which would
+otherwise have a structural meaning. ("Called" is to Inform as the backslash
+character, making letters literal, is to C.)
+</p>
+
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">(1) a sailor called jack silver is on the table</span>
+
+<span class="plain-syntax">SENTENCE_NT'a sailor called jack silver is on the table'</span>
+<span class="plain-syntax">    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    CALLED_NT'called'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'a sailor' {common nom/acc m s}</span>
+<span class="plain-syntax">        UNPARSED_NOUN_NT'jack silver'</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'is on' {meaning: carries}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+
+<span class="plain-syntax">(2) on the table is a sailor called ben gunn</span>
+
+<span class="plain-syntax">SENTENCE_NT'on the table is a sailor called ben gunn'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'on the table' {meaning: carries}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+<span class="plain-syntax">    CALLED_NT'called'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">        UNPARSED_NOUN_NT'ben gunn'</span>
+
+<span class="plain-syntax">(3) there is a sailor called captain flint</span>
+
+<span class="plain-syntax">SENTENCE_NT'there is a sailor called captain flint'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}</span>
+<span class="plain-syntax">    DEFECTIVE_NOUN_NT'there'</span>
+<span class="plain-syntax">    CALLED_NT'called'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">        UNPARSED_NOUN_NT'captain flint'</span>
+
+<span class="plain-syntax">(4) there is a table called the billiards and snooker table</span>
+
+<span class="plain-syntax">SENTENCE_NT'there is a table called the billiards and snooker table'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}</span>
+<span class="plain-syntax">    DEFECTIVE_NOUN_NT'there'</span>
+<span class="plain-syntax">    CALLED_NT'called'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">        UNPARSED_NOUN_NT'billiards and snooker table' {definite 'the' n/m/f s/p nom/acc}</span>
+
+<span class="plain-syntax">(5) there is a table called the billiards table with deep pockets</span>
+
+<span class="plain-syntax">SENTENCE_NT'there is a table called the billiards table with deep pocket'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}</span>
+<span class="plain-syntax">    DEFECTIVE_NOUN_NT'there'</span>
+<span class="plain-syntax">    CALLED_NT'called'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">        UNPARSED_NOUN_NT'billiards table with deep pockets' {definite 'the' n/m/f s/p nom/acc}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The word "with", often but not always used in conjunction with "kind of":
+</p>
+
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">(1) on the table is a sailor with carrying capacity 10</span>
+
+<span class="plain-syntax">SENTENCE_NT'on the table is a sailor with carrying capacity 10'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'on the table' {meaning: carries}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+<span class="plain-syntax">    WITH_NT'with'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">        PROPERTY_LIST_NT'carrying capacity 10'</span>
+
+<span class="plain-syntax">(2) a sailor with carrying capacity 10 is on the table</span>
+
+<span class="plain-syntax">SENTENCE_NT'a sailor with carrying capacity 10 is on the table'</span>
+<span class="plain-syntax">    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    WITH_NT'with'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">        PROPERTY_LIST_NT'carrying capacity 10'</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'is on' {meaning: carries}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+
+<span class="plain-syntax">(3) on the table is a sailor with carrying capacity 10 and wealth 12</span>
+
+<span class="plain-syntax">SENTENCE_NT'on the table is a sailor with carrying capacity 10 and wealt'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'on the table' {meaning: carries}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+<span class="plain-syntax">    WITH_NT'with'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">        AND_NT'and'</span>
+<span class="plain-syntax">            PROPERTY_LIST_NT'carrying capacity 10'</span>
+<span class="plain-syntax">            PROPERTY_LIST_NT'wealth 12'</span>
+
+<span class="plain-syntax">(4) on the table is a sailor with carrying capacity 10 , wealth 12 , and sea count 7</span>
+
+<span class="plain-syntax">SENTENCE_NT'on the table is a sailor with carrying capacity 10 , wealth '</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    RELATIONSHIP_NT'on the table' {meaning: carries}</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
+<span class="plain-syntax">    WITH_NT'with'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">        AND_NT','</span>
+<span class="plain-syntax">            PROPERTY_LIST_NT'carrying capacity 10'</span>
+<span class="plain-syntax">            AND_NT','</span>
+<span class="plain-syntax">                PROPERTY_LIST_NT'wealth 12'</span>
+<span class="plain-syntax">                PROPERTY_LIST_NT'sea count 7'</span>
+
+<span class="plain-syntax">(5) there is a kind of sailor called an admiral</span>
+
+<span class="plain-syntax">SENTENCE_NT'there is a kind of sailor called an admiral'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}</span>
+<span class="plain-syntax">    DEFECTIVE_NOUN_NT'there'</span>
+<span class="plain-syntax">    CALLED_NT'called'</span>
+<span class="plain-syntax">        KIND_NT'kind of sailor'</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'sailor' {common nom/acc m s}</span>
+<span class="plain-syntax">        UNPARSED_NOUN_NT'admiral' {indefinite 'an' n/m/f nom/acc s}</span>
+
+<span class="plain-syntax">(6) an admiral is a kind of sailor</span>
+
+<span class="plain-syntax">SENTENCE_NT'an admiral is a kind of sailor'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    UNPARSED_NOUN_NT'admiral' {indefinite 'an' n/m/f nom/acc s}</span>
+<span class="plain-syntax">    KIND_NT'kind of sailor'</span>
+<span class="plain-syntax">        COMMON_NOUN_NT'sailor' {common nom/acc m s}</span>
+
+<span class="plain-syntax">(7) an admiral is a kind of sailor with wealth 50</span>
+
+<span class="plain-syntax">SENTENCE_NT'an admiral is a kind of sailor with wealth 50'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    UNPARSED_NOUN_NT'admiral' {indefinite 'an' n/m/f nom/acc s}</span>
+<span class="plain-syntax">    WITH_NT'with'</span>
+<span class="plain-syntax">        KIND_NT'kind of sailor'</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'sailor' {common nom/acc m s}</span>
+<span class="plain-syntax">        PROPERTY_LIST_NT'wealth 50'</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">asd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-adj.html">2</a></li><li class="progresschapter"><a href="3-vrb.html">3</a></li><li class="progresschapter"><a href="4-np.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>

@@ -1,7 +1,7 @@
 (1) anna and beth are women
 
 SENTENCE_NT'anna and beth are women'
-    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve} {meaning: is}
+    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve}
     AND_NT'and'
         PROPER_NOUN_NT'anna' {proper nom/acc f s}
         PROPER_NOUN_NT'beth' {proper nom/acc f s}
@@ -10,7 +10,7 @@ SENTENCE_NT'anna and beth are women'
 (2) anna , beth and charles are sailors
 
 SENTENCE_NT'anna , beth and charles are sailors'
-    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve} {meaning: is}
+    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve}
     AND_NT','
         PROPER_NOUN_NT'anna' {proper nom/acc f s}
         AND_NT'and'
@@ -21,7 +21,7 @@ SENTENCE_NT'anna , beth and charles are sailors'
 (3) anna , beth , and charles are sailors
 
 SENTENCE_NT'anna , beth , and charles are sailors'
-    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve} {meaning: is}
+    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve}
     AND_NT','
         PROPER_NOUN_NT'anna' {proper nom/acc f s}
         AND_NT','
@@ -32,7 +32,7 @@ SENTENCE_NT'anna , beth , and charles are sailors'
 (4) anna carries the table and the ming vase
 
 SENTENCE_NT'anna carries the table and the ming vase'
-    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve} {meaning: carries}
+    VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
     PROPER_NOUN_NT'anna' {proper nom/acc f s}
     RELATIONSHIP_NT'carries' {meaning: carries-reversed}
         AND_NT'and'
@@ -42,11 +42,11 @@ SENTENCE_NT'anna carries the table and the ming vase'
 (5) anna is on the table and under the ming vase
 
 SENTENCE_NT'anna is on the table and under the ming vase'
-    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {meaning: carries}
+    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}
     PROPER_NOUN_NT'anna' {proper nom/acc f s}
-    RELATIONSHIP_NT'is on' {meaning: carries-reversed}
+    RELATIONSHIP_NT'is on' {meaning: carries}
         AND_NT'and'
             COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
-            RELATIONSHIP_NT'under the ming vase' {meaning: carries}
+            RELATIONSHIP_NT'under the ming vase' {meaning: carries-reversed}
                 COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
 

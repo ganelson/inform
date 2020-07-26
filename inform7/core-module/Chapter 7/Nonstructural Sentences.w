@@ -112,8 +112,7 @@ void Sentences::VPs::visit(parse_node *p) {
 
 @<Check that this is allowed, if it occurs in the Options file@> =
 	if (Wordings::within(Node::get_text(p), options_file_wording)) {
-		verb_meaning *vm = Node::get_verb_meaning(p->down);
-		special_meaning_fn soa = VerbMeanings::get_special_meaning_fn(vm);
+		special_meaning_fn soa = VerbMeanings::sm_of_verb_node(p->down);
 		int err = TRUE;
 		if ((soa == UseOptions::use_SMF) ||
 			(soa == PL::Parsing::TestScripts::test_with_SMF) ||

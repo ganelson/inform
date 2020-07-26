@@ -1,14 +1,30 @@
 (1) there is a table
 
 SENTENCE_NT'there is a table'
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential} {meaning: is}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}
     DEFECTIVE_NOUN_NT'there'
     COMMON_NOUN_NT'table' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}
 
 (2) some sailors are there
 
 SENTENCE_NT'some sailors are there'
-    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve} {meaning: is}
+    VERB_NT'are' {verb 'be' s/p 2p act IS_TENSE +ve + 1p/3p p act IS_TENSE +ve}
     COMMON_NOUN_NT'sailors' {common nom/acc m p} {indefinite 'some' n/m/f nom/acc p}
     UNPARSED_NOUN_NT'there'
+
+(3) there is a ming vase on the table
+
+SENTENCE_NT'there is a ming vase on the table'
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}
+    COMMON_NOUN_NT'ming vase' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}
+    RELATIONSHIP_NT'is' {meaning: carries}
+        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+
+(4) a ming vase is on the table
+
+SENTENCE_NT'a ming vase is on the table'
+    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}
+    COMMON_NOUN_NT'ming vase' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}
+    RELATIONSHIP_NT'is on' {meaning: carries}
+        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
 

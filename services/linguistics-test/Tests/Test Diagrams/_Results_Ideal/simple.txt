@@ -1,7 +1,7 @@
 (1) beth is not a sailor
 
 SENTENCE_NT'beth is not a sailor'
-    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve} {meaning: is}
+    VERB_NT'is not' {verb 'be' 3p s act IS_TENSE -ve}
     PROPER_NOUN_NT'beth' {proper nom/acc f s}
     COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
 

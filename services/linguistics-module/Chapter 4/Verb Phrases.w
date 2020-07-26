@@ -449,9 +449,6 @@ we start building the diagram tree for the sentence at last, with the node
 representing the verb.
 
 @<Check whether any sense of this verb form will accept this usage and succeed if so@> =
-	int possessive = FALSE;
-	if (VerbMeanings::get_regular_meaning(vm) == VERB_MEANING_POSSESSION)
-		possessive = TRUE;
 	parse_node *VP_PN = Node::new(VERB_NT);
 	if (certainty != UNKNOWN_CE)
 		Annotations::write_int(VP_PN, verbal_certainty_ANNOT, certainty);
@@ -460,7 +457,6 @@ representing the verb.
 	Node::set_second_preposition(VP_PN, second_prep);
 
 	Node::set_text(VP_PN, VW);
-	if (possessive) Annotations::write_int(VP_PN, possessive_verb_ANNOT, TRUE);
 	if (existential) Annotations::write_int(VP_PN, sentence_is_existential_ANNOT, TRUE);
 	if ((pre_certainty != UNKNOWN_CE) && (post_certainty != UNKNOWN_CE))
 		Annotations::write_int(VP_PN, linguistic_error_here_ANNOT, TwoLikelihoods_LINERROR);
@@ -503,20 +499,24 @@ parse_node *VerbPhrases::accept(verb_form *vf, parse_node *VP_PN, wording SW, wo
 	wording NPs[MAX_NPS_IN_VP];
 	for (int i=0; i<MAX_NPS_IN_VP; i++) NPs[i] = EMPTY_WORDING;
 	NPs[0] = SW; NPs[1] = OW; NPs[2] = O2W;
+	verb_meaning *vm = NULL;
 	for (verb_sense *vs = (vf)?vf->list_of_senses:NULL; vs; vs = vs->next_sense) {
-		verb_meaning *vm = &(vs->vm);
-		Node::set_verb_meaning(VP_PN, vm);
-		special_meaning_fn soa = VerbMeanings::get_special_meaning_fn(vm);
-		if (soa) {
-			int rev = VerbMeanings::get_reversal_status_of_smf(vm);
-			if (rev) { wording W = NPs[0]; NPs[0] = NPs[1]; NPs[1] = W; }
-			if ((*soa)(ACCEPT_SMFT, VP_PN, NPs)) {
+		vm = &(vs->vm);
+		special_meaning_holder *sm = VerbMeanings::get_special_meaning_fn(vm);
+		if (sm) {
+			wording SNPs[MAX_NPS_IN_VP];
+			if (VerbMeanings::get_reversal_status_of_smf(vm)) {
+				SNPs[0] = NPs[1]; SNPs[1] = NPs[0]; SNPs[2] = NPs[2];
+			} else {
+				SNPs[0] = NPs[0]; SNPs[1] = NPs[1]; SNPs[2] = NPs[2];
+			}
+			if ((*(sm->sm_func))(ACCEPT_SMFT, VP_PN, SNPs)) {
+				Node::set_special_meaning(VP_PN, sm);
 				return VP_PN;
 			}
-			if (rev) { wording W = NPs[0]; NPs[0] = NPs[1]; NPs[1] = W; }
 		}
 	}
-	if (VerbPhrases::default_verb(ACCEPT_SMFT, VP_PN, NPs)) return VP_PN;
+	if (VerbPhrases::default_verb(ACCEPT_SMFT, VP_PN, vm, NPs)) return VP_PN;
 	return NULL;
 }
 
@@ -524,7 +524,7 @@ parse_node *VerbPhrases::accept(verb_form *vf, parse_node *VP_PN, wording SW, wo
 For example, "Darcy is proud" and "Darcy wears the hat" will both end up here.
 
 =
-int VerbPhrases::default_verb(int task, parse_node *V, wording *NPs) {
+int VerbPhrases::default_verb(int task, parse_node *V, verb_meaning *vm, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	if (Wordings::nonempty(NPs[2])) return FALSE;
@@ -565,14 +565,11 @@ sentence not the subject: we thus turn the idea of Darcy wearing the hat into
 the exactly equivalent idea of the hat being worn by Darcy.
 
 @<Insert a relationship subtree if the verb creates one without a relative phrase@> =
-	verb_meaning *vm = Node::get_verb_meaning(V);
 	VERB_MEANING_LINGUISTICS_TYPE *meaning = VerbMeanings::get_regular_meaning(vm);
 	if (meaning == NULL) return FALSE;
-	Node::set_verb_meaning(V, vm);
-	if ((Annotations::read_int(V, possessive_verb_ANNOT) == FALSE) && (meaning != VERB_MEANING_EQUALITY)) {
+	if (meaning != VERB_MEANING_EQUALITY)
 		V->next->next = NounPhrases::PN_rel(
 			Node::get_text(V), VerbMeanings::reverse_VMT(meaning), STANDARD_RELN, O_PN);
-	}
 
 @
 

@@ -30,6 +30,7 @@ which use this module:
 @e pronoun_CLASS
 @e pronoun_usage_CLASS
 @e small_word_set_CLASS
+@e special_meaning_holder_CLASS
 @e time_period_CLASS
 
 =
@@ -53,6 +54,7 @@ DECLARE_CLASS(noun)
 DECLARE_CLASS(noun_usage)
 DECLARE_CLASS(pronoun)
 DECLARE_CLASS(pronoun_usage)
+DECLARE_CLASS(special_meaning_holder)
 DECLARE_CLASS(small_word_set)
 
 @ Like all modules, this one must define a |start| and |end| function:

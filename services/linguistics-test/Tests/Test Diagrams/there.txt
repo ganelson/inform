@@ -1,3 +1,7 @@
 There is a table.
 
 Some sailors are there.
+
+There is a Ming vase on the table.
+
+A Ming vase is on the table.

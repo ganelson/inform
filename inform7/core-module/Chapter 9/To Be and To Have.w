@@ -35,15 +35,21 @@ relationship as well as the noun).
 sentence_handler ASSERT_SH_handler = { SENTENCE_NT, ASSERT_VB, 0, Assertions::Copular::assertion };
 
 void Assertions::Copular::assertion(parse_node *pv) {
-	if (Annotations::read_int(pv->down, possessive_verb_ANNOT))
+	if (Assertions::Copular::possessive(pv->down->next->next))
 		Assertions::Copular::to_have(pv);
 	else
-		Assertions::Copular::to_be(pv);
+		Assertions::Copular::to_be(pv->down->next, pv->down->next->next);
 }
 
-void Assertions::Copular::to_be(parse_node *pv) {
-	parse_node *px = pv->down->next;
-	parse_node *py = pv->down->next->next;
+int Assertions::Copular::possessive(parse_node *py) {
+	if ((py) && (Node::get_type(py) == RELATIONSHIP_NT) &&
+		(Node::get_relationship(py)) &&
+		(Node::get_relationship(py)->reversal == VERB_MEANING_POSSESSION))
+		return TRUE;
+	return FALSE;
+}
+
+void Assertions::Copular::to_be(parse_node *px, parse_node *py) {
 	if ((Wordings::length(Node::get_text(px)) > 1)
 		&& (Vocabulary::test_flags(
 			Wordings::first_wn(Node::get_text(px)), TEXT_MC+TEXTWITHSUBS_MC))) {
@@ -77,7 +83,7 @@ called in traverse 2, when there are no uses of "to have" left in the tree.
 =
 void Assertions::Copular::to_have(parse_node *pv) {
 	parse_node *px = pv->down->next;
-	parse_node *py = pv->down->next->next;
+	parse_node *py = pv->down->next->next->down;
 
 	@<Reject two ungrammatical forms of "to have"@>;
 
@@ -88,8 +94,8 @@ void Assertions::Copular::to_have(parse_node *pv) {
 	else
 		@<Handle "X has P" where P is a list of properties@>;
 
-	Annotations::write_int(pv->down, possessive_verb_ANNOT, FALSE);
-	Assertions::Copular::to_be(pv); /* and start again as if it had never been possessive */
+	pv->down->next->next = py;
+	Assertions::Copular::to_be(px, py); /* and start again as if it had never been possessive */
 }
 
 @<Reject two ungrammatical forms of "to have"@> =

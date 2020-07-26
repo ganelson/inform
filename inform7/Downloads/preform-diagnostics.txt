@@ -8933,7 +8933,7 @@
         map region 
           (hits 1/1) (matched: 'map region') constraint CS = {30} extremes [2, 2]
 
-<notable-map-kinds> hits 19/2328 nti 31 constraint CS = {31} extremes [1, 1]
+<notable-map-kinds> hits 19/2300 nti 31 constraint CS = {31} extremes [1, 1]
     English:
         direction 
           (hits 13/22) (matched: 'direction') constraint CS = {31} extremes [1, 1]

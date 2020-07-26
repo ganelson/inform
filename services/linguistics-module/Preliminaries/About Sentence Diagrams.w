@@ -33,12 +33,12 @@ certainly singular.
 phrase in the object position".
 
 [2] Since the 1850s a variety of tree-diagram schemes for sentence structure
-have been proposed: see //Wikipedia -> https://en.wikipedia.org/wiki/Sentence_diagram//.
+has been proposed: see //Wikipedia -> https://en.wikipedia.org/wiki/Sentence_diagram//.
 These tend to be quite large, with many optional features -- no bad thing when
 the aim is to explain. But our aim is to process, not to illustrate, and
 whereas a typical dependency tree would have nodes for both "not" and "a",
-we use annotations instead. The aim is to have flattish sentence trees
-with a simple, predictable shape.
+we use annotations instead. We want fairly flat sentence trees with a simple,
+predictable shape.
 
 @ Using <sentence> alone tends to result in a lot of |UNPARSED_NOUN_NT| nodes.
 This is unsatisfying, but useful, because sometimes the meaning of a verb
@@ -87,6 +87,20 @@ which play different roles.
 
 = (undisplayed text from Figures/regular.txt)
 
+Each |RELATIONSHIP_NT| node expresses that it, and the other term, are
+in some non-copular relation to each other. The annotation gives that
+relation from the point of view of the node, not from the point of view
+of the subject of the sentence. For example, in (4), the subject of the
+sentence (woman) is carried by the object (table), but the |RELATIONSHIP_NT|
+node is for the table, and so the meaning is "carries", not "carried-by".
+
+@ Possessive verbs need careful handling because of the wide range of
+meanings they can carry which may not involve ownership as such (cf. French
+"j'ai trente ans", or English "I have mumps"). But syntactically they are
+just like other non-copular verbs, and we parse them as such.
+
+= (undisplayed text from Figures/possessive.txt)
+
 @ An unusual feature of English is its use of subject-verb inversion:
 
 = (undisplayed text from Figures/inversion.txt)
@@ -98,6 +112,33 @@ to preserve the distinction because Inform will make some use of it.
 Sentence (2) here is arguably just plain wrong, but we do very occasionally
 allow that sort of thing in Inform (for e.g. "east of X is south of Y").
 
+@ Existential sentences, using the defective subject nounphrase "there", are
+marked with an additional annotation.
+
+= (undisplayed text from Figures/there.txt)
+
+In sentences (3) and (4) here, the resulting trees are essentially identical
+except for the existential annotation.
+
+Note that "there" as an object phrase is also defective, but not considered
+existential (it is more likely an anaphora -- "A woman is there" implies a
+reference to a location already being discussed, whereas "There is a woman"
+does not).
+
+@ Two sorts of adverbs are recognised, for certainty and occurrence, and they
+are handled by making additional annotations to the verb node, not by adding
+fresh nodes:
+
+= (undisplayed text from Figures/usingadverbs.txt)
+
+@ That shows the full range of what happens with verb nodes. Turning back
+to noun phrases, we can have serial lists:
+
+= (undisplayed text from Figures/composite.txt)
+
+Note that |AND_NT| nodes always have exactly two children, and that the serial
+comma is allowed but not required.
+
 @ Now we introduce pronouns to the mix. These are detected automatically
 by //linguistics//, and exist in nominative and accusative cases in
 English. Note the difference in annotations between "them" and "you",
@@ -105,3 +146,13 @@ for example.
 
 = (undisplayed text from Figures/usingpronouns.txt)
 
+@ "Callings" use the special syntax "X called Y", which has to be handled
+here in the //linguistics// module so that Y can safely wording which would
+otherwise have a structural meaning. ("Called" is to Inform as the backslash
+character, making letters literal, is to C.)
+
+= (undisplayed text from Figures/callings.txt)
+
+@ The word "with", often but not always used in conjunction with "kind of":
+
+= (undisplayed text from Figures/withs.txt)
