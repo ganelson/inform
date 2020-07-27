@@ -191,7 +191,7 @@ In traverse 2, only (c) takes place; (a) and (b) are one-time events.
 void Assertions::Copular::make_assertion(parse_node *px, parse_node *py) {
 	if (traverse == 1) {
 		int pc = problem_count;
-		if (!(<existential-np>(Node::get_text(px))))
+		if (!(<np-existential>(Node::get_text(px))))
 			Assertions::Refiner::refine(px, ALLOW_CREATION);
 		Assertions::Refiner::refine(py, ALLOW_CREATION);
 		if (problem_count > pc) return;
@@ -199,7 +199,7 @@ void Assertions::Copular::make_assertion(parse_node *px, parse_node *py) {
 	}
 
 	if (SyntaxTree::is_trace_set(Task::syntax_tree())) LOG("$T", current_sentence);
-	if (<existential-np>(Node::get_text(px))) {
+	if (<np-existential>(Node::get_text(px))) {
 		if (traverse == 1) Assertions::Copular::make_existential_assertion(py);
 		px = py;
 	} else {

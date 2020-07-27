@@ -1,0 +1,29 @@
+Seek verb in: there is a ming vase which is on the table
+    viability map of 'there is a ming vase which is on the table':
+    -- is[1] -- -- -- -- is[1] on[1] -- -- 
+    Found usage, pass 1 tier 2: (there) be(0) (a ming vase which is on the table)
+        Seek verb in: a ming vase which is on the table | 
+            viability map of 'a ming vase which is on the table':
+            -- -- -- -- is[1] -- -- -- 
+            Found usage, pass 1 tier 2: (a ming vase which) be(0) (on the table)
+            Trimmed to: (a ming vase) be(0) (on the table)
+            be(0) + had by + ___ : failed for lack of 'had by'
+            Trimmed to: (a ming vase) be(0) (on the table)
+            be(0) + carried by + ___ : failed for lack of 'carried by'
+            Trimmed to: (a ming vase) be(0) (on the table)
+            be(0) + known by + ___ : failed for lack of 'known by'
+            Trimmed to: (a ming vase) be(0) (on the table)
+            be(0) + having + ___ : failed for lack of 'having'
+            Trimmed to: (a ming vase) be(0) (on the table)
+            be(0) + carrying + ___ : failed for lack of 'carrying'
+            Trimmed to: (a ming vase) be(0) (on the table)
+            be(0) + knowing + ___ : failed for lack of 'knowing'
+            Trimmed to: (a ming vase) be(0) (on the table)
+            Accepted as be(0) + on + ___
+        Seek succeeded
+Seek succeeded
+Sentence subtree:
+    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}
+    UNPARSED_NOUN_NT'ming vase' {indefinite 'a' n/m/f nom/acc s}
+    RELATIONSHIP_NT'is on' {meaning: carries}
+        UNPARSED_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc}

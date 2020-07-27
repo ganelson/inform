@@ -14,12 +14,8 @@ int sentence_counter = 1;
 
 void Interpreting::diagram(parse_node *p) {
 	if (Node::get_type(p) == SENTENCE_NT) {
-		text_stream *save_DL = DL;
-		DL = STDOUT;
-		Streams::enable_debugging(DL);
 		LOG("(%d) %W\n\n", sentence_counter++, Node::get_text(p));
 		Node::log_subtree(DL, p);
 		LOG("\n");
-		DL = save_DL;
 	}
 }

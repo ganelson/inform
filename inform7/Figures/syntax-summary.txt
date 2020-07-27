@@ -16,46 +16,46 @@ ROOT_NT
         INCLUSION_NT'include standard rules by graham nelson'
     HEADING_NT'use the serial comma and no scoring' (level 0)
         SENTENCE_NT'use the serial comma and no scoring'
-            VERB_NT'use'
+            VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
             AND_NT'and'
-                UNPARSED_NOUN_NT'serial comma'
+                UNPARSED_NOUN_NT'serial comma' {definite 'the' n/m/f s/p nom/acc}
                 UNPARSED_NOUN_NT'no scoring'
         SENTENCE_NT'understand "about" as asking for information'
-            VERB_NT'understand'
+            VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
             UNPARSED_NOUN_NT'"about"'
             UNPARSED_NOUN_NT'asking for information'
         SENTENCE_NT'asking for information is an action out of world'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
             UNPARSED_NOUN_NT'asking for information'
             UNPARSED_NOUN_NT'out of world'
         RULE_NT'carry out asking for information'
         RULE_NT'when play begins'
         HEADING_NT'section 1 - errands' (level 5)
             SENTENCE_NT'the current actor is a person which varies'
-                VERB_NT'is'
-                PROPER_NOUN_NT'current actor'
-                COMMON_NOUN_NT'person which varies'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'current actor' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'the current owner is a person which varies'
-                VERB_NT'is'
-                PROPER_NOUN_NT'current owner'
-                COMMON_NOUN_NT'person which varies'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'current owner' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s}
             RULE_NT'every turn'
             RULE_NT'every turn'
             SENTENCE_NT'a person can be active or passive'
-                VERB_NT'can be'
+                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person'
                 UNPARSED_NOUN_NT'active or passive'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'active'
                         UNPARSED_NOUN_NT'passive'
             SENTENCE_NT'the player is passive'
-                VERB_NT'is'
-                PROPER_NOUN_NT'player'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc}
                 ADJECTIVE_NT'passive'
             SENTENCE_NT'the character movement rules are a rulebook'
-                VERB_NT'are'
-                PROPER_NOUN_NT'character movement rules'
-                COMMON_NOUN_NT'rulebook'
+                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
+                PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s}
             RULE_NT'the first character movement rule'
             RULE_NT'a character movement rule'
             RULE_NT'a character movement rule'
@@ -63,66 +63,66 @@ ROOT_NT
             RULE_NT'definition'
             RULE_NT'definition'
             SENTENCE_NT'the shopowner rules is a rulebook'
-                VERB_NT'is'
-                PROPER_NOUN_NT'shopowner rules'
-                COMMON_NOUN_NT'rulebook'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'shopowner rules' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s}
             RULE_NT'a shopowner rule'
             RULE_NT'report someone closing a door when the person asked owns the'
             RULE_NT'report vanessa closing the metal door when the metal door is'
             RULE_NT'a shopowner rule'
             SENTENCE_NT'filing is an action applying to one thing'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'filing'
                 UNPARSED_NOUN_NT'applying to one thing'
             RULE_NT'before someone filing something which is not carried by the '
             RULE_NT'carry out someone filing'
             RULE_NT'report someone filing'
             SENTENCE_NT'the shopper rules is a rulebook'
-                VERB_NT'is'
-                PROPER_NOUN_NT'shopper rules'
-                COMMON_NOUN_NT'rulebook'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'shopper rules' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s}
             RULE_NT'a shopper rule'
             RULE_NT'a shopper rule'
             RULE_NT'definition'
             SENTENCE_NT'protection relates a door ( called x ) to a room ( called y '
-                VERB_NT'relates'
+                VERB_NT'relates' {verb 'relate' 3p s act IS_TENSE +ve} {special meaning: new-relation}
                 UNPARSED_NOUN_NT'protection'
                 UNPARSED_NOUN_NT'a door ( called x )'
                 UNPARSED_NOUN_NT'a room ( called y ) when the front side of x is y or the bac'
             SENTENCE_NT'the verb to protect means the protection relation'
-                VERB_NT'means'
+                VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                 UNPARSED_NOUN_NT'to protect'
-                UNPARSED_NOUN_NT'protection relation'
+                UNPARSED_NOUN_NT'protection relation' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'ownership relates one person to various rooms'
-                VERB_NT'relates'
+                VERB_NT'relates' {verb 'relate' 3p s act IS_TENSE +ve} {special meaning: new-relation}
                 UNPARSED_NOUN_NT'ownership'
                 UNPARSED_NOUN_NT'one person'
                 UNPARSED_NOUN_NT'various rooms'
             SENTENCE_NT'the verb to own means the ownership relation'
-                VERB_NT'means'
+                VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                 UNPARSED_NOUN_NT'to own'
-                UNPARSED_NOUN_NT'ownership relation'
+                UNPARSED_NOUN_NT'ownership relation' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'resolving is an action applying to one thing'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'resolving'
                 UNPARSED_NOUN_NT'applying to one thing'
             SENTENCE_NT'an artwork is a kind of thing'
-                VERB_NT'is'
-                COMMON_NOUN_NT'artwork'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s}
                 KIND_NT'kind of thing'
                     COMMON_NOUN_NT'thing'
             RULE_NT'before printing the name of an artwork'
             RULE_NT'after printing the name of an artwork'
             SENTENCE_NT'an artwork can be submitted or reserved'
-                VERB_NT'can be'
+                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'an artwork'
                 UNPARSED_NOUN_NT'submitted or reserved'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'submitted'
                         UNPARSED_NOUN_NT'reserved'
             SENTENCE_NT'a book is a kind of artwork'
-                VERB_NT'is'
-                COMMON_NOUN_NT'book'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s}
                 KIND_NT'kind of artwork'
                     COMMON_NOUN_NT'artwork'
             RULE_NT'before someone resolving a book when the person asked is not'
@@ -131,8 +131,8 @@ ROOT_NT
             RULE_NT'before listing contents'
             RULE_NT'before grouping together books'
             SENTENCE_NT'a stamped envelope is a kind of thing'
-                VERB_NT'is'
-                COMMON_NOUN_NT'stamped envelope'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s}
                 KIND_NT'kind of thing'
                     COMMON_NOUN_NT'thing'
             RULE_NT'before someone resolving a stamped envelope when the person '
@@ -140,8 +140,8 @@ ROOT_NT
             RULE_NT'report someone resolving a stamped envelope'
             RULE_NT'instead of someone resolving a stamped envelope when the per'
             SENTENCE_NT'a dvd is a kind of artwork'
-                VERB_NT'is'
-                COMMON_NOUN_NT'dvd'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s}
                 KIND_NT'kind of artwork'
                     COMMON_NOUN_NT'artwork'
             RULE_NT'before someone resolving a dvd when the person asked is not '
@@ -151,31 +151,31 @@ ROOT_NT
             RULE_NT'before listing contents'
             RULE_NT'before grouping together dvds'
             SENTENCE_NT'approaching is an action applying to one thing'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'approaching'
                 UNPARSED_NOUN_NT'applying to one thing'
             RULE_NT'carry out someone approaching'
             SENTENCE_NT'a coupon is a kind of thing'
-                VERB_NT'is'
-                COMMON_NOUN_NT'coupon'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s}
                 KIND_NT'kind of thing'
                     COMMON_NOUN_NT'thing'
             RULE_NT'carry out someone resolving a coupon'
             SENTENCE_NT'the block giving rule is not listed in any rulebook'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                 UNPARSED_NOUN_NT'the block giving rule'
                 UNPARSED_NOUN_NT'in any rulebook'
             RULE_NT'check giving something to someone ( this is the block player'
             RULE_NT'before someone resolving a coupon when the person asked is n'
             RULE_NT'after someone giving a coupon to vanessa'
             SENTENCE_NT'infection color is a kind of value'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'infection color'
                 KIND_NT'kind of value'
                     COMMON_NOUN_NT'value'
             SENTENCE_NT'the infection colors are french vanilla , whole-bean vanilla'
-                VERB_NT'are'
-                COMMON_NOUN_NT'infection colors'
+                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
+                COMMON_NOUN_NT'infection colors' {definite 'the' n/m/f s/p nom/acc}
                 AND_NT','
                     PROPER_NOUN_NT'french vanilla'
                     AND_NT','
@@ -229,50 +229,50 @@ ROOT_NT
                                                                                                                     PROPER_NOUN_NT'cookie dough cream'
             RULE_NT'to say list of flavors'
             SENTENCE_NT'understand "ask vanessa for [flavored ice cream]" as buying '
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"ask vanessa for [flavored ice cream]"'
                 UNPARSED_NOUN_NT'buying the flavor'
             SENTENCE_NT'understand "buy [flavored ice cream]" as buying the flavor'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"buy [flavored ice cream]"'
                 UNPARSED_NOUN_NT'buying the flavor'
             SENTENCE_NT'buying the flavor is an action applying to one infection col'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'buying the flavor'
                 UNPARSED_NOUN_NT'applying to one infection color'
             RULE_NT'check buying the flavor'
             RULE_NT'carry out buying the flavor'
             SENTENCE_NT'understand "ice cream" or "cream" or "ice" or "sherbet" or "'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"ice cream" or "cream" or "ice" or "sherbet" or "sorbet"'
                 UNPARSED_NOUN_NT'"[ice cream]"'
             SENTENCE_NT'understand "[infection color]" or "[infection color] [ice cr'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"[infection color]" or "[infection color] [ice cream]"'
                 UNPARSED_NOUN_NT'"[flavored ice cream]"'
             SENTENCE_NT'an ice cream cone is a kind of thing'
-                VERB_NT'is'
-                COMMON_NOUN_NT'ice cream cone'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s}
                 KIND_NT'kind of thing'
                     COMMON_NOUN_NT'thing'
             SENTENCE_NT'an ice cream cone is always edible'
-                VERB_NT'is always'
-                COMMON_NOUN_NT'ice cream cone'
+                VERB_NT'is always' {verb 'be' 3p s act IS_TENSE +ve} {certainty:certain}
+                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s}
                 ADJECTIVE_NT'edible'
             SENTENCE_NT'an ice cream cone has an infection color'
-                VERB_NT'has'
-                COMMON_NOUN_NT'ice cream cone'
+                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s}
                 ALLOWED_NT
-                    UNPARSED_NOUN_NT'infection color'
+                    UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s}
             SENTENCE_NT'an ice cream cone can be half-eaten or fresh'
-                VERB_NT'can be'
+                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'an ice cream cone'
                 UNPARSED_NOUN_NT'half-eaten or fresh'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'half-eaten'
                         UNPARSED_NOUN_NT'fresh'
             SENTENCE_NT'understand the infection color property as referring to an i'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'the infection color property'
                 UNPARSED_NOUN_NT'referring to an ice cream cone'
             RULE_NT'carry out someone resolving an ice cream cone'
@@ -282,28 +282,28 @@ ROOT_NT
         HEADING_NT'section 2 - infection rules' (level 5)
             RULE_NT'this is the infection rule'
             SENTENCE_NT'a person can be infected or clean'
-                VERB_NT'can be'
+                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person'
                 UNPARSED_NOUN_NT'infected or clean'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'infected'
                         UNPARSED_NOUN_NT'clean'
             SENTENCE_NT'a person has an infection color'
-                VERB_NT'has'
-                COMMON_NOUN_NT'person'
+                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                 ALLOWED_NT
-                    UNPARSED_NOUN_NT'infection color'
+                    UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s}
             RULE_NT'every turn'
             RULE_NT'definition'
             RULE_NT'definition'
             RULE_NT'when play begins'
             RULE_NT'every turn'
             SENTENCE_NT'understand "sneeze on [something]" as sneezing on'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"sneeze on [something]"'
                 UNPARSED_NOUN_NT'sneezing on'
             SENTENCE_NT'sneezing on is an action applying to one thing'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'sneezing on'
                 UNPARSED_NOUN_NT'applying to one thing'
             RULE_NT'check sneezing on'
@@ -312,23 +312,23 @@ ROOT_NT
             RULE_NT'report sneezing on'
             RULE_NT'report someone sneezing on'
             SENTENCE_NT'understand "inject [someone] with [something]" as injecting '
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"inject [someone] with [something]"'
                 UNPARSED_NOUN_NT'injecting it with'
             SENTENCE_NT'understand "inject [someone] with [syringe]" as injecting it'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"inject [someone] with [syringe]"'
                 UNPARSED_NOUN_NT'injecting it with'
             SENTENCE_NT'understand "use [syringe] on [someone]" as injecting it with'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"use [syringe] on [someone]"'
                 UNPARSED_NOUN_NT'injecting it with'
             SENTENCE_NT'understand the commands innoculate and vaccinate as inject'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'the commands innoculate and vaccinate'
                 UNPARSED_NOUN_NT'inject'
             SENTENCE_NT'injecting it with is an action applying to two things'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'injecting it with'
                 UNPARSED_NOUN_NT'applying to two things'
             RULE_NT'check injecting it with'
@@ -341,33 +341,33 @@ ROOT_NT
                     BEGINHERE_NT'version 12 of locksmith by emily short'
                     ...
             SENTENCE_NT'understand "go to/toward/into [any room]" as going toward'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"go to/toward/into [any room]"'
                 UNPARSED_NOUN_NT'going toward'
             SENTENCE_NT'understand "enter [any room]" as going toward'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"enter [any room]"'
                 UNPARSED_NOUN_NT'going toward'
             SENTENCE_NT'a person has a room called the destination'
-                VERB_NT'has'
-                COMMON_NOUN_NT'person'
+                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                 ALLOWED_NT
                     PROPERTYCALLED_NT'called'
-                        UNPARSED_NOUN_NT'room'
+                        UNPARSED_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'destination'
             SENTENCE_NT'going toward is an action applying to one thing'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'going toward'
                 UNPARSED_NOUN_NT'applying to one thing'
             RULE_NT'check going toward'
             RULE_NT'carry out going toward'
             RULE_NT'instead of waiting when the destination of the player is not'
             SENTENCE_NT'understand "stop" or "cease" as stopping'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"stop" or "cease"'
                 UNPARSED_NOUN_NT'stopping'
             SENTENCE_NT'stopping is an action applying to nothing'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'stopping'
                 UNPARSED_NOUN_NT'applying to nothing'
             RULE_NT'carry out stopping'
@@ -376,360 +376,360 @@ ROOT_NT
             RULE_NT'after going from an air-conditioned room'
             RULE_NT'instead of listening to an air-conditioned room'
             SENTENCE_NT'the alfred cralle pool hall is a room'
-                VERB_NT'is'
-                PROPER_NOUN_NT'alfred cralle pool hall'
-                COMMON_NOUN_NT'room'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'"The town's most popular gathering-place, the pool hall is d'
             SENTENCE_NT'the air conditioner is a device in the pool hall'
-                VERB_NT'is'
-                PROPER_NOUN_NT'air conditioner'
-                COMMON_NOUN_NT'device in the pool hall'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'air conditioner' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'device in the pool hall' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'"[if switched off]An air conditioner sits in the corner, unh'
             SENTENCE_NT'the felt door is west of the pool hall'
-                VERB_NT'is west of'
-                PROPER_NOUN_NT'felt door'
-                RELATIONSHIP_NT'is west of'
-                    PROPER_NOUN_NT'pool hall'
+                VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is west of' {meaning: west-map-r}
+                    PROPER_NOUN_NT'pool hall' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'west'
             SENTENCE_NT'the felt door is a door'
-                VERB_NT'is'
-                PROPER_NOUN_NT'felt door'
-                COMMON_NOUN_NT'door'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'the felt door is open'
-                VERB_NT'is'
-                PROPER_NOUN_NT'felt door'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc}
                 ADJECTIVE_NT'open'
             SENTENCE_NT'the felt door is lockable and unlocked'
-                VERB_NT'is'
-                PROPER_NOUN_NT'felt door'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc}
                 AND_NT'and'
                     ADJECTIVE_NT'lockable'
                     ADJECTIVE_NT'unlocked'
             SENTENCE_NT'the key to the city unlocks the felt door'
-                VERB_NT'unlocks'
-                PROPER_NOUN_NT'key to the city'
-                RELATIONSHIP_NT'unlocks'
-                    PROPER_NOUN_NT'felt door'
+                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r}
+                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'the description of the felt door is "It has a prominent lock'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the felt door'
-                    PROPER_NOUN_NT'felt door'
+                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"It has a prominent lock, designed for an old-fashioned key.'
             RULE_NT'after locking a door with something in the presence of an ot'
             SENTENCE_NT'nancy johnson memorial square is west of the felt door'
-                VERB_NT'is west of'
+                VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'nancy johnson memorial square'
-                RELATIONSHIP_NT'is west of'
-                    PROPER_NOUN_NT'felt door'
+                RELATIONSHIP_NT'is west of' {meaning: west-map-r}
+                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'west'
             SENTENCE_NT'the description of nancy johnson memorial square is "Waves o'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of nancy johnson memorial square'
                     PROPER_NOUN_NT'nancy johnson memorial square'
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"Waves of August heat rise from the pavement: more than once'
             SENTENCE_NT'the statue is scenery in memorial square'
-                VERB_NT'is'
-                PROPER_NOUN_NT'statue'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc}
                 COMMON_NOUN_NT'scenery in memorial square'
             SENTENCE_NT'understand "nancy" or "johnson" or "mrs" as the statue'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"nancy" or "johnson" or "mrs"'
                 UNPARSED_NOUN_NT'the statue'
             SENTENCE_NT'the description of the statue is "Mrs. Johnson is pictured w'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the statue'
-                    PROPER_NOUN_NT'statue'
+                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"Mrs. Johnson is pictured with a hand-cranked ice cream free'
             SENTENCE_NT'a hand-cranked ice cream freezer is part of the statue'
-                VERB_NT'is part of'
-                PROPER_NOUN_NT'hand-cranked ice cream freezer'
-                RELATIONSHIP_NT'is part of'
-                    PROPER_NOUN_NT'statue'
+                VERB_NT'is part of' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'hand-cranked ice cream freezer' {indefinite 'a' n/m/f nom/acc s}
+                RELATIONSHIP_NT'is part of' {meaning: incorporates}
+                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'the description is "The hand-cranked ice cream freezer was M'
-                VERB_NT'is'
-                PROPER_NOUN_NT'description'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'description' {definite 'the' n/m/f s/p nom/acc}
                 PROPER_NOUN_NT'"The hand-cranked ice cream freezer was Mrs. Johnson's inven'
             SENTENCE_NT'the scoop is part of the statue'
-                VERB_NT'is part of'
-                PROPER_NOUN_NT'scoop'
-                RELATIONSHIP_NT'is part of'
-                    PROPER_NOUN_NT'statue'
+                VERB_NT'is part of' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'scoop' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is part of' {meaning: incorporates}
+                    PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'the description of the scoop is "An anachronism: Alfred Cral'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the scoop'
-                    PROPER_NOUN_NT'scoop'
+                    PROPER_NOUN_NT'scoop' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"An anachronism: Alfred Cralle would not invent the tool unt'
             SENTENCE_NT'the post office is northwest of nancy johnson memorial squar'
-                VERB_NT'is northwest of'
-                PROPER_NOUN_NT'post office'
-                RELATIONSHIP_NT'is northwest of'
+                VERB_NT'is northwest of' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'post office' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is northwest of' {meaning: northwest-map-r}
                     PROPER_NOUN_NT'nancy johnson memorial square'
                     PROPER_NOUN_NT'northwest'
             SENTENCE_NT'"Service at the post office is on the slow side since everyt'
             SENTENCE_NT'the slot is scenery in the post office'
-                VERB_NT'is'
-                PROPER_NOUN_NT'slot'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc}
                 COMMON_NOUN_NT'scenery in the post office'
             SENTENCE_NT'the slot is a container'
-                VERB_NT'is'
-                PROPER_NOUN_NT'slot'
-                COMMON_NOUN_NT'container'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s}
             RULE_NT'carry out inserting something into the slot'
             RULE_NT'report inserting something into the slot'
             SENTENCE_NT'hamwi street is northeast of an iron gate'
-                VERB_NT'is northeast of'
+                VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'hamwi street'
-                RELATIONSHIP_NT'is northeast of'
-                    PROPER_NOUN_NT'iron gate'
+                RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r}
+                    PROPER_NOUN_NT'iron gate' {indefinite 'an' n/m/f nom/acc s}
                     PROPER_NOUN_NT'northeast'
             SENTENCE_NT'"A U-shaped street running from Main Street around to the Me'
             SENTENCE_NT'the iron gate is northeast of nancy johnson memorial square'
-                VERB_NT'is northeast of'
-                PROPER_NOUN_NT'iron gate'
-                RELATIONSHIP_NT'is northeast of'
+                VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r}
                     PROPER_NOUN_NT'nancy johnson memorial square'
                     PROPER_NOUN_NT'northeast'
             SENTENCE_NT'the iron gate is a door'
-                VERB_NT'is'
-                PROPER_NOUN_NT'iron gate'
-                COMMON_NOUN_NT'door'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'it is lockable and unlocked'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'it'
                 AND_NT'and'
                     ADJECTIVE_NT'lockable'
                     ADJECTIVE_NT'unlocked'
             RULE_NT'before printing the name of the iron gate while not opening '
             SENTENCE_NT'cold comfort ice cream is north of a metal door'
-                VERB_NT'is north of'
+                VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'cold comfort ice cream'
-                RELATIONSHIP_NT'is north of'
-                    PROPER_NOUN_NT'metal door'
+                RELATIONSHIP_NT'is north of' {meaning: north-map-r}
+                    PROPER_NOUN_NT'metal door' {indefinite 'a' n/m/f nom/acc s}
                     PROPER_NOUN_NT'north'
             SENTENCE_NT'the metal door is north of hamwi street'
-                VERB_NT'is north of'
-                PROPER_NOUN_NT'metal door'
-                RELATIONSHIP_NT'is north of'
+                VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is north of' {meaning: north-map-r}
                     PROPER_NOUN_NT'hamwi street'
                     PROPER_NOUN_NT'north'
             SENTENCE_NT'a poster is fixed in place in cold comfort'
-                VERB_NT'is'
-                PROPER_NOUN_NT'poster'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'poster' {indefinite 'a' n/m/f nom/acc s}
                 COMMON_NOUN_NT'fixed in place in cold comfort'
             SENTENCE_NT'"A poster fills one wall with the blazing promise of treats '
             SENTENCE_NT'the description of the poster is "Coming soon! Thai ice crea'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the poster'
-                    PROPER_NOUN_NT'poster'
+                    PROPER_NOUN_NT'poster' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"Coming soon! Thai ice creams! Durian, jackfruit, taro, and '
             SENTENCE_NT'the metal door is a door'
-                VERB_NT'is'
-                PROPER_NOUN_NT'metal door'
-                COMMON_NOUN_NT'door'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'"A frosty metallic door separates [the location] from [the o'
             SENTENCE_NT'the metal door is lockable and unlocked'
-                VERB_NT'is'
-                PROPER_NOUN_NT'metal door'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc}
                 AND_NT'and'
                     ADJECTIVE_NT'lockable'
                     ADJECTIVE_NT'unlocked'
             SENTENCE_NT'the key to the city unlocks the metal door'
-                VERB_NT'unlocks'
-                PROPER_NOUN_NT'key to the city'
-                RELATIONSHIP_NT'unlocks'
-                    PROPER_NOUN_NT'metal door'
+                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r}
+                    PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'marciony street is southeast of nancy johnson memorial squar'
-                VERB_NT'is southeast of'
+                VERB_NT'is southeast of' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'marciony street'
-                RELATIONSHIP_NT'is southeast of'
+                RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r}
                     PROPER_NOUN_NT'nancy johnson memorial square'
                     PROPER_NOUN_NT'southeast'
             SENTENCE_NT'"A semi-circular terrace, named somewhat fancifully after on'
             SENTENCE_NT'the movie rental store is west of a glass door'
-                VERB_NT'is west of'
-                PROPER_NOUN_NT'movie rental store'
-                RELATIONSHIP_NT'is west of'
-                    PROPER_NOUN_NT'glass door'
+                VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'movie rental store' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is west of' {meaning: west-map-r}
+                    PROPER_NOUN_NT'glass door' {indefinite 'a' n/m/f nom/acc s}
                     PROPER_NOUN_NT'west'
             SENTENCE_NT'the glass door is a door'
-                VERB_NT'is'
-                PROPER_NOUN_NT'glass door'
-                COMMON_NOUN_NT'door'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'it is west of marciony street'
-                VERB_NT'is west of'
+                VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'it'
-                RELATIONSHIP_NT'is west of'
+                RELATIONSHIP_NT'is west of' {meaning: west-map-r}
                     PROPER_NOUN_NT'marciony street'
                     PROPER_NOUN_NT'west'
             SENTENCE_NT'the glass door is lockable and unlocked'
-                VERB_NT'is'
-                PROPER_NOUN_NT'glass door'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc}
                 AND_NT'and'
                     ADJECTIVE_NT'lockable'
                     ADJECTIVE_NT'unlocked'
             SENTENCE_NT'the key to the city unlocks the glass door'
-                VERB_NT'unlocks'
-                PROPER_NOUN_NT'key to the city'
-                RELATIONSHIP_NT'unlocks'
-                    PROPER_NOUN_NT'glass door'
+                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r}
+                    PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'main street is southeast of hamwi street'
-                VERB_NT'is southeast of'
+                VERB_NT'is southeast of' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'main street'
-                RELATIONSHIP_NT'is southeast of'
+                RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r}
                     PROPER_NOUN_NT'hamwi street'
                     PROPER_NOUN_NT'southeast'
             SENTENCE_NT'main street is northeast of some bronze gates'
-                VERB_NT'is northeast of'
+                VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'main street'
-                RELATIONSHIP_NT'is northeast of'
-                    PROPER_NOUN_NT'bronze gates'
+                RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r}
+                    PROPER_NOUN_NT'bronze gates' {indefinite 'some' n/m/f nom/acc p}
                     PROPER_NOUN_NT'northeast'
             SENTENCE_NT'the emergency box is in main street'
-                VERB_NT'is in'
-                PROPER_NOUN_NT'emergency box'
-                RELATIONSHIP_NT'is in'
+                VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is in' {meaning: contains}
                     PROPER_NOUN_NT'main street'
             SENTENCE_NT'the emergency box is fixed in place'
-                VERB_NT'is'
-                PROPER_NOUN_NT'emergency box'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc}
                 ADJECTIVE_NT'fixed in place'
             SENTENCE_NT'"A fire-red box with a glass front faces the sidewalk, with '
             SENTENCE_NT'the emergency box is closed and transparent'
-                VERB_NT'is'
-                PROPER_NOUN_NT'emergency box'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc}
                 AND_NT'and'
                     ADJECTIVE_NT'closed'
                     ADJECTIVE_NT'transparent'
             SENTENCE_NT'understand "glass" as the box'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"glass"'
                 UNPARSED_NOUN_NT'the box'
             RULE_NT'instead of attacking the closed emergency box'
             RULE_NT'instead of attacking the open emergency box'
             SENTENCE_NT'the syringe is in the emergency box'
-                VERB_NT'is in'
-                PROPER_NOUN_NT'syringe'
-                RELATIONSHIP_NT'is in'
-                    PROPER_NOUN_NT'emergency box'
+                VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is in' {meaning: contains}
+                    PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'the description of the syringe is "It contains the cure for '
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the syringe'
-                    PROPER_NOUN_NT'syringe'
+                    PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"It contains the cure for Gelato's Syndrome. You can inject '
             SENTENCE_NT'the bronze gates are northeast of marciony street'
-                VERB_NT'are northeast of'
-                PROPER_NOUN_NT'bronze gates'
-                RELATIONSHIP_NT'are northeast of'
+                VERB_NT'are northeast of' {verb 'be' 3p p act IS_TENSE +ve}
+                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'are northeast of' {meaning: northeast-map-r}
                     PROPER_NOUN_NT'marciony street'
                     PROPER_NOUN_NT'northeast'
             SENTENCE_NT'the bronze gates are a door'
-                VERB_NT'are'
-                PROPER_NOUN_NT'bronze gates'
-                COMMON_NOUN_NT'door'
+                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
+                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'the bronze gates are lockable and unlocked'
-                VERB_NT'are'
-                PROPER_NOUN_NT'bronze gates'
+                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
+                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc}
                 AND_NT'and'
                     ADJECTIVE_NT'lockable'
                     ADJECTIVE_NT'unlocked'
             SENTENCE_NT'the description of the bronze gates is "Erected during the m'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the bronze gates'
-                    PROPER_NOUN_NT'bronze gates'
+                    PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"Erected during the milk-taint revolution of 1937, they were'
             SENTENCE_NT'the public library is east of main street'
-                VERB_NT'is east of'
-                PROPER_NOUN_NT'public library'
-                RELATIONSHIP_NT'is east of'
+                VERB_NT'is east of' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'public library' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is east of' {meaning: east-map-r}
                     PROPER_NOUN_NT'main street'
                     PROPER_NOUN_NT'east'
             SENTENCE_NT'"Built in the 1920s during the height of the dairy boom, the'
             SENTENCE_NT'the incongruous sign is scenery in the public library'
-                VERB_NT'is'
-                PROPER_NOUN_NT'incongruous sign'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc}
                 COMMON_NOUN_NT'scenery in the public library'
             SENTENCE_NT'the description of the incongruous sign is "Eating and drink'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the incongruous sign'
-                    PROPER_NOUN_NT'incongruous sign'
+                    PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"Eating and drinking in the library is STRICTLY PROHIBITED."'
             SENTENCE_NT'town hall is southeast of main street'
-                VERB_NT'is southeast of'
+                VERB_NT'is southeast of' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'town hall'
-                RELATIONSHIP_NT'is southeast of'
+                RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r}
                     PROPER_NOUN_NT'main street'
                     PROPER_NOUN_NT'southeast'
             SENTENCE_NT'"Town Hall was built during the slow days of the ice-cream b'
             SENTENCE_NT'the key to the city is in town hall'
-                VERB_NT'is in'
-                PROPER_NOUN_NT'key to the city'
-                RELATIONSHIP_NT'is in'
+                VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc}
+                RELATIONSHIP_NT'is in' {meaning: contains}
                     PROPER_NOUN_NT'town hall'
             SENTENCE_NT'it unlocks the iron gate'
-                VERB_NT'unlocks'
+                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'it'
-                RELATIONSHIP_NT'unlocks'
-                    PROPER_NOUN_NT'iron gate'
+                RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r}
+                    PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'it unlocks the bronze gates'
-                VERB_NT'unlocks'
+                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'it'
-                RELATIONSHIP_NT'unlocks'
-                    PROPER_NOUN_NT'bronze gates'
+                RELATIONSHIP_NT'unlocks' {meaning: lock-fitting-r}
+                    PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'the description of the key to the city is "A skeleton key."'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the key to the city'
-                    PROPER_NOUN_NT'key to the city'
+                    PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"A skeleton key."'
             SENTENCE_NT'a room can be indoors or outdoors'
-                VERB_NT'can be'
+                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a room'
                 UNPARSED_NOUN_NT'indoors or outdoors'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'indoors'
                         UNPARSED_NOUN_NT'outdoors'
             SENTENCE_NT'the post office , the alfred cralle pool hall , the store , '
-                VERB_NT'are'
+                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 AND_NT','
-                    PROPER_NOUN_NT'post office'
+                    PROPER_NOUN_NT'post office' {definite 'the' n/m/f s/p nom/acc}
                     AND_NT','
-                        PROPER_NOUN_NT'alfred cralle pool hall'
+                        PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc}
                         AND_NT','
-                            PROPER_NOUN_NT'store'
+                            PROPER_NOUN_NT'store' {definite 'the' n/m/f s/p nom/acc}
                             AND_NT','
                                 PROPER_NOUN_NT'cold comfort'
                                 AND_NT','
                                     PROPER_NOUN_NT'town hall'
-                                    PROPER_NOUN_NT'library'
+                                    PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc}
                 ADJECTIVE_NT'indoors'
             SENTENCE_NT'use full-length room descriptions'
-                VERB_NT'use'
+                VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'full-length room descriptions'
             RULE_NT'after looking in an outdoors room'
             RULE_NT'definition'
             RULE_NT'before exiting when the player is in an indoors room'
             SENTENCE_NT'blank is a room'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'blank'
-                COMMON_NOUN_NT'room'
+                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'the destination of the player is blank'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'destination of the player'
-                    PROPER_NOUN_NT'player'
+                    PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc}
                     PROPER_NOUN_NT'destination'
                 PROPER_NOUN_NT'blank'
             SENTENCE_NT'blank contains 15 ice cream cones'
-                VERB_NT'contains'
+                VERB_NT'contains' {verb 'contain' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'blank'
-                RELATIONSHIP_NT'contains'
+                RELATIONSHIP_NT'contains' {meaning: is-in}
                     AND_NT
                         PROPER_NOUN_NT
                         AND_NT
@@ -761,140 +761,140 @@ ROOT_NT
                                                                             PROPER_NOUN_NT
         HEADING_NT'section 4 - other players' (level 5)
             SENTENCE_NT'vanessa is a woman in cold comfort'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'vanessa'
-                COMMON_NOUN_NT'woman in cold comfort'
+                COMMON_NOUN_NT'woman in cold comfort' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'vanessa owns cold comfort'
-                VERB_NT'owns'
+                VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'vanessa'
-                RELATIONSHIP_NT'owns'
+                RELATIONSHIP_NT'owns' {meaning: ownership-r}
                     PROPER_NOUN_NT'cold comfort'
             SENTENCE_NT'francine is a woman in the public library'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'francine'
-                COMMON_NOUN_NT'woman in the public library'
+                COMMON_NOUN_NT'woman in the public library' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'francine carries a book called phlox for phyllis'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'francine'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'phlox for phyllis'
             SENTENCE_NT'francine carries a stamped envelope called a pink stamped en'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'francine'
-                RELATIONSHIP_NT'carries'
-                    PROPER_NOUN_NT'pink stamped envelope'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
+                    PROPER_NOUN_NT'pink stamped envelope' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'lewis is a man in the alfred cralle pool hall'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis'
-                COMMON_NOUN_NT'man in the alfred cralle pool hall'
+                COMMON_NOUN_NT'man in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'lewis carries 3 stamped envelopes'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     AND_NT
                         PROPER_NOUN_NT
                         AND_NT
                             PROPER_NOUN_NT
                             PROPER_NOUN_NT
             SENTENCE_NT'lewis carries a book called idiot's guide to dating'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'idiot's guide to dating'
             SENTENCE_NT'lewis carries a book called how to meet women'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'how to meet women'
             SENTENCE_NT'lewis carries a book called seduction in three easy steps'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'seduction in three easy steps'
             SENTENCE_NT'lewis carries a dvd called sleepless in seattle'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'sleepless in seattle'
             SENTENCE_NT'gene is a man in nancy johnson memorial square'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene'
-                COMMON_NOUN_NT'man in nancy johnson memorial square'
+                COMMON_NOUN_NT'man in nancy johnson memorial square' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'gene carries a stamped envelope'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT
             SENTENCE_NT'gene carries a dvd called casablanca'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'casablanca'
             SENTENCE_NT'gene carries a coupon'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT
             SENTENCE_NT'rhoda is a woman in marciony street'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda'
-                COMMON_NOUN_NT'woman in marciony street'
+                COMMON_NOUN_NT'woman in marciony street' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'rhoda carries a book called the marciony street murders'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'the marciony street murders'
             SENTENCE_NT'rhoda carries a dvd called unsolved serial killings xviii'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'unsolved serial killings xviii'
             SENTENCE_NT'rhoda carries a stamped envelope called a squashy package'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda'
-                RELATIONSHIP_NT'carries'
-                    PROPER_NOUN_NT'squashy package'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
+                    PROPER_NOUN_NT'squashy package' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'martin is a man in main street'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin'
-                COMMON_NOUN_NT'man in main street'
+                COMMON_NOUN_NT'man in main street' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'martin carries a dvd called the lifecycle of the south sea t'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'the lifecycle of the south sea tortoise'
             SENTENCE_NT'martin carries a coupon'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT
             SENTENCE_NT'antony is a man in movie rental'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony'
-                COMMON_NOUN_NT'man in movie rental'
+                COMMON_NOUN_NT'man in movie rental' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'antony carries a coupon'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT
             SENTENCE_NT'antony carries a stamped envelope called a postcard'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony'
-                RELATIONSHIP_NT'carries'
-                    PROPER_NOUN_NT'postcard'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
+                    PROPER_NOUN_NT'postcard' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'shelby is a man in the town hall'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby'
-                COMMON_NOUN_NT'man in the town hall'
+                COMMON_NOUN_NT'man in the town hall' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'shelby carries a dvd called conducting an orderly meeting'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT'conducting an orderly meeting'
             SENTENCE_NT'shelby carries 5 stamped envelopes'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     AND_NT
                         PROPER_NOUN_NT
                         AND_NT
@@ -905,125 +905,125 @@ ROOT_NT
                                     PROPER_NOUN_NT
                                     PROPER_NOUN_NT
             SENTENCE_NT'shelby carries an ice cream cone'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT
             SENTENCE_NT'shelby carries a coupon'
-                VERB_NT'carries'
+                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby'
-                RELATIONSHIP_NT'carries'
+                RELATIONSHIP_NT'carries' {meaning: is-carried-by}
                     PROPER_NOUN_NT
             SENTENCE_NT'christopher is a man in the library'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'christopher'
-                COMMON_NOUN_NT'man in the library'
+                COMMON_NOUN_NT'man in the library' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'christopher owns the library'
-                VERB_NT'owns'
+                VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'christopher'
-                RELATIONSHIP_NT'owns'
-                    PROPER_NOUN_NT'library'
+                RELATIONSHIP_NT'owns' {meaning: ownership-r}
+                    PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'linnea is a woman in the alfred cralle pool hall'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'linnea'
-                COMMON_NOUN_NT'woman in the alfred cralle pool hall'
+                COMMON_NOUN_NT'woman in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'linnea owns the alfred cralle pool hall'
-                VERB_NT'owns'
+                VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'linnea'
-                RELATIONSHIP_NT'owns'
-                    PROPER_NOUN_NT'alfred cralle pool hall'
+                RELATIONSHIP_NT'owns' {meaning: ownership-r}
+                    PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc}
             SENTENCE_NT'ned is a man in the movie rental store'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'ned'
-                COMMON_NOUN_NT'man in the movie rental store'
+                COMMON_NOUN_NT'man in the movie rental store' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'ned owns the movie rental'
-                VERB_NT'owns'
+                VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'ned'
-                RELATIONSHIP_NT'owns'
-                    PROPER_NOUN_NT'movie rental'
+                RELATIONSHIP_NT'owns' {meaning: ownership-r}
+                    PROPER_NOUN_NT'movie rental' {definite 'the' n/m/f s/p nom/acc}
             RULE_NT'after printing the name of someone ( called target ) while l'
             SENTENCE_NT'the description of a person is usually "[The noun] [if the n'
-                VERB_NT'is usually'
+                VERB_NT'is usually' {verb 'be' 3p s act IS_TENSE +ve} {certainty:likely}
                 X_OF_Y_NT'description of a person'
-                    COMMON_NOUN_NT'person'
+                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                     PROPER_NOUN_NT'description'
                 PROPER_NOUN_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is'
             RULE_NT'after examining another person who is carrying something'
             RULE_NT'when play begins'
         HEADING_NT'section 5 - conversation' (level 5)
             SENTENCE_NT'a person has a table name called conversation'
-                VERB_NT'has'
-                COMMON_NOUN_NT'person'
+                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                 ALLOWED_NT
                     PROPERTYCALLED_NT'called'
-                        UNPARSED_NOUN_NT'table name'
+                        UNPARSED_NOUN_NT'table name' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'conversation'
             RULE_NT'instead of asking someone about something'
             RULE_NT'instead of telling someone about something'
             SENTENCE_NT'understand "recap" or "recall" or "review" as recalling conv'
-                VERB_NT'understand'
+                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"recap" or "recall" or "review"'
                 UNPARSED_NOUN_NT'recalling conversations'
             SENTENCE_NT'recalling conversations is an action applying to nothing'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'recalling conversations'
                 UNPARSED_NOUN_NT'applying to nothing'
             RULE_NT'carry out recalling conversations'
             SENTENCE_NT'the conversation of a person is usually table of general chi'
-                VERB_NT'is usually'
+                VERB_NT'is usually' {verb 'be' 3p s act IS_TENSE +ve} {certainty:likely}
                 X_OF_Y_NT'conversation of a person'
-                    COMMON_NOUN_NT'person'
+                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                     PROPER_NOUN_NT'conversation'
                 PROPER_NOUN_NT'table of general chitchat'
             TABLE_NT'table of general chitchat topic reply summary turn stamp cha'
             SENTENCE_NT'the conversation of vanessa is the table of vanessa chatter'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'conversation of vanessa'
                     PROPER_NOUN_NT'vanessa'
                     PROPER_NOUN_NT'conversation'
-                PROPER_NOUN_NT'table of vanessa chatter'
+                PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc}
             TABLE_NT'table of vanessa chatter topic reply summary turn stamp char'
             RULE_NT'after reading a command'
         HEADING_NT'section 6 - movement description' (level 5)
             SENTENCE_NT'a person has some text called walk style'
-                VERB_NT'has'
-                COMMON_NOUN_NT'person'
+                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                 ALLOWED_NT
                     PROPERTYCALLED_NT'called'
-                        UNPARSED_NOUN_NT'text'
+                        UNPARSED_NOUN_NT'text' {indefinite 'some' n/m/f nom/acc p}
                         UNPARSED_NOUN_NT'walk style'
             SENTENCE_NT'the walk style of a man is usually "stride"'
-                VERB_NT'is usually'
+                VERB_NT'is usually' {verb 'be' 3p s act IS_TENSE +ve} {certainty:likely}
                 X_OF_Y_NT'walk style of a man'
-                    COMMON_NOUN_NT'man'
+                    COMMON_NOUN_NT'man' {indefinite 'a' n/m/f nom/acc s}
                     PROPER_NOUN_NT'walk style'
                 PROPER_NOUN_NT'"stride"'
             SENTENCE_NT'the walk style of a woman is usually "strut"'
-                VERB_NT'is usually'
+                VERB_NT'is usually' {verb 'be' 3p s act IS_TENSE +ve} {certainty:likely}
                 X_OF_Y_NT'walk style of a woman'
-                    COMMON_NOUN_NT'woman'
+                    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s}
                     PROPER_NOUN_NT'walk style'
                 PROPER_NOUN_NT'"strut"'
             SENTENCE_NT'the walk style of gene is "[one of]wander[or]stroll[purely a'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of gene'
                     PROPER_NOUN_NT'gene'
                     PROPER_NOUN_NT'walk style'
                 PROPER_NOUN_NT'"[one of]wander[or]stroll[purely at random]"'
             SENTENCE_NT'the walk style of francine is "waddle"'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of francine'
                     PROPER_NOUN_NT'francine'
                     PROPER_NOUN_NT'walk style'
                 PROPER_NOUN_NT'"waddle"'
             SENTENCE_NT'the walk style of antony is "scamper"'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of antony'
                     PROPER_NOUN_NT'antony'
                     PROPER_NOUN_NT'walk style'
                 PROPER_NOUN_NT'"scamper"'
             SENTENCE_NT'the walk style of rhoda is "sashay"'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of rhoda'
                     PROPER_NOUN_NT'rhoda'
                     PROPER_NOUN_NT'walk style'
@@ -1033,33 +1033,33 @@ ROOT_NT
             RULE_NT'to clear ( current table - a table name )'
             RULE_NT'to tidy departures of ( current table - a table name )'
             SENTENCE_NT'a door has a person called last opener'
-                VERB_NT'has'
-                COMMON_NOUN_NT'door'
+                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s}
                 ALLOWED_NT
                     PROPERTYCALLED_NT'called'
-                        UNPARSED_NOUN_NT'person'
+                        UNPARSED_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'last opener'
             RULE_NT'report someone opening a door'
             RULE_NT'report someone going through a door ( called route )'
             SENTENCE_NT'the last thing named is a thing that varies'
-                VERB_NT'is'
-                PROPER_NOUN_NT'last thing named'
-                COMMON_NOUN_NT'thing that varies'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'last thing named' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s}
             RULE_NT'before printing the name of something ( called target ) whic'
             RULE_NT'report someone going a direction'
             RULE_NT'this is the movement reporting rule'
             RULE_NT'to generate descriptions from ( current table - a table name'
             SENTENCE_NT'the last person named is a person that varies'
-                VERB_NT'is'
-                PROPER_NOUN_NT'last person named'
-                COMMON_NOUN_NT'person that varies'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+                PROPER_NOUN_NT'last person named' {definite 'the' n/m/f s/p nom/acc}
+                COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s}
             RULE_NT'before printing the name of a person ( called target )'
             SENTENCE_NT'group size is a number that varies'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size'
-                COMMON_NOUN_NT'number that varies'
+                COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s}
             SENTENCE_NT'group size is 1'
-                VERB_NT'is'
+                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size'
                 PROPER_NOUN_NT'1'
             RULE_NT'to clear marked people'
@@ -1070,60 +1070,60 @@ ROOT_NT
             RULE_NT'to say looks as though dipped in for ( index - a number )'
             TABLE_NT'table of dipping phrases dipping "looks as though dipped in"'
             SENTENCE_NT'a door is usually scenery'
-                VERB_NT'is usually'
-                COMMON_NOUN_NT'door'
+                VERB_NT'is usually' {verb 'be' 3p s act IS_TENSE +ve} {certainty:likely}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s}
                 ADJECTIVE_NT'scenery'
             RULE_NT'to make delimiter ( index - a number ) of ( count - a number'
             RULE_NT'to say optional comma'
             SENTENCE_NT'test me with go to cold comfort / z / z / z / z / ask vaness'
-                VERB_NT'test'
+                VERB_NT'test' {verb 'test' 3p p act IS_TENSE +ve} {special meaning: test-with}
                 UNPARSED_NOUN_NT'me'
                 UNPARSED_NOUN_NT'go to cold comfort / z / z / z / z / ask vanessa for french '
             SENTENCE_NT'use fast route-finding'
-                VERB_NT'use'
+                VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'fast route-finding'
     HEADING_NT'invented sentences' (level 0)
         SENTENCE_NT'external file understood is a external file which varies'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'external file understood'
-            COMMON_NOUN_NT'external file which varies'
+            COMMON_NOUN_NT'external file which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'scene understood is a scene which varies'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'scene understood'
-            COMMON_NOUN_NT'scene which varies'
+            COMMON_NOUN_NT'scene which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'figure name understood is a figure name which varies'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'figure name understood'
-            COMMON_NOUN_NT'figure name which varies'
+            COMMON_NOUN_NT'figure name which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'sound name understood is a sound name which varies'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'sound name understood'
-            COMMON_NOUN_NT'sound name which varies'
+            COMMON_NOUN_NT'sound name which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'natural language understood is a natural language which vari'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'natural language understood'
-            COMMON_NOUN_NT'natural language which varies'
+            COMMON_NOUN_NT'natural language which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'grammatical tense understood is a grammatical tense which va'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'grammatical tense understood'
-            COMMON_NOUN_NT'grammatical tense which varies'
+            COMMON_NOUN_NT'grammatical tense which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'narrative viewpoint understood is a narrative viewpoint whic'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'narrative viewpoint understood'
-            COMMON_NOUN_NT'narrative viewpoint which varies'
+            COMMON_NOUN_NT'narrative viewpoint which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'grammatical case understood is a grammatical case which vari'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'grammatical case understood'
-            COMMON_NOUN_NT'grammatical case which varies'
+            COMMON_NOUN_NT'grammatical case which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'grammatical gender understood is a grammatical gender which '
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'grammatical gender understood'
-            COMMON_NOUN_NT'grammatical gender which varies'
+            COMMON_NOUN_NT'grammatical gender which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'command parser error understood is a command parser error wh'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'command parser error understood'
-            COMMON_NOUN_NT'command parser error which varies'
+            COMMON_NOUN_NT'command parser error which varies' {indefinite 'a' n/m/f nom/acc s}
         SENTENCE_NT'infection color understood is a infection color which varies'
-            VERB_NT'is'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'infection color understood'
-            COMMON_NOUN_NT'infection color which varies'
+            COMMON_NOUN_NT'infection color which varies' {indefinite 'a' n/m/f nom/acc s}

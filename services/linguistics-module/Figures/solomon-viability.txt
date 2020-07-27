@@ -1,0 +1,8 @@
+viability map of 'anna is a know all':
+-- is[1] -- know[1] -- 
+viability map of 'the soldier knows that ( this is true ) they do not carry rifles':
+-- -- knows[1] -- -- -- is[2] -- -- -- do[3] not[3] carry[3] -- 
+viability map of 'the solomon islands does not have an air force ( this is true )':
+-- -- -- does[3] not[3] have[3] -- -- -- -- -- is[2] -- -- 
+viability map of 'velma is not a thinker':
+-- is[1] -- -- -- 

@@ -1,7 +1,6 @@
 [NounPhrases::] Noun Phrases.
 
-To construct noun-phrase subtrees for assertion sentences found
-in the parse tree.
+To construct noun-phrase subtrees for assertion sentences.
 
 @h Hierarchy of noun phrases.
 Noun phrase nodes are built at four levels of elaboration, which we take in
@@ -29,6 +28,12 @@ used in a balanced way: thus |frogs ( and toads )| would match, but
 <np-balanced> ::=
 	^<balanced-text> |  ==> 0; return FAIL_NONTERMINAL;
 	<np-unparsed>       ==> 0; *XP = RP[1]
+
+@ The noun phrase of an existential sentence is recognised thus:
+
+=
+<np-existential> ::=
+	there               ==> 0; *XP = Diagrams::new_DEFECTIVE(W);
 
 @h Articled nounphrases (NP2).
 Now an initial article becomes an annotation and is removed from the text.
@@ -140,13 +145,13 @@ looks like a participle.
 
 =
 <np-as-subject> ::=
-	<existential-np> |                                                  ==> 0; *XP = RP[1]
+	<np-existential> |                                                  ==> 0; *XP = RP[1]
 	<if-not-deliberately-capitalised> <np-relative-phrase-limited> |    ==> 0; *XP = RP[2]
-	<np-nonrelative>                                                  ==> 0; *XP = RP[1]
+	<np-nonrelative>                                                    ==> 0; *XP = RP[1]
 
 <np-as-object> ::=
 	<if-not-deliberately-capitalised> <np-relative-phrase-unlimited> |  ==> 0; *XP = RP[2]
-	<np-nonrelative>							                        ==> 0; *XP = RP[1]
+	<np-nonrelative>                                                    ==> 0; *XP = RP[1]
 
 @ To explain the limitation here: RPs only exist in the subject position due
 to subject-verb inversion in English. Thus, "In the Garden is a tortoise" is a

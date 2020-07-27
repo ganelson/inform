@@ -33,7 +33,7 @@ placeholder to stand for a missing noun phrase:
 
 =
 <s-sentence> ::=
-	<existential-np> <s-existential-verb-tail> |    ==> @<Make SV provided object is descriptive@>;
+	<np-existential> <s-existential-verb-tail> |    ==> @<Make SV provided object is descriptive@>;
 	<s-noun-phrase> <s-general-verb-tail>			==> @<Make SV@>;
 
 <s-existential-verb-tail> ::=

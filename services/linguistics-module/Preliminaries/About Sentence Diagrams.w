@@ -139,6 +139,18 @@ to noun phrases, we can have serial lists:
 Note that |AND_NT| nodes always have exactly two children, and that the serial
 comma is allowed but not required.
 
+|AND_NT| in conjunction with |RELATIONSHIP_NT| can allow for zeugmas.
+Zeugma is sometimes thought to be rare in English and to be basically a comedy
+effect, as in the famous Flanders and Swann lyric:
+
+>> She made no reply, up her mind, and a dash for the door.
+
+in which three completely different senses of the same verb are used,
+but in which the verb appears only once. It might seem reasonable just to
+disallow this. Unfortunately, less extreme zeugmas occur all the time:
+
+>> The red door is west of the Dining Room and east of the Ballroom.
+
 @ Now we introduce pronouns to the mix. These are detected automatically
 by //linguistics//, and exist in nominative and accusative cases in
 English. Note the difference in annotations between "them" and "you",

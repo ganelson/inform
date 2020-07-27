@@ -348,13 +348,3 @@ void Node::log_node(OUTPUT_STREAM, void *vpn) {
 	while ((pn->next_alternative) && (a<9)) a++, pn = pn->next_alternative;
 	if (a > 0) WRITE("/%d", a);
 }
-
-@ This is occasionally useful:
-
-=
-void Node::log_with_annotations(parse_node *pn) {
-	LOG("Diagnosis $P", pn);
-	for (parse_node_annotation *pna = pn->annotations; pna; pna = pna->next_annotation)
-		LOG("-%d", pna->annotation_id);
-	LOG("\n");
-}

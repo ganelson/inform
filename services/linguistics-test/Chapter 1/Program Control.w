@@ -9,6 +9,8 @@ What shall we test?
 @e VOCABULARY_CLSW
 @e TEST_DIAGRAMS_CLSW
 @e RAW_DIAGRAMS_CLSW
+@e TRACE_DIAGRAMS_CLSW
+@e VIABILITY_DIAGRAMS_CLSW
 @e TEST_ARTICLES_CLSW
 @e TEST_PRONOUNS_CLSW
 
@@ -34,6 +36,10 @@ int main(int argc, char **argv) {
 		L"test sentence diagrams from text in X");
 	CommandLine::declare_switch(RAW_DIAGRAMS_CLSW, L"raw", 2,
 		L"test raw sentence diagrams from text in X");
+	CommandLine::declare_switch(TRACE_DIAGRAMS_CLSW, L"trace", 2,
+		L"test raw sentence diagrams from text in X with tracing on");
+	CommandLine::declare_switch(VIABILITY_DIAGRAMS_CLSW, L"viability", 2,
+		L"show viability map for sentences in X");
 	CommandLine::declare_switch(VOCABULARY_CLSW, L"vocabulary", 2,
 		L"read vocabulary from file X for use in -diagram tests");
 	CommandLine::declare_switch(TEST_ARTICLES_CLSW, L"test-articles", 2,
@@ -52,9 +58,34 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
+@
+
+@d TRACING_LINGUISTICS_CALLBACK Main::trace_parsing
+
+=
+int trace_diagrams_mode = FALSE;
+int viability_diagrams_mode = FALSE;
+int Main::trace_parsing(int A) {
+	if (trace_diagrams_mode) return trace_diagrams_mode;
+	if (A == VIABILITY_VP_TRACE) return viability_diagrams_mode;
+	return FALSE;
+}
+
+@ =
 void Main::respond(int id, int val, text_stream *arg, void *state) {
+	text_stream *save_DL = DL;
+	DL = STDOUT;
+	Streams::enable_debugging(DL);
 	switch (id) {
 		case VOCABULARY_CLSW: Banking::load_from_file(arg); break;
+		case TRACE_DIAGRAMS_CLSW:
+			trace_diagrams_mode = TRUE;
+			Diagramming::test_diagrams(arg, TRUE);
+			break;
+		case VIABILITY_DIAGRAMS_CLSW:
+			viability_diagrams_mode = TRUE;
+			Diagramming::test_diagrams(arg, TRUE);
+			break;
 		case RAW_DIAGRAMS_CLSW:
 			Interpreting::go(Diagramming::test_diagrams(arg, TRUE));
 			break;
@@ -70,6 +101,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 			Pronouns::test(STDOUT);
 			break;
 	}
+	DL = save_DL;
 }
 
 void Main::ignore(int id, text_stream *arg, void *state) {

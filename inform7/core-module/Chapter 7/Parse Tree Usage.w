@@ -422,6 +422,7 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 		WRITE("'%S'", text);
 		DISCARD_TEXT(text)
 	}
+	Diagrams::log_node(OUT, pn);
 
 	if ((pn->node_type >= UNKNOWN_NT) && (pn->node_type <= TEST_VALUE_NT))
 		@<Log annotations of specification nodes@>
@@ -448,18 +449,14 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 		case HEADING_NT: WRITE(" (level %d)", Annotations::read_int(pn, heading_level_ANNOT)); break;
 		case COMMON_NOUN_NT: show_refers = TRUE; break;
 		case KIND_NT: show_refers = TRUE; break;
-		case RELATIONSHIP_NT:
-			Diagrams::log_node(OUT, pn);
-			break;
+		case RELATIONSHIP_NT: break;
 		case PROPER_NOUN_NT:
-			Diagrams::log_node(OUT, pn);
 			if (Annotations::read_int(pn, multiplicity_ANNOT))
 				WRITE(" (x%d)", Annotations::read_int(pn, multiplicity_ANNOT));
 			show_refers = TRUE;
 			break;
 		case VERB_NT:
 			WRITE(" ($V)", Annotations::read_int(pn, verb_id_ANNOT));
-			Diagrams::log_node(OUT, pn);
 			break;
 		case TOKEN_NT: WRITE(" [%d/%d]", Annotations::read_int(pn, slash_class_ANNOT),
 			Annotations::read_int(pn, slash_dash_dash_ANNOT)); break;
