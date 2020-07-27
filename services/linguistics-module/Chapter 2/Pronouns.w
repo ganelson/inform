@@ -219,64 +219,64 @@ parsed lies in the relevant small word set.
 <agent-pronoun> internal 1 {
 	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (pronoun_usage *) Stock::find_in_sws(pronouns_sws, ve);
-	if (*XP) return TRUE;
+	pronoun_usage *pu = Stock::find_in_sws(pronouns_sws, ve);
+	if (pu) { ==> { 0, pu }; return TRUE; }
 	return FALSE;
 }
 
 <subject-pronoun> internal 1 {
 	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (pronoun_usage *) Stock::find_in_sws(subject_pronouns_sws, ve);
-	if (*XP) return TRUE;
+	pronoun_usage *pu = Stock::find_in_sws(subject_pronouns_sws, ve);
+	if (pu) { ==> { 0, pu }; return TRUE; }
 	return FALSE;
 }
 
 <object-pronoun> internal 1 {
 	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (pronoun_usage *) Stock::find_in_sws(object_pronouns_sws, ve);
-	if (*XP) return TRUE;
+	pronoun_usage *pu = Stock::find_in_sws(object_pronouns_sws, ve);
+	if (pu) { ==> { 0, pu }; return TRUE; }
 	return FALSE;
 }
 
 <possessive-pronoun> internal 1 {
 	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (pronoun_usage *) Stock::find_in_sws(possessive_pronouns_sws, ve);
-	if (*XP) return TRUE;
+	pronoun_usage *pu = Stock::find_in_sws(possessive_pronouns_sws, ve);
+	if (pu) { ==> { 0, pu }; return TRUE; }
 	return FALSE;
 }
 
 <possessive-first-person> internal 1 {
 	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (pronoun_usage *) Stock::find_in_sws(first_person_possessive_pronouns_sws, ve);
-	if (*XP) return TRUE;
+	pronoun_usage *pu = Stock::find_in_sws(first_person_possessive_pronouns_sws, ve);
+	if (pu) { ==> { 0, pu }; return TRUE; }
 	return FALSE;
 }
 
 <possessive-second-person> internal 1 {
 	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (pronoun_usage *) Stock::find_in_sws(second_person_possessive_pronouns_sws, ve);
-	if (*XP) return TRUE;
+	pronoun_usage *pu = Stock::find_in_sws(second_person_possessive_pronouns_sws, ve);
+	if (pu) { ==> { 0, pu }; return TRUE; }
 	return FALSE;
 }
 
 <possessive-third-person> internal 1 {
 	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (pronoun_usage *) Stock::find_in_sws(third_person_possessive_pronouns_sws, ve);
-	if (*XP) return TRUE;
+	pronoun_usage *pu = Stock::find_in_sws(third_person_possessive_pronouns_sws, ve);
+	if (pu) { ==> { 0, pu }; return TRUE; }
 	return FALSE;
 }
 
 <here-pronoun> internal 1 {
 	if (pronouns_sws == NULL) Pronouns::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (pronoun_usage *) Stock::find_in_sws(here_pronouns_sws, ve);
-	if (*XP) return TRUE;
+	pronoun_usage *pu = Stock::find_in_sws(here_pronouns_sws, ve);
+	if (pu) { ==> { 0, pu }; return TRUE; }
 	return FALSE;
 }
 

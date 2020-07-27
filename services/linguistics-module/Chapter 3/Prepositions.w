@@ -122,7 +122,7 @@ preposition, but note that it does so by testing in creation order.
 	LOOP_OVER(prep, preposition) {
 		int i = Prepositions::parse_prep_against(W, prep);
 		if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W)+1)) {
-			*XP = prep;
+			==> { -, prep };
 			return i-1;
 		}
 	}
@@ -143,7 +143,7 @@ So it will find the longest match.
 		if ((prep) && (VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE)) {
 			int i = Prepositions::parse_prep_against(W, prep);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W)+1)) {
-				*XP = prep;
+				==> { -, prep };
 				return i-1;
 			}
 		}
@@ -163,7 +163,7 @@ with a given "permitted verb".
 			if ((prep) && (VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE)) {
 				int i = Prepositions::parse_prep_against(W, prep);
 				if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W)+1)) {
-					*XP = prep;
+					==> { -, prep };
 					return i-1;
 				}
 			}

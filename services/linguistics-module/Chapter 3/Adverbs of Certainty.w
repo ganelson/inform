@@ -49,8 +49,8 @@ the case and what has been the case in the past.
 
 =
 <certainty> ::=
-	always/certainly |  ==> CERTAIN_CE
-	usually/normally |  ==> LIKELY_CE
-	rarely/seldom |     ==> UNLIKELY_CE
-	never |             ==> IMPOSSIBLE_CE
-	initially           ==> INITIALLY_CE
+	always/certainly |  ==> { CERTAIN_CE, - }
+	usually/normally |  ==> { LIKELY_CE, - }
+	rarely/seldom |     ==> { UNLIKELY_CE, - }
+	never |             ==> { IMPOSSIBLE_CE, - }
+	initially           ==> { INITIALLY_CE, - }

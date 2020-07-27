@@ -466,7 +466,7 @@ which has a meaning.
 				if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
 					if ((vf->preposition == NULL) ||
 						(WordAssemblages::is_at(&(vf->preposition->prep_text), i, Wordings::last_wn(W)))) {
-						*XP = vu;
+						==> { -, vu };
 						permitted_verb = VerbUsages::get_verb(vu);
 						return i-1;
 					}
@@ -488,7 +488,7 @@ and so on.
 		if (VerbUsages::get_verb(vu) == copular_verb) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
-				*XP = vu;
+				==> { -, vu };
 				return -(i-1);
 			}
 			BacktrackFrom: ;
@@ -511,7 +511,7 @@ not carry" qualifies; "is not" or "supports" don't qualify.
 			(VerbUsages::is_used_negatively(vu))) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
-				*XP = vu;
+				==> { -, vu };
 				return -(i-1);
 			}
 			BacktrackFrom: ;
@@ -531,7 +531,7 @@ that means it's "to relate".
 		if (VerbUsages::get_regular_meaning(vu, NULL, NULL) == VERB_MEANING_UNIVERSAL) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
-				*XP = vu;
+				==> { -, vu };
 				return i-1;
 			}
 		}
@@ -550,7 +550,7 @@ Any verb usage which is negative in sense: this is used only to diagnose problem
 		if (VerbUsages::is_used_negatively(vu)) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
-				*XP = vu;
+				==> { -, vu };
 				return -(i-1);
 			}
 			BacktrackFrom: ;
@@ -569,7 +569,7 @@ Any verb usage which is negative in sense: this is used only to diagnose problem
 		if (VerbUsages::get_tense_used(vu) != IS_TENSE) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
-				*XP = vu;
+				==> { -, vu };
 				return -(i-1);
 			}
 			BacktrackFrom: ;
@@ -591,10 +591,10 @@ uses of verbs:
 			word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
 			word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
 			if (WordAssemblages::compare_with_wording(we_form, W)) {
-				*XP = vc; *X = FALSE; return TRUE;
+				==> { FALSE, vc }; return TRUE;
 			}
 			if (WordAssemblages::compare_with_wording(we_dont_form, W)) {
-				*XP = vc; *X = TRUE; return TRUE;
+				==> { TRUE, vc }; return TRUE;
 			}
 		}
 	return FALSE;
@@ -606,7 +606,7 @@ uses of verbs:
 		if (vc->auxiliary_only == FALSE) {
 			word_assemblage *infinitive_form = &(vc->infinitive);
 			if (WordAssemblages::compare_with_wording(infinitive_form, W)) {
-				*XP = vc; *X = FALSE; return TRUE;
+				==> { FALSE, vc }; return TRUE;
 			}
 		}
 	return FALSE;
@@ -623,10 +623,10 @@ or "the verb to be able to see" use these.
 		verb_conjugation *vc = vf->underlying_verb->conjugation;
 		if ((vc) && (vc->auxiliary_only == FALSE) && (vc->instance_of_verb)) {
 			if (WordAssemblages::compare_with_wording(&(vf->pos_reference_text), W)) {
-				*XP = vf; *X = FALSE; return TRUE;
+				==> { FALSE, vf }; return TRUE;
 			}
 			if (WordAssemblages::compare_with_wording(&(vf->neg_reference_text), W)) {
-				*XP = vf; *X = TRUE; return TRUE;
+				==> { TRUE, vf }; return TRUE;
 			}
 		}
 	}
@@ -639,7 +639,7 @@ or "the verb to be able to see" use these.
 		verb_conjugation *vc = vf->underlying_verb->conjugation;
 		if ((vc) && (vc->auxiliary_only == FALSE) && (vc->instance_of_verb)) {
 			if (WordAssemblages::compare_with_wording(&(vf->infinitive_reference_text), W)) {
-				*XP = vf; *X = FALSE; return TRUE;
+				==> { FALSE, vf }; return TRUE;
 			}
 		}
 	}
@@ -656,10 +656,10 @@ or "the verb to be able to see" use these.
 				word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
 				word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
 				if (WordAssemblages::compare_with_wording(we_form, W)) {
-					*XP = vc; *X = FALSE; return TRUE;
+					==> { FALSE, vc }; return TRUE;
 				}
 				if (WordAssemblages::compare_with_wording(we_dont_form, W)) {
-					*XP = vc; *X = TRUE; return TRUE;
+					==> { TRUE, vc }; return TRUE;
 				}
 			}
 		}

@@ -18,22 +18,22 @@ matches any non-empty text:
 
 =
 <np-unparsed> ::=
-	...                 ==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
+	...                 ==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
 
 @ This "balanced" version, however, requires any brackets and braces to be
 used in a balanced way: thus |frogs ( and toads )| would match, but
 |frogs ( and| would not. It therefore does not always match.
 
 =
-<np-balanced> ::=
-	^<balanced-text> |  ==> 0; return FAIL_NONTERMINAL;
-	<np-unparsed>       ==> 0; *XP = RP[1]
+<np-unparsed-bal> ::=
+	^<balanced-text> |  ==> { fail }
+	<np-unparsed>       ==> { pass 1 }
 
 @ The noun phrase of an existential sentence is recognised thus:
 
 =
 <np-existential> ::=
-	there               ==> 0; *XP = Diagrams::new_DEFECTIVE(W);
+	there               ==> { 0, Diagrams::new_DEFECTIVE(W) }
 
 @h Articled nounphrases (NP2).
 Now an initial article becomes an annotation and is removed from the text.
@@ -49,17 +49,17 @@ indefinite, the latter has precedence.
 
 =
 <np-articled> ::=
-	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<if-not-deliberately-capitalised> <indefinite-article> <np-unparsed> |  ==> 0; *XP = NounPhrases::add_article(RP[3], RP[2]);
-	<if-not-deliberately-capitalised> <definite-article> <np-unparsed> |    ==> 0; *XP = NounPhrases::add_article(RP[3], RP[2]);
-	<np-unparsed>															==> 0; *XP = RP[1]
+	... |                                              ==> { lookahead }
+	<if-not-cap> <indefinite-article> <np-unparsed> |  ==> { 0, NounPhrases::add_art(RP[3], RP[2]) }
+	<if-not-cap> <definite-article> <np-unparsed> |    ==> { 0, NounPhrases::add_art(RP[3], RP[2]) }
+	<np-unparsed>                                      ==> { pass 1 }
 
-<np-articled-balanced> ::=
-	^<balanced-text> |                                                      ==> 0; return FAIL_NONTERMINAL;
-	<np-articled>								                            ==> 0; *XP = RP[1]
+<np-articled-bal> ::=
+	^<balanced-text> |                                 ==> { fail }
+	<np-articled>                                      ==> { pass 1 }
 
 @ =
-parse_node *NounPhrases::add_article(parse_node *p, article_usage *au) {
+parse_node *NounPhrases::add_art(parse_node *p, article_usage *au) {
 	Node::set_article(p, au);
 	return p;
 }
@@ -87,13 +87,13 @@ means that an and or a comma inside brackets can never be a divider. Thus
 
 =
 <np-articled-list> ::=
-	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-articled-balanced> <np-articled-tail> |  ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-articled>                                ==> 0; *XP = RP[1]
+	... |                                   ==> { lookahead }
+	<np-articled-bal> <np-articled-tail> |  ==> { 0, Diagrams::new_AND(R[2], RP[1], RP[2]) }
+	<np-articled>                           ==> { pass 1 }
 
 <np-articled-tail> ::=
-	, {_and} <np-articled-list> |                ==> Wordings::first_wn(W); *XP = RP[1]
-	{_,/and} <np-articled-list>                  ==> Wordings::first_wn(W); *XP = RP[1]
+	, {_and} <np-articled-list> |           ==> { Wordings::first_wn(W), RP[1] }
+	{_,/and} <np-articled-list>             ==> { Wordings::first_wn(W), RP[1] }
 
 @ "Alternative lists" divide up at "or" rather than "and", thus matching text
 such as "voluminous, middling big or poky", and the individual entries are not
@@ -101,13 +101,13 @@ articled.
 
 =
 <np-alternative-list> ::=
-	... |                                  ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<np-balanced> <np-alternative-tail> |  ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-unparsed>                          ==> 0; *XP = RP[1]
+	... |                                      ==> { lookahead }
+	<np-unparsed-bal> <np-alternative-tail> |  ==> { 0, Diagrams::new_AND(R[2], RP[1], RP[2]) }
+	<np-unparsed>                              ==> { pass 1 }
 
 <np-alternative-tail> ::=
-	, {_or} <np-alternative-list> |  ==> Wordings::first_wn(W); *XP= RP[1]
-	{_,/or} <np-alternative-list>    ==> Wordings::first_wn(W); *XP= RP[1]
+	, {_or} <np-alternative-list> |            ==> { Wordings::first_wn(W), RP[1] }
+	{_,/or} <np-alternative-list>              ==> { Wordings::first_wn(W), RP[1] }
 
 @h Full nounphrases (NP4).
 When fully parsing the structure of a nounphrase, we have five different
@@ -145,13 +145,13 @@ looks like a participle.
 
 =
 <np-as-subject> ::=
-	<np-existential> |                                                  ==> 0; *XP = RP[1]
-	<if-not-deliberately-capitalised> <np-relative-phrase-limited> |    ==> 0; *XP = RP[2]
-	<np-nonrelative>                                                    ==> 0; *XP = RP[1]
+	<np-existential> |                             ==> { pass 1 }
+	<if-not-cap> <np-relative-phrase-limited> |    ==> { pass 2 }
+	<np-nonrelative>                               ==> { pass 1 }
 
 <np-as-object> ::=
-	<if-not-deliberately-capitalised> <np-relative-phrase-unlimited> |  ==> 0; *XP = RP[2]
-	<np-nonrelative>                                                    ==> 0; *XP = RP[1]
+	<if-not-cap> <np-relative-phrase-unlimited> |  ==> { pass 2 }
+	<np-nonrelative>                               ==> { pass 1 }
 
 @ To explain the limitation here: RPs only exist in the subject position due
 to subject-verb inversion in English. Thus, "In the Garden is a tortoise" is a
@@ -163,13 +163,13 @@ called "Area".
 
 =
 <np-relative-phrase-limited> ::=
-	<np-relative-phrase-implicit> |                                     ==> 0; *XP = RP[1]
-	<probable-participle> *** |                                         ==> 0; return FAIL_NONTERMINAL;
-	<np-relative-phrase-explicit>                                       ==> 0; *XP = RP[1]
+	<np-relative-phrase-implicit> |                ==> { pass 1 }
+	<probable-participle> *** |                    ==> { fail }
+	<np-relative-phrase-explicit>                  ==> { pass 1 }
 
 <np-relative-phrase-unlimited> ::=
-	<np-relative-phrase-implicit> |                                     ==> 0; *XP = RP[1]
-	<np-relative-phrase-explicit>                                       ==> 0; *XP = RP[1]
+	<np-relative-phrase-implicit> |                ==> { pass 1 }
+	<np-relative-phrase-explicit>                  ==> { pass 1 }
 
 @ Inform guesses above that most English words ending in "-ing" are present
 participles -- like guessing, bluffing, cheating, and so on. But there is
@@ -200,26 +200,26 @@ using the "implied noun" pronoun. For now, these are fixed.
 
 @<Act on the implicit RP worn@> =
 	#ifndef IF_MODULE
-	return FALSE;
+	==> { fail production }
 	#endif
 	#ifdef IF_MODULE
-	*X = 0; *XP = Diagrams::new_implied_RELATIONSHIP(W, R_wearing);
+	==> { 0, Diagrams::new_implied_RELATIONSHIP(W, R_wearing) }
 	#endif
 
 @<Act on the implicit RP carried@> =
 	#ifndef IF_MODULE
-	return FALSE;
+	==> { fail production }
 	#endif
 	#ifdef IF_MODULE
-	*X = 0; *XP = Diagrams::new_implied_RELATIONSHIP(W, R_carrying);
+	==> { 0, Diagrams::new_implied_RELATIONSHIP(W, R_carrying) }
 	#endif
 
 @<Act on the implicit RP initially carried@> =
 	#ifndef IF_MODULE
-	return FALSE;
+	==> { fail production }
 	#endif
 	#ifdef IF_MODULE
-	*X = 0; *XP = Diagrams::new_implied_RELATIONSHIP(W, R_carrying);
+	==> { 0, Diagrams::new_implied_RELATIONSHIP(W, R_carrying) }
 	#endif
 
 @ An explicit RP is one which uses a preposition and then a noun phrase: for
@@ -232,15 +232,15 @@ directions, in particular, a little better. But it means we do not recognise
 
 =
 <np-relative-phrase-explicit> ::=
-	<permitted-preposition> _,/and ... |       ==> 0; return FAIL_NONTERMINAL;
-	<permitted-preposition> _,/and |           ==> 0; return FAIL_NONTERMINAL;
+	<permitted-preposition> _,/and ... |       ==> { fail }
+	<permitted-preposition> _,/and |           ==> { fail }
 	<permitted-preposition> <np-nonrelative>   ==> @<Work out a meaning@>
 
 @<Work out a meaning@> =
 	VERB_MEANING_LINGUISTICS_TYPE *R = VerbMeanings::get_regular_meaning_of_form(
 		Verbs::find_form(permitted_verb, RP[1], NULL));
 	if (R == NULL) return FALSE;
-	*XP = Diagrams::new_RELATIONSHIP(W, VerbMeanings::reverse_VMT(R), RP[2]);
+	==> { -, Diagrams::new_RELATIONSHIP(W, VerbMeanings::reverse_VMT(R), RP[2]) };
 
 @ We have now disposed of |RELATIONSHIP_NT| and are left with the constructs:
 = (text)
@@ -259,19 +259,19 @@ text like "smile X-)" will in fact match <np-nonrelative>.
 
 =
 <np-nonrelative> ::=
-	... |                                           ==> 0; *XP = NULL; return preform_lookahead_mode;
-	<np-operand> {called} <np-articled-balanced> |  ==> 0; *XP = Diagrams::new_CALLED(WR[1], RP[1], RP[2])
-	<np-operand> <np-with-or-having-tail> |         ==> 0; *XP = Diagrams::new_WITH(Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-operand> <np-and-tail> |                    ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-kind-phrase> |                              ==> 0; *XP = RP[1]
-	<agent-pronoun> |                               ==> 0; *XP = Diagrams::new_PRONOUN(W, RP[1])
-	<here-pronoun> |                                ==> 0; *XP = Diagrams::new_PRONOUN(W, RP[1])
-	<np-articled>                                   ==> 0; *XP = RP[1]
+	... |                                      ==> { lookahead }
+	<np-operand> {called} <np-articled-bal> |  ==> { 0, Diagrams::new_CALLED(WR[1], RP[1], RP[2]) }
+	<np-operand> <np-with-or-having-tail> |    ==> { 0, Diagrams::new_WITH(R[2], RP[1], RP[2]) }
+	<np-operand> <np-and-tail> |               ==> { 0, Diagrams::new_AND(R[2], RP[1], RP[2]) }
+	<np-kind-phrase> |                         ==> { pass 1 }
+	<agent-pronoun> |                          ==> { 0, Diagrams::new_PRONOUN(W, RP[1]) }
+	<here-pronoun> |                           ==> { 0, Diagrams::new_PRONOUN(W, RP[1]) }
+	<np-articled>                              ==> { pass 1 }
 
 <np-operand> ::=
-	<if-not-deliberately-capitalised> <np-relative-phrase-unlimited> |  ==> 0; *XP = RP[2]
-	^<balanced-text> |                                                  ==> 0; return FAIL_NONTERMINAL;
-	<np-nonrelative>                                                    ==> 0; *XP = RP[1]
+	<if-not-cap> <np-relative-phrase-unlimited> |  ==> { pass 2 }
+	^<balanced-text> |                             ==> { fail }
+	<np-nonrelative>                               ==> { pass 1 }
 
 @ The tail of with-or-having parses for instance "with carrying capacity 5"
 in the NP
@@ -288,29 +288,29 @@ bogus object called "locking it".)
 
 =
 <np-with-or-having-tail> ::=
-	it with action *** |                       ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	{with/having} (/) *** |                    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	{with/having} ... ( <response-letter> ) |  ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	{with/having} <np-new-property-list>       ==> Wordings::first_wn(WR[1]); *XP = RP[1]
+	it with action *** |                       ==> { advance Wordings::delta(WR[1], W) }
+	{with/having} (/) *** |                    ==> { advance Wordings::delta(WR[1], W) }
+	{with/having} ... ( <response-letter> ) |  ==> { advance Wordings::delta(WR[1], W) }
+	{with/having} <np-new-property-list>       ==> { Wordings::first_wn(WR[1]), RP[1] }
 
 <np-new-property-list> ::=
-	... |                                      ==> 0; *XP = NULL; return preform_lookahead_mode;
-	<np-new-property> <np-new-property-tail> | ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
-	<np-new-property>                          ==> 0; *XP = RP[1];
+	... |                                      ==> { lookahead }
+	<np-new-property> <np-new-property-tail> | ==> { 0, Diagrams::new_AND(R[2], RP[1], RP[2]) }
+	<np-new-property>                          ==> { pass 1 };
 
 <np-new-property-tail> ::=
-	, {_and} <np-new-property-list> |          ==> Wordings::first_wn(W); *XP= RP[1]
-	{_,/and} <np-new-property-list>            ==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <np-new-property-list> |          ==> { Wordings::first_wn(W), RP[1] }
+	{_,/and} <np-new-property-list>            ==> { Wordings::first_wn(W), RP[1] }
 
 <np-new-property> ::=
-	...                                        ==> 0; *XP = Diagrams::new_PROPERTY_LIST(W);
+	...                                        ==> { 0, Diagrams::new_PROPERTY_LIST(W) }
 
 @ The "and" tail is much easier:
 
 =
 <np-and-tail> ::=
-	, {_and} <np-operand> |                    ==> Wordings::first_wn(W); *XP= RP[1]
-	{_,/and} <np-operand>                      ==> Wordings::first_wn(W); *XP= RP[1]
+	, {_and} <np-operand> |                    ==> { Wordings::first_wn(W), RP[1] }
+	{_,/and} <np-operand>                      ==> { Wordings::first_wn(W), RP[1] }
 
 @ Kind phrases are easier:
 
@@ -321,9 +321,9 @@ but definite articles are not.
 
 =
 <np-kind-phrase> ::=
-	<indefinite-article> <np-kind-phrase-unarticled> |  ==> 0; *XP = RP[2]
-	<np-kind-phrase-unarticled>                         ==> 0; *XP = RP[1]
+	<indefinite-article> <np-kind-phrase-unarticled> |  ==> { pass 2 }
+	<np-kind-phrase-unarticled>                         ==> { pass 1 }
 
 <np-kind-phrase-unarticled> ::=
-	kind/kinds |                                        ==> 0; *XP = Diagrams::new_KIND(W, NULL)
-	kind/kinds of <np-operand>                          ==> 0; *XP = Diagrams::new_KIND(W, RP[1])
+	kind/kinds |                                        ==> { 0, Diagrams::new_KIND(W, NULL) }
+	kind/kinds of <np-operand>                          ==> { 0, Diagrams::new_KIND(W, RP[1]) }

@@ -2,7 +2,7 @@
 
 <if-start-of-paragraph> internal hits 1177/6302 nti 18 constraint (none) extremes [0, 0]
 
-<if-not-deliberately-capitalised> internal hits 3865/7942 nti 19 constraint (none) extremes [0, 0]
+<if-not-cap> internal hits 3865/7942 nti 19 constraint (none) extremes [0, 0]
 
 <balanced-text> hits 746/1492 nti 20 constraint (none) extremes [1, infinity)
     English:
@@ -5024,7 +5024,7 @@
         {...} 
           (hits 3144/3144) (matched long text) constraint (none) extremes [1, infinity)
 
-<np-balanced> hits 60/120 nti 6 constraint (none) extremes [0, infinity)
+<np-unparsed-bal> hits 60/120 nti 6 constraint (none) extremes [0, infinity)
     English:
         ^<balanced-text> 
           (hits 0/60) constraint (none) extremes [0, infinity)
@@ -5040,14 +5040,14 @@
     English:
         {...} 
           (hits 99/2077) (matched: '"(considering the first sixteen objects only)[command clarification break]" ( a )') constraint (none) extremes [1, infinity)
-        <if-not-deliberately-capitalised> <indefinite-article> <np-unparsed> 
+        <if-not-cap> <indefinite-article> <np-unparsed> 
           (hits 322/1413) (matched long text) constraint (none) extremes [2, infinity)
-        <if-not-deliberately-capitalised> <definite-article> <np-unparsed> 
+        <if-not-cap> <definite-article> <np-unparsed> 
           (hits 661/1091) (matched long text) constraint (none) extremes [2, infinity)
         <np-unparsed> 
           (hits 995/995) (matched long text) constraint (none) extremes [1, infinity)
 
-<np-articled-balanced> hits 255/510 nti 8 constraint (none) extremes [0, infinity)
+<np-articled-bal> hits 255/510 nti 8 constraint (none) extremes [0, infinity)
     English:
         ^<balanced-text> 
           (hits 0/255) constraint (none) extremes [0, infinity)
@@ -5058,7 +5058,7 @@
     English:
         {...} 
           (hits 99/279) (matched long text) constraint (none) extremes [1, infinity)
-        <np-articled-balanced> <np-articled-tail> 
+        <np-articled-bal> <np-articled-tail> 
           (hits 99/142) (matched long text) constraint DS = {20} extremes [2, infinity)
         <np-articled> 
           (hits 81/81) (matched long text) constraint (none) extremes [1, infinity)
@@ -5074,7 +5074,7 @@
     English:
         {...} 
           (hits 30/103) (matched: 'unmarked for listing') constraint (none) extremes [1, infinity)
-        <np-balanced> <np-alternative-tail> 
+        <np-unparsed-bal> <np-alternative-tail> 
           (hits 30/32) (matched: 'marked for listing or unmarked for listing') constraint DS = {21} extremes [2, infinity)
         <np-unparsed> 
           (hits 43/43) (matched: 'pushable between rooms') constraint (none) extremes [1, infinity)
@@ -5090,14 +5090,14 @@
     English:
         <np-existential> 
           (hits 0/4) constraint CS = {19} extremes [1, 1]
-        <if-not-deliberately-capitalised> <np-relative-phrase-limited> 
+        <if-not-cap> <np-relative-phrase-limited> 
           (hits 0/460) constraint (none) extremes [1, infinity)
         <np-nonrelative> 
           (hits 460/460) (matched long text) constraint (none) extremes [1, infinity)
 
 <np-as-object> hits 576/1152 nti 12 constraint (none) extremes [1, infinity)
     English:
-        <if-not-deliberately-capitalised> <np-relative-phrase-unlimited> 
+        <if-not-cap> <np-relative-phrase-unlimited> 
           (hits 0/576) constraint (none) extremes [1, infinity)
         <np-nonrelative> 
           (hits 576/576) (matched long text) constraint (none) extremes [1, infinity)
@@ -5147,7 +5147,7 @@
     English:
         {...} 
           (hits 174/1467) (matched long text) constraint (none) extremes [1, infinity)
-        <np-operand> {called} <np-articled-balanced> 
+        <np-operand> {called} <np-articled-bal> 
           (hits 57/577) (matched long text) constraint DS = {27} extremes [1, infinity)
         <np-operand> <np-with-or-having-tail> 
           (hits 0/697) constraint DS = {24} extremes [2, infinity)
@@ -5164,7 +5164,7 @@
 
 <np-operand> hits 431/862 nti 16 constraint (none) extremes [0, infinity)
     English:
-        <if-not-deliberately-capitalised> <np-relative-phrase-unlimited> 
+        <if-not-cap> <np-relative-phrase-unlimited> 
           (hits 0/431) constraint (none) extremes [1, infinity)
         ^<balanced-text> 
           (hits 0/431) constraint (none) extremes [0, infinity)
@@ -5819,9 +5819,9 @@
 
 <literal-pattern-part> nti 15 constraint (none) extremes [0, infinity)
     English:
-        <np-balanced> ( <literal-pattern-part-option-list> ) 
+        <np-unparsed-bal> ( <literal-pattern-part-option-list> ) 
           constraint DS = {15} extremes [3, infinity)
-        <np-balanced> 
+        <np-unparsed-bal> 
           constraint (none) extremes [0, infinity)
 
 <literal-pattern-part-option-list> nti 14 constraint (none) extremes [1, infinity)

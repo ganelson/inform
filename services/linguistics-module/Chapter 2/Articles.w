@@ -98,19 +98,19 @@ These are useful for stripping optional articles from text:
 
 =
 <optional-definite-article> ::=
-	<definite-article> ... |	==> 0; *XP = RP[1]
+	<definite-article> ... |	==> { pass 1 }
 	...
 
 <optional-indefinite-article> ::=
-	<indefinite-article> ... |	==> 0; *XP = RP[1]
+	<indefinite-article> ... |	==> { pass 1 }
 	...
 
 <optional-article> ::=
-	<article> ... |	            ==> 0; *XP = RP[1]
+	<article> ... |	            ==> { pass 1 }
 	...
 
 <compulsory-article> ::=
-	<article> ...	            ==> 0; *XP = RP[1]
+	<article> ...	            ==> { pass 1 }
 
 @ =
 wording Articles::remove_the(wording W) {
@@ -202,24 +202,24 @@ small_word_set *Articles::add(small_word_set *sws, nonterminal *nt, article *a) 
 <article> internal 1 {
 	if (article_sws == NULL) Articles::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (article_usage *) Stock::find_in_sws(article_sws, ve);
-	if (*XP) return TRUE;
+	article_usage *au = Stock::find_in_sws(article_sws, ve);
+	if (au) { ==> { 0, au }; return TRUE; }
 	return FALSE;
 }
 
 <definite-article> internal 1 {
 	if (article_sws == NULL) Articles::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (article_usage *) Stock::find_in_sws(definite_article_sws, ve);
-	if (*XP) return TRUE;
+	article_usage *au = Stock::find_in_sws(definite_article_sws, ve);
+	if (au) { ==> { 0, au }; return TRUE; }
 	return FALSE;
 }
 
 <indefinite-article> internal 1 {
 	if (article_sws == NULL) Articles::create_small_word_sets();
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
-	*XP = (article_usage *) Stock::find_in_sws(indefinite_article_sws, ve);
-	if (*XP) return TRUE;
+	article_usage *au = Stock::find_in_sws(indefinite_article_sws, ve);
+	if (au) { ==> { 0, au }; return TRUE; }
 	return FALSE;
 }
 

@@ -234,14 +234,14 @@ parse_node *Diagrams::new_implied_RELATIONSHIP(wording W, VERB_MEANING_LINGUISTI
 	return Diagrams::new_RELATIONSHIP(W, R, Diagrams::new_PRONOUN(W, Pronouns::get_implied()));
 }
 
-parse_node *Diagrams::new_AND(wording W, parse_node *X, parse_node *Y) {
+parse_node *Diagrams::new_AND(int wn, parse_node *X, parse_node *Y) {
 	if (preform_lookahead_mode) return NULL;
-	return Diagrams::new_arity2(AND_NT, W, X, Y);
+	return Diagrams::new_arity2(AND_NT, Wordings::one_word(wn), X, Y);
 }
 
-parse_node *Diagrams::new_WITH(wording W, parse_node *X, parse_node *Y) {
+parse_node *Diagrams::new_WITH(int wn, parse_node *X, parse_node *Y) {
 	if (preform_lookahead_mode) return NULL;
-	return Diagrams::new_arity2(WITH_NT, W, X, Y);
+	return Diagrams::new_arity2(WITH_NT, Wordings::one_word(wn), X, Y);
 }
 
 parse_node *Diagrams::new_CALLED(wording W, parse_node *X, parse_node *Y) {

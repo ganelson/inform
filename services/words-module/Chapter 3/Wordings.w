@@ -96,6 +96,10 @@ int Wordings::last_wn(wording W) {
 	return W.word_B;
 }
 
+int Wordings::delta(wording W1, wording W2) {
+	return W1.word_A - W2.word_A;
+}
+
 @h Manipulation.
 Unlike the construction routines above, these never make positional empty
 wordings.

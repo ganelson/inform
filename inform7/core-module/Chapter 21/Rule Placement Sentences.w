@@ -83,7 +83,7 @@ following won't pick up many false positives.
 =
 <nounphrase-rule-list> ::=
 	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<nounphrase-rule> <np-rule-tail> |    ==> 0; *XP = Diagrams::new_AND(Wordings::one_word(R[2]), RP[1], RP[2])
+	<nounphrase-rule> <np-rule-tail> |    ==> 0; *XP = Diagrams::new_AND(R[2], RP[1], RP[2])
 	<nounphrase-rule>								==> 0; *XP = RP[1]
 
 <np-rule-tail> ::=

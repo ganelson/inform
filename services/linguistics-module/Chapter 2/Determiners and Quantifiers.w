@@ -432,9 +432,9 @@ names like "three of clubs", meaning a single playing card.
 
 =
 <determination-of> ::=
-	of the ... |    ==> TRUE
-	of ... |    ==> TRUE; return FAIL_NONTERMINAL
-	...					==> TRUE
+	of the ... |  ==> { TRUE, - }
+	of ... |      ==> { fail }
+	...           ==> { TRUE, - }
 
 @ English has an awkward ambiguity here: what does this mean?
 

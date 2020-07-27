@@ -149,38 +149,38 @@ cannot contain any HR; this cuts down our parsing time considerably.
 
 =
 <historical-reference> ::=
-	for <repetition-specification> |            ==> R[1]
-	<repetition-specification>                  ==> R[1]
+	for <repetition-specification> |       ==> { R[1], - }
+	<repetition-specification>             ==> { R[1], - }
 
 <repetition-specification> ::=
-	only/exactly <repetitions> |                ==> EQ_REPM
-	at most <repetitions> |                     ==> LE_REPM
-	less/fewer than <repetitions> |             ==> LT_REPM
-	at least <repetitions> |                    ==> GE_REPM
-	more than <repetitions> |                   ==> GT_REPM
-	under <repetitions> |                       ==> LT_REPM
-	over <repetitions> |                        ==> GT_REPM
-	<repetitions>                               ==> NO_REPM
+	only/exactly <repetitions> |           ==> { EQ_REPM, - }
+	at most <repetitions> |                ==> { LE_REPM, - }
+	less/fewer than <repetitions> |        ==> { LT_REPM, - }
+	at least <repetitions> |               ==> { GE_REPM, - }
+	more than <repetitions> |              ==> { GT_REPM, - }
+	under <repetitions> |                  ==> { LT_REPM, - }
+	over <repetitions> |                   ==> { GT_REPM, - }
+	<repetitions>                          ==> { NO_REPM, - }
 
 <repetitions> ::=
-	<iteration-repetitions> |                   ==> 0; <<from>> = R[1]; <<unit>> = TIMES_UNIT
-	<turn-repetitions>                          ==> 0; <<from>> = R[1]; <<unit>> = TURNS_UNIT
+	<iteration-repetitions> |              ==> { 0, -, <<from>> = R[1], <<unit>> = TIMES_UNIT }
+	<turn-repetitions>                     ==> { 0, -, <<from>> = R[1], <<unit>> = TURNS_UNIT }
 
 <iteration-repetitions> ::=
-	once |                                      ==> 1
-	twice |                                     ==> 2
-	thrice |                                    ==> 3
-	<rep-number> to <rep-number> time/times |   ==> R[1]; <<to>> = R[2]
-	<rep-number> time/times                     ==> R[1]
+	once |                                 ==> { 1, - }
+	twice |                                ==> { 2, - }
+	thrice |                               ==> { 3, - }
+	<reps> to <reps> time/times |          ==> { R[1], - , <<to>> = R[2] }
+	<reps> time/times                      ==> { R[1], - }
 
 <turn-repetitions> ::=
-	<rep-number> to <rep-number> turn/turns |   ==> R[1]; <<to>> = R[2]
-	<rep-number> turn/turns                     ==> R[1]
+	<reps> to <reps> turn/turns |          ==> { R[1], - , <<to>> = R[2] }
+	<reps> turn/turns                      ==> { R[1], - }
 
-<rep-number> ::=
-	<definite-article> <ordinal-number> |       ==> R[2]
-	<ordinal-number> |                          ==> R[1]
-	<cardinal-number>                           ==> R[1]
+<reps> ::=
+	<definite-article> <ordinal-number> |  ==> { R[2], - }
+	<ordinal-number> |                     ==> { R[1], - }
+	<cardinal-number>                      ==> { R[1], - }
 
 @ And so, finally, here is code to parse using the above grammar:
 

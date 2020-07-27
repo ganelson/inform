@@ -109,7 +109,8 @@ text, so the following is unambiguous:
 <adjective-name> internal {
 	parse_node *p = Lexicon::retrieve(ADJECTIVE_MC, W);
 	if (p) {
-		*XP = RETRIEVE_POINTER_adjective(Lexicon::get_data(Node::get_meaning(p)));
+		adjective *adj = RETRIEVE_POINTER_adjective(Lexicon::get_data(Node::get_meaning(p)));
+		==> {-, adj};
 		return TRUE;
 	}
 	return FALSE;

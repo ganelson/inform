@@ -31,7 +31,7 @@ A useful nonterminal which matches no text, but detects the position:
 @ And another convenience:
 
 =
-<if-not-deliberately-capitalised> internal 0 {
+<if-not-cap> internal 0 {
 	int w1 = Wordings::first_wn(W);
 	if (Word::unexpectedly_upper_case(w1) == FALSE) return TRUE;
 	return FALSE;

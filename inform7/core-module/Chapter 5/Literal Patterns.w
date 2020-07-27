@@ -2602,8 +2602,8 @@ by a bracketed list of up to three options in any order.
 	<literal-pattern-part>						==> 0; *XP = RP[1]
 
 <literal-pattern-part> ::=
-	<np-balanced> ( <literal-pattern-part-option-list> ) |    ==> 0; *XP = RP[1]; if (RP[1]) Annotations::write_int(*XP, lpe_options_ANNOT, R[2]);
-	<np-balanced>								==> 0; *XP = RP[1]
+	<np-unparsed-bal> ( <literal-pattern-part-option-list> ) |    ==> 0; *XP = RP[1]; if (RP[1]) Annotations::write_int(*XP, lpe_options_ANNOT, R[2]);
+	<np-unparsed-bal>								==> 0; *XP = RP[1]
 
 <literal-pattern-part-option-list> ::=
 	<literal-pattern-part-option> <literal-pattern-part-option-tail> |    ==> R[1] | R[2]

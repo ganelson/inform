@@ -555,10 +555,10 @@ the plain", where "mainly" divides "lies" from "in".
 
 =
 <pre-verb-certainty> ::=
-	... <certainty>					==> R[1]
+	... <certainty>					==> { R[1], - }
 
 <post-verb-certainty> ::=
-	<certainty> ...					==> R[1]
+	<certainty> ...					==> { R[1], - }
 
 @ Relative clauses ("a woman who is on the stage") are detected by the presence
 of a marker word before the verb (in this example, "who"). Of course, such
