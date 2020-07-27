@@ -29,21 +29,6 @@ VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::reverse_VMT(VERB_MEANING_LINGUISTIC
 	#endif
 }
 
-@ We will, however, allow for a little more complication, in that the code
-using this module can instead provide a function of the following type.
-
-The first parameter is the task to be performed on the verb node pointed
-to by the second. The task number must belong to the |*_SMFT| enumeration,
-and the only task used by the Linguistics module is |ACCEPT_SMFT|. This should
-look at the array of wordings and either accept this as a valid usage, build
-a subtree from the verb node, and return |TRUE|, or else return |FALSE| to
-say that the usage is invalid: see Verb Phrases for more.
-
-@e ACCEPT_SMFT from 0
-
-=
-typedef int (*special_meaning_fn)(int, parse_node *, wording *);
-
 @h How this module stores verb meanings.
 We can now define an object to wrap up this abstracted idea of verb meaning:
 
@@ -133,7 +118,7 @@ most one regular sense.
 verb_meaning *VerbMeanings::first_unspecial_meaning_of_verb_form(verb_form *vf) {
 	if (vf)
 		for (verb_sense *vs = vf->list_of_senses; vs; vs = vs->next_sense)
-			if (VerbMeanings::get_special_meaning_fn(&(vs->vm)) == NULL)
+			if (VerbMeanings::get_special_meaning(&(vs->vm)) == NULL)
 				return &(vs->vm);
 	return NULL;
 }
@@ -179,7 +164,7 @@ a special meaning function, we have to provide a function to tell the user
 whether to reverse what that function does.
 
 =
-special_meaning_holder *VerbMeanings::get_special_meaning_fn(verb_meaning *vm) {
+special_meaning_holder *VerbMeanings::get_special_meaning(verb_meaning *vm) {
 	vm = VerbMeanings::follow_indirection(vm);
 	if (vm == NULL) return NULL;
 	return vm->special_meaning;
@@ -207,38 +192,4 @@ void VerbMeanings::log(OUTPUT_STREAM, void *vvm) {
 		#endif
 	} else if (vm->special_meaning) WRITE("(special)");
 	else WRITE("(meaningless)");
-}
-
-@h Special, second go.
-
-@ =
-typedef struct special_meaning_holder {
-	int (*sm_func)(int, parse_node *, wording *); /* (for tangling reasons, can't use typedef here) */
-	struct text_stream *sm_name;
-	int verb_priority;
-	CLASS_DEFINITION
-} special_meaning_holder;
-
-special_meaning_holder *VerbMeanings::declare_sm(int (*func)(int, parse_node *, wording *), text_stream *name, int p) {
-	special_meaning_holder *smh = CREATE(special_meaning_holder);
-	smh->sm_func = func;
-	smh->sm_name = Str::duplicate(name);
-	smh->verb_priority = p;
-	return smh;
-}
-
-verb_meaning VerbMeanings::sm_by_name(wchar_t *name, int *p) {
-	special_meaning_holder *smh;
-	LOOP_OVER(smh, special_meaning_holder)
-		if (Str::eq_wide_string(smh->sm_name, name)) {
-			if (p) *p = smh->verb_priority;
-			return VerbMeanings::special(smh);
-		}
-	return VerbMeanings::meaninglessness();
-}
-
-special_meaning_fn VerbMeanings::sm_of_verb_node(parse_node *pn) {
-	special_meaning_holder *sm = Node::get_special_meaning(pn);
-	if (sm) return sm->sm_func;
-	return NULL;
 }

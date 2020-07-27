@@ -25,6 +25,7 @@ Chapter 2: NP Categories
 Chapter 3: VP Categories
 	Verbs
 	Verb Meanings
+	Special Meanings
 	Verb Usages
 	Prepositions
 	Adverbs of Certainty

@@ -79,12 +79,10 @@ rel *Relating::new(wording W) {
 rel *Relating::find(wording W) {
 	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "%W", W);
-	rel *T, *R = NULL;
+	rel *T;
 	LOOP_OVER(T, rel)
 		if (Str::eq_insensitive(T->debugging_log_name, name))
-			R = T;
-	if (R == NULL)
-		WRITE_TO(STDERR, "unable to find relation named %S\n", name);
+			break;
 	DISCARD_TEXT(name)
-	return R;
+	return T;
 }

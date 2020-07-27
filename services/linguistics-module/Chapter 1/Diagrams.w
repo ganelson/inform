@@ -117,7 +117,7 @@ void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
 				WRITE(" {existential}");
 			if (Node::get_special_meaning(pn))
 				WRITE(" {special meaning: %S}",
-					Node::get_special_meaning(pn)->sm_name);
+					SpecialMeanings::get_name(Node::get_special_meaning(pn)));
 			if (Annotations::read_int(pn, verbal_certainty_ANNOT) != UNKNOWN_CE) {
 				WRITE(" {certainty:");
 				Certainty::write(OUT, Annotations::read_int(pn, verbal_certainty_ANNOT));

@@ -147,19 +147,6 @@ very limited stock of nouns, verbs and prepositions as follows:
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">IS = relationship.</span>
-<span class="plain-syntax">HAS = relationship.</span>
-<span class="plain-syntax">CARRIES = relationship.</span>
-<span class="plain-syntax">KNOWS = relationship.</span>
-
-<span class="plain-syntax">be = verb meaning IS with priority 2.</span>
-<span class="plain-syntax">have = verb meaning HAS with priority 1.</span>
-<span class="plain-syntax">carry = verb meaning CARRIES with priority 3.</span>
-<span class="plain-syntax">know = verb meaning KNOWS with priority 3.</span>
-
-<span class="plain-syntax">be + on = preposition meaning CARRIES-reversed.</span>
-<span class="plain-syntax">be + under = preposition meaning CARRIES.</span>
-
 <span class="plain-syntax">Anna = feminine proper noun.</span>
 <span class="plain-syntax">Beth = feminine proper noun.</span>
 <span class="plain-syntax">Charles = masculine proper noun.</span>
@@ -170,6 +157,31 @@ very limited stock of nouns, verbs and prepositions as follows:
 <span class="plain-syntax">sailor = masculine common noun.</span>
 <span class="plain-syntax">table = neuter common noun.</span>
 <span class="plain-syntax">Ming vase = neuter common noun.</span>
+
+<span class="plain-syntax">IS = relationship.</span>
+<span class="plain-syntax">HAS = relationship.</span>
+<span class="plain-syntax">CARRIES = relationship.</span>
+<span class="plain-syntax">KNOWS = relationship.</span>
+<span class="plain-syntax">COMBINES = special meaning.</span>
+<span class="plain-syntax">COMBINESUP = special meaning.</span>
+<span class="plain-syntax">GREETS = special meaning.</span>
+
+<span class="plain-syntax">be = copular verb with priority 2.</span>
+<span class="plain-syntax">have = verb with priority 1.</span>
+<span class="plain-syntax">carry = verb with priority 3.</span>
+<span class="plain-syntax">greet = verb with priority 3.</span>
+<span class="plain-syntax">know = verb with priority 3.</span>
+<span class="plain-syntax">combine = verb with priority 3.</span>
+
+<span class="plain-syntax">-- be --              = IS.</span>
+<span class="plain-syntax">-- have --            = HAS.</span>
+<span class="plain-syntax">-- carry --           = CARRIES.</span>
+<span class="plain-syntax">-- know --            = KNOWS.</span>
+<span class="plain-syntax">-- be on --           = CARRIES-reversed.</span>
+<span class="plain-syntax">-- be under --        = CARRIES.</span>
+<span class="plain-syntax">combine -- with --    = COMBINES.</span>
+<span class="plain-syntax">combine up -- with -- = COMBINESUP.</span>
+<span class="plain-syntax">greet --              = GREETS.</span>
 </pre>
 <p class="commentary">We only know that Beth is feminine-gendered and sailor masculine-gendered<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
 because the vocabulary being used by <a href="../linguistics-test/index.html" class="internal">linguistics-test</a> says so. It's
@@ -372,7 +384,33 @@ fresh nodes:
 <span class="plain-syntax">    RELATIONSHIP_NT'carries' {meaning: carries-reversed}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>That shows the full range of what happens with verb nodes. Turning back
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>We can also support imperative verbs, with "special meanings" which are
+not necessarily relational, and do not always lead to <span class="extract"><span class="extract-syntax">RELATIONSHIP_NT</span></span>
+subtrees. See <a href="3-sm.html" class="internal">Special Meanings</a>.
+</p>
+
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">(1) greet beth</span>
+
+<span class="plain-syntax">SENTENCE_NT'greet beth'</span>
+<span class="plain-syntax">    VERB_NT'greet' {verb 'greet' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {special meaning: greets}</span>
+<span class="plain-syntax">    PROPER_NOUN_NT'beth' {proper nom/acc f s}</span>
+
+<span class="plain-syntax">(2) combine the ming vase with the table</span>
+
+<span class="plain-syntax">SENTENCE_NT'combine the ming vase with the table'</span>
+<span class="plain-syntax">    VERB_NT'combine' {verb 'combine' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {special meaning: combines}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'the table' {common nom/acc n s}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'the ming vase' {common nom/acc n s}</span>
+
+<span class="plain-syntax">(3) combine up the ming vase with the table</span>
+
+<span class="plain-syntax">SENTENCE_NT'combine up the ming vase with the table'</span>
+<span class="plain-syntax">    VERB_NT'combine up' {verb 'combine' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {special meaning: combinesup}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'the table' {common nom/acc n s}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'the ming vase' {common nom/acc n s}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>That shows the full range of what happens with verb nodes. Turning back
 to noun phrases, we can have serial lists:
 </p>
 
@@ -451,7 +489,7 @@ disallow this. Unfortunately, less extreme zeugmas occur all the time:
     <p>The red door is west of the Dining Room and east of the Ballroom.</p>
 </blockquote>
 
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Now we introduce pronouns to the mix. These are detected automatically
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Now we introduce pronouns to the mix. These are detected automatically
 by <a href="index.html" class="internal">linguistics</a>, and exist in nominative and accusative cases in
 English. Note the difference in annotations between "them" and "you",
 for example.
@@ -505,7 +543,7 @@ for example.
 <span class="plain-syntax">    PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
 <span class="plain-syntax">    PRONOUN_NT'here' {location pronoun n/m/f s/p nom/acc 3p}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>"Callings" use the special syntax "X called Y", which has to be handled
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>"Callings" use the special syntax "X called Y", which has to be handled
 here in the <a href="index.html" class="internal">linguistics</a> module so that Y can safely wording which would
 otherwise have a structural meaning. ("Called" is to Inform as the backslash
 character, making letters literal, is to C.)
@@ -559,7 +597,7 @@ character, making letters literal, is to C.)
 <span class="plain-syntax">        COMMON_NOUN_NT'table' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}</span>
 <span class="plain-syntax">        UNPARSED_NOUN_NT'billiards table with deep pockets' {definite 'the' n/m/f s/p nom/acc}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The word "with", often but not always used in conjunction with "kind of":
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The word "with", often but not always used in conjunction with "kind of":
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">

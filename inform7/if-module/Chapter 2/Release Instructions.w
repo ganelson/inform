@@ -122,8 +122,8 @@ int PL::Bibliographic::Release::release_along_with_SMF(int task, parse_node *V, 
 @ =
 void PL::Bibliographic::Release::visit_to_quote(OUTPUT_STREAM, parse_node *p) {
 	if ((Node::get_type(p) == SENTENCE_NT) && (p->down)) {
-		special_meaning_fn soa = VerbMeanings::sm_of_verb_node(p->down);
-		if (soa == PL::Bibliographic::Release::release_along_with_SMF) {
+		special_meaning_holder *sm = Node::get_special_meaning(p->down);
+		if (SpecialMeanings::is(sm, PL::Bibliographic::Release::release_along_with_SMF)) {
 			TEMPORARY_TEXT(TEMP)
 			Index::link_to(TEMP, Wordings::first_wn(Node::get_text(p)), TRUE);
 			WRITE("status instruction ||");

@@ -1,16 +1,3 @@
-IS = relationship.
-HAS = relationship.
-CARRIES = relationship.
-KNOWS = relationship.
-
-be = verb meaning IS with priority 2.
-have = verb meaning HAS with priority 1.
-carry = verb meaning CARRIES with priority 3.
-know = verb meaning KNOWS with priority 3.
-
-be + on = preposition meaning CARRIES-reversed.
-be + under = preposition meaning CARRIES.
-
 Anna = feminine proper noun.
 Beth = feminine proper noun.
 Charles = masculine proper noun.
@@ -21,3 +8,28 @@ person = masculine common noun.
 sailor = masculine common noun.
 table = neuter common noun.
 Ming vase = neuter common noun.
+
+IS = relationship.
+HAS = relationship.
+CARRIES = relationship.
+KNOWS = relationship.
+COMBINES = special meaning.
+COMBINESUP = special meaning.
+GREETS = special meaning.
+
+be = copular verb with priority 2.
+have = verb with priority 1.
+carry = verb with priority 3.
+greet = verb with priority 3.
+know = verb with priority 3.
+combine = verb with priority 3.
+
+-- be --              = IS.
+-- have --            = HAS.
+-- carry --           = CARRIES.
+-- know --            = KNOWS.
+-- be on --           = CARRIES-reversed.
+-- be under --        = CARRIES.
+combine -- with --    = COMBINES.
+combine up -- with -- = COMBINESUP.
+greet --              = GREETS.

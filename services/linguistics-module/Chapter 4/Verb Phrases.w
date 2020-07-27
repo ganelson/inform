@@ -280,11 +280,12 @@ so we will match "Test me with flash cards" but not "Peter tests me with
 flash cards".
 
 @<Reject a match with verb in the wrong position@> =
-	if (vf->form_structures & (VO_FS_BIT + VOO_FS_BIT)) {
-		if (pos > Wordings::first_wn(W)) break;
-	} else {
+	if ((vf->form_structures & (VO_FS_BIT + VOO_FS_BIT)) == 0) {
 		if (pos == Wordings::first_wn(W)) break;
-	}
+	}		
+	if ((vf->form_structures & (SVO_FS_BIT + SVOO_FS_BIT)) == 0) {
+		if (pos > Wordings::first_wn(W)) break;
+	}		
 
 @ So now we know that the verb definitely appears. We form |ISW| as the
 wording for the subject phrase and |IOW| the object phrase. Adverbs of
@@ -478,7 +479,7 @@ parse_node *VerbPhrases::accept(verb_form *vf, parse_node *VP_PN, wording *NPs) 
 	verb_meaning *vm = NULL;
 	for (verb_sense *vs = (vf)?vf->list_of_senses:NULL; vs; vs = vs->next_sense) {
 		vm = &(vs->vm);
-		special_meaning_holder *sm = VerbMeanings::get_special_meaning_fn(vm);
+		special_meaning_holder *sm = VerbMeanings::get_special_meaning(vm);
 		if (sm) {
 			wording SNPs[MAX_NPS_IN_VP];
 			if (VerbMeanings::get_reversal_status_of_smf(vm)) {
@@ -486,13 +487,15 @@ parse_node *VerbPhrases::accept(verb_form *vf, parse_node *VP_PN, wording *NPs) 
 			} else {
 				SNPs[0] = NPs[0]; SNPs[1] = NPs[1]; SNPs[2] = NPs[2];
 			}
-			if ((*(sm->sm_func))(ACCEPT_SMFT, VP_PN, SNPs)) {
+			if (SpecialMeanings::call(sm, ACCEPT_SMFT, VP_PN, SNPs)) {
 				Node::set_special_meaning(VP_PN, sm);
 				return VP_PN;
 			}
 		}
 	}
 	if ((VerbMeanings::get_regular_meaning(vm)) &&
+		(Wordings::nonempty(NPs[0])) &&
+		(Wordings::nonempty(NPs[1])) &&
 		(Wordings::empty(NPs[2])) &&
 		(VerbPhrases::default_verb(ACCEPT_SMFT, VP_PN, vm, NPs))) return VP_PN;
 	return NULL;

@@ -385,8 +385,8 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 			break;
 		case BUILTIN_VERBM: {
 			wording MW = GET_RW(<verb-implies-sentence-object>, 1);
-			vm = VerbMeanings::sm_by_name(Lexer::word_text(Wordings::first_wn(MW)), &priority);
-			if ((Wordings::length(MW) != 1) || (VerbMeanings::is_meaningless(&vm))) {
+			special_meaning_holder *smh = SpecialMeanings::find_from_wording(MW);
+			if (smh == NULL) {
 				#ifndef IF_MODULE
 				source_file *pos = Lexer::file_of_origin(Wordings::first_wn(MW));
 				inform_extension *loc = Extensions::corresponding_to(pos);
@@ -397,6 +397,9 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 					"and should be one of the ones used in the Preamble to the "
 					"Standard Rules.");
 				vm = VerbMeanings::regular(R_equality);
+			} else {
+				vm = VerbMeanings::special(smh);
+				priority = SpecialMeanings::get_metadata_N(smh);
 			}
 			break;
 		}
@@ -620,52 +623,52 @@ foreign verbs (4).
 @ =
 
 void NewVerbs::bootstrap(void) {
-	VerbMeanings::declare_sm(NewVerbs::verb_means_SMF, 							I"verb-means", 3);
+	SpecialMeanings::declare(NewVerbs::verb_means_SMF, 							I"verb-means", 3);
 
-	VerbMeanings::declare_sm(NewVerbs::new_verb_SMF, 							I"new-verb", 2);
-	VerbMeanings::declare_sm(Plurals::plural_SMF, 								I"new-plural", 2);
-	VerbMeanings::declare_sm(Activities::new_activity_SMF, 						I"new-activity", 2);
+	SpecialMeanings::declare(NewVerbs::new_verb_SMF, 							I"new-verb", 2);
+	SpecialMeanings::declare(Plurals::plural_SMF, 								I"new-plural", 2);
+	SpecialMeanings::declare(Activities::new_activity_SMF, 						I"new-activity", 2);
 	#ifdef IF_MODULE
-	VerbMeanings::declare_sm(PL::Actions::new_action_SMF, 						I"new-action", 2);
+	SpecialMeanings::declare(PL::Actions::new_action_SMF, 						I"new-action", 2);
 	#endif
-	VerbMeanings::declare_sm(NewVerbs::new_adjective_SMF,						I"new-adjective", 2);
-	VerbMeanings::declare_sm(Assertions::Property::either_SMF,					I"new-either-or", 2);
-	VerbMeanings::declare_sm(Tables::Defining::defined_by_SMF,					I"defined-by-table", 2);
-	VerbMeanings::declare_sm(Rules::Placement::listed_in_SMF,					I"rule-listed-in", 2);
+	SpecialMeanings::declare(NewVerbs::new_adjective_SMF,						I"new-adjective", 2);
+	SpecialMeanings::declare(Assertions::Property::either_SMF,					I"new-either-or", 2);
+	SpecialMeanings::declare(Tables::Defining::defined_by_SMF,					I"defined-by-table", 2);
+	SpecialMeanings::declare(Rules::Placement::listed_in_SMF,					I"rule-listed-in", 2);
 	#ifdef MULTIMEDIA_MODULE
-	VerbMeanings::declare_sm(PL::Figures::new_figure_SMF,						I"new-figure", 2);
-	VerbMeanings::declare_sm(PL::Sounds::new_sound_SMF,							I"new-sound", 2);
-	VerbMeanings::declare_sm(PL::Files::new_file_SMF,							I"new-file", 2);
+	SpecialMeanings::declare(PL::Figures::new_figure_SMF,						I"new-figure", 2);
+	SpecialMeanings::declare(PL::Sounds::new_sound_SMF,							I"new-sound", 2);
+	SpecialMeanings::declare(PL::Files::new_file_SMF,							I"new-file", 2);
 	#endif
 	#ifdef IF_MODULE
-	VerbMeanings::declare_sm(PL::Bibliographic::episode_SMF,					I"episode", 2);
+	SpecialMeanings::declare(PL::Bibliographic::episode_SMF,					I"episode", 2);
 	#endif
-	VerbMeanings::declare_sm(Relations::new_relation_SMF,						I"new-relation", 1);
-	VerbMeanings::declare_sm(Assertions::Property::optional_either_SMF,			I"can-be", 2);
-	VerbMeanings::declare_sm(LiteralPatterns::specifies_SMF, 					I"specifies-notation", 4);
-	VerbMeanings::declare_sm(Rules::Placement::substitutes_for_SMF,				I"rule-substitutes-for", 1);
+	SpecialMeanings::declare(Relations::new_relation_SMF,						I"new-relation", 1);
+	SpecialMeanings::declare(Assertions::Property::optional_either_SMF,			I"can-be", 2);
+	SpecialMeanings::declare(LiteralPatterns::specifies_SMF, 					I"specifies-notation", 4);
+	SpecialMeanings::declare(Rules::Placement::substitutes_for_SMF,				I"rule-substitutes-for", 1);
 	#ifdef IF_MODULE
-	VerbMeanings::declare_sm(PL::Scenes::begins_when_SMF,						I"scene-begins-when", 1);
-	VerbMeanings::declare_sm(PL::Scenes::ends_when_SMF,							I"scene-ends-when", 1);
+	SpecialMeanings::declare(PL::Scenes::begins_when_SMF,						I"scene-begins-when", 1);
+	SpecialMeanings::declare(PL::Scenes::ends_when_SMF,							I"scene-ends-when", 1);
 	#endif
-	VerbMeanings::declare_sm(Rules::Placement::does_nothing_SMF,				I"rule-does-nothing", 1);
-	VerbMeanings::declare_sm(Rules::Placement::does_nothing_if_SMF,				I"rule-does-nothing-if", 1);
-	VerbMeanings::declare_sm(Rules::Placement::does_nothing_unless_SMF,			I"rule-does-nothing-unless", 1);
-	VerbMeanings::declare_sm(Sentences::VPs::translates_into_unicode_as_SMF,	I"translates-into-unicode", 1);
-	VerbMeanings::declare_sm(Sentences::VPs::translates_into_I6_as_SMF,			I"translates-into-i6", 1);
-	VerbMeanings::declare_sm(Sentences::VPs::translates_into_language_as_SMF,	I"translates-into-language", 1);
-	VerbMeanings::declare_sm(UseOptions::use_translates_as_SMF,					I"use-translates", 4);
+	SpecialMeanings::declare(Rules::Placement::does_nothing_SMF,				I"rule-does-nothing", 1);
+	SpecialMeanings::declare(Rules::Placement::does_nothing_if_SMF,				I"rule-does-nothing-if", 1);
+	SpecialMeanings::declare(Rules::Placement::does_nothing_unless_SMF,			I"rule-does-nothing-unless", 1);
+	SpecialMeanings::declare(Sentences::VPs::translates_into_unicode_as_SMF,	I"translates-into-unicode", 1);
+	SpecialMeanings::declare(Sentences::VPs::translates_into_I6_as_SMF,			I"translates-into-i6", 1);
+	SpecialMeanings::declare(Sentences::VPs::translates_into_language_as_SMF,	I"translates-into-language", 1);
+	SpecialMeanings::declare(UseOptions::use_translates_as_SMF,					I"use-translates", 4);
 	#ifdef IF_MODULE
-	VerbMeanings::declare_sm(PL::Parsing::TestScripts::test_with_SMF,			I"test-with", 1);
-	VerbMeanings::declare_sm(PL::Parsing::understand_as_SMF,					I"understand-as", 1);
+	SpecialMeanings::declare(PL::Parsing::TestScripts::test_with_SMF,			I"test-with", 1);
+	SpecialMeanings::declare(PL::Parsing::understand_as_SMF,					I"understand-as", 1);
 	#endif
-	VerbMeanings::declare_sm(UseOptions::use_SMF,								I"use", 4);
+	SpecialMeanings::declare(UseOptions::use_SMF,								I"use", 4);
 	#ifdef IF_MODULE
-	VerbMeanings::declare_sm(PL::Bibliographic::Release::release_along_with_SMF,I"release-along-with", 4);
-	VerbMeanings::declare_sm(PL::EPSMap::index_map_with_SMF,					I"index-map-with", 4);
+	SpecialMeanings::declare(PL::Bibliographic::Release::release_along_with_SMF,I"release-along-with", 4);
+	SpecialMeanings::declare(PL::EPSMap::index_map_with_SMF,					I"index-map-with", 4);
 	#endif
-	VerbMeanings::declare_sm(Sentences::VPs::include_in_SMF,					I"include-in", 4);
-	VerbMeanings::declare_sm(Sentences::VPs::omit_from_SMF,						I"omit-from", 4);
+	SpecialMeanings::declare(Sentences::VPs::include_in_SMF,					I"include-in", 4);
+	SpecialMeanings::declare(Sentences::VPs::omit_from_SMF,						I"omit-from", 4);
 
 	word_assemblage infinitive = PreformUtilities::wording(<bootstrap-verb>, 0);
 	verb_conjugation *vc = Conjugation::conjugate(infinitive, DefaultLanguage::get(NULL));
@@ -679,7 +682,7 @@ void NewVerbs::bootstrap(void) {
 	vc->vc_conjugates = vi;
 	VerbUsages::register_all_usages_of_verb(vi, FALSE, 3, NULL);
 
-	Verbs::add_form(vi, NULL, NULL, VerbMeanings::sm_by_name(L"verb-means", NULL), SVO_FS_BIT);
+	Verbs::add_form(vi, NULL, NULL, SpecialMeanings::find(L"verb-means"), SVO_FS_BIT);
 }
 
 @h Runtime conjugation.

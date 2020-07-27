@@ -112,14 +112,14 @@ void Sentences::VPs::visit(parse_node *p) {
 
 @<Check that this is allowed, if it occurs in the Options file@> =
 	if (Wordings::within(Node::get_text(p), options_file_wording)) {
-		special_meaning_fn soa = VerbMeanings::sm_of_verb_node(p->down);
+		special_meaning_holder *sm = Node::get_special_meaning(p->down);
 		int err = TRUE;
-		if ((soa == UseOptions::use_SMF) ||
-			(soa == PL::Parsing::TestScripts::test_with_SMF) ||
-			(soa == Sentences::VPs::include_in_SMF) ||
-			(soa == Sentences::VPs::omit_from_SMF)) err = FALSE;
+		if ((SpecialMeanings::is(sm, UseOptions::use_SMF)) ||
+			(SpecialMeanings::is(sm, PL::Parsing::TestScripts::test_with_SMF)) ||
+			(SpecialMeanings::is(sm, Sentences::VPs::include_in_SMF)) ||
+			(SpecialMeanings::is(sm, Sentences::VPs::omit_from_SMF))) err = FALSE;
 		#ifdef IF_MODULE
-		if (soa == PL::Bibliographic::Release::release_along_with_SMF) err = FALSE;
+		if (SpecialMeanings::is(sm, PL::Bibliographic::Release::release_along_with_SMF)) err = FALSE;
 		#endif
 		if (err)
 			StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* not usefully testable, anyway */

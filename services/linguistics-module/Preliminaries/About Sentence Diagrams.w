@@ -131,6 +131,12 @@ fresh nodes:
 
 = (undisplayed text from Figures/usingadverbs.txt)
 
+@ We can also support imperative verbs, with "special meanings" which are
+not necessarily relational, and do not always lead to |RELATIONSHIP_NT|
+subtrees. See //Special Meanings//.
+
+= (undisplayed text from Figures/imperatives.txt)
+
 @ That shows the full range of what happens with verb nodes. Turning back
 to noun phrases, we can have serial lists:
 

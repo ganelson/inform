@@ -1,0 +1,20 @@
+(1) greet beth
+
+SENTENCE_NT'greet beth'
+    VERB_NT'greet' {verb 'greet' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {special meaning: greets}
+    PROPER_NOUN_NT'beth' {proper nom/acc f s}
+
+(2) combine the ming vase with the table
+
+SENTENCE_NT'combine the ming vase with the table'
+    VERB_NT'combine' {verb 'combine' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {special meaning: combines}
+    COMMON_NOUN_NT'the table' {common nom/acc n s}
+    COMMON_NOUN_NT'the ming vase' {common nom/acc n s}
+
+(3) combine up the ming vase with the table
+
+SENTENCE_NT'combine up the ming vase with the table'
+    VERB_NT'combine up' {verb 'combine' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve} {special meaning: combinesup}
+    COMMON_NOUN_NT'the table' {common nom/acc n s}
+    COMMON_NOUN_NT'the ming vase' {common nom/acc n s}
+
