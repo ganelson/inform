@@ -41,7 +41,7 @@ placeholder to stand for a missing noun phrase:
 
 @<Make SV@> =
 	ExParser::Subtrees::correct_for_adjectives(RP[1], RP[2]);
-	*XP = ExParser::Subtrees::to_specification(TRUE, W, RP[1], RP[2]);
+	==> { -, ExParser::Subtrees::to_specification(TRUE, W, RP[1], RP[2]) }
 
 @ An ugly trick, invisible from the grammar itself, is that we forbid the
 object to be a value. This removes cases like "if there is 21", but in fact
@@ -54,8 +54,8 @@ so ambiguous -- a bad decision in about 2003.)
 	parse_node *op = RP[2];
 	parse_node *test = op->down;
 	if (Node::is(test, AMBIGUITY_NT)) test = test->down;
-	if (Specifications::is_description_like(test) == FALSE) return FAIL_NONTERMINAL;
-	*XP = ExParser::Subtrees::to_specification(TRUE, W, NULL, op);
+	if (Specifications::is_description_like(test) == FALSE) { ==> { fail } }
+	==> { -, ExParser::Subtrees::to_specification(TRUE, W, NULL, op) }
 
 @ More generally, the tail syntax splits according to the verb in question. The
 copular verb "to be" has special syntactic rules for its object phrase (for
@@ -240,21 +240,18 @@ is the same as that matched by <s-value>.
 @ Finally, the following is needed for conditions ("if fixed in place
 scenery, ...") where the object referred to is understood from context.
 
-=
-<s-descriptive-np> ::=
-	( <s-descriptive-np> ) |    ==> RP[1]
-	<cardinal-number> |    ==> @<Reject a bare number as descriptive@>
-	<s-description> |    ==> @<Construct a descriptive SN subtree@>
-	<s-adjective-list-as-desc>	==> @<Construct a descriptive SN subtree@>
-
-@ The reason a literal number is explicitly not allowed to be a condition is
+The reason a literal number is explicitly not allowed to be a condition is
 that if something is created called (say) "Room 62" then "62" might be read
 by <s-description> as an abbreviated reference to that room. (This doesn't
 happen with non-descriptive NPs because then literal values are tried earlier,
 pre-empting descriptions.)
 
-@<Reject a bare number as descriptive@> =
-	return FAIL_NONTERMINAL;
+=
+<s-descriptive-np> ::=
+	( <s-descriptive-np> ) |    ==> RP[1]
+	<cardinal-number> |    ==> { fail }
+	<s-description> |    ==> @<Construct a descriptive SN subtree@>
+	<s-adjective-list-as-desc>	==> @<Construct a descriptive SN subtree@>
 
 @<Construct a descriptive SN subtree@> =
 	parse_node *sn = RP[1];

@@ -94,7 +94,7 @@ three" with result 5.
 Or consider the following refinement of <competitor>:
 = (text as Preform)
 	<competitor> ::=
-		the pacemaker |              ==> 1
+		the pacemaker |              ==> { 1, - }
 		<ordinal-number> runner |    ==> R[1]
 		runner no <cardinal-number>  ==> R[1]
 =
@@ -125,7 +125,7 @@ Another convenient notation is the caret |^|, which negates the effect of
 a token. For example,
 = (text as Preform)
 	<competitor> ::=
-		the ^adjudicator  ==> 1
+		the ^adjudicator  ==> { 1, - }
 =
 matches "the pacemaker", "the cyclist", etc. -- the anything at all, but not
 "the adjudicator".
@@ -196,7 +196,7 @@ definition are normally given the internal numbers 0, 1, 2, 3... in the
 order in which they appear. For example, in
 = (text as Preform)
 	<competitor> ::=
-		the pacemaker |              ==> 1
+		the pacemaker |              ==> { 1, - }
 		<ordinal-number> runner |    ==> R[1]
 		runner no <cardinal-number>  ==> R[1]
 =
@@ -205,17 +205,17 @@ and so on. Those "match numbers" have little outward significance, but help
 to determine the result when a successful match is made. Consider:
 = (text as Preform)
 	<letter-score> ::=
-		alpha |  ==> 10
-		beta |   ==> 20
-		gamma    ==> 30
+		alpha |  ==> { 10, - }
+		beta |   ==> { 20, - }
+		gamma    ==> { 30, - }
 =
 Here, matching against "beta" produces 20 -- the result on the same row. But
 we can mess with that:
 = (text as Preform)
 	<letter-score> ::=
-		/c/ alpha |  ==> 10
-		/a/ beta |   ==> 20
-		/b/ gamma    ==> 30
+		/c/ alpha |  ==> { 10, - }
+		/a/ beta |   ==> { 20, - }
+		/b/ gamma    ==> { 30, - }
 =
 The special notation |/X/|, where |X| is a lower-case letter, marks the row
 as having a different number from the obvious one. |/a/| means 0, |/b/| means
@@ -223,9 +223,9 @@ as having a different number from the obvious one. |/a/| means 0, |/b/| means
 of this:
 = (text as Preform)
 	<letter-score> ::=
-		beta |  ==> 10
-		gamma | ==> 20
-		alpha   ==> 30
+		beta |  ==> { 10, - }
+		gamma | ==> { 20, - }
+		alpha   ==> { 30, - }
 =
 That might seem a stupidly obfuscatory thing to do, and indeed it is, when
 done in the main Inform source code -- which is why we never do it. But

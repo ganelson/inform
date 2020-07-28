@@ -240,11 +240,11 @@ and here goes:
 	<extension-end-marker-sentence>     ==> R[1]
 
 <heading> ::=
-	volume ... |                        ==> 1
-	book ... |                          ==> 2
-	part ... |                          ==> 3
-	chapter ... |                       ==> 4
-	section ...                         ==> 5
+	volume ... |                        ==> { 1, - }
+	book ... |                          ==> { 2, - }
+	part ... |                          ==> { 3, - }
+	chapter ... |                       ==> { 4, - }
+	section ...                         ==> { 5, - }
 
 <extension-end-marker-sentence> ::=
 	... begin/begins here |             ==> -1; @<Check we can begin an extension here@>;

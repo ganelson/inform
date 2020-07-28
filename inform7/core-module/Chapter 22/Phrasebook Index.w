@@ -129,9 +129,9 @@ and the second and third pieces used as headings and subheadings respectively.
 	{<heading-name-hyphenated>}
 
 <heading-name-hyphenated> ::=
-	... - ... - ... |    ==> 3
-	... - ... |    ==> 2
-	... 					==> 1
+	... - ... - ... |    ==> { 3, - }
+	... - ... |    ==> { 2, - }
+	... 					==> { 1, - }
 
 @ We then extract "Control phrases" as the "clue".
 

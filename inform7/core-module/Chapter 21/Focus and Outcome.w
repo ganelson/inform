@@ -97,13 +97,13 @@ can be what rulebook does if it none of its rules cause an outcome.
 
 =
 <rulebook-default-outcome> ::=
-	<rule-outcome> |    ==> @<Make this the rulebook's new default@>
-	...							==> @<Issue PM_BadDefaultOutcome problem@>
+	<rule-outcome> |  ==> @<Make this the rulebook's new default@>
+	...               ==> @<Issue PM_BadDefaultOutcome problem@>
 
 <rule-outcome> ::=
-	success |    ==> SUCCESS_OUTCOME
-	failure |    ==> FAILURE_OUTCOME
-	no outcome					==> NO_OUTCOME
+	success |         ==> { SUCCESS_OUTCOME, - }
+	failure |         ==> { FAILURE_OUTCOME, - }
+	no outcome        ==> { NO_OUTCOME, - }
 
 @<Make this the rulebook's new default@> =
 	if (outcomes_being_parsed->default_outcome_declared) {
@@ -135,12 +135,12 @@ The following parses a declaration of named outcomes. For example:
 =
 <rulebook-outcome-list> ::=
 	... |    ==> 0; return preform_lookahead_mode; /* match only when looking ahead */
-	<rulebook-outcome-setting-entry> <rulebook-outcome-tail> |    ==> 0
-	<rulebook-outcome-setting-entry>								==> 0
+	<rulebook-outcome-setting-entry> <rulebook-outcome-tail> |    ==> { 0, - }
+	<rulebook-outcome-setting-entry>								==> { 0, - }
 
 <rulebook-outcome-tail> ::=
-	, _and/or <rulebook-outcome-list> |    ==> 0
-	_,/and/or <rulebook-outcome-list>								==> 0
+	, _and/or <rulebook-outcome-list> |    ==> { 0, - }
+	_,/and/or <rulebook-outcome-list>								==> { 0, - }
 
 <rulebook-outcome-setting-entry> ::=
 	<form-of-named-rule-outcome>			==> 0; if (!preform_lookahead_mode) @<Adopt this new named rule outcome@>

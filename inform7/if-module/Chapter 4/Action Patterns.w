@@ -811,8 +811,8 @@ here -- a constant, a description, a table entry, a variable, and so on.
 
 =
 <action-parameter> ::=
-	^<if-nonconstant-action-context> <s-local-variable> |    ==> TRUE; return FAIL_NONTERMINAL
-	^<if-nonconstant-action-context> <s-global-variable> |    ==> TRUE; return FAIL_NONTERMINAL
+	^<if-nonconstant-action-context> <s-local-variable> |    ==> { fail }
+	^<if-nonconstant-action-context> <s-global-variable> |    ==> { fail }
 	<s-local-variable> |    ==> TRUE; *XP = RP[1]
 	<s-global-variable>	|    ==> TRUE; *XP = RP[1]
 	<s-type-expression-or-value>							==> TRUE; *XP = RP[1]

@@ -217,7 +217,7 @@ property names before they can do any damage.)
 	{_,/and} <has-properties-called-sentence-object>
 
 <has-property-name> ::=
-	<bad-property-name-diagnosis> |    ==> 0
+	<bad-property-name-diagnosis> |    ==> { 0, - }
 	...												==> 0; Properties::Valued::obtain(W);
 
 <bad-property-name-diagnosis> ::=

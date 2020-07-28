@@ -325,7 +325,7 @@ to be the name of a kind, possibly in the plural.
 <relation-term-basic> ::=
 	one ... |    ==> ONE_RBIT
 	various ... |    ==> VAR_RBIT
-	...														==> 0
+	...														==> { 0, - }
 
 @h The parsing phase.
 Our aims here are:

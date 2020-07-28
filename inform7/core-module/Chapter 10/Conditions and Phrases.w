@@ -122,12 +122,12 @@ testing the existence of something.
 
 =
 <s-nonexistential-phrase-to-decide> ::=
-	<existential-verb-phrase> |    ==> NULL; return FAIL_NONTERMINAL;
+	<existential-verb-phrase> |    ==> { fail }
 	<s-phrase-to-decide> |    ==> RP[1]
 	not <s-phrase-to-decide>								==> Conditions::negate(RP[1])
 
 <s-existential-phrase-to-decide> ::=
-	^<existential-verb-phrase> |    ==> NULL; return FAIL_NONTERMINAL;
+	^<existential-verb-phrase> |    ==> { fail }
 	<s-phrase-to-decide> |    ==> RP[1]
 	not <s-phrase-to-decide>								==> Conditions::negate(RP[1])
 
@@ -225,7 +225,7 @@ typechecking to choose between much later on.
 	<s-text-substitution>			==> RP[1]
 
 <s-adaptive-text> ::=
-	<s-local-variable> |    ==> NULL; return FAIL_NONTERMINAL
+	<s-local-variable> |    ==> { fail }
 	<adaptive-verb> verb |    ==> ExParser::say_verb(RP[1], R[1], NULL, W)
 	<adaptive-adjective> adjective |    ==> ExParser::say_adjective(RP[1], W)
 	<adaptive-verb> |    ==> ExParser::say_verb(RP[1], R[1], NULL, W)

@@ -105,8 +105,8 @@ test_scenario *ts_being_parsed = NULL;
 
 <test-case-circumstance-list> ::=
 	... |    ==> 0; return preform_lookahead_mode;
-	<test-case-circumstance-list> <test-case-circumstance> |    ==> 0
-	<test-case-circumstance>									==> 0
+	<test-case-circumstance-list> <test-case-circumstance> |    ==> { 0, - }
+	<test-case-circumstance>									==> { 0, - }
 
 <test-case-circumstance> ::=
 	in <instance-of-object> |    ==> @<Process the in-test requirement@>

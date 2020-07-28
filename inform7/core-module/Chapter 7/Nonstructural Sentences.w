@@ -509,8 +509,8 @@ Problem message than the one they will otherwise receive later on.
 	... <bad-nonstructural-sentence-diagnosis-tail>
 
 <bad-nonstructural-sentence-diagnosis-tail> ::=
-	<relative-clause-marker> <certainty> <meaningful-nonimperative-verb> ... |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	<relative-clause-marker> <meaningful-nonimperative-verb> ... |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	<relative-clause-marker> <certainty> <meaningful-nonimperative-verb> ... |    ==> { advance Wordings::delta(WR[1], W) }
+	<relative-clause-marker> <meaningful-nonimperative-verb> ... |    ==> { advance Wordings::delta(WR[1], W) }
 	<past-tense-verb> ... |    ==> @<Issue PM_NonPresentTense problem@>
 	<negated-verb> ...																	==> @<Issue PM_NegatedVerb1 problem@>
 

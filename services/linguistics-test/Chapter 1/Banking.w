@@ -10,16 +10,16 @@ match any text.
 
 =
 <dividing-sentence> ::=
-	... ==> TRUE; return FAIL_NONTERMINAL;
+	... ==> { fail }
 
 <structural-sentence> ::=
-	... ==> TRUE; return FAIL_NONTERMINAL;
+	... ==> { fail }
 
 <language-modifying-sentence> ::=
-	... ==> TRUE; return FAIL_NONTERMINAL;
+	... ==> { fail }
 
 <comma-divisible-sentence> ::=
-	... ==> TRUE; return FAIL_NONTERMINAL;
+	... ==> { fail }
 
 @h Loading from a file.
 The following function reads a file whose name is in |arg|, feeds it into

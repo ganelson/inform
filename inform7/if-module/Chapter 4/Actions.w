@@ -800,7 +800,7 @@ It's convenient to define a single action clause first:
 	requiring light							==> LIGHT_ACT_CLAUSE
 
 <action-applications> ::=
-	nothing |    ==> 0
+	nothing |    ==> { 0, - }
 	one <act-req> and one <act-req> |    ==> 2; <<kind:op1>> = RP[1]; <<ac1>> = R[1]; <<kind:op2>> = RP[2]; <<ac2>> = R[2]
 	one <act-req> and <act-req> |    ==> 2; <<kind:op1>> = RP[1]; <<ac1>> = R[1]; <<kind:op2>> = RP[2]; <<ac2>> = R[2]
 	<act-req> and one <act-req> |    ==> 2; <<kind:op1>> = RP[1]; <<ac1>> = R[1]; <<kind:op2>> = RP[2]; <<ac2>> = R[2]
@@ -824,7 +824,7 @@ It's convenient to define a single action clause first:
 
 =
 <action-sentence-object> ::=
-	<action-clauses> |    ==> 0
+	<action-clauses> |    ==> { 0, - }
 	...											==> @<Issue PM_ActionClauseUnknown problem@>
 
 <action-clauses> ::=

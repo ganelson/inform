@@ -155,7 +155,7 @@ phrase definitions and timed events don't open the rulebook name.
 	at *** |    ==> @<Issue PM_RulebookWithAt problem@>
 	to *** |    ==> @<Issue PM_RulebookWithTo problem@>
 	definition *** |    ==> @<Issue PM_RulebookWithDefinition problem@>
-	...											==> 0
+	...											==> { 0, - }
 
 @<Issue PM_RulebookWithAt problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RulebookWithAt),

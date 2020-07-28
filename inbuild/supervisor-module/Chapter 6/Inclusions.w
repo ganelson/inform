@@ -86,8 +86,8 @@ word "Include", which might e.g. be "Locksmith by Emily Short".
 	<extension-unversioned>                                                      ==> -1
 
 <extension-unversioned> ::=
-	<extension-unversioned-inner> ( ... ) |  ==> 0
-	<extension-unversioned-inner>            ==> 0
+	<extension-unversioned-inner> ( ... ) |  ==> { 0, - }
+	<extension-unversioned-inner>            ==> { 0, - }
 
 <extension-unversioned-inner> ::=
 	<quoted-text> *** |  ==> @<Issue PM_IncludeExtQuoted problem@>

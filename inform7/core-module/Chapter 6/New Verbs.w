@@ -270,7 +270,7 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 	<verb-means-sentence-subject-unarticled>							==> R[1]; *XP = RP[1]
 
 <verb-means-sentence-subject-unarticled> ::=
-	verb to |    ==> FALSE; return FAIL_NONTERMINAL;
+	verb to |    ==> { fail }
 	verb <np-unparsed> in the imperative |    ==> TRUE; *XP = RP[1]
 	verb <np-unparsed>												==> FALSE; *XP = RP[1]
 

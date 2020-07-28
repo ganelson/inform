@@ -144,8 +144,8 @@ option name is taken from the |...| or |###| as appropriate:
 <use-sentence-object> ::=
 	... of at least <cardinal-number-unlimited> |    ==> R[1]
 	### of <cardinal-number-unlimited> |    ==> -R[1]
-	<definite-article> ...	|    ==> 0
-	...												==> 0
+	<definite-article> ...	|    ==> { 0, - }
+	...												==> { 0, - }
 
 <use-inter-pipeline> ::=
 	inter pipeline {<quoted-text>} 					==> TRUE

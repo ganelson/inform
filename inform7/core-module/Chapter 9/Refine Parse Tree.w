@@ -389,9 +389,9 @@ property of something.
 
 =
 <newfound-property-of> ::=
-	in the presence of ... |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	... that varies |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	... variable |    ==> 0; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	in the presence of ... |    ==> { advance Wordings::delta(WR[1], W) }
+	... that varies |    ==> { advance Wordings::delta(WR[1], W) }
+	... variable |    ==> { advance Wordings::delta(WR[1], W) }
 	{<property-name-v>} of ...		==> 0; *XP = RP[1]
 
 @<Act on a newly-discovered property of something@> =

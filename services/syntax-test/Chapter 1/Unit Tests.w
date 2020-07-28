@@ -8,17 +8,17 @@ any text but then fail.
 
 =
 <dividing-sentence> ::=
-	chapter ... |  ==> 1
-	section ...    ==> 2
+	chapter ... |  ==> { 1, - }
+	section ...    ==> { 2, - }
 
 <structural-sentence> ::=
-	... ==> TRUE; return FAIL_NONTERMINAL;
+	... ==> { fail }
 
 <language-modifying-sentence> ::=
-	... ==> TRUE; return FAIL_NONTERMINAL;
+	... ==> { fail }
 
 <comma-divisible-sentence> ::=
-	... ==> TRUE; return FAIL_NONTERMINAL;
+	... ==> { fail }
 
 @h Syntax tree.
 

@@ -351,7 +351,7 @@ Here the grammar is very simple, and the object can't be a list.
 =
 <understand-command-sentence-object> ::=
 	... when/while ... |    ==> @<Issue PM_UnderstandCommandWhen problem@>
-	something new |    ==> 0
+	something new |    ==> { 0, - }
 	<quoted-text> |    ==> Wordings::first_wn(W)
 	...								==> @<Issue PM_NotOldCommand problem@>
 

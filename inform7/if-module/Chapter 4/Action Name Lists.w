@@ -107,7 +107,7 @@ operands.
 	doing something/anything except <anl-excluded> |    ==> FALSE; *XP = RP[1];
 	doing something/anything to/with <anl-to-tail> |    ==> TRUE; *XP = RP[1];
 	doing something/anything |    ==> @<Construct ANL for anything@>
-	doing something/anything ... |    ==> TRUE; *XP = NULL; return FAIL_NONTERMINAL;
+	doing something/anything ... |    ==> { fail }
 	<anl>													==> TRUE; *XP = RP[1];
 
 <anl-excluded> ::=
@@ -115,8 +115,8 @@ operands.
 	<anl>													==> TRUE; *XP = PL::Actions::Lists::flip_anl_parity(RP[1], FALSE);
 
 <anl-minimal-common-operand> ::=
-	_,/or ... |    ==> FALSE; return FAIL_NONTERMINAL;
-	... to/with ... |    ==> FALSE; return FAIL_NONTERMINAL;
+	_,/or ... |    ==> { fail }
+	... to/with ... |    ==> { fail }
 	...														==> TRUE;
 
 @<Construct ANL for anything@> =
@@ -145,8 +145,8 @@ for instance, we don't want to count the "in" from "fixed in place".
 	...									==> @<Construct ANL for anything applied@>
 
 <anl-in-tail> ::=
-	fixed in place *** |    ==> FALSE; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
-	is/are/was/were/been/listed in *** |    ==> FALSE; return FAIL_NONTERMINAL + Wordings::first_wn(WR[1]) - Wordings::first_wn(W);
+	fixed in place *** |    ==> { advance Wordings::delta(WR[1], W) }
+	is/are/was/were/been/listed in *** |    ==> { advance Wordings::delta(WR[1], W) }
 	in ...									==> TRUE
 
 @<Augment ANL with in clause@> =

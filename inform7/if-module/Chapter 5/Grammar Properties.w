@@ -84,12 +84,12 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
 =
 <notable-parsing-variables> ::=
 	<k-kind> understood |    ==> 0; <<kind:understood>> = RP[1]
-	noun |    ==> 1
-	location |    ==> 2
-	actor-location |    ==> 3
-	second noun |    ==> 4
-	person asked |    ==> 5
-	maximum score					==> 6
+	noun |    ==> { 1, - }
+	location |    ==> { 2, - }
+	actor-location |    ==> { 3, - }
+	second noun |    ==> { 4, - }
+	person asked |    ==> { 5, - }
+	maximum score					==> { 6, - }
 
 @ =
 int PL::Parsing::Visibility::parsing_new_variable_notify(nonlocal_variable *var) {
