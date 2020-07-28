@@ -2397,11 +2397,11 @@ condition caused the trouble:
 =
 <condition-problem-diagnosis> ::=
 	<condition-problem-part> <condition-problem-part-tail> |    ==> R[1] | R[2]
-	<condition-problem-part>										==> R[1]
+	<condition-problem-part>										==> { pass 1 }
 
 <condition-problem-part-tail> ::=
-	, and/or <condition-problem-diagnosis> |    ==> R[1]
-	,/and/or <condition-problem-diagnosis>							==> R[1]
+	, and/or <condition-problem-diagnosis> |    ==> { pass 1 }
+	,/and/or <condition-problem-diagnosis>							==> { pass 1 }
 
 <condition-problem-part> ::=
 	<s-condition> |    ==> 0; @<Quote this-condition-okay segment@>;
@@ -2558,9 +2558,9 @@ substitution or not.
 
 =
 <unknown-text-shape> ::=
-	say ... |    ==> SAY_UTSHAPE
-	... and/or ... |    ==> LIST_UTSHAPE
-	...						==> NO_UTSHAPE
+	say ... |         ==> { SAY_UTSHAPE, - }
+	... and/or ... |  ==> { LIST_UTSHAPE, - }
+	...               ==> { NO_UTSHAPE, - }
 
 <unknown-text-substitution-problem-diagnosis> ::=
 	, ... |    ==> @<Issue PM_SayComma problem@>

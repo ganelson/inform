@@ -6,7 +6,7 @@ Defining an adjective with an I6 condition.
 
 =
 <inform6-condition-adjective-definition> ::=
-	i6 condition <quoted-text-without-subs> says so ( ... )		==> R[1]
+	i6 condition <quoted-text-without-subs> says so ( ... )		==> { pass 1 }
 
 @ Which leads us to a simple set of adjectives:
 

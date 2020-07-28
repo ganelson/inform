@@ -129,14 +129,14 @@ and creates two options with <phrase-option-declaration-setting-entry>.
 =
 <phrase-option-declaration-list> ::=
 	... |    ==> FALSE; return preform_lookahead_mode; /* match only when looking ahead */
-	<phrase-option-declaration-setting-entry> <phrase-option-declaration-tail> |    ==> R[2]
-	<phrase-option-declaration-setting-entry>		==> FALSE
+	<phrase-option-declaration-setting-entry> <phrase-option-declaration-tail> |    ==> { pass 2 }
+	<phrase-option-declaration-setting-entry>		==> { FALSE, - }
 
 <phrase-option-declaration-tail> ::=
-	, _or <phrase-option-declaration-list> |    ==> R[1]
-	, \and/or <phrase-option-declaration-list> |    ==> TRUE
-	_,/or <phrase-option-declaration-list> |    ==> R[1]
-	\and/or <phrase-option-declaration-list>		==> TRUE
+	, _or <phrase-option-declaration-list> |    ==> { pass 1 }
+	, \and/or <phrase-option-declaration-list> |    ==> { TRUE, - }
+	_,/or <phrase-option-declaration-list> |    ==> { pass 1 }
+	\and/or <phrase-option-declaration-list>		==> { TRUE, - }
 
 <phrase-option-declaration-setting-entry> ::=
 	...		==> FALSE; if (!preform_lookahead_mode) Phrases::Options::phod_add_phrase_option(phod_being_parsed, W);
@@ -239,16 +239,16 @@ by "and":
 
 =
 <phrase-option-list> ::=
-	... |    ==> FALSE; return preform_lookahead_mode; /* match only when looking ahead */
-	<phrase-option-setting-entry> <phrase-option-tail> | ==> R[1] | R[2]
-	<phrase-option-setting-entry>						==> R[1]
+	... |    ==> { lookahead }
+	<phrase-option-setting-entry> <phrase-option-tail> | ==> { R[1] | R[2], - }
+	<phrase-option-setting-entry>						==> { pass 1 }
 
 <phrase-option-tail> ::=
-	, _and <phrase-option-list> |    ==> R[1]
-	_,/and <phrase-option-list>							==> R[1]
+	, _and <phrase-option-list> |    ==> { pass 1 }
+	_,/and <phrase-option-list>							==> { pass 1 }
 
 <phrase-option-setting-entry> ::=
-	<phrase-option> |    ==> R[1]
+	<phrase-option> |    ==> { pass 1 }
 	...					==> @<Issue PM_NotAPhraseOption or C22NotTheOnlyPhraseOption problem@>
 
 @<Issue PM_NotAPhraseOption or C22NotTheOnlyPhraseOption problem@> =

@@ -228,14 +228,14 @@ is the same as that matched by <s-value>.
 
 =
 <s-noun-phrase> ::=
-	<if-forced-physical> <s-variable-as-value> |    ==> RP[2]
-	<if-forced-physical> <s-description> |    ==> RP[2]
-	^<if-forced-physical> <s-value-uncached> |    ==> RP[2]
+	<if-forced-physical> <s-variable-as-value> |    ==> { pass 2 }
+	<if-forced-physical> <s-description> |    ==> { pass 2 }
+	^<if-forced-physical> <s-value-uncached> |    ==> { pass 2 }
 
 <s-noun-phrase-nounless> ::=
-	<if-forced-physical> <s-variable-as-value> |    ==> RP[2]
-	<if-forced-physical> <s-description-nounless> |    ==> RP[2]
-	^<if-forced-physical> <s-value-uncached> |    ==> RP[2]
+	<if-forced-physical> <s-variable-as-value> |    ==> { pass 2 }
+	<if-forced-physical> <s-description-nounless> |    ==> { pass 2 }
+	^<if-forced-physical> <s-value-uncached> |    ==> { pass 2 }
 
 @ Finally, the following is needed for conditions ("if fixed in place
 scenery, ...") where the object referred to is understood from context.
@@ -248,7 +248,7 @@ pre-empting descriptions.)
 
 =
 <s-descriptive-np> ::=
-	( <s-descriptive-np> ) |    ==> RP[1]
+	( <s-descriptive-np> ) |    ==> { pass 1 }
 	<cardinal-number> |    ==> { fail }
 	<s-description> |    ==> @<Construct a descriptive SN subtree@>
 	<s-adjective-list-as-desc>	==> @<Construct a descriptive SN subtree@>

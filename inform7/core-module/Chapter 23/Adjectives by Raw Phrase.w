@@ -7,8 +7,8 @@ This little grammar catches definitions delegated to Inform 6 routines.
 
 =
 <inform6-routine-adjective-definition> ::=
-	i6 routine {<quoted-text-without-subs>} says so ( ... ) |    ==> FALSE
-	i6 routine {<quoted-text-without-subs>} makes it so ( ... )	==> TRUE
+	i6 routine {<quoted-text-without-subs>} says so ( ... ) |    ==> { FALSE, - }
+	i6 routine {<quoted-text-without-subs>} makes it so ( ... )  ==> { TRUE, - }
 
 @ So here's a set of adjectives...
 

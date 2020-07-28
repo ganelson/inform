@@ -76,8 +76,8 @@ blorb_figure *PL::Figures::new_blorb_figure(instance *nc) {
 
 =
 <new-figure-sentence-object> ::=
-	<definite-article> <new-figure-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
-	<new-figure-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
+	<definite-article> <new-figure-sentence-object-unarticled> |    ==> { pass 2 }
+	<new-figure-sentence-object-unarticled>							==> { pass 1 }
 
 <new-figure-sentence-object-unarticled> ::=
 	file <np-unparsed>												==> TRUE; *XP = RP[1]
@@ -110,11 +110,11 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 @ =
 <figure-sentence-object> ::=
 	<figure-source> ( <quoted-text> ) |    ==> R[1]; <<alttext>> = R[2];
-	<figure-source>							==> R[1]
+	<figure-source>							==> { pass 1 }
 
 <figure-source> ::=
-	of cover art |    ==> -1
-	<quoted-text> |    ==> R[1]
+	of cover art |    ==> { -1, - }
+	<quoted-text> |    ==> { pass 1 }
 	...						==> @<Issue PM_PictureNotTextual problem@>;
 
 @<Issue PM_PictureNotTextual problem@> =

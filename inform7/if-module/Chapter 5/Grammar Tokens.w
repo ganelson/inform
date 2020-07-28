@@ -59,9 +59,9 @@ four constituent tokens.
 
 =
 <grammar-token-breaking> ::=
-	... , ... |    ==> NOT_APPLICABLE
-	<quoted-text> |    ==> TRUE
-	...						==> FALSE
+	... , ... |    ==> { NOT_APPLICABLE, - }
+	<quoted-text> |    ==> { TRUE, - }
+	...						==> { FALSE, - }
 
 @ We use a different punctuation set, in which forward slashes break words,
 to handle such as:
@@ -236,15 +236,15 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 	...									==> @<Issue PM_UnknownToken problem@>
 
 <standard-grammar-token> ::=
-	something |    ==> NOUN_TOKEN_GTC
-	things |    ==> MULTI_TOKEN_GTC
-	things inside |    ==> MULTIINSIDE_TOKEN_GTC
-	things preferably held |    ==> MULTIHELD_TOKEN_GTC
-	something preferably held |    ==> HELD_TOKEN_GTC
-	other things |    ==> MULTIEXCEPT_TOKEN_GTC
-	someone	|    ==> CREATURE_TOKEN_GTC
-	somebody |    ==> CREATURE_TOKEN_GTC
-	text |    ==> TOPIC_TOKEN_GTC
+	something |    ==> { NOUN_TOKEN_GTC, - }
+	things |    ==> { MULTI_TOKEN_GTC, - }
+	things inside |    ==> { MULTIINSIDE_TOKEN_GTC, - }
+	things preferably held |    ==> { MULTIHELD_TOKEN_GTC, - }
+	something preferably held |    ==> { HELD_TOKEN_GTC, - }
+	other things |    ==> { MULTIEXCEPT_TOKEN_GTC, - }
+	someone	|    ==> { CREATURE_TOKEN_GTC, - }
+	somebody |    ==> { CREATURE_TOKEN_GTC, - }
+	text |    ==> { TOPIC_TOKEN_GTC, - }
 	topic |    ==> @<Issue PM_UseTextNotTopic problem@>
 	a topic |    ==> @<Issue PM_UseTextNotTopic problem@>
 	object |    ==> @<Issue PM_UseThingNotObject problem@>

@@ -418,8 +418,8 @@ and no documentation.
 
 =
 <extension-body> ::=
-	*** ---- documentation ---- ... |  ==> TRUE
-	...                                ==> FALSE
+	*** ---- documentation ---- ... |  ==> { TRUE, - }
+	...                                ==> { FALSE, - }
 
 @<Break the extension's text into body and documentation@> =
 	<extension-body>(EXW);

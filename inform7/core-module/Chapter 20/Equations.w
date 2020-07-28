@@ -392,7 +392,7 @@ mass, too.
 	<equation-symbol>						==> EQW_IDENTIFIES_NOTHING; eq_symbol_wn = R[1];
 
 <equation-symbol> ::=
-	<valid-equation-symbol>	|    ==> R[1]
+	<valid-equation-symbol>	|    ==> { pass 1 }
 	### |    ==> @<Issue PM_EquationSymbolMalformed problem@>
 	...										==> @<Issue PM_EquationSymbolMisdeclared problem@>
 

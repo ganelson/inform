@@ -158,8 +158,8 @@ to other natural languages.
 
 =
 <documentation-symbol-tail> ::=
-	... ( <documentation-symbol> ) |    ==> R[1]
-	... -- <documentation-symbol> --	==> R[1]
+	... ( <documentation-symbol> ) |    ==> { pass 1 }
+	... -- <documentation-symbol> --	==> { pass 1 }
 
 <documentation-symbol> ::=
 	documented at ###					==> Wordings::first_wn(WR[1])

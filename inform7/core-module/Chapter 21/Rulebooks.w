@@ -150,8 +150,8 @@ phrase definitions and timed events don't open the rulebook name.
 
 =
 <new-rulebook-name> ::=
-	<definite-article> <new-rulebook-name> |    ==> R[2]
-	<new-rulebook-name> rules/rulebook |    ==> R[1]
+	<definite-article> <new-rulebook-name> |    ==> { pass 2 }
+	<new-rulebook-name> rules/rulebook |    ==> { pass 1 }
 	at *** |    ==> @<Issue PM_RulebookWithAt problem@>
 	to *** |    ==> @<Issue PM_RulebookWithTo problem@>
 	definition *** |    ==> @<Issue PM_RulebookWithDefinition problem@>
@@ -389,7 +389,7 @@ Any new rulebook variable name is vetted by being run through this:
 =
 <rulebook-variable-name> ::=
 	<unfortunate-name> |    ==> @<Issue PM_RulebookVariableAnd problem@>
-	...										==> TRUE
+	...										==> { TRUE, - }
 
 @<Issue PM_RulebookVariableAnd problem@> =
 	*X = NOT_APPLICABLE;
@@ -911,8 +911,8 @@ parses the object noun phrase with the following:
 
 =
 <rulebook-property> ::=
-	outcome/outcomes <rulebook-outcome-list> |    ==> TRUE
-	default <rulebook-default-outcome>	|    ==> FALSE
+	outcome/outcomes <rulebook-outcome-list> |    ==> { TRUE, - }
+	default <rulebook-default-outcome>	|    ==> { FALSE, - }
 	...										==> @<Issue PM_NonOutcomeProperty problem@>
 
 @<Issue PM_NonOutcomeProperty problem@> =

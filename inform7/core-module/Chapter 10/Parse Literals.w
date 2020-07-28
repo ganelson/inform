@@ -20,12 +20,12 @@ Note that ordinal numbers are not valid as literals: "2nd" is not a noun.
 	minus <cardinal-number> |    ==> Rvalues::from_int(-R[1], W)
 	<quoted-text> ( <response-letter> ) |    ==> Rvalues::from_wording(W)
 	<quoted-text> |    ==> Rvalues::from_wording(W)
-	<s-literal-real-number> |    ==> RP[1]
-	<s-literal-truth-state> |    ==> RP[1]
-	<s-literal-list> |    ==> RP[1]
-	unicode <s-unicode-character> |    ==> RP[1]
-	<s-literal-time> |    ==> RP[1] /* times\_plugin */
-	<s-literal-unit-notation>				==> RP[1]
+	<s-literal-real-number> |    ==> { pass 1 }
+	<s-literal-truth-state> |    ==> { pass 1 }
+	<s-literal-list> |    ==> { pass 1 }
+	unicode <s-unicode-character> |    ==> { pass 1 }
+	<s-literal-time> |    ==> { pass 1 }
+	<s-literal-unit-notation>				==> { pass 1 }
 
 <s-literal-unit-notation> internal {
 	literal_pattern *lp;

@@ -342,7 +342,7 @@ itself.
 
 =
 <index-map-sentence-subject> ::=
-	eps file |    ==> EPSFILE_IMW
+	eps file |    ==> { EPSFILE_IMW, - }
 	<direction-name> mapped as <direction-name> |    ==> MAPPED_AS_IMW; <<instance:x>> = RP[1]; <<instance:y>> = RP[2];
 	... mapped as ... |    ==> @<Issue PM_MapDirectionClue problem@>
 	<instance-of-object> mapped <map-positioning> |    ==> MAPPED_IMW; <<instance:x>> = RP[1]; <<instance:y>> = RP[2];
@@ -350,7 +350,7 @@ itself.
 	<map-setting> set to <map-setting-value> |    ==> SETTING_IMW; <<scoping>> = R[1]; if (R[1] == NO_IMW) *X = NO_IMW; <<msvtype>> = R[2]
 	<map-setting> set to ... |    ==> @<Issue PM_MapSettingTooLong problem@>
 	... set to ... |    ==> @<Issue PM_MapSettingOfUnknown problem@>
-	rubric {<quoted-text-without-subs>} *** |    ==> RUBRIC_IMW
+	rubric {<quoted-text-without-subs>} *** |    ==> { RUBRIC_IMW, - }
 	...													==> @<Issue PM_MapHintUnknown problem@>
 
 <map-positioning> ::=
@@ -409,11 +409,11 @@ itself.
 	... of <map-setting-scope>					==> @<Issue PM_MapSettingUnknown problem@>
 
 <map-setting-scope> ::=
-	<definite-article> <map-setting-scope-unarticled> |    ==> R[2]
-	<map-setting-scope-unarticled>											==> R[1]
+	<definite-article> <map-setting-scope-unarticled> |    ==> { pass 2 }
+	<map-setting-scope-unarticled>											==> { pass 1 }
 
 <map-setting-scope-unarticled> ::=
-	first room |    ==> FIRST_ROOM_MAP_SCOPE
+	first room |    ==> { FIRST_ROOM_MAP_SCOPE, - }
 	level <cardinal-number> |    ==>	LEVEL_MAP_SCOPE; <<level>> = R[1]
 	<k-kind> |    ==> KIND_MAP_SCOPE; <<kind:kscope>> = RP[1]
 	<instance-of-object>		==> INSTANCE_MAP_SCOPE; <<instance:iscope>> = RP[1]
@@ -461,8 +461,8 @@ Never mind.
 	###							==> -1; <<msword>> = Wordings::first_wn(W); /* leads to a problem message later */
 
 <map-setting-boolean> ::=
-	on |    ==> TRUE
-	off							==> FALSE
+	on |    ==> { TRUE, - }
+	off							==> { FALSE, - }
 
 @ Map offsets have a cutesy notation: |10&-30|, for example, written as a
 single word. The following nonterminal actually matches any single word

@@ -146,9 +146,9 @@ as the object.
 	<infinitive-usage>					==> R[1]; <<giving-parts>> = FALSE
 
 <infinitive-usage> ::=
-	{be able to ...} |    ==> TRUE
-	{be able to} |    ==> TRUE
-	...									==> FALSE
+	{be able to ...} |    ==> { TRUE, - }
+	{be able to} |    ==> { TRUE, - }
+	...									==> { FALSE, - }
 
 @ The text in brackets, if given, is a comma-separated list of conjugations
 of the verb. Each one is matched against this:
@@ -187,8 +187,8 @@ now absolutely any non-empty word range is accepted as the property name.
 	reversed <relation-name> relation |    ==> REL_VERBM; *XP = BinaryPredicates::get_reversal(RP[1])
 	<relation-name> relation |    ==> REL_VERBM; *XP = RP[1]
 	to <instance-of-infinitive-form> |    ==> @<Use verb infinitive as shorthand@>
-	... property |    ==> PROP_VERBM
-	built-in ... meaning |    ==> BUILTIN_VERBM
+	... property |    ==> { PROP_VERBM, - }
+	built-in ... meaning |    ==> { BUILTIN_VERBM, - }
 	... relation |    ==> @<Issue PM_VerbRelationUnknown problem@>
 	{relation} |    ==> @<Issue PM_VerbRelationVague problem@>
 	...										==> @<Issue PM_VerbUnknownMeaning problem@>
@@ -233,8 +233,8 @@ now absolutely any non-empty word range is accepted as the property name.
 
 =
 <new-verb-sentence-object> ::=
-	<indefinite-article> <new-verb-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
-	<new-verb-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
+	<indefinite-article> <new-verb-sentence-object-unarticled> |    ==> { pass 2 }
+	<new-verb-sentence-object-unarticled>							==> { pass 1 }
 
 <new-verb-sentence-object-unarticled> ::=
 	verb |    ==> TRUE; *XP = NULL;
@@ -266,8 +266,8 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 
 =
 <verb-means-sentence-subject> ::=
-	<definite-article> <verb-means-sentence-subject-unarticled> |    ==> R[2]; *XP = RP[2]
-	<verb-means-sentence-subject-unarticled>							==> R[1]; *XP = RP[1]
+	<definite-article> <verb-means-sentence-subject-unarticled> |    ==> { pass 2 }
+	<verb-means-sentence-subject-unarticled>							==> { pass 1 }
 
 <verb-means-sentence-subject-unarticled> ::=
 	verb to |    ==> { fail }
@@ -1121,8 +1121,8 @@ int NewVerbs::takes_contraction_form(word_assemblage *wa) {
 
 =
 <new-adjective-sentence-object> ::=
-	<indefinite-article> <new-adjective-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
-	<new-adjective-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
+	<indefinite-article> <new-adjective-sentence-object-unarticled> |    ==> { pass 2 }
+	<new-adjective-sentence-object-unarticled>							==> { pass 1 }
 
 <new-adjective-sentence-object-unarticled> ::=
 	adjective |    ==> TRUE; *XP = NULL

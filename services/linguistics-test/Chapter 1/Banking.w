@@ -78,9 +78,9 @@ And these are parsed by the following simple Preform grammar:
 	... = <gender> proper noun                              ==> @<Create proper noun@>;
 	
 <gender> ::=
-	neuter |    ==> NEUTER_GENDER
-	masculine | ==> MASCULINE_GENDER
-	feminine    ==> FEMININE_GENDER
+	neuter |    ==> { NEUTER_GENDER, - }
+	masculine | ==> { MASCULINE_GENDER, - }
+	feminine    ==> { FEMININE_GENDER, - }
 
 <meaning> internal 1 {
 	*XP = Relating::find(W);

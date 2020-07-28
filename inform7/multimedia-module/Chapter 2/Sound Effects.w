@@ -68,8 +68,8 @@ blorb_sound *PL::Sounds::new_blorb_sound(instance *nc) {
 
 =
 <new-sound-sentence-object> ::=
-	<definite-article> <new-sound-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
-	<new-sound-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
+	<definite-article> <new-sound-sentence-object-unarticled> |    ==> { pass 2 }
+	<new-sound-sentence-object-unarticled>							==> { pass 1 }
 
 <new-sound-sentence-object-unarticled> ::=
 	file <np-unparsed>												==> TRUE; *XP = RP[1]
@@ -103,12 +103,12 @@ int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 
 =
 <sound-sentence-object> ::=
-	<sound-source> ( <quoted-text> ) |    ==> R[1]; <<alttext>> = R[2];
-	<sound-source>							==> R[1]
+	<sound-source> ( <quoted-text> ) |  ==> R[1]; <<alttext>> = R[2];
+	<sound-source>                      ==> { pass 1 }
 
 <sound-source> ::=
-	<quoted-text> |    ==> R[1]
-	...						==> @<Issue PM_SoundNotTextual problem@>;
+	<quoted-text> |  ==> { pass 1 }
+	...              ==> @<Issue PM_SoundNotTextual problem@>;
 
 @<Issue PM_SoundNotTextual problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SoundNotTextual),

@@ -236,8 +236,8 @@ and here goes:
 
 =
 <dividing-sentence> ::=
-	<if-start-of-paragraph> <heading> | ==> R[2]
-	<extension-end-marker-sentence>     ==> R[1]
+	<if-start-of-paragraph> <heading> | ==> { pass 2 }
+	<extension-end-marker-sentence>     ==> { pass 1 }
 
 <heading> ::=
 	volume ... |                        ==> { 1, - }
@@ -273,7 +273,7 @@ never accidentally match in the main source text.
 <structural-sentence> ::=
 	<if-start-of-source-text> <quoted-text> |      ==> 0; sfsm->nt = BIBLIOGRAPHIC_NT;
 	<if-start-of-source-text> <quoted-text> ... |  ==> 0; sfsm->nt = BIBLIOGRAPHIC_NT;
-	<language-modifying-sentence> |                ==> R[1]
+	<language-modifying-sentence> |                ==> { pass 1 }
 	* |                                            ==> 0; sfsm->nt = TRACE_NT;
 	* <quoted-text-without-subs> |                 ==> 0; sfsm->nt = TRACE_NT;
 	<if-start-of-paragraph> table ... |            ==> 0; sfsm->nt = TABLE_NT;
@@ -306,7 +306,7 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 =
 <language-modifying-sentence> ::=
 	include (- ### in the preform grammar |        ==> -2; sfsm->nt = INFORM6CODE_NT;
-	use ... language element/elements              ==> -1
+	use ... language element/elements              ==> { -1, - }
 
 @ The following callback function is called by //syntax// when it breaks a
 sentence of type |BEGINHERE_NT| or |ENDHERE_NT| -- i.e., the beginning or end

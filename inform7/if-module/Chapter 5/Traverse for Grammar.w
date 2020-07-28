@@ -285,7 +285,7 @@ It's not widely known, but the object phrase here can be a list.
 	plural of <understand-ref> |    ==> R[1]; ur_being_parsed.pluralised_reference = TRUE;
 	<quoted-text> |    ==> 0; ur_being_parsed.gv_result = GV_IS_TOKEN;
 	<understand-ref> ( with nouns reversed ) |    ==> R[1]; ur_being_parsed.reversed_reference = TRUE;
-	<understand-ref>							==> R[1]
+	<understand-ref>							==> { pass 1 }
 
 <understand-ref> ::=
 	<action-name> |    ==> 0; ur_being_parsed.an_reference = RP[1];

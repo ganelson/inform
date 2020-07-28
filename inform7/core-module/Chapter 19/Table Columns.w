@@ -233,14 +233,14 @@ what looks like text into grammar for parsing.
 	<s-table-column-name> ( ... ) |    ==> EXISTING_TC; *XP = RP[1]; <<k1>> = Wordings::first_wn(WR[1]); <<k2>> = Wordings::last_wn(WR[1]);
 	<table-column-heading-unbracketed> ( ... ) |    ==> R[1]; if (R[1] != NEW_TC_PROBLEM) *X = NEW_TC_WITH_KIND; <<k1>> = Wordings::first_wn(WR[1]); <<k2>> = Wordings::last_wn(WR[1]);
 	<s-table-column-name> |    ==> EXISTING_TC; *XP = RP[1]; <<k1>> = -1; <<k2>> = -1;
-	<table-column-heading-unbracketed>				==> R[1]
+	<table-column-heading-unbracketed>				==> { pass 1 }
 
 <table-column-heading-unbracketed> ::=
 	<article> |    ==> @<Issue PM_TableColumnArticle problem@>
-	{topic} |    ==> NEW_TC_TOPIC
-	{<property-name>} |    ==> NEW_TC_WITHOUT_KIND
+	{topic} |    ==> { NEW_TC_TOPIC, - }
+	{<property-name>} |    ==> { NEW_TC_WITHOUT_KIND, - }
 	{<s-constant-value>} |    ==> @<Issue PM_TableColumnAlready problem@>
-	...												==> NEW_TC_WITHOUT_KIND
+	...												==> { NEW_TC_WITHOUT_KIND, - }
 
 @<Issue PM_TableColumnArticle problem@> =
 	*X = NEW_TC_PROBLEM;

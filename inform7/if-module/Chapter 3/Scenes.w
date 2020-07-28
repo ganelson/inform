@@ -381,7 +381,7 @@ if it doesn't already exist:
 
 =
 <scene-ends-sentence-adverb> ::=
-	<scene-end-name-creating>				==> R[1]
+	<scene-end-name-creating>				==> { pass 1 }
 
 @ The following is elementary enough, but we want to be careful because
 there are possible ambiguities: the condition might contain the word "ends"
@@ -390,7 +390,7 @@ in a different context, for instance, and could still be valid in that case.
 =
 <scene-ends-sentence-object> ::=
 	<text-including-a-calling> |    ==> @<Issue PM_ScenesDisallowCalled problem@>
-	play begins |    ==> -1
+	play begins |    ==> { -1, - }
 	play ends |    ==> @<Issue PM_ScenesNotPlay problem@>
 	<scene-name> begins |    ==> 0; <<scene:named>> = RP[1]
 	<scene-name> ends |    ==> 1; <<scene:named>> = RP[1]
@@ -427,8 +427,8 @@ and also internally converts the result:
 
 =
 <scene-name> ::=
-	<definite-article> <scene-name-unarticled> |    ==> R[2]; *XP = RP[2]
-	<scene-name-unarticled>							==> R[1]; *XP = RP[1]
+	<definite-article> <scene-name-unarticled> |    ==> { pass 2 }
+	<scene-name-unarticled>							==> { pass 1 }
 
 <scene-name-unarticled> ::=
 	<instance-of-non-object>	==> @<Convert instance result to scene result, if possible@>

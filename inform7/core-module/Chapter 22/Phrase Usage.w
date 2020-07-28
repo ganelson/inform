@@ -132,7 +132,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 
 =
 <rule-preamble> ::=
-	definition |    ==> DEFINITIONAL_PHRASE_EFF
+	definition |    ==> { DEFINITIONAL_PHRASE_EFF, - }
 	this is the {... rule} |    ==> RULE_NOT_IN_RULEBOOK_EFF; <<event-time>> = NOT_AN_EVENT; <<written>> = FALSE;
 	this is the rule |    ==> @<Issue PM_NamelessRule problem@>
 	this is ... rule |    ==> @<Issue PM_UnarticledRule problem@>
@@ -207,9 +207,9 @@ following grammar. (Parsing this is "fine mode".)
 	<rule-preamble-finer>									==> R[1]; <<parse_node:scenes>> = NULL
 
 <rule-preamble-finer> ::=
-	{<rulebook-stem-embellished>} {when/while ...} |    ==> TRUE
-	{<rulebook-stem-embellished>} |    ==> FALSE
-	...													==> NOT_APPLICABLE
+	{<rulebook-stem-embellished>} {when/while ...} |    ==> { TRUE, - }
+	{<rulebook-stem-embellished>} |    ==> { FALSE, - }
+	...													==> { NOT_APPLICABLE, - }
 
 <rulebook-stem-embellished> ::=
 	<rulebook-stem> *** |    ==> 0; <<bud1>> = Wordings::first_wn(WR[1]); <<bud2>> = Wordings::last_wn(WR[1])
@@ -219,9 +219,9 @@ following grammar. (Parsing this is "fine mode".)
 	rule <rulebook-stem> ***					==> 0; <<bud1>> = Wordings::first_wn(WR[1]); <<bud2>> = Wordings::last_wn(WR[1])
 
 <rulebook-bud> ::=
-	of/for ... |    ==> TRUE
-	rule about/for/on ... |    ==> TRUE
-	rule									==> FALSE
+	of/for ... |    ==> { TRUE, - }
+	rule about/for/on ... |    ==> { TRUE, - }
+	rule									==> { FALSE, - }
 
 @ The following turns the preamble text into a PHUD. It can be used as often
 as necessary in "coarse mode", but should be run once and once only on any
@@ -978,16 +978,16 @@ might have gone wrong.
 
 @ =
 <anl-diagnosis> ::=
-	<anl-inner-diagnosis> when/while ... |    ==> R[1]
-	<anl-inner-diagnosis>							==> R[1]
+	<anl-inner-diagnosis> when/while ... |        ==> { pass 1 }
+	<anl-inner-diagnosis>						  ==> { pass 1 }
 
 <anl-inner-diagnosis> ::=
-	<anl-entry-diagnosis> <anl-tail-diagnosis> |    ==> R[1]+R[2]
-	<anl-entry-diagnosis>							==> R[1]
+	<anl-entry-diagnosis> <anl-tail-diagnosis> |  ==> { R[1]+R[2], - }
+	<anl-entry-diagnosis>                         ==> { pass 1 }
 
 <anl-tail-diagnosis> ::=
-	, _or <anl-inner-diagnosis> |    ==> R[1]
-	_,/or <anl-inner-diagnosis>						==> R[1]
+	, _or <anl-inner-diagnosis> |                 ==> { pass 1 }
+	_,/or <anl-inner-diagnosis>                   ==> { pass 1 }
 
 <anl-entry-diagnosis> ::=
 	......											==> @<Diagnose problem with this ANL entry@>

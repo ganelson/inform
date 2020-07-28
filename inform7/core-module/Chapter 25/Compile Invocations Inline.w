@@ -194,7 +194,7 @@ the fixed text "phrase options" expands to the whole bitmap.
 
 =
 <inline-substitution> ::=
-	phrase options |    ==> OPTS_INSUB
+	phrase options |    ==> { OPTS_INSUB, - }
 	<phrase-option>	|    ==> OPT_INSUB; <<opt>> = R[1]
 	<name-local-to-inline-stack-frame> |    ==> LOCAL_INSUB; <<local_variable:var>> = RP[1]
 	...										==> @<Issue PM_BadInlineExpansion problem@>

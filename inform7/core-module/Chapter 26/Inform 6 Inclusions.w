@@ -50,12 +50,12 @@ and the following grammar defines the "when defining a thing" end.
 	when defining <s-type-expression> |    ==> WHEN_DEFINING_INC; <<parse_node:s>> = RP[1]
 	when defining ... |    ==> @<Issue PM_WhenDefiningUnknown problem@>
 	before the library |    ==> @<Issue PM_BeforeTheLibrary problem@>
-	in the preform grammar							==> AS_PREFORM_INC
+	in the preform grammar							==> { AS_PREFORM_INC, - }
 
 <inclusion-side> ::=
-	before |    ==> BEFORE_LINK_STAGE
-	instead of |    ==> INSTEAD_LINK_STAGE
-	after											==> AFTER_LINK_STAGE
+	before |      ==> { BEFORE_LINK_STAGE, - }
+	instead of |  ==> { INSTEAD_LINK_STAGE, - }
+	after         ==> { AFTER_LINK_STAGE, - }
 
 @<Note segment-level inclusion@> =
 	*X = SEGMENT_LEVEL_INC;

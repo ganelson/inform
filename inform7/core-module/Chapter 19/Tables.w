@@ -254,9 +254,9 @@ two forms in any case.
 	<table-new-name>					==> TABLE_IS_NEW; <<nameforms>> = R[1]
 
 <table-new-name> ::=
-	table ... - ... |    ==> TABLE_HAS_NUMBER_AND_NAME
-	table ### |    ==> TABLE_HAS_ONLY_NUMBER
-	table of ... |    ==> TABLE_HAS_ONLY_NAME
+	table ... - ... |    ==> { TABLE_HAS_NUMBER_AND_NAME, - }
+	table ### |    ==> { TABLE_HAS_ONLY_NUMBER, - }
+	table of ... |    ==> { TABLE_HAS_ONLY_NAME, - }
 	table ...							==> @<Issue PM_TableMisnamed problem@>
 
 @<Issue PM_TableMisnamed problem@> =
@@ -853,7 +853,7 @@ us issue more contextual problem messages.
 	<k-kind-articled> |    ==> @<Make anomalous entry for kind@>
 	<s-named-constant> |    ==> NAMED_CONSTANT_ENTRY; *XP = RP[1]
 	<s-global-variable>	|    ==> @<Issue PM_TablePlayerEntry or C20TableVariableEntry problem@>
-	<table-cell-value> |    ==> R[1]; *XP = RP[1]
+	<table-cell-value> |    ==> { pass 1 }
 	<list-of-double-quotes> |    ==> @<Make anomalous entry for text to be understood@>
 	...							==>	@<Issue PM_TableUnknownEntry problem@>
 

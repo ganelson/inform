@@ -42,8 +42,8 @@ suppose //inweb// sees the following in the web it is tangling:
 = (text as Preform)
 	<competitor> ::=
 		the pacemaker |              ==> { 1, - }
-		<ordinal-number> runner |    ==> R[1]
-		runner no <cardinal-number>  ==> R[1]
+		<ordinal-number> runner |    ==> { pass 1 }
+		runner no <cardinal-number>  ==> { pass 1 }
 =
 It then tangles this macro usage into //Nonterminals::register// above:
 = (text as C)

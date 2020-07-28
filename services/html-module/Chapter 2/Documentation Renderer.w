@@ -91,7 +91,7 @@ text of three asterisks in a row.
 
 =
 <extension-example-header> ::=
-	example : <row-of-asterisks> ... - ... |  ==> R[1]
+	example : <row-of-asterisks> ... - ... |  ==> { pass 1 }
 	example : ... - ...                       ==> { 0, - }
 
 <row-of-asterisks> ::=

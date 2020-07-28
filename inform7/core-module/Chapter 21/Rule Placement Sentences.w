@@ -291,7 +291,7 @@ The subject noun phrase is an articled list, each entry of which must match:
 
 =
 <listed-in-sentence-object-inner> ::=
-	in any rulebook |    ==> ANY_RULE_PLACEMENT
+	in any rulebook |    ==> { ANY_RULE_PLACEMENT, - }
 	in <destination-rulebook> |    ==> MIDDLE_PLACEMENT + 1000*IN_SIDE; *XP = RP[1];
 	first in <destination-rulebook> |    ==> FIRST_PLACEMENT  + 1000*IN_SIDE; *XP = RP[1];
 	last in <destination-rulebook> |    ==> LAST_PLACEMENT   + 1000*IN_SIDE; *XP = RP[1];

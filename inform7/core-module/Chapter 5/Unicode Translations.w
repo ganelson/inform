@@ -35,8 +35,8 @@ different code number).
 
 =
 <translates-into-unicode-sentence-subject> ::=
-	<unicode-character-name> |    ==> R[1]
-	...									==> -1
+	<unicode-character-name> |    ==> { pass 1 }
+	...									==> { -1, - }
 
 @ And this parses the object noun phrase of such sentences -- a decimal
 number. I was tempted to allow hexadecimal here, but life's too short.
@@ -45,7 +45,7 @@ the built-in extensions anyway; Inform authors never type them.
 
 =
 <translates-into-unicode-sentence-object> ::=
-	<cardinal-number-unlimited> |    ==> R[1]
+	<cardinal-number-unlimited> |    ==> { pass 1 }
 	...									==> @<Issue PM_UnicodeNonLiteral problem@>
 
 @<Issue PM_UnicodeNonLiteral problem@> =

@@ -450,18 +450,18 @@ word "to".
 <phrase-preamble> ::=
 	<phrase-preamble> ( deprecated ) |    ==> R[1]; <<deprecated>> = TRUE
 	<say-preamble>	|    ==> SAY_ANN; <<say-ann>> = R[1]
-	<to-preamble>								==> R[1]
+	<to-preamble>								==> { pass 1 }
 
 <to-preamble> ::=
 	<to-preamble> ( arithmetic operation <cardinal-number> ) |    ==> R[1]; <<operation>> = R[2]
 	<to-preamble> ( assignment operation ) |    ==> R[1]; <<assignment>> = TRUE
 	{let ... be given by ...} |    ==> LET_ANN; <<eqn>> = TRUE
 	{let ...} |    ==> LET_ANN; <<eqn>> = FALSE
-	... -- end |    ==> BLOCK_ANN
-	... -- end conditional |    ==> CONDITIONAL_ANN
-	... -- end loop |    ==> LOOP_ANN
-	... -- in loop |    ==> IN_LOOP_ANN
-	... -- in ### |    ==> IN_ANN
+	... -- end |    ==> { BLOCK_ANN, - }
+	... -- end conditional |    ==> { CONDITIONAL_ANN, - }
+	... -- end loop |    ==> { LOOP_ANN, - }
+	... -- in loop |    ==> { IN_LOOP_ANN, - }
+	... -- in ### |    ==> { IN_ANN, - }
 	...											==>	NO_ANN
 
 @ The definition remaining after the preamble is removed is then vetted.
@@ -503,11 +503,11 @@ the exception being the primordial phrase for saying text.
 	{say otherwise/else if/unless ...} |    ==> CONTROL_SANN; <<control>> = OTHERWISE_IF_SAY_CS
 	{say if/unless ...} |    ==> CONTROL_SANN; <<control>> = IF_SAY_CS
 	{say end if/unless} |    ==> CONTROL_SANN; <<control>> = END_IF_SAY_CS
-	{say ...} -- beginning ### |    ==> BEGIN_SANN
-	{say ...} -- continuing ### |    ==> CONTINUE_SANN
-	{say ...} -- ending ### with marker ### |    ==> ENDM_SANN
-	{say ...} -- ending ### |    ==> END_SANN
-	{say ...}									==> NO_SANN
+	{say ...} -- beginning ### |    ==> { BEGIN_SANN, - }
+	{say ...} -- continuing ### |    ==> { CONTINUE_SANN, - }
+	{say ...} -- ending ### with marker ### |    ==> { ENDM_SANN, - }
+	{say ...} -- ending ### |    ==> { END_SANN, - }
+	{say ...}									==> { NO_SANN, - }
 
 @ The following is used on the same text as <to-preamble>, but later on,
 for timing reasons.
@@ -523,13 +523,13 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 
 =
 <to-return-data> ::=
-	to {decide yes/no} |    ==> DEC_RANN
-	to {decide on ...} |    ==> DEV_RANN
+	to {decide yes/no} |    ==> { DEC_RANN, - }
+	to {decide on ...} |    ==> { DEV_RANN, - }
 	to decide whether/if the ... |    ==>	TOC_RANN
-	to decide whether/if ... |    ==> TOC_RANN
+	to decide whether/if ... |    ==> { TOC_RANN, - }
 	to decide what/which <return-kind> is the ... |    ==> TOV_RANN; *XP = RP[1]
 	to decide what/which <return-kind> is ... |    ==> TOV_RANN; *XP = RP[1]
-	to ...											==> TO_RANN
+	to ...											==> { TO_RANN, - }
 
 <return-kind> ::=
 	<k-kind-for-template> |    ==> 0; *XP = RP[1]
@@ -651,7 +651,7 @@ give problems for misuse of brackets.
 	( <phrase-token-declaration> ) *** |    ==> TRUE; <<token-form>> = R[1]; *XP = RP[1]
 	( *** |    ==> @<Issue PM_TokenWithoutCloseBracket problem@>
 	) *** |    ==> @<Issue PM_TokenWithoutOpenBracket problem@>
-	### ***									==> FALSE
+	### ***									==> { FALSE, - }
 
 @ Phrase token declarations allow a variety of non-standard constructs.
 

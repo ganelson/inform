@@ -65,10 +65,10 @@ it hard to see what any given component has done.
 
 =
 <test-sentence-subject> ::=
-	<internal-test-case-name> ( internal ) |    ==> R[1]
+	<internal-test-case-name> ( internal ) |    ==> { pass 1 }
 	### ( internal ) |    ==> @<Issue PM_UnknownInternalTest problem@>
 	<quoted-text> |    ==> @<Issue PM_TestQuoted problem@>
-	###	|    ==> EXTERNAL_INTT
+	###	|    ==> { EXTERNAL_INTT, - }
 	...											==> @<Issue PM_TestMultiWord problem@>
 
 @ These test case names are in English only and may change at any time

@@ -394,7 +394,7 @@ of grammatical gender for languages other than English.
 
 =
 <grammatical-gender-marker> ::=
-	... ( <grammatical-gender-abbreviation> )		==> R[1]
+	... ( <grammatical-gender-abbreviation> )  ==> { pass 1 }
 
 <grammatical-gender-abbreviation> ::=
 	n |

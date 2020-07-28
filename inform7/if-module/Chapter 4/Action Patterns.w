@@ -794,17 +794,17 @@ We treat words like "something" specially to avoid them being read as
 
 =
 <action-operand> ::=
-	something/anything | 			==> FALSE
-	something/anything else | 		==> FALSE
+	something/anything | 			==> { FALSE, - }
+	something/anything else | 		==> { FALSE, - }
 	<action-parameter> 				==> TRUE; *XP = RP[1]
 
 <going-action-irregular-operand> ::=
-	nowhere |    ==> FALSE
-	somewhere						==> TRUE
+	nowhere |    ==> { FALSE, - }
+	somewhere						==> { TRUE, - }
 
 <understanding-action-irregular-operand> ::=
-	something/anything |    ==> TRUE
-	it								==> FALSE
+	something/anything |    ==> { TRUE, - }
+	it								==> { FALSE, - }
 
 @ Finally, then, <action-parameter>. Almost anything syntactically matches
 here -- a constant, a description, a table entry, a variable, and so on.

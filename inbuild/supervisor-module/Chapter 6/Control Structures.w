@@ -138,8 +138,8 @@ overlapping with this, and they need to match.
 	end repeat                      ==> 0; *XP = repeat_CSP
 
 <other-significant-phrase> ::=
-	say ... |                       ==> SAY_SIGF
-	now ...                         ==> NOW_SIGF
+	say ... |                       ==> { SAY_SIGF, - }
+	now ...                         ==> { NOW_SIGF, - }
 
 @ This is used to see if an "if" is being used with the comma notation:
 

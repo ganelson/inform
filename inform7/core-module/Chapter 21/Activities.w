@@ -85,8 +85,8 @@ is specified, since this would otherwise not be legal Inform.
 
 =
 <bare-activity-sentence-object> ::=
-	<article> activity |    ==> TRUE
-	activity							==> TRUE
+	<article> activity |    ==> { TRUE, - }
+	activity							==> { TRUE, - }
 
 @ =
 int Activities::new_activity_SMF(int task, parse_node *V, wording *NPs) {
@@ -260,7 +260,7 @@ Any new activity variable name is vetted by being run through this:
 =
 <activity-variable-name> ::=
 	<unfortunate-name> |    ==> @<Issue PM_ActivityVarAnd problem@>
-	...										==> TRUE
+	...										==> { TRUE, - }
 
 @<Issue PM_ActivityVarAnd problem@> =
 	*X = NOT_APPLICABLE;

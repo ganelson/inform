@@ -80,10 +80,10 @@ word "Include", which might e.g. be "Locksmith by Emily Short".
 
 =
 <extension-title-and-version> ::=
-	version <extension-version> of <definite-article> <extension-unversioned> |  ==> R[1]
-	version <extension-version> of <extension-unversioned> |                     ==> R[1]
-	<definite-article> <extension-unversioned> |                                 ==> -1
-	<extension-unversioned>                                                      ==> -1
+	version <extension-version> of <definite-article> <extension-unversioned> |  ==> { pass 1 }
+	version <extension-version> of <extension-unversioned> |                     ==> { pass 1 }
+	<definite-article> <extension-unversioned> |                                 ==> { -1, - }
+	<extension-unversioned>                                                      ==> { -1, - }
 
 <extension-unversioned> ::=
 	<extension-unversioned-inner> ( ... ) |  ==> { 0, - }

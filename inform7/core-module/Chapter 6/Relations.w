@@ -135,7 +135,7 @@ text of the subject mustn't be an existing relation name.
 =
 <relates-sentence-subject> ::=
 	<relation-name> |    ==> @<Issue PM_RelationExists problem@>
-	...							==> TRUE
+	...							==> { TRUE, - }
 
 @<Issue PM_RelationExists problem@> =
 	*X = FALSE;
@@ -305,26 +305,26 @@ to be the name of a kind, possibly in the plural.
 =
 <relates-sentence-left-object> ::=
 	<relation-term-basic> ( called ... ) |    ==> R[1] | CALLED_RBIT
-	<relation-term-basic>									==> R[1]
+	<relation-term-basic>									==> { pass 1 }
 
 <relates-sentence-right-object> ::=
 	<relation-term-right-named> with fast route-finding |    ==> R[1] | FRF_RBIT
 	<relation-term-right-named> when ... |    ==> R[1] | WHEN_RBIT
-	<relation-term-right-named>								==> R[1]
+	<relation-term-right-named>								==> { pass 1 }
 
 <relation-term-right-named> ::=
 	<relation-term-right> ( called ... ) |    ==> R[1] | CALLED_RBIT
-	<relation-term-right>									==> R[1]
+	<relation-term-right>									==> { pass 1 }
 
 <relation-term-right> ::=
-	{another} |    ==> ANOTHER_RBIT
-	{each other} |    ==> EACHOTHER_RBIT
-	{each other in groups} |    ==> GROUPS_RBIT
-	<relation-term-basic>									==> R[1]
+	{another} |    ==> { ANOTHER_RBIT, - }
+	{each other} |    ==> { EACHOTHER_RBIT, - }
+	{each other in groups} |    ==> { GROUPS_RBIT, - }
+	<relation-term-basic>									==> { pass 1 }
 
 <relation-term-basic> ::=
-	one ... |    ==> ONE_RBIT
-	various ... |    ==> VAR_RBIT
+	one ... |    ==> { ONE_RBIT, - }
+	various ... |    ==> { VAR_RBIT, - }
 	...														==> { 0, - }
 
 @h The parsing phase.

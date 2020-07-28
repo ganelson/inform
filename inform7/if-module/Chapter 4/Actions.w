@@ -531,16 +531,16 @@ and this allows "exiting from the cage", say, as an action pattern.
 
 =
 <action-variable> ::=
-	<action-variable-name> ( matched as {<quoted-text-without-subs>} ) |    ==> TRUE
+	<action-variable-name> ( matched as {<quoted-text-without-subs>} ) |    ==> { TRUE, - }
 	<action-variable-name> ( ... ) |    ==> @<Issue PM_BadMatchingSyntax problem@>
-	<action-variable-name>									==> FALSE
+	<action-variable-name>									==> { FALSE, - }
 
 @ And the new action variable name is vetted by being run through this:
 
 =
 <action-variable-name> ::=
 	<unfortunate-name> |    ==> @<Issue PM_ActionVarAnd problem@>
-	...														==> TRUE
+	...														==> { TRUE, - }
 
 @<Issue PM_BadMatchingSyntax problem@> =
 	*X = NOT_APPLICABLE;
@@ -708,8 +708,8 @@ void PL::Actions::compile_action_name_var_creators(void) {
 
 =
 <new-action-sentence-object> ::=
-	<indefinite-article> <new-action-sentence-object-unarticled> |    ==> R[2]; *XP = RP[2]
-	<new-action-sentence-object-unarticled>							==> R[1]; *XP = RP[1]
+	<indefinite-article> <new-action-sentence-object-unarticled> |    ==> { pass 2 }
+	<new-action-sentence-object-unarticled>							==> { pass 1 }
 
 <new-action-sentence-object-unarticled> ::=
 	action <nounphrase-actionable> |    ==> TRUE; *XP = RP[1]
@@ -793,11 +793,11 @@ It's convenient to define a single action clause first:
 
 =
 <action-clause> ::=
-	out of world |    ==> OOW_ACT_CLAUSE
-	abbreviable |    ==> ABBREV_ACT_CLAUSE
-	with past participle ... |    ==> PP_ACT_CLAUSE
+	out of world |    ==> { OOW_ACT_CLAUSE, - }
+	abbreviable |    ==> { ABBREV_ACT_CLAUSE, - }
+	with past participle ... |    ==> { PP_ACT_CLAUSE, - }
 	applying to <action-applications> |    ==> APPLYING_ACT_CLAUSE; <<num>> = R[1]
-	requiring light							==> LIGHT_ACT_CLAUSE
+	requiring light							==> { LIGHT_ACT_CLAUSE, - }
 
 <action-applications> ::=
 	nothing |    ==> { 0, - }
@@ -812,13 +812,13 @@ It's convenient to define a single action clause first:
 	...									==> @<Issue PM_ActionMisapplied problem@>;
 
 <act-req> ::=
-	<action-access> <k-kind> | 			==> R[1]; *XP = RP[2]; @<Check action kind@>;
-	<k-kind>							==> UNRESTRICTED_ACCESS; *XP = RP[1]; @<Check action kind@>;
+	<action-access> <k-kind> | 			==> { R[1], RP[2] }; @<Check action kind@>;
+	<k-kind>							==> { UNRESTRICTED_ACCESS, RP[1] }; @<Check action kind@>;
 
 <action-access> ::=
-	visible |    ==> DOESNT_REQUIRE_ACCESS
-	touchable |    ==> REQUIRES_ACCESS
-	carried				==> REQUIRES_POSSESSION
+	visible |    ==> { DOESNT_REQUIRE_ACCESS, - }
+	touchable |    ==> { REQUIRES_ACCESS, - }
+	carried				==> { REQUIRES_POSSESSION, - }
 
 @ We are now able to define this peculiar form of list of action clauses:
 
@@ -833,10 +833,10 @@ It's convenient to define a single action clause first:
 	<action-clause-terminated>					==> R[1]; @<Act on this action information@>
 
 <action-clause-terminated> ::=
-	<action-clause> , and |    ==> R[1]
-	<action-clause> and |    ==> R[1]
-	<action-clause> , |    ==> R[1]
-	<action-clause>								==> R[1]
+	<action-clause> , and |    ==> { pass 1 }
+	<action-clause> and |    ==> { pass 1 }
+	<action-clause> , |    ==> { pass 1 }
+	<action-clause>								==> { pass 1 }
 
 @<Issue PM_ActionClauseUnknown problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionClauseUnknown),

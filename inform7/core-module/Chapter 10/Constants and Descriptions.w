@@ -14,11 +14,11 @@ is on the table". For now, though, we treat it as a noun.
 
 =
 <s-constant-value> ::=
-	<s-literal> |    ==> RP[1]
+	<s-literal> |    ==> { pass 1 }
 	nothing	|    ==> Rvalues::new_nothing_object_constant();
-	<s-miscellaneous-proper-noun> |    ==> RP[1]
-	<s-rulebook-outcome-name> outcome |    ==> RP[1]
-	<s-use-option-name> option |    ==> RP[1]
+	<s-miscellaneous-proper-noun> |    ==> { pass 1 }
+	<s-rulebook-outcome-name> outcome |    ==> { pass 1 }
+	<s-use-option-name> option |    ==> { pass 1 }
 	verb <instance-of-verb> |    ==> @<Compose verb ML@>
 	<s-rule-name> response ( <response-letter> )		==> @<Compose response ML@>
 
@@ -444,36 +444,36 @@ In the grammar for <s-description>, the noun is compulsory.
 
 =
 <s-description> ::=
-	<s-description-uncomposite-inner> |    ==> RP[1]
-	<s-np-with-relative-clause>										==> RP[1]
+	<s-description-uncomposite-inner> |    ==> { pass 1 }
+	<s-np-with-relative-clause>										==> { pass 1 }
 
 <s-description-uncomposite> ::=
-	<s-description-uncomposite-inner>								==> RP[1]
+	<s-description-uncomposite-inner>								==> { pass 1 }
 
 <s-description-uncomposite-inner> ::=
 	<s-description-uncalled> ( called <s-calling-name> ) |    ==> @<Glue on the calling ML@>
-	<s-description-uncalled>										==> RP[1]
+	<s-description-uncalled>										==> { pass 1 }
 
 <s-description-uncalled> ::=
 	<s-specifier> <s-description-unspecified> |    ==> @<Glue on the quantification ML@>
-	<s-specifying-noun> |    ==> RP[1]
+	<s-specifying-noun> |    ==> { pass 1 }
 	<s-specifying-noun> <s-adjective-list> |    ==> Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
-	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> RP[3]
+	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> { pass 3 }
 	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |    ==> @<Issue PM_DefiniteCommonNoun problem@>
-	<definite-article> <s-proper-description-unspecified> |    ==> RP[2]
-	<indefinite-article> <s-description-unspecified> |    ==> RP[2]
-	<s-description-unspecified>										==> RP[1]
+	<definite-article> <s-proper-description-unspecified> |    ==> { pass 2 }
+	<indefinite-article> <s-description-unspecified> |    ==> { pass 2 }
+	<s-description-unspecified>										==> { pass 1 }
 
 <s-description-unspecified> ::=
-	<s-qualifiable-noun> |    ==> RP[1]
+	<s-qualifiable-noun> |    ==> { pass 1 }
 	<s-applicable-adjective-list> <s-qualifiable-noun>				==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <s-common-description-unspecified> ::=
-	<s-qualifiable-common-noun> |    ==> RP[1]
+	<s-qualifiable-common-noun> |    ==> { pass 1 }
 	<s-applicable-adjective-list> <s-qualifiable-common-noun>		==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <s-proper-description-unspecified> ::=
-	<s-qualifiable-proper-noun> |    ==> RP[1]
+	<s-qualifiable-proper-noun> |    ==> { pass 1 }
 	<s-applicable-adjective-list> <s-qualifiable-proper-noun>		==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
 
 <if-trying-omission-permitted> internal 0 {
@@ -493,25 +493,25 @@ except that the noun is optional. The only difference is right at the bottom.
 
 =
 <s-description-nounless> ::=
-	<s-description-nounless-uncomposite> |    ==> RP[1]
-	<s-np-with-relative-clause>										==> RP[1]
+	<s-description-nounless-uncomposite> |    ==> { pass 1 }
+	<s-np-with-relative-clause>										==> { pass 1 }
 
 <s-description-nounless-uncomposite> ::=
 	<s-description-nounless-uncalled> ( called <s-calling-name> ) |    ==> @<Glue on the calling ML@>
-	<s-description-nounless-uncalled>								==> RP[1]
+	<s-description-nounless-uncalled>								==> { pass 1 }
 
 <s-description-nounless-uncalled> ::=
 	<s-specifier> <s-description-nounless-unspecified> |    ==> @<Glue on the quantification ML@>
-	<s-specifying-noun> |    ==> RP[1]
+	<s-specifying-noun> |    ==> { pass 1 }
 	<s-specifying-noun> <s-adjective-list> |    ==> Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
-	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> RP[3]
+	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> { pass 3 }
 	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |    ==> @<Issue PM_DefiniteCommonNoun problem@>
-	<indefinite-article> <s-description-nounless-unspecified> |    ==> RP[2]
-	<definite-article> <s-proper-description-unspecified> |    ==> RP[2]
-	<s-description-nounless-unspecified>							==> RP[1]
+	<indefinite-article> <s-description-nounless-unspecified> |    ==> { pass 2 }
+	<definite-article> <s-proper-description-unspecified> |    ==> { pass 2 }
+	<s-description-nounless-unspecified>							==> { pass 1 }
 
 <s-description-nounless-unspecified> ::=
-	<s-qualifiable-noun> |    ==> RP[1]
+	<s-qualifiable-noun> |    ==> { pass 1 }
 	<s-applicable-adjective-list> <s-qualifiable-noun> |    ==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
 	<s-adjective-list>												==> Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1])
 

@@ -12,7 +12,7 @@ Y or Z...".
 
 =
 <either-sentence-object> ::=
-	either <np-unparsed>					==> TRUE; *XP = RP[1]
+	either <np-unparsed>					==> { pass 1 }
 
 @ =
 int Assertions::Property::either_SMF(int task, parse_node *V, wording *NPs) {

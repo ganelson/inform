@@ -66,41 +66,41 @@ phrase tokens.
 
 =
 <k-kind-as-name-token> ::=
-	( <k-kind-as-name-token> ) |    ==> RP[1]
-	name of kind of <k-kind-abbreviating> |    ==> RP[1]
-	name of kind <k-kind-abbreviating> |    ==> RP[1]
-	name of kind of ... |    ==> NULL
-	name of kind ...							==> NULL
+	( <k-kind-as-name-token> ) |    ==> { pass 1 }
+	name of kind of <k-kind-abbreviating> |    ==> { pass 1 }
+	name of kind <k-kind-abbreviating> |    ==> { pass 1 }
+	name of kind of ... |    ==> { -, NULL }
+	name of kind ...							==> { -, NULL }
 
 <k-kind-abbreviating> ::=
-	( <k-kind-abbreviating> ) |    ==> RP[1]
+	( <k-kind-abbreviating> ) |    ==> { pass 1 }
 	<k-kind-of-kind> <k-formal-kind-variable> |    ==> Kinds::variable_construction(R[2], RP[1])
-	<k-kind>									==> RP[1]
+	<k-kind>									==> { pass 1 }
 
 @ So now we can begin properly. Every valid kind matches <k-kind>:
 
 =
 <k-kind> ::=
-	( <k-kind> ) |    ==> RP[1]
-	^<if-parsing-phrase-tokens> <k-kind-variable> |    ==> RP[2]
-	<if-parsing-phrase-tokens> <k-variable-definition> |    ==> RP[2]
-	<k-base-kind> |    ==> RP[1]
-	<k-irregular-kind-construction> |    ==> RP[1]
-	<k-kind-construction>									==> RP[1]
+	( <k-kind> ) |    ==> { pass 1 }
+	^<if-parsing-phrase-tokens> <k-kind-variable> |    ==> { pass 2 }
+	<if-parsing-phrase-tokens> <k-variable-definition> |    ==> { pass 2 }
+	<k-base-kind> |    ==> { pass 1 }
+	<k-irregular-kind-construction> |    ==> { pass 1 }
+	<k-kind-construction>									==> { pass 1 }
 
 @ And, as a convenient shorthand:
 
 =
 <k-kind-articled> ::=
-	<indefinite-article> <k-kind> |    ==> RP[2]
-	<k-kind>												==> RP[1]
+	<indefinite-article> <k-kind> |    ==> { pass 2 }
+	<k-kind>												==> { pass 1 }
 
 @ In phrase-token mode, kind variables are treated as formal symbols, not as
 the kinds which are their current values:
 
 =
 <k-variable-definition> ::=
-	<k-formal-kind-variable> |    ==> RP[1]
+	<k-formal-kind-variable> |    ==> { pass 1 }
 	<k-kind-of-kind> of kind <k-formal-kind-variable>	==> Kinds::variable_construction(R[2], RP[1])
 
 @ Some base kinds with one-word names have that word flagged with a direct
@@ -242,19 +242,19 @@ be more varied.
 
 =
 <k-single-material> ::=
-	( <k-single-material> ) |    ==> RP[1]
-	<article> <k-single-material> |    ==> RP[2]
-	<k-kind>								==> RP[1]
+	( <k-single-material> ) |    ==> { pass 1 }
+	<article> <k-single-material> |    ==> { pass 2 }
+	<k-kind>								==> { pass 1 }
 
 <k-optional-material> ::=
-	( <k-optional-material> ) |    ==> RP[1]
-	<article> <k-optional-material> |    ==> RP[2]
+	( <k-optional-material> ) |    ==> { pass 1 }
+	<article> <k-optional-material> |    ==> { pass 2 }
 	nothing |    ==> K_nil
 	action |    ==> K_action_name
-	<k-kind>								==> RP[1]
+	<k-kind>								==> { pass 1 }
 
 <k-tupled-material> ::=
-	( <k-tuple-list> ) |    ==> RP[1]
+	( <k-tuple-list> ) |    ==> { pass 1 }
 	nothing |    ==> K_nil
 	<k-single-material>						==> Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_nil)
 

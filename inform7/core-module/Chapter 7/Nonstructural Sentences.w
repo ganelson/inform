@@ -204,13 +204,13 @@ void Sentences::VPs::switch_dl_mode(parse_node *PN, int sense) {
 @ =
 <include-in-debugging-sentence-subject> ::=
 	only <debugging-log-request> |    ==> R[1] | ONLY_DLR; *XP = RP[1]
-	<debugging-log-request>				==> R[1]; *XP = RP[1]
+	<debugging-log-request>				==> { pass 1 }
 
 <debugging-log-request> ::=
-	everything |    ==> EVERYTHING_DLR
-	nothing |    ==> NOTHING_DLR
+	everything |    ==> { EVERYTHING_DLR, - }
+	nothing |    ==> { NOTHING_DLR, - }
 	<preform-nonterminal> |    ==> PREFORM_DLR; *XP = RP[1]
-	...									==> SOMETHING_DLR
+	...									==> { SOMETHING_DLR, - }
 
 =
 void Sentences::VPs::set_aspect_from_text(wording W, int new_state) {

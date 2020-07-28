@@ -147,7 +147,7 @@ for instance, we don't want to count the "in" from "fixed in place".
 <anl-in-tail> ::=
 	fixed in place *** |    ==> { advance Wordings::delta(WR[1], W) }
 	is/are/was/were/been/listed in *** |    ==> { advance Wordings::delta(WR[1], W) }
-	in ...									==> TRUE
+	in ...									==> { TRUE, - }
 
 @<Augment ANL with in clause@> =
 	action_name_list *anl = RP[1];

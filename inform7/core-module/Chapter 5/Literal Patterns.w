@@ -2495,18 +2495,18 @@ of alternatives each of which matches the following:
 
 =
 <specifies-sentence-subject> ::=
-	... ( {<literal-pattern-group-list>} ) |    ==> R[1]; *XP = RP[1]
+	... ( {<literal-pattern-group-list>} ) |    ==> { pass 1 }
 	<k-kind-articled> times <k-kind-articled> |    ==> TIMES_LPN; LP_left_kind = RP[1]; LP_right_kind = RP[2];
 	<s-type-expression> times <s-type-expression> |    ==> @<Issue PM_MultiplyingNonKOVs problem@>
 	...														==> 0; *XP = NULL
 
 <literal-pattern-group-list> ::=
 	<literal-pattern-group> <literal-pattern-group-tail> |    ==> R[1] | R[2]; @<Compose LPG lists@>;
-	<literal-pattern-group>						==> R[1]; *XP = RP[1]
+	<literal-pattern-group>						==> { pass 1 }
 
 <literal-pattern-group-tail> ::=
-	, and <literal-pattern-group-list> |    ==> R[1]; *XP = RP[1]
-	,/and <literal-pattern-group-list>			==> R[1]; *XP = RP[1]
+	, and <literal-pattern-group-list> |    ==> { pass 1 }
+	,/and <literal-pattern-group-list>			==> { pass 1 }
 
 <literal-pattern-group> ::=
 	singular |    ==> SINGULAR_LPN; *XP = NULL;
@@ -2557,7 +2557,7 @@ can't set both scaling and an equivalent, for instance.
 
 =
 <specifies-sentence-object> ::=
-	<kind-specified> <literal-pattern-specification-tail> |    ==> R[2]; *XP = RP[2]
+	<kind-specified> <literal-pattern-specification-tail> |    ==> { pass 2 }
 	<kind-specified>										==> 0; *XP = NULL
 
 <kind-specified> ::=
@@ -2566,7 +2566,7 @@ can't set both scaling and an equivalent, for instance.
 
 <literal-pattern-specification-tail> ::=
 	with parts <literal-pattern-part-list> |    ==> PARTS_LPC; *XP = RP[1];
-	<scaling-instruction> |    ==> SCALING_LPC
+	<scaling-instruction> |    ==> { SCALING_LPC, - }
 	<scaling-instruction> offset by <s-literal> |    ==> SCALING_LPC; LP_real_offset = latest_constructed_real; LP_offset_value = RP[2];
 	offset by <s-literal> |    ==> OFFSET_LPC; LP_real_offset = latest_constructed_real; LP_offset_value = RP[1];
 	equivalent to <s-literal>						==> EQUIVALENT_LPC; LP_real_equivalent = latest_constructed_real; LP_equivalent_value = RP[1];
@@ -2607,16 +2607,16 @@ by a bracketed list of up to three options in any order.
 
 <literal-pattern-part-option-list> ::=
 	<literal-pattern-part-option> <literal-pattern-part-option-tail> |    ==> R[1] | R[2]
-	<literal-pattern-part-option>				==> R[1]
+	<literal-pattern-part-option>				==> { pass 1 }
 
 <literal-pattern-part-option-tail> ::=
-	, and <literal-pattern-part-option-list> |    ==> R[1]
-	,/and <literal-pattern-part-option-list>	==> R[1]
+	, and <literal-pattern-part-option-list> |    ==> { pass 1 }
+	,/and <literal-pattern-part-option-list>	==> { pass 1 }
 
 <literal-pattern-part-option> ::=
-	optional |    ==> OPTIONAL_LSO
-	preamble optional |    ==> PREAMBLE_OPTIONAL_LSO
-	without leading zeros |    ==> WITHOUT_LEADING_ZEROS_LSO
+	optional |    ==> { OPTIONAL_LSO, - }
+	preamble optional |    ==> { PREAMBLE_OPTIONAL_LSO, - }
+	without leading zeros |    ==> { WITHOUT_LEADING_ZEROS_LSO, - }
 	......										==> @<Issue PM_BadLPPartOption problem@>
 
 @<Issue PM_BadLPPartOption problem@> =

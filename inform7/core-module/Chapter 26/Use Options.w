@@ -111,7 +111,7 @@ void UseOptions::new_use_option(parse_node *p) {
 	use <np-unparsed>			==> TRUE; *XP = RP[1]
 
 <use-translates-as-sentence-object> ::=
-	(- ### |    ==> TRUE
+	(- ### |    ==> { TRUE, - }
 	...							==> @<Issue PM_UseTranslatesNotI6 problem@>
 
 @<Issue PM_UseTranslatesNotI6 problem@> =
@@ -142,13 +142,13 @@ option name is taken from the |...| or |###| as appropriate:
 
 =
 <use-sentence-object> ::=
-	... of at least <cardinal-number-unlimited> |    ==> R[1]
-	### of <cardinal-number-unlimited> |    ==> -R[1]
-	<definite-article> ...	|    ==> { 0, - }
-	...												==> { 0, - }
+	... of at least <cardinal-number-unlimited> |  ==> { R[1], - }
+	### of <cardinal-number-unlimited> |           ==> { -R[1], - }
+	<definite-article> ...	|                      ==> { 0, - }
+	...                                            ==> { 0, - }
 
 <use-inter-pipeline> ::=
-	inter pipeline {<quoted-text>} 					==> TRUE
+	inter pipeline {<quoted-text>}                 ==> { TRUE, - }
 
 @ These are use option names which Inform provides special support for; it
 recognises the English names when they are defined by the Standard Rules. (So
@@ -324,8 +324,8 @@ those which need immediate action.
 =
 <immediate-use> ::=
 	... |    ==> TRUE; return preform_lookahead_mode; /* match only when looking ahead */
-	<immediate-use-entry> <immediate-use-tail> |    ==> TRUE
-	<immediate-use-entry>							==> TRUE
+	<immediate-use-entry> <immediate-use-tail> |    ==> { TRUE, - }
+	<immediate-use-entry>							==> { TRUE, - }
 
 <immediate-use-tail> ::=
 	, _and <immediate-use> |

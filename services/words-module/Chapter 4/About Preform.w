@@ -54,8 +54,8 @@ code of Inform by //inweb//. For example, the excerpt of grammar might have
 come from some (hypothetical) source code looking like this:
 = (text as Preform)
 	<competitor> ::=
-		<ordinal-number> runner |    ==> TRUE
-		runner no <cardinal-number>  ==> FALSE
+		<ordinal-number> runner |    ==> { TRUE, - }
+		runner no <cardinal-number>  ==> { FALSE, - }
 =
 Definitions like this one are scattered all across the Inform web, in order
 to keep them close to the code which relates to them. //inweb// tears this
@@ -83,8 +83,8 @@ the production, |R[2]| the second, and so on; |RP[1]| and so on hold the
 pointer results. For example, you could make a very crude calculator with:
 = (text as Preform)
 	<arithmetic> ::=
-		<cardinal-number> |                       ==> R[1]
-		<cardinal-number> plus <cardinal-number>  ==> R[1]+R[2]
+		<cardinal-number> |                       ==> { pass 1 }
+		<cardinal-number> plus <cardinal-number>  ==> { R[1]+R[2], - }
 =
 Here |R[1]+R[2]| produces a result by composition of the two results of
 the <cardinal-number> nontermimal which occurred when parsing the line.
@@ -95,14 +95,14 @@ Or consider the following refinement of <competitor>:
 = (text as Preform)
 	<competitor> ::=
 		the pacemaker |              ==> { 1, - }
-		<ordinal-number> runner |    ==> R[1]
-		runner no <cardinal-number>  ==> R[1]
+		<ordinal-number> runner |    ==> { pass 1 }
+		runner no <cardinal-number>  ==> { pass 1 }
 =
 Now "4th runner" matches with integer result 4, because <ordinal-number>
 matches "4th" with integer result 4, and that goes into |R[1]|. Similarly,
 "runner no 17" ends up with integer result 17. "The pacemaker" matches
 with integer result 1; here there are no intermediate results to make use
-of, so |R[...]| can't be used.
+of, so |pass| can't be used.
 
 @ The arrows and expressions are optional, and if they are omitted, then the
 result integer is set to the alternative number, counting up from 0. For
@@ -197,8 +197,8 @@ order in which they appear. For example, in
 = (text as Preform)
 	<competitor> ::=
 		the pacemaker |              ==> { 1, - }
-		<ordinal-number> runner |    ==> R[1]
-		runner no <cardinal-number>  ==> R[1]
+		<ordinal-number> runner |    ==> { pass 1 }
+		runner no <cardinal-number>  ==> { pass 1 }
 =
 the |the pacemaker| row is numbered 0, |<ordinal-number> runner| is numbered 1,
 and so on. Those "match numbers" have little outward significance, but help

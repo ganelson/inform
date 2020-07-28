@@ -157,8 +157,8 @@ a specific time of day, or when a named event occurs.
 
 =
 <event-rule-preamble> ::=
-	at <clock-time> |    ==> R[1]
-	at the time when ... |    ==> NO_FIXED_TIME
+	at <clock-time> |    ==> { pass 1 }
+	at the time when ... |    ==> { NO_FIXED_TIME, - }
 	at the time that ... |    ==> @<Issue PM_AtTimeThat problem@>
 	at ...								==> @<Issue PM_AtWithoutTime problem@>
 
