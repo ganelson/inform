@@ -366,15 +366,15 @@ The subject is simple: it has to be a scene name.
 
 =
 <scene-ends-sentence-subject> ::=
-	<scene-name> |    ==> TRUE; *XP = RP[1]
-	...								==> @<Issue PM_ScenesOnly problem@>
+	<scene-name> |  ==> { TRUE, RP[1] }
+	...             ==> @<Issue PM_ScenesOnly problem@>
 
 @<Issue PM_ScenesOnly problem@> =
-	*X = FALSE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesOnly),
 		"'begins when' and 'ends when' can only be applied to scenes",
 		"which have already been defined with a sentence like 'The final "
 		"confrontation is a scene.'");
+	==> { FALSE, NULL };
 
 @ The adverb, if present, always matches, since the scene end is created
 if it doesn't already exist:
@@ -389,14 +389,14 @@ in a different context, for instance, and could still be valid in that case.
 
 =
 <scene-ends-sentence-object> ::=
-	<text-including-a-calling> |    ==> @<Issue PM_ScenesDisallowCalled problem@>
-	play begins |    ==> { -1, - }
-	play ends |    ==> @<Issue PM_ScenesNotPlay problem@>
-	<scene-name> begins |    ==> 0; <<scene:named>> = RP[1]
-	<scene-name> ends |    ==> 1; <<scene:named>> = RP[1]
-	<scene-name> ends <scene-end-name> |    ==> R[2]; <<scene:named>> = RP[1]
-	<scene-name> ends ... |    ==> @<Issue PM_ScenesUnknownEnd problem@>
-	<s-condition>						==> -2; <<parse_node:cond>> = RP[1]
+	<text-including-a-calling> |  ==> @<Issue PM_ScenesDisallowCalled problem@>
+	play begins |                 ==> { -1, - }
+	play ends |                   ==> @<Issue PM_ScenesNotPlay problem@>
+	<scene-name> begins |         ==> 0; <<scene:named>> = RP[1]
+	<scene-name> ends |           ==> 1; <<scene:named>> = RP[1]
+	<scene-name> ends <scene-end-name> |  ==> R[2]; <<scene:named>> = RP[1]
+	<scene-name> ends ... |               ==> @<Issue PM_ScenesUnknownEnd problem@>
+	<s-condition>                         ==> -2; <<parse_node:cond>> = RP[1]
 
 @<Issue PM_ScenesDisallowCalled problem@> =
 	*X = -1;

@@ -26,9 +26,9 @@ The subject must match:
 
 =
 <defined-by-sentence-subject> ::=
-	kind/kinds of <s-type-expression> |    ==> TRUE; *XP = RP[1]
-	<s-type-expression> |    ==> TRUE; *XP = RP[1]
-	...									==> @<Issue PM_TableDefiningTheImpossible problem@>
+	kind/kinds of <s-type-expression> |  ==> { TRUE, RP[1] }
+	<s-type-expression> |                ==> { TRUE, RP[1] }
+	...                                  ==> @<Issue PM_TableDefiningTheImpossible problem@>
 
 @<Issue PM_TableDefiningTheImpossible problem@> =
 	*X = FALSE;
@@ -86,7 +86,7 @@ whatever is named in column 1.
 
 =
 <defined-by-sentence-object> ::=
-	defined by <np-as-object>			==> TRUE; *XP = RP[1]
+	defined by <np-as-object>  ==> { pass 1 }
 
 @ =
 int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
@@ -95,7 +95,6 @@ int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The colours are defined by Table 1." */
 		case ACCEPT_SMFT:
 			if (<defined-by-sentence-object>(OW)) {
-				if (<<r>> == FALSE) return FALSE;
 				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				Annotations::write_int(V, examine_for_ofs_ANNOT, TRUE);
 				parse_node *O = <<rp>>;

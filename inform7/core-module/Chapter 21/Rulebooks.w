@@ -673,23 +673,23 @@ of the two outer words and is discontiguous.
 
 =
 <rulebook-stem-inner> ::=
-	<indefinite-article> <rulebook-stem-inner-unarticled> |    ==> 0; *XP = RP[1]; <<place>> = R[2]
-	<definite-article> <rulebook-stem-inner-unarticled> |    ==> 0; *XP = RP[1]; <<place>> = R[2]
-	<rulebook-stem-inner-unarticled>						==> 0; *XP = NULL; <<place>> = R[1]
+	<indefinite-article> <rulebook-stem-inner-unarticled> |  ==> { 0, RP[1], <<place>> = R[2] }
+	<definite-article> <rulebook-stem-inner-unarticled> |    ==> { 0, RP[1], <<place>> = R[2] }
+	<rulebook-stem-inner-unarticled>                         ==> { 0, NULL, <<place>> = R[1] }
 
 <rulebook-stem-inner-unarticled> ::=
-	rule for/about/on <rulebook-stem-name> |    ==> MIDDLE_PLACEMENT; <<len>> = R[1]
-	rule <rulebook-stem-name> |    ==> MIDDLE_PLACEMENT; <<len>> = R[1]
-	first rule <rulebook-stem-name> |    ==> FIRST_PLACEMENT; <<len>> = R[1]
-	first <rulebook-stem-name> |    ==> FIRST_PLACEMENT; <<len>> = R[1]
-	last rule <rulebook-stem-name> |    ==> LAST_PLACEMENT; <<len>> = R[1]
-	last <rulebook-stem-name> |    ==> LAST_PLACEMENT; <<len>> = R[1]
-	<rulebook-stem-name>						==> MIDDLE_PLACEMENT; <<len>> = R[1]
+	rule for/about/on <rulebook-stem-name> |  ==> { MIDDLE_PLACEMENT, -, <<len>> = R[1] }
+	rule <rulebook-stem-name> |               ==> { MIDDLE_PLACEMENT, -, <<len>> = R[1] }
+	first rule <rulebook-stem-name> |         ==> { FIRST_PLACEMENT, -, <<len>> = R[1] }
+	first <rulebook-stem-name> |              ==> { FIRST_PLACEMENT, -, <<len>> = R[1] }
+	last rule <rulebook-stem-name> |          ==> { LAST_PLACEMENT, -, <<len>> = R[1] }
+	last <rulebook-stem-name> |               ==> { LAST_PLACEMENT, -, <<len>> = R[1] }
+	<rulebook-stem-name>                      ==> { MIDDLE_PLACEMENT, -, <<len>> = R[1] }
 
 <rulebook-stem-name> ::=
-	{when ... begins} |    ==> 2; <<rulebook:m>> = built_in_rulebooks[WHEN_SCENE_BEGINS_RB] /* scenes\_plugin */
-	{when ... ends} |    ==> 2; <<rulebook:m>> = built_in_rulebooks[WHEN_SCENE_ENDS_RB] /* scenes\_plugin */
-	...											==> 0; <<rulebook:m>> = NULL
+	{when ... begins} |  ==> { 2, -, <<rulebook:m>> = built_in_rulebooks[WHEN_SCENE_BEGINS_RB] }
+	{when ... ends} |    ==> { 2, -, <<rulebook:m>> = built_in_rulebooks[WHEN_SCENE_ENDS_RB] }
+	...                  ==> { 0, -, <<rulebook:m>> = NULL }
 
 @ =
 rulebook_match Rulebooks::rb_match_from_description(wording W) {

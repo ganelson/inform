@@ -227,7 +227,7 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 	anyone |    ==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_person);
 	anywhere |    ==> ANY_STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(K_room);
 	something related by reversed <relation-name> |    ==> RELATED_GTC; *XP = BinaryPredicates::get_reversal(RP[1])
-	something related by <relation-name> |    ==> RELATED_GTC; *XP = RP[1]
+	something related by <relation-name> |    ==> { RELATED_GTC, RP[1] }
 	something related by ... |    ==> @<Issue PM_GrammarBadRelation problem@>
 	<standard-grammar-token> |    ==> R[1]
 	<definite-article> <k-kind> |    ==> STUFF_GTC; <<parse_node:s>> = Specifications::from_kind(RP[2])

@@ -330,7 +330,7 @@ int PL::EPSMap::index_map_with_SMF(int task, parse_node *V, wording *NPs) {
 
 =
 <direction-name> ::=
-	<instance-of-object>		==> 0; *XP = RP[1]; if (Instances::of_kind(RP[1], K_direction) == FALSE) return FALSE;
+	<instance-of-object>		==> { pass 1 }; if (Instances::of_kind(RP[1], K_direction) == FALSE) return FALSE;
 
 @ The subject noun phrase of sentences like this:
 

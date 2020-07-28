@@ -209,7 +209,7 @@ void Sentences::VPs::switch_dl_mode(parse_node *PN, int sense) {
 <debugging-log-request> ::=
 	everything |    ==> { EVERYTHING_DLR, - }
 	nothing |    ==> { NOTHING_DLR, - }
-	<preform-nonterminal> |    ==> PREFORM_DLR; *XP = RP[1]
+	<preform-nonterminal> |    ==> { PREFORM_DLR, RP[1] }
 	...									==> { SOMETHING_DLR, - }
 
 =
@@ -427,7 +427,7 @@ new action.
 	inform 6							==> TRUE; *XP = NULL;
 
 <translation-target-language> ::=
-	<natural-language>					==> TRUE; *XP = RP[1];
+	<natural-language>					==> { TRUE, RP[1] }
 
 @ =
 int Sentences::VPs::translates_into_unicode_as_SMF(int task, parse_node *V, wording *NPs) {

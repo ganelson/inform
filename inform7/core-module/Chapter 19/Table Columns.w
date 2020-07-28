@@ -230,9 +230,9 @@ what looks like text into grammar for parsing.
 =
 <table-column-heading> ::=
 	( *** ) |    ==> @<Issue PM_TableColumnBracketed problem@>
-	<s-table-column-name> ( ... ) |    ==> EXISTING_TC; *XP = RP[1]; <<k1>> = Wordings::first_wn(WR[1]); <<k2>> = Wordings::last_wn(WR[1]);
+	<s-table-column-name> ( ... ) |    ==> { EXISTING_TC, RP[1] }; <<k1>> = Wordings::first_wn(WR[1]); <<k2>> = Wordings::last_wn(WR[1]);
 	<table-column-heading-unbracketed> ( ... ) |    ==> R[1]; if (R[1] != NEW_TC_PROBLEM) *X = NEW_TC_WITH_KIND; <<k1>> = Wordings::first_wn(WR[1]); <<k2>> = Wordings::last_wn(WR[1]);
-	<s-table-column-name> |    ==> EXISTING_TC; *XP = RP[1]; <<k1>> = -1; <<k2>> = -1;
+	<s-table-column-name> |    ==> { EXISTING_TC, RP[1] }; <<k1>> = -1; <<k2>> = -1;
 	<table-column-heading-unbracketed>				==> { pass 1 }
 
 <table-column-heading-unbracketed> ::=

@@ -72,7 +72,7 @@ blorb_sound *PL::Sounds::new_blorb_sound(instance *nc) {
 	<new-sound-sentence-object-unarticled>							==> { pass 1 }
 
 <new-sound-sentence-object-unarticled> ::=
-	file <np-unparsed>												==> TRUE; *XP = RP[1]
+	file <np-unparsed>												==> { TRUE, RP[1] }
 
 @ =
 int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {

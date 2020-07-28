@@ -127,7 +127,7 @@ letters or digits, with the first being a letter.
 	<new-file-sentence-object-unarticled>							==> { pass 1 }
 
 <new-file-sentence-object-unarticled> ::=
-	called <np-unparsed>												==> TRUE; *XP = RP[1];
+	called <np-unparsed>												==> { TRUE, RP[1] }
 
 @ =
 int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {

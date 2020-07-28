@@ -851,7 +851,7 @@ us issue more contextual problem messages.
 <table-cell> ::=
 	<table-cell-blank> |    ==> @<Make anomalous entry for blank@>
 	<k-kind-articled> |    ==> @<Make anomalous entry for kind@>
-	<s-named-constant> |    ==> NAMED_CONSTANT_ENTRY; *XP = RP[1]
+	<s-named-constant> |    ==> { NAMED_CONSTANT_ENTRY, RP[1] }
 	<s-global-variable>	|    ==> @<Issue PM_TablePlayerEntry or C20TableVariableEntry problem@>
 	<table-cell-value> |    ==> { pass 1 }
 	<list-of-double-quotes> |    ==> @<Make anomalous entry for text to be understood@>
@@ -861,12 +861,12 @@ us issue more contextual problem messages.
 	--
 
 <table-cell-value> ::=
-	the action of <s-constant-action> |    ==> ACTION_TABLE_ENTRY; *XP = RP[1]
-	<s-constant-action> |    ==> ACTION_TABLE_ENTRY; *XP = RP[1]
+	the action of <s-constant-action> |    ==> { ACTION_TABLE_ENTRY, RP[1] }
+	<s-constant-action> |    ==> { ACTION_TABLE_ENTRY, RP[1] }
 	the action of <s-explicit-action> |    ==> @<Issue PM_NonconstantActionInTable problem@>
 	<s-explicit-action> |    ==> @<Issue PM_NonconstantActionInTable problem@>
 	<instance-of-non-object> |    ==> INSTANCE_TABLE_ENTRY; *XP = Rvalues::from_instance(RP[1])
-	<s-type-expression>					==> SPEC_TABLE_ENTRY; *XP = RP[1]
+	<s-type-expression>					==> { SPEC_TABLE_ENTRY, RP[1] }
 
 <list-of-double-quotes> ::=
 	<quoted-text> or <list-of-double-quotes> |

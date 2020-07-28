@@ -47,8 +47,8 @@ optionally be used.)
 
 =
 <listed-in-sentence-object> ::=
-	listed <np-unparsed> |    ==> TRUE; *XP = RP[1];
-	not listed <np-unparsed>					==> FALSE; *XP = RP[1];
+	listed <np-unparsed> |    ==> { TRUE, RP[1] }
+	not listed <np-unparsed>					==> { FALSE, RP[1] }
 
 @ =
 int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
@@ -84,7 +84,7 @@ following won't pick up many false positives.
 <nounphrase-rule-list> ::=
 	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
 	<nounphrase-rule> <np-rule-tail> |    ==> 0; *XP = Diagrams::new_AND(R[2], RP[1], RP[2])
-	<nounphrase-rule>								==> 0; *XP = RP[1]
+	<nounphrase-rule>								==> { 0, RP[1] }
 
 <np-rule-tail> ::=
 	, {_and} <nounphrase-rule-list> |    ==> Wordings::first_wn(W); *XP= RP[1]
@@ -97,9 +97,9 @@ following won't pick up many false positives.
 
 =
 <substitutes-for-sentence-object> ::=
-	<nounphrase-rule> |    ==> NOT_APPLICABLE; *XP = RP[1];
-	<nounphrase-rule> if/when <np-unparsed> |    ==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	<nounphrase-rule> unless <np-unparsed>		==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	<nounphrase-rule> |    ==> { NOT_APPLICABLE, RP[1] }
+	<nounphrase-rule> if/when <np-unparsed> |    ==> { TRUE, RP[1] }; ((parse_node *) RP[1])->next = RP[2];
+	<nounphrase-rule> unless <np-unparsed>		==> { FALSE, RP[1] }; ((parse_node *) RP[1])->next = RP[2];
 
 @ =
 int Rules::Placement::substitutes_for_SMF(int task, parse_node *V, wording *NPs) {
@@ -139,11 +139,11 @@ subject and object NPs.
 
 =
 <substitutes-for-sentence-subject> ::=
-	<rule-name> |    ==> TRUE; *XP = RP[1];
+	<rule-name> |    ==> { TRUE, RP[1] }
 	...														==> @<Issue PM_NoSuchRuleExists problem@>
 
 <substitutes-for-sentence-object-inner> ::=
-	<rule-name> |    ==> TRUE; *XP = RP[1];
+	<rule-name> |    ==> { TRUE, RP[1] }
 	...														==> @<Issue PM_NoSuchRuleExists problem@>
 
 @<Issue PM_NoSuchRuleExists problem@> =
@@ -183,7 +183,7 @@ eventually match <spec-condition>.
 	nothing
 
 <does-nothing-sentence-subject> ::=
-	<rule-name> |    ==> TRUE; *XP = RP[1];
+	<rule-name> |    ==> { TRUE, RP[1] }
 	...														==> @<Issue PM_NoSuchRuleExists problem@>
 
 @ =
@@ -284,7 +284,7 @@ The subject noun phrase is an articled list, each entry of which must match:
 
 =
 <listed-in-sentence-subject> ::=
-	<rule-name> |    ==> TRUE; *XP = RP[1];
+	<rule-name> |    ==> { TRUE, RP[1] }
 	...											==> FALSE; @<Issue PM_NoSuchRuleExists problem@>
 
 @ The object NP is more flexible:
@@ -310,7 +310,7 @@ The subject noun phrase is an articled list, each entry of which must match:
 	...											==> @<Issue PM_ImproperRulePlacement problem@>
 
 <destination-rulebook> ::=
-	<rulebook-name> |    ==> 0; *XP = RP[1];
+	<rulebook-name> |    ==> { 0, RP[1] }
 	...											==> @<Issue PM_NoSuchRulebookPlacement problem@>
 
 @

@@ -712,7 +712,7 @@ void PL::Actions::compile_action_name_var_creators(void) {
 	<new-action-sentence-object-unarticled>							==> { pass 1 }
 
 <new-action-sentence-object-unarticled> ::=
-	action <nounphrase-actionable> |    ==> TRUE; *XP = RP[1]
+	action <nounphrase-actionable> |    ==> { TRUE, RP[1] }
 	action								==> @<Issue PM_BadActionDeclaration problem@>
 
 @<Issue PM_BadActionDeclaration problem@> =

@@ -2495,25 +2495,25 @@ of alternatives each of which matches the following:
 
 =
 <specifies-sentence-subject> ::=
-	... ( {<literal-pattern-group-list>} ) |    ==> { pass 1 }
-	<k-kind-articled> times <k-kind-articled> |    ==> TIMES_LPN; LP_left_kind = RP[1]; LP_right_kind = RP[2];
-	<s-type-expression> times <s-type-expression> |    ==> @<Issue PM_MultiplyingNonKOVs problem@>
-	...														==> 0; *XP = NULL
+	... ( {<literal-pattern-group-list>} ) |         ==> { pass 1 }
+	<k-kind-articled> times <k-kind-articled> |      ==> TIMES_LPN; LP_left_kind = RP[1]; LP_right_kind = RP[2];
+	<s-type-expression> times <s-type-expression> |  ==> @<Issue PM_MultiplyingNonKOVs problem@>
+	... ==> { 0, NULL }
 
 <literal-pattern-group-list> ::=
-	<literal-pattern-group> <literal-pattern-group-tail> |    ==> R[1] | R[2]; @<Compose LPG lists@>;
-	<literal-pattern-group>						==> { pass 1 }
+	<literal-pattern-group> <literal-pattern-group-tail> |  ==> { R[1] | R[2], - }; @<Compose LPG lists@>;
+	<literal-pattern-group>                                 ==> { pass 1 }
 
 <literal-pattern-group-tail> ::=
-	, and <literal-pattern-group-list> |    ==> { pass 1 }
-	,/and <literal-pattern-group-list>			==> { pass 1 }
+	, and <literal-pattern-group-list> |  ==> { pass 1 }
+	,/and <literal-pattern-group-list>    ==> { pass 1 }
 
 <literal-pattern-group> ::=
-	singular |    ==> SINGULAR_LPN; *XP = NULL;
-	plural |    ==> PLURAL_LPN; *XP = NULL;
-	<literal-pattern-group-name> |    ==> IN_LPN; *XP = LiteralPatterns::new_lpn(EMPTY_WORDING, RP[1]);
-	in ...... |    ==> IN_LPN; *XP = LiteralPatterns::new_lpn(W, NULL);
-	......										==> @<Issue PM_BadLPNameOption problem@>
+	singular |                      ==> { SINGULAR_LPN, NULL }
+	plural |                        ==> { PLURAL_LPN, NULL }
+	<literal-pattern-group-name> |  ==> { IN_LPN, LiteralPatterns::new_lpn(EMPTY_WORDING, RP[1]) }
+	in ...... |                     ==> { IN_LPN, LiteralPatterns::new_lpn(W, NULL) }
+	......                          ==> @<Issue PM_BadLPNameOption problem@>
 
 @<Compose LPG lists@> =
 	*XP = RP[1];
@@ -2521,15 +2521,14 @@ of alternatives each of which matches the following:
 	else if (RP[2]) ((literal_pattern_name *) RP[1])->next_with_rp = RP[2];
 
 @<Issue PM_MultiplyingNonKOVs problem@> =
-	*X = ABANDON_LPN; *XP = NULL;
 	if (preform_lookahead_mode == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultiplyingNonKOVs),
 			"only kinds of value can be multiplied here",
 			"and only in a sentence like 'A length times a length specifies an area.'");
 	}
+	==> { ABANDON_LPN, NULL }
 
 @<Issue PM_BadLPNameOption problem@> =
-	*X = ABANDON_LPN; *XP = NULL;
 	if (preform_lookahead_mode == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
@@ -2540,6 +2539,7 @@ of alternatives each of which matches the following:
 			"'plural' or 'in ...'.");
 		Problems::issue_problem_end();
 	}
+	==> { ABANDON_LPN, NULL }
 
 @<Parse the object noun phrase of the specifies sentence@> =
 	LP_offset_value = NULL;
@@ -2557,15 +2557,15 @@ can't set both scaling and an equivalent, for instance.
 
 =
 <specifies-sentence-object> ::=
-	<kind-specified> <literal-pattern-specification-tail> |    ==> { pass 2 }
-	<kind-specified>										==> 0; *XP = NULL
+	<kind-specified> <literal-pattern-specification-tail> |  ==> { pass 2 }
+	<kind-specified>                                         ==> { 0, NULL }
 
 <kind-specified> ::=
-	<k-kind-articled> |    ==> 0; LP_kind_specified = RP[1];
-	...														==> @<Issue PM_LPNotKOV problem@>
+	<k-kind-articled> |  ==> { 0, NULL }; LP_kind_specified = RP[1];
+	...                  ==> @<Issue PM_LPNotKOV problem@>
 
 <literal-pattern-specification-tail> ::=
-	with parts <literal-pattern-part-list> |    ==> PARTS_LPC; *XP = RP[1];
+	with parts <literal-pattern-part-list> |    ==> { PARTS_LPC, RP[1] }
 	<scaling-instruction> |    ==> { SCALING_LPC, - }
 	<scaling-instruction> offset by <s-literal> |    ==> SCALING_LPC; LP_real_offset = latest_constructed_real; LP_offset_value = RP[2];
 	offset by <s-literal> |    ==> OFFSET_LPC; LP_real_offset = latest_constructed_real; LP_offset_value = RP[1];
@@ -2596,14 +2596,14 @@ by a bracketed list of up to three options in any order.
 
 =
 <literal-pattern-part-list> ::=
-	<literal-pattern-part> , and <literal-pattern-part-list> |    ==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
-	<literal-pattern-part> , <literal-pattern-part-list> |    ==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
-	<literal-pattern-part> and <literal-pattern-part-list> |    ==> 0; *XP = RP[1]; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
-	<literal-pattern-part>						==> 0; *XP = RP[1]
+	<literal-pattern-part> , and <literal-pattern-part-list> |    ==> { 0, RP[1] }; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
+	<literal-pattern-part> , <literal-pattern-part-list> |    ==> { 0, RP[1] }; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
+	<literal-pattern-part> and <literal-pattern-part-list> |    ==> { 0, RP[1] }; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
+	<literal-pattern-part>						==> { 0, RP[1] }
 
 <literal-pattern-part> ::=
-	<np-unparsed-bal> ( <literal-pattern-part-option-list> ) |    ==> 0; *XP = RP[1]; if (RP[1]) Annotations::write_int(*XP, lpe_options_ANNOT, R[2]);
-	<np-unparsed-bal>								==> 0; *XP = RP[1]
+	<np-unparsed-bal> ( <literal-pattern-part-option-list> ) |    ==> { 0, RP[1] }; if (RP[1]) Annotations::write_int(*XP, lpe_options_ANNOT, R[2]);
+	<np-unparsed-bal>								==> { 0, RP[1] }
 
 <literal-pattern-part-option-list> ::=
 	<literal-pattern-part-option> <literal-pattern-part-option-tail> |    ==> R[1] | R[2]

@@ -80,7 +80,7 @@ blorb_figure *PL::Figures::new_blorb_figure(instance *nc) {
 	<new-figure-sentence-object-unarticled>							==> { pass 1 }
 
 <new-figure-sentence-object-unarticled> ::=
-	file <np-unparsed>												==> TRUE; *XP = RP[1]
+	file <np-unparsed>												==> { TRUE, RP[1] }
 
 @ =
 int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {

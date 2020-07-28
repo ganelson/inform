@@ -523,17 +523,17 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 
 =
 <to-return-data> ::=
-	to {decide yes/no} |    ==> { DEC_RANN, - }
-	to {decide on ...} |    ==> { DEV_RANN, - }
-	to decide whether/if the ... |    ==>	TOC_RANN
-	to decide whether/if ... |    ==> { TOC_RANN, - }
-	to decide what/which <return-kind> is the ... |    ==> TOV_RANN; *XP = RP[1]
-	to decide what/which <return-kind> is ... |    ==> TOV_RANN; *XP = RP[1]
-	to ...											==> { TO_RANN, - }
+	to {decide yes/no} |                             ==> { DEC_RANN, NULL }
+	to {decide on ...} |                             ==> { DEV_RANN, NULL }
+	to decide whether/if the ... |                   ==> { TOC_RANN, NULL }
+	to decide whether/if ... |                       ==> { TOC_RANN, NULL }
+	to decide what/which <return-kind> is the ... |  ==> { TOV_RANN, RP[1] }
+	to decide what/which <return-kind> is ... |      ==> { TOV_RANN, RP[1] }
+	to ...                                           ==> { TO_RANN,  NULL }
 
 <return-kind> ::=
-	<k-kind-for-template> |    ==> 0; *XP = RP[1]
-	...												==> @<Issue PM_UnknownValueToDecide problem@>
+	<k-kind-for-template> |                          ==> { pass 1 }
+	...                                              ==> @<Issue PM_UnknownValueToDecide problem@>
 
 @<Issue PM_UnknownValueToDecide problem@> =
 	*XP = K_number;
@@ -680,10 +680,10 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 	...... - storage |    ==> TRUE; *XP = Specifications::from_kind(K_value); Node::set_text(*XP, WR[2]); <<token-construct>> = STORAGE_PT_CONSTRUCT
 	...... - a table-reference |    ==> TRUE; *XP = Specifications::from_kind(K_value); Node::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
 	...... - table-reference |    ==> TRUE; *XP = Specifications::from_kind(K_value); Node::set_text(*XP, WR[2]); <<token-construct>> = TABLE_REFERENCE_PT_CONSTRUCT
-	...... - <s-phrase-token-type> |    ==> TRUE; *XP = RP[1]; <<token-construct>> = STANDARD_PT_CONSTRUCT
-	...... - <s-kind-as-name-token> |    ==> TRUE; *XP = RP[1]; <<token-construct>> = KIND_NAME_PT_CONSTRUCT
+	...... - <s-phrase-token-type> |    ==> { TRUE, RP[1], <<token-construct>> = STANDARD_PT_CONSTRUCT }
+	...... - <s-kind-as-name-token> |    ==> { TRUE, RP[1], <<token-construct>> = KIND_NAME_PT_CONSTRUCT }
 	...... - ...... |    ==> @<Issue PM_BadTypeIndication problem@>
-	<s-kind-as-name-token> |    ==> FALSE; *XP = RP[1]; <<token-construct>> = KIND_NAME_PT_CONSTRUCT
+	<s-kind-as-name-token> |    ==> { FALSE, RP[1], <<token-construct>> = KIND_NAME_PT_CONSTRUCT }
 	......																==> @<Issue PM_TokenMisunderstood problem@>
 
 @<Issue PM_TokenWithEmptyBrackets problem@> =

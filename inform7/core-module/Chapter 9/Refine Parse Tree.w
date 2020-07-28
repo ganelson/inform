@@ -392,7 +392,7 @@ property of something.
 	in the presence of ... |    ==> { advance Wordings::delta(WR[1], W) }
 	... that varies |    ==> { advance Wordings::delta(WR[1], W) }
 	... variable |    ==> { advance Wordings::delta(WR[1], W) }
-	{<property-name-v>} of ...		==> 0; *XP = RP[1]
+	{<property-name-v>} of ...		==> { 0, RP[1] }
 
 @<Act on a newly-discovered property of something@> =
 	property *prn = NULL;
@@ -464,10 +464,10 @@ a noun instead of a condition testing the current action.
 
 =
 <assertion-np-as-value> ::=
-	variable |    ==> @<Issue PM_VagueVariable problem@>
-	action of <s-explicit-action>	|    ==> TRUE; *XP = RP[1]
-	<s-descriptive-type-expression> |    ==> TRUE; *XP = RP[1]
-	<s-global-variable>							==> TRUE; *XP = RP[1]
+	variable |                         ==> @<Issue PM_VagueVariable problem@>
+	action of <s-explicit-action>	|  ==> { TRUE, RP[1] }
+	<s-descriptive-type-expression> |  ==> { TRUE, RP[1] }
+	<s-global-variable>                ==> { TRUE, RP[1] }
 
 @<Parse the noun phrase as a value@> =
 	if (<assertion-np-as-value>(Node::get_text(p))) {

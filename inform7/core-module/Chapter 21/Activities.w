@@ -451,17 +451,17 @@ it mentions no activities.
 
 =
 <run-time-context> ::=
-	not <activity-list-unnegated> |    ==> 0; *XP = RP[1]; @<Flip the activity list parities@>;
-	<activity-list-unnegated>						==> 0; *XP = RP[1]
+	not <activity-list-unnegated> |    ==> { 0, RP[1] }; @<Flip the activity list parities@>;
+	<activity-list-unnegated>						==> { 0, RP[1] }
 
 <activity-list-unnegated> ::=
 	... |    ==> 0; return preform_lookahead_mode; /* match only when looking ahead */
 	<activity-list-entry> <activity-tail> |    ==> @<Join the activity lists@>;
-	<activity-list-entry>							==> 0; *XP = RP[1]
+	<activity-list-entry>							==> { 0, RP[1] }
 
 <activity-tail> ::=
-	, _or <run-time-context> |    ==> 0; *XP = RP[1]
-	_,/or <run-time-context>						==> 0; *XP = RP[1]
+	, _or <run-time-context> |    ==> { 0, RP[1] }
+	_,/or <run-time-context>						==> { 0, RP[1] }
 
 <activity-list-entry> ::=
 	<activity-name> |    ==> @<Make one-entry AL without operand@>
@@ -482,7 +482,7 @@ values, of the kind to which the activity applies.
 <activity-operand> ::=
 	something/anything |    ==> FALSE; *XP = Specifications::new_UNKNOWN(W);
 	something/anything else |    ==> FALSE; *XP = Specifications::new_UNKNOWN(W);
-	<s-type-expression-or-value>					==> TRUE; *XP = RP[1]
+	<s-type-expression-or-value>					==> { TRUE, RP[1] }
 
 @<Flip the activity list parities@> =
 	activity_list *al = *XP;

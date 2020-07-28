@@ -121,21 +121,21 @@ overlapping with this, and they need to match.
 
 =
 <control-structure-phrase> ::=
-	if ... is begin |               ==> 0; *XP = switch_CSP
-	if ... is |                     ==> 0; *XP = switch_CSP
-	if/unless ... |                 ==> 0; *XP = if_CSP
-	repeat ... |                    ==> 0; *XP = repeat_CSP
-	while ... |                     ==> 0; *XP = while_CSP
-	else/otherwise |                ==> 0; *XP = otherwise_CSP
-	else/otherwise if/unless ... |  ==> 0; *XP = otherwise_if_CSP
-	else/otherwise ... |            ==> 0; *XP = abbreviated_otherwise_CSP
-	-- otherwise |                  ==> 0; *XP = default_case_CSP
-	-- ...                          ==> 0; *XP = case_CSP
+	if ... is begin |               ==> { -, switch_CSP }
+	if ... is |                     ==> { -, switch_CSP }
+	if/unless ... |                 ==> { -, if_CSP }
+	repeat ... |                    ==> { -, repeat_CSP }
+	while ... |                     ==> { -, while_CSP }
+	else/otherwise |                ==> { -, otherwise_CSP }
+	else/otherwise if/unless ... |  ==> { -, otherwise_if_CSP }
+	else/otherwise ... |            ==> { -, abbreviated_otherwise_CSP }
+	-- otherwise |                  ==> { -, default_case_CSP }
+	-- ...                          ==> { -, case_CSP }
 
 <end-control-structure-phrase> ::=
-	end if/unless |                 ==> 0; *XP = if_CSP
-	end while |                     ==> 0; *XP = while_CSP
-	end repeat                      ==> 0; *XP = repeat_CSP
+	end if/unless |                 ==> { -, if_CSP }
+	end while |                     ==> { -, while_CSP }
+	end repeat                      ==> { -, repeat_CSP }
 
 <other-significant-phrase> ::=
 	say ... |                       ==> { SAY_SIGF, - }

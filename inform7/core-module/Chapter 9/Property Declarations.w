@@ -158,23 +158,23 @@ which might take forms such as:
 
 =
 <can-be-sentence-object> ::=
-	either <np-alternative-list> ( <condition-name> ) |    ==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	<np-alternative-list> ( <condition-name> ) |    ==> FALSE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
-	either <np-alternative-list> |    ==> TRUE; *XP = RP[1]
-	<np-alternative-list>								==> FALSE; *XP = RP[1]
+	either <np-alternative-list> ( <condition-name> ) |  ==> { TRUE, RP[1] }; ((parse_node *) RP[1])->next = RP[2];
+	<np-alternative-list> ( <condition-name> ) |         ==> { FALSE, RP[1] }; ((parse_node *) RP[1])->next = RP[2];
+	either <np-alternative-list> |                       ==> { TRUE, RP[1] }
+	<np-alternative-list>                                ==> { FALSE, RP[1] }
 
 <condition-name> ::=
-	this is <condition-name-inner> |    ==> 0; *XP = RP[1]
-	<condition-name-inner>					==> 0; *XP = RP[1]
+	this is <condition-name-inner> |  ==> { 0, RP[1] }
+	<condition-name-inner>            ==> { 0, RP[1] }
 
 <condition-name-inner> ::=
-	<article> <condition-name-innermost> |    ==> 0; *XP = RP[2]
-	<possessive-third-person> <condition-name-innermost> |    ==> 0; *XP = RP[2]
-	<condition-name-innermost>								==> 0; *XP = RP[1]
+	<article> <condition-name-innermost> |                  ==> { 0, RP[2] }
+	<possessive-third-person> <condition-name-innermost> |  ==> { 0, RP[2] }
+	<condition-name-innermost>                              ==> { 0, RP[1] }
 
 <condition-name-innermost> ::=
-	<np-unparsed> property |    ==> 0; *XP = RP[1]
-	<np-unparsed>							==> 0; *XP = RP[1]
+	<np-unparsed> property |  ==> { 0, RP[1] }
+	<np-unparsed>             ==> { 0, RP[1] }
 
 @<An optional condition name can only be given to a condition@> =
 	if ((Wordings::nonempty(CNW)) && (count < 3)) {

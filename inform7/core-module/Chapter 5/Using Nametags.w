@@ -117,8 +117,8 @@ and is a somewhat provisional feature for now.
 
 =
 <translates-into-nl-sentence-subject> ::=
-	<k-kind> |    ==> TRANS_KIND; *XP = RP[1]
-	<instance>						==> TRANS_INSTANCE; *XP = RP[1]
+	<k-kind> |    ==> { TRANS_KIND, RP[1] }
+	<instance>						==> { TRANS_INSTANCE, RP[1] }
 
 @ =
 void UseNouns::nl_translates(parse_node *pn) {

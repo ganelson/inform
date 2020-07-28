@@ -66,42 +66,42 @@ phrase tokens.
 
 =
 <k-kind-as-name-token> ::=
-	( <k-kind-as-name-token> ) |    ==> { pass 1 }
-	name of kind of <k-kind-abbreviating> |    ==> { pass 1 }
-	name of kind <k-kind-abbreviating> |    ==> { pass 1 }
-	name of kind of ... |    ==> { -, NULL }
-	name of kind ...							==> { -, NULL }
+	( <k-kind-as-name-token> ) |             ==> { pass 1 }
+	name of kind of <k-kind-abbreviating> |  ==> { pass 1 }
+	name of kind <k-kind-abbreviating> |     ==> { pass 1 }
+	name of kind of ... |                    ==> { -, NULL }
+	name of kind ...                         ==> { -, NULL }
 
 <k-kind-abbreviating> ::=
-	( <k-kind-abbreviating> ) |    ==> { pass 1 }
-	<k-kind-of-kind> <k-formal-kind-variable> |    ==> Kinds::variable_construction(R[2], RP[1])
-	<k-kind>									==> { pass 1 }
+	( <k-kind-abbreviating> ) |                  ==> { pass 1 }
+	<k-kind-of-kind> <k-formal-kind-variable> |  ==> { -, Kinds::variable_construction(R[2], RP[1]) }
+	<k-kind>                                     ==> { pass 1 }
 
 @ So now we can begin properly. Every valid kind matches <k-kind>:
 
 =
 <k-kind> ::=
-	( <k-kind> ) |    ==> { pass 1 }
-	^<if-parsing-phrase-tokens> <k-kind-variable> |    ==> { pass 2 }
-	<if-parsing-phrase-tokens> <k-variable-definition> |    ==> { pass 2 }
-	<k-base-kind> |    ==> { pass 1 }
-	<k-irregular-kind-construction> |    ==> { pass 1 }
-	<k-kind-construction>									==> { pass 1 }
+	( <k-kind> ) |                                        ==> { pass 1 }
+	^<if-parsing-phrase-tokens> <k-kind-variable> |       ==> { pass 2 }
+	<if-parsing-phrase-tokens> <k-variable-definition> |  ==> { pass 2 }
+	<k-base-kind> |                                       ==> { pass 1 }
+	<k-irregular-kind-construction> |                     ==> { pass 1 }
+	<k-kind-construction>                                 ==> { pass 1 }
 
 @ And, as a convenient shorthand:
 
 =
 <k-kind-articled> ::=
-	<indefinite-article> <k-kind> |    ==> { pass 2 }
-	<k-kind>												==> { pass 1 }
+	<indefinite-article> <k-kind> |  ==> { pass 2 }
+	<k-kind>                         ==> { pass 1 }
 
 @ In phrase-token mode, kind variables are treated as formal symbols, not as
 the kinds which are their current values:
 
 =
 <k-variable-definition> ::=
-	<k-formal-kind-variable> |    ==> { pass 1 }
-	<k-kind-of-kind> of kind <k-formal-kind-variable>	==> Kinds::variable_construction(R[2], RP[1])
+	<k-formal-kind-variable> |                         ==> { pass 1 }
+	<k-kind-of-kind> of kind <k-formal-kind-variable>  ==> { -, Kinds::variable_construction(R[2], RP[1]) }
 
 @ Some base kinds with one-word names have that word flagged with a direct
 pointer to the kind, for speed of parsing. Names of base kinds, such as
@@ -157,20 +157,31 @@ And similarly for the others here, except "either/or property", which is a
 
 =
 <k-irregular-kind-construction> ::=
-	indexed text | 				==> K_text
-	indexed texts | 			==> K_text
-	stored action | 			==> K_stored_action; if (K_stored_action == NULL) return FALSE;
-	stored actions | 			==> K_stored_action; if (K_stored_action == NULL) return FALSE;
-	object-based rulebook producing <indefinite-article> <k-kind> |    ==> Kinds::binary_construction(CON_rulebook, K_object, RP[2])
-	object-based rulebook producing <k-kind> |    ==> Kinds::binary_construction(CON_rulebook, K_object, RP[1])
-	object-based rulebook |    ==> Kinds::binary_construction(CON_rulebook, K_object, K_nil)
-	action-based rulebook |    ==> Kinds::binary_construction(CON_rulebook, K_action_name, K_nil); if (K_action_name == NULL) return FALSE;
-	object-based rule producing <indefinite-article> <k-kind> |    ==> Kinds::binary_construction(CON_rule, K_object, RP[2])
-	object-based rule producing <k-kind> |    ==> Kinds::binary_construction(CON_rule, K_object, RP[1])
-	object-based rule |    ==> Kinds::binary_construction(CON_rule, K_object, K_nil)
-	action-based rule |    ==> Kinds::binary_construction(CON_rule, K_action_name, K_nil); if (K_action_name == NULL) return FALSE;
-	either-or property			==> Kinds::unary_construction(CON_property, K_truth_state)
+	indexed text | 				                                     ==> { -, K_text }
+	indexed texts | 			                                     ==> { -, K_text }
+	stored action | 			                                     ==> @<Stored action if it exists@>
+	stored actions | 			                                     ==> @<Stored action if it exists@>
+	object-based rulebook producing <indefinite-article> <k-kind> |  ==> { -, Kinds::binary_construction(CON_rulebook, K_object, RP[2]) }
+	object-based rulebook producing <k-kind> |                       ==> { -, Kinds::binary_construction(CON_rulebook, K_object, RP[1]) }
+	object-based rulebook |                                          ==> { -, Kinds::binary_construction(CON_rulebook, K_object, K_nil) }
+	action-based rulebook |                                          ==> @<Action rulebook if it exists@>
+	object-based rule producing <indefinite-article> <k-kind> |      ==> { -, Kinds::binary_construction(CON_rule, K_object, RP[2]) }
+	object-based rule producing <k-kind> |                           ==> { -, Kinds::binary_construction(CON_rule, K_object, RP[1]) }
+	object-based rule |                                              ==> { -, Kinds::binary_construction(CON_rule, K_object, K_nil) }
+	action-based rule |                                              ==> @<Action rule if it exists@>
+	either-or property                                               ==> { -, Kinds::unary_construction(CON_property, K_truth_state) }
 
+@<Stored action if it exists@> =
+	if (K_stored_action == NULL) { ==> { fail production }; }
+	==> { -, K_stored_action };
+
+@<Action rulebook if it exists@> =
+	if (K_action_name == NULL) { ==> { fail production }; }
+	==> { -, Kinds::binary_construction(CON_rulebook, K_action_name, K_nil) };
+
+@<Action rule if it exists@> =
+	if (K_action_name == NULL) { ==> { fail production }; }
+	==> { -, Kinds::binary_construction(CON_rule, K_action_name, K_nil) };
 
 @ This loop looks a little slow, but there are only about 10 proper constructors.
 
@@ -242,25 +253,25 @@ be more varied.
 
 =
 <k-single-material> ::=
-	( <k-single-material> ) |    ==> { pass 1 }
+	( <k-single-material> ) |          ==> { pass 1 }
 	<article> <k-single-material> |    ==> { pass 2 }
-	<k-kind>								==> { pass 1 }
+	<k-kind>                           ==> { pass 1 }
 
 <k-optional-material> ::=
-	( <k-optional-material> ) |    ==> { pass 1 }
-	<article> <k-optional-material> |    ==> { pass 2 }
-	nothing |    ==> K_nil
-	action |    ==> K_action_name
-	<k-kind>								==> { pass 1 }
+	( <k-optional-material> ) |        ==> { pass 1 }
+	<article> <k-optional-material> |  ==> { pass 2 }
+	nothing |                          ==> { -, K_nil }
+	action |                           ==> { -, K_action_name }
+	<k-kind>                           ==> { pass 1 }
 
 <k-tupled-material> ::=
-	( <k-tuple-list> ) |    ==> { pass 1 }
-	nothing |    ==> K_nil
-	<k-single-material>						==> Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_nil)
+	( <k-tuple-list> ) |               ==> { pass 1 }
+	nothing |                          ==> { -, K_nil }
+	<k-single-material>                ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_nil) }
 
 <k-tuple-list> ::=
-	<k-single-material> , <k-tuple-list> |    ==> Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], RP[2])
-	<k-single-material>						==> Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_nil)
+	<k-single-material> , <k-tuple-list> |  ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], RP[2]) }
+	<k-single-material>                     ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_nil) }
 
 @ The following looks at a word range and tries to find text making a kind
 construction: if it does, it adjusts the word ranges to the kind(s) being
@@ -341,7 +352,7 @@ or "list of texts" will fail.
 
 =
 <k-kind-of-kind> ::=
-	<k-kind>		==> RP[1]; if (Kinds::Behaviour::is_kind_of_kind(RP[1]) == FALSE) return FALSE;
+	<k-kind>		==> { pass 1 }; if (Kinds::Behaviour::is_kind_of_kind(RP[1]) == FALSE) return FALSE;
 
 @h Parsing kind variables.
 As a small detour, here's how we deal with the pleasingly simple names A to Z

@@ -415,15 +415,15 @@ an object" pseudo-value).
 
 =
 <spatial-specifying-nouns> ::=
-	_something/anything *** | 	==> 0; <<kind:k>> = K_thing
-	_somewhere/anywhere *** | 	==> 0; <<kind:k>> = K_room
-	_someone/anyone/somebody/anybody *** | 	==> 0; <<kind:k>> = K_person
-	_everything *** |    ==> 0; <<kind:k>> = K_thing;  <<quantifier:q>> = for_all_quantifier
-	_everywhere *** |    ==> 0; <<kind:k>> = K_room;   <<quantifier:q>> = for_all_quantifier
-	_everyone/everybody *** |    ==> 0; <<kind:k>> = K_person; <<quantifier:q>> = for_all_quantifier
-	_nowhere *** |    ==> 0; <<kind:k>> = K_room;   <<quantifier:q>> = not_exists_quantifier
-	_nobody/no-one *** |    ==> 0; <<kind:k>> = K_person; <<quantifier:q>> = not_exists_quantifier
-	_no _one ***					==> 0; <<kind:k>> = K_person; <<quantifier:q>> = not_exists_quantifier
+	_something/anything *** | 	            ==> { -, K_thing }
+	_somewhere/anywhere *** | 	            ==> { -, K_room }
+	_someone/anyone/somebody/anybody *** | 	==> { -, K_person }
+	_everything *** |                       ==> { -, K_thing, <<quantifier:q>> = for_all_quantifier }
+	_everywhere *** |                       ==> { -, K_room, <<quantifier:q>> = for_all_quantifier }
+	_everyone/everybody *** |               ==> { -, K_person, <<quantifier:q>> = for_all_quantifier }
+	_nowhere *** |                          ==> { -, K_room, <<quantifier:q>> = not_exists_quantifier }
+	_nobody/no-one *** |                    ==> { -, K_person, <<quantifier:q>> = not_exists_quantifier }
+	_no _one ***                            ==> { -, K_person, <<quantifier:q>> = not_exists_quantifier }
 
 @ Words like "something" or "everywhere" combine a common noun -- thing,
 and implicitly room -- with a determiner -- one thing, all rooms. When we
@@ -443,10 +443,10 @@ that such a door exists -- we needn't set the variable.
 int PL::Spatial::spatial_parse_composite_NQs(wording *W, wording *DW,
 	quantifier **quant, kind **some_kind) {
 	if (K_thing) {
-		<<quantifier:q>> = NULL; <<kind:k>> = NULL;
+		<<quantifier:q>> = NULL;
 		if (<spatial-specifying-nouns>(*W)) {
 			*W = Wordings::from(*W, Wordings::first_wn(GET_RW(<spatial-specifying-nouns>, 1)));
-			*quant = <<quantifier:q>>; *some_kind = <<kind:k>>;
+			*quant = <<quantifier:q>>; *some_kind = <<rp>>;
 			return TRUE;
 		}
 	}

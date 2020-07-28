@@ -155,8 +155,8 @@ of the verb. Each one is matched against this:
 
 =
 <conjugation> ::=
-	<subject-pronoun> is/are ... |    ==> 0; *XP = RP[1]; <<is-participle>> = TRUE
-	<subject-pronoun> ...			==> 0; *XP = RP[1]; <<is-participle>> = FALSE
+	<subject-pronoun> is/are ... |  ==> { 0, RP[1], <<is-participle>> = TRUE }
+	<subject-pronoun> ...           ==> { 0, RP[1], <<is-participle>> = FALSE }
 
 @ This syntax was a design mistake. It generalises badly to other languages,
 and doesn't even work perfectly for English. The problem is that the source
@@ -185,7 +185,7 @@ now absolutely any non-empty word range is accepted as the property name.
 =
 <verb-implies-sentence-object> ::=
 	reversed <relation-name> relation |    ==> REL_VERBM; *XP = BinaryPredicates::get_reversal(RP[1])
-	<relation-name> relation |    ==> REL_VERBM; *XP = RP[1]
+	<relation-name> relation |    ==> { REL_VERBM, RP[1] }
 	to <instance-of-infinitive-form> |    ==> @<Use verb infinitive as shorthand@>
 	... property |    ==> { PROP_VERBM, - }
 	built-in ... meaning |    ==> { BUILTIN_VERBM, - }
@@ -238,8 +238,8 @@ now absolutely any non-empty word range is accepted as the property name.
 
 <new-verb-sentence-object-unarticled> ::=
 	verb |    ==> TRUE; *XP = NULL;
-	verb implying/meaning <definite-article> nounphrase-unparsed> |	==> TRUE; *XP = RP[2]
-	verb implying/meaning <np-unparsed>						==> TRUE; *XP = RP[1]
+	verb implying/meaning <definite-article> nounphrase-unparsed> |	==> { TRUE, RP[2] }
+	verb implying/meaning <np-unparsed>						==> { TRUE, RP[1] }
 
 @ =
 int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
@@ -271,8 +271,8 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 
 <verb-means-sentence-subject-unarticled> ::=
 	verb to |    ==> { fail }
-	verb <np-unparsed> in the imperative |    ==> TRUE; *XP = RP[1]
-	verb <np-unparsed>												==> FALSE; *XP = RP[1]
+	verb <np-unparsed> in the imperative |    ==> { TRUE, RP[1] }
+	verb <np-unparsed>												==> { FALSE, RP[1] }
 
 @ =
 int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
@@ -1126,8 +1126,8 @@ int NewVerbs::takes_contraction_form(word_assemblage *wa) {
 
 <new-adjective-sentence-object-unarticled> ::=
 	adjective |    ==> TRUE; *XP = NULL
-	adjective implying/meaning <definite-article> <np-unparsed>	| ==> TRUE; *XP = RP[2]
-	adjective implying/meaning <np-unparsed>					==> TRUE; *XP = RP[1]
+	adjective implying/meaning <definite-article> <np-unparsed>	| ==> { TRUE, RP[2] }
+	adjective implying/meaning <np-unparsed>					==> { TRUE, RP[1] }
 
 @ =
 int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
@@ -1156,8 +1156,8 @@ int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
 
 @ =
 <adjective-definition-subject> ::=
-	in <natural-language> ... |    ==> TRUE; *XP = RP[1];
-	...								==> TRUE; *XP = Projects::get_language_of_play(Task::project());
+	in <natural-language> ... |  ==> { TRUE, RP[1] }
+	...                          ==> { TRUE, Projects::get_language_of_play(Task::project()) }
 
 @ =
 void NewVerbs::declare_meaningless_adjective(parse_node *p) {

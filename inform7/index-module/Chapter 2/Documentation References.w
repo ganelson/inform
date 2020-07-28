@@ -162,7 +162,7 @@ to other natural languages.
 	... -- <documentation-symbol> --	==> { pass 1 }
 
 <documentation-symbol> ::=
-	documented at ###					==> Wordings::first_wn(WR[1])
+	documented at ###					==> { Wordings::first_wn(WR[1]), - }
 
 @ =
 wording Index::DocReferences::position_of_symbol(wording *W) {

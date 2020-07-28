@@ -238,7 +238,7 @@ the chimp is either not hairy or not an animal.
 
 <s-adjective-list-unarticled> ::=
 	not <s-adjective> |    ==> 0; *XP = Node::AdjectiveLists::negate_adjlist(RP[1])
-	<s-adjective> |    ==> 0; *XP = RP[1]
+	<s-adjective> |    ==> { 0, RP[1] }
 	not <s-adjective> <s-adjective-list-unarticled> |    ==> 0; *XP = Node::AdjectiveLists::join_adjlist(Node::AdjectiveLists::negate_adjlist(RP[1]), RP[2])
 	<s-adjective> <s-adjective-list-unarticled>					==> 0; *XP = Node::AdjectiveLists::join_adjlist(RP[1], RP[2])
 

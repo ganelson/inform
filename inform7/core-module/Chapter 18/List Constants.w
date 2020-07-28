@@ -60,7 +60,7 @@ isn't expressed in this grammar.
 	<literal-list-entry>				==> 0; *XP = Lists::add_to_ll(RP[1], Lists::empty_literal_list(W), W, R[1])
 
 <literal-list-entry> ::=
-	<s-value> |    ==> FALSE; *XP = RP[1]
+	<s-value> |    ==> { FALSE, RP[1] }
 	......								==> TRUE; *XP = Specifications::new_UNKNOWN(W)
 
 @ The grammar above builds our list structures from the bottom up. They begin

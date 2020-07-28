@@ -749,14 +749,14 @@ name or a description.
 
 =
 <new-called-name> ::=
-	<definite-article> <new-called-name-unarticled> |    ==> *X = R[2]; *XP = RP[2]
-	<new-called-name-unarticled>						==> *X = R[1]; *XP = RP[1]
+	<definite-article> <new-called-name-unarticled> |  ==> { pass 2 }
+	<new-called-name-unarticled>                       ==> { pass 1 }
 
 <new-called-name-unarticled> ::=
-	*** - *** |    ==> @<Issue PM_CalledWithDash problem@>
-	<existing-local-name> |    ==> *X = R[1]; *XP = RP[1]
-	<s-type-expression-or-value> |    ==> @<Vet to see if this name can be overloaded@>
-	...										==> @<Make a new local for this calling@>
+	*** - *** |                     ==> @<Issue PM_CalledWithDash problem@>
+	<existing-local-name> |         ==> { pass 1 }
+	<s-type-expression-or-value> |  ==> @<Vet to see if this name can be overloaded@>
+	...                             ==> @<Make a new local for this calling@>
 
 <existing-local-name> internal {
 	*XP = LocalVariables::parse(Frames::current_stack_frame(), W);
@@ -765,13 +765,13 @@ name or a description.
 }
 
 @<Issue PM_CalledWithDash problem@> =
-	*X = 0; *XP = NULL;
 	if (!(Wordings::eq(PM_CalledWithDash_wording, W))) {
 		PM_CalledWithDash_wording = W;
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CalledWithDash),
 			"a '(called ...)' name is not allowed to include a hyphen",
 			"since this would look misleadingly like a declaration of kind of value it has.");
 	}
+	==> { 0, NULL }
 
 @<Vet to see if this name can be overloaded@> =
 	parse_node *already = <<rp>>;
@@ -789,7 +789,7 @@ name or a description.
 			"will be called. But I can't allow that, because it already has a meaning "
 			"as %3.");
 		Problems::issue_problem_end();
-		*X = 0; *XP = NULL;
+		==> { 0, NULL }
 	} else return FALSE;
 
 @<Make a new local for this calling@> =

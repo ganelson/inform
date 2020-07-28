@@ -103,27 +103,26 @@ operands.
 
 =
 <action-list> ::=
-	doing something/anything other than <anl-excluded> |    ==> FALSE; *XP = RP[1];
-	doing something/anything except <anl-excluded> |    ==> FALSE; *XP = RP[1];
-	doing something/anything to/with <anl-to-tail> |    ==> TRUE; *XP = RP[1];
-	doing something/anything |    ==> @<Construct ANL for anything@>
-	doing something/anything ... |    ==> { fail }
-	<anl>													==> TRUE; *XP = RP[1];
+	doing something/anything other than <anl-excluded> |  ==> { FALSE, RP[1] }
+	doing something/anything except <anl-excluded> |      ==> { FALSE, RP[1] }
+	doing something/anything to/with <anl-to-tail> |      ==> { TRUE, RP[1] }
+	doing something/anything |                            ==> @<Construct ANL for anything@>
+	doing something/anything ... |                        ==> { fail }
+	<anl>                                                 ==> { TRUE, RP[1] }
 
 <anl-excluded> ::=
-	<anl> to/with {<anl-minimal-common-operand>} |    ==> @<Add to-clause to excluded ANL@>;
-	<anl>													==> TRUE; *XP = PL::Actions::Lists::flip_anl_parity(RP[1], FALSE);
+	<anl> to/with {<anl-minimal-common-operand>} |        ==> @<Add to-clause to excluded ANL@>;
+	<anl>                                                 ==> { TRUE, PL::Actions::Lists::flip_anl_parity(RP[1], FALSE) }
 
 <anl-minimal-common-operand> ::=
-	_,/or ... |    ==> { fail }
-	... to/with ... |    ==> { fail }
-	...														==> TRUE;
+	_,/or ... |                                           ==> { fail }
+	... to/with ... |                                     ==> { fail }
+	...
 
 @<Construct ANL for anything@> =
-	*X = TRUE;
 	action_name_list *new_anl = PL::Actions::Lists::anl_new();
 	new_anl->word_position = Wordings::first_wn(W);
-	*XP = new_anl;
+	==> { TRUE, new_anl };
 
 @ The trickiest form is:
 
@@ -138,16 +137,16 @@ for instance, we don't want to count the "in" from "fixed in place".
 
 =
 <anl-to-tail> ::=
-	<anl-operand> <anl-in-tail> |    ==> @<Augment ANL with in clause@>
-	<anl-operand>						==> 0; *XP = RP[1]
+	<anl-operand> <anl-in-tail> |  ==> @<Augment ANL with in clause@>
+	<anl-operand>                  ==> { pass 1 }
 
 <anl-operand> ::=
-	...									==> @<Construct ANL for anything applied@>
+	...                            ==> @<Construct ANL for anything applied@>
 
 <anl-in-tail> ::=
-	fixed in place *** |    ==> { advance Wordings::delta(WR[1], W) }
-	is/are/was/were/been/listed in *** |    ==> { advance Wordings::delta(WR[1], W) }
-	in ...									==> { TRUE, - }
+	fixed in place *** |                  ==> { advance Wordings::delta(WR[1], W) }
+	is/are/was/were/been/listed in *** |  ==> { advance Wordings::delta(WR[1], W) }
+	in ...                                ==> { TRUE, - }
 
 @<Augment ANL with in clause@> =
 	action_name_list *anl = RP[1];
@@ -169,12 +168,12 @@ for instance, we don't want to count the "in" from "fixed in place".
 
 =
 <anl> ::=
-	<anl-entry> <anl-tail> |    ==> @<Join parsed ANLs@>
-	<anl-entry>						==> 0; *XP = RP[1];
+	<anl-entry> <anl-tail> |  ==> @<Join parsed ANLs@>
+	<anl-entry>               ==> { pass 1 }
 
 <anl-tail> ::=
-	, _or <anl> |    ==> 0; *XP = RP[1];
-	_,/or <anl>						==> 0; *XP = RP[1];
+	, _or <anl> |             ==> { pass 1 }
+	_,/or <anl>               ==> { pass 1 }
 
 @ Which reduces us to an internal nonterminal for an entry in this list.
 It actually produces multiple matches: for example,
@@ -188,9 +187,9 @@ end, but it's syntactically valid.)
 
 =
 <anl-entry> ::=
-	<named-action-pattern>	|    ==> @<Make an action pattern from named behaviour@>
-	<named-action-pattern> <anl-in-tail> |    ==> @<Make an action pattern from named behaviour plus in@>
-	<anl-entry-with-action>					==> 0; *XP = RP[1];
+	<named-action-pattern>	|               ==> @<Make an action pattern from named behaviour@>
+	<named-action-pattern> <anl-in-tail> |  ==> @<Make an action pattern from named behaviour plus in@>
+	<anl-entry-with-action>					==> { pass 1 }
 
 <named-action-pattern> internal {
 	named_action_pattern *nap = PL::Actions::Patterns::Named::by_name(W);

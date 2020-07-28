@@ -108,11 +108,11 @@ void UseOptions::new_use_option(parse_node *p) {
 
 =
 <use-translates-as-sentence-subject> ::=
-	use <np-unparsed>			==> TRUE; *XP = RP[1]
+	use <np-unparsed>			==> { TRUE, RP[1] }
 
 <use-translates-as-sentence-object> ::=
-	(- ### |    ==> { TRUE, - }
-	...							==> @<Issue PM_UseTranslatesNotI6 problem@>
+	(- ### |                    ==> { TRUE, - }
+	...                         ==> @<Issue PM_UseTranslatesNotI6 problem@>
 
 @<Issue PM_UseTranslatesNotI6 problem@> =
 	*X = FALSE;

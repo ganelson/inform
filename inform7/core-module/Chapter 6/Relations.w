@@ -97,7 +97,7 @@ parse tree.
 
 =
 <new-relation-sentence-object> ::=
-	<np-unparsed> to <np-unparsed>					==> TRUE; *XP = RP[1]; ((parse_node *) RP[1])->next = RP[2];
+	<np-unparsed> to <np-unparsed>  ==> { TRUE, RP[1] }; ((parse_node *) RP[1])->next = RP[2];
 
 @ =
 int Relations::new_relation_SMF(int task, parse_node *V, wording *NPs) {
