@@ -190,7 +190,6 @@ int PL::Parsing::TestScripts::test_with_SMF(int task, parse_node *V, wording *NP
 	wording O2W = (NPs)?(NPs[2]):EMPTY_WORDING;
 	switch (task) { /* "Test me with..." */
 		case ACCEPT_SMFT:
-			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<np-unparsed>(O2W);
 			V->next = <<rp>>;
 			<np-unparsed>(OW);

@@ -130,6 +130,12 @@ void Sentences::VPs::visit(parse_node *p) {
 				"instructions.");
 	}
 
+@ =
+int Sentences::VPs::special(parse_node *p) {
+	if (Node::get_special_meaning(p)) return TRUE;
+	return FALSE;
+}
+
 @ To break up an individual sentence into noun phrases and a verb phrase
 is quite simple: we feed it to the <nonstructural-sentence> grammar,
 and if that doesn't work, we feed it to <bad-nonstructural-sentence-diagnosis>
@@ -161,7 +167,6 @@ int Sentences::VPs::include_in_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Index map with ..." */
 		case ACCEPT_SMFT:
 			if (<the-debugging-log>(OW)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<np-articled-list>(O2W);
 				V->next = <<rp>>;
 				Sentences::VPs::switch_dl_mode(V->next, TRUE);
@@ -178,7 +183,6 @@ int Sentences::VPs::omit_from_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Index map with ..." */
 		case ACCEPT_SMFT:
 			if (<the-debugging-log>(OW)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<np-articled-list>(O2W);
 				V->next = <<rp>>;
 				Sentences::VPs::switch_dl_mode(V->next, FALSE);
@@ -324,8 +328,6 @@ action declarations continue with usually extensive further text:
 	parse_node *VP_PN = RP[1];
 	if (Annotations::read_int(VP_PN, linguistic_error_here_ANNOT) == TwoLikelihoods_LINERROR)
 		@<Issue two likelihoods problem@>;
-	if (Annotations::read_int(VP_PN, verb_id_ANNOT) == 0)
-		Annotations::write_int(VP_PN, verb_id_ANNOT, ASSERT_VB);
 	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
 
 	if (SyntaxTree::is_trace_set(Task::syntax_tree())) {
@@ -352,38 +354,6 @@ object noun phrase.
 	    PROPER_NOUN_NT "Railway Departure"
 	    PROPER_NOUN_NT "the player is in the train"
 =
-This is made by |Sentences::VPs::nss_tree2|, but there are variants for one noun phrase or three.
-
-=
-int Sentences::VPs::nss_tree1(int t, wording VW, parse_node *np1) {
-	parse_node *VP_PN = Node::new(VERB_NT);
-	Node::set_text(VP_PN, VW);
-	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
-	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
-	SyntaxTree::graft(Task::syntax_tree(), np1, nss_tree_head);
-	return 0;
-}
-
-int Sentences::VPs::nss_tree2(int t, wording VW, parse_node *np1, parse_node *np2) {
-	parse_node *VP_PN = Node::new(VERB_NT);
-	Node::set_text(VP_PN, VW);
-	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
-	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
-	SyntaxTree::graft(Task::syntax_tree(), np1, nss_tree_head);
-	SyntaxTree::graft(Task::syntax_tree(), np2, nss_tree_head);
-	return 0;
-}
-
-int Sentences::VPs::nss_tree3(int t, wording VW, parse_node *np1, parse_node *np2, parse_node *np3) {
-	parse_node *VP_PN = Node::new(VERB_NT);
-	Node::set_text(VP_PN, VW);
-	Annotations::write_int(VP_PN, verb_id_ANNOT, t);
-	SyntaxTree::graft(Task::syntax_tree(), VP_PN, nss_tree_head);
-	SyntaxTree::graft(Task::syntax_tree(), np1, nss_tree_head);
-	SyntaxTree::graft(Task::syntax_tree(), np2, nss_tree_head);
-	SyntaxTree::graft(Task::syntax_tree(), np3, nss_tree_head);
-	return 0;
-}
 
 @ In the assertion parser, any text at all can be a noun phrase. However,
 to disambiguate sentences we sometimes want to insist that it takes a
@@ -436,7 +406,6 @@ int Sentences::VPs::translates_into_unicode_as_SMF(int task, parse_node *V, word
 	switch (task) { /* "Black king chess piece translates into Unicode as 9818" */
 		case ACCEPT_SMFT:
 			if (<translation-target-unicode>(O2W)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<np-articled>(SW);
 				V->next = <<rp>>;
 				<np-articled>(OW);
@@ -458,7 +427,6 @@ int Sentences::VPs::translates_into_I6_as_SMF(int task, parse_node *V, wording *
 	switch (task) { /* "Black king chess piece translates into Unicode as 9818" */
 		case ACCEPT_SMFT:
 			if (<translation-target-i6>(O2W)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<np-articled>(SW);
 				V->next = <<rp>>;
 				<np-articled>(OW);
@@ -481,7 +449,6 @@ int Sentences::VPs::translates_into_language_as_SMF(int task, parse_node *V, wor
 	switch (task) { /* "Black king chess piece translates into Unicode as 9818" */
 		case ACCEPT_SMFT:
 			if (<translation-target-language>(O2W)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				inform_language *nl = (inform_language *) (<<rp>>);
 				<np-articled>(SW);
 				V->next = <<rp>>;

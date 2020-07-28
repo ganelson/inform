@@ -57,7 +57,6 @@ int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The time passes rule is listed in the turn sequence rulebook." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<listed-in-sentence-object>(OW))) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				Annotations::write_int(V, listing_sense_ANNOT, <<r>>);
 				parse_node *O = <<rp>>;
 				<np-unparsed>(SW);
@@ -108,7 +107,6 @@ int Rules::Placement::substitutes_for_SMF(int task, parse_node *V, wording *NPs)
 	switch (task) { /* "The time passes slowly rule substitutes for the time passes rule." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<substitutes-for-sentence-object>(OW))) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				Annotations::write_int(V, listing_sense_ANNOT, <<r>>);
 				parse_node *O = <<rp>>;
 				<np-unparsed>(SW);
@@ -193,7 +191,6 @@ int Rules::Placement::does_nothing_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The time passes rule does nothing." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<np-unparsed>(SW);
 				V->next = <<rp>>;
@@ -216,7 +213,6 @@ int Rules::Placement::does_nothing_if_SMF(int task, parse_node *V, wording *NPs)
 	switch (task) { /* "The time passes rule does nothing if ..." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				<np-unparsed>(CW);
@@ -240,7 +236,6 @@ int Rules::Placement::does_nothing_unless_SMF(int task, parse_node *V, wording *
 	switch (task) { /* "The time passes rule does nothing unless ..." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-rule-list>(SW)) && (<does-nothing-sentence-object>(OW))) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				<np-unparsed>(CW);

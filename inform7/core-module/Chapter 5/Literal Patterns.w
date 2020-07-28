@@ -2340,7 +2340,6 @@ int LiteralPatterns::specifies_SMF(int task, parse_node *V, wording *NPs) {
 				if (<np-unparsed>(OW)) {
 					parse_node *O = <<rp>>;
 					V->next = S; V->next->next = O;
-					Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 					return TRUE;
 				}
 			}

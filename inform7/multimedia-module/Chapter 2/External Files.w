@@ -136,7 +136,6 @@ int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "File... is the file..." */
 		case ACCEPT_SMFT:
 			if ((<nounphrase-external-file>(SW)) && (<new-file-sentence-object>(OW))) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<np-unparsed>(SW);
 				V->next = <<rp>>;

@@ -295,9 +295,11 @@ a valid verb number to have no handler: if so, we handle the verb by doing
 nothing on either traverse, of course.
 
 @<Act on the primary verb in the sentence@> =
-	int vn = Annotations::read_int(p->down, verb_id_ANNOT);
+	int vn = ASSERT_VB;
+	if (Sentences::VPs::special(p->down)) vn = SPECIAL_MEANING_VB;
+	
 	if ((vn < 0) || (vn >= MAX_OF_NTS_AND_VBS)) {
-		LOG("Unimplemented verb %d\n", Annotations::read_int(p->down, verb_id_ANNOT));
+		LOG("Unimplemented verb\n");
 		internal_error_on_node_type(p->down);
 	}
 	if (how_to_handle_sentences[vn]) {
@@ -544,7 +546,7 @@ void Assertions::Traverse::special_meaning(parse_node *pn) {
 }
 
 void Assertions::Traverse::try_special_meaning(int task, parse_node *pn) {
-	if (Annotations::read_int(pn, verb_id_ANNOT) == SPECIAL_MEANING_VB) {
+	if (Sentences::VPs::special(pn)) {
 		special_meaning_holder *sm = Node::get_special_meaning(pn);
 		if (sm) SpecialMeanings::call(sm, task, pn, NULL);
 	}

@@ -71,7 +71,6 @@ int UseOptions::use_translates_as_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Use American dialect means ..." */
 		case ACCEPT_SMFT:
 			if (<use-translates-as-sentence-subject>(SW)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				V->next = <<rp>>;
 				<np-unparsed>(OW);
 				V->next->next = <<rp>>;
@@ -208,7 +207,6 @@ int UseOptions::use_SMF(int task, parse_node *V, wording *NPs) {
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "Use American dialect." */
 		case ACCEPT_SMFT:
-			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<np-articled-list>(OW);
 			V->next = <<rp>>;
 			return TRUE;

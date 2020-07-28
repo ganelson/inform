@@ -25,7 +25,6 @@ int Plurals::plural_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			FSW = SW; FOW = OW;
 			if (<plural-sentence-subject>(SW)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				V->next = <<rp>>;
 				<np-unparsed>(OW);
 				V->next->next = <<rp>>;

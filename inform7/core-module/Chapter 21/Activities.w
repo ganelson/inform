@@ -95,7 +95,6 @@ int Activities::new_activity_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "Description is an activity." */
 		case ACCEPT_SMFT:
 			if (<bare-activity-sentence-object>(OW)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				<np-unparsed>(OW);

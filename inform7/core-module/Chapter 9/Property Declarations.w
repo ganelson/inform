@@ -21,7 +21,6 @@ int Assertions::Property::either_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "A room is either dark or lighted." */
 		case ACCEPT_SMFT:
 			if (<either-sentence-object>(OW)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<np-unparsed>(SW);
 				V->next = <<rp>>;
@@ -42,7 +41,6 @@ int Assertions::Property::optional_either_SMF(int task, parse_node *V, wording *
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "A room can be dark or lighted." */
 		case ACCEPT_SMFT:
-			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<np-unparsed>(OW);
 			parse_node *O = <<rp>>;
 			<np-unparsed>(SW);

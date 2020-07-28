@@ -504,7 +504,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e token_to_be_parsed_against_ANNOT /* |parse_node|: what if anything is returned */
 @e turned_already_ANNOT /* |int|: aliasing like "player" to "yourself" performed already */
 @e unproven_ANNOT /* |int|: this invocation needs run-time typechecking */
-@e verb_id_ANNOT /* int: identifying what kind of VERB node */
 @e verb_problem_issued_ANNOT /* |int|: has a problem message about the primary verb been issued already? */
 @e vu_ANNOT /* |verb_usage|: for e.g. "does not carry" */
 @e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */

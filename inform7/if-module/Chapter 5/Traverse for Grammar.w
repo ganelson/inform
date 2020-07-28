@@ -57,7 +57,6 @@ int PL::Parsing::understand_as_SMF(int task, parse_node *V, wording *NPs) {
 	wording O2W = (NPs)?(NPs[2]):EMPTY_WORDING;
 	switch (task) { /* "Understand... as..." */
 		case ACCEPT_SMFT:
-			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<np-unparsed>(O2W);
 			V->next = <<rp>>;
 			<np-unparsed>(OW);

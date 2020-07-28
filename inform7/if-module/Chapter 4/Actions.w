@@ -730,7 +730,6 @@ int PL::Actions::new_action_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<new-action-sentence-object>(OW)) {
 				if (<<r>> == FALSE) return FALSE;
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<np-unparsed>(SW);
 				V->next = <<rp>>;

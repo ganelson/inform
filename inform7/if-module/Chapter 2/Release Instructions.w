@@ -108,7 +108,6 @@ int PL::Bibliographic::Release::release_along_with_SMF(int task, parse_node *V, 
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "Use American dialect." */
 		case ACCEPT_SMFT:
-			Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 			<np-articled-list>(OW);
 			V->next = <<rp>>;
 			return TRUE;

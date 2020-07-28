@@ -173,7 +173,6 @@ int PL::Bibliographic::episode_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The story is episode 2 of ..." */
 		case ACCEPT_SMFT:
 			if ((<episode-sentence-subject>(SW)) && (<episode-sentence-object>(OW))) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				if (<<r>> >= 0) {
 					episode_number = <<r>>;
 					Word::dequote(<<series>>);

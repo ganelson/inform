@@ -141,7 +141,7 @@ We therefore look for this subtree structure:
 the new property.
 
 @<See if this assertion creates property names with "... has ... called ..."@> =
-	if ((Annotations::read_int(pn, verb_id_ANNOT) == ASSERT_VB)
+	if ((Sentences::VPs::special(pn) == FALSE)
 		&& (pn->next)
 		&& (pn->next->next)
 		&& (Assertions::Copular::possessive(pn->next->next))
@@ -279,8 +279,8 @@ wastes only a negligible amount of memory.
 void Sentences::Rearrangement::traverse_for_nonbreaking_ofs(parse_node *pn) {
 	if ((Node::get_type(pn) == SENTENCE_NT) &&
 		(pn->down) && (Node::get_type(pn->down) == VERB_NT)) {
-		int vn = Annotations::read_int(pn->down, verb_id_ANNOT);
-		if (((vn == ASSERT_VB) || (Annotations::read_int(pn->down, examine_for_ofs_ANNOT))) &&
+		int vn = Sentences::VPs::special(pn->down);
+		if (((vn == FALSE) || (Annotations::read_int(pn->down, examine_for_ofs_ANNOT))) &&
 			(<sentence-needing-second-look>(Node::get_text(pn)))) {
 			current_sentence = pn; /* (just in case any problem messages are issued) */
 			pn->down = NULL; /* thus cutting off and forgetting its former subtree */

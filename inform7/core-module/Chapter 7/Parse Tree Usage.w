@@ -203,7 +203,6 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(ADJECTIVE_NT, negated_boolean_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, article_ANNOT);
 	Annotations::allow(VERB_NT, log_inclusion_sense_ANNOT);
-	Annotations::allow(VERB_NT, verb_id_ANNOT);
 	Annotations::allow(VERB_NT, imperative_ANNOT);
 	Annotations::allow(VERB_NT, examine_for_ofs_ANNOT);
 	Annotations::allow(VERB_NT, listing_sense_ANNOT);
@@ -454,9 +453,6 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 			if (Annotations::read_int(pn, multiplicity_ANNOT))
 				WRITE(" (x%d)", Annotations::read_int(pn, multiplicity_ANNOT));
 			show_refers = TRUE;
-			break;
-		case VERB_NT:
-			WRITE(" ($V)", Annotations::read_int(pn, verb_id_ANNOT));
 			break;
 		case TOKEN_NT: WRITE(" [%d/%d]", Annotations::read_int(pn, slash_class_ANNOT),
 			Annotations::read_int(pn, slash_dash_dash_ANNOT)); break;

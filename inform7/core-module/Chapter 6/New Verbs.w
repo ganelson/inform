@@ -247,7 +247,6 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<new-verb-sentence-object>(OW)) {
 				if (<<r>> == FALSE) return FALSE;
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				<np-unparsed>(SW);
 				V->next = <<rp>>;
@@ -280,7 +279,6 @@ int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<verb-means-sentence-subject>(SW)) {
 				int imperative_flag = <<r>>;
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				V->next = <<rp>>;
 				<np-articled>(OW);
 				V->next->next = <<rp>>;
@@ -1134,7 +1132,6 @@ int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "In French petit is an adjective meaning..." */
 		case ACCEPT_SMFT:
 			if (<new-adjective-sentence-object>(OW)) {
-				Annotations::write_int(V, verb_id_ANNOT, SPECIAL_MEANING_VB);
 				parse_node *O = <<rp>>;
 				if (O == NULL) { <np-unparsed>(OW); O = <<rp>>; }
 				<np-unparsed>(SW);
