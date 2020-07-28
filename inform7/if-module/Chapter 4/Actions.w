@@ -767,8 +767,8 @@ action to be created.
 
 =
 <action-sentence-subject> ::=
-	<action-name> |    ==> @<Issue PM_ActionAlreadyExists problem@>
-	...							==> 0; *XP = PL::Actions::act_new(W, TRUE);
+	<action-name> |  ==> @<Issue PM_ActionAlreadyExists problem@>
+	...              ==> { 0, PL::Actions::act_new(W, TRUE) }
 
 @<Issue PM_ActionAlreadyExists problem@> =
 	*XP = NULL;
@@ -793,50 +793,50 @@ It's convenient to define a single action clause first:
 
 =
 <action-clause> ::=
-	out of world |    ==> { OOW_ACT_CLAUSE, - }
-	abbreviable |    ==> { ABBREV_ACT_CLAUSE, - }
-	with past participle ... |    ==> { PP_ACT_CLAUSE, - }
-	applying to <action-applications> |    ==> APPLYING_ACT_CLAUSE; <<num>> = R[1]
-	requiring light							==> { LIGHT_ACT_CLAUSE, - }
+	out of world |                       ==> { OOW_ACT_CLAUSE, - }
+	abbreviable |                        ==> { ABBREV_ACT_CLAUSE, - }
+	with past participle ... |           ==> { PP_ACT_CLAUSE, - }
+	applying to <action-applications> |  ==> { APPLYING_ACT_CLAUSE, -, <<num>> = R[1] }
+	requiring light                      ==> { LIGHT_ACT_CLAUSE, - }
 
 <action-applications> ::=
-	nothing |    ==> { 0, - }
-	one <act-req> and one <act-req> |    ==> 2; <<kind:op1>> = RP[1]; <<ac1>> = R[1]; <<kind:op2>> = RP[2]; <<ac2>> = R[2]
-	one <act-req> and <act-req> |    ==> 2; <<kind:op1>> = RP[1]; <<ac1>> = R[1]; <<kind:op2>> = RP[2]; <<ac2>> = R[2]
-	<act-req> and one <act-req> |    ==> 2; <<kind:op1>> = RP[1]; <<ac1>> = R[1]; <<kind:op2>> = RP[2]; <<ac2>> = R[2]
-	<act-req> and <act-req> |    ==> 2; <<kind:op1>> = RP[1]; <<ac1>> = R[1]; <<kind:op2>> = RP[2]; <<ac2>> = R[2]
-	nothing or one <act-req> |    ==> -1; <<kind:op1>> = RP[1]; <<ac1>> = R[1]
-	one <act-req> |    ==> 1; <<kind:op1>> = RP[1]; <<ac1>> = R[1]
-	two <act-req>	|    ==> 2; <<kind:op1>> = RP[1]; <<ac1>> = R[1]; <<kind:op2>> = RP[1]; <<ac2>> = R[1]
-	<act-req> |    ==> 1; <<kind:op1>> = RP[1]; <<ac1>> = R[1]
-	...									==> @<Issue PM_ActionMisapplied problem@>;
+	nothing |                            ==> { 0, - }
+	one <act-req> and one <act-req> |    ==> { 2, -, <<kind:op1>> = RP[1], <<ac1>> = R[1], <<kind:op2>> = RP[2], <<ac2>> = R[2] }
+	one <act-req> and <act-req> |        ==> { 2, -, <<kind:op1>> = RP[1], <<ac1>> = R[1], <<kind:op2>> = RP[2], <<ac2>> = R[2] }
+	<act-req> and one <act-req> |        ==> { 2, -, <<kind:op1>> = RP[1], <<ac1>> = R[1], <<kind:op2>> = RP[2], <<ac2>> = R[2] }
+	<act-req> and <act-req> |            ==> { 2, -, <<kind:op1>> = RP[1], <<ac1>> = R[1], <<kind:op2>> = RP[2], <<ac2>> = R[2] }
+	nothing or one <act-req> |           ==> { -1, -, <<kind:op1>> = RP[1], <<ac1>> = R[1] }
+	one <act-req> |                      ==> { 1, -, <<kind:op1>> = RP[1], <<ac1>> = R[1] }
+	two <act-req>	|                    ==> { 2, -, <<kind:op1>> = RP[1], <<ac1>> = R[1], <<kind:op2>> = RP[1], <<ac2>> = R[1] }
+	<act-req> |                          ==> { 1, -, <<kind:op1>> = RP[1], <<ac1>> = R[1] }
+	...                                  ==> @<Issue PM_ActionMisapplied problem@>;
 
 <act-req> ::=
-	<action-access> <k-kind> | 			==> { R[1], RP[2] }; @<Check action kind@>;
-	<k-kind>							==> { UNRESTRICTED_ACCESS, RP[1] }; @<Check action kind@>;
+	<action-access> <k-kind> |           ==> { R[1], RP[2] }; @<Check action kind@>;
+	<k-kind>                             ==> { UNRESTRICTED_ACCESS, RP[1] }; @<Check action kind@>;
 
 <action-access> ::=
-	visible |    ==> { DOESNT_REQUIRE_ACCESS, - }
-	touchable |    ==> { REQUIRES_ACCESS, - }
-	carried				==> { REQUIRES_POSSESSION, - }
+	visible |                            ==> { DOESNT_REQUIRE_ACCESS, - }
+	touchable |                          ==> { REQUIRES_ACCESS, - }
+	carried                              ==> { REQUIRES_POSSESSION, - }
 
 @ We are now able to define this peculiar form of list of action clauses:
 
 =
 <action-sentence-object> ::=
-	<action-clauses> |    ==> { 0, - }
-	...											==> @<Issue PM_ActionClauseUnknown problem@>
+	<action-clauses> |                   ==> { 0, - }
+	...                                  ==> @<Issue PM_ActionClauseUnknown problem@>
 
 <action-clauses> ::=
-	... |    ==> 0; return preform_lookahead_mode; /* match only on lookahead */
-	<action-clauses> <action-clause-terminated> |    ==> R[2]; @<Act on this action information@>
-	<action-clause-terminated>					==> R[1]; @<Act on this action information@>
+	... |                                ==> { lookahead }
+	<action-clauses> <action-clause-terminated> | ==> { R[2], - }; @<Act on this action information@>
+	<action-clause-terminated>			 ==> { R[1], - }; @<Act on this action information@>
 
 <action-clause-terminated> ::=
-	<action-clause> , and |    ==> { pass 1 }
-	<action-clause> and |    ==> { pass 1 }
-	<action-clause> , |    ==> { pass 1 }
-	<action-clause>								==> { pass 1 }
+	<action-clause> , and |              ==> { pass 1 }
+	<action-clause> and |                ==> { pass 1 }
+	<action-clause> , |                  ==> { pass 1 }
+	<action-clause>                      ==> { pass 1 }
 
 @<Issue PM_ActionClauseUnknown problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionClauseUnknown),

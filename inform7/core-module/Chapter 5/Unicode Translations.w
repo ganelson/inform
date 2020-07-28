@@ -66,8 +66,8 @@ the player types either of these:
 
 =
 <s-unicode-character> ::=
-	<cardinal-number-unlimited> |    ==> Rvalues::from_Unicode_point(R[1], W); if (!(UnicodeTranslations::char_in_range(R[1]))) return FALSE;
-	<unicode-character-name>		==> Rvalues::from_Unicode_point(R[1], W)
+	<cardinal-number-unlimited> |  ==> { -, Rvalues::from_Unicode_point(R[1], W) }; if (!(UnicodeTranslations::char_in_range(R[1]))) return FALSE;
+	<unicode-character-name>       ==> { -, Rvalues::from_Unicode_point(R[1], W) }
 
 <unicode-character-name> internal {
 	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);

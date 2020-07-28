@@ -134,23 +134,23 @@ The following parses a declaration of named outcomes. For example:
 
 =
 <rulebook-outcome-list> ::=
-	... |    ==> 0; return preform_lookahead_mode; /* match only when looking ahead */
-	<rulebook-outcome-setting-entry> <rulebook-outcome-tail> |    ==> { 0, - }
-	<rulebook-outcome-setting-entry>								==> { 0, - }
+	... |                                                       ==> { lookahead }
+	<rulebook-outcome-setting-entry> <rulebook-outcome-tail> |  ==> { 0, - }
+	<rulebook-outcome-setting-entry>                            ==> { 0, - }
 
 <rulebook-outcome-tail> ::=
-	, _and/or <rulebook-outcome-list> |    ==> { 0, - }
-	_,/and/or <rulebook-outcome-list>								==> { 0, - }
+	, _and/or <rulebook-outcome-list> |                         ==> { 0, - }
+	_,/and/or <rulebook-outcome-list>                           ==> { 0, - }
 
 <rulebook-outcome-setting-entry> ::=
-	<form-of-named-rule-outcome>			==> 0; if (!preform_lookahead_mode) @<Adopt this new named rule outcome@>
+	<form-of-named-rule-outcome>   ==> {0, - }; if (!preform_lookahead_mode) @<Adopt this new named rule outcome@>
 
 <form-of-named-rule-outcome> ::=
-	... ( <rule-outcome> - the default ) |    ==> R[1]; default_rbno_flag = TRUE
-	... ( <rule-outcome> - default ) |    ==> R[1]; default_rbno_flag = TRUE
-	... ( <rule-outcome> ) |    ==> R[1]; default_rbno_flag = FALSE
-	... ( ... ) |    ==> @<Issue PM_BadOutcomeClarification problem@>
-	...										==> SUCCESS_OUTCOME; default_rbno_flag = FALSE
+	... ( <rule-outcome> - the default ) |                      ==> { R[1], -}; default_rbno_flag = TRUE
+	... ( <rule-outcome> - default ) |                          ==> { R[1], -}; default_rbno_flag = TRUE
+	... ( <rule-outcome> ) |                                    ==> { R[1], -}; default_rbno_flag = FALSE
+	... ( ... ) |                                               ==> @<Issue PM_BadOutcomeClarification problem@>
+	...                                                         ==> { SUCCESS_OUTCOME, -}; default_rbno_flag = FALSE
 
 <notable-rulebook-outcomes> ::=
 	it is very likely |

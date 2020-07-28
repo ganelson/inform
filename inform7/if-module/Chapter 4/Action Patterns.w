@@ -695,10 +695,10 @@ a condition attached with "when":
 
 =
 <ap-common-core> ::=
-	<ap-common-core-inner> when/while <condition-in-ap> |    ==> { 0, RP[1] }; action_pattern *ap = *XP; ap->when = RP[2]; if (pap_failure_reason == MISC_PAPF) pap_failure_reason = WHENOKAY_PAPF;
-	<ap-common-core-inner> |    ==> { 0, RP[1] };
-	... when/while <condition-in-ap> |    ==> 0; pap_failure_reason = WHENOKAY_PAPF; return FALSE; /* used only to diagnose problems */
-	... when/while ...										==> 0; if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF; return FALSE; /* used only to diagnose problems */
+	<ap-common-core-inner> when/while <condition-in-ap> |  ==> { 0, RP[1] }; action_pattern *ap = *XP; ap->when = RP[2]; if (pap_failure_reason == MISC_PAPF) pap_failure_reason = WHENOKAY_PAPF;
+	<ap-common-core-inner> |                               ==> { 0, RP[1] };
+	... when/while <condition-in-ap> |                     ==> { 0, NULL }; pap_failure_reason = WHENOKAY_PAPF; return FALSE; /* used only to diagnose problems */
+	... when/while ...                                     ==> { 0, NULL }; if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF; return FALSE; /* used only to diagnose problems */
 
 @ <condition-in-ap> is really just <spec-condition> in disguise -- i.e.,
 it matches a standard Inform condition -- but it's implemented as an internal

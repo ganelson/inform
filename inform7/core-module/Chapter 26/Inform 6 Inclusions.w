@@ -45,12 +45,12 @@ and the following grammar defines the "when defining a thing" end.
 
 =
 <inform6-inclusion-location> ::=
-	<inclusion-side> {<quoted-text-without-subs>} |    ==> @<Note segment-level inclusion@>
-	<inclusion-side> {<quoted-text-without-subs>} in {<quoted-text-without-subs>} |    ==> @<Note section-level inclusion@>
-	when defining <s-type-expression> |    ==> WHEN_DEFINING_INC; <<parse_node:s>> = RP[1]
-	when defining ... |    ==> @<Issue PM_WhenDefiningUnknown problem@>
-	before the library |    ==> @<Issue PM_BeforeTheLibrary problem@>
-	in the preform grammar							==> { AS_PREFORM_INC, - }
+	<inclusion-side> {<quoted-text-without-subs>} |                                  ==> @<Note segment-level inclusion@>
+	<inclusion-side> {<quoted-text-without-subs>} in {<quoted-text-without-subs>} |  ==> @<Note section-level inclusion@>
+	when defining <s-type-expression> |                                              ==> { WHEN_DEFINING_INC, -, <<parse_node:s>> = RP[1] }
+	when defining ... |                                                              ==> @<Issue PM_WhenDefiningUnknown problem@>
+	before the library |                                                             ==> @<Issue PM_BeforeTheLibrary problem@>
+	in the preform grammar                                                           ==> { AS_PREFORM_INC, - }
 
 <inclusion-side> ::=
 	before |      ==> { BEFORE_LINK_STAGE, - }

@@ -2396,19 +2396,19 @@ condition caused the trouble:
 
 =
 <condition-problem-diagnosis> ::=
-	<condition-problem-part> <condition-problem-part-tail> |    ==> R[1] | R[2]
-	<condition-problem-part>										==> { pass 1 }
+	<condition-problem-part> <condition-problem-part-tail> |  ==> { R[1] | R[2], - }
+	<condition-problem-part>                                  ==> { pass 1 }
 
 <condition-problem-part-tail> ::=
-	, and/or <condition-problem-diagnosis> |    ==> { pass 1 }
-	,/and/or <condition-problem-diagnosis>							==> { pass 1 }
+	, and/or <condition-problem-diagnosis> |                  ==> { pass 1 }
+	,/and/or <condition-problem-diagnosis>                    ==> { pass 1 }
 
 <condition-problem-part> ::=
-	<s-condition> |    ==> 0; @<Quote this-condition-okay segment@>;
-	<s-value> |    ==> INVALID_CP_BIT; @<Quote this-condition-value segment@>;
-	... begins/ends |    ==> WHENWHILE_CP_BIT+INVALID_CP_BIT; @<Quote scene-begins-or-ends segment@>;
-	when/while *** |    ==> WHENWHILE_CP_BIT+INVALID_CP_BIT; @<Quote this-condition-bad segment@>;
-	...											==> INVALID_CP_BIT; @<Quote this-condition-bad segment@>;
+	<s-condition> |    ==> { 0, - }; @<Quote this-condition-okay segment@>;
+	<s-value> |        ==> { INVALID_CP_BIT, - }; @<Quote this-condition-value segment@>;
+	... begins/ends |  ==> { WHENWHILE_CP_BIT+INVALID_CP_BIT, - }; @<Quote scene-begins-or-ends segment@>;
+	when/while *** |   ==> { WHENWHILE_CP_BIT+INVALID_CP_BIT, - }; @<Quote this-condition-bad segment@>;
+	...                ==> { INVALID_CP_BIT, - }; @<Quote this-condition-bad segment@>;
 
 @<Quote this-condition-okay segment@> =
 	if (preform_lookahead_mode == FALSE) {

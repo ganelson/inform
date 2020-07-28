@@ -122,19 +122,19 @@ something"):
 
 =
 <activity-sentence-subject> ::=
-	<activity-noted> ( <documentation-symbol> ) |    ==> R[1]; <<ds>> = R[2]
-	<activity-noted> -- <documentation-symbol> -- |    ==> R[1]; <<ds>> = R[2]
-	<activity-noted>								==> R[1]; <<ds>> = -1;
+	<activity-noted> ( <documentation-symbol> ) |    ==> { R[1], -, <<ds>> = R[2] }
+	<activity-noted> -- <documentation-symbol> -- |  ==> { R[1], -, <<ds>> = R[2] }
+	<activity-noted>                                 ==> { R[1], -, <<ds>> = -1 }
 
 <activity-noted> ::=
-	<activity-new-name> ( future action ) |    ==> TRUE; <<future>> = TRUE
-	<activity-new-name> ( ... )	|    ==> @<Issue PM_ActivityNoteUnknown problem@>
-	<activity-new-name>								==> TRUE; <<future>> = FALSE
+	<activity-new-name> ( future action ) |          ==> { TRUE, -, <<future>> = TRUE }
+	<activity-new-name> ( ... )	|                    ==> @<Issue PM_ActivityNoteUnknown problem@>
+	<activity-new-name>                              ==> { TRUE, -, <<future>> = FALSE }
 
 <activity-new-name> ::=
-	... of/for something/anything |    ==> 0; <<any>> = TRUE
-	... something/anything |    ==> 0; <<any>> = TRUE
-	...												==> 0; <<any>> = FALSE
+	... of/for something/anything |                  ==> { 0, -, <<any>> = TRUE }
+	... something/anything |                         ==> { 0, -, <<any>> = TRUE }
+	...                                              ==> { 0, -, <<any>> = FALSE }
 
 @ Once a new activity has been created, the following is used to make a
 noun for it; for example, the "announcing activity".
@@ -451,24 +451,24 @@ it mentions no activities.
 
 =
 <run-time-context> ::=
-	not <activity-list-unnegated> |    ==> { 0, RP[1] }; @<Flip the activity list parities@>;
-	<activity-list-unnegated>						==> { 0, RP[1] }
+	not <activity-list-unnegated> |          ==> { 0, RP[1] }; @<Flip the activity list parities@>;
+	<activity-list-unnegated>                ==> { 0, RP[1] }
 
 <activity-list-unnegated> ::=
-	... |    ==> 0; return preform_lookahead_mode; /* match only when looking ahead */
-	<activity-list-entry> <activity-tail> |    ==> @<Join the activity lists@>;
-	<activity-list-entry>							==> { 0, RP[1] }
+	... |                                    ==> { lookahead }
+	<activity-list-entry> <activity-tail> |  ==> @<Join the activity lists@>;
+	<activity-list-entry>                    ==> { 0, RP[1] }
 
 <activity-tail> ::=
-	, _or <run-time-context> |    ==> { 0, RP[1] }
-	_,/or <run-time-context>						==> { 0, RP[1] }
+	, _or <run-time-context> |               ==> { 0, RP[1] }
+	_,/or <run-time-context>                 ==> { 0, RP[1] }
 
 <activity-list-entry> ::=
-	<activity-name> |    ==> @<Make one-entry AL without operand@>
-	<activity-name> of/for <activity-operand> |    ==> @<Make one-entry AL with operand@>
-	<activity-name> <activity-operand> |    ==> @<Make one-entry AL with operand@>
-	^<if-parsing-al-conditions> ... |    ==> @<Make one-entry AL with unparsed text@>
-	<if-parsing-al-conditions> <s-condition>		==> @<Make one-entry AL with condition@>
+	<activity-name> |                            ==> @<Make one-entry AL without operand@>
+	<activity-name> of/for <activity-operand> |  ==> @<Make one-entry AL with operand@>
+	<activity-name> <activity-operand> |         ==> @<Make one-entry AL with operand@>
+	^<if-parsing-al-conditions> ... |            ==> @<Make one-entry AL with unparsed text@>
+	<if-parsing-al-conditions> <s-condition>     ==> @<Make one-entry AL with condition@>
 
 @ The optional operand handles "something" itself in productions (a) and (b)
 in order to prevent it from being read as a description at production (c). This
@@ -480,9 +480,9 @@ values, of the kind to which the activity applies.
 
 =
 <activity-operand> ::=
-	something/anything |    ==> FALSE; *XP = Specifications::new_UNKNOWN(W);
-	something/anything else |    ==> FALSE; *XP = Specifications::new_UNKNOWN(W);
-	<s-type-expression-or-value>					==> { TRUE, RP[1] }
+	something/anything |          ==> { FALSE, Specifications::new_UNKNOWN(W) }
+	something/anything else |     ==> { FALSE, Specifications::new_UNKNOWN(W) }
+	<s-type-expression-or-value>  ==> { TRUE, RP[1] }
 
 @<Flip the activity list parities@> =
 	activity_list *al = *XP;

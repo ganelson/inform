@@ -109,13 +109,13 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 
 @ =
 <figure-sentence-object> ::=
-	<figure-source> ( <quoted-text> ) |    ==> R[1]; <<alttext>> = R[2];
-	<figure-source>							==> { pass 1 }
+	<figure-source> ( <quoted-text> ) |  ==> { R[1], -, <<alttext>> = R[2] }
+	<figure-source>                      ==> { pass 1 }
 
 <figure-source> ::=
-	of cover art |    ==> { -1, - }
-	<quoted-text> |    ==> { pass 1 }
-	...						==> @<Issue PM_PictureNotTextual problem@>;
+	of cover art |                       ==> { -1, - }
+	<quoted-text> |                      ==> { pass 1 }
+	...                                  ==> @<Issue PM_PictureNotTextual problem@>;
 
 @<Issue PM_PictureNotTextual problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PictureNotTextual),

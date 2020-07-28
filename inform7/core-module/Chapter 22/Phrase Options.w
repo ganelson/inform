@@ -128,7 +128,7 @@ and creates two options with <phrase-option-declaration-setting-entry>.
 
 =
 <phrase-option-declaration-list> ::=
-	... |    ==> FALSE; return preform_lookahead_mode; /* match only when looking ahead */
+	... |    ==> { lookahead }
 	<phrase-option-declaration-setting-entry> <phrase-option-declaration-tail> |    ==> { pass 2 }
 	<phrase-option-declaration-setting-entry>		==> { FALSE, - }
 
@@ -139,7 +139,12 @@ and creates two options with <phrase-option-declaration-setting-entry>.
 	\and/or <phrase-option-declaration-list>		==> { TRUE, - }
 
 <phrase-option-declaration-setting-entry> ::=
-	...		==> FALSE; if (!preform_lookahead_mode) Phrases::Options::phod_add_phrase_option(phod_being_parsed, W);
+	... |    ==> { lookahead }
+	...		 ==> @<Add a phrase option@>;
+	
+@<Add a phrase option@> =
+	Phrases::Options::phod_add_phrase_option(phod_being_parsed, W);
+	==> { FALSE, - };
 
 @ =
 int too_many_POs_error = FALSE;

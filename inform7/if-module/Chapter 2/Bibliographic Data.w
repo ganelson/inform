@@ -151,8 +151,8 @@ which must match:
 	story
 
 <episode-sentence-object> ::=
-	episode <cardinal-number> of <quoted-text-without-subs> |    ==> R[1]; <<series>> = R[2];
-	episode ...														==> @<Issue PM_BadEpisode problem@>;
+	episode <cardinal-number> of <quoted-text-without-subs> |  ==> { R[1], -, <<series>> = R[2] }
+	episode ...                                                ==> @<Issue PM_BadEpisode problem@>;
 
 @<Issue PM_BadEpisode problem@> =
 	*X = -1;

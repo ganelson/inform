@@ -19,8 +19,8 @@ only valid impure conditions are description noun phrases.
 
 =
 <s-condition-uncached> ::=
-	<s-condition-pure> | ==> { pass 1 }
-	<s-descriptive-np>								==> { pass 1 }
+	<s-condition-pure> |  ==> { pass 1 }
+	<s-descriptive-np>    ==> { pass 1 }
 
 @ Now for pure conditions. Note that logical "and" and "or" are implemented
 directly right here, rather than being phrases defined in the Standard Rules,
@@ -28,13 +28,13 @@ and that they aren't the same as the "and" and "or" used a list dividers.
 
 =
 <s-condition-pure> ::=
-	( <s-condition-pure> ) |    ==> { pass 1 }
-	<s-condition-pure> , and <s-condition-pure> |    ==> Conditions::new_LOGICAL_AND(RP[1], RP[2])
-	<s-condition-pure> and <s-condition-pure> |    ==> Conditions::new_LOGICAL_AND(RP[1], RP[2])
-	<s-condition-pure> , or <s-condition-pure> |    ==> Conditions::new_LOGICAL_OR(RP[1], RP[2])
-	<s-condition-pure> or <s-condition-pure> |    ==> Conditions::new_LOGICAL_OR(RP[1], RP[2])
-	<s-condition-with-chronology> |    ==> { pass 1 }
-	<s-condition-atomic>							==> { pass 1 }
+	( <s-condition-pure> ) |                       ==> { pass 1 }
+	<s-condition-pure> , and <s-condition-pure> |  ==> { -, Conditions::new_LOGICAL_AND(RP[1], RP[2]) }
+	<s-condition-pure> and <s-condition-pure> |    ==> { -, Conditions::new_LOGICAL_AND(RP[1], RP[2]) }
+	<s-condition-pure> , or <s-condition-pure> |   ==> { -, Conditions::new_LOGICAL_OR(RP[1], RP[2]) }
+	<s-condition-pure> or <s-condition-pure> |     ==> { -, Conditions::new_LOGICAL_OR(RP[1], RP[2]) }
+	<s-condition-with-chronology> |                ==> { pass 1 }
+	<s-condition-atomic>                           ==> { pass 1 }
 
 @ Chronological restrictions include, for instance,
 
@@ -102,15 +102,15 @@ to other languages may want to find more elegant solutions.
 
 =
 <s-condition-atomic> ::=
-	<s-phrase-option-in-use> |    ==> { pass 1 }
-	not <s-phrase-option-in-use> |    ==> Conditions::negate(RP[1])
-	<s-nonexistential-phrase-to-decide> |    ==> { pass 1 }
-	<s-past-action-pattern-as-condition> |    ==> { pass 1 }
-	<s-past-action-pattern-as-negated-condition> |    ==> Conditions::negate(RP[1])
-	<s-action-pattern-as-condition> |    ==> { pass 1 }
-	<s-action-pattern-as-negated-condition> |    ==> Conditions::negate(RP[1])
-	<s-sentence> |    ==> { pass 1 }
-	<s-existential-phrase-to-decide>						==> { pass 1 }
+	<s-phrase-option-in-use> |                      ==> { pass 1 }
+	not <s-phrase-option-in-use> |                  ==> { -, Conditions::negate(RP[1]) }
+	<s-nonexistential-phrase-to-decide> |           ==> { pass 1 }
+	<s-past-action-pattern-as-condition> |          ==> { pass 1 }
+	<s-past-action-pattern-as-negated-condition> |  ==> { -, Conditions::negate(RP[1]) }
+	<s-action-pattern-as-condition> |               ==> { pass 1 }
+	<s-action-pattern-as-negated-condition> |       ==> { -, Conditions::negate(RP[1]) }
+	<s-sentence> |                                  ==> { pass 1 }
+	<s-existential-phrase-to-decide>                ==> { pass 1 }
 
 @ As before, we try to get better sensitivity to ambiguities by dividing the
 test for a phrase-to-decide into two, so that the following is used at a
@@ -122,14 +122,14 @@ testing the existence of something.
 
 =
 <s-nonexistential-phrase-to-decide> ::=
-	<existential-verb-phrase> |    ==> { fail }
-	<s-phrase-to-decide> |    ==> { pass 1 }
-	not <s-phrase-to-decide>								==> Conditions::negate(RP[1])
+	<existential-verb-phrase> |   ==> { fail }
+	<s-phrase-to-decide> |        ==> { pass 1 }
+	not <s-phrase-to-decide>      ==> { -, Conditions::negate(RP[1]) }
 
 <s-existential-phrase-to-decide> ::=
-	^<existential-verb-phrase> |    ==> { fail }
-	<s-phrase-to-decide> |    ==> { pass 1 }
-	not <s-phrase-to-decide>								==> Conditions::negate(RP[1])
+	^<existential-verb-phrase> |  ==> { fail }
+	<s-phrase-to-decide> |        ==> { pass 1 }
+	not <s-phrase-to-decide>      ==> { -, Conditions::negate(RP[1]) }
 
 <existential-verb-phrase> ::=
 	<np-existential> is/are ...
@@ -170,10 +170,10 @@ is handled. The following nonterminal exists to enter the AP to the meaning list
 
 =
 <s-action-pattern-as-condition> ::=
-	<we-are-action-pattern>			==> Conditions::new_TEST_ACTION(RP[1], W);
+	<we-are-action-pattern>			==> { -, Conditions::new_TEST_ACTION(RP[1], W) }
 
 <s-action-pattern-as-negated-condition> ::=
-	<action-pattern-negated>		==> Conditions::new_TEST_ACTION(RP[1], W);
+	<action-pattern-negated>		==> { -, Conditions::new_TEST_ACTION(RP[1], W) }
 
 @ And similarly:
 
@@ -216,22 +216,22 @@ typechecking to choose between much later on.
 
 =
 <s-command> ::=
-	( <s-command> ) |    ==> { pass 1 }
-	<s-to-phrase>					==> { pass 1 }
+	( <s-command> ) |                               ==> { pass 1 }
+	<s-to-phrase>                                   ==> { pass 1 }
 
 <s-say-command> ::=
-	( <s-say-command> ) |    ==> { pass 1 }
-	<s-adaptive-text> |    ==> { pass 1 }
-	<s-text-substitution>			==> { pass 1 }
+	( <s-say-command> ) |                           ==> { pass 1 }
+	<s-adaptive-text> |                             ==> { pass 1 }
+	<s-text-substitution>                           ==> { pass 1 }
 
 <s-adaptive-text> ::=
-	<s-local-variable> |    ==> { fail }
-	<adaptive-verb> verb |    ==> ExParser::say_verb(RP[1], R[1], NULL, W)
-	<adaptive-adjective> adjective |    ==> ExParser::say_adjective(RP[1], W)
-	<adaptive-verb> |    ==> ExParser::say_verb(RP[1], R[1], NULL, W)
-	<modal-verb> <adaptive-verb-infinitive> verb |    ==> @<Annotate the verb with a modal@>
-	<modal-verb> <adaptive-verb-infinitive> |    ==> @<Annotate the verb with a modal@>
-	<adaptive-adjective>							==> ExParser::say_adjective(RP[1], W)
+	<s-local-variable> |                            ==> { fail }
+	<adaptive-verb> verb |                          ==> { -, ExParser::say_verb(RP[1], R[1], NULL, W) }
+	<adaptive-adjective> adjective |                ==> { -, ExParser::say_adjective(RP[1], W) }
+	<adaptive-verb> |                               ==> { -, ExParser::say_verb(RP[1], R[1], NULL, W) }
+	<modal-verb> <adaptive-verb-infinitive> verb |  ==> @<Annotate the verb with a modal@>
+	<modal-verb> <adaptive-verb-infinitive> |       ==> @<Annotate the verb with a modal@>
+	<adaptive-adjective>                            ==> { -, ExParser::say_adjective(RP[1], W) }
 
 @ "To..." phrases are easy, or at least, easy to delegate:
 

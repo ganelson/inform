@@ -274,11 +274,11 @@ what number is...", for instance.
 
 =
 <inline-phrase-definition> ::=
-	(- ### - in to only | 			==> DECIDES_NOTHING_MOR; <<inlinecode>> = Wordings::first_wn(WR[1])
-	(- ### - in to decide if only |    ==> DECIDES_CONDITION_MOR; <<inlinecode>> = Wordings::first_wn(WR[1])
-	(- ### - in to decide only |    ==> DECIDES_VALUE_MOR; <<inlinecode>> = Wordings::first_wn(WR[1])
-	(- ### |    ==> DONT_KNOW_MOR; <<inlinecode>> = Wordings::first_wn(WR[1])
-	(- ### ...						==> DONT_KNOW_MOR; <<inlinecode>> = Wordings::first_wn(WR[1]); @<Issue PM_TailAfterInline problem@>
+	(- ### - in to only | 			 ==> { DECIDES_NOTHING_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }
+	(- ### - in to decide if only |  ==> { DECIDES_CONDITION_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }
+	(- ### - in to decide only |     ==> { DECIDES_VALUE_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }
+	(- ### |                         ==> { DONT_KNOW_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }
+	(- ### ...                       ==> { DONT_KNOW_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }; @<Issue PM_TailAfterInline problem@>
 
 @<Issue PM_TailAfterInline problem@> =
 	*X = DONT_KNOW_MOR;

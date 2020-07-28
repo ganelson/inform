@@ -91,7 +91,7 @@ word "Include", which might e.g. be "Locksmith by Emily Short".
 
 <extension-unversioned-inner> ::=
 	<quoted-text> *** |  ==> @<Issue PM_IncludeExtQuoted problem@>
-	...                  ==> 0; <<t1>> = Wordings::first_wn(W); <<t2>> = Wordings::last_wn(W)
+	...                  ==> { 0, -, <<t1>> = Wordings::first_wn(W), <<t2>> = Wordings::last_wn(W) }
 
 @ Quite a popular mistake, this:
 

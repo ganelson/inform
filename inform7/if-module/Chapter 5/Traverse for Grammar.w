@@ -140,11 +140,11 @@ As examples:
 
 =
 <understand-sentence-subject> ::=
-	nothing |    ==> NOTHING_UNDERSTAND_FORM; *XP = NULL
-	<understand-property-list> |    ==> { PROPERTY_UNDERSTAND_FORM, RP[1] }
-	the command/commands <understand-regular-list> |    ==> { COMMAND_UNDERSTAND_FORM, RP[1] }
-	the verb/verbs ... |    ==> @<Issue PM_OldVerbUsage problem@>
-	<understand-regular-list>							==> { GRAMMAR_UNDERSTAND_FORM, RP[1] }
+	nothing |                                         ==> { NOTHING_UNDERSTAND_FORM, NULL }
+	<understand-property-list> |                      ==> { PROPERTY_UNDERSTAND_FORM, RP[1] }
+	the command/commands <understand-regular-list> |  ==> { COMMAND_UNDERSTAND_FORM, RP[1] }
+	the verb/verbs ... |                              ==> @<Issue PM_OldVerbUsage problem@>
+	<understand-regular-list>                         ==> { GRAMMAR_UNDERSTAND_FORM, RP[1] }
 
 @<Issue PM_OldVerbUsage problem@> =
 	*X = NO_UNDERSTAND_FORM;
@@ -160,33 +160,33 @@ As examples:
 
 =
 <understand-regular-list> ::=
-	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<understand-regular-entry> <understand-regular-tail> |    ==> @<Compose understand item list@>
-	<understand-regular-entry>									==> { 0, RP[1] };
+	... |                                                   ==> { lookahead }
+	<understand-regular-entry> <understand-regular-tail> |  ==> @<Compose understand item list@>
+	<understand-regular-entry>                              ==> { 0, RP[1] }
 
 <understand-regular-tail> ::=
-	, _and/or <understand-regular-list> |    ==> { 0, RP[1] };
-	_,/and/or <understand-regular-list>							==> { 0, RP[1] };
+	, _and/or <understand-regular-list> |                   ==> { 0, RP[1] }
+	_,/and/or <understand-regular-list>                     ==> { 0, RP[1] }
 
 <understand-regular-entry> ::=
-	...															==> @<Make understand item@>
+	...                                                     ==> @<Make understand item@>
 
 @ In the third case, the subject NP is a list of property names written in the
 formal way (with "property").
 
 =
 <understand-property-list> ::=
-	... |    ==> 0; *XP = NULL; return preform_lookahead_mode; /* match only when looking ahead */
-	<understand-property-entry> <understand-property-tail> |    ==> @<Compose understand item list@>
-	<understand-property-entry>									==> { 0, RP[1] };
+	... |                                                     ==> { lookahead }
+	<understand-property-entry> <understand-property-tail> |  ==> @<Compose understand item list@>
+	<understand-property-entry>                               ==> { 0, RP[1] }
 
 <understand-property-tail> ::=
-	, _and/or <understand-property-list> |    ==> { 0, RP[1] };
-	_,/and/or <understand-property-list>						==> { 0, RP[1] };
+	, _and/or <understand-property-list> |                    ==> { 0, RP[1] }
+	_,/and/or <understand-property-list>                      ==> { 0, RP[1] }
 
 <understand-property-entry> ::=
-	<property-name> property |    ==> @<Make understand property item@>
-	... property												==> @<Issue PM_UnknownUnderstandProperty problem@>
+	<property-name> property |                                ==> @<Make understand property item@>
+	... property                                              ==> @<Issue PM_UnknownUnderstandProperty problem@>
 
 @<Issue PM_UnknownUnderstandProperty problem@> =
 	if (!preform_lookahead_mode)
@@ -239,20 +239,20 @@ It's not widely known, but the object phrase here can be a list.
 
 =
 <understand-sentence-object> ::=
-	<understand-sentence-object-uncond> when/while ... |    ==> { 2, RP[1] }
-	<understand-sentence-object-uncond>						==> { 1, RP[1] }
+	<understand-sentence-object-uncond> when/while ... |  ==> { 2, RP[1] }
+	<understand-sentence-object-uncond>                   ==> { 1, RP[1] }
 
 <understand-sentence-object-uncond> ::=
-	... |    ==> 0; return preform_lookahead_mode; /* match only when looking ahead */
-	<understand-sentence-entry> <understand-sentence-object-tail> |    ==> @<Compose understand reference list@>
-	<understand-sentence-entry>								==> { 0, RP[1] }
+	... |                                                            ==> { lookahead }
+	<understand-sentence-entry> <understand-sentence-object-tail> |  ==> @<Compose understand reference list@>
+	<understand-sentence-entry>                                      ==> { 0, RP[1] }
 
 <understand-sentence-object-tail> ::=
-	, _and/or <understand-sentence-object-uncond> |    ==> { 0, RP[1] }
-	_,/and/or <understand-sentence-object-uncond>			==> { 0, RP[1] }
+	, _and/or <understand-sentence-object-uncond> |  ==> { 0, RP[1] }
+	_,/and/or <understand-sentence-object-uncond>    ==> { 0, RP[1] }
 
 <understand-sentence-entry> ::=
-	<understand-as-this>									==> 0; if (!preform_lookahead_mode) @<Deal with UT vars@>;
+	<understand-as-this>  ==> { 0, - }; if (!preform_lookahead_mode) @<Deal with UT vars@>;
 
 @<Compose understand reference list@> =
 	understanding_reference *ui1 = RP[1];
@@ -277,21 +277,21 @@ It's not widely known, but the object phrase here can be a list.
 
 =
 <understand-as-this> ::=
-	... |    ==> 0; @<Clear UT vars@>; return preform_lookahead_mode; /* match only when looking ahead */
-	a mistake |    ==> 0; ur_being_parsed.gv_result = GV_IS_COMMAND; ur_being_parsed.mistaken = TRUE;
-	a mistake ( <quoted-text> ) |    ==> 0; ur_being_parsed.gv_result = GV_IS_COMMAND; ur_being_parsed.mistaken = TRUE; ur_being_parsed.mword = R[1]
-	a mistake ... |    ==> @<Issue PM_TextlessMistake problem@>
-	the plural of <understand-ref> |    ==> R[1]; ur_being_parsed.pluralised_reference = TRUE;
-	plural of <understand-ref> |    ==> R[1]; ur_being_parsed.pluralised_reference = TRUE;
-	<quoted-text> |    ==> 0; ur_being_parsed.gv_result = GV_IS_TOKEN;
-	<understand-ref> ( with nouns reversed ) |    ==> R[1]; ur_being_parsed.reversed_reference = TRUE;
-	<understand-ref>							==> { pass 1 }
+	... |                                       ==> { 0, - }; @<Clear UT vars@>; return preform_lookahead_mode; /* match only when looking ahead */
+	a mistake |                                 ==> { 0, - }; ur_being_parsed.gv_result = GV_IS_COMMAND; ur_being_parsed.mistaken = TRUE;
+	a mistake ( <quoted-text> ) |               ==> { 0, - }; ur_being_parsed.gv_result = GV_IS_COMMAND; ur_being_parsed.mistaken = TRUE; ur_being_parsed.mword = R[1]
+	a mistake ... |                             ==> @<Issue PM_TextlessMistake problem@>
+	the plural of <understand-ref> |            ==> { R[1], - }; ur_being_parsed.pluralised_reference = TRUE;
+	plural of <understand-ref> |                ==> { R[1], - }; ur_being_parsed.pluralised_reference = TRUE;
+	<quoted-text> |                             ==> { 0, - }; ur_being_parsed.gv_result = GV_IS_TOKEN;
+	<understand-ref> ( with nouns reversed ) |  ==> { R[1], - }; ur_being_parsed.reversed_reference = TRUE;
+	<understand-ref>                            ==> { pass 1 }
 
 <understand-ref> ::=
-	<action-name> |    ==> 0; ur_being_parsed.an_reference = RP[1];
-	<s-descriptive-type-expression> |    ==> 0; ur_being_parsed.spec_reference = RP[1];
-	<s-variable> |    ==> @<Issue PM_UnderstandVariable problem@>
-	...											==> @<Issue PM_UnderstandVague problem@>
+	<action-name> |                             ==> { 0, - }; ur_being_parsed.an_reference = RP[1];
+	<s-descriptive-type-expression> |           ==> { 0, - }; ur_being_parsed.spec_reference = RP[1];
+	<s-variable> |                              ==> @<Issue PM_UnderstandVariable problem@>
+	...                                         ==> @<Issue PM_UnderstandVague problem@>
 
 @<Clear UT vars@> =
 	ur_being_parsed.reference_text = W;
@@ -350,10 +350,10 @@ Here the grammar is very simple, and the object can't be a list.
 
 =
 <understand-command-sentence-object> ::=
-	... when/while ... |    ==> @<Issue PM_UnderstandCommandWhen problem@>
-	something new |    ==> { 0, - }
-	<quoted-text> |    ==> Wordings::first_wn(W)
-	...								==> @<Issue PM_NotOldCommand problem@>
+	... when/while ... |  ==> @<Issue PM_UnderstandCommandWhen problem@>
+	something new |       ==> { 0, - }
+	<quoted-text> |       ==> { Wordings::first_wn(W), - }
+	...                   ==> @<Issue PM_NotOldCommand problem@>
 
 @<Issue PM_UnderstandCommandWhen problem@> =
 	*X = -1;
@@ -375,18 +375,18 @@ to or described can be of any kind, but in fact we restrict to kinds of object.
 
 =
 <understand-property-sentence-object> ::=
-	<understand-property-sentence-object-unconditional> when/while ... |    ==> { 2, RP[1] }; <<level>> = R[1]
-	<understand-property-sentence-object-unconditional>						==> { 1, RP[1] }; <<level>> = R[1]
+	<understand-property-sentence-object-unconditional> when/while ... |  ==> { 2, RP[1], <<level>> = R[1] }
+	<understand-property-sentence-object-unconditional>                   ==> { 1, RP[1], <<level>> = R[1] }
 
 <understand-property-sentence-object-unconditional> ::=
-	referring to <understand-property-reference> |    ==> { 1, RP[1] }
+	referring to <understand-property-reference> |  ==> { 1, RP[1] }
 	describing <understand-property-reference> |    ==> { 2, RP[1] }
 	...												==> @<Issue PM_BadUnderstandProperty problem@>
 
 <understand-property-reference> ::=
-	<k-kind> |    ==> @<Make reference from kind, if a kind of object@>
-	<instance-of-object> |    ==> 0; *XP = Instances::as_subject(RP[1]);
-	...						==> @<Issue PM_BadUnderstandPropertyAs problem@>
+	<k-kind> |              ==> @<Make reference from kind, if a kind of object@>
+	<instance-of-object> |  ==> { 0, Instances::as_subject(RP[1]) }
+	...                     ==> @<Issue PM_BadUnderstandPropertyAs problem@>
 
 @<Make reference from kind, if a kind of object@> =
 	kind *K = RP[1];

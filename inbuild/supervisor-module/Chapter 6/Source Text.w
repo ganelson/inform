@@ -247,8 +247,8 @@ and here goes:
 	section ...                         ==> { 5, - }
 
 <extension-end-marker-sentence> ::=
-	... begin/begins here |             ==> -1; @<Check we can begin an extension here@>;
-	... end/ends here                   ==> -2; @<Check we can end an extension here@>;
+	... begin/begins here |             ==> { -1, - }; @<Check we can begin an extension here@>;
+	... end/ends here                   ==> { -2, - }; @<Check we can end an extension here@>;
 
 @ Note that the extension end markers are only read in extensions, so they can
 never accidentally match in the main source text.
@@ -271,16 +271,16 @@ never accidentally match in the main source text.
 
 =
 <structural-sentence> ::=
-	<if-start-of-source-text> <quoted-text> |      ==> 0; sfsm->nt = BIBLIOGRAPHIC_NT;
-	<if-start-of-source-text> <quoted-text> ... |  ==> 0; sfsm->nt = BIBLIOGRAPHIC_NT;
+	<if-start-of-source-text> <quoted-text> |      ==> { 0, - }; sfsm->nt = BIBLIOGRAPHIC_NT;
+	<if-start-of-source-text> <quoted-text> ... |  ==> { 0, - }; sfsm->nt = BIBLIOGRAPHIC_NT;
 	<language-modifying-sentence> |                ==> { pass 1 }
-	* |                                            ==> 0; sfsm->nt = TRACE_NT;
-	* <quoted-text-without-subs> |                 ==> 0; sfsm->nt = TRACE_NT;
-	<if-start-of-paragraph> table ... |            ==> 0; sfsm->nt = TABLE_NT;
-	<if-start-of-paragraph> equation ... |         ==> 0; sfsm->nt = EQUATION_NT;
-	include the ... by ... |                       ==> 0; sfsm->nt = INCLUDE_NT;
-	include ... by ... |                           ==> 0; sfsm->nt = INCLUDE_NT;
-	include (- ...                                 ==> 0; sfsm->nt = INFORM6CODE_NT;
+	* |                                            ==> { 0, - }; sfsm->nt = TRACE_NT;
+	* <quoted-text-without-subs> |                 ==> { 0, - }; sfsm->nt = TRACE_NT;
+	<if-start-of-paragraph> table ... |            ==> { 0, - }; sfsm->nt = TABLE_NT;
+	<if-start-of-paragraph> equation ... |         ==> { 0, - }; sfsm->nt = EQUATION_NT;
+	include the ... by ... |                       ==> { 0, - }; sfsm->nt = INCLUDE_NT;
+	include ... by ... |                           ==> { 0, - }; sfsm->nt = INCLUDE_NT;
+	include (- ...                                 ==> { 0, - }; sfsm->nt = INFORM6CODE_NT;
 
 @ Rules are ordinarily detected by their colon, which divides the header from the
 rest: colons are not otherwise legal in Inform. But there's an exception. If the
@@ -305,7 +305,7 @@ sentences. Whereas other nonstructural sentences can wait, these can't.
 
 =
 <language-modifying-sentence> ::=
-	include (- ### in the preform grammar |        ==> -2; sfsm->nt = INFORM6CODE_NT;
+	include (- ### in the preform grammar |        ==> { -2, - }; sfsm->nt = INFORM6CODE_NT;
 	use ... language element/elements              ==> { -1, - }
 
 @ The following callback function is called by //syntax// when it breaks a

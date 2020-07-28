@@ -194,10 +194,10 @@ the fixed text "phrase options" expands to the whole bitmap.
 
 =
 <inline-substitution> ::=
-	phrase options |    ==> { OPTS_INSUB, - }
-	<phrase-option>	|    ==> OPT_INSUB; <<opt>> = R[1]
-	<name-local-to-inline-stack-frame> |    ==> LOCAL_INSUB; <<local_variable:var>> = RP[1]
-	...										==> @<Issue PM_BadInlineExpansion problem@>
+	phrase options |                      ==> { OPTS_INSUB, - }
+	<phrase-option>	|                     ==> { OPT_INSUB, -, <<opt>> = R[1] }
+	<name-local-to-inline-stack-frame> |  ==> { LOCAL_INSUB, -, <<local_variable:var>> = RP[1] }
+	...                                   ==> @<Issue PM_BadInlineExpansion problem@>
 
 @ This matches one of the token names in the preamble to the inline definition.
 
@@ -215,7 +215,6 @@ the fixed text "phrase options" expands to the whole bitmap.
 charlatans" and what they "deserve". I'm a better person now.
 
 @<Issue PM_BadInlineExpansion problem@> =
-	*X = PROBLEM_INSUB;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadInlineExpansion));
@@ -229,6 +228,7 @@ charlatans" and what they "deserve". I'm a better person now.
 		"extensions. A good rule of thumb is: if you can define a phrase without "
 		"using I6 insertions, do.");
 	Problems::issue_problem_end();
+	==> { PROBLEM_INSUB, - };
 
 @ Acting on that:
 

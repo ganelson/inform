@@ -248,16 +248,16 @@ two forms in any case.
 
 =
 <table-header> ::=
-	<table-new-name> ( continued ) |    ==> TABLE_IS_CONTINUED; <<nameforms>> = R[1]
-	<table-new-name> ( amended ) |    ==> TABLE_IS_AMENDED; <<nameforms>> = R[1]
-	<table-new-name> ( replaced ) |    ==> TABLE_IS_REPLACED; <<nameforms>> = R[1]
-	<table-new-name>					==> TABLE_IS_NEW; <<nameforms>> = R[1]
+	<table-new-name> ( continued ) |  ==> { TABLE_IS_CONTINUED, -, <<nameforms>> = R[1] }
+	<table-new-name> ( amended ) |    ==> { TABLE_IS_AMENDED, -, <<nameforms>> = R[1] }
+	<table-new-name> ( replaced ) |   ==> { TABLE_IS_REPLACED, -, <<nameforms>> = R[1] }
+	<table-new-name>                  ==> { TABLE_IS_NEW, -, <<nameforms>> = R[1] }
 
 <table-new-name> ::=
-	table ... - ... |    ==> { TABLE_HAS_NUMBER_AND_NAME, - }
-	table ### |    ==> { TABLE_HAS_ONLY_NUMBER, - }
-	table of ... |    ==> { TABLE_HAS_ONLY_NAME, - }
-	table ...							==> @<Issue PM_TableMisnamed problem@>
+	table ... - ... |                 ==> { TABLE_HAS_NUMBER_AND_NAME, - }
+	table ### |                       ==> { TABLE_HAS_ONLY_NUMBER, - }
+	table of ... |                    ==> { TABLE_HAS_ONLY_NAME, - }
+	table ...                         ==> @<Issue PM_TableMisnamed problem@>
 
 @<Issue PM_TableMisnamed problem@> =
 	*X = TABLE_HAS_ONLY_NAME; /* for recovery */
@@ -284,9 +284,9 @@ Inform's run, when kinds haven't yet been created.
 
 =
 <table-footer> ::=
-	*** with <cardinal-number> blank row/rows |    ==> R[1]; <<each>> = FALSE
-	*** with ... blank row/rows |    ==> 0; <<each>> = NOT_APPLICABLE
-	*** with blank row/rows for each/every ...		==> 0; <<each>> = TRUE
+	*** with <cardinal-number> blank row/rows |  ==> { R[1], -, <<each>> = FALSE }
+	*** with ... blank row/rows |                ==> { 0, -, <<each>> = NOT_APPLICABLE }
+	*** with blank row/rows for each/every ...   ==> { 0, -, <<each>> = TRUE }
 
 @ So, here goes. We first identify the top line of the table declaration
 (the "headline"), then set the current sentence to that, even though in
@@ -849,32 +849,28 @@ us issue more contextual problem messages.
 
 =
 <table-cell> ::=
-	<table-cell-blank> |    ==> @<Make anomalous entry for blank@>
-	<k-kind-articled> |    ==> @<Make anomalous entry for kind@>
-	<s-named-constant> |    ==> { NAMED_CONSTANT_ENTRY, RP[1] }
-	<s-global-variable>	|    ==> @<Issue PM_TablePlayerEntry or C20TableVariableEntry problem@>
-	<table-cell-value> |    ==> { pass 1 }
-	<list-of-double-quotes> |    ==> @<Make anomalous entry for text to be understood@>
-	...							==>	@<Issue PM_TableUnknownEntry problem@>
+	<table-cell-blank> |       ==> { BLANK_TABLE_ENTRY, Specifications::new_UNKNOWN(W) }
+	<k-kind-articled> |        ==> @<Make anomalous entry for kind@>
+	<s-named-constant> |       ==> { NAMED_CONSTANT_ENTRY, RP[1] }
+	<s-global-variable>	|      ==> @<Issue PM_TablePlayerEntry or C20TableVariableEntry problem@>
+	<table-cell-value> |       ==> { pass 1 }
+	<list-of-double-quotes> |  ==> @<Make anomalous entry for text to be understood@>
+	...                        ==> @<Issue PM_TableUnknownEntry problem@>
 
 <table-cell-blank> ::=
 	--
 
 <table-cell-value> ::=
-	the action of <s-constant-action> |    ==> { ACTION_TABLE_ENTRY, RP[1] }
-	<s-constant-action> |    ==> { ACTION_TABLE_ENTRY, RP[1] }
-	the action of <s-explicit-action> |    ==> @<Issue PM_NonconstantActionInTable problem@>
-	<s-explicit-action> |    ==> @<Issue PM_NonconstantActionInTable problem@>
-	<instance-of-non-object> |    ==> INSTANCE_TABLE_ENTRY; *XP = Rvalues::from_instance(RP[1])
-	<s-type-expression>					==> { SPEC_TABLE_ENTRY, RP[1] }
+	the action of <s-constant-action> |  ==> { ACTION_TABLE_ENTRY, RP[1] }
+	<s-constant-action> |                ==> { ACTION_TABLE_ENTRY, RP[1] }
+	the action of <s-explicit-action> |  ==> @<Issue PM_NonconstantActionInTable problem@>
+	<s-explicit-action> |                ==> @<Issue PM_NonconstantActionInTable problem@>
+	<instance-of-non-object> |           ==> { INSTANCE_TABLE_ENTRY, Rvalues::from_instance(RP[1]) }
+	<s-type-expression>                  ==> { SPEC_TABLE_ENTRY, RP[1] }
 
 <list-of-double-quotes> ::=
 	<quoted-text> or <list-of-double-quotes> |
 	<quoted-text>
-
-@<Make anomalous entry for blank@> =
-	*X = BLANK_TABLE_ENTRY;
-	*XP = Specifications::new_UNKNOWN(W);
 
 @<Make anomalous entry for kind@> =
 	*X = KIND_TABLE_ENTRY;

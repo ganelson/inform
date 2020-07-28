@@ -16,16 +16,16 @@ Note that ordinal numbers are not valid as literals: "2nd" is not a noun.
 
 =
 <s-literal> ::=
-	<cardinal-number> |    ==> Rvalues::from_int(R[1], W)
-	minus <cardinal-number> |    ==> Rvalues::from_int(-R[1], W)
-	<quoted-text> ( <response-letter> ) |    ==> Rvalues::from_wording(W)
-	<quoted-text> |    ==> Rvalues::from_wording(W)
-	<s-literal-real-number> |    ==> { pass 1 }
-	<s-literal-truth-state> |    ==> { pass 1 }
-	<s-literal-list> |    ==> { pass 1 }
-	unicode <s-unicode-character> |    ==> { pass 1 }
-	<s-literal-time> |    ==> { pass 1 }
-	<s-literal-unit-notation>				==> { pass 1 }
+	<cardinal-number> |                    ==> { -, Rvalues::from_int(R[1], W) }
+	minus <cardinal-number> |              ==> { -, Rvalues::from_int(-R[1], W) }
+	<quoted-text> ( <response-letter> ) |  ==> { -, Rvalues::from_wording(W) }
+	<quoted-text> |                        ==> { -, Rvalues::from_wording(W) }
+	<s-literal-real-number> |              ==> { pass 1 }
+	<s-literal-truth-state> |              ==> { pass 1 }
+	<s-literal-list> |                     ==> { pass 1 }
+	unicode <s-unicode-character> |        ==> { pass 1 }
+	<s-literal-time> |                     ==> { pass 1 }
+	<s-literal-unit-notation>              ==> { pass 1 }
 
 <s-literal-unit-notation> internal {
 	literal_pattern *lp;
@@ -59,8 +59,8 @@ in principle be any number of people, colours, vehicles, and such.
 
 =
 <s-literal-truth-state> ::=
-	false |    ==> Rvalues::from_boolean(FALSE, W)
-	true						==> Rvalues::from_boolean(TRUE, W)
+	false |  ==> { -, Rvalues::from_boolean(FALSE, W) }
+	true     ==> { -, Rvalues::from_boolean(TRUE, W) }
 
 @ The problem message for engineering notation should only appear once:
 
@@ -75,11 +75,11 @@ Still:
 
 =
 <s-literal-real-number> ::=
-	_ pi |    ==> Rvalues::from_IEEE_754(0x40490FDB, W)
-	_ e |    ==> Rvalues::from_IEEE_754(0x402DF854, W)
-	plus infinity |    ==> Rvalues::from_IEEE_754(0x7F800000, W)
-	minus infinity |    ==> Rvalues::from_IEEE_754(0xFF800000, W)
-	<literal-real-in-digits>	==> Rvalues::from_IEEE_754((unsigned int) R[1], W)
+	_ pi |                    ==> { -, Rvalues::from_IEEE_754(0x40490FDB, W) }
+	_ e |                     ==> { -, Rvalues::from_IEEE_754(0x402DF854, W) }
+	plus infinity |           ==> { -, Rvalues::from_IEEE_754(0x7F800000, W) }
+	minus infinity |          ==> { -, Rvalues::from_IEEE_754(0xFF800000, W) }
+	<literal-real-in-digits>  ==> { -, Rvalues::from_IEEE_754((unsigned int) R[1], W) }
 
 <literal-real-in-digits> internal {
 	if ((Wordings::length(W) != 1) && (Wordings::length(W) != 3)) return FALSE;

@@ -14,13 +14,13 @@ is on the table". For now, though, we treat it as a noun.
 
 =
 <s-constant-value> ::=
-	<s-literal> |    ==> { pass 1 }
-	nothing	|    ==> Rvalues::new_nothing_object_constant();
-	<s-miscellaneous-proper-noun> |    ==> { pass 1 }
-	<s-rulebook-outcome-name> outcome |    ==> { pass 1 }
-	<s-use-option-name> option |    ==> { pass 1 }
-	verb <instance-of-verb> |    ==> @<Compose verb ML@>
-	<s-rule-name> response ( <response-letter> )		==> @<Compose response ML@>
+	<s-literal> |                                 ==> { pass 1 }
+	nothing	|                                     ==> { -, Rvalues::new_nothing_object_constant() }
+	<s-miscellaneous-proper-noun> |               ==> { pass 1 }
+	<s-rulebook-outcome-name> outcome |           ==> { pass 1 }
+	<s-use-option-name> option |                  ==> { pass 1 }
+	verb <instance-of-verb> |                     ==> @<Compose verb ML@>
+	<s-rule-name> response ( <response-letter> )  ==> @<Compose response ML@>
 
 @<Compose verb ML@> =
 	verb_form *vf = (verb_form *) (RP[1]);
@@ -172,7 +172,7 @@ is read as if it were "scenery thing".
 
 =
 <s-adjective-list-as-desc> ::=
-	<s-adjective-list>				==> Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1])
+	<s-adjective-list>  ==> { -, Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1]) }
 
 @ So now we test whether an excerpt is a list of adjectives; for example,
 this matches
@@ -232,15 +232,15 @@ the chimp is either not hairy or not an animal.
 
 =
 <s-adjective-list> ::=
-	not <indefinite-article> <s-adjective-list-unarticled> |    ==> 0; *XP = Node::AdjectiveLists::make_adjlist(Node::AdjectiveLists::negate_adjlist(RP[2]), W)
-	<indefinite-article> <s-adjective-list-unarticled> |    ==> 0; *XP = Node::AdjectiveLists::make_adjlist(RP[2], W)
-	<s-adjective-list-unarticled>								==> 0; *XP = Node::AdjectiveLists::make_adjlist(RP[1], W)
+	not <indefinite-article> <s-adjective-list-unarticled> |  ==> { 0, Node::AdjectiveLists::make_adjlist(Node::AdjectiveLists::negate_adjlist(RP[2]), W) }
+	<indefinite-article> <s-adjective-list-unarticled> |      ==> { 0, Node::AdjectiveLists::make_adjlist(RP[2], W) }
+	<s-adjective-list-unarticled>                             ==> { 0, Node::AdjectiveLists::make_adjlist(RP[1], W) }
 
 <s-adjective-list-unarticled> ::=
-	not <s-adjective> |    ==> 0; *XP = Node::AdjectiveLists::negate_adjlist(RP[1])
-	<s-adjective> |    ==> { 0, RP[1] }
-	not <s-adjective> <s-adjective-list-unarticled> |    ==> 0; *XP = Node::AdjectiveLists::join_adjlist(Node::AdjectiveLists::negate_adjlist(RP[1]), RP[2])
-	<s-adjective> <s-adjective-list-unarticled>					==> 0; *XP = Node::AdjectiveLists::join_adjlist(RP[1], RP[2])
+	not <s-adjective> |                                       ==> { 0, Node::AdjectiveLists::negate_adjlist(RP[1]) }
+	<s-adjective> |                                           ==> { 0, RP[1] }
+	not <s-adjective> <s-adjective-list-unarticled> |         ==> { 0, Node::AdjectiveLists::join_adjlist(Node::AdjectiveLists::negate_adjlist(RP[1]), RP[2]) }
+	<s-adjective> <s-adjective-list-unarticled>               ==> { 0, Node::AdjectiveLists::join_adjlist(RP[1], RP[2]) }
 
 @ That reduces us to an internal nonterminal, which matches the longest
 possible adjective name it can see.
@@ -352,14 +352,14 @@ them with conditions like
 
 =
 <s-qualifiable-noun> ::=
-	<k-kind> |    ==> Specifications::from_kind(RP[1]); s_adj_domain = RP[1];
-	<s-instance-name>						==> RP[1]; s_adj_domain = NULL;
+	<k-kind> |           ==> { -, Specifications::from_kind(RP[1]) }; s_adj_domain = RP[1];
+	<s-instance-name>    ==> { -, RP[1] }; s_adj_domain = NULL;
 
 <s-qualifiable-common-noun> ::=
-	<k-kind>								==> Specifications::from_kind(RP[1]); s_adj_domain = RP[1];
+	<k-kind>             ==> { -, Specifications::from_kind(RP[1]) }; s_adj_domain = RP[1];
 
 <s-qualifiable-proper-noun> ::=
-	<s-instance-name>						==> RP[1]; s_adj_domain = NULL;
+	<s-instance-name>    ==> { -, RP[1] }; s_adj_domain = NULL;
 
 @ <s-instance-name> parses text exactly as if it were <instance-of-object>, but
 is just a little faster written as an internal like this.
@@ -388,7 +388,7 @@ whereas "empty rulebook" will work.
 
 =
 <s-applicable-adjective-list> ::=
-	<s-adjective-list>	==> RP[1]; if ((s_adj_domain) && (Node::AdjectiveLists::adjlist_applies_to_kind(RP[1], s_adj_domain) == FALSE)) return FALSE;
+	<s-adjective-list>	==> { -, RP[1] }; if ((s_adj_domain) && (Node::AdjectiveLists::adjlist_applies_to_kind(RP[1], s_adj_domain) == FALSE)) return FALSE;
 
 @h Descriptions.
 In most programming languages, commands are like imperative verbs, but their
@@ -444,37 +444,38 @@ In the grammar for <s-description>, the noun is compulsory.
 
 =
 <s-description> ::=
-	<s-description-uncomposite-inner> |    ==> { pass 1 }
-	<s-np-with-relative-clause>										==> { pass 1 }
+	<s-description-uncomposite-inner> |                             ==> { pass 1 }
+	<s-np-with-relative-clause>                                     ==> { pass 1 }
 
 <s-description-uncomposite> ::=
-	<s-description-uncomposite-inner>								==> { pass 1 }
+	<s-description-uncomposite-inner>                               ==> { pass 1 }
 
 <s-description-uncomposite-inner> ::=
-	<s-description-uncalled> ( called <s-calling-name> ) |    ==> @<Glue on the calling ML@>
-	<s-description-uncalled>										==> { pass 1 }
+	<s-description-uncalled> ( called <s-calling-name> ) |          ==> @<Glue on the calling ML@>
+	<s-description-uncalled>                                        ==> { pass 1 }
 
 <s-description-uncalled> ::=
-	<s-specifier> <s-description-unspecified> |    ==> @<Glue on the quantification ML@>
-	<s-specifying-noun> |    ==> { pass 1 }
-	<s-specifying-noun> <s-adjective-list> |    ==> Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
-	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> { pass 3 }
-	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |    ==> @<Issue PM_DefiniteCommonNoun problem@>
-	<definite-article> <s-proper-description-unspecified> |    ==> { pass 2 }
-	<indefinite-article> <s-description-unspecified> |    ==> { pass 2 }
-	<s-description-unspecified>										==> { pass 1 }
+	<s-specifier> <s-description-unspecified> |                     ==> @<Glue on the quantification ML@>
+	<s-specifying-noun> |                                           ==> { pass 1 }
+	<s-specifying-noun> <s-adjective-list> |                        ==> { -, Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2]) }
+	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |  ==> { pass 3 }
+	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |  ==> @<Issue PM_DefiniteCommonNoun problem@>
+	<definite-article> <s-proper-description-unspecified> |         ==> { pass 2 }
+	<indefinite-article> <s-description-unspecified> |              ==> { pass 2 }
+	<s-description-unspecified>                                     ==> { pass 1 }
 
 <s-description-unspecified> ::=
-	<s-qualifiable-noun> |    ==> { pass 1 }
-	<s-applicable-adjective-list> <s-qualifiable-noun>				==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
+	<s-qualifiable-noun> |                                          ==> { pass 1 }
+	<s-applicable-adjective-list> <s-qualifiable-noun>				==> { -, Node::AdjectiveLists::add_adjlist(RP[2], RP[1]) }
 
 <s-common-description-unspecified> ::=
-	<s-qualifiable-common-noun> |    ==> { pass 1 }
-	<s-applicable-adjective-list> <s-qualifiable-common-noun>		==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
+	<s-qualifiable-common-noun> |                                   ==> { pass 1 }
+	<s-applicable-adjective-list> <s-qualifiable-common-noun>		==> { -, Node::AdjectiveLists::add_adjlist(RP[2], RP[1]) }
 
 <s-proper-description-unspecified> ::=
-	<s-qualifiable-proper-noun> |    ==> { pass 1 }
-	<s-applicable-adjective-list> <s-qualifiable-proper-noun>		==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
+	<s-qualifiable-proper-noun> |                                   ==> { pass 1 }
+	<s-applicable-adjective-list> <s-qualifiable-proper-noun>		==> { -, Node::AdjectiveLists::add_adjlist(RP[2], RP[1]) }
+	
 
 <if-trying-omission-permitted> internal 0 {
 	#ifdef IF_MODULE
@@ -493,27 +494,27 @@ except that the noun is optional. The only difference is right at the bottom.
 
 =
 <s-description-nounless> ::=
-	<s-description-nounless-uncomposite> |    ==> { pass 1 }
-	<s-np-with-relative-clause>										==> { pass 1 }
+	<s-description-nounless-uncomposite> |                          ==> { pass 1 }
+	<s-np-with-relative-clause>                                     ==> { pass 1 }
 
 <s-description-nounless-uncomposite> ::=
-	<s-description-nounless-uncalled> ( called <s-calling-name> ) |    ==> @<Glue on the calling ML@>
-	<s-description-nounless-uncalled>								==> { pass 1 }
+	<s-description-nounless-uncalled> ( called <s-calling-name> ) |  ==> @<Glue on the calling ML@>
+	<s-description-nounless-uncalled>                                ==> { pass 1 }
 
 <s-description-nounless-uncalled> ::=
-	<s-specifier> <s-description-nounless-unspecified> |    ==> @<Glue on the quantification ML@>
-	<s-specifying-noun> |    ==> { pass 1 }
-	<s-specifying-noun> <s-adjective-list> |    ==> Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2])
-	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |    ==> { pass 3 }
-	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |    ==> @<Issue PM_DefiniteCommonNoun problem@>
-	<indefinite-article> <s-description-nounless-unspecified> |    ==> { pass 2 }
-	<definite-article> <s-proper-description-unspecified> |    ==> { pass 2 }
-	<s-description-nounless-unspecified>							==> { pass 1 }
+	<s-specifier> <s-description-nounless-unspecified> |             ==> @<Glue on the quantification ML@>
+	<s-specifying-noun> |                                            ==> { pass 1 }
+	<s-specifying-noun> <s-adjective-list> |                         ==> { -, Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2]) }
+	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |  ==> { pass 3 }
+	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |  ==> @<Issue PM_DefiniteCommonNoun problem@>
+	<indefinite-article> <s-description-nounless-unspecified> |      ==> { pass 2 }
+	<definite-article> <s-proper-description-unspecified> |          ==> { pass 2 }
+	<s-description-nounless-unspecified>                             ==> { pass 1 }
 
 <s-description-nounless-unspecified> ::=
-	<s-qualifiable-noun> |    ==> { pass 1 }
-	<s-applicable-adjective-list> <s-qualifiable-noun> |    ==> Node::AdjectiveLists::add_adjlist(RP[2], RP[1])
-	<s-adjective-list>												==> Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1])
+	<s-qualifiable-noun> |                                           ==> { pass 1 }
+	<s-applicable-adjective-list> <s-qualifiable-noun> |             ==> { -, Node::AdjectiveLists::add_adjlist(RP[2], RP[1]) }
+	<s-adjective-list>                                               ==> { -, Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1]) }
 
 @<Glue on the calling ML@> =
 	parse_node *p = RP[1];
@@ -590,8 +591,8 @@ context of a proper noun, as in "some tea", because it may be confusion of
 
 =
 <s-calling-name> ::=
-	<article> ... |    ==> Node::new_with_words(UNKNOWN_NT, WR[1])
-	...					==> Node::new_with_words(UNKNOWN_NT, WR[1])
+	<article> ... |  ==> { -, Node::new_with_words(UNKNOWN_NT, WR[1]) }
+	...              ==> { -, Node::new_with_words(UNKNOWN_NT, WR[1]) }
 
 @ The following is written as an internal, voracious nonterminal for speed.
 It matches text like

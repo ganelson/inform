@@ -88,7 +88,15 @@ present.
 
 =
 <language-element> ::=
-	<plugin-name>	==> TRUE; if ((registered_plugins[R[1]] == NULL) || (registered_plugins[R[1]]->now_plugged_in == FALSE)) *X = FALSE;
+	<plugin-name>	==> @<Result true only if plugged in@>;
+
+@<Result true only if plugged in@> =
+	if ((registered_plugins[R[1]] == NULL) ||
+		(registered_plugins[R[1]]->now_plugged_in == FALSE)) {
+		==> { FALSE, - };
+	} else {
+		==> { TRUE, - };
+	}
 
 @ =
 word_assemblage Plugins::Manage::wording(int N) {

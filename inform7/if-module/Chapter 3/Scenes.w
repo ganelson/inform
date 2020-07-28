@@ -389,14 +389,14 @@ in a different context, for instance, and could still be valid in that case.
 
 =
 <scene-ends-sentence-object> ::=
-	<text-including-a-calling> |  ==> @<Issue PM_ScenesDisallowCalled problem@>
-	play begins |                 ==> { -1, - }
-	play ends |                   ==> @<Issue PM_ScenesNotPlay problem@>
-	<scene-name> begins |         ==> 0; <<scene:named>> = RP[1]
-	<scene-name> ends |           ==> 1; <<scene:named>> = RP[1]
-	<scene-name> ends <scene-end-name> |  ==> R[2]; <<scene:named>> = RP[1]
+	<text-including-a-calling> |          ==> @<Issue PM_ScenesDisallowCalled problem@>
+	play begins |                         ==> { -1, - }
+	play ends |                           ==> @<Issue PM_ScenesNotPlay problem@>
+	<scene-name> begins |                 ==> { 0, -, <<scene:named>> = RP[1] }
+	<scene-name> ends |                   ==> { 1, -, <<scene:named>> = RP[1] }
+	<scene-name> ends <scene-end-name> |  ==> { R[2], -, <<scene:named>> = RP[1] }
 	<scene-name> ends ... |               ==> @<Issue PM_ScenesUnknownEnd problem@>
-	<s-condition>                         ==> -2; <<parse_node:cond>> = RP[1]
+	<s-condition>                         ==> { -2, -, <<parse_node:cond>> = RP[1] }
 
 @<Issue PM_ScenesDisallowCalled problem@> =
 	*X = -1;

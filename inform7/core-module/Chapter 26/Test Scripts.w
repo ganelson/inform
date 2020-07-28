@@ -99,21 +99,21 @@ test_scenario *ts_being_parsed = NULL;
 
 =
 <test-sentence-object> ::=
-	<quoted-text> |    ==> TRUE; @<Process the quoted test script@>
-	<quoted-text> <test-case-circumstance-list> |    ==> TRUE; @<Process the quoted test script@>
-	...												==> @<Issue PM_TestBadRequirements problem@>
+	<quoted-text> |                                ==> { TRUE, - }; @<Process the quoted test script@>
+	<quoted-text> <test-case-circumstance-list> |  ==> { TRUE, - }; @<Process the quoted test script@>
+	...                                            ==> @<Issue PM_TestBadRequirements problem@>
 
 <test-case-circumstance-list> ::=
-	... |    ==> 0; return preform_lookahead_mode;
-	<test-case-circumstance-list> <test-case-circumstance> |    ==> { 0, - }
-	<test-case-circumstance>									==> { 0, - }
+	... |                                                     ==> { lookahead }
+	<test-case-circumstance-list> <test-case-circumstance> |  ==> { 0, - }
+	<test-case-circumstance>                                  ==> { 0, - }
 
 <test-case-circumstance> ::=
-	in <instance-of-object> |    ==> @<Process the in-test requirement@>
-	holding/and/, <instance-of-object> |    ==> @<Process the holding requirement@>
-	in ... |    ==> @<Issue PM_TestBadRequirements problem@>
-	holding/and/, ... |    ==> @<Issue PM_TestBadRequirements problem@>
-	with ...								==> @<Issue PM_TestDoubleWith problem@>
+	in <instance-of-object> |             ==> @<Process the in-test requirement@>
+	holding/and/, <instance-of-object> |  ==> @<Process the holding requirement@>
+	in ... |                              ==> @<Issue PM_TestBadRequirements problem@>
+	holding/and/, ... |                   ==> @<Issue PM_TestBadRequirements problem@>
+	with ...                              ==> @<Issue PM_TestDoubleWith problem@>
 
 @<Process the quoted test script@> =
 	int i, x1 = R[1];

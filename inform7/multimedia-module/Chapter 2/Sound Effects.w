@@ -103,7 +103,7 @@ int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 
 =
 <sound-sentence-object> ::=
-	<sound-source> ( <quoted-text> ) |  ==> R[1]; <<alttext>> = R[2];
+	<sound-source> ( <quoted-text> ) |  ==> { R[1], -, <<alttext>> = R[2] }
 	<sound-source>                      ==> { pass 1 }
 
 <sound-source> ::=

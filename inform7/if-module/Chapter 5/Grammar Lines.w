@@ -179,9 +179,9 @@ known what the action will be.
 
 =
 <understand-condition> ::=
-	<s-non-action-condition> |    ==> 0; <<parse_node:cond>> = RP[1];
-	<s-condition> |    ==> @<Issue PM_WhenAction problem@>
-	...								==> @<Issue PM_BadWhen problem@>;
+	<s-non-action-condition> |  ==> { 0, -, <<parse_node:cond>> = RP[1] }
+	<s-condition> |             ==> @<Issue PM_WhenAction problem@>
+	...                         ==> @<Issue PM_BadWhen problem@>;
 
 @<Issue PM_WhenAction problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_WhenAction),

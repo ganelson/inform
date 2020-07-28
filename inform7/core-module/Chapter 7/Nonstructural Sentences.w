@@ -203,14 +203,14 @@ void Sentences::VPs::switch_dl_mode(parse_node *PN, int sense) {
 
 @ =
 <include-in-debugging-sentence-subject> ::=
-	only <debugging-log-request> |    ==> R[1] | ONLY_DLR; *XP = RP[1]
-	<debugging-log-request>				==> { pass 1 }
+	only <debugging-log-request> |  ==> { R[1] | ONLY_DLR, RP[1] }
+	<debugging-log-request>         ==> { pass 1 }
 
 <debugging-log-request> ::=
-	everything |    ==> { EVERYTHING_DLR, - }
-	nothing |    ==> { NOTHING_DLR, - }
-	<preform-nonterminal> |    ==> { PREFORM_DLR, RP[1] }
-	...									==> { SOMETHING_DLR, - }
+	everything |                    ==> { EVERYTHING_DLR, NULL }
+	nothing |                       ==> { NOTHING_DLR, NULL }
+	<preform-nonterminal> |         ==> { PREFORM_DLR, RP[1] }
+	...                             ==> { SOMETHING_DLR, NULL }
 
 =
 void Sentences::VPs::set_aspect_from_text(wording W, int new_state) {
@@ -401,16 +401,16 @@ new action.
 
 =
 <nounphrase-figure> ::=
-	figure ...							==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
+	figure ...							==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
 
 <nounphrase-sound> ::=
-	sound ...							==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
+	sound ...							==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
 
 <nounphrase-external-file> ::=
-	<external-file-sentence-subject>						==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
+	<external-file-sentence-subject>    ==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
 
 <nounphrase-actionable> ::=
-	^<variable-creation-tail>			==> 0; *XP = Diagrams::new_UNPARSED_NOUN(W)
+	^<variable-creation-tail>			==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
 
 <variable-creation-tail> ::=
 	*** that/which vary/varies |
@@ -420,11 +420,11 @@ new action.
 
 =
 <translation-target-unicode> ::=
-	unicode								==> TRUE; *XP = NULL;
+	unicode								==> { TRUE, NULL }
 
 <translation-target-i6> ::=
-	i6 |    ==> TRUE; *XP = NULL;
-	inform 6							==> TRUE; *XP = NULL;
+	i6 |                                ==> { TRUE, NULL }
+	inform 6							==> { TRUE, NULL }
 
 <translation-target-language> ::=
 	<natural-language>					==> { TRUE, RP[1] }

@@ -132,23 +132,23 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 
 =
 <rule-preamble> ::=
-	definition |    ==> { DEFINITIONAL_PHRASE_EFF, - }
-	this is the {... rule} |    ==> RULE_NOT_IN_RULEBOOK_EFF; <<event-time>> = NOT_AN_EVENT; <<written>> = FALSE;
-	this is the rule |    ==> @<Issue PM_NamelessRule problem@>
-	this is ... rule |    ==> @<Issue PM_UnarticledRule problem@>
-	this is ... rules |    ==> @<Issue PM_PluralisedRule problem@>
-	<event-rule-preamble> |    ==> RULE_NOT_IN_RULEBOOK_EFF; <<event-time>> = R[1]
-	to |    ==> @<Issue PM_BareTo problem@>
-	to ... ( called ... ) |    ==> @<Issue PM_DontCallPhrasesWithCalled problem@>
-	{to ...} ( this is the {### function} inverse to ### ) |    ==> TO_PHRASE_EFF; <<named>> = TRUE; <<written>> = TRUE; <<inverted>> = TRUE;
-	{to ...} ( this is the {### function} ) |    ==> TO_PHRASE_EFF; <<named>> = TRUE; <<written>> = TRUE; <<inverted>> = FALSE;
-	{to ...} ( this is ... ) |    ==> TO_PHRASE_EFF; <<named>> = TRUE; <<written>> = FALSE;
-	to ... |    ==> TO_PHRASE_EFF; <<named>> = FALSE
-	... ( this is the {... rule} ) |    ==> RULE_IN_RULEBOOK_EFF; <<named>> = TRUE; <<written>> = FALSE;
-	... ( this is the rule ) |    ==> @<Issue PM_NamelessRule problem@>
-	... ( this is ... rule ) |    ==> @<Issue PM_UnarticledRule problem@>
-	... ( this is ... rules ) |    ==> @<Issue PM_PluralisedRule problem@>
-	...									==> RULE_IN_RULEBOOK_EFF; <<named>> = FALSE
+	definition |                                              ==> { DEFINITIONAL_PHRASE_EFF, - }
+	this is the {... rule} |                                  ==> { RULE_NOT_IN_RULEBOOK_EFF, -, <<event-time>> = NOT_AN_EVENT, <<written>> = FALSE }
+	this is the rule |                                        ==> @<Issue PM_NamelessRule problem@>
+	this is ... rule |                                        ==> @<Issue PM_UnarticledRule problem@>
+	this is ... rules |                                       ==> @<Issue PM_PluralisedRule problem@>
+	<event-rule-preamble> |                                   ==> { RULE_NOT_IN_RULEBOOK_EFF, -, <<event-time>> = R[1] }
+	to |                                                      ==> @<Issue PM_BareTo problem@>
+	to ... ( called ... ) |                                   ==> @<Issue PM_DontCallPhrasesWithCalled problem@>
+	{to ...} ( this is the {### function} inverse to ### ) |  ==> { TO_PHRASE_EFF, -, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = TRUE }
+	{to ...} ( this is the {### function} ) |                 ==> { TO_PHRASE_EFF, -, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = FALSE }
+	{to ...} ( this is ... ) |                                ==> { TO_PHRASE_EFF, -, <<named>> = TRUE, <<written>> = FALSE }
+	to ... |                                                  ==> { TO_PHRASE_EFF, -, <<named>> = FALSE }
+	... ( this is the {... rule} ) |                          ==> { RULE_IN_RULEBOOK_EFF, -, <<named>> = TRUE, <<written>> = FALSE }
+	... ( this is the rule ) |                                ==> @<Issue PM_NamelessRule problem@>
+	... ( this is ... rule ) |                                ==> @<Issue PM_UnarticledRule problem@>
+	... ( this is ... rules ) |                               ==> @<Issue PM_PluralisedRule problem@>
+	...                                                       ==> { RULE_IN_RULEBOOK_EFF, -, <<named>> = FALSE }
 
 @<Issue PM_NamelessRule problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessRule),
@@ -203,25 +203,25 @@ following grammar. (Parsing this is "fine mode".)
 
 =
 <rule-preamble-fine> ::=
-	<rule-preamble-finer> during <s-scene-description> |    ==> R[1]; <<parse_node:scenes>> = RP[2]
-	<rule-preamble-finer>									==> R[1]; <<parse_node:scenes>> = NULL
+	<rule-preamble-finer> during <s-scene-description> |  ==> { R[1], -, <<parse_node:scenes>> = RP[2] }
+	<rule-preamble-finer>                                 ==> { R[1], -, <<parse_node:scenes>> = NULL }
 
 <rule-preamble-finer> ::=
-	{<rulebook-stem-embellished>} {when/while ...} |    ==> { TRUE, - }
-	{<rulebook-stem-embellished>} |    ==> { FALSE, - }
-	...													==> { NOT_APPLICABLE, - }
+	{<rulebook-stem-embellished>} {when/while ...} |      ==> { TRUE, - }
+	{<rulebook-stem-embellished>} |                       ==> { FALSE, - }
+	...													  ==> { NOT_APPLICABLE, - }
 
 <rulebook-stem-embellished> ::=
-	<rulebook-stem> *** |    ==> 0; <<bud1>> = Wordings::first_wn(WR[1]); <<bud2>> = Wordings::last_wn(WR[1])
-	<article> rule for <rulebook-stem> *** |    ==> 0; <<bud1>> = Wordings::first_wn(WR[1]); <<bud2>> = Wordings::last_wn(WR[1])
-	<article> rule <rulebook-stem> *** |    ==> 0; <<bud1>> = Wordings::first_wn(WR[1]); <<bud2>> = Wordings::last_wn(WR[1])
-	rule for <rulebook-stem> *** |    ==> 0; <<bud1>> = Wordings::first_wn(WR[1]); <<bud2>> = Wordings::last_wn(WR[1])
-	rule <rulebook-stem> ***					==> 0; <<bud1>> = Wordings::first_wn(WR[1]); <<bud2>> = Wordings::last_wn(WR[1])
+	<rulebook-stem> *** |                     ==> { 0, -, <<bud1>> = Wordings::first_wn(WR[1]), <<bud2>> = Wordings::last_wn(WR[1]) }
+	<article> rule for <rulebook-stem> *** |  ==> { 0, -, <<bud1>> = Wordings::first_wn(WR[1]), <<bud2>> = Wordings::last_wn(WR[1]) }
+	<article> rule <rulebook-stem> *** |      ==> { 0, -, <<bud1>> = Wordings::first_wn(WR[1]), <<bud2>> = Wordings::last_wn(WR[1]) }
+	rule for <rulebook-stem> *** |            ==> { 0, -, <<bud1>> = Wordings::first_wn(WR[1]), <<bud2>> = Wordings::last_wn(WR[1]) }
+	rule <rulebook-stem> ***                  ==> { 0, -, <<bud1>> = Wordings::first_wn(WR[1]), <<bud2>> = Wordings::last_wn(WR[1]) }
 
 <rulebook-bud> ::=
-	of/for ... |    ==> { TRUE, - }
-	rule about/for/on ... |    ==> { TRUE, - }
-	rule									==> { FALSE, - }
+	of/for ... |                                          ==> { TRUE, - }
+	rule about/for/on ... |                               ==> { TRUE, - }
+	rule                                                  ==> { FALSE, - }
 
 @ The following turns the preamble text into a PHUD. It can be used as often
 as necessary in "coarse mode", but should be run once and once only on any
@@ -970,11 +970,11 @@ might have gone wrong.
 
 =
 <action-when-diagnosis> ::=
-	... called ... {when/while ...} |    ==> 1; <<cw1>> = Wordings::first_wn(WR[3]); <<cw2>> = Wordings::last_wn(WR[3])
-	... {when/while *** nothing ***} |    ==> 2; <<cw1>> = Wordings::first_wn(WR[2]); <<cw2>> = Wordings::last_wn(WR[2])
-	... {when/while *** nowhere ***} |    ==> 3; <<cw1>> = Wordings::first_wn(WR[2]); <<cw2>> = Wordings::last_wn(WR[2])
-	... and {when/while ...} |    ==> 4; <<cw1>> = Wordings::first_wn(WR[2]); <<cw2>> = Wordings::last_wn(WR[2])
-	... {when/while ...} 					==> 5; <<cw1>> = Wordings::first_wn(WR[2]); <<cw2>> = Wordings::last_wn(WR[2])
+	... called ... {when/while ...} |   ==> { 1, -, <<cw1>> = Wordings::first_wn(WR[3]), <<cw2>> = Wordings::last_wn(WR[3]) }
+	... {when/while *** nothing ***} |  ==> { 2, -, <<cw1>> = Wordings::first_wn(WR[2]), <<cw2>> = Wordings::last_wn(WR[2]) }
+	... {when/while *** nowhere ***} |  ==> { 3, -, <<cw1>> = Wordings::first_wn(WR[2]), <<cw2>> = Wordings::last_wn(WR[2]) }
+	... and {when/while ...} |          ==> { 4, -, <<cw1>> = Wordings::first_wn(WR[2]), <<cw2>> = Wordings::last_wn(WR[2]) }
+	... {when/while ...}                ==> { 5, -, <<cw1>> = Wordings::first_wn(WR[2]), <<cw2>> = Wordings::last_wn(WR[2]) }
 
 @ =
 <anl-diagnosis> ::=
@@ -982,7 +982,7 @@ might have gone wrong.
 	<anl-inner-diagnosis>						  ==> { pass 1 }
 
 <anl-inner-diagnosis> ::=
-	<anl-entry-diagnosis> <anl-tail-diagnosis> |  ==> { R[1]+R[2], - }
+	<anl-entry-diagnosis> <anl-tail-diagnosis> |  ==> { R[1] + R[2], - }
 	<anl-entry-diagnosis>                         ==> { pass 1 }
 
 <anl-tail-diagnosis> ::=

@@ -56,26 +56,26 @@ The object noun phrase is an articled list, and each entry must match this.
 
 =
 <release-sentence-object> ::=
-	<privacy-indicator> <exposed-innards> |    ==> R[2]; <<privacy>> = R[1]
-	<privacy-indicator> ...	|    ==> @<Issue PM_NoSuchPublicRelease problem@>
-	<exposed-innards> |    ==> R[1]; <<privacy>> = NOT_APPLICABLE
-	cover art ( <quoted-text> ) |    ==> COVER_ART_PAYLOAD; <<alttext>> = R[1];
-	cover art |    ==> COVER_ART_PAYLOAD; <<alttext>> = -1;
-	existing story file |    ==> { EXISTING_STORY_FILE_PAYLOAD, - }
-	existing story file called {<quoted-text-without-subs>} |    ==> { NAMED_EXISTING_STORY_FILE_PAYLOAD, - }
-	file of {<quoted-text-without-subs>} called {<quoted-text-without-subs>} |    ==> { AUXILIARY_FILE_PAYLOAD, - }
-	file {<quoted-text-without-subs>} in {<quoted-text-without-subs>} | ==> { HIDDEN_FILE_IN_PAYLOAD, - }
-	file {<quoted-text-without-subs>} |    ==> { HIDDEN_FILE_PAYLOAD, - }
-	style sheet {<quoted-text-without-subs>} |    ==> { CSS_PAYLOAD, - }
-	javascript {<quoted-text-without-subs>} |    ==> { JAVASCRIPT_PAYLOAD, - }
-	introductory booklet |    ==> { BOOKLET_PAYLOAD, - }
-	introductory postcard |    ==> { POSTCARD_PAYLOAD, - }
-	website |    ==> { WEBSITE_PAYLOAD, - }
-	separate figures |    ==> { SEPARATE_FIGURES_PAYLOAD, - }
-	separate sounds |    ==> { SEPARATE_SOUNDS_PAYLOAD, - }
-	{<quoted-text-without-subs>} website |    ==> { THEMED_WEBSITE_PAYLOAD, - }
-	interpreter |    ==> { INTERPRETER_PAYLOAD, - }
-	{<quoted-text-without-subs>} interpreter		==> { THEMED_INTERPRETER_PAYLOAD, - }
+	<privacy-indicator> <exposed-innards> |    ==> { R[2], -, <<privacy>> = R[1] }
+	<privacy-indicator> ...	|                  ==> @<Issue PM_NoSuchPublicRelease problem@>
+	<exposed-innards> |                        ==> { R[1], -, <<privacy>> = NOT_APPLICABLE }
+	cover art ( <quoted-text> ) |              ==> { COVER_ART_PAYLOAD, -, <<alttext>> = R[1] }
+	cover art |                                ==> { COVER_ART_PAYLOAD, -, <<alttext>> = -1 }
+	existing story file |                      ==> { EXISTING_STORY_FILE_PAYLOAD, - }
+	existing story file called {<quoted-text-without-subs>} |  ==> { NAMED_EXISTING_STORY_FILE_PAYLOAD, - }
+	file of {<quoted-text-without-subs>} called {<quoted-text-without-subs>} |  ==> { AUXILIARY_FILE_PAYLOAD, - }
+	file {<quoted-text-without-subs>} in {<quoted-text-without-subs>} |  ==> { HIDDEN_FILE_IN_PAYLOAD, - }
+	file {<quoted-text-without-subs>} |        ==> { HIDDEN_FILE_PAYLOAD, - }
+	style sheet {<quoted-text-without-subs>} | ==> { CSS_PAYLOAD, - }
+	javascript {<quoted-text-without-subs>} |  ==> { JAVASCRIPT_PAYLOAD, - }
+	introductory booklet |                     ==> { BOOKLET_PAYLOAD, - }
+	introductory postcard |                    ==> { POSTCARD_PAYLOAD, - }
+	website |                                  ==> { WEBSITE_PAYLOAD, - }
+	separate figures |                         ==> { SEPARATE_FIGURES_PAYLOAD, - }
+	separate sounds |                          ==> { SEPARATE_SOUNDS_PAYLOAD, - }
+	{<quoted-text-without-subs>} website |     ==> { THEMED_WEBSITE_PAYLOAD, - }
+	interpreter |                              ==> { INTERPRETER_PAYLOAD, - }
+	{<quoted-text-without-subs>} interpreter   ==> { THEMED_INTERPRETER_PAYLOAD, - }
 
 @<Issue PM_NoSuchPublicRelease problem@> =
 	*X = BOOKLET_PAYLOAD; /* to recover harmlessly */

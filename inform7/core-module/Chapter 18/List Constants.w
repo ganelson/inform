@@ -52,16 +52,16 @@ isn't expressed in this grammar.
 
 =
 <s-literal-list> ::=
-	\{ \} |    ==> Rvalues::from_wording_of_list(Lists::kind_of_ll(Lists::empty_literal_list(Wordings::last_word(W)), FALSE), W)
-	\{ <literal-list-contents> \}		==> Rvalues::from_wording_of_list(Lists::kind_of_ll(RP[1], FALSE), W)
+	\{ \} |                        ==> { -, Rvalues::from_wording_of_list(Lists::kind_of_ll(Lists::empty_literal_list(Wordings::last_word(W)), FALSE), W) }
+	\{ <literal-list-contents> \}  ==> { -, Rvalues::from_wording_of_list(Lists::kind_of_ll(RP[1], FALSE), W) }
 
 <literal-list-contents> ::=
-	<literal-list-entry> , <literal-list-contents> |    ==> 0; *XP = Lists::add_to_ll(RP[1], RP[2], W, R[1])
-	<literal-list-entry>				==> 0; *XP = Lists::add_to_ll(RP[1], Lists::empty_literal_list(W), W, R[1])
+	<literal-list-entry> , <literal-list-contents> |  ==> { 0, Lists::add_to_ll(RP[1], RP[2], W, R[1]) }
+	<literal-list-entry>                              ==> { 0, Lists::add_to_ll(RP[1], Lists::empty_literal_list(W), W, R[1]) }
 
 <literal-list-entry> ::=
-	<s-value> |    ==> { FALSE, RP[1] }
-	......								==> TRUE; *XP = Specifications::new_UNKNOWN(W)
+	<s-value> |  ==> { FALSE, RP[1] }
+	......       ==> { TRUE, Specifications::new_UNKNOWN(W) }
 
 @ The grammar above builds our list structures from the bottom up. They begin
 with a call to:

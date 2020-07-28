@@ -136,19 +136,19 @@ as the object.
 
 =
 <verb-implies-sentence-subject> ::=
-	in <natural-language> <infinitive-declaration> |    ==> R[2]; <<inform_language:nl>> = (inform_language *) (RP[1]);
-	<infinitive-declaration>							==> R[1]; <<inform_language:nl>> = DefaultLanguage::get(NULL);
+	in <natural-language> <infinitive-declaration> |  ==> { R[2], -, <<inform_language:nl>> = RP[1] }
+	<infinitive-declaration>                          ==> { R[1], -, <<inform_language:nl>> = DefaultLanguage::get(NULL) }
 
 <infinitive-declaration> ::=
-	to <infinitive-usage> ( ... ) |    ==> R[1]; <<giving-parts>> = TRUE
-	to <infinitive-usage> |    ==> R[1]; <<giving-parts>> = FALSE
-	<infinitive-usage> ( ... ) |    ==> R[1]; <<giving-parts>> = TRUE
-	<infinitive-usage>					==> R[1]; <<giving-parts>> = FALSE
+	to <infinitive-usage> ( ... ) |                   ==> { R[1], -, <<giving-parts>> = TRUE }
+	to <infinitive-usage> |                           ==> { R[1], -, <<giving-parts>> = FALSE }
+	<infinitive-usage> ( ... ) |                      ==> { R[1], -, <<giving-parts>> = TRUE }
+	<infinitive-usage>                                ==> { R[1], -, <<giving-parts>> = FALSE }
 
 <infinitive-usage> ::=
-	{be able to ...} |    ==> { TRUE, - }
-	{be able to} |    ==> { TRUE, - }
-	...									==> { FALSE, - }
+	{be able to ...} |                                ==> { TRUE, - }
+	{be able to} |                                    ==> { TRUE, - }
+	...                                               ==> { FALSE, - }
 
 @ The text in brackets, if given, is a comma-separated list of conjugations
 of the verb. Each one is matched against this:
@@ -184,14 +184,14 @@ now absolutely any non-empty word range is accepted as the property name.
 
 =
 <verb-implies-sentence-object> ::=
-	reversed <relation-name> relation |    ==> REL_VERBM; *XP = BinaryPredicates::get_reversal(RP[1])
-	<relation-name> relation |    ==> { REL_VERBM, RP[1] }
-	to <instance-of-infinitive-form> |    ==> @<Use verb infinitive as shorthand@>
-	... property |    ==> { PROP_VERBM, - }
-	built-in ... meaning |    ==> { BUILTIN_VERBM, - }
-	... relation |    ==> @<Issue PM_VerbRelationUnknown problem@>
-	{relation} |    ==> @<Issue PM_VerbRelationVague problem@>
-	...										==> @<Issue PM_VerbUnknownMeaning problem@>
+	reversed <relation-name> relation |  ==> { REL_VERBM, BinaryPredicates::get_reversal(RP[1]) }
+	<relation-name> relation |           ==> { REL_VERBM, RP[1] }
+	to <instance-of-infinitive-form> |   ==> @<Use verb infinitive as shorthand@>
+	... property |                       ==> { PROP_VERBM, - }
+	built-in ... meaning |               ==> { BUILTIN_VERBM, - }
+	... relation |                       ==> @<Issue PM_VerbRelationUnknown problem@>
+	{relation} |                         ==> @<Issue PM_VerbRelationVague problem@>
+	...                                  ==> @<Issue PM_VerbUnknownMeaning problem@>
 
 @<Issue PM_VerbRelationUnknown problem@> =
 	*X = NONE_VERBM;
@@ -233,13 +233,13 @@ now absolutely any non-empty word range is accepted as the property name.
 
 =
 <new-verb-sentence-object> ::=
-	<indefinite-article> <new-verb-sentence-object-unarticled> |    ==> { pass 2 }
-	<new-verb-sentence-object-unarticled>							==> { pass 1 }
+	<indefinite-article> <new-verb-sentence-object-unarticled> |     ==> { pass 2 }
+	<new-verb-sentence-object-unarticled>							 ==> { pass 1 }
 
 <new-verb-sentence-object-unarticled> ::=
-	verb |    ==> TRUE; *XP = NULL;
-	verb implying/meaning <definite-article> nounphrase-unparsed> |	==> { TRUE, RP[2] }
-	verb implying/meaning <np-unparsed>						==> { TRUE, RP[1] }
+	verb |                                                           ==> { TRUE, NULL }
+	verb implying/meaning <definite-article> nounphrase-unparsed> |  ==> { TRUE, RP[2] }
+	verb implying/meaning <np-unparsed>                              ==> { TRUE, RP[1] }
 
 @ =
 int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
@@ -266,13 +266,13 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 
 =
 <verb-means-sentence-subject> ::=
-	<definite-article> <verb-means-sentence-subject-unarticled> |    ==> { pass 2 }
-	<verb-means-sentence-subject-unarticled>							==> { pass 1 }
+	<definite-article> <verb-means-sentence-subject-unarticled> |  ==> { pass 2 }
+	<verb-means-sentence-subject-unarticled>                       ==> { pass 1 }
 
 <verb-means-sentence-subject-unarticled> ::=
-	verb to |    ==> { fail }
-	verb <np-unparsed> in the imperative |    ==> { TRUE, RP[1] }
-	verb <np-unparsed>												==> { FALSE, RP[1] }
+	verb to |                                                      ==> { fail }
+	verb <np-unparsed> in the imperative |                         ==> { TRUE, RP[1] }
+	verb <np-unparsed>                                             ==> { FALSE, RP[1] }
 
 @ =
 int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
@@ -1121,13 +1121,13 @@ int NewVerbs::takes_contraction_form(word_assemblage *wa) {
 
 =
 <new-adjective-sentence-object> ::=
-	<indefinite-article> <new-adjective-sentence-object-unarticled> |    ==> { pass 2 }
-	<new-adjective-sentence-object-unarticled>							==> { pass 1 }
+	<indefinite-article> <new-adjective-sentence-object-unarticled> |  ==> { pass 2 }
+	<new-adjective-sentence-object-unarticled>                         ==> { pass 1 }
 
 <new-adjective-sentence-object-unarticled> ::=
-	adjective |    ==> TRUE; *XP = NULL
-	adjective implying/meaning <definite-article> <np-unparsed>	| ==> { TRUE, RP[2] }
-	adjective implying/meaning <np-unparsed>					==> { TRUE, RP[1] }
+	adjective |                                                        ==> { TRUE, NULL }
+	adjective implying/meaning <definite-article> <np-unparsed>	|      ==> { TRUE, RP[2] }
+	adjective implying/meaning <np-unparsed>					       ==> { TRUE, RP[1] }
 
 @ =
 int NewVerbs::new_adjective_SMF(int task, parse_node *V, wording *NPs) {

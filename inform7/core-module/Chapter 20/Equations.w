@@ -380,7 +380,8 @@ mass, too.
 	_,/and <equation-where-list>    ==> { 0, - }
 
 <equation-where-setting-entry> ::=
-	<equation-where-setting>  ==> 0; if (!preform_lookahead_mode) Equations::eqn_dec_var(equation_being_declared, Wordings::one_word(eq_symbol_wn), R[1], RP[1]);
+	...  |                    ==> { lookahead }
+	<equation-where-setting>  ==> { -, - }; Equations::eqn_dec_var(equation_being_declared, Wordings::one_word(eq_symbol_wn), R[1], RP[1]);
 
 <equation-where-setting> ::=
 	<equation-symbol> is/are <k-kind> |   ==> { EQW_IDENTIFIES_KIND, RP[2] }; eq_symbol_wn = R[1];

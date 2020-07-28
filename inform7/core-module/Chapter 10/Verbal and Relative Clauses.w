@@ -37,7 +37,7 @@ placeholder to stand for a missing noun phrase:
 	<s-noun-phrase> <s-general-verb-tail>			==> @<Make SV@>;
 
 <s-existential-verb-tail> ::=
-	<copular-verb> <s-noun-phrase-nounless>			==> ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2])
+	<copular-verb> <s-noun-phrase-nounless>			==> { -, ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
 
 @<Make SV@> =
 	ExParser::Subtrees::correct_for_adjectives(RP[1], RP[2]);
@@ -85,9 +85,9 @@ handle its extra object: see below.
 
 =
 <s-general-verb-tail> ::=
-	<universal-verb> <s-universal-relation-term> |    ==> ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2])
-	<meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |    ==> ExParser::Subtrees::verb_marker(RP[1], RP[2], RP[3])
-	<meaningful-nonimperative-verb> <s-noun-phrase>								==> ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2])
+	<universal-verb> <s-universal-relation-term> |                             ==> { -, ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
+	<meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, ExParser::Subtrees::verb_marker(RP[1], RP[2], RP[3]) }
+	<meaningful-nonimperative-verb> <s-noun-phrase>                            ==> { -, ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
 
 @ The verb marker is a temporary node used just to store the verb or preposition
 usage; it's attached to the tree only briefly before sentence conversion
@@ -114,7 +114,7 @@ works.
 
 =
 <s-universal-relation-term> ::=
-	<s-noun-phrase> to <s-noun-phrase>	==> ExParser::val(Rvalues::from_pair(RP[1], RP[2]), W)
+	<s-noun-phrase> to <s-noun-phrase>	==> { -, ExParser::val(Rvalues::from_pair(RP[1], RP[2]), W) }
 
 @ The following parses a noun phrase with a relative clause, which is
 syntactically very similar to the case of a sentence. Sometimes the verb is
@@ -136,17 +136,17 @@ relevant noun subtree with a representation of the player-object for those.
 
 =
 <s-np-with-relative-clause> ::=
-	<s-noun-phrase-nounless> <s-implied-relative-verb-tail> |    ==> @<Make SN@>
-	<s-noun-phrase> <s-relative-verb-tail>												==> @<Make SN@>
+	<s-noun-phrase-nounless> <s-implied-relative-verb-tail> |  ==> @<Make SN@>
+	<s-noun-phrase> <s-relative-verb-tail>                     ==> @<Make SN@>
 
 <s-implied-relative-verb-tail> ::=
-	<copular-preposition> <s-noun-phrase-nounless> |    ==> ExParser::Subtrees::verb_marker(regular_to_be, RP[1], RP[2])
-	not <copular-preposition> <s-noun-phrase-nounless>									==> ExParser::Subtrees::verb_marker(negated_to_be, RP[1], RP[2])
+	<copular-preposition> <s-noun-phrase-nounless> |    ==> { -, ExParser::Subtrees::verb_marker(regular_to_be, RP[1], RP[2]) }
+	not <copular-preposition> <s-noun-phrase-nounless>  ==> { -, ExParser::Subtrees::verb_marker(negated_to_be, RP[1], RP[2]) }
 
 <s-relative-verb-tail> ::=
-	<relative-clause-marker> <universal-verb> <s-universal-relation-term> |    ==> ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3])
-	<relative-clause-marker> <meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |    ==> ExParser::Subtrees::verb_marker(RP[2], RP[3], RP[4])
-	<relative-clause-marker> <meaningful-nonimperative-verb> <s-noun-phrase> 							==> ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3])
+	<relative-clause-marker> <universal-verb> <s-universal-relation-term> |                             ==> { -, ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3]) }
+	<relative-clause-marker> <meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, ExParser::Subtrees::verb_marker(RP[2], RP[3], RP[4]) }
+	<relative-clause-marker> <meaningful-nonimperative-verb> <s-noun-phrase> 							==> { -, ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3]) }
 
 @<Make SN@> =
 	LOGIF(MATCHING, "So uncorrectedly RP[1] = $T\n", RP[1]);

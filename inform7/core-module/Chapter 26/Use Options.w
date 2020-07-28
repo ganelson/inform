@@ -323,16 +323,16 @@ those which need immediate action.
 
 =
 <immediate-use> ::=
-	... |    ==> TRUE; return preform_lookahead_mode; /* match only when looking ahead */
-	<immediate-use-entry> <immediate-use-tail> |    ==> { TRUE, - }
-	<immediate-use-entry>							==> { TRUE, - }
+	... |                                         ==> { lookahead }
+	<immediate-use-entry> <immediate-use-tail> |
+	<immediate-use-entry>
 
 <immediate-use-tail> ::=
 	, _and <immediate-use> |
 	_,/and <immediate-use>
 
 <immediate-use-entry> ::=
-	<notable-use-option-name> |    ==> @<Act on this use option immediately@>
+	<notable-use-option-name> |                   ==> @<Act on this use option immediately@>
 	......
 
 @<Act on this use option immediately@> =

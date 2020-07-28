@@ -122,7 +122,7 @@ traversing the parse tree to look for translation sentences of the right sort.
 
 =
 <extra-response> ::=
-	<quoted-text> ( <response-letter> )				==> R[2];
+	<quoted-text> ( <response-letter> )  ==> { pass 2 }
 
 @ =
 void IdentifierTranslations::plus_responses(parse_node *p, rule *R) {

@@ -61,18 +61,18 @@ linguistically the same thing at all.
 
 =
 <s-literal-time> ::=
-	minus <elapsed-time> | 											==> Rvalues::from_time(-R[1], W)
-	<elapsed-time> | 												==> Rvalues::from_time(R[1], W)
-	<clock-time>													==> Rvalues::from_time(R[1], W)
+	minus <elapsed-time> |                                         ==> { -, Rvalues::from_time(-R[1], W) }
+	<elapsed-time> |                                               ==> { -, Rvalues::from_time(R[1], W) }
+	<clock-time>                                                   ==> { -, Rvalues::from_time(R[1], W) }
 
 <elapsed-time> ::=
-	<cardinal-number> hour/hours |    ==> 60*R[1]
-	<cardinal-number> minute/minutes |    ==>	R[1]
-	<cardinal-number> hour/hours <cardinal-number> minute/minutes	==> 60*R[1]+R[2]
+	<cardinal-number> hour/hours |                                 ==> { 60*R[1], - }
+	<cardinal-number> minute/minutes |                             ==> { pass 1 }
+	<cardinal-number> hour/hours <cardinal-number> minute/minutes  ==> { 60*R[1]+R[2], - }
 
 <clock-time> ::=
 	<cardinal-number> <am-pm> |    ==> @<Vet the time for clock range@>
-	<digital-clock-time> <am-pm>				==> @<Vet the time for clock range@>
+	<digital-clock-time> <am-pm>   ==> @<Vet the time for clock range@>
 
 <am-pm> ::=
 	am |
