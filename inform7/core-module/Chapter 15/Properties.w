@@ -298,10 +298,10 @@ article:
 	property *prn;
 	LOOP_OVER(prn, property)
 		if (Wordings::match(W, prn->name)) {
-			*XP = prn;
+			==> { -, prn };
 			return Wordings::first_wn(W) + Wordings::length(prn->name) - 1;
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ With two variants:
@@ -313,10 +313,10 @@ article:
 	LOOP_OVER(prn, property)
 		if (prn->either_or)
 			if (Wordings::match(W, prn->name)) {
-				*XP = prn;
+				==> { -, prn };
 				return TRUE;
 			}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <value-property-name> internal {
@@ -325,10 +325,10 @@ article:
 	LOOP_OVER(prn, property)
 		if (prn->either_or == FALSE)
 			if (Wordings::match(W, prn->name)) {
-				*XP = prn;
+				==> { -, prn };
 				return TRUE;
 			}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ For tiresome internal reasons, we also need a version which is voracious
@@ -339,10 +339,10 @@ article:
 	property *prn;
 	LOOP_OVER(prn, property)
 		if (Wordings::starts_with(W, prn->name)) {
-			*XP = prn;
+			==> { -, prn };
 			return Wordings::first_wn(W) + Wordings::length(prn->name) - 1;
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ We call a property name "ambiguous" if, syntactically, it looks like a
@@ -363,11 +363,11 @@ matches ambiguous cases.
 	LOOP_OVER(prn, property)
 		if (prn->ambiguous_name) {
 			if (Wordings::starts_with(W, prn->name)) {
-				*XP = prn;
+				==> { -, prn };
 				return Wordings::first_wn(W) + Wordings::length(prn->name) - 1;
 			}
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ But the following slow routine, not used very often, is also convenient for

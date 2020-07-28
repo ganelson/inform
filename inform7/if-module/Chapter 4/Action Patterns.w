@@ -581,7 +581,7 @@ would match as an abbreviated form of the name of "angry waiting man".
 						(Lvalues::get_storage_form(try_stem) == NONLOCAL_VARIABLE_NT) ||
 						(Node::is(try_stem, CONSTANT_NT)) ||
 						(Specifications::is_description(try_stem))) {
-						*XP = try_stem;
+						==> { -, try_stem };
 						return i-1;
 					}
 				}
@@ -625,14 +625,14 @@ trimmed away;
 <action-pattern-core> internal {
 	if (suppress_ap_parsing) return FALSE;
 	action_pattern *ap = PL::Actions::Patterns::ap_parse_inner(W, IS_TENSE);
-	if (ap) { *XP = ap; return TRUE; }
-	return FALSE;
+	if (ap) { ==> { -, ap }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 <action-pattern-past-core> internal {
 	action_pattern *ap = PL::Actions::Patterns::ap_parse_inner(W, HASBEEN_TENSE);
-	if (ap) { *XP = ap; return TRUE; }
-	return FALSE;
+	if (ap) { ==> { -, ap }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 @ "Doing it" is not the happiest of syntaxes. The idea is for this to be
@@ -722,10 +722,10 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 	if (phsf) Frames::remove_nonphrase_stack_frame();
 	if ((wts) && (Dash::validate_conditional_clause(wts))) {
 		LOGIF(ACTION_PATTERN_PARSING, "When clause validated: $P.\n", wts);
-		*XP = wts;
+		==> { -, wts };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ Level 4 now. The optional "in the presence of":
@@ -743,16 +743,17 @@ is valid as an AP, but this enables many natural-looking rules to be written
 
 =
 <ap-common-core-inner-inner> ::=
-	in <action-parameter> |    ==> @<Make an actionless action pattern, specifying room only@>
-	<ap-common-core-inner-inner-inner>						==> { 0, RP[1] };
+	in <action-parameter> |             ==> @<Make an actionless action pattern, specifying room only@>
+	<ap-common-core-inner-inner-inner>  ==> { 0, RP[1] };
 
 @<Make an actionless action pattern, specifying room only@> =
-	if (Dash::validate_parameter(RP[1], K_object) == FALSE)
-		return FALSE; /* the "room" isn't even an object */
+	if (Dash::validate_parameter(RP[1], K_object) == FALSE) {
+		==> { fail production }; /* the "room" isn't even an object */
+	}
 	action_pattern ap = PL::Actions::Patterns::new();
 	ap.valid = TRUE; ap.text_of_pattern = W;
 	ap.room_spec = RP[1];
-	*XP = PL::Actions::Patterns::ap_store(ap);
+	==> { 0, PL::Actions::Patterns::ap_store(ap) };
 
 @ And that's as far down as we go: to level 6. Most of the complexity is gone
 now, but what's left can't very efficiently be written in Preform. Essentially
@@ -765,14 +766,14 @@ box" makes no sense since only one is transitive).
 
 =
 <ap-common-core-inner-inner-inner> internal {
-	if (Wordings::mismatched_brackets(W)) return FALSE;
+	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
 	if (scanning_anl_only_mode) {
 		action_name_list *anl = PL::Actions::Lists::parse(W, prevailing_ap_tense);
-		if (anl == NULL) return FALSE;
+		if (anl == NULL) { ==> { fail nonterminal }; }
 		action_pattern ap = PL::Actions::Patterns::new(); ap.valid = TRUE;
 		ap.text_of_pattern = W;
 		ap.action = anl;
-		*XP = PL::Actions::Patterns::ap_store(ap);
+		==> { -, PL::Actions::Patterns::ap_store(ap) };
 		return TRUE;
 	} else {
 		LOGIF(ACTION_PATTERN_PARSING, "Parsing action pattern: %W\n", W);
@@ -780,11 +781,11 @@ box" makes no sense since only one is transitive).
 		action_pattern ap = PL::Actions::Patterns::parse_action_pattern_dash(W);
 		LOG_OUTDENT;
 		if (PL::Actions::Patterns::is_valid(&ap)) {
-			*XP = PL::Actions::Patterns::ap_store(ap);
+			==> { -, PL::Actions::Patterns::ap_store(ap) };
 			return TRUE;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ The "operands" of an action pattern are the nouns to which it applies: for

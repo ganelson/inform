@@ -26,13 +26,13 @@ is on the table". For now, though, we treat it as a noun.
 	verb_form *vf = (verb_form *) (RP[1]);
 	parse_node *spec = Rvalues::from_verb_form(vf);
 	Node::set_text(spec, W);
-	*XP = spec;
+	==> { -, spec };
 
 @<Compose response ML@> =
 	parse_node *spec = RP[1];
 	Node::set_kind_of_value(spec, K_response);
 	Annotations::write_int(spec, response_code_ANNOT, R[2]);
-	*XP = spec;
+	==> { -, spec };
 
 @ Screening for this saves time.
 
@@ -51,22 +51,27 @@ being used as nouns for functional-programming purposes.
 		if ((Rvalues::is_CONSTANT_of_kind(p, K_action_name)) ||
 			(Rvalues::is_CONSTANT_construction(p, CON_relation)) ||
 			(Rvalues::is_CONSTANT_construction(p, CON_rule))) {
-			*XP = p; return TRUE;
+			==> { -, p };
+			return TRUE;
 		}
 	}
 	p = Lexicon::retrieve(VARIABLE_MC, W);
 	if (p) {
 		nonlocal_variable *nlv = Lvalues::get_nonlocal_variable_if_any(p);
 		if (NonlocalVariables::is_constant(nlv)) {
-			*XP = p; return TRUE;
+			==> { -, p };
+			return TRUE;
 		}
 	}
 
 	if ((Vocabulary::disjunction_of_flags(W)) & CONSTANT_VAL_BITMAP) {
 		p = Lexicon::retrieve(CONSTANT_VAL_BITMAP, W);
-		if (p) { *XP = p; return TRUE; }
+		if (p) {
+			==> { -, p };
+			return TRUE;
+		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ Named constants are handled separately.
@@ -77,10 +82,11 @@ being used as nouns for functional-programming purposes.
 	if (p) {
 		nonlocal_variable *nlv = Lvalues::get_nonlocal_variable_if_any(p);
 		if (NonlocalVariables::is_constant(nlv)) {
-			*XP = p; return TRUE;
+			==> { -, p };
+			return TRUE;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ There's actually nothing special about rulebook outcome names or use option
@@ -91,27 +97,28 @@ names; but because they are stored internally without the compulsory words
 <s-rulebook-outcome-name> internal {
 	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome)) {
-		*XP = p;
+		==> { -, p };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <s-use-option-name> internal {
 	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_of_kind(p, K_use_option)) {
-		*XP = p; return TRUE;
+		==> { -, p };
+		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <s-rule-name> internal {
 	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_construction(p, CON_rule)) {
-		*XP = p;
+		==> { -, p };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ We will also sometimes need a nonterminal which can only produce table
@@ -122,8 +129,11 @@ as constants.
 =
 <s-table-column-name> internal {
 	parse_node *p = Lexicon::retrieve(TABLE_COLUMN_MC, W);
-	if (p) { *XP = p; return TRUE; }
-	return FALSE;
+	if (p) {
+		==> { -, p };
+		return TRUE;
+	}
+	==> { fail nonterminal };
 }
 
 @ In order to resolve a subtle distinction of usage later on, we want not
@@ -140,14 +150,14 @@ to do this.
 <s-property-name> internal {
 	parse_node *p = Lexicon::retrieve(PROPERTY_MC, W);
 	if (p) {
-		*XP = p;
 		if (<property-name-as-noun-phrase>(W))
 			Annotations::write_int(p, property_name_used_as_noun_ANNOT, TRUE);
 		else
 			Annotations::write_int(p, property_name_used_as_noun_ANNOT, FALSE);
+		==> { -, p };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Adjective lists.
@@ -249,16 +259,17 @@ possible adjective name it can see.
 <s-adjective> internal ? {
 	parse_node *p = Lexicon::retrieve_longest_initial_segment(ADJECTIVE_MC, W);
 	if (p) {
+		parse_node *a = Descriptions::from_proposition(NULL, W);
 		unary_predicate *ale = UnaryPredicates::new(
 			RETRIEVE_POINTER_adjective(Lexicon::get_data(Node::get_meaning(p))),
 				TRUE);
-		*XP = Descriptions::from_proposition(NULL, W);
-		Descriptions::add_to_adjective_list(ale, *XP);
+		Descriptions::add_to_adjective_list(ale, a);
 		int sc = Node::get_score(p);
 		if (sc == 0) internal_error("Length-scored maximal parse with length 0");
+		==> { -, a };
 		return Wordings::first_wn(W) + sc - 1;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ =
@@ -373,10 +384,11 @@ is just a little faster written as an internal like this.
 		if (Nouns::is_proper(nt)) {
 			instance *I = Rvalues::to_object_instance(
 				RETRIEVE_POINTER_parse_node(Nouns::meaning(nt)));
-			*XP = Rvalues::from_instance(I); return TRUE;
+			==> { -, Rvalues::from_instance(I) };
+			return TRUE;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ The following is used only in combination with a qualifiable noun: it
@@ -481,12 +493,12 @@ In the grammar for <s-description>, the noun is compulsory.
 	#ifdef IF_MODULE
 	if (permit_trying_omission) return TRUE;
 	#endif
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <if-multiplicitous> internal 0 {
 	if (<s-value-uncached>->multiplicitous) return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ The grammar for <s-description-nounless> is almost exactly the same
@@ -540,7 +552,7 @@ except that the noun is optional. The only difference is right at the bottom.
 			LocalVariables::ensure_called_local(C, K);
 		}
 	}
-	*XP = p;
+	==> { -, p };
 
 @ Determiners make sense in the context of a common noun, e.g., "three doors",
 but not usually for proper nouns ("all 5"). But we allow existence in the
@@ -558,10 +570,9 @@ context of a proper noun, as in "some tea", because it may be confusion of
 		} else if (!((quant == exists_quantifier) && (Node::is(p, CONSTANT_NT))))
 			p = Specifications::new_UNKNOWN(W);
 	}
-	*XP = p;
+	==> { -, p };
 
 @<Issue PM_DefiniteCommonNoun problem@> =
-	*XP = RP[4];
 	if ((PM_DefiniteCommonNoun_issued_at != current_sentence) ||
 		(PM_DefiniteCommonNoun_issued_at == NULL)) {
 		PM_DefiniteCommonNoun_issued_at = current_sentence;
@@ -586,6 +597,7 @@ context of a proper noun, as in "some tea", because it may be confusion of
 			"door is being talked about.");
 		Problems::issue_problem_end();
 	}
+	==> { -, RP[4] };
 
 @ This simply wraps up a calling name into S-grammar form.
 
@@ -615,7 +627,7 @@ blind eye to singular vs plural.
 		parse_node *qp = Specifications::new_UNKNOWN(Wordings::up_to(W, x1-1));
 		Node::set_quant(qp, quantifier_used);
 		Annotations::write_int(qp, quantification_parameter_ANNOT, which_N);
-		*XP = qp;
+		==> { -, qp };
 		return x1-1;
 	}
 	return 0;
@@ -633,9 +645,8 @@ to the kind "thing", whereas "somebody" does refer to people and
 	Plugins::Call::parse_composite_NQs(&W, &DW, &quantifier_used, &some_kind);
 	if (some_kind) {
 		parse_node *p = Descriptions::from_kind(some_kind, TRUE);
-		if (quantifier_used)
-			Descriptions::quantify(p, quantifier_used, -1);
-		*XP = p;
+		if (quantifier_used) Descriptions::quantify(p, quantifier_used, -1);
+		==> { -, p };
 		return Wordings::first_wn(W) - 1;
 	}
 	return 0;

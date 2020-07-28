@@ -371,26 +371,26 @@ the second matches the others; and the third all instances, of whatever kind.
 =
 <instance-of-object> internal {
 	instance *I = Instances::parse_object(W);
-	if (I) { *XP = I; return TRUE; }
-	return FALSE;
+	if (I) { ==> { -, I }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 <instance-of-non-object> internal {
 	parse_node *p = Lexicon::retrieve(NAMED_CONSTANT_MC, W);
 	instance *I = Rvalues::to_instance(p);
-	if (I) { *XP = I; return TRUE; }
-	return FALSE;
+	if (I) { ==> { -, I }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 <instance> internal {
-	if (<s-literal>(W)) return FALSE;
+	if (<s-literal>(W)) { ==> { fail nonterminal }; }
 	W = Articles::remove_the(W);
 	instance *I = Instances::parse_object(W);
-	if (I) { *XP = I; return TRUE; }
+	if (I) { ==> { -, I }; return TRUE; }
 	parse_node *p = Lexicon::retrieve(NAMED_CONSTANT_MC, W);
 	I = Rvalues::to_instance(p);
-	if (I) { *XP = I; return TRUE; }
-	return FALSE;
+	if (I) { ==> { -, I }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 @h The kind of an instance.

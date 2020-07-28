@@ -2516,9 +2516,10 @@ of alternatives each of which matches the following:
 	......                          ==> @<Issue PM_BadLPNameOption problem@>
 
 @<Compose LPG lists@> =
-	*XP = RP[1];
-	if (RP[1] == NULL) *XP = RP[2];
+	parse_node *comp = RP[1];
+	if (comp == NULL) comp = RP[2];
 	else if (RP[2]) ((literal_pattern_name *) RP[1])->next_with_rp = RP[2];
+	==> { -, comp };
 
 @<Issue PM_MultiplyingNonKOVs problem@> =
 	if (preform_lookahead_mode == FALSE) {
@@ -2620,7 +2621,6 @@ by a bracketed list of up to three options in any order.
 	......                                                      ==> @<Issue PM_BadLPPartOption problem@>
 
 @<Issue PM_BadLPPartOption problem@> =
-	*X = 0;
 	if (preform_lookahead_mode == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
@@ -2631,6 +2631,7 @@ by a bracketed list of up to three options in any order.
 			"'preamble optional' or 'without leading zeros'.");
 		Problems::issue_problem_end();
 	}
+	==> { 0, - };
 
 @ That's it for syntax: now back to semantics.
 
@@ -2937,10 +2938,10 @@ seen before.
 	literal_pattern_name *lpn;
 	LOOP_OVER(lpn, literal_pattern_name) {
 		if (Wordings::match(lpn->notation_name, W)) {
-			*XP = lpn; return TRUE;
+			==> { -, lpn }; return TRUE;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ And this is the routine which does the creation. The text will actually be

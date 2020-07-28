@@ -29,9 +29,10 @@ bundle for that language during its initial scan.
 	inform_language *L;
 	LOOP_OVER(L, inform_language)
 		if (Wordings::match(W, Wordings::first_word(L->instance_name))) {
-			*XP = L; return TRUE;
+			==> { -, L };
+			return TRUE;
 		}
-	return FALSE;
+	==> { fail };
 }
 
 @h The natural language kind.

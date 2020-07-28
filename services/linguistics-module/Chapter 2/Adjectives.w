@@ -113,7 +113,7 @@ text, so the following is unambiguous:
 		==> {-, adj};
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ Wrapping which:

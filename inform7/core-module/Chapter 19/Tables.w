@@ -260,13 +260,13 @@ two forms in any case.
 	table ...                         ==> @<Issue PM_TableMisnamed problem@>
 
 @<Issue PM_TableMisnamed problem@> =
-	*X = TABLE_HAS_ONLY_NAME; /* for recovery */
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableMisnamed),
 		"this isn't allowed as the name of a Table",
 		"since a table is required either to have a number, or to be a table 'of' "
 		"something (or both). For example: 'Table 5', 'Table of Blue Meanies', and "
 		"'Table 2 - Submarine Hues' are all allowed, but 'Table concerning "
 		"Pepperland' is not.");
+	==> { TABLE_HAS_ONLY_NAME, - };
 
 @ The following is then used to register table names as constants. The idea
 is that "Table 12 - Chemical Elements" will be registered both as Table 12
@@ -873,19 +873,16 @@ us issue more contextual problem messages.
 	<quoted-text>
 
 @<Make anomalous entry for kind@> =
-	*X = KIND_TABLE_ENTRY;
 	parse_node *new = Specifications::from_kind(RP[1]);
 	Node::set_text(new, W);
-	*XP = new;
+	==> { KIND_TABLE_ENTRY, new };
 
 @<Make anomalous entry for text to be understood@> =
-	*X = TOPIC_TABLE_ENTRY;
 	parse_node *new = Specifications::from_kind(K_text);
 	Node::set_text(new, W);
-	*XP = new;
+	==> { TOPIC_TABLE_ENTRY, new };
 
 @<Issue PM_NonconstantActionInTable problem@> =
-	*X = PROBLEMATIC_TABLE_ENTRY;
 	int quoted_col = table_cell_col + 1; /* i.e., counting from 1 */
 	Problems::quote_number(4, &quoted_col);
 	Problems::quote_wording(5,
@@ -899,13 +896,13 @@ us issue more contextual problem messages.
 		"because 'the player' is a variable. If 'the player' is the person "
 		"carrying out the action, simply leave those words out; if 'the player' "
 		"is involved in some other way, try using 'yourself' instead.");
+	==> { PROBLEMATIC_TABLE_ENTRY, - };
 
 @ The message PM_TablePlayerEntry is so called because by far the commonest
 case of this is people writing "player" as a constant value in a column of
 people -- it needs to be "yourself" instead, since "player" is a variable.
 
 @<Issue PM_TablePlayerEntry or C20TableVariableEntry problem@> =
-	*X = PROBLEMATIC_TABLE_ENTRY;
 	nonlocal_variable *q = Lvalues::get_nonlocal_variable_if_any(RP[1]);
 	if (q == NULL) internal_error("no such variable");
 	inference_subject *infs = NonlocalVariables::get_alias(q);
@@ -933,10 +930,11 @@ people -- it needs to be "yourself" instead, since "player" is a variable.
 			"In %1, the entry %3 in column %4 (%5) of row %6 is the name of a value "
 			"which varies, not a constant, so it can't be stored as a table entry.");
 	}
+	==> { PROBLEMATIC_TABLE_ENTRY, - };
 
 @<Issue PM_TableUnknownEntry problem@> =
-	*X = PROBLEMATIC_TABLE_ENTRY;
 	@<Actually issue PM_TableUnknownEntry problem@>;
+	==> { PROBLEMATIC_TABLE_ENTRY, - };
 
 @ (There are actually two ways this can happen, which is why it's set out like this.)
 

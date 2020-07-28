@@ -392,7 +392,6 @@ Any new rulebook variable name is vetted by being run through this:
 	...										==> { TRUE, - }
 
 @<Issue PM_RulebookVariableAnd problem@> =
-	*X = NOT_APPLICABLE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableAnd));
@@ -403,6 +402,7 @@ Any new rulebook variable name is vetted by being run through this:
 		"say that the name in question is '%2', but I'd prefer to "
 		"avoid 'and', 'or', 'with', or 'having' in such names, please.");
 	Problems::issue_problem_end();
+	==> { NOT_APPLICABLE, - };
 
 @ =
 void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
@@ -646,7 +646,7 @@ of <rulebook-stem-inner> below, and then does some direct parsing.
 =
 <rulebook-stem> internal ? {
 	rulebook_match rm = Rulebooks::rb_match_from_description(W);
-	if (rm.matched_rulebook == NULL) return FALSE;
+	if (rm.matched_rulebook == NULL) { ==> { fail nonterminal }; }
 	parsed_rm = rm;
 	return Wordings::first_wn(W) + rm.advance_words - 1;
 }
@@ -916,10 +916,10 @@ parses the object noun phrase with the following:
 	...										==> @<Issue PM_NonOutcomeProperty problem@>
 
 @<Issue PM_NonOutcomeProperty problem@> =
-	*X = NOT_APPLICABLE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NonOutcomeProperty),
 		"the only properties of a rulebook are its outcomes",
 		"for the time being at least.");
+	==> { NOT_APPLICABLE, - };
 
 @ =
 outcomes *outcomes_being_parsed = NULL;

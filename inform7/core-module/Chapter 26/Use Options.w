@@ -115,10 +115,10 @@ void UseOptions::new_use_option(parse_node *p) {
 	...                         ==> @<Issue PM_UseTranslatesNotI6 problem@>
 
 @<Issue PM_UseTranslatesNotI6 problem@> =
-	*X = FALSE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UseTranslatesNotI6),
 		"that translates into something which isn't a simple I6 inclusion",
 		"placed in '(-' and '-)' markers.");
+	==> { FALSE, - };
 
 @ Having registered the use option names as miscellaneous, we need to parse
 them back that way too:
@@ -126,9 +126,8 @@ them back that way too:
 =
 use_option *UseOptions::parse_uo(wording OW) {
 	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, OW);
-	if (Rvalues::is_CONSTANT_of_kind(p, K_use_option)) {
+	if (Rvalues::is_CONSTANT_of_kind(p, K_use_option))
 		return Rvalues::to_use_option(p);
-	}
 	return NULL;
 }
 

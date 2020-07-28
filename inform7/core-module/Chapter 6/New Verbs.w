@@ -194,39 +194,37 @@ now absolutely any non-empty word range is accepted as the property name.
 	...                                  ==> @<Issue PM_VerbUnknownMeaning problem@>
 
 @<Issue PM_VerbRelationUnknown problem@> =
-	*X = NONE_VERBM;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_VerbRelationUnknown),
 		"new verbs can only be defined in terms of existing relations",
 		"all of which have names ending 'relation': thus '...implies the "
 		"possession relation' is an example of a valid definition, this "
 		"being one of the relations built into Inform.");
+	==> { NONE_VERBM, - };
 
 @<Issue PM_VerbRelationVague problem@> =
-	*X = NONE_VERBM;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_VerbRelationVague),
 		"that's too vague",
 		"calling a relation simply 'relation'.");
-
+	==> { NONE_VERBM, - };
 
 @<Issue PM_VerbUnknownMeaning problem@> =
-	*X = NONE_VERBM;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_VerbUnknownMeaning),
 		"I don't see what the meaning of this verb ought to be",
 		"because it doesn't take any of the three forms I know: a relation "
 		"name ('...means the wearing relation'), a property name ('...means "
 		"the matching key property'), or another verb ('...means to wear.').");
+	==> { NONE_VERBM, - };
 
 @<Use verb infinitive as shorthand@> =
-	*X = VM_VERBM;
 	verb_form *vf = RP[1];
 	verb_meaning *vm = VerbMeanings::first_unspecial_meaning_of_verb_form(vf);
 	if (vm) {
-		*XP = vm;
+		==> { VM_VERBM, vm };
 	} else {
-		*X = NONE_VERBM;
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"that's another verb which has no meaning at present",
 			"so this doesn't help me.");
+		==> { NONE_VERBM, - };
 	}
 
 @ This handles the special meaning "X is a verb...".

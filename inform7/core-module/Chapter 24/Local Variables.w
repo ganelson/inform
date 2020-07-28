@@ -759,9 +759,12 @@ name or a description.
 	...                             ==> @<Make a new local for this calling@>
 
 <existing-local-name> internal {
-	*XP = LocalVariables::parse(Frames::current_stack_frame(), W);
-	if (*XP) return TRUE;
-	return FALSE;
+	local_variable *lvar = LocalVariables::parse(Frames::current_stack_frame(), W);
+	if (lvar) {
+		==> { -, lvar };
+		return TRUE;
+	}
+	==> { fail nonterminal };
 }
 
 @<Issue PM_CalledWithDash problem@> =
@@ -794,8 +797,7 @@ name or a description.
 
 @<Make a new local for this calling@> =
 	ph_stack_frame *phsf = Frames::current_stack_frame();
-	*X = 0;
-	*XP = (phsf)?(LocalVariables::new(W, K_object)):NULL;
+	==> { 0, (phsf)?(LocalVariables::new(W, K_object)):NULL };
 
 @h Permissible names.
 This is an interesting issue of policy. Suppose the source text says:

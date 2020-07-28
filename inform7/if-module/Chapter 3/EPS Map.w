@@ -347,7 +347,7 @@ itself.
 	... mapped as ... |                              ==> @<Issue PM_MapDirectionClue problem@>
 	<instance-of-object> mapped <map-positioning> |  ==> { MAPPED_IMW, -, <<instance:x>> = RP[1], <<instance:y>> = RP[2] }
 	... mapped ... |                                 ==> @<Issue PM_MapPlacement problem@>
-	<map-setting> set to <map-setting-value> |       ==> { SETTING_IMW, -, <<scoping>> = R[1], <<msvtype>> = R[2] }; if (R[1] == NO_IMW) *X = NO_IMW;
+	<map-setting> set to <map-setting-value> |       ==> { PL::EPSMap::setting(R[1]), -, <<scoping>> = R[1], <<msvtype>> = R[2] }
 	<map-setting> set to ... |                       ==> @<Issue PM_MapSettingTooLong problem@>
 	... set to ... |                                 ==> @<Issue PM_MapSettingOfUnknown problem@>
 	rubric {<quoted-text-without-subs>} *** |        ==> { RUBRIC_IMW, - }
@@ -359,41 +359,43 @@ itself.
 	below <instance-of-object>                           ==> { TRUE, RP[1], <<instance:dir>> = I_down }
 
 @<Issue PM_MapDirectionClue problem@> =
-	*X = NO_IMW;
-	if (index_map_with_pass == 1) {
+	if (index_map_with_pass == 1)
 		StandardProblems::map_problem(_p_(PM_MapDirectionClue),
 			index_map_with_p, "You can only say 'Index map with D mapped as E.' "
 			"when D and E are directions.");
-	}
+	==> { NO_IMW, - };
 
 @<Issue PM_MapPlacement problem@> =
-	*X = NO_IMW;
-	if (index_map_with_pass == 1) {
+	if (index_map_with_pass == 1)
 		StandardProblems::map_problem(_p_(PM_MapPlacement),
 			index_map_with_p, "The map placement hint should either have the form 'Index map with X "
 			"mapped east of Y' or 'Index map with X mapped above/below Y'.");
-	}
+	==> { NO_IMW, - };
 
 @<Issue PM_MapSettingTooLong problem@> =
-	*X = NO_IMW;
-	if (index_map_with_pass == 1) {
+	if (index_map_with_pass == 1)
 		StandardProblems::map_problem(_p_(PM_MapSettingTooLong),
 			index_map_with_p, "The value supplied has to be a single item, a number, a word "
 			"or some text in double-quotes: this looks too long to be right.");
-	}
+	==> { NO_IMW, - };
 
 @<Issue PM_MapSettingOfUnknown problem@> =
-	*X = NO_IMW;
 	@<Actually issue PM_MapSettingOfUnknown problem@>;
+	==> { NO_IMW, - };
 
 @<Issue PM_MapHintUnknown problem@> =
-	*X = NO_IMW;
-	if (index_map_with_pass == 2) {
+	if (index_map_with_pass == 2)
 		StandardProblems::map_problem(_p_(PM_MapHintUnknown),
 			index_map_with_p, "The general form for this is 'Index map with ...' and then a "
 			"list of clues, such as 'the Ballroom mapped east of the Terrace', "
 			"or 'room-size of the Ballroom set to 100'.");
-	}
+	==> { NO_IMW, - };
+
+@ =
+int PL::EPSMap::setting(int N) {
+	if (N == NO_IMW) return N;
+	return SETTING_IMW;
+}
 
 @ Now we parse the setting to be set. For example,
 
@@ -431,22 +433,20 @@ For now, at least, these are all in English only.
 	wchar_t *parameter_name = Lexer::word_text(Wordings::first_wn(W));
 	if ((Wordings::length(W) == 1) &&
 		((i = PL::EPSMap::get_map_variable_index_forgivingly(parameter_name))>=0)) {
-		*X = i;
-		*XP = parameter_name;
+		==> { i, parameter_name };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @<Issue PM_MapSettingUnknown problem@> =
-	*X = NO_IMW;
-	if (index_map_with_pass == 1) {
+	if (index_map_with_pass == 1)
 		StandardProblems::map_problem(_p_(PM_MapSettingUnknown),
 			index_map_with_p, "The parameter has to be one of the fixed named set given in "
 			"the documentation, like 'room-name'. All parameters are one "
 			"word, but many are hyphenated. (Also, note that 'colour' has the "
 			"Canadian/English spelling, not the American one 'color'.)");
-	}
+	==> { NO_IMW, - };
 
 @ The value of map settings is as follows. In retrospect, the "booleans"
 perhaps should just have been "true" and "false", not "on" and "off".
@@ -471,7 +471,7 @@ offset or else the |ERRONEOUS_OFFSET_VALUE| sentinel.
 
 =
 <map-offset> internal 1 {
-	*X = PL::EPSMap::parse_eps_map_offset(W);
+	==> { PL::EPSMap::parse_eps_map_offset(W), - };
 	return TRUE;
 }
 

@@ -91,7 +91,6 @@ Here is the subject:
 	...                                                    ==> @<Issue PM_BadFileOwner problem@>
 
 @<Issue PM_BadFileOwner problem@> =
-	*X = NOT_APPLICABLE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadFileOwner),
 		"the owner of this file is wrongly specified",
 		"since it is not one of the three possibilities - "
@@ -103,6 +102,7 @@ Here is the subject:
 		"IFID: 'The File of Wisdom (owned by project "
 		"\"4122DDA8-A153-46BC-8F57-42220F9D8795\") "
 		"is called \"wisdom\".'");
+	==> { NOT_APPLICABLE, - };
 
 @ The object NP is simply quoted text. Although the Preform grammar doesn't
 go into this level of detail, it's actually required to have 3 to 23 English
@@ -114,10 +114,10 @@ letters or digits, with the first being a letter.
 	...              ==> @<Issue PM_FilenameNotTextual problem@>
 
 @<Issue PM_FilenameNotTextual problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FilenameNotTextual),
 		"a file can only be called with a single quoted piece of text",
 		"as in: 'The File of Wisdom is called \"wisdom\".'");
+	==> { -1, - };
 
 @ This handles the special meaning "File... is the file...".
 

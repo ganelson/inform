@@ -58,12 +58,12 @@ and the following grammar defines the "when defining a thing" end.
 	after         ==> { AFTER_LINK_STAGE, - }
 
 @<Note segment-level inclusion@> =
-	*X = SEGMENT_LEVEL_INC;
 	inclusion_side = R[1]; segment_inclusion_wn = R[2];
+	==> { SEGMENT_LEVEL_INC, - };
 
 @<Note section-level inclusion@> =
-	*X = SECTION_LEVEL_INC;
 	inclusion_side = R[1]; section_inclusion_wn = R[2]; segment_inclusion_wn = R[3];
+	==> { SEGMENT_LEVEL_INC, - };
 
 @<Issue PM_WhenDefiningUnknown problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_WhenDefiningUnknown),
@@ -170,12 +170,12 @@ code instructions; we remember what's needed ourselves:
 
 @ =
 void Config::Inclusions::new_intervention(int stage, text_stream *segment, text_stream *part, wchar_t *i6, text_stream *seg) {
-	text_stream *X = NULL;
+	text_stream *T = NULL;
 	if (i6) {
-		X = Str::new();
-		I6T::interpret_i6t(X, i6, -1);
+		T = Str::new();
+		I6T::interpret_i6t(T, i6, -1);
 	}
-	Emit::intervention(stage, segment, part, X, seg);
+	Emit::intervention(stage, segment, part, T, seg);
 }
 
 @ The following is our opportunity to redeem those inclusion-in-definitions

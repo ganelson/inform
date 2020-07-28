@@ -72,10 +72,12 @@ the player types either of these:
 <unicode-character-name> internal {
 	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if ((p) && (Node::get_type(p) == PROPER_NOUN_NT)) {
-		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(Node::get_text(p))));
+		int N = Vocabulary::get_literal_number_value(
+			Lexer::word(Wordings::first_wn(Node::get_text(p))));
+		==> { N, - };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ And here is the range check:

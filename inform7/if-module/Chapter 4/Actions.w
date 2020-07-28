@@ -363,18 +363,18 @@ phrases: "unlocking the door with" won't match the unlocking action; only
 	action_name *an;
 	LOOP_OVER(an, action_name)
 		if (Wordings::match(W, an->present_name)) {
-			*XP = an;
+			==> { -, an };
 			return TRUE;
 		}
 	LOOP_OVER(an, action_name)
 		if (<action-optional-trailing-prepositions>(an->present_name)) {
 			wording SHW = GET_RW(<action-optional-trailing-prepositions>, 1);
 			if (Wordings::match(W, SHW)) {
-				*XP = an;
+				==> { -, an };
 				return TRUE;
 			}
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ However, <action-name> can also be made to match an action name without
@@ -543,7 +543,6 @@ and this allows "exiting from the cage", say, as an action pattern.
 	...														==> { TRUE, - }
 
 @<Issue PM_BadMatchingSyntax problem@> =
-	*X = NOT_APPLICABLE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadMatchingSyntax));
@@ -554,6 +553,7 @@ and this allows "exiting from the cage", say, as an action pattern.
 		"say in parentheses that the name in question is '%2', but "
 		"I only recognise the form '(matched as \"some text\")' here.");
 	Problems::issue_problem_end();
+	==> { NOT_APPLICABLE, - };
 
 @<Issue PM_ActionVarAnd problem@> =
 	Problems::quote_source(1, current_sentence);
@@ -716,11 +716,11 @@ void PL::Actions::compile_action_name_var_creators(void) {
 	action								==> @<Issue PM_BadActionDeclaration problem@>
 
 @<Issue PM_BadActionDeclaration problem@> =
-	*X = FALSE; *XP = NULL;
 	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadActionDeclaration),
 		"it is not sufficient to say that something is an 'action'",
 		"without giving the necessary details: for example, 'Unclamping "
 		"is an action applying to one thing.'");
+	==> { FALSE, NULL };
 
 @ =
 int PL::Actions::new_action_SMF(int task, parse_node *V, wording *NPs) {
@@ -771,7 +771,6 @@ action to be created.
 	...              ==> { 0, PL::Actions::act_new(W, TRUE) }
 
 @<Issue PM_ActionAlreadyExists problem@> =
-	*XP = NULL;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionAlreadyExists),
 		"that seems to be an action already existing",
 		"so it cannot be redefined now. If you would like to reconfigure "
@@ -780,6 +779,7 @@ action to be created.
 		"action for what you need ('keyless unlocking', perhaps) and then "
 		"change the grammar to use the new action rather than the old "
 		"('Understand \"unlock [something]\" as keyless unlocking.').");
+	==> { -, K_object };
 
 @ The object NP is trickier, because it is a sequence
 of "action clauses" which can occur in any order, which are allowed but
@@ -812,8 +812,11 @@ It's convenient to define a single action clause first:
 	...                                  ==> @<Issue PM_ActionMisapplied problem@>;
 
 <act-req> ::=
-	<action-access> <k-kind> |           ==> { R[1], RP[2] }; @<Check action kind@>;
-	<k-kind>                             ==> { UNRESTRICTED_ACCESS, RP[1] }; @<Check action kind@>;
+	<act-req-inner>                      ==> @<Check action kind@>;
+
+<act-req-inner> ::=
+	<action-access> <k-kind> |           ==> { R[1], RP[2] }
+	<k-kind>                             ==> { UNRESTRICTED_ACCESS, RP[1] }
 
 <action-access> ::=
 	visible |                            ==> { DOESNT_REQUIRE_ACCESS, - }
@@ -828,9 +831,9 @@ It's convenient to define a single action clause first:
 	...                                  ==> @<Issue PM_ActionClauseUnknown problem@>
 
 <action-clauses> ::=
-	... |                                ==> { lookahead }
-	<action-clauses> <action-clause-terminated> | ==> { R[2], - }; @<Act on this action information@>
-	<action-clause-terminated>			 ==> { R[1], - }; @<Act on this action information@>
+	... |                                         ==> { lookahead }
+	<action-clauses> <action-clause-terminated> | ==> { R[2], - }; PL::Actions::act_on_clause(R[2]);
+	<action-clause-terminated>                    ==> { R[1], - }; PL::Actions::act_on_clause(R[1]);
 
 <action-clause-terminated> ::=
 	<action-clause> , and |              ==> { pass 1 }
@@ -843,14 +846,36 @@ It's convenient to define a single action clause first:
 		"the action definition contained text I couldn't follow",
 		"and may be too complicated.");
 
-@<Act on this action information@> =
-	switch (*X) {
+@<Check action kind@> =
+	int A = R[1]; kind *K = RP[1];
+	if (Kinds::Compare::eq(K, K_thing)) {
+		if (A == UNRESTRICTED_ACCESS) A = REQUIRES_ACCESS;
+		==> { A, K_object };
+	} else if (Kinds::Compare::lt(K, K_object)) {
+		@<Issue PM_ActionMisapplied problem@>;
+	} else if (A != UNRESTRICTED_ACCESS) {
+		@<Issue PM_ActionMisapplied problem@>;
+	} else {
+		==> { A, K };
+	}
+
+@<Issue PM_ActionMisapplied problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionMisapplied),
+		"an action can only apply to things or to kinds of value",
+		"for instance: 'photographing is an action applying to "
+		"one visible thing'.");
+	==> { REQUIRES_ACCESS, K_thing };
+
+@ =
+void PL::Actions::act_on_clause(int N) {
+	switch (N) {
 		case OOW_ACT_CLAUSE:
 			an_being_parsed->out_of_world = TRUE; break;
 		case PP_ACT_CLAUSE: {
 			wording C = GET_RW(<action-clause>, 1);
 			if (Wordings::length(C) != 1)
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultiwordPastParticiple),
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_MultiwordPastParticiple),
 					"a past participle must be given as a single word",
 					"even if the action name itself is longer than that. "
 					"(For instance, the action name 'hanging around until' "
@@ -878,23 +903,7 @@ It's convenient to define a single action clause first:
 			an_being_parsed->abbreviable = TRUE;
 			break;
 	}
-
-@<Check action kind@> =
-	if (Kinds::Compare::eq(*XP, K_thing)) {
-		if (*X == UNRESTRICTED_ACCESS) *X = REQUIRES_ACCESS;
-		*XP = K_object;
-	} else if (Kinds::Compare::lt(*XP, K_object)) {
-		@<Issue PM_ActionMisapplied problem@>;
-	} else {
-		if (*X != UNRESTRICTED_ACCESS) @<Issue PM_ActionMisapplied problem@>;
-	}
-
-@<Issue PM_ActionMisapplied problem@> =
-	*X = REQUIRES_ACCESS; *XP = K_thing;
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionMisapplied),
-		"an action can only apply to things or to kinds of value",
-		"for instance: 'photographing is an action applying to "
-		"one visible thing'.");
+}
 
 @ =
 wording PL::Actions::set_past_participle(wording W, int irregular_pp) {

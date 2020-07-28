@@ -44,7 +44,7 @@ only be allowed if K already existed.
 =
 <if-parsing-phrase-tokens> internal 0 {
 	if (kind_parsing_mode != NORMAL_KIND_PARSING) return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ And the following internal is in fact only <k-kind> but inside phrase
@@ -57,8 +57,8 @@ phrase (which, like phrase tokens, can involve the variables).
 	kind_parsing_mode = PHRASE_TOKEN_KIND_PARSING;
 	int t = <k-kind>(W);
 	kind_parsing_mode = s;
-	if (t) { *XP = <<rp>>; return TRUE; }
-	return FALSE;
+	if (t) { ==> { -, <<rp>> }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 @ And here is that "name of kind..." construction, which is valid only in
@@ -112,10 +112,10 @@ make two further checks:
 =
 <k-base-kind> internal {
 	kind *K = NULL;
-	if (Wordings::empty(W)) return FALSE;
+	if (Wordings::empty(W)) { ==> { fail nonterminal }; }
 	if (Wordings::length(W) == 1) K = Kinds::read_kind_marking_from_vocabulary(Lexer::word(Wordings::first_wn(W)));
 	if (K == NULL) {
-		if (<definite-article>(Wordings::first_word(W))) return FALSE;
+		if (<definite-article>(Wordings::first_word(W))) { ==> { fail nonterminal }; }
 		parse_node *p = Lexicon::retrieve(KIND_SLOW_MC, W);
 		if (p) {
 			excerpt_meaning *em = Node::get_meaning(p);
@@ -135,8 +135,8 @@ make two further checks:
 			}
 		}
 	}
-	if (K) { *XP = K; return TRUE; }
-	return FALSE;
+	if (K) { ==> { -, K }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 @
@@ -195,7 +195,7 @@ And similarly for the others here, except "either/or property", which is a
 			if (Kinds::Textual::parse_constructor_name(con, &X, &Y))
 				@<See if this partial kind-constructor match works out@>;
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ So at this point we have a match of the fixed words in the constructor.
@@ -229,10 +229,10 @@ unspecified because a short form of the constructor is used (e.g.,
 	@<The relation constructor defaults to Y matching X, if X is specified@>;
 
 	if ((Kinds::Constructors::arity(con) == 1) && (KX)) {
-		*XP = Kinds::unary_construction(con, KX); return TRUE;
+		==> { -, Kinds::unary_construction(con, KX) }; return TRUE;
 	}
 	if ((Kinds::Constructors::arity(con) == 2) && (KX) && (KY)) {
-		*XP = Kinds::binary_construction(con, KX, KY); return TRUE;
+		==> { -, Kinds::binary_construction(con, KX, KY) }; return TRUE;
 	}
 
 @ Ordinarily missing X or Y are filled in as "value", but...
@@ -402,9 +402,9 @@ parsed almost all of the time.
 	int k = Kinds::Textual::parse_kind_variable_name(Lexer::word_raw_text(Wordings::first_wn(W)), FALSE);
 	if (k != 0) {
 		kind *K = Kinds::variable_from_context(k);
-		if (K) { *X = k; *XP = K; return TRUE; }
+		if (K) { ==> { k, K }; return TRUE; }
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ But we can also formally parse A to Z as their own abstract identities;
@@ -415,9 +415,10 @@ they aren't replaced with their values (which they may not even have).
 <k-formal-kind-variable> internal 1 {
 	int k = Kinds::Textual::parse_kind_variable_name(Lexer::word_raw_text(Wordings::first_wn(W)), FALSE);
 	if (k != 0) {
-		*X = k; *XP = Kinds::variable_construction(k, NULL); return TRUE;
+		==> { k, Kinds::variable_construction(k, NULL) };
+		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ And it's also convenient to have:
@@ -426,9 +427,10 @@ they aren't replaced with their values (which they may not even have).
 <k-formal-kind-variable-singular> internal 1 {
 	int k = Kinds::Textual::parse_kind_variable_name_singular(Lexer::word_raw_text(Wordings::first_wn(W)));
 	if (k != 0) {
-		*X = k; *XP = Kinds::variable_construction(k, NULL); return TRUE;
+		==> { k, Kinds::variable_construction(k, NULL) };
+		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ For efficiency's sake, we don't actually parse directly using this

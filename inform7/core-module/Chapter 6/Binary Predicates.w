@@ -750,9 +750,9 @@ so the fact that it runs relatively slowly does not matter.
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
 		if (WordAssemblages::compare_with_wording(&(bp->relation_name), W)) {
-			*XP = bp; return TRUE;
+			==> { -, bp }; return TRUE;
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ =

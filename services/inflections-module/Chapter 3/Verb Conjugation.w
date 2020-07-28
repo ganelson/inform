@@ -864,9 +864,9 @@ as markers in verb conjugations.
 
 =
 <auxiliary-verb-only> internal {
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <not-instance-of-verb-at-run-time> internal {
-	return FALSE;
+	==> { fail nonterminal };
 }

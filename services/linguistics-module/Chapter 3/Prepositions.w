@@ -117,7 +117,9 @@ preposition, but note that it does so by testing in creation order.
 
 =
 <preposition> internal ? {
-	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) return FALSE;
+	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) {
+		==> { fail nonterminal };
+	}
 	preposition *prep;
 	LOOP_OVER(prep, preposition) {
 		int i = Prepositions::parse_prep_against(W, prep);
@@ -126,7 +128,7 @@ preposition, but note that it does so by testing in creation order.
 			return i-1;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ It's often useful to look for prepositions which can be combined with the
@@ -136,8 +138,8 @@ So it will find the longest match.
 
 =
 <copular-preposition> internal ? {
-	if (copular_verb == NULL) return FALSE;
-	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) return FALSE;
+	if (copular_verb == NULL) { ==> { fail nonterminal }; }
+	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) { ==> { fail nonterminal }; }
 	for (verb_form *vf = copular_verb->first_form; vf; vf=vf->next_form) {
 		preposition *prep = vf->preposition;
 		if ((prep) && (VerbMeanings::is_meaningless(&(vf->list_of_senses->vm)) == FALSE)) {
@@ -148,7 +150,7 @@ So it will find the longest match.
 			}
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ This is exactly similar, except that it looks for prepositions combined
@@ -156,7 +158,9 @@ with a given "permitted verb".
 
 =
 <permitted-preposition> internal ? {
-	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) return FALSE;
+	if (Vocabulary::test_flags(Wordings::first_wn(W), PREPOSITION_MC) == FALSE) {
+		==> { fail nonterminal };
+	}
 	if (permitted_verb)
 		for (verb_form *vf = permitted_verb->first_form; vf; vf=vf->next_form) {
 			preposition *prep = vf->preposition;
@@ -168,7 +172,7 @@ with a given "permitted verb".
 				}
 			}
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ =

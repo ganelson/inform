@@ -78,7 +78,6 @@ The object noun phrase is an articled list, and each entry must match this.
 	{<quoted-text-without-subs>} interpreter   ==> { THEMED_INTERPRETER_PAYLOAD, - }
 
 @<Issue PM_NoSuchPublicRelease problem@> =
-	*X = BOOKLET_PAYLOAD; /* to recover harmlessly */
 	Problems::quote_wording_as_source(1, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchPublicRelease));
 	Problems::issue_problem_segment(
@@ -86,6 +85,7 @@ The object noun phrase is an articled list, and each entry must match this.
 		"a release which can be marked as public or private are the 'source "
 		"text', 'solution' and 'library card'.");
 	Problems::issue_problem_end();
+	==> { BOOKLET_PAYLOAD, - }; /* to recover harmlessly */
 
 @ Three of the secret ingredients of a project which can be released, and can
 optionally be marked "public" (they appear on any website about it) or

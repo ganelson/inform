@@ -472,11 +472,10 @@ messages.
 
 =
 <phrase-vetting> ::=
-	( ...... ) <copular-verb> {<copular-preposition>} ( ...... )  ==> { -, -, <<rel1>> = Wordings::first_wn(WR[2]), <<rel2>> = Wordings::last_wn(WR[2]), <<preposition:prep>> = RP[2] }; @<Issue PM_MasksRelation problem@>
+	( ...... ) <copular-verb> {<copular-preposition>} ( ...... )  ==> { -, K_number, <<rel1>> = Wordings::first_wn(WR[2]), <<rel2>> = Wordings::last_wn(WR[2]), <<preposition:prep>> = RP[2] }; @<Issue PM_MasksRelation problem@>
 
 @<Issue PM_MasksRelation problem@> =
 	preposition *prep = <<preposition:prep>>;
-	*XP = K_number;
 	Problems::quote_source(1, current_sentence);
 	if (Prepositions::get_where_pu_created(prep) == NULL)
 		Problems::quote_text(4, "This is a relation defined inside Inform.");
@@ -533,10 +532,9 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 
 <return-kind> ::=
 	<k-kind-for-template> |                          ==> { pass 1 }
-	...                                              ==> @<Issue PM_UnknownValueToDecide problem@>
+	...                                              ==> { -, K_number}; @<Issue PM_UnknownValueToDecide problem@>
 
 @<Issue PM_UnknownValueToDecide problem@> =
-	*XP = K_number;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownValueToDecide));
@@ -687,39 +685,38 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 	......                                                            ==> @<Issue PM_TokenMisunderstood problem@>
 
 @<Issue PM_TokenWithEmptyBrackets problem@> =
-	*X = NOT_APPLICABLE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TokenWithEmptyBrackets),
 		"nothing is between the opening bracket '(' and its matching close bracket ')'",
 		"so I can't see what is meant to be the fixed text and what is meant to be "
 		"changeable. The idea is to put brackets around whatever varies from one "
 		"usage to another: for instance, 'To contribute (N - a number) dollars: ...'.");
+	==> { NOT_APPLICABLE, - };
 
 @<Issue PM_TokenWithoutCloseBracket problem@> =
-	*X = NOT_APPLICABLE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TokenWithoutCloseBracket),
 		"the opening bracket '(' has no matching close bracket ')'",
 		"so I can't see what is meant to be the fixed text and what is meant to be "
 		"changeable. The idea is to put brackets around whatever varies from one "
 		"usage to another: for instance, 'To contribute (N - a number) dollars: ...'.");
+	==> { NOT_APPLICABLE, - };
 
 @<Issue PM_TokenWithoutOpenBracket problem@> =
-	*X = NOT_APPLICABLE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TokenWithoutOpenBracket),
 		"a close bracket ')' appears here with no matching open '('",
 		"so I can't see what is meant to be the fixed text and what is meant to "
 		"be changeable. The idea is to put brackets around whatever varies from "
 		"one usage to another: for instance, 'To contribute (N - a number) "
 		"dollars: ...'.");
+	==> { NOT_APPLICABLE, - };
 
 @<Issue PM_TokenWithNestedBrackets problem@> =
-	*X = NOT_APPLICABLE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TokenWithNestedBrackets),
 		"the name of the token inside the brackets '(' and ')' and before the "
 		"hyphen '-' itself contains another open bracket '('",
 		"which is not allowed.");
+	==> { NOT_APPLICABLE, - };
 
 @<Issue PM_BadTypeIndication problem@> =
-	*X = NOT_APPLICABLE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, GET_RW(<phrase-token-declaration>, 2));
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadTypeIndication));
@@ -728,10 +725,9 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 		"goes here (like 'a number', or 'a vehicle'), but it's not something I "
 		"recognise.");
 	Problems::issue_problem_end();
+	==> { NOT_APPLICABLE, - };
 
 @<Issue PM_TokenMisunderstood problem@> =
-	LOG("On %W\n", W);
-	*X = NOT_APPLICABLE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TokenMisunderstood),
 		"the brackets '(' and ')' here neither say that something varies but has "
 		"a given type, nor specify a called name",
@@ -741,6 +737,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 		"Rules, on the other hand, use brackets to give names to things or rooms "
 		"found when matching conditions: for instance, 'Instead of opening a "
 		"container in the presence of a man (called the box-watcher): ...'");
+	==> { NOT_APPLICABLE, - };
 
 @ This internal simply wraps <k-kind-as-name-token> up as a value.
 
@@ -753,11 +750,10 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 	if (t) {
 		parse_node *spec = Specifications::from_kind(<<rp>>);
 		Node::set_text(spec, W);
-		*XP = spec;
-		*X = TRUE;
+		==> { TRUE, spec };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 

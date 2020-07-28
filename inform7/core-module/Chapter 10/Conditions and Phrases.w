@@ -61,12 +61,12 @@ implemented this as a hand-coded nonterminal instead.
 				action_pattern *ap = Rvalues::to_action_pattern(spec);
 				spec = Conditions::new_TEST_ACTION(ap, W);
 			}
-			*XP = Conditions::attach_historic_requirement(spec, tp);
+			==> { -, Conditions::attach_historic_requirement(spec, tp) };
 			return TRUE;
 		}
 	}
 	#endif
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ The syntax for the logical operation "not" is more complicated, because
@@ -141,9 +141,10 @@ testing the existence of something.
 		ExParser::add_ilist(spec, p);
 		parse_node *tval = Node::new_with_words(TEST_VALUE_NT, W);
 		tval->down = spec;
-		*XP = tval; return TRUE;
+		==> { -, tval };
+		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ The following only matches the phrase option names for the phrase currently
@@ -154,11 +155,11 @@ being compiled; all others are out of scope.
 	if (phrase_being_compiled) {
 		int i = Routines::ToPhrases::parse_phrase_option_used(phrase_being_compiled, W);
 		if (i >= 0) {
-			*XP = Conditions::new_TEST_PHRASE_OPTION(i);
+			==> { -, Conditions::new_TEST_PHRASE_OPTION(i) };
 			return TRUE;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ We have already seen action patterns used as nouns; here they are used as
@@ -195,8 +196,9 @@ is handled. The following nonterminal exists to enter the AP to the meaning list
 			"too much information about past events.");
 		return FALSE;
 	}
-	*XP = Conditions::new_TEST_ACTION(ap, W);
-	*XP = Conditions::attach_tense(*XP, HASBEEN_TENSE);
+	parse_node *C = Conditions::new_TEST_ACTION(ap, W);
+	C = Conditions::attach_tense(C, HASBEEN_TENSE);
+	==> { -, C };
 	#endif
 	#ifndef IF_MODULE
 	return FALSE;
@@ -241,9 +243,10 @@ typechecking to choose between much later on.
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
-		*XP = spec; return TRUE;
+		==> { -, spec };
+		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ =
@@ -252,15 +255,16 @@ typechecking to choose between much later on.
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
-		*XP = spec; return TRUE;
+		==> { -, spec };
+		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @<Annotate the verb with a modal@> =
 	int neg = FALSE;
 	if ((R[1]) || (R[2])) neg = TRUE;
-	*XP = ExParser::say_verb(RP[2], neg, RP[1], W);
+	==> { -, ExParser::say_verb(RP[2], neg, RP[1], W) };
 
 @ Invocation nodes for adaptive-text adjectives hold references to their masculine
 singulars.

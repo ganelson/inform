@@ -73,21 +73,21 @@ The subject (in this example, "a container") is required not to match:
 	<object-pronoun>				==> @<Issue PM_PropertyOfPronoun problem@>
 
 @<Issue PM_PropertyOfKind1 problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyOfKind1),
 		"this seems to give a property to all kinds, rather than to objects or "
 		"values",
 		"which are the only things capable of having properties. For instance, "
 		"'A vehicle has a number called maximum speed' is fine, but not 'A kind "
 		"has a number called coolness rating'.");
+	==> { -1, - };
 
 @<Issue PM_PropertyOfPronoun problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyOfPronoun),
 		"it's often a little ambiguous to declare properties for 'it' "
 		"(or some similarly vague pronoun like 'him' or 'her')",
 		"so it seems best to spell this out by saying exactly what the "
 		"property's owner or owners would be.");
+	==> { -1, - };
 
 @ It might look as if this should always create an either/or property, and
 in the speedy/sluggish example that's just what it does, but if there are

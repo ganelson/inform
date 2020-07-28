@@ -321,7 +321,6 @@ action declarations continue with usually extensive further text:
 	<sentence-without-occurrences>								==> @<Construct NSS subtree for regular sentence@>
 
 @<Construct NSS subtree for regular sentence@> =
-	*X = 0;
 	parse_node *VP_PN = RP[1];
 	if (Annotations::read_int(VP_PN, linguistic_error_here_ANNOT) == TwoLikelihoods_LINERROR)
 		@<Issue two likelihoods problem@>;
@@ -332,7 +331,7 @@ action declarations continue with usually extensive further text:
 	if (SyntaxTree::is_trace_set(Task::syntax_tree())) {
 		LOG("$T\n", nss_tree_head); STREAM_FLUSH(DL);
 	}
-	*X = 0;
+	==> { 0, - };
 
 @<Issue two likelihoods problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoLikelihoods),

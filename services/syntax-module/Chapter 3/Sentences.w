@@ -480,10 +480,10 @@ sentences and options-file sentences may have been read already.)
 	int w1 = Wordings::first_wn(W);
 	while (w1 >= 0) {
 		if (w1 == sfsm->main_source_start_wn) return TRUE;
-		if (compare_word(w1-1, PARBREAK_V) == FALSE) return FALSE;
+		if (compare_word(w1-1, PARBREAK_V) == FALSE) { ==> { fail nonterminal }; }
 		w1--;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @<Accept the new sentence as one or more nodes in the parse tree@> =

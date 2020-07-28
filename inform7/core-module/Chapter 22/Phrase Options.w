@@ -283,6 +283,7 @@ by "and":
 =
 <phrase-option> internal {
 	int bitmap = Phrases::Options::parse(phod_being_parsed, W);
-	if (bitmap == -1) return FALSE;
-	*X = bitmap; return TRUE;
+	if (bitmap == -1) { ==> { fail nonterminal }; }
+	==> { bitmap, - };
+	return TRUE;
 }

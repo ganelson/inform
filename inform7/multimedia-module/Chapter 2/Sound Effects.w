@@ -116,7 +116,7 @@ int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 		"which should be the name of an AIFF or OGG file inside the Sounds "
 		"subfolder of the project's .materials folder. For instance, 'Sound "
 		"of Swordplay is the file \"Crossed Swords.aiff\".'");
-	*X = 0;
+	==> { 0, - };
 
 @ =
 void PL::Sounds::register_sound(wording F, wording FN) {

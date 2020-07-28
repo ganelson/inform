@@ -204,7 +204,7 @@ small_word_set *Articles::add(small_word_set *sws, nonterminal *nt, article *a) 
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	article_usage *au = Stock::find_in_sws(article_sws, ve);
 	if (au) { ==> { 0, au }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <definite-article> internal 1 {
@@ -212,7 +212,7 @@ small_word_set *Articles::add(small_word_set *sws, nonterminal *nt, article *a) 
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	article_usage *au = Stock::find_in_sws(definite_article_sws, ve);
 	if (au) { ==> { 0, au }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <indefinite-article> internal 1 {
@@ -220,7 +220,7 @@ small_word_set *Articles::add(small_word_set *sws, nonterminal *nt, article *a) 
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	article_usage *au = Stock::find_in_sws(indefinite_article_sws, ve);
 	if (au) { ==> { 0, au }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h English articles.

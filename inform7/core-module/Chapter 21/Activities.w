@@ -144,10 +144,10 @@ noun for it; for example, the "announcing activity".
 	... activity
 
 @<Issue PM_ActivityNoteUnknown problem@> =
-	*X = FALSE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityNoteUnknown),
 		"one of the notes about this activity makes no sense",
 		"and should be either 'documented at SYMBOL' or 'future action'.");
+	==> { FALSE, - };
 
 @ =
 activity *Activities::new(kind *creation_kind, wording W) {
@@ -263,7 +263,6 @@ Any new activity variable name is vetted by being run through this:
 	...										==> { TRUE, - }
 
 @<Issue PM_ActivityVarAnd problem@> =
-	*X = NOT_APPLICABLE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarAnd));
@@ -274,6 +273,7 @@ Any new activity variable name is vetted by being run through this:
 		"say that the name in question is '%2', but I'd prefer to "
 		"avoid 'and', 'or', 'with', or 'having' in such names, please.");
 	Problems::issue_problem_end();
+	==> { NOT_APPLICABLE, - };
 
 @ =
 void Activities::add_variable(activity *av, parse_node *cnode) {
@@ -493,7 +493,7 @@ values, of the kind to which the activity applies.
 @<Join the activity lists@> =
 	activity_list *al1 = RP[1], *al2 = RP[2];
 	al1->next = al2;
-	*XP = al1;
+	==> { -, al1 };
 
 @<Make one-entry AL without operand@> =
 	activity_list *al;
@@ -503,8 +503,7 @@ values, of the kind to which the activity applies.
 @<Make one-entry AL with operand@> =
 	activity *an = RP[1];
 	if (an->activity_on_what_kind == NULL) return FALSE;
-	if ((R[2]) &&
-		(Dash::validate_parameter(RP[2], an->activity_on_what_kind) == FALSE))
+	if ((R[2]) && (Dash::validate_parameter(RP[2], an->activity_on_what_kind) == FALSE))
 		return FALSE;
 	activity_list *al;
 	@<Make one-entry AL@>;
@@ -531,7 +530,7 @@ values, of the kind to which the activity applies.
 	al->next = NULL;
 	al->ACL_parity = TRUE;
 	al->activity = NULL;
-	*XP = al;
+	==> { -, al };
 
 @ And this parses individual activity names.
 
@@ -539,10 +538,10 @@ values, of the kind to which the activity applies.
 <activity-name> internal {
 	parse_node *p = Lexicon::retrieve(ACTIVITY_MC, W);
 	if (Rvalues::is_CONSTANT_construction(p, CON_activity)) {
-		*XP = Rvalues::to_activity(p);
+		==> { -, Rvalues::to_activity(p) };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal }
 }
 
 @ =
@@ -557,7 +556,7 @@ activity_list *Activities::parse_list(wording W) {
 =
 <if-parsing-al-conditions> internal 0 {
 	if (parsing_al_conditions) return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ All of which sets up the context for:

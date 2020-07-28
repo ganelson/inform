@@ -254,12 +254,14 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 
 <named-grammar-token> internal {
 	grammar_verb *gv = PL::Parsing::Verbs::named_token_by_name(W);
-	if (gv) { *XP = gv; return TRUE; }
-	return FALSE;
+	if (gv) {
+		==> { -, gv };
+		return TRUE;
+	}
+	==> { fail nonterminal };
 }
 
 @<Issue PM_GrammarBadRelation problem@> =
-	*X = RELATED_GTC; *XP = NULL;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarBadRelation));
@@ -268,9 +270,9 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 		"invites me to understand names of related things, "
 		"but the relation is not one that I know.");
 	Problems::issue_problem_end();
+	==> { RELATED_GTC, NULL };
 
 @<Issue PM_UseTextNotTopic problem@> =
-	*X = TOPIC_TOKEN_GTC;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UseTextNotTopic));
@@ -285,9 +287,9 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 		"or in descriptions of actions or in table columns; it's really "
 		"intended only for defining new commands.");
 	Problems::issue_problem_end();
+	==> { TOPIC_TOKEN_GTC, NULL };
 
 @<Issue PM_UseThingNotObject problem@> =
-	*X = MULTI_TOKEN_GTC;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UseThingNotObject));
@@ -297,16 +299,17 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 		"all here', but Inform uses the special syntax '[thing]' "
 		"for that. (Or '[things]' if multiple objects are allowed.)");
 	Problems::issue_problem_end();
+	==> { MULTI_TOKEN_GTC, NULL };
 
 @<Issue something held problem message@> =
-	*X = HELD_TOKEN_GTC;
 	PL::Parsing::Tokens::incompatible_change_problem(
 		"something held", "something", "something preferably held");
+	==> { HELD_TOKEN_GTC, NULL };
 
 @<Issue things held problem message@> =
-	*X = MULTIHELD_TOKEN_GTC;
 	PL::Parsing::Tokens::incompatible_change_problem(
 			"things held", "things", "things preferably held");
+	==> { MULTIHELD_TOKEN_GTC, NULL };
 
 @ Something of an extended mea culpa: but it had the desired effect, in
 that nobody complained about what might have been a controversial change.
@@ -339,7 +342,6 @@ void PL::Parsing::Tokens::incompatible_change_problem(char *token_tried, char *t
 }
 
 @<Issue PM_BizarreToken problem@> =
-	*X = STUFF_GTC;
 	LOG("$T", current_sentence);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
@@ -350,9 +352,9 @@ void PL::Parsing::Tokens::incompatible_change_problem(char *token_tried, char *t
 		"if it might be %3, but this isn't something allowed in "
 		"parsing grammar.");
 	Problems::issue_problem_end();
+	==> { STUFF_GTC, - };
 
 @<Issue PM_UnknownToken problem@> =
-	*X = STUFF_GTC;
 	LOG("$T", current_sentence);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
@@ -361,6 +363,7 @@ void PL::Parsing::Tokens::incompatible_change_problem(char *token_tried, char *t
 		"I was unable to understand what you meant by the grammar token '%2' "
 		"in the sentence %1.");
 	Problems::issue_problem_end();
+	==> { STUFF_GTC, - };
 
 @h Phase II: Determining Grammar.
 Slashing does not recurse down to individual tokens, so the first time we

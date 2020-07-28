@@ -106,7 +106,7 @@ word "Include", which might e.g. be "Locksmith by Emily Short".
 
 =
 <extension-version> internal 1 {
-	*X = Wordings::first_wn(W);
+	==> { Wordings::first_wn(W), - };
 	return TRUE;
 }
 

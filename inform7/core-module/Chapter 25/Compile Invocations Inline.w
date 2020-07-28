@@ -203,12 +203,12 @@ the fixed text "phrase options" expands to the whole bitmap.
 
 =
 <name-local-to-inline-stack-frame> internal {
-	local_variable *lvar =
-		LocalVariables::parse(&(ph_being_parsed->stack_frame), W);
+	local_variable *lvar = LocalVariables::parse(&(ph_being_parsed->stack_frame), W);
 	if (lvar) {
-		*XP = lvar; return TRUE;
+		==> { -, lvar };
+		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ In my first draft of Inform, this paragraph made reference to "meddling

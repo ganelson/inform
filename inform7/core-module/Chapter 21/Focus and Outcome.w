@@ -160,10 +160,10 @@ The following parses a declaration of named outcomes. For example:
 	it is very unlikely
 
 @<Issue PM_BadOutcomeClarification problem@> =
-	*X = UNRECOGNISED_OUTCOME;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadOutcomeClarification),
 		"the bracketed clarification isn't what I expected",
 		"which would be one of '(success)', '(failure)' or '(no outcome)'.");
+	==> { UNRECOGNISED_OUTCOME, - };
 
 @<Adopt this new named rule outcome@> =
 	wording OW = GET_RW(<form-of-named-rule-outcome>, 1);
@@ -216,10 +216,10 @@ can be used in a void context as a sort of return-from-rule phrase.
 <named-rulebook-outcome> internal {
 	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
 	if (Rvalues::is_CONSTANT_of_kind(p, K_rulebook_outcome)) {
-		*XP = Rvalues::to_named_rulebook_outcome(p);
+		==> { -, Rvalues::to_named_rulebook_outcome(p) }
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal }
 }
 
 @ =
@@ -356,8 +356,7 @@ void Rulebooks::Outcomes::compile_outcome(named_rulebook_outcome *rbno) {
 					break;
 				}
 		}
-		if (rbo == NULL)
-			internal_error("rbno with no rb context");
+		if (rbo == NULL) internal_error("rbno with no rb context");
 	}
 	switch(rbo->kind_of_outcome) {
 		case SUCCESS_OUTCOME: {

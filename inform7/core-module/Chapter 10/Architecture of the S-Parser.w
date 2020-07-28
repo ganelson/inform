@@ -15,7 +15,7 @@ permanent structure, whereas <s-plain-text> makes an S-node.)
 
 =
 <s-plain-text> internal {
-	*XP = Specifications::new_UNKNOWN(W);
+	==> { -, Specifications::new_UNKNOWN(W) };
 	return TRUE;
 }
 
@@ -35,11 +35,11 @@ both match this, the first example being three words long, the second only one.
 		wchar_t *p = Lexer::word_raw_text(i);
 		for (int j=0; p[j]; j++)
 			if (p[j] == '=') {
-				*XP = Specifications::new_UNKNOWN(W);
+				==> { -, Specifications::new_UNKNOWN(W) };
 				return TRUE;
 			}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Top-level nonterminals.
@@ -56,8 +56,8 @@ variable or other storage object, or a phrase to decide a value.
 =
 <s-value> internal {
 	parse_node *spec = ExParser::parse_with_cache(W, 0, <s-value-uncached>);
-	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
-	*XP = spec;
+	if (Node::is(spec, UNKNOWN_NT)) { ==> { fail nonterminal }; }
+	==> { -, spec };
 	return TRUE;
 }
 
@@ -69,8 +69,8 @@ animals have been in the Stables".
 <s-condition> internal {
 	LocalVariables::make_necessary_callings(W);
 	parse_node *spec = ExParser::parse_with_cache(W, 1, <s-condition-uncached>);
-	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
-	*XP = spec;
+	if (Node::is(spec, UNKNOWN_NT)) { ==> { fail nonterminal }; }
+	==> { -, spec };
 	return TRUE;
 }
 
@@ -87,8 +87,8 @@ as conditions, so for example "taking something" would not match.
 	#ifdef IF_MODULE
 	PL::Actions::Patterns::resume(old_state);
 	#endif
-	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
-	*XP = spec;
+	if (Node::is(spec, UNKNOWN_NT)) { ==> { fail nonterminal }; }
+	==> { -, spec };
 	return TRUE;
 }
 
@@ -99,8 +99,8 @@ specification of a phrase argument.
 =
 <s-type-expression> internal {
 	parse_node *spec = ExParser::parse_with_cache(W, 3, <s-type-expression-uncached>);
-	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
-	*XP = spec;
+	if (Node::is(spec, UNKNOWN_NT)) { ==> { fail nonterminal }; }
+	==> { -, spec };
 	return TRUE;
 }
 
@@ -115,8 +115,8 @@ and <s-value> as a constant value of the kind "colour".
 =
 <s-descriptive-type-expression> internal {
 	parse_node *spec = ExParser::parse_with_cache(W, 4, <s-descriptive-type-expression-uncached>);
-	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
-	*XP = spec;
+	if (Node::is(spec, UNKNOWN_NT)) { ==> { fail nonterminal }; }
+	==> { -, spec };
 	return TRUE;
 }
 
@@ -130,8 +130,8 @@ kind variables will be read as formal prototypes.
 	kind_parsing_mode = PHRASE_TOKEN_KIND_PARSING;
 	int t = <s-descriptive-type-expression>(W);
 	kind_parsing_mode = s;
-	if (t) { *X = <<r>>; *XP = <<rp>>; }
-	return t;
+	if (t) { ==> { <<r>>, <<rp>> }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 @ That's it for the cached nonterminals, but we will also define a convenient
@@ -157,14 +157,17 @@ a noun-like way.
 	permit_trying_omission = p;
 	if (S) {
 		if (Rvalues::is_CONSTANT_of_kind(S, K_stored_action)) {
-			*XP = S; return TRUE;
-		} else if (Conditions::is_TEST_ACTION(S)) {
-			*XP = S->down;
+			==> { -, S };
 			return TRUE;
-		} else return FALSE;
+		} else if (Conditions::is_TEST_ACTION(S)) {
+			==> { -, S->down };
+			return TRUE;
+		} else {
+			==> { fail nonterminal };
+		}
 	}
 	#endif
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <s-constant-action> internal {
@@ -179,14 +182,17 @@ a noun-like way.
 	permit_nonconstant_action_parameters = p2;
 	if (S) {
 		if (Rvalues::is_CONSTANT_of_kind(S, K_stored_action)) {
-			*XP = S; return TRUE;
-		} else if (Conditions::is_TEST_ACTION(S)) {
-			*XP = S->down;
+			==> { -, S };
 			return TRUE;
-		} else return FALSE;
+		} else if (Conditions::is_TEST_ACTION(S)) {
+			==> { -, S->down };
+			return TRUE;
+		} else {
+			==> { fail nonterminal };
+		}
 	}
 	#endif
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h The cache.

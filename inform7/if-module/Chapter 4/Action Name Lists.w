@@ -153,7 +153,6 @@ for instance, we don't want to count the "in" from "fixed in place".
 	anl->in_clause = GET_RW(<anl-in-tail>, 1);
 
 @<Construct ANL for anything applied@> =
-	*X = TRUE;
 	action_name_list *new_anl;
 	if ((!preform_lookahead_mode) && (anl_being_parsed)) new_anl = anl_being_parsed;
 	else {
@@ -162,7 +161,7 @@ for instance, we don't want to count the "in" from "fixed in place".
 	}
 	new_anl->parameter[new_anl->parc] = W;
 	new_anl->parc++;
-	*XP = new_anl;
+	==> { TRUE, new_anl };
 
 @ Now for the basic list of actions being included:
 
@@ -194,55 +193,55 @@ end, but it's syntactically valid.)
 <named-action-pattern> internal {
 	named_action_pattern *nap = PL::Actions::Patterns::Named::by_name(W);
 	if (nap) {
-		*XP = nap; return TRUE;
+		==> { -, nap }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <anl-entry-with-action> internal {
 	action_name_list *anl = PL::Actions::Lists::anl_parse_internal(W);
 	if (anl) {
-		*XP = anl; return TRUE;
+		==> { -, anl }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @<Make an action pattern from named behaviour@> =
-	*X = 0;
 	action_name_list *new_anl = PL::Actions::Lists::anl_new();
 	new_anl->word_position = Wordings::first_wn(W);
 	new_anl->nap_listed = RP[1];
-	*XP = new_anl;
+	==> { 0, new_anl };
 
 @<Make an action pattern from named behaviour plus in@> =
-	*X = 0;
 	action_name_list *new_anl = PL::Actions::Lists::anl_new();
 	new_anl->word_position = Wordings::first_wn(W);
 	new_anl->nap_listed = RP[1];
 	new_anl->in_clause = GET_RW(<anl-in-tail>, 1);
-	*XP = new_anl;
+	==> { 0, new_anl };
 
 @<Add to-clause to excluded ANL@> =
 	action_name_list *anl = PL::Actions::Lists::flip_anl_parity(RP[1], TRUE);
 	if ((anl == NULL) ||
-		(PL::Actions::can_have_parameters(anl->action_listed) == FALSE))
-		return FALSE;
+		(PL::Actions::can_have_parameters(anl->action_listed) == FALSE)) {
+		==> { fail production };
+	}
 	anl->parameter[anl->parc] = GET_RW(<anl-excluded>, 1);
 	anl->parc++;
-	*XP = anl;
+	==> { 0, anl };
 
 @<Join parsed ANLs@> =
+	action_name_list *join;
 	action_name_list *left_atom = RP[1];
 	action_name_list *right_tail = RP[2];
-	if (left_atom == NULL) { *XP = right_tail; }
-	else if (right_tail == NULL) { *XP = left_atom; }
+	if (left_atom == NULL) { join = right_tail; }
+	else if (right_tail == NULL) { join = left_atom; }
 	else {
 		action_name_list *new_anl = right_tail;
 		while (new_anl->next != NULL) new_anl = new_anl->next;
 		new_anl->next = left_atom;
-		*XP = right_tail;
+		join = right_tail;
 	}
-
+	==> { 0, join };
 
 @ =
 action_name_list *PL::Actions::Lists::flip_anl_parity(action_name_list *anl, int flip_all) {

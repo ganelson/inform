@@ -338,7 +338,6 @@ allowed; they should probably be withdrawn.
 	Copies::attach_error(sfsm->ref, CE);
 
 @<Set for-use-with extension identifier@> =
-	*X = R[0] + 4;
 	TEMPORARY_TEXT(exft)
 	TEMPORARY_TEXT(exfa)
 	wording TW = GET_RW(<extension-identifier>, 1);
@@ -348,6 +347,7 @@ allowed; they should probably be withdrawn.
 	work_identified = Works::new(extension_genre, exft, exfa);
 	DISCARD_TEXT(exft)
 	DISCARD_TEXT(exfa)
+	==> { R[0] + 4, - };
 
 @ This nonterminal matches any description of a virtual machine, and produces
 the result |TRUE| if the VM we are building for fits that description, |FALSE|
@@ -357,11 +357,10 @@ otherwise.
 <current-virtual-machine> internal {
 	if (<virtual-machine>(W)) {
 		compatibility_specification *vms = (compatibility_specification *) <<rp>>;
-		*X = Compatibility::test(vms, Supervisor::current_vm());
+		==> { Compatibility::test(vms, Supervisor::current_vm()), - };
 		return TRUE;
 	} else {
-		*X = FALSE;
-		return FALSE;
+		==> { fail nonterminal };
 	}
 }
 

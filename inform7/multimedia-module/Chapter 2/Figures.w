@@ -123,7 +123,7 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 		"which should be the name of a JPEG or PNG image inside the "
 		"project's .materials folder. For instance, 'Figure 2 is the "
 		"file \"Crossed Swords.png\".'");
-	*X = 0;
+	==> { 0, - };
 
 @ This is a figure name which Inform provides special support for; it
 recognises the English name when it is defined by the Standard Rules. (So there

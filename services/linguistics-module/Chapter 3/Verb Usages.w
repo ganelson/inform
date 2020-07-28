@@ -473,7 +473,7 @@ which has a meaning.
 				}
 			}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ A copular verb is one which implies the equality relation: in practice,
@@ -494,7 +494,7 @@ and so on.
 			BacktrackFrom: ;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ A noncopular verb is anything that isn't copular, but here we also require
@@ -517,7 +517,7 @@ not carry" qualifies; "is not" or "supports" don't qualify.
 			BacktrackFrom: ;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ A universal verb is one which implies the universal relation: in Inform,
@@ -536,7 +536,7 @@ that means it's "to relate".
 			}
 		}
 	#endif
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @
@@ -556,7 +556,7 @@ Any verb usage which is negative in sense: this is used only to diagnose problem
 			BacktrackFrom: ;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ Any verb usage which is in the past tense: this is used only to diagnose problems.
@@ -575,7 +575,7 @@ Any verb usage which is negative in sense: this is used only to diagnose problem
 			BacktrackFrom: ;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ The following are used only when recognising text expansions for adaptive
@@ -597,7 +597,7 @@ uses of verbs:
 				==> { TRUE, vc }; return TRUE;
 			}
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <adaptive-verb-infinitive> internal {
@@ -609,7 +609,7 @@ uses of verbs:
 				==> { FALSE, vc }; return TRUE;
 			}
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ These three nonterminals are used by Inform only to recognise constant
@@ -630,7 +630,7 @@ or "the verb to be able to see" use these.
 			}
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <instance-of-infinitive-form> internal {
@@ -643,7 +643,7 @@ or "the verb to be able to see" use these.
 			}
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <modal-verb> internal {
@@ -663,7 +663,7 @@ or "the verb to be able to see" use these.
 				}
 			}
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Optimisation.

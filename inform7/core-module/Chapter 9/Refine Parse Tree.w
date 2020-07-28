@@ -446,12 +446,12 @@ property name meaning, not as the name of a kind of value.)
 		spec = Rvalues::from_property(<<rp>>);
 
 @<Issue PM_VagueVariable problem@> =
-	*X = FALSE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_VagueVariable),
 		"'variable' is too vague a description",
 		"because it doesn't say what kind of value should go into the variable. "
 		"'number variable' or 'a number that varies' - whatever kind of value you "
 		"need - would be much clearer.");
+	==> { FALSE, - };
 
 @ When a noun phrase in an assertion represents a value, it's normally a
 constant ("13") or else something like a description of values ("a number").

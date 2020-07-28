@@ -15,25 +15,27 @@ to give it permanency.
 	TEMPORARY_TEXT(vtext)
 	WRITE_TO(vtext, "%W", W);
 	semantic_version_number V = VersionNumbers::from_text(vtext);
-	int result = FALSE;
+	DISCARD_TEXT(vtext)
 	if (VersionNumbers::is_null(V) == FALSE) {
-		result = TRUE;
 		semantic_version_number_holder *H = CREATE(semantic_version_number_holder);
 		H->version = V;
-		*XP = (void *) H;
+		==> { -, H };
+		return TRUE;
 	}
-	DISCARD_TEXT(vtext)
-	return result;
+	==> { fail nonterminal };
 }
 
-@ The following nonterminal matches any valid description of a virtual machine,
-with result |TRUE| if the current target VM matches that description and
-|FALSE| if not.
+@ The following nonterminal matches any valid description of a virtual machine.
+
 =
 <virtual-machine> internal {
 	TEMPORARY_TEXT(vtext)
 	WRITE_TO(vtext, "%W", W);
 	compatibility_specification *C = Compatibility::from_text(vtext);
-	if (C) { *XP = C; return TRUE; }
-	*XP = NULL; return FALSE;
+	DISCARD_TEXT(vtext)
+	if (C) {
+		==> { -, C };
+		return TRUE;
+	}
+	==> { fail nonterminal };
 }

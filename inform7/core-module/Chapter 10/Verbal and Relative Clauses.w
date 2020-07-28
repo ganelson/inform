@@ -152,7 +152,7 @@ relevant noun subtree with a representation of the player-object for those.
 	LOGIF(MATCHING, "So uncorrectedly RP[1] = $T\n", RP[1]);
 	LOGIF(MATCHING, "and uncorrectedly RP[2] = $T\n", RP[2]);
 	ExParser::Subtrees::correct_for_adjectives(RP[1], RP[2]);
-	*XP = ExParser::Subtrees::to_specification(FALSE, W, RP[1], RP[2]);
+	==> { -, ExParser::Subtrees::to_specification(FALSE, W, RP[1], RP[2]) };
 
 @h Tidying up a sentence subtree.
 This checks, in a paranoid sort of way, that a subtree is properly formed,
@@ -212,13 +212,13 @@ stack, we simply give <s-noun-phrase> a global mode of operation.
 	parse_node *p = NULL;
 	if (<s-description>(W)) p = <<rp>>;
 	force_all_SP_noun_phrases_to_be_physical = s;
-	if (p) { *XP = p; return TRUE; }
-	return FALSE;
+	if (p) { ==> { -, p }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 <if-forced-physical> internal 0 {
 	if (force_all_SP_noun_phrases_to_be_physical) return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ The upshot of this is that <s-noun-phrase> is only ever called in "purely
@@ -256,9 +256,9 @@ pre-empting descriptions.)
 @<Construct a descriptive SN subtree@> =
 	parse_node *sn = RP[1];
 	if (Annotations::read_int(sn, converted_SN_ANNOT)) {
-		*XP = sn;
+		==> { -, sn };
 	} else {
-		*XP = ExParser::Subtrees::to_specification(FALSE, W, RP[1], NULL);
+		==> { -, ExParser::Subtrees::to_specification(FALSE, W, RP[1], NULL) };
 	}
 	parse_node *pn = *XP;
 	Node::set_text(pn, W);

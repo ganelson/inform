@@ -399,28 +399,28 @@ in a different context, for instance, and could still be valid in that case.
 	<s-condition>                         ==> { -2, -, <<parse_node:cond>> = RP[1] }
 
 @<Issue PM_ScenesDisallowCalled problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesDisallowCalled),
 		"'(called ...)' is not allowed within conditions for a scene to begin or end",
 		"since calling gives only a temporary name to something, for the purpose "
 		"of further instructions which immediately follow in. Here there is no room "
 		"for such further instructions, so a calling would have no effect. Anyway - "
 		"not allowed!");
+	==> { -1, - };
 
 @<Issue PM_ScenesNotPlay problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesNotPlay),
 		"'play' is not really a scene",
 		"so although you can write '... when play begins' you cannot write '... "
 		"when play ends'. But there's no need to do so, anyway. When play ends, "
 		"all scenes end.");
+	==> { -1, - };
 
 @<Issue PM_ScenesUnknownEnd problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ScenesUnknownEnd),
 		"that's not one of the known ends for that scene",
 		"which must be declared with something like 'Confrontation ends happily "
 		"when...' or 'Confrontation ends tragically when...'.");
+	==> { -1, - };
 
 @ Where the following filters instance names to allow those of scenes only,
 and also internally converts the result:
@@ -436,8 +436,8 @@ and also internally converts the result:
 @<Convert instance result to scene result, if possible@> =
 	instance *I = <<rp>>;
 	if (Instances::of_kind(I, K_scene) == FALSE) return FALSE;
-	*XP = PL::Scenes::from_named_constant(I);
-	scene_end_of_which_parsed = *XP;
+	scene_end_of_which_parsed = PL::Scenes::from_named_constant(I);
+	==> { -, scene_end_of_which_parsed };
 
 @ Lastly, scene end names are parsed by these internals. They are identical
 except that the creating case will create a new end if need be so that it
@@ -446,12 +446,14 @@ never fails.
 =
 <scene-end-name> internal {
 	int end = PL::Scenes::parse_scene_end_name(scene_end_of_which_parsed, W, FALSE);
-	if (end < 0) return FALSE;
-	*X = end; return TRUE;
+	if (end < 0) { ==> { fail nonterminal }; }
+	==> { end, - };
+	return TRUE;
 }
 
 <scene-end-name-creating> internal {
-	*X = PL::Scenes::parse_scene_end_name(scene_end_of_which_parsed, W, TRUE);
+	int end = PL::Scenes::parse_scene_end_name(scene_end_of_which_parsed, W, TRUE);
+	==> { end, - };
 	return TRUE;
 }
 
@@ -1124,7 +1126,7 @@ of them:
 	if (((I) && (Instances::of_kind(I, K_scene))) ||
 		((Specifications::is_description(spec)) &&
 			(Kinds::Compare::eq(Specifications::to_kind(spec), K_scene)))) {
-		*XP = spec;
+		==> { -, spec };
 	} else return FALSE;
 
 @ And this is where we compile I6 code to test that a scene matching this is

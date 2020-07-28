@@ -147,7 +147,6 @@ As examples:
 	<understand-regular-list>                         ==> { GRAMMAR_UNDERSTAND_FORM, RP[1] }
 
 @<Issue PM_OldVerbUsage problem@> =
-	*X = NO_UNDERSTAND_FORM;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OldVerbUsage),
 		"this is an outdated form of words",
 		"and Inform now prefers 'Understand the command ...' "
@@ -155,6 +154,7 @@ As examples:
 		"change was made in beta-testing, quite a few old "
 		"source texts still use the old form: the authors "
 		"of Inform apologise for any nuisance incurred.)");
+	==> { NO_UNDERSTAND_FORM, - };
 
 @ In the first two cases, a list of quoted text appears:
 
@@ -197,33 +197,37 @@ formal way (with "property").
 		"describing a container.'");
 
 @<Compose understand item list@> =
+	understanding_item *comp;
 	understanding_item *ui1 = RP[1];
 	understanding_item *ui2 = RP[2];
-	if (ui1 == NULL) { *XP = ui2; }
-	else if (ui2 == NULL) { *XP = ui1; }
+	if (ui1 == NULL) { comp = ui2; }
+	else if (ui2 == NULL) { comp = ui1; }
 	else {
 		ui1->next = ui2;
-		*XP = ui1;
+		comp = ui1;
 	}
+	==> { -, comp };
 
 @<Make understand item@> =
-	*XP = NULL;
 	if (!preform_lookahead_mode) {
 		understanding_item *ui = CREATE(understanding_item);
 		ui->quoted_text = W;
 		ui->quoted_property = NULL;
 		ui->next = NULL;
-		*XP = ui;
+		==> { -, ui };
+	} else {
+		==> { -, NULL };
 	}
 
 @<Make understand property item@> =
-	*XP = NULL;
 	if (!preform_lookahead_mode) {
 		understanding_item *ui = CREATE(understanding_item);
 		ui->quoted_text = EMPTY_WORDING;
 		ui->quoted_property = RP[1];
 		ui->next = NULL;
-		*XP = ui;
+		==> { -, ui };
+	} else {
+		==> { -, NULL };
 	}
 
 @ =
@@ -255,22 +259,24 @@ It's not widely known, but the object phrase here can be a list.
 	<understand-as-this>  ==> { 0, - }; if (!preform_lookahead_mode) @<Deal with UT vars@>;
 
 @<Compose understand reference list@> =
+	understanding_reference *comp;
 	understanding_reference *ui1 = RP[1];
 	understanding_reference *ui2 = RP[2];
-	if (ui1 == NULL) { *XP = ui2; }
-	else if (ui2 == NULL) { *XP = ui1; }
+	if (ui1 == NULL) { comp = ui2; }
+	else if (ui2 == NULL) { comp = ui1; }
 	else {
 		ui1->next = ui2;
-		*XP = ui1;
+		comp = ui1;
 	}
+	==> { -, comp };
 
 @<Deal with UT vars@> =
 	if (R[1] == -1) {
-		*XP = NULL;
+		==> { -, NULL };
 	} else {
 		understanding_reference *ur = CREATE(understanding_reference);
 		*ur = ur_being_parsed;
-		*XP = ur;
+		==> { -, ur };
 	}
 
 @ Each of the items in the object phrase list is matched against:
@@ -305,15 +311,14 @@ It's not widely known, but the object phrase here can be a list.
 	ur_being_parsed.gv_result = GV_IS_OBJECT;
 
 @<Issue PM_TextlessMistake problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextlessMistake),
 		"when 'understand' results in a mistake it can only be "
 		"followed by a textual message in brackets",
 		"so for instance 'understand \"take\" as a mistake "
 		"(\"In this sort of game, a noun is required there.\").'");
+	==> { -1, - };
 
 @<Issue PM_UnderstandVariable problem@> =
-	*X = -1;
 	LOG("Offending pseudo-meaning is: %W\n", W);
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandVariable),
 		"this meaning is a value that varies",
@@ -322,11 +327,12 @@ It's not widely known, but the object phrase here can be a list.
 		"understood as 'the player', which is actually a variable, because "
 		"the perspective of play can change. Writing 'yourself' instead will "
 		"usually do.)");
+	==> { -1, - };
 
 @<Issue PM_UnderstandVague problem@> =
-	*X = -1;
 	LOG("Offending pseudo-meaning is: %W\n", W);
 	@<Actually issue PM_UnderstandVague problem@>;
+	==> { -1, - };
 
 @<Actually issue PM_UnderstandVague problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandVague),
@@ -356,15 +362,15 @@ Here the grammar is very simple, and the object can't be a list.
 	...                   ==> @<Issue PM_NotOldCommand problem@>
 
 @<Issue PM_UnderstandCommandWhen problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandCommandWhen),
 		"'understand the command ... as ...' is not allowed to have a "
 		"'... when ...' clause",
 		"for the moment at any rate.");
+	==> { -1, - };
 
 @<Issue PM_NotOldCommand problem@> =
-	*X = -1;
 	@<Actually issue PM_NotOldCommand problem@>;
+	==> { -1, - };
 
 @ The third and final form of the sentence has an object phrase like so:
 
@@ -390,25 +396,28 @@ to or described can be of any kind, but in fact we restrict to kinds of object.
 
 @<Make reference from kind, if a kind of object@> =
 	kind *K = RP[1];
-	if (Kinds::Compare::lt(K, K_object)) *XP = Kinds::Knowledge::as_subject(K);
-	else return FALSE;
+	if (Kinds::Compare::lt(K, K_object)) {
+		==> { -, Kinds::Knowledge::as_subject(K) };
+	} else {
+		==> { fail production };
+	}
 
 @<Issue PM_BadUnderstandProperty problem@> =
-	*X = 0;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadUnderstandProperty),
 		"'understand the ... property as ...' is only allowed if "
 		"followed by 'describing ...' or 'referring to ...'",
 		"so for instance 'understand the transparent property as "
 		"describing a container.'");
+	==> { 0, - };
 
 @<Issue PM_BadUnderstandPropertyAs problem@> =
-	*XP = NULL;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadUnderstandPropertyAs),
 		"I don't understand what single thing or kind of thing that refers to",
 		"but it does need to be an object (or kind of object) and not "
 		"some other sort of value. For instance, 'understand the transparent "
 		"property as describing a container.' is okay because 'a container' "
 		"is a kind of object.");
+	==> { -, NULL };
 
 @ =
 void PL::Parsing::understand_sentence(wording W, wording ASW) {
@@ -560,7 +569,6 @@ void PL::Parsing::understand_property_block(property *pr, int level, inference_s
 			"device' would not be allowed because it makes no sense to call a "
 			"device 'open'.");
 	}
-	return;
 }
 
 @ =

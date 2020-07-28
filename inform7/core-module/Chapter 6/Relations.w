@@ -138,10 +138,10 @@ text of the subject mustn't be an existing relation name.
 	...							==> { TRUE, - }
 
 @<Issue PM_RelationExists problem@> =
-	*X = FALSE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationExists),
 		"that relation already exists",
 		"and cannot have its definition amended now.");
+	==> { FALSE, - };
 
 @ =
 void Relations::parse_new(parse_node *PN) {

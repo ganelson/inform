@@ -91,7 +91,7 @@ a digital clock glowing with "24:01" -- but we won't allow that, either.
 	else { time_hours = t/60; time_minutes = t%60; }
 	if ((time_hours == 0) && (time_cycles > 0)) return FALSE; /* reject for example "0:01 PM" */
 	if (time_hours == 12) time_hours = 0; /* allow for example "12:01 AM" */
-	*X = time_minutes + 60*time_hours + time_cycles;
+	==> { time_minutes + 60*time_hours + time_cycles, - };
 
 @ These are times of day written in the style of a digital clock: "00:00",
 "5:21", "17:21". The syntax must be one or two digits, followed by a
@@ -106,20 +106,20 @@ the range 0 to 23, and the minutes part in the range 0 to 59.
 	wchar_t *wd = Lexer::word_text(Wordings::first_wn(W));
 	for (t=0; wd[t]; t++) {
 		if (((t==1) || (t==2)) && (wd[t] == ':') && (wd[t+1])) {
-			if (ratchet >= 24) return FALSE;
+			if (ratchet >= 24) { ==> { fail nonterminal }; }
 			time_hours = ratchet;
 			ratchet = 0; digits = 0;
 			colons++;
 		} else if (Characters::isdigit(wd[t])) {
 			ratchet = 10*ratchet + (wd[t]-'0'); digits++;
-			if ((ratchet >= 60) || (digits > 2)) return FALSE;
-		} else return FALSE;
+			if ((ratchet >= 60) || (digits > 2)) { ==> { fail nonterminal }; }
+		} else { ==> { fail nonterminal }; }
 	}
-	if (colons != 1) return FALSE;
+	if (colons != 1) { ==> { fail nonterminal }; }
 	time_minutes = ratchet;
-	if ((time_hours < 0) || (time_hours > 12)) return FALSE;
-	if ((time_minutes < 0) || (time_minutes >= 60)) return FALSE;
-	*X = time_minutes + time_hours*60;
+	if ((time_hours < 0) || (time_hours > 12)) { ==> { fail nonterminal }; }
+	if ((time_minutes < 0) || (time_minutes >= 60)) { ==> { fail nonterminal }; }
+	==> { time_minutes + time_hours*60, - };
 	return TRUE;
 }
 
@@ -134,20 +134,20 @@ standard English grammar doesn't use this, but translators might want to.)
 	wchar_t *wd = Lexer::word_text(Wordings::first_wn(W));
 	for (t=0; wd[t]; t++) {
 		if (((t==1) || (t==2)) && (wd[t] == 'h') && (wd[t+1])) {
-			if (ratchet >= 24) return FALSE;
+			if (ratchet >= 24) { ==> { fail nonterminal }; }
 			time_hours = ratchet;
 			ratchet = 0; digits = 0;
 			colons++;
 		} else if (Characters::isdigit(wd[t])) {
 			ratchet = 10*ratchet + (wd[t]-'0'); digits++;
-			if ((ratchet >= 60) || (digits > 2)) return FALSE;
-		} else return FALSE;
+			if ((ratchet >= 60) || (digits > 2)) { ==> { fail nonterminal }; }
+		} else { ==> { fail nonterminal }; }
 	}
-	if (colons != 1) return FALSE;
+	if (colons != 1) { ==> { fail nonterminal }; }
 	time_minutes = ratchet;
-	if ((time_hours < 0) || (time_hours > 12)) return FALSE;
-	if ((time_minutes < 0) || (time_minutes >= 60)) return FALSE;
-	*X = time_minutes + time_hours*60;
+	if ((time_hours < 0) || (time_hours > 12)) { ==> { fail nonterminal }; }
+	if ((time_minutes < 0) || (time_minutes >= 60)) { ==> { fail nonterminal }; }
+	==> { time_minutes + time_hours*60, - };
 	return TRUE;
 }
 

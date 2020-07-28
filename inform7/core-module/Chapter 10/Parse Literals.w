@@ -32,9 +32,9 @@ Note that ordinal numbers are not valid as literals: "2nd" is not a noun.
 	LOOP_OVER(lp, literal_pattern) {
 		int val;
 		kind *K = LiteralPatterns::match(lp, W, &val);
-		if (K) { *X = val; *XP = Rvalues::from_encoded_notation(K, val, W); return TRUE; }
+		if (K) { ==> { val, Rvalues::from_encoded_notation(K, val, W) }; return TRUE; }
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Response letters.
@@ -45,10 +45,10 @@ A to Z.
 <response-letter> internal 1 {
 	wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 	if ((p) && (p[0] >= 'A') && (p[0] <= 'Z') && (p[1] == 0)) {
-		*X = p[0] - 'A';
+		==> { p[0]-'A', - };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Truth states.
@@ -97,12 +97,12 @@ Still:
 		if (intcount + fraccount > 0) {
 			if ((Wordings::length(W) > 1) || (p[i])) @<Parse an exponent@>;
 			if ((distinctive) || (TEST_COMPILATION_MODE(CONSTANT_CMODE))) {
-				*X = Literals::construct_float(signbit, intv, fracv, expo);
+				==> { Literals::construct_float(signbit, intv, fracv, expo), - };
 				return TRUE;
 			}
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @<Parse the sign at the front@> =

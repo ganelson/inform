@@ -221,7 +221,7 @@ parsed lies in the relevant small word set.
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	pronoun_usage *pu = Stock::find_in_sws(pronouns_sws, ve);
 	if (pu) { ==> { 0, pu }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <subject-pronoun> internal 1 {
@@ -229,7 +229,7 @@ parsed lies in the relevant small word set.
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	pronoun_usage *pu = Stock::find_in_sws(subject_pronouns_sws, ve);
 	if (pu) { ==> { 0, pu }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <object-pronoun> internal 1 {
@@ -237,7 +237,7 @@ parsed lies in the relevant small word set.
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	pronoun_usage *pu = Stock::find_in_sws(object_pronouns_sws, ve);
 	if (pu) { ==> { 0, pu }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <possessive-pronoun> internal 1 {
@@ -245,7 +245,7 @@ parsed lies in the relevant small word set.
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	pronoun_usage *pu = Stock::find_in_sws(possessive_pronouns_sws, ve);
 	if (pu) { ==> { 0, pu }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <possessive-first-person> internal 1 {
@@ -253,7 +253,7 @@ parsed lies in the relevant small word set.
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	pronoun_usage *pu = Stock::find_in_sws(first_person_possessive_pronouns_sws, ve);
 	if (pu) { ==> { 0, pu }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <possessive-second-person> internal 1 {
@@ -261,7 +261,7 @@ parsed lies in the relevant small word set.
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	pronoun_usage *pu = Stock::find_in_sws(second_person_possessive_pronouns_sws, ve);
 	if (pu) { ==> { 0, pu }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <possessive-third-person> internal 1 {
@@ -269,7 +269,7 @@ parsed lies in the relevant small word set.
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	pronoun_usage *pu = Stock::find_in_sws(third_person_possessive_pronouns_sws, ve);
 	if (pu) { ==> { 0, pu }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <here-pronoun> internal 1 {
@@ -277,7 +277,7 @@ parsed lies in the relevant small word set.
 	vocabulary_entry *ve = Lexer::word(Wordings::first_wn(W));
 	pronoun_usage *pu = Stock::find_in_sws(here_pronouns_sws, ve);
 	if (pu) { ==> { 0, pu }; return TRUE; }
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h English pronouns.

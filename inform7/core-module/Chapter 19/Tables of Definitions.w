@@ -31,8 +31,8 @@ The subject must match:
 	...                                  ==> @<Issue PM_TableDefiningTheImpossible problem@>
 
 @<Issue PM_TableDefiningTheImpossible problem@> =
-	*X = FALSE;
 	@<Actually issue PM_TableDefiningTheImpossible problem@>;
+	==> { FALSE, - };
 
 @ (We're going to need this twice.)
 
@@ -50,15 +50,17 @@ The subject must match:
 	...											==> @<Issue PM_TableUndefined problem@>
 
 @<Allow if a table name@> =
-	*X = TRUE; *XP = RP[1];
-	if (!(Rvalues::is_CONSTANT_of_kind(RP[1], K_table)))
-		return FALSE;
+	if (!(Rvalues::is_CONSTANT_of_kind(RP[1], K_table))) {
+		==> { fail };
+	} else {
+		==> { TRUE, RP[1] };
+	}
 
 @<Issue PM_TableUndefined problem@> =
-	*X = FALSE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableUndefined),
 	"you can only use 'defined by' in terms of a table",
 	"which lists the value names in the first column.");
+	==> { FALSE, - };
 
 @h Handling definition-by-table sentences.
 The timing of when to act on defined-by sentences is not completely
@@ -393,13 +395,13 @@ some misleading names we don't want to allow for these properties.
 	location						==> @<Issue PM_TableColumnLocation problem@>
 
 @<Issue PM_TableColumnLocation problem@> =
-	*X = NEW_TC_PROBLEM;
 	Problems::quote_wording(3, W);
 	StandardProblems::table_problem(_p_(PM_TableColumnLocation),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because there would be too "
 		"much ambiguity arising from its ordinary meaning referring to the "
 		"physical position of something.");
+	==> { NEW_TC_PROBLEM, - };
 
 @ Now for something sneaky. There are two ways we can actually assign the
 property values: active, and passive. The passive way is the sneaky one, and

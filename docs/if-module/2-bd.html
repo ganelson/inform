@@ -228,15 +228,14 @@ which must match:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">story</span>
 
 <span class="Preform-function-syntax">&lt;episode-sentence-object&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">episode</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;quoted-text-without-subs&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> R[1]; &lt;&lt;series&gt;&gt; = R[2];</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">episode</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">														</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadEpisode problem</span><span class="named-paragraph-number">8.1</span></a></span><span class="Preform-constant-syntax">;</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">episode</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;quoted-text-without-subs&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { R[1], -, &lt;&lt;series&gt;&gt; = R[2] }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">episode</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadEpisode problem</span><span class="named-paragraph-number">8.1</span></a></span><span class="Preform-constant-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadEpisode problem</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = -1;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadEpisode</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"this is not the right way to specify how the story "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"fits into a larger narrative"</span><span class="plain-syntax">,</span>
@@ -244,6 +243,7 @@ which must match:
 <span class="plain-syntax">        </span><span class="string-syntax">"\"Belt of Orion\", where the episode number has to be a "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"whole number 0, 1, 2, ... and the series name has to be "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"plain text without [substitutions]."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    ==&gt; { -1, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP8">&#167;8</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>This handles the special meaning "The story is episode...".

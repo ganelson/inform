@@ -182,10 +182,10 @@ is never treated as a participle.
 
 <probable-participle> internal 1 {
 	if (Vocabulary::test_flags(Wordings::first_wn(W), ING_MC)) {
-		if (<non-participles>(W)) return FALSE;
+		if (<non-participles>(W)) { ==> { fail nonterminal }; }
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ An implicit RP is a word like "carried", or "worn", on its own -- this

@@ -83,24 +83,31 @@ And these are parsed by the following simple Preform grammar:
 	feminine    ==> { FEMININE_GENDER, - }
 
 <meaning> internal 1 {
-	*XP = Relating::find(W);
-	if (*XP) return TRUE;
-	return FALSE;
+	rel *R = Relating::find(W);
+	if (R) {
+		==> { -, R };
+		return TRUE;
+	}
+	==> { fail nonterminal };
 }
 
 <special-meaning> internal 1 {
-	*XP = SpecialMeanings::find_from_wording(W);
-	if (*XP) return TRUE;
-	return FALSE;
+	special_meaning_holder *smh = SpecialMeanings::find_from_wording(W);
+	if (smh) {
+		==> { -, smh };
+		return TRUE;
+	}
+	==> { fail nonterminal };
 }
 
 <existing-verb> internal {
 	verb *V;
 	LOOP_OVER(V, verb)
 		if (WordAssemblages::compare_with_wording(&(V->conjugation->infinitive), W)) {
-			*XP = V; return TRUE;
+			==> { -, V };
+			return TRUE;
 		}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @<Create relationship@> =

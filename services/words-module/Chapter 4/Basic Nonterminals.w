@@ -14,8 +14,8 @@ exactly one word.
 =
 <preform-nonterminal> internal 1 {
 	nonterminal *nt = Nonterminals::detect(Lexer::word(Wordings::first_wn(W)));
-	if (nt) { *XP = nt; return TRUE; }
-	return FALSE;
+	if (nt) { ==> { -, nt }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 @h Text positions.
@@ -25,7 +25,7 @@ A useful nonterminal which matches no text, but detects the position:
 <if-start-of-paragraph> internal 0 {
 	int w1 = Wordings::first_wn(W);
 	if ((w1 == 0) || (compare_word(w1-1, PARBREAK_V))) return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ And another convenience:
@@ -34,7 +34,7 @@ A useful nonterminal which matches no text, but detects the position:
 <if-not-cap> internal 0 {
 	int w1 = Wordings::first_wn(W);
 	if (Word::unexpectedly_upper_case(w1) == FALSE) return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Balancing.
@@ -64,10 +64,11 @@ ordinals within the VM-representable range.)
 =
 <any-integer> internal 1 {
 	if (Vocabulary::test_flags(Wordings::first_wn(W), NUMBER_MC)) {
-		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
+		int N = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
+		==> { N, - };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Literal text.
@@ -78,25 +79,25 @@ for interpolations called "text substitutions".
 <quoted-text> internal 1 {
 	if ((Wordings::nonempty(W)) &&
 		(Vocabulary::test_flags(Wordings::first_wn(W), TEXT_MC+TEXTWITHSUBS_MC))) {
-		*X = Wordings::first_wn(W); return TRUE;
+		==> { Wordings::first_wn(W), - }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <quoted-text-with-subs> internal 1 {
 	if ((Wordings::nonempty(W)) &&
 		(Vocabulary::test_flags(Wordings::first_wn(W), TEXTWITHSUBS_MC))) {
-		*X = Wordings::first_wn(W); return TRUE;
+		==> { Wordings::first_wn(W), - }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <quoted-text-without-subs> internal 1 {
 	if ((Wordings::nonempty(W)) &&
 		(Vocabulary::test_flags(Wordings::first_wn(W), TEXT_MC))) {
-		*X = Wordings::first_wn(W); return TRUE;
+		==> { Wordings::first_wn(W), - }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ For finicky technical reasons the easiest way to detect an empty piece
@@ -106,7 +107,7 @@ of text |""| is to provide a nonterminal matching it:
 <empty-text> internal 1 {
 	if ((Wordings::nonempty(W)) &&
 		(Word::compare_by_strcmp(Wordings::first_wn(W), L"\"\""))) {
-		*X = Wordings::first_wn(W); return TRUE;
+		==> { Wordings::first_wn(W), - }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }

@@ -993,7 +993,6 @@ might have gone wrong.
 	......											==> @<Diagnose problem with this ANL entry@>
 
 @<Diagnose problem with this ANL entry@> =
-	*X = 1;
 	if ((issuing_ANL_problem) && (!preform_lookahead_mode)) {
 		Problems::quote_wording(4, W);
 		#ifdef IF_MODULE
@@ -1036,3 +1035,4 @@ might have gone wrong.
 		#endif
 		Problems::issue_problem_segment("'%4' was okay; ");
 	}
+	==> { 1, - };

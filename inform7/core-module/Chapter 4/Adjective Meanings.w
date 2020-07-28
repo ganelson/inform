@@ -1317,10 +1317,11 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 	LOOP_OVER(aph, adjective) {
 		wording AW = Clusters::get_form_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
 		if (Wordings::match(AW, W)) {
-			*XP = aph; *X = FALSE; return TRUE;
+			==> { FALSE, aph};
+			return TRUE;
 		}
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ Compiling to:

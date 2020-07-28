@@ -121,7 +121,7 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 		"In %1, '%2' is not a kind of value which a variable can safely have, "
 		"as it cannot ever vary.");
 	Problems::issue_problem_end();
-	*XP = Specifications::new_new_variable_like(K_object);
+	==> { -, Specifications::new_new_variable_like(K_object) };
 
 @<Issue PM_TypeUnmaintainable problem@> =
 	Problems::quote_source(1, current_sentence);
@@ -132,7 +132,7 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 		"as it cannot be guaranteed that the contents will always meet "
 		"this criterion.");
 	Problems::issue_problem_end();
-	*XP = Specifications::new_new_variable_like(K_object);
+	==> { -, Specifications::new_new_variable_like(K_object) };
 
 @ Two pieces of context:
 
@@ -155,7 +155,7 @@ As mentioned earlier, this changes our conventions on word-breaking.
 =
 <if-let-equation-mode> internal 0 {
 	if (let_equation_mode) return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ Next, we are sometimes in a situation where a local variable exists which
@@ -165,7 +165,7 @@ of possessives like "its" to refer to properties.
 =
 <if-pronoun-present> internal 0 {
 	if (LocalVariables::is_possessive_form_of_it_enabled()) return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ The other possible contexts are where we are expecting a table column or
@@ -176,13 +176,13 @@ but otherwise changes little.
 <if-table-column-expected> internal 0 {
 	if (Kinds::get_construct(probable_noun_phrase_context) == CON_table_column)
 		return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <if-property-name-expected> internal 0 {
 	if (Kinds::get_construct(probable_noun_phrase_context) == CON_property)
 		return TRUE;
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Values.
@@ -276,7 +276,7 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 	Equations::set_wherewithal(eqn, Node::get_text((parse_node *) RP[3]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	*XP = ExParser::val(eq, W);
+	==> { -, ExParser::val(eq, W) };
 
 @<Make an equation, if the kinds are right@> =
 	parse_node *p = RP[1];
@@ -286,14 +286,14 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 	Equations::set_usage_notes(eqn, Node::get_text((parse_node *) RP[2]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	*XP = ExParser::val(eq, W);
+	==> { -, ExParser::val(eq, W) };
 
 @<Make an inline equation@> =
 	equation *eqn = Equations::new(Node::get_text((parse_node *) RP[2]), TRUE);
 	parse_node *eq = Rvalues::from_equation(eqn);
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	*XP = ExParser::val(eq, W);
+	==> { -, ExParser::val(eq, W) };
 
 
 @<Make a belonging-to-it property@> =
@@ -301,14 +301,14 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING,
 			LocalVariables::it_variable());
 	parse_node *val = ExParser::val(lvspec, EMPTY_WORDING);
-	*XP = ExParser::val(ExParser::p_o_val(RP[3], val), W);
+	==> { -, ExParser::val(ExParser::p_o_val(RP[3], val), W) };
 
 @<Make a belonging-to-V property@> =
-	*XP = ExParser::val(ExParser::p_o_val(RP[1], RP[2]), W);
+	==> { -, ExParser::val(ExParser::p_o_val(RP[1], RP[2]), W) };
 
 @<Make a list entry@> =
 	parse_node *val = Lvalues::new_LIST_ENTRY(RP[2], RP[1]);
-	*XP = ExParser::val(val, W);
+	==> { -, ExParser::val(val, W) };
 
 @ =
 parse_node *ExParser::p_o_val(parse_node *A, parse_node *B) {
@@ -361,9 +361,9 @@ the text "grand total" is parsed as the local.
 	local_variable *lvar = LocalVariables::parse(Frames::current_stack_frame(), W);
 	if (lvar) {
 		parse_node *spec = Lvalues::new_LOCAL_VARIABLE(W, lvar);
-		*XP = spec; return TRUE;
+		==> { -, spec }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ And similarly:
@@ -371,15 +371,15 @@ the text "grand total" is parsed as the local.
 =
 <s-stacked-variable> internal {
 	ph_stack_frame *phsf = Frames::current_stack_frame();
-	if (phsf == NULL) return FALSE;
+	if (phsf == NULL) { ==> { fail nonterminal }; }
 	stacked_variable *stv = StackedVariables::parse_from_owner_list(
 		Frames::get_stvol(), W);
 	if (stv) {
 		parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(
 			StackedVariables::get_variable(stv));
-		*XP = spec; return TRUE;
+		==> { -, spec }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ And:
@@ -387,8 +387,8 @@ the text "grand total" is parsed as the local.
 =
 <s-global-variable> internal {
 	parse_node *p = Lexicon::retrieve(VARIABLE_MC, W);
-	if (p) { *XP = p; return TRUE; }
-	return FALSE;
+	if (p) { ==> { -, p }; return TRUE; }
+	==> { fail nonterminal };
 }
 
 @ As noted above, we want to parse phrases containing "of" cautiously in
@@ -421,9 +421,9 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
-		*XP = spec; return TRUE;
+		==> { -, spec }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <s-value-phrase> internal {
@@ -432,9 +432,9 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 		ExParser::add_ilist(spec, p);
-		*XP = spec; return TRUE;
+		==> { -, spec }; return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @h Table references.
@@ -478,20 +478,20 @@ Again, this is part of a condition, and can't evaluate.
 			"when the text is printed, which could be at any "
 			"time, and no row will be chosen then.)");
 	}
-	*XP = spec;
+	==> { -, spec };
 
 @<Make table in row of value@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
 	spec->down = ExParser::arg(RP[1]);
 	spec->down->next = ExParser::arg(RP[2]);
 	spec->down->next->next = ExParser::arg(RP[3]);
-	*XP = spec;
+	==> { -, spec };
 
 @<Make table listed in value@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
 	spec->down = ExParser::arg(RP[1]);
 	spec->down->next = ExParser::arg(RP[2]);
-	*XP = spec;
+	==> { -, spec };
 
 @<Make table corresponding to value@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
@@ -499,7 +499,7 @@ Again, this is part of a condition, and can't evaluate.
 	spec->down->next = ExParser::arg(RP[2]);
 	spec->down->next->next = ExParser::arg(RP[3]);
 	spec->down->next->next->next = ExParser::arg(RP[4]);
-	*XP = spec;
+	==> { -, spec };
 
 @<Make table of in value@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
@@ -507,7 +507,7 @@ Again, this is part of a condition, and can't evaluate.
 	spec->down->next = ExParser::arg(RP[1]);
 	spec->down->next->next = ExParser::arg(RP[2]);
 	spec->down->next->next->next = ExParser::arg(RP[3]);
-	*XP = spec;
+	==> { -, spec };
 
 @ =
 parse_node *ExParser::arg(parse_node *val) {
@@ -522,8 +522,8 @@ result.
 =
 <s-action-pattern-as-value> internal {
 	#ifdef IF_MODULE
-	if (Wordings::mismatched_brackets(W)) return FALSE;
-	if (Lexer::word(Wordings::first_wn(W)) == OPENBRACE_V) return FALSE;
+	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
+	if (Lexer::word(Wordings::first_wn(W)) == OPENBRACE_V) { ==> { fail nonterminal }; }
 	int pto = permit_trying_omission;
 	if (<definite-article>(Wordings::first_word(W)) == FALSE) permit_trying_omission = TRUE;
 	int r = <action-pattern>(W);
@@ -536,9 +536,9 @@ result.
 		}
 	}
 	if (r) {
-		*XP = Conditions::new_TEST_ACTION(<<rp>>, W);
+		==> { -, Conditions::new_TEST_ACTION(<<rp>>, W) };
 		return TRUE;
 	}
 	#endif
-	return FALSE;
+	==> { fail nonterminal };
 }

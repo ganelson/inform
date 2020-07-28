@@ -27,20 +27,20 @@ optionally be used.)
 	W = Articles::remove_the(W);
 	parse_node *p = Lexicon::retrieve(RULEBOOK_MC, W);
 	if (Rvalues::is_CONSTANT_construction(p, CON_rulebook)) {
-		*XP = Rvalues::to_rulebook(p);
+		==> { -, Rvalues::to_rulebook(p) };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <rule-name> internal {
 	W = Articles::remove_the(W);
 	rule *R = Rules::by_name(W);
 	if (R) {
-		*XP = R;
+		==> { -, R };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ This handles the special meaning "X is listed in...".
@@ -147,13 +147,13 @@ subject and object NPs.
 	...														==> @<Issue PM_NoSuchRuleExists problem@>
 
 @<Issue PM_NoSuchRuleExists problem@> =
-	*X = FALSE;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchRuleExists));
 	Problems::issue_problem_segment(
 		"In %1, you gave '%2' where a rule was required.");
 	Problems::issue_problem_end();
+	==> { FALSE, - };
 
 @ =
 void Rules::Placement::request_substitute(parse_node *p1, parse_node *p2, parse_node *p3,
@@ -319,7 +319,6 @@ The subject noun phrase is an articled list, each entry of which must match:
 @d BAD_RULE_PLACEMENT 1000000
 
 @<Issue PM_UnspecifiedRulebookPlacement problem@> =
-	*X = BAD_RULE_PLACEMENT;
 	Problems::quote_source(1, current_sentence);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnspecifiedRulebookPlacement));
 	Problems::issue_problem_segment(
@@ -327,10 +326,11 @@ The subject noun phrase is an articled list, each entry of which must match:
 		"be listed, only which existing rule it should go before or "
 		"after.");
 	Problems::issue_problem_end();
+	==> { BAD_RULE_PLACEMENT, - };
 
 @<Issue PM_ImproperRulePlacement problem@> =
-	*X = BAD_RULE_PLACEMENT;
 	@<Actually issue PM_ImproperRulePlacement problem@>;
+	==> { BAD_RULE_PLACEMENT, - };
 
 @<Actually issue PM_ImproperRulePlacement problem@> =
 	Problems::quote_source(1, current_sentence);

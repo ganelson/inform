@@ -230,9 +230,9 @@ what looks like text into grammar for parsing.
 =
 <table-column-heading> ::=
 	( *** ) |                                     ==> @<Issue PM_TableColumnBracketed problem@>
-	<s-table-column-name> ( ... ) |               ==> { EXISTING_TC, RP[1] }; <<k1>> = Wordings::first_wn(WR[1]); <<k2>> = Wordings::last_wn(WR[1]);
-	<table-column-heading-unbracketed> ( ... ) |  ==> { R[1], - }; if (R[1] != NEW_TC_PROBLEM) *X = NEW_TC_WITH_KIND; <<k1>> = Wordings::first_wn(WR[1]); <<k2>> = Wordings::last_wn(WR[1]);
-	<s-table-column-name> |                       ==> { EXISTING_TC, RP[1] }; <<k1>> = -1; <<k2>> = -1;
+	<s-table-column-name> ( ... ) |               ==> { EXISTING_TC, RP[1], <<k1>> = Wordings::first_wn(WR[1]), <<k2>> = Wordings::last_wn(WR[1]) }
+	<table-column-heading-unbracketed> ( ... ) |  ==> { (R[1] == NEW_TC_PROBLEM)?R[1]:NEW_TC_WITH_KIND, -, <<k1>> = Wordings::first_wn(WR[1]), <<k2>> = Wordings::last_wn(WR[1]) }
+	<s-table-column-name> |                       ==> { EXISTING_TC, RP[1], <<k1>> = -1, <<k2>> = -1 }
 	<table-column-heading-unbracketed>            ==> { pass 1 }
 
 <table-column-heading-unbracketed> ::=
@@ -241,30 +241,30 @@ what looks like text into grammar for parsing.
 	{<property-name>} |                           ==> { NEW_TC_WITHOUT_KIND, - }
 	{<s-constant-value>} |                        ==> @<Issue PM_TableColumnAlready problem@>
 	...                                           ==> { NEW_TC_WITHOUT_KIND, - }
-
+	
 @<Issue PM_TableColumnArticle problem@> =
-	*X = NEW_TC_PROBLEM;
 	Problems::quote_wording(4, W);
 	StandardProblems::table_problem(_p_(PM_TableColumnArticle),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because there would be too "
 		"much ambiguity arising from its ordinary meaning as an article. (It "
 		"would be quite awkward talking about the '%4 entry', for example.)");
+	==> { NEW_TC_PROBLEM, - };
 
 @<Issue PM_TableColumnAlready problem@> =
-	*X = NEW_TC_PROBLEM;
 	StandardProblems::table_problem(_p_(PM_TableColumnAlready),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because it already means "
 		"something else.");
+	==> { NEW_TC_PROBLEM, - };
 
 @<Issue PM_TableColumnBracketed problem@> =
-	*X = NEW_TC_PROBLEM;
 	StandardProblems::table_problem(_p_(PM_TableColumnBracketed),
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because it is in brackets. "
 		"(Perhaps you intended to use the brackets to give the kind of the "
 		"entries, but forgot to put a name before the opening bracket.)");
+	==> { NEW_TC_PROBLEM, - };
 
 @ When a column is found with a name not seen before -- say, "merit points"
 -- the following grammar is used to construct a proper noun to refer to this

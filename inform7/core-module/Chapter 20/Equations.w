@@ -192,12 +192,12 @@ We know that this begins with the word "equation", or we wouldn't be here
 (because the sentence would not have been classed an |EQUATION_NT|).
 
 @<Issue PM_EquationMisnumbered problem@> =
-	*X = 0;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EquationMisnumbered),
 		"the top line of this equation declaration seems not to be a "
 		"legal equation number or name",
 		"and should read something like 'Equation 6', or 'Equation - "
 		"Newton's Second Law', or 'Equation 41 - Coulomb's Law'.");
+	==> { 0, - };
 
 @<Parse the equation's number and/or name@> =
 	int i = Wordings::last_word_of_formatted_text(W, FALSE);
@@ -398,37 +398,38 @@ mass, too.
 	...										==> @<Issue PM_EquationSymbolMisdeclared problem@>
 
 @<Issue PM_EquationSymbolNonValue problem@> =
-	*X = EQW_IDENTIFIES_PROBLEM;
 	if (!preform_lookahead_mode)
-	StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolNonValue),
-		equation_being_declared, Wordings::one_word(R[1]),
-		"this has neither a kind of value nor an actual value.");
+		StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolNonValue),
+			equation_being_declared, Wordings::one_word(R[1]),
+			"this has neither a kind of value nor an actual value.");
+	==> { EQW_IDENTIFIES_PROBLEM, - };
 
 @<Issue PM_EquationSymbolEqualsKOV problem@> =
-	*X = EQW_IDENTIFIES_PROBLEM;
 	if (!preform_lookahead_mode)
-	StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolEqualsKOV),
-		equation_being_declared, Wordings::one_word(R[1]),
-		"'is' should be used, not '=', for a kind of value rather "
-		"than an actual value.");
+		StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolEqualsKOV),
+			equation_being_declared, Wordings::one_word(R[1]),
+			"'is' should be used, not '=', for a kind of value rather "
+			"than an actual value.");
+	==> { EQW_IDENTIFIES_PROBLEM, - };
 
 @<Issue PM_EquationSymbolMalformed problem@> =
-	*X = -1;
 	if (!preform_lookahead_mode)
-	StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolMalformed),
-		equation_being_declared, W,
-		"a symbol in a equation has to be a sequence of one to ten "
-		"letters optionally followed by a number from 0 to 99, so "
-		"'G', 'm', 'pi' and 'KE1' are all legal symbol names. But "
-		"this one is not.");
+		StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolMalformed),
+			equation_being_declared, W,
+			"a symbol in a equation has to be a sequence of one to ten "
+			"letters optionally followed by a number from 0 to 99, so "
+			"'G', 'm', 'pi' and 'KE1' are all legal symbol names. But "
+			"this one is not.");
+	==> { -1, - };
 
 @<Issue PM_EquationSymbolMisdeclared problem@> =
-	*X = -1;
 	if (!preform_lookahead_mode)
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EquationSymbolMisdeclared),
-		"the symbols here are not declared properly",
-		"and should each be declared with a kind of value or else an "
-		"actual value.");
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_EquationSymbolMisdeclared),
+			"the symbols here are not declared properly",
+			"and should each be declared with a kind of value or else an "
+			"actual value.");
+	==> { -1, - };
 
 @
 
@@ -615,8 +616,11 @@ expression |[A-Za-z]?{1,8}\d?{0,2}|.
 
 =
 <valid-equation-symbol> internal {
-	if (Equations::equation_symbol_legal(W)) { *X = Wordings::first_wn(W); return TRUE; }
-	return FALSE;
+	if (Equations::equation_symbol_legal(W)) {
+		==> { Wordings::first_wn(W), - };
+		return TRUE;
+	}
+	==> { fail nonterminal };
 }
 
 @ Using:

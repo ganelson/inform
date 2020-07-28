@@ -86,20 +86,22 @@ in decimal digits, perhaps with a minus sign.
 =
 <cardinal-number> internal 1 {
 	if (Vocabulary::test_flags(Wordings::first_wn(W), NUMBER_MC)) {
-		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
+		int N = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
 		@<In Inform 7 only, check that the number is representable in the VM@>;
+		==> { N, - };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 <ordinal-number> internal 1 {
 	if (Vocabulary::test_flags(Wordings::first_wn(W), ORDINAL_MC)) {
-		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
+		int N = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
 		@<In Inform 7 only, check that the number is representable in the VM@>;
+		==> { N, - };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }
 
 @ These mustn't match any number too large to fit into the virtual machine
@@ -114,10 +116,10 @@ project, with the user not realising the consequences.
 
 @<In Inform 7 only, check that the number is representable in the VM@> =
 	#ifdef CORE_MODULE
-	if (FundamentalConstants::veto_number(*X)) {
+	if (FundamentalConstants::veto_number(N)) {
 		/* to prevent repetitions: */
 		Vocabulary::set_literal_number_value(Lexer::word(Wordings::first_wn(W)), 1);
-		return FALSE;
+		==> { fail nonterminal };
 	}
 	#endif
 
@@ -126,8 +128,9 @@ project, with the user not realising the consequences.
 =
 <cardinal-number-unlimited> internal 1 {
 	if (Vocabulary::test_flags(Wordings::first_wn(W), NUMBER_MC)) {
-		*X = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
+		int N = Vocabulary::get_literal_number_value(Lexer::word(Wordings::first_wn(W)));
+		==> { N, - };
 		return TRUE;
 	}
-	return FALSE;
+	==> { fail nonterminal };
 }

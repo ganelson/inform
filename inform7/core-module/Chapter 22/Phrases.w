@@ -281,11 +281,11 @@ what number is...", for instance.
 	(- ### ...                       ==> { DONT_KNOW_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }; @<Issue PM_TailAfterInline problem@>
 
 @<Issue PM_TailAfterInline problem@> =
-	*X = DONT_KNOW_MOR;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TailAfterInline),
 		"some unexpected text appears after the tail of an inline definition",
 		"placed within '(-' and '-)' markers to indicate that it is written in "
 		"Inform 6. Here, there seems to be something extra after the '-)'.");
+	==> { DONT_KNOW_MOR, - };
 
 @ And this is used when the preamble is first looked at:
 

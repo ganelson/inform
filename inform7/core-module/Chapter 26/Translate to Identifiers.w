@@ -28,21 +28,21 @@ such as "The yourself object" in
 
 =
 <translates-into-i6-sentence-subject> ::=
-	... property |    ==> { PROPERTY_I6TR, - }
-	... object/kind |    ==> { NOUN_I6TR, - }
-	{... rule} |    ==> { RULE_I6TR, - }
-	... variable |    ==> { VARIABLE_I6TR, - }
-	... action |    ==> { ACTION_I6TR, - }
-	understand token ... |    ==> { GRAMMAR_TOKEN_I6TR, - }
-	...									==> @<Issue PM_TranslatedUnknownCategory problem@>
+	... property |          ==> { PROPERTY_I6TR, - }
+	... object/kind |       ==> { NOUN_I6TR, - }
+	{... rule} |            ==> { RULE_I6TR, - }
+	... variable |          ==> { VARIABLE_I6TR, - }
+	... action |            ==> { ACTION_I6TR, - }
+	understand token ... |  ==> { GRAMMAR_TOKEN_I6TR, - }
+	...                     ==> @<Issue PM_TranslatedUnknownCategory problem@>
 
 @<Issue PM_TranslatedUnknownCategory problem@> =
-	*X = INVALID_I6TR;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatedUnknownCategory),
 		"that isn't one of the things which can be translated to I6",
 		"and should be '... variable', '... property', '... object', "
 		"'... kind', '... rule', or '... action'. For instance, 'The yourself "
 		"object translates into I6 as \"selfobj\".'");
+	==> { INVALID_I6TR, - };
 
 @ The object noun phrase is usually just an I6 identifier in quotation marks,
 but it's also possible to list literal texts (for the benefit of rules).

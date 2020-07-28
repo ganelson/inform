@@ -75,16 +75,16 @@ void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
 	...                          ==> @<Issue PM_RelationWithBadProperty problem@>
 
 @<Issue PM_RelationWithEitherOrProperty problem@> =
-	*X = FALSE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithEitherOrProperty),
 		"verbs can only set properties with values",
 		"not either/or properties like this one.");
+	==> { FALSE, - };
 
 @<Issue PM_RelationWithBadProperty problem@> =
-	*X = FALSE;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithBadProperty),
 		"that doesn't seem to be a property",
 		"perhaps because you haven't defined it yet?");
+	==> { FALSE, - };
 
 @ No such funny business is necessary for a nameless property created within
 Inform:

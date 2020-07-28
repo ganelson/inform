@@ -161,22 +161,22 @@ test_scenario *ts_being_parsed = NULL;
 		"holding ...'");
 
 @<Issue PM_TestQuoted problem@> =
-	*X = FALSE;
-   	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestQuoted),
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestQuoted),
 		"test scenarios must have unquoted names",
 		"so 'test garden with ...' is allowed but not 'test \"garden\" with...'");
+	==> { FALSE, - };
 
 @<Issue PM_TestMultiWord problem@> =
-	*X = FALSE;
    	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestMultiWord),
 		"test scenarios must have single-word names",
 		"so 'test garden with ...' is allowed but not 'test garden gate with...'");
+	==> { FALSE, - };
 
 @<Issue PM_UnknownInternalTest problem@> =
-	*X = NO_INTT;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownInternalTest),
 		"that's an internal test case which I don't know",
 		"so I am taking no action.");
+	==> { NO_INTT, - };
 
 @<Issue PM_TestDoubleWith problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestDoubleWith),

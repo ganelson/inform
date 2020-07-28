@@ -155,7 +155,6 @@ which must match:
 	episode ...                                                ==> @<Issue PM_BadEpisode problem@>;
 
 @<Issue PM_BadEpisode problem@> =
-	*X = -1;
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadEpisode),
 		"this is not the right way to specify how the story "
 		"fits into a larger narrative",
@@ -163,6 +162,7 @@ which must match:
 		"\"Belt of Orion\", where the episode number has to be a "
 		"whole number 0, 1, 2, ... and the series name has to be "
 		"plain text without [substitutions].");
+	==> { -1, - };
 
 @ This handles the special meaning "The story is episode...".
 
