@@ -25,6 +25,7 @@ Chapter 2: Bridge to Problems Module
 
 Chapter 3: Bridge to Words Module
 "Reading source text as a stream of characters and dividing it up into words."
+	Booting Verbs
 	Classifying Sentences
 	Debugging Log Requests
 	Pluralisation Requests

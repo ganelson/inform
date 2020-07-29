@@ -6,6 +6,7 @@ Licence: Artistic License 2.0
 
 Chapter 1: Starting Up
 	IF Module
+	IF Special Meanings
 
 Chapter 2: Bibliographic Data
 "Our project is a kind of interactive book, with ISBN-like data and various

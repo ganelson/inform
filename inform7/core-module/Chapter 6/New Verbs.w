@@ -76,26 +76,17 @@ cleared.)
 	<= |		/* implies the numerically-less-than-or-equal-to relation */
 	>=			/* implies the numerically-greater-than-or-equal-to relation */
 
-
 =
 void NewVerbs::add_inequalities(void) {
-	NewVerbs::add_inequalities_inner(
-		NewVerbs::ineq_vm(R_numerically_less_than),
-		NewVerbs::ineq_vm(R_numerically_greater_than),
-		NewVerbs::ineq_vm(R_numerically_less_than_or_equal_to),
-		NewVerbs::ineq_vm(R_numerically_greater_than_or_equal_to));
-}
-
-void NewVerbs::add_inequalities_inner(verb_meaning lt, verb_meaning gt, verb_meaning le, verb_meaning ge) {
 	current_main_verb = NULL;
 
 	for (int i=0; i<=3; i++) {
 		verb *v = NULL;
 		switch (i) {
-			case 0: v = Verbs::new_operator_verb(lt); break;
-			case 1: v = Verbs::new_operator_verb(gt); break;
-			case 2: v = Verbs::new_operator_verb(le); break;
-			case 3: v = Verbs::new_operator_verb(ge); break;
+			case 0: v = Verbs::new_operator_verb(VerbMeanings::regular(R_numerically_less_than)); break;
+			case 1: v = Verbs::new_operator_verb(VerbMeanings::regular(R_numerically_greater_than)); break;
+			case 2: v = Verbs::new_operator_verb(VerbMeanings::regular(R_numerically_less_than_or_equal_to)); break;
+			case 3: v = Verbs::new_operator_verb(VerbMeanings::regular(R_numerically_greater_than_or_equal_to)); break;
 		}
 		grammatical_usage *gu = Stock::new_usage(v->in_stock, Task::language_of_syntax());
 		lcon_ti l = Verbs::to_lcon(v);
@@ -108,10 +99,6 @@ void NewVerbs::add_inequalities_inner(verb_meaning lt, verb_meaning gt, verb_mea
 		VerbUsages::new(
 			PreformUtilities::wording(<inequality-conjugations>, i), FALSE, gu, NULL);
 	}
-}
-
-verb_meaning NewVerbs::ineq_vm(binary_predicate *bp) {
-	return VerbMeanings::regular(bp);
 }
 
 @h Parsing new verb declarations.
@@ -608,79 +595,6 @@ foreign verbs (4).
 	if (priority >= 1) p = priority;
 	VerbUsages::register_all_usages_of_verb(vi, unexpected_upper_casing_used, p, current_sentence);
 
-@h Bootstrapping.
-
-=
-<bootstrap-verb> ::=
-	be |
-	mean |
-	imply
-
-@ =
-
-void NewVerbs::bootstrap(void) {
-	SpecialMeanings::declare(NewVerbs::verb_means_SMF, 							I"verb-means", 3);
-
-	SpecialMeanings::declare(NewVerbs::new_verb_SMF, 							I"new-verb", 2);
-	SpecialMeanings::declare(Plurals::plural_SMF, 								I"new-plural", 2);
-	SpecialMeanings::declare(Activities::new_activity_SMF, 						I"new-activity", 2);
-	#ifdef IF_MODULE
-	SpecialMeanings::declare(PL::Actions::new_action_SMF, 						I"new-action", 2);
-	#endif
-	SpecialMeanings::declare(NewVerbs::new_adjective_SMF,						I"new-adjective", 2);
-	SpecialMeanings::declare(Assertions::Property::either_SMF,					I"new-either-or", 2);
-	SpecialMeanings::declare(Tables::Defining::defined_by_SMF,					I"defined-by-table", 2);
-	SpecialMeanings::declare(Rules::Placement::listed_in_SMF,					I"rule-listed-in", 2);
-	#ifdef MULTIMEDIA_MODULE
-	SpecialMeanings::declare(PL::Figures::new_figure_SMF,						I"new-figure", 2);
-	SpecialMeanings::declare(PL::Sounds::new_sound_SMF,							I"new-sound", 2);
-	SpecialMeanings::declare(PL::Files::new_file_SMF,							I"new-file", 2);
-	#endif
-	#ifdef IF_MODULE
-	SpecialMeanings::declare(PL::Bibliographic::episode_SMF,					I"episode", 2);
-	#endif
-	SpecialMeanings::declare(Relations::new_relation_SMF,						I"new-relation", 1);
-	SpecialMeanings::declare(Assertions::Property::optional_either_SMF,			I"can-be", 2);
-	SpecialMeanings::declare(LiteralPatterns::specifies_SMF, 					I"specifies-notation", 4);
-	SpecialMeanings::declare(Rules::Placement::substitutes_for_SMF,				I"rule-substitutes-for", 1);
-	#ifdef IF_MODULE
-	SpecialMeanings::declare(PL::Scenes::begins_when_SMF,						I"scene-begins-when", 1);
-	SpecialMeanings::declare(PL::Scenes::ends_when_SMF,							I"scene-ends-when", 1);
-	#endif
-	SpecialMeanings::declare(Rules::Placement::does_nothing_SMF,				I"rule-does-nothing", 1);
-	SpecialMeanings::declare(Rules::Placement::does_nothing_if_SMF,				I"rule-does-nothing-if", 1);
-	SpecialMeanings::declare(Rules::Placement::does_nothing_unless_SMF,			I"rule-does-nothing-unless", 1);
-	SpecialMeanings::declare(Translations::translates_into_unicode_as_SMF,	I"translates-into-unicode", 1);
-	SpecialMeanings::declare(Translations::translates_into_Inter_as_SMF,			I"translates-into-i6", 1);
-	SpecialMeanings::declare(Translations::translates_into_language_as_SMF,	I"translates-into-language", 1);
-	SpecialMeanings::declare(UseOptions::use_translates_as_SMF,					I"use-translates", 4);
-	#ifdef IF_MODULE
-	SpecialMeanings::declare(PL::Parsing::TestScripts::test_with_SMF,			I"test-with", 1);
-	SpecialMeanings::declare(PL::Parsing::understand_as_SMF,					I"understand-as", 1);
-	#endif
-	SpecialMeanings::declare(UseOptions::use_SMF,								I"use", 4);
-	#ifdef IF_MODULE
-	SpecialMeanings::declare(PL::Bibliographic::Release::release_along_with_SMF,I"release-along-with", 4);
-	SpecialMeanings::declare(PL::EPSMap::index_map_with_SMF,					I"index-map-with", 4);
-	#endif
-	SpecialMeanings::declare(Sentences::DLRs::include_in_SMF,					I"include-in", 4);
-	SpecialMeanings::declare(Sentences::DLRs::omit_from_SMF,						I"omit-from", 4);
-
-	word_assemblage infinitive = PreformUtilities::wording(<bootstrap-verb>, 0);
-	verb_conjugation *vc = Conjugation::conjugate(infinitive, DefaultLanguage::get(NULL));
-	verb *vi = Verbs::new_verb(vc, TRUE);
-	vc->vc_conjugates = vi;
-	VerbUsages::register_all_usages_of_verb(vi, FALSE, 2, NULL);
-
-	infinitive = PreformUtilities::wording(<bootstrap-verb>, 1);
-	vc = Conjugation::conjugate(infinitive, DefaultLanguage::get(NULL));
-	vi = Verbs::new_verb(vc, FALSE);
-	vc->vc_conjugates = vi;
-	VerbUsages::register_all_usages_of_verb(vi, FALSE, 3, NULL);
-
-	Verbs::add_form(vi, NULL, NULL, SpecialMeanings::find(L"verb-means"), SVO_FS_BIT);
-}
-
 @h Runtime conjugation.
 
 =
@@ -1065,7 +979,6 @@ void NewVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, inter_sym
 			if (i>0) WRITE(" ");
 			wchar_t *q = Vocabulary::get_exemplar(words[i], FALSE);
 			if ((q[0]) && (q[Wide::len(q)-1] == '*')) {
-internal_error("star alert!");
 				TEMPORARY_TEXT(unstarred)
 				WRITE_TO(unstarred, "%V", words[i]);
 				Str::delete_last_character(unstarred);

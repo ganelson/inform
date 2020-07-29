@@ -5,6 +5,8 @@ of Inform as a programming language."
 
 Part One - Preamble
 
+The verb to mean means the meaning relation.
+
 The verb to be means the built-in new-verb meaning.
 The verb to be means the built-in new-plural meaning.
 The verb to be means the built-in new-activity meaning.
@@ -18,8 +20,6 @@ The verb to be means the built-in new-sound meaning.
 The verb to be means the built-in new-file meaning.
 The verb to be means the built-in episode meaning.
 The verb to be means the equality relation.
-
-The verb to mean means the meaning relation.
 
 The verb to imply means the built-in verb-means meaning.
 The verb to imply means the meaning relation.

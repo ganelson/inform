@@ -128,7 +128,7 @@ most of these worker functions are in the |core| module, some are not.
 	BENCH(NewVerbs::add_inequalities)
 
 	Task::advance_stage_to(SEMANTIC_I_CSEQ, I"Semantic analysis Ib", -1);
-	BENCH(NewVerbs::bootstrap)
+	BENCH(BootVerbs::bootstrap)
 	BENCH(Classifying::traverse)
 	BENCH(Sentences::Rearrangement::tidy_up_ofs_and_froms)
 	BENCH(Sentences::RuleSubtrees::register_recently_lexed_phrases)

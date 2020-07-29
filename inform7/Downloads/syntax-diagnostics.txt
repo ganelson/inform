@@ -5,6 +5,10 @@ ROOT_NT
                 BEGINHERE_NT'version 1 of basic inform by graham nelson'
                 SENTENCE_NT'Basic Inform, included in every project, defines the basic f'
                 HEADING_NT'part one - preamble' (level 3)
+                    SENTENCE_NT'the verb to mean means the meaning relation'
+                        VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
+                        UNPARSED_NOUN_NT'to mean'
+                        UNPARSED_NOUN_NT'meaning relation' {definite 'the' n/m/f s/p nom/acc}
                     SENTENCE_NT'the verb to be means the built-in new-verb meaning'
                         VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                         UNPARSED_NOUN_NT'to be'
@@ -57,10 +61,6 @@ ROOT_NT
                         VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                         UNPARSED_NOUN_NT'to be'
                         UNPARSED_NOUN_NT'equality relation' {definite 'the' n/m/f s/p nom/acc}
-                    SENTENCE_NT'the verb to mean means the meaning relation'
-                        VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
-                        UNPARSED_NOUN_NT'to mean'
-                        UNPARSED_NOUN_NT'meaning relation' {definite 'the' n/m/f s/p nom/acc}
                     SENTENCE_NT'the verb to imply means the built-in verb-means meaning'
                         VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                         UNPARSED_NOUN_NT'to imply'

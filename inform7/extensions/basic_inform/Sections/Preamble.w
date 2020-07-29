@@ -22,14 +22,11 @@ else. The first sentence should really read "The verb to mean means the
 built-in verb-means meaning", but that would be circular. So Inform
 starts with two verbs built in, "to mean" and "to be", with "to mean"
 having the built-in "verb-means meaning", and "to be" initially having
-no meaning at all. (We need "to be" because this enables us to conjugate
-forms of "mean" such as "X is meant by": note the "is".)
-
-So we actually start by defining the copular verb "to be". This has a
-dozen special meanings, all valid only in assertion sentences, as well
-as its regular one.
+no meaning at all.
 
 =
+The verb to mean means the meaning relation.
+
 The verb to be means the built-in new-verb meaning.
 The verb to be means the built-in new-plural meaning.
 The verb to be means the built-in new-activity meaning.
@@ -44,12 +41,9 @@ The verb to be means the built-in new-file meaning.
 The verb to be means the built-in episode meaning.
 The verb to be means the equality relation.
 
-@ Unfinished business: the other meaning of "mean", and "imply" as
-a synonym for it.
+@ We allow "imply" as a synonym for "mean".
 
 =
-The verb to mean means the meaning relation.
-
 The verb to imply means the built-in verb-means meaning.
 The verb to imply means the meaning relation.
 

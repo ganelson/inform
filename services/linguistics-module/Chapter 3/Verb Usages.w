@@ -331,9 +331,7 @@ int VerbUsages::allow_generally(verb_conjugation *vc, int tense, int sense, int 
 
 @ That just leaves the business of setting the "priority" of a usage. As
 noted above, priority 0 usages are ignored, while otherwise low numbers
-beat high ones. For example, in "The verb to be means the equality relation",
-the verb "be" might have priority 2 and so be beaten by the verb "mean",
-with priority 1.
+beat high ones.
 
 We must add the new usage to the tier with the given priority, creating
 that tier if need be. Newly created tiers are insertion-sorted into a

@@ -76,13 +76,6 @@ special_meaning_holder *SpecialMeanings::declare(special_meaning_fn func,
 @ SMHs can be found by name:
 
 =
-verb_meaning SpecialMeanings::find(wchar_t *name) {
-	special_meaning_holder *smh;
-	LOOP_OVER(smh, special_meaning_holder)
-		if (Str::eq_wide_string(smh->sm_name, name))
-			return VerbMeanings::special(smh);
-	return VerbMeanings::meaninglessness();
-}
 special_meaning_holder *SpecialMeanings::find_from_wording(wording W) {
 	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "%W", W);

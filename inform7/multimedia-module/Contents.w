@@ -6,6 +6,7 @@ Licence: Artistic License 2.0
 
 Chapter 1: Starting Up
 	Multimedia Module
+	Multimedia Special Meanings
 
 Chapter 2: Multimedia Features
 "Three plugins enabling Inform-written works of IF to make use of multimedia
