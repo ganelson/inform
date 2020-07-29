@@ -161,7 +161,7 @@ it read "Velma is a doer".
 		if ((Lexer::word(pos) == CLOSEBRACKET_V) || (Lexer::word(pos) == CLOSEBRACE_V)) bl--;
 		int i = pos - Wordings::first_wn(W);
 		if (i >= VIABILITY_MAP_SIZE) break;
-		if (NTI::test_vocabulary(Lexer::word(pos), <meaningful-nonimperative-verb>) == FALSE) {
+		if (NTI::test_vocabulary(Lexer::word(pos), <nonimperative-verb>) == FALSE) {
 			viable[i] = 0;
 		} else {
 			if (bl == 0) viable[i] = 1; else viable[i] = 2;
@@ -566,11 +566,11 @@ a word doesn't always mean we have a relative clause, so we will need to be a
 little careful using this nonterminal.
 
 =
-<relative-clause-marker> ::=
+<rc-marker> ::=
 	which/who/that
 
 <pre-verb-rc-marker> ::=
-	... <relative-clause-marker>
+	... <rc-marker>
 
 @ The following is used only in the reconstruction of existential sentences
 such as "There is a cat called Puss in Boots", where we want to prevent the

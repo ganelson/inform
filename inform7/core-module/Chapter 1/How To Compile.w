@@ -128,7 +128,8 @@ most of these worker functions are in the |core| module, some are not.
 	BENCH(NewVerbs::add_inequalities)
 
 	Task::advance_stage_to(SEMANTIC_I_CSEQ, I"Semantic analysis Ib", -1);
-	BENCH(Sentences::VPs::traverse)
+	BENCH(NewVerbs::bootstrap)
+	BENCH(Classifying::traverse)
 	BENCH(Sentences::Rearrangement::tidy_up_ofs_and_froms)
 	BENCH(Sentences::RuleSubtrees::register_recently_lexed_phrases)
 	BENCH(Kinds::Knowledge::include_templates_for_kinds)
@@ -289,4 +290,4 @@ most of these worker functions are in the |core| module, some are not.
 @<Generate index and bibliographic file@> =
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work", -1);
 	BENCH_IF(bibliographic_plugin, PL::Bibliographic::Release::write_ifiction_and_blurb);
-	BENCH(NaturalLanguages::produce_index);
+	BENCH(I6T::produce_index);

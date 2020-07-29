@@ -705,6 +705,13 @@ void PL::Actions::compile_action_name_var_creators(void) {
 }
 
 @ This handles the special meaning "X is an action...".
+<nounphrase-actionable> is an awkward necessity, designed to prevent the
+regular sentence
+
+>> The impulse is an action name that varies.
+
+from being parsed as an instance of "... is an action ...", creating a
+new action.
 
 =
 <new-action-sentence-object> ::=
@@ -714,6 +721,13 @@ void PL::Actions::compile_action_name_var_creators(void) {
 <new-action-sentence-object-unarticled> ::=
 	action <nounphrase-actionable> |    ==> { TRUE, RP[1] }
 	action								==> @<Issue PM_BadActionDeclaration problem@>
+
+<nounphrase-actionable> ::=
+	^<variable-creation-tail>			==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
+
+<variable-creation-tail> ::=
+	*** that/which vary/varies |
+	*** variable
 
 @<Issue PM_BadActionDeclaration problem@> =
 	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadActionDeclaration),

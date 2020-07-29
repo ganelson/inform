@@ -177,7 +177,7 @@ with a given "permitted verb".
 
 @ =
 void Prepositions::mark_for_preform(void) {
-	Nonterminals::flag_words_with(<relative-clause-marker>, PREPOSITION_MC);
+	Nonterminals::flag_words_with(<rc-marker>, PREPOSITION_MC);
 }
 
 void Prepositions::preform_optimiser(void) {

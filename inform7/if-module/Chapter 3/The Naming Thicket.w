@@ -492,3 +492,43 @@ void PL::Naming::compile_cap_short_name(void) {
 		Hierarchy::make_available(Emit::tree(), iname);
 	}
 }
+
+@h The adaptive person.
+The following is only relevant for the language of play, whose extension will
+always be read in. That in turn is expected to contain a declaration like
+this one:
+
+>> The adaptive text viewpoint of the French language is second person singular.
+
+The following routine picks up on the result of this declaration. (We cache
+this because we need access to it very quickly when parsing text substitutions.)
+
+@d ADAPTIVE_PERSON_LINGUISTICS_CALLBACK PL::Naming::adaptive_person
+@d ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK PL::Naming::adaptive_number
+
+=
+int PL::Naming::adaptive_person(inform_language *L) {
+	int C = PL::Naming::adaptive_combination(L);
+	if (C < 0) return -1;
+	return C % NO_KNOWN_PERSONS;
+}
+
+int PL::Naming::adaptive_number(inform_language *L) {
+	int C = PL::Naming::adaptive_combination(L);
+	if (C < 0) return -1;
+	return C / NO_KNOWN_PERSONS;
+}
+
+int PL::Naming::adaptive_combination(inform_language *L) {
+	if (L->adaptive_person >= 0) return L->adaptive_person;
+	if ((L->adaptive_person == -1) && (P_adaptive_text_viewpoint)) {
+		instance *I = L->nl_instance;
+		parse_node *val = World::Inferences::get_prop_state(
+			Instances::as_subject(I), P_adaptive_text_viewpoint);
+		if (Node::is(val, CONSTANT_NT)) {
+			instance *V = Node::get_constant_instance(val);
+			L->adaptive_person = Instances::get_numerical_value(V)-1;
+		}
+	}
+	return L->adaptive_person;
+}

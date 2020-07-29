@@ -4,7 +4,7 @@ To keep track of the hierarchy of headings and subheadings found
 in the source text.
 
 @h World objects under each heading.
-Every heading must carry with it a linked list of the nametags created in
+Every heading must carry with it a linked list of the nouns created in
 sentences which belong to it. So when any noun is created, the following
 is called to let the current sentence's heading know that it has a new
 friend.

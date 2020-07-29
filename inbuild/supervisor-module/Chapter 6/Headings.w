@@ -207,7 +207,6 @@ different way in. (These are never skipped.)
 =
 void Headings::place_implied_level_0(parse_node_tree *T, parse_node *pn) {
 	Headings::attach(T, pn);
-	Annotations::write_int(pn, sentence_unparsed_ANNOT, FALSE);
 	Annotations::write_int(pn, heading_level_ANNOT, 0);
 	Annotations::write_int(pn, implied_heading_ANNOT, TRUE);
 }

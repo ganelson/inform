@@ -203,7 +203,7 @@ Inform. Some standard kinds:
 kind *K_action_name = NULL;
 kind *K_equation = NULL;
 kind *K_grammatical_gender = NULL;
-kind *K_inform_language = NULL;
+kind *K_natural_language = NULL;
 kind *K_number = NULL;
 kind *K_object = NULL;
 kind *K_real_number = NULL;
@@ -662,9 +662,9 @@ kind *Kinds::new_base(parse_node_tree *T, wording W, kind *super) {
 	if (<notable-linguistic-kinds>(W)) {
 		Kinds::Constructors::mark_as_linguistic(K->construct);
 		switch (<<r>>) {
-			case 0: K_inform_language = K;
-				#ifdef NATURAL_LANGUAGES_PRESENT
-				NaturalLanguages::stock_nl_kind(K);
+			case 0: K_natural_language = K;
+				#ifdef NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK
+				NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK(K);
 				#endif
 				break;
 			case 1: K_grammatical_gender = K; break;

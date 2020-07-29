@@ -64,7 +64,6 @@ int Inform7Skill::inform7_internally(build_skill *skill, build_step *S,
 	if (project == NULL) internal_error("no project");
 	if (S->associated_copy->edition->work->genre == project_bundle_genre)
 		Pathnames::create_in_file_system(Projects::materials_path(project));
-	SourceText::bulk_of_source_loaded();
 	#ifdef CORE_MODULE
 	return Task::carry_out(S);
 	#endif

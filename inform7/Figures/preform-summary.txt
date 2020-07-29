@@ -1,11 +1,11 @@
-<s-literal> hits 2097/23834 nti 25 constraint (none) extremes [1, infinity)
+<s-literal> hits 2097/23834 nti 31 constraint (none) extremes [1, infinity)
     English:
         (@1)<cardinal-number>=1 
           (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]
         (@1)minus (@2)<cardinal-number>=1 
-          (hits 0/1279) constraint DS = {25} extremes [2, 2]
+          (hits 0/46) constraint DS = {31} extremes [2, 2]
         (@1)<quoted-text>=1 (@2)( (@3)<response-letter>=2 (@4)) 
-          (hits 273/698) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {25} extremes [4, 4]
+          (hits 273/583) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {31} extremes [4, 4]
         (@1)<quoted-text>=1 
           (hits 1564/5548) (matched: 'Represents geographical locations, both indoor
         and outdoor, which are not necessarily areas in a building. A player in one
@@ -14,12 +14,12 @@
         <s-literal-real-number>=1 
           (hits 11/9909) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
         (@1)<s-literal-truth-state>=1 
-          (hits 78/228) (matched: 'false') constraint CS = {19} extremes [1, 1]
+          (hits 78/809) (matched: 'false') constraint CS = {25} extremes [1, 1]
         <s-literal-list>=1 
-          (hits 0/3243) constraint DS = {21} extremes [2, infinity)
+          (hits 0/2306) constraint DS = {27} extremes [2, infinity)
         (@1)unicode <s-unicode-character>=1 
-          (hits 0/2910) constraint DS = {25} extremes [2, infinity)
+          (hits 0/1236) constraint DS = {31} extremes [2, infinity)
         <s-literal-time>=1 
-          (hits 0/3468) constraint DW = {22, 23, 24} extremes [2, 5]
+          (hits 0/3054) constraint DW = {28, 29, 30} extremes [2, 5]
         <s-literal-unit-notation>=1 
           (hits 0/9820) constraint (none) extremes [1, infinity)

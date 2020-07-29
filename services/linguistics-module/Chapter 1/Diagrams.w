@@ -55,8 +55,7 @@ MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(special_meaning, special_meaning_holder)
 MAKE_ANNOTATION_FUNCTIONS(occurrence, time_period)
 
-@ The |linguistic_error_here_ANNOT| annotation is for any errors we find,
-though at present there is just one:
+@ The |linguistic_error_here_ANNOT| annotation is for any errors we find:
 
 @e TwoLikelihoods_LINERROR from 1
 

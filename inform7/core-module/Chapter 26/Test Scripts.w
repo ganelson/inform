@@ -198,6 +198,8 @@ int PL::Parsing::TestScripts::test_with_SMF(int task, parse_node *V, wording *NP
 		case TRAVERSE2_SMFT:
 			PL::Parsing::TestScripts::new_test_text(V);
 			break;
+		case ALLOW_IN_OPTIONS_FILE_SMFT:
+			return TRUE;
 	}
 	return FALSE;
 }

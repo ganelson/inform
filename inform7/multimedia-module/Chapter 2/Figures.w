@@ -82,6 +82,9 @@ blorb_figure *PL::Figures::new_blorb_figure(instance *nc) {
 <new-figure-sentence-object-unarticled> ::=
 	file <np-unparsed>												==> { TRUE, RP[1] }
 
+<nounphrase-figure> ::=
+	figure ...							==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
+
 @ =
 int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;

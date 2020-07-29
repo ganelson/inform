@@ -111,6 +111,8 @@ int PL::Bibliographic::Release::release_along_with_SMF(int task, parse_node *V, 
 			<np-articled-list>(OW);
 			V->next = <<rp>>;
 			return TRUE;
+		case ALLOW_IN_OPTIONS_FILE_SMFT:
+			return TRUE;
 		case TRAVERSE1_SMFT:
 			PL::Bibliographic::Release::handle_release_declaration_inner(V->next);
 			break;

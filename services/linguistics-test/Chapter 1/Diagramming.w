@@ -51,12 +51,16 @@ void Diagramming::diagram(parse_node *p) {
 		wording W = Node::get_text(p);
 		if (<sentence>(W)) {
 			parse_node *n = <<rp>>;
-			if (Annotations::read_int(p, linguistic_error_here_ANNOT) == TwoLikelihoods_LINERROR)
-				Errors::nowhere("sentence has two certainties");
-			else
-				SyntaxTree::graft(syntax_tree, n, p);
+			switch (Annotations::read_int(p, linguistic_error_here_ANNOT)) {
+				case TwoLikelihoods_LINERROR:
+					Errors::nowhere("sentence has two certainties");
+					break;
+				default:
+					SyntaxTree::graft(syntax_tree, n, p);
+					break;
+			}
 		} else {
-			Errors::nowhere("sentence failed to parse");
+			Errors::nowhere("sentence has no primary verb");
 		}
 	}
 }

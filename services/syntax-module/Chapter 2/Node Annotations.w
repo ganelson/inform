@@ -171,7 +171,6 @@ void Annotations::copy(parse_node *to, parse_node *from) {
 
 @e heading_level_ANNOT from 1 /* int: for HEADING nodes, a hierarchical level, 0 (highest) to 9 (lowest) */
 @e language_element_ANNOT /* int: this node is not really a sentence, but a language definition Use */
-@e sentence_unparsed_ANNOT /* int: set if verbs haven't been sought yet here */
 @e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
 @e implied_heading_ANNOT /* int: set only for the heading of implied inclusions */
 
@@ -187,8 +186,6 @@ node will throw an internal error -- it must mean a bug in Inform.
 void Annotations::make_annotation_allowed_table(void) {
 	Annotations::allow(HEADING_NT, heading_level_ANNOT);
 	Annotations::allow(SENTENCE_NT, language_element_ANNOT);
-	Annotations::allow_for_category(L1_NCAT, sentence_unparsed_ANNOT);
-	Annotations::allow_for_category(L2_NCAT, sentence_unparsed_ANNOT);
 	#ifdef ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK
 	ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK();
 	#endif

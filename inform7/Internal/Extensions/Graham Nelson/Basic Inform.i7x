@@ -110,18 +110,18 @@ An object can be plural-named or singular-named. An object is usually singular-n
 An object can be proper-named or improper-named. An object is usually improper-named.
 An object can be ambiguously plural.
 
-The indefinite article property translates into I6 as "article".
-The printed plural name property translates into I6 as "plural".
-The printed name property translates into I6 as "short_name".
-The plural-named property translates into I6 as "pluralname".
-The ambiguously plural property translates into I6 as "ambigpluralname".
-The proper-named property translates into I6 as "proper".
+The indefinite article property translates into Inter as "article".
+The printed plural name property translates into Inter as "plural".
+The printed name property translates into Inter as "short_name".
+The plural-named property translates into Inter as "pluralname".
+The ambiguously plural property translates into Inter as "ambigpluralname".
+The proper-named property translates into Inter as "proper".
 
 A natural language is a kind of value.
 The language of play is a natural language that varies.
 
 The parameter-object is an object that varies.
-The parameter-object variable translates into I6 as "parameter_value".
+The parameter-object variable translates into Inter as "parameter_value".
 
 Startup rules is a rulebook.
 Startup rules have outcomes allow startup (success) and deny startup (failure).
@@ -129,17 +129,19 @@ Shutdown rules is a rulebook.
 
 Starting the virtual machine (documented at act_startvm) is an activity.
 The enable Glulx acceleration rule is listed first in for starting the virtual machine.
-The enable Glulx acceleration rule translates into I6 as "ENABLE_GLULX_ACCEL_R".
+The enable Glulx acceleration rule translates into Inter as "ENABLE_GLULX_ACCEL_R".
 
 Printing the name of something (documented at act_pn) is an activity.
 
 The standard name printing rule is listed last in the for printing the name rulebook.
-The standard name printing rule translates into I6 as "STANDARD_NAME_PRINTING_R".
+The standard name printing rule translates into Inter as "STANDARD_NAME_PRINTING_R".
 
 Printing the plural name of something (documented at act_ppn) is an activity.
 
-The standard printing the plural name rule is listed last in the for printing the plural name rulebook.
-The standard printing the plural name rule translates into I6 as "STANDARD_PLURAL_NAME_PRINTING_R".
+The standard printing the plural name rule is listed last in the for printing the
+plural name rulebook.
+The standard printing the plural name rule translates into Inter as
+"STANDARD_PLURAL_NAME_PRINTING_R".
 
 
 Part Three - Phrasebook

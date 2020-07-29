@@ -831,6 +831,16 @@ action patterns. For example, the Standard Rules define:
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>This handles the special meaning "X is an action...".
+&lt;nounphrase-actionable&gt; is an awkward necessity, designed to prevent the
+regular sentence
+</p>
+
+<blockquote>
+    <p>The impulse is an action name that varies.</p>
+</blockquote>
+
+<p class="commentary">from being parsed as an instance of "... is an action ...", creating a
+new action.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -841,6 +851,13 @@ action patterns. For example, the Standard Rules define:
 <span class="Preform-function-syntax">&lt;new-action-sentence-object-unarticled&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">action</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;nounphrase-actionable&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, RP[1] }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">action</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-act.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadActionDeclaration problem</span><span class="named-paragraph-number">25.1</span></a></span>
+
+<span class="Preform-function-syntax">&lt;nounphrase-actionable&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">^&lt;variable-creation-tail&gt;</span><span class="Preform-plain-syntax">			</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, Diagrams::new_UNPARSED_NOUN(W) }</span>
+
+<span class="Preform-function-syntax">&lt;variable-creation-tail&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">that/which</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">vary/varies</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">variable</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP25_1"></a><b>&#167;25.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadActionDeclaration problem</span><span class="named-paragraph-number">25.1</span></span><span class="Preform-comment-syntax"> =</span>
@@ -864,7 +881,6 @@ action patterns. For example, the Standard Rules define:
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCEPT_SMFT:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;new-action-sentence-object&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">verb_id_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">SPECIAL_MEANING_VB</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">O</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="function-syntax">&lt;np-unparsed&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">SW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>

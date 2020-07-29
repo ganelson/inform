@@ -340,27 +340,27 @@ ROOT_NT
                         COMMON_NOUN_NT'an object'
                         UNPARSED_NOUN_NT'ambiguously plural'
                             UNPARSED_NOUN_NT'ambiguously plural'
-                    SENTENCE_NT'the indefinite article property translates into i6 as articl'
+                    SENTENCE_NT'the indefinite article property translates into inter as art'
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'indefinite article property' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'article'
-                    SENTENCE_NT'the printed plural name property translates into i6 as plura'
+                    SENTENCE_NT'the printed plural name property translates into inter as pl'
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'printed plural name property' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'plural'
-                    SENTENCE_NT'the printed name property translates into i6 as short_name'
+                    SENTENCE_NT'the printed name property translates into inter as short_nam'
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'printed name property' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'short_name'
-                    SENTENCE_NT'the plural-named property translates into i6 as pluralname'
+                    SENTENCE_NT'the plural-named property translates into inter as pluralnam'
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'plural-named property' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'pluralname'
-                    SENTENCE_NT'the ambiguously plural property translates into i6 as ambigp'
+                    SENTENCE_NT'the ambiguously plural property translates into inter as amb'
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'ambiguously plural property' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'ambigpluralname'
-                    SENTENCE_NT'the proper-named property translates into i6 as proper'
+                    SENTENCE_NT'the proper-named property translates into inter as proper'
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'proper-named property' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'proper'
@@ -377,7 +377,7 @@ ROOT_NT
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                         PROPER_NOUN_NT'parameter-object' {definite 'the' n/m/f s/p nom/acc}
                         COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                    SENTENCE_NT'the parameter-object variable translates into i6 as paramete'
+                    SENTENCE_NT'the parameter-object variable translates into inter as param'
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'parameter-object variable' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'parameter_value'
@@ -403,7 +403,7 @@ ROOT_NT
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                         UNPARSED_NOUN_NT'the enable glulx acceleration rule'
                         UNPARSED_NOUN_NT'first in for starting the virtual machine'
-                    SENTENCE_NT'the enable glulx acceleration rule translates into i6 as ENA'
+                    SENTENCE_NT'the enable glulx acceleration rule translates into inter as '
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'enable glulx acceleration rule' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'ENABLE_GLULX_ACCEL_R'
@@ -415,7 +415,7 @@ ROOT_NT
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                         UNPARSED_NOUN_NT'the standard name printing rule'
                         UNPARSED_NOUN_NT'last in the for printing the name rulebook'
-                    SENTENCE_NT'the standard name printing rule translates into i6 as STANDA'
+                    SENTENCE_NT'the standard name printing rule translates into inter as STA'
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'standard name printing rule' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'STANDARD_NAME_PRINTING_R'
@@ -4416,11 +4416,11 @@ ROOT_NT
                                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                                 UNPARSED_NOUN_NT'"out"'
                                 UNPARSED_NOUN_NT'outside'
-                            SENTENCE_NT'the inside object translates into i6 as in_obj'
+                            SENTENCE_NT'the inside object translates into inter as in_obj'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'inside object' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'in_obj'
-                            SENTENCE_NT'the outside object translates into i6 as out_obj'
+                            SENTENCE_NT'the outside object translates into inter as out_obj'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'outside object' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'out_obj'
@@ -4463,7 +4463,7 @@ ROOT_NT
                                     PROPERTYCALLED_NT'called'
                                         UNPARSED_NOUN_NT'object' {indefinite 'an' n/m/f nom/acc s}
                                         UNPARSED_NOUN_NT'other side'
-                            SENTENCE_NT'the other side property translates into i6 as door_to'
+                            SENTENCE_NT'the other side property translates into inter as door_to'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'other side property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'door_to'
@@ -4791,7 +4791,7 @@ ROOT_NT
                                     PROPER_NOUN_NT'yourself'
                                     PROPER_NOUN_NT'description'
                                 PROPER_NOUN_NT'"As good-looking as ever."'
-                            SENTENCE_NT'the yourself object translates into i6 as selfobj'
+                            SENTENCE_NT'the yourself object translates into inter as selfobj'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'yourself object' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'selfobj'
@@ -4920,116 +4920,116 @@ ROOT_NT
                                 VERB_NT'is usually' {verb 'be' 3p s act IS_TENSE +ve} {certainty:likely}
                                 COMMON_NOUN_NT'player's holdall' {indefinite 'a' n/m/f nom/acc s}
                                 ADJECTIVE_NT'openable'
-                        HEADING_NT'section 16 - inform 6 equivalents' (level 5)
-                            SENTENCE_NT'the wearable property translates into i6 as clothing'
+                        HEADING_NT'section 16 - inter identifier equivalents' (level 5)
+                            SENTENCE_NT'the wearable property translates into inter as clothing'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'wearable property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'clothing'
-                            SENTENCE_NT'the undescribed property translates into i6 as concealed'
+                            SENTENCE_NT'the undescribed property translates into inter as concealed'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'undescribed property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'concealed'
-                            SENTENCE_NT'the edible property translates into i6 as edible'
+                            SENTENCE_NT'the edible property translates into inter as edible'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'edible property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'edible'
-                            SENTENCE_NT'the enterable property translates into i6 as enterable'
+                            SENTENCE_NT'the enterable property translates into inter as enterable'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'enterable property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'enterable'
-                            SENTENCE_NT'the female property translates into i6 as female'
+                            SENTENCE_NT'the female property translates into inter as female'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'female property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'female'
-                            SENTENCE_NT'the mentioned property translates into i6 as mentioned'
+                            SENTENCE_NT'the mentioned property translates into inter as mentioned'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'mentioned property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'mentioned'
-                            SENTENCE_NT'the lit property translates into i6 as light'
+                            SENTENCE_NT'the lit property translates into inter as light'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'lit property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'light'
-                            SENTENCE_NT'the lighted property translates into i6 as light'
+                            SENTENCE_NT'the lighted property translates into inter as light'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'lighted property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'light'
-                            SENTENCE_NT'the lockable property translates into i6 as lockable'
+                            SENTENCE_NT'the lockable property translates into inter as lockable'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'lockable property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'lockable'
-                            SENTENCE_NT'the locked property translates into i6 as locked'
+                            SENTENCE_NT'the locked property translates into inter as locked'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'locked property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'locked'
-                            SENTENCE_NT'the handled property translates into i6 as moved'
+                            SENTENCE_NT'the handled property translates into inter as moved'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'handled property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'moved'
-                            SENTENCE_NT'the neuter property translates into i6 as neuter'
+                            SENTENCE_NT'the neuter property translates into inter as neuter'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'neuter property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'neuter'
-                            SENTENCE_NT'the switched on property translates into i6 as on'
+                            SENTENCE_NT'the switched on property translates into inter as on'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'switched on property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'on'
-                            SENTENCE_NT'the open property translates into i6 as open'
+                            SENTENCE_NT'the open property translates into inter as open'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'open property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'open'
-                            SENTENCE_NT'the openable property translates into i6 as openable'
+                            SENTENCE_NT'the openable property translates into inter as openable'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'openable property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'openable'
-                            SENTENCE_NT'the privately-named property translates into i6 as privately'
+                            SENTENCE_NT'the privately-named property translates into inter as privat'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'privately-named property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'privately_named'
-                            SENTENCE_NT'the pushable between rooms property translates into i6 as pu'
+                            SENTENCE_NT'the pushable between rooms property translates into inter as'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'pushable between rooms property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'pushable'
-                            SENTENCE_NT'the scenery property translates into i6 as scenery'
+                            SENTENCE_NT'the scenery property translates into inter as scenery'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'scenery property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'scenery'
-                            SENTENCE_NT'the fixed in place property translates into i6 as static'
+                            SENTENCE_NT'the fixed in place property translates into inter as static'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'fixed in place property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'static'
-                            SENTENCE_NT'the transparent property translates into i6 as transparent'
+                            SENTENCE_NT'the transparent property translates into inter as transparen'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'transparent property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'transparent'
-                            SENTENCE_NT'the visited property translates into i6 as visited'
+                            SENTENCE_NT'the visited property translates into inter as visited'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'visited property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'visited'
-                            SENTENCE_NT'the marked for listing property translates into i6 as workfl'
+                            SENTENCE_NT'the marked for listing property translates into inter as wor'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'marked for listing property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'workflag'
-                            SENTENCE_NT'the list grouping key property translates into i6 as list_to'
+                            SENTENCE_NT'the list grouping key property translates into inter as list'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'list grouping key property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'list_together'
-                            SENTENCE_NT'the carrying capacity property translates into i6 as capacit'
+                            SENTENCE_NT'the carrying capacity property translates into inter as capa'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'carrying capacity property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'capacity'
-                            SENTENCE_NT'the description property translates into i6 as description'
+                            SENTENCE_NT'the description property translates into inter as descriptio'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'description property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'description'
-                            SENTENCE_NT'the initial appearance property translates into i6 as initia'
+                            SENTENCE_NT'the initial appearance property translates into inter as ini'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'initial appearance property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'initial'
-                            SENTENCE_NT'the map region property translates into i6 as map_region'
+                            SENTENCE_NT'the map region property translates into inter as map_region'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'map region property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'map_region'
-                            SENTENCE_NT'the matching key property translates into i6 as with_key'
+                            SENTENCE_NT'the matching key property translates into inter as with_key'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'matching key property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'with_key'
@@ -5040,7 +5040,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s}
-                            SENTENCE_NT'the player variable translates into i6 as player'
+                            SENTENCE_NT'the player variable translates into inter as player'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'player variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'player'
@@ -5072,27 +5072,27 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'darkness witnessed' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'truth state that varies' {indefinite 'a' n/m/f nom/acc s}
-                            SENTENCE_NT'the location variable translates into i6 as real_location'
+                            SENTENCE_NT'the location variable translates into inter as real_location'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'location variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'real_location'
-                            SENTENCE_NT'the score variable translates into i6 as score'
+                            SENTENCE_NT'the score variable translates into inter as score'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'score variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'score'
-                            SENTENCE_NT'the last notified score variable translates into i6 as last_'
+                            SENTENCE_NT'the last notified score variable translates into inter as la'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'last notified score variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'last_score'
-                            SENTENCE_NT'the maximum score variable translates into i6 as MAX_SCORE'
+                            SENTENCE_NT'the maximum score variable translates into inter as MAX_SCOR'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'maximum score variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'MAX_SCORE'
-                            SENTENCE_NT'the turn count variable translates into i6 as turns'
+                            SENTENCE_NT'the turn count variable translates into inter as turns'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'turn count variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'turns'
-                            SENTENCE_NT'the time of day variable translates into i6 as the_time'
+                            SENTENCE_NT'the time of day variable translates into inter as the_time'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'time of day variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'the_time'
@@ -5117,23 +5117,23 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'item described' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                            SENTENCE_NT'the noun variable translates into i6 as noun'
+                            SENTENCE_NT'the noun variable translates into inter as noun'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'noun variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'noun'
-                            SENTENCE_NT'the second noun variable translates into i6 as second'
+                            SENTENCE_NT'the second noun variable translates into inter as second'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'second noun variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'second'
-                            SENTENCE_NT'the person asked variable translates into i6 as actor'
+                            SENTENCE_NT'the person asked variable translates into inter as actor'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'person asked variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'actor'
-                            SENTENCE_NT'the reason the action failed variable translates into i6 as '
+                            SENTENCE_NT'the reason the action failed variable translates into inter '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'reason the action failed variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'reason_the_action_failed'
-                            SENTENCE_NT'the item described variable translates into i6 as self'
+                            SENTENCE_NT'the item described variable translates into inter as self'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'item described variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'self'
@@ -5154,19 +5154,19 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'particular possession' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s}
-                            SENTENCE_NT'the person reaching variable translates into i6 as actor'
+                            SENTENCE_NT'the person reaching variable translates into inter as actor'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'person reaching variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'actor'
-                            SENTENCE_NT'the container in question variable translates into i6 as par'
+                            SENTENCE_NT'the container in question variable translates into inter as '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'container in question variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'parameter_object'
-                            SENTENCE_NT'the supporter in question variable translates into i6 as par'
+                            SENTENCE_NT'the supporter in question variable translates into inter as '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'supporter in question variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'parameter_object'
-                            SENTENCE_NT'the particular possession variable translates into i6 as par'
+                            SENTENCE_NT'the particular possession variable translates into inter as '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'particular possession variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'particular_possession'
@@ -5203,15 +5203,15 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'current item from the multiple object list' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                            SENTENCE_NT'the player's command variable translates into i6 as players_'
+                            SENTENCE_NT'the player's command variable translates into inter as playe'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'player's command variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'players_command'
-                            SENTENCE_NT'the matched text variable translates into i6 as matched_text'
+                            SENTENCE_NT'the matched text variable translates into inter as matched_t'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'matched text variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'matched_text'
-                            SENTENCE_NT'the topic understood variable translates into i6 as parsed_n'
+                            SENTENCE_NT'the topic understood variable translates into inter as parse'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'topic understood variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'parsed_number'
@@ -5236,11 +5236,11 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'right hand status line' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'text that varies' {indefinite 'a' n/m/f nom/acc s}
-                            SENTENCE_NT'the left hand status line variable translates into i6 as lef'
+                            SENTENCE_NT'the left hand status line variable translates into inter as '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'left hand status line variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'left_hand_status_line'
-                            SENTENCE_NT'the right hand status line variable translates into i6 as ri'
+                            SENTENCE_NT'the right hand status line variable translates into inter as'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'right hand status line variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'right_hand_status_line'
@@ -5248,7 +5248,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'listing group size' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s}
-                            SENTENCE_NT'the listing group size variable translates into i6 as listin'
+                            SENTENCE_NT'the listing group size variable translates into inter as lis'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'listing group size variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'listing_size'
@@ -5257,7 +5257,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'prior named object' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                            SENTENCE_NT'the prior named object variable translates into i6 as prior_'
+                            SENTENCE_NT'the prior named object variable translates into inter as pri'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'prior named object variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'prior_named_noun'
@@ -5299,7 +5299,7 @@ ROOT_NT
                                 VERB_NT'is usually' {verb 'be' 3p s act IS_TENSE +ve} {certainty:likely}
                                 PROPER_NOUN_NT'story genre' {definite 'the' n/m/f s/p nom/acc}
                                 PROPER_NOUN_NT'"Fiction"'
-                            SENTENCE_NT'the story title variable translates into i6 as Story'
+                            SENTENCE_NT'the story title variable translates into inter as Story'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'story title variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'Story'
@@ -5313,7 +5313,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'i6-nothing-constant' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                            SENTENCE_NT'the i6-nothing-constant variable translates into i6 as nothi'
+                            SENTENCE_NT'the i6-nothing-constant variable translates into inter as no'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'i6-nothing-constant variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'nothing'
@@ -5321,7 +5321,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'i6-varying-global' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                            SENTENCE_NT'the i6-varying-global variable translates into i6 as nothing'
+                            SENTENCE_NT'the i6-varying-global variable translates into inter as noth'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'i6-varying-global variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'nothing'
@@ -5329,7 +5329,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'item-pushed-between-rooms' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                            SENTENCE_NT'the item-pushed-between-rooms variable translates into i6 as'
+                            SENTENCE_NT'the item-pushed-between-rooms variable translates into inter'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'item-pushed-between-rooms variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'move_pushing'
@@ -5337,7 +5337,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'actor-location' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                            SENTENCE_NT'the actor-location variable translates into i6 as actor_loca'
+                            SENTENCE_NT'the actor-location variable translates into inter as actor_l'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'actor-location variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'actor_location'
@@ -5345,7 +5345,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'scene being changed' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'scene that varies' {indefinite 'a' n/m/f nom/acc s}
-                            SENTENCE_NT'the scene being changed variable translates into i6 as param'
+                            SENTENCE_NT'the scene being changed variable translates into inter as pa'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'scene being changed variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'parameter_value'
@@ -5537,7 +5537,7 @@ ROOT_NT
                                 PROPER_NOUN_NT'multiple action processing rules' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s}
                         HEADING_NT'section 2 - the standard rules' (level 5)
-                            SENTENCE_NT'the little-used do nothing rule translates into i6 as LITTLE'
+                            SENTENCE_NT'the little-used do nothing rule translates into inter as LIT'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'little-used do nothing rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'LITTLE_USED_DO_NOTHING_R'
@@ -5581,23 +5581,23 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                                 UNPARSED_NOUN_NT'the initialise memory rule'
                                 UNPARSED_NOUN_NT'first in the startup rulebook'
-                            SENTENCE_NT'the virtual machine startup rule translates into i6 as VIRTU'
+                            SENTENCE_NT'the virtual machine startup rule translates into inter as VI'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'virtual machine startup rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'VIRTUAL_MACHINE_STARTUP_R'
-                            SENTENCE_NT'the initialise memory rule translates into i6 as INITIALISE_'
+                            SENTENCE_NT'the initialise memory rule translates into inter as INITIALI'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'initialise memory rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'INITIALISE_MEMORY_R'
-                            SENTENCE_NT'the seed random number generator rule translates into i6 as '
+                            SENTENCE_NT'the seed random number generator rule translates into inter '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'seed random number generator rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'SEED_RANDOM_NUMBER_GENERATOR_R'
-                            SENTENCE_NT'the update chronological records rule translates into i6 as '
+                            SENTENCE_NT'the update chronological records rule translates into inter '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'update chronological records rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'UPDATE_CHRONOLOGICAL_RECORDS_R'
-                            SENTENCE_NT'the position player in model world rule translates into i6 a'
+                            SENTENCE_NT'the position player in model world rule translates into inte'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'position player in model world rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'POSITION_PLAYER_IN_MODEL_R'
@@ -5710,31 +5710,31 @@ ROOT_NT
                                                 INVOCATION_NT'issue score notification message'
                                             INVOCATION_LIST_NT'now the last notified score is the score'
                                                 CONDITION_CONTEXT_NT'the last notified score is the score'
-                            SENTENCE_NT'the adjust light rule translates into i6 as ADJUST_LIGHT_R w'
+                            SENTENCE_NT'the adjust light rule translates into inter as ADJUST_LIGHT_'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'adjust light rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'ADJUST_LIGHT_R'
                                     UNPARSED_NOUN_NT'"[It] [are] [if story tense is present tense]now [end if]pit'
-                            SENTENCE_NT'the advance time rule translates into i6 as ADVANCE_TIME_R'
+                            SENTENCE_NT'the advance time rule translates into inter as ADVANCE_TIME_'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'advance time rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'ADVANCE_TIME_R'
-                            SENTENCE_NT'the generate action rule translates into i6 as GENERATE_ACTI'
+                            SENTENCE_NT'the generate action rule translates into inter as GENERATE_A'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'generate action rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'GENERATE_ACTION_R'
                                     AND_NT','
                                         UNPARSED_NOUN_NT'"(considering the first sixteen objects only)[command clarif'
                                         UNPARSED_NOUN_NT'"Nothing to do!" ( b )'
-                            SENTENCE_NT'the note object acquisitions rule translates into i6 as NOTE'
+                            SENTENCE_NT'the note object acquisitions rule translates into inter as N'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'note object acquisitions rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'NOTE_OBJECT_ACQUISITIONS_R'
-                            SENTENCE_NT'the parse command rule translates into i6 as PARSE_COMMAND_R'
+                            SENTENCE_NT'the parse command rule translates into inter as PARSE_COMMAN'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'parse command rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'PARSE_COMMAND_R'
-                            SENTENCE_NT'the timed events rule translates into i6 as TIMED_EVENTS_R'
+                            SENTENCE_NT'the timed events rule translates into inter as TIMED_EVENTS_'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'timed events rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'TIMED_EVENTS_R'
@@ -5766,11 +5766,11 @@ ROOT_NT
                                         INVOCATION_NT'carry out the printing the player's obituary activity'
                                             RVALUE_CONTEXT_NT'printing the player's obituary'
                                                 {printing the player's obituary = ACTIVITY_MC}'printing the player's obituary'-activity
-                            SENTENCE_NT'the resurrect player if asked rule translates into i6 as RES'
+                            SENTENCE_NT'the resurrect player if asked rule translates into inter as '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'resurrect player if asked rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'RESURRECT_PLAYER_IF_ASKED_R'
-                            SENTENCE_NT'the ask the final question rule translates into i6 as ASK_FI'
+                            SENTENCE_NT'the ask the final question rule translates into inter as ASK'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'ask the final question rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'ASK_FINAL_QUESTION_R'
@@ -5778,7 +5778,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                                 UNPARSED_NOUN_NT'the scene change machinery rule'
                                 UNPARSED_NOUN_NT'last in the scene changing rulebook'
-                            SENTENCE_NT'the scene change machinery rule translates into i6 as SCENE_'
+                            SENTENCE_NT'the scene change machinery rule translates into inter as SCE'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'scene change machinery rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'SCENE_CHANGE_MACHINERY_R'
@@ -5881,17 +5881,17 @@ ROOT_NT
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'rule succeeds'
                                         INVOCATION_NT'rule succeeds'
-                            SENTENCE_NT'the basic accessibility rule translates into i6 as BASIC_ACC'
+                            SENTENCE_NT'the basic accessibility rule translates into inter as BASIC_'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'basic accessibility rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'BASIC_ACCESSIBILITY_R'
                                     UNPARSED_NOUN_NT'"You must name something more substantial." ( a )'
-                            SENTENCE_NT'the basic visibility rule translates into i6 as BASIC_VISIBI'
+                            SENTENCE_NT'the basic visibility rule translates into inter as BASIC_VIS'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'basic visibility rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'BASIC_VISIBILITY_R'
                                     UNPARSED_NOUN_NT'"[It] [are] pitch dark, and [we] [can't see] a thing." ( a )'
-                            SENTENCE_NT'the carrying requirements rule translates into i6 as CARRYIN'
+                            SENTENCE_NT'the carrying requirements rule translates into inter as CARR'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'carrying requirements rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'CARRYING_REQUIREMENTS_R'
@@ -5900,7 +5900,7 @@ ROOT_NT
                                 UNPARSED_NOUN_NT'requested actions require persuasion rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'REQUESTED_ACTIONS_REQUIRE_R'
                                     UNPARSED_NOUN_NT'"[The noun] [have] better things to do." ( a )'
-                            SENTENCE_NT'the carry out requested actions rule translates into i6 as C'
+                            SENTENCE_NT'the carry out requested actions rule translates into inter a'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'carry out requested actions rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'CARRY_OUT_REQUESTED_ACTIONS_R'
@@ -6053,7 +6053,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                                 UNPARSED_NOUN_NT'the access through barriers rule'
                                 UNPARSED_NOUN_NT'last in the accessibility rules'
-                            SENTENCE_NT'the access through barriers rule translates into i6 as ACCES'
+                            SENTENCE_NT'the access through barriers rule translates into inter as AC'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'access through barriers rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'ACCESS_THROUGH_BARRIERS_R'
@@ -6071,7 +6071,7 @@ ROOT_NT
                                 UNPARSED_NOUN_NT'can't reach inside closed containers rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'CANT_REACH_INSIDE_CLOSED_R'
                                     UNPARSED_NOUN_NT'"[The noun] [aren't] open." ( a )'
-                            SENTENCE_NT'the can't reach inside rooms rule translates into i6 as CANT'
+                            SENTENCE_NT'the can't reach inside rooms rule translates into inter as C'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'can't reach inside rooms rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'CANT_REACH_INSIDE_ROOMS_R'
@@ -6208,12 +6208,12 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'latest parser error' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'command parser error that varies' {indefinite 'a' n/m/f nom/acc s}
-                            SENTENCE_NT'the latest parser error variable translates into i6 as etype'
+                            SENTENCE_NT'the latest parser error variable translates into inter as et'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'latest parser error variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'etype'
                         HEADING_NT'section 9 - responses for internal rules' (level 5)
-                            SENTENCE_NT'the list writer internal rule translates into i6 as LIST_WRI'
+                            SENTENCE_NT'the list writer internal rule translates into inter as LIST_'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'list writer internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'LIST_WRITER_INTERNAL_R'
@@ -6266,7 +6266,7 @@ ROOT_NT
                                                                                                                                 AND_NT','
                                                                                                                                     UNPARSED_NOUN_NT'"Nothing" ( x )'
                                                                                                                                     UNPARSED_NOUN_NT'"nothing" ( y )'
-                            SENTENCE_NT'the action processing internal rule translates into i6 as AC'
+                            SENTENCE_NT'the action processing internal rule translates into inter as'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'action processing internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'ACTION_PROCESSING_INTERNAL_R'
@@ -6291,7 +6291,7 @@ ROOT_NT
                                                                         AND_NT','
                                                                             UNPARSED_NOUN_NT'"(Since something dramatic has happened, your list of comman'
                                                                             UNPARSED_NOUN_NT'"I didn't understand that instruction." ( k )'
-                            SENTENCE_NT'the parser error internal rule translates into i6 as PARSER_'
+                            SENTENCE_NT'the parser error internal rule translates into inter as PARS'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'parser error internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'PARSER_ERROR_INTERNAL_R'
@@ -6343,7 +6343,7 @@ ROOT_NT
                                                                                                                             AND_NT','
                                                                                                                                 UNPARSED_NOUN_NT'"To talk to someone, try 'someone, hello' or some such." ( w'
                                                                                                                                 UNPARSED_NOUN_NT'"I beg your pardon?" ( x )'
-                            SENTENCE_NT'the parser nothing error internal rule translates into i6 as'
+                            SENTENCE_NT'the parser nothing error internal rule translates into inter'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'parser nothing error internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'PARSER_N_ERROR_INTERNAL_R'
@@ -6358,12 +6358,12 @@ ROOT_NT
                                                     AND_NT','
                                                         UNPARSED_NOUN_NT'"[The noun] [aren't] open." ( e )'
                                                         UNPARSED_NOUN_NT'"[The noun] [are] empty." ( f )'
-                            SENTENCE_NT'the darkness name internal rule translates into i6 as DARKNE'
+                            SENTENCE_NT'the darkness name internal rule translates into inter as DAR'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'darkness name internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'DARKNESS_NAME_INTERNAL_R'
                                     UNPARSED_NOUN_NT'"Darkness" ( a )'
-                            SENTENCE_NT'the parser command internal rule translates into i6 as PARSE'
+                            SENTENCE_NT'the parser command internal rule translates into inter as PA'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'parser command internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'PARSER_COMMAND_INTERNAL_R'
@@ -6374,7 +6374,7 @@ ROOT_NT
                                             AND_NT','
                                                 UNPARSED_NOUN_NT'"'Oops' can only correct a single word." ( c )'
                                                 UNPARSED_NOUN_NT'"You can hardly repeat that." ( d )'
-                            SENTENCE_NT'the parser clarification internal rule translates into i6 as'
+                            SENTENCE_NT'the parser clarification internal rule translates into inter'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'parser clarification internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'PARSER_CLARIF_INTERNAL_R'
@@ -6393,12 +6393,12 @@ ROOT_NT
                                                             AND_NT','
                                                                 UNPARSED_NOUN_NT'"that" ( g )'
                                                                 UNPARSED_NOUN_NT'" or " ( h )'
-                            SENTENCE_NT'the yes or no question internal rule translates into i6 as Y'
+                            SENTENCE_NT'the yes or no question internal rule translates into inter a'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'yes or no question internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'YES_OR_NO_QUESTION_INTERNAL_R'
                                     UNPARSED_NOUN_NT'"Please answer yes or no." ( a )'
-                            SENTENCE_NT'the print protagonist internal rule translates into i6 as PR'
+                            SENTENCE_NT'the print protagonist internal rule translates into inter as'
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'print protagonist internal rule' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'PRINT_PROTAGONIST_INTERNAL_R'
@@ -6478,7 +6478,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the standard contents listing rule'
                             UNPARSED_NOUN_NT'last in the for listing contents rulebook'
-                        SENTENCE_NT'the standard contents listing rule translates into i6 as STA'
+                        SENTENCE_NT'the standard contents listing rule translates into inter as '
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'standard contents listing rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'STANDARD_CONTENTS_LISTING_R'
@@ -6613,7 +6613,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the standard implicit taking rule'
                             UNPARSED_NOUN_NT'last in for implicitly taking'
-                        SENTENCE_NT'the standard implicit taking rule translates into i6 as STAN'
+                        SENTENCE_NT'the standard implicit taking rule translates into inter as S'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'standard implicit taking rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'STANDARD_IMPLICIT_TAKING_R'
@@ -6641,7 +6641,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the display final status line rule'
                             UNPARSED_NOUN_NT'last in for printing the player's obituary'
-                        SENTENCE_NT'the print obituary headline rule translates into i6 as PRINT'
+                        SENTENCE_NT'the print obituary headline rule translates into inter as PR'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'print obituary headline rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'PRINT_OBITUARY_HEADLINE_R'
@@ -6650,11 +6650,11 @@ ROOT_NT
                                     AND_NT','
                                         UNPARSED_NOUN_NT'" You have won " ( b )'
                                         UNPARSED_NOUN_NT'" The End " ( c )'
-                        SENTENCE_NT'the print final score rule translates into i6 as PRINT_FINAL'
+                        SENTENCE_NT'the print final score rule translates into inter as PRINT_FI'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'print final score rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'PRINT_FINAL_SCORE_R'
-                        SENTENCE_NT'the display final status line rule translates into i6 as DIS'
+                        SENTENCE_NT'the display final status line rule translates into inter as '
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'display final status line rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'DISPLAY_FINAL_STATUS_LINE_R'
@@ -6662,19 +6662,19 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-activity}
                             UNPARSED_NOUN_NT'handling the final question'
                             UNPARSED_NOUN_NT'an activity'
-                        SENTENCE_NT'the immediately restart the vm rule translates into i6 as IM'
+                        SENTENCE_NT'the immediately restart the vm rule translates into inter as'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'immediately restart the vm rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'IMMEDIATELY_RESTART_VM_R'
-                        SENTENCE_NT'the immediately restore saved game rule translates into i6 a'
+                        SENTENCE_NT'the immediately restore saved game rule translates into inte'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'immediately restore saved game rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'IMMEDIATELY_RESTORE_SAVED_R'
-                        SENTENCE_NT'the immediately quit rule translates into i6 as IMMEDIATELY_'
+                        SENTENCE_NT'the immediately quit rule translates into inter as IMMEDIATE'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'immediately quit rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'IMMEDIATELY_QUIT_R'
-                        SENTENCE_NT'the immediately undo rule translates into i6 as IMMEDIATELY_'
+                        SENTENCE_NT'the immediately undo rule translates into inter as IMMEDIATE'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'immediately undo rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'IMMEDIATELY_UNDO_R'
@@ -6712,7 +6712,7 @@ ROOT_NT
                                         INVOCATION_NT'"> [run paragraph on]" ( a )'
                                             RVALUE_CONTEXT_NT'"> [run paragraph on]" ( a )'
                                                 CONSTANT_NT'"> [run paragraph on]" ( a )'-text
-                        SENTENCE_NT'the read the final answer rule translates into i6 as READ_FI'
+                        SENTENCE_NT'the read the final answer rule translates into inter as READ'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'read the final answer rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'READ_FINAL_ANSWER_R'
@@ -7893,7 +7893,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'taking inventory'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the taking inventory action translates into i6 as Inv'
+                        SENTENCE_NT'the taking inventory action translates into inter as Inv'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'taking inventory action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Inv'
@@ -7951,7 +7951,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'taking'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the taking action translates into i6 as Take'
+                        SENTENCE_NT'the taking action translates into inter as Take'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'taking action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Take'
@@ -8391,7 +8391,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'removing it from'
                             UNPARSED_NOUN_NT'applying to two things'
-                        SENTENCE_NT'the removing it from action translates into i6 as Remove'
+                        SENTENCE_NT'the removing it from action translates into inter as Remove'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'removing it from action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Remove'
@@ -8482,7 +8482,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'dropping'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the dropping action translates into i6 as Drop'
+                        SENTENCE_NT'the dropping action translates into inter as Drop'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'dropping action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Drop'
@@ -8729,7 +8729,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'putting it on'
                             UNPARSED_NOUN_NT'applying to two things'
-                        SENTENCE_NT'the putting it on action translates into i6 as PutOn'
+                        SENTENCE_NT'the putting it on action translates into inter as PutOn'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'putting it on action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'PutOn'
@@ -8977,7 +8977,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'inserting it into'
                             UNPARSED_NOUN_NT'applying to two things'
-                        SENTENCE_NT'the inserting it into action translates into i6 as Insert'
+                        SENTENCE_NT'the inserting it into action translates into inter as Insert'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'inserting it into action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Insert'
@@ -9248,7 +9248,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'eating'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the eating action translates into i6 as Eat'
+                        SENTENCE_NT'the eating action translates into inter as Eat'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'eating action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Eat'
@@ -9395,7 +9395,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'going'
                             UNPARSED_NOUN_NT'applying to one visible thing'
-                        SENTENCE_NT'the going action translates into i6 as Go'
+                        SENTENCE_NT'the going action translates into inter as Go'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'going action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Go'
@@ -10102,7 +10102,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'entering'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the entering action translates into i6 as Enter'
+                        SENTENCE_NT'the entering action translates into inter as Enter'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'entering action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Enter'
@@ -10678,7 +10678,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'exiting'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the exiting action translates into i6 as Exit'
+                        SENTENCE_NT'the exiting action translates into inter as Exit'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'exiting action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Exit'
@@ -10872,7 +10872,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'getting off'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the getting off action translates into i6 as GetOff'
+                        SENTENCE_NT'the getting off action translates into inter as GetOff'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'getting off action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'GetOff'
@@ -10965,7 +10965,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'looking'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the looking action translates into i6 as Look'
+                        SENTENCE_NT'the looking action translates into inter as Look'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'looking action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Look'
@@ -11379,7 +11379,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'examining'
                             UNPARSED_NOUN_NT'applying to one visible thing and requiring light'
-                        SENTENCE_NT'the examining action translates into i6 as Examine'
+                        SENTENCE_NT'the examining action translates into inter as Examine'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'examining action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Examine'
@@ -11572,7 +11572,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'looking under'
                             UNPARSED_NOUN_NT'applying to one visible thing and requiring light'
-                        SENTENCE_NT'the looking under action translates into i6 as LookUnder'
+                        SENTENCE_NT'the looking under action translates into inter as LookUnder'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'looking under action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'LookUnder'
@@ -11624,7 +11624,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'searching'
                             UNPARSED_NOUN_NT'applying to one thing and requiring light'
-                        SENTENCE_NT'the searching action translates into i6 as Search'
+                        SENTENCE_NT'the searching action translates into inter as Search'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'searching action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Search'
@@ -11754,7 +11754,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'consulting it about'
                             UNPARSED_NOUN_NT'applying to one thing and one topic'
-                        SENTENCE_NT'the consulting it about action translates into i6 as Consult'
+                        SENTENCE_NT'the consulting it about action translates into inter as Cons'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'consulting it about action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Consult'
@@ -11789,7 +11789,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'locking it with'
                             UNPARSED_NOUN_NT'applying to one thing and one carried thing'
-                        SENTENCE_NT'the locking it with action translates into i6 as Lock'
+                        SENTENCE_NT'the locking it with action translates into inter as Lock'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'locking it with action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Lock'
@@ -11934,7 +11934,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'unlocking it with'
                             UNPARSED_NOUN_NT'applying to one thing and one carried thing'
-                        SENTENCE_NT'the unlocking it with action translates into i6 as Unlock'
+                        SENTENCE_NT'the unlocking it with action translates into inter as Unlock'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'unlocking it with action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Unlock'
@@ -12058,7 +12058,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'switching on'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the switching on action translates into i6 as SwitchOn'
+                        SENTENCE_NT'the switching on action translates into inter as SwitchOn'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'switching on action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'SwitchOn'
@@ -12137,7 +12137,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'switching off'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the switching off action translates into i6 as SwitchOff'
+                        SENTENCE_NT'the switching off action translates into inter as SwitchOff'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'switching off action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'SwitchOff'
@@ -12216,7 +12216,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'opening'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the opening action translates into i6 as Open'
+                        SENTENCE_NT'the opening action translates into inter as Open'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'opening action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Open'
@@ -12389,7 +12389,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'closing'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the closing action translates into i6 as Close'
+                        SENTENCE_NT'the closing action translates into inter as Close'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'closing action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Close'
@@ -12494,7 +12494,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'wearing'
                             UNPARSED_NOUN_NT'applying to one carried thing'
-                        SENTENCE_NT'the wearing action translates into i6 as Wear'
+                        SENTENCE_NT'the wearing action translates into inter as Wear'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'wearing action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Wear'
@@ -12606,7 +12606,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'taking off'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the taking off action translates into i6 as Disrobe'
+                        SENTENCE_NT'the taking off action translates into inter as Disrobe'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'taking off action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Disrobe'
@@ -12699,7 +12699,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'giving it to'
                             UNPARSED_NOUN_NT'applying to one carried thing and one thing'
-                        SENTENCE_NT'the giving it to action translates into i6 as Give'
+                        SENTENCE_NT'the giving it to action translates into inter as Give'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'giving it to action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Give'
@@ -12877,7 +12877,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'showing it to'
                             UNPARSED_NOUN_NT'applying to one carried thing and one visible thing'
-                        SENTENCE_NT'the showing it to action translates into i6 as Show'
+                        SENTENCE_NT'the showing it to action translates into inter as Show'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'showing it to action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Show'
@@ -12942,7 +12942,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'waking'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the waking action translates into i6 as WakeOther'
+                        SENTENCE_NT'the waking action translates into inter as WakeOther'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'waking action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'WakeOther'
@@ -12974,7 +12974,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'throwing it at'
                             UNPARSED_NOUN_NT'applying to one carried thing and one visible thing'
-                        SENTENCE_NT'the throwing it at action translates into i6 as ThrowAt'
+                        SENTENCE_NT'the throwing it at action translates into inter as ThrowAt'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'throwing it at action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'ThrowAt'
@@ -13054,7 +13054,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'attacking'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the attacking action translates into i6 as Attack'
+                        SENTENCE_NT'the attacking action translates into inter as Attack'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'attacking action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Attack'
@@ -13086,7 +13086,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'kissing'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the kissing action translates into i6 as Kiss'
+                        SENTENCE_NT'the kissing action translates into inter as Kiss'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'kissing action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Kiss'
@@ -13137,7 +13137,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'answering it that'
                             UNPARSED_NOUN_NT'applying to one thing and one topic'
-                        SENTENCE_NT'the answering it that action translates into i6 as Answer'
+                        SENTENCE_NT'the answering it that action translates into inter as Answer'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'answering it that action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Answer'
@@ -13169,7 +13169,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'telling it about'
                             UNPARSED_NOUN_NT'applying to one thing and one topic'
-                        SENTENCE_NT'the telling it about action translates into i6 as Tell'
+                        SENTENCE_NT'the telling it about action translates into inter as Tell'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'telling it about action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Tell'
@@ -13222,7 +13222,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'asking it about'
                             UNPARSED_NOUN_NT'applying to one thing and one topic'
-                        SENTENCE_NT'the asking it about action translates into i6 as Ask'
+                        SENTENCE_NT'the asking it about action translates into inter as Ask'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'asking it about action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Ask'
@@ -13254,7 +13254,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'asking it for'
                             UNPARSED_NOUN_NT'applying to two things'
-                        SENTENCE_NT'the asking it for action translates into i6 as AskFor'
+                        SENTENCE_NT'the asking it for action translates into inter as AskFor'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'asking it for action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'AskFor'
@@ -13297,7 +13297,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'waiting'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the waiting action translates into i6 as Wait'
+                        SENTENCE_NT'the waiting action translates into inter as Wait'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'waiting action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Wait'
@@ -13342,7 +13342,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'touching'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the touching action translates into i6 as Touch'
+                        SENTENCE_NT'the touching action translates into inter as Touch'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'touching action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Touch'
@@ -13473,7 +13473,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'waving'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the waving action translates into i6 as Wave'
+                        SENTENCE_NT'the waving action translates into inter as Wave'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'waving action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Wave'
@@ -13537,7 +13537,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'pulling'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the pulling action translates into i6 as Pull'
+                        SENTENCE_NT'the pulling action translates into inter as Pull'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'pulling action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Pull'
@@ -13645,7 +13645,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'pushing'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the pushing action translates into i6 as Push'
+                        SENTENCE_NT'the pushing action translates into inter as Push'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'pushing action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Push'
@@ -13753,7 +13753,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'turning'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the turning action translates into i6 as Turn'
+                        SENTENCE_NT'the turning action translates into inter as Turn'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'turning action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Turn'
@@ -13861,7 +13861,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'pushing it to'
                             UNPARSED_NOUN_NT'applying to one thing and one visible thing'
-                        SENTENCE_NT'the pushing it to action translates into i6 as PushDir'
+                        SENTENCE_NT'the pushing it to action translates into inter as PushDir'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'pushing it to action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'PushDir'
@@ -13981,7 +13981,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'squeezing'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the squeezing action translates into i6 as Squeeze'
+                        SENTENCE_NT'the squeezing action translates into inter as Squeeze'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'squeezing action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Squeeze'
@@ -14046,7 +14046,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'saying yes'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the saying yes action translates into i6 as Yes'
+                        SENTENCE_NT'the saying yes action translates into inter as Yes'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'saying yes action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Yes'
@@ -14075,7 +14075,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'saying no'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the saying no action translates into i6 as No'
+                        SENTENCE_NT'the saying no action translates into inter as No'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'saying no action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'No'
@@ -14104,7 +14104,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'burning'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the burning action translates into i6 as Burn'
+                        SENTENCE_NT'the burning action translates into inter as Burn'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'burning action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Burn'
@@ -14133,7 +14133,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'waking up'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the waking up action translates into i6 as Wake'
+                        SENTENCE_NT'the waking up action translates into inter as Wake'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'waking up action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Wake'
@@ -14164,7 +14164,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'thinking'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the thinking action translates into i6 as Think'
+                        SENTENCE_NT'the thinking action translates into inter as Think'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'thinking action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Think'
@@ -14193,7 +14193,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'smelling'
                             UNPARSED_NOUN_NT'applying to nothing or one thing'
-                        SENTENCE_NT'the smelling action translates into i6 as Smell'
+                        SENTENCE_NT'the smelling action translates into inter as Smell'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'smelling action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Smell'
@@ -14235,7 +14235,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'listening to'
                             UNPARSED_NOUN_NT'applying to nothing or one thing and abbreviable'
-                        SENTENCE_NT'the listening to action translates into i6 as Listen'
+                        SENTENCE_NT'the listening to action translates into inter as Listen'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'listening to action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Listen'
@@ -14277,7 +14277,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'tasting'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the tasting action translates into i6 as Taste'
+                        SENTENCE_NT'the tasting action translates into inter as Taste'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'tasting action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Taste'
@@ -14319,7 +14319,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'cutting'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the cutting action translates into i6 as Cut'
+                        SENTENCE_NT'the cutting action translates into inter as Cut'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'cutting action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Cut'
@@ -14348,7 +14348,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'jumping'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the jumping action translates into i6 as Jump'
+                        SENTENCE_NT'the jumping action translates into inter as Jump'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'jumping action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Jump'
@@ -14390,7 +14390,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'tying it to'
                             UNPARSED_NOUN_NT'applying to two things'
-                        SENTENCE_NT'the tying it to action translates into i6 as Tie'
+                        SENTENCE_NT'the tying it to action translates into inter as Tie'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'tying it to action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Tie'
@@ -14419,7 +14419,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'drinking'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the drinking action translates into i6 as Drink'
+                        SENTENCE_NT'the drinking action translates into inter as Drink'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'drinking action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Drink'
@@ -14450,7 +14450,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'saying sorry'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the saying sorry action translates into i6 as Sorry'
+                        SENTENCE_NT'the saying sorry action translates into inter as Sorry'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'saying sorry action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Sorry'
@@ -14484,7 +14484,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'swinging'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the swinging action translates into i6 as Swing'
+                        SENTENCE_NT'the swinging action translates into inter as Swing'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'swinging action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Swing'
@@ -14515,7 +14515,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'rubbing'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the rubbing action translates into i6 as Rub'
+                        SENTENCE_NT'the rubbing action translates into inter as Rub'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'rubbing action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Rub'
@@ -14578,7 +14578,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'setting it to'
                             UNPARSED_NOUN_NT'applying to one thing and one topic'
-                        SENTENCE_NT'the setting it to action translates into i6 as SetTo'
+                        SENTENCE_NT'the setting it to action translates into inter as SetTo'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'setting it to action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'SetTo'
@@ -14607,7 +14607,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'waving hands'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the waving hands action translates into i6 as WaveHands'
+                        SENTENCE_NT'the waving hands action translates into inter as WaveHands'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'waving hands action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'WaveHands'
@@ -14649,7 +14649,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'buying'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the buying action translates into i6 as Buy'
+                        SENTENCE_NT'the buying action translates into inter as Buy'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'buying action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Buy'
@@ -14680,7 +14680,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'climbing'
                             UNPARSED_NOUN_NT'applying to one thing'
-                        SENTENCE_NT'the climbing action translates into i6 as Climb'
+                        SENTENCE_NT'the climbing action translates into inter as Climb'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'climbing action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Climb'
@@ -14709,7 +14709,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'sleeping'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        SENTENCE_NT'the sleeping action translates into i6 as Sleep'
+                        SENTENCE_NT'the sleeping action translates into inter as Sleep'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'sleeping action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Sleep'
@@ -14739,7 +14739,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'quitting the game'
                             UNPARSED_NOUN_NT'out of world and applying to nothing'
-                        SENTENCE_NT'the quitting the game action translates into i6 as Quit'
+                        SENTENCE_NT'the quitting the game action translates into inter as Quit'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'quitting the game action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Quit'
@@ -14747,7 +14747,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the quit the game rule'
                             UNPARSED_NOUN_NT'in the carry out quitting the game rulebook'
-                        SENTENCE_NT'the quit the game rule translates into i6 as QUIT_THE_GAME_R'
+                        SENTENCE_NT'the quit the game rule translates into inter as QUIT_THE_GAM'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'quit the game rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'QUIT_THE_GAME_R'
@@ -14756,7 +14756,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'saving the game'
                             UNPARSED_NOUN_NT'out of world and applying to nothing'
-                        SENTENCE_NT'the saving the game action translates into i6 as Save'
+                        SENTENCE_NT'the saving the game action translates into inter as Save'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'saving the game action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Save'
@@ -14764,7 +14764,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the save the game rule'
                             UNPARSED_NOUN_NT'in the carry out saving the game rulebook'
-                        SENTENCE_NT'the save the game rule translates into i6 as SAVE_THE_GAME_R'
+                        SENTENCE_NT'the save the game rule translates into inter as SAVE_THE_GAM'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'save the game rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'SAVE_THE_GAME_R'
@@ -14775,7 +14775,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'restoring the game'
                             UNPARSED_NOUN_NT'out of world and applying to nothing'
-                        SENTENCE_NT'the restoring the game action translates into i6 as Restore'
+                        SENTENCE_NT'the restoring the game action translates into inter as Resto'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'restoring the game action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Restore'
@@ -14783,7 +14783,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the restore the game rule'
                             UNPARSED_NOUN_NT'in the carry out restoring the game rulebook'
-                        SENTENCE_NT'the restore the game rule translates into i6 as RESTORE_THE_'
+                        SENTENCE_NT'the restore the game rule translates into inter as RESTORE_T'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'restore the game rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'RESTORE_THE_GAME_R'
@@ -14794,7 +14794,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'restarting the game'
                             UNPARSED_NOUN_NT'out of world and applying to nothing'
-                        SENTENCE_NT'the restarting the game action translates into i6 as Restart'
+                        SENTENCE_NT'the restarting the game action translates into inter as Rest'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'restarting the game action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Restart'
@@ -14802,7 +14802,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the restart the game rule'
                             UNPARSED_NOUN_NT'in the carry out restarting the game rulebook'
-                        SENTENCE_NT'the restart the game rule translates into i6 as RESTART_THE_'
+                        SENTENCE_NT'the restart the game rule translates into inter as RESTART_T'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'restart the game rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'RESTART_THE_GAME_R'
@@ -14813,7 +14813,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'verifying the story file'
                             UNPARSED_NOUN_NT'out of world and applying to nothing'
-                        SENTENCE_NT'the verifying the story file action translates into i6 as Ve'
+                        SENTENCE_NT'the verifying the story file action translates into inter as'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'verifying the story file action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Verify'
@@ -14821,7 +14821,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the verify the story file rule'
                             UNPARSED_NOUN_NT'in the carry out verifying the story file rulebook'
-                        SENTENCE_NT'the verify the story file rule translates into i6 as VERIFY_'
+                        SENTENCE_NT'the verify the story file rule translates into inter as VERI'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'verify the story file rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'VERIFY_THE_STORY_FILE_R'
@@ -14840,7 +14840,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the switch the story transcript on rule'
                             UNPARSED_NOUN_NT'in the carry out switching the story transcript on rulebook'
-                        SENTENCE_NT'the switch the story transcript on rule translates into i6 a'
+                        SENTENCE_NT'the switch the story transcript on rule translates into inte'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'switch the story transcript on rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'SWITCH_TRANSCRIPT_ON_R'
@@ -14861,7 +14861,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the switch the story transcript off rule'
                             UNPARSED_NOUN_NT'in the carry out switching the story transcript off rulebook'
-                        SENTENCE_NT'the switch the story transcript off rule translates into i6 '
+                        SENTENCE_NT'the switch the story transcript off rule translates into int'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'switch the story transcript off rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'SWITCH_TRANSCRIPT_OFF_R'
@@ -14882,7 +14882,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the announce the story file version rule'
                             UNPARSED_NOUN_NT'in the carry out requesting the story file version rulebook'
-                        SENTENCE_NT'the announce the story file version rule translates into i6 '
+                        SENTENCE_NT'the announce the story file version rule translates into int'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'announce the story file version rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'ANNOUNCE_STORY_FILE_VERSION_R'
@@ -14890,7 +14890,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'requesting the score'
                             UNPARSED_NOUN_NT'out of world and applying to nothing'
-                        SENTENCE_NT'the requesting the score action translates into i6 as Score'
+                        SENTENCE_NT'the requesting the score action translates into inter as Sco'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'requesting the score action' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'Score'
@@ -14898,7 +14898,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the announce the score rule'
                             UNPARSED_NOUN_NT'in the carry out requesting the score rulebook'
-                        SENTENCE_NT'the announce the score rule translates into i6 as ANNOUNCE_S'
+                        SENTENCE_NT'the announce the score rule translates into inter as ANNOUNC'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'announce the score rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'ANNOUNCE_SCORE_R'
@@ -14998,7 +14998,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the switch score notification on rule'
                             UNPARSED_NOUN_NT'in the carry out switching score notification on rulebook'
-                        SENTENCE_NT'the switch score notification on rule translates into i6 as '
+                        SENTENCE_NT'the switch score notification on rule translates into inter '
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'switch score notification on rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'SWITCH_SCORE_NOTIFY_ON_R'
@@ -15023,7 +15023,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the switch score notification off rule'
                             UNPARSED_NOUN_NT'in the carry out switching score notification off rulebook'
-                        SENTENCE_NT'the switch score notification off rule translates into i6 as'
+                        SENTENCE_NT'the switch score notification off rule translates into inter'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'switch score notification off rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'SWITCH_SCORE_NOTIFY_OFF_R'
@@ -15048,7 +15048,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the announce the pronoun meanings rule'
                             UNPARSED_NOUN_NT'in the carry out requesting the pronoun meanings rulebook'
-                        SENTENCE_NT'the announce the pronoun meanings rule translates into i6 as'
+                        SENTENCE_NT'the announce the pronoun meanings rule translates into inter'
                             VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                             UNPARSED_NOUN_NT'announce the pronoun meanings rule' {definite 'the' n/m/f s/p nom/acc}
                             UNPARSED_NOUN_NT'ANNOUNCE_PRONOUN_MEANINGS_R'
@@ -15688,7 +15688,7 @@ ROOT_NT
                         VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {special meaning: understand-as}
                         UNPARSED_NOUN_NT'"notify off"'
                         UNPARSED_NOUN_NT'switching score notification off'
-                    SENTENCE_NT'the understand token a time period translates into i6 as REL'
+                    SENTENCE_NT'the understand token a time period translates into inter as '
                         VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                         UNPARSED_NOUN_NT'understand token a time period' {definite 'the' n/m/f s/p nom/acc}
                         UNPARSED_NOUN_NT'RELATIVE_TIME_TOKEN'
@@ -16148,7 +16148,7 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'pronoun reference object' {definite 'the' n/m/f s/p nom/acc}
                                 COMMON_NOUN_NT'object that varies' {indefinite 'an' n/m/f nom/acc s}
-                            SENTENCE_NT'the pronoun reference object variable translates into i6 as '
+                            SENTENCE_NT'the pronoun reference object variable translates into inter '
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: translates-into-i6}
                                 UNPARSED_NOUN_NT'pronoun reference object variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'pronoun_obj'

@@ -455,7 +455,7 @@ The following picks up any verb which can be used in an SVO sentence and
 which has a meaning.
 
 =
-<meaningful-nonimperative-verb> internal ? {
+<nonimperative-verb> internal ? {
 	verb_usage *vu;
 	LOOP_OVER_USAGES(vu) {
 		verb *vi = VerbUsages::get_verb(vu);
@@ -670,7 +670,7 @@ or "the verb to be able to see" use these.
 
 =
 void VerbUsages::mark_as_verb(vocabulary_entry *ve) {
-	NTI::mark_vocabulary(ve, <meaningful-nonimperative-verb>);
+	NTI::mark_vocabulary(ve, <nonimperative-verb>);
 	NTI::mark_vocabulary(ve, <copular-verb>);
 	NTI::mark_vocabulary(ve, <negated-noncopular-verb-present>);
 	NTI::mark_vocabulary(ve, <universal-verb>);
@@ -679,7 +679,7 @@ void VerbUsages::mark_as_verb(vocabulary_entry *ve) {
 }
 
 void VerbUsages::preform_optimiser(void) {
-	NTI::first_word_in_match_must_have_my_NTI_bit(<meaningful-nonimperative-verb>);
+	NTI::first_word_in_match_must_have_my_NTI_bit(<nonimperative-verb>);
 	NTI::first_word_in_match_must_have_my_NTI_bit(<copular-verb>);
 	NTI::first_word_in_match_must_have_my_NTI_bit(<negated-noncopular-verb-present>);
 	NTI::first_word_in_match_must_have_my_NTI_bit(<universal-verb>);
@@ -692,7 +692,9 @@ void VerbUsages::preform_optimiser(void) {
 =
 int VerbUsages::adaptive_person(NATURAL_LANGUAGE_WORDS_TYPE *X) {
 	#ifdef ADAPTIVE_PERSON_LINGUISTICS_CALLBACK
-	return ADAPTIVE_PERSON_LINGUISTICS_CALLBACK(X);
+	int N = ADAPTIVE_PERSON_LINGUISTICS_CALLBACK(X);
+	if (N >= 0) return N;
+	return FIRST_PERSON;
 	#endif
 	#ifndef ADAPTIVE_PERSON_LINGUISTICS_CALLBACK
 	return FIRST_PERSON;
@@ -700,7 +702,9 @@ int VerbUsages::adaptive_person(NATURAL_LANGUAGE_WORDS_TYPE *X) {
 }
 int VerbUsages::adaptive_number(NATURAL_LANGUAGE_WORDS_TYPE *X) {
 	#ifdef ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK
-	return ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK(X);
+	int N = ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK(X);
+	if (N >= 0) return N;
+	return PLURAL_NUMBER;
 	#endif
 	#ifndef ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK
 	return PLURAL_NUMBER;

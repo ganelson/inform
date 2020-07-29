@@ -210,6 +210,8 @@ int UseOptions::use_SMF(int task, parse_node *V, wording *NPs) {
 			<np-articled-list>(OW);
 			V->next = <<rp>>;
 			return TRUE;
+		case ALLOW_IN_OPTIONS_FILE_SMFT:
+			return TRUE;
 		case TRAVERSE1_SMFT:
 		case TRAVERSE2_SMFT:
 			UseOptions::set_use_options(V->next);

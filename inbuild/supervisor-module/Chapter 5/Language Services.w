@@ -163,3 +163,18 @@ inform_language *Languages::find_for(text_stream *name, linked_list *search) {
 	if (R) return LanguageManager::from_copy(R->copy);
 	return NULL;
 }
+
+@ Finally, the following Preform nonterminal matches the English-language
+name of a language: for example, "French". Unlike the above functions, it
+looks only at languages already loaded, and doesn't scan nests for more.
+
+=
+<natural-language> internal {
+	inform_language *L;
+	LOOP_OVER(L, inform_language)
+		if (Wordings::match(W, Wordings::first_word(L->instance_name))) {
+			==> { -, L };
+			return TRUE;
+		}
+	==> { fail };
+}

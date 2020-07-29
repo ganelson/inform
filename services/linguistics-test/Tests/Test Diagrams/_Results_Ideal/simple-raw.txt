@@ -1,4 +1,4 @@
-linguistics-test: sentence failed to parse
+linguistics-test: sentence has no primary verb
 (1) arfle barfle gloop
 
 SENTENCE_NT'arfle barfle gloop'

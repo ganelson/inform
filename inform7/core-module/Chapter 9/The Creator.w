@@ -1064,3 +1064,23 @@ int Assertions::Creator::vet_name_for_noun(wording W) {
 	}
 	return TRUE;
 }
+
+@h The natural language kind.
+Inform has a kind built in called "natural language", whose values are
+enumerated names: English language, French language, German language and so on.
+When the kind is created, the following routine makes these instances. We do
+this exactly as we would to create any other instance -- we write a logical
+proposition claiming its existence, then assert it to be true.
+
+@d NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK Assertions::Creator::stock_nl_kind
+
+=
+void Assertions::Creator::stock_nl_kind(kind *K) {
+	inform_language *L;
+	LOOP_OVER(L, inform_language) {
+		pcalc_prop *prop =
+			Calculus::Propositions::Abstract::to_create_something(K, L->instance_name);
+		Calculus::Propositions::Assert::assert_true(prop, CERTAIN_CE);
+		L->nl_instance = latest_instance;
+	}
+}

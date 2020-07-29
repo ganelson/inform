@@ -242,7 +242,7 @@ void Problems::Using::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS,
 		if ((i != Wordings::first_wn(Node::get_text(current_sentence->down))) &&
 			(Word::unexpectedly_upper_case(i) == FALSE)) {
 			wording W = Wordings::from(Node::get_text(current_sentence), i);
-			int j = <meaningful-nonimperative-verb>(W);
+			int j = <nonimperative-verb>(W);
 			if (j > 0) RTW = Wordings::new(i, j);
 		}
 	Problems::quote_source(1, current_sentence);

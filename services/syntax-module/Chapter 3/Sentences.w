@@ -354,7 +354,6 @@ is declared as if it were a super-heading in the text.
 	if (Lexer::file_of_origin(Wordings::first_wn(W)) != sfsm->sf) {
 		parse_node *implicit_heading = Node::new(HEADING_NT);
 		Node::set_text(implicit_heading, W);
-		Annotations::write_int(implicit_heading, sentence_unparsed_ANNOT, FALSE);
 		Annotations::write_int(implicit_heading, heading_level_ANNOT, 0);
 		SyntaxTree::graft_sentence(T, implicit_heading);
 		#ifdef NEW_HEADING_SYNTAX_CALLBACK
@@ -423,7 +422,6 @@ in Headings to determine whether we should include the material.
 @<Make a new HEADING node, possibly beginning to skip material@> =
 	new = Node::new(HEADING_NT);
 	Node::set_text(new, W);
-	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
 	Annotations::write_int(new, heading_level_ANNOT, heading_level);
 	SyntaxTree::graft_sentence(T, new);
 	#ifdef NEW_HEADING_SYNTAX_CALLBACK
@@ -518,7 +516,6 @@ sentences and options-file sentences may have been read already.)
 	@<Convert a begins here or ends here sentence to a BEGINHERE or ENDHERE node and return@>;
 
 	/* none of that happened, so we have a SENTENCE node for certain */
-	Annotations::write_int(new, sentence_unparsed_ANNOT, TRUE);
 	#ifdef NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK
 	NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK(new);
 	#endif
@@ -576,7 +573,6 @@ commonest outcome is a SENTENCE node, so that's what we shall assume for now.
 @<Otherwise, make a SENTENCE node@> =
 	new = Node::new(SENTENCE_NT);
 	Node::set_text(new, W);
-	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
 	SyntaxTree::graft_sentence(T, new);
 
 @ Rules are sequences of phrases with a preamble in front, which we detect by
@@ -671,7 +667,6 @@ it would be too late.
 	LANGUAGE_ELEMENT_SYNTAX_CALLBACK(GET_RW(<language-modifying-sentence>, 1));
 	#endif
 	Annotations::write_int(new, language_element_ANNOT, TRUE);
-	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
 
 @ And for similar reasons:
 
@@ -682,7 +677,6 @@ it would be too late.
 	WRITE_TO(wd, "%+W", Wordings::one_word(Wordings::first_wn(W)));
 	LoadPreform::parse_text(wd);
 	DISCARD_TEXT(wd)
-	Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem

@@ -210,7 +210,7 @@ int CoreMain::read_command_line(int argc, char *argv[]) {
 	int proceed = CommandLine::read(argc, argv, NULL, &CoreMain::switch, &CoreMain::bareword);
 	if (proceed) {
 		path_to_inform7 = Pathnames::installation_path("INFORM7_PATH", I"inform7");
-		Supervisor::optioneering_complete(NULL, TRUE, &Semantics::read_preform);
+		Supervisor::optioneering_complete(NULL, TRUE, &CorePreform::load);
 	}
 	return proceed;
 }

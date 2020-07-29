@@ -74,6 +74,9 @@ blorb_sound *PL::Sounds::new_blorb_sound(instance *nc) {
 <new-sound-sentence-object-unarticled> ::=
 	file <np-unparsed>												==> { TRUE, RP[1] }
 
+<nounphrase-sound> ::=
+	sound ...							==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
+
 @ =
 int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;

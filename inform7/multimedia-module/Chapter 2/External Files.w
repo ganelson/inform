@@ -129,6 +129,9 @@ letters or digits, with the first being a letter.
 <new-file-sentence-object-unarticled> ::=
 	called <np-unparsed>                                          ==> { TRUE, RP[1] }
 
+<nounphrase-external-file> ::=
+	<external-file-sentence-subject>    ==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
+
 @ =
 int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;

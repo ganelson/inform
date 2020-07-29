@@ -31,6 +31,7 @@ exception to Inform's normal rules.)
 @e TRAVERSE_FOR_MAP1_SMFT
 @e TRAVERSE_FOR_MAP2_SMFT
 @e TRAVERSE_FOR_MAP_INDEX_SMFT
+@e ALLOW_IN_OPTIONS_FILE_SMFT
 
 = (early code)
 int traverse; /* always 1 or 2 */
@@ -67,7 +68,6 @@ typedef struct sentence_handler {
 
 =
 sentence_handler *how_to_handle_nodes[MAX_OF_NTS_AND_VBS]; /* for non-|SENTENCE_NT| nodes */
-sentence_handler *how_to_handle_sentences[MAX_OF_NTS_AND_VBS]; /* for |SENTENCE_NT| nodes */
 
 @ We recognise either node types |*_NT|, or node type |SENTENCE_NT| plus an
 associated verb number |*_VB|. The following macro registers a sentence handler
@@ -75,9 +75,6 @@ by entering a pointer to it into one of the above tables:
 
 @d REGISTER_SENTENCE_HANDLER(sh_name) {
 	sentence_handler *the_sh = &sh_name##_handler;
-	if ((the_sh->sentence_node_type == SENTENCE_NT) && (the_sh->verb_type != -1))
-		how_to_handle_sentences[the_sh->verb_type] = the_sh;
-	else
 		how_to_handle_nodes[the_sh->sentence_node_type - ENUMERATED_NT_BASE] = the_sh;
 }
 
@@ -177,10 +174,7 @@ handlers until right at the end of the program. The routine which does so,
 14.
 
 @<Empty the sentence handler tables@> =
-	for (int i=0; i<MAX_OF_NTS_AND_VBS; i++) {
-		how_to_handle_nodes[i] = NULL;
-		how_to_handle_sentences[i] = NULL;
-	}
+	for (int i=0; i<MAX_OF_NTS_AND_VBS; i++) how_to_handle_nodes[i] = NULL;
 
 @<Take a sceptical look at WITH nodes in the light of subsequent knowledge@> =
 	if ((p->down) && (p->down->next)) {
@@ -263,6 +257,11 @@ refers on to other sentence handlers accordingly:
 sentence_handler SENTENCE_SH_handler =
 	{ SENTENCE_NT, -1, 0, Assertions::Traverse::handle_sentence_with_primary_verb };
 
+int Assertions::Traverse::special(parse_node *p) {
+	if (Node::get_special_meaning(p)) return TRUE;
+	return FALSE;
+}
+
 void Assertions::Traverse::handle_sentence_with_primary_verb(parse_node *p) {
 	prevailing_mood = UNKNOWN_CE;
 	if (Annotations::read_int(p, language_element_ANNOT)) return;
@@ -281,13 +280,11 @@ the description or initial appearance of the most recent object, but in all
 other eventualities we must produce a "no such sentence" problem.
 
 @<Handle a sentence with no primary verb@> =
-	if ((Wordings::length(Node::get_text(p)) == 1) &&
-		(Vocabulary::test_flags(Wordings::first_wn(Node::get_text(p)), TEXT_MC+TEXTWITHSUBS_MC))) {
+	if (Classifying::sentence_is_textual(p)) {
 		if (traverse == 2) Assertions::Traverse::set_appearance(Wordings::first_wn(Node::get_text(p)));
 		return;
 	}
-	<no-verb-diagnosis>(Node::get_text(p));
-	return;
+	internal_error("sentence unclassified");
 
 @ We now use the other sentence-handler table, with almost the same code as
 for the first (above). A small point of difference is that it's allowed for
@@ -295,19 +292,8 @@ a valid verb number to have no handler: if so, we handle the verb by doing
 nothing on either traverse, of course.
 
 @<Act on the primary verb in the sentence@> =
-	int vn = ASSERT_VB;
-	if (Sentences::VPs::special(p->down)) vn = SPECIAL_MEANING_VB;
-	
-	if ((vn < 0) || (vn >= MAX_OF_NTS_AND_VBS)) {
-		LOG("Unimplemented verb\n");
-		internal_error_on_node_type(p->down);
-	}
-	if (how_to_handle_sentences[vn]) {
-		int desired = how_to_handle_sentences[vn]->handle_on_traverse;
-		if (((traverse == desired) || (desired == 0)) &&
-			(how_to_handle_sentences[vn]->handling_routine))
-			(*(how_to_handle_sentences[vn]->handling_routine))(p);
-	}
+	if (Assertions::Traverse::special(p->down)) Assertions::Traverse::special_meaning(p);
+	else Assertions::Copular::assertion(p);
 
 @ During early beta-testing, the problem message for "I can't find a verb"
 split into cases. Inform is quite sensitive to punctuation errors as between
@@ -316,51 +302,6 @@ to bite.
 
 =
 <no-verb-diagnosis> ::=
-	before/every/after/when/instead/check/carry/report ... | ==> @<Issue PM_RuleWithoutColon problem@>
-	if ... |												 ==> @<Issue PM_IfOutsidePhrase problem@>
-	... , ... |												 ==> @<Issue PM_NoSuchVerbComma problem@>
-	...														 ==> @<Issue PM_NoSuchVerb problem@>
-
-@<Issue PM_RuleWithoutColon problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RuleWithoutColon),
-		"I can't find a verb that I know how to deal with, so can't do anything "
-		"with this sentence. It looks as if it might be a rule definition",
-		"but if so then it is lacking the necessary colon (or comma). "
-		"The punctuation style for rules is 'Rule conditions: do this; "
-		"do that; do some more.' Perhaps you used a full stop instead "
-		"of the colon?");
-
-@<Issue PM_IfOutsidePhrase problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_IfOutsidePhrase),
-		"I can't find a verb that I know how to deal with. This looks like an 'if' "
-		"phrase which has slipped its moorings",
-		"so I am ignoring it. ('If' phrases, like all other such "
-		"instructions, belong inside definitions of rules or phrases - "
-		"not as sentences which have no context. Maybe a full stop or a "
-		"skipped line was accidentally used instead of semicolon, so that you "
-		"inadvertently ended the last rule early?)");
-
-@<Issue PM_NoSuchVerbComma problem@> =
-	Problems::quote_source(1, current_sentence);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchVerbComma));
-	Problems::issue_problem_segment(
-		"In the sentence %1, I can't find a verb that I know how to deal with. "
-		"(I notice there's a comma here, which is sometimes used to abbreviate "
-		"rules which would normally be written with a colon - for instance, "
-		"'Before taking: say \"You draw breath.\"' can be abbreviated to 'Before "
-		"taking, say...' - but that's only allowed for Before, Instead and "
-		"After rules. I mention all this in case you meant this sentence "
-		"as a rule in some rulebook, but used a comma where there should "
-		"have been a colon ':'?)");
-	Problems::issue_problem_end();
-
-@<Issue PM_NoSuchVerb problem@> =
-	LOG("$T\n", current_sentence);
-	Problems::quote_source(1, current_sentence);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchVerb));
-	Problems::issue_problem_segment(
-		"In the sentence %1, I can't find a verb that I know how to deal with.");
-	Problems::issue_problem_end();
 
 @ Inform source text does not make much use of parentheses to group subexpressions,
 but the ability does exist, and we defend it a little here:
@@ -538,15 +479,12 @@ void Assertions::Traverse::subject_of_discussion_a_list(void) {
 }
 
 @ =
-sentence_handler SPECIAL_MEANING_SH_handler =
-	{ SENTENCE_NT, SPECIAL_MEANING_VB, 0, Assertions::Traverse::special_meaning };
-
 void Assertions::Traverse::special_meaning(parse_node *pn) {
 	Assertions::Traverse::try_special_meaning(traverse, pn->down);
 }
 
 void Assertions::Traverse::try_special_meaning(int task, parse_node *pn) {
-	if (Sentences::VPs::special(pn)) {
+	if (Assertions::Traverse::special(pn)) {
 		special_meaning_holder *sm = Node::get_special_meaning(pn);
 		if (sm) SpecialMeanings::call(sm, task, pn, NULL);
 	}

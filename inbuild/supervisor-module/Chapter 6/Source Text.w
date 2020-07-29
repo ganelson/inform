@@ -148,40 +148,6 @@ add to those generated in //syntax//.
 @e ExtInadequateVM_SYNERROR
 @e ExtMisidentifiedEnds_SYNERROR
 
-@ The //inform7// compiler will eventually make a much more detailed syntax
-tree, extending the one we make here: but we will basically just break the
-text into sentences, arrange those under headings, and take action on just a
-few so-called "structural sentences" which have to be dealt with early on.
-
-//syntax// allows us to create a callback function which will be called
-whenever a new sentence is made. What we use it for reflects that fact that
-the vast bulk of the source text is read by //supervisor// early in a run of
-//inform7//, with just a few sentences ("inventions") added later. The bulk
-part is parsed collectively, but the later inventions have to be marked as
-needing to be parsed one by one. So, when //supervisor// has definitely
-finished loading the bulk in, it calls:
-
-=
-int bulk_of_source_loaded = FALSE;
-void SourceText::bulk_of_source_loaded(void) {
-	bulk_of_source_loaded = TRUE;
-}
-
-@ And here is the callback function. It's only ever needed for //inform7//,
-not for //inbuild//, which isn't in the inventions business.
-
-@d NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK SourceText::annotate_new_sentence
-
-=
-void SourceText::annotate_new_sentence(parse_node *new) {
-	if (bulk_of_source_loaded) {
-		Annotations::write_int(new, sentence_unparsed_ANNOT, FALSE);
-		#ifdef CORE_MODULE
-		Sentences::VPs::seek(new);
-		#endif
-	}
-}
-
 @ The next tweak to //syntax// is to give it some node metadata. //syntax//
 itself places nodes of a small number of basic types into the syntax tree;
 we want to expand on those. (And the //core// module will expand on them still

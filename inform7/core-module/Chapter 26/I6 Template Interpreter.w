@@ -283,23 +283,16 @@ time.) |{-index:name}| opens the index file called |name|.
 		continue;
 	}
 
-@h Template errors.
-Errors here used to be basically failed assertions, but inevitably people
-reported this as a bug (0001596). It was never intended that I6T coding
-be part of the outside-facing language, but for a handful of people
-using template-hacking there are a handful of cases that can't be avoided, so...
+@h Indexing.
+And so, finally, the following triggers the indexing process.
 
 =
-void I6T::error(char *message) {
-	Problems::quote_text(1, message);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
-	Problems::issue_problem_segment(
-		"I ran into a mistake in a template file command: %1. The I6 "
-		"template files (or .i6t files) are a very low-level part of Inform, "
-		"and errors like this will only occur if the standard installation "
-		"has been amended or damaged. One possibility is that you're using "
-		"an extension which does some 'template hacking', as it's called, "
-		"but made a mistake doing so.");
-	Problems::issue_problem_end();
+void I6T::produce_index(void) {
+	inform_project *project = Task::project();
+	I6T::interpret_indext(
+		Filenames::in(
+			Languages::path_to_bundle(
+				Projects::get_language_of_index(project)),
+			Projects::index_structure(project)));
 }
 

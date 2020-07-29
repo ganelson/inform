@@ -183,7 +183,6 @@ void ParseTreeUsage::write_permissions(void) {
 
 	Annotations::allow_for_category(L2_NCAT, clears_pronouns_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, interpretation_of_subject_ANNOT);
-	Annotations::allow_for_category(L2_NCAT, sentence_unparsed_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, verb_problem_issued_ANNOT);
 	Annotations::allow(RULE_NT, indentation_level_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicit_in_creation_of_ANNOT);
@@ -202,10 +201,8 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(ADJECTIVE_NT, aph_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, negated_boolean_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, article_ANNOT);
-	Annotations::allow(VERB_NT, log_inclusion_sense_ANNOT);
-	Annotations::allow(VERB_NT, imperative_ANNOT);
 	Annotations::allow(VERB_NT, examine_for_ofs_ANNOT);
-	Annotations::allow(VERB_NT, listing_sense_ANNOT);
+	Annotations::allow(VERB_NT, rule_placement_sense_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, creation_site_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, multiplicity_ANNOT);
@@ -216,7 +213,6 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, creation_site_ANNOT);
 	Annotations::allow(UNPARSED_NOUN_NT, defn_language_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, defn_language_ANNOT);
-	Annotations::allow(PROPER_NOUN_NT, log_inclusion_sense_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, lpe_options_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, multiplicity_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, negated_boolean_ANNOT);
@@ -249,10 +245,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow_for_category(L4_NCAT, verb_problem_issued_ANNOT);
 	Annotations::allow_for_category(L4_NCAT, problem_falls_under_ANNOT);
 	Annotations::allow_for_category(L4_NCAT, module_ANNOT);
-	Annotations::allow(CODE_BLOCK_NT, sentence_unparsed_ANNOT);
 	Annotations::allow(INVOCATION_LIST_NT, from_text_substitution_ANNOT);
-	Annotations::allow(INVOCATION_LIST_NT, sentence_unparsed_ANNOT);
-	Annotations::allow(INVOCATION_LIST_SAY_NT, sentence_unparsed_ANNOT);
 	Annotations::allow(INVOCATION_LIST_SAY_NT, suppress_newlines_ANNOT);
 	Annotations::allow(INVOCATION_NT, epistemological_status_ANNOT);
 	Annotations::allow(INVOCATION_NT, kind_resulting_ANNOT);
@@ -487,8 +480,3 @@ void ParseTreeUsage::verify(void) {
 	VerifyTree::verify_integrity(Task::syntax_tree());
 	VerifyTree::verify_structure(Task::syntax_tree());
 }
-
-@
-
-@d PARSE_TREE_TRAVERSE_TYPE instance
-

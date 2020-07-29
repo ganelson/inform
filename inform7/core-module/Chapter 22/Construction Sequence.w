@@ -238,7 +238,7 @@ void Phrases::Manager::visit_to_parse_placements(parse_node *p) {
 		(Node::get_type(p->down) == VERB_NT)) {
 		prevailing_mood =
 			Annotations::read_int(p->down, verbal_certainty_ANNOT);
-		if (Sentences::VPs::special(p->down))
+		if (Assertions::Traverse::special(p->down))
 			Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_RULE_FILING_SMFT, p->down);
 	}
 }

@@ -220,7 +220,6 @@ COMPILE_WRITER(phrase *, Phrases::log)
 COMPILE_WRITER(unary_predicate *, UnaryPredicates::log)
 COMPILE_WRITER(ph_usage_data *, Phrases::Usage::log)
 COMPILE_WRITER(kind *, Kinds::Textual::log)
-COMPILE_WRITER_I(int, Sentences::VPs::log)
 COMPILE_WRITER(property *, Properties::log)
 COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
 COMPILE_WRITER(noun *, Nouns::log)
@@ -233,6 +232,7 @@ void CoreModule::start(void) {
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
+	CorePreform::set_core_internal_NTIs();
 }
 void CoreModule::end(void) {
 }
@@ -385,7 +385,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	REGISTER_WRITER('r', UnaryPredicates::log);
 	REGISTER_WRITER('U', Phrases::Usage::log);
 	REGISTER_WRITER('u', Kinds::Textual::log);
-	REGISTER_WRITER_I('V', Sentences::VPs::log)
 	REGISTER_WRITER('Y', Properties::log);
 	REGISTER_WRITER('Z', NonlocalVariables::log);
 	REGISTER_WRITER('z', Nouns::log);
@@ -450,7 +449,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e grammar_token_literal_ANNOT /* int: for grammar tokens which are literal words */
 @e grammar_token_relation_ANNOT /* |binary_predicate|: for relation tokens */
 @e grammar_value_ANNOT /* |parse_node|: used as a marker when evaluating Understand grammar */
-@e imperative_ANNOT /* |int|: marking definitions of imperative verbs */
 @e implicit_in_creation_of_ANNOT /* |inference_subject|: for assemblies */
 @e implicitness_count_ANNOT /* int: keeping track of recursive assemblies */
 @e indentation_level_ANNOT /* |int|: for routines written with Pythonesque indentation */
@@ -461,8 +459,7 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e kind_required_by_context_ANNOT /* |kind|: what if anything is expected here */
 @e kind_resulting_ANNOT /* |kind|: what if anything is returned */
 @e kind_variable_declarations_ANNOT /* |kind_variable_declaration|: and of these */
-@e listing_sense_ANNOT /* |int|: are we listing a rule into something, or out of it? */
-@e log_inclusion_sense_ANNOT /* |int|: should we include or exclude this from the debugging log? */
+@e rule_placement_sense_ANNOT /* |int|: are we listing a rule into something, or out of it? */
 @e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
 @e modal_verb_ANNOT /* |verb_conjugation|: relevant only for that: e.g., "might" */
 @e module_ANNOT /* |compilation_module|: set only for headings, routines and sentences */

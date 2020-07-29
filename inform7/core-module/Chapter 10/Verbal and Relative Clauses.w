@@ -86,8 +86,8 @@ handle its extra object: see below.
 =
 <s-general-verb-tail> ::=
 	<universal-verb> <s-universal-relation-term> |                             ==> { -, ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
-	<meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, ExParser::Subtrees::verb_marker(RP[1], RP[2], RP[3]) }
-	<meaningful-nonimperative-verb> <s-noun-phrase>                            ==> { -, ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
+	<nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, ExParser::Subtrees::verb_marker(RP[1], RP[2], RP[3]) }
+	<nonimperative-verb> <s-noun-phrase>                            ==> { -, ExParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
 
 @ The verb marker is a temporary node used just to store the verb or preposition
 usage; it's attached to the tree only briefly before sentence conversion
@@ -144,9 +144,9 @@ relevant noun subtree with a representation of the player-object for those.
 	not <copular-preposition> <s-noun-phrase-nounless>  ==> { -, ExParser::Subtrees::verb_marker(negated_to_be, RP[1], RP[2]) }
 
 <s-relative-verb-tail> ::=
-	<relative-clause-marker> <universal-verb> <s-universal-relation-term> |                             ==> { -, ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3]) }
-	<relative-clause-marker> <meaningful-nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, ExParser::Subtrees::verb_marker(RP[2], RP[3], RP[4]) }
-	<relative-clause-marker> <meaningful-nonimperative-verb> <s-noun-phrase> 							==> { -, ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3]) }
+	<rc-marker> <universal-verb> <s-universal-relation-term> |                  ==> { -, ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3]) }
+	<rc-marker> <nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, ExParser::Subtrees::verb_marker(RP[2], RP[3], RP[4]) }
+	<rc-marker> <nonimperative-verb> <s-noun-phrase>                            ==> { -, ExParser::Subtrees::verb_marker(RP[2], NULL, RP[3]) }
 
 @<Make SN@> =
 	LOGIF(MATCHING, "So uncorrectedly RP[1] = $T\n", RP[1]);

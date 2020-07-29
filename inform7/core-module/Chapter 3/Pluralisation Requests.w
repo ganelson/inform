@@ -1,29 +1,31 @@
-[Plurals::] Plural Dictionary.
+[Plurals::] Pluralisation Requests.
 
-To parse sentences like "The plural of woman is women".
+Special sentences for setting exotic plural forms of nouns.
 
-@h Stocking the plurals dictionary.
-The user gives us plurals with special sentences, whose subject is like so:
+@ Sentences like "the plural of cherub is cherubim" are hardly needed now,
+because the //inflections// module now contains a full implementation of
+Conway's algorithm. Still, we keep the syntax around, and it may one day be
+useful again for languages other than English.
+
+The subject phrase must match:
 
 =
 <plural-sentence-subject> ::=
-	<article> plural of <np-articled> |    ==> { TRUE, RP[2] }
-	plural of <np-articled>							==> { TRUE, RP[1] }
+	<article> plural of <np-articled> |  ==> { pass 2 }
+	plural of <np-articled>              ==> { pass 1 }
 
-@ We take immediate action on parsing the sentence, and after that ignore it
-as having been dealt with.
+@ Note that we are saved later grief by not allowing a plural form which
+would be illegal as a new noun: allowing "The plural of thing is ," would not
+end well.
 
-Note that we are entirely allowed to register a new plural for a phrase
-which already has a plural in the dictionary, which is why we do not
-trouble to search the existing dictionary here.
+Otherwise, though, we simply send the request to //inflections: Pluralisation//.
 
 =
 int Plurals::plural_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
-	switch (task) { /* "The plural of woman is women." */
+	switch (task) { /* "The plural of seraph is seraphim." */
 		case ACCEPT_SMFT:
-			FSW = SW; FOW = OW;
 			if (<plural-sentence-subject>(SW)) {
 				V->next = <<rp>>;
 				<np-unparsed>(OW);
@@ -45,8 +47,9 @@ text anyway, so the following problem messages are not too gratuitous.
 
 @<Forbid plural declarations containing quoted text@> =
 	LOOP_THROUGH_WORDING(i, S)
-		if (Vocabulary::test_flags(i, TEXT_MC+TEXTWITHSUBS_MC)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PluralOfQuoted),
+		if (Vocabulary::test_flags(i, TEXT_MC + TEXTWITHSUBS_MC)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_PluralOfQuoted),
 				"declares a plural for a phrase containing quoted text",
 				"which is forbidden. Sentences like this are supposed to "
 				"declare plurals without quotation marks: for instance, "
@@ -54,8 +57,9 @@ text anyway, so the following problem messages are not too gratuitous.
 			return TRUE;
 		}
 	LOOP_THROUGH_WORDING(i, P)
-		if (Vocabulary::test_flags(i, TEXT_MC+TEXTWITHSUBS_MC)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PluralIsQuoted),
+		if (Vocabulary::test_flags(i, TEXT_MC + TEXTWITHSUBS_MC)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_PluralIsQuoted),
 				"declares a plural for a phrase using quoted text",
 				"which is forbidden. Sentences like this are supposed to "
 				"declare plurals without quotation marks: for instance, "

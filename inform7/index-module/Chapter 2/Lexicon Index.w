@@ -209,7 +209,7 @@ on. (Sometimes these will also be listed separately with an adjectival sense.)
 		"indefinite article", NULL);
 	PreformUtilities::enter_lexicon(<definite-article>, MISCELLANEOUS_LEXE,
 		"definite article", NULL);
-	PreformUtilities::enter_lexicon(<relative-clause-marker>, MISCELLANEOUS_LEXE,
+	PreformUtilities::enter_lexicon(<rc-marker>, MISCELLANEOUS_LEXE,
 		"connective",
 		"used to place a further condition on a description: like 'which' in "
 		"'A which is B', or 'A which carries B', for instance.");

@@ -410,8 +410,8 @@ Down has opposite up. Understand "d" as down.
 Inside has opposite outside. Understand "in" as inside.
 Outside has opposite inside. Understand "out" as outside.
 
-The inside object translates into I6 as "in_obj".
-The outside object translates into I6 as "out_obj".
+The inside object translates into Inter as "in_obj".
+The outside object translates into Inter as "out_obj".
 
 The verb to be above means the reversed mapping up relation.
 The verb to be mapped above means the reversed mapping up relation.
@@ -471,7 +471,7 @@ the relation data is stored at run-time.
 
 =
 A door has an object called other side.
-The other side property translates into I6 as "door_to".
+The other side property translates into Inter as "door_to".
 Leading-through relates one room (called the other side) to various doors.
 The verb to be through means the leading-through relation.
 
@@ -699,7 +699,7 @@ Understand "your former self" or "my former self" or "former self" or
 
 The description of yourself is usually "As good-looking as ever."
 
-The yourself object translates into I6 as "selfobj".
+The yourself object translates into Inter as "selfobj".
 
 @h Non-fundamental kinds.
 We have now finished defining the nine fundamental kinds which Inform requires
@@ -929,39 +929,39 @@ this sort of reuse seemed sensible in the early 1990s, especially as the
 meanings were basically similar.
 
 =
-Section 16 - Inform 6 equivalents
+Section 16 - Inter identifier equivalents
 
-The wearable property translates into I6 as "clothing".
-The undescribed property translates into I6 as "concealed".
-The edible property translates into I6 as "edible".
-The enterable property translates into I6 as "enterable".
-The female property translates into I6 as "female".
-The mentioned property translates into I6 as "mentioned".
-The lit property translates into I6 as "light".
-The lighted property translates into I6 as "light".
-The lockable property translates into I6 as "lockable".
-The locked property translates into I6 as "locked".
-The handled property translates into I6 as "moved".
-The neuter property translates into I6 as "neuter".
-The switched on property translates into I6 as "on".
-The open property translates into I6 as "open".
-The openable property translates into I6 as "openable".
-The privately-named property translates into I6 as "privately_named".
-The pushable between rooms property translates into I6 as "pushable".
-The scenery property translates into I6 as "scenery".
-The fixed in place property translates into I6 as "static".
-The transparent property translates into I6 as "transparent".
-The visited property translates into I6 as "visited".
-The marked for listing property translates into I6 as "workflag".
-The list grouping key property translates into I6 as "list_together".
+The wearable property translates into Inter as "clothing".
+The undescribed property translates into Inter as "concealed".
+The edible property translates into Inter as "edible".
+The enterable property translates into Inter as "enterable".
+The female property translates into Inter as "female".
+The mentioned property translates into Inter as "mentioned".
+The lit property translates into Inter as "light".
+The lighted property translates into Inter as "light".
+The lockable property translates into Inter as "lockable".
+The locked property translates into Inter as "locked".
+The handled property translates into Inter as "moved".
+The neuter property translates into Inter as "neuter".
+The switched on property translates into Inter as "on".
+The open property translates into Inter as "open".
+The openable property translates into Inter as "openable".
+The privately-named property translates into Inter as "privately_named".
+The pushable between rooms property translates into Inter as "pushable".
+The scenery property translates into Inter as "scenery".
+The fixed in place property translates into Inter as "static".
+The transparent property translates into Inter as "transparent".
+The visited property translates into Inter as "visited".
+The marked for listing property translates into Inter as "workflag".
+The list grouping key property translates into Inter as "list_together".
 
 @ Second, the I7 value properties mapping onto I6 properties. Again,
 |map_region| is a new I6 property of our own, while the rest are I6 staples.
 And see also "other side", which is translated above for timing reasons.
 
 =
-The carrying capacity property translates into I6 as "capacity".
-The description property translates into I6 as "description".
-The initial appearance property translates into I6 as "initial".
-The map region property translates into I6 as "map_region".
-The matching key property translates into I6 as "with_key".
+The carrying capacity property translates into Inter as "capacity".
+The description property translates into Inter as "description".
+The initial appearance property translates into Inter as "initial".
+The map region property translates into Inter as "map_region".
+The matching key property translates into Inter as "with_key".

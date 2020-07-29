@@ -36,7 +36,7 @@ To win is a verb.
 Section 2 - Standard actions concerning the actor's possessions
 
 Taking inventory is an action applying to nothing.
-The taking inventory action translates into I6 as "Inv".
+The taking inventory action translates into Inter as "Inv".
 
 The specification of the taking inventory action is "Taking an inventory of
 one's immediate possessions: the things being carried, either directly or in
@@ -80,7 +80,7 @@ Report an actor taking inventory (this is the report other people taking
 
 =
 Taking is an action applying to one thing.
-The taking action translates into I6 as "Take".
+The taking action translates into Inter as "Take".
 
 The specification of the taking action is "The taking action is the only way
 an action in the Standard Rules can cause something to be carried by an actor.
@@ -205,7 +205,7 @@ Report an actor taking (this is the standard report taking rule):
 
 =
 Removing it from is an action applying to two things.
-The removing it from action translates into I6 as "Remove".
+The removing it from action translates into Inter as "Remove".
 
 The specification of the removing it from action is "Removing is not really
 an action in its own right. Whereas there are many ways to put something down
@@ -245,7 +245,7 @@ inside rule in the check removing it from rules.
 
 =
 Dropping is an action applying to one thing.
-The dropping action translates into I6 as "Drop".
+The dropping action translates into Inter as "Drop".
 
 The specification of the dropping action is "Dropping is one of five actions
 by which an actor can get rid of something carried: the others are inserting
@@ -333,7 +333,7 @@ Report an actor dropping (this is the standard report dropping rule):
 
 =
 Putting it on is an action applying to two things.
-The putting it on action translates into I6 as "PutOn".
+The putting it on action translates into Inter as "PutOn".
 
 The specification of the putting it on action is "By this action, an actor puts
 something he is holding on top of a supporter: for instance, putting an apple
@@ -408,7 +408,7 @@ Report an actor putting something on (this is the standard report putting rule):
 
 =
 Inserting it into is an action applying to two things.
-The inserting it into action translates into I6 as "Insert".
+The inserting it into action translates into Inter as "Insert".
 
 The specification of the inserting it into action is "By this action, an actor puts
 something he is holding into a container: for instance, putting a coin into a
@@ -492,7 +492,7 @@ Report an actor inserting something into (this is the standard report inserting 
 
 =
 Eating is an action applying to one thing.
-The eating action translates into I6 as "Eat".
+The eating action translates into Inter as "Eat".
 
 The specification of the eating action is "Eating is the only one of the
 built-in actions which can, in effect, destroy something: the carry out
@@ -555,7 +555,7 @@ Report an actor eating (this is the standard report eating rule):
 Section 3 - Standard actions which move the actor
 
 Going is an action applying to one visible thing.
-The going action translates into I6 as "Go".
+The going action translates into Inter as "Go".
 
 The specification of the going action is "This is the action which allows people
 to move from one room to another, using whatever map connections and doors are
@@ -738,7 +738,7 @@ Report an actor going (this is the describe room gone into rule):
 
 =
 Entering is an action applying to one thing.
-The entering action translates into I6 as "Enter".
+The entering action translates into Inter as "Enter".
 
 The specification of the entering action is "Whereas the going action allows
 people to move from one location to another in the model world, the entering
@@ -886,7 +886,7 @@ Report an actor entering (this is the describe contents entered into rule):
 
 =
 Exiting is an action applying to nothing.
-The exiting action translates into I6 as "Exit".
+The exiting action translates into Inter as "Exit".
 The exiting action has an object called the container exited from (matched as "from").
 
 The specification of the exiting action is "Whereas the going action allows
@@ -960,7 +960,7 @@ Report an actor exiting (this is the describe room emerged into rule):
 
 =
 Getting off is an action applying to one thing.
-The getting off action translates into I6 as "GetOff".
+The getting off action translates into Inter as "GetOff".
 
 The specification of the getting off action is "The getting off action is for
 actors who are currently on top of a supporter: perhaps standing on a platform,
@@ -1004,7 +1004,7 @@ Report an actor getting off (this is the describe room stood up into rule):
 Section 4 - Standard actions concerning the actor's vision
 
 Looking is an action applying to nothing.
-The looking action translates into I6 as "Look".
+The looking action translates into Inter as "Look".
 
 The specification of the looking action is "The looking action describes the
 player's current room and any visible items, but is made more complicated
@@ -1141,7 +1141,7 @@ Report an actor looking (this is the other people looking rule):
 
 =
 Examining is an action applying to one visible thing and requiring light.
-The examining action translates into I6 as "Examine".
+The examining action translates into Inter as "Examine".
 
 The specification of the examining action is "The act of looking closely at
 something. Note that the noun could be either a direction or a thing, which
@@ -1219,7 +1219,7 @@ Report an actor examining (this is the report other people examining rule):
 
 =
 Looking under is an action applying to one visible thing and requiring light.
-The looking under action translates into I6 as "LookUnder".
+The looking under action translates into Inter as "LookUnder".
 
 The specification of the looking under action is "The standard Inform world
 model does not have a concept of things being under other things, so this
@@ -1253,7 +1253,7 @@ Report an actor looking under (this is the report other people looking under rul
 
 =
 Searching is an action applying to one thing and requiring light.
-The searching action translates into I6 as "Search".
+The searching action translates into Inter as "Search".
 
 The specification of the searching action is "Searching looks at the contents
 of an open or transparent container, or at the items on top of a supporter.
@@ -1315,7 +1315,7 @@ Report an actor searching (this is the report other people searching rule):
 
 =
 Consulting it about is an action applying to one thing and one topic.
-The consulting it about action translates into I6 as "Consult".
+The consulting it about action translates into Inter as "Consult".
 
 The specification of the consulting it about action is "Consulting is a very
 flexible and potentially powerful action, but only because it leaves almost
@@ -1343,7 +1343,7 @@ Report an actor consulting something about (this is the block consulting rule):
 Section 5 - Standard actions which change the state of things
 
 Locking it with is an action applying to one thing and one carried thing.
-The locking it with action translates into I6 as "Lock".
+The locking it with action translates into Inter as "Lock".
 
 The specification of the locking it with action is "Locking is the act of
 using an object such as a key to ensure that something such as a door or
@@ -1426,7 +1426,7 @@ Report an actor locking something with (this is the standard report locking rule
 
 =
 Unlocking it with is an action applying to one thing and one carried thing.
-The unlocking it with action translates into I6 as "Unlock".
+The unlocking it with action translates into Inter as "Unlock".
 
 The specification of the unlocking it with action is "Unlocking undoes the
 effect of locking, and renders the noun openable again provided that the
@@ -1501,7 +1501,7 @@ Report an actor unlocking something with (this is the standard report unlocking 
 
 =
 Switching on is an action applying to one thing.
-The switching on action translates into I6 as "SwitchOn".
+The switching on action translates into Inter as "SwitchOn".
 
 The specification of the switching on action is "The switching on and switching
 off actions are for the simplest kind of machinery operation: they are for
@@ -1544,7 +1544,7 @@ Report an actor switching on (this is the standard report switching on rule):
 
 =
 Switching off is an action applying to one thing.
-The switching off action translates into I6 as "SwitchOff".
+The switching off action translates into Inter as "SwitchOff".
 
 The specification of the switching off action is "The switching off and switching
 on actions are for the simplest kind of machinery operation: they are for
@@ -1587,7 +1587,7 @@ Report an actor switching off (this is the standard report switching off rule):
 
 =
 Opening is an action applying to one thing.
-The opening action translates into I6 as "Open".
+The opening action translates into Inter as "Open".
 
 The specification of the opening action is "Opening makes something no longer
 a physical barrier. The action can be performed on any kind of thing which
@@ -1670,7 +1670,7 @@ Report an actor opening (this is the standard report opening rule):
 
 =
 Closing is an action applying to one thing.
-The closing action translates into I6 as "Close".
+The closing action translates into Inter as "Close".
 
 The specification of the closing action is "Closing makes something into
 a physical barrier. The action can be performed on any kind of thing which
@@ -1729,7 +1729,7 @@ Report an actor closing (this is the standard report closing rule):
 
 =
 Wearing is an action applying to one carried thing.
-The wearing action translates into I6 as "Wear".
+The wearing action translates into Inter as "Wear".
 
 The specification of the wearing action is "The Standard Rules give Inform
 only a simple model of clothing. A thing can be worn only if it has the
@@ -1784,7 +1784,7 @@ Report an actor wearing (this is the standard report wearing rule):
 
 =
 Taking off is an action applying to one thing.
-The taking off action translates into I6 as "Disrobe".
+The taking off action translates into Inter as "Disrobe".
 
 Does the player mean taking off something worn: it is very likely.
 
@@ -1837,7 +1837,7 @@ Report an actor taking off (this is the standard report taking off rule):
 Section 6 - Standard actions concerning other people
 
 Giving it to is an action applying to one carried thing and one thing.
-The giving it to action translates into I6 as "Give".
+The giving it to action translates into Inter as "Give".
 
 The specification of the giving it to action is "This action is indexed by
 Inform under 'Actions concerning other people', but it could just as easily
@@ -1917,7 +1917,7 @@ Report an actor giving something to (this is the standard report giving rule):
 
 =
 Showing it to is an action applying to one carried thing and one visible thing.
-The showing it to action translates into I6 as "Show".
+The showing it to action translates into Inter as "Show".
 
 The specification of the showing it to action is "Anyone can show anyone
 else something which they are carrying, but not some nearby piece of
@@ -1958,7 +1958,7 @@ Check an actor showing something to (this is the block showing rule):
 
 =
 Waking is an action applying to one thing.
-The waking action translates into I6 as "WakeOther".
+The waking action translates into Inter as "WakeOther".
 
 The specification of the waking action is "This is the act of jostling
 a sleeping person to wake him or her up, and it finds its way into the
@@ -1980,7 +1980,7 @@ Check an actor waking (this is the block waking rule):
 
 =
 Throwing it at is an action applying to one carried thing and one visible thing.
-The throwing it at action translates into I6 as "ThrowAt".
+The throwing it at action translates into Inter as "ThrowAt".
 
 The specification of the throwing it at action is "Throwing something at
 someone or something is difficult for Inform to model. So many considerations
@@ -2030,7 +2030,7 @@ Check an actor throwing something at (this is the block throwing at rule):
 
 =
 Attacking is an action applying to one thing.
-The attacking action translates into I6 as "Attack".
+The attacking action translates into Inter as "Attack".
 
 The specification of the attacking action is "Violence is seldom the answer,
 and attempts to attack another person are normally blocked as being unrealistic
@@ -2052,7 +2052,7 @@ Check an actor attacking (this is the block attacking rule):
 
 =
 Kissing is an action applying to one thing.
-The kissing action translates into I6 as "Kiss".
+The kissing action translates into Inter as "Kiss".
 
 The specification of the kissing action is "Possibly because Inform was
 originally written by an Englishman, attempts at kissing another person are
@@ -2078,7 +2078,7 @@ Check an actor kissing (this is the block kissing rule):
 
 =
 Answering it that is an action applying to one thing and one topic.
-The answering it that action translates into I6 as "Answer".
+The answering it that action translates into Inter as "Answer".
 
 The specification of the answering it that action is "The Standard Rules do
 not include any systematic way to handle conversation: instead, Inform is
@@ -2114,7 +2114,7 @@ Report an actor answering something that (this is the block answering rule):
 
 =
 Telling it about is an action applying to one thing and one topic.
-The telling it about action translates into I6 as "Tell".
+The telling it about action translates into Inter as "Tell".
 
 The specification of the telling it about action is "The Standard Rules do
 not include any systematic way to handle conversation: instead, Inform is
@@ -2155,7 +2155,7 @@ Report an actor telling something about (this is the block telling rule):
 
 =
 Asking it about is an action applying to one thing and one topic.
-The asking it about action translates into I6 as "Ask".
+The asking it about action translates into Inter as "Ask".
 
 The specification of the asking it about action is "The Standard Rules do
 not include any systematic way to handle conversation: instead, Inform is
@@ -2190,7 +2190,7 @@ Report an actor asking something about (this is the block asking rule):
 
 =
 Asking it for is an action applying to two things.
-The asking it for action translates into I6 as "AskFor".
+The asking it for action translates into Inter as "AskFor".
 
 The specification of the asking it for action is "The Standard Rules do
 not include any systematic way to handle conversation, but this is
@@ -2223,7 +2223,7 @@ Check an actor asking something for (this is the translate asking for to giving 
 Section 7 - Standard actions which are checked but then do nothing unless rules intervene
 
 Waiting is an action applying to nothing.
-The waiting action translates into I6 as "Wait".
+The waiting action translates into Inter as "Wait".
 
 The specification of the waiting action is "The inaction action: where would
 we be without waiting? Waiting does not cause time to pass by - that happens
@@ -2250,7 +2250,7 @@ Report an actor waiting (this is the standard report waiting rule):
 
 =
 Touching is an action applying to one thing.
-The touching action translates into I6 as "Touch".
+The touching action translates into Inter as "Touch".
 
 The specification of the touching action is "Touching is just that, touching
 something without applying pressure: a touch-sensitive screen or a living
@@ -2298,7 +2298,7 @@ Report an actor touching (this is the report touching things rule):
 
 =
 Waving is an action applying to one thing.
-The waving action translates into I6 as "Wave".
+The waving action translates into Inter as "Wave".
 
 The specification of the waving action is "Waving in this sense is like
 waving a sceptre: the item to be waved must be directly held (or worn)
@@ -2332,7 +2332,7 @@ Report an actor waving (this is the report waving things rule):
 
 =
 Pulling is an action applying to one thing.
-The Pulling action translates into I6 as "Pull".
+The Pulling action translates into Inter as "Pull".
 
 The specification of the pulling action is "Pulling is the act of pulling
 something not grossly larger than the actor by an amount which would not
@@ -2381,7 +2381,7 @@ Report an actor pulling (this is the report pulling rule):
 
 =
 Pushing is an action applying to one thing.
-The Pushing action translates into I6 as "Push".
+The Pushing action translates into Inter as "Push".
 
 The specification of the pushing action is "Pushing is the act of pushing
 something not grossly larger than the actor by an amount which would not
@@ -2431,7 +2431,7 @@ Report an actor pushing something (this is the report pushing rule):
 
 =
 Turning is an action applying to one thing.
-The Turning action translates into I6 as "Turn".
+The Turning action translates into Inter as "Turn".
 
 The specification of the turning action is "Turning is the act of rotating
 something - say, a dial.
@@ -2477,7 +2477,7 @@ Report an actor turning (this is the report turning rule):
 
 =
 Pushing it to is an action applying to one thing and one visible thing.
-The Pushing it to action translates into I6 as "PushDir".
+The Pushing it to action translates into Inter as "PushDir".
 
 The specification of the pushing it to action is "This action covers pushing
 a large object, not being carried, so that the actor pushes it from one room
@@ -2529,7 +2529,7 @@ Check an actor pushing something to (this is the block pushing in directions rul
 
 =
 Squeezing is an action applying to one thing.
-The Squeezing action translates into I6 as "Squeeze".
+The Squeezing action translates into Inter as "Squeeze".
 
 The specification of the squeezing action is "Squeezing is an action which
 can conveniently vary from squeezing something hand-held, like a washing-up
@@ -2566,7 +2566,7 @@ Report an actor squeezing (this is the report squeezing rule):
 Section 8 - Standard actions which always do nothing unless rules intervene
 
 Saying yes is an action applying to nothing.
-The Saying yes action translates into I6 as "Yes".
+The Saying yes action translates into Inter as "Yes".
 
 The specification of the saying yes action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2588,7 +2588,7 @@ Check an actor saying yes (this is the block saying yes rule):
 
 =
 Saying no is an action applying to nothing.
-The Saying no action translates into I6 as "No".
+The Saying no action translates into Inter as "No".
 
 The specification of the saying no action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2610,7 +2610,7 @@ Check an actor saying no (this is the block saying no rule):
 
 =
 Burning is an action applying to one thing.
-The Burning action translates into I6 as "Burn".
+The Burning action translates into Inter as "Burn".
 
 The specification of the burning action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2632,7 +2632,7 @@ Check an actor burning (this is the block burning rule):
 
 =
 Waking up is an action applying to nothing.
-The Waking up action translates into I6 as "Wake".
+The Waking up action translates into Inter as "Wake".
 
 The specification of the waking up action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2655,7 +2655,7 @@ Check an actor waking up (this is the block waking up rule):
 
 =
 Thinking is an action applying to nothing.
-The Thinking action translates into I6 as "Think".
+The Thinking action translates into Inter as "Think".
 
 The specification of the thinking action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2677,7 +2677,7 @@ Check an actor thinking (this is the block thinking rule):
 
 =
 Smelling is an action applying to nothing or one thing.
-The Smelling action translates into I6 as "Smell".
+The Smelling action translates into Inter as "Smell".
 
 The specification of the smelling action is
 "The Standard Rules define this action in only a minimal way, replying only
@@ -2697,7 +2697,7 @@ Report an actor smelling (this is the report smelling rule):
 
 =
 Listening to is an action applying to nothing or one thing and abbreviable.
-The Listening to action translates into I6 as "Listen".
+The Listening to action translates into Inter as "Listen".
 
 The specification of the listening to action is
 "The Standard Rules define this action in only a minimal way, replying only
@@ -2717,7 +2717,7 @@ Report an actor listening to (this is the report listening rule):
 
 =
 Tasting is an action applying to one thing.
-The Tasting action translates into I6 as "Taste".
+The Tasting action translates into Inter as "Taste".
 
 The specification of the tasting action is
 "The Standard Rules define this action in only a minimal way, replying only
@@ -2737,7 +2737,7 @@ Report an actor tasting (this is the report tasting rule):
 
 =
 Cutting is an action applying to one thing.
-The Cutting action translates into I6 as "Cut".
+The Cutting action translates into Inter as "Cut".
 
 The specification of the cutting action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2759,7 +2759,7 @@ Check an actor cutting (this is the block cutting rule):
 
 =
 Jumping is an action applying to nothing.
-The Jumping action translates into I6 as "Jump".
+The Jumping action translates into Inter as "Jump".
 
 The specification of the jumping action is
 "The Standard Rules define this action in only a minimal way, simply reporting
@@ -2779,7 +2779,7 @@ Report an actor jumping (this is the report jumping rule):
 
 =
 Tying it to is an action applying to two things.
-The Tying it to action translates into I6 as "Tie".
+The Tying it to action translates into Inter as "Tie".
 
 The specification of the tying it to action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2801,7 +2801,7 @@ Check an actor tying something to (this is the block tying rule):
 
 =
 Drinking is an action applying to one thing.
-The Drinking action translates into I6 as "Drink".
+The Drinking action translates into Inter as "Drink".
 
 The specification of the drinking action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2824,7 +2824,7 @@ Check an actor drinking (this is the block drinking rule):
 
 =
 Saying sorry is an action applying to nothing.
-The Saying sorry action translates into I6 as "Sorry".
+The Saying sorry action translates into Inter as "Sorry".
 
 The specification of the saying sorry action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2847,7 +2847,7 @@ Check an actor saying sorry (this is the block saying sorry rule):
 
 =
 Swinging is an action applying to one thing.
-The Swinging action translates into I6 as "Swing".
+The Swinging action translates into Inter as "Swing".
 
 The specification of the swinging action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2870,7 +2870,7 @@ Check an actor swinging (this is the block swinging rule):
 
 =
 Rubbing is an action applying to one thing.
-The Rubbing action translates into I6 as "Rub".
+The Rubbing action translates into Inter as "Rub".
 
 The specification of the rubbing action is
 "The Standard Rules define this action in only a minimal way, simply reporting
@@ -2899,7 +2899,7 @@ Report an actor rubbing (this is the report rubbing rule):
 
 =
 Setting it to is an action applying to one thing and one topic.
-The Setting it to action translates into I6 as "SetTo".
+The Setting it to action translates into Inter as "SetTo".
 
 The specification of the setting it to action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2921,7 +2921,7 @@ Check an actor setting something to (this is the block setting it to rule):
 
 =
 Waving hands is an action applying to nothing.
-The Waving hands action translates into I6 as "WaveHands".
+The Waving hands action translates into Inter as "WaveHands".
 
 The specification of the waving hands action is
 "The Standard Rules define this action in only a minimal way, simply reporting
@@ -2941,7 +2941,7 @@ Report an actor waving hands (this is the report waving hands rule):
 
 =
 Buying is an action applying to one thing.
-The Buying action translates into I6 as "Buy".
+The Buying action translates into Inter as "Buy".
 
 The specification of the buying action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2964,7 +2964,7 @@ Check an actor buying (this is the block buying rule):
 
 =
 Climbing is an action applying to one thing.
-The Climbing action translates into I6 as "Climb".
+The Climbing action translates into Inter as "Climb".
 
 The specification of the climbing action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -2986,7 +2986,7 @@ Check an actor climbing (this is the block climbing rule):
 
 =
 Sleeping is an action applying to nothing.
-The Sleeping action translates into I6 as "Sleep".
+The Sleeping action translates into Inter as "Sleep".
 
 The specification of the sleeping action is
 "The Standard Rules define this action in only a minimal way, blocking it
@@ -3015,60 +3015,60 @@ is the current VM: so these are close to the metal, as they say.
 Section 9 - Standard actions which happen out of world
 
 Quitting the game is an action out of world and applying to nothing.
-The quitting the game action translates into I6 as "Quit".
+The quitting the game action translates into Inter as "Quit".
 
 The quit the game rule is listed in the carry out quitting the game rulebook.
-The quit the game rule translates into I6 as "QUIT_THE_GAME_R" with
+The quit the game rule translates into Inter as "QUIT_THE_GAME_R" with
 	"Are you sure you want to quit? " (A).
 
 Saving the game is an action out of world and applying to nothing.
-The saving the game action translates into I6 as "Save".
+The saving the game action translates into Inter as "Save".
 
 The save the game rule is listed in the carry out saving the game rulebook.
-The save the game rule translates into I6 as "SAVE_THE_GAME_R" with
+The save the game rule translates into Inter as "SAVE_THE_GAME_R" with
 	"Save failed." (A),
 	"Ok." (B).
 
 Restoring the game is an action out of world and applying to nothing.
-The restoring the game action translates into I6 as "Restore".
+The restoring the game action translates into Inter as "Restore".
 
 The restore the game rule is listed in the carry out restoring the game rulebook.
-The restore the game rule translates into I6 as "RESTORE_THE_GAME_R" with
+The restore the game rule translates into Inter as "RESTORE_THE_GAME_R" with
 	"Restore failed." (A),
 	"Ok." (B).
 
 Restarting the game is an action out of world and applying to nothing.
-The restarting the game action translates into I6 as "Restart".
+The restarting the game action translates into Inter as "Restart".
 
 The restart the game rule is listed in the carry out restarting the game rulebook.
-The restart the game rule translates into I6 as "RESTART_THE_GAME_R" with
+The restart the game rule translates into Inter as "RESTART_THE_GAME_R" with
 	"Are you sure you want to restart? " (A),
 	"Failed." (B).
 
 Verifying the story file is an action out of world and applying to nothing.
-The verifying the story file action translates into I6 as "Verify".
+The verifying the story file action translates into Inter as "Verify".
 
 The verify the story file rule is listed in the carry out verifying the story file rulebook.
-The verify the story file rule translates into I6 as "VERIFY_THE_STORY_FILE_R" with
+The verify the story file rule translates into Inter as "VERIFY_THE_STORY_FILE_R" with
 	"The game file has verified as intact." (A),
 	"The game file did not verify as intact, and may be corrupt." (B).
 
 Switching the story transcript on is an action out of world and applying to nothing.
-The switching the story transcript on action translates into I6 as "ScriptOn".
+The switching the story transcript on action translates into Inter as "ScriptOn".
 
 The switch the story transcript on rule is listed in the carry out switching the story
 	transcript on rulebook.
-The switch the story transcript on rule translates into I6 as "SWITCH_TRANSCRIPT_ON_R" with
+The switch the story transcript on rule translates into Inter as "SWITCH_TRANSCRIPT_ON_R" with
     "Transcripting is already on." (A),
     "Start of a transcript of" (B),
     "Attempt to begin transcript failed." (C).
 
 Switching the story transcript off is an action out of world and applying to nothing.
-The switching the story transcript off action translates into I6 as "ScriptOff".
+The switching the story transcript off action translates into Inter as "ScriptOff".
 
 The switch the story transcript off rule is listed in the carry out switching the story
 	transcript off rulebook.
-The switch the story transcript off rule translates into I6 as "SWITCH_TRANSCRIPT_OFF_R" with
+The switch the story transcript off rule translates into Inter as "SWITCH_TRANSCRIPT_OFF_R" with
     "Transcripting is already off." (A),
     "[line break]End of transcript." (B),
     "Attempt to end transcript failed." (C).
@@ -3081,11 +3081,11 @@ different formats being compiled to.
 
 =
 Requesting the story file version is an action out of world and applying to nothing.
-The requesting the story file version action translates into I6 as "Version".
+The requesting the story file version action translates into Inter as "Version".
 
 The announce the story file version rule is listed in the carry out requesting the story
 	file version rulebook.
-The announce the story file version rule translates into I6 as "ANNOUNCE_STORY_FILE_VERSION_R".
+The announce the story file version rule translates into Inter as "ANNOUNCE_STORY_FILE_VERSION_R".
 
 @ There's really no very good reason why we provide the out-of-world command
 SCORE but not (say) TIME, or any one of dozens of other traditional what's-my-status
@@ -3096,10 +3096,10 @@ removal would be a gesture too far.
 
 =
 Requesting the score is an action out of world and applying to nothing.
-The requesting the score action translates into I6 as "Score".
+The requesting the score action translates into Inter as "Score".
 
 The announce the score rule is listed in the carry out requesting the score rulebook.
-The announce the score rule translates into I6 as "ANNOUNCE_SCORE_R" with
+The announce the score rule translates into Inter as "ANNOUNCE_SCORE_R" with
 	"[if the story has ended]In that game you scored[otherwise]You have so far scored[end if]
 	[score] out of a possible [maximum score], in [turn count] turn[s]" (A),
     ", earning you the rank of " (B),
@@ -3115,46 +3115,46 @@ and does no harm.
 
 =
 Preferring abbreviated room descriptions is an action out of world and applying to nothing.
-The preferring abbreviated room descriptions action translates into I6 as "LMode3".
+The preferring abbreviated room descriptions action translates into Inter as "LMode3".
 
 The prefer abbreviated room descriptions rule is listed in the carry out preferring
 	abbreviated room descriptions rulebook.
-The prefer abbreviated room descriptions rule translates into I6 as "PREFER_ABBREVIATED_R".
+The prefer abbreviated room descriptions rule translates into Inter as "PREFER_ABBREVIATED_R".
 
 The standard report preferring abbreviated room descriptions rule is listed in the
 	report preferring abbreviated room descriptions rulebook.
 The standard report preferring abbreviated room descriptions rule translates into
-	I6 as "REP_PREFER_ABBREVIATED_R" with
+	Inter as "REP_PREFER_ABBREVIATED_R" with
 	" is now in its 'superbrief' mode, which always gives short descriptions
 	of locations (even if you haven't been there before)." (A).
 
 Preferring unabbreviated room descriptions is an action out of world and applying to nothing.
-The preferring unabbreviated room descriptions action translates into I6 as "LMode2".
+The preferring unabbreviated room descriptions action translates into Inter as "LMode2".
 
 The prefer unabbreviated room descriptions rule is listed in the carry out preferring
 	unabbreviated room descriptions rulebook.
-The prefer unabbreviated room descriptions rule translates into I6 as "PREFER_UNABBREVIATED_R".
+The prefer unabbreviated room descriptions rule translates into Inter as "PREFER_UNABBREVIATED_R".
 
 The standard report preferring unabbreviated room descriptions rule is listed in the
 	report preferring unabbreviated room descriptions rulebook.
 The standard report preferring unabbreviated room descriptions rule translates into
-	I6 as "REP_PREFER_UNABBREVIATED_R" with
+	Inter as "REP_PREFER_UNABBREVIATED_R" with
 	" is now in its 'verbose' mode, which always gives long descriptions of
 	locations (even if you've been there before)." (A).
 
 Preferring sometimes abbreviated room descriptions is an action out of world and
 	applying to nothing.
-The preferring sometimes abbreviated room descriptions action translates into I6 as "LMode1".
+The preferring sometimes abbreviated room descriptions action translates into Inter as "LMode1".
 
 The prefer sometimes abbreviated room descriptions rule is listed in the carry out
 	preferring sometimes abbreviated room descriptions rulebook.
-The prefer sometimes abbreviated room descriptions rule translates into I6 as
+The prefer sometimes abbreviated room descriptions rule translates into Inter as
 	"PREFER_SOMETIMES_ABBREVIATED_R".
 
 The standard report preferring sometimes abbreviated room descriptions rule is listed
 	in the report preferring sometimes abbreviated room descriptions rulebook.
 The standard report preferring sometimes abbreviated room descriptions rule translates
-	into I6 as "REP_PREFER_SOMETIMES_ABBR_R" with
+	into Inter as "REP_PREFER_SOMETIMES_ABBR_R" with
 	" is now in its 'brief' printing mode, which gives long descriptions
     of places never before visited and short descriptions otherwise." (A).
 
@@ -3162,39 +3162,39 @@ The standard report preferring sometimes abbreviated room descriptions rule tran
 
 =
 Switching score notification on is an action out of world and applying to nothing.
-The switching score notification on action translates into I6 as "NotifyOn".
+The switching score notification on action translates into Inter as "NotifyOn".
 
 The switch score notification on rule is listed in the carry out switching score
 	notification on rulebook.
-The switch score notification on rule translates into I6 as "SWITCH_SCORE_NOTIFY_ON_R".
+The switch score notification on rule translates into Inter as "SWITCH_SCORE_NOTIFY_ON_R".
 
 The standard report switching score notification on rule is listed in the report
 	switching score notification on rulebook.
 The standard report switching score notification on rule translates into
-	I6 as "REP_SWITCH_NOTIFY_ON_R" with "Score notification on." (A).
+	Inter as "REP_SWITCH_NOTIFY_ON_R" with "Score notification on." (A).
 
 Switching score notification off is an action out of world and applying to nothing.
-The switching score notification off action translates into I6 as "NotifyOff".
+The switching score notification off action translates into Inter as "NotifyOff".
 
 The switch score notification off rule is listed in the carry out switching score
 	notification off rulebook.
-The switch score notification off rule translates into I6 as "SWITCH_SCORE_NOTIFY_OFF_R".
+The switch score notification off rule translates into Inter as "SWITCH_SCORE_NOTIFY_OFF_R".
 
 The standard report switching score notification off rule is listed in the report
 	switching score notification off rulebook.
 The standard report switching score notification off rule translates into
-	I6 as "REP_SWITCH_NOTIFY_OFF_R" with "Score notification off." (A).
+	Inter as "REP_SWITCH_NOTIFY_OFF_R" with "Score notification off." (A).
 
 @ Lastly, the "pronouns" verb, which is perhaps more often used by people
 debugging the I6 parser than by actual players.
 
 =
 Requesting the pronoun meanings is an action out of world and applying to nothing.
-The requesting the pronoun meanings action translates into I6 as "Pronouns".
+The requesting the pronoun meanings action translates into Inter as "Pronouns".
 
 The announce the pronoun meanings rule is listed in the carry out requesting the
 	pronoun meanings rulebook.
-The announce the pronoun meanings rule translates into I6 as "ANNOUNCE_PRONOUN_MEANINGS_R" with
+The announce the pronoun meanings rule translates into Inter as "ANNOUNCE_PRONOUN_MEANINGS_R" with
 	"At the moment, " (A),
 	"means " (B),
 	"is unset" (C),

@@ -93,6 +93,11 @@
 							<span class="sectionpurpose">The long production line on which products of Inform are built, one step at a time.</span></p>
 						</li>
 						<li>
+							<p class="sectionentry"><a href="1-cp.html">
+								<spon class="sectiontitle">Core Preform</span></a> -
+							<span class="sectionpurpose">To load, optimise and throw problem messages related to Preform syntax.</span></p>
+						</li>
+						<li>
 							<p class="sectionentry"><a href="1-pp.html">
 								<spon class="sectiontitle">Progress Percentages</span></a> -
 							<span class="sectionpurpose">This tiny section, the Lichtenstein of Inform, prints percentage of completion estimates so that the host application can intercept them and update its graphical progress bar.</span></p>
@@ -132,14 +137,24 @@
 					<p class="chapterpurpose">Reading source text as a stream of characters and dividing it up into words.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="3-nl.html">
-								<spon class="sectiontitle">Natural Languages</span></a> -
-							<span class="sectionpurpose">To manage definitions of natural languages, such as English or French, which may be used either to write Inform or to read the works it compiles.</span></p>
+							<p class="sectionentry"><a href="3-cs.html">
+								<spon class="sectiontitle">Classifying Sentences</span></a> -
+							<span class="sectionpurpose">To work out the verbs used and to diagram sentences in the source.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-pd.html">
-								<spon class="sectiontitle">Plural Dictionary</span></a> -
-							<span class="sectionpurpose">To parse sentences like "The plural of woman is women".</span></p>
+							<p class="sectionentry"><a href="3-dlr.html">
+								<spon class="sectiontitle">Debugging Log Requests</span></a> -
+							<span class="sectionpurpose">Special sentences for changing what goes into the debugging log.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-pr.html">
+								<spon class="sectiontitle">Pluralisation Requests</span></a> -
+							<span class="sectionpurpose">Special sentences for setting exotic plural forms of nouns.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-tr.html">
+								<spon class="sectiontitle">Translation Requests</span></a> -
+							<span class="sectionpurpose">Three unrelated senses of "X translates into Y as Z" sentences.</span></p>
 						</li>
 					</ul>
 				</li>
@@ -258,11 +273,6 @@
 							<p class="sectionentry"><a href="7-hdn.html">
 								<spon class="sectiontitle">Headings</span></a> -
 							<span class="sectionpurpose">To keep track of the hierarchy of headings and subheadings found in the source text.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="7-ns.html">
-								<spon class="sectiontitle">Nonstructural Sentences</span></a> -
-							<span class="sectionpurpose">To construct verb-phrase nodes in the parse tree.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="7-oaf.html">
@@ -1010,7 +1020,7 @@
 						<li>
 							<p class="sectionentry"><a href="26-shr.html">
 								<spon class="sectiontitle">Sentence Handler Registration</span></a> -
-							<span class="sectionpurpose">This routine has to be placed close to the end of the code for boring compilation order reasons, not because it belongs here.</span></p>
+							<span class="sectionpurpose">This function has to be placed close to the end of the code for boring compilation order reasons, not because it belongs here.</span></p>
 						</li>
 					</ul>
 				</li>

@@ -13,6 +13,7 @@ Chapter 1: Configuration and Control
 	Main Routine
 	What To Compile
 	How To Compile
+	Core Preform
 	Progress Percentages
 
 Chapter 2: Bridge to Problems Module
@@ -24,8 +25,10 @@ Chapter 2: Bridge to Problems Module
 
 Chapter 3: Bridge to Words Module
 "Reading source text as a stream of characters and dividing it up into words."
-	Natural Languages
-	Plural Dictionary
+	Classifying Sentences
+	Debugging Log Requests
+	Pluralisation Requests
+	Translation Requests
 
 Chapter 4: Bridge to Linguistics Module
 "Miscellaneous grammatical features other than nouns, verbs and adjectives."
@@ -62,7 +65,6 @@ material intended only for certain target virtual machines included or
 excluded as need be."
 	Parse Tree Usage
 	Headings
-	Nonstructural Sentences
 	Of and From
 	Rule Subtrees
 

@@ -650,9 +650,9 @@ void NewVerbs::bootstrap(void) {
 	SpecialMeanings::declare(Rules::Placement::does_nothing_SMF,				I"rule-does-nothing", 1);
 	SpecialMeanings::declare(Rules::Placement::does_nothing_if_SMF,				I"rule-does-nothing-if", 1);
 	SpecialMeanings::declare(Rules::Placement::does_nothing_unless_SMF,			I"rule-does-nothing-unless", 1);
-	SpecialMeanings::declare(Sentences::VPs::translates_into_unicode_as_SMF,	I"translates-into-unicode", 1);
-	SpecialMeanings::declare(Sentences::VPs::translates_into_I6_as_SMF,			I"translates-into-i6", 1);
-	SpecialMeanings::declare(Sentences::VPs::translates_into_language_as_SMF,	I"translates-into-language", 1);
+	SpecialMeanings::declare(Translations::translates_into_unicode_as_SMF,	I"translates-into-unicode", 1);
+	SpecialMeanings::declare(Translations::translates_into_Inter_as_SMF,			I"translates-into-i6", 1);
+	SpecialMeanings::declare(Translations::translates_into_language_as_SMF,	I"translates-into-language", 1);
 	SpecialMeanings::declare(UseOptions::use_translates_as_SMF,					I"use-translates", 4);
 	#ifdef IF_MODULE
 	SpecialMeanings::declare(PL::Parsing::TestScripts::test_with_SMF,			I"test-with", 1);
@@ -663,8 +663,8 @@ void NewVerbs::bootstrap(void) {
 	SpecialMeanings::declare(PL::Bibliographic::Release::release_along_with_SMF,I"release-along-with", 4);
 	SpecialMeanings::declare(PL::EPSMap::index_map_with_SMF,					I"index-map-with", 4);
 	#endif
-	SpecialMeanings::declare(Sentences::VPs::include_in_SMF,					I"include-in", 4);
-	SpecialMeanings::declare(Sentences::VPs::omit_from_SMF,						I"omit-from", 4);
+	SpecialMeanings::declare(Sentences::DLRs::include_in_SMF,					I"include-in", 4);
+	SpecialMeanings::declare(Sentences::DLRs::omit_from_SMF,						I"omit-from", 4);
 
 	word_assemblage infinitive = PreformUtilities::wording(<bootstrap-verb>, 0);
 	verb_conjugation *vc = Conjugation::conjugate(infinitive, DefaultLanguage::get(NULL));

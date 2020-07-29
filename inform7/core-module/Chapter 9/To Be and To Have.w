@@ -32,8 +32,6 @@ box" (not just a leaf, since it will be a tree showing the containment
 relationship as well as the noun).
 
 =
-sentence_handler ASSERT_SH_handler = { SENTENCE_NT, ASSERT_VB, 0, Assertions::Copular::assertion };
-
 void Assertions::Copular::assertion(parse_node *pv) {
 	if (Assertions::Copular::possessive(pv->down->next->next))
 		Assertions::Copular::to_have(pv);
