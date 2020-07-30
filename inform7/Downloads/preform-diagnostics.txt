@@ -16,7 +16,7 @@
 
 <any-integer> internal nti 21 constraint (none) extremes [1, 1]
 
-<quoted-text> internal hits 2894/23406 nti 22 constraint (none) extremes [1, 1]
+<quoted-text> internal hits 2894/22706 nti 22 constraint (none) extremes [1, 1]
 
 <quoted-text-with-subs> internal nti 23 constraint (none) extremes [1, 1]
 
@@ -4750,19 +4750,19 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<optional-article> hits 81532/163064 nti 14 constraint (none) extremes [1, infinity)
+<optional-article> hits 81340/162680 nti 14 constraint (none) extremes [1, infinity)
     English:
         <article> {...} 
-          (hits 15779/46644) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 15779/46514) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 65753/65753) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 65561/65561) (matched long text) constraint (none) extremes [1, infinity)
 
 <compulsory-article> nti 15 constraint (none) extremes [2, infinity)
     English:
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16202/96934 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16202/96550 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article> internal hits 21557/254136 nti r2 constraint (none) extremes [1, 1]
 
@@ -6258,19 +6258,19 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<prohibited-property-owners> hits 235/950 nti 9 constraint DW = {29, 30, 31} extremes [2, infinity)
+<prohibited-property-owners> hits 40/176 nti 9 constraint DW = {29, 30, 31} extremes [2, infinity)
     English:
         <action-name-formal> 
-          (hits 158/158) (matched: 'unlocking keylessly action') constraint DS = {29} extremes [2, infinity)
+          (hits 26/26) (matched: 'unlocking keylessly action') constraint DS = {29} extremes [2, infinity)
         <activity-name-formal> 
           constraint DS = {30} extremes [2, infinity)
         <rulebook-name-formal> 
-          (hits 77/77) (matched: 'specific action-processing rulebook') constraint DS = {31} extremes [2, infinity)
+          (hits 14/14) (matched: 'specific action-processing rulebook') constraint DS = {31} extremes [2, infinity)
 
-<action-name-formal> hits 158/316 nti 29 constraint DS = {29} extremes [2, infinity)
+<action-name-formal> hits 26/52 nti 29 constraint DS = {29} extremes [2, infinity)
     English:
         {...} action 
-          (hits 158/158) (matched: 'unlocking keylessly action') constraint DS = {29} extremes [2, infinity)
+          (hits 26/26) (matched: 'unlocking keylessly action') constraint DS = {29} extremes [2, infinity)
 
 <activity-name-formal> nti 30 constraint DS = {30} extremes [2, infinity)
     English:
@@ -6287,17 +6287,17 @@
         {...} rule 
           (hits 1191/1191) (matched long text) constraint DS = {7} extremes [2, infinity)
 
-<rulebook-name-formal> hits 84/168 nti 31 constraint DS = {31} extremes [2, infinity)
+<rulebook-name-formal> hits 21/42 nti 31 constraint DS = {31} extremes [2, infinity)
     English:
         {...} rulebook 
-          (hits 84/84) (matched: 'specific action-processing rulebook') constraint DS = {31} extremes [2, infinity)
+          (hits 21/21) (matched: 'specific action-processing rulebook') constraint DS = {31} extremes [2, infinity)
 
-<has-properties-called-sentence-object> hits 216/432 nti 10 constraint (none) extremes [1, infinity)
+<has-properties-called-sentence-object> hits 24/48 nti 10 constraint (none) extremes [1, infinity)
     English:
         <has-property-name> <has-property-name-tail> 
           constraint DS = {9} extremes [3, infinity)
         <has-property-name> 
-          (hits 216/216) (matched: 'variable initial value') constraint (none) extremes [1, infinity)
+          (hits 24/24) (matched: 'variable initial value') constraint (none) extremes [1, infinity)
 
 <has-property-name-tail> nti 9 constraint DS = {9} extremes [2, infinity)
     English:
@@ -6306,28 +6306,28 @@
         _{,/and} <has-properties-called-sentence-object> 
           constraint DS = {9} extremes [2, infinity)
 
-<has-property-name> hits 216/432 nti 11 constraint (none) extremes [1, infinity)
+<has-property-name> hits 24/48 nti 11 constraint (none) extremes [1, infinity)
     English:
         <bad-property-name-diagnosis> 
-          (hits 0/216) constraint (none) extremes [1, infinity)
+          (hits 0/24) constraint (none) extremes [1, infinity)
         {...} 
-          (hits 216/216) (matched: 'variable initial value') constraint (none) extremes [1, infinity)
+          (hits 24/24) (matched: 'variable initial value') constraint (none) extremes [1, infinity)
 
-<bad-property-name-diagnosis> hits 0/432 nti 8 constraint (none) extremes [1, infinity)
+<bad-property-name-diagnosis> hits 0/48 nti 8 constraint (none) extremes [1, infinity)
     English:
         <article> 
-          (hits 0/69) constraint (none) extremes [1, 1]
+          (hits 0/7) constraint (none) extremes [1, 1]
         presence 
           constraint CS = {8} extremes [1, 1]
         {***} , {***} 
-          (hits 0/10) constraint DS = {8} extremes [1, infinity)
+          (hits 0/2) constraint DS = {8} extremes [1, infinity)
         {***} <quoted-text> {***} 
-          (hits 0/216) constraint (none) extremes [1, infinity)
+          (hits 0/24) constraint (none) extremes [1, infinity)
 
-<sentence-needing-second-look> hits 0/10908 nti 12 constraint (none) extremes [1, infinity)
+<sentence-needing-second-look> hits 0/906 nti 12 constraint (none) extremes [1, infinity)
     English:
         {***} <ambiguous-property-name> {***} 
-          (hits 0/5454) constraint (none) extremes [1, infinity)
+          (hits 0/453) constraint (none) extremes [1, infinity)
 
 <verify-expanded-text-substitution> hits 438/876 nti 10 constraint (none) extremes [1, infinity)
     English:
@@ -7316,7 +7316,7 @@
         {***} of {***} 
           (hits 0/24) constraint DS = {12} extremes [1, infinity)
 
-<ambiguous-property-name> internal hits 0/82192 nti 19 constraint (none) extremes [1, infinity)
+<ambiguous-property-name> internal hits 0/6824 nti 19 constraint (none) extremes [1, infinity)
 
 <measurement-adjective-definition> hits 0/82 nti 14 constraint DS = {14} extremes [4, infinity)
     English:
@@ -8911,7 +8911,7 @@
         map region 
           (hits 1/1) (matched: 'map region') constraint CS = {25} extremes [2, 2]
 
-<notable-map-kinds> hits 19/2300 nti 26 constraint CS = {26} extremes [1, 1]
+<notable-map-kinds> hits 19/2308 nti 26 constraint CS = {26} extremes [1, 1]
     English:
         direction 
           (hits 13/19) (matched: 'direction') constraint CS = {26} extremes [1, 1]

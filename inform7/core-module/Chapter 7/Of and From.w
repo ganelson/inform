@@ -55,11 +55,6 @@ names; at the same time look for "X of Y" phrases where the "of" should
 not be treated as a possessive, and expunge them.
 
 =
-void Sentences::Rearrangement::further_material(void) {
-	Sentences::Rearrangement::tidy_up_ofs_and_froms();
-	Sentences::RuleSubtrees::register_recently_lexed_phrases();
-}
-
 void Sentences::Rearrangement::tidy_up_ofs_and_froms(void) {
 	VerifyTree::verify_integrity(Task::syntax_tree());
 	SyntaxTree::traverse_wfirst(Task::syntax_tree(), Sentences::Rearrangement::traverse_for_property_names);

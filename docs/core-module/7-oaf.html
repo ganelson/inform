@@ -125,11 +125,6 @@ not be treated as a possessive, and expunge them.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Sentences::Rearrangement::further_material</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="7-oaf.html#SP3" class="function-link"><span class="function-syntax">Sentences::Rearrangement::tidy_up_ofs_and_froms</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="7-rs.html#SP3" class="function-link"><span class="function-syntax">Sentences::RuleSubtrees::register_recently_lexed_phrases</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">}</span>
-
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Sentences::Rearrangement::tidy_up_ofs_and_froms</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Sentences::Rearrangement::tidy_up_ofs_and_froms</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_3">&#167;2.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VerifyTree::verify_integrity</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SyntaxTree::traverse_wfirst</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><a href="7-oaf.html#SP5" class="function-link"><span class="function-syntax">Sentences::Rearrangement::traverse_for_property_names</span></a><span class="plain-syntax">);</span>

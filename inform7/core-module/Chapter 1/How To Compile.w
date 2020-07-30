@@ -125,6 +125,7 @@ most of these worker functions are in the |core| module, some are not.
 	BENCH(Plugins::Manage::start_plugins);
 	BENCH(Task::load_types);
 	BENCH(BinaryPredicates::make_built_in)
+	BENCH(Kinds::Knowledge::include_templates_for_kinds)
 	BENCH(NewVerbs::add_inequalities)
 
 	Task::advance_stage_to(SEMANTIC_I_CSEQ, I"Semantic analysis Ib", -1);
@@ -132,7 +133,6 @@ most of these worker functions are in the |core| module, some are not.
 	BENCH(Classifying::traverse)
 	BENCH(Sentences::Rearrangement::tidy_up_ofs_and_froms)
 	BENCH(Sentences::RuleSubtrees::register_recently_lexed_phrases)
-	BENCH(Kinds::Knowledge::include_templates_for_kinds)
 
 	Task::advance_stage_to(SEMANTIC_II_CSEQ, I"Semantic analysis II", -1);
 	BENCH(ParseTreeUsage::verify)

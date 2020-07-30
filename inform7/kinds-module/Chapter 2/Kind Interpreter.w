@@ -522,9 +522,6 @@ void Kinds::Interpreter::transcribe_kind_template(parse_node_tree *T,
 		}
 		DISCARD_TEXT(template_line_buffer)
 	}
-	#ifdef CORE_MODULE
-	Sentences::Rearrangement::further_material();
-	#endif
 }
 
 @ Inside template text, anything in angle brackets <...> is a wildcard.
