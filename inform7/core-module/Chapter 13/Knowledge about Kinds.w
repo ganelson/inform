@@ -154,10 +154,6 @@ void Kinds::Knowledge::move_within(kind *sub, kind *super) {
 	InferenceSubjects::falls_within(Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
 }
 
-void Kinds::Knowledge::include_templates_for_kinds(void) {
-	Kinds::Interpreter::include_templates_for_kinds(Task::syntax_tree());
-}
-
 @h Problems with kinds.
 
 @d KINDS_PROBLEM_HANDLER Kinds::Knowledge::kinds_problem_handler

@@ -475,33 +475,9 @@ void Kinds::Interpreter::end_kind_template(void) {
 }
 
 @ So much for recording a template. To "play back", we need to take its text
-and squeeze it into the main source text, but there's a timing issue: when
-we read kind commands it is very early in Inform's run, and the lexer may not
-even have started yet. So we simply remember our intention to insert the text:
+and squeeze it into the main source text.
 
 =
-int era_of_kind_template_transcription = FALSE;
-void Kinds::Interpreter::remember_to_transcribe_spec_template(parse_node_tree *T, kind_template_definition *ttd, kind_constructor *C) {
-	if (era_of_kind_template_transcription) {
-		Kinds::Interpreter::transcribe_kind_template(T, ttd, C);
-	} else {
-		kind_template_obligation *tto = CREATE(kind_template_obligation);
-		tto->remembered_template = ttd;
-		tto->remembered_constructor = C;
-	}
-}
-
-@ ...until now, when it's later on and the source text does indeed exist.
-
-=
-void Kinds::Interpreter::include_templates_for_kinds(parse_node_tree *T) {
-	era_of_kind_template_transcription = TRUE;
-	kind_template_obligation *tto;
-	LOOP_OVER(tto, kind_template_obligation)
-		Kinds::Interpreter::transcribe_kind_template(T,
-			tto->remembered_template, tto->remembered_constructor);
-}
-
 void Kinds::Interpreter::transcribe_kind_template(parse_node_tree *T,
 	kind_template_definition *ttd, kind_constructor *con) {
 	if (ttd == NULL) internal_error("tried to transcribe missing source text template");
@@ -767,7 +743,7 @@ void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_comm
 @<Apply kind macros or transcribe kind templates on request@> =
 	switch (tcc) {
 		case apply_template_KCC:
-			Kinds::Interpreter::remember_to_transcribe_spec_template(T, stc.template_argument, con);
+			Kinds::Interpreter::transcribe_kind_template(T, stc.template_argument, con);
 			return;
 		case apply_macro_KCC:
 			Kinds::Interpreter::play_back_kind_macro(T, stc.macro_argument, con);

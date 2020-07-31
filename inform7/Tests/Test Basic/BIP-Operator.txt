@@ -1,0 +1,6 @@
+The operator && means the numerically-greater-than relation.
+
+To begin:
+	showme whether or not 10 && 5;
+	showme whether or not 10 && 15;
+	showme whether or not 10 && 10.
