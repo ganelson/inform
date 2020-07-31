@@ -59,9 +59,10 @@ wording Grading::make_superlative(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 }
 
 @ This is essentially a wrapper function for the trie <adjective-to-quiddity>.
-There has to be a better term than "quiddity" for this grammatical concept,
-but what I mean is the property for which the given adjective makes a
-comparison: for instance, "tallness" for "tall", or "steeliness" for "steely".
+There has to be a better term than "quiddity" for this grammatical concept
+(it is some sort of morphological nominalisation) but what I mean is the
+property of which the given adjective makes a comparison: for instance,
+"tallness" for "tall", or "steeliness" for "steely".
 
 =
 wording Grading::make_quiddity(wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {

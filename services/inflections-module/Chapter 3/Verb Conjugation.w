@@ -14,7 +14,7 @@ typedef struct verb_conjugation {
 	struct word_assemblage infinitive; /* not counting the "to", in English */
 	struct word_assemblage past_participle;
 	struct word_assemblage present_participle;
-	struct verb_tabulation tabulations[NO_KNOWN_MOODS];
+	struct verb_tabulation tabulations[NO_KNOWN_VOICES];
 	NATURAL_LANGUAGE_WORDS_TYPE *defined_in;
 	#ifdef LINGUISTICS_MODULE
 	struct verb *vc_conjugates;
@@ -65,7 +65,7 @@ int Conjugation::eq(verb_conjugation *nvc, verb_conjugation *vc) {
 	if ((WordAssemblages::eq(&(nvc->infinitive), &(vc->infinitive))) &&
 		(WordAssemblages::eq(&(nvc->past_participle), &(vc->past_participle))) &&
 		(WordAssemblages::eq(&(nvc->present_participle), &(vc->present_participle)))) {
-		for (int i=0; i<NO_KNOWN_MOODS; i++) {
+		for (int i=0; i<NO_KNOWN_VOICES; i++) {
 			verb_tabulation *nvt = &(nvc->tabulations[i]);
 			verb_tabulation *vt = &(vc->tabulations[i]);
 			if (WordAssemblages::eq(
@@ -92,12 +92,12 @@ int Conjugation::eq(verb_conjugation *nvc, verb_conjugation *vc) {
 void Conjugation::write(OUTPUT_STREAM, verb_conjugation *vc) {
 	WRITE("Infinitive: %A / Present participle: %A / Past participle: %A^",
 		&(vc->infinitive), &(vc->present_participle), &(vc->past_participle));
-	int mood_count = 2;
-	if (WordAssemblages::nonempty(vc->tabulations[PASSIVE_MOOD].to_be_auxiliary))
-		mood_count = 1;
-	for (int mood=0; mood<mood_count; mood++) {
+	int voice_count = 2;
+	if (WordAssemblages::nonempty(vc->tabulations[PASSIVE_VOICE].to_be_auxiliary))
+		voice_count = 1;
+	for (int voice=0; voice<voice_count; voice++) {
 		for (int sense=0; sense<NO_KNOWN_SENSES; sense++) {
-			if (mood == 0) WRITE("Active "); else WRITE("Passive ");
+			if (voice == 0) WRITE("Active "); else WRITE("Passive ");
 			if (sense == 0) WRITE("positive^"); else WRITE("negative^");
 			for (int tense=0; tense<NO_KNOWN_TENSES; tense++) {
 				WRITE("Tense %d: ", tense);
@@ -105,10 +105,10 @@ void Conjugation::write(OUTPUT_STREAM, verb_conjugation *vc) {
 				for (int n=0; n<NO_KNOWN_NUMBERS; n++)
 					for (int p=0; p<NO_KNOWN_PERSONS; p++) {
 						word_assemblage *wa;
-						if (mood == 0)
-							wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][p][n]);
+						if (voice == 0)
+							wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][p][n]);
 						else
-							wa = &(vc->tabulations[PASSIVE_MOOD].vc_text[tense][sense][p][n]);
+							wa = &(vc->tabulations[PASSIVE_VOICE].vc_text[tense][sense][p][n]);
 						if (person++ > 0) WRITE(" / ");
 						if (WordAssemblages::nonempty(*wa)) WRITE("%A", wa);
 						else WRITE("--");
@@ -117,9 +117,9 @@ void Conjugation::write(OUTPUT_STREAM, verb_conjugation *vc) {
 			}
 		}
 	}
-	if (WordAssemblages::nonempty(vc->tabulations[PASSIVE_MOOD].to_be_auxiliary))
+	if (WordAssemblages::nonempty(vc->tabulations[PASSIVE_VOICE].to_be_auxiliary))
 		WRITE("Form passive as to be + %A\n",
-			&(vc->tabulations[PASSIVE_MOOD].to_be_auxiliary));
+			&(vc->tabulations[PASSIVE_VOICE].to_be_auxiliary));
 }
 
 @h Making conjugations.
@@ -201,15 +201,15 @@ Note that verb form 0 can't be overridden: that was the base text.
 	return vc;
 
 @<Start by blanking out all the passive and active slots@> =
-	vc->tabulations[ACTIVE_MOOD].to_be_auxiliary = WordAssemblages::lit_0();
-	vc->tabulations[PASSIVE_MOOD].to_be_auxiliary = WordAssemblages::lit_0();
+	vc->tabulations[ACTIVE_VOICE].to_be_auxiliary = WordAssemblages::lit_0();
+	vc->tabulations[PASSIVE_VOICE].to_be_auxiliary = WordAssemblages::lit_0();
 	for (int t=0; t<NO_KNOWN_TENSES; t++)
 		for (int s=0; s<NO_KNOWN_SENSES; s++)
 			for (int n=0; n<NO_KNOWN_NUMBERS; n++)
 				for (int p=0; p<NO_KNOWN_PERSONS; p++) {
-					vc->tabulations[ACTIVE_MOOD].vc_text[t][s][p][n] =
+					vc->tabulations[ACTIVE_VOICE].vc_text[t][s][p][n] =
 						WordAssemblages::lit_0();
-					vc->tabulations[PASSIVE_MOOD].vc_text[t][s][p][n] =
+					vc->tabulations[PASSIVE_VOICE].vc_text[t][s][p][n] =
 						WordAssemblages::lit_0();
 				}
 
@@ -243,7 +243,7 @@ rest. (The selector is always just a single token.)
 	@<Parse the slot selector@>;
 
 	if (set_tba)
-		vc->tabulations[PASSIVE_MOOD].to_be_auxiliary =
+		vc->tabulations[PASSIVE_VOICE].to_be_auxiliary =
 			Conjugation::merge(line, POSITIVE_SENSE, IS_TENSE, FIRST_PERSON,
 				SINGULAR_NUMBER, MAX_FORM_TYPES+1, verb_forms, nl, NULL);
 
@@ -253,22 +253,22 @@ rest. (The selector is always just a single token.)
 				for (int p=0; p<NO_KNOWN_PERSONS; p++) {
 					if ((sense_set >= 0) && (sense != sense_set)) continue;
 					if ((tense_set >= 0) && (tense != tense_set)) continue;
-					if (active_set) @<Apply to the active mood@>
-					else @<Apply to the passive mood@>;
+					if (active_set) @<Apply to the active voice@>
+					else @<Apply to the passive voice@>;
 				}
 
-@<Apply to the active mood@> =
-	vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][p][n] =
+@<Apply to the active voice@> =
+	vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][p][n] =
 		Conjugation::merge(line, sense, tense, p, n, MAX_FORM_TYPES+1, verb_forms, nl,
-			&(vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][p][n]));
+			&(vc->tabulations[ACTIVE_VOICE].modal_auxiliary_usage[tense][sense][p][n]));
 
-@<Apply to the passive mood@> =
-	vc->tabulations[PASSIVE_MOOD].vc_text[tense][sense][p][n] =
+@<Apply to the passive voice@> =
+	vc->tabulations[PASSIVE_VOICE].vc_text[tense][sense][p][n] =
 		Conjugation::merge(line, sense, tense, p, n, MAX_FORM_TYPES+1, verb_forms, nl,
-			&(vc->tabulations[PASSIVE_MOOD].modal_auxiliary_usage[tense][sense][p][n]));
+			&(vc->tabulations[PASSIVE_VOICE].modal_auxiliary_usage[tense][sense][p][n]));
 
-@ The selector tells us which tense(s), sense(s) and mood(s) to apply the
-line to; |a3|, for example, means active mood, tense 3, in both positive
+@ The selector tells us which tense(s), sense(s) and voice(s) to apply the
+line to; |a3|, for example, means active voice, tense 3, in both positive
 and negative senses.
 
 @<Parse the slot selector@> =
@@ -303,7 +303,7 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 			package_request *R =
 				Hierarchy::package(Modules::find(vc->where_vc_created), MVERBS_HAP);
 			TEMPORARY_TEXT(ANT)
-			WRITE_TO(ANT, "%A (modal)", &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][THIRD_PERSON]));
+			WRITE_TO(ANT, "%A (modal)", &(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][POSITIVE_SENSE][THIRD_PERSON]));
 			Hierarchy::markup(R, MVERB_NAME_HMD, ANT);
 			DISCARD_TEXT(ANT)
 			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
@@ -619,7 +619,7 @@ make use of the numbered verb forms if we want it to.
 			case 2: wa = WordAssemblages::join(wa, aux->present_participle); break;
 			case 3: wa = WordAssemblages::join(wa, aux->past_participle); break;
 			case -1: wa = WordAssemblages::join(wa,
-				aux->tabulations[ACTIVE_MOOD].vc_text[T][S][person][number]); break;
+				aux->tabulations[ACTIVE_VOICE].vc_text[T][S][person][number]); break;
 			default: internal_error("only parts 1, 2, 3 can be extracted");
 		}
 		continue;

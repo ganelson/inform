@@ -269,8 +269,8 @@ in a canonical verbal form. For example, "translate into |+| as".
 	if (vc) {
 		int p = VerbUsages::adaptive_person(vc->defined_in);
 		int n = VerbUsages::adaptive_number(vc->defined_in);
-		word_assemblage we_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
-		word_assemblage we_dont_form = (vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
+		word_assemblage we_form = (vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
+		word_assemblage we_dont_form = (vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
 		vf->infinitive_reference_text = vc->infinitive;
 		vf->pos_reference_text = we_form;
 		vf->neg_reference_text = we_dont_form;

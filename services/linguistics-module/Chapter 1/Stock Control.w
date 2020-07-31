@@ -125,7 +125,7 @@ void Stock::log_all(void) {
 @ The stock inventory can also be used to make references. Using the stock
 ID number (plus 1) as the reference ID of a linguistic constant reference,
 we can effectively have a single |int| value refer to a stock item together
-with any combination of gender, person, number, mood, case, tense, and sense.
+with any combination of gender, person, number, voice, case, tense, and sense.
 The "plus 1" is so that a reference ID of zeri can mean "no item".
 
 =

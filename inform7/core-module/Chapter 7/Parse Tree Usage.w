@@ -201,7 +201,6 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(ADJECTIVE_NT, aph_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, negated_boolean_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, article_ANNOT);
-	Annotations::allow(VERB_NT, examine_for_ofs_ANNOT);
 	Annotations::allow(VERB_NT, rule_placement_sense_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, creation_site_ANNOT);

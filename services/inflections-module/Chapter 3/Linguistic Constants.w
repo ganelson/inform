@@ -25,11 +25,11 @@ languages.
 @d SINGULAR_NUMBER 0
 @d PLURAL_NUMBER 1
 
-@ And two moods:
+@ And two voices:
 
-@d NO_KNOWN_MOODS 2
-@d ACTIVE_MOOD 0
-@d PASSIVE_MOOD 1
+@d NO_KNOWN_VOICES 2
+@d ACTIVE_VOICE 0
+@d PASSIVE_VOICE 1
 
 @ And two senses:
 
@@ -61,8 +61,8 @@ tense 5 for the past historic.
 @h Packed references.
 The following enables even a 32-bit integer to hold an ID reference in the
 range 0 to 128K, together with any combination of gender, person, number,
-mood, case, tense, and sense. This could be optimised further, exploiting
-for example that no grammatical concept ever simultaneously has mood and
+voice, case, tense, and sense. This could be optimised further, exploiting
+for example that no grammatical concept ever simultaneously has voice and
 gender, but it seems unlikely that there's any need.
 
 If the 128K limit on references ever becomes problematic, which seems very
@@ -80,7 +80,7 @@ values, and at present Preform return values are |int|.
     gender  xx..............................
     person  ..xx............................
     number  ....x...........................
-    mood    .....x..........................
+    voice   .....x..........................
     case    ......xxxxx.....................
 	tense   ...........xxx..................
 	sense   ..............x.................
@@ -93,8 +93,8 @@ values, and at present Preform return values are |int|.
 @d PERSON_LCMASK 0x0000000C
 @d NUMBER_LCBASE 0x00000010
 @d NUMBER_LCMASK 0x00000010
-@d MOOD_LCBASE   0x00000020
-@d MOOD_LCMASK   0x00000020
+@d VOICE_LCBASE  0x00000020
+@d VOICE_LCMASK  0x00000020
 @d CASE_LCBASE   0x00000040
 @d CASE_LCMASK   0x000007C0
 @d TENSE_LCBASE  0x00000800
@@ -112,7 +112,7 @@ int Lcon::get_id(lcon_ti l)     { return (int) l/ID_LCBASE; }
 int Lcon::get_gender(lcon_ti l) { return (int) (l & GENDER_LCMASK) / GENDER_LCBASE; }
 int Lcon::get_person(lcon_ti l) { return (int) (l & PERSON_LCMASK) / PERSON_LCBASE; }
 int Lcon::get_number(lcon_ti l) { return (int) (l & NUMBER_LCMASK) / NUMBER_LCBASE; }
-int Lcon::get_mood(lcon_ti l)   { return (int) (l & MOOD_LCMASK) / MOOD_LCBASE; }
+int Lcon::get_voice(lcon_ti l)   { return (int) (l & VOICE_LCMASK) / VOICE_LCBASE; }
 int Lcon::get_case(lcon_ti l)   { return (int) (l & CASE_LCMASK) / CASE_LCBASE; }
 int Lcon::get_tense(lcon_ti l)  { return (int) (l & TENSE_LCMASK) / TENSE_LCBASE; }
 int Lcon::get_sense(lcon_ti l)  { return (int) (l & SENSE_LCMASK) / SENSE_LCBASE; }
@@ -121,7 +121,7 @@ lcon_ti Lcon::set_id(lcon_ti l, int id) { return (l & ID_LCUNMASK) + id*ID_LCBAS
 lcon_ti Lcon::set_gender(lcon_ti l, int x) { return (l & (~GENDER_LCMASK)) + x*GENDER_LCBASE; }
 lcon_ti Lcon::set_person(lcon_ti l, int x) { return (l & (~PERSON_LCMASK)) + x*PERSON_LCBASE; }
 lcon_ti Lcon::set_number(lcon_ti l, int x) { return (l & (~NUMBER_LCMASK)) + x*NUMBER_LCBASE; }
-lcon_ti Lcon::set_mood(lcon_ti l, int x)   { return (l & (~MOOD_LCMASK)) + x*MOOD_LCBASE; }
+lcon_ti Lcon::set_voice(lcon_ti l, int x)   { return (l & (~VOICE_LCMASK)) + x*VOICE_LCBASE; }
 lcon_ti Lcon::set_case(lcon_ti l, int x)   { return (l & (~CASE_LCMASK)) + x*CASE_LCBASE; }
 lcon_ti Lcon::set_tense(lcon_ti l, int x)  { return (l & (~TENSE_LCMASK)) + x*TENSE_LCBASE; }
 lcon_ti Lcon::set_sense(lcon_ti l, int x)  { return (l & (~SENSE_LCMASK)) + x*SENSE_LCBASE; }
@@ -154,9 +154,9 @@ void Lcon::write_sense(OUTPUT_STREAM, int s) {
 	if (s == POSITIVE_SENSE) WRITE("+ve");
 }
 
-void Lcon::write_mood(OUTPUT_STREAM, int m) {
-	if (m == ACTIVE_MOOD) WRITE("act");
-	if (m == PASSIVE_MOOD) WRITE("pass");
+void Lcon::write_voice(OUTPUT_STREAM, int m) {
+	if (m == ACTIVE_VOICE)  WRITE("act");
+	if (m == PASSIVE_VOICE) WRITE("pass");
 }
 
 void Lcon::write_tense(OUTPUT_STREAM, int t) {
@@ -196,8 +196,8 @@ int Lcon::same_but_for_number(lcon_ti A, lcon_ti B) {
 	return FALSE;
 }
 
-int Lcon::same_but_for_mood(lcon_ti A, lcon_ti B) {
-	if ((A - (A & MOOD_LCMASK)) == (B - (B & MOOD_LCMASK))) return TRUE;
+int Lcon::same_but_for_voice(lcon_ti A, lcon_ti B) {
+	if ((A - (A & VOICE_LCMASK)) == (B - (B & VOICE_LCMASK))) return TRUE;
 	return FALSE;
 }
 
@@ -229,7 +229,7 @@ sum of these can represent a set of things we're interested in:
 @d GENDER_LCW 1
 @d PERSON_LCW 2
 @d NUMBER_LCW 4
-@d MOOD_LCW   8
+@d VOICE_LCW  8
 @d CASE_LCW   16
 @d TENSE_LCW  32
 @d SENSE_LCW  64
@@ -254,7 +254,7 @@ void Lcon::write_value_on_axis(OUTPUT_STREAM, int axis, int v) {
 		case GENDER_LCW: Lcon::write_gender(OUT, v); break;
 		case PERSON_LCW: Lcon::write_person(OUT, v); break;
 		case NUMBER_LCW: Lcon::write_number(OUT, v); break;
-		case MOOD_LCW: Lcon::write_mood(OUT, v); break;
+		case VOICE_LCW: Lcon::write_voice(OUT, v); break;
 		case CASE_LCW: Lcon::write_case(OUT, v); break;
 		case TENSE_LCW: Lcon::write_tense(OUT, v); break;
 		case SENSE_LCW: Lcon::write_sense(OUT, v); break;
@@ -267,7 +267,7 @@ int Lcon::get_value_on_axis(int axis, lcon_ti A) {
 		case GENDER_LCW: return Lcon::get_gender(A);
 		case PERSON_LCW: return Lcon::get_person(A);
 		case NUMBER_LCW: return Lcon::get_number(A);
-		case MOOD_LCW: return Lcon::get_mood(A);
+		case VOICE_LCW: return Lcon::get_voice(A);
 		case CASE_LCW: return Lcon::get_case(A);
 		case TENSE_LCW: return Lcon::get_tense(A);
 		case SENSE_LCW: return Lcon::get_sense(A);
@@ -281,7 +281,7 @@ int Lcon::same_but_for_value_on_axis(int axis, lcon_ti A, lcon_ti B) {
 		case GENDER_LCW: return Lcon::same_but_for_gender(A, B);
 		case PERSON_LCW: return Lcon::same_but_for_person(A, B);
 		case NUMBER_LCW: return Lcon::same_but_for_number(A, B);
-		case MOOD_LCW: return Lcon::same_but_for_mood(A, B);
+		case VOICE_LCW: return Lcon::same_but_for_voice(A, B);
 		case CASE_LCW: return Lcon::same_but_for_case(A, B);
 		case TENSE_LCW: return Lcon::same_but_for_tense(A, B);
 		case SENSE_LCW: return Lcon::same_but_for_sense(A, B);
@@ -316,7 +316,7 @@ allocation, we're simply going to make our working arrays quite large. But
 this is fine -- the function is for printing, so it's not used much.
 
 @d MAX_LCON_SET_SIZE
-	NO_KNOWN_GENDERS*NO_KNOWN_PERSONS*NO_KNOWN_NUMBERS*NO_KNOWN_MOODS*
+	NO_KNOWN_GENDERS*NO_KNOWN_PERSONS*NO_KNOWN_NUMBERS*NO_KNOWN_VOICES*
 		NO_KNOWN_SENSES*MAX_GRAMMATICAL_CASES*NO_KNOWN_TENSES
 
 @ We are going to aggregate items in the list into numbered cuboids. The

@@ -14,7 +14,7 @@ be turned into one of the following structures:
 
 =
 typedef struct verb_usage {
-	struct grammatical_usage *usage;        /* includes verb, mood, tense, sense */
+	struct grammatical_usage *usage;        /* includes verb, voice, tense, sense */
 	struct word_assemblage vu_text;			/* text to recognise */
 	int vu_allow_unexpected_upper_case; 	/* for verbs like "to Hoover" or "to Google" */
 	struct verb_usage *next_in_search_list; /* within a linked list of all usages in length order */
@@ -35,7 +35,7 @@ void VerbUsages::write_usage(OUTPUT_STREAM, verb_usage *vu) {
 	WRITE(" {verb");
 	verb *V = VerbUsages::get_verb(vu);
 	if (V) WRITE(" '%A'", &(V->conjugation->infinitive));
-	Stock::write_usage(OUT, vu->usage, SENSE_LCW+MOOD_LCW+TENSE_LCW+PERSON_LCW+NUMBER_LCW);
+	Stock::write_usage(OUT, vu->usage, SENSE_LCW+VOICE_LCW+TENSE_LCW+PERSON_LCW+NUMBER_LCW);
 	WRITE("}");
 }
 
@@ -145,11 +145,11 @@ void VerbUsages::register_all_usages_of_verb(verb *vi,
 	IndexLexicon::new_main_verb(vc->infinitive, VERB_LEXE);
 	#endif
 
-	VerbUsages::register_moods_of_verb(vc, ACTIVE_MOOD, vi,
+	VerbUsages::register_voices_of_verb(vc, ACTIVE_VOICE, vi,
 		unexpected_upper_casing_used, priority, where);
 
 	if (vi != copular_verb) {
-		VerbUsages::register_moods_of_verb(vc, PASSIVE_MOOD, vi,
+		VerbUsages::register_voices_of_verb(vc, PASSIVE_VOICE, vi,
 			unexpected_upper_casing_used, priority, where);
 		@<Add present participle forms@>;
 	}
@@ -182,15 +182,15 @@ meaning. Both forms are then internally implemented as prepositional forms
 of "to be", which is convenient however dubious in linguistic terms.
 
 =
-void VerbUsages::register_moods_of_verb(verb_conjugation *vc, int mood,
+void VerbUsages::register_voices_of_verb(verb_conjugation *vc, int voice,
 	verb *vi, int unexpected_upper_casing_used, int priority, parse_node *where) {
-	verb_tabulation *vt = &(vc->tabulations[mood]);
+	verb_tabulation *vt = &(vc->tabulations[voice]);
 	if (WordAssemblages::nonempty(vt->to_be_auxiliary)) {
 		preposition *prep =
 			Prepositions::make(vt->to_be_auxiliary, unexpected_upper_casing_used,
 			where);
 		Verbs::add_form(copular_verb, prep, NULL,
-			VerbMeanings::indirected(vi, (mood == PASSIVE_MOOD)?TRUE:FALSE),
+			VerbMeanings::indirected(vi, (voice == PASSIVE_VOICE)?TRUE:FALSE),
 			SVO_FS_BIT);
 		return;
 	}
@@ -207,7 +207,7 @@ the persons from 1PS to 3PP.
 Moreover, we need to group together identical wordings, so that each is
 registered only once, but with an accumulated grammatical usage marker.
 For example, consider the regular English verb "to carry". Of the six present
-tense active mood forms, only one -- "carries" -- uniquely identifies its
+tense active voice forms, only one -- "carries" -- uniquely identifies its
 number and person (i.e., as third person singular); the other five are all
 "carry". So we make two registrations, one with a //grammatical_usage//
 containing a single linguistic constant, the other with one containing five.
@@ -265,7 +265,7 @@ to be this long just in case:
 
 @<Add this form to the to-do list@> =
 	lcon_ti l = Verbs::to_lcon(vi);
-	l = Lcon::set_mood(l, mood);
+	l = Lcon::set_voice(l, voice);
 	l = Lcon::set_tense(l, tense);
 	l = Lcon::set_sense(l, sense);
 	l = Lcon::set_person(l, person);
@@ -390,7 +390,7 @@ int VerbUsages::is_foreign(verb_usage *vu) {
 VERB_MEANING_LINGUISTICS_TYPE *VerbUsages::get_regular_meaning(verb_usage *vu, preposition *prep, preposition *second_prep) {
 	if (vu == NULL) return NULL;
 	VERB_MEANING_LINGUISTICS_TYPE *root = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(VerbUsages::get_verb(vu), prep, second_prep));
-	if ((root) && (VerbUsages::get_mood(vu) == PASSIVE_MOOD) && (root != VERB_MEANING_EQUALITY))
+	if ((root) && (VerbUsages::get_voice(vu) == PASSIVE_VOICE) && (root != VERB_MEANING_EQUALITY))
 		root = VerbMeanings::reverse_VMT(root);
 	return root;
 }
@@ -400,8 +400,8 @@ verb *VerbUsages::get_verb(verb_usage *vu) {
 	return NULL;
 }
 
-int VerbUsages::get_mood(verb_usage *vu) {
-	return Lcon::get_mood(Stock::first_form_in_usage(vu->usage));
+int VerbUsages::get_voice(verb_usage *vu) {
+	return Lcon::get_voice(Stock::first_form_in_usage(vu->usage));
 }
 
 int VerbUsages::get_tense_used(verb_usage *vu) {
@@ -586,8 +586,8 @@ uses of verbs:
 		if (vc->auxiliary_only == FALSE) {
 			int p = VerbUsages::adaptive_person(vc->defined_in);
 			int n = VerbUsages::adaptive_number(vc->defined_in);
-			word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
-			word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
+			word_assemblage *we_form = &(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
+			word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
 			if (WordAssemblages::compare_with_wording(we_form, W)) {
 				==> { FALSE, vc }; return TRUE;
 			}
@@ -650,9 +650,9 @@ or "the verb to be able to see" use these.
 		if (vc->auxiliary_only == FALSE) {
 			int p = VerbUsages::adaptive_person(vc->defined_in);
 			int n = VerbUsages::adaptive_number(vc->defined_in);
-			if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[IS_TENSE][POSITIVE_SENSE][p][n] != 0) {
-				word_assemblage *we_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
-				word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_MOOD].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
+			if (vc->tabulations[ACTIVE_VOICE].modal_auxiliary_usage[IS_TENSE][POSITIVE_SENSE][p][n] != 0) {
+				word_assemblage *we_form = &(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][POSITIVE_SENSE][p][n]);
+				word_assemblage *we_dont_form = &(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][NEGATIVE_SENSE][p][n]);
 				if (WordAssemblages::compare_with_wording(we_form, W)) {
 					==> { FALSE, vc }; return TRUE;
 				}

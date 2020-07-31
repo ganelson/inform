@@ -490,7 +490,7 @@ be used with other languages too.
 
 Inform uses five different tenses (present, past, present perfect, past
 perfect, and future), three persons, two numbers, two senses (true
-and false), and two moods (active and passive); in addition, it keeps
+and false), and two voices (active and passive); in addition, it keeps
 track of the infinitive, past participle and present participle of a verb.
 Altogether that makes 123 potentially different versions of the original
 text. But of course there's a great deal of duplication in this, and
@@ -670,7 +670,7 @@ for "[have]".
 	<to-have-tabulation>
 
 @ Tabulations give instructions for how to construct 120 possible versions
-of the verb. These are divided up first into active and passive "moods":
+of the verb. These are divided up first into active and passive "voices":
 
 >> Peter carries the lantern. [Active.]
 >> The lantern is carried by Peter. [Passive.]
@@ -700,7 +700,7 @@ And that makes six sets of 2: the positive sense and the negative.
 >> I carry the lantern. [Positive.]
 >> I do not carry the lantern. [Negative]
 
-To sum up, two moods times five tenses times six persons times two senses,
+To sum up, two voices times five tenses times six persons times two senses,
 which makes 120 versions in all.
 
 A tabulation is best thought of as a short program to make these. Inform starts
@@ -715,7 +715,7 @@ chooses which of the 120 forms to set. The selector always begins with "a"
 or "p", meaning active or passive; it can then optionally give a digit from
 1 to 5, narrowing down to a given tense; and it can optionally give a plus or
 minus sign, narrowing down to positive or negative senses. In the following,
-for example, |a2+| means active mood (a), past tense (2), positive (|+|).
+for example, |a2+| means active voice (a), past tense (2), positive (|+|).
 This nails down the selection to just 6 versions of the verb.
 
 The text is used literally, except for the following:

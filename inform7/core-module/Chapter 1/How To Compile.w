@@ -131,11 +131,10 @@ most of these worker functions are in the |core| module, some are not.
 	Task::advance_stage_to(SEMANTIC_I_CSEQ, I"Semantic analysis Ib", -1);
 	BENCH(BootVerbs::bootstrap)
 	BENCH(Classifying::traverse)
-	BENCH(Sentences::Rearrangement::tidy_up_ofs_and_froms)
 	BENCH(Sentences::RuleSubtrees::register_recently_lexed_phrases)
+	BENCH(ParseTreeUsage::verify)
 
 	Task::advance_stage_to(SEMANTIC_II_CSEQ, I"Semantic analysis II", -1);
-	BENCH(ParseTreeUsage::verify)
 	BENCH(Sentences::Headings::make_the_tree)
 	BENCH(Sentences::Headings::write_as_xml)
 	BENCH(Modules::traverse_to_define)

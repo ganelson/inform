@@ -66,7 +66,6 @@ material intended only for certain target virtual machines included or
 excluded as need be."
 	Parse Tree Usage
 	Headings
-	Of and From
 	Rule Subtrees
 
 Chapter 8: Extensions
@@ -158,6 +157,7 @@ objects, but also other enumerated constant values, and so on."
 	Properties
 	Either-Or Properties
 	Valued Properties
+	Property Sentences
 	Condition Properties
 	Indefinite Appearance
 	The Provision Relation

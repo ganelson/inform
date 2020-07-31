@@ -214,7 +214,7 @@ numbered upwards from 1 to, in principle, 99. See //Declensions::decline_from_gr
 
 @h Verb conjugations.
 This module supplies an extensive system for conjugating verbs. A full set
-of inflected forms for a verb, in all its tenses, moods and so on, is stored
+of inflected forms for a verb, in all its tenses, voices and so on, is stored
 in a //verb_conjugation// object. Making these objects is a nontrivial task:
 see the function //Conjugation::conjugate//.
 

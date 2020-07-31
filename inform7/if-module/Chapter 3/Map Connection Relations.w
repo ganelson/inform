@@ -110,6 +110,16 @@ this to other languages.)
 	inside |
 	outside
 
+@ Directions are detected in sentences having the form "D is a direction." This
+is intentionally done very early on.
+
+@d MAX_DIRECTIONS 100 /* the Standard Rules define only 12, so this is plenty */
+
+=
+parse_node *directions_noticed[MAX_DIRECTIONS];
+binary_predicate *direction_relations_noticed[MAX_DIRECTIONS];
+int no_directions_noticed = 0;
+
 @
 
 @d MAX_MAPPING_RELATION_NAME_LENGTH MAX_WORDS_IN_DIRECTION*MAX_WORD_LENGTH+10
@@ -168,7 +178,7 @@ void PL::MapDirections::make_mapped_predicate(instance *I, inter_name *ident) {
 	wording W = Instances::get_name(I, FALSE);
 	if ((Wordings::empty(W)) || (Wordings::length(W) > MAX_WORDS_IN_DIRECTION))
 		internal_error("bad direction name");
-	binary_predicate *bp = Sentences::Rearrangement::relation_noticed(mmp_call_counter++);
+	binary_predicate *bp = direction_relations_noticed[mmp_call_counter++];
 	if (bp == NULL) {
 		LOG("Improper text: %W\n", W);
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ImproperlyMadeDirection),
@@ -187,6 +197,29 @@ void PL::MapDirections::make_mapped_predicate(instance *I, inter_name *ident) {
 	bp->make_true_function = Calculus::Schemas::new("AssertMapConnection(*2,%n,*1)", ident);
 	bp->make_false_function = Calculus::Schemas::new("AssertMapUnconnection(*2,%n,*1)", ident);
 	PF_I(map, I)->direction_relation = bp;
+}
+
+@ 
+
+=
+void PL::MapDirections::look_for_direction_creation(parse_node *pn) {
+	if (Node::get_type(pn) != SENTENCE_NT) return;
+	if ((pn->down == NULL) || (pn->down->next == NULL) || (pn->down->next->next == NULL)) return;
+	if (Node::get_type(pn->down) != VERB_NT) return;
+	if (Node::get_type(pn->down->next) != UNPARSED_NOUN_NT) return;
+	if (Node::get_type(pn->down->next->next) != UNPARSED_NOUN_NT) return;
+	current_sentence = pn;
+	pn = pn->down->next;
+	if (!((<notable-map-kinds>(Node::get_text(pn->next)))
+			&& (<<r>> == 0))) return;
+	if (no_directions_noticed >= MAX_DIRECTIONS) {
+		StandardProblems::limit_problem(Task::syntax_tree(), _p_(PM_TooManyDirections),
+			"different directions", MAX_DIRECTIONS);
+		return;
+	}
+	direction_relations_noticed[no_directions_noticed] =
+		PL::MapDirections::create_sketchy_mapping_direction(Node::get_text(pn));
+	directions_noticed[no_directions_noticed++] = pn;
 }
 
 @h Second stock.

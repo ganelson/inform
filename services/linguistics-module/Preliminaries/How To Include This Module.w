@@ -79,7 +79,7 @@ names are acceptable. See //Adjectives::declare//.
 give the parent control over which forms of verbs are allowed: for examole, //core//
 allows them in assertions only in the third person (singular or plural), whereas
 it allows them in any form in non-assertion contexts. See
-//VerbUsages::register_moods_of_verb//.
+//VerbUsages::register_voices_of_verb//.
 
 (*) |ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK|, if provided, should accompany a
 declaration of a structure called |adjecttve_compilation_data|; this function should

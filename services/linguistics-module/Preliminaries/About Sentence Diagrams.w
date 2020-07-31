@@ -22,7 +22,7 @@ in |_NT|. The text leading to the creation of the node then appears in quotes.
 After that are "annotations", written in braces.[2] In sentence (2), we see:
 
 (a) The |VERB_NT| node is annotated with its grammatical form -- it is "to be",
-in third person singular, active mood, present tense, and a negative sense --
+in third person singular, active voice, present tense, and a negative sense --
 and also its semantic meaning -- the equality relationship "is".
 (b) The second |UNPARSED_NOUN_NT| node is annotated with the article used to
 introduce it -- the indefinite article, "a", which could be any of masculine,

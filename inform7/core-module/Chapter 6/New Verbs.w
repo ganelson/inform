@@ -90,7 +90,7 @@ void NewVerbs::add_inequalities(void) {
 		}
 		grammatical_usage *gu = Stock::new_usage(v->in_stock, Task::language_of_syntax());
 		lcon_ti l = Verbs::to_lcon(v);
-		l = Lcon::set_mood(l, ACTIVE_MOOD);
+		l = Lcon::set_voice(l, ACTIVE_VOICE);
 		l = Lcon::set_tense(l, IS_TENSE);
 		l = Lcon::set_sense(l, POSITIVE_SENSE);
 		l = Lcon::set_person(l, THIRD_PERSON);
@@ -866,7 +866,7 @@ void NewVerbs::ConjugateVerb(void) {
 		for (int tense=0; tense<NO_KNOWN_TENSES; tense++)
 			for (int person=0; person<NO_KNOWN_PERSONS; person++)
 				for (int number=0; number<NO_KNOWN_NUMBERS; number++)
-					if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][person][number] != 0)
+					if (vc->tabulations[ACTIVE_VOICE].modal_auxiliary_usage[tense][sense][person][number] != 0)
 						modal_verb = TRUE;
 
 @<Compile conjugation in this sense@> =
@@ -876,7 +876,7 @@ void NewVerbs::ConjugateVerb(void) {
 		word_assemblage *common = NULL, *common_except_3PS = NULL;
 		for (int person=0; person<NO_KNOWN_PERSONS; person++)
 			for (int number=0; number<NO_KNOWN_NUMBERS; number++) {
-				word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][person][number]);
+				word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][person][number]);
 				if (WordAssemblages::nonempty(*wa)) {
 					if (some_exist) {
 						if (WordAssemblages::eq(wa, common) == FALSE)
@@ -892,7 +892,7 @@ void NewVerbs::ConjugateVerb(void) {
 						if ((person != THIRD_PERSON) || (number != SINGULAR_NUMBER))
 							common_except_3PS = wa;
 					}
-					if (vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][person][number] != 0)
+					if (vc->tabulations[ACTIVE_VOICE].modal_auxiliary_usage[tense][sense][person][number] != 0)
 						some_are_modal = TRUE;
 				}
 				else some_dont_exist = TRUE;
@@ -924,7 +924,7 @@ void NewVerbs::ConjugateVerb(void) {
 		Produce::down(Emit::tree());
 			for (int person=0; person<NO_KNOWN_PERSONS; person++)
 				for (int number=0; number<NO_KNOWN_NUMBERS; number++) {
-					word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][person][number]);
+					word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][person][number]);
 					if (WordAssemblages::nonempty(*wa)) {
 						Produce::inv_primitive(Emit::tree(), CASE_BIP);
 						Produce::down(Emit::tree());
@@ -932,7 +932,7 @@ void NewVerbs::ConjugateVerb(void) {
 							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) part);
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
-								int mau = vc->tabulations[ACTIVE_MOOD].modal_auxiliary_usage[tense][sense][person][number];
+								int mau = vc->tabulations[ACTIVE_VOICE].modal_auxiliary_usage[tense][sense][person][number];
 								NewVerbs::conj_from_wa(wa, vc, modal_to_s, mau);
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
@@ -951,18 +951,18 @@ void NewVerbs::ConjugateVerb(void) {
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][THIRD_PERSON][SINGULAR_NUMBER]);
+			word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][THIRD_PERSON][SINGULAR_NUMBER]);
 			NewVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
+			wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
 			NewVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
 @<Compile for the case where all six parts are the same@> =
-	word_assemblage *wa = &(vc->tabulations[ACTIVE_MOOD].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
+	word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
 	NewVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 
 @ =

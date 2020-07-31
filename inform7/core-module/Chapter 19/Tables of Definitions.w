@@ -97,7 +97,6 @@ int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The colours are defined by Table 1." */
 		case ACCEPT_SMFT:
 			if (<defined-by-sentence-object>(OW)) {
-				Annotations::write_int(V, examine_for_ofs_ANNOT, TRUE);
 				parse_node *O = <<rp>>;
 				<np-unparsed>(SW);
 				V->next = <<rp>>;

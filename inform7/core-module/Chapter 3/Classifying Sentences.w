@@ -28,10 +28,7 @@ void Classifying::visit(parse_node *p) {
 		SyntaxTree::toggle_trace(Task::syntax_tree());
 		Log::tracing_on(SyntaxTree::is_trace_set(Task::syntax_tree()), I"Diagramming");
 	}
-	if (Node::get_type(p) == SENTENCE_NT) {
-		Classifying::sentence(p);
-		Sentences::Rearrangement::check_sentence_for_direction_creation(p);
-	}
+	if (Node::get_type(p) == SENTENCE_NT) Classifying::sentence(p);
 }
 
 @ Certain extra sentences, called "inventions", are sometimes created after
@@ -76,6 +73,8 @@ See //linguistics: About Sentence Diagrams// for many examples.
 
 =
 void Classifying::sentence(parse_node *p) {
+	parse_node *save = current_sentence;
+	current_sentence = p;
 	if (Classifying::sentence_is_textual(p) == FALSE) {
 		wording W = Node::get_text(p);
 		if (<sentence-without-occurrences>(W)) {
@@ -86,11 +85,16 @@ void Classifying::sentence(parse_node *p) {
 			SyntaxTree::graft(Task::syntax_tree(), VP_PN, p);
 			if (SyntaxTree::is_trace_set(Task::syntax_tree())) LOG("$T\n", p);
 			@<Check that this is allowed, if it occurs in the Options file@>;
+			#ifdef IF_MODULE
+			PL::MapDirections::look_for_direction_creation(p);
+			#endif
+			PropertySentences::look_for_property_creation(p);
 		} else {
 			LOG("$T\n", p);
 			<no-primary-verb-diagnosis>(W);
 		}
 	}
+	current_sentence = save;
 }
 
 @<Issue PM_TwoLikelihoods problem@> =

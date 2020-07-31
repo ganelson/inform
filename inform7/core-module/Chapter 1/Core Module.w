@@ -440,7 +440,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e end_control_structure_used_ANNOT /* |control_structure_phrase|: for CODE BLOCK nodes only */
 @e epistemological_status_ANNOT /* |int|: a bitmap of results from checking an ambiguous reading */
 @e evaluation_ANNOT /* |parse_node|: result of evaluating the text */
-@e examine_for_ofs_ANNOT /* |int|: mark this as a possible site for removing "of" tree breaks */
 @e explicit_iname_ANNOT /* |inter_name|: is this value explicitly an iname? */
 @e explicit_literal_ANNOT /* |int|: my value is an explicit integer or text */
 @e explicit_vh_ANNOT /* |value_holster|: used for compiling I6-level properties */
