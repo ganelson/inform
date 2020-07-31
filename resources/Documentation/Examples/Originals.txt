@@ -6,7 +6,7 @@ We rely here on the understanding-by-relations rules we've already learned, but 
 
 	{*}"Originals"
 	
-	A model is a kind of thing. 100 models are in the model-repository. 
+	A model is a kind of thing. 10 models are in the model-repository. 
 
 	Appearance relates one thing to various models. The verb to be shown by means the appearance relation.
 	

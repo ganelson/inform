@@ -57,6 +57,11 @@ The verb to be less than means the numerically-less-than relation.
 The verb to be at least means the numerically-greater-than-or-equal-to relation.
 The verb to be at most means the numerically-less-than-or-equal-to relation.
 
+The operator > means the numerically-greater-than relation.
+The operator < means the numerically-less-than relation.
+The operator >= means the numerically-greater-than-or-equal-to relation.
+The operator <= means the numerically-less-than-or-equal-to relation.
+
 Use ineffectual translates as (- ! Use ineffectual does nothing. -).
 
 Use American dialect translates as (- Constant DIALECT_US; -).

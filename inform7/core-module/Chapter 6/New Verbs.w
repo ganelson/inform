@@ -70,35 +70,19 @@ notation rather than words. (This is why the variable |current_main_verb| is
 cleared.)
 
 =
-<inequality-conjugations> ::=
-	< |			/* implies the numerically-less-than relation */
-	> |			/* implies the numerically-greater-than relation */
-	<= |		/* implies the numerically-less-than-or-equal-to relation */
-	>=			/* implies the numerically-greater-than-or-equal-to relation */
-
-=
-void NewVerbs::add_inequalities(void) {
+void NewVerbs::add_operator(wording W, verb_meaning vm) {
 	current_main_verb = NULL;
-
-	for (int i=0; i<=3; i++) {
-		verb *v = NULL;
-		switch (i) {
-			case 0: v = Verbs::new_operator_verb(VerbMeanings::regular(R_numerically_less_than)); break;
-			case 1: v = Verbs::new_operator_verb(VerbMeanings::regular(R_numerically_greater_than)); break;
-			case 2: v = Verbs::new_operator_verb(VerbMeanings::regular(R_numerically_less_than_or_equal_to)); break;
-			case 3: v = Verbs::new_operator_verb(VerbMeanings::regular(R_numerically_greater_than_or_equal_to)); break;
-		}
-		grammatical_usage *gu = Stock::new_usage(v->in_stock, Task::language_of_syntax());
-		lcon_ti l = Verbs::to_lcon(v);
-		l = Lcon::set_voice(l, ACTIVE_VOICE);
-		l = Lcon::set_tense(l, IS_TENSE);
-		l = Lcon::set_sense(l, POSITIVE_SENSE);
-		l = Lcon::set_person(l, THIRD_PERSON);
-		l = Lcon::set_number(l, SINGULAR_NUMBER);
-		Stock::add_form_to_usage(gu, l);
-		VerbUsages::new(
-			PreformUtilities::wording(<inequality-conjugations>, i), FALSE, gu, NULL);
-	}
+	verb *v = Verbs::new_operator_verb(vm);
+	grammatical_usage *gu = Stock::new_usage(v->in_stock, Task::language_of_syntax());
+	lcon_ti l = Verbs::to_lcon(v);
+	l = Lcon::set_voice(l, ACTIVE_VOICE);
+	l = Lcon::set_tense(l, IS_TENSE);
+	l = Lcon::set_sense(l, POSITIVE_SENSE);
+	l = Lcon::set_person(l, THIRD_PERSON);
+	l = Lcon::set_number(l, SINGULAR_NUMBER);
+	Stock::add_form_to_usage(gu, l);
+	LOG("So W is %W\n", W);
+	VerbUsages::new(WordAssemblages::from_wording(W), FALSE, gu, NULL);
 }
 
 @h Parsing new verb declarations.
@@ -123,8 +107,8 @@ as the object.
 
 =
 <verb-implies-sentence-subject> ::=
-	in <natural-language> <infinitive-declaration> |  ==> { R[2], -, <<inform_language:nl>> = RP[1] }
-	<infinitive-declaration>                          ==> { R[1], -, <<inform_language:nl>> = DefaultLanguage::get(NULL) }
+	in <natural-language> <infinitive-declaration> |  ==> { R[2], RP[1] }
+	<infinitive-declaration>                          ==> { R[1], DefaultLanguage::get(NULL) }
 
 <infinitive-declaration> ::=
 	to <infinitive-usage> ( ... ) |                   ==> { R[1], -, <<giving-parts>> = TRUE }
@@ -238,7 +222,7 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 				<np-unparsed>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
-				NewVerbs::parse_new(V, FALSE);
+				NewVerbs::parse_new(V, FALSE, FALSE);
 				return TRUE;
 			}
 			break;
@@ -256,7 +240,8 @@ int NewVerbs::new_verb_SMF(int task, parse_node *V, wording *NPs) {
 <verb-means-sentence-subject-unarticled> ::=
 	verb to |                                                      ==> { fail }
 	verb <np-unparsed> in the imperative |                         ==> { TRUE, RP[1] }
-	verb <np-unparsed>                                             ==> { FALSE, RP[1] }
+	verb <np-unparsed> |                                           ==> { FALSE, RP[1] }
+	operator <np-unparsed>                                         ==> { NOT_APPLICABLE, RP[1] }
 
 @ =
 int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
@@ -265,11 +250,13 @@ int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
 	switch (task) { /* "The verb to grow means the growing relation." */
 		case ACCEPT_SMFT:
 			if (<verb-means-sentence-subject>(SW)) {
-				int imperative_flag = <<r>>;
+				int imperative_flag = FALSE, operator_flag = FALSE;
+				if (<<r>> == TRUE) imperative_flag = TRUE;
+				if (<<r>> == NOT_APPLICABLE) operator_flag = TRUE;
 				V->next = <<rp>>;
 				<np-articled>(OW);
 				V->next->next = <<rp>>;
-				NewVerbs::parse_new(V, imperative_flag);
+				NewVerbs::parse_new(V, imperative_flag, operator_flag);
 				return TRUE;
 			}
 			break;
@@ -278,8 +265,7 @@ int NewVerbs::verb_means_SMF(int task, parse_node *V, wording *NPs) {
 }
 
 @ =
-int new_verb_sequence_count = 0;
-void NewVerbs::parse_new(parse_node *PN, int imperative) {
+void NewVerbs::parse_new(parse_node *PN, int imperative, int operator) {
 	wording PW = EMPTY_WORDING; /* wording of the parts of speech */
 	verb_meaning vm = VerbMeanings::meaninglessness(); int meaning_given = FALSE;
 	int priority = -1;
@@ -287,8 +273,13 @@ void NewVerbs::parse_new(parse_node *PN, int imperative) {
 	if (PN->next->next)
 		@<Find the underlying relation of the new verb or preposition@>;
 
+	if ((operator) && (<verb-means-sentence-subject>(Node::get_text(PN->next)))) {
+		NewVerbs::add_operator(Node::get_text(<<rp>>), vm);
+		return;
+	}
+
 	if (<verb-implies-sentence-subject>(Node::get_text(PN->next))) {
-		inform_language *nl = <<inform_language:nl>>;
+		inform_language *nl = <<rp>>;
 		int r = <<r>>;
 		wording W = GET_RW(<infinitive-usage>, 1);
 		if (<<giving-parts>>) PW = GET_RW(<infinitive-declaration>, 1);
@@ -589,7 +580,6 @@ foreign verbs (4).
 	if (bp == a_has_b_predicate) p = 1;
 	if (bp == R_equality) p = 2;
 	if ((nl) && (nl != DefaultLanguage::get(NULL))) p = 5;
-	++new_verb_sequence_count;
 	vi = Verbs::new_verb(vc, FALSE);
 	vc->vc_conjugates = vi;
 	if (priority >= 1) p = priority;

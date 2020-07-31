@@ -157,6 +157,22 @@ ROOT_NT
                         VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                         UNPARSED_NOUN_NT'to be at most'
                         UNPARSED_NOUN_NT'numerically-less-than-or-equal-to relation' {definite 'the' n/m/f s/p nom/acc}
+                    SENTENCE_NT'the operator > means the numerically-greater-than relation'
+                        VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
+                        UNPARSED_NOUN_NT'>'
+                        UNPARSED_NOUN_NT'numerically-greater-than relation' {definite 'the' n/m/f s/p nom/acc}
+                    SENTENCE_NT'the operator < means the numerically-less-than relation'
+                        VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
+                        UNPARSED_NOUN_NT'<'
+                        UNPARSED_NOUN_NT'numerically-less-than relation' {definite 'the' n/m/f s/p nom/acc}
+                    SENTENCE_NT'the operator >= means the numerically-greater-than-or-equal-'
+                        VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
+                        UNPARSED_NOUN_NT'>='
+                        UNPARSED_NOUN_NT'numerically-greater-than-or-equal-to relation' {definite 'the' n/m/f s/p nom/acc}
+                    SENTENCE_NT'the operator <= means the numerically-less-than-or-equal-to '
+                        VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
+                        UNPARSED_NOUN_NT'<='
+                        UNPARSED_NOUN_NT'numerically-less-than-or-equal-to relation' {definite 'the' n/m/f s/p nom/acc}
                     SENTENCE_NT'use ineffectual translates as (-  ! Use ineffectual does not'
                         VERB_NT'translates as' {verb 'translate' 3p s act IS_TENSE +ve} {special meaning: use-translates}
                         UNPARSED_NOUN_NT'ineffectual'
@@ -6984,10 +7000,10 @@ ROOT_NT
                                                 TEST_PROPOSITION_NT'o is a thing'(test: [ kind=thing('o') ])
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT
-                                            INVOCATION_LIST_NT'if n <= 0'
-                                                INVOCATION_NT'if n <= 0'
-                                                    CONDITION_CONTEXT_NT'n <= 0'
-                                                        TEST_PROPOSITION_NT'n <= 0'(test: [ at-most('n', '0') ])
+                                            INVOCATION_LIST_NT'if n is at most 0'
+                                                INVOCATION_NT'if n is at most 0'
+                                                    CONDITION_CONTEXT_NT'n is at most 0'
+                                                        TEST_PROPOSITION_NT'n is at most 0'(test: [ at-most('n', '0') ])
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'now o is mentioned'
                                                     CONDITION_CONTEXT_NT'o is mentioned'
@@ -7015,10 +7031,10 @@ ROOT_NT
                                                         RVALUE_CONTEXT_NT'table of locale priorities'
                                                             {table of locale priorities = TABLE_MC}'table of locale priorities'-table name
                                                 CODE_BLOCK_NT
-                                                    INVOCATION_LIST_NT'if n <= 0'
-                                                        INVOCATION_NT'if n <= 0'
-                                                            CONDITION_CONTEXT_NT'n <= 0'
-                                                                TEST_PROPOSITION_NT'n <= 0'(test: [ at-most('n', '0') ])
+                                                    INVOCATION_LIST_NT'if n is at most 0'
+                                                        INVOCATION_NT'if n is at most 0'
+                                                            CONDITION_CONTEXT_NT'n is at most 0'
+                                                                TEST_PROPOSITION_NT'n is at most 0'(test: [ at-most('n', '0') ])
                                                     CODE_BLOCK_NT
                                                         INVOCATION_LIST_NT'blank out the whole row'
                                                             INVOCATION_NT'blank out the whole row'

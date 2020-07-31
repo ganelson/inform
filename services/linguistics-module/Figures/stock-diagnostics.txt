@@ -2,11 +2,11 @@ adjective: 137 items
 article: 2 items
 noun: 2381 items
 pronoun: 8 items
-preposition: 273 items
+preposition: 281 items
 determiner: 22 items
 verb: 108 items
-verb_form: 386 items
-total in all categories: 3317
+verb_form: 394 items
+total in all categories: 3333
 
 adjective: A0'even'
 adjective: A1'odd'
@@ -2577,6 +2577,14 @@ preposition: greater than
 preposition: less than
 preposition: at least
 preposition: at most
+preposition: >ed by
+preposition: >ing
+preposition: <ed by
+preposition: <ing
+preposition: >=ed by
+preposition: >=ing
+preposition: <=ed by
+preposition: <=ing
 preposition: being able to
 preposition: coulding
 preposition: maying
@@ -2837,24 +2845,24 @@ determiner: 'greater than' --> Card>%d
 determiner: 'other than' --> Card~=%d
 determiner: '' --> Card>=%d
 
-verb: (unconjugated)(0)
-verb: (unconjugated)(1)
-verb: (unconjugated)(2)
-verb: (unconjugated)(3)
-verb: be(4)
-verb: mean(5)
-verb: imply(6)
-verb: be able to be(7)
-verb: have(8)
-verb: specify(9)
-verb: relate(10)
-verb: substitute(11)
-verb: do(12)
-verb: translate(13)
-verb: provide(14)
-verb: use(15)
-verb: include(16)
-verb: omit(17)
+verb: be(0)
+verb: mean(1)
+verb: imply(2)
+verb: be able to be(3)
+verb: have(4)
+verb: specify(5)
+verb: relate(6)
+verb: substitute(7)
+verb: do(8)
+verb: translate(9)
+verb: provide(10)
+verb: use(11)
+verb: include(12)
+verb: omit(13)
+verb: >(14)
+verb: <(15)
+verb: >=(16)
+verb: <=(17)
 verb: be able to(18)
 verb: could(19)
 verb: may(20)
@@ -2946,390 +2954,398 @@ verb: own(105)
 verb: fit(106)
 verb: unbolt(107)
 
-verb_form: (unconjugated)(0) + ___ + ___ SVO
-verb_form: (unconjugated)(1) + ___ + ___ SVO
-verb_form: (unconjugated)(2) + ___ + ___ SVO
-verb_form: (unconjugated)(3) + ___ + ___ SVO
-verb_form: be(4) + ___ + ___ SVO
-verb_form: mean(5) + ___ + ___ SVO
-verb_form: be(4) + meant by + ___ SVO
-verb_form: be(4) + meaning + ___ SVO
-verb_form: imply(6) + ___ + ___ SVO
-verb_form: be(4) + implied by + ___ SVO
-verb_form: be(4) + implying + ___ SVO
-verb_form: be able to be(7) + ___ + ___ SVO
-verb_form: be(4) + being able to be + ___ SVO
-verb_form: have(8) + ___ + ___ SVO
-verb_form: be(4) + had by + ___ SVO
-verb_form: be(4) + having + ___ SVO
-verb_form: specify(9) + ___ + ___ SVO
-verb_form: be(4) + specified by + ___ SVO
-verb_form: be(4) + specifying + ___ SVO
-verb_form: relate(10) + ___ + ___ SVO
-verb_form: be(4) + related by + ___ SVO
-verb_form: be(4) + relating + ___ SVO
-verb_form: substitute(11) + ___ + ___ SVO
-verb_form: be(4) + substituted by + ___ SVO
-verb_form: be(4) + substituting + ___ SVO
-verb_form: substitute(11) + for + ___ SVO
-verb_form: do(12) + ___ + ___ SVO
-verb_form: be(4) + done by + ___ SVO
-verb_form: be(4) + doing + ___ SVO
-verb_form: do(12) + ___ + if SVOO
-verb_form: do(12) + ___ + when SVOO
-verb_form: do(12) + ___ + unless SVOO
-verb_form: translate(13) + ___ + ___ SVO
-verb_form: be(4) + translated by + ___ SVO
-verb_form: be(4) + translating + ___ SVO
-verb_form: translate(13) + into + as SVOO
-verb_form: translate(13) + as + ___ SVO
-verb_form: provide(14) + ___ + ___ SVO
-verb_form: be(4) + provided by + ___ SVO
-verb_form: be(4) + providing + ___ SVO
-verb_form: use(15) + ___ + ___ SVO VO
-verb_form: be(4) + used by + ___ SVO
-verb_form: be(4) + using + ___ SVO
-verb_form: include(16) + ___ + ___ SVO
-verb_form: be(4) + included by + ___ SVO
-verb_form: be(4) + including + ___ SVO
-verb_form: include(16) + ___ + in VO
-verb_form: omit(17) + ___ + ___ SVO
-verb_form: be(4) + omitted by + ___ SVO
-verb_form: be(4) + omitting + ___ SVO
-verb_form: omit(17) + ___ + from VO
-verb_form: be(4) + greater than + ___ SVO
-verb_form: be(4) + less than + ___ SVO
-verb_form: be(4) + at least + ___ SVO
-verb_form: be(4) + at most + ___ SVO
+verb_form: be(0) + ___ + ___ SVO
+verb_form: mean(1) + ___ + ___ SVO
+verb_form: be(0) + meant by + ___ SVO
+verb_form: be(0) + meaning + ___ SVO
+verb_form: imply(2) + ___ + ___ SVO
+verb_form: be(0) + implied by + ___ SVO
+verb_form: be(0) + implying + ___ SVO
+verb_form: be able to be(3) + ___ + ___ SVO
+verb_form: be(0) + being able to be + ___ SVO
+verb_form: have(4) + ___ + ___ SVO
+verb_form: be(0) + had by + ___ SVO
+verb_form: be(0) + having + ___ SVO
+verb_form: specify(5) + ___ + ___ SVO
+verb_form: be(0) + specified by + ___ SVO
+verb_form: be(0) + specifying + ___ SVO
+verb_form: relate(6) + ___ + ___ SVO
+verb_form: be(0) + related by + ___ SVO
+verb_form: be(0) + relating + ___ SVO
+verb_form: substitute(7) + ___ + ___ SVO
+verb_form: be(0) + substituted by + ___ SVO
+verb_form: be(0) + substituting + ___ SVO
+verb_form: substitute(7) + for + ___ SVO
+verb_form: do(8) + ___ + ___ SVO
+verb_form: be(0) + done by + ___ SVO
+verb_form: be(0) + doing + ___ SVO
+verb_form: do(8) + ___ + if SVOO
+verb_form: do(8) + ___ + when SVOO
+verb_form: do(8) + ___ + unless SVOO
+verb_form: translate(9) + ___ + ___ SVO
+verb_form: be(0) + translated by + ___ SVO
+verb_form: be(0) + translating + ___ SVO
+verb_form: translate(9) + into + as SVOO
+verb_form: translate(9) + as + ___ SVO
+verb_form: provide(10) + ___ + ___ SVO
+verb_form: be(0) + provided by + ___ SVO
+verb_form: be(0) + providing + ___ SVO
+verb_form: use(11) + ___ + ___ SVO VO
+verb_form: be(0) + used by + ___ SVO
+verb_form: be(0) + using + ___ SVO
+verb_form: include(12) + ___ + ___ SVO
+verb_form: be(0) + included by + ___ SVO
+verb_form: be(0) + including + ___ SVO
+verb_form: include(12) + ___ + in VO
+verb_form: omit(13) + ___ + ___ SVO
+verb_form: be(0) + omitted by + ___ SVO
+verb_form: be(0) + omitting + ___ SVO
+verb_form: omit(13) + ___ + from VO
+verb_form: be(0) + greater than + ___ SVO
+verb_form: be(0) + less than + ___ SVO
+verb_form: be(0) + at least + ___ SVO
+verb_form: be(0) + at most + ___ SVO
+verb_form: >(14) + ___ + ___ SVO
+verb_form: be(0) + >ed by + ___ SVO
+verb_form: be(0) + >ing + ___ SVO
+verb_form: <(15) + ___ + ___ SVO
+verb_form: be(0) + <ed by + ___ SVO
+verb_form: be(0) + <ing + ___ SVO
+verb_form: >=(16) + ___ + ___ SVO
+verb_form: be(0) + >=ed by + ___ SVO
+verb_form: be(0) + >=ing + ___ SVO
+verb_form: <=(17) + ___ + ___ SVO
+verb_form: be(0) + <=ed by + ___ SVO
+verb_form: be(0) + <=ing + ___ SVO
 verb_form: be able to(18) + ___ + ___ SVO
-verb_form: be(4) + being able to + ___ SVO
+verb_form: be(0) + being able to + ___ SVO
 verb_form: could(19) + ___ + ___ SVO
-verb_form: be(4) + coulding + ___ SVO
+verb_form: be(0) + coulding + ___ SVO
 verb_form: may(20) + ___ + ___ SVO
-verb_form: be(4) + maying + ___ SVO
+verb_form: be(0) + maying + ___ SVO
 verb_form: might(21) + ___ + ___ SVO
-verb_form: be(4) + mighting + ___ SVO
+verb_form: be(0) + mighting + ___ SVO
 verb_form: must(22) + ___ + ___ SVO
-verb_form: be(4) + musting + ___ SVO
+verb_form: be(0) + musting + ___ SVO
 verb_form: should(23) + ___ + ___ SVO
-verb_form: be(4) + shoulding + ___ SVO
+verb_form: be(0) + shoulding + ___ SVO
 verb_form: would(24) + ___ + ___ SVO
-verb_form: be(4) + woulding + ___ SVO
+verb_form: be(0) + woulding + ___ SVO
 verb_form: 're(25) + ___ + ___ SVO
-verb_form: be(4) + being + ___ SVO
+verb_form: be(0) + being + ___ SVO
 verb_form: 've(26) + ___ + ___ SVO
 verb_form: aren't(27) + ___ + ___ SVO
-verb_form: be(4) + aren'ting + ___ SVO
+verb_form: be(0) + aren'ting + ___ SVO
 verb_form: can't(28) + ___ + ___ SVO
-verb_form: be(4) + can'ting + ___ SVO
+verb_form: be(0) + can'ting + ___ SVO
 verb_form: don't(29) + ___ + ___ SVO
-verb_form: be(4) + don'ting + ___ SVO
+verb_form: be(0) + don'ting + ___ SVO
 verb_form: haven't(30) + ___ + ___ SVO
-verb_form: be(4) + haven'ting + ___ SVO
+verb_form: be(0) + haven'ting + ___ SVO
 verb_form: mustn't(31) + ___ + ___ SVO
-verb_form: be(4) + mustn'ting + ___ SVO
+verb_form: be(0) + mustn'ting + ___ SVO
 verb_form: mightn't(32) + ___ + ___ SVO
-verb_form: be(4) + mightn'ting + ___ SVO
+verb_form: be(0) + mightn'ting + ___ SVO
 verb_form: mayn't(33) + ___ + ___ SVO
-verb_form: be(4) + mayn'ting + ___ SVO
+verb_form: be(0) + mayn'ting + ___ SVO
 verb_form: wouldn't(34) + ___ + ___ SVO
-verb_form: be(4) + wouldn'ting + ___ SVO
+verb_form: be(0) + wouldn'ting + ___ SVO
 verb_form: couldn't(35) + ___ + ___ SVO
-verb_form: be(4) + couldn'ting + ___ SVO
+verb_form: be(0) + couldn'ting + ___ SVO
 verb_form: shouldn't(36) + ___ + ___ SVO
-verb_form: be(4) + shouldn'ting + ___ SVO
+verb_form: be(0) + shouldn'ting + ___ SVO
 verb_form: won't(37) + ___ + ___ SVO
-verb_form: be(4) + won'ting + ___ SVO
+verb_form: be(0) + won'ting + ___ SVO
 verb_form: begin(38) + ___ + ___ SVO
-verb_form: be(4) + begun by + ___ SVO
-verb_form: be(4) + beginning + ___ SVO
+verb_form: be(0) + begun by + ___ SVO
+verb_form: be(0) + beginning + ___ SVO
 verb_form: begin(38) + when + ___ SVO
 verb_form: end(39) + ___ + ___ SVO
-verb_form: be(4) + ended by + ___ SVO
-verb_form: be(4) + ending + ___ SVO
+verb_form: be(0) + ended by + ___ SVO
+verb_form: be(0) + ending + ___ SVO
 verb_form: end(39) + when + ___ SVO
 verb_form: end(39) + ___ + when SVOO
 verb_form: test(40) + ___ + ___ SVO
-verb_form: be(4) + tested by + ___ SVO
-verb_form: be(4) + testing + ___ SVO
+verb_form: be(0) + tested by + ___ SVO
+verb_form: be(0) + testing + ___ SVO
 verb_form: test(40) + ___ + with VO
 verb_form: understand(41) + ___ + ___ SVO
-verb_form: be(4) + understood by + ___ SVO
-verb_form: be(4) + understanding + ___ SVO
+verb_form: be(0) + understood by + ___ SVO
+verb_form: be(0) + understanding + ___ SVO
 verb_form: understand(41) + ___ + as VO
 verb_form: release(42) + ___ + ___ SVO
-verb_form: be(4) + released by + ___ SVO
-verb_form: be(4) + releasing + ___ SVO
+verb_form: be(0) + released by + ___ SVO
+verb_form: be(0) + releasing + ___ SVO
 verb_form: release(42) + along with + ___ VO
 verb_form: index(43) + ___ + ___ SVO
-verb_form: be(4) + indexed by + ___ SVO
-verb_form: be(4) + indexing + ___ SVO
+verb_form: be(0) + indexed by + ___ SVO
+verb_form: be(0) + indexing + ___ SVO
 verb_form: index(43) + map with + ___ VO
-verb_form: be(4) + in + ___ SVO
-verb_form: be(4) + inside + ___ SVO
-verb_form: be(4) + within + ___ SVO
-verb_form: be(4) + held in + ___ SVO
-verb_form: be(4) + held inside + ___ SVO
+verb_form: be(0) + in + ___ SVO
+verb_form: be(0) + inside + ___ SVO
+verb_form: be(0) + within + ___ SVO
+verb_form: be(0) + held in + ___ SVO
+verb_form: be(0) + held inside + ___ SVO
 verb_form: contain(44) + ___ + ___ SVO
-verb_form: be(4) + contained by + ___ SVO
-verb_form: be(4) + containing + ___ SVO
-verb_form: be(4) + contained in + ___ SVO
-verb_form: be(4) + on top of + ___ SVO
-verb_form: be(4) + on + ___ SVO
+verb_form: be(0) + contained by + ___ SVO
+verb_form: be(0) + containing + ___ SVO
+verb_form: be(0) + contained in + ___ SVO
+verb_form: be(0) + on top of + ___ SVO
+verb_form: be(0) + on + ___ SVO
 verb_form: support(45) + ___ + ___ SVO
-verb_form: be(4) + supported by + ___ SVO
-verb_form: be(4) + supporting + ___ SVO
-verb_form: be(4) + supported on + ___ SVO
+verb_form: be(0) + supported by + ___ SVO
+verb_form: be(0) + supporting + ___ SVO
+verb_form: be(0) + supported on + ___ SVO
 verb_form: incorporate(46) + ___ + ___ SVO
-verb_form: be(4) + incorporated by + ___ SVO
-verb_form: be(4) + incorporating + ___ SVO
-verb_form: be(4) + part of + ___ SVO
-verb_form: be(4) + a part of + ___ SVO
-verb_form: be(4) + parts of + ___ SVO
+verb_form: be(0) + incorporated by + ___ SVO
+verb_form: be(0) + incorporating + ___ SVO
+verb_form: be(0) + part of + ___ SVO
+verb_form: be(0) + a part of + ___ SVO
+verb_form: be(0) + parts of + ___ SVO
 verb_form: enclose(47) + ___ + ___ SVO
-verb_form: be(4) + enclosed by + ___ SVO
-verb_form: be(4) + enclosing + ___ SVO
+verb_form: be(0) + enclosed by + ___ SVO
+verb_form: be(0) + enclosing + ___ SVO
 verb_form: carry(48) + ___ + ___ SVO
-verb_form: be(4) + carried by + ___ SVO
-verb_form: be(4) + carrying + ___ SVO
+verb_form: be(0) + carried by + ___ SVO
+verb_form: be(0) + carrying + ___ SVO
 verb_form: hold(49) + ___ + ___ SVO
-verb_form: be(4) + held by + ___ SVO
-verb_form: be(4) + holding + ___ SVO
+verb_form: be(0) + held by + ___ SVO
+verb_form: be(0) + holding + ___ SVO
 verb_form: wear(50) + ___ + ___ SVO
-verb_form: be(4) + worn by + ___ SVO
-verb_form: be(4) + wearing + ___ SVO
+verb_form: be(0) + worn by + ___ SVO
+verb_form: be(0) + wearing + ___ SVO
 verb_form: be able to see(51) + ___ + ___ SVO
-verb_form: be(4) + being able to see + ___ SVO
+verb_form: be(0) + being able to see + ___ SVO
 verb_form: be able to touch(52) + ___ + ___ SVO
-verb_form: be(4) + being able to touch + ___ SVO
+verb_form: be(0) + being able to touch + ___ SVO
 verb_form: conceal(53) + ___ + ___ SVO
-verb_form: be(4) + concealed by + ___ SVO
-verb_form: be(4) + concealing + ___ SVO
-verb_form: be(4) + adjacent to + ___ SVO
-verb_form: be(4) + regionally in + ___ SVO
-verb_form: be(4) + mapped north of + ___ SVO
-verb_form: be(4) + north of + ___ SVO
-verb_form: be(4) + north from + ___ SVO
-verb_form: be(4) + mapped northeast of + ___ SVO
-verb_form: be(4) + northeast of + ___ SVO
-verb_form: be(4) + northeast from + ___ SVO
-verb_form: be(4) + mapped northwest of + ___ SVO
-verb_form: be(4) + northwest of + ___ SVO
-verb_form: be(4) + northwest from + ___ SVO
-verb_form: be(4) + mapped south of + ___ SVO
-verb_form: be(4) + south of + ___ SVO
-verb_form: be(4) + south from + ___ SVO
-verb_form: be(4) + mapped southeast of + ___ SVO
-verb_form: be(4) + southeast of + ___ SVO
-verb_form: be(4) + southeast from + ___ SVO
-verb_form: be(4) + mapped southwest of + ___ SVO
-verb_form: be(4) + southwest of + ___ SVO
-verb_form: be(4) + southwest from + ___ SVO
-verb_form: be(4) + mapped east of + ___ SVO
-verb_form: be(4) + east of + ___ SVO
-verb_form: be(4) + east from + ___ SVO
-verb_form: be(4) + mapped west of + ___ SVO
-verb_form: be(4) + west of + ___ SVO
-verb_form: be(4) + west from + ___ SVO
-verb_form: be(4) + mapped up of + ___ SVO
-verb_form: be(4) + up of + ___ SVO
-verb_form: be(4) + up from + ___ SVO
-verb_form: be(4) + mapped down of + ___ SVO
-verb_form: be(4) + down of + ___ SVO
-verb_form: be(4) + down from + ___ SVO
-verb_form: be(4) + mapped inside + ___ SVO
-verb_form: be(4) + inside of + ___ SVO
-verb_form: be(4) + inside from + ___ SVO
-verb_form: be(4) + mapped outside + ___ SVO
-verb_form: be(4) + outside of + ___ SVO
-verb_form: be(4) + outside from + ___ SVO
-verb_form: be(4) + above + ___ SVO
-verb_form: be(4) + mapped above + ___ SVO
-verb_form: be(4) + below + ___ SVO
-verb_form: be(4) + mapped below + ___ SVO
-verb_form: be(4) + through + ___ SVO
+verb_form: be(0) + concealed by + ___ SVO
+verb_form: be(0) + concealing + ___ SVO
+verb_form: be(0) + adjacent to + ___ SVO
+verb_form: be(0) + regionally in + ___ SVO
+verb_form: be(0) + mapped north of + ___ SVO
+verb_form: be(0) + north of + ___ SVO
+verb_form: be(0) + north from + ___ SVO
+verb_form: be(0) + mapped northeast of + ___ SVO
+verb_form: be(0) + northeast of + ___ SVO
+verb_form: be(0) + northeast from + ___ SVO
+verb_form: be(0) + mapped northwest of + ___ SVO
+verb_form: be(0) + northwest of + ___ SVO
+verb_form: be(0) + northwest from + ___ SVO
+verb_form: be(0) + mapped south of + ___ SVO
+verb_form: be(0) + south of + ___ SVO
+verb_form: be(0) + south from + ___ SVO
+verb_form: be(0) + mapped southeast of + ___ SVO
+verb_form: be(0) + southeast of + ___ SVO
+verb_form: be(0) + southeast from + ___ SVO
+verb_form: be(0) + mapped southwest of + ___ SVO
+verb_form: be(0) + southwest of + ___ SVO
+verb_form: be(0) + southwest from + ___ SVO
+verb_form: be(0) + mapped east of + ___ SVO
+verb_form: be(0) + east of + ___ SVO
+verb_form: be(0) + east from + ___ SVO
+verb_form: be(0) + mapped west of + ___ SVO
+verb_form: be(0) + west of + ___ SVO
+verb_form: be(0) + west from + ___ SVO
+verb_form: be(0) + mapped up of + ___ SVO
+verb_form: be(0) + up of + ___ SVO
+verb_form: be(0) + up from + ___ SVO
+verb_form: be(0) + mapped down of + ___ SVO
+verb_form: be(0) + down of + ___ SVO
+verb_form: be(0) + down from + ___ SVO
+verb_form: be(0) + mapped inside + ___ SVO
+verb_form: be(0) + inside of + ___ SVO
+verb_form: be(0) + inside from + ___ SVO
+verb_form: be(0) + mapped outside + ___ SVO
+verb_form: be(0) + outside of + ___ SVO
+verb_form: be(0) + outside from + ___ SVO
+verb_form: be(0) + above + ___ SVO
+verb_form: be(0) + mapped above + ___ SVO
+verb_form: be(0) + below + ___ SVO
+verb_form: be(0) + mapped below + ___ SVO
+verb_form: be(0) + through + ___ SVO
 verb_form: unlock(54) + ___ + ___ SVO
-verb_form: be(4) + unlocked by + ___ SVO
-verb_form: be(4) + unlocking + ___ SVO
+verb_form: be(0) + unlocked by + ___ SVO
+verb_form: be(0) + unlocking + ___ SVO
 verb_form: achieve(55) + ___ + ___ SVO
-verb_form: be(4) + achieved by + ___ SVO
-verb_form: be(4) + achieving + ___ SVO
+verb_form: be(0) + achieved by + ___ SVO
+verb_form: be(0) + achieving + ___ SVO
 verb_form: appreciate(56) + ___ + ___ SVO
-verb_form: be(4) + appreciated by + ___ SVO
-verb_form: be(4) + appreciating + ___ SVO
+verb_form: be(0) + appreciated by + ___ SVO
+verb_form: be(0) + appreciating + ___ SVO
 verb_form: arrive(57) + ___ + ___ SVO
-verb_form: be(4) + arrived by + ___ SVO
-verb_form: be(4) + arriving + ___ SVO
+verb_form: be(0) + arrived by + ___ SVO
+verb_form: be(0) + arriving + ___ SVO
 verb_form: care(58) + ___ + ___ SVO
-verb_form: be(4) + cared by + ___ SVO
-verb_form: be(4) + caring + ___ SVO
+verb_form: be(0) + cared by + ___ SVO
+verb_form: be(0) + caring + ___ SVO
 verb_form: close(59) + ___ + ___ SVO
-verb_form: be(4) + closed by + ___ SVO
-verb_form: be(4) + closing + ___ SVO
+verb_form: be(0) + closed by + ___ SVO
+verb_form: be(0) + closing + ___ SVO
 verb_form: die(60) + ___ + ___ SVO
-verb_form: be(4) + died by + ___ SVO
-verb_form: be(4) + dying + ___ SVO
+verb_form: be(0) + died by + ___ SVO
+verb_form: be(0) + dying + ___ SVO
 verb_form: discover(61) + ___ + ___ SVO
-verb_form: be(4) + discovered by + ___ SVO
-verb_form: be(4) + discovering + ___ SVO
+verb_form: be(0) + discovered by + ___ SVO
+verb_form: be(0) + discovering + ___ SVO
 verb_form: drop(62) + ___ + ___ SVO
-verb_form: be(4) + dropped by + ___ SVO
-verb_form: be(4) + dropping + ___ SVO
+verb_form: be(0) + dropped by + ___ SVO
+verb_form: be(0) + dropping + ___ SVO
 verb_form: eat(63) + ___ + ___ SVO
-verb_form: be(4) + eaten by + ___ SVO
-verb_form: be(4) + eating + ___ SVO
+verb_form: be(0) + eaten by + ___ SVO
+verb_form: be(0) + eating + ___ SVO
 verb_form: feel(64) + ___ + ___ SVO
-verb_form: be(4) + felt by + ___ SVO
-verb_form: be(4) + feeling + ___ SVO
+verb_form: be(0) + felt by + ___ SVO
+verb_form: be(0) + feeling + ___ SVO
 verb_form: find(65) + ___ + ___ SVO
-verb_form: be(4) + found by + ___ SVO
-verb_form: be(4) + finding + ___ SVO
+verb_form: be(0) + found by + ___ SVO
+verb_form: be(0) + finding + ___ SVO
 verb_form: get(66) + ___ + ___ SVO
-verb_form: be(4) + got by + ___ SVO
-verb_form: be(4) + getting + ___ SVO
+verb_form: be(0) + got by + ___ SVO
+verb_form: be(0) + getting + ___ SVO
 verb_form: give(67) + ___ + ___ SVO
-verb_form: be(4) + given by + ___ SVO
-verb_form: be(4) + giving + ___ SVO
+verb_form: be(0) + given by + ___ SVO
+verb_form: be(0) + giving + ___ SVO
 verb_form: go(68) + ___ + ___ SVO
-verb_form: be(4) + gone by + ___ SVO
-verb_form: be(4) + going + ___ SVO
+verb_form: be(0) + gone by + ___ SVO
+verb_form: be(0) + going + ___ SVO
 verb_form: happen(69) + ___ + ___ SVO
-verb_form: be(4) + happened by + ___ SVO
-verb_form: be(4) + happening + ___ SVO
+verb_form: be(0) + happened by + ___ SVO
+verb_form: be(0) + happening + ___ SVO
 verb_form: hear(70) + ___ + ___ SVO
-verb_form: be(4) + heard by + ___ SVO
-verb_form: be(4) + hearing + ___ SVO
+verb_form: be(0) + heard by + ___ SVO
+verb_form: be(0) + hearing + ___ SVO
 verb_form: jump(71) + ___ + ___ SVO
-verb_form: be(4) + jumped by + ___ SVO
-verb_form: be(4) + jumping + ___ SVO
+verb_form: be(0) + jumped by + ___ SVO
+verb_form: be(0) + jumping + ___ SVO
 verb_form: lack(72) + ___ + ___ SVO
-verb_form: be(4) + lacked by + ___ SVO
-verb_form: be(4) + lacking + ___ SVO
+verb_form: be(0) + lacked by + ___ SVO
+verb_form: be(0) + lacking + ___ SVO
 verb_form: lead(73) + ___ + ___ SVO
-verb_form: be(4) + led by + ___ SVO
-verb_form: be(4) + leading + ___ SVO
+verb_form: be(0) + led by + ___ SVO
+verb_form: be(0) + leading + ___ SVO
 verb_form: like(74) + ___ + ___ SVO
-verb_form: be(4) + liked by + ___ SVO
-verb_form: be(4) + liking + ___ SVO
+verb_form: be(0) + liked by + ___ SVO
+verb_form: be(0) + liking + ___ SVO
 verb_form: listen(75) + ___ + ___ SVO
-verb_form: be(4) + listened by + ___ SVO
-verb_form: be(4) + listening + ___ SVO
+verb_form: be(0) + listened by + ___ SVO
+verb_form: be(0) + listening + ___ SVO
 verb_form: lock(76) + ___ + ___ SVO
-verb_form: be(4) + locked by + ___ SVO
-verb_form: be(4) + locking + ___ SVO
+verb_form: be(0) + locked by + ___ SVO
+verb_form: be(0) + locking + ___ SVO
 verb_form: look(77) + ___ + ___ SVO
-verb_form: be(4) + looked by + ___ SVO
-verb_form: be(4) + looking + ___ SVO
+verb_form: be(0) + looked by + ___ SVO
+verb_form: be(0) + looking + ___ SVO
 verb_form: need(78) + ___ + ___ SVO
-verb_form: be(4) + needed by + ___ SVO
-verb_form: be(4) + needing + ___ SVO
+verb_form: be(0) + needed by + ___ SVO
+verb_form: be(0) + needing + ___ SVO
 verb_form: open(79) + ___ + ___ SVO
-verb_form: be(4) + opened by + ___ SVO
-verb_form: be(4) + opening + ___ SVO
+verb_form: be(0) + opened by + ___ SVO
+verb_form: be(0) + opening + ___ SVO
 verb_form: pass(80) + ___ + ___ SVO
-verb_form: be(4) + passed by + ___ SVO
-verb_form: be(4) + passing + ___ SVO
+verb_form: be(0) + passed by + ___ SVO
+verb_form: be(0) + passing + ___ SVO
 verb_form: pick(81) + ___ + ___ SVO
-verb_form: be(4) + picked by + ___ SVO
-verb_form: be(4) + picking + ___ SVO
+verb_form: be(0) + picked by + ___ SVO
+verb_form: be(0) + picking + ___ SVO
 verb_form: provoke(82) + ___ + ___ SVO
-verb_form: be(4) + provoked by + ___ SVO
-verb_form: be(4) + provoking + ___ SVO
+verb_form: be(0) + provoked by + ___ SVO
+verb_form: be(0) + provoking + ___ SVO
 verb_form: pull(83) + ___ + ___ SVO
-verb_form: be(4) + pulled by + ___ SVO
-verb_form: be(4) + pulling + ___ SVO
+verb_form: be(0) + pulled by + ___ SVO
+verb_form: be(0) + pulling + ___ SVO
 verb_form: push(84) + ___ + ___ SVO
-verb_form: be(4) + pushed by + ___ SVO
-verb_form: be(4) + pushing + ___ SVO
+verb_form: be(0) + pushed by + ___ SVO
+verb_form: be(0) + pushing + ___ SVO
 verb_form: put(85) + ___ + ___ SVO
-verb_form: be(4) + put by + ___ SVO
-verb_form: be(4) + putting + ___ SVO
+verb_form: be(0) + put by + ___ SVO
+verb_form: be(0) + putting + ___ SVO
 verb_form: rub(86) + ___ + ___ SVO
-verb_form: be(4) + rubbed by + ___ SVO
-verb_form: be(4) + rubbing + ___ SVO
+verb_form: be(0) + rubbed by + ___ SVO
+verb_form: be(0) + rubbing + ___ SVO
 verb_form: say(87) + ___ + ___ SVO
-verb_form: be(4) + said by + ___ SVO
-verb_form: be(4) + saying + ___ SVO
+verb_form: be(0) + said by + ___ SVO
+verb_form: be(0) + saying + ___ SVO
 verb_form: search(88) + ___ + ___ SVO
-verb_form: be(4) + searched by + ___ SVO
-verb_form: be(4) + searching + ___ SVO
+verb_form: be(0) + searched by + ___ SVO
+verb_form: be(0) + searching + ___ SVO
 verb_form: see(89) + ___ + ___ SVO
-verb_form: be(4) + seen by + ___ SVO
-verb_form: be(4) + seeing + ___ SVO
+verb_form: be(0) + seen by + ___ SVO
+verb_form: be(0) + seeing + ___ SVO
 verb_form: seem(90) + ___ + ___ SVO
-verb_form: be(4) + seemed by + ___ SVO
-verb_form: be(4) + seeming + ___ SVO
+verb_form: be(0) + seemed by + ___ SVO
+verb_form: be(0) + seeming + ___ SVO
 verb_form: set(91) + ___ + ___ SVO
-verb_form: be(4) + set by + ___ SVO
-verb_form: be(4) + setting + ___ SVO
+verb_form: be(0) + set by + ___ SVO
+verb_form: be(0) + setting + ___ SVO
 verb_form: smell(92) + ___ + ___ SVO
-verb_form: be(4) + smelled by + ___ SVO
-verb_form: be(4) + smelling + ___ SVO
+verb_form: be(0) + smelled by + ___ SVO
+verb_form: be(0) + smelling + ___ SVO
 verb_form: sniff(93) + ___ + ___ SVO
-verb_form: be(4) + sniffed by + ___ SVO
-verb_form: be(4) + sniffing + ___ SVO
+verb_form: be(0) + sniffed by + ___ SVO
+verb_form: be(0) + sniffing + ___ SVO
 verb_form: squeeze(94) + ___ + ___ SVO
-verb_form: be(4) + squeezed by + ___ SVO
-verb_form: be(4) + squeezing + ___ SVO
+verb_form: be(0) + squeezed by + ___ SVO
+verb_form: be(0) + squeezing + ___ SVO
 verb_form: switch(95) + ___ + ___ SVO
-verb_form: be(4) + switched by + ___ SVO
-verb_form: be(4) + switching + ___ SVO
+verb_form: be(0) + switched by + ___ SVO
+verb_form: be(0) + switching + ___ SVO
 verb_form: take(96) + ___ + ___ SVO
-verb_form: be(4) + taken by + ___ SVO
-verb_form: be(4) + taking + ___ SVO
+verb_form: be(0) + taken by + ___ SVO
+verb_form: be(0) + taking + ___ SVO
 verb_form: talk(97) + ___ + ___ SVO
-verb_form: be(4) + talked by + ___ SVO
-verb_form: be(4) + talking + ___ SVO
+verb_form: be(0) + talked by + ___ SVO
+verb_form: be(0) + talking + ___ SVO
 verb_form: taste(98) + ___ + ___ SVO
-verb_form: be(4) + tasted by + ___ SVO
-verb_form: be(4) + tasting + ___ SVO
+verb_form: be(0) + tasted by + ___ SVO
+verb_form: be(0) + tasting + ___ SVO
 verb_form: touch(99) + ___ + ___ SVO
-verb_form: be(4) + touched by + ___ SVO
-verb_form: be(4) + touching + ___ SVO
+verb_form: be(0) + touched by + ___ SVO
+verb_form: be(0) + touching + ___ SVO
 verb_form: turn(100) + ___ + ___ SVO
-verb_form: be(4) + turned by + ___ SVO
-verb_form: be(4) + turning + ___ SVO
+verb_form: be(0) + turned by + ___ SVO
+verb_form: be(0) + turning + ___ SVO
 verb_form: wait(101) + ___ + ___ SVO
-verb_form: be(4) + waited by + ___ SVO
-verb_form: be(4) + waiting + ___ SVO
+verb_form: be(0) + waited by + ___ SVO
+verb_form: be(0) + waiting + ___ SVO
 verb_form: wave(102) + ___ + ___ SVO
-verb_form: be(4) + waved by + ___ SVO
-verb_form: be(4) + waving + ___ SVO
+verb_form: be(0) + waved by + ___ SVO
+verb_form: be(0) + waving + ___ SVO
 verb_form: win(103) + ___ + ___ SVO
-verb_form: be(4) + won by + ___ SVO
-verb_form: be(4) + winning + ___ SVO
+verb_form: be(0) + won by + ___ SVO
+verb_form: be(0) + winning + ___ SVO
 verb_form: protect(104) + ___ + ___ SVO
-verb_form: be(4) + protected by + ___ SVO
-verb_form: be(4) + protecting + ___ SVO
+verb_form: be(0) + protected by + ___ SVO
+verb_form: be(0) + protecting + ___ SVO
 verb_form: own(105) + ___ + ___ SVO
-verb_form: be(4) + owned by + ___ SVO
-verb_form: be(4) + owning + ___ SVO
+verb_form: be(0) + owned by + ___ SVO
+verb_form: be(0) + owning + ___ SVO
 verb_form: fit(106) + ___ + ___ SVO
-verb_form: be(4) + fitted by + ___ SVO
-verb_form: be(4) + fitting + ___ SVO
+verb_form: be(0) + fitted by + ___ SVO
+verb_form: be(0) + fitting + ___ SVO
 verb_form: unbolt(107) + ___ + ___ SVO
-verb_form: be(4) + unbolted by + ___ SVO
-verb_form: be(4) + unbolting + ___ SVO
-verb_form: be(4) + the same variable initial value as + ___ SVO
-verb_form: be(4) + the same specification as + ___ SVO
-verb_form: be(4) + the same indefinite appearance text as + ___ SVO
-verb_form: be(4) + the same printed name as + ___ SVO
-verb_form: be(4) + the same printed plural name as + ___ SVO
-verb_form: be(4) + the same indefinite article as + ___ SVO
-verb_form: be(4) + the same adaptive text viewpoint as + ___ SVO
-verb_form: be(4) + the same description as + ___ SVO
-verb_form: be(4) + the same map region as + ___ SVO
-verb_form: be(4) + the same initial appearance as + ___ SVO
-verb_form: be(4) + the same opposite as + ___ SVO
-verb_form: be(4) + the same other side as + ___ SVO
-verb_form: be(4) + the same carrying capacity as + ___ SVO
-verb_form: be(4) + the same matching key as + ___ SVO
-verb_form: be(4) + the same list grouping key as + ___ SVO
-verb_form: be(4) + the same destination as + ___ SVO
-verb_form: be(4) + the same conversation as + ___ SVO
-verb_form: be(4) + the same walk style as + ___ SVO
-verb_form: be(4) + the same last opener as + ___ SVO
-verb_form: be(4) + the same ownership relation storage as + ___ SVO
-verb_form: be(4) + the same infection color as + ___ SVO
-verb_form: be(4) + the same unbolting relation storage as + ___ SVO
+verb_form: be(0) + unbolted by + ___ SVO
+verb_form: be(0) + unbolting + ___ SVO
+verb_form: be(0) + the same variable initial value as + ___ SVO
+verb_form: be(0) + the same specification as + ___ SVO
+verb_form: be(0) + the same indefinite appearance text as + ___ SVO
+verb_form: be(0) + the same printed name as + ___ SVO
+verb_form: be(0) + the same printed plural name as + ___ SVO
+verb_form: be(0) + the same indefinite article as + ___ SVO
+verb_form: be(0) + the same adaptive text viewpoint as + ___ SVO
+verb_form: be(0) + the same description as + ___ SVO
+verb_form: be(0) + the same map region as + ___ SVO
+verb_form: be(0) + the same initial appearance as + ___ SVO
+verb_form: be(0) + the same opposite as + ___ SVO
+verb_form: be(0) + the same other side as + ___ SVO
+verb_form: be(0) + the same carrying capacity as + ___ SVO
+verb_form: be(0) + the same matching key as + ___ SVO
+verb_form: be(0) + the same list grouping key as + ___ SVO
+verb_form: be(0) + the same destination as + ___ SVO
+verb_form: be(0) + the same conversation as + ___ SVO
+verb_form: be(0) + the same walk style as + ___ SVO
+verb_form: be(0) + the same last opener as + ___ SVO
+verb_form: be(0) + the same ownership relation storage as + ___ SVO
+verb_form: be(0) + the same infection color as + ___ SVO
+verb_form: be(0) + the same unbolting relation storage as + ___ SVO
 

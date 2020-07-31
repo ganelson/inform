@@ -84,16 +84,23 @@ The verb to include + in in the imperative means the built-in include-in meaning
 The verb to omit + from in the imperative means the built-in omit-from meaning.
 
 @ We might as well declare these numerical comparisons now, too, though
-they're not needed for any of the world-building work. (The verbal usages |<|,
-|>|, |<=| and |>=| are built into Inform; those would be the same in any
-language, and are unlike other verbs since they have no inflected forms for
-non-present tenses.)
+they're not needed for any of the world-building work.
 
 =
 The verb to be greater than means the numerically-greater-than relation.
 The verb to be less than means the numerically-less-than relation.
 The verb to be at least means the numerically-greater-than-or-equal-to relation.
 The verb to be at most means the numerically-less-than-or-equal-to relation.
+
+@ And these have symbolic equivalents as operators, declared using the
+following syntax. Operators are unlike other verbs in that they have no
+inflected forms and exist only in the present tense.
+
+=
+The operator > means the numerically-greater-than relation.
+The operator < means the numerically-less-than relation.
+The operator >= means the numerically-greater-than-or-equal-to relation.
+The operator <= means the numerically-less-than-or-equal-to relation.
 
 @h Use Options.
 The following has no effect, and exists only to be a default non-value for

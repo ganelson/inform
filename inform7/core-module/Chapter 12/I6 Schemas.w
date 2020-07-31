@@ -319,8 +319,12 @@ void Calculus::Schemas::sch_emit_parameter(pcalc_term *pt,
 	if (give_kind_id) {
 		if (pt) Kinds::RunTime::emit_weak_id_as_val(pt->term_checked_as_kind);
 	} else if (give_comparison_routine) {
-		inter_name *cr = (pt)?(Kinds::Behaviour::get_comparison_routine_as_iname(pt->term_checked_as_kind)):NULL;
-		if (cr == NULL) cr = Hierarchy::find(SIGNEDCOMPARE_HL);
+		inter_name *cr = Hierarchy::find(SIGNEDCOMPARE_HL);
+		if ((pt) && (pt->term_checked_as_kind)) {
+			inter_name *specialised_cr = 
+				Kinds::Behaviour::get_comparison_routine_as_iname(pt->term_checked_as_kind);
+			if (specialised_cr) cr = specialised_cr;
+		}
 		Produce::val_iname(Emit::tree(), K_value, cr);
 	} else {
 		if (by_reference) {

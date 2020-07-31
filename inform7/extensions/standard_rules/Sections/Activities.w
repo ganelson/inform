@@ -408,10 +408,10 @@ To describe locale for (O - object):
 
 To set the/-- locale priority of (O - an object) to (N - a number):
 	if O is a thing:
-		if N <= 0, now O is mentioned;
+		if N is at most 0, now O is mentioned;
 		if there is a notable-object of O in the Table of Locale Priorities:
 			choose row with a notable-object of O in the Table of Locale Priorities;
-			if N <= 0, blank out the whole row;
+			if N is at most 0, blank out the whole row;
 			otherwise now the locale description priority entry is N;
 		otherwise:
 			if N is greater than 0:

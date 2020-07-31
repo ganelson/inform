@@ -243,7 +243,6 @@ void ExtensionDictionary::load_helper(text_stream *line_entry,
 		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
 		if (C) ExtensionDictionary::new_ede(ExtensionManager::from_copy(C),
 			category, author, title, headword);
-		else PRINT("Hapless! on %S\n", line_entry);
 	}
 }
 
