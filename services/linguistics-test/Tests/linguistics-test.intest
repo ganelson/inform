@@ -36,6 +36,9 @@
 	if: $CASE %c*-viability
 		set: $U = -viability
 	endif
+	if: $CASE %c*-surgery
+		set: $U = -surgery
+	endif
 
 	mkdir: $PATH/_Results_Actual
 	step: services/linguistics-test/Tangled/linguistics-test -vocabulary $V $U $PATH/$CASE.txt >$A 2>&1

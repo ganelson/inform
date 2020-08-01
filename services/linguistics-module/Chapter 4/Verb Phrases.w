@@ -40,12 +40,14 @@ too complicated to maintain once VSO verbs were added to the grammar.
 =
 <sentence> internal {
 	int rv = VerbPhrases::seek(W, X, XP, 0, TRUE);
+	VerbPhrases::corrective_surgery(*XP);
 	@<Trace diagram@>;
 	return rv;
 }
 
 <sentence-without-occurrences> internal {
 	int rv = VerbPhrases::seek(W, X, XP, 0, FALSE);
+	VerbPhrases::corrective_surgery(*XP);
 	@<Trace diagram@>;
 	return rv;
 }
@@ -64,6 +66,7 @@ too complicated to maintain once VSO verbs were added to the grammar.
 @e SEEK_VP_TRACE from 1
 @e VIABILITY_VP_TRACE
 @e RESULTS_VP_TRACE
+@e SURGERY_VP_TRACE
 
 =
 int VerbPhrases::tracing(int A) {
@@ -579,3 +582,80 @@ such as "There is a cat called Puss in Boots", where we want to prevent the
 =
 <phrase-with-calling> ::=
 	... called ...
+
+
+@h Corrective surgery.
+The following iterates until all possible surgeries have been done.
+
+=
+void VerbPhrases::corrective_surgery(parse_node *pn) {
+	int rv = TRUE;
+	while (rv) rv = VerbPhrases::corrective_surgery_r(pn);
+}
+
+int VerbPhrases::corrective_surgery_r(parse_node *pn) {
+	for (; pn; pn=pn->next) {
+		if (VerbPhrases::perform_location_surgery(pn)) return TRUE;
+		if (VerbPhrases::perform_called_surgery(pn)) return TRUE;
+		if ((pn->down) && (VerbPhrases::corrective_surgery_r(pn->down))) return TRUE;
+	}
+	return FALSE;
+}
+
+@ "Location surgery" is needed to make sentences like the second one here work:
+
+>> Anna is on the table and under the Ming Vase.
+
+It performs a transformation on the tree like so:
+
+= (undisplayed text from Figures/location-surgery.txt)
+
+Looks easy, doesn't it? You will implement it wrongly the first six times you try.
+
+=
+int VerbPhrases::perform_location_surgery(parse_node *p) {
+	parse_node *old_and, *old_np1, *old_loc2;
+	if ((Node::get_type(p) == RELATIONSHIP_NT) &&
+		(p->down) && (Node::get_type(p->down) == AND_NT) &&
+		(p->down->down) && (p->down->down->next) &&
+		(Node::get_type(p->down->down->next) == RELATIONSHIP_NT)) {
+		if (VerbPhrases::tracing(SURGERY_VP_TRACE)) LOG("Location surgery on:\n$T", p);
+		wording AW = Node::get_text(p->down);
+		old_and = p->down;
+		old_np1 = old_and->down;
+		old_loc2 = old_and->down->next;
+		Node::copy(old_and, p); /* making this the new first location node */
+		Node::set_type_and_clear_annotations(p, AND_NT); /* and this is new AND */
+		Node::set_text(p, AW);
+		p->down = old_and;
+		old_and->down = old_np1;
+		old_and->next = old_loc2;
+		old_np1->next = NULL;
+		if (VerbPhrases::tracing(SURGERY_VP_TRACE)) LOG("Results in:\n$T", p);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+@h Called surgery.
+The following case is now, I believe, impossible, but once happened on phrases
+like "north of a room called the Hot and Cold Room" where a |CALLED_NT| and
+a |RELATIONSHIP_NT| had ended up the wrong way round. The code is retained
+in case needed again in future.
+
+=
+int VerbPhrases::perform_called_surgery(parse_node *p) {
+	if ((Node::get_type(p) == CALLED_NT) &&
+		(p->down) && (Node::get_type(p->down) == RELATIONSHIP_NT) && (p->down->down)) {
+		if (VerbPhrases::tracing(SURGERY_VP_TRACE)) LOG("Called surgery on:\n$T", p);
+		parse_node *x_pn = p->down->down->next; /* "north" in the example */
+		parse_node *name_pn = p->down->next; /* "hot and cold room" in the example */
+		Node::set_type(p, RELATIONSHIP_NT);
+		Node::set_type(p->down, CALLED_NT);
+		p->down->next = x_pn;
+		p->down->down->next = name_pn;
+		if (VerbPhrases::tracing(SURGERY_VP_TRACE)) LOG("Results in:\n$T", p);
+		return TRUE;
+	}
+	return FALSE;
+}

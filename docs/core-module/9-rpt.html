@@ -81,7 +81,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#9">Chapter 9: The A-Parser</a></li><li><b>Refine Parse Tree</b></li></ul></div>
 <p class="purpose">To determine which subjects are referred to by noun phrases such as "the table" and "a paper cup" found in assertion sentences being parsed.</p>
 
-<ul class="toc"><li><a href="9-rpt.html#SP1">&#167;1. How individual nouns are represented after refinement</a></li><li><a href="9-rpt.html#SP5">&#167;5. Representation of single adjectives</a></li><li><a href="9-rpt.html#SP7">&#167;7. The refinery itself</a></li><li><a href="9-rpt.html#SP11">&#167;11. About surgeries</a></li><li><a href="9-rpt.html#SP12">&#167;12. And surgery</a></li><li><a href="9-rpt.html#SP13">&#167;13. With surgery</a></li><li><a href="9-rpt.html#SP14">&#167;14. Location surgery</a></li><li><a href="9-rpt.html#SP15">&#167;15. Called surgery</a></li><li><a href="9-rpt.html#SP16">&#167;16. The player is not yourself</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="9-rpt.html#SP1">&#167;1. How individual nouns are represented after refinement</a></li><li><a href="9-rpt.html#SP5">&#167;5. Representation of single adjectives</a></li><li><a href="9-rpt.html#SP7">&#167;7. The refinery itself</a></li><li><a href="9-rpt.html#SP11">&#167;11. About surgeries</a></li><li><a href="9-rpt.html#SP12">&#167;12. And surgery</a></li><li><a href="9-rpt.html#SP13">&#167;13. With surgery</a></li><li><a href="9-rpt.html#SP14">&#167;14. The player is not yourself</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. How individual nouns are represented after refinement. </b>The parse tree identifies the primary verb in each sentence, but does only the
 most basic work in parsing its noun phrases. It can spot the use of certain
@@ -95,7 +95,7 @@ nodes, thus decomposing the NP into smaller clauses which are refined in turn.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Refiner::noun_from_infs</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Assertions::Refiner::noun_from_infs</span></span>:<br/><a href="9-rpt.html#SP9_5_1">&#167;9.5.1</a>, <a href="9-rpt.html#SP9_7">&#167;9.7</a>, <a href="9-rpt.html#SP10_1">&#167;10.1</a>, <a href="9-rpt.html#SP16">&#167;16</a><br/>The Creator - <a href="9-tc.html#SP5_4">&#167;5.4</a>, <a href="9-tc.html#SP8_4">&#167;8.4</a>, <a href="9-tc.html#SP8_4_1">&#167;8.4.1</a><br/>Assemblies - <a href="9-ass.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Refiner::noun_from_infs</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Assertions::Refiner::noun_from_infs</span></span>:<br/><a href="9-rpt.html#SP9_5_1">&#167;9.5.1</a>, <a href="9-rpt.html#SP9_7">&#167;9.7</a>, <a href="9-rpt.html#SP10_1">&#167;10.1</a>, <a href="9-rpt.html#SP14">&#167;14</a><br/>The Creator - <a href="9-tc.html#SP5_4">&#167;5.4</a>, <a href="9-tc.html#SP8_4">&#167;8.4</a>, <a href="9-tc.html#SP8_4_1">&#167;8.4.1</a><br/>Assemblies - <a href="9-ass.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="9-rpt.html#SP3" class="function-link"><span class="function-syntax">Assertions::Refiner::pn_make_COMMON_or_PROPER</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_evaluation</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><a href="16-is.html#SP18" class="function-link"><span class="function-syntax">InferenceSubjects::as_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
@@ -312,7 +312,7 @@ pattern; if it works, that reading is allowed to stand.
 <span class="plain-syntax">    </span><a href="9-rpt.html#SP8" class="function-link"><span class="function-syntax">Assertions::Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">creation_rule</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="9-rpt.html#SP9_2">&#167;9.2</a>, <a href="9-rpt.html#SP9_4">&#167;9.4</a>, <a href="9-rpt.html#SP9_5">&#167;9.5</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="9-rpt.html#SP9_2">&#167;9.2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9_3"></a><b>&#167;9.3.  </b><span class="extract"><span class="extract-syntax">AND_NT</span></span> is easy, except for "and surgery", of which more below.
 </p>
 
@@ -340,10 +340,6 @@ from the tree.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">) == </span><span class="identifier-syntax">RELATIONSHIP_NT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><a href="9-rpt.html#SP15" class="function-link"><span class="function-syntax">Assertions::Refiner::perform_called_surgery</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="9-rpt.html#SP9_2_1" class="named-paragraph-link"><span class="named-paragraph">Start the refinement over</span><span class="named-paragraph-number">9.2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="9-rpt.html#SP8" class="function-link"><span class="function-syntax">Assertions::Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">, </span><span class="constant-syntax">FORBID_CREATION</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">, </span><span class="constant-syntax">multiplicity_ANNOT</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_MultipleCalled</span><span class="plain-syntax">),</span>
@@ -372,9 +368,6 @@ has the marble and the box as its children, the relationship being containment.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><a href="9-rpt.html#SP14" class="function-link"><span class="function-syntax">Assertions::Refiner::perform_location_surgery</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="identifier-syntax">AND_NT</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="9-rpt.html#SP9_2_1" class="named-paragraph-link"><span class="named-paragraph">Start the refinement over</span><span class="named-paragraph-number">9.2.1</span></a></span><span class="plain-syntax">;</span>
-
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="9-rpt.html#SP8" class="function-link"><span class="function-syntax">Assertions::Refiner::refine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">creation_rule</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
@@ -1029,84 +1022,7 @@ terms of the tree,
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Location surgery. </b>This is needed to make sentences like the second one
-here work:
-</p>
-
-<blockquote>
-    <p>The escalator is a door. It is below the Kudamm and above the U-Bahn.</p>
-</blockquote>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">        RELATIONSHIP_NT &lt;below&gt; (CONTAINS_THINGS_INF)</span>
-<span class="plain-syntax">            AND_NT</span>
-<span class="plain-syntax">                PROPER_NOUN_NT &lt;kudamm&gt; (definite)</span>
-<span class="plain-syntax">                RELATIONSHIP_NT &lt;above&gt; (CONTAINS_THINGS_INF)</span>
-<span class="plain-syntax">                    PROPER_NOUN_NT &lt;u-bahn&gt; (definite)</span>
-</pre>
-<p class="commentary">into:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">        AND_NT</span>
-<span class="plain-syntax">            RELATIONSHIP_NT &lt;below&gt; (CONTAINS_THINGS_INF)</span>
-<span class="plain-syntax">                PROPER_NOUN_NT &lt;kudamm&gt; (definite)</span>
-<span class="plain-syntax">            RELATIONSHIP_NT &lt;above&gt; (CONTAINS_THINGS_INF)</span>
-<span class="plain-syntax">                PROPER_NOUN_NT &lt;u-bahn&gt; (definite)</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Refiner::perform_location_surgery</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Assertions::Refiner::perform_location_surgery</span></span>:<br/><a href="9-rpt.html#SP9_5">&#167;9.5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">old_and</span><span class="plain-syntax">, *</span><span class="identifier-syntax">old_np1</span><span class="plain-syntax">, *</span><span class="identifier-syntax">old_loc2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="identifier-syntax">RELATIONSHIP_NT</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">) == </span><span class="identifier-syntax">AND_NT</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) == </span><span class="identifier-syntax">RELATIONSHIP_NT</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="constant-syntax">refined_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">); </span><span class="comment-syntax"> otherwise this will be wrongly copied</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">old_and</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">old_np1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">old_and</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">old_loc2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">old_and</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Node::copy</span><span class="plain-syntax">(</span><span class="identifier-syntax">old_and</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">); </span><span class="comment-syntax"> making this the new first location node</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Node::set_type_and_clear_annotations</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">AND_NT</span><span class="plain-syntax">); </span><span class="comment-syntax"> and this is new AND</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">old_and</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">old_and</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">old_np1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">old_and</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">old_loc2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">old_np1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Called surgery. </b>The following case occurs very rarely, on a noun phrase such as
-"north of a room called the Hot and Cold Room". The problem, as usual, is
-the two clauses are the wrong way around, so we perform surgery to turn:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    CALLED_NT  &lt;called&gt;</span>
-<span class="plain-syntax">        RELATIONSHIP_NT  &lt;north of a room&gt; (type:direction)</span>
-<span class="plain-syntax">            PROPER_NOUN_NT  &lt;room&gt; (indefinite)</span>
-<span class="plain-syntax">            PROPER_NOUN_NT  &lt;north&gt; (no article)</span>
-<span class="plain-syntax">        PROPER_NOUN_NT  &lt;hot and cold room&gt; (definite)</span>
-</pre>
-<p class="commentary">into:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    RELATIONSHIP_NT  &lt;called&gt; (type:direction)</span>
-<span class="plain-syntax">        CALLED_NT  &lt;north of a room&gt;</span>
-<span class="plain-syntax">            COMMON_NOUN_NT  &lt;room&gt;</span>
-<span class="plain-syntax">            CREATED_NT  &lt;hot and cold room&gt;</span>
-<span class="plain-syntax">        PROPER_NOUN_NT  &lt;north&gt; (no article)</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Refiner::perform_called_surgery</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Assertions::Refiner::perform_called_surgery</span></span>:<br/><a href="9-rpt.html#SP9_4">&#167;9.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">x_pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax"> "north" in the example</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax"> "hot and cold room" in the example</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">RELATIONSHIP_NT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">CALLED_NT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">x_pn</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">name_pn</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. The player is not yourself. </b>The following routine handles a feature added to Inform to handle just one
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. The player is not yourself. </b>The following routine handles a feature added to Inform to handle just one
 peculiarity of syntax: that the source text will often talk about "the
 player" to mean the object which represents the player at the start of
 play (properly called "yourself"), not the variable whose value is the
@@ -1118,7 +1034,7 @@ can set up aliases of variable names to constants like this.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Refiner::turn_player_to_yourself</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Assertions::Refiner::turn_player_to_yourself</span></span>:<br/>Make Assertions - <a href="9-ma.html#SP3_3_13">&#167;3.3.13</a>, <a href="9-ma.html#SP3_3_20">&#167;3.3.20</a>, <a href="9-ma.html#SP3_3_25">&#167;3.3.25</a>, <a href="9-ma.html#SP3_3_26">&#167;3.3.26</a>, <a href="9-ma.html#SP3_3_29">&#167;3.3.29</a>, <a href="9-ma.html#SP3_3_36">&#167;3.3.36</a>, <a href="9-ma.html#SP3_3_37">&#167;3.3.37</a><br/>Relation Knowledge - <a href="9-rk.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Refiner::turn_player_to_yourself</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Assertions::Refiner::turn_player_to_yourself</span></span>:<br/>Make Assertions - <a href="9-ma.html#SP3_3_13">&#167;3.3.13</a>, <a href="9-ma.html#SP3_3_20">&#167;3.3.20</a>, <a href="9-ma.html#SP3_3_25">&#167;3.3.25</a>, <a href="9-ma.html#SP3_3_26">&#167;3.3.26</a>, <a href="9-ma.html#SP3_3_29">&#167;3.3.29</a>, <a href="9-ma.html#SP3_3_36">&#167;3.3.36</a>, <a href="9-ma.html#SP3_3_37">&#167;3.3.37</a><br/>Relation Knowledge - <a href="9-rk.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">))) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) == </span><span class="identifier-syntax">PROPER_NOUN_NT</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">turned_already_ANNOT</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>

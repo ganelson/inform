@@ -1,0 +1,12 @@
+Location surgery on:
+RELATIONSHIP_NT'is on' {meaning: carries}
+    AND_NT'and'
+        UNPARSED_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc}
+        RELATIONSHIP_NT'under the ming vase' {meaning: carries-reversed}
+            UNPARSED_NOUN_NT'ming vase' {definite 'the' n/m/f s/p nom/acc}
+Results in:
+AND_NT'and'
+    RELATIONSHIP_NT'is on' {meaning: carries}
+        UNPARSED_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc}
+    RELATIONSHIP_NT'under the ming vase' {meaning: carries-reversed}
+        UNPARSED_NOUN_NT'ming vase' {definite 'the' n/m/f s/p nom/acc}

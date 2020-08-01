@@ -11,6 +11,7 @@ What shall we test?
 @e RAW_DIAGRAMS_CLSW
 @e TRACE_DIAGRAMS_CLSW
 @e VIABILITY_DIAGRAMS_CLSW
+@e SURGERY_CLSW
 @e TEST_ARTICLES_CLSW
 @e TEST_PRONOUNS_CLSW
 
@@ -40,6 +41,8 @@ int main(int argc, char **argv) {
 		L"test raw sentence diagrams from text in X with tracing on");
 	CommandLine::declare_switch(VIABILITY_DIAGRAMS_CLSW, L"viability", 2,
 		L"show viability map for sentences in X");
+	CommandLine::declare_switch(SURGERY_CLSW, L"surgery", 2,
+		L"show surgeries performed on sentences in X");
 	CommandLine::declare_switch(VOCABULARY_CLSW, L"vocabulary", 2,
 		L"read vocabulary from file X for use in -diagram tests");
 	CommandLine::declare_switch(TEST_ARTICLES_CLSW, L"test-articles", 2,
@@ -66,9 +69,11 @@ viability map for each sentence.
 =
 int trace_diagrams_mode = FALSE;
 int viability_diagrams_mode = FALSE;
+int surgery_mode = FALSE;
 int Main::trace_parsing(int A) {
 	if (trace_diagrams_mode) return trace_diagrams_mode;
 	if (A == VIABILITY_VP_TRACE) return viability_diagrams_mode;
+	if (A == SURGERY_VP_TRACE) return surgery_mode;
 	return FALSE;
 }
 
@@ -85,6 +90,10 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 			break;
 		case VIABILITY_DIAGRAMS_CLSW:
 			viability_diagrams_mode = TRUE;
+			Diagramming::test_diagrams(arg, TRUE);
+			break;
+		case SURGERY_CLSW:
+			surgery_mode = TRUE;
 			Diagramming::test_diagrams(arg, TRUE);
 			break;
 		case RAW_DIAGRAMS_CLSW:

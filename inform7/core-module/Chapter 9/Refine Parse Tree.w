@@ -224,10 +224,6 @@ of Y and the kind of X. In this way, all |CALLED_NT| nodes are removed
 from the tree.
 
 @<Refine a calling subtree@> =
-	if ((Node::get_type(p->down) == RELATIONSHIP_NT) && (p->down->down)) {
-		Assertions::Refiner::perform_called_surgery(p);
-		@<Start the refinement over@>;
-	}
 	Assertions::Refiner::refine(p->down, FORBID_CREATION);
 	if (Annotations::read_int(p->down, multiplicity_ANNOT) > 1) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleCalled),
@@ -251,9 +247,6 @@ in general it has two children: for instance "a green marble in a blue box"
 has the marble and the box as its children, the relationship being containment.
 
 @<Refine a relationship subtree@> =
-	Assertions::Refiner::perform_location_surgery(p);
-	if (Node::get_type(p) == AND_NT) @<Start the refinement over@>;
-
 	if (p->down) {
 		Assertions::Refiner::refine(p->down, creation_rule);
 		#ifdef IF_MODULE
@@ -782,77 +775,6 @@ void Assertions::Refiner::perform_with_surgery(parse_node *p) {
 		p->down->next->down = prop_1;
 		p->down->next->down->next = prop_2;
 	}
-}
-
-@h Location surgery. This is needed to make sentences like the second one
-here work:
-
->> The escalator is a door. It is below the Kudamm and above the U-Bahn.
-
-= (text)
-	    RELATIONSHIP_NT <below> (CONTAINS_THINGS_INF)
-	        AND_NT
-	            PROPER_NOUN_NT <kudamm> (definite)
-	            RELATIONSHIP_NT <above> (CONTAINS_THINGS_INF)
-	                PROPER_NOUN_NT <u-bahn> (definite)
-=
-into:
-= (text)
-	    AND_NT
-	        RELATIONSHIP_NT <below> (CONTAINS_THINGS_INF)
-	            PROPER_NOUN_NT <kudamm> (definite)
-	        RELATIONSHIP_NT <above> (CONTAINS_THINGS_INF)
-	            PROPER_NOUN_NT <u-bahn> (definite)
-=
-
-=
-void Assertions::Refiner::perform_location_surgery(parse_node *p) {
-	parse_node *old_and, *old_np1, *old_loc2;
-	if ((Node::get_type(p) == RELATIONSHIP_NT) &&
-		(p->down) && (Node::get_type(p->down) == AND_NT) &&
-		(p->down->down) && (p->down->down->next) &&
-		(Node::get_type(p->down->down->next) == RELATIONSHIP_NT)) {
-		Annotations::write_int(p, refined_ANNOT, FALSE); /* otherwise this will be wrongly copied */
-		old_and = p->down;
-		old_np1 = old_and->down;
-		old_loc2 = old_and->down->next;
-		Node::copy(old_and, p); /* making this the new first location node */
-		Node::set_type_and_clear_annotations(p, AND_NT); /* and this is new AND */
-		p->down = old_and;
-		old_and->down = old_np1;
-		old_and->next = old_loc2;
-		old_np1->next = NULL;
-	}
-}
-
-@h Called surgery.
-The following case occurs very rarely, on a noun phrase such as
-"north of a room called the Hot and Cold Room". The problem, as usual, is
-the two clauses are the wrong way around, so we perform surgery to turn:
-= (text)
-	CALLED_NT  <called>
-		RELATIONSHIP_NT  <north of a room> (type:direction)
-			PROPER_NOUN_NT  <room> (indefinite)
-			PROPER_NOUN_NT  <north> (no article)
-		PROPER_NOUN_NT  <hot and cold room> (definite)
-=
-into:
-= (text)
-	RELATIONSHIP_NT  <called> (type:direction)
-		CALLED_NT  <north of a room>
-			COMMON_NOUN_NT  <room>
-			CREATED_NT  <hot and cold room>
-		PROPER_NOUN_NT  <north> (no article)
-=
-
-=
-void Assertions::Refiner::perform_called_surgery(parse_node *p) {
-	parse_node *x_pn = p->down->down->next; /* "north" in the example */
-	parse_node *name_pn = p->down->next; /* "hot and cold room" in the example */
-	Node::set_type(p, RELATIONSHIP_NT);
-	Node::set_type(p->down, CALLED_NT);
-	p->down->next = x_pn;
-	p->down->down->next = name_pn;
 }
 
 @h The player is not yourself.
