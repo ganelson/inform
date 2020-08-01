@@ -146,7 +146,7 @@ typedef struct adjective_compilation_data {
 
 =
 void Adjectives::Meanings::initialise(adjective *adj) {
-	adj->adjective_compilation.aph_package = Hierarchy::package(Modules::current(), ADJECTIVES_HAP);
+	adj->adjective_compilation.aph_package = Hierarchy::package(CompilationUnits::current(), ADJECTIVES_HAP);
 	adj->adjective_compilation.aph_iname = Hierarchy::make_iname_in(ADJECTIVE_HL, adj->adjective_compilation.aph_package);
 }
 

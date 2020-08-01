@@ -23,9 +23,9 @@ void Emit::begin(void) {
 	I7_generation_tree = I;
 	
 	Packaging::incarnate(Site::veneer_request(I));
-	Packaging::incarnate(Packaging::get_module(I, I"generic")->the_package);
-	Packaging::incarnate(Packaging::get_module(I, I"synoptic")->the_package);
-	Packaging::incarnate(Packaging::get_module(I, I"standard_rules")->the_package);	
+	Packaging::incarnate(Packaging::get_unit(I, I"generic")->the_package);
+	Packaging::incarnate(Packaging::get_unit(I, I"synoptic")->the_package);
+	Packaging::incarnate(Packaging::get_unit(I, I"standard_rules")->the_package);	
 
 	Hierarchy::establish(I);
 

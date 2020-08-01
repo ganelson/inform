@@ -18,7 +18,7 @@ defined "to mean", how can we recognise "means" as the verb, or know what it
 means? We break this circularity by hard-wiring it, as follows.
 
 =
-void BootVerbs::bootstrap(void) {
+void BootVerbs::make_built_in(void) {
 	verb *to_mean;
 	special_meaning_holder *meaning_of_mean;
 	@<Create the special meanings@>;

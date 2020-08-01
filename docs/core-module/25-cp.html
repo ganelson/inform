@@ -105,7 +105,7 @@ should always be supplied for "To..." phrases, but left null for rules.
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"tried to compile phrase with bad ROUTINE node"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PHRASE_COMPILATION</span><span class="plain-syntax">, </span><span class="string-syntax">"Compiling phrase:\n$T"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">declaration_node</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><a href="27-cm.html#SP6" class="function-link"><span class="function-syntax">Modules::set_current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ph</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">declaration_node</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="27-cm.html#SP6" class="function-link"><span class="function-syntax">CompilationUnits::set_current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ph</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">declaration_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">phrase_being_compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ph</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="25-cp.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Set up the stack frame for this compilation request</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
 
@@ -119,7 +119,7 @@ should always be supplied for "To..." phrases, but left null for rules.
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">phrase_being_compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="27-cm.html#SP6" class="function-link"><span class="function-syntax">Modules::set_current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="27-cm.html#SP6" class="function-link"><span class="function-syntax">CompilationUnits::set_current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile some commentary about the routine to follow</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>

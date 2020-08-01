@@ -301,7 +301,7 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 	if (vc->vc_iname == NULL) {
 		if (vc->vc_conjugates == NULL) {
 			package_request *R =
-				Hierarchy::package(Modules::find(vc->where_vc_created), MVERBS_HAP);
+				Hierarchy::package(CompilationUnits::find(vc->where_vc_created), MVERBS_HAP);
 			TEMPORARY_TEXT(ANT)
 			WRITE_TO(ANT, "%A (modal)", &(vc->tabulations[ACTIVE_VOICE].vc_text[IS_TENSE][POSITIVE_SENSE][THIRD_PERSON]));
 			Hierarchy::markup(R, MVERB_NAME_HMD, ANT);

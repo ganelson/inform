@@ -40,6 +40,7 @@ To place calls to the plugins.
 @d PLUGIN_ADD_TO_WORLD_INDEX 40
 @d PLUGIN_ANNOTATE_IN_WORLD_INDEX 41
 @d PLUGIN_SET_SUBKIND_NOTIFY 42
+@d PLUGIN_CREATE_INFERENCES 43
 
 @
 
@@ -240,4 +241,8 @@ int Plugins::Call::add_to_World_index(OUTPUT_STREAM, instance *O) {
 
 int Plugins::Call::annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 	PLUGINS_CALL(PLUGIN_ANNOTATE_IN_WORLD_INDEX, OUT, O);
+}
+
+int Plugins::Call::create_inference_subjects(void) {
+	PLUGINS_CALLV(PLUGIN_CREATE_INFERENCES);
 }

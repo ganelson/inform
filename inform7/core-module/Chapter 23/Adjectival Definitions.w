@@ -104,8 +104,8 @@ void Phrases::Adjectives::traverse(void) {
 void Phrases::Adjectives::look_for_headers(parse_node *p) {
 	if (Node::get_type(p) == RULE_NT)
 		if (<definition-header>(Node::get_text(p))) {
-			compilation_module *cm = Modules::current();
-			Modules::set_current(p);
+			compilation_unit *cm = CompilationUnits::current();
+			CompilationUnits::set_current(p);
 			parse_node *q = (p->down)?(p->down->down):NULL;
 			if (q == NULL) @<Futz with the parse tree, trying right not down@>;
 
@@ -122,7 +122,7 @@ void Phrases::Adjectives::look_for_headers(parse_node *p) {
 
 			if (the_format != DEFINED_PHRASALLY)  p->down = NULL;
 
-			Modules::set_current_to(cm);
+			CompilationUnits::set_current_to(cm);
 		}
 }
 

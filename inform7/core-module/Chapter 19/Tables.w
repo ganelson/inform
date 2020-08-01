@@ -141,7 +141,7 @@ table *Tables::new_table_structure(parse_node *PN) {
 	t->preserve_row_order_at_run_time = FALSE;
 	t->amendment_of = NULL;
 	t->has_been_amended = FALSE;
-	t->table_package = Hierarchy::package(Modules::find(PN), TABLES_HAP);
+	t->table_package = Hierarchy::package(CompilationUnits::find(PN), TABLES_HAP);
 	t->table_identifier = Hierarchy::make_iname_in(TABLE_DATA_HL, t->table_package);
 	t->approximate_array_space_needed = 0;
 	t->disable_block_constant_correction = FALSE;

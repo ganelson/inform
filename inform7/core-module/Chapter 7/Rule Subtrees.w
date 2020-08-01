@@ -1,4 +1,4 @@
-[Sentences::RuleSubtrees::] Rule Subtrees.
+[RuleSubtrees::] Rule Subtrees.
 
 To tidy up |INVOCATION_LIST_NT| nodes into a list of children under the
 relevant |RULE_NT| node, and so turn each rule definition into a single
@@ -21,16 +21,16 @@ acts so as to leave a non-zero number of children, and since it acts only
 on childless nodes, it cannot ever act on the same node twice.
 
 =
-void Sentences::RuleSubtrees::register_recently_lexed_phrases(void) {
+void RuleSubtrees::register_recently_lexed_phrases(void) {
 	if (problem_count > 0) return; /* for then the tree is perhaps broken anyway */
-	SyntaxTree::traverse(Task::syntax_tree(), Sentences::RuleSubtrees::demote_command_nodes);
-	SyntaxTree::traverse(Task::syntax_tree(), Sentences::RuleSubtrees::detect_loose_command_nodes);
+	SyntaxTree::traverse(Task::syntax_tree(), RuleSubtrees::demote_command_nodes);
+	SyntaxTree::traverse(Task::syntax_tree(), RuleSubtrees::detect_loose_command_nodes);
 }
 
 @ Command nodes are demoted to be children of routine nodes:
 
 =
-void Sentences::RuleSubtrees::demote_command_nodes(parse_node *p) {
+void RuleSubtrees::demote_command_nodes(parse_node *p) {
 	if ((Node::get_type(p) == RULE_NT) && (p->down == NULL)) {
 		parse_node *end_def = p;
 		while ((end_def->next) && (Node::get_type(end_def->next) == INVOCATION_LIST_NT))
@@ -40,14 +40,14 @@ void Sentences::RuleSubtrees::demote_command_nodes(parse_node *p) {
 		p->down = p->next;
 		p->next = end_def->next;
 		end_def->next = NULL;
-		Sentences::RuleSubtrees::parse_routine_structure(p);
+		RuleSubtrees::parse_routine_structure(p);
 	}
 }
 
 @ And just in case:
 
 =
-void Sentences::RuleSubtrees::detect_loose_command_nodes(parse_node *p) {
+void RuleSubtrees::detect_loose_command_nodes(parse_node *p) {
 	if (Node::get_type(p) == INVOCATION_LIST_NT)
 		internal_error("loose COMMAND node outside of rule definition");
 }
@@ -70,7 +70,7 @@ it's kept for the benefit of partially sighted users, who find tabbed
 indentation difficult to manage with screen-readers.
 
 =
-void Sentences::RuleSubtrees::parse_routine_structure(parse_node *routine_node) {
+void RuleSubtrees::parse_routine_structure(parse_node *routine_node) {
 	int initial_problem_count = problem_count;
 
 	parse_node *uses_colon_syntax = NULL;
@@ -285,7 +285,7 @@ to break this up.
 	@<Deal with an immediately following otherwise node, if there is one@>;
 
 	if (uses_colon_syntax == FALSE) {
-		last_node_of_if_construction->next = Sentences::RuleSubtrees::end_node(p);
+		last_node_of_if_construction->next = RuleSubtrees::end_node(p);
 		last_node_of_if_construction->next->next = rest_of_routine;
 	} else {
 		last_node_of_if_construction->next = rest_of_routine;
@@ -524,7 +524,7 @@ above it: here we insert such a marker at a place where the source text
 indentation implicitly requires it.
 
 @<Insert end marker to match the opening of the block phrase@> =
-	parse_node *implicit_end = Sentences::RuleSubtrees::end_node(opening);
+	parse_node *implicit_end = RuleSubtrees::end_node(opening);
 	implicit_end->next = prev->next; prev->next = implicit_end;
 	prev = implicit_end;
 
@@ -765,13 +765,13 @@ where we look for such mistakes.
 
 @<(f) Police the structure of the parse tree@> =
 	int n = problem_count;
-	Sentences::RuleSubtrees::police_code_block(routine_node->down, NULL);
+	RuleSubtrees::police_code_block(routine_node->down, NULL);
 	if (problem_count > n) LOG("Local parse tree: $T\n", routine_node);
 
 @ Which recursively uses the following:
 
 =
-void Sentences::RuleSubtrees::police_code_block(parse_node *block, control_structure_phrase *context) {
+void RuleSubtrees::police_code_block(parse_node *block, control_structure_phrase *context) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
 		current_sentence = p;
 
@@ -801,7 +801,7 @@ void Sentences::RuleSubtrees::police_code_block(parse_node *block, control_struc
 			}
 		}
 
-		if (p->down) Sentences::RuleSubtrees::police_code_block(p, csp);
+		if (p->down) RuleSubtrees::police_code_block(p, csp);
 	}
 }
 
@@ -913,7 +913,7 @@ can now become "otherwise: if whatever: ...".
 
 @<(g) Optimise out the otherwise if nodes@> =
 	int n = problem_count;
-	Sentences::RuleSubtrees::purge_otherwise_if(routine_node->down);
+	RuleSubtrees::purge_otherwise_if(routine_node->down);
 	if (problem_count > n) LOG("Local parse tree: $T\n", routine_node);
 
 @ We made a similar manoeuvre above, but for one-line "otherwise do something"
@@ -922,7 +922,7 @@ didn't handle this back then because to do so would have made it impossible
 to issue good problem messages for failures to use "otherwise if" correctly.
 
 =
-void Sentences::RuleSubtrees::purge_otherwise_if(parse_node *block) {
+void RuleSubtrees::purge_otherwise_if(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
 		if (Node::get_control_structure_used(p) == otherwise_if_CSP) {
 			parse_node *former_contents = p->down;
@@ -949,7 +949,7 @@ void Sentences::RuleSubtrees::purge_otherwise_if(parse_node *block) {
 			/* any further "otherwise if" or "otherwise" nodes after p follow */
 			p->down->next = former_successors;
 		}
-		if (p->down) Sentences::RuleSubtrees::purge_otherwise_if(p);
+		if (p->down) RuleSubtrees::purge_otherwise_if(p);
 	}
 }
 
@@ -959,15 +959,15 @@ but now that the structure is known to be correct they serve no further purpose.
 We remove them.
 
 @<(h) Remove any end markers as no longer necessary@> =
-	Sentences::RuleSubtrees::purge_end_markers(routine_node->down);
+	RuleSubtrees::purge_end_markers(routine_node->down);
 
 @ =
-void Sentences::RuleSubtrees::purge_end_markers(parse_node *block) {
+void RuleSubtrees::purge_end_markers(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
 		if (Node::get_end_control_structure_used(p)) {
 			if (prev_p) prev_p->next = p->next; else block->down = p->next;
 		}
-		if (p->down) Sentences::RuleSubtrees::purge_end_markers(p);
+		if (p->down) RuleSubtrees::purge_end_markers(p);
 	}
 }
 
@@ -975,15 +975,15 @@ void Sentences::RuleSubtrees::purge_end_markers(parse_node *block) {
 can now be removed, too.
 
 @<(i) Remove any begin markers as no longer necessary@> =
-	Sentences::RuleSubtrees::purge_begin_markers(routine_node->down);
+	RuleSubtrees::purge_begin_markers(routine_node->down);
 
 @ =
-void Sentences::RuleSubtrees::purge_begin_markers(parse_node *block) {
+void RuleSubtrees::purge_begin_markers(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
 		if (Node::get_control_structure_used(p))
 			if (<phrase-beginning-block>(Node::get_text(p)))
 				Node::set_text(p, GET_RW(<phrase-beginning-block>, 1));
-		if (p->down) Sentences::RuleSubtrees::purge_begin_markers(p);
+		if (p->down) RuleSubtrees::purge_begin_markers(p);
 	}
 }
 
@@ -995,10 +995,10 @@ code block nodes to mark these phrases, and transfer the control structure
 annotations to them.
 
 @<(j) Insert code block nodes so that nodes needing to be parsed are childless@> =
-	Sentences::RuleSubtrees::insert_cb_nodes(routine_node->down);
+	RuleSubtrees::insert_cb_nodes(routine_node->down);
 
 @ =
-void Sentences::RuleSubtrees::insert_cb_nodes(parse_node *block) {
+void RuleSubtrees::insert_cb_nodes(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
 		if (ControlStructures::opens_block(Node::get_control_structure_used(p))) {
 			parse_node *blank_cb_node = Node::new(CODE_BLOCK_NT);
@@ -1012,17 +1012,17 @@ void Sentences::RuleSubtrees::insert_cb_nodes(parse_node *block) {
 			if (prev_p) prev_p->next = blank_cb_node; else block->down = blank_cb_node;
 			p = blank_cb_node;
 		}
-		if (p->down) Sentences::RuleSubtrees::insert_cb_nodes(p);
+		if (p->down) RuleSubtrees::insert_cb_nodes(p);
 	}
 }
 
 @ Now:
 
 @<(k) Insert instead marker nodes@> =
-	Sentences::RuleSubtrees::read_instead_markers(routine_node->down);
+	RuleSubtrees::read_instead_markers(routine_node->down);
 
 @ =
-void Sentences::RuleSubtrees::read_instead_markers(parse_node *block) {
+void RuleSubtrees::read_instead_markers(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
 		if (<instead-keyword>(Node::get_text(p))) {
 			Node::set_text(p, GET_RW(<instead-keyword>, 1));
@@ -1031,17 +1031,17 @@ void Sentences::RuleSubtrees::read_instead_markers(parse_node *block) {
 			instead_node->next = p->next;
 			p->next = instead_node;
 		}
-		if (p->down) Sentences::RuleSubtrees::read_instead_markers(p);
+		if (p->down) RuleSubtrees::read_instead_markers(p);
 	}
 }
 
 @ Now:
 
 @<(l) Break up say phrases@> =
-	Sentences::RuleSubtrees::break_up_says(routine_node->down);
+	RuleSubtrees::break_up_says(routine_node->down);
 
 @ =
-void Sentences::RuleSubtrees::break_up_says(parse_node *block) {
+void RuleSubtrees::break_up_says(parse_node *block) {
 	for (parse_node *p = block->down, *prev_p = NULL; p; prev_p = p, p = p->next) {
 		int sf = NO_SIGF;
 		wording W = Node::get_text(p);
@@ -1059,7 +1059,7 @@ void Sentences::RuleSubtrees::break_up_says(parse_node *block) {
 				if (prev_p) prev_p->next = blank_cb_node; else block->down = blank_cb_node;
 
 				current_sentence = p;
-				Sentences::RuleSubtrees::unroll_says(blank_cb_node, W, 0);
+				RuleSubtrees::unroll_says(blank_cb_node, W, 0);
 				p = blank_cb_node;
 				break;
 			}
@@ -1071,11 +1071,11 @@ void Sentences::RuleSubtrees::break_up_says(parse_node *block) {
 				break;
 			}
 		}
-		if (p->down) Sentences::RuleSubtrees::break_up_says(p);
+		if (p->down) RuleSubtrees::break_up_says(p);
 	}
 }
 
-void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) {
+void RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) {
 	while (<phrase-with-comma-notation>(W)) {
 		wording AW = GET_RW(<phrase-with-comma-notation>, 1);
 		wording BW = GET_RW(<phrase-with-comma-notation>, 2);
@@ -1093,7 +1093,7 @@ void Sentences::RuleSubtrees::unroll_says(parse_node *cb_node, wording W, int de
 			@<Check that substitution does not contain suspicious punctuation@>;
 			wording A = Feeds::feed_C_string_expanding_strings(p);
 			if (<verify-expanded-text-substitution>(A))
-				Sentences::RuleSubtrees::unroll_says(cb_node, A, depth+1);
+				RuleSubtrees::unroll_says(cb_node, A, depth+1);
 		} else {
 			parse_node *say_term_node = Node::new(INVOCATION_LIST_SAY_NT);
 			Node::set_text(say_term_node, W);
@@ -1220,7 +1220,7 @@ to parse the list.
 match a given begin node.
 
 =
-parse_node *Sentences::RuleSubtrees::end_node(parse_node *opening) {
+parse_node *RuleSubtrees::end_node(parse_node *opening) {
 	parse_node *implicit_end = Node::new(INVOCATION_LIST_NT);
 	Node::set_end_control_structure_used(implicit_end,
 		Node::get_control_structure_used(opening));

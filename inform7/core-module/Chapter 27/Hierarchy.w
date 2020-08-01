@@ -1580,7 +1580,7 @@ void Hierarchy::make_available(inter_tree *I, inter_name *iname) {
 	Inter::Connectors::socket(Emit::tree(), ma_as, S);
 }
 
-package_request *Hierarchy::package(compilation_module *C, int hap_id) {
+package_request *Hierarchy::package(compilation_unit *C, int hap_id) {
 	return HierarchyLocations::attach_new_package(Emit::tree(), C, NULL, hap_id);
 }
 
@@ -1589,7 +1589,7 @@ package_request *Hierarchy::synoptic_package(int hap_id) {
 }
 
 package_request *Hierarchy::local_package(int hap_id) {
-	return HierarchyLocations::attach_new_package(Emit::tree(), Modules::find(current_sentence), NULL, hap_id);
+	return HierarchyLocations::attach_new_package(Emit::tree(), CompilationUnits::find(current_sentence), NULL, hap_id);
 }
 
 package_request *Hierarchy::package_in_enclosure(int hap_id) {
@@ -1612,7 +1612,7 @@ inter_name *Hierarchy::derive_iname_in(int id, inter_name *derive_from, package_
 	return HierarchyLocations::find_in_package(Emit::tree(), id, P, EMPTY_WORDING, derive_from, -1, NULL);
 }
 
-inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_module *C) {
+inter_name *Hierarchy::make_localised_iname_in(int id, package_request *P, compilation_unit *C) {
 	return HierarchyLocations::find_in_package(Emit::tree(), id, P, EMPTY_WORDING, NULL, -1, NULL);
 }
 

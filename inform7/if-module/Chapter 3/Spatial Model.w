@@ -95,6 +95,7 @@ inference_subject *infs_person = NULL;
 
 =
 void PL::Spatial::start(void) {
+	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCES, PL::Spatial::create_inference_subjects);
 	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Spatial::spatial_new_base_kind_notify);
 	PLUGIN_REGISTER(PLUGIN_ACT_ON_SPECIAL_NPS, PL::Spatial::spatial_act_on_special_NPs);
 	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Spatial::IF_complete_model);
@@ -110,7 +111,6 @@ void PL::Spatial::start(void) {
 	PLUGIN_REGISTER(PLUGIN_SET_SUBKIND_NOTIFY, PL::Spatial::spatial_set_subkind_notify);
 	PLUGIN_REGISTER(PLUGIN_ADD_TO_WORLD_INDEX, PL::Spatial::spatial_add_to_World_index);
 	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Spatial::spatial_intervene_in_assertion);
-	@<Create early inference subjects@>;
 }
 
 @ In talking about some of the fundamental spatial domains we potentially have
@@ -131,7 +131,8 @@ kinds they will one day infer about. These amount to promisory notes that
 we will make them correspond to the actual kinds later on, at some point
 after stage (d) when they exist.
 
-@<Create early inference subjects@> =
+=
+void PL::Spatial::create_inference_subjects(void) {
 	infs_room = InferenceSubjects::new(global_constants,
 		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
 	infs_thing = InferenceSubjects::new(global_constants,
@@ -140,6 +141,7 @@ after stage (d) when they exist.
 		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
 	infs_person = InferenceSubjects::new(global_constants,
 		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
+}
 
 @ And this is where those IOUs are redeemed. What happens is that, ordinarily,
 the machinery creating objects (and kinds) will allocate a new inference

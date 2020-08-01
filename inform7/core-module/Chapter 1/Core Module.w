@@ -461,7 +461,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e rule_placement_sense_ANNOT /* |int|: are we listing a rule into something, or out of it? */
 @e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
 @e modal_verb_ANNOT /* |verb_conjugation|: relevant only for that: e.g., "might" */
-@e module_ANNOT /* |compilation_module|: set only for headings, routines and sentences */
 @e multiplicity_ANNOT /* |int|: e.g., 5 for "five gold rings" */
 @e negated_boolean_ANNOT /* int: set if adjective/verb meant negatively */
 @e new_relation_here_ANNOT /* |binary_predicate|: new relation as subject of "relates" sentence */
@@ -499,6 +498,7 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e token_check_to_do_ANNOT /* |parse_node|: what if anything is returned */
 @e token_to_be_parsed_against_ANNOT /* |parse_node|: what if anything is returned */
 @e turned_already_ANNOT /* |int|: aliasing like "player" to "yourself" performed already */
+@e unit_ANNOT /* |compilation_unit|: set only for headings, routines and sentences */
 @e unproven_ANNOT /* |int|: this invocation needs run-time typechecking */
 @e verb_problem_issued_ANNOT /* |int|: has a problem message about the primary verb been issued already? */
 @e vu_ANNOT /* |verb_usage|: for e.g. "does not carry" */
@@ -540,7 +540,6 @@ DECLARE_ANNOTATION_FUNCTIONS(kind_resulting, kind)
 DECLARE_ANNOTATION_FUNCTIONS(kind_variable_declarations, kind_variable_declaration)
 DECLARE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)
 DECLARE_ANNOTATION_FUNCTIONS(modal_verb, verb_conjugation)
-DECLARE_ANNOTATION_FUNCTIONS(module, compilation_module)
 DECLARE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
 DECLARE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
@@ -555,6 +554,7 @@ DECLARE_ANNOTATION_FUNCTIONS(tense_marker, grammatical_usage)
 DECLARE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
+DECLARE_ANNOTATION_FUNCTIONS(unit, compilation_unit)
 DECLARE_ANNOTATION_FUNCTIONS(vu, verb_usage)
 
 @ So we itemise the pointer-valued annotations below, and the macro expands

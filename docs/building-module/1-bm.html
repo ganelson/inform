@@ -76,7 +76,7 @@
 <span class="definition-keyword">enum</span> <span class="constant-syntax">module_package_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">submodule_identity_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">submodule_request_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">compilation_module_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">compilation_unit_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inter_schema_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inter_schema_node_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inter_schema_token_CLASS</span>
@@ -92,7 +92,7 @@
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">module_package</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">submodule_identity</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">submodule_request</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">compilation_module</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">compilation_unit</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_token</span><span class="plain-syntax">)</span>
@@ -102,7 +102,7 @@
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">explicit_iname</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_name</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">module</span><span class="plain-syntax">, </span><span class="reserved-syntax">compilation_module</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">unit</span><span class="plain-syntax">, </span><span class="reserved-syntax">compilation_unit</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The beginning. </b>(The client doesn't need to call the start and end routines, because the

@@ -26,7 +26,7 @@ a value with the owner; it isn't that either/or properties are unloved.)
 typedef struct property {
 	struct wording name; /* name of property */
 	int ambiguous_name; /* does this look like a property test, e.g., "point of view"? */
-	struct compilation_module *owning_module; /* where defined */
+	struct compilation_unit *owning_module; /* where defined */
 
 	/* the basic nature of this property */
 	int either_or; /* is this an either/or property? if not, it is a valued one */
@@ -193,7 +193,7 @@ something.
 
 @<Initialise the property name structure@> =
 	prn->name = W;
-	prn->owning_module = Modules::find(current_sentence);
+	prn->owning_module = CompilationUnits::find(current_sentence);
 	prn->ambiguous_name = <name-looking-like-property-test>(W);
 	prn->applicable_to = NULL;
 	prn->either_or = FALSE;

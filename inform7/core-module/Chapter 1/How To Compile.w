@@ -11,11 +11,9 @@ on to the next.
 150 is a great many, so we group the stages into 16 departments, which are,
 in order of when they work:
 
-@e STARTED_CSEQ from 0
-@e SEMANTIC_LANGUAGE_CSEQ
-@e SEMANTIC_I_CSEQ
-@e SEMANTIC_II_CSEQ
-@e SEMANTIC_III_CSEQ
+@e SUBDIVIDING_CSEQ from 0
+@e BUILT_IN_STUFF_CSEQ
+@e SEMANTIC_ANALYSIS_CSEQ
 @e ASSERTIONS_PASS_1_CSEQ
 @e ASSERTIONS_PASS_2_CSEQ
 @e MODEL_CSEQ
@@ -35,19 +33,14 @@ with building that grammar are skipped unless the relevant language element
 is active.
 
 =
-int compiler_booted_up = FALSE;
-
 int Sequence::carry_out(int debugging) {
 	stopwatch_timer *sequence_timer =
 		Time::start_stopwatch(inform7_timer, I"compilation to Inter");
-	Task::advance_stage_to(STARTED_CSEQ, I"Starting", -1);
 
-	if (compiler_booted_up == FALSE) {
-		@<Boot up the compiler@>;
-		compiler_booted_up = TRUE;
-	}
-	@<Perform textual analysis@>;
-	@<Read the assertions in two passes@>;
+	@<Divide into compilation units@>;
+	@<Build a rudimentary set of kinds, relations, verbs and inference subjects@>;
+	@<Find the major declarations at non-SENTENCE nodes@>;
+	@<Diagram the SENTENCE nodes and act on them@>;
 	@<Make the model world@>;
 	@<Tables and grammar@>;
 	@<Phrases and rules@>;
@@ -115,45 +108,53 @@ as possible.
 commentary. For what they do, see the relevant sections. Note that although
 most of these worker functions are in the |core| module, some are not.
 
-@<Boot up the compiler@> =
+Before anything else can be done, we must create an empty Inter hierarchy
+into which we will "emit" an Inter program. No actual code will be emitted for
+some time yet, but identifier names and type declarations need somewhere to go.
+We then break the source into "compilation units" -- basically, one for the
+main source text and one for each extension -- because the Inter hierarchy
+will divide according to these units.
+
+@<Divide into compilation units@> =
+	Task::advance_stage_to(SUBDIVIDING_CSEQ, I"Dividing source into compilation units", -1);
 	BENCH(Emit::begin);
-	BENCH(InferenceSubjects::begin);
-	BENCH(Index::DocReferences::read_xrefs);
-
-@<Perform textual analysis@> =
-	Task::advance_stage_to(SEMANTIC_LANGUAGE_CSEQ, I"Semantic analysis Ia", -1);
-	BENCH(Plugins::Manage::start_plugins);
-	BENCH(Task::load_types);
-	BENCH(BinaryPredicates::make_built_in)
-
-	Task::advance_stage_to(SEMANTIC_I_CSEQ, I"Semantic analysis Ib", -1);
-	BENCH(BootVerbs::bootstrap)
-	BENCH(Classifying::traverse)
-	BENCH(Sentences::RuleSubtrees::register_recently_lexed_phrases)
-	BENCH(ParseTreeUsage::verify)
-
-	Task::advance_stage_to(SEMANTIC_II_CSEQ, I"Semantic analysis II", -1);
 	BENCH(Sentences::Headings::make_the_tree)
 	BENCH(Sentences::Headings::write_as_xml)
-	BENCH(Modules::traverse_to_define)
+	BENCH(CompilationUnits::determine)
 
-	Task::advance_stage_to(SEMANTIC_III_CSEQ, I"Semantic analysis III", -1);
+@ Most of the conceptual infrastructure in Inform is created by Inform source
+text in the Basic Inform or Standard Rules extensions, but not basic kinds of
+value such as "number", or the verb "to mean", or the meaning relation, and
+so on. Those absolute basics are made here.
+
+@<Build a rudimentary set of kinds, relations, verbs and inference subjects@> =
+	Task::advance_stage_to(BUILT_IN_STUFF_CSEQ, I"Making built in infrastructure", -1);
+	BENCH(InferenceSubjects::make_built_in);
+	BENCH(Task::make_built_in_kind_constructors);
+	BENCH(BinaryPredicates::make_built_in)
+	BENCH(BootVerbs::make_built_in)
+
+@<Find the major declarations at non-SENTENCE nodes@> =
+	Task::advance_stage_to(SEMANTIC_ANALYSIS_CSEQ, I"Semantic analysis", -1);
+	BENCH(RuleSubtrees::register_recently_lexed_phrases)
 	BENCH(Phrases::Adjectives::traverse)
 	BENCH(Equations::traverse_to_create)
 	BENCH(Tables::traverse_to_create)
 	BENCH(Phrases::Manager::traverse_for_names)
 
-@<Read the assertions in two passes@> =
+@<Diagram the SENTENCE nodes and act on them@> =
+	BENCH(Classifying::traverse)
 	Task::advance_stage_to(ASSERTIONS_PASS_1_CSEQ, I"First pass through assertions", 2);
 	BENCH(Assertions::Traverse::traverse1)
 	BENCH(Tables::traverse_to_stock)
 	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through assertions", -1);
 	BENCH(Assertions::Traverse::traverse2)
 	BENCH(Kinds::RunTime::kind_declarations)
+	BENCH(UseOptions::compile)
+	BENCH(ParseTreeUsage::verify)
 
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world", -1);
-	BENCH(UseOptions::compile)
 	BENCH(Properties::emit)
 	BENCH(Properties::Emit::allocate_attributes)
 	BENCH(PL::Actions::name_all)

@@ -328,7 +328,7 @@ can't normally be unravelled at compile time.
 	mdef->superlative = EMPTY_WORDING; /* but it may be set below */
 	mdef->headword_as_adjective = NULL; /* but it will certainly be set below */
 
-	package_request *P = Hierarchy::package(Modules::current(), ADJECTIVE_MEANINGS_HAP);
+	package_request *P = Hierarchy::package(CompilationUnits::current(), ADJECTIVE_MEANINGS_HAP);
 	mdef->mdef_iname = Hierarchy::make_iname_in(MEASUREMENT_FN_HL, P);
 
 @<Create the superlative form@> =
@@ -336,7 +336,7 @@ can't normally be unravelled at compile time.
 		Grading::make_superlative(mdef->headword, Task::language_of_syntax());
 	@<Feed the preamble for the superlative phrase into the lexer@>;
 	@<Feed the body of the superlative phrase into the lexer@>;
-	Sentences::RuleSubtrees::register_recently_lexed_phrases();
+	RuleSubtrees::register_recently_lexed_phrases();
 
 @<Feed the preamble for the superlative phrase into the lexer@> =
 	TEMPORARY_TEXT(TEMP)

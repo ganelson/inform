@@ -16,7 +16,6 @@ which use this module:
 @e kind_constructor_CLASS
 @e kind_template_definition_CLASS
 @e kind_macro_definition_CLASS
-@e kind_template_obligation_CLASS
 @e kind_constructor_comparison_schema_CLASS
 @e kind_constructor_casting_rule_CLASS
 @e kind_constructor_instance_CLASS
@@ -29,7 +28,6 @@ DECLARE_CLASS(kind_variable_declaration)
 DECLARE_CLASS(kind_constructor)
 DECLARE_CLASS(kind_macro_definition)
 DECLARE_CLASS(kind_template_definition)
-DECLARE_CLASS(kind_template_obligation)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_casting_rule, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_comparison_schema, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_instance, 100)

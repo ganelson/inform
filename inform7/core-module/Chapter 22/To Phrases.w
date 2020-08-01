@@ -168,8 +168,8 @@ to_phrase_request *Routines::ToPhrases::make_request(phrase *ph, kind *K,
 	req = CREATE(to_phrase_request);
 	req->requested_exact_kind = K;
 	req->requested_phrase = ph;
-	compilation_module *cm = Modules::current();
-	if (ph->declaration_node) cm = Modules::find(ph->declaration_node);
+	compilation_unit *cm = CompilationUnits::current();
+	if (ph->declaration_node) cm = CompilationUnits::find(ph->declaration_node);
 
 	package_request *P = Hierarchy::package_within(REQUESTS_HAP, ph->requests_package);
 	req->req_iname = Hierarchy::make_localised_iname_in(PHRASE_FN_HL, P, cm);

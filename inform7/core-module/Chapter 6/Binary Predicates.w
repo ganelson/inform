@@ -617,7 +617,7 @@ binary_predicate *BinaryPredicates::make_single(int family,
 package_request *BinaryPredicates::package(binary_predicate *bp) {
 	if (bp == NULL) internal_error("null bp");
 	if (bp->bp_package == NULL)
-		bp->bp_package = Hierarchy::package(Modules::find(bp->bp_created_at), RELATIONS_HAP);
+		bp->bp_package = Hierarchy::package(CompilationUnits::find(bp->bp_created_at), RELATIONS_HAP);
 	return bp->bp_package;
 }
 

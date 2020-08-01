@@ -408,10 +408,10 @@ reads them in for every kit which is included in the project.
 
 =
 #ifdef CORE_MODULE
-void Projects::load_types(inform_project *project) {
+void Projects::load_built_in_kind_constructors(inform_project *project) {
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
-		Kits::load_types(kd->kit);
+		Kits::load_built_in_kind_constructors(kd->kit);
 }
 #endif
 

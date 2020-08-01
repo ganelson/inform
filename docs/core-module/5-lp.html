@@ -3383,7 +3383,7 @@ are declared.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LiteralPatterns::define_named_phrases</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::define_named_phrases</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_7">&#167;2.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LiteralPatterns::define_named_phrases</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::define_named_phrases</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_8">&#167;2.8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">literal_pattern_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lpn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">lpn</span><span class="plain-syntax">, </span><span class="reserved-syntax">literal_pattern_name</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">lpn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lpn_compiled_already</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -3395,7 +3395,7 @@ are declared.
 <span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="5-lp.html#SP40_1" class="named-paragraph-link"><span class="named-paragraph">Compile the printing phrase for this and perhaps subsequent LPs</span><span class="named-paragraph-number">40.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="7-rs.html#SP3" class="function-link"><span class="function-syntax">Sentences::RuleSubtrees::register_recently_lexed_phrases</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="7-rs.html#SP3" class="function-link"><span class="function-syntax">RuleSubtrees::register_recently_lexed_phrases</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP40_1"></a><b>&#167;40.1.  </b>These text substitutions correspond exactly neither to the LPs nor to the
@@ -3458,7 +3458,7 @@ the LPs under each named possibility.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Kinds::Textual::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-lp.html#SP41_1" class="named-paragraph-link"><span class="named-paragraph">Define phrases to convert from a packed value to individual parts</span><span class="named-paragraph-number">41.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-lp.html#SP41_2" class="named-paragraph-link"><span class="named-paragraph">Define a phrase to convert from numerical parts to a packed value</span><span class="named-paragraph-number">41.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="7-rs.html#SP3" class="function-link"><span class="function-syntax">Sentences::RuleSubtrees::register_recently_lexed_phrases</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="7-rs.html#SP3" class="function-link"><span class="function-syntax">RuleSubtrees::register_recently_lexed_phrases</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>

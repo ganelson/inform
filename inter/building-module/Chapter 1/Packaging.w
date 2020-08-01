@@ -277,14 +277,14 @@ inter_package *Packaging::incarnate(package_request *R) {
 @h Compilation modules.
 
 =
-typedef struct compilation_module {
+typedef struct compilation_unit {
 	struct module_package *inter_presence;
 	struct parse_node *hanging_from;
 	CLASS_DEFINITION
-} compilation_module;
+} compilation_unit;
 
-compilation_module *Packaging::new_cm(void) {
-	return CREATE(compilation_module);
+compilation_unit *Packaging::new_cu(void) {
+	return CREATE(compilation_unit);
 }
 
 @h Modules.
@@ -303,7 +303,7 @@ typedef struct module_package {
 	CLASS_DEFINITION
 } module_package;
 
-module_package *Packaging::get_module(inter_tree *I, text_stream *name) {
+module_package *Packaging::get_unit(inter_tree *I, text_stream *name) {
 	if (Dictionaries::find(Site::modules_dictionary(I), name))
 		return (module_package *) Dictionaries::read_value(Site::modules_dictionary(I), name);
 	
@@ -345,26 +345,26 @@ module to have this submodule. It should call one of the following four function
 
 =
 #ifdef CORE_MODULE
-package_request *Packaging::request_submodule(inter_tree *I, compilation_module *C, submodule_identity *sid) {
+package_request *Packaging::request_submodule(inter_tree *I, compilation_unit *C, submodule_identity *sid) {
 	if (C == NULL) return Packaging::generic_submodule(I, sid);
-	return Packaging::new_submodule_inner(I, Modules::inter_presence(C), sid);
+	return Packaging::new_submodule_inner(I, CompilationUnits::inter_presence(C), sid);
 }
 
 package_request *Packaging::local_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::request_submodule(I, Modules::find(current_sentence), sid);
+	return Packaging::request_submodule(I, CompilationUnits::find(current_sentence), sid);
 }
 #endif
 
 package_request *Packaging::generic_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_module(I, I"generic"), sid);
+	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"generic"), sid);
 }
 
 package_request *Packaging::synoptic_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_module(I, I"synoptic"), sid);
+	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"synoptic"), sid);
 }
 
 package_request *Packaging::template_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_module(I, I"template"), sid);
+	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"template"), sid);
 }
 
 @ Those in turn all make use of this back-end function:

@@ -27,7 +27,7 @@ typedef struct text_substitution {
 	struct inter_name *ts_iname; /* the I6 array for this */
 	struct inter_name *ts_routine_iname; /* the routine to implement it */
 	int ts_sb_needed; /* reference copy of small block needed as a constant? */
-	struct compilation_module *belongs_to_module;
+	struct compilation_unit *belongs_to_module;
 	CLASS_DEFINITION
 } text_substitution;
 
@@ -83,7 +83,7 @@ text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
 	package_request *PR = Hierarchy::package_within(LITERALS_HAP, P);
 	ts->ts_iname = Hierarchy::make_iname_in(TEXT_SUBSTITUTION_HL, PR);
 	ts->ts_routine_iname = Hierarchy::make_iname_in(TEXT_SUBSTITUTION_FN_HL, PR);
-	ts->belongs_to_module = Modules::current();
+	ts->belongs_to_module = CompilationUnits::current();
 	LOGIF(TEXT_SUBSTITUTIONS, "Requesting text routine %d %08x %W %08x\n",
 		ts->allocation_id, (int) phsf, W, R);
 	return ts;
@@ -327,20 +327,20 @@ a request for a new text substitution to be compiled later...
 	}
 
 	parse_node *ts_code_block = Node::new(RULE_NT);
-	Node::set_module(ts_code_block, ts->belongs_to_module);
-	compilation_module *cm = Modules::current();
-	Modules::set_current_to(ts->belongs_to_module);
+	Node::set_unit(ts_code_block, ts->belongs_to_module);
+	compilation_unit *cm = CompilationUnits::current();
+	CompilationUnits::set_current_to(ts->belongs_to_module);
 	ts_code_block->down = Node::new(INVOCATION_LIST_NT);
 	Node::set_text(ts_code_block->down, ts->unsubstituted_text);
 	Annotations::write_int(ts_code_block->down, from_text_substitution_ANNOT, TRUE);
-	Sentences::RuleSubtrees::parse_routine_structure(ts_code_block);
+	RuleSubtrees::parse_routine_structure(ts_code_block);
 
 	Routines::Compile::code_block_outer(0, ts_code_block->down);
 
 	Produce::rtrue(Emit::tree());
 
 	END_COMPILATION_MODE;
-	Modules::set_current_to(cm);
+	CompilationUnits::set_current_to(cm);
 
 @ See the "Responses" section for why, but we sometimes want to force
 the coroutine to go through the whole queue once, then go back to the

@@ -50,7 +50,7 @@ typedef struct phrase {
 	int inter_defn_converted; /* has this been tried yet? */
 	int inline_mor; /* manner of return for inline I6 definition, or |UNKNOWN_NT| */
 	struct wording ph_documentation_symbol; /* cross-reference with documentation */
-	struct compilation_module *owning_module;
+	struct compilation_unit *owning_module;
 	struct package_request *requests_package;
 	struct package_request *rule_package;
 
@@ -229,7 +229,7 @@ of it:
 	new_ph->ph_iname = NULL;
 	new_ph->to_begin = FALSE;
 	new_ph->imported = FALSE;
-	new_ph->owning_module = Modules::find(current_sentence);
+	new_ph->owning_module = CompilationUnits::find(current_sentence);
 	new_ph->requests_package = NULL;
 	if (inline_wn >= 0) {
 		new_ph->at_least_one_compiled_form_needed = FALSE;

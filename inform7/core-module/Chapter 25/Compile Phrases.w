@@ -35,7 +35,7 @@ void Routines::Compile::routine(phrase *ph,
 		internal_error("tried to compile phrase with bad ROUTINE node");
 	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", ph->declaration_node);
 
-	Modules::set_current(ph->declaration_node);
+	CompilationUnits::set_current(ph->declaration_node);
 	phrase_being_compiled = ph;
 	@<Set up the stack frame for this compilation request@>;
 
@@ -49,7 +49,7 @@ void Routines::Compile::routine(phrase *ph,
 
 	phrase_being_compiled = NULL;
 	current_sentence = NULL;
-	Modules::set_current(NULL);
+	CompilationUnits::set_current(NULL);
 }
 
 @<Compile some commentary about the routine to follow@> =

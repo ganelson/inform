@@ -398,10 +398,10 @@ inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 package_request *Kinds::Constructors::package(kind_constructor *con) {
 	if (con->kc_package == NULL) {
 		if (con->defined_in_source_text) {
-			compilation_module *C = Modules::find(con->where_defined_in_source_text);
+			compilation_unit *C = CompilationUnits::find(con->where_defined_in_source_text);
 			con->kc_package = Hierarchy::package(C, KIND_HAP);
 		} else if (con->superkind_set_at) {
-			compilation_module *C = Modules::find(con->superkind_set_at);
+			compilation_unit *C = CompilationUnits::find(con->superkind_set_at);
 			con->kc_package = Hierarchy::package(C, KIND_HAP);
 		} else {
 			con->kc_package = Hierarchy::synoptic_package(KIND_HAP);

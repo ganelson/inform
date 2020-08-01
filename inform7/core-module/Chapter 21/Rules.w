@@ -960,15 +960,6 @@ ph_stack_frame *Rules::stack_frame(rule *R) {
 	return &(R->defn_as_phrase->stack_frame);
 }
 
-int Rules::portable(rule *R) {
-	if ((R) && (Wordings::nonempty(R->name)) &&
-		(R->first_applicability_condition == NULL) &&
-		(R->rule_extern_iname == NULL) &&
-		(Modules::find(R->defn_as_phrase->declaration_node) == Modules::SR()))
-		return TRUE;
-	return FALSE;
-}
-
 package_request *Rules::package(rule *R) {
 	return R->rule_package;
 }

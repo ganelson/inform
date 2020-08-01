@@ -26,7 +26,7 @@ typedef struct label_namespace {
 	int label_counter; /* next free ID number for this label namespace */
 	int allocate_storage; /* number of words of memory to reserve for each label */
 	struct inter_name *label_storage_iname;
-	struct compilation_module *module;
+	struct compilation_unit *module;
 	CLASS_DEFINITION
 } label_namespace;
 
@@ -34,7 +34,7 @@ typedef struct label_namespace {
 reserves no memory.
 
 =
-label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_module *cm) {
+label_namespace *JumpLabels::new_namespace(text_stream *name, compilation_unit *cm) {
 	if (Str::len(name) > MAX_NAMESPACE_PREFIX_LENGTH) {
 		#ifdef CORE_MODULE
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LabelNamespaceTooLong),
@@ -62,7 +62,7 @@ few namespaces and it happens fairly seldom, so there is no point in
 optimising.
 
 =
-label_namespace *JumpLabels::namespace_by_prefix(text_stream *name, compilation_module *cm) {
+label_namespace *JumpLabels::namespace_by_prefix(text_stream *name, compilation_unit *cm) {
 	label_namespace *lns;
 	LOOP_OVER(lns, label_namespace)
 		if ((lns->module == cm) && (Str::eq(name, lns->label_prefix)))
@@ -71,7 +71,7 @@ label_namespace *JumpLabels::namespace_by_prefix(text_stream *name, compilation_
 }
 
 label_namespace *JumpLabels::read_or_create_namespace(text_stream *name) {
-	compilation_module *cm = Modules::current();
+	compilation_unit *cm = CompilationUnits::current();
 	label_namespace *lns = JumpLabels::namespace_by_prefix(name, cm);
 	if (lns == NULL) lns = JumpLabels::new_namespace(name, cm);
 	return lns;

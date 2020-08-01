@@ -216,7 +216,7 @@ loads the base kinds in a kit |K|:
 
 =
 #ifdef CORE_MODULE
-void Kits::load_types(inform_kit *K) {
+void Kits::load_built_in_kind_constructors(inform_kit *K) {
 	text_stream *segment;
 	LOOP_OVER_LINKED_LIST(segment, text_stream, K->kind_definitions) {
 		pathname *P = Pathnames::down(K->as_copy->location_if_path, I"kinds");

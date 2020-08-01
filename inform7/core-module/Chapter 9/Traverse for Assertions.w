@@ -149,12 +149,12 @@ artificially to run through those sentences.
 =
 void Assertions::Traverse::visit(parse_node *p, parse_node **last) {
 	assembly_position = current_sentence;
-	compilation_module *cm = Modules::current();
-	Modules::set_current(p);
+	compilation_unit *cm = CompilationUnits::current();
+	CompilationUnits::set_current(p);
 	@<Take a sceptical look at WITH nodes in the light of subsequent knowledge@>;
 	*last = p;
 	@<Deal with an individual sentence@>;
-	Modules::set_current_to(cm);
+	CompilationUnits::set_current_to(cm);
 }
 
 @ If this hasn't already been done:

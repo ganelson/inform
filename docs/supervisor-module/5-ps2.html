@@ -526,10 +526,10 @@ reads them in for every kit which is included in the project.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::load_types</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Projects::load_built_in_kind_constructors</span><span class="plain-syntax">(</span><span class="reserved-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">kit_dependency</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">kd</span><span class="plain-syntax">, </span><span class="reserved-syntax">kit_dependency</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kits_to_include</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="5-ks.html#SP10" class="function-link"><span class="function-syntax">Kits::load_types</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kit</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="5-ks.html#SP10" class="function-link"><span class="function-syntax">Kits::load_built_in_kind_constructors</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kit</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>

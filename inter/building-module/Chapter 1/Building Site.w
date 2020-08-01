@@ -209,7 +209,7 @@ package_request *Site::main_request(inter_tree *I) {
 
 package_request *Site::connectors_request(inter_tree *I) {
 	if (I->site.connectors_pr == NULL) {
-		module_package *T = Packaging::get_module(I, I"connectors");
+		module_package *T = Packaging::get_unit(I, I"connectors");
 		I->site.connectors_pr = T->the_package;
 	}
 	return I->site.connectors_pr;
@@ -217,7 +217,7 @@ package_request *Site::connectors_request(inter_tree *I) {
 
 package_request *Site::veneer_request(inter_tree *I) {
 	if (I->site.veneer_pr == NULL) {
-		module_package *T = Packaging::get_module(I, I"veneer");
+		module_package *T = Packaging::get_unit(I, I"veneer");
 		I->site.veneer_pr = T->the_package;
 		packaging_state save = Packaging::enter(I->site.veneer_pr);
 		I->site.veneer_bookmark = Packaging::bubble(I);

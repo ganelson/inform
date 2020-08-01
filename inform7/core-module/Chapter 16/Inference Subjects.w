@@ -127,11 +127,12 @@ At the start of Inform's run, the subject tree consists only of the
 following.
 
 =
-void InferenceSubjects::begin(void) {
+void InferenceSubjects::make_built_in(void) {
 	model_world = InferenceSubjects::new_fundamental(NULL, "model-world");
 	nonlocal_variables = InferenceSubjects::new_fundamental(model_world, "global-variables");
 	global_constants = InferenceSubjects::new_fundamental(model_world, "global-constants");
 	relations = InferenceSubjects::new_fundamental(model_world, "relations");
+	Plugins::Call::create_inference_subjects();
 }
 
 inference_subject *InferenceSubjects::new_fundamental(inference_subject *from, char *lname) {

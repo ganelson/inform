@@ -43,7 +43,7 @@ package_request *NewVerbs::package(verb *V, parse_node *where) {
 	if (V == NULL) internal_error("no verb identity");
 	if (V->verb_compilation.verb_package == NULL)
 		V->verb_compilation.verb_package =
-			Hierarchy::package(Modules::find(where), VERBS_HAP);
+			Hierarchy::package(CompilationUnits::find(where), VERBS_HAP);
 	return V->verb_compilation.verb_package;
 }
 

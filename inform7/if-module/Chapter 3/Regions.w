@@ -36,6 +36,7 @@ typedef struct regions_data {
 
 =
 void PL::Regions::start(void) {
+	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCES, PL::Regions::create_inference_subjects);
 	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Regions::regions_new_base_kind_notify);
 	PLUGIN_REGISTER(PLUGIN_SET_SUBKIND_NOTIFY, PL::Regions::regions_set_subkind_notify);
 	PLUGIN_REGISTER(PLUGIN_NEW_SUBJECT_NOTIFY, PL::Regions::regions_new_subject_notify);
@@ -46,6 +47,9 @@ void PL::Regions::start(void) {
 	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Regions::regions_intervene_in_assertion);
 	PLUGIN_REGISTER(PLUGIN_NAME_TO_EARLY_INFS, PL::Regions::regions_name_to_early_infs);
 	PLUGIN_REGISTER(PLUGIN_ADD_TO_WORLD_INDEX, PL::Regions::regions_add_to_World_index);
+}
+
+void PL::Regions::create_inference_subjects(void) {
 	infs_region = InferenceSubjects::new(global_constants,
 		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
 }

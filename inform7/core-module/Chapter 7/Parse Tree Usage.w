@@ -179,7 +179,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(HEADING_NT, interpretation_of_subject_ANNOT);
 	Annotations::allow(HEADING_NT, suppress_heading_dependencies_ANNOT);
 	Annotations::allow(HEADING_NT, implied_heading_ANNOT);
-	Annotations::allow_for_category(L1_NCAT, module_ANNOT);
+	Annotations::allow_for_category(L1_NCAT, unit_ANNOT);
 
 	Annotations::allow_for_category(L2_NCAT, clears_pronouns_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, interpretation_of_subject_ANNOT);
@@ -188,12 +188,12 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(SENTENCE_NT, implicit_in_creation_of_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicitness_count_ANNOT);
 	Annotations::allow(SENTENCE_NT, you_can_ignore_ANNOT);
-	Annotations::allow_for_category(L2_NCAT, module_ANNOT);
+	Annotations::allow_for_category(L2_NCAT, unit_ANNOT);
 	LOOP_OVER_ENUMERATED_NTS(t)
 		if (NodeType::has_flag(t, ASSERT_NFLAG))
 			Annotations::allow(t, resolved_ANNOT);
 
-	Annotations::allow_for_category(L3_NCAT, module_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, unit_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, creation_proposition_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, evaluation_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, subject_ANNOT);
@@ -243,7 +243,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow_for_category(L4_NCAT, token_to_be_parsed_against_ANNOT);
 	Annotations::allow_for_category(L4_NCAT, verb_problem_issued_ANNOT);
 	Annotations::allow_for_category(L4_NCAT, problem_falls_under_ANNOT);
-	Annotations::allow_for_category(L4_NCAT, module_ANNOT);
+	Annotations::allow_for_category(L4_NCAT, unit_ANNOT);
 	Annotations::allow(INVOCATION_LIST_NT, from_text_substitution_ANNOT);
 	Annotations::allow(INVOCATION_LIST_SAY_NT, suppress_newlines_ANNOT);
 	Annotations::allow(INVOCATION_NT, epistemological_status_ANNOT);

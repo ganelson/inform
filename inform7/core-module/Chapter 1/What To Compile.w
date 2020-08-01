@@ -29,7 +29,7 @@ typedef struct compile_task_data {
 @ An early and perhaps arguable design decision for inform7 was that it would
 compile just one source text in its lifetime as a process: and because of that,
 |Task::carry_out| can only in fact be called once, and Inbuild only does so
-once. But the following routine allows in principle for multiple calls,
+once. But the following function allows in principle for multiple calls,
 against the day when we change our minds about all this.
 
 Something we will never do is attempt to make |inform7| thread-safe in the
@@ -48,7 +48,9 @@ int Task::carry_out(build_step *S) {
 	if (project == NULL) internal_error("no project");
 	latest_syntax_tree = project->syntax_tree;
 
+	Index::DocReferences::read_xrefs();
 	Task::issue_problems_arising(project->as_copy->vertex);
+	Plugins::Manage::start_plugins();
 
 	if (problem_count > 0) return FALSE;
 
@@ -178,9 +180,9 @@ int Task::rng_seed(void) {
 referring something back up to Inbuild.
 
 =
-void Task::load_types(void) {
+void Task::make_built_in_kind_constructors(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
-	Projects::load_types(inform7_task->project);
+	Projects::load_built_in_kind_constructors(inform7_task->project);
 }
 
 int Task::begin_execution_at_to_begin(void) {
