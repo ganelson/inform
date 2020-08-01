@@ -262,7 +262,7 @@ ROOT_NT
             SENTENCE_NT'an ice cream cone has an infection color'
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s}
-                ALLOWED_NT
+                ALLOWED_NT'has'
                     UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s}
             SENTENCE_NT'an ice cream cone can be half-eaten or fresh'
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
@@ -291,7 +291,7 @@ ROOT_NT
             SENTENCE_NT'a person has an infection color'
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
-                ALLOWED_NT
+                ALLOWED_NT'has'
                     UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s}
             RULE_NT'every turn'
             RULE_NT'definition'

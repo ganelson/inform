@@ -134,8 +134,8 @@ int forbid_nowhere = FALSE;
 void Assertions::Refiner::refine(parse_node *p, int creation_rule) {
 	if (p == NULL) internal_error("Refine parse tree on null pn");
 
-	if (Annotations::read_int(p, resolved_ANNOT)) return;
-	Annotations::write_int(p, resolved_ANNOT, TRUE);
+	if (Annotations::read_int(p, refined_ANNOT)) return;
+	Annotations::write_int(p, refined_ANNOT, TRUE);
 
 	LOGIF(NOUN_RESOLUTION, "Refine subtree (%s creation):\n$T",
 		((creation_rule == FORBID_CREATION)?"forbid":
@@ -197,12 +197,12 @@ pattern; if it works, that reading is allowed to stand.
 		}
 		#endif
 	}
-	if (Annotations::read_int(p, resolved_ANNOT) == FALSE) @<Start the refinement over@>;
+	if (Annotations::read_int(p, refined_ANNOT) == FALSE) @<Start the refinement over@>;
 
 @ After surgery on the tree, it's usually best to start over again:
 
 @<Start the refinement over@> =
-	Annotations::write_int(p, resolved_ANNOT, FALSE);
+	Annotations::write_int(p, refined_ANNOT, FALSE);
 	Assertions::Refiner::refine(p, creation_rule);
 	return;
 
@@ -273,7 +273,7 @@ direction object for "north".
 	wording DW = Instances::get_name(dir, FALSE);
 	p->down->next = Diagrams::new_UNPARSED_NOUN(DW);
 	Assertions::Refiner::noun_from_infs(p->down->next, Instances::as_subject(dir));
-	Annotations::write_int(p->down->next, resolved_ANNOT, TRUE);
+	Annotations::write_int(p->down->next, refined_ANNOT, TRUE);
 
 @ A |KIND_NT| node may have no children, and if so it represents the bare
 word "kind": the reference must be to the kind "kind" itself.
@@ -410,7 +410,7 @@ property of something.
 		p->down = <<rp>>;
 		<np-as-object>(PW);
 		p->down->next = <<rp>>;
-		Annotations::write_int(p, resolved_ANNOT, FALSE);
+		Annotations::write_int(p, refined_ANNOT, FALSE);
 		LOGIF(NOUN_RESOLUTION, "Resolved new-property to:\n$T\n", p);
 		Assertions::Refiner::refine(p, creation_rule);
 		return;
@@ -812,7 +812,7 @@ void Assertions::Refiner::perform_location_surgery(parse_node *p) {
 		(p->down) && (Node::get_type(p->down) == AND_NT) &&
 		(p->down->down) && (p->down->down->next) &&
 		(Node::get_type(p->down->down->next) == RELATIONSHIP_NT)) {
-		Annotations::write_int(p, resolved_ANNOT, FALSE); /* otherwise this will be wrongly copied */
+		Annotations::write_int(p, refined_ANNOT, FALSE); /* otherwise this will be wrongly copied */
 		old_and = p->down;
 		old_np1 = old_and->down;
 		old_loc2 = old_and->down->next;

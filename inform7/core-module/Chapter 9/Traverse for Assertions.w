@@ -249,9 +249,7 @@ void Assertions::Traverse::switch_sentence_trace(parse_node *PN) {
 }
 
 @h The SENTENCE sentence handler.
-The other special case is the handler for |SENTENCE_NT| itself, which is
-special because it looks at the |VERB_NT| child of the sentence and then
-refers on to other sentence handlers accordingly:
+The other special case is the handler for |SENTENCE_NT| itself.
 
 =
 sentence_handler SENTENCE_SH_handler =
@@ -263,14 +261,12 @@ int Assertions::Traverse::special(parse_node *p) {
 }
 
 void Assertions::Traverse::handle_sentence_with_primary_verb(parse_node *p) {
-	prevailing_mood = UNKNOWN_CE;
 	if (Annotations::read_int(p, language_element_ANNOT)) return;
 	if (Annotations::read_int(p, you_can_ignore_ANNOT)) return;
 
 	if (p->down == NULL) @<Handle a sentence with no primary verb@>;
 	internal_error_if_node_type_wrong(Task::syntax_tree(), p->down, VERB_NT);
 	prevailing_mood = Annotations::read_int(p->down, verbal_certainty_ANNOT);
-	@<Issue problem message if either subject or object contains mismatched brackets@>;
 	@<Act on the primary verb in the sentence@>;
 }
 
@@ -281,7 +277,10 @@ other eventualities we must produce a "no such sentence" problem.
 
 @<Handle a sentence with no primary verb@> =
 	if (Classifying::sentence_is_textual(p)) {
-		if (traverse == 2) Assertions::Traverse::set_appearance(Wordings::first_wn(Node::get_text(p)));
+		if (traverse == 2) {
+			prevailing_mood = UNKNOWN_CE;
+			Assertions::Traverse::set_appearance(Wordings::first_wn(Node::get_text(p)));
+		}
 		return;
 	}
 	internal_error("sentence unclassified");
@@ -294,42 +293,6 @@ nothing on either traverse, of course.
 @<Act on the primary verb in the sentence@> =
 	if (Assertions::Traverse::special(p->down)) Assertions::Traverse::special_meaning(p);
 	else Assertions::Copular::assertion(p);
-
-@ During early beta-testing, the problem message for "I can't find a verb"
-split into cases. Inform is quite sensitive to punctuation errors as between
-comma, paragraph break and semicolon, and this is where that sensitivity begins
-to bite.
-
-=
-<no-verb-diagnosis> ::=
-
-@ Inform source text does not make much use of parentheses to group subexpressions,
-but the ability does exist, and we defend it a little here:
-
-@<Issue problem message if either subject or object contains mismatched brackets@> =
-	if ((p->down->next) && (p->down->next->next)) {
-		if ((Wordings::mismatched_brackets(Node::get_text(p->down->next))) ||
-			(Wordings::mismatched_brackets(Node::get_text(p->down->next->next)))) {
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2,
-				Wordings::one_word(Wordings::last_wn(Node::get_text(p->down->next)) + 1));
-			Problems::quote_wording(3, Node::get_text(p->down->next));
-			Problems::quote_wording(4, Node::get_text(p->down->next->next));
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-			if (Wordings::nonempty(Node::get_text(p->down->next->next)))
-				Problems::issue_problem_segment(
-					"I must be misreading the sentence %1. The verb "
-					"looks to me like '%2', but then the brackets don't "
-					"match in what I have left: '%3' and '%4'.");
-			else
-				Problems::issue_problem_segment(
-					"I must be misreading the sentence %1. The verb "
-					"looks to me like '%2', but then the brackets don't "
-					"match in what I have left: '%3'.");
-			Problems::issue_problem_end();
-			return;
-		}
-	}
 
 @ The "appearance" is not a property as such. When a quoted piece of text
 is given as a whole sentence, it might be:

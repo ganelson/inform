@@ -475,7 +475,7 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e quant_ANNOT /* |quantifier|: for quantified excerpts like "three baskets" */
 @e quantification_parameter_ANNOT /* |int|: e.g., 3 for "three baskets" */
 @e record_as_self_ANNOT /* |int|: record recipient as |self| when writing this */
-@e resolved_ANNOT /* int: temp storage when resolving NPs */
+@e refined_ANNOT /* int: temp storage when resolving NPs */
 @e response_code_ANNOT /* |int|: for responses only */
 @e results_from_splitting_ANNOT /* |int|: node in a routine's parse tree from comma block notation */
 @e row_amendable_ANNOT /* int: a candidate row for a table amendment */

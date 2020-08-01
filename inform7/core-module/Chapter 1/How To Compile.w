@@ -144,6 +144,7 @@ so on. Those absolute basics are made here.
 
 @<Diagram the SENTENCE nodes and act on them@> =
 	BENCH(Classifying::traverse)
+	BENCH(ParseTreeUsage::verify)
 	Task::advance_stage_to(ASSERTIONS_PASS_1_CSEQ, I"First pass through assertions", 2);
 	BENCH(Assertions::Traverse::traverse1)
 	BENCH(Tables::traverse_to_stock)
@@ -151,7 +152,6 @@ so on. Those absolute basics are made here.
 	BENCH(Assertions::Traverse::traverse2)
 	BENCH(Kinds::RunTime::kind_declarations)
 	BENCH(UseOptions::compile)
-	BENCH(ParseTreeUsage::verify)
 
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world", -1);

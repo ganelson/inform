@@ -191,7 +191,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow_for_category(L2_NCAT, unit_ANNOT);
 	LOOP_OVER_ENUMERATED_NTS(t)
 		if (NodeType::has_flag(t, ASSERT_NFLAG))
-			Annotations::allow(t, resolved_ANNOT);
+			Annotations::allow(t, refined_ANNOT);
 
 	Annotations::allow_for_category(L3_NCAT, unit_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, creation_proposition_ANNOT);

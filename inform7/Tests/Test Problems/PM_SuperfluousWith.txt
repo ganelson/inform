@@ -1,1 +1,0 @@
-The player has a carrying capacity with 10.

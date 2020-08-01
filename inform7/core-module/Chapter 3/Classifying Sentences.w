@@ -89,6 +89,10 @@ void Classifying::sentence(parse_node *p) {
 			PL::MapDirections::look_for_direction_creation(p);
 			#endif
 			PropertySentences::look_for_property_creation(p);
+			@<Issue problem message if either subject or object contains mismatched brackets@>;
+			@<Issue problem message if subject starts with double-quoted literal text@>;
+			if ((VP_PN->next) && (VP_PN->next->next) && (Assertions::Copular::possessive(VP_PN->next->next)))
+				@<Diagram property callings@>;
 		} else {
 			LOG("$T\n", p);
 			<no-primary-verb-diagnosis>(W);
@@ -114,7 +118,7 @@ of those.
 	if (Wordings::within(Node::get_text(p), options_file_wording)) {
 		special_meaning_holder *sm = Node::get_special_meaning(p->down);
 		if ((sm == NULL) ||
-			(SpecialMeanings::call(sm, ALLOW_IN_OPTIONS_FILE_SMFT, NULL, NULL) == FALSE))
+			(SpecialMeanings::call(sm, ALLOW_IN_OPTIONS_FILE_SMFT, NULL, NULL) == FALSE)) {
 			StandardProblems::unlocated_problem(Task::syntax_tree(),
 				_p_(BelievedImpossible), /* not convenient to test automatically, anyway */
 				"The options file placed in this installation of Inform's folder "
@@ -122,6 +126,109 @@ of those.
 				"in that situation. The options file is only allowed to contain "
 				"use options, Test ... with..., and Release along with... "
 				"instructions.");
+			return;
+		}
+	}
+
+@ The //linguistics// module no longer makes sentence diagrams with this defect,
+so the following problem ought now to be impossible to generate. But I'm leaving
+the test here in case of future changes.
+
+@<Issue problem message if either subject or object contains mismatched brackets@> =
+	if ((VP_PN->next) && (VP_PN->next->next)) {
+		if ((Wordings::mismatched_brackets(Node::get_text(VP_PN->next))) ||
+			(Wordings::mismatched_brackets(Node::get_text(VP_PN->next->next)))) {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2,
+				Wordings::one_word(Wordings::last_wn(Node::get_text(VP_PN->next)) + 1));
+			Problems::quote_wording(3, Node::get_text(VP_PN->next));
+			Problems::quote_wording(4, Node::get_text(VP_PN->next->next));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+			if (Wordings::nonempty(Node::get_text(VP_PN->next->next)))
+				Problems::issue_problem_segment(
+					"I must be misreading the sentence %1. The verb "
+					"looks to me like '%2', but then the brackets don't "
+					"match in what I have left: '%3' and '%4'.");
+			else
+				Problems::issue_problem_segment(
+					"I must be misreading the sentence %1. The verb "
+					"looks to me like '%2', but then the brackets don't "
+					"match in what I have left: '%3'.");
+			Problems::issue_problem_end();
+			return;
+		}
+	}
+
+@ This is a pragmatic sort of problem message. A priori, assertion sentences
+like this might be okay, but in practice they cannot be useful and are far
+more likely to occur as a result of something like:
+
+>> "This is a dining room" East is the Ballroom.
+
+where the lack of a closing full stop in the quoted text means that //linguistics//
+read this as one single sentence, equating |"This is a dining room" East|
+with |the Ballroom|.
+
+Special-meaning sentences are exempt; this is needed because subject phrases
+for "Understand ... as ..." are indeed sometimes multiword clauses the first
+word of which is quoted.
+
+@<Issue problem message if subject starts with double-quoted literal text@> =
+	special_meaning_holder *sm = Node::get_special_meaning(VP_PN);
+	if ((sm == NULL)
+		&& (Wordings::length(Node::get_text(VP_PN->next)) > 1)
+		&& (Vocabulary::test_flags(
+			Wordings::first_wn(Node::get_text(VP_PN->next)), TEXT_MC+TEXTWITHSUBS_MC))) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextNotClosing),
+			"it looks as if perhaps you did not intend that to read as a "
+			"single sentence",
+			"and possibly the text in quotes was supposed to stand as "
+			"as a sentence on its own? (The convention is that if text "
+			"ends in a full stop, exclamation or question mark, perhaps "
+			"with a close bracket or quotation mark involved as well, then "
+			"that punctuation mark also closes the sentence to which the "
+			"text belongs: but otherwise the words following the quoted "
+			"text are considered part of the same sentence.)");
+		return;
+	}
+
+@ Here |py| is a |CALLED_NT| subtree for "an A called B", which we relabel
+as a |PROPERTYCALLED_NT| subtree and hang beneath an |ALLOWED_NT| node;
+or else it's a property or list of properties, as in "carrying capacity 7".
+
+@<Diagram property callings@> =
+	parse_node *px = VP_PN->next;
+	parse_node *py = VP_PN->next->next->down;
+	if (Node::get_type(py) == CALLED_NT) {
+		if (Wordings::match(Node::get_text(py->down->next), Node::get_text(py->down))) {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SuperfluousCalled),
+				"'called' should be used only when the name is different from the kind",
+				"so this sentence should be simplified. For example, 'A door has a "
+				"colour called colour' should be written more simply as 'A door has "
+				"a colour'; but 'called' can be used for something like 'A door has "
+				"a number called the street number'.");
+			return;
+		}
+		Node::set_type(py, PROPERTYCALLED_NT);
+		if (Node::get_type(py->down) == AND_NT) {
+internal_error("Og yeah?");
+			int L = Node::left_edge_of(py->down),
+				R = Node::right_edge_of(py->down);
+			<np-articled>(Wordings::new(L, R));
+			parse_node *pn = <<rp>>;
+			pn->next = py->down->next;
+			py->down = pn;
+			LOG("Thus $T", py);
+		}
+		px->next = Node::new(ALLOWED_NT);
+		px->next->down = py;
+		int prohibited = <prohibited-property-owners>(Node::get_text(px));
+		if (!prohibited) {
+			<np-articled-list>(Node::get_text(py->down->next));
+			py->down->next = <<rp>>;
+		}
+	} else {
+		Node::set_type(py, PROPERTY_LIST_NT);
 	}
 
 @ From the earliest beta-testing, the problem message for "I can't find a verb"

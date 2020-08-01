@@ -118,7 +118,10 @@ void Assertions::PropertyKnowledge::assert_property_list(parse_node *owner_subtr
 			if (K) owner = Kinds::Knowledge::as_subject(K);
 		}
 	}
-	if (owner == NULL) @<Issue a problem for an unrecognised property owner@>;
+	if (owner == NULL) {
+		LOG("OS is: $T\n", owner_subtree);
+		@<Issue a problem for an unrecognised property owner@>;
+	}
 	kind *kind_clue = NULL;
 	@<Work out the clue kind@>;
 	pcalc_prop *prop = Calculus::Propositions::Abstract::from_property_list(list_subtree, kind_clue);
