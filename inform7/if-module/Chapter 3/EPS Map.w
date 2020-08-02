@@ -289,6 +289,9 @@ void PL::EPSMap::put_int_mp(wchar_t *name, map_parameter_scope *scope, int val) 
 @h Parsing sentences which set map parameters.
 This happens in two passes: pass 1 before HTML mapping, pass 2 before EPS mapping.
 
+@e TRAVERSE_FOR_MAP1_SMFT
+@e TRAVERSE_FOR_MAP2_SMFT
+
 =
 void PL::EPSMap::traverse_for_map_parameters(int pass) {
 	if (pass == 1) PL::SpatialMap::initialise_page_directions();
@@ -298,8 +301,8 @@ void PL::EPSMap::traverse_for_map_parameters(int pass) {
 void PL::EPSMap::look_for_map_parameters(parse_node *p, int *pass) {
 	if ((Node::get_type(p) == SENTENCE_NT)
 		&& (p->down)) {
-		if (*pass == 1) Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_MAP1_SMFT, p->down);
-		else Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_MAP2_SMFT, p->down);
+		if (*pass == 1) MajorNodes::try_special_meaning(TRAVERSE_FOR_MAP1_SMFT, p->down);
+		else MajorNodes::try_special_meaning(TRAVERSE_FOR_MAP2_SMFT, p->down);
 	}
 }
 

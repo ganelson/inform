@@ -82,9 +82,6 @@ and share the grammar above, they're nevertheless a different thing and aren't
 handled here: if we see one, we ignore it.
 
 =
-sentence_handler INFORM6CODE_SH_handler =
-	{ INFORM6CODE_NT, -1, 2, Config::Inclusions::inform_6_inclusion };
-
 void Config::Inclusions::inform_6_inclusion(parse_node *PN) {
 	current_sentence = PN;
 	wording IW = Node::get_text(PN);

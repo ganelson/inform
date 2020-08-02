@@ -111,5 +111,6 @@ int SpecialMeanings::is(special_meaning_holder *smh, special_meaning_fn func) {
 =
 int SpecialMeanings::call(special_meaning_holder *smh, int task, parse_node *V,
 	wording *NPs) {
+	if ((smh == NULL) || (smh->sm_func == NULL)) return FALSE;
 	return (*(smh->sm_func))(task, V, NPs);
 }

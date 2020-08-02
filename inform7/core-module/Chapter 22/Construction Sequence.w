@@ -52,17 +52,6 @@ But at least it does pick out the name "fire alarm rule", and Inform
 creates an empty "rule" structure called this, registering this as the
 name of a new constant.
 
-=
-void Phrases::Manager::traverse_for_names(void) {
-	Phrases::Manager::advance_phrase_time_to(EARLY_MORNING_PHT);
-	SyntaxTree::traverse(Task::syntax_tree(), Phrases::Manager::visit_for_names);
-}
-
-void Phrases::Manager::visit_for_names(parse_node *p) {
-	if (Node::get_type(p) == RULE_NT)
-		Phrases::Usage::predeclare_name_in(p);
-}
-
 @h Mid-morning.
 This is when Inform is making its main traverses through assertions.
 Something very useful is happening, but it's happening somewhere else.
@@ -71,14 +60,6 @@ Assertions such as
 >> Instead is a rulebook.
 
 are being read, and rulebooks are therefore being created.
-
-We do nothing at all. We see nodes in the parse tree for phrase definitions,
-but we let them go by. The |NULL|s in these two definitions tell Inform not
-to do anything when the assertion traverse reaches nodes of these types:
-
-=
-sentence_handler COMMAND_SH_handler = { INVOCATION_LIST_NT, -1, 0, NULL };
-sentence_handler ROUTINE_SH_handler = { RULE_NT, -1, 0, NULL };
 
 @h Late morning.
 With the assertions read, all the values have their names, and that means
@@ -232,14 +213,18 @@ void Phrases::Manager::parse_rule_placements(void) {
 	SyntaxTree::traverse(Task::syntax_tree(), Phrases::Manager::visit_to_parse_placements);
 }
 
+@
+
+@e TRAVERSE_FOR_RULE_FILING_SMFT
+
+=
 void Phrases::Manager::visit_to_parse_placements(parse_node *p) {
 	if ((Node::get_type(p) == SENTENCE_NT) &&
 		(p->down) &&
 		(Node::get_type(p->down) == VERB_NT)) {
 		prevailing_mood =
 			Annotations::read_int(p->down, verbal_certainty_ANNOT);
-		if (Assertions::Traverse::special(p->down))
-			Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_RULE_FILING_SMFT, p->down);
+		MajorNodes::try_special_meaning(TRAVERSE_FOR_RULE_FILING_SMFT, p->down);
 	}
 }
 

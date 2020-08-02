@@ -146,7 +146,7 @@ int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
 				return TRUE;
 			}
 			break;
-		case TRAVERSE1_SMFT:
+		case PASS_1_SMFT:
 			if (Plugins::Manage::plugged_in(files_plugin) == FALSE)
 				internal_error("Files plugin inactive");
 			PL::Files::register_file(Node::get_text(V->next),

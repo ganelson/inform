@@ -99,7 +99,7 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 				return TRUE;
 			}
 			break;
-		case TRAVERSE1_SMFT:
+		case PASS_1_SMFT:
 			if (Plugins::Manage::plugged_in(figures_plugin) == FALSE)
 				internal_error("Figures plugin inactive");
 			PL::Figures::register_figure(Node::get_text(V->next),

@@ -70,7 +70,7 @@
 				<li>
 					<p class="chapterentry"><a name="1"></a>
 						<span class="chaptertitle">Chapter 1: Configuration and Control</span></p>
-					<p class="chapterpurpose">The management and the production line for the compilation process.</p>
+					<p class="chapterpurpose">Managing the production line for the compilation process.</p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="1-cm.html">
@@ -106,7 +106,7 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="2"></a>
-						<span class="chaptertitle">Chapter 2: Bridge to Problems Module</span></p>
+						<span class="chaptertitle">Chapter 2: Problem Messages</span></p>
 					<p class="chapterpurpose">The issuing of Problem messages.</p>
 					<ul class="sectionlist">
 						<li>
@@ -133,8 +133,8 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="3"></a>
-						<span class="chaptertitle">Chapter 3: Bridge to Words Module</span></p>
-					<p class="chapterpurpose">Reading source text as a stream of characters and dividing it up into words.</p>
+						<span class="chaptertitle">Chapter 3: Top-Level Declarations</span></p>
+					<p class="chapterpurpose">Passing three times through top-level declarations and assertion sentences.</p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="3-bv.html">
@@ -147,216 +147,216 @@
 							<span class="sectionpurpose">To work out the verbs used and to diagram sentences in the source.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-dlr.html">
+							<p class="sectionentry"><a href="3-ptmn.html">
+								<spon class="sectiontitle">Passes through Major Nodes</span></a> -
+							<span class="sectionpurpose">To manage the overall process of traversing the parse tree for top-level declarations and assertion sentences.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-ar.html">
+								<spon class="sectiontitle">Anaphoric References</span></a> -
+							<span class="sectionpurpose">To keep track of the current object and subject of discussion.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="4"></a>
+						<span class="chaptertitle">Chapter 4: Assertions with Special Meanings</span></p>
+					<p class="chapterpurpose">Responding directly to assertion sentences which have special meanings.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="4-dlr.html">
 								<spon class="sectiontitle">Debugging Log Requests</span></a> -
 							<span class="sectionpurpose">Special sentences for changing what goes into the debugging log.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-pr.html">
+							<p class="sectionentry"><a href="4-pr.html">
 								<spon class="sectiontitle">Pluralisation Requests</span></a> -
 							<span class="sectionpurpose">Special sentences for setting exotic plural forms of nouns.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-tr.html">
+							<p class="sectionentry"><a href="4-tr.html">
 								<spon class="sectiontitle">Translation Requests</span></a> -
 							<span class="sectionpurpose">Three unrelated senses of "X translates into Y as Z" sentences.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="4"></a>
-						<span class="chaptertitle">Chapter 4: Bridge to Linguistics Module</span></p>
-					<p class="chapterpurpose">Miscellaneous grammatical features other than nouns, verbs and adjectives.</p>
+					<p class="chapterentry"><a name="5"></a>
+						<span class="chaptertitle">Chapter 5: Assertions with Regular Meanings</span></p>
+					<p class="chapterpurpose">Turning regular assertion sentences into propositions about the model world.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="4-its.html">
-								<spon class="sectiontitle">Introduction to Semantics</span></a> -
-							<span class="sectionpurpose">A general introduction to the S-parser and the data structures it makes use of.</span></p>
+							<p class="sectionentry"><a href="5-ita.html">
+								<spon class="sectiontitle">Introduction to Assertions</span></a> -
+							<span class="sectionpurpose">A general introduction to how the A-parser deals with assertions.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-am.html">
-								<spon class="sectiontitle">Adjective Meanings</span></a> -
-							<span class="sectionpurpose">One individual meaning which an adjective can have.</span></p>
+							<p class="sectionentry"><a href="5-tbath.html">
+								<spon class="sectiontitle">To Be and To Have</span></a> -
+							<span class="sectionpurpose">To handle sentences with primary verb "to be" or "to have".</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-rpt.html">
+								<spon class="sectiontitle">Refine Parse Tree</span></a> -
+							<span class="sectionpurpose">To determine which subjects are referred to by noun phrases such as "the table" and "a paper cup" found in assertion sentences being parsed.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-tc.html">
+								<spon class="sectiontitle">The Creator</span></a> -
+							<span class="sectionpurpose">This is where all objects, kinds of object, named values, kinds of value and global variables are made.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-ma.html">
+								<spon class="sectiontitle">Make Assertions</span></a> -
+							<span class="sectionpurpose">To read assertion sentences, sort them according to a detailed grammatical classification and take the primary actions necessary either to generate problem messages, or to infer information.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-pk.html">
+								<spon class="sectiontitle">Property Knowledge</span></a> -
+							<span class="sectionpurpose">This section draws inferences from assertions which seem to be about the properties of things, independent of their location.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-rk.html">
+								<spon class="sectiontitle">Relation Knowledge</span></a> -
+							<span class="sectionpurpose">This section draws inferences about the relationships between objects or values.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-ass.html">
+								<spon class="sectiontitle">Assemblies</span></a> -
+							<span class="sectionpurpose">To build the complex multi-object assemblies which result from allowing the source text to say things like "in every room is a vehicle".</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-imp.html">
+								<spon class="sectiontitle">Implications</span></a> -
+							<span class="sectionpurpose">To keep track of a dangerous form of super-assertion called an implication, which is allowed to generalise about properties.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-pd.html">
+								<spon class="sectiontitle">Property Declarations</span></a> -
+							<span class="sectionpurpose">To parse sentences which create new properties, or assert that particular kinds of value can possess them.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="5"></a>
-						<span class="chaptertitle">Chapter 5: Nouns</span></p>
+					<p class="chapterentry"><a name="6"></a>
+						<span class="chaptertitle">Chapter 6: Nouns</span></p>
 					<p class="chapterpurpose">Nouns, mainly proper, and notations for constant values such as 10:03 AM, six, 34 kg, and so on.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="5-lp.html">
+							<p class="sectionentry"><a href="6-lp.html">
 								<spon class="sectiontitle">Literal Patterns</span></a> -
 							<span class="sectionpurpose">To manage the possible notations with which literal values can be written.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-tod.html">
+							<p class="sectionentry"><a href="6-tod.html">
 								<spon class="sectiontitle">Times of Day</span></a> -
 							<span class="sectionpurpose">To make a built-in kind of value for times of day, such as "11:22 AM".</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-uem.html">
+							<p class="sectionentry"><a href="6-uem.html">
 								<spon class="sectiontitle">Using Excerpt Meanings</span></a> -
 							<span class="sectionpurpose">To register and deregister meanings for excerpts of text as nouns, adjectives, imperative phrases and other usages.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-ut.html">
+							<p class="sectionentry"><a href="6-ut.html">
 								<spon class="sectiontitle">Unicode Translations</span></a> -
 							<span class="sectionpurpose">To manage the names assigned to Unicode character values.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-un.html">
+							<p class="sectionentry"><a href="6-un.html">
 								<spon class="sectiontitle">Using Nametags</span></a> -
 							<span class="sectionpurpose">Nametags provide for a more contextual parsing of nouns, allowing them to be given in an inexact verbal form.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-ins.html">
+							<p class="sectionentry"><a href="6-ins.html">
 								<spon class="sectiontitle">Instances</span></a> -
 							<span class="sectionpurpose">To manage constant values of enumerated kinds, including kinds of object.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-nv.html">
+							<p class="sectionentry"><a href="6-nv.html">
 								<spon class="sectiontitle">Nonlocal Variables</span></a> -
 							<span class="sectionpurpose">To manage variables whose scope is wider than the current rule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-ipw.html">
+							<p class="sectionentry"><a href="6-ipw.html">
 								<spon class="sectiontitle">Index Physical World</span></a> -
 							<span class="sectionpurpose">This section masterminds the creation of the World and Kinds index pages, though it delegates much of the work elsewhere. Though it does belong to core Inform, these indexes will look pretty sparse if the spatial Plugins aren't plugged in.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="6"></a>
-						<span class="chaptertitle">Chapter 6: Verbs</span></p>
+					<p class="chapterentry"><a name="7"></a>
+						<span class="chaptertitle">Chapter 7: Verbs</span></p>
 					<p class="chapterpurpose">Verbs which establish relationships between nouns, and which give meaning to binary predicates.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="6-up.html">
+							<p class="sectionentry"><a href="7-up.html">
 								<spon class="sectiontitle">Unary Predicates</span></a> -
 							<span class="sectionpurpose">A lightweight structure to record uses of an adjective, either positively or negatively.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-bp.html">
+							<p class="sectionentry"><a href="7-am.html">
+								<spon class="sectiontitle">Adjective Meanings</span></a> -
+							<span class="sectionpurpose">One individual meaning which an adjective can have.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="7-bp.html">
 								<spon class="sectiontitle">Binary Predicates</span></a> -
 							<span class="sectionpurpose">To create and manage binary predicates, which are the underlying data structures beneath Inform's relations.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-rlt.html">
+							<p class="sectionentry"><a href="7-rlt.html">
 								<spon class="sectiontitle">Relations</span></a> -
 							<span class="sectionpurpose">What Inform internally calls "binary predicates", the user calls "relations". In this section, we parse definitions of new relations and create the resulting |binary_predicate| objects.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-er.html">
+							<p class="sectionentry"><a href="7-er.html">
 								<spon class="sectiontitle">Explicit Relations</span></a> -
 							<span class="sectionpurpose">To draw inferences from the relations created explicitly by the source text.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-tur.html">
+							<p class="sectionentry"><a href="7-tur.html">
 								<spon class="sectiontitle">The Universal Relation</span></a> -
 							<span class="sectionpurpose">To define the universal relation, which can apply and therefore subsumes all other relations.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-nv.html">
+							<p class="sectionentry"><a href="7-nv.html">
 								<spon class="sectiontitle">New Verbs</span></a> -
 							<span class="sectionpurpose">To define verbal forms for relations, in different tenses and numbers.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="7"></a>
-						<span class="chaptertitle">Chapter 7: Sentences</span></p>
+					<p class="chapterentry"><a name="8"></a>
+						<span class="chaptertitle">Chapter 8: Sentences</span></p>
 					<p class="chapterpurpose">In which the stream of words is broken up into sentences and built into a parse tree, recording primary verbs, noun phrases and some sub-clauses; and in which these sentences are collected under a hierarchy of headings, with material intended only for certain target virtual machines included or excluded as need be.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="7-ptu.html">
+							<p class="sectionentry"><a href="8-ptu.html">
 								<spon class="sectiontitle">Parse Tree Usage</span></a> -
 							<span class="sectionpurpose">Shims for the parse tree.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="7-hdn.html">
+							<p class="sectionentry"><a href="8-hdn.html">
 								<spon class="sectiontitle">Headings</span></a> -
 							<span class="sectionpurpose">To keep track of the hierarchy of headings and subheadings found in the source text.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="7-rs.html">
+							<p class="sectionentry"><a href="8-rs.html">
 								<spon class="sectiontitle">Rule Subtrees</span></a> -
 							<span class="sectionpurpose">To tidy up |INVOCATION_LIST_NT| nodes into a list of children under the relevant |RULE_NT| node, and so turn each rule definition into a single subtree.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="8"></a>
-						<span class="chaptertitle">Chapter 8: Extensions</span></p>
+					<p class="chapterentry"><a name="9"></a>
+						<span class="chaptertitle">Chapter 9: Extensions</span></p>
 					<p class="chapterpurpose">Extensions of more sentences must be Included as requested; because of which, we also handle extension installation, uninstallation and documentation here.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="8-ef.html">
+							<p class="sectionentry"><a href="9-ef.html">
 								<spon class="sectiontitle">Extension Files</span></a> -
 							<span class="sectionpurpose">To keep details of the extensions currently loaded, their authors, titles, versions and rubrics, and to index and credit them suitably.</span></p>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<p class="chapterentry"><a name="9"></a>
-						<span class="chaptertitle">Chapter 9: The A-Parser</span></p>
-					<p class="chapterpurpose">We work through the assertion sentences in the parse tree one by one, and formulate logical propositions which must be true statements about the model world.</p>
-					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="9-ita.html">
-								<spon class="sectiontitle">Introduction to Assertions</span></a> -
-							<span class="sectionpurpose">A general introduction to how the A-parser deals with assertions.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-tfa.html">
-								<spon class="sectiontitle">Traverse for Assertions</span></a> -
-							<span class="sectionpurpose">To manage the overall process of traversing the parse tree for assertion sentences.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-tbath.html">
-								<spon class="sectiontitle">To Be and To Have</span></a> -
-							<span class="sectionpurpose">To handle sentences with primary verb "to be" or "to have".</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-rpt.html">
-								<spon class="sectiontitle">Refine Parse Tree</span></a> -
-							<span class="sectionpurpose">To determine which subjects are referred to by noun phrases such as "the table" and "a paper cup" found in assertion sentences being parsed.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-tc.html">
-								<spon class="sectiontitle">The Creator</span></a> -
-							<span class="sectionpurpose">This is where all objects, kinds of object, named values, kinds of value and global variables are made.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-ma.html">
-								<spon class="sectiontitle">Make Assertions</span></a> -
-							<span class="sectionpurpose">To read assertion sentences, sort them according to a detailed grammatical classification and take the primary actions necessary either to generate problem messages, or to infer information.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-pk.html">
-								<spon class="sectiontitle">Property Knowledge</span></a> -
-							<span class="sectionpurpose">This section draws inferences from assertions which seem to be about the properties of things, independent of their location.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-rk.html">
-								<spon class="sectiontitle">Relation Knowledge</span></a> -
-							<span class="sectionpurpose">This section draws inferences about the relationships between objects or values.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-ass.html">
-								<spon class="sectiontitle">Assemblies</span></a> -
-							<span class="sectionpurpose">To build the complex multi-object assemblies which result from allowing the source text to say things like "in every room is a vehicle".</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-imp.html">
-								<spon class="sectiontitle">Implications</span></a> -
-							<span class="sectionpurpose">To keep track of a dangerous form of super-assertion called an implication, which is allowed to generalise about properties.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="9-pd.html">
-								<spon class="sectiontitle">Property Declarations</span></a> -
-							<span class="sectionpurpose">To parse sentences which create new properties, or assert that particular kinds of value can possess them.</span></p>
 						</li>
 					</ul>
 				</li>
@@ -365,6 +365,11 @@
 						<span class="chaptertitle">Chapter 10: The S-Parser</span></p>
 					<p class="chapterpurpose">In which the S-parser is put to work: excerpts of several words at a time are assigned meanings, and compound statements formed of these are parsed, producing lists of possible interpretations.</p>
 					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="10-its.html">
+								<spon class="sectiontitle">Introduction to Semantics</span></a> -
+							<span class="sectionpurpose">A general introduction to the S-parser and the data structures it makes use of.</span></p>
+						</li>
 						<li>
 							<p class="sectionentry"><a href="10-aots.html">
 								<spon class="sectiontitle">Architecture of the S-Parser</span></a> -
@@ -1021,11 +1026,6 @@
 							<p class="sectionentry"><a href="26-ts.html">
 								<spon class="sectiontitle">Test Scripts</span></a> -
 							<span class="sectionpurpose">A rudimentary but useful testing system built in to IF produced by Inform, allowing short sequences of commands to be concisely noted in the source text and tried out in the Inform application using the TEST command.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="26-shr.html">
-								<spon class="sectiontitle">Sentence Handler Registration</span></a> -
-							<span class="sectionpurpose">This function has to be placed close to the end of the code for boring compilation order reasons, not because it belongs here.</span></p>
 						</li>
 					</ul>
 				</li>

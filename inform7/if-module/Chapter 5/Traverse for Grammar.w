@@ -49,6 +49,8 @@ depend on too much not known then: they have a traverse of their own, and
 so do not use the sentence handler system adopted by the main assertion
 traverse.
 
+@e TRAVERSE_FOR_GRAMMAR_SMFT
+
 @ =
 int base_problem_count = 0;
 
@@ -76,7 +78,7 @@ void PL::Parsing::traverse(void) {
 }
 void PL::Parsing::visit(parse_node *p) {
 	if ((Node::get_type(p) == SENTENCE_NT) && (p->down))
-		Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_GRAMMAR_SMFT, p->down);
+		MajorNodes::try_special_meaning(TRAVERSE_FOR_GRAMMAR_SMFT, p->down);
 }
 
 @ The secondary means of acquiring new grammar is used when compiling type

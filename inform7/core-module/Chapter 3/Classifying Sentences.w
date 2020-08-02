@@ -15,41 +15,6 @@ compilation process in earnest: for each such |SENTENCE_NT| node, it asks
 the //linguistics// module to identify a primary verb, noun phrases and so
 on, placing them in a subtree.
 
-=
-int classification_traverse_done = FALSE;
-
-void Classifying::traverse(void) {
-	SyntaxTree::traverse(Task::syntax_tree(), Classifying::visit);
-	classification_traverse_done = TRUE;
-}
-
-void Classifying::visit(parse_node *p) {
-	if (Node::get_type(p) == TRACE_NT) {
-		SyntaxTree::toggle_trace(Task::syntax_tree());
-		Log::tracing_on(SyntaxTree::is_trace_set(Task::syntax_tree()), I"Diagramming");
-	}
-	if (Node::get_type(p) == SENTENCE_NT) Classifying::sentence(p);
-}
-
-@ Certain extra sentences, called "inventions", are sometimes created after
-that traverse takes place: those extra |SENTENCE_NT| nodes therefore won't
-be caught. Extra sentences can happen in two ways:
-
-(a) When additional text is fed to the lexer and sentence-broken by the
-//syntax// module, at which point //syntax// calls the function below
-because we have given it as a callback.
-
-(b) When explicit rearrangement of the tree causes new |SENTENCE_NT| nodes
-to be created. Any code doing this should call the following function
-explicitly.
-
-@d NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK Classifying::visit_extra_sentence
-
-=
-void Classifying::visit_extra_sentence(parse_node *new) {
-	if (classification_traverse_done) Classifying::sentence(new);
-}
-
 @h Textual sentences.
 "Textual" sentences are not really sentences at all, and are just double-quoted
 text used in isolation -- Inform sometimes recognises these as being implicit
@@ -73,6 +38,8 @@ See //linguistics: About Sentence Diagrams// for many examples.
 
 =
 void Classifying::sentence(parse_node *p) {
+	if (Annotations::read_int(p, classified_ANNOT)) return;
+	Annotations::write_int(p, classified_ANNOT, TRUE);
 	parse_node *save = current_sentence;
 	current_sentence = p;
 	if (Classifying::sentence_is_textual(p) == FALSE) {
@@ -113,6 +80,8 @@ void Classifying::sentence(parse_node *p) {
 
 @ Only special-meaning sentences are allowed in Options files, and not all
 of those.
+
+@e ALLOW_IN_OPTIONS_FILE_SMFT
 
 @<Check that this is allowed, if it occurs in the Options file@> =
 	if (Wordings::within(Node::get_text(p), options_file_wording)) {

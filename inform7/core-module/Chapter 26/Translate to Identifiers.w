@@ -65,7 +65,7 @@ void IdentifierTranslations::as(parse_node *pn) {
 	if (category == INVALID_I6TR) return;
 	wording W = GET_RW(<translates-into-i6-sentence-subject>, 1);
 
-	if (traverse == 1) {
+	if (global_pass_state.pass == 1) {
 		Annotations::write_int(pn, category_of_I6_translation_ANNOT, INVALID_I6TR);
 		@<Ensure that we are translating to a quoted I6 identifier@>;
 		Annotations::write_int(pn, category_of_I6_translation_ANNOT, category);
@@ -85,14 +85,14 @@ traversing the parse tree to look for translation sentences of the right sort.
 			Annotations::write_int(pn, category_of_I6_translation_ANNOT, INVALID_I6TR); break;
 		case NOUN_I6TR: break;
 		case RULE_I6TR:
-			if (traverse == 1) Rules::Placement::declare_I6_written_rule(W, p2);
-			if ((traverse == 2) && (p2->down) && (<rule-name>(W)))
+			if (global_pass_state.pass == 1) Rules::Placement::declare_I6_written_rule(W, p2);
+			if ((global_pass_state.pass == 2) && (p2->down) && (<rule-name>(W)))
 				IdentifierTranslations::plus_responses(p2->down, <<rp>>);
 			break;
-		case VARIABLE_I6TR: if (traverse == 2) NonlocalVariables::translates(W, p2); break;
+		case VARIABLE_I6TR: if (global_pass_state.pass == 2) NonlocalVariables::translates(W, p2); break;
 		#ifdef IF_MODULE
-		case ACTION_I6TR: if (traverse == 2) PL::Actions::translates(W, p2); break;
-		case GRAMMAR_TOKEN_I6TR: if (traverse == 2) PL::Parsing::Verbs::translates(W, p2); break;
+		case ACTION_I6TR: if (global_pass_state.pass == 2) PL::Actions::translates(W, p2); break;
+		case GRAMMAR_TOKEN_I6TR: if (global_pass_state.pass == 2) PL::Parsing::Verbs::translates(W, p2); break;
 		#endif
 	}
 

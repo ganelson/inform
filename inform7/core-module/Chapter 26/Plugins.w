@@ -35,11 +35,6 @@ plugin *core_plugin, *IF_plugin, *counting_plugin, *multimedia_plugin,
 
 plugin *registered_plugins[MAX_PLUGINS];
 
-#ifdef IF_MODULE
-sentence_handler BIBLIOGRAPHIC_SH_handler =
-	{ BIBLIOGRAPHIC_NT, -1, 2, PL::Bibliographic::bibliographic_data };
-#endif
-
 @h Names of the great plugins.
 Although Inform was specifically written to create programs within a complex
 and unusual domain (interactive fiction), almost all of its code is quite

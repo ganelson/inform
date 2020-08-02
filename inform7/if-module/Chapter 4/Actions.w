@@ -157,7 +157,7 @@ int PL::Actions::actions_offered_property(kind *K, parse_node *owner, parse_node
 	if (Kinds::Compare::eq(K, K_action_name)) {
 		action_name *an = Rvalues::to_action_name(owner);
 		if (an == NULL) internal_error("failed to extract action-name structure");
-		if (traverse == 1) PL::Actions::an_add_variable(an, what);
+		if (global_pass_state.pass == 1) PL::Actions::an_add_variable(an, what);
 		return TRUE;
 	}
 	return FALSE;
@@ -751,7 +751,7 @@ int PL::Actions::new_action_SMF(int task, parse_node *V, wording *NPs) {
 				return TRUE;
 			}
 			break;
-		case TRAVERSE1_SMFT:
+		case PASS_1_SMFT:
 			PL::Actions::act_parse_definition(V);
 			break;
 	}

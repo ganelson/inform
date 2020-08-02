@@ -31,7 +31,7 @@ sentence will be properly parsed later on.
 void PropertySentences::look_for_property_creation(parse_node *pn) {
 	pn = pn->down;
 	if ((Node::get_type(pn) == VERB_NT)
-		&& (Assertions::Traverse::special(pn) == FALSE)
+		&& (Node::get_special_meaning(pn) == NULL)
 		&& (pn->next)
 		&& (pn->next->next)
 		&& (Diagrams::is_possessive_RELATIONSHIP(pn->next->next))

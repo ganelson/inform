@@ -1,14 +1,14 @@
-Total memory consumption was 256459K = 250 MB
+Total memory consumption was 256458K = 250 MB
 
-62.3% was used for 1331462 objects, in 273670 frames in 200 x 800K = 160000K = 156 MB:
+62.3% was used for 1332948 objects, in 273659 frames in 200 x 800K = 160000K = 156 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.5%  text_stream_array                        2579 x 100 = 257900 objects, 14524928 bytes
-     3.9%  parse_node                               130010 objects, 10400800 bytes
+     3.9%  parse_node                               130006 objects, 10400480 bytes
      2.8%  verb_conjugation                         164 objects, 7610912 bytes
-     2.6%  parse_node_annotation_array              428 x 500 = 214000 objects, 6861696 bytes
+     2.6%  parse_node_annotation_array              431 x 500 = 215500 objects, 6909792 bytes
      2.4%  inter_symbol_array                       70 x 1024 = 71680 objects, 6310080 bytes
-     1.9%  linked_list                              8928 objects, 4999680 bytes
+     1.9%  linked_list                              8923 objects, 4996880 bytes
      1.3%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3648768 bytes
      1.2%  map_data                                 666 objects, 3159504 bytes
      0.9%  kind_array                               65 x 1000 = 65000 objects, 2602080 bytes
@@ -93,7 +93,7 @@ Total memory consumption was 256459K = 250 MB
      ----  adjective_iname_holder                   320 objects, 15360 bytes
      ----  plugin                                   23 objects, 13432 bytes
      ----  literal_text                             147 objects, 12936 bytes
-     ----  stopwatch_timer                          152 objects, 12160 bytes
+     ----  stopwatch_timer                          147 objects, 11760 bytes
      ----  understanding_reference_array            2 x 100 = 200 objects, 11264 bytes
      ----  pathname                                 265 objects, 10600 bytes
      ----  adjective                                137 objects, 9864 bytes
@@ -211,9 +211,9 @@ Total memory consumption was 256459K = 250 MB
 
 37.6% was used for memory not allocated for objects:
 
-    15.9%  text stream storage                      41935140 bytes in 264253 claims
+    15.9%  text stream storage                      41934212 bytes in 264248 claims
      3.5%  dictionary storage                       9293312 bytes in 16401 claims
-     ----  sorting                                  1080 bytes in 3 claims
+     ----  sorting                                  1040 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
      4.1%  source text details                      10800000 bytes in 2 claims
      ----  linguistic stock array                   81920 bytes in 2 claims
@@ -228,5 +228,5 @@ Total memory consumption was 256459K = 250 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.9% was overhead - 52453448 bytes = 51224K = 50 MB
+19.9% was overhead - 52408872 bytes = 51180K = 49 MB
 

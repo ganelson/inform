@@ -2813,10 +2813,14 @@ void PL::SpatialMap::log_precis_of_map(void) {
 		}
 	}
 
-@ =
+@ 
+
+@e TRAVERSE_FOR_MAP_INDEX_SMFT
+
+=
 void PL::SpatialMap::visit_to_transcribe(parse_node *p) {
 	if ((Node::get_type(p) == SENTENCE_NT) && (p->down)) {
-		Assertions::Traverse::try_special_meaning(TRAVERSE_FOR_MAP_INDEX_SMFT, p->down);
+		MajorNodes::try_special_meaning(TRAVERSE_FOR_MAP_INDEX_SMFT, p->down);
 	}
 }
 

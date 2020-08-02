@@ -3222,10 +3222,12 @@ can make use of the following:
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm2.html#SP43">&#167;43</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP44"></a><b>&#167;44.  </b></p>
 
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TRAVERSE_FOR_MAP_INDEX_SMFT</span>
+</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::SpatialMap::visit_to_transcribe</span><button class="popup" onclick="togglePopup('usagePopup78')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup78">Usage of <span class="code-font"><span class="function-syntax">PL::SpatialMap::visit_to_transcribe</span></span>:<br/><a href="3-sm2.html#SP43">&#167;43</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="identifier-syntax">SENTENCE_NT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Assertions::Traverse::try_special_meaning</span><span class="plain-syntax">(</span><span class="identifier-syntax">TRAVERSE_FOR_MAP_INDEX_SMFT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">MajorNodes::try_special_meaning</span><span class="plain-syntax">(</span><span class="constant-syntax">TRAVERSE_FOR_MAP_INDEX_SMFT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>

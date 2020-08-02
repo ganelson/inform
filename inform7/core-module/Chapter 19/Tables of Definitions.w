@@ -104,8 +104,8 @@ int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
 				return TRUE;
 			}
 			break;
-		case TRAVERSE1_SMFT:
-		case TRAVERSE2_SMFT:
+		case PASS_1_SMFT:
+		case PASS_2_SMFT:
 			Tables::Defining::kind_defined_by_table(V);
 			break;
 	}
@@ -122,12 +122,12 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 	wording LTW = Node::get_text(pn->next->next);
 	wording SPW = Node::get_text(pn->next);
 	LOGIF(TABLES, "Traverse %d: I now want to define <%W> by table <%W>\n",
-		traverse, SPW, LTW);
+		global_pass_state.pass, SPW, LTW);
 
 	<defined-by-sentence-object-inner>(LTW); if (<<r>> == FALSE) return;
 	table *t = Rvalues::to_table(<<rp>>);
 
-	if (traverse == 1) {
+	if (global_pass_state.pass == 1) {
 		int abstract = NOT_APPLICABLE;
 		kind *K = NULL;
 		@<Decide whether this will be an abstract or a concrete creation@>;
@@ -270,9 +270,8 @@ have occurred, but if it does then the creation has worked.
 		Assertions::Creator::tabular_definitions(t);
 		NounPhrases::annotate_by_articles(name_entry);
 		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, pn->next);
-		LOG("Yah $T\nTeh $T\n", name_entry, pn->next);
 		if (Assertions::Refiner::refine_coupling(name_entry, pn->next))
-			Assertions::Maker::make_assertion_recursive(name_entry, pn->next);
+			Assertions::make_coupling(name_entry, pn->next);
 		ProblemBuffer::redirect_problem_sentence(NULL, NULL, NULL);
 		Node::set_text(name_entry, NW);
 		evaluation = NULL;
@@ -353,7 +352,7 @@ table: do they get permission as well? We're going to say that they do.
 	for (int i=1; i<t->no_columns; i++) {
 		property *P = NULL;
 		@<Ensure that a property with the same name as the column name exists@>;
-		if (traverse == 1)
+		if (global_pass_state.pass == 1)
 			Calculus::Propositions::Assert::assert_true_about(
 				Calculus::Propositions::Abstract::to_provide_property(P),
 				Kinds::Knowledge::as_subject(t->kind_defined_in_this_table),
@@ -414,7 +413,7 @@ property storage mechanisms that we intend this to happen.
 following immediately after a permission grant.)
 
 @<Passively allow the column to become the property values@> =
-	if (traverse == 1)
+	if (global_pass_state.pass == 1)
 		Properties::OfValues::pp_set_table_storage(t->columns[i].tcu_iname);
 
 @ Active assertions of properties are, once again, a matter of calling the
@@ -439,7 +438,7 @@ also ordinary sentences about the property value, and the former won't.
 
 @<Make an assertion that this name has that property@> =
 	inference_subject *subj = Node::get_subject(name_entry);
-	if (traverse == 2) {
+	if (global_pass_state.pass == 2) {
 		if ((Wordings::nonempty(Node::get_text(data_entry))) &&
 			(<table-cell-blank>(Node::get_text(data_entry)) == FALSE)) {
 			parse_node *val = Node::get_evaluation(data_entry);

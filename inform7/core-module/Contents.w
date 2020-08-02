@@ -8,7 +8,7 @@ Preliminaries
 	What This Module Does
 
 Chapter 1: Configuration and Control
-"The management and the production line for the compilation process."
+"Managing the production line for the compilation process."
 	Core Module
 	Main Routine
 	What To Compile
@@ -16,27 +16,40 @@ Chapter 1: Configuration and Control
 	Core Preform
 	Progress Percentages
 
-Chapter 2: Bridge to Problems Module
+Chapter 2: Problem Messages
 "The issuing of Problem messages."
 	Using Problems
 	Supplementary Quotes
 	Supplementary Issues
 	Problems With Source Text
 
-Chapter 3: Bridge to Words Module
-"Reading source text as a stream of characters and dividing it up into words."
+Chapter 3: Top-Level Declarations
+"Passing three times through top-level declarations and assertion sentences."
 	Booting Verbs
 	Classifying Sentences
+	Passes through Major Nodes
+	Anaphoric References
+
+Chapter 4: Assertions with Special Meanings
+"Responding directly to assertion sentences which have special meanings."
 	Debugging Log Requests
 	Pluralisation Requests
 	Translation Requests
 
-Chapter 4: Bridge to Linguistics Module
-"Miscellaneous grammatical features other than nouns, verbs and adjectives."
-	Introduction to Semantics
-	Adjective Meanings
+Chapter 5: Assertions with Regular Meanings
+"Turning regular assertion sentences into propositions about the model world."
+	Introduction to Assertions
+	To Be and To Have
+	Refine Parse Tree
+	The Creator
+	Make Assertions
+	Property Knowledge
+	Relation Knowledge
+	Assemblies
+	Implications
+	Property Declarations
 
-Chapter 5: Nouns
+Chapter 6: Nouns
 "Nouns, mainly proper, and notations for constant values such as 10:03 AM, six,
 34 kg, and so on."
 	Literal Patterns
@@ -48,17 +61,18 @@ Chapter 5: Nouns
 	Nonlocal Variables
 	Index Physical World
 
-Chapter 6: Verbs
+Chapter 7: Verbs
 "Verbs which establish relationships between nouns, and which give meaning
 to binary predicates."
 	Unary Predicates
+	Adjective Meanings
 	Binary Predicates
 	Relations
 	Explicit Relations
 	The Universal Relation
 	New Verbs
 
-Chapter 7: Sentences
+Chapter 8: Sentences
 "In which the stream of words is broken up into sentences and built into a
 parse tree, recording primary verbs, noun phrases and some sub-clauses; and in
 which these sentences are collected under a hierarchy of headings, with
@@ -68,32 +82,17 @@ excluded as need be."
 	Headings
 	Rule Subtrees
 
-Chapter 8: Extensions
+Chapter 9: Extensions
 "Extensions of more sentences must be Included as requested; because of
 which, we also handle extension installation, uninstallation and
 documentation here."
 	Extension Files
 
-Chapter 9: The A-Parser
-"We work through the assertion sentences in the parse tree one by one, and
-formulate logical propositions which must be true statements about the model
-world."
-	Introduction to Assertions
-	Traverse for Assertions
-	To Be and To Have
-	Refine Parse Tree
-	The Creator
-	Make Assertions
-	Property Knowledge
-	Relation Knowledge
-	Assemblies
-	Implications
-	Property Declarations
-
 Chapter 10: The S-Parser
 "In which the S-parser is put to work: excerpts of several words at a time
 are assigned meanings, and compound statements formed of these are parsed,
 producing lists of possible interpretations."
+	Introduction to Semantics
 	Architecture of the S-Parser
 	Parse Literals
 	Constants and Descriptions
@@ -273,7 +272,6 @@ Chapter 26: Compilation Utilities
 	Plugins
 	Plugin Calls
 	Test Scripts
-	Sentence Handler Registration
 
 Chapter 27: Bridge to Inter Module
 "Emitting Inter code ready for the code-generator."

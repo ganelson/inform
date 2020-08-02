@@ -77,7 +77,7 @@ int UseOptions::use_translates_as_SMF(int task, parse_node *V, wording *NPs) {
 				return TRUE;
 			}
 			break;
-		case TRAVERSE1_SMFT:
+		case PASS_1_SMFT:
 			UseOptions::new_use_option(V);
 			break;
 	}
@@ -212,8 +212,8 @@ int UseOptions::use_SMF(int task, parse_node *V, wording *NPs) {
 			return TRUE;
 		case ALLOW_IN_OPTIONS_FILE_SMFT:
 			return TRUE;
-		case TRAVERSE1_SMFT:
-		case TRAVERSE2_SMFT:
+		case PASS_1_SMFT:
+		case PASS_2_SMFT:
 			UseOptions::set_use_options(V->next);
 			break;
 	}
@@ -232,7 +232,7 @@ void UseOptions::set_use_options(parse_node *p) {
 	}
 	if (<use-inter-pipeline>(Node::get_text(p))) @<Set the chain given in this word range@>
 	else if (<use-sentence-object>(Node::get_text(p))) @<Set the option given in this word range@>;
-	if (traverse == 1) return;
+	if (global_pass_state.pass == 1) return;
 	LOG("Used: %W\n", Node::get_text(p));
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUseOption),
 		"that isn't a 'Use' option known to me",
@@ -264,7 +264,7 @@ void UseOptions::set_use_options(parse_node *p) {
 
 @<Set the chain given in this word range@> =
 	wording CW = GET_RW(<use-inter-pipeline>, 1);
-	if (traverse == 1) {
+	if (global_pass_state.pass == 1) {
 		TEMPORARY_TEXT(p)
 		WRITE_TO(p, "%W", CW);
 		Str::delete_first_character(p);

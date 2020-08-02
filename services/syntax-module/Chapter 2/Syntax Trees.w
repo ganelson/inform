@@ -201,6 +201,18 @@ void SyntaxTree::traverse_from(parse_node *pn, void (*visitor)(parse_node *)) {
 	}
 	current_sentence = SCS;
 }
+void SyntaxTree::traverse_run(parse_node *pn, void (*visitor)(parse_node *), node_type_t X) {
+	parse_node *SCS = current_sentence;
+	for (; pn; pn = pn->next) {
+		if (Node::get_type(pn) != X) break;
+		if (NodeType::is_top_level(pn->node_type)) SyntaxTree::traverse_from(pn->down, visitor);
+		if (SyntaxTree::visitable(pn->node_type)) {
+			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
+			(*visitor)(pn);
+		}
+	}
+	current_sentence = SCS;
+}
 
 @ Note that any node not "visitable" is omitted, where the following function
 is the sole arbiter. This depends only on its node type.

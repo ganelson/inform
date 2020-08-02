@@ -97,10 +97,6 @@ the doubled use of colons is unfortunate.)
 @d DEFINED_IN_SOME_WAY_NOT_YET_KNOWN -2
 
 =
-void Phrases::Adjectives::traverse(void) {
-	SyntaxTree::traverse(Task::syntax_tree(), Phrases::Adjectives::look_for_headers);
-}
-
 void Phrases::Adjectives::look_for_headers(parse_node *p) {
 	if (Node::get_type(p) == RULE_NT)
 		if (<definition-header>(Node::get_text(p))) {

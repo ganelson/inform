@@ -125,6 +125,8 @@ so do not use the sentence handler system adopted by the main assertion
 traverse.
 </p>
 
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TRAVERSE_FOR_GRAMMAR_SMFT</span>
+</pre>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -156,7 +158,7 @@ traverse.
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Parsing::visit</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="identifier-syntax">SENTENCE_NT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Assertions::Traverse::try_special_meaning</span><span class="plain-syntax">(</span><span class="identifier-syntax">TRAVERSE_FOR_GRAMMAR_SMFT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">MajorNodes::try_special_meaning</span><span class="plain-syntax">(</span><span class="constant-syntax">TRAVERSE_FOR_GRAMMAR_SMFT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The secondary means of acquiring new grammar is used when compiling type

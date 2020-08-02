@@ -91,7 +91,7 @@ int PL::Sounds::new_sound_SMF(int task, parse_node *V, wording *NPs) {
 				return TRUE;
 			}
 			break;
-		case TRAVERSE1_SMFT:
+		case PASS_1_SMFT:
 			if (Plugins::Manage::plugged_in(sounds_plugin) == FALSE)
 				internal_error("Sounds plugin inactive");
 			PL::Sounds::register_sound(Node::get_text(V->next),

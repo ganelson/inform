@@ -304,10 +304,10 @@ int PL::Scenes::begins_when_SMF(int task, parse_node *V, wording *NPs) {
 			V->next = <<rp>>;
 			V->next->next = O;
 			return TRUE;
-		case TRAVERSE1_SMFT:
+		case PASS_1_SMFT:
 			PL::Scenes::new_scene_anchor(V, 1, 0);
 			break;
-		case TRAVERSE2_SMFT:
+		case PASS_2_SMFT:
 			PL::Scenes::new_scene_anchor(V, 2, 0);
 			break;
 	}
@@ -336,10 +336,10 @@ int PL::Scenes::ends_when_SMF(int task, parse_node *V, wording *NPs) {
 				V->next->next = O;
 			}
 			return TRUE;
-		case TRAVERSE1_SMFT:
+		case PASS_1_SMFT:
 			PL::Scenes::new_scene_anchor(V, 1, 1);
 			break;
-		case TRAVERSE2_SMFT:
+		case PASS_2_SMFT:
 			PL::Scenes::new_scene_anchor(V, 2, 1);
 			break;
 	}

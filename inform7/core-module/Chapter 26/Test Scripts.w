@@ -195,7 +195,7 @@ int PL::Parsing::TestScripts::test_with_SMF(int task, parse_node *V, wording *NP
 			<np-unparsed>(OW);
 			V->next->next = <<rp>>;
 			return TRUE;
-		case TRAVERSE2_SMFT:
+		case PASS_2_SMFT:
 			PL::Parsing::TestScripts::new_test_text(V);
 			break;
 		case ALLOW_IN_OPTIONS_FILE_SMFT:

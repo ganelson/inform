@@ -3,12 +3,12 @@
 The long production line on which products of Inform are built, one step at a time.
 
 @ Having seen the top management of the factory, we now reach the factory
-floor, which is one long production line: around 150 steps must be performed
+floor, which is one long production line: around 130 steps must be performed
 in sequence to finish making the product. We can picture each of these
 steps as carried out by a worker function: each does its work and passes
 on to the next.
 
-150 is a great many, so we group the stages into 16 departments, which are,
+130 is a great many, so we group the stages into 12 departments, which are,
 in order of when they work:
 
 @e SUBDIVIDING_CSEQ from 0
@@ -36,11 +36,9 @@ is active.
 int Sequence::carry_out(int debugging) {
 	stopwatch_timer *sequence_timer =
 		Time::start_stopwatch(inform7_timer, I"compilation to Inter");
-
 	@<Divide into compilation units@>;
 	@<Build a rudimentary set of kinds, relations, verbs and inference subjects@>;
-	@<Find the major declarations at non-SENTENCE nodes@>;
-	@<Diagram the SENTENCE nodes and act on them@>;
+	@<Pass three times through the major nodes@>;
 	@<Make the model world@>;
 	@<Tables and grammar@>;
 	@<Phrases and rules@>;
@@ -134,27 +132,20 @@ so on. Those absolute basics are made here.
 	BENCH(BinaryPredicates::make_built_in)
 	BENCH(BootVerbs::make_built_in)
 
-@<Find the major declarations at non-SENTENCE nodes@> =
-	Task::advance_stage_to(SEMANTIC_ANALYSIS_CSEQ, I"Semantic analysis", -1);
-	BENCH(RuleSubtrees::register_recently_lexed_phrases)
-	BENCH(Phrases::Adjectives::traverse)
-	BENCH(Equations::traverse_to_create)
-	BENCH(Tables::traverse_to_create)
-	BENCH(Phrases::Manager::traverse_for_names)
-
-@<Diagram the SENTENCE nodes and act on them@> =
-	BENCH(Classifying::traverse)
+@<Pass three times through the major nodes@> =
+	Task::advance_stage_to(SEMANTIC_ANALYSIS_CSEQ, I"Pre-pass through major nodes", 1);
+	BENCH(MajorNodes::pre_pass)
 	BENCH(ParseTreeUsage::verify)
-	Task::advance_stage_to(ASSERTIONS_PASS_1_CSEQ, I"First pass through assertions", 2);
-	BENCH(Assertions::Traverse::traverse1)
+	Task::advance_stage_to(ASSERTIONS_PASS_1_CSEQ, I"First pass through major nodes", 2);
+	BENCH(MajorNodes::pass_1)
 	BENCH(Tables::traverse_to_stock)
-	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through assertions", -1);
-	BENCH(Assertions::Traverse::traverse2)
-	BENCH(Kinds::RunTime::kind_declarations)
-	BENCH(UseOptions::compile)
+	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through major nodes", -1);
+	BENCH(MajorNodes::pass_2)
 
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world", -1);
+	BENCH(Kinds::RunTime::kind_declarations)
+	BENCH(UseOptions::compile)
 	BENCH(Properties::emit)
 	BENCH(Properties::Emit::allocate_attributes)
 	BENCH(PL::Actions::name_all)

@@ -113,21 +113,6 @@ typedef struct equation_node {
 	CLASS_DEFINITION
 } equation_node;
 
-@h Traversing for equations.
-Early in Inform's run, the following takes place:
-
-=
-sentence_handler EQUATION_SH_handler = { EQUATION_NT, -1, 0, NULL };
-
-=
-void Equations::traverse_to_create(void) {
-	SyntaxTree::traverse(Task::syntax_tree(), Equations::visit_to_create);
-}
-void Equations::visit_to_create(parse_node *p) {
-	if (Node::get_type(p) == EQUATION_NT)
-		Equations::new(Node::get_text(p), FALSE);
-}
-
 @ Equation names follow the same conventions as table names.
 
 =
@@ -147,6 +132,11 @@ S-parser: such equations are called "anonymous", as they have no name. But in
 either case, an equation begins here:
 
 =
+equation *Equations::new_at(parse_node *p, int anonymous) {
+	wording W = Node::get_text(p);
+	return Equations::new(W, anonymous);
+}
+
 equation *Equations::new(wording W, int anonymous) {
 	equation *eqn;
 	LOOP_OVER(eqn, equation)

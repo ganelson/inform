@@ -56,31 +56,12 @@ int table_cell_col = -1;
 table *table_being_examined = NULL;
 
 @h Traversing for tables.
-Tables of data are created in two special passes through the source text:
+Tables of data are created in two passes through the source text:
 the first finds their names and registers them with the parser, while
 the second (much later) works out their columns and contents. At some
 point we also try to find ambiguity problems which might bite us later on.
 
-During the main assertions traverses, we simply skip over tables, which
-is why the following sentence handler is null:
-
-=
-sentence_handler TABLE_SH_handler = { TABLE_NT, -1, 0, NULL };
-
-@ So here are the specialised table-on traverses. First, the early one,
-which can't do very much about the contents of the tables, but just
-established names of tables and columns:
-
-=
-void Tables::traverse_to_create(void) {
-	SyntaxTree::traverse(Task::syntax_tree(), Tables::visit_to_create);
-}
-void Tables::visit_to_create(parse_node *p) {
-	if (Node::get_type(p) == TABLE_NT)
-		Tables::create_table(p);
-}
-
-@ Second, the later one. By this point all of the constant values in Inform
+Here is that later one. By this point all of the constant values in Inform
 exist, and so do all of the kinds, so we can now make sense of the kinds
 of the columns and of what's in them; and we can check that this is all
 consistent. This is called "stocking", and it comes in three phases:
@@ -88,8 +69,7 @@ see below.
 
 =
 void Tables::traverse_to_stock(void) {
-	int phase;
-	for (phase = 1; phase <= 3; phase++) {
+	for (int phase = 1; phase <= 3; phase++) {
 		table *t;
 		LOOP_OVER(t, table) {
 			current_sentence = t->table_created_at->source_table;

@@ -406,6 +406,7 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e action_meaning_ANNOT /* |action_pattern|: meaning in parse tree when used as noun */
 @e aph_ANNOT /* |adjective|: which adjective is asserted */
 @e category_of_I6_translation_ANNOT /* int: what sort of "translates into I6" sentence this is */
+@e classified_ANNOT /* |int|: this sentence has been classified */
 @e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
 @e colon_block_command_ANNOT /* int: this COMMAND uses the ":" not begin/end syntax */
 @e condition_tense_ANNOT /* |time_period|: for specification nodes */

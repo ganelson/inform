@@ -527,7 +527,7 @@ void PL::Spatial::infer_presence_here(instance *I) {
 	}
 
 	World::Inferences::draw(PARENTAGE_HERE_INF, infs, CERTAIN_CE,
-		Assertions::Traverse::get_current_subject(), NULL);
+		Anaphora::get_current_subject(), NULL);
 	World::Inferences::draw(IS_ROOM_INF, infs, IMPOSSIBLE_CE, NULL, NULL);
 }
 
