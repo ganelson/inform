@@ -120,6 +120,20 @@ void Assertions::Refiner::coerce_adjectival_usage_to_noun(parse_node *leaf) {
 	}
 }
 
+@h Refining equated phrases.
+When an assertion couples |px| and |py|, the following is called first to
+refine them.
+
+=
+int Assertions::Refiner::refine_coupling(parse_node *px, parse_node *py) {
+	int pc = problem_count;
+	Assertions::Refiner::refine(px, ALLOW_CREATION);
+	Assertions::Refiner::refine(py, ALLOW_CREATION);
+	if (problem_count > pc) return FALSE;
+	if (Assertions::Creator::consult_the_creator(px, py) == FALSE) return FALSE;
+	return TRUE;
+}
+
 @h The refinery itself.
 Time to get started, then. Each subtree can be refined only once.
 

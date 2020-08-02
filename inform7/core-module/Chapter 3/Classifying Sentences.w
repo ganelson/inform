@@ -91,7 +91,7 @@ void Classifying::sentence(parse_node *p) {
 			PropertySentences::look_for_property_creation(p);
 			@<Issue problem message if either subject or object contains mismatched brackets@>;
 			@<Issue problem message if subject starts with double-quoted literal text@>;
-			if ((VP_PN->next) && (VP_PN->next->next) && (Assertions::Copular::possessive(VP_PN->next->next)))
+			if ((VP_PN->next) && (VP_PN->next->next) && (Diagrams::is_possessive_RELATIONSHIP(VP_PN->next->next)))
 				@<Diagram property callings@>;
 		} else {
 			LOG("$T\n", p);

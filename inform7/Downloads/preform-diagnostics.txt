@@ -4736,12 +4736,12 @@
 
 <adjective-name> internal hits 0/258 nti 17 constraint (none) extremes [1, infinity)
 
-<optional-definite-article> hits 36061/72122 nti 13 constraint (none) extremes [1, infinity)
+<optional-definite-article> hits 36075/72150 nti 13 constraint (none) extremes [1, infinity)
     English:
         <definite-article> {...} 
-          (hits 7694/36061) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 7694/36075) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 28367/28367) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 28381/28381) (matched long text) constraint (none) extremes [1, infinity)
 
 <optional-indefinite-article> nti 14 constraint (none) extremes [1, infinity)
     English:
@@ -4750,21 +4750,21 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<optional-article> hits 81344/162688 nti 15 constraint (none) extremes [1, infinity)
+<optional-article> hits 81396/162792 nti 15 constraint (none) extremes [1, infinity)
     English:
         <article> {...} 
-          (hits 15781/46516) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 15781/46530) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 65563/65563) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 65615/65615) (matched long text) constraint (none) extremes [1, infinity)
 
 <compulsory-article> nti 16 constraint (none) extremes [2, infinity)
     English:
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16205/96556 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16205/96584 nti r2 constraint (none) extremes [1, 1]
 
-<definite-article> internal hits 21519/254266 nti r2 constraint (none) extremes [1, 1]
+<definite-article> internal hits 21519/254308 nti r2 constraint (none) extremes [1, 1]
 
 <indefinite-article> internal hits 2239/40852 nti r2 constraint (none) extremes [1, 1]
 
@@ -5031,10 +5031,10 @@
         <np-unparsed> 
           (hits 60/60) (matched: 'fixed in place') constraint (none) extremes [1, infinity)
 
-<np-existential> hits 33/122748 nti 19 constraint CS = {19} extremes [1, 1]
+<np-existential> hits 33/120886 nti 19 constraint CS = {19} extremes [1, 1]
     English:
         there 
-          (hits 33/772) (matched: 'there') constraint CS = {19} extremes [1, 1]
+          (hits 33/752) (matched: 'there') constraint CS = {19} extremes [1, 1]
 
 <np-articled> hits 2081/4162 nti 8 constraint (none) extremes [1, infinity)
     English:
@@ -5271,7 +5271,7 @@
         grammatical case 
           (hits 1/1) (matched: 'grammatical case') constraint CS = {7} extremes [2, 2]
 
-<if-parsing-phrase-tokens> internal hits 2474/40926 nti 26 constraint (none) extremes [0, 0]
+<if-parsing-phrase-tokens> internal hits 2474/40954 nti 26 constraint (none) extremes [0, 0]
 
 <k-kind-for-template> internal hits 164/328 nti 27 constraint (none) extremes [1, infinity)
 
@@ -5297,20 +5297,20 @@
         <k-kind> 
           (hits 5/5) (matched: 'value of kind k') constraint (none) extremes [1, infinity)
 
-<k-kind> hits 5771/102278 nti r5 constraint (none) extremes [1, infinity)
+<k-kind> hits 5771/102316 nti r5 constraint (none) extremes [1, infinity)
     English:
         ( <k-kind> ) 
           (hits 0/2032) constraint DS = {r5} & CW = {r2, r5} extremes [3, infinity)
         ^<if-parsing-phrase-tokens> <k-kind-variable> 
-          (hits 1589/11026) (matched: 'k') constraint CW = {r2, r5} extremes [1, infinity)
+          (hits 1589/11033) (matched: 'k') constraint CW = {r2, r5} extremes [1, infinity)
         <if-parsing-phrase-tokens> <k-variable-definition> 
-          (hits 201/9437) (matched: 'sayable value of kind k') constraint CW = {r2, r5} extremes [1, infinity)
+          (hits 201/9444) (matched: 'sayable value of kind k') constraint CW = {r2, r5} extremes [1, infinity)
         <k-base-kind> 
-          (hits 3626/9236) (matched: 'an ice cream cone') constraint CW = {r2, r5} extremes [1, infinity)
+          (hits 3626/9243) (matched: 'an ice cream cone') constraint CW = {r2, r5} extremes [1, infinity)
         <k-irregular-kind-construction> 
           (hits 2/15790) (matched: 'object-based rulebook') constraint DS = {r5} extremes [2, infinity)
         <k-kind-construction> 
-          (hits 353/5608) (matched long text) constraint CW = {r2, r5} extremes [1, infinity)
+          (hits 353/5615) (matched long text) constraint CW = {r2, r5} extremes [1, infinity)
 
 <k-kind-articled> hits 40/338 nti 28 constraint (none) extremes [1, infinity)
     English:
@@ -5326,7 +5326,7 @@
         <k-kind-of-kind> of kind <k-formal-kind-variable> 
           (hits 81/315) (matched: 'sayable value of kind k') constraint DS = {r5} & CW = {r2, r5} extremes [4, infinity)
 
-<k-base-kind> internal hits 3626/18472 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
+<k-base-kind> internal hits 3626/18486 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
 
 <k-irregular-kind-construction> hits 2/31580 nti r5 constraint DS = {r5} extremes [2, infinity)
     English:
@@ -5357,7 +5357,7 @@
         either-or property 
           (hits 0/974) constraint CS = {r5} extremes [2, 2]
 
-<k-kind-construction> internal hits 353/11216 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
+<k-kind-construction> internal hits 353/11230 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
 
 <k-single-material> hits 150/300 nti r5 constraint (none) extremes [1, infinity)
     English:
@@ -5402,7 +5402,7 @@
         <k-kind> 
           (hits 100/224) (matched: 'sayable value') constraint (none) extremes [1, infinity)
 
-<k-kind-variable> internal hits 1589/19578 nti r5 constraint CW = {r2, r5} extremes [1, 1]
+<k-kind-variable> internal hits 1589/19592 nti r5 constraint CW = {r2, r5} extremes [1, 1]
 
 <k-formal-kind-variable> internal hits 220/1414 nti r5 constraint CW = {r2, r5} extremes [1, 1]
 
@@ -6885,7 +6885,7 @@
 
 <s-stacked-variable> internal hits 897/18620 nti 11 constraint (none) extremes [1, infinity)
 
-<s-global-variable> internal hits 2296/19440 nti 12 constraint (none) extremes [1, infinity)
+<s-global-variable> internal hits 2296/19516 nti 12 constraint (none) extremes [1, infinity)
 
 <property-of-shape> hits 105/18348 nti 9 constraint DS = {9} extremes [3, infinity)
     English:

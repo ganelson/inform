@@ -4,6 +4,33 @@ To read assertion sentences, sort them according to a detailed
 grammatical classification and take the primary actions necessary either
 to generate problem messages, or to infer information.
 
+@h Existential assertions.
+These are very much simpler than coupling assertions, and the tree |py|
+can contain only a common noun together with requirements on it: for
+example, the subtree for "an open door".
+
+=
+void Assertions::Maker::make_existential_assertion(parse_node *py) {
+	switch (Node::get_type(py)) {
+		case WITH_NT:
+			Assertions::Maker::make_existential_assertion(py->down);
+			break;
+		case AND_NT:
+			Assertions::Maker::make_existential_assertion(py->down);
+			Assertions::Maker::make_existential_assertion(py->down->next);
+			break;
+		case COMMON_NOUN_NT:
+			if ((InferenceSubjects::is_a_kind_of_object(Node::get_subject(py))) ||
+				(Kinds::Compare::eq(K_object, InferenceSubjects::as_kind(Node::get_subject(py)))))
+				Assertions::Creator::convert_instance_to_nounphrase(py, NULL);
+			else
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ThereIsVague),
+					"'there is...' can only be used to create objects",
+					"and not instances of other kinds.'");
+			break;
+	}
+}
+
 @h The Matrix.
 So assertion sentences such as:
 
@@ -957,6 +984,16 @@ opera about a dog, "Collared Is Bowser".)
 @h Case 31. "Every K is in L."
 
 @<Case 31 - EVERY vs RELATIONSHIP@> =
+	if (Diagrams::is_possessive_RELATIONSHIP(py)) {
+		if (<k-kind>(Node::get_text(py->down))) {
+			Node::set_type(py, ALLOWED_NT);
+			Node::set_type(py->down, UNPARSED_NOUN_NT);
+			Assertions::Maker::make_assertion_recursive(px, py);
+			return;
+		}
+		Assertions::Maker::make_assertion_recursive(px, py->down);
+		return;
+	}
 	if (traverse == 1) Assertions::Assemblies::make_generalisation(px, py);
 
 @h Case 32. A problem message issued purely on stylistic grounds.
@@ -992,6 +1029,7 @@ this ought to be allowed...
 >> An animal is in the desk.
 
 @<Case 34 - COMMON NOUN vs RELATIONSHIP@> =
+	@<Possession of something is allowed@>;
 	@<Generalised relationships are allowed@>;
 	@<Multiple objects in a relationship are allowed@>;
 	@<Certain non-spatial relationships are allowed too@>;
@@ -1029,6 +1067,20 @@ this ought to be allowed...
 			"not realising you intended to make a brass number-plate or "
 			"an old book. If that's the trouble, you can use 'called': "
 			"for instance, 'In the prayer-box is a thing called the text.'");
+
+@
+
+@<Possession of something is allowed@> =
+	if (Diagrams::is_possessive_RELATIONSHIP(py)) {
+		if (<k-kind>(Node::get_text(py->down))) {
+			Node::set_type(py, ALLOWED_NT);
+			Node::set_type(py->down, UNPARSED_NOUN_NT);
+			Assertions::Maker::make_assertion_recursive(px, py);
+			return;
+		}
+		Assertions::Maker::make_assertion_recursive(px, py->down);
+		return;
+	}
 
 @ For example,
 
@@ -1098,6 +1150,16 @@ since "west of the Lawn" parses to a |RELATIONSHIP_NT| subtree.
 @<Case 36 - PROPER NOUN vs RELATIONSHIP@> =
 	if (Assertions::Refiner::turn_player_to_yourself(px)) {
 		Assertions::Maker::make_assertion_recursive(px, py); return;
+	}
+	if (Diagrams::is_possessive_RELATIONSHIP(py)) {
+		if (<k-kind>(Node::get_text(py->down))) {
+			Node::set_type(py, ALLOWED_NT);
+			Node::set_type(py->down, UNPARSED_NOUN_NT);
+			Assertions::Maker::make_assertion_recursive(px, py);
+			return;
+		}
+		Assertions::Maker::make_assertion_recursive(px, py->down);
+		return;
 	}
 	Assertions::Maker::instantiate_related_common_nouns(py);
 	if (traverse == 2) Assertions::Relational::assert_subtree_in_relationship(px, py);

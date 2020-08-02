@@ -291,8 +291,23 @@ a valid verb number to have no handler: if so, we handle the verb by doing
 nothing on either traverse, of course.
 
 @<Act on the primary verb in the sentence@> =
-	if (Assertions::Traverse::special(p->down)) Assertions::Traverse::special_meaning(p);
-	else Assertions::Copular::assertion(p);
+	if (Assertions::Traverse::special(p->down)) {
+		Assertions::Traverse::special_meaning(p);
+	} else {
+		parse_node *px = p->down->next;
+		parse_node *py = px->next;
+		if (traverse == 1) {
+			if (Assertions::Refiner::refine_coupling(px, py) == FALSE) return;
+		}
+		if (SyntaxTree::is_trace_set(Task::syntax_tree())) LOG("$T", current_sentence);
+		if (Node::get_type(px) == DEFECTIVE_NOUN_NT) {
+			if (traverse == 1) Assertions::Maker::make_existential_assertion(py);
+			Assertions::Traverse::change_discussion_from_coupling(py, py);
+		} else {
+			Assertions::Maker::make_assertion_recursive(px, py);
+			Assertions::Traverse::change_discussion_from_coupling(px, py);
+		}
+	}
 
 @ The "appearance" is not a property as such. When a quoted piece of text
 is given as a whole sentence, it might be:
@@ -408,6 +423,32 @@ void Assertions::Traverse::new_discussion(void) {
 	subject_of_sentences = NULL; object_of_sentences = NULL;
 }
 
+@ The slight asymmetry in what follows is partly pragmatic, partly the result
+of subject-verb inversion ("in the bag is the ball" not "the ball is in the
+bag"). We extract a subject from a relationship node on the left, but not on
+the right, and we don't extract an object from one. Consider:
+
+>> A billiards table is in the Gazebo. On it is a trophy cup.
+
+What does "it" mean, and why? A human reader goes for the billiards table at
+once, because it seems more likely as a supporter than the Gazebo, but that's
+not how Inform gets the same answer. It all hangs on "billiards table" being
+the object of the first sentence, not the Gazebo; if we descended the RHS,
+which is |RELATIONSHIP_NT -> PROPER_NOUN_NT| pointing to the Gazebo, that's the
+conclusion we would have reached.
+
+=
+void Assertions::Traverse::change_discussion_from_coupling(parse_node *px, parse_node *py) {
+	inference_subject *infsx = NULL, *infsy = NULL, *infsy_full = NULL;
+	infsx = Assertions::Traverse::discussed_at_node(px);
+	infsy_full = Assertions::Traverse::discussed_at_node(py);
+	if (Node::get_type(py) != KIND_NT) infsy = Node::get_subject(py);
+	Assertions::Traverse::change_discussion_topic(infsx, infsy, infsy_full);
+	if (Node::get_type(px) == AND_NT) Assertions::Traverse::subject_of_discussion_a_list();
+	if (Annotations::read_int(current_sentence, clears_pronouns_ANNOT))
+		Assertions::Traverse::new_discussion();
+}
+
 void Assertions::Traverse::change_discussion_topic(inference_subject *infsx,
 	inference_subject *infsy, inference_subject *infsy_full) {
 	inference_subject *old_sub = subject_of_sentences, *old_obj = object_of_sentences;
@@ -432,6 +473,19 @@ void Assertions::Traverse::change_discussion_topic(inference_subject *infsx,
 	if (object_of_sentences != old_obj)
 		LOGIF(PRONOUNS, "[Changed object of sentences to $j]\n",
 			object_of_sentences);
+}
+
+@ =
+inference_subject *Assertions::Traverse::discussed_at_node(parse_node *pn) {
+	inference_subject *infs = NULL;
+	if (Node::get_type(pn) != KIND_NT) infs = Node::get_subject(pn);
+	if ((Node::get_type(pn) == RELATIONSHIP_NT) && (pn->down) &&
+		(Node::get_type(pn->down) == PROPER_NOUN_NT))
+		infs = Node::get_subject(pn->down);
+	if ((Node::get_type(pn) == WITH_NT) && (pn->down) &&
+		(Node::get_type(pn->down) == PROPER_NOUN_NT))
+		infs = Node::get_subject(pn->down);
+	return infs;
 }
 
 @ Occasionally we need to force the issue, though:

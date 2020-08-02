@@ -230,6 +230,14 @@ parse_node *Diagrams::new_RELATIONSHIP(wording W, VERB_MEANING_LINGUISTICS_TYPE 
 	return P;
 }
 
+int Diagrams::is_possessive_RELATIONSHIP(parse_node *py) {
+	if ((py) && (Node::get_type(py) == RELATIONSHIP_NT) &&
+		(Node::get_relationship(py)) &&
+		(VerbMeanings::reverse_VMT(Node::get_relationship(py)) == VERB_MEANING_POSSESSION))
+		return TRUE;
+	return FALSE;
+}
+
 parse_node *Diagrams::new_implied_RELATIONSHIP(wording W, VERB_MEANING_LINGUISTICS_TYPE *R) {
 	if (preform_lookahead_mode) return NULL;
 	return Diagrams::new_RELATIONSHIP(W, R, Diagrams::new_PRONOUN(W, Pronouns::get_implied()));

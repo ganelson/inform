@@ -271,8 +271,8 @@ have occurred, but if it does then the creation has worked.
 		NounPhrases::annotate_by_articles(name_entry);
 		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, pn->next);
 		LOG("Yah $T\nTeh $T\n", name_entry, pn->next);
-		if (Assertions::Copular::refine(name_entry, pn->next))
-			Assertions::Copular::make_assertion(name_entry, pn->next);
+		if (Assertions::Refiner::refine_coupling(name_entry, pn->next))
+			Assertions::Maker::make_assertion_recursive(name_entry, pn->next);
 		ProblemBuffer::redirect_problem_sentence(NULL, NULL, NULL);
 		Node::set_text(name_entry, NW);
 		evaluation = NULL;

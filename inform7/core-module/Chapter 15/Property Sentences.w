@@ -34,7 +34,7 @@ void PropertySentences::look_for_property_creation(parse_node *pn) {
 		&& (Assertions::Traverse::special(pn) == FALSE)
 		&& (pn->next)
 		&& (pn->next->next)
-		&& (Assertions::Copular::possessive(pn->next->next))
+		&& (Diagrams::is_possessive_RELATIONSHIP(pn->next->next))
 		&& (Node::get_type(pn->next->next->down) == CALLED_NT)
 		&& (pn->next->next->down->down)
 		&& (pn->next->next->down->down->next)) {
