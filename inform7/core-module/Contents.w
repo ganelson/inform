@@ -55,7 +55,7 @@ Chapter 6: Nouns
 	Literal Patterns
 	Times of Day
 	Using Excerpt Meanings
-	Unicode Translations
+	Unicode Literals
 	Using Nametags
 	Instances
 	Nonlocal Variables
@@ -267,7 +267,6 @@ Chapter 26: Compilation Utilities
 	Jump Labels
 	Compiled Text
 	Routines
-	Translate to Identifiers
 	I6 Template Interpreter
 	Plugins
 	Plugin Calls

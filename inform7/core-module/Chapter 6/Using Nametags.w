@@ -81,27 +81,6 @@ void UseNouns::name_all(void) {
 }
 
 void UseNouns::visit_to_name(parse_node *p) {
-	if ((Node::get_type(p) == SENTENCE_NT) && (p->down) &&
-		(Annotations::read_int(p->down, category_of_I6_translation_ANNOT) == NOUN_I6TR))
-		@<Act on a request to translate a noun in a specific way@>;
+	if ((Node::get_type(p) == SENTENCE_NT) && (p->down))
+		MajorNodes::try_special_meaning(INTER_NAMING_SMFT, p->down);
 }
-
-@<Act on a request to translate a noun in a specific way@> =
-	wording W = Wordings::trim_last_word(Node::get_text(p->down->next));
-	parse_node *res = Lexicon::retrieve(NOUN_MC, W);
-	if (res) {
-		noun_usage *nu = Nouns::disambiguate(res, FALSE);
-		noun *nt = (nu)?(nu->noun_used):NULL;
-		if (nt) {
-			TEMPORARY_TEXT(i6r)
-			WRITE_TO(i6r, "%N", Wordings::first_wn(Node::get_text(p->down->next->next)));
-			UseNouns::noun_set_I6_representation(nt, i6r);
-			DISCARD_TEXT(i6r)
-		}
-	} else {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadObjectTranslation),
-			"there is no such object or kind of object",
-			"so its name will never be translated into an I6 Object or Class identifier "
-			"in any event.");
-	}
-
