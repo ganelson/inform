@@ -40,14 +40,29 @@ box" (not just a leaf, since it will be a tree showing the containment
 relationship as well as the noun).
 
 =
-void Assertions::Copular::assertion(parse_node *pv) {
-	parse_node *px = pv->down->next;
-	parse_node *py = px->next;
+int Assertions::Copular::refine(parse_node *px, parse_node *py) {
+	int pc = problem_count;
 	if ((Assertions::Copular::possessive(py)) &&
 		(<k-kind>(Node::get_text(py->down)))) {
 			Node::set_type(py, ALLOWED_NT);
 			Node::set_type(py->down, UNPARSED_NOUN_NT);
 		}
+
+	Assertions::Refiner::refine(px, ALLOW_CREATION);
+	Assertions::Refiner::refine(py, ALLOW_CREATION);
+	if (problem_count > pc) return FALSE;
+	if (Assertions::Creator::consult_the_creator(px, py) == FALSE) return FALSE;
+	return TRUE;
+}
+
+void Assertions::Copular::assertion(parse_node *pv) {
+	parse_node *px = pv->down->next;
+	parse_node *py = px->next;
+
+	if (traverse == 1) {
+		if (Assertions::Copular::refine(px, py) == FALSE) return;
+	}
+
 	if (Assertions::Copular::possessive(py))
 		Assertions::Copular::make_assertion(px, py->down);
 	else
@@ -82,15 +97,6 @@ In traverse 2, only (c) takes place; (a) and (b) are one-time events.
 
 =
 void Assertions::Copular::make_assertion(parse_node *px, parse_node *py) {
-	if (traverse == 1) {
-		int pc = problem_count;
-		if (!(<np-existential>(Node::get_text(px))))
-			Assertions::Refiner::refine(px, ALLOW_CREATION);
-		Assertions::Refiner::refine(py, ALLOW_CREATION);
-		if (problem_count > pc) return;
-		if (Assertions::Creator::consult_the_creator(px, py) == FALSE) return;
-	}
-
 	if (SyntaxTree::is_trace_set(Task::syntax_tree())) LOG("$T", current_sentence);
 	if (<np-existential>(Node::get_text(px))) {
 		if (traverse == 1) Assertions::Copular::make_existential_assertion(py);

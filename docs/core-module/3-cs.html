@@ -431,6 +431,40 @@ this, a problem message of some kind will certainly result.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cs.html#SP5">&#167;5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The following is needed to handle something like "colour of the box",
+where "colour" is a property name. We must be careful, though, to avoid
+confusion with variable declarations:
+</p>
+
+<blockquote>
+    <p>The interesting var is a description of numbers that varies.</p>
+</blockquote>
+
+<p class="commentary">which would otherwise be misread as an attempt to set the "description"
+property of something.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ALLOW_OF_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="3-cs.html#SP7" class="function-link"><span class="function-syntax">Classifying::allow_of</span></a>
+</pre>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;allow-of-x&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">presence</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { fail }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;property-name-v&gt;</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, - }</span>
+
+<span class="Preform-function-syntax">&lt;allow-of-y&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">that</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">varies</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { fail}</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">variable</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { fail }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, - }</span>
+</pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Classifying::allow_of</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Classifying::allow_of</span></span>:<br/><a href="3-cs.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">XW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">YW</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;allow-of-x&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">XW</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;allow-of-y&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">YW</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="3-bv.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-bv.html">bv</a></li><li class="progresscurrent">cs</li><li class="progresssection"><a href="3-dlr.html">dlr</a></li><li class="progresssection"><a href="3-pr.html">pr</a></li><li class="progresssection"><a href="3-tr.html">tr</a></li><li class="progresschapter"><a href="4-its.html">4</a></li><li class="progresschapter"><a href="5-lp.html">5</a></li><li class="progresschapter"><a href="6-up.html">6</a></li><li class="progresschapter"><a href="7-ptu.html">7</a></li><li class="progresschapter"><a href="8-ef.html">8</a></li><li class="progresschapter"><a href="9-ita.html">9</a></li><li class="progresschapter"><a href="10-aots.html">10</a></li><li class="progresschapter"><a href="11-itpc.html">11</a></li><li class="progresschapter"><a href="12-ter.html">12</a></li><li class="progresschapter"><a href="13-kak.html">13</a></li><li class="progresschapter"><a href="14-sp.html">14</a></li><li class="progresschapter"><a href="15-pr.html">15</a></li><li class="progresschapter"><a href="16-is.html">16</a></li><li class="progresschapter"><a href="17-tl.html">17</a></li><li class="progresschapter"><a href="18-lc.html">18</a></li><li class="progresschapter"><a href="19-tc.html">19</a></li><li class="progresschapter"><a href="20-eq.html">20</a></li><li class="progresschapter"><a href="21-rl.html">21</a></li><li class="progresschapter"><a href="22-itp.html">22</a></li><li class="progresschapter"><a href="23-ad.html">23</a></li><li class="progresschapter"><a href="24-lv.html">24</a></li><li class="progresschapter"><a href="25-in.html">25</a></li><li class="progresschapter"><a href="26-fc.html">26</a></li><li class="progresschapter"><a href="27-hr.html">27</a></li><li class="progressnext"><a href="3-dlr.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

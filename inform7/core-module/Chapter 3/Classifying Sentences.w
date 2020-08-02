@@ -307,3 +307,30 @@ this, a problem message of some kind will certainly result.
 		Annotations::write_int(current_sentence, verb_problem_issued_ANNOT, TRUE);
 		StandardProblems::negative_sentence_problem(Task::syntax_tree(), _p_(PM_NegatedVerb1));
 	}
+
+@ The following is needed to handle something like "colour of the box",
+where "colour" is a property name. We must be careful, though, to avoid
+confusion with variable declarations:
+
+>> The interesting var is a description of numbers that varies.
+
+which would otherwise be misread as an attempt to set the "description"
+property of something.
+
+@d ALLOW_OF_LINGUISTICS_CALLBACK Classifying::allow_of
+
+=
+<allow-of-x> ::=
+	in the presence |    ==> { fail }
+	<property-name-v>    ==> { -, - }
+
+<allow-of-y> ::=
+	... that varies |    ==> { fail}
+	... variable |       ==> { fail }
+	...                  ==> { -, - }
+
+@ =
+int Classifying::allow_of(wording XW, wording YW) {
+	if ((<allow-of-x>(XW)) && (<allow-of-y>(YW))) return TRUE;
+	return FALSE;
+}

@@ -25,7 +25,6 @@ void ParseTreeUsage::copy_annotations(parse_node_annotation *to, parse_node_anno
 @e ACTION_NT            			/* "taking something closed" */
 @e ADJECTIVE_NT         			/* "open" */
 @e PROPERTYCALLED_NT    			/* "A man has a number called age" */
-@e X_OF_Y_NT            			/* "description of the painting" */
 @e CREATED_NT           			/* "a vehicle called Sarah Jane's car" */
 
 @e TOKEN_NT             			/* Used for tokens in grammar */
@@ -101,7 +100,6 @@ void ParseTreeUsage::md(void) {
 	NodeType::new(ADJECTIVE_NT, I"ADJECTIVE_NT",			   				0, INFTY,	L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(PROPERTYCALLED_NT, I"PROPERTYCALLED_NT",  				2, 2,		L3_NCAT, 0);
 	NodeType::new(TOKEN_NT, I"TOKEN_NT",					   				0, INFTY,	L3_NCAT, 0);
-	NodeType::new(X_OF_Y_NT, I"X_OF_Y_NT",				   					2, 2,		L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(CREATED_NT, I"CREATED_NT",				  				0, 0,		L3_NCAT, ASSERT_NFLAG);
 
 	NodeType::new(CODE_BLOCK_NT, I"CODE_BLOCK_NT",	       					0, INFTY,	L4_NCAT, 0);

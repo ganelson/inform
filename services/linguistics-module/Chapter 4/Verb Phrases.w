@@ -588,18 +588,62 @@ such as "There is a cat called Puss in Boots", where we want to prevent the
 The following iterates until all possible surgeries have been done.
 
 =
-void VerbPhrases::corrective_surgery(parse_node *pn) {
+void VerbPhrases::corrective_surgery(parse_node *p) {
+	int permit_of = (Node::get_special_meaning(p))?FALSE:TRUE;
 	int rv = TRUE;
-	while (rv) rv = VerbPhrases::corrective_surgery_r(pn);
+	while (rv) rv = VerbPhrases::corrective_surgery_r(p, permit_of, 0);
 }
 
-int VerbPhrases::corrective_surgery_r(parse_node *pn) {
-	for (; pn; pn=pn->next) {
-		if (VerbPhrases::perform_location_surgery(pn)) return TRUE;
-		if (VerbPhrases::perform_called_surgery(pn)) return TRUE;
-		if ((pn->down) && (VerbPhrases::corrective_surgery_r(pn->down))) return TRUE;
+int VerbPhrases::corrective_surgery_r(parse_node *p, int permit_of, node_type_t par) {
+	int n = 1;
+	for (; p; p=p->next) {
+		if ((permit_of) && ((par != CALLED_NT) || (n != 2)) &&
+			(VerbPhrases::perform_of_surgery(p))) return TRUE;
+		if (VerbPhrases::perform_location_surgery(p)) return TRUE;
+		if (VerbPhrases::perform_called_surgery(p)) return TRUE;
+		if ((p->down) &&
+			(VerbPhrases::corrective_surgery_r(p->down, permit_of, Node::get_type(p))))
+			return TRUE;
+		n++;
 	}
 	return FALSE;
+}
+
+@ "Of surgery" is needed to break nounphrases including the word "of".
+
+=
+<np-x-of-y> ::=
+	of ...
+
+@ =
+int VerbPhrases::perform_of_surgery(parse_node *p) {
+	if (Node::get_type(p) == UNPARSED_NOUN_NT) {
+		wording W = Node::get_text(p);
+		int a = Wordings::first_wn(W)+1, b = Wordings::last_wn(W)-1;
+		for (int i = a; i <= b; i++)
+			if (<np-x-of-y>(Wordings::from(W, i))) {
+				wording PW = Wordings::up_to(W, i-1);
+				wording OW = GET_RW(<np-x-of-y>, 1);
+				if (VerbPhrases::allow_of_surgery(PW, OW)) {
+					Node::set_type(p, X_OF_Y_NT);
+					<np-articled>(OW);
+					p->down = <<rp>>;
+					<np-as-object>(PW);
+					p->down->next = <<rp>>;
+					return TRUE;
+				}
+			}
+	}
+	return FALSE;
+}
+
+int VerbPhrases::allow_of_surgery(wording PW, wording OW) {
+	#ifdef ALLOW_OF_LINGUISTICS_CALLBACK
+	return ALLOW_OF_LINGUISTICS_CALLBACK(PW, OW);
+	#endif
+	#ifndef ALLOW_OF_LINGUISTICS_CALLBACK
+	return TRUE;
+	#endif
 }
 
 @ "Location surgery" is needed to make sentences like the second one here work:

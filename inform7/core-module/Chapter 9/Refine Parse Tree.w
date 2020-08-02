@@ -133,9 +133,9 @@ The |creation_rule| can have three values:
 int forbid_nowhere = FALSE;
 void Assertions::Refiner::refine(parse_node *p, int creation_rule) {
 	if (p == NULL) internal_error("Refine parse tree on null pn");
-
 	if (Annotations::read_int(p, refined_ANNOT)) return;
 	Annotations::write_int(p, refined_ANNOT, TRUE);
+	VerbPhrases::corrective_surgery(p);
 
 	LOGIF(NOUN_RESOLUTION, "Refine subtree (%s creation):\n$T",
 		((creation_rule == FORBID_CREATION)?"forbid":
@@ -160,7 +160,6 @@ void Assertions::Refiner::refine_parse_tree_inner(parse_node *p, int creation_ru
 		case CALLED_NT: @<Refine a calling subtree@>; return;
 		case KIND_NT: @<Refine a kind subtree@>; return;
 		case PRONOUN_NT: @<Refine a pronoun@>; return;
-		case DEFECTIVE_NOUN_NT:
 		case PROPER_NOUN_NT:
 		case UNPARSED_NOUN_NT: @<Refine what seems to be a noun phrase@>; return;
 	}
@@ -197,14 +196,6 @@ pattern; if it works, that reading is allowed to stand.
 		}
 		#endif
 	}
-	if (Annotations::read_int(p, refined_ANNOT) == FALSE) @<Start the refinement over@>;
-
-@ After surgery on the tree, it's usually best to start over again:
-
-@<Start the refinement over@> =
-	Annotations::write_int(p, refined_ANNOT, FALSE);
-	Assertions::Refiner::refine(p, creation_rule);
-	return;
 
 @ |AND_NT| is easy, except for "and surgery", of which more below.
 
@@ -362,7 +353,6 @@ complicated description is as follows:
 
 @<Refine what seems to be a noun phrase@> =
 	Node::set_type(p, PROPER_NOUN_NT);
-	@<Act on a newly-discovered property of something@>;
 	if (forbid_nowhere == FALSE) @<Act on any special noun phrases significant to plugins@>;
 
 	if (creation_rule != MANDATE_CREATION)
@@ -370,44 +360,6 @@ complicated description is as follows:
 
 	if (creation_rule != FORBID_CREATION) Node::set_type(p, CREATED_NT);
 	else Node::set_subject(p, NULL);
-
-@ The following is needed to handle something like "colour of the box",
-where "colour" is a property name. We must be careful, though, to avoid
-confusion with variable declarations:
-
->> The interesting var is a description of numbers that varies.
-
-which would otherwise be misread as an attempt to set the "description"
-property of something.
-
-=
-<newfound-property-of> ::=
-	in the presence of ... |    ==> { advance Wordings::delta(WR[1], W) }
-	... that varies |    ==> { advance Wordings::delta(WR[1], W) }
-	... variable |    ==> { advance Wordings::delta(WR[1], W) }
-	{<property-name-v>} of ...		==> { 0, RP[1] }
-
-@<Act on a newly-discovered property of something@> =
-	property *prn = NULL;
-	wording PW = EMPTY_WORDING, OW = EMPTY_WORDING;
-	if (<newfound-property-of>(Node::get_text(p))) {
-		prn = <<rp>>;
-		PW = GET_RW(<newfound-property-of>, 1);
-		OW = GET_RW(<newfound-property-of>, 2);
-	}
-	if ((prn) && (Properties::is_value_property(prn)) /* &&
-		(Properties::Valued::coincides_with_kind(prn)) */) {
-		LOGIF(NOUN_RESOLUTION, "Resolving new-property of: $Y\n", prn);
-		Node::set_type(p, X_OF_Y_NT);
-		<np-articled>(OW);
-		p->down = <<rp>>;
-		<np-as-object>(PW);
-		p->down->next = <<rp>>;
-		Annotations::write_int(p, refined_ANNOT, FALSE);
-		LOGIF(NOUN_RESOLUTION, "Resolved new-property to:\n$T\n", p);
-		Assertions::Refiner::refine(p, creation_rule);
-		return;
-	}
 
 @ For example, "above" and "below" become significant if the mapping plugin
 is active, and "nowhere" if the spatial one is.
