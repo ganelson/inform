@@ -1,54 +1,16 @@
-[Rules::Placement::] Rule Placement Sentences.
+[Rules::Placement::] Rule Placement Requests.
 
-To parse and act upon explicit sentences like "The fire alarm
-rule is listed after the burglar alarm rule in the House Security rules."
+Special sentences for listing named rules in particular rulebooks.
 
-@ Booked rules can be declared wrapping I6 routines which we assume
-are defined either in the I6 template or in an I6 inclusion.
+@ This section covers five forms of request to change the way rules are
+filed in rulebooks; the test group |:placement| exercises these.
 
-The following is called early in the run on sentences like "The can't act
-in the dark rule translates into I6 as |"CANT_ACT_IN_THE_DARK_R"|." The
-node |p->down->next| is the I7 name, and |p->down->next->next| is the I6
-name, whose double-quotes have already been removed.
-
-=
-void Rules::Placement::declare_I6_written_rule(wording W, parse_node *p2) {
-	wchar_t *I6_name = Lexer::word_text(Wordings::first_wn(Node::get_text(p2)));
-	rule *R = Rules::new(W, TRUE);
-	Rules::set_I6_definition(R, I6_name);
-}
-
-@ In order to parse sentences about how rules are placed in rulebooks, we
-need to be able to parse the relevant names. (The definite article can
-optionally be used.)
-
-=
-<rulebook-name> internal {
-	W = Articles::remove_the(W);
-	parse_node *p = Lexicon::retrieve(RULEBOOK_MC, W);
-	if (Rvalues::is_CONSTANT_construction(p, CON_rulebook)) {
-		==> { -, Rvalues::to_rulebook(p) };
-		return TRUE;
-	}
-	==> { fail nonterminal };
-}
-
-<rule-name> internal {
-	W = Articles::remove_the(W);
-	rule *R = Rules::by_name(W);
-	if (R) {
-		==> { -, R };
-		return TRUE;
-	}
-	==> { fail nonterminal };
-}
-
-@ This handles the special meaning "X is listed in...".
+First, this handles the special meaning "X is listed in...":
 
 =
 <listed-in-sentence-object> ::=
 	listed <np-unparsed> |    ==> { TRUE, RP[1] }
-	not listed <np-unparsed>					==> { FALSE, RP[1] }
+	not listed <np-unparsed>  ==> { FALSE, RP[1] }
 
 @ =
 int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
@@ -138,11 +100,11 @@ subject and object NPs.
 =
 <substitutes-for-sentence-subject> ::=
 	<rule-name> |    ==> { TRUE, RP[1] }
-	...														==> @<Issue PM_NoSuchRuleExists problem@>
+	...              ==> @<Issue PM_NoSuchRuleExists problem@>
 
 <substitutes-for-sentence-object-inner> ::=
 	<rule-name> |    ==> { TRUE, RP[1] }
-	...														==> @<Issue PM_NoSuchRuleExists problem@>
+	...              ==> @<Issue PM_NoSuchRuleExists problem@>
 
 @<Issue PM_NoSuchRuleExists problem@> =
 	Problems::quote_source(1, current_sentence);
@@ -182,7 +144,7 @@ eventually match <spec-condition>.
 
 <does-nothing-sentence-subject> ::=
 	<rule-name> |    ==> { TRUE, RP[1] }
-	...														==> @<Issue PM_NoSuchRuleExists problem@>
+	...              ==> @<Issue PM_NoSuchRuleExists problem@>
 
 @ =
 int Rules::Placement::does_nothing_SMF(int task, parse_node *V, wording *NPs) {
@@ -267,9 +229,6 @@ void Rules::Placement::constrain_effect(parse_node *p1, parse_node *p2, int sens
 		Rules::impose_constraint(NULL, existing_rule, EMPTY_WORDING, FALSE);
 }
 
-@ =
-rule *relative_to_which = NULL;
-
 @ Explicit listing sentences allow the source text to control which rulebook(s)
 a given rule appears in, and (within limits) where. A simple example:
 
@@ -290,13 +249,13 @@ The subject noun phrase is an articled list, each entry of which must match:
 	in <destination-rulebook> |                  ==> { MIDDLE_PLACEMENT + 1000*IN_SIDE, RP[1] }
 	first in <destination-rulebook> |            ==> { FIRST_PLACEMENT  + 1000*IN_SIDE, RP[1] }
 	last in <destination-rulebook> |             ==> { LAST_PLACEMENT   + 1000*IN_SIDE, RP[1] }
-	instead of <rule-name> in <rulebook-name> |  ==> { MIDDLE_PLACEMENT + 1000*INSTEAD_SIDE, RP[2] }; relative_to_which = RP[1];
+	instead of <rule-name> in <rulebook-name> |  ==> { MIDDLE_PLACEMENT + 1000*INSTEAD_SIDE, RP[2], <<rule:rel>> = RP[1] }
 	instead of <rule-name> in ... |              ==> @<Issue PM_NoSuchRulebookPlacement problem@>
 	instead of ... in ... |                      ==> @<Issue PM_NoSuchRuleExists problem@>
-	before <rule-name> in <rulebook-name> |      ==> { MIDDLE_PLACEMENT + 1000*BEFORE_SIDE, RP[2] }; relative_to_which = RP[1];
+	before <rule-name> in <rulebook-name> |      ==> { MIDDLE_PLACEMENT + 1000*BEFORE_SIDE, RP[2], <<rule:rel>> = RP[1] }
 	before <rule-name> in ... |                  ==> @<Issue PM_NoSuchRulebookPlacement problem@>
 	before ... in ... |                          ==> @<Issue PM_NoSuchRuleExists problem@>
-	after <rule-name> in <rulebook-name> |       ==> { MIDDLE_PLACEMENT + 1000*AFTER_SIDE, RP[2] }; relative_to_which = RP[1];
+	after <rule-name> in <rulebook-name> |       ==> { MIDDLE_PLACEMENT + 1000*AFTER_SIDE, RP[2], <<rule:rel>> = RP[1] }
 	after <rule-name> in ... |                   ==> @<Issue PM_NoSuchRulebookPlacement problem@>
 	after ... in ... |                           ==> @<Issue PM_NoSuchRuleExists problem@>
 	instead of ... |                             ==> @<Issue PM_UnspecifiedRulebookPlacement problem@>
@@ -352,75 +311,88 @@ void Rules::Placement::place_in_rulebook(parse_node *p1, parse_node *p2, int sen
 		Rules::Placement::place_in_rulebook(p1->down->next, p2, sense);
 		return;
 	}
+	@<Make single placement@>;
+}
 
-	int side, new_rule_placement;
+@<Make single placement@> =
 	LOGIF(RULE_ATTACHMENTS, "Placement sentence (%d):\np1=$T\np2=$T\n", sense, p1, p2);
 
-	relative_to_which = NULL;
+	int any, side, new_rule_placement;
+	rulebook *given_rulebook;
+	rule *given_rule, *relative_rule;
+	@<Parse the wording to find how to place@>;
+
+	if ((sense == FALSE) &&
+		((new_rule_placement != MIDDLE_PLACEMENT) || (side != IN_SIDE)))
+		@<Issue PM_BadRulePlacementNegation problem@>;
+
+	if (any) @<Detach from all rulebooks@>;
+	if (sense == FALSE) @<Detach only from this rulebook@>;
+
+	booking *new_rule_booking = Rules::Bookings::new(given_rule);
+	Rules::set_kind_from(given_rule, given_rulebook);
+	if (relative_rule) {
+		LOGIF(RULE_ATTACHMENTS, "Relative to which = %W\n", relative_rule->name);
+		Rulebooks::affected_by_placement(given_rulebook, current_sentence);
+		if (Rulebooks::rule_in_rulebook(relative_rule, given_rulebook) == FALSE)
+			@<Issue PM_PlaceWithMissingRule problem@>;
+	}
+	Rulebooks::attach_rule(given_rulebook, new_rule_booking, new_rule_placement,
+		side, relative_rule);
+
+@<Parse the wording to find how to place@> =
 	int pc = problem_count;
+	<<rule:rel>> = NULL;
 	<listed-in-sentence-object-inner>(Node::get_text(p2));
-	if (problem_count > pc) return;
-	rulebook *the_rulebook = <<rp>>;
+	if ((problem_count > pc) || (<<r>> == BAD_RULE_PLACEMENT)) return;
+	given_rulebook = <<rp>>;
+	relative_rule = <<rule:rel>>;
 	int pair = <<r>>;
+	any = FALSE;
 	if (pair == BAD_RULE_PLACEMENT) return;
 	if (pair == ANY_RULE_PLACEMENT) {
-		if (sense == TRUE) {
-			@<Actually issue PM_ImproperRulePlacement problem@>;
-			return;
-		}
+		any = TRUE;
+		if (sense == TRUE) { @<Actually issue PM_ImproperRulePlacement problem@>; return; }
 		new_rule_placement = MIDDLE_PLACEMENT; side = IN_SIDE;
 	} else {
 		new_rule_placement = pair%1000; side = pair/1000;
 	}
-
-	if ((sense == FALSE) &&
-		((new_rule_placement != MIDDLE_PLACEMENT) || (side != IN_SIDE))) {
-		Problems::quote_source(1, current_sentence);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePlacementNegation));
-		Problems::issue_problem_segment(
-			"In %1, you used the special verb 'to be listed' - which specifies "
-			"how rules are listed in rulebooks - in a way too complicated to "
-			"be accompanied by 'not', so that the result was too vague. "
-			"The usual form is: 'The summer breeze rule is not listed in the "
-			"meadow noises rulebook'.");
-		Problems::issue_problem_end();
-		return;
-	}
-
 	<listed-in-sentence-subject>(Node::get_text(p1));
 	if (<<r>> == FALSE) return;
-	rule *existing_rule = <<rp>>;
+	given_rule = <<rp>>;
 
-	if (pair == ANY_RULE_PLACEMENT) {
-		rulebook *rb;
-		LOOP_OVER(rb, rulebook) Rulebooks::detach_rule(rb, existing_rule);
-		return;
-	}
+@<Issue PM_BadRulePlacementNegation problem@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(),
+		_p_(PM_BadRulePlacementNegation));
+	Problems::issue_problem_segment(
+		"In %1, you used the special verb 'to be listed' - which specifies "
+		"how rules are listed in rulebooks - in a way too complicated to "
+		"be accompanied by 'not', so that the result was too vague. "
+		"The usual form is: 'The summer breeze rule is not listed in the "
+		"meadow noises rulebook'.");
+	Problems::issue_problem_end();
+	return;
 
-	if (sense == FALSE) {
-		Rulebooks::affected_by_placement(the_rulebook, current_sentence);
-		Rulebooks::detach_rule(the_rulebook, existing_rule);
-		return;
-	}
+@<Detach from all rulebooks@> =
+	rulebook *rb;
+	LOOP_OVER(rb, rulebook) Rulebooks::detach_rule(rb, given_rule);
+	return;
 
-	booking *new_rule_booking = Rules::Bookings::new(existing_rule);
-	Rules::set_kind_from(existing_rule, the_rulebook);
-	if (relative_to_which) {
-		LOGIF(RULE_ATTACHMENTS, "Relative to which = %W\n", relative_to_which->name);
-		Rulebooks::affected_by_placement(the_rulebook, current_sentence);
-		if (Rulebooks::rule_in_rulebook(relative_to_which, the_rulebook) == FALSE) {
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, the_rulebook->primary_name);
-			Problems::quote_wording(3, relative_to_which->name);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PlaceWithMissingRule));
-			Problems::issue_problem_segment(
-				"In %1, you talk about the position of the rule '%3' "
-				"in the rulebook '%2', but in fact that rule isn't in this "
-				"rulebook, so the placing instruction makes no sense.");
-			Problems::issue_problem_end();
-			return;
-		}
-	}
-	Rulebooks::attach_rule(the_rulebook, new_rule_booking, new_rule_placement,
-		side, relative_to_which);
-}
+@<Detach only from this rulebook@> =
+	Rulebooks::affected_by_placement(given_rulebook, current_sentence);
+	Rulebooks::detach_rule(given_rulebook, given_rule);
+	return;
+
+@<Issue PM_PlaceWithMissingRule problem@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, given_rulebook->primary_name);
+	Problems::quote_wording(3, relative_rule->name);
+	StandardProblems::handmade_problem(Task::syntax_tree(),
+		_p_(PM_PlaceWithMissingRule));
+	Problems::issue_problem_segment(
+		"In %1, you talk about the position of the rule '%3' "
+		"in the rulebook '%2', but in fact that rule isn't in this "
+		"rulebook, so the placing instruction makes no sense.");
+	Problems::issue_problem_end();
+	return;

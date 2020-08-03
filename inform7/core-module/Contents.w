@@ -40,6 +40,7 @@ Chapter 4: Requests
 	Use Option Requests
 	Test Requests
 	Define by Table Requests
+	Rule Placement Requests
 
 Chapter 5: Assertions
 "Turning regular assertion sentences into propositions about the model world."
@@ -214,7 +215,6 @@ a way to organise lists of them."
 	Rule Bookings
 	Rulebooks
 	Focus and Outcome
-	Rule Placement Sentences
 	Stacked Variables
 	Activities
 

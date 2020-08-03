@@ -953,3 +953,43 @@ ph_stack_frame *Rules::stack_frame(rule *R) {
 package_request *Rules::package(rule *R) {
 	return R->rule_package;
 }
+
+@ Booked rules can be declared wrapping I6 routines which we assume
+are defined either in the I6 template or in an I6 inclusion.
+
+The following is called early in the run on sentences like "The can't act
+in the dark rule translates into I6 as |"CANT_ACT_IN_THE_DARK_R"|." The
+node |p->down->next| is the I7 name, and |p->down->next->next| is the I6
+name, whose double-quotes have already been removed.
+
+=
+void Rules::declare_I6_written_rule(wording W, parse_node *p2) {
+	wchar_t *I6_name = Lexer::word_text(Wordings::first_wn(Node::get_text(p2)));
+	rule *R = Rules::new(W, TRUE);
+	Rules::set_I6_definition(R, I6_name);
+}
+
+@ In order to parse sentences about how rules are placed in rulebooks, we
+need to be able to parse the relevant names. (The definite article can
+optionally be used.)
+
+=
+<rulebook-name> internal {
+	W = Articles::remove_the(W);
+	parse_node *p = Lexicon::retrieve(RULEBOOK_MC, W);
+	if (Rvalues::is_CONSTANT_construction(p, CON_rulebook)) {
+		==> { -, Rvalues::to_rulebook(p) };
+		return TRUE;
+	}
+	==> { fail nonterminal };
+}
+
+<rule-name> internal {
+	W = Articles::remove_the(W);
+	rule *R = Rules::by_name(W);
+	if (R) {
+		==> { -, R };
+		return TRUE;
+	}
+	==> { fail nonterminal };
+}
