@@ -19,6 +19,19 @@ typedef struct runtime_kind_structure {
 	CLASS_DEFINITION
 } runtime_kind_structure;
 
+@h Kinds as tables.
+
+=
+table *Kinds::RunTime::defined_by_table(kind *K) {
+	if (K == NULL) return NULL;
+	return K->construct->named_values_created_with_table;
+}
+
+void Kinds::RunTime::set_defined_by_table(kind *K, table *t) {
+	if (K == NULL) internal_error("no such kind");
+	K->construct->named_values_created_with_table = t;
+}
+
 @h Kinds as I6 classes.
 The noun is used to store the "classname" and "class-number". In the
 compiled I6 code, some kinds will correspond to classes with systematic

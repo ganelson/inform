@@ -84,7 +84,7 @@ be a single word, and are hyphenated.
 	SpecialMeanings::declare(Activities::new_activity_SMF, 					I"new-activity", 2);
 	SpecialMeanings::declare(NewVerbs::new_adjective_SMF,					I"new-adjective", 2);
 	SpecialMeanings::declare(Assertions::Property::either_SMF,				I"new-either-or", 2);
-	SpecialMeanings::declare(Tables::Defining::defined_by_SMF,				I"defined-by-table", 2);
+	SpecialMeanings::declare(DefineByTable::defined_by_SMF,				I"defined-by-table", 2);
 	SpecialMeanings::declare(Rules::Placement::listed_in_SMF,				I"rule-listed-in", 2);
 	SpecialMeanings::declare(Assertions::Property::optional_either_SMF,		I"can-be", 2);
 

@@ -31,16 +31,17 @@ Chapter 3: Top-Level Declarations
 	Anaphoric References
 	Classifying Sentences
 
-Chapter 4: Assertions with Special Meanings
-"Responding directly to assertion sentences which have special meanings."
+Chapter 4: Requests
+"Sentences, often imperative, which have special meanings."
 	Debugging Log Requests
 	Pluralisation Requests
 	Translation Requests
 	New Use Option Requests
 	Use Option Requests
 	Test Requests
+	Define by Table Requests
 
-Chapter 5: Assertions with Regular Meanings
+Chapter 5: Assertions
 "Turning regular assertion sentences into propositions about the model world."
 	Introduction to Assertions
 	To Be and To Have
@@ -200,7 +201,6 @@ Chapter 19: Table Data
 	Table Columns
 	Tables
 	Runtime Support for Tables
-	Tables of Definitions
 	Listed-In Relations
 
 Chapter 20: Equations

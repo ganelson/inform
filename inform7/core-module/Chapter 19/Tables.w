@@ -1398,3 +1398,25 @@ int Tables::table_within(table *t, inform_extension *E) {
 	if (E == at_E) return TRUE;
 	return FALSE;
 }
+
+@ This is called when a table is being asked to define objects (or kinds).
+
+=
+void Tables::use_to_define(table *t, int defining_objects, parse_node *where) {
+	if (t == NULL) internal_error("no table");
+	if (defining_objects == FALSE) {
+		t->contains_property_values_at_run_time = TRUE;
+		t->fill_in_blanks = TRUE;
+		t->preserve_row_order_at_run_time = TRUE;
+		t->disable_block_constant_correction = TRUE;
+	}
+	if ((t->has_been_amended) && (defining_objects))
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TableCantDefineAndAmend),
+			"you can't use 'defined by' to define objects using a table "
+			"which is amended by another table",
+			"since that could too easily lead to ambiguities about what "
+			"the property values are.");
+	t->first_column_by_definition = TRUE;
+	t->where_used_to_define = where;
+}

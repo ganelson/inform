@@ -1,9 +1,8 @@
-[Tables::Defining::] Tables of Definitions.
+[DefineByTable::] Define by Table Requests.
 
-To support tables which amount to massed groups of assertions.
+Special sentences declaring that tables amount to massed groups of assertions.
 
-@h Kinds defined by table.
-Tables lie behind the special "defined by" sentence. These come in three
+@ Tables lie behind the special "defined by" sentence. These come in three
 subtly different versions:
 
 >> (1) Some animals are defined by the Table of Specimens.
@@ -22,76 +21,15 @@ however reject:
 where the "okapi" is an existing single animal (or indeed where it's a new
 name, meaning as yet unknown).
 
-The subject must match:
-
-=
-<defined-by-sentence-subject> ::=
-	kind/kinds of <s-type-expression> |  ==> { TRUE, RP[1] }
-	<s-type-expression> |                ==> { TRUE, RP[1] }
-	...                                  ==> @<Issue PM_TableDefiningTheImpossible problem@>
-
-@<Issue PM_TableDefiningTheImpossible problem@> =
-	@<Actually issue PM_TableDefiningTheImpossible problem@>;
-	==> { FALSE, - };
-
-@ (We're going to need this twice.)
-
-@<Actually issue PM_TableDefiningTheImpossible problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableDefiningTheImpossible),
-		"you can only use 'defined by' to set up values and things",
-		"as created with sentences like 'The tree species are defined by Table 1.' "
-		"or 'Some men are defined by the Table of Eligible Bachelors.'");
-
-@ And the object, which in fact is required to be a table name value:
-
-=
-<defined-by-sentence-object-inner> ::=
-	<s-value> |    ==> @<Allow if a table name@>
-	...											==> @<Issue PM_TableUndefined problem@>
-
-@<Allow if a table name@> =
-	if (!(Rvalues::is_CONSTANT_of_kind(RP[1], K_table))) {
-		==> { fail };
-	} else {
-		==> { TRUE, RP[1] };
-	}
-
-@<Issue PM_TableUndefined problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableUndefined),
-	"you can only use 'defined by' in terms of a table",
-	"which lists the value names in the first column.");
-	==> { FALSE, - };
-
-@h Handling definition-by-table sentences.
-The timing of when to act on defined-by sentences is not completely
-straightforward; if it's wrong, entries making cross-references may sometimes
-be rejected by Inform for what seem very opaque reasons. Here's the timeline:
-
-(a) Inform looks for tables in the source text, creating the table names
-and columns, though it doesn't know the column kinds yet. (The point of
-this is to make sure table column names are in place before properties
-begin to be used in assertion sentence, since these names can overlap.)
-
-(b) Main assertion traverse 1: Nothing is done with most tables, but with
-defined-by tables, the names in column 1 are created, and their identities
-are asserted.
-
-(c) All tables are "stocked", a process which involves parsing their cell
-values. This finally settles the kind of any columns where this has to be
-inferred from the contents.
-
-(d) Main assertion traverse 2: Nothing is done with most tables, but with
-defined-by tables, property values in columns 2 onwards are assigned to
-whatever is named in column 1.
-
-@ So this handles the special meaning "X is defined by Y".
+@ So this function handles the special meaning "X is defined by Y"; it is
+a special meaning of "to be", recognised when Y matches --
 
 =
 <defined-by-sentence-object> ::=
 	defined by <np-as-object>  ==> { pass 1 }
 
 @ =
-int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
+int DefineByTable::defined_by_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "The colours are defined by Table 1." */
@@ -106,80 +44,118 @@ int Tables::Defining::defined_by_SMF(int task, parse_node *V, wording *NPs) {
 			break;
 		case PASS_1_SMFT:
 		case PASS_2_SMFT:
-			Tables::Defining::kind_defined_by_table(V);
+			DefineByTable::kind_defined_by_table(V);
 			break;
 	}
 	return FALSE;
 }
 
+@ The timing of when to act on defined-by sentences is not completely
+straightforward; if it's wrong, entries making cross-references may sometimes
+be rejected by Inform for what seem very opaque reasons. Here's the timeline:
 
-@ Stages (a) and (c) above are both handled by the following routine,
-which is called on "defined by" sentences, and thus is never called in
-connection with ordinary tables.
+(a) Names of tables and their columns are created in the pre-pass.
+
+(b) In pass 1, the names in column 1 of a defined-by table are created: see
+below.
+
+(c) Between pass 1 and 2 there's a process called "stocking", in which
+cell values of tables are parsed. This finally settles the kind of any columns
+where this has to be inferred from the contents.
+
+(d) In pass 2, the property values in columns 2 onwards are assigned to
+whatever was named in column 1: see below.
 
 =
-void Tables::Defining::kind_defined_by_table(parse_node *pn) {
-	wording LTW = Node::get_text(pn->next->next);
-	wording SPW = Node::get_text(pn->next);
+void DefineByTable::kind_defined_by_table(parse_node *V) {
+	wording SPW = Node::get_text(V->next);
+	wording LTW = Node::get_text(V->next->next);
 	LOGIF(TABLES, "Traverse %d: I now want to define <%W> by table <%W>\n",
 		global_pass_state.pass, SPW, LTW);
 
 	<defined-by-sentence-object-inner>(LTW); if (<<r>> == FALSE) return;
 	table *t = Rvalues::to_table(<<rp>>);
 
-	if (global_pass_state.pass == 1) {
-		int abstract = NOT_APPLICABLE;
-		kind *K = NULL;
-		@<Decide whether this will be an abstract or a concrete creation@>;
-		@<Check that this is a kind where it makes sense to enumerate new values@>;
-		K = Kinds::weaken(K);
-		if (!(Kinds::Compare::le(K, K_object))) Tables::Defining::set_defined_by_table(K, t);
-		t->kind_defined_in_this_table = K;
-		Tables::Columns::set_kind(t->columns[0].column_identity, t, K);
-
-		@<Create values for this kind as enumerated by names in the first column@>;
-	}
+	if (global_pass_state.pass == 1) @<Create whatever is in column 1@>;
 	@<Assign properties for these values as enumerated in subsequent columns@>;
 }
 
-@<Decide whether this will be an abstract or a concrete creation@> =
+@ The object phrase is required to be a table name value:
+
+=
+<defined-by-sentence-object-inner> ::=
+	<s-value> |  ==> @<Allow if a table name@>
+	...          ==> @<Issue PM_TableUndefined problem@>
+
+@<Allow if a table name@> =
+	if (Rvalues::is_CONSTANT_of_kind(RP[1], K_table)) {
+		==> { TRUE, RP[1] };
+	} else {
+		==> { FALSE, - };
+	}
+
+@<Issue PM_TableUndefined problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableUndefined),
+	"you can only use 'defined by' in terms of a table",
+	"which lists the value names in the first column.");
+	==> { FALSE, - };
+
+@ The subject phrase will also have to match:
+
+=
+<defined-by-sentence-subject> ::=
+	kind/kinds of <s-type-expression> |  ==> { TRUE, RP[1] }
+	<s-type-expression> |                ==> { TRUE, RP[1] }
+	...                                  ==> @<Issue PM_TableDefiningTheImpossible problem@>
+
+@<Issue PM_TableDefiningTheImpossible problem@> =
+	@<Actually issue PM_TableDefiningTheImpossible problem@>;
+	==> { FALSE, - };
+
+@ (We're going to need this problem message twice.)
+
+@<Actually issue PM_TableDefiningTheImpossible problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_TableDefiningTheImpossible),
+		"you can only use 'defined by' to set up values and things",
+		"as created with sentences like 'The tree species are defined by Table 1.' "
+		"or 'Some men are defined by the Table of Eligible Bachelors.'");
+
+@h Creation.
+
+@<Create whatever is in column 1@> =
+	kind *K = NULL;
+	@<Determine the kind of what to make@>;
+	@<Check that this is a kind where it makes sense to enumerate new values@>;
+	K = Kinds::weaken(K);
+	if (!(Kinds::Compare::le(K, K_object))) Kinds::RunTime::set_defined_by_table(K, t);
+	t->kind_defined_in_this_table = K;
+	Tables::Columns::set_kind(t->columns[0].column_identity, t, K);
+	@<Create values for this kind as enumerated by names in the first column@>;
+
+@<Determine the kind of what to make@> =
 	<defined-by-sentence-subject>(SPW); if (<<r>> == FALSE) return;
 	parse_node *what = <<rp>>;
+	int defining_objects = FALSE;
 	if (Specifications::is_kind_like(what)) {
 		K = Specifications::to_kind(what);
-		if (Kinds::Compare::le(K, K_object)) abstract = FALSE;
-		else {
-			abstract = TRUE;
-			t->contains_property_values_at_run_time = TRUE;
-			t->fill_in_blanks = TRUE;
-			t->preserve_row_order_at_run_time = TRUE;
-			t->disable_block_constant_correction = TRUE;
-		}
+		if (Kinds::Compare::le(K, K_object)) defining_objects = TRUE;
 	} else if (Specifications::object_exactly_described_if_any(what)) {
 		@<Issue PM_TableDefiningObject problem@>
 		return;
 	} else if (Specifications::is_description(what)) {
 		@<Check that this is a description which in principle can be asserted@>;
-		abstract = FALSE;
 		K = Specifications::to_kind(what);
 	} else {
 		LOG("Error at: $T", what);
 		@<Actually issue PM_TableDefiningTheImpossible problem@>;
 		return;
 	}
-	if ((t) && (t->has_been_amended) && (Kinds::Compare::le(K, K_object))) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableCantDefineAndAmend),
-			"you can't use 'defined by' to define objects using a table "
-			"which is amended by another table",
-			"since that could too easily lead to ambiguities about what "
-			"the property values are.");
-		return;
-	}
-	t->first_column_by_definition = TRUE;
-	t->where_used_to_define = pn->next;
+	if (t) Tables::use_to_define(t, defining_objects, V->next);
 
 @<Issue PM_TableDefiningObject problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableDefiningObject),
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_TableDefiningObject),
 		"you can only use 'defined by' to set up values and things",
 		"as created with sentences like 'The tree species are defined by Table 1.' "
 		"or 'Some men are defined by the Table of Eligible Bachelors.' - trying to "
@@ -191,7 +167,8 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		LOG("K is $u\n", K);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfBuiltInKind));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_TableOfBuiltInKind));
 		Problems::issue_problem_segment(
 			"You wrote %1, but this would mean making each of the names in "
 			"the first column %2 that's new. This is a kind which can't have "
@@ -203,7 +180,8 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		(Kinds::Behaviour::is_uncertainly_defined(K) == FALSE)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfExistingKind));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_TableOfExistingKind));
 		Problems::issue_problem_segment(
 			"You wrote %1, but this would mean making each of the names in "
 			"the first column %2 that's new. That looks reasonable, since this is a "
@@ -218,7 +196,8 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 @<Check that this is a description which in principle can be asserted@> =
 	if (Calculus::Propositions::contains_quantifier(
 		Specifications::to_proposition(what))) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TableOfQuantifiedKind),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TableOfQuantifiedKind),
 			"you can't use 'defined by' a table while also talking about the "
 			"number of things to be defined",
 			"since that could too easily lead to contradictions. (So 'Six doors are "
@@ -227,8 +206,7 @@ void Tables::Defining::kind_defined_by_table(parse_node *pn) {
 		return;
 	}
 
-@h Name creation.
-The following code has a curious history: it has evolved backwards from
+@ The following code has a curious history: it has evolved backwards from
 something much higher-level. When definition by tables began, it was a device
 to create new instances -- the names in column 1 would be, say, the instances
 of the kind "colour". Inform did this by writing propositions to assert their
@@ -269,9 +247,9 @@ have occurred, but if it does then the creation has worked.
 
 		Assertions::Creator::tabular_definitions(t);
 		NounPhrases::annotate_by_articles(name_entry);
-		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, pn->next);
-		if (Assertions::Refiner::refine_coupling(name_entry, pn->next))
-			Assertions::make_coupling(name_entry, pn->next);
+		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, V->next);
+		if (Assertions::Refiner::refine_coupling(name_entry, V->next))
+			Assertions::make_coupling(name_entry, V->next);
 		ProblemBuffer::redirect_problem_sentence(NULL, NULL, NULL);
 		Node::set_text(name_entry, NW);
 		evaluation = NULL;
@@ -350,6 +328,7 @@ table: do they get permission as well? We're going to say that they do.
 
 @<Assign properties for these values as enumerated in subsequent columns@> =
 	for (int i=1; i<t->no_columns; i++) {
+		table_column *tc = t->columns[i].column_identity;
 		property *P = NULL;
 		@<Ensure that a property with the same name as the column name exists@>;
 		if (global_pass_state.pass == 1)
@@ -368,10 +347,11 @@ traverse 2, if not before, we will be able to give it a kind, since after
 table-stocking the column will have a kind for its entries.
 
 @<Ensure that a property with the same name as the column name exists@> =
-	<unfortunate-table-column-property>(Nouns::nominative_singular(t->columns[i].column_identity->name));
-	P = Properties::Valued::obtain(Nouns::nominative_singular(t->columns[i].column_identity->name));
+	wording PW = Nouns::nominative_singular(tc->name);
+	<unfortunate-table-column-property>(PW);
+	P = Properties::Valued::obtain(PW);
 	if (Properties::Valued::kind(P) == NULL) {
-		kind *CK = Tables::Columns::get_kind(t->columns[i].column_identity);
+		kind *CK = Tables::Columns::get_kind(tc);
 		if ((Kinds::get_construct(CK) == CON_rule) ||
 			(Kinds::get_construct(CK) == CON_rulebook)) {
 			kind *K1 = NULL, *K2 = NULL;
@@ -379,7 +359,7 @@ table-stocking the column will have a kind for its entries.
 			if ((Kinds::Compare::eq(K1, K_value)) && (Kinds::Compare::eq(K1, K_value))) {
 				CK = Kinds::binary_construction(
 					Kinds::get_construct(CK), K_action_name, K_nil);
-				Tables::Columns::set_kind(t->columns[i].column_identity, t, CK);
+				Tables::Columns::set_kind(tc, t, CK);
 			}
 		}
 		if (CK) Properties::Valued::set_kind(P, CK);
@@ -391,7 +371,7 @@ some misleading names we don't want to allow for these properties.
 
 =
 <unfortunate-table-column-property> ::=
-	location						==> @<Issue PM_TableColumnLocation problem@>
+	location  ==> @<Issue PM_TableColumnLocation problem@>
 
 @<Issue PM_TableColumnLocation problem@> =
 	Problems::quote_wording(3, W);
@@ -421,8 +401,7 @@ assertion handler, simulating sentences like "The P of X is Y".
 
 @<Actively assert the column entries as property values@> =
 	parse_node *name_entry, *data_entry;
-	for (name_entry = t->columns[0].entries->down,
-			data_entry = t->columns[i].entries->down;
+	for (name_entry = t->columns[0].entries->down, data_entry = t->columns[i].entries->down;
 		name_entry && data_entry;
 		name_entry = name_entry->next,
 			data_entry = data_entry->next) {
@@ -451,14 +430,3 @@ also ordinary sentences about the property value, and the former won't.
 			}
 		}
 	}
-
-@ =
-table *Tables::Defining::defined_by_table(kind *K) {
-	if (K == NULL) return NULL;
-	return K->construct->named_values_created_with_table;
-}
-
-void Tables::Defining::set_defined_by_table(kind *K, table *t) {
-	if (K == NULL) internal_error("no such kind");
-	K->construct->named_values_created_with_table = t;
-}
