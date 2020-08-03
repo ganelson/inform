@@ -96,9 +96,31 @@ unyielding the user's views, it's not allowed to write:
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;use-option-sentence-shape&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">use</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">.</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">use</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;immediate-use&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">.</span>
+
+<span class="Preform-function-syntax">&lt;immediate-use&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { lookahead }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;immediate-use-entry&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;immediate-use-tail&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;immediate-use-entry&gt;</span>
+
+<span class="Preform-function-syntax">&lt;immediate-use-tail&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">_and</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;immediate-use&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">_,/and</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;immediate-use&gt;</span>
+
+<span class="Preform-function-syntax">&lt;immediate-use-entry&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;notable-use-option-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="6-tof.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Act on this use option immediately</span><span class="named-paragraph-number">1.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on this use option immediately</span><span class="named-paragraph-number">1.1</span></span><span class="Preform-comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CompilationSettings::set</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">[1], -1, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="6-tof.html#SP1">&#167;1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>There is just one options file, so no need to load it more than once.
 </p>
 
@@ -118,11 +140,7 @@ unyielding the user's views, it's not allowed to write:
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unused_state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::feed_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;use-option-sentence-shape&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">UseOptions::set_immediate_option_flags</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="function-syntax">&lt;use-option-sentence-shape&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

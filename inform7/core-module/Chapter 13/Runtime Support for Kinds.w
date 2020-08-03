@@ -800,8 +800,8 @@ has essentially no memory constraints compared with the Z-machine.
 
 @<Compile a constant for the heap size needed@> =
 	int max_heap = 1;
-	if (total_heap_allocation < UseOptions::get_dynamic_memory_allocation())
-		total_heap_allocation = UseOptions::get_dynamic_memory_allocation();
+	if (total_heap_allocation < global_compilation_settings.dynamic_memory_allocation)
+		total_heap_allocation = global_compilation_settings.dynamic_memory_allocation;
 	while (max_heap < total_heap_allocation) max_heap = max_heap*2;
 	if (TargetVMs::is_16_bit(Task::vm()))
 		Kinds::RunTime::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_HL), max_heap);

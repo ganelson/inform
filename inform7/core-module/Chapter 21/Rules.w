@@ -568,7 +568,7 @@ void Rules::RulePrintingRule_routine(void) {
 }
 
 @<Print a rulebook name@> =
-	if (memory_economy_in_force) {
+	if (global_compilation_settings.memory_economy_in_force) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), I"(rulebook ");
@@ -593,7 +593,7 @@ void Rules::RulePrintingRule_routine(void) {
 	}
 
 @<Print a rule name@> =
-	if (memory_economy_in_force) {
+	if (global_compilation_settings.memory_economy_in_force) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), I"(rule at address ");
@@ -723,16 +723,6 @@ void Rules::set_italicised_index_text(rule *R, wording W) {
 	R->italicised_text = W;
 }
 
-@ A use option controls whether little rule numbers are shown in the index.
-I wonder how useful this really is, but it was much requested at one time.
-
-=
-int use_numbered_rules = FALSE;
-
-void Rules::set_numbered_rules(void) {
-	use_numbered_rules = TRUE;
-}
-
 @ And off we go:
 
 =
@@ -744,7 +734,7 @@ int Rules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 		(Wordings::nonempty(R->name) == FALSE) && (R->defn_as_phrase))
 		@<Index some text extracted from the first line of the otherwise anonymous rule@>;
 	@<Index a link to the first line of the rule's definition@>;
-	if (use_numbered_rules) @<Index the small type rule numbering@>;
+	if (global_compilation_settings.number_rules_in_index) @<Index the small type rule numbering@>;
 	@<Index any applicability conditions@>;
 	HTML_CLOSE("p");
 	@<Index any response texts in the rule@>;

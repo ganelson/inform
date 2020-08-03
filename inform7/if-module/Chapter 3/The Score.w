@@ -50,7 +50,7 @@ void PL::Score::compile_max_score(void) {
 				Assertions::PropertyKnowledge::initialise_global_variable(
 					max_score_VAR, Node::get_evaluation(PN));
 			Hierarchy::make_available(Emit::tree(), iname);
-			UseOptions::ranking_table_given();
+			global_compilation_settings.ranking_table_given = TRUE;
 			rt_made = TRUE;
 			break;
 		}

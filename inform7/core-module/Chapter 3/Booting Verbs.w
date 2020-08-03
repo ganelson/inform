@@ -91,7 +91,7 @@ be a single word, and are hyphenated.
 	meaning_of_mean = SpecialMeanings::declare(NewVerbs::verb_means_SMF, 	I"verb-means", 3);
 
 	SpecialMeanings::declare(LiteralPatterns::specifies_SMF, 				I"specifies-notation", 4);
-	SpecialMeanings::declare(UseOptions::use_translates_as_SMF,				I"use-translates", 4);
+	SpecialMeanings::declare(NewUseOptions::use_translates_as_SMF,				I"use-translates", 4);
 	SpecialMeanings::declare(UseOptions::use_SMF,							I"use", 4);
 	SpecialMeanings::declare(Sentences::DLRs::include_in_SMF,				I"include-in", 4);
 	SpecialMeanings::declare(Sentences::DLRs::omit_from_SMF,				I"omit-from", 4);

@@ -363,7 +363,7 @@ char *NonlocalVariables::get_write_schema(nonlocal_variable *nlv) {
 void NonlocalVariables::warn_about_change(nonlocal_variable *nlv) {
 	#ifdef IF_MODULE
 	if ((score_VAR) && (nlv == score_VAR)) {
-		if ((scoring_option_set == FALSE) || (scoring_option_set == NOT_APPLICABLE)) {
+		if ((global_compilation_settings.scoring_option_set == FALSE) || (global_compilation_settings.scoring_option_set == NOT_APPLICABLE)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeScore),
 				"this is a story with no scoring",
 				"so it makes no sense to change the 'score' value. You can add "

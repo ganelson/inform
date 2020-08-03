@@ -159,7 +159,7 @@ Still:
 	if (expocount == 0) return FALSE;
 	if (exposign) { expo = -expo; }
 	distinctive = TRUE;
-	if ((e_notation_used) && (allow_engineering_notation == FALSE) &&
+	if ((e_notation_used) && (global_compilation_settings.allow_engineering_notation == FALSE) &&
 		(e_notation_problem_issued == FALSE)) {
 		e_notation_problem_issued = TRUE;
 		Problems::quote_source(1, current_sentence);

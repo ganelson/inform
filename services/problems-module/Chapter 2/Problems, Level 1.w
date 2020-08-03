@@ -267,6 +267,10 @@ void ProblemBuffer::redirect_problem_stream(text_stream *S) {
 
 int telemetry_recording = FALSE;
 
+void ProblemBuffer::set_telemetry(void) {
+	telemetry_recording = TRUE;
+}
+
 void ProblemBuffer::output_problem_buffer(int indentation) {
 	if (redirected_problem_text == NULL) {
 		ProblemBuffer::output_problem_buffer_to(problems_file, indentation);

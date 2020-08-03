@@ -278,7 +278,7 @@ to match this width, preserving the aspect ratio.
 void PL::Figures::index_all(OUTPUT_STREAM) {
 	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
 	blorb_figure *bf; FILE *FIGURE_FILE;
-	int MAX_INDEXED_FIGURES = UseOptions::get_index_figure_thumbnails();
+	int MAX_INDEXED_FIGURES = global_compilation_settings.index_figure_thumbnails;
 	int rv;
 	if (NUMBER_CREATED(blorb_figure) < 2) { /* cover art always creates 1 */
 		HTML_OPEN("p"); WRITE("There are no figures, or illustrations, in this project.");

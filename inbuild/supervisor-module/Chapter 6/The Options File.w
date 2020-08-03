@@ -23,8 +23,26 @@ so the sentence-terminator will certainly be a full stop.
 
 =
 <use-option-sentence-shape> ::=
-	use ... .
+	use <immediate-use> .
 
+<immediate-use> ::=
+	... |                                         ==> { lookahead }
+	<immediate-use-entry> <immediate-use-tail> |
+	<immediate-use-entry>
+
+<immediate-use-tail> ::=
+	, _and <immediate-use> |
+	_,/and <immediate-use>
+
+<immediate-use-entry> ::=
+	<notable-use-option-name> |                   ==> @<Act on this use option immediately@>
+	......
+
+@<Act on this use option immediately@> =
+	#ifdef CORE_MODULE
+	CompilationSettings::set(R[1], -1, NULL);
+	#endif
+	
 @ There is just one options file, so no need to load it more than once.
 
 =
@@ -43,9 +61,5 @@ void OptionsFile::read_helper(text_stream *line,
 	text_file_position *tfp, void *unused_state) {
 	WRITE_TO(line, "\n");
 	wording W = Feeds::feed_text(line);
-	if (<use-option-sentence-shape>(W)) {
-		#ifdef CORE_MODULE
-		UseOptions::set_immediate_option_flags(W, NULL);
-		#endif
-	}
+	<use-option-sentence-shape>(W);
 }

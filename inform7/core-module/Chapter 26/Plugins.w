@@ -288,7 +288,7 @@ void Plugins::Manage::start_plugins(void) {
 =
 void Plugins::Manage::index_innards(OUTPUT_STREAM, target_vm *VM) {
 	Plugins::Manage::index_VM(OUT, VM);
-	UseOptions::index(OUT);
+	NewUseOptions::index(OUT);
 	HTML_OPEN("p");
 	Index::extra_link(OUT, 3);
 	WRITE("See some technicalities for Inform maintainers only");

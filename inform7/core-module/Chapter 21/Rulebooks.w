@@ -503,7 +503,7 @@ void Rulebooks::rulebook_var_creators(void) {
 			StackedVariables::compile_frame_creator(rb->owned_by_rb,
 				Rulebooks::get_stv_creator_iname(rb));
 
-	if (memory_economy_in_force == FALSE) {
+	if (global_compilation_settings.memory_economy_in_force == FALSE) {
 		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
 		packaging_state save = Emit::named_array_begin(iname, K_value);
 		LOOP_OVER(rb, rulebook) {
@@ -883,7 +883,7 @@ void Rulebooks::compile_rulebooks(void) {
 void Rulebooks::RulebookNames_array(void) {
 	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_value);
-	if (memory_economy_in_force) {
+	if (global_compilation_settings.memory_economy_in_force) {
 		Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry(0);
 	} else {

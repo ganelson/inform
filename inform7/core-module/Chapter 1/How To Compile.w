@@ -115,6 +115,7 @@ will divide according to these units.
 
 @<Divide into compilation units@> =
 	Task::advance_stage_to(SUBDIVIDING_CSEQ, I"Dividing source into compilation units", -1);
+	BENCH(CompilationSettings::initialise_gcs)
 	BENCH(Emit::begin);
 	BENCH(Sentences::Headings::make_the_tree)
 	BENCH(Sentences::Headings::write_as_xml)
@@ -145,7 +146,7 @@ so on. Those absolute basics are made here.
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world", -1);
 	BENCH(Kinds::RunTime::kind_declarations)
-	BENCH(UseOptions::compile)
+	BENCH(RTUseOptions::compile)
 	BENCH(Properties::emit)
 	BENCH(Properties::Emit::allocate_attributes)
 	BENCH(PL::Actions::name_all)
@@ -183,13 +184,13 @@ so on. Those absolute basics are made here.
 
 @<Generate inter@> =
 	Task::advance_stage_to(INTER_CSEQ, I"Generating inter", 4);
-	BENCH(UseOptions::compile_icl_commands)
+	BENCH(RTUseOptions::compile_pragmas)
 	BENCH(FundamentalConstants::emit_build_number)
 	BENCH(PL::Bibliographic::compile_constants)
 	BENCH(Extensions::Files::ShowExtensionVersions_routine)
 	BENCH(Kinds::Constructors::compile_I6_constants)
 	BENCH_IF(scoring_plugin, PL::Score::compile_max_score)
-	BENCH(UseOptions::TestUseOption_routine)
+	BENCH(RTUseOptions::TestUseOption_routine)
 	BENCH(Activities::compile_activity_constants)
 	BENCH(Activities::Activity_before_rulebooks_array)
 	BENCH(Activities::Activity_for_rulebooks_array)
@@ -274,7 +275,7 @@ so on. Those absolute basics are made here.
 	BENCH(Phrases::Timed::TimedEventsTable)
 	BENCH(Phrases::Timed::TimedEventTimesTable)
 	BENCH(PL::Naming::compile_cap_short_name)
-	BENCH(UseOptions::configure_template)
+	BENCH(RTUseOptions::configure_template)
 
 @<Generate index and bibliographic file@> =
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work", -1);

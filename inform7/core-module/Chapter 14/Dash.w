@@ -1731,7 +1731,7 @@ And here is where we check that "break" is indeed used only in a loop.
 	}
 
 @<Step (4I.i) Disallow any phrases which are now deprecated@> =
-	if (no_deprecated_features) {
+	if (global_compilation_settings.no_deprecated_features) {
 		LOG_DASH("(4I.i)");
 		if ((ph) && (ph->type_data.now_deprecated)) {
 			THIS_IS_AN_INTERESTING_PROBLEM {

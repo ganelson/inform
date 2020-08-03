@@ -15,6 +15,7 @@ Chapter 1: Configuration and Control
 	How To Compile
 	Core Preform
 	Progress Percentages
+	Compilation Settings
 
 Chapter 2: Problem Messages
 "The issuing of Problem messages."
@@ -35,6 +36,8 @@ Chapter 4: Assertions with Special Meanings
 	Debugging Log Requests
 	Pluralisation Requests
 	Translation Requests
+	New Use Option Requests
+	Use Option Requests
 
 Chapter 5: Assertions with Regular Meanings
 "Turning regular assertion sentences into propositions about the model world."
@@ -262,7 +265,6 @@ Chapter 26: Compilation Utilities
 "Mainly low-level utilities for compiling code."
 	Fundamental Constants
 	Inform 6 Inclusions
-	Use Options
 	List Together
 	Jump Labels
 	Compiled Text
@@ -271,6 +273,7 @@ Chapter 26: Compilation Utilities
 	Plugins
 	Plugin Calls
 	Test Scripts
+	Use Options at Run Time
 
 Chapter 27: Bridge to Inter Module
 "Emitting Inter code ready for the code-generator."
