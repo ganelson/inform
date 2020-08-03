@@ -27,9 +27,9 @@ Chapter 2: Problem Messages
 Chapter 3: Top-Level Declarations
 "Passing three times through top-level declarations and assertion sentences."
 	Booting Verbs
-	Classifying Sentences
 	Passes through Major Nodes
 	Anaphoric References
+	Classifying Sentences
 
 Chapter 4: Assertions with Special Meanings
 "Responding directly to assertion sentences which have special meanings."
@@ -38,6 +38,7 @@ Chapter 4: Assertions with Special Meanings
 	Translation Requests
 	New Use Option Requests
 	Use Option Requests
+	Test Requests
 
 Chapter 5: Assertions with Regular Meanings
 "Turning regular assertion sentences into propositions about the model world."
@@ -273,6 +274,7 @@ Chapter 26: Compilation Utilities
 	Plugins
 	Plugin Calls
 	Test Scripts
+	Internal Test Cases
 	Use Options at Run Time
 
 Chapter 27: Bridge to Inter Module

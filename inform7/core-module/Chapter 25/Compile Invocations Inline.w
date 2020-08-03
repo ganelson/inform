@@ -1385,7 +1385,7 @@ phrase applied to the named variable.
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			PL::Parsing::TestScripts::emit_showme(to_show);
+			InternalTests::emit_showme(to_show);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	END_COMPILATION_MODE;

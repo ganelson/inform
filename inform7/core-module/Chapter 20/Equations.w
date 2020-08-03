@@ -2108,7 +2108,7 @@ void Equations::internal_test(wording E) {
 	equation *eqn = Equations::new(E, TRUE);
 	Equations::set_wherewithal(eqn, WH);
 	Equations::examine(eqn);
-	PL::Parsing::TestScripts::begin_internal_reporting();
+	InternalTests::begin_internal_reporting();
 	Equations::log_equation_parsed(eqn);
 	equation_symbol *ev;
 	for (ev = eqn->symbol_list; ev; ev = ev->next) {
@@ -2119,7 +2119,7 @@ void Equations::internal_test(wording E) {
 			Equations::log_equation_parsed(eqn);
 		}
 	}
-	PL::Parsing::TestScripts::end_internal_reporting();
+	InternalTests::end_internal_reporting();
 }
 
 @h Indexing and logging.

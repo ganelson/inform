@@ -237,7 +237,7 @@ so on. Those absolute basics are made here.
 	if (debugging) {
 		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::write_text)
 		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_routine)
-		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::InternalTestCases_routine)
+		BENCH_IF(parsing_plugin, InternalTests::InternalTestCases_routine)
 	} else {
 		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_stub_routine)
 	}
