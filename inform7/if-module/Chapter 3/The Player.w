@@ -242,7 +242,7 @@ and people still sometimes type it.
 @ =
 int PL::Player::player_refine_implicit_noun(parse_node *p) {
 	if (<implicit-player-relationship>(Node::get_text(p))) {
-		Assertions::Refiner::noun_from_infs(p, Instances::as_subject(player_character_object));
+		Refiner::give_subject_to_noun(p, Instances::as_subject(player_character_object));
 		return TRUE;
 	}
 	return FALSE;

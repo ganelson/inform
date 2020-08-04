@@ -468,7 +468,7 @@ int PL::Spatial::spatial_act_on_special_NPs(parse_node *p) {
 	if ((<notable-spatial-noun-phrases>(Node::get_text(p))) &&
 		(Word::unexpectedly_upper_case(Wordings::first_wn(Node::get_text(p))) == FALSE) &&
 		(K_room)) {
-		Assertions::Refiner::noun_from_value(p, Rvalues::new_nothing_object_constant());
+		Refiner::give_spec_to_noun(p, Rvalues::new_nothing_object_constant());
 		Annotations::write_int(p, nowhere_ANNOT, TRUE);
 		return TRUE;
 	}

@@ -180,7 +180,7 @@ with one of the following task codes. They don't get the benefit of
 		MajorNodes::try_special_meaning(PASS_2_SMFT, p->down);
 
 @ Regular meanings are more subtle: on pass 1, we "refine" them, which means
-identifying unparsed noun phrases. //Assertions::Refiner::refine_coupling//
+identifying unparsed noun phrases. //Refiner::refine_coupling//
 returns |TRUE| if it succeeds in this.
 
 After that, there are two cases: existential sentences (such as "there are
@@ -190,7 +190,7 @@ two cases") and all others (such as "regular meaning are more subtle").
 	parse_node *px = p->down->next;
 	parse_node *py = px->next;
 	if ((global_pass_state.pass > 1) ||
-		(Assertions::Refiner::refine_coupling(px, py))) {
+		(Refiner::refine_coupling(px, py))) {
 		if (Node::get_type(px) == DEFECTIVE_NOUN_NT) {
 			Assertions::make_existential(py);
 			Anaphora::change_discussion_from_coupling(py, py);

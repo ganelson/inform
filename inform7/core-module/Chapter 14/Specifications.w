@@ -73,6 +73,22 @@ pcalc_prop *Specifications::to_proposition(parse_node *p) {
 	return Node::get_proposition(p);
 }
 
+inference_subject *Specifications::to_subject(parse_node *spec) {
+	inference_subject *infs = NULL;
+	pcalc_prop *prop = Specifications::to_proposition(spec);
+	if (prop) {
+		parse_node *val = Calculus::Propositions::describes_value(prop);
+		if (val) {
+			infs = InferenceSubjects::from_specification(val);
+		} else {
+			kind *K = Calculus::Variables::kind_of_variable_0(prop);
+			if (Kinds::Compare::lt(K, K_object) == FALSE) K = K_object;
+			infs = Kinds::Knowledge::as_subject(K);
+		}
+	} else infs = InferenceSubjects::from_specification(spec);
+	return infs;
+}
+
 @ Specifications which talk about objects lie in two different families:
 "Mrs Jones" is a CONSTANT with kind "object", but "the open Bronze Gateway"
 is a DESCRIPTION. The following extracts the object, if any, from either case:

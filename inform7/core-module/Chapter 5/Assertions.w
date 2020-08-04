@@ -1,8 +1,7 @@
-[Assertions::] Make Assertions.
+[Assertions::] Assertions.
 
-To read assertion sentences, sort them according to a detailed
-grammatical classification and take the primary actions necessary either
-to generate problem messages, or to infer information.
+To infer facts about the model world, or take other action, based on sentences
+asserted as being true in the source text.
 
 @h Existential assertions.
 These are very much simpler than coupling assertions, and the tree |py|
@@ -86,17 +85,40 @@ first is the rubric, the second the credit line.
 		"Sanctum is...')");
 	return;
 
+@h Copula.
+We now come to the main business, which is to act on "copula", that is,
+couplings of two subtrees |px| and |py| representing things which are linked
+by a copular verb. For example, in:
+
+>> The white marble is a thing.
+
+|px| would be the proper noun "white marble", |py| the common noun "thing",
+and the sentence is telling is what kind of value something has.
+
+It is usually said that "to be" is the only copular verb in English, but it
+got that way by blurring together several quite different meanings: consider
+"I am 5", "I am happy" and "I am Chloe". (In French, for example, one would
+say "I have five".) The definition of "to be" occupies 12 columns of the
+Oxford English Dictionary; most computer programming languages implement only
+|=| and |==|, which correspond to OED's meaning 10, "to exist as the thing
+known by a certain name; to be identical with". But Inform implements a much
+broader set of meanings. For example, its distinction between spatial and
+property knowledge reflects the OED's distinction between meanings 5a ("to
+have or occupy a place somewhere") and 9b ("to have a place among the things
+distinguished by a specified quality") respectively.
+
+Besides that, we expand the range of possible copula by considering sentences
+like:
+
+>> The white marble is in the bamboo box.
+
+as also being copula, but where |py| is now a |RELATIONSHIP_NT| subtree
+expressing the sense of being inside the box.
+
+So dealing with copula is not as simple as asserting that two things are
+equal, and what we do falls into numerous cases.
+
 @h The Matrix.
-So assertion sentences such as:
-
->> The lion is supported by the marble plinth.
-
-have now been parsed to a tree form, in which the two clauses being equated
-("the lion" and "supported by the marble plinth") are each represented
-by subtrees, which we will call |px| and |py|. All references have been
-resolved, that is, we have identified what objects and values are referred
-to, creating new items if necessary. Now we must take action.
-
 What we do depends in the first instance on the node types of the head nodes of
 the |px| and |py| subtrees. We want to be sure that we completely understand
 this process and that no possibilities escape notice; we therefore use a matrix
@@ -573,7 +595,7 @@ further sub-cases later.
 		if ((ap) && (PL::Actions::Patterns::is_unspecific(ap) == FALSE) &&
 			(PL::Actions::Patterns::is_overspecific(ap) == FALSE)) {
 			parse_node *val = Rvalues::from_action_pattern(ap);
-			Assertions::Refiner::noun_from_value(py, val);
+			Refiner::give_spec_to_noun(py, val);
 			Assertions::make_coupling(px, py);
 			return;
 		}
@@ -605,7 +627,7 @@ further sub-cases later.
 				"play. (It is possible to get around this using 'implications', "
 				"but it's better to avoid the need.)");
 		} else {
-			Assertions::Refiner::turn_player_to_yourself(px->down);
+			Refiner::turn_player_to_yourself(px->down);
 			Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(prn,
 				Node::get_subject(px->down), py);
 		}
@@ -698,8 +720,8 @@ a spatial location.
 >> On the desk is 100. East of the Pitch is a rulebook.
 
 @<Case 20 - Miscellaneous on both sides@> =
-	if (Assertions::Refiner::turn_player_to_yourself(px)) { Assertions::make_coupling(px, py); return; }
-	if (Assertions::Refiner::turn_player_to_yourself(py)) { Assertions::make_coupling(px, py); return; }
+	if (Refiner::turn_player_to_yourself(px)) { Assertions::make_coupling(px, py); return; }
+	if (Refiner::turn_player_to_yourself(py)) { Assertions::make_coupling(px, py); return; }
 	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_IntangibleRelated),
 		"this seems to give a worldly relationship to something intangible",
 		"like saying that 'in the box is a text'. Perhaps it came "
@@ -736,7 +758,7 @@ which can be used as an adjective, but isn't being so used here. So if it's
 possible to coerce the left side to a noun, we will.
 
 @<Case 22 - ADJECTIVE, PROPERTY LIST vs PROPERTY LIST, ADJECTIVE@> =
-	Assertions::Refiner::coerce_adjectival_usage_to_noun(px);
+	Refiner::coerce_adjectival_usage_to_noun(px);
 	if (Node::get_type(px) == PROPER_NOUN_NT) {
 		Assertions::make_coupling(px, py);
 		return;
@@ -765,7 +787,7 @@ or a kind of value.
 >> A container has a number called security rating.
 
 @<Case 25 - EVERY, COMMON NOUN, PROPER NOUN vs ALLOWED@> =
-	if (Assertions::Refiner::turn_player_to_yourself(px)) {
+	if (Refiner::turn_player_to_yourself(px)) {
 		Assertions::make_coupling(px, py); return;
 	}
 	parse_node *spec = Node::get_evaluation(px);
@@ -859,7 +881,7 @@ but in fact isn't one;
 
 @<Case 26 - X OF Y vs PROPER NOUN@> =
 	if (global_pass_state.pass == 1) return;
-	Assertions::Refiner::turn_player_to_yourself(px->down);
+	Refiner::turn_player_to_yourself(px->down);
 	if (<negated-clause>(Node::get_text(py))) {
 		StandardProblems::negative_sentence_problem(Task::syntax_tree(), _p_(PM_NonValue)); return;
 	}
@@ -867,7 +889,7 @@ but in fact isn't one;
 	parse_node *owner = Node::get_evaluation(px->down);
 	property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
 	if (prn == P_specification) @<We're setting the specification pseudo-property@>;
-	Assertions::Refiner::coerce_adjectival_usage_to_noun(px->down);
+	Refiner::coerce_adjectival_usage_to_noun(px->down);
 
 	if ((Node::get_type(px->down) == PROPER_NOUN_NT) ||
 		(Node::get_type(px->down) == COMMON_NOUN_NT)) {
@@ -1015,7 +1037,7 @@ in this case.
 >> The desk is fixed in place. A container is usually fixed in place.
 
 @<Case 29 - COMMON NOUN, PROPER NOUN vs ADJECTIVE@> =
-	Assertions::Refiner::turn_player_to_yourself(px);
+	Refiner::turn_player_to_yourself(px);
 	if (global_pass_state.pass == 2) Assertions::PropertyKnowledge::assert_property_list(px, py);
 
 @h Case 30. I am in two minds about the next nit-picking error message.
@@ -1203,7 +1225,7 @@ discussion. "The Gazebo is west of the Lawn" also falls into this case,
 since "west of the Lawn" parses to a |RELATIONSHIP_NT| subtree.
 
 @<Case 36 - PROPER NOUN vs RELATIONSHIP@> =
-	if (Assertions::Refiner::turn_player_to_yourself(px)) {
+	if (Refiner::turn_player_to_yourself(px)) {
 		Assertions::make_coupling(px, py); return;
 	}
 	if (Diagrams::is_possessive_RELATIONSHIP(py)) {
@@ -1222,7 +1244,7 @@ since "west of the Lawn" parses to a |RELATIONSHIP_NT| subtree.
 @h Case 37. "On the table is a box." A mirror image, handling the inversion.
 
 @<Case 37 - RELATIONSHIP vs PROPER NOUN@> =
-	if (Assertions::Refiner::turn_player_to_yourself(py)) { Assertions::make_coupling(px, py); return; }
+	if (Refiner::turn_player_to_yourself(py)) { Assertions::make_coupling(px, py); return; }
 	Assertions::instantiate_related_common_nouns(px);
 	if (global_pass_state.pass == 2) Assertions::Relational::assert_subtree_in_relationship(py, px);
 
@@ -1844,7 +1866,7 @@ int Assertions::convert_adjective_to_noun(parse_node *p) {
 	if ((Node::get_type(p) == ADJECTIVE_NT) &&
 		(Annotations::read_int(p, negated_boolean_ANNOT) == FALSE)) {
 		if (<s-value>(Node::get_text(p)))
-			Assertions::Refiner::noun_from_value(p, <<rp>>);
+			Refiner::give_spec_to_noun(p, <<rp>>);
 		if (Node::get_type(p) != ADJECTIVE_NT) return TRUE;
 	}
 	return FALSE;

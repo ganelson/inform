@@ -539,13 +539,13 @@ int PL::Map::map_act_on_special_NPs(parse_node *p) {
 		switch (<<r>>) {
 			case 0:
 				if (I_down) {
-					Assertions::Refiner::noun_from_infs(p, Instances::as_subject(I_down));
+					Refiner::give_subject_to_noun(p, Instances::as_subject(I_down));
 					return TRUE;
 				}
 				break;
 			case 1:
 				if (I_up) {
-					Assertions::Refiner::noun_from_infs(p, Instances::as_subject(I_up));
+					Refiner::give_subject_to_noun(p, Instances::as_subject(I_up));
 					return TRUE;
 				}
 				break;

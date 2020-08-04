@@ -50,11 +50,9 @@ Chapter 4: Requests
 
 Chapter 5: Assertions
 "Turning regular assertion sentences into propositions about the model world."
-	Introduction to Assertions
-	To Be and To Have
 	Refine Parse Tree
 	The Creator
-	Make Assertions
+	Assertions
 	New Property Assertions
 	Property Knowledge
 	Relation Knowledge

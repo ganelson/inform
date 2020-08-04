@@ -958,14 +958,14 @@ void Tables::stock_table_cell(table *t, parse_node *cell, int row_count, int col
 			Annotations::write_int(cell, table_cell_unspecified_ANNOT, TRUE);
 			return;
 		case SPEC_TABLE_ENTRY:
-			Assertions::Refiner::noun_from_value(cell, spec);
+			Refiner::give_spec_to_noun(cell, spec);
 			break;
 		case NAMED_CONSTANT_ENTRY:
 			topic_exception = TRUE;
-			Assertions::Refiner::noun_from_value(cell, spec);
+			Refiner::give_spec_to_noun(cell, spec);
 			break;
 		case INSTANCE_TABLE_ENTRY:
-			Assertions::Refiner::noun_from_value(cell, spec);
+			Refiner::give_spec_to_noun(cell, spec);
 			break;
 		case KIND_TABLE_ENTRY:
 			Annotations::write_int(cell, table_cell_unspecified_ANNOT, TRUE);
@@ -974,10 +974,10 @@ void Tables::stock_table_cell(table *t, parse_node *cell, int row_count, int col
 				K, TRUE);
 			return;
 		case ACTION_TABLE_ENTRY:
-			Assertions::Refiner::noun_from_value(cell, spec);
+			Refiner::give_spec_to_noun(cell, spec);
 			break;
 		case TOPIC_TABLE_ENTRY:
-			Assertions::Refiner::noun_from_value(cell, spec);
+			Refiner::give_spec_to_noun(cell, spec);
 			topic_exception = TRUE;
 			break;
 		case PROBLEMATIC_TABLE_ENTRY:
@@ -1263,7 +1263,7 @@ void Tables::splice_table_row(table *table_to, table *table_from, int row_to, in
 		for (row = 1, cell_from = table_from->columns[i].entries->down;
 				cell_from && (row < row_from); cell_from = cell_from->next, row++) ;
 		if ((cell_to) && (cell_from)) {
-			Assertions::Refiner::copy_noun_details(cell_to, cell_from);
+			Refiner::copy_noun_details(cell_to, cell_from);
 			Annotations::write_int(cell_to, table_cell_unspecified_ANNOT,
 				Annotations::read_int(cell_from, table_cell_unspecified_ANNOT));
 		} else internal_error("bad table row splice");

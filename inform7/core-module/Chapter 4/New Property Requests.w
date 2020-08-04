@@ -104,7 +104,7 @@ void NewPropertyRequests::declare_property_can_be(parse_node *p) {
 	wording CNW = EMPTY_WORDING;
 	if (the_list->next) CNW = Node::get_text(the_list->next);
 
-	Assertions::Refiner::refine(the_owner, FORBID_CREATION);
+	Refiner::refine(the_owner, FORBID_CREATION);
 	@<Possession must be time-independent@>;
 
 	int count = NewPropertyRequests::list_length(the_list);

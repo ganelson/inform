@@ -239,7 +239,7 @@ have occurred, but if it does then the creation has worked.
 			@<Issue a problem for trying to create a blank name@>;
 		parse_node *evaluation = NULL;
 		if (<s-type-expression>(Node::get_text(name_entry))) evaluation = <<rp>>;
-		Assertions::Refiner::noun_from_value(name_entry, evaluation);
+		Refiner::give_spec_to_noun(name_entry, evaluation);
 		if (Specifications::is_kind_like(evaluation))
 			@<Issue a problem for trying to create an existing kind as a new instance@>;
 		if ((evaluation) && (Node::is(evaluation, UNKNOWN_NT) == FALSE))
@@ -248,7 +248,7 @@ have occurred, but if it does then the creation has worked.
 		Assertions::Creator::tabular_definitions(t);
 		NounPhrases::annotate_by_articles(name_entry);
 		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, V->next);
-		if (Assertions::Refiner::refine_coupling(name_entry, V->next))
+		if (Refiner::refine_coupling(name_entry, V->next))
 			Assertions::make_coupling(name_entry, V->next);
 		ProblemBuffer::redirect_problem_sentence(NULL, NULL, NULL);
 		Node::set_text(name_entry, NW);
@@ -257,7 +257,7 @@ have occurred, but if it does then the creation has worked.
 			evaluation = Specifications::from_kind(<<rp>>);
 		else if (<s-type-expression>(Node::get_text(name_entry)))
 			evaluation = <<rp>>;
-		Assertions::Refiner::noun_from_value(name_entry, evaluation);
+		Refiner::give_spec_to_noun(name_entry, evaluation);
 		Assertions::Creator::tabular_definitions(NULL);
 
 		if (Node::get_subject(name_entry) == NULL)
@@ -424,7 +424,7 @@ also ordinary sentences about the property value, and the former won't.
 			if (Node::is(val, UNKNOWN_NT)) {
 				if (problem_count == 0) internal_error("misevaluated cell");
 			} else {
-				Assertions::Refiner::noun_from_value(data_entry, val);
+				Refiner::give_spec_to_noun(data_entry, val);
 				Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(
 					P, subj, data_entry);
 			}

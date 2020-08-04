@@ -170,7 +170,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 @<If we have to make a kind qualified by adjectives, expand that into a suitable subtree@> =
 	parse_node *val = Node::get_evaluation(what_to_make);
 	if ((val) && (Descriptions::is_adjectives_plus_kind(val))) {
-		Assertions::Refiner::refine_from_simple_description(what_to_make, Node::duplicate(val));
+		Refiner::refine_from_simple_description(what_to_make, Node::duplicate(val));
 	}
 
 @<Add this new generalisation to the list for the kind it applies to@> =
@@ -313,7 +313,7 @@ void Assertions::Assemblies::satisfies_generalisation(inference_subject *infs, g
 	Node::set_text(new_sentence, Node::get_text(current_sentence));
 
 	/* temporarily make the |EVERY_NT| node refer to the specific new |infs|: */
-	Assertions::Refiner::noun_from_infs(g->substitute_at, infs);
+	Refiner::give_subject_to_noun(g->substitute_at, infs);
 
 	/* make the new sentence an assertion: */
 	new_sentence->down = Node::new(VERB_NT);

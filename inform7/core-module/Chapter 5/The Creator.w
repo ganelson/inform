@@ -82,7 +82,7 @@ in |py|, which (if it exists) we'll call its "governing node".
 
 >> Taking something is proactive behaviour.
 
-Here |Assertions::Refiner::refine| will correctly report that "proactive behaviour" is
+Here |Refiner::refine| will correctly report that "proactive behaviour" is
 a new term, and give it a |CREATED_NT| node. But we don't want it to become an
 object or a value -- it will become a named kind of action instead. So we
 amend the node to |ACTION_NT|.
@@ -422,13 +422,13 @@ from the tree.
 		instance *recent_creation = NULL;
 		if (Wordings::nonempty(W)) @<Create an object or kind of object rather than a value@>;
 		if (recent_creation) {
-			Assertions::Refiner::noun_from_infs(p, Instances::as_subject(recent_creation));
+			Refiner::give_subject_to_noun(p, Instances::as_subject(recent_creation));
 			Annotations::write_int(p, creation_site_ANNOT, TRUE);
 		}
 	} else {
 		parse_node *val = NULL;
 		if (Wordings::nonempty(W)) @<Create a value rather than an object@>;
-		Assertions::Refiner::noun_from_value(p, val);
+		Refiner::give_spec_to_noun(p, val);
 		if (val) Annotations::write_int(p, creation_site_ANNOT, TRUE);
 	}
 
@@ -632,7 +632,7 @@ to abbreviated forms of object names are normally allowed.
 		}
 	} else {
 		parse_node *val = Specifications::from_kind(latest_base_kind_of_value);
-		Assertions::Refiner::noun_from_value(p, val);
+		Refiner::give_spec_to_noun(p, val);
 		Annotations::write_int(p, creation_site_ANNOT, TRUE);
 	}
 
@@ -908,12 +908,12 @@ to a different vehicle object.
 		if (i < instance_count) {
 			Node::set_type_and_clear_annotations(attach_to, AND_NT);
 			attach_to->down = Node::new(PROPER_NOUN_NT);
-			Assertions::Refiner::noun_from_infs(attach_to->down, new_instance);
+			Refiner::give_subject_to_noun(attach_to->down, new_instance);
 			Annotations::write_int(attach_to->down, creation_site_ANNOT, TRUE);
 			attach_to->down->next = Node::new(PROPER_NOUN_NT);
 			attach_to = attach_to->down->next;
 		} else {
-			Assertions::Refiner::noun_from_infs(attach_to, new_instance);
+			Refiner::give_subject_to_noun(attach_to, new_instance);
 			Annotations::write_int(attach_to, creation_site_ANNOT, TRUE);
 		}
 	}
@@ -941,7 +941,7 @@ to a different vehicle object.
 	#ifdef IF_MODULE
 	if (propriety) PL::Naming::now_has_proper_name(new_instance);
 	#endif
-	Assertions::Refiner::noun_from_infs(pz, new_instance);
+	Refiner::give_subject_to_noun(pz, new_instance);
 	Annotations::write_int(pz, creation_site_ANNOT, TRUE);
 	Assertions::make_coupling(pz, p);
 

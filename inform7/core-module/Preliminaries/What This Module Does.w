@@ -19,6 +19,41 @@ For more, see //foundation: A Brief Guide to Foundation//.
 The //core// module is the largest and most important part of //inform7//,
 while not being included in either //inbuild// or //inter//. It manages the
 entire process of compiling an Inform 7 project, doing a good deal of the
-work itself, but also calling numerous other modules. Though in theory it is
-second-in-command to the , it always gets essentially the
-same, quite vague, orders to follow, so //core// has wide authority.
+work itself, but also calling numerous other modules.
+
+When an Inform project is being compiled, the sequence of operation is as
+follows:
+(*) //CoreMain::main// asks the //supervisor// module what to do.
+(*) //supervisor// uses the //words// and //syntax// modules to build a parse
+tree for the project and any extensions it needs, and works out dependencies
+on kits of Inter code.
+(*) All being well, //supervisor// then calls //Task::carry_out// to ask //core//
+to compile this parse tree. The process is a long multi-stage one, run as a
+production line: see //How To Compile// for a detailed list of steps.
+(*) The tree is subdivided into //Compilation Units//. The project's own
+source text is one unit, as is each extension used.
+(*) A minimal set of kinds, such as "number", verbs, such as "to mean", relations,
+such as "meaning", and so on, is created. See in particular //Booting Verbs//.
+(*) Three passes are made through the "major nodes" of the parse tree, meaning,
+assertion sentences and top-level declarations of structures such as tables,
+equations and rules. See //Passes through Major Nodes//.
+(-0) During the "pre-pass" names of tables and other top-level structures are
+recorded, and sentences are classified by //Classifying::sentence//. This is
+done by asking the //linguistics// module to diagram them and determine whether
+the meaning is "regular" -- a typical sentence asserting some relationship,
+such as "the ball is on the table" -- or "special" -- a sentence with some
+other purpose, such as "Test ... with ...", often but not always written in
+the imperative.
+(-1) During "pass 1", noun phrases in these assertion sentences are understood,
+which may involve creating new instances or other values. For example, the
+sentence "The fedora hat is on the can of Ubuntu cola" may cause new instances
+"fedora hat" and "can of Ubuntu cola" to be created. This process is called
+"refinement": see //Refine Parse Tree//, which calls //The Creator// to bring
+things into being.[1] The function //Assertions::make_coupling// is then
+called to draw out information from this pairing of values.
+(-2) During "pass 2", //Assertions::make_coupling// is again called, and this
+time is able to draw out relationships between values: for example, that the
+hat is indeed spatially on top of the can.
+
+[1] There really is an Ubuntu cola; it's a fair-trade product which it amuses my
+more Linux-aware students to drink." 

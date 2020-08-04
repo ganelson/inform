@@ -110,7 +110,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 void Assertions::Relational::substitute_at_node(parse_node *p) {
 	parse_node *spec = Node::get_evaluation(p);
 	spec = NonlocalVariables::substitute_constants(spec);
-	Assertions::Refiner::noun_from_value(p, spec);
+	Refiner::give_spec_to_noun(p, spec);
 }
 
 @ So the majority case above calls |Assertions::Relational::assert_relation_between_subtrees| to say
@@ -147,8 +147,8 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 @ Both sides have to be nouns representing constant values:
 
 @<Normalise the two noun leaves@> =
-	Assertions::Refiner::coerce_adjectival_usage_to_noun(px); Assertions::Refiner::turn_player_to_yourself(px);
-	Assertions::Refiner::coerce_adjectival_usage_to_noun(py); Assertions::Refiner::turn_player_to_yourself(py);
+	Refiner::coerce_adjectival_usage_to_noun(px); Refiner::turn_player_to_yourself(px);
+	Refiner::coerce_adjectival_usage_to_noun(py); Refiner::turn_player_to_yourself(py);
 
 	if (((Node::get_type(px) != PROPER_NOUN_NT) && (Node::get_type(px) != COMMON_NOUN_NT)) ||
 		((Node::get_type(py) != PROPER_NOUN_NT) && (Node::get_type(py) != COMMON_NOUN_NT))) {

@@ -178,7 +178,7 @@ parse the text to find what which property is referred to.
 		}
 		<np-as-object>(VW);
 		parse_node *pn = <<rp>>;
-		Assertions::Refiner::refine(pn, FORBID_CREATION);
+		Refiner::refine(pn, FORBID_CREATION);
 		pcalc_prop *P = Calculus::Propositions::Abstract::from_property_subtree(prn, pn);
 		prop = Calculus::Propositions::conjoin(prop, P);
 	} else { /* no value is supplied... */

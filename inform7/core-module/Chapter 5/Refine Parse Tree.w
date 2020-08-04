@@ -1,74 +1,52 @@
-[Assertions::Refiner::] Refine Parse Tree.
+[Refiner::] Refine Parse Tree.
 
-To determine which subjects are referred to by noun phrases
-such as "the table" and "a paper cup" found in assertion sentences being
-parsed.
+To determine which subjects are referred to by noun phrases such as "the
+table" or "a paper cup" found in assertion sentences.
 
 @h How individual nouns are represented after refinement.
-The parse tree identifies the primary verb in each sentence, but does only the
-most basic work in parsing its noun phrases. It can spot the use of certain
-keywords like "called", and constructions like "kind of", but otherwise the
-NPs are just left unparsed.
-
-Here we "refine" the subtree for a single noun phrase. Refinement means that
-we either annotate it with a meaning or break it down into subtree of further
-nodes, thus decomposing the NP into smaller clauses which are refined in turn.
-
-=
-void Assertions::Refiner::noun_from_infs(parse_node *p, inference_subject *infs) {
-	Assertions::Refiner::pn_make_COMMON_or_PROPER(p, infs);
-	Node::set_evaluation(p, InferenceSubjects::as_constant(infs));
-}
-
-void Assertions::Refiner::noun_from_value(parse_node *p, parse_node *spec) {
-	inference_subject *infs = NULL;
-	if (Specifications::to_proposition(spec)) {
-		pcalc_prop *prop = Specifications::to_proposition(spec);
-		parse_node *val = Calculus::Propositions::describes_value(prop);
-		if (val) infs = InferenceSubjects::from_specification(val);
-		else {
-			kind *K = Calculus::Variables::kind_of_variable_0(prop);
-			if (Kinds::Compare::lt(K, K_object) == FALSE) K = K_object;
-			infs = Kinds::Knowledge::as_subject(K);
-		}
-		Assertions::Refiner::pn_noun_details_from_spec(p, spec);
-	} else infs = InferenceSubjects::from_specification(spec);
-	Assertions::Refiner::pn_make_COMMON_or_PROPER(p, infs);
-	Node::set_evaluation(p, spec);
-}
-
-@ Furthermore:
-
-(c) If the noun phrase gives a number of items, the |multiplicity| annotation
+(a) In general, noun phrases in the parse tree divide into "proper" and "common".
+Before refinement they generally have node type |UNPARSED_NOUN_NT|: afterwards,
+either |PROPER_NOUN_NT| or |COMMON_NOUN_NT|.
+(b) A noun phrase node has a "subject" annotation, an //inference_subject//
+identifying what if anything it refers to. For example, "a door" refers to
+the kind "door".
+(c) It also has an "evaluation" annotation. For example, "35" evaluates to
+the number 33, but has no subject.
+(d) If the noun phrase gives a number of items, the |multiplicity| annotation
 records how many; thus, for "six lorries" it would be 6.
-(d) If the noun phrase describes some properties or relations which must be
+(e) If the noun phrase describes some properties or relations which must be
 true -- "an open door", say, or "a woman in London" -- these are recorded
-in a |creation_proposition| field.
+in a |creation_proposition| annotation.
 
 =
-void Assertions::Refiner::pn_noun_details_from_spec(parse_node *p, parse_node *spec) {
-	pcalc_prop *prop = Descriptions::get_quantified_prop(spec);
-	Node::set_creation_proposition(p, Calculus::Propositions::copy(prop));
-	int N = Descriptions::get_quantification_parameter(spec);
-	if (N > 0) Annotations::write_int(p, multiplicity_ANNOT, N);
+void Refiner::give_subject_to_noun(parse_node *p, inference_subject *infs) {
+	parse_node *eval = InferenceSubjects::as_constant(infs);
+	@<Make a common or proper noun as appropriate@>;
 }
 
-@ And lastly:
+void Refiner::give_spec_to_noun(parse_node *p, parse_node *eval) {
+	inference_subject *infs = Specifications::to_subject(eval);
+	@<Make a common or proper noun as appropriate@>;
+}
 
-(e) The node type is |COMMON_NOUN_NT| if and only if the |subject| field is
-an inference subject representing a domain rather than a single instance;
-thus, if it is kind of object or a kind of value. In all other cases, the
-node type is |PROPER_NOUN_NT|.
+@<Make a common or proper noun as appropriate@> =
+	if (InferenceSubjects::domain(infs)) Node::set_type(p, COMMON_NOUN_NT);
+	else Node::set_type(p, PROPER_NOUN_NT);
+	Refiner::apply_description(p, eval);
+	Node::set_subject(p, infs);
+	Node::set_evaluation(p, eval);
 
-The linguistic difference between proper and common nouns is a matter of some
-disagreement among semanticists, but to us it's very helpful in distinguishing
-cases in the assertion-maker.
+@ This can be performed either on noun or |ADJECTIVE_NT| nodes. It transfers
+the details of a description to the node.
 
 =
-void Assertions::Refiner::pn_make_COMMON_or_PROPER(parse_node *p, inference_subject *infs) {
-	if ((infs) && (InferenceSubjects::domain(infs))) Node::set_type(p, COMMON_NOUN_NT);
-	else Node::set_type(p, PROPER_NOUN_NT);
-	Node::set_subject(p, infs);
+void Refiner::apply_description(parse_node *p, parse_node *desc) {
+	if (Specifications::is_description(desc)) {
+		pcalc_prop *prop = Descriptions::get_quantified_prop(desc);
+		Node::set_creation_proposition(p, Calculus::Propositions::copy(prop));
+		int N = Descriptions::get_quantification_parameter(desc);
+		if (N > 0) Annotations::write_int(p, multiplicity_ANNOT, N);
+	}
 }
 
 @ It's useful to have a safe way of transferring the complete noun details
@@ -77,14 +55,14 @@ from one node to another, without breaking the above invariant. (The
 it probably never needs to be copied, but we do so for safety's sake.)
 
 =
-void Assertions::Refiner::copy_noun_details(parse_node *to, parse_node *from) {
-	Node::set_type(to, Node::get_type(from));
-	Node::set_evaluation(to, Node::get_evaluation(from));
-	Node::set_creation_proposition(to, Node::get_creation_proposition(from));
-	Node::set_subject(to, Node::get_subject(from));
-	Annotations::write_int(to, multiplicity_ANNOT, Annotations::read_int(from, multiplicity_ANNOT));
-	Annotations::write_int(to, nowhere_ANNOT, Annotations::read_int(from, nowhere_ANNOT));
-	Annotations::write_int(to, creation_site_ANNOT, Annotations::read_int(from, creation_site_ANNOT));
+void Refiner::copy_noun_details(parse_node *p_to, parse_node *p_from) {
+	Node::set_type(p_to, Node::get_type(p_from));
+	Node::set_evaluation(p_to, Node::get_evaluation(p_from));
+	Node::set_creation_proposition(p_to, Node::get_creation_proposition(p_from));
+	Node::set_subject(p_to, Node::get_subject(p_from));
+	Annotations::write_int(p_to, multiplicity_ANNOT, Annotations::read_int(p_from, multiplicity_ANNOT));
+	Annotations::write_int(p_to, nowhere_ANNOT, Annotations::read_int(p_from, nowhere_ANNOT));
+	Annotations::write_int(p_to, creation_site_ANNOT, Annotations::read_int(p_from, creation_site_ANNOT));
 }
 
 @h Representation of single adjectives.
@@ -99,24 +77,26 @@ common things, which ought to have count nouns, in fact have mass nouns --
 compare "clothing" and "clothes", which has no adequate singular.)
 
 =
-void Assertions::Refiner::pn_make_adjective(parse_node *p, unary_predicate *ale, parse_node *spec) {
+void Refiner::pn_make_adjective(parse_node *p, unary_predicate *ale, parse_node *spec) {
 	adjective *aph = UnaryPredicates::get_adj(ale);
 	Node::set_type(p, ADJECTIVE_NT);
 	Node::set_aph(p, aph);
 	Node::set_evaluation(p, NULL);
-	Assertions::Refiner::pn_noun_details_from_spec(p, spec);
-	if (UnaryPredicates::get_parity(ale)) Annotations::write_int(p, negated_boolean_ANNOT, FALSE);
-	else Annotations::write_int(p, negated_boolean_ANNOT, TRUE);
+	Refiner::apply_description(p, spec);
+	if (UnaryPredicates::get_parity(ale))
+		Annotations::write_int(p, negated_boolean_ANNOT, FALSE);
+	else
+		Annotations::write_int(p, negated_boolean_ANNOT, TRUE);
 }
 
 @ A different reason why adjective and nouns overlap is due to words like
 "green", which describe a state and also suggest that something possesses it.
 
 =
-void Assertions::Refiner::coerce_adjectival_usage_to_noun(parse_node *leaf) {
+void Refiner::coerce_adjectival_usage_to_noun(parse_node *leaf) {
 	if ((leaf) && (Node::get_type(leaf) == ADJECTIVE_NT)) {
 		instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(Node::get_aph(leaf));
-		if (q) Assertions::Refiner::noun_from_value(leaf, Rvalues::from_instance(q));
+		if (q) Refiner::give_spec_to_noun(leaf, Rvalues::from_instance(q));
 	}
 }
 
@@ -125,12 +105,12 @@ When an assertion couples |px| and |py|, the following is called first to
 refine them.
 
 =
-int Assertions::Refiner::refine_coupling(parse_node *px, parse_node *py) {
+int Refiner::refine_coupling(parse_node *px, parse_node *py) {
 	int pc = problem_count;
-	Assertions::Refiner::un_with(px);
-	Assertions::Refiner::un_with(py);
-	Assertions::Refiner::refine(px, ALLOW_CREATION);
-	Assertions::Refiner::refine(py, ALLOW_CREATION);
+	Refiner::un_with(px);
+	Refiner::un_with(py);
+	Refiner::refine(px, ALLOW_CREATION);
+	Refiner::refine(py, ALLOW_CREATION);
 	if (problem_count > pc) return FALSE;
 	if (Assertions::Creator::consult_the_creator(px, py) == FALSE) return FALSE;
 	return TRUE;
@@ -147,7 +127,7 @@ The |creation_rule| can have three values:
 
 @ =
 int forbid_nowhere = FALSE;
-void Assertions::Refiner::refine(parse_node *p, int creation_rule) {
+void Refiner::refine(parse_node *p, int creation_rule) {
 	if (p == NULL) internal_error("Refine parse tree on null pn");
 	if (Annotations::read_int(p, refined_ANNOT)) return;
 	Annotations::write_int(p, refined_ANNOT, TRUE);
@@ -158,7 +138,7 @@ void Assertions::Refiner::refine(parse_node *p, int creation_rule) {
 			((creation_rule == ALLOW_CREATION)?"allow":"mandate")), p);
 	LOG_INDENT;
 
-	Assertions::Refiner::refine_parse_tree_inner(p, creation_rule);
+	Refiner::refine_parse_tree_inner(p, creation_rule);
 
 	LOG_OUTDENT;
 	LOGIF(NOUN_RESOLUTION, "Refined subtree is:\n$T", p);
@@ -167,7 +147,7 @@ void Assertions::Refiner::refine(parse_node *p, int creation_rule) {
 @ What we do depends on the crude structure already found.
 
 =
-void Assertions::Refiner::refine_parse_tree_inner(parse_node *p, int creation_rule) {
+void Refiner::refine_parse_tree_inner(parse_node *p, int creation_rule) {
 	switch(Node::get_type(p)) {
 		case X_OF_Y_NT: @<Refine an X-of-Y subtree@>; return;
 		case WITH_NT: @<Refine an X-with-Y subtree@>; return;
@@ -186,8 +166,8 @@ property name, so we forbid creation of a new object from the property name
 subtree.
 
 @<Refine an X-of-Y subtree@> =
-	Assertions::Refiner::refine(p->down, creation_rule);
-	Assertions::Refiner::refine(p->down->next, FORBID_CREATION);
+	Refiner::refine(p->down, creation_rule);
+	Refiner::refine(p->down->next, FORBID_CREATION);
 
 @ |WITH_NT| is used to create something with a list of properties. This
 leads to some awkward cases -- for instance, where a "with" in an action
@@ -197,8 +177,8 @@ divided, to form the word range $(a_1, a_2)$; then parsing it as an action
 pattern; if it works, that reading is allowed to stand.
 
 @<Refine an X-with-Y subtree@> =
-	Assertions::Refiner::refine(p->down, creation_rule);
-	Assertions::Refiner::perform_with_surgery(p);
+	Refiner::refine(p->down, creation_rule);
+	Refiner::perform_with_surgery(p);
 	if (Node::get_type(p) == WITH_NT) {
 		#ifdef IF_MODULE
 		wording W = Wordings::new(Wordings::first_wn(Node::get_text(p->down)),
@@ -216,9 +196,9 @@ pattern; if it works, that reading is allowed to stand.
 @ |AND_NT| is easy, except for "and surgery", of which more below.
 
 @<Refine an X-and-Y subtree@> =
-	Assertions::Refiner::refine(p->down, creation_rule);
-	Assertions::Refiner::refine(p->down->next, creation_rule);
-	Assertions::Refiner::perform_and_surgery(p);
+	Refiner::refine(p->down, creation_rule);
+	Refiner::refine(p->down->next, creation_rule);
+	Refiner::perform_and_surgery(p);
 
 @ A |CALLED_NT| node has two children: in the phrase "an X called Y", they
 will represent X and Y respectively. Y must be created afresh whatever its
@@ -231,7 +211,7 @@ of Y and the kind of X. In this way, all |CALLED_NT| nodes are removed
 from the tree.
 
 @<Refine a calling subtree@> =
-	Assertions::Refiner::refine(p->down, FORBID_CREATION);
+	Refiner::refine(p->down, FORBID_CREATION);
 	if (Annotations::read_int(p->down, multiplicity_ANNOT) > 1) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleCalled),
 			"I can only make a single 'called' thing at a time",
@@ -245,7 +225,7 @@ from the tree.
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"'called' can't be used in this context",
 			"and is best reserved for full sentences.");
-	else Assertions::Refiner::refine(p->down->next, MANDATE_CREATION);
+	else Refiner::refine(p->down->next, MANDATE_CREATION);
 	forbid_nowhere = FALSE;
 
 @ A |RELATIONSHIP_NT| node may have no children, representing "here"; or
@@ -255,12 +235,12 @@ has the marble and the box as its children, the relationship being containment.
 
 @<Refine a relationship subtree@> =
 	if (p->down) {
-		Assertions::Refiner::refine(p->down, creation_rule);
+		Refiner::refine(p->down, creation_rule);
 		#ifdef IF_MODULE
 		instance *dir = PL::MapDirections::get_mapping_relationship(p);
 		if (dir) @<Make the relation one which refers to a map direction@>;
 		#endif
-		if (p->down->next) Assertions::Refiner::refine(p->down->next, creation_rule);
+		if (p->down->next) Refiner::refine(p->down->next, creation_rule);
 	}
 
 @ This handles the case of a one-child node representing a map direction,
@@ -272,7 +252,7 @@ direction object for "north".
 	LOGIF(NOUN_RESOLUTION, "Directional predicate with BP from $O\n", dir);
 	wording DW = Instances::get_name(dir, FALSE);
 	p->down->next = Diagrams::new_UNPARSED_NOUN(DW);
-	Assertions::Refiner::noun_from_infs(p->down->next, Instances::as_subject(dir));
+	Refiner::give_subject_to_noun(p->down->next, Instances::as_subject(dir));
 	Annotations::write_int(p->down->next, refined_ANNOT, TRUE);
 
 @ A |KIND_NT| node may have no children, and if so it represents the bare
@@ -285,7 +265,7 @@ inference subject representing the domain to which any new kind would belong.
 	inference_subject *kind_of_what = Kinds::Knowledge::as_subject(K_object);
 	if (p->down) {
 		parse_node *what = p->down;
-		Assertions::Refiner::refine(what, FORBID_CREATION);
+		Refiner::refine(what, FORBID_CREATION);
 		kind_of_what = Node::get_subject(what);
 	}
 	if ((kind_of_what == NULL) || (InferenceSubjects::domain(kind_of_what) == NULL))
@@ -345,7 +325,7 @@ inference subject representing the domain to which any new kind would belong.
 			return;
 		}
 		inference_subject *referent = Anaphora::get_current_object();
-		if (referent) Assertions::Refiner::noun_from_infs(p, referent);
+		if (referent) Refiner::give_subject_to_noun(p, referent);
 		else {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_EnigmaticPronoun),
 				"I'm not sure what to make of the pronoun here",
@@ -389,7 +369,7 @@ is active, and "nowhere" if the spatial one is.
 	if (spec == NULL) @<Parse the noun phrase as a value@>;
 	if ((Node::is(spec, NONLOCAL_VARIABLE_NT)) ||
 		(Node::is(spec, CONSTANT_NT))) {
-		Assertions::Refiner::noun_from_value(p, spec);
+		Refiner::give_spec_to_noun(p, spec);
 		return;
 	}
 	if (Specifications::is_description(spec))
@@ -507,7 +487,7 @@ Oddly, it's not the complicated descriptions which give trouble...
 @<Act on a description used as a noun phrase@> =
 	Node::set_subject(p, NULL);
 	if (Descriptions::is_complex(spec)) {
-		Assertions::Refiner::noun_from_value(p, spec);
+		Refiner::give_spec_to_noun(p, spec);
 		return;
 	}
 	@<Act on a simple description@>;
@@ -544,7 +524,7 @@ sentence.
 	if (!((Descriptions::to_instance(spec)) &&
 		((Descriptions::number_of_adjectives_applied_to(spec) > 0) ||
 			(Articles::may_be_definite(Node::get_article(p)) == FALSE)))) {
-		Assertions::Refiner::refine_from_simple_description(p, spec);
+		Refiner::refine_from_simple_description(p, spec);
 		return;
 	}
 
@@ -558,7 +538,7 @@ object) or a |PROPER_NOUN_NT| (where the headword is a specific object), and
 where the adjectives each become |ADJECTIVE_NT| nodes.
 
 =
-void Assertions::Refiner::refine_from_simple_description(parse_node *p, parse_node *spec) {
+void Refiner::refine_from_simple_description(parse_node *p, parse_node *spec) {
 	inference_subject *head = NULL;
 	@<Set the attachment node to the headword, if there is one@>;
 	if (Descriptions::number_of_adjectives_applied_to(spec) > 0) {
@@ -570,7 +550,7 @@ void Assertions::Refiner::refine_from_simple_description(parse_node *p, parse_no
 @ Crucially, the headword node gets one extra annotation: its "full phrase
 evaluation", which retains the original description information -- in
 particular, quantification data such as that in "four doors", which
-would be lost if we simply applied |Assertions::Refiner::noun_from_infs| to the inference
+would be lost if we simply applied |Refiner::give_subject_to_noun| to the inference
 subject for "door".
 
 If |head| is not set, it doesn't matter what we do, because there'll be
@@ -581,15 +561,15 @@ set for it.
 	if (Descriptions::to_instance(spec)) {
 		head = Instances::as_subject(Descriptions::to_instance(spec));
 		if (head) {
-			Assertions::Refiner::noun_from_infs(p, head);
-			Assertions::Refiner::pn_noun_details_from_spec(p, spec);
+			Refiner::give_subject_to_noun(p, head);
+			Refiner::apply_description(p, spec);
 		}
 	} else if (Descriptions::makes_kind_explicit(spec)) {
 		kind *K = Specifications::to_kind(spec);
 		head = Kinds::Knowledge::as_subject(K);
-		Assertions::Refiner::noun_from_infs(p, head);
+		Refiner::give_subject_to_noun(p, head);
 		Node::set_evaluation(p, Specifications::from_kind(K));
-		Assertions::Refiner::pn_noun_details_from_spec(p, spec);
+		Refiner::apply_description(p, spec);
 	}
 
 @ We put a WITH node in the attachment position, displacing the headword
@@ -612,7 +592,7 @@ or memory.
 @<Place a subtree of adjectives at the attachment node@> =
 	int no_adjectives = Descriptions::number_of_adjectives_applied_to(spec);
 	if (no_adjectives == 1) {
-		Assertions::Refiner::pn_make_adjective(p,
+		Refiner::pn_make_adjective(p,
 			Descriptions::first_unary_predicate(spec), spec);
 	} else {
 		Node::set_type_and_clear_annotations(p, AND_NT);
@@ -623,7 +603,7 @@ or memory.
 		LOOP_THROUGH_ADJECTIVE_LIST(ale, ale_prop, spec) {
 			i++;
 			parse_node *p3 = Node::new(ADJECTIVE_NT);
-			Assertions::Refiner::pn_make_adjective(p3, ale, spec);
+			Refiner::pn_make_adjective(p3, ale, spec);
 			if (i < no_adjectives) {
 				AND_p->down = p3;
 				if (i+1 < no_adjectives) {
@@ -684,7 +664,7 @@ This innocent-looking little routine involved drawing a lot of diagrams
 on the back of an envelope. Change at your peril.
 
 =
-void Assertions::Refiner::perform_and_surgery(parse_node *p) {
+void Refiner::perform_and_surgery(parse_node *p) {
 	parse_node *x, *a_p, *w_p, *p1_p, *p2_p, *i_p;
 	if ((Node::get_type(p->down) == ADJECTIVE_NT)
 		&& (Node::get_type(p->down->next) == WITH_NT)) {
@@ -732,7 +712,7 @@ is reconstructed as:
 =
 
 =
-void Assertions::Refiner::perform_with_surgery(parse_node *p) {
+void Refiner::perform_with_surgery(parse_node *p) {
 	parse_node *inst, *prop_1, *prop_2;
 	if ((Node::get_type(p) == WITH_NT) && (Node::get_type(p->down) == WITH_NT)) {
 		inst = p->down->down;
@@ -753,7 +733,7 @@ issue for sentences like:
 >> The agreeing with policy action has an object called the hat.
 
 =
-void Assertions::Refiner::un_with(parse_node *p) {
+void Refiner::un_with(parse_node *p) {
 	if ((Node::get_type(p) == WITH_NT) && (p->down) && (p->down->next)) {
 		wording W = Wordings::up_to(Node::get_text(p->down),
 			Wordings::last_wn(Node::get_text(p->down->next)));
@@ -777,14 +757,14 @@ But no explicit mention of this case appears here; in theory any plugin
 can set up aliases of variable names to constants like this.
 
 =
-int Assertions::Refiner::turn_player_to_yourself(parse_node *pn) {
+int Refiner::turn_player_to_yourself(parse_node *pn) {
 	if ((Wordings::nonempty(Node::get_text(pn))) &&
 		(Node::get_type(pn) == PROPER_NOUN_NT) &&
 		(Annotations::read_int(pn, turned_already_ANNOT) == FALSE)) {
 		nonlocal_variable *q = NonlocalVariables::parse(Node::get_text(pn));
 		inference_subject *diversion = NonlocalVariables::get_alias(q);
 		if (diversion) {
-			Assertions::Refiner::noun_from_infs(pn, diversion);
+			Refiner::give_subject_to_noun(pn, diversion);
 			Annotations::write_int(pn, turned_already_ANNOT, TRUE);
 			return TRUE;
 		}
