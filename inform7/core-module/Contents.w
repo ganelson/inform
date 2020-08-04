@@ -41,6 +41,9 @@ Chapter 4: Requests
 	Test Requests
 	Define by Table Requests
 	Rule Placement Requests
+	New Activity Requests
+	New Literal Pattern Requests
+	New Relation Requests
 
 Chapter 5: Assertions
 "Turning regular assertion sentences into propositions about the model world."

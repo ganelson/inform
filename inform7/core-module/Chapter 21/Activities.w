@@ -80,36 +80,6 @@ typedef struct activity_crossref {
 @d CHOOSING_NOTABLE_LOCALE_OBJ_ACT 32
 @d PRINTING_LOCALE_PARAGRAPH_ACT 33
 
-@ We give a special meaning to the sentence "X is an activity", where no kind
-is specified, since this would otherwise not be legal Inform.
-
-=
-<bare-activity-sentence-object> ::=
-	<article> activity |    ==> { TRUE, - }
-	activity							==> { TRUE, - }
-
-@ =
-int Activities::new_activity_SMF(int task, parse_node *V, wording *NPs) {
-	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
-	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
-	switch (task) { /* "Description is an activity." */
-		case ACCEPT_SMFT:
-			if (<bare-activity-sentence-object>(OW)) {
-				<np-unparsed>(SW);
-				V->next = <<rp>>;
-				<np-unparsed>(OW);
-				V->next->next = <<rp>>;
-				return TRUE;
-			}
-			break;
-		case PASS_1_SMFT:
-			Activities::new(Kinds::unary_construction(CON_activity, K_nil),
-				Node::get_text(V->next));
-			break;
-	}
-	return FALSE;
-}
-
 @ Activities are much simpler to create than actions. For example,
 
 >> Announcing something is an activity on numbers.

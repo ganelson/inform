@@ -1,0 +1,8 @@
+1.0mm is 0.04167 quarters.
+1.0cm is 0.41667 quarters.
+10.0cm is 4.16667 quarters.
+1.0m is 5.55556 pencils.
+10.0m is 6.57895 bathtubs.
+100.00001m is 2.0 Olympic swimming pools.
+1.0km is 2.25734 Empire State buildings.
+10.0km is 22.57337 Empire State buildings.

@@ -99,6 +99,16 @@ void Node::set_type_and_clear_annotations(parse_node *pn, node_type_t nt) {
 int Node::get_score(parse_node *pn) { return pn->score; }
 void Node::set_score(parse_node *pn, int s) { pn->score = s; }
 
+@h Composition.
+This simply means stringing two nodes together into a list.
+
+=
+parse_node *Node::compose(parse_node *A, parse_node *B) {
+	if (A == NULL) return B;
+	A->next = B;
+	return A;
+}
+
 @h Copying parse nodes.
 If we want to duplicate a parse node, we cannot do so with a shallow bit copy:
 the node points to a list of its annotations, and the duplicated node would

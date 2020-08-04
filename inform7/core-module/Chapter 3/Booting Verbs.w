@@ -70,7 +70,7 @@ names. But as these names are only used in early boot sentences in the
 be a single word, and are hyphenated.
 
 @<Create the special meanings@> =
-	SpecialMeanings::declare(Relations::new_relation_SMF,					I"new-relation", 1);
+	SpecialMeanings::declare(RelationRequests::new_relation_SMF,					I"new-relation", 1);
 	SpecialMeanings::declare(Rules::Placement::substitutes_for_SMF,			I"rule-substitutes-for", 1);
 	SpecialMeanings::declare(Rules::Placement::does_nothing_SMF,			I"rule-does-nothing", 1);
 	SpecialMeanings::declare(Rules::Placement::does_nothing_if_SMF,			I"rule-does-nothing-if", 1);
@@ -81,7 +81,7 @@ be a single word, and are hyphenated.
 
 	SpecialMeanings::declare(NewVerbs::new_verb_SMF, 						I"new-verb", 2);
 	SpecialMeanings::declare(Plurals::plural_SMF, 							I"new-plural", 2);
-	SpecialMeanings::declare(Activities::new_activity_SMF, 					I"new-activity", 2);
+	SpecialMeanings::declare(ActivityRequests::new_activity_SMF, 					I"new-activity", 2);
 	SpecialMeanings::declare(NewVerbs::new_adjective_SMF,					I"new-adjective", 2);
 	SpecialMeanings::declare(Assertions::Property::either_SMF,				I"new-either-or", 2);
 	SpecialMeanings::declare(DefineByTable::defined_by_SMF,				I"defined-by-table", 2);
@@ -90,7 +90,7 @@ be a single word, and are hyphenated.
 
 	meaning_of_mean = SpecialMeanings::declare(NewVerbs::verb_means_SMF, 	I"verb-means", 3);
 
-	SpecialMeanings::declare(LiteralPatterns::specifies_SMF, 				I"specifies-notation", 4);
+	SpecialMeanings::declare(LPRequests::specifies_SMF, 				I"specifies-notation", 4);
 	SpecialMeanings::declare(NewUseOptions::use_translates_as_SMF,				I"use-translates", 4);
 	SpecialMeanings::declare(UseOptions::use_SMF,							I"use", 4);
 	SpecialMeanings::declare(Sentences::DLRs::include_in_SMF,				I"include-in", 4);

@@ -83,77 +83,6 @@ other languages may as well drop the hyphens.
 	enclosure |
 	room-containment
 
-@h Creation, Stage I.
-The creation of relations happens in two stages. First, when the parse tree is
-being organised into sentences, we call the following routine the moment a
-relation definition has been found. (This is important because it may affect
-the parsing of subsequent sentences in the source text.) The predicate we make
-is initially sketchy: but by existing, and having a name, it can be used in
-subsequent verb definitions, and then subsequent sentences using those newly
-defined verbs can be properly parsed all during the same run-through of the
-parse tree.
-
-@ This handles the special meaning "X relates Y to Z".
-
-=
-<new-relation-sentence-object> ::=
-	<np-unparsed> to <np-unparsed>  ==> { TRUE, RP[1] }; ((parse_node *) RP[1])->next = RP[2];
-
-@ =
-int Relations::new_relation_SMF(int task, parse_node *V, wording *NPs) {
-	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
-	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
-	switch (task) { /* "Knowledge relates various people to various things." */
-		case ACCEPT_SMFT:
-			if (<new-relation-sentence-object>(OW)) {
-				parse_node *O = <<rp>>;
-				<np-unparsed>(SW);
-				V->next = <<rp>>;
-				V->next->next = O;
-				Relations::parse_new(V);
-				return TRUE;
-			}
-			break;
-		case PASS_1_SMFT:
-			Relations::parse_new_relation_further(V);
-			break;
-	}
-	return FALSE;
-}
-
-
-
-@ The following grammar is used to parse the subject noun phrase of
-sentences like
-
->> Acquaintance relates people to each other.
-
-Since the point is to create something new, the only stipulation is that the
-text of the subject mustn't be an existing relation name.
-
-=
-<relates-sentence-subject> ::=
-	<relation-name> |    ==> @<Issue PM_RelationExists problem@>
-	...							==> { TRUE, - }
-
-@<Issue PM_RelationExists problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationExists),
-		"that relation already exists",
-		"and cannot have its definition amended now.");
-	==> { FALSE, - };
-
-@ =
-void Relations::parse_new(parse_node *PN) {
-	<relates-sentence-subject>(Node::get_text(PN->next));
-	if (<<r>>) {
-		wording W = Node::get_text(PN->next);
-		W = Wordings::truncate(W, 31);
-		binary_predicate *bp = BinaryPredicates::make_pair_sketchily(
-			WordAssemblages::from_wording(W), Relation_OtoO);
-		Node::set_new_relation_here(PN->next, bp);
-	}
-}
-
 @h Creation, Stage II.
 In the second stage, which is reached during the first traverse of
 sentences to work through the assertions, we parse the specification of the
@@ -166,45 +95,25 @@ can be found from these different outcomes, but inevitably ends up
 splitting into cases.
 
 =
-void Relations::parse_new_relation_further(parse_node *PN) {
-	wording RW = Node::get_text(PN->next); /* relation name */
-	wording FW = Node::get_text(PN->next->next); /* left term declaration, before "to" */
-	wording SW = Node::get_text(PN->next->next->next); /* right term declaration, after "to" */
-
-	binary_predicate *bp = Node::get_new_relation_here(PN->next);
-	if (bp == NULL) return; /* to recover from problem */
+void Relations::new(binary_predicate *bp,
+	relation_request *RR) {
 	binary_predicate *bpr = bp->reversal;
-
 	property *prn = NULL; /* used for run-time storage of this relation */
 	inter_name *i6_prn_name = NULL; /* the I6 identifier for this property */
 	kind *storage_kind = NULL; /* what kind, if any, might be stored in it */
 	inference_subject *storage_infs = NULL; /* summing these up */
-	kind *left_kind = NULL, *right_kind = NULL; /* kind requirement */
-	wording CONW = EMPTY_WORDING; /* text of test condition if any */
 
-	int left_unique = NOT_APPLICABLE, /* |TRUE| for one, |FALSE| for various, */
-		right_unique = NOT_APPLICABLE, /* ...or |NOT_APPLICABLE| for unspecified */
-		symmetric = FALSE, /* a symmetric relation? */
-		equivalence = FALSE, /* an equivalence ("in groups") relation? */
-		rvno = FALSE, /* relate values not objects? */
-		frf = FALSE, /* use fast route-finding? */
+	int rvno = FALSE, /* relate values not objects? */
 		dynamic = FALSE, /* use dynamic memory allocation for storage? */
 		provide_prn = FALSE, /* allocate the storage property to the kind? */
 		calling_made = FALSE; /* one of the terms has been given a name */
 
 	if (bp == NULL) internal_error("BP in relation not initially parsed");
 
-	if (Wordings::length(RW) > MAX_WORDS_IN_ASSEMBLAGE-4) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationNameTooLong),
-			"this is too long a name for a single relation to have",
-			"and would become unwieldy.");
-		RW = Wordings::truncate(RW, MAX_WORDS_IN_ASSEMBLAGE-4);
-	}
-
 	@<Parse the classification variables and use them to fill in the BP term details@>;
 
 	if (rvno) { bp->relates_values_not_objects = TRUE; bpr->relates_values_not_objects = TRUE; }
-	if (frf) { bp->fast_route_finding = TRUE; bpr->fast_route_finding = TRUE; }
+	if (RR->frf) { bp->fast_route_finding = TRUE; bpr->fast_route_finding = TRUE; }
 	if (prn) {
 		bp->i6_storage_property = prn; bpr->i6_storage_property = prn;
 		Properties::Valued::set_stored_relation(prn, bp);
@@ -217,16 +126,16 @@ void Relations::parse_new_relation_further(parse_node *PN) {
 	}
 	BinaryPredicates::mark_as_needed(bp);
 
-	if (Wordings::nonempty(CONW)) @<Complete as a relation-by-routine BP@>
-	else if (equivalence) @<Complete as an equivalence-relation BP@>
-	else if (left_unique) {
-		if (right_unique) {
-			if (symmetric) @<Complete as a symmetric one-to-one BP@>
+	if (Wordings::nonempty(RR->CONW)) @<Complete as a relation-by-routine BP@>
+	else if (RR->equivalence) @<Complete as an equivalence-relation BP@>
+	else if (RR->terms[0].unique) {
+		if (RR->terms[1].unique) {
+			if (RR->symmetric) @<Complete as a symmetric one-to-one BP@>
 			else @<Complete as an asymmetric one-to-one BP@>;
 		} else @<Complete as a one-to-various BP@>;
 	} else {
-		if (right_unique) @<Complete as a various-to-one BP@>
-		else if (symmetric) @<Complete as a symmetric various-to-various BP@>
+		if (RR->terms[1].unique) @<Complete as a various-to-one BP@>
+		else if (RR->symmetric) @<Complete as a symmetric various-to-various BP@>
 		else @<Complete as an asymmetric various-to-various BP@>;
 	}
 
@@ -241,10 +150,10 @@ void Relations::parse_new_relation_further(parse_node *PN) {
 		@<Add in the reducing functions@>;
 	}
 
-	if ((Kinds::Compare::lt(left_kind, K_object)) || (Kinds::Compare::lt(right_kind, K_object))) {
+	if ((Kinds::Compare::lt(RR->terms[0].domain, K_object)) || (Kinds::Compare::lt(RR->terms[1].domain, K_object))) {
 		relation_guard *rg = CREATE(relation_guard);
-		rg->check_L = NULL; if (Kinds::Compare::lt(left_kind, K_object)) rg->check_L = left_kind;
-		rg->check_R = NULL; if (Kinds::Compare::lt(right_kind, K_object)) rg->check_R = right_kind;
+		rg->check_L = NULL; if (Kinds::Compare::lt(RR->terms[0].domain, K_object)) rg->check_L = RR->terms[0].domain;
+		rg->check_R = NULL; if (Kinds::Compare::lt(RR->terms[1].domain, K_object)) rg->check_R = RR->terms[1].domain;
 		rg->inner_test = bp->test_function;
 		rg->inner_make_true = bp->make_true_function;
 		rg->inner_make_false = bp->make_false_function;
@@ -290,102 +199,13 @@ void Relations::parse_new_relation_further(parse_node *PN) {
 	LOGIF(RELATION_DEFINITIONS, "Defined the binary predicate:\n$2\n", bp);
 }
 
-@ The following grammar is used to parse the declaration of new relations in
-sentences like
-
->> Acquaintance relates people to each other.
-
-In such a sentence, we'll call "people" the left object noun phrase and
-"each other" the right object noun phrase. The way <relation-term-basic>
-is written below, it seems to match any text, but that's just an implementation
-convenience; the |...| text will eventually have to match <k-kind> and thus
-to be the name of a kind, possibly in the plural.
-
-=
-<relates-sentence-left-object> ::=
-	<relation-term-basic> ( called ... ) |                 ==> { R[1] | CALLED_RBIT, - }
-	<relation-term-basic>                                  ==> { pass 1 }
-
-<relates-sentence-right-object> ::=
-	<relation-term-right-named> with fast route-finding |  ==> { R[1] | FRF_RBIT, - }
-	<relation-term-right-named> when ... |                 ==> { R[1] | WHEN_RBIT, - }
-	<relation-term-right-named>                            ==> { pass 1 }
-
-<relation-term-right-named> ::=
-	<relation-term-right> ( called ... ) |                 ==> { R[1] | CALLED_RBIT, - }
-	<relation-term-right>                                  ==> { pass 1 }
-
-<relation-term-right> ::=
-	{another} |                                            ==> { ANOTHER_RBIT, - }
-	{each other} |                                         ==> { EACHOTHER_RBIT, - }
-	{each other in groups} |                               ==> { GROUPS_RBIT, - }
-	<relation-term-basic>                                  ==> { pass 1 }
-
-<relation-term-basic> ::=
-	one ... |                                              ==> { ONE_RBIT, - }
-	various ... |                                          ==> { VAR_RBIT, - }
-	...                                                    ==> { 0, - }
-
 @h The parsing phase.
-Our aims here are:
-
-(i) to decide if the definition is valid, and reject it with a suitable
-problem message if not, returning from the current routine;
-(ii) to fill in the classification variables |left_unique|, |symmetric|, etc.,
-as defined above;
-(iii) to choose a property which will provide run-time storage for this
-relation, if it needs any; and
-(iv) to set |bp->term_details[0]| and |...[1]| with the kinds, names and
-logical properties of the two terms of the BP being defined.
-
-@
-
-@d FRF_RBIT 1
-@d ONE_RBIT 2
-@d VAR_RBIT 4
-@d ANOTHER_RBIT 8
-@d EACHOTHER_RBIT 16
-@d GROUPS_RBIT 32
-@d WHEN_RBIT 64
-@d CALLED_RBIT 128
 
 @<Parse the classification variables and use them to fill in the BP term details@> =
-	LOGIF(RELATION_DEFINITIONS,
-		"Relation definition of %W: left term: '%W', right term: '%W'\n",
-			RW, FW, SW);
-	wording LCALLW = EMPTY_WORDING; /* left term "calling" name */
-	wording RCALLW = EMPTY_WORDING; /* right term "calling" name */
-
-	<relates-sentence-left-object>(FW);
-	int left_bitmap = <<r>>;
-	if (left_bitmap & CALLED_RBIT) LCALLW = GET_RW(<relates-sentence-left-object>, 1);
-	FW = GET_RW(<relation-term-basic>, 1);
-
-	<relates-sentence-right-object>(SW);
-	int right_bitmap = <<r>>;
-	if (right_bitmap & CALLED_RBIT) RCALLW = GET_RW(<relation-term-right-named>, 1);
-	SW = GET_RW(<relation-term-basic>, 1);
-
-	if (right_bitmap & WHEN_RBIT)
-		CONW = GET_RW(<relates-sentence-right-object>, 1);
-
-	@<Find term multiplicities and use of fast route-finding@>;
-	@<Detect use of a condition for a test-only relation@>;
 	@<Detect callings for the terms of the relation@>;
-	@<Detect use of symmetry in definition of second term@>;
-	@<Vet the use of callings for the terms of the relation@>;
 	@<Work out the kinds of the terms in the relation@>;
 
-	if (left_unique == NOT_APPLICABLE) {
-		left_unique = FALSE;
-		if ((Wordings::nonempty(LCALLW)) || (right_unique == FALSE)) left_unique = TRUE;
-	}
-	if (right_unique == NOT_APPLICABLE) {
-		right_unique = FALSE;
-		if ((Wordings::nonempty(RCALLW)) || (left_unique == FALSE)) right_unique = TRUE;
-	}
-
-	if (Wordings::empty(CONW)) @<Determine property used for run-time storage@>;
+	if (Wordings::empty(RR->CONW)) @<Determine property used for run-time storage@>;
 
 	@<Fill in the BP term details based on the left- and right- variables@>;
 
@@ -393,52 +213,14 @@ logical properties of the two terms of the BP being defined.
 	bp_term_details left_bptd, right_bptd;
 
 	inference_subject *left_infs = NULL, *right_infs = NULL;
-	if (left_kind) left_infs = Kinds::Knowledge::as_subject(left_kind);
-	if (right_kind) right_infs = Kinds::Knowledge::as_subject(right_kind);
+	if (RR->terms[0].domain) left_infs = Kinds::Knowledge::as_subject(RR->terms[0].domain);
+	if (RR->terms[1].domain) right_infs = Kinds::Knowledge::as_subject(RR->terms[1].domain);
 
-	left_bptd = BinaryPredicates::full_new_term(left_infs, left_kind, LCALLW, NULL);
-	right_bptd = BinaryPredicates::full_new_term(right_infs, right_kind, RCALLW, NULL);
+	left_bptd = BinaryPredicates::full_new_term(left_infs, RR->terms[0].domain, RR->terms[0].CALLW, NULL);
+	right_bptd = BinaryPredicates::full_new_term(right_infs, RR->terms[1].domain, RR->terms[1].CALLW, NULL);
 
 	bp->term_details[0] = left_bptd; bp->term_details[1] = right_bptd;
 	bpr->term_details[0] = right_bptd; bpr->term_details[1] = left_bptd;
-
-@ We set word ranges for the condition (if any) and the callings (if any),
-whittling down the word ranges for the left and right specifications if
-these are clipped away, and also look at the multiplicities.
-
-@<Find term multiplicities and use of fast route-finding@> =
-	if (left_bitmap & ONE_RBIT) left_unique = TRUE;
-	if (left_bitmap & VAR_RBIT) left_unique = FALSE;
-
-	if (right_bitmap & ONE_RBIT) right_unique = TRUE;
-	if (right_bitmap & VAR_RBIT) right_unique = FALSE;
-	if (right_bitmap & FRF_RBIT) frf = TRUE;
-
-	if (frf && (left_unique != FALSE) && (right_unique != FALSE)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FRFUnavailable),
-			"fast route-finding is only possible with various-to-various "
-			"relations",
-			"though this doesn't matter because with other relations the "
-			"standard route-finding algorithm is efficient already.");
-		return;
-	}
-
-@ When a relation is said to hold depending on a condition to be tested at
-run-time, it is meaningless to tell Inform anything about the uniqueness of
-terms in the domain: a relation might be one-to-one at the start of play
-but become various-to-various later on, as the outcomes of these tests
-change. So we reject any such misleading syntax.
-
-@<Detect use of a condition for a test-only relation@> =
-	if (right_bitmap & WHEN_RBIT) {
-		if ((left_unique != NOT_APPLICABLE) || (right_unique != NOT_APPLICABLE)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OneOrVariousWithWhen),
-				"this relation is a mixture of different syntaxes",
-				"and must be simplified. If it is going to specify 'one' or "
-				"'various' then it cannot also say 'when' the relation holds.");
-			return;
-		}
-	}
 
 @ Callings are used to give names to the terms on each side of the relation,
 e.g.,
@@ -446,85 +228,8 @@ e.g.,
 >> Lock-fitting relates one thing (called the matching key) to various things.
 
 @<Detect callings for the terms of the relation@> =
-	if ((left_bitmap & CALLED_RBIT) || (right_bitmap & CALLED_RBIT))
+	if ((Wordings::nonempty(RR->terms[0].CALLW)) || (Wordings::nonempty(RR->terms[1].CALLW)))
 		calling_made = TRUE;
-
-@ The second term can be given in several special ways to indicate symmetry
-between the two terms. This is more than a declaration that the left and
-right terms belong to the same domain set (though that is true): it says
-that $R(x, y)$ is true if and only if $R(y, x)$ is true.
-
-@<Detect use of symmetry in definition of second term@> =
-	int specified_one = left_unique;
-	if (right_bitmap & ANOTHER_RBIT) {
-		symmetric = TRUE; left_unique = TRUE; right_unique = TRUE;
-	}
-	if (right_bitmap & EACHOTHER_RBIT) {
-		symmetric = TRUE; left_unique = FALSE; right_unique = FALSE;
-	}
-	if (right_bitmap & GROUPS_RBIT) {
-		symmetric = TRUE; left_unique = FALSE; right_unique = FALSE; equivalence = TRUE;
-	}
-	if ((specified_one == TRUE) && (left_unique == FALSE)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BothOneAndMany),
-			"the left-hand term in this relation seems to be both 'one' thing "
-			"and also many things",
-			"given the mention of 'each other'. Try removing the 'one'.");
-		return;
-	}
-
-@ To give a name to one term implies some degree of uniqueness about it.
-But that only makes sense if there is indeed some uniqueness involved,
-because otherwise it is unclear what the name refers to. Who is "the
-greeter of the Queen of Sheba" given the following definition?
-
->> Acquaintance relates various people (called the greeter) to various people.
-
-Because of that, callings are only allowed in certain circumstances. An
-exception is made -- that is, they are always allowed -- where the relation
-tests a given condition, because then the names identify the terms, e.g.,
-
->> Divisibility relates a number (called N) to a number (called M) when the remainder after dividing M by N is 0.
-
-Here the names "N" and "M" unambiguously refer to the terms being tested
-at this moment, and have no currency beyond that context.
-
-@<Vet the use of callings for the terms of the relation@> =
-	if (Wordings::empty(CONW)) {
-		if ((left_unique == FALSE) && (Wordings::nonempty(LCALLW))) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallLeft),
-				"the left-hand term of this relation is not unique",
-				"so you cannot assign a name to it using 'called'.");
-			return;
-		}
-		if ((right_unique == FALSE) && (Wordings::nonempty(RCALLW))) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallRight),
-				"the right-hand term of this relation is not unique",
-				"so you cannot assign a name to it using 'called'.");
-			return;
-		}
-		if ((Wordings::nonempty(LCALLW)) && (Wordings::nonempty(RCALLW))) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallBoth),
-				"the terms of the relation can't be named on both sides at once",
-				"and because of that it's best to use a single even-handed name: "
-				"for instance, 'Marriage relates one person to another (called "
-				"the spouse).' rather than 'Employment relates one person (called "
-				"the boss) to one person (called the underling).'");
-			return;
-		}
-		if ((symmetric == FALSE) && (left_unique) && (right_unique) && (Wordings::nonempty(RCALLW))) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OneToOneMiscalled),
-				"with a one-to-one relation which is not symmetrical "
-				"only the left-hand item can be given a name using 'called'",
-				"so this needs rephrasing to name the left in terms of the right "
-				"rather than vice versa. For instance, 'Transmission relates "
-				"one remote to one gadget (called the target).' should be "
-				"rephrased as 'Transmission relates one gadget (called the "
-				"target) to one remote.' It will then be possible to talk about "
-				"'the gadget of' any given remote.");
-			return;
-		}
-	}
 
 @ Here we find out the kind which forms the domain on either side. Ideally
 we want each to be a fixed-size and fairly small domain set; actually, best
@@ -533,23 +238,17 @@ very efficiently, and the worst case is to be forced into "dynamic" storage:
 this means using up heap memory allocated dynamically at run-time.
 
 @<Work out the kinds of the terms in the relation@> =
-	if (Relations::parse_relation_term_type(FW, &left_kind, "left") == FALSE) return;
-	if (symmetric) {
-		right_kind = left_kind;
-	} else {
-		if (Relations::parse_relation_term_type(SW, &right_kind, "right") == FALSE) return;
-	}
 
 	rvno = TRUE;
-	if ((Kinds::Compare::le(left_kind, K_object)) &&
-		(Kinds::Compare::le(right_kind, K_object))) rvno = FALSE;
+	if ((Kinds::Compare::le(RR->terms[0].domain, K_object)) &&
+		(Kinds::Compare::le(RR->terms[1].domain, K_object))) rvno = FALSE;
 
-	if (Wordings::empty(CONW)) {
-		if ((Kinds::Compare::lt(left_kind, K_object) == FALSE) &&
-			(Relations::check_finite_range(left_kind) == FALSE)) dynamic = TRUE;
-		if ((Kinds::Compare::lt(right_kind, K_object) == FALSE) &&
-			(symmetric == FALSE) &&
-			(Relations::check_finite_range(right_kind) == FALSE)) dynamic = TRUE;
+	if (Wordings::empty(RR->CONW)) {
+		if ((Kinds::Compare::lt(RR->terms[0].domain, K_object) == FALSE) &&
+			(Relations::check_finite_range(RR->terms[0].domain) == FALSE)) dynamic = TRUE;
+		if ((Kinds::Compare::lt(RR->terms[1].domain, K_object) == FALSE) &&
+			(RR->symmetric == FALSE) &&
+			(Relations::check_finite_range(RR->terms[1].domain) == FALSE)) dynamic = TRUE;
 	}
 
 @ All forms of relation we can produce from here use an I6 property for
@@ -559,36 +258,36 @@ callings, then it gets a name like "concealment relation storage", and is
 omitted from the index.
 
 @<Determine property used for run-time storage@> =
-	if (Wordings::nonempty(LCALLW)) {
-		prn = Properties::Valued::obtain_within_kind(LCALLW, left_kind);
+	if (Wordings::nonempty(RR->terms[0].CALLW)) {
+		prn = Properties::Valued::obtain_within_kind(RR->terms[0].CALLW, RR->terms[0].domain);
 		if (prn == NULL) return;
-	} else if (Wordings::nonempty(RCALLW)) {
-		prn = Properties::Valued::obtain_within_kind(RCALLW, right_kind);
+	} else if (Wordings::nonempty(RR->terms[1].CALLW)) {
+		prn = Properties::Valued::obtain_within_kind(RR->terms[1].CALLW, RR->terms[1].domain);
 		if (prn == NULL) return;
 	} else {
 		word_assemblage pw_wa =
 			PreformUtilities::merge(<relation-storage-construction>, 0,
-				WordAssemblages::from_wording(RW));
+				WordAssemblages::from_wording(RR->RW));
 		wording PW = WordAssemblages::to_wording(&pw_wa);
 		prn = Properties::Valued::obtain_within_kind(PW, K_object);
 		if (prn == NULL) return;
 		Properties::exclude_from_index(prn);
 	}
 	i6_prn_name = Properties::iname(prn);
-	storage_kind = left_kind;
+	storage_kind = RR->terms[0].domain;
 	kind *PK = NULL;
-	if (left_unique) {
-		storage_kind = right_kind;
-		if (left_kind) PK = left_kind;
-	} else if (right_unique) {
-		storage_kind = left_kind;
-		if (right_kind) PK = right_kind;
+	if (RR->terms[0].unique) {
+		storage_kind = RR->terms[1].domain;
+		if (RR->terms[0].domain) PK = RR->terms[0].domain;
+	} else if (RR->terms[1].unique) {
+		storage_kind = RR->terms[0].domain;
+		if (RR->terms[1].domain) PK = RR->terms[1].domain;
 	}
 	if ((PK) && (Kinds::Compare::le(PK, K_object) == FALSE)) Properties::Valued::set_kind(prn, PK);
 	if (storage_kind) storage_infs = Kinds::Knowledge::as_subject(storage_kind);
 	else storage_infs = NULL;
 	if (Kinds::Compare::le(storage_kind, K_object) == FALSE) bp->storage_kind = storage_kind;
-	if (((left_unique) || (right_unique)) && (PK) &&
+	if (((RR->terms[0].unique) || (RR->terms[1].unique)) && (PK) &&
 		(Kinds::Compare::le(PK, K_object) == FALSE))
 		Properties::Valued::now_used_for_non_typesafe_relation(prn);
 
@@ -729,7 +428,7 @@ K to L when (some condition)".
 	package_request *P = BinaryPredicates::package(bp);
 	bp->bp_by_routine_iname = Hierarchy::make_iname_in(RELATION_FN_HL, P);
 	bp->test_function = Calculus::Schemas::new("(%n(*1,*2))", bp->bp_by_routine_iname);
-	bp->condition_defn_text = CONW;
+	bp->condition_defn_text = RR->CONW;
 
 @ The left- and right- local variables above provide us with convenient
 aliases for the entries which will end up in the |bp_term_details|
@@ -747,21 +446,21 @@ have the form $B(x, f_1(x))$.
 @<Add in the reducing functions@> =
 	if (i6_prn_name) {
 		i6_schema *f0 = NULL, *f1 = NULL;
-		if (left_unique) {
-			if (right_kind) {
-				if (Kinds::Compare::le(right_kind, K_object))
+		if (RR->terms[0].unique) {
+			if (RR->terms[1].domain) {
+				if (Kinds::Compare::le(RR->terms[1].domain, K_object))
 					f0 = Calculus::Schemas::new("(*1.%n)", i6_prn_name);
 				else
 					f0 = Calculus::Schemas::new("(GProperty(%k, *1, %n))",
-						right_kind, i6_prn_name);
+						RR->terms[1].domain, i6_prn_name);
 			}
-		} else if (right_unique) {
-			if (left_kind) {
-				if (Kinds::Compare::le(left_kind, K_object))
+		} else if (RR->terms[1].unique) {
+			if (RR->terms[0].domain) {
+				if (Kinds::Compare::le(RR->terms[0].domain, K_object))
 					f1 = Calculus::Schemas::new("(*1.%n)", i6_prn_name);
 				else
 					f1 = Calculus::Schemas::new("(GProperty(%k, *1, %n))",
-						left_kind, i6_prn_name);
+						RR->terms[0].domain, i6_prn_name);
 			}
 		}
 		if (f0) BinaryPredicates::set_term_function(&(bp->term_details[0]), f0);
@@ -783,25 +482,6 @@ to have a name:
 =
 <relation-storage-construction> ::=
 	... relation storage
-
-@h Parsing utilities.
-A term is specified as a kind.
-
-=
-int Relations::parse_relation_term_type(wording W, kind **set_K, char *side) {
-	if (<k-kind-articled>(W)) { *set_K = <<rp>>; return TRUE; }
-	*set_K = NULL;
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, W);
-	Problems::quote_text(3, side);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelatedKindsUnknown));
-	Problems::issue_problem_segment(
-		"In the relation definition %1, I am unable to understand the %3-hand "
-		"side -- I was expecting that %2 would be either the name of a kind, "
-		"or the name of a kind of value, but it wasn't either of those.");
-	Problems::issue_problem_end();
-	return FALSE;
-}
 
 @ A modest utility, to check for a case we forbid because of the prohibitive
 (or anyway unpredictable) run-time storage it would imply.

@@ -388,6 +388,10 @@ int waive_lp_overflows = FALSE;
 int last_LP_problem_at = -1;
 double latest_constructed_real = 0.0;
 
+double LiteralPatterns::get_latest_real(void) {
+	return latest_constructed_real;
+}
+
 kind *LiteralPatterns::match(literal_pattern *lp, wording W, int *found) {
 	int matched_number = 0, overflow_16_bit_flag = FALSE, overflow_32_bit_flag = FALSE;
 	literal_pattern_element *sign_used_at = NULL, *element_overflow_at = NULL;
@@ -2317,96 +2321,23 @@ void LiteralPatterns::log_lp_debugging_data(literal_pattern *lp) {
 	LiteralPatterns::comment_use_of_lp(lp);
 }
 
-@h Creating new literal patterns.
-We create new LPs during traverse 1 of the parse tree. This imposes two
-timing constraints:
-
-(a) The specification sentence must come after the sentence creating the
-kind of value being specified; but
-(b) It must come before any sentences using constants written in this
-notation.
-
-In practice both constraints seem to be accepted by users as reasonable,
-and this causes no trouble.
-
-=
-int LiteralPatterns::specifies_SMF(int task, parse_node *V, wording *NPs) {
-	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
-	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
-	switch (task) {
-		case ACCEPT_SMFT: /* "10'23 specifies a running time." */
-			if (<np-alternative-list>(SW)) {
-				parse_node *S = <<rp>>;
-				if (<np-unparsed>(OW)) {
-					parse_node *O = <<rp>>;
-					V->next = S; V->next->next = O;
-					return TRUE;
-				}
-			}
-			break;
-		case PASS_1_SMFT:
-			LiteralPatterns::new_literal_specification_list(V->next, V->next->next, NULL);
-			break;
-	}
-	return FALSE;
-}
-
-void LiteralPatterns::new_literal_specification(parse_node *pn) {
-	LiteralPatterns::new_literal_specification_list(pn->down->next, pn->down->next->next, NULL);
-}
-
-@ One can define LPs with a list of alternatives, of which the first is the
-"primary alternative" and said to be the "owner" of the rest. For instance:
-
->> 1 tonne (in metric units, in tonnes, singular) or 2 tonnes (in metric units,
-in tonnes, plural) specifies a mass scaled up by 1000.
-
-Here we call |LiteralPatterns::new_literal_specification_list| on "1 tonne" with no owner,
-and then on "2 tonnes" with the "1 tonne" LP as its owner.
-
-=
-literal_pattern *LiteralPatterns::new_literal_specification_list(parse_node *p, parse_node *q,
-	literal_pattern *lp_main) {
-	if (Node::get_type(p) == AND_NT) {
-		lp_main = LiteralPatterns::new_literal_specification_list(p->down, q, lp_main);
-		return LiteralPatterns::new_literal_specification_list(p->down->next, q, lp_main);
-	}
-	return LiteralPatterns::new_literal_specification_inner(p, q, lp_main);
-}
-
 @ The grammars for the specify sentence are quite complicated, but aren't used
 recursively. So it's more convenient to have them set global variables than to
 form a big parse subtree and extract the data from that; these are what they
 set.
 
 =
-double LP_real_offset = 0.0, LP_real_equivalent = 0.0, LP_real_scaling_amount = 0.0;
-int LP_scaling, LP_scaling_amount, LP_to_real;
-int LP_equivalent; parse_node *LP_equivalent_value;
-parse_node *LP_offset_value;
-kind *LP_left_kind, *LP_right_kind; /* used only for dimensional rules */
-kind *LP_kind_specified; /* what kind this sentence specifies */
+literal_pattern *LiteralPatterns::new_literal_specification_inner(lp_specification *lps,
+	parse_node *p, parse_node *q, literal_pattern *owner) {
+	int offset = 0, integer_scaling = TRUE;
+	kind *K = lps->kind_specified;
 
-@ So this is where we handle a typical specification:
-
-=
-literal_pattern *LiteralPatterns::new_literal_specification_inner(parse_node *p, parse_node *q,
-	literal_pattern *owner) {
-	int scaled = 1, scaled_dir = LP_SCALED_UP, offset = 0, integer_scaling = TRUE;
-	parse_node *part_np_list = NULL;
-	kind *K = NULL;
 	literal_pattern *lp = NULL; /* what we will create, if all goes well */
-	int notation_options = 0; literal_pattern_name *notation_groups = NULL;
-	wording SPW = Node::get_text(p);
-
-	@<Parse the subject noun phrase of the specifies sentence@>;
-	@<Parse the object noun phrase of the specifies sentence@>;
 
 	if (Kinds::FloatingPoint::uses_floating_point(K)) integer_scaling = FALSE;
-	if ((LP_to_real) && (integer_scaling))
+	if ((lps->uses_real_arithmetic) && (integer_scaling))
 		@<Issue problem message warning that real arithmetic is needed@>;
 
-	@<Deal with the case where a dimensionality rule is being specified@>;
 	@<Check that the new notation does not overlap with that of any existing LP@>;
 	@<Check that the kind is acceptable as the owner of a LP@>;
 	@<Check that any other value mentioned as an equivalent or scaled equivalent has the right kind@>;
@@ -2418,7 +2349,7 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(parse_node *p,
 	if (LiteralPatterns::list_of_literal_forms(K) == NULL) lp->benchmark = TRUE;
 	LiteralPatterns::add_literal_pattern(K, lp);
 
-	if (part_np_list) {
+	if (lps->part_np_list) {
 		@<Work through parts text to assign names to the individual elements@>;
 		@<Check that any notes to do with optional elements are mutually compatible@>;
 		LiteralPatterns::define_packing_phrases(lp, K);
@@ -2441,203 +2372,12 @@ literal_pattern *LiteralPatterns::new_literal_specification_inner(parse_node *p,
 @d OFFSET_LPC 3
 @d EQUIVALENT_LPC 4
 
-@d OPTIONAL_LSO 1
-@d PREAMBLE_OPTIONAL_LSO 2
-@d WITHOUT_LEADING_ZEROS_LSO 4
-
-@d SINGULAR_LPN 1
-@d PLURAL_LPN 2
-@d IN_LPN 4
-@d TIMES_LPN 8
-@d ABANDON_LPN 16
-
-@<Parse the subject noun phrase of the specifies sentence@> =
-	LP_scaling = LP_SCALED_UP; LP_scaling_amount = 1; LP_real_scaling_amount = 1.0;
-	LP_real_equivalent = 0.0; LP_equivalent_value = NULL;
-	LP_real_offset = 0.0; LP_offset_value = NULL;
-	LP_to_real = FALSE;
-
-	<specifies-sentence-subject>(SPW);
-	SPW = GET_RW(<specifies-sentence-subject>, 1);
-	notation_options = <<r>>;
-	if (notation_options & ABANDON_LPN) return owner;
-	notation_groups = NULL;
-	if (notation_options) notation_groups = <<rp>>;
-
-@ The following grammar is used to parse the new literal patterns defined
-in a "specifies" sentence.
-
->> 1 tonne (in metric units, in tonnes, singular) or 2 tonnes (in metric units, in tonnes, plural) specifies a mass scaled up by 1000.
-
-The subject nounphrase has already been converted into a list of alternatives,
-divided by "or", and the following grammar removes the optional list of
-groups to which the notation begins. So, for example, <specifies-sentence-subject>
-is used on "1 tonne (in metric units, in tonnes, singular)". "In metric
-units" and "in tonnes" are names for groups of literal patterns; note
-that in English, these names always begin with "in".
-
-However, note that a "specifies" sentence can also be used for a quite
-different purpose:
-
->> A length times a length specifies an area.
-
-This gives dimensional instructions about kinds, and doesn't have anything to
-do with literals and their notation. It's a slightly unhappy ambiguity, but
-the potential for confusion is very low. Nobody who defines a literal pattern
-with the word "times" in can expect good results anyway, given that "times"
-will usually be interpreted as multiplication when Inform eventually parses
-such a literal. Still, to minimise clashes, we respond to "times" here only
-when there is meaningful text on either side of it.
-
-Formally, the subject noun phrase of a "specifies" sentence must be a list
-of alternatives each of which matches the following:
-
-=
-<specifies-sentence-subject> ::=
-	... ( {<literal-pattern-group-list>} ) |         ==> { pass 1 }
-	<k-kind-articled> times <k-kind-articled> |      ==> { TIMES_LPN, - }; LP_left_kind = RP[1]; LP_right_kind = RP[2];
-	<s-type-expression> times <s-type-expression> |  ==> @<Issue PM_MultiplyingNonKOVs problem@>
-	... ==> { 0, NULL }
-
-<literal-pattern-group-list> ::=
-	<literal-pattern-group> <literal-pattern-group-tail> |  ==> { R[1] | R[2], - }; @<Compose LPG lists@>;
-	<literal-pattern-group>                                 ==> { pass 1 }
-
-<literal-pattern-group-tail> ::=
-	, and <literal-pattern-group-list> |  ==> { pass 1 }
-	,/and <literal-pattern-group-list>    ==> { pass 1 }
-
-<literal-pattern-group> ::=
-	singular |                      ==> { SINGULAR_LPN, NULL }
-	plural |                        ==> { PLURAL_LPN, NULL }
-	<literal-pattern-group-name> |  ==> { IN_LPN, LiteralPatterns::new_lpn(EMPTY_WORDING, RP[1]) }
-	in ...... |                     ==> { IN_LPN, LiteralPatterns::new_lpn(W, NULL) }
-	......                          ==> @<Issue PM_BadLPNameOption problem@>
-
-@<Compose LPG lists@> =
-	parse_node *comp = RP[1];
-	if (comp == NULL) comp = RP[2];
-	else if (RP[2]) ((literal_pattern_name *) RP[1])->next_with_rp = RP[2];
-	==> { -, comp };
-
-@<Issue PM_MultiplyingNonKOVs problem@> =
-	if (preform_lookahead_mode == FALSE) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultiplyingNonKOVs),
-			"only kinds of value can be multiplied here",
-			"and only in a sentence like 'A length times a length specifies an area.'");
-	}
-	==> { ABANDON_LPN, NULL }
-
-@<Issue PM_BadLPNameOption problem@> =
-	if (preform_lookahead_mode == FALSE) {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, W);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadLPNameOption));
-		Problems::issue_problem_segment(
-			"In the specification %1, I was expecting that '%2' would be an optional "
-			"note about one of the notations: it should have been one of 'singular', "
-			"'plural' or 'in ...'.");
-		Problems::issue_problem_end();
-	}
-	==> { ABANDON_LPN, NULL }
-
-@<Parse the object noun phrase of the specifies sentence@> =
-	LP_offset_value = NULL;
-	<specifies-sentence-object>(Node::get_text(q));
-	switch (<<r>>) {
-		case PARTS_LPC: part_np_list = <<rp>>; break;
-		case SCALING_LPC: scaled = LP_scaling_amount; scaled_dir = LP_scaling; break;
-	}
-	K = LP_kind_specified;
-	if (K == NULL) return owner;
-
-@ The object noun phrase of a "specifies" sentence is required to match
-the following grammar. Note that the tails are mutually exclusive; you
-can't set both scaling and an equivalent, for instance.
-
-=
-<specifies-sentence-object> ::=
-	<kind-specified> <literal-pattern-specification-tail> |  ==> { pass 2 }
-	<kind-specified>                                         ==> { 0, NULL }
-
-<kind-specified> ::=
-	<k-kind-articled> |  ==> { 0, NULL }; LP_kind_specified = RP[1];
-	...                  ==> @<Issue PM_LPNotKOV problem@>
-
-<literal-pattern-specification-tail> ::=
-	with parts <literal-pattern-part-list> |    ==> { PARTS_LPC, RP[1] }
-	<scaling-instruction> |    ==> { SCALING_LPC, - }
-	<scaling-instruction> offset by <s-literal> |    ==> { SCALING_LPC, - }; LP_real_offset = latest_constructed_real; LP_offset_value = RP[2];
-	offset by <s-literal> |    ==> { OFFSET_LPC, - }; LP_real_offset = latest_constructed_real; LP_offset_value = RP[1];
-	equivalent to <s-literal>						==> { EQUIVALENT_LPC, - }; LP_real_equivalent = latest_constructed_real; LP_equivalent_value = RP[1];
-
-<scaling-instruction> ::=
-	scaled up by <cardinal-number> |    ==> { SCALING_LPC, - }; LP_scaling = LP_SCALED_UP; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
-	scaled up by <s-literal-real-number> |    ==> { SCALING_LPC, - }; LP_scaling = LP_SCALED_UP; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;
-	scaled down by <cardinal-number> |    ==> { SCALING_LPC, - }; LP_scaling = LP_SCALED_DOWN; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
-	scaled down by <s-literal-real-number> |    ==> { SCALING_LPC, - }; LP_scaling = LP_SCALED_DOWN; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;
-	scaled at <cardinal-number>	|    ==> { SCALING_LPC, - }; LP_scaling = LP_SCALED_AT; LP_scaling_amount = R[1]; LP_real_scaling_amount = (double) LP_scaling_amount;
-	scaled at <s-literal-real-number>			==> { SCALING_LPC, - }; LP_scaling = LP_SCALED_AT; LP_scaling_amount = 1; LP_real_scaling_amount = latest_constructed_real; LP_to_real = TRUE;
-
-@<Issue PM_LPNotKOV problem@> =
-	if (preform_lookahead_mode == FALSE) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPNotKOV),
-			"you can only specify ways to write kinds of value",
-			"as created with sentences like 'A weight is a kind of value.'");
-	}
-
-@ Of the optional tails, the only tricky one is the part list, which has the
-following rather extensive grammar. This handles text like:
-
->> dollars and cents (optional, preamble optional)
-
-The text is a list of part-names, each of which can optionally be followed
-by a bracketed list of up to three options in any order.
-
-=
-<literal-pattern-part-list> ::=
-	<literal-pattern-part> , and <literal-pattern-part-list> |  ==> { 0, RP[1] }; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
-	<literal-pattern-part> , <literal-pattern-part-list> |      ==> { 0, RP[1] }; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
-	<literal-pattern-part> and <literal-pattern-part-list> |    ==> { 0, RP[1] }; if (RP[1]) ((parse_node *) RP[1])->next = RP[2];
-	<literal-pattern-part>                                      ==> { 0, RP[1] }
-
-<literal-pattern-part> ::=
-	<np-unparsed-bal> ( <literal-pattern-part-option-list> ) |  ==> { 0, RP[1] }; if (RP[1]) Annotations::write_int(*XP, lpe_options_ANNOT, R[2]);
-	<np-unparsed-bal>                                           ==> { 0, RP[1] }
-
-<literal-pattern-part-option-list> ::=
-	<literal-pattern-part-option> <literal-pattern-part-option-tail> |  ==> { R[1] | R[2], - }
-	<literal-pattern-part-option>                               ==> { pass 1 }
-
-<literal-pattern-part-option-tail> ::=
-	, and <literal-pattern-part-option-list> |                  ==> { pass 1 }
-	,/and <literal-pattern-part-option-list>                    ==> { pass 1 }
-
-<literal-pattern-part-option> ::=
-	optional |                                                  ==> { OPTIONAL_LSO, - }
-	preamble optional |                                         ==> { PREAMBLE_OPTIONAL_LSO, - }
-	without leading zeros |                                     ==> { WITHOUT_LEADING_ZEROS_LSO, - }
-	......                                                      ==> @<Issue PM_BadLPPartOption problem@>
-
-@<Issue PM_BadLPPartOption problem@> =
-	if (preform_lookahead_mode == FALSE) {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, W);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadLPPartOption));
-		Problems::issue_problem_segment(
-			"In the specification %1, I was expecting that '%2' would be an optional "
-			"note about one of the parts: it should have been one of 'optional', "
-			"'preamble optional' or 'without leading zeros'.");
-		Problems::issue_problem_end();
-	}
-	==> { 0, - };
-
 @ That's it for syntax: now back to semantics.
 
 @<Check that any other value mentioned as an equivalent or scaled equivalent has the right kind@> =
-	if (LP_equivalent_value) {
-		if (Rvalues::is_CONSTANT_of_kind(LP_equivalent_value, K)) {
-			scaled_dir = LP_SCALED_UP; scaled = Rvalues::to_encoded_notation(LP_equivalent_value);
+	if (lps->equivalent_value) {
+		if (Rvalues::is_CONSTANT_of_kind(lps->equivalent_value, K)) {
+			lps->scaled_dir = LP_SCALED_UP; lps->scale_factor = Rvalues::to_encoded_notation(lps->equivalent_value);
 		} else {
 			StandardProblems::sentence_problem_with_note(Task::syntax_tree(), _p_(PM_BadLPEquivalent),
 				"the equivalent value needs to be a constant of the same kind "
@@ -2648,9 +2388,9 @@ by a bracketed list of up to three options in any order.
 		}
 	}
 
-	if (LP_offset_value) {
-		if (Rvalues::is_CONSTANT_of_kind(LP_offset_value, K)) {
-			offset = Rvalues::to_encoded_notation(LP_offset_value);
+	if (lps->offset_value) {
+		if (Rvalues::is_CONSTANT_of_kind(lps->offset_value, K)) {
+			offset = Rvalues::to_encoded_notation(lps->offset_value);
 		} else {
 			StandardProblems::sentence_problem_with_note(Task::syntax_tree(), _p_(PM_BadLPOffset),
 				"the offset value needs to be a constant of the same kind "
@@ -2675,12 +2415,12 @@ does not throw a problem message as being a bar which is out of range
 
 @<Check that the new notation does not overlap with that of any existing LP@> =
 	waive_lp_overflows = TRUE;
-	kind *K = NULL; if (<s-literal>(SPW)) K = Rvalues::to_kind(<<rp>>);
+	kind *K = NULL; if (<s-literal>(lps->notation_wording)) K = Rvalues::to_kind(<<rp>>);
 	waive_lp_overflows = FALSE;
 	if (K) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
-		Problems::quote_wording(3, SPW);
+		Problems::quote_wording(3, lps->notation_wording);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_DuplicateUnitSpec));
 		Problems::issue_problem_segment(
 			"In the sentence %1, it looks as if you intend to give a new meaning "
@@ -2704,17 +2444,6 @@ does not throw a problem message as being a bar which is out of range
 		"instead of '1 rel specifies...'.");
 	Problems::issue_problem_end();
 	return owner;
-
-@ Note that we don't create a new LP structure if the following happens:
-
-@<Deal with the case where a dimensionality rule is being specified@> =
-	if (notation_options == TIMES_LPN) {
-		Kinds::Dimensions::dim_set_multiplication(LP_left_kind, LP_right_kind, K);
-		return owner;
-	}
-
-@ This checking did not apply to the dimensionality rules case, which looks
-after itself.
 
 @<Check that the kind is acceptable as the owner of a LP@> =
 	if (Kinds::Behaviour::is_built_in(K)) {
@@ -2742,42 +2471,38 @@ after itself.
 @ All the hard work here was done during parsing.
 
 @<Create the new literal pattern structure@> =
-	lp = LiteralPatterns::lp_new(K, SPW);
-	if (LP_equivalent_value) LP_real_scaling_amount = LP_real_equivalent;
-	if (scaled <= 0) {
+	lp = LiteralPatterns::lp_new(K, lps->notation_wording);
+	if (lps->equivalent_value) lps->scale_factor_as_double = lps->equivalent_value_as_double;
+	if (lps->scale_factor <= 0) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPNonpositiveScaling),
 			"you can only scale by a positive multiple",
 			"so something like 'scaled up by -1' is not allowed.");
-		scaled = 1;
+		lps->scale_factor = 1;
 	}
-	lp->scaling = Kinds::Scalings::new(integer_scaling, scaled_dir,
-		scaled, LP_real_scaling_amount, offset, LP_real_offset);
-	if ((scaled_dir == LP_SCALED_DOWN) && (scaled == 0)) internal_error("Oooops");
+	lp->scaling = Kinds::Scalings::new(integer_scaling, lps->scaled_dir,
+		lps->scale_factor, lps->scale_factor_as_double, offset, lps->offset_value_as_double);
 	if (owner == NULL) lp->primary_alternative = TRUE;
-	if (LP_equivalent_value) lp->equivalent_unit = TRUE;
-	if (notation_options & SINGULAR_LPN) lp->singular_form_only = TRUE;
-	if (notation_options & PLURAL_LPN) lp->plural_form_only = TRUE;
-	if (notation_options & IN_LPN) {
-		literal_pattern_name *lpn;
-		for (lpn = notation_groups; lpn; lpn = lpn->next_with_rp)
-			lpn->can_use_this_lp = lp;
-	}
+	if (lps->equivalent_value) lp->equivalent_unit = TRUE;
+	if (lps->notation_options & SINGULAR_LPN) lp->singular_form_only = TRUE;
+	if (lps->notation_options & PLURAL_LPN) lp->plural_form_only = TRUE;
+	for (literal_pattern_name *lpn = lps->notation_groups; lpn; lpn = lpn->next_with_rp)
+		lpn->can_use_this_lp = lp;
 
 @ Each word is either a whole token in itself, or a stream of tokens representing
 alphabetic vs numeric pieces of a word:
 
 @<Break down the specification text into tokens and elements@> =
 	int i, j, tc, ec;
-	for (i=0, tc=0, ec=0; i<Wordings::length(SPW); i++) {
+	for (i=0, tc=0, ec=0; i<Wordings::length(lps->notation_wording); i++) {
 		literal_pattern_token new_token;
 		int digit_found = FALSE;
-		wchar_t *text_of_word = Lexer::word_raw_text(Wordings::first_wn(SPW)+i);
+		wchar_t *text_of_word = Lexer::word_raw_text(Wordings::first_wn(lps->notation_wording)+i);
 		for (j=0; text_of_word[j]; j++) if (Characters::isdigit(text_of_word[j])) digit_found = TRUE;
 		if (digit_found)
 			@<Break up the word into at least one element token, and perhaps also character tokens@>
 		else {
 			new_token = LiteralPatterns::lpt_new(WORD_LPT, TRUE);
-			new_token.token_wn = Wordings::first_wn(SPW)+i;
+			new_token.token_wn = Wordings::first_wn(lps->notation_wording)+i;
 			@<Add new token to LP@>;
 		}
 	}
@@ -2878,7 +2603,7 @@ this is deferred until all elements exist, at which point we --
 @<Work through parts text to assign names to the individual elements@> =
 	int i;
 	parse_node *p;
-	for (i=0, p=part_np_list; (i<lp->no_lp_elements) && (p); i++, p = p->next) {
+	for (i=0, p=lps->part_np_list; (i<lp->no_lp_elements) && (p); i++, p = p->next) {
 		literal_pattern_element *lpe = &(lp->lp_elements[i]);
 		lpe->element_name = Node::get_text(p);
 		int O = Annotations::read_int(p, lpe_options_ANNOT);
@@ -2928,12 +2653,11 @@ optional, and it must not be the first.
 		return owner;
 	}
 
-@ Group names are created when first seen (in production (d)
-of <literal-pattern-group>): the following recognises one which has been
-seen before.
+@ Group names are created when first seen; the following recognises one which
+has been seen before.
 
 =
-<literal-pattern-group-name> internal {
+<lp-group-name> internal {
 	literal_pattern_name *lpn;
 	LOOP_OVER(lpn, literal_pattern_name) {
 		if (Wordings::match(lpn->notation_name, W)) {

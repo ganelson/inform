@@ -124,7 +124,7 @@ generalisations which apply to it.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">generalisation</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure generalisation is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 5/rpt, 5/tc, 5/ma, 5/rk, 5/imp, 5/pd, 6/lp, 6/ins, 7/rlt, 7/nv, 8/rs, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/rl2, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 27/cm and here.</li></ul>
+<ul class="endnotetexts"><li>The structure generalisation is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 4/nar, 4/nlpr, 4/nrr, 5/rpt, 5/tc, 5/ma, 5/rk, 5/imp, 5/pd, 6/lp, 6/ins, 7/nv, 8/rs, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/rl2, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 27/cm and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>For reasons to do with timing, each object needs to keep track of which
 generalisations have and have not yet applied to it. In practice, this is
 a list of pairs \((K, g)\) where \(K\) is a kind and \(g\) is the most recent one
@@ -138,7 +138,7 @@ applied from \(K\)'s list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">application</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">application</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure application is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 5/rpt, 5/tc, 5/ma, 5/rk, 5/imp, 5/pd, 6/lp, 6/ins, 7/rlt, 7/nv, 8/rs, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/rl2, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 27/cm and here.</li></ul>
+<ul class="endnotetexts"><li>The structure application is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 4/nar, 4/nlpr, 4/nrr, 5/rpt, 5/tc, 5/ma, 5/rk, 5/imp, 5/pd, 6/lp, 6/ins, 7/nv, 8/rs, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/rl2, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 27/cm and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>These structures are combined in the following packet of data attached to
 each inference subject:
 </p>
