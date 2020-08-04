@@ -231,7 +231,7 @@ so on. Those absolute basics are made here.
 	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::truth_state)
 	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::time)
 	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::compile_type_gprs)
-	BENCH(NewVerbs::ConjugateVerb)
+	BENCH(VerbsAtRunTime::ConjugateVerb)
 	BENCH(Adjectives::Meanings::agreements)
 
 	if (debugging) {

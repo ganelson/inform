@@ -150,7 +150,7 @@ they can be rather lengthy.
 			CoreMain::write_diagnostics(
 				I"documentation-diagnostics.txt", &Index::DocReferences::log_statistics);
 			CoreMain::write_diagnostics(
-				I"verbs-diagnostics.txt", &NewVerbs::log_all);
+				I"verbs-diagnostics.txt", &VerbsAtRunTime::log_all);
 			CoreMain::write_diagnostics(
 				I"excerpts-diagnostics.txt", &FromLexicon::statistics);
 			CoreMain::write_diagnostics(

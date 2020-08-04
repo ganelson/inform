@@ -425,7 +425,7 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 	if (ParseTreeUsage::is_lvalue(pn)) Lvalues::log(pn);
 	else if (ParseTreeUsage::is_rvalue(pn)) Rvalues::log(pn);
 	else if (ParseTreeUsage::is_condition(pn)) Conditions::log(pn);
-	if (Node::get_vu(pn)) { WRITE("-vu:"); NewVerbs::log(Node::get_vu(pn)); }
+	if (Node::get_vu(pn)) { WRITE("-vu:"); VerbsAtRunTime::log(Node::get_vu(pn)); }
 	if (Node::get_prep(pn)) { WRITE("-prep:$p", Node::get_prep(pn)); }
 
 @ We do not log every annotation: only the few which are most illuminating.

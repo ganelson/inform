@@ -44,6 +44,9 @@ Chapter 4: Requests
 	New Activity Requests
 	New Literal Pattern Requests
 	New Relation Requests
+	New Property Requests
+	New Verb Requests
+	New Adjective Requests
 
 Chapter 5: Assertions
 "Turning regular assertion sentences into propositions about the model world."
@@ -52,11 +55,11 @@ Chapter 5: Assertions
 	Refine Parse Tree
 	The Creator
 	Make Assertions
+	New Property Assertions
 	Property Knowledge
 	Relation Knowledge
 	Assemblies
 	Implications
-	Property Declarations
 
 Chapter 6: Nouns
 "Nouns, mainly proper, and notations for constant values such as 10:03 AM, six,
@@ -79,7 +82,7 @@ to binary predicates."
 	Relations
 	Explicit Relations
 	The Universal Relation
-	New Verbs
+	Verbs at Run Time
 
 Chapter 8: Sentences
 "In which the stream of words is broken up into sentences and built into a

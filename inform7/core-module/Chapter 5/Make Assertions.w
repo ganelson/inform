@@ -789,7 +789,7 @@ or a kind of value.
 		}
 		@<Issue the not allowed to have properties or variables problem message@>;
 	}
-	if (global_pass_state.pass == 1) Assertions::Property::recursively_declare_properties(px, py->down);
+	if (global_pass_state.pass == 1) NewPropertyAssertions::recursively_declare(px, py->down);
 
 @ Activities can optionally be referred to without the clarifier "activity",
 but not in this context.

@@ -2,11 +2,11 @@ adjective: 137 items
 article: 2 items
 noun: 2381 items
 pronoun: 8 items
-preposition: 281 items
+preposition: 273 items
 determiner: 22 items
 verb: 108 items
-verb_form: 394 items
-total in all categories: 3333
+verb_form: 386 items
+total in all categories: 3317
 
 adjective: A0'even'
 adjective: A1'odd'
@@ -2577,14 +2577,6 @@ preposition: greater than
 preposition: less than
 preposition: at least
 preposition: at most
-preposition: >ed by
-preposition: >ing
-preposition: <ed by
-preposition: <ing
-preposition: >=ed by
-preposition: >=ing
-preposition: <=ed by
-preposition: <=ing
 preposition: being able to
 preposition: coulding
 preposition: maying
@@ -2859,10 +2851,10 @@ verb: provide(10)
 verb: use(11)
 verb: include(12)
 verb: omit(13)
-verb: >(14)
-verb: <(15)
-verb: >=(16)
-verb: <=(17)
+verb: (unconjugated)(14)
+verb: (unconjugated)(15)
+verb: (unconjugated)(16)
+verb: (unconjugated)(17)
 verb: be able to(18)
 verb: could(19)
 verb: may(20)
@@ -3005,18 +2997,10 @@ verb_form: be(0) + greater than + ___ SVO
 verb_form: be(0) + less than + ___ SVO
 verb_form: be(0) + at least + ___ SVO
 verb_form: be(0) + at most + ___ SVO
-verb_form: >(14) + ___ + ___ SVO
-verb_form: be(0) + >ed by + ___ SVO
-verb_form: be(0) + >ing + ___ SVO
-verb_form: <(15) + ___ + ___ SVO
-verb_form: be(0) + <ed by + ___ SVO
-verb_form: be(0) + <ing + ___ SVO
-verb_form: >=(16) + ___ + ___ SVO
-verb_form: be(0) + >=ed by + ___ SVO
-verb_form: be(0) + >=ing + ___ SVO
-verb_form: <=(17) + ___ + ___ SVO
-verb_form: be(0) + <=ed by + ___ SVO
-verb_form: be(0) + <=ing + ___ SVO
+verb_form: (unconjugated)(14) + ___ + ___ SVO
+verb_form: (unconjugated)(15) + ___ + ___ SVO
+verb_form: (unconjugated)(16) + ___ + ___ SVO
+verb_form: (unconjugated)(17) + ___ + ___ SVO
 verb_form: be able to(18) + ___ + ___ SVO
 verb_form: be(0) + being able to + ___ SVO
 verb_form: could(19) + ___ + ___ SVO

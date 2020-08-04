@@ -309,7 +309,7 @@ inter_name *Conjugation::conj_iname(verb_conjugation *vc) {
 			vc->vc_iname = Hierarchy::make_iname_in(MODAL_CONJUGATION_FN_HL, R);
 		} else {
 			package_request *R =
-				NewVerbs::package(vc->vc_conjugates, vc->where_vc_created);
+				VerbsAtRunTime::package(vc->vc_conjugates, vc->where_vc_created);
 			TEMPORARY_TEXT(ANT)
 			WRITE_TO(ANT, "to %A", &(vc->infinitive));
 			Hierarchy::markup(R, VERB_NAME_HMD, ANT);

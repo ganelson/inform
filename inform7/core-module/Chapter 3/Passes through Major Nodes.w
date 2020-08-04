@@ -243,3 +243,13 @@ followed by double-quoted text is a note for the telemetry file.
 		}
 		Log::tracing_on(SyntaxTree::is_trace_set(Task::syntax_tree()), pass_name);
 	}
+
+@
+
+@d TRACING_LINGUISTICS_CALLBACK MajorNodes::trace_parsing
+
+=
+int MajorNodes::trace_parsing(int A) {
+	if (SyntaxTree::is_trace_set(Task::syntax_tree())) return TRUE;
+	return FALSE;
+}

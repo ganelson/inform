@@ -177,54 +177,10 @@ The current S-grammar has the following verb and preposition usages:
  {verb 'omit' 3p s act IS_TENSE +ve}
  {verb 'omit' 3p p act IS_TENSE +ve}
  {verb 'omit' s/p 3p act WAS_TENSE +ve}
- {verb '>' 3p s act HASBEEN_TENSE -ve}
- {verb '>' 3p p act HASBEEN_TENSE -ve}
- {verb '>' s/p 3p act HADBEEN_TENSE -ve}
- {verb '>' 3p s act HASBEEN_TENSE +ve}
- {verb '>' 3p p act HASBEEN_TENSE +ve}
- {verb '>' s/p 3p act HADBEEN_TENSE +ve}
- {verb '>' 3p s act IS_TENSE -ve}
- {verb '>' 3p p act IS_TENSE -ve}
- {verb '>' s/p 3p act WAS_TENSE -ve}
- {verb '>' 3p s act IS_TENSE +ve}
- {verb '>' 3p p act IS_TENSE +ve}
- {verb '>' s/p 3p act WAS_TENSE +ve}
- {verb '<' 3p s act HASBEEN_TENSE -ve}
- {verb '<' 3p p act HASBEEN_TENSE -ve}
- {verb '<' s/p 3p act HADBEEN_TENSE -ve}
- {verb '<' 3p s act HASBEEN_TENSE +ve}
- {verb '<' 3p p act HASBEEN_TENSE +ve}
- {verb '<' s/p 3p act HADBEEN_TENSE +ve}
- {verb '<' 3p s act IS_TENSE -ve}
- {verb '<' 3p p act IS_TENSE -ve}
- {verb '<' s/p 3p act WAS_TENSE -ve}
- {verb '<' 3p s act IS_TENSE +ve}
- {verb '<' 3p p act IS_TENSE +ve}
- {verb '<' s/p 3p act WAS_TENSE +ve}
- {verb '>=' 3p s act HASBEEN_TENSE -ve}
- {verb '>=' 3p p act HASBEEN_TENSE -ve}
- {verb '>=' s/p 3p act HADBEEN_TENSE -ve}
- {verb '>=' 3p s act HASBEEN_TENSE +ve}
- {verb '>=' 3p p act HASBEEN_TENSE +ve}
- {verb '>=' s/p 3p act HADBEEN_TENSE +ve}
- {verb '>=' 3p s act IS_TENSE -ve}
- {verb '>=' 3p p act IS_TENSE -ve}
- {verb '>=' s/p 3p act WAS_TENSE -ve}
- {verb '>=' 3p s act IS_TENSE +ve}
- {verb '>=' 3p p act IS_TENSE +ve}
- {verb '>=' s/p 3p act WAS_TENSE +ve}
- {verb '<=' 3p s act HASBEEN_TENSE -ve}
- {verb '<=' 3p p act HASBEEN_TENSE -ve}
- {verb '<=' s/p 3p act HADBEEN_TENSE -ve}
- {verb '<=' 3p s act HASBEEN_TENSE +ve}
- {verb '<=' 3p p act HASBEEN_TENSE +ve}
- {verb '<=' s/p 3p act HADBEEN_TENSE +ve}
- {verb '<=' 3p s act IS_TENSE -ve}
- {verb '<=' 3p p act IS_TENSE -ve}
- {verb '<=' s/p 3p act WAS_TENSE -ve}
- {verb '<=' 3p s act IS_TENSE +ve}
- {verb '<=' 3p p act IS_TENSE +ve}
- {verb '<=' s/p 3p act WAS_TENSE +ve}
+ {verb '' 3p s act IS_TENSE +ve}
+ {verb '' 3p s act IS_TENSE +ve}
+ {verb '' 3p s act IS_TENSE +ve}
+ {verb '' 3p s act IS_TENSE +ve}
  {verb 'be able to' 3p s act HASBEEN_TENSE -ve}
  {verb 'be able to' 3p p act HASBEEN_TENSE -ve}
  {verb 'be able to' s/p 3p act HADBEEN_TENSE -ve}
@@ -1208,14 +1164,6 @@ greater than
 less than
 at least
 at most
->ed by
->ing
-<ed by
-<ing
->=ed by
->=ing
-<=ed by
-<=ing
 being able to
 coulding
 maying

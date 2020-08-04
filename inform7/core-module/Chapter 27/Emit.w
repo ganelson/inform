@@ -57,7 +57,7 @@ void Emit::begin(void) {
 	Packaging::exit(Emit::tree(), save);
 
 	FundamentalConstants::emit(Task::vm());
-	NewVerbs::ConjugateVerbDefinitions();
+	VerbsAtRunTime::ConjugateVerbDefinitions();
 	
 	Hierarchy::find(INFORMLIBRARY_HL);
 }
