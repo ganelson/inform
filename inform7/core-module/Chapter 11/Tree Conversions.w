@@ -252,12 +252,11 @@ which is by now inside the "creation proposition".
 
 @<Conjoin atoms to assert from an adjective node@> =
 	int negate_me = FALSE;
-	if (Annotations::read_int(p, negated_boolean_ANNOT)) negate_me = TRUE;
-	if (Node::get_aph(p) == NULL)
-		internal_error("Bogus adjective at Calculus::Propositions::Abstract::from_property_list");
-
+	unary_predicate *pred = Node::get_predicate(p);
+	if (pred == NULL) internal_error("adjective without predicate");
+	if (UnaryPredicates::get_parity(pred) == FALSE) negate_me = TRUE;
 	if (Node::get_creation_proposition(p))
 		prop = Calculus::Propositions::conjoin(prop, Node::get_creation_proposition(p));
 	if (negate_me) prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::new(NEGATION_OPEN_ATOM));
-	prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::unary_PREDICATE_from_aph(Node::get_aph(p), FALSE));
+	prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::unary_PREDICATE_from_aph(UnaryPredicates::get_adj(pred), FALSE));
 	if (negate_me) prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::new(NEGATION_CLOSE_ATOM));

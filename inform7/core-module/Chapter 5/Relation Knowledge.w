@@ -147,8 +147,8 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 @ Both sides have to be nouns representing constant values:
 
 @<Normalise the two noun leaves@> =
-	Refiner::coerce_adjectival_usage_to_noun(px); Refiner::turn_player_to_yourself(px);
-	Refiner::coerce_adjectival_usage_to_noun(py); Refiner::turn_player_to_yourself(py);
+	Refiner::nominalise_adjective(px); Refiner::turn_player_to_yourself(px);
+	Refiner::nominalise_adjective(py); Refiner::turn_player_to_yourself(py);
 
 	if (((Node::get_type(px) != PROPER_NOUN_NT) && (Node::get_type(px) != COMMON_NOUN_NT)) ||
 		((Node::get_type(py) != PROPER_NOUN_NT) && (Node::get_type(py) != COMMON_NOUN_NT))) {

@@ -60,9 +60,12 @@ void Refiner::copy_noun_details(parse_node *p_to, parse_node *p_from) {
 	Node::set_evaluation(p_to, Node::get_evaluation(p_from));
 	Node::set_creation_proposition(p_to, Node::get_creation_proposition(p_from));
 	Node::set_subject(p_to, Node::get_subject(p_from));
-	Annotations::write_int(p_to, multiplicity_ANNOT, Annotations::read_int(p_from, multiplicity_ANNOT));
-	Annotations::write_int(p_to, nowhere_ANNOT, Annotations::read_int(p_from, nowhere_ANNOT));
-	Annotations::write_int(p_to, creation_site_ANNOT, Annotations::read_int(p_from, creation_site_ANNOT));
+	Annotations::write_int(p_to, multiplicity_ANNOT,
+		Annotations::read_int(p_from, multiplicity_ANNOT));
+	Annotations::write_int(p_to, nowhere_ANNOT,
+		Annotations::read_int(p_from, nowhere_ANNOT));
+	Annotations::write_int(p_to, creation_site_ANNOT,
+		Annotations::read_int(p_from, creation_site_ANNOT));
 }
 
 @h Representation of single adjectives.
@@ -73,34 +76,31 @@ details to the nodes so that sentences like this one...
 
 ...can work; here "scenery", though an adjective, is effectively a common
 noun in disguise. (It's a deficiency of English that a surprising number of
-common things, which ought to have count nouns, in fact have mass nouns --
+common objects, which ought to have count nouns, in fact have mass nouns --
 compare "clothing" and "clothes", which has no adequate singular.)
 
 =
 void Refiner::pn_make_adjective(parse_node *p, unary_predicate *ale, parse_node *spec) {
-	adjective *aph = UnaryPredicates::get_adj(ale);
 	Node::set_type(p, ADJECTIVE_NT);
-	Node::set_aph(p, aph);
+	Node::set_predicate(p, ale);
 	Node::set_evaluation(p, NULL);
 	Refiner::apply_description(p, spec);
-	if (UnaryPredicates::get_parity(ale))
-		Annotations::write_int(p, negated_boolean_ANNOT, FALSE);
-	else
-		Annotations::write_int(p, negated_boolean_ANNOT, TRUE);
 }
 
 @ A different reason why adjective and nouns overlap is due to words like
 "green", which describe a state and also suggest that something possesses it.
 
 =
-void Refiner::coerce_adjectival_usage_to_noun(parse_node *leaf) {
+void Refiner::nominalise_adjective(parse_node *leaf) {
 	if ((leaf) && (Node::get_type(leaf) == ADJECTIVE_NT)) {
-		instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(Node::get_aph(leaf));
+		unary_predicate *pred = Node::get_predicate(leaf);
+		instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(
+			UnaryPredicates::get_adj(pred));
 		if (q) Refiner::give_spec_to_noun(leaf, Rvalues::from_instance(q));
 	}
 }
 
-@h Refining equated phrases.
+@h Refining couplings.
 When an assertion couples |px| and |py|, the following is called first to
 refine them.
 

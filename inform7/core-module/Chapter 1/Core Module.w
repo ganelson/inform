@@ -404,7 +404,7 @@ void CoreModule::writer(OUTPUT_STREAM, char *format_string, int wn) {
 tree; though it's a little like itemising the baubles on a Christmas tree.
 
 @e action_meaning_ANNOT /* |action_pattern|: meaning in parse tree when used as noun */
-@e aph_ANNOT /* |adjective|: which adjective is asserted */
+@e predicate_ANNOT /* |unary_predicate|: which adjective is asserted */
 @e category_of_I6_translation_ANNOT /* int: what sort of "translates into I6" sentence this is */
 @e classified_ANNOT /* |int|: this sentence has been classified */
 @e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
@@ -463,7 +463,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
 @e modal_verb_ANNOT /* |verb_conjugation|: relevant only for that: e.g., "might" */
 @e multiplicity_ANNOT /* |int|: e.g., 5 for "five gold rings" */
-@e negated_boolean_ANNOT /* int: set if adjective/verb meant negatively */
 @e new_relation_here_ANNOT /* |binary_predicate|: new relation as subject of "relates" sentence */
 @e nothing_object_ANNOT /* |int|: this represents |nothing| at run-time */
 @e nowhere_ANNOT /* |int|: used by the spatial plugin to show this represents "nowhere" */
@@ -506,7 +505,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */
 
 = (early code)
-DECLARE_ANNOTATION_FUNCTIONS(aph, adjective)
 DECLARE_ANNOTATION_FUNCTIONS(condition_tense, time_period)
 DECLARE_ANNOTATION_FUNCTIONS(constant_activity, activity)
 DECLARE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
@@ -544,6 +542,7 @@ DECLARE_ANNOTATION_FUNCTIONS(modal_verb, verb_conjugation)
 DECLARE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
 DECLARE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
+DECLARE_ANNOTATION_FUNCTIONS(predicate, unary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
 DECLARE_ANNOTATION_FUNCTIONS(prep, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(quant, quantifier)
@@ -562,7 +561,6 @@ DECLARE_ANNOTATION_FUNCTIONS(vu, verb_usage)
 to provide their get and set functions:
 
 =
-MAKE_ANNOTATION_FUNCTIONS(aph, adjective)
 MAKE_ANNOTATION_FUNCTIONS(condition_tense, time_period)
 MAKE_ANNOTATION_FUNCTIONS(constant_activity, activity)
 MAKE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
@@ -599,6 +597,7 @@ MAKE_ANNOTATION_FUNCTIONS(modal_verb, verb_conjugation)
 MAKE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
 MAKE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
+MAKE_ANNOTATION_FUNCTIONS(predicate, unary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
 MAKE_ANNOTATION_FUNCTIONS(prep, preposition)
 MAKE_ANNOTATION_FUNCTIONS(quant, quantifier)

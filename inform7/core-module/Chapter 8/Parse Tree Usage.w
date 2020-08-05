@@ -197,8 +197,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow_for_category(L3_NCAT, evaluation_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, subject_ANNOT);
 	Annotations::allow(ACTION_NT, action_meaning_ANNOT);
-	Annotations::allow(ADJECTIVE_NT, aph_ANNOT);
-	Annotations::allow(ADJECTIVE_NT, negated_boolean_ANNOT);
+	Annotations::allow(ADJECTIVE_NT, predicate_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, article_ANNOT);
 	Annotations::allow(VERB_NT, category_of_I6_translation_ANNOT);
 	Annotations::allow(VERB_NT, rule_placement_sense_ANNOT);
@@ -207,13 +206,12 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(COMMON_NOUN_NT, multiplicity_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, quant_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, quantification_parameter_ANNOT);
-	Annotations::allow(PROPER_NOUN_NT, aph_ANNOT);
+	Annotations::allow(PROPER_NOUN_NT, predicate_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, creation_site_ANNOT);
 	Annotations::allow(UNPARSED_NOUN_NT, defn_language_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, defn_language_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, lpe_options_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, multiplicity_ANNOT);
-	Annotations::allow(PROPER_NOUN_NT, negated_boolean_ANNOT);
 	Annotations::allow(UNPARSED_NOUN_NT, new_relation_here_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, new_relation_here_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, nowhere_ANNOT);

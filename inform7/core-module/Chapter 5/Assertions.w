@@ -617,7 +617,8 @@ further sub-cases later.
 
 @<Case 13 - X OF Y vs ADJECTIVE@> =
 	if (global_pass_state.pass == 1) return;
-	if (Adjectives::Meanings::has_ENUMERATIVE_meaning(Node::get_aph(py))) {
+	unary_predicate *pred = Node::get_predicate(py);
+	if (Adjectives::Meanings::has_ENUMERATIVE_meaning(UnaryPredicates::get_adj(pred))) {
 		property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
 		if (Node::get_type(px->down) == WITH_NT) {
 			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_EOOwnerMutable),
@@ -758,7 +759,7 @@ which can be used as an adjective, but isn't being so used here. So if it's
 possible to coerce the left side to a noun, we will.
 
 @<Case 22 - ADJECTIVE, PROPERTY LIST vs PROPERTY LIST, ADJECTIVE@> =
-	Refiner::coerce_adjectival_usage_to_noun(px);
+	Refiner::nominalise_adjective(px);
 	if (Node::get_type(px) == PROPER_NOUN_NT) {
 		Assertions::make_coupling(px, py);
 		return;
@@ -889,7 +890,7 @@ but in fact isn't one;
 	parse_node *owner = Node::get_evaluation(px->down);
 	property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
 	if (prn == P_specification) @<We're setting the specification pseudo-property@>;
-	Refiner::coerce_adjectival_usage_to_noun(px->down);
+	Refiner::nominalise_adjective(px->down);
 
 	if ((Node::get_type(px->down) == PROPER_NOUN_NT) ||
 		(Node::get_type(px->down) == COMMON_NOUN_NT)) {
@@ -1864,7 +1865,7 @@ can also be used adjectivally.
 =
 int Assertions::convert_adjective_to_noun(parse_node *p) {
 	if ((Node::get_type(p) == ADJECTIVE_NT) &&
-		(Annotations::read_int(p, negated_boolean_ANNOT) == FALSE)) {
+		(UnaryPredicates::get_parity(Node::get_predicate(p)) == TRUE)) {
 		if (<s-value>(Node::get_text(p)))
 			Refiner::give_spec_to_noun(p, <<rp>>);
 		if (Node::get_type(p) != ADJECTIVE_NT) return TRUE;

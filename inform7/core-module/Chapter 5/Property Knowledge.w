@@ -224,7 +224,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 	return NULL;
 
 @<Check that the subtree does indeed express a property value@> =
-	Refiner::coerce_adjectival_usage_to_noun(py);
+	Refiner::nominalise_adjective(py);
 	switch(Node::get_type(py)) {
 		case PROPER_NOUN_NT:
 			if ((Node::get_evaluation(py) == NULL) ||
