@@ -82,6 +82,7 @@ The verb to provide means the provision relation.
 The verb to use in the imperative means the built-in use meaning.
 The verb to include + in in the imperative means the built-in include-in meaning.
 The verb to omit + from in the imperative means the built-in omit-from meaning.
+The verb to test + with in the imperative means the built-in test-with meaning.
 
 @ We might as well declare these numerical comparisons now, too, though
 they're not needed for any of the world-building work.

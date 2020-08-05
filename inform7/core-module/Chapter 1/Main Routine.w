@@ -21,6 +21,7 @@ equivalent of unlocking the doors and turning the lights on in the morning.
 =
 pathname *path_to_inform7 = NULL;
 pathname *diagnostics_path = NULL;
+filename *internal_test_output_file = NULL;
 stopwatch_timer *inform7_timer = NULL, *supervisor_timer = NULL;
 
 int CoreMain::main(int argc, char *argv[]) {
@@ -227,6 +228,7 @@ compiler via Delia scripts in |intest|.
 @e PROGRESS_CLSW
 @e REQUIRE_PROBLEM_CLSW
 @e SIGILS_CLSW
+@e TEST_OUTPUT_CLSW
 
 @<Register command-line arguments@> =
 	CommandLine::begin_group(INFORM_TESTING_CLSG, I"for testing and debugging inform7");
@@ -244,6 +246,8 @@ compiler via Delia scripts in |intest|.
 		L"if no problems occur, write diagnostics files to directory X", FALSE);
 	CommandLine::declare_switch(REQUIRE_PROBLEM_CLSW, L"require-problem", 2,
 		L"return 0 unless exactly this Problem message is generated");
+	CommandLine::declare_switch(TEST_OUTPUT_CLSW, L"test-output", 2,
+		L"write output of internal tests to file X");
 	CommandLine::end_group();
 
 @ Three of the five options here actually configure the |problems| module
@@ -264,6 +268,7 @@ void CoreMain::switch(int id, int val, text_stream *arg, void *state) {
 		case SIGILS_CLSW: ProblemSigils::echo_sigils(val); break;
 		case REQUIRE_PROBLEM_CLSW: ProblemSigils::require(arg); break;
 		case DIAGNOSTICS_CLSW: diagnostics_path = Pathnames::from_text(arg); break;
+		case TEST_OUTPUT_CLSW: internal_test_output_file = Filenames::from_text(arg); break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

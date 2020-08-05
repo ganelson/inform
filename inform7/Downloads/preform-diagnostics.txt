@@ -8673,6 +8673,8 @@
           constraint CS = {30} extremes [1, 1]
         dashlog 
           constraint CS = {30} extremes [1, 1]
+        refinery 
+          constraint CS = {30} extremes [1, 1]
 
 <notable-bibliographic-variables> hits 7/186 nti 8 constraint CS = {8} extremes [2, 3]
     English:

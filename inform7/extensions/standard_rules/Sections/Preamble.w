@@ -27,10 +27,9 @@ The verb to begin when means the built-in scene-begins-when meaning.
 The verb to end when means the built-in scene-ends-when meaning.
 The verb to end + when means the built-in scene-ends-when meaning.
 
-@ Verbs used as imperatives: "Test ... with ...", for example.
+@ Verbs used as imperatives: "Understand ... as ...", for example.
 
 =
-The verb to test + with in the imperative means the built-in test-with meaning.
 The verb to understand + as in the imperative means the built-in understand-as meaning.
 The verb to release along with in the imperative means the built-in release-along-with meaning.
 The verb to index map with in the imperative means the built-in index-map-with meaning.

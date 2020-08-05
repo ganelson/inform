@@ -6,7 +6,6 @@ Setting up the use of this module.
 void IFModuleMeanings::bootstrap(void) {
 	SpecialMeanings::declare(PL::Scenes::begins_when_SMF,						I"scene-begins-when", 1);
 	SpecialMeanings::declare(PL::Scenes::ends_when_SMF,							I"scene-ends-when", 1);
-	SpecialMeanings::declare(TestRequests::test_with_SMF,			I"test-with", 1);
 	SpecialMeanings::declare(PL::Parsing::understand_as_SMF,					I"understand-as", 1);
 
 	SpecialMeanings::declare(PL::Actions::new_action_SMF, 						I"new-action", 2);

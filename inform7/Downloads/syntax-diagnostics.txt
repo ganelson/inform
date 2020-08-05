@@ -141,6 +141,10 @@ ROOT_NT
                         VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                         UNPARSED_NOUN_NT'to omit + from'
                         UNPARSED_NOUN_NT'built-in omit-from meaning' {definite 'the' n/m/f s/p nom/acc}
+                    SENTENCE_NT'the verb to test + with in the imperative means the built-in'
+                        VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
+                        UNPARSED_NOUN_NT'to test + with'
+                        UNPARSED_NOUN_NT'built-in test-with meaning' {definite 'the' n/m/f s/p nom/acc}
                     SENTENCE_NT'the verb to be greater than means the numerically-greater-th'
                         VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                         UNPARSED_NOUN_NT'to be greater than'
@@ -3819,10 +3823,6 @@ ROOT_NT
                         VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                         UNPARSED_NOUN_NT'to end + when'
                         UNPARSED_NOUN_NT'built-in scene-ends-when meaning' {definite 'the' n/m/f s/p nom/acc}
-                    SENTENCE_NT'the verb to test + with in the imperative means the built-in'
-                        VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
-                        UNPARSED_NOUN_NT'to test + with'
-                        UNPARSED_NOUN_NT'built-in test-with meaning' {definite 'the' n/m/f s/p nom/acc}
                     SENTENCE_NT'the verb to understand + as in the imperative means the buil'
                         VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                         UNPARSED_NOUN_NT'to understand + as'

@@ -64,9 +64,8 @@ parse_node *NounPhrases::add_art(parse_node *p, article_usage *au) {
 	return p;
 }
 
-@ The following function is only occasionally useful (for example, Inform
-uses it in //core: Tables of Definitions//); takes an existing raw node
-and retrospectively applies <np-articled> to it.
+@ The following function is only occasionally useful; it takes an existing raw
+node and retrospectively applies <np-articled> to it.
 
 =
 parse_node *NounPhrases::annotate_by_articles(parse_node *RAW_NP) {

@@ -340,6 +340,7 @@ readmepage:
 diagrams:
 	cp -f services/linguistics-test/Tests/Test\ Diagrams/_Results_Ideal/*.txt services/linguistics-module/Figures
 	cp -f services/linguistics-test/Tests/vocabulary.txt services/linguistics-module/Figures
+	cp -f inform7/Tests/Test\ Internals/_Results_Ideal/*.txt inform7/core-module/Figures
 
 {repeat-tools-block:ctools}
 .PHONY: @PAGES

@@ -18,6 +18,7 @@ Inform. The current roster is as follows:
 @e MAP_INTT
 @e DASH_INTT
 @e DASHLOG_INTT
+@e REFINER_INTT
 
 @ The following are the names of the internal test cases, which are in English
 only and may change at any time without notice.
@@ -36,7 +37,8 @@ only and may change at any time without notice.
 	kind |         ==> { KIND_INTT, - }
 	map |          ==> { MAP_INTT, - }
 	dash |         ==> { DASH_INTT, - }
-	dashlog        ==> { DASHLOG_INTT, - }
+	dashlog |      ==> { DASHLOG_INTT, - }
+	refinery       ==> { REFINER_INTT, - }
 
 @ Each request to run one of the above generates an //internal_test_case// object:
 
@@ -60,6 +62,13 @@ internal_test_case *InternalTests::new(int code, wording W) {
 text_stream *itc_save_DL = NULL, *itc_save_OUT = NULL;
 
 void InternalTests::InternalTestCases_routine(void) {
+	text_stream OUTFILE_struct; text_stream *OUTFILE = &OUTFILE_struct;
+	if (internal_test_output_file) {
+		if (STREAM_OPEN_TO_FILE(OUTFILE, internal_test_output_file, UTF8_ENC) == FALSE)
+			Problems::fatal_on_file("Can't open file to write internal test results to",
+				internal_test_output_file);
+	}
+
 	inter_name *iname = Hierarchy::find(INTERNALTESTCASES_HL);
 	packaging_state save = Routines::begin(iname);
 	internal_test_case *itc; int n = 0;
@@ -169,16 +178,21 @@ void InternalTests::InternalTestCases_routine(void) {
 			case DASHLOG_INTT:
 				Dash::experiment(itc->text_supplying_the_case, TRUE);
 				break;
+			case REFINER_INTT:
+				@<Perform an internal test of the refinery@>;
+				break;
 		}
 		WRITE("\n");
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_text(Emit::tree(), OUT);
 		Produce::up(Emit::tree());
+		if (internal_test_output_file) WRITE_TO(OUTFILE, "%S", OUT);
 		DISCARD_TEXT(OUT)
 	}
 	Routines::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
+	if (internal_test_output_file) STREAM_CLOSE(OUTFILE);
 }
 
 void InternalTests::begin_internal_reporting(void) {
@@ -209,6 +223,20 @@ void InternalTests::end_internal_reporting(void) {
 		LOG("$D\n", prop);
 		if (tc == FALSE) LOG("Failed: proposition would not type-check\n");
 		Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_problem_logging());
+	}
+	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;
+
+@<Perform an internal test of the refinery@> =
+	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
+	wording W = itc->text_supplying_the_case;
+	parse_node *p = Node::new(SENTENCE_NT); Node::set_text(p, W);
+	Classifying::sentence(p);
+	LOG("Classification:\n$T", p);
+	if ((p->down) && (p->down->next) && (p->down->next->next)) {
+		parse_node *px = p->down->next;
+		parse_node *py = px->next;
+		Refiner::refine_coupling(px, py, TRUE);
+		LOG("After creation:\n$T", p);
 	}
 	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;
 

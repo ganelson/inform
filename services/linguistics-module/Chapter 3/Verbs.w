@@ -159,7 +159,7 @@ typedef struct verb_form {
 	struct linguistic_stock_item *in_stock;
 
 	#ifdef VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK
-	struct verb_form_compilation_data verb_form_compilation; /* see //core: New Verbs// on this */
+	struct verb_form_compilation_data verb_form_compilation;
 	#endif
 
 	CLASS_DEFINITION

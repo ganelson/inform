@@ -190,7 +190,7 @@ two cases") and all others (such as "regular meaning are more subtle").
 	parse_node *px = p->down->next;
 	parse_node *py = px->next;
 	if ((global_pass_state.pass > 1) ||
-		(Refiner::refine_coupling(px, py))) {
+		(Refiner::refine_coupling(px, py, FALSE))) {
 		if (Node::get_type(px) == DEFECTIVE_NOUN_NT) {
 			Assertions::make_existential(py);
 			Anaphora::change_discussion_from_coupling(py, py);

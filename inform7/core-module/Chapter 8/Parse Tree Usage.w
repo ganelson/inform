@@ -198,7 +198,6 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow_for_category(L3_NCAT, subject_ANNOT);
 	Annotations::allow(ACTION_NT, action_meaning_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, predicate_ANNOT);
-	Annotations::allow(ADJECTIVE_NT, article_ANNOT);
 	Annotations::allow(VERB_NT, category_of_I6_translation_ANNOT);
 	Annotations::allow(VERB_NT, rule_placement_sense_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
@@ -221,7 +220,6 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, slash_dash_dash_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, table_cell_unspecified_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, turned_already_ANNOT);
-	Annotations::allow(PROPERTY_LIST_NT, article_ANNOT);
 	Annotations::allow(TOKEN_NT, grammar_token_literal_ANNOT);
 	Annotations::allow(TOKEN_NT, grammar_token_relation_ANNOT);
 	Annotations::allow(TOKEN_NT, grammar_value_ANNOT);

@@ -51,6 +51,7 @@ The verb to provide means the provision relation.
 The verb to use in the imperative means the built-in use meaning.
 The verb to include + in in the imperative means the built-in include-in meaning.
 The verb to omit + from in the imperative means the built-in omit-from meaning.
+The verb to test + with in the imperative means the built-in test-with meaning.
 
 The verb to be greater than means the numerically-greater-than relation.
 The verb to be less than means the numerically-less-than relation.

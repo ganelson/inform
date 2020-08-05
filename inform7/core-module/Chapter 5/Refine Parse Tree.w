@@ -68,6 +68,32 @@ void Refiner::copy_noun_details(parse_node *p_to, parse_node *p_from) {
 		Annotations::read_int(p_from, creation_site_ANNOT));
 }
 
+@h The player is not yourself.
+The following function handles a feature added to Inform to handle just one
+peculiarity of syntax: that the source text will often talk about "the
+player" to mean the instance which represents the player at the start of
+play (properly called "yourself"), not the variable whose value is the
+instance currently representing the player.
+
+But no explicit mention of this case appears here; in theory any global
+variable can be set to shadow a spcific instance in this way.
+
+=
+int Refiner::turn_player_to_yourself(parse_node *pn) {
+	if ((Wordings::nonempty(Node::get_text(pn))) &&
+		(Node::get_type(pn) == PROPER_NOUN_NT) &&
+		(Annotations::read_int(pn, turned_already_ANNOT) == FALSE)) {
+		nonlocal_variable *q = NonlocalVariables::parse(Node::get_text(pn));
+		inference_subject *diversion = NonlocalVariables::get_alias(q);
+		if (diversion) {
+			Refiner::give_subject_to_noun(pn, diversion);
+			Annotations::write_int(pn, turned_already_ANNOT, TRUE);
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
 @h Representation of single adjectives.
 Individual adjective nodes are made as follows. Note that we append noun
 details to the nodes so that sentences like this one...
@@ -89,29 +115,135 @@ void Refiner::pn_make_adjective(parse_node *p, unary_predicate *ale, parse_node 
 
 @ A different reason why adjective and nouns overlap is due to words like
 "green", which describe a state and also suggest that something possesses it.
+Context sometimes causes us to consider an adjective as a noun instead,
+though only if it has a positive sense and has a nominal meaning.
 
 =
-void Refiner::nominalise_adjective(parse_node *leaf) {
-	if ((leaf) && (Node::get_type(leaf) == ADJECTIVE_NT)) {
-		unary_predicate *pred = Node::get_predicate(leaf);
-		instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(
-			UnaryPredicates::get_adj(pred));
-		if (q) Refiner::give_spec_to_noun(leaf, Rvalues::from_instance(q));
+int Refiner::nominalise_adjective(parse_node *p) {
+	if ((p) && (Node::get_type(p) == ADJECTIVE_NT)) {
+		unary_predicate *pred = Node::get_predicate(p);
+		if (UnaryPredicates::get_parity(pred) == TRUE) {
+			instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(
+				UnaryPredicates::get_adj(pred));
+			if (q) Refiner::give_spec_to_noun(p, Rvalues::from_instance(q));
+		}
+	}
+	if ((p) && (Node::get_type(p) == PROPER_NOUN_NT)) return TRUE;
+	return FALSE;
+}
+
+@h Simple descriptions.
+For a precise definition see //Descriptions::is_complex//, but roughly speaking
+a "simple" description is one with only adjectives and perhaps a head noun:
+thus "closed" and "a closed lockable door" are simple, but "four women in a
+lighted room" is complex.
+
+The following function should be called only on a simple description.
+It turns the node |p| into a subtree representing the content of
+that simple description in |desc|.
+
+Depending on the circumstances, we get a subtree in which the headword if any
+is represented by an |COMMON_NOUN_NT| node (where the headword is a kind of
+object) or a |PROPER_NOUN_NT| (where the headword is a specific object), and
+where the adjectives each become |ADJECTIVE_NT| nodes.
+
+=
+void Refiner::refine_from_simple_description(parse_node *p, parse_node *desc) {
+	inference_subject *head = NULL;
+	@<Set the attachment node to the headword, if there is one@>;
+	if (Descriptions::number_of_adjectives_applied_to(desc) > 0) {
+		if (head) @<Insert a WITH node joining adjective tree to headword@>;
+		@<Place a subtree of adjectives at the attachment node@>;
 	}
 }
+
+@ Crucially, the headword node gets one extra annotation: its "full phrase
+evaluation", which retains the original description information -- in
+particular, quantification data such as that in "four doors", which
+would be lost if we simply applied |Refiner::give_subject_to_noun| to the inference
+subject for "door".
+
+If |head| is not set, it doesn't matter what we do, because there'll be
+no headword node -- this is why we don't bother to find any subject to
+set for it.
+
+@<Set the attachment node to the headword, if there is one@> =
+	if (Descriptions::to_instance(desc)) {
+		head = Instances::as_subject(Descriptions::to_instance(desc));
+		if (head) {
+			Refiner::give_subject_to_noun(p, head);
+			Refiner::apply_description(p, desc);
+		}
+	} else if (Descriptions::makes_kind_explicit(desc)) {
+		kind *K = Specifications::to_kind(desc);
+		head = Kinds::Knowledge::as_subject(K);
+		Refiner::give_subject_to_noun(p, head);
+		Node::set_evaluation(p, Specifications::from_kind(K));
+		Refiner::apply_description(p, desc);
+	}
+
+@ We put a WITH node in the attachment position, displacing the headword
+content to its first child, and making its second child the new attachment
+position -- so that that is where the adjectives subtree will go.
+
+@<Insert a WITH node joining adjective tree to headword@> =
+	parse_node *lower_copy = Node::new(PROPER_NOUN_NT);
+	Node::copy(lower_copy, p);
+	Node::set_type(p, WITH_NT);
+	p->down = lower_copy;
+	lower_copy->next = Node::new(PROPER_NOUN_NT);
+	p = lower_copy->next;
+
+@ When there are two or more adjectives, they must occur as leaves of a
+binary tree whose non-leaf nodes are |AND_NT|. We do this pretty inefficiently,
+making no effort to balance the tree, since it has negligible effect on speed
+or memory.
+
+@<Place a subtree of adjectives at the attachment node@> =
+	int no_adjectives = Descriptions::number_of_adjectives_applied_to(desc);
+	if (no_adjectives == 1) {
+		Refiner::pn_make_adjective(p,
+			Descriptions::first_unary_predicate(desc), desc);
+	} else {
+		Node::set_type_and_clear_annotations(p, AND_NT);
+		unary_predicate *ale;
+		int i = 0;
+		parse_node *AND_p = p;
+		pcalc_prop *ale_prop = NULL;
+		LOOP_THROUGH_ADJECTIVE_LIST(ale, ale_prop, desc) {
+			i++;
+			parse_node *p3 = Node::new(ADJECTIVE_NT);
+			Refiner::pn_make_adjective(p3, ale, desc);
+			if (i < no_adjectives) {
+				AND_p->down = p3;
+				if (i+1 < no_adjectives) {
+					p3->next = Node::new(AND_NT);
+					AND_p = p3->next;
+				}
+			} else {
+				AND_p->down->next = p3;
+			}
+		}
+	}
 
 @h Refining couplings.
 When an assertion couples |px| and |py|, the following is called first to
 refine them.
 
 =
-int Refiner::refine_coupling(parse_node *px, parse_node *py) {
+int Refiner::refine_coupling(parse_node *px, parse_node *py, int logging) {
 	int pc = problem_count;
 	Refiner::un_with(px);
 	Refiner::un_with(py);
 	Refiner::refine(px, ALLOW_CREATION);
 	Refiner::refine(py, ALLOW_CREATION);
 	if (problem_count > pc) return FALSE;
+	if (logging) {
+		LOG("Refined:\n"); LOG_INDENT;
+		LOG("$T", px);
+		LOG("$T", py);
+		LOG_OUTDENT;
+	}
 	if (Assertions::Creator::consult_the_creator(px, py) == FALSE) return FALSE;
 	return TRUE;
 }
@@ -173,8 +305,8 @@ subtree.
 leads to some awkward cases -- for instance, where a "with" in an action
 pattern like "doing something with the bucket" has been misinterpreted.
 We fix those cases by hand, by reconstructing the text before it was
-divided, to form the word range $(a_1, a_2)$; then parsing it as an action
-pattern; if it works, that reading is allowed to stand.
+divided, then parsing it as an action pattern; if that works, that reading
+is allowed to stand.
 
 @<Refine an X-with-Y subtree@> =
 	Refiner::refine(p->down, creation_rule);
@@ -349,7 +481,8 @@ complicated description is as follows:
 
 @<Refine what seems to be a noun phrase@> =
 	Node::set_type(p, PROPER_NOUN_NT);
-	if (forbid_nowhere == FALSE) @<Act on any special noun phrases significant to plugins@>;
+	if (forbid_nowhere == FALSE)
+		@<Act on any special noun phrases significant to plugins@>;
 
 	if (creation_rule != MANDATE_CREATION)
 		@<Interpret this as an existing noun if possible@>;
@@ -528,115 +661,17 @@ sentence.
 		return;
 	}
 
-@ The following turns the node |p| into a subtree representing the content of
-a simple description in |spec|. Besides being used above, it's also convenient
-for assemblies.
-
-Depending on the circumstances, we get a subtree in which the headword if any
-is represented by an |COMMON_NOUN_NT| node (where the headword is a kind of
-object) or a |PROPER_NOUN_NT| (where the headword is a specific object), and
-where the adjectives each become |ADJECTIVE_NT| nodes.
-
-=
-void Refiner::refine_from_simple_description(parse_node *p, parse_node *spec) {
-	inference_subject *head = NULL;
-	@<Set the attachment node to the headword, if there is one@>;
-	if (Descriptions::number_of_adjectives_applied_to(spec) > 0) {
-		if (head) @<Insert a WITH node joining adjective tree to headword@>;
-		@<Place a subtree of adjectives at the attachment node@>;
-	}
-}
-
-@ Crucially, the headword node gets one extra annotation: its "full phrase
-evaluation", which retains the original description information -- in
-particular, quantification data such as that in "four doors", which
-would be lost if we simply applied |Refiner::give_subject_to_noun| to the inference
-subject for "door".
-
-If |head| is not set, it doesn't matter what we do, because there'll be
-no headword node -- this is why we don't bother to find any subject to
-set for it.
-
-@<Set the attachment node to the headword, if there is one@> =
-	if (Descriptions::to_instance(spec)) {
-		head = Instances::as_subject(Descriptions::to_instance(spec));
-		if (head) {
-			Refiner::give_subject_to_noun(p, head);
-			Refiner::apply_description(p, spec);
-		}
-	} else if (Descriptions::makes_kind_explicit(spec)) {
-		kind *K = Specifications::to_kind(spec);
-		head = Kinds::Knowledge::as_subject(K);
-		Refiner::give_subject_to_noun(p, head);
-		Node::set_evaluation(p, Specifications::from_kind(K));
-		Refiner::apply_description(p, spec);
-	}
-
-@ We put a WITH node in the attachment position, displacing the headword
-content to its first child, and making its second child the new attachment
-position -- so that that is where the adjectives subtree will go.
-
-@<Insert a WITH node joining adjective tree to headword@> =
-	parse_node *lower_copy = Node::new(PROPER_NOUN_NT);
-	Node::copy(lower_copy, p);
-	Node::set_type(p, WITH_NT);
-	p->down = lower_copy;
-	lower_copy->next = Node::new(PROPER_NOUN_NT);
-	p = lower_copy->next;
-
-@ When there are two or more adjectives, they must occur as leaves of a
-binary tree whose non-leaf nodes are |AND_NT|. We do this pretty inefficiently,
-making no effort to balance the tree, since it has negligible effect on speed
-or memory.
-
-@<Place a subtree of adjectives at the attachment node@> =
-	int no_adjectives = Descriptions::number_of_adjectives_applied_to(spec);
-	if (no_adjectives == 1) {
-		Refiner::pn_make_adjective(p,
-			Descriptions::first_unary_predicate(spec), spec);
-	} else {
-		Node::set_type_and_clear_annotations(p, AND_NT);
-		unary_predicate *ale;
-		int i = 0;
-		parse_node *AND_p = p;
-		pcalc_prop *ale_prop = NULL;
-		LOOP_THROUGH_ADJECTIVE_LIST(ale, ale_prop, spec) {
-			i++;
-			parse_node *p3 = Node::new(ADJECTIVE_NT);
-			Refiner::pn_make_adjective(p3, ale, spec);
-			if (i < no_adjectives) {
-				AND_p->down = p3;
-				if (i+1 < no_adjectives) {
-					p3->next = Node::new(AND_NT);
-					AND_p = p3->next;
-				}
-			} else {
-				AND_p->down->next = p3;
-			}
-		}
-	}
-
 @h About surgeries.
-The rest of this section is taken up with four local surgical operations
-performed on the tree in the light of what we can now see. In each case, the
-problem is that two clausal constructions implied by the nodes inserted
-earlier have been applied the wrong way round:
+The rest of this section is taken up with local surgical operations
+performed on the tree in the light of what we can now see.
 
-(1) "And surgery": |AND_NT| and |WITH_NT| the wrong way round.
-
-(2) "With surgery": |WITH_NT| and |WITH_NT| where just one will do, though
-in disguised form this is another clash with |AND_NT|.
-
-(3) "Location surgery": |AND_NT| and |RELATIONSHIP_NT| the wrong way round.
-
-(4) "Called surgery": |CALLED_NT| and |RELATIONSHIP_NT| the wrong way round.
-
-@h And surgery.
 "And surgery" is a fiddly operation to correct the parse tree after
 resolution of all the nouns in a phrase which involves both "and" and
 "with" in a particular way. There's no problem with either of these:
 
->> In the Pitch are a bat and ball with score for finding 10. In the Pitch is a sweater with score for finding 5 and description "White wool."
+>> In the Pitch are a bat and ball with weight 10.
+
+>> In the Pitch is a sweater with score for finding 5 and description "White wool."
 
 neither of which is altered by and surgery. The difficulty arises with
 
@@ -647,20 +682,20 @@ the two sentences above, yet a very different meaning, since "openable" is a
 property whereas "bat" was an object. We perform surgery on:
 = (text)
 	AND_NT
-	    ADJECTIVE_NT prop:p46_openable
+	    ADJECTIVE_NT "openable"
 	    WITH_NT
-	        COMMON_NOUN_NT K4_door
-	        ADJECTIVE_NT prop:p44_open
+	        COMMON_NOUN_NT "door"
+	        ADJECTIVE_NT "open"
 =
 to restructure the nodes as:
 = (text)
 	WITH_NT
-	    COMMON_NOUN_NT K4_door
+	    COMMON_NOUN_NT "door"
 	    AND_NT
-	        ADJECTIVE_NT prop:p46_openable
-	        ADJECTIVE_NT prop:p44_open
+	        ADJECTIVE_NT "openable"
+	        ADJECTIVE_NT "open"
 =
-This innocent-looking little routine involved drawing a lot of diagrams
+This innocent-looking little function involved drawing a lot of diagrams
 on the back of an envelope. Change at your peril.
 
 =
@@ -684,8 +719,7 @@ void Refiner::perform_and_surgery(parse_node *p) {
 	}
 }
 
-@h With surgery.
-This is a less traumatic operation, motivated by sentences like:
+@ "With surgery" is a less traumatic operation, motivated by sentences like:
 
 >> In the Pitch is an open container with description "The box of stumps and bails."
 
@@ -698,16 +732,16 @@ terms of the tree,
 = (text)
 	WITH_NT
 	    WITH_NT
-	        COMMON_NOUN_NT K4_container
-	        ADJECTIVE_NT prop:p44_open
+	        COMMON_NOUN_NT "container"
+	        ADJECTIVE_NT "open"
 	    PROPERTY_LIST_NT "The box..."
 =
 is reconstructed as:
 = (text)
 	WITH_NT
-	    COMMON_NOUN_NT K4_container
+	    COMMON_NOUN_NT "container"
 	    AND_NT
-	        ADJECTIVE_NT prop:p44_open
+	        ADJECTIVE_NT "open"
 	        PROPERTY_LIST_NT "The box..."
 =
 
@@ -744,30 +778,4 @@ void Refiner::un_with(parse_node *p) {
 			p->down = NULL;
 		}
 	}
-}
-
-@h The player is not yourself.
-The following routine handles a feature added to Inform to handle just one
-peculiarity of syntax: that the source text will often talk about "the
-player" to mean the object which represents the player at the start of
-play (properly called "yourself"), not the variable whose value is the
-object currently representing the player.
-
-But no explicit mention of this case appears here; in theory any plugin
-can set up aliases of variable names to constants like this.
-
-=
-int Refiner::turn_player_to_yourself(parse_node *pn) {
-	if ((Wordings::nonempty(Node::get_text(pn))) &&
-		(Node::get_type(pn) == PROPER_NOUN_NT) &&
-		(Annotations::read_int(pn, turned_already_ANNOT) == FALSE)) {
-		nonlocal_variable *q = NonlocalVariables::parse(Node::get_text(pn));
-		inference_subject *diversion = NonlocalVariables::get_alias(q);
-		if (diversion) {
-			Refiner::give_subject_to_noun(pn, diversion);
-			Annotations::write_int(pn, turned_already_ANNOT, TRUE);
-			return TRUE;
-		}
-	}
-	return FALSE;
 }

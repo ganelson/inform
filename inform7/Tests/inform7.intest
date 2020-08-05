@@ -10,6 +10,7 @@
 -if osx -cases	[Map] 'inform7/Tests/Test Maps'
 -if osx -cases	[Release] 'inform7/Tests/Test Releases'
 -cases			[Basic] 'inform7/Tests/Test Basic'
+-cases			[Internal] 'inform7/Tests/Test Internals'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Complex Listing.i7x'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'
@@ -258,6 +259,61 @@
 		match frotz transcript: $A $I
 		or: 'played incorrectly'
 	endif
+
+	pass: 'passed'
+
+-end
+
+-recipe [Internal]
+	set: $I6 = inform6/Tangled/inform6
+	set: $I7 = inform7/Tangled/inform7
+	set: $INTERNAL = inform7/Internal
+	set: $WORKSPACE = intest/Workspace
+
+	! First we decide whether to compile it for the Z-machine or Glulx.
+
+	set: $VM = Z
+	if: $CASE %c*-G
+		set: $VM = G
+	endif
+	if: $CASE %c*Metric%c*Units%c*
+		set: $VM = G
+	endif
+
+	! On the basis of which:
+
+	if: $VM G
+		set: $FORMAT 		= ulx
+	else
+		set: $FORMAT		= z8
+	endif
+
+	! Now we extract the source text from whatever file originated the test
+	! case: this is a non-trivial operation when the file is an Extension or
+	! an example, but is a simple copy operation otherwise.
+
+	extract: $WORK/Example.inform/Source/story.ni $VM
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+
+	set: $I7OPTIONS = -kit BasicInformKit -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+
+	set: $PIPELINE = test_basic
+
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	
+	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+	debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -crash-all -test-output $A
+	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -pipeline $PIPELINE -test-output $A >$I7CONSOLE 2>&1
+	or: 'failed with Problem message(s)' $I7CONSOLE
+	show: $A
+
+	exists: $I
+	or: 'ran without crashing but no ideal results existed'
+	match text: $A $I
+	or: 'results incorrect'
 
 	pass: 'passed'
 

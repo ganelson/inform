@@ -1850,7 +1850,8 @@ where "hostile" and "friendly" are values of an enumerated kind but which
 can also be used adjectivally.
 
 @<Case 42 - ADJECTIVE vs RELATIONSHIP@> =
-	if ((Assertions::convert_adjective_to_noun(px)) || (Assertions::convert_adjective_to_noun(py->down))) {
+	if ((Refiner::nominalise_adjective(px)) ||
+		(Refiner::nominalise_adjective(py->down))) {
 		Assertions::make_coupling(px, py);
 		return;
 	}
@@ -1859,19 +1860,6 @@ can also be used adjectivally.
 		"that seems to relate an adjective to something",
 		"which must be wrong. (This can sometimes happen if the same word can "
 		"be used both as an adjective and a noun, and I misunderstand.)");
-
-@ where:
-
-=
-int Assertions::convert_adjective_to_noun(parse_node *p) {
-	if ((Node::get_type(p) == ADJECTIVE_NT) &&
-		(UnaryPredicates::get_parity(Node::get_predicate(p)) == TRUE)) {
-		if (<s-value>(Node::get_text(p)))
-			Refiner::give_spec_to_noun(p, <<rp>>);
-		if (Node::get_type(p) != ADJECTIVE_NT) return TRUE;
-	}
-	return FALSE;
-}
 
 @ =
 void Assertions::issue_value_equation_problem(parse_node *px, parse_node *py) {

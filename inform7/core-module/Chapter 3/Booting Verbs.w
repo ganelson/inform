@@ -79,6 +79,8 @@ be a single word, and are hyphenated.
 	SpecialMeanings::declare(Translations::translates_into_Inter_as_SMF,	I"translates-into-i6", 1);
 	SpecialMeanings::declare(Translations::translates_into_language_as_SMF,	I"translates-into-language", 1);
 
+	SpecialMeanings::declare(TestRequests::test_with_SMF,			        I"test-with", 1);
+
 	SpecialMeanings::declare(NewVerbRequests::new_verb_SMF, 				I"new-verb", 2);
 	SpecialMeanings::declare(Plurals::plural_SMF, 							I"new-plural", 2);
 	SpecialMeanings::declare(ActivityRequests::new_activity_SMF, 			I"new-activity", 2);

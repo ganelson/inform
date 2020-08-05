@@ -248,7 +248,7 @@ have occurred, but if it does then the creation has worked.
 		Assertions::Creator::tabular_definitions(t);
 		NounPhrases::annotate_by_articles(name_entry);
 		ProblemBuffer::redirect_problem_sentence(current_sentence, name_entry, V->next);
-		if (Refiner::refine_coupling(name_entry, V->next))
+		if (Refiner::refine_coupling(name_entry, V->next, FALSE))
 			Assertions::make_coupling(name_entry, V->next);
 		ProblemBuffer::redirect_problem_sentence(NULL, NULL, NULL);
 		Node::set_text(name_entry, NW);

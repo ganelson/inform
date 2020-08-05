@@ -2573,6 +2573,9 @@ preposition: in
 preposition: omitted by
 preposition: omitting
 preposition: from
+preposition: tested by
+preposition: testing
+preposition: with
 preposition: greater than
 preposition: less than
 preposition: at least
@@ -2600,9 +2603,6 @@ preposition: begun by
 preposition: beginning
 preposition: ended by
 preposition: ending
-preposition: tested by
-preposition: testing
-preposition: with
 preposition: understood by
 preposition: understanding
 preposition: released by
@@ -2851,33 +2851,33 @@ verb: provide(10)
 verb: use(11)
 verb: include(12)
 verb: omit(13)
-verb: (unconjugated)(14)
+verb: test(14)
 verb: (unconjugated)(15)
 verb: (unconjugated)(16)
 verb: (unconjugated)(17)
-verb: be able to(18)
-verb: could(19)
-verb: may(20)
-verb: might(21)
-verb: must(22)
-verb: should(23)
-verb: would(24)
-verb: 're(25)
-verb: 've(26)
-verb: aren't(27)
-verb: can't(28)
-verb: don't(29)
-verb: haven't(30)
-verb: mustn't(31)
-verb: mightn't(32)
-verb: mayn't(33)
-verb: wouldn't(34)
-verb: couldn't(35)
-verb: shouldn't(36)
-verb: won't(37)
-verb: begin(38)
-verb: end(39)
-verb: test(40)
+verb: (unconjugated)(18)
+verb: be able to(19)
+verb: could(20)
+verb: may(21)
+verb: might(22)
+verb: must(23)
+verb: should(24)
+verb: would(25)
+verb: 're(26)
+verb: 've(27)
+verb: aren't(28)
+verb: can't(29)
+verb: don't(30)
+verb: haven't(31)
+verb: mustn't(32)
+verb: mightn't(33)
+verb: mayn't(34)
+verb: wouldn't(35)
+verb: couldn't(36)
+verb: shouldn't(37)
+verb: won't(38)
+verb: begin(39)
+verb: end(40)
 verb: understand(41)
 verb: release(42)
 verb: index(43)
@@ -2993,66 +2993,66 @@ verb_form: omit(13) + ___ + ___ SVO
 verb_form: be(0) + omitted by + ___ SVO
 verb_form: be(0) + omitting + ___ SVO
 verb_form: omit(13) + ___ + from VO
+verb_form: test(14) + ___ + ___ SVO
+verb_form: be(0) + tested by + ___ SVO
+verb_form: be(0) + testing + ___ SVO
+verb_form: test(14) + ___ + with VO
 verb_form: be(0) + greater than + ___ SVO
 verb_form: be(0) + less than + ___ SVO
 verb_form: be(0) + at least + ___ SVO
 verb_form: be(0) + at most + ___ SVO
-verb_form: (unconjugated)(14) + ___ + ___ SVO
 verb_form: (unconjugated)(15) + ___ + ___ SVO
 verb_form: (unconjugated)(16) + ___ + ___ SVO
 verb_form: (unconjugated)(17) + ___ + ___ SVO
-verb_form: be able to(18) + ___ + ___ SVO
+verb_form: (unconjugated)(18) + ___ + ___ SVO
+verb_form: be able to(19) + ___ + ___ SVO
 verb_form: be(0) + being able to + ___ SVO
-verb_form: could(19) + ___ + ___ SVO
+verb_form: could(20) + ___ + ___ SVO
 verb_form: be(0) + coulding + ___ SVO
-verb_form: may(20) + ___ + ___ SVO
+verb_form: may(21) + ___ + ___ SVO
 verb_form: be(0) + maying + ___ SVO
-verb_form: might(21) + ___ + ___ SVO
+verb_form: might(22) + ___ + ___ SVO
 verb_form: be(0) + mighting + ___ SVO
-verb_form: must(22) + ___ + ___ SVO
+verb_form: must(23) + ___ + ___ SVO
 verb_form: be(0) + musting + ___ SVO
-verb_form: should(23) + ___ + ___ SVO
+verb_form: should(24) + ___ + ___ SVO
 verb_form: be(0) + shoulding + ___ SVO
-verb_form: would(24) + ___ + ___ SVO
+verb_form: would(25) + ___ + ___ SVO
 verb_form: be(0) + woulding + ___ SVO
-verb_form: 're(25) + ___ + ___ SVO
+verb_form: 're(26) + ___ + ___ SVO
 verb_form: be(0) + being + ___ SVO
-verb_form: 've(26) + ___ + ___ SVO
-verb_form: aren't(27) + ___ + ___ SVO
+verb_form: 've(27) + ___ + ___ SVO
+verb_form: aren't(28) + ___ + ___ SVO
 verb_form: be(0) + aren'ting + ___ SVO
-verb_form: can't(28) + ___ + ___ SVO
+verb_form: can't(29) + ___ + ___ SVO
 verb_form: be(0) + can'ting + ___ SVO
-verb_form: don't(29) + ___ + ___ SVO
+verb_form: don't(30) + ___ + ___ SVO
 verb_form: be(0) + don'ting + ___ SVO
-verb_form: haven't(30) + ___ + ___ SVO
+verb_form: haven't(31) + ___ + ___ SVO
 verb_form: be(0) + haven'ting + ___ SVO
-verb_form: mustn't(31) + ___ + ___ SVO
+verb_form: mustn't(32) + ___ + ___ SVO
 verb_form: be(0) + mustn'ting + ___ SVO
-verb_form: mightn't(32) + ___ + ___ SVO
+verb_form: mightn't(33) + ___ + ___ SVO
 verb_form: be(0) + mightn'ting + ___ SVO
-verb_form: mayn't(33) + ___ + ___ SVO
+verb_form: mayn't(34) + ___ + ___ SVO
 verb_form: be(0) + mayn'ting + ___ SVO
-verb_form: wouldn't(34) + ___ + ___ SVO
+verb_form: wouldn't(35) + ___ + ___ SVO
 verb_form: be(0) + wouldn'ting + ___ SVO
-verb_form: couldn't(35) + ___ + ___ SVO
+verb_form: couldn't(36) + ___ + ___ SVO
 verb_form: be(0) + couldn'ting + ___ SVO
-verb_form: shouldn't(36) + ___ + ___ SVO
+verb_form: shouldn't(37) + ___ + ___ SVO
 verb_form: be(0) + shouldn'ting + ___ SVO
-verb_form: won't(37) + ___ + ___ SVO
+verb_form: won't(38) + ___ + ___ SVO
 verb_form: be(0) + won'ting + ___ SVO
-verb_form: begin(38) + ___ + ___ SVO
+verb_form: begin(39) + ___ + ___ SVO
 verb_form: be(0) + begun by + ___ SVO
 verb_form: be(0) + beginning + ___ SVO
-verb_form: begin(38) + when + ___ SVO
-verb_form: end(39) + ___ + ___ SVO
+verb_form: begin(39) + when + ___ SVO
+verb_form: end(40) + ___ + ___ SVO
 verb_form: be(0) + ended by + ___ SVO
 verb_form: be(0) + ending + ___ SVO
-verb_form: end(39) + when + ___ SVO
-verb_form: end(39) + ___ + when SVOO
-verb_form: test(40) + ___ + ___ SVO
-verb_form: be(0) + tested by + ___ SVO
-verb_form: be(0) + testing + ___ SVO
-verb_form: test(40) + ___ + with VO
+verb_form: end(40) + when + ___ SVO
+verb_form: end(40) + ___ + when SVOO
 verb_form: understand(41) + ___ + ___ SVO
 verb_form: be(0) + understood by + ___ SVO
 verb_form: be(0) + understanding + ___ SVO

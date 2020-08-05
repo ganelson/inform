@@ -28,8 +28,8 @@ some new node types:
 @e linguistic_error_here_ANNOT   /* |int|: one of the errors occurred here */
 @e verb_ANNOT                    /* |verb_usage|: what's being done here */
 @e noun_ANNOT                    /* |noun_usage|: what's being done here */
-@e pronoun_ANNOT                 /* |pronoun_usage|: what's being done here */
 @e article_ANNOT                 /* |article_usage|: what's being done here */
+@e pronoun_ANNOT                 /* |pronoun_usage|: what's being done here */
 @e preposition_ANNOT             /* |preposition|: which preposition, if any, qualifies it */
 @e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
 @e special_meaning_ANNOT         /* |special_meaning_holder|: to give a verb a non-standard meaning */
