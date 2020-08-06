@@ -346,14 +346,8 @@ void Node::log_node(OUTPUT_STREAM, void *vpn) {
 		WRITE("'%S'", text);
 		DISCARD_TEXT(text)
 	}
-	#ifdef LINGUISTICS_MODULE
-	Diagrams::log_node(OUT, pn);
 	#endif
-	switch(pn->node_type) {
-		case HEADING_NT: WRITE(" (level %d)", Annotations::read_int(pn,
-			heading_level_ANNOT)); break;
-	}
-	#endif
+	Annotations::write_annotations(OUT, pn);
 	int a = 0;
 	while ((pn->next_alternative) && (a<9)) a++, pn = pn->next_alternative;
 	if (a > 0) WRITE("/%d", a);

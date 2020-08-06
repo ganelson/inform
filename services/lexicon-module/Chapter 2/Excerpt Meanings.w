@@ -112,15 +112,16 @@ First to log a general bitmap made up from meaning codes:
 =
 void ExcerptMeanings::log(OUTPUT_STREAM, void *vem) {
 	excerpt_meaning *em = (excerpt_meaning *) vem;
-	if (em == NULL) { LOG("<null-em>"); return; }
-	LOG("{");
+	if (em == NULL) { WRITE("<null-em>"); return; }
+	WRITE("{");
 	for (int i=0; i<em->no_em_tokens; i++) {
-		if (i>0) LOG(" ");
-		if (em->em_tokens[i] == NULL) { LOG("#"); continue; }
-		LOG("%V", em->em_tokens[i]);
+		if (i>0) WRITE(" ");
+		if (em->em_tokens[i] == NULL) { WRITE("#"); continue; }
+		WRITE("%V", em->em_tokens[i]);
 	}
-	LOG(" = $N", em->meaning_code);
-	LOG("}");
+	WRITE(" = ");
+	NodeType::log(OUT, (int) em->meaning_code);
+	WRITE("}");
 }
 
 void ExcerptMeanings::log_all(void) {

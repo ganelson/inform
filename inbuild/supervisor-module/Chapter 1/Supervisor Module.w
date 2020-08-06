@@ -73,39 +73,22 @@ DECLARE_CLASS(known_extension_clash)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
-=
-void SupervisorModule::start(void) {
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
-	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
-	Supervisor::start();
-}
-void SupervisorModule::end(void) {
-}
-
-@
-
 @e EXTENSION_DICTIONARY_MREASON
-
-@<Register this module's memory allocation reasons@> =
-	Memory::reason_name(EXTENSION_DICTIONARY_MREASON, "extension dictionary");
-
-@<Register this module's stream writers@> =
-	Writers::register_writer('X', &Works::writer);
-	Writers::register_writer('J', &Languages::log);
-
-@
-
 @e EXTENSIONS_CENSUS_DA
 @e HEADINGS_DA
 
-@<Register this module's debugging log aspects@> =
+=
+void SupervisorModule::start(void) {
+	Memory::reason_name(EXTENSION_DICTIONARY_MREASON, "extension dictionary");
+	Writers::register_writer('X', &Works::writer);
+	Writers::register_writer('J', &Languages::log);
 	Log::declare_aspect(EXTENSIONS_CENSUS_DA, L"extensions census", FALSE, FALSE);
 	Log::declare_aspect(HEADINGS_DA, L"headings", FALSE, FALSE);
-
-@<Register this module's debugging log writers@> =
-	;
+	Supervisor::start();
+	@<Declare the tree annotations@>;
+}
+void SupervisorModule::end(void) {
+}
 
 @ This module uses |syntax|, and adds the following annotations to the
 syntax tree.
@@ -118,3 +101,25 @@ DECLARE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
 MAKE_ANNOTATION_FUNCTIONS(embodying_heading, heading)
 DECLARE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
 MAKE_ANNOTATION_FUNCTIONS(inclusion_of_extension, inform_extension)
+
+@<Declare the tree annotations@> =
+	Annotations::declare_type(embodying_heading_ANNOT,
+		SupervisorModule::write_embodying_heading_ANNOT);
+	Annotations::declare_type(inclusion_of_extension_ANNOT,
+		SupervisorModule::write_inclusion_of_extension_ANNOT);
+
+@ =
+void SupervisorModule::write_embodying_heading_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_embodying_heading(p)) {
+		heading *H = Node::get_embodying_heading(p);
+		WRITE(" {under: H%d'%W'}", H->level, Node::get_text(H->sentence_declaring));
+	}
+}
+void SupervisorModule::write_inclusion_of_extension_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_inclusion_of_extension(p)) {
+		inform_extension *E = Node::get_inclusion_of_extension(p);
+		WRITE("{includes: ");
+		Copies::write_copy(OUT, E->as_copy);
+		WRITE(" }");
+	}
+}

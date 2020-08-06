@@ -1,21 +1,21 @@
 (1) a sailor called jack silver is on the table
 
 SENTENCE_NT'a sailor called jack silver is on the table'
-    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}
+    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on}
     CALLED_NT'called'
         COMMON_NOUN_NT'a sailor' {common nom/acc m s}
         UNPARSED_NOUN_NT'jack silver'
     RELATIONSHIP_NT'is on' {meaning: carries}
-        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
 
 (2) on the table is a sailor called ben gunn
 
 SENTENCE_NT'on the table is a sailor called ben gunn'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     RELATIONSHIP_NT'on the table' {meaning: carries}
-        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
     CALLED_NT'called'
-        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
+        COMMON_NOUN_NT'sailor' {indefinite 'a' n/m/f nom/acc s} {common nom/acc m s}
         UNPARSED_NOUN_NT'ben gunn'
 
 (3) there is a sailor called captain flint
@@ -24,7 +24,7 @@ SENTENCE_NT'there is a sailor called captain flint'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}
     DEFECTIVE_NOUN_NT'there'
     CALLED_NT'called'
-        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
+        COMMON_NOUN_NT'sailor' {indefinite 'a' n/m/f nom/acc s} {common nom/acc m s}
         UNPARSED_NOUN_NT'captain flint'
 
 (4) there is a table called the billiards and snooker table
@@ -33,7 +33,7 @@ SENTENCE_NT'there is a table called the billiards and snooker table'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}
     DEFECTIVE_NOUN_NT'there'
     CALLED_NT'called'
-        COMMON_NOUN_NT'table' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}
+        COMMON_NOUN_NT'table' {indefinite 'a' n/m/f nom/acc s} {common nom/acc n s}
         UNPARSED_NOUN_NT'billiards and snooker table' {definite 'the' n/m/f s/p nom/acc}
 
 (5) there is a table called the billiards table with deep pockets
@@ -42,6 +42,6 @@ SENTENCE_NT'there is a table called the billiards table with deep pocket'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}
     DEFECTIVE_NOUN_NT'there'
     CALLED_NT'called'
-        COMMON_NOUN_NT'table' {common nom/acc n s} {indefinite 'a' n/m/f nom/acc s}
+        COMMON_NOUN_NT'table' {indefinite 'a' n/m/f nom/acc s} {common nom/acc n s}
         UNPARSED_NOUN_NT'billiards table with deep pockets' {definite 'the' n/m/f s/p nom/acc}
 

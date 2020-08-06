@@ -23,7 +23,7 @@ Seek verb in: there is a ming vase which is on the table
         Seek succeeded
 Seek succeeded
 Sentence subtree:
-    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}
+    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on}
     UNPARSED_NOUN_NT'ming vase' {indefinite 'a' n/m/f nom/acc s}
     RELATIONSHIP_NT'is on' {meaning: carries}
         UNPARSED_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc}

@@ -71,11 +71,13 @@ which use this module:
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">parse_node_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">parse_node_tree_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">parse_node_annotation_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">parse_node_annotation_type_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node_tree</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node_annotation</span><span class="plain-syntax">, </span><span class="constant-syntax">500</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node_annotation_type</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function. Here,
 all we need do is set up some debugging log facilities.
@@ -85,11 +87,12 @@ all we need do is set up some debugging log facilities.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SyntaxModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-nt.html#SP4" class="function-link"><span class="function-syntax">NodeType::make_parentage_allowed_table</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-nt.html#SP12" class="function-link"><span class="function-syntax">NodeType::metadata_setup</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="2-na.html#SP12" class="function-link"><span class="function-syntax">Annotations::make_annotation_allowed_table</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-na.html#SP13" class="function-link"><span class="function-syntax">Annotations::make_annotation_allowed_table</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'m'</span><span class="plain-syntax">, </span><a href="2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::log_tree</span></a><span class="plain-syntax">);    </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">$m</span></span><span class="comment-syntax"> = log syntax tree from node</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger_I</span><span class="plain-syntax">(</span><span class="character-syntax">'N'</span><span class="plain-syntax">, </span><a href="2-nt.html#SP8" class="function-link"><span class="function-syntax">NodeType::log</span></a><span class="plain-syntax">);   </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">$N</span></span><span class="comment-syntax"> = log individual node type</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'P'</span><span class="plain-syntax">, </span><a href="2-pn.html#SP18" class="function-link"><span class="function-syntax">Node::log_node</span></a><span class="plain-syntax">);    </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">$P</span></span><span class="comment-syntax"> = log individual parse node</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'T'</span><span class="plain-syntax">, </span><a href="2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::log_subtree</span></a><span class="plain-syntax">); </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">$T</span></span><span class="comment-syntax"> = log tree under node</span>
+<span class="plain-syntax">    </span><a href="2-na.html#SP1" class="function-link"><span class="function-syntax">Annotations::begin</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SyntaxModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>

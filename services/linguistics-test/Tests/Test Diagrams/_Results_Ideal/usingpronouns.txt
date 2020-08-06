@@ -20,13 +20,13 @@ SENTENCE_NT'i carry the ming vase'
     VERB_NT'carry' {verb 'carry' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}
     PRONOUN_NT'i' {first person pronoun n/m/f 1p s nom}
     RELATIONSHIP_NT'carry' {meaning: carries-reversed}
-        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'ming vase' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
 
 (4) the sailors know them
 
 SENTENCE_NT'the sailors know them'
     VERB_NT'know' {verb 'know' 1p/2p s/p act IS_TENSE +ve + 3p p act IS_TENSE +ve}
-    COMMON_NOUN_NT'sailors' {common nom/acc m p} {definite 'the' n/m/f s/p nom/acc}
+    COMMON_NOUN_NT'sailors' {definite 'the' n/m/f s/p nom/acc} {common nom/acc m p}
     RELATIONSHIP_NT'know' {meaning: knows-reversed}
         PRONOUN_NT'them' {third person pronoun n/m/f 3p p acc}
 

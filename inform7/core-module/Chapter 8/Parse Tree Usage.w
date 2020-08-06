@@ -196,6 +196,7 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow_for_category(L3_NCAT, creation_proposition_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, evaluation_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, subject_ANNOT);
+	Annotations::allow_for_category(L3_NCAT, explicit_gender_marker_ANNOT);
 	Annotations::allow(ACTION_NT, action_meaning_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, predicate_ANNOT);
 	Annotations::allow(VERB_NT, category_of_I6_translation_ANNOT);
@@ -408,25 +409,13 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 		WRITE("'%S'", text);
 		DISCARD_TEXT(text)
 	}
-	Diagrams::log_node(OUT, pn);
 
-	if ((pn->node_type >= UNKNOWN_NT) && (pn->node_type <= TEST_VALUE_NT))
-		@<Log annotations of specification nodes@>
-	else
-		@<Log annotations of structural nodes@>;
-}
-
-@<Log annotations of specification nodes@> =
 	if (Node::get_kind_of_value(pn)) WRITE("-$u", Node::get_kind_of_value(pn));
 	if (ParseTreeUsage::is_lvalue(pn)) Lvalues::log(pn);
 	else if (ParseTreeUsage::is_rvalue(pn)) Rvalues::log(pn);
 	else if (ParseTreeUsage::is_condition(pn)) Conditions::log(pn);
 	if (Node::get_vu(pn)) { WRITE("-vu:"); VerbsAtRunTime::log(Node::get_vu(pn)); }
-	if (Node::get_prep(pn)) { WRITE("-prep:$p", Node::get_prep(pn)); }
 
-@ We do not log every annotation: only the few which are most illuminating.
-
-@<Log annotations of structural nodes@> =
 	int show_eval = FALSE, show_refers = FALSE;
 	if (Annotations::read_int(pn, creation_site_ANNOT))
 		WRITE(" (created here)");
@@ -468,6 +457,7 @@ void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
 		WRITE(" language:%J", Node::get_defn_language(pn));
 	if (Node::get_creation_proposition(pn))
 		WRITE(" (creation $D)", Node::get_creation_proposition(pn));
+}
 
 @ =
 void ParseTreeUsage::verify(void) {

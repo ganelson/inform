@@ -2,7 +2,7 @@
 
 SENTENCE_NT'the carrying capacity of the sailor is 20'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-    X_OF_Y_NT'carrying capacity of the sailor'
+    X_OF_Y_NT'carrying capacity of the sailor' {definite 'the' n/m/f s/p nom/acc}
         UNPARSED_NOUN_NT'sailor' {definite 'the' n/m/f s/p nom/acc}
         UNPARSED_NOUN_NT'carrying capacity'
     UNPARSED_NOUN_NT'20'
@@ -11,12 +11,12 @@ SENTENCE_NT'the carrying capacity of the sailor is 20'
 
 SENTENCE_NT'the brother of the sister of the bride is the best of them'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-    X_OF_Y_NT'brother of the sister of the bride'
-        X_OF_Y_NT'sister of the bride'
+    X_OF_Y_NT'brother of the sister of the bride' {definite 'the' n/m/f s/p nom/acc}
+        X_OF_Y_NT'sister of the bride' {definite 'the' n/m/f s/p nom/acc}
             UNPARSED_NOUN_NT'bride' {definite 'the' n/m/f s/p nom/acc}
             UNPARSED_NOUN_NT'sister'
         UNPARSED_NOUN_NT'brother'
-    X_OF_Y_NT'best of them'
+    X_OF_Y_NT'best of them' {definite 'the' n/m/f s/p nom/acc}
         UNPARSED_NOUN_NT'them'
         UNPARSED_NOUN_NT'best'
 

@@ -22,20 +22,13 @@ DECLARE_CLASS(excerpt_meaning)
 
 =
 void LexiconModule::start(void) {
-	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
+	Log::declare_aspect(EXCERPT_MEANINGS_DA, L"excerpt meanings", FALSE, FALSE);
+	Log::declare_aspect(EXCERPT_PARSING_DA, L"excerpt parsing", FALSE, FALSE);
+	Writers::register_logger('M', ExcerptMeanings::log);
+	@<Declare the tree annotations@>;
 }
 void LexiconModule::end(void) {
 }
-
-@
-
-@<Register this module's debugging log aspects@> =
-	Log::declare_aspect(EXCERPT_MEANINGS_DA, L"excerpt meanings", FALSE, FALSE);
-	Log::declare_aspect(EXCERPT_PARSING_DA, L"excerpt parsing", FALSE, FALSE);
-
-@<Register this module's debugging log writers@> =
-	Writers::register_logger('M', ExcerptMeanings::log);
 
 @ This module uses //syntax//, and adds the following annotations to the
 syntax tree.
@@ -46,3 +39,15 @@ syntax tree.
 DECLARE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
 
 MAKE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
+
+@<Declare the tree annotations@> =
+	Annotations::declare_type(meaning_ANNOT, LexiconModule::write_meaning_ANNOT);
+
+@ =
+void LexiconModule::write_meaning_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_meaning(p)) {
+		WRITE("{meaning: ");
+		ExcerptMeanings::log(OUT, Node::get_meaning(p));
+		WRITE("}");
+	}
+}

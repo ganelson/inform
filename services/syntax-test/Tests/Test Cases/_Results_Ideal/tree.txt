@@ -1,10 +1,10 @@
 Read 106 words
 ROOT_NT
-    HEADING_NT'chapter 1' (level 0)
-        HEADING_NT'chapter 1' (level 1)
+    HEADING_NT'chapter 1' {heading 0}
+        HEADING_NT'chapter 1' {heading 1}
             SENTENCE_NT'i burn to paint a certain woman who has appeared to me so ra'
             SENTENCE_NT'it is already long since i saw her'
             SENTENCE_NT'she is beautiful , and more than beautiful , she is overpowe'
-        HEADING_NT'chapter 2' (level 1)
+        HEADING_NT'chapter 2' {heading 1}
             SENTENCE_NT'i would compare her to a black sun if one could conceive of '
             SENTENCE_NT'but it is the moon that she makes one dream of most readily'

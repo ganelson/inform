@@ -13,11 +13,13 @@ which use this module:
 @e parse_node_CLASS
 @e parse_node_tree_CLASS
 @e parse_node_annotation_CLASS
+@e parse_node_annotation_type_CLASS
 
 =
 DECLARE_CLASS(parse_node)
 DECLARE_CLASS(parse_node_tree)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(parse_node_annotation, 500)
+DECLARE_CLASS(parse_node_annotation_type)
 
 @ Like all modules, this one must define a |start| and |end| function. Here,
 all we need do is set up some debugging log facilities.
@@ -31,6 +33,7 @@ void SyntaxModule::start(void) {
 	Writers::register_logger_I('N', NodeType::log);   /* |$N| = log individual node type */
 	Writers::register_logger('P', Node::log_node);    /* |$P| = log individual parse node */
 	Writers::register_logger('T', Node::log_subtree); /* |$T| = log tree under node */
+	Annotations::begin();
 }
 
 void SyntaxModule::end(void) {

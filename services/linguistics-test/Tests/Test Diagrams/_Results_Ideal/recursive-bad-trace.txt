@@ -39,7 +39,7 @@ Seek verb in: there is a ming vase on the table called the table of having
     Accepted as be(0) + on + ___
 Seek succeeded
 Sentence subtree:
-    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {existential}
+    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on} {existential}
     UNPARSED_NOUN_NT'ming vase' {indefinite 'a' n/m/f nom/acc s}
     RELATIONSHIP_NT'is' {meaning: carries}
         CALLED_NT'called'

@@ -3,15 +3,15 @@
 SENTENCE_NT'on the table is the ming vase'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     RELATIONSHIP_NT'on the table' {meaning: carries}
-        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
-    COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
+    COMMON_NOUN_NT'ming vase' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
 
 (2) on the table is under the ming vase
 
 SENTENCE_NT'on the table is under the ming vase'
-    VERB_NT'is under' {verb 'be' 3p s act IS_TENSE +ve}
+    VERB_NT'is under' {verb 'be' 3p s act IS_TENSE +ve} {prep1: under}
     RELATIONSHIP_NT'on the table' {meaning: carries}
-        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
     RELATIONSHIP_NT'is under' {meaning: carries-reversed}
-        COMMON_NOUN_NT'ming vase' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'ming vase' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
 

@@ -1,6 +1,6 @@
 Total memory consumption was 257142K = 251 MB
 
-62.5% was used for 1330343 objects, in 273241 frames in 201 x 800K = 160800K = 157 MB:
+62.5% was used for 1330464 objects, in 273362 frames in 201 x 800K = 160800K = 157 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.4%  text_stream_array                        2569 x 100 = 256900 objects, 14468608 bytes
@@ -116,10 +116,11 @@ Total memory consumption was 257142K = 251 MB
      ----  placement_affecting_array                1 x 100 objects, 4032 bytes
      ----  activity                                 35 objects, 3920 bytes
      ----  inbuild_edition                          54 objects, 3888 bytes
+     ----  parse_node_annotation_type               121 objects, 3872 bytes
      ----  inbuild_copy                             35 objects, 3640 bytes
      ----  command_line_switch                      43 objects, 3440 bytes
-     ----  instance_usage_array                     1 x 200 objects, 3232 bytes
      ----  kind_constructor_comparison_schema_array 1 x 100 objects, 3232 bytes
+     ----  instance_usage_array                     1 x 200 objects, 3232 bytes
      ----  definition                               44 objects, 3168 bytes
      ----  compatibility_specification              66 objects, 3168 bytes
      ----  inform_extension                         19 objects, 3040 bytes
@@ -132,9 +133,9 @@ Total memory consumption was 257142K = 251 MB
      ----  use_option                               29 objects, 1856 bytes
      ----  method_set                               56 objects, 1792 bytes
      ----  pronoun_usage                            42 objects, 1680 bytes
-     ----  plugin_call_array                        1 x 100 objects, 1632 bytes
-     ----  activity_crossref_array                  1 x 100 objects, 1632 bytes
      ----  table_contribution_array                 1 x 100 objects, 1632 bytes
+     ----  activity_crossref_array                  1 x 100 objects, 1632 bytes
+     ----  plugin_call_array                        1 x 100 objects, 1632 bytes
      ----  kind_interaction                         39 objects, 1560 bytes
      ----  inter_annotation_form                    37 objects, 1480 bytes
      ----  pipeline_step                            12 objects, 1440 bytes
@@ -148,8 +149,8 @@ Total memory consumption was 257142K = 251 MB
      ----  quantifier                               16 objects, 1024 bytes
      ----  table_column                             16 objects, 896 bytes
      ----  inbuild_requirement                      22 objects, 880 bytes
-     ----  code_generation                          1 object, 864 bytes
      ----  control_structure_phrase                 12 objects, 864 bytes
+     ----  code_generation                          1 object, 864 bytes
      ----  cached_understanding                     21 objects, 840 bytes
      ----  runtime_kind_structure                   13 objects, 832 bytes
      ----  phrase_option_array                      1 x 100 objects, 824 bytes
@@ -228,5 +229,5 @@ Total memory consumption was 257142K = 251 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.3% was overhead - 53602616 bytes = 52346K = 51 MB
+20.3% was overhead - 53598744 bytes = 52342K = 51 MB
 

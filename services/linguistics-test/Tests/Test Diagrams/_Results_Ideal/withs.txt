@@ -3,29 +3,29 @@
 SENTENCE_NT'on the table is a sailor with carrying capacity 10'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     RELATIONSHIP_NT'on the table' {meaning: carries}
-        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
     WITH_NT'with'
-        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
+        COMMON_NOUN_NT'sailor' {indefinite 'a' n/m/f nom/acc s} {common nom/acc m s}
         PROPERTY_LIST_NT'carrying capacity 10'
 
 (2) a sailor with carrying capacity 10 is on the table
 
 SENTENCE_NT'a sailor with carrying capacity 10 is on the table'
-    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve}
+    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on}
     WITH_NT'with'
-        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
+        COMMON_NOUN_NT'sailor' {indefinite 'a' n/m/f nom/acc s} {common nom/acc m s}
         PROPERTY_LIST_NT'carrying capacity 10'
     RELATIONSHIP_NT'is on' {meaning: carries}
-        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
 
 (3) on the table is a sailor with carrying capacity 10 and wealth 12
 
 SENTENCE_NT'on the table is a sailor with carrying capacity 10 and wealt'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     RELATIONSHIP_NT'on the table' {meaning: carries}
-        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
     WITH_NT'with'
-        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
+        COMMON_NOUN_NT'sailor' {indefinite 'a' n/m/f nom/acc s} {common nom/acc m s}
         AND_NT'and'
             PROPERTY_LIST_NT'carrying capacity 10'
             PROPERTY_LIST_NT'wealth 12'
@@ -35,9 +35,9 @@ SENTENCE_NT'on the table is a sailor with carrying capacity 10 and wealt'
 SENTENCE_NT'on the table is a sailor with carrying capacity 10 , wealth '
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     RELATIONSHIP_NT'on the table' {meaning: carries}
-        COMMON_NOUN_NT'table' {common nom/acc n s} {definite 'the' n/m/f s/p nom/acc}
+        COMMON_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}
     WITH_NT'with'
-        COMMON_NOUN_NT'sailor' {common nom/acc m s} {indefinite 'a' n/m/f nom/acc s}
+        COMMON_NOUN_NT'sailor' {indefinite 'a' n/m/f nom/acc s} {common nom/acc m s}
         AND_NT','
             PROPERTY_LIST_NT'carrying capacity 10'
             AND_NT','

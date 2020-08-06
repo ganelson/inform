@@ -24,7 +24,7 @@ Seek verb in: a ming vase is carried by anna
     Accepted as be(0) + carried by + ___
 Seek succeeded
 Sentence subtree:
-    VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve}
+    VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve} {prep1: carried by}
     UNPARSED_NOUN_NT'ming vase' {indefinite 'a' n/m/f nom/acc s}
     RELATIONSHIP_NT'is carried by' {meaning: carries}
         UNPARSED_NOUN_NT'anna'

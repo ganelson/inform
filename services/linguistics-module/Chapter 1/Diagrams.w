@@ -34,7 +34,6 @@ some new node types:
 @e second_preposition_ANNOT      /* |preposition|: which further preposition, if any, qualifies it */
 @e special_meaning_ANNOT         /* |special_meaning_holder|: to give a verb a non-standard meaning */
 @e occurrence_ANNOT              /* |time_period|: any stipulation on occurrence */
-@e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
 @e relationship_ANNOT            /* |binary_predicate|: for RELATIONSHIP nodes */
 
 =
@@ -55,6 +54,99 @@ MAKE_ANNOTATION_FUNCTIONS(preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(second_preposition, preposition)
 MAKE_ANNOTATION_FUNCTIONS(special_meaning, special_meaning_holder)
 MAKE_ANNOTATION_FUNCTIONS(occurrence, time_period)
+
+@ =
+void Diagrams::declare_annotations(void) {
+	Annotations::declare_type(verbal_certainty_ANNOT,
+		Diagrams::write_verbal_certainty_ANNOT);
+	Annotations::declare_type(sentence_is_existential_ANNOT,
+		Diagrams::write_sentence_is_existential_ANNOT);
+	Annotations::declare_type(linguistic_error_here_ANNOT,
+		Diagrams::write_linguistic_error_here_ANNOT);
+	Annotations::declare_type(verb_ANNOT,
+		Diagrams::write_verb_ANNOT);
+	Annotations::declare_type(noun_ANNOT,
+		Diagrams::write_noun_ANNOT);
+	Annotations::declare_type(article_ANNOT,
+		Diagrams::write_article_ANNOT);
+	Annotations::declare_type(pronoun_ANNOT,
+		Diagrams::write_pronoun_ANNOT);
+	Annotations::declare_type(preposition_ANNOT,
+		Diagrams::write_preposition_ANNOT);
+	Annotations::declare_type(second_preposition_ANNOT,
+		Diagrams::write_second_preposition_ANNOT);
+	Annotations::declare_type(special_meaning_ANNOT,
+		Diagrams::write_special_meaning_ANNOT);
+	Annotations::declare_type(occurrence_ANNOT,
+		Diagrams::write_occurrence_ANNOT);
+	Annotations::declare_type(relationship_ANNOT,
+		Diagrams::write_relationship_ANNOT);
+}
+void Diagrams::write_verbal_certainty_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, verbal_certainty_ANNOT) != UNKNOWN_CE) {
+		WRITE(" {certainty:");
+		Certainty::write(OUT, Annotations::read_int(p, verbal_certainty_ANNOT));
+		WRITE("}");
+	}
+}
+void Diagrams::write_sentence_is_existential_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, sentence_is_existential_ANNOT))
+		WRITE(" {existential}");
+}
+void Diagrams::write_linguistic_error_here_ANNOT(text_stream *OUT, parse_node *p) {
+	WRITE(" {error: ");
+	switch (Annotations::read_int(p, linguistic_error_here_ANNOT)) {
+		case TwoLikelihoods_LINERROR: WRITE(" two likelihoods"); break;
+		default: WRITE("unknown"); break;
+	}
+	WRITE("}");
+}
+void Diagrams::write_verb_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_verb(p))
+		VerbUsages::write_usage(OUT, Node::get_verb(p));
+}
+void Diagrams::write_noun_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_noun(p))
+		Nouns::write_usage(OUT, Node::get_noun(p));
+}
+void Diagrams::write_article_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_article(p))
+		Articles::write_usage(OUT, Node::get_article(p));
+}
+void Diagrams::write_pronoun_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_pronoun(p))
+		Pronouns::write_usage(OUT, Node::get_pronoun(p));
+}
+void Diagrams::write_preposition_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_preposition(p)) {
+		WRITE(" {prep1: ");
+		Prepositions::log(OUT, Node::get_preposition(p));
+		WRITE("}");
+	}
+}
+void Diagrams::write_second_preposition_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_second_preposition(p)) {
+		WRITE(" {prep2: ");
+		Prepositions::log(OUT, Node::get_second_preposition(p));
+		WRITE("}");
+	}
+}
+void Diagrams::write_special_meaning_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_special_meaning(p))
+		WRITE(" {special meaning: %S}",
+			SpecialMeanings::get_name(Node::get_special_meaning(p)));
+}
+void Diagrams::write_occurrence_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_occurrence(p)) {
+		WRITE(" {occurrence: ");
+		Occurrence::log(OUT, Node::get_occurrence(p));
+		WRITE("}");
+	}
+}
+void Diagrams::write_relationship_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_relationship(p))
+		WRITE(" {meaning: %S}", Node::get_relationship(p)->debugging_log_name);
+}
 
 @ The |linguistic_error_here_ANNOT| annotation is for any errors we find:
 
@@ -98,55 +190,7 @@ void Diagrams::permissions(void) {
 	Annotations::allow(RELATIONSHIP_NT, preposition_ANNOT);
 	Annotations::allow(RELATIONSHIP_NT, relationship_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, linguistic_error_here_ANNOT);
-	Annotations::allow_for_category(L3_NCAT, explicit_gender_marker_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, article_ANNOT);
-}
-
-@ And the following conveniently prints out a sentence in diagram form; this
-is used by //linguistics-test// to keep us on the straight and narrow.
-
-=
-void Diagrams::log_node(OUTPUT_STREAM, parse_node *pn) {
-	switch (Annotations::read_int(pn, linguistic_error_here_ANNOT)) {
-		case TwoLikelihoods_LINERROR: WRITE(" (*** TwoLikelihoods_LINERROR ***)"); break;
-	}
-	switch(pn->node_type) {
-		case VERB_NT:
-			if (Node::get_verb(pn))
-				VerbUsages::write_usage(OUT, Node::get_verb(pn));
-			if (Annotations::read_int(pn, sentence_is_existential_ANNOT))
-				WRITE(" {existential}");
-			if (Node::get_special_meaning(pn))
-				WRITE(" {special meaning: %S}",
-					SpecialMeanings::get_name(Node::get_special_meaning(pn)));
-			if (Annotations::read_int(pn, verbal_certainty_ANNOT) != UNKNOWN_CE) {
-				WRITE(" {certainty:");
-				Certainty::write(OUT, Annotations::read_int(pn, verbal_certainty_ANNOT));
-				WRITE("}");
-			}
-			if (Node::get_occurrence(pn)) {
-				WRITE(" {occurrence: ");
-				Occurrence::log(OUT, Node::get_occurrence(pn));
-				WRITE("}");
-			}
-			break;
-		case UNPARSED_NOUN_NT:
-		case COMMON_NOUN_NT:
-		case PROPER_NOUN_NT:
-		case PRONOUN_NT:
-		case DEFECTIVE_NOUN_NT:
-			if (Node::get_noun(pn))
-				Nouns::write_usage(OUT, Node::get_noun(pn));
-			if (Node::get_pronoun(pn))
-				Pronouns::write_usage(OUT, Node::get_pronoun(pn));
-			if (Node::get_article(pn))
-				Articles::write_usage(OUT, Node::get_article(pn));
-			break;
-		case RELATIONSHIP_NT:
-			if (Node::get_relationship(pn))
-				WRITE(" {meaning: %S}", Node::get_relationship(pn)->debugging_log_name);
-			break;
-	}
 }
 
 @h Creation.

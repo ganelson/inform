@@ -2,10 +2,89 @@
 
 Attaching general-purpose data to nodes in the syntax tree.
 
-@h Annotations.
+@h Annotation types.
 The parse tree annotations are miscellaneous, and many are needed only at a
 few unusual nodes. Rather than have the structure grow large, we store
-annotations in the following.
+annotations, allowing each node in principle to have an arbitrary set (though
+see below).
+
+The following annotations used by the syntax module.
+
+@e heading_level_ANNOT from 1 /* int: for HEADING nodes, a hierarchical level, 0 (highest) to 9 (lowest) */
+@e language_element_ANNOT /* int: this node is not really a sentence, but a language definition Use */
+@e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
+@e implied_heading_ANNOT /* int: set only for the heading of implied inclusions */
+
+@d MAX_ANNOT_NUMBER (NO_DEFINED_ANNOT_VALUES+1)
+
+=
+void Annotations::begin(void) {
+	Annotations::declare_type(heading_level_ANNOT,
+		Annotations::write_heading_level_ANNOT);
+	Annotations::declare_type(language_element_ANNOT,
+		Annotations::write_language_element_ANNOT);
+	Annotations::declare_type(suppress_heading_dependencies_ANNOT,
+		Annotations::write_suppress_heading_dependencies_ANNOT);
+	Annotations::declare_type(implied_heading_ANNOT,
+		Annotations::write_implied_heading_ANNOT);
+}
+
+void Annotations::write_heading_level_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, heading_level_ANNOT) >= 0)
+		WRITE(" {heading %d}", Annotations::read_int(p, heading_level_ANNOT));
+}
+
+void Annotations::write_language_element_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, language_element_ANNOT))
+		WRITE(" {language element}");
+}
+
+void Annotations::write_suppress_heading_dependencies_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, suppress_heading_dependencies_ANNOT))
+		WRITE(" {suppress dependencies}");
+}
+
+void Annotations::write_implied_heading_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, implied_heading_ANNOT))
+		WRITE(" {implied}");
+}
+
+@ Annotations are identified by type, which are enumerated constants, and
+these must be declared before use.
+
+=
+typedef struct parse_node_annotation_type {
+	void (*writer_function)(text_stream *, parse_node *p);
+	CLASS_DEFINITION
+} parse_node_annotation_type;
+
+int known_annotation_types_started = FALSE;
+parse_node_annotation_type *known_annotation_types[MAX_ANNOT_NUMBER];
+
+void Annotations::declare_type(int id, void (*f)(text_stream *, parse_node *)) {
+	if ((id < 0) || (id >= MAX_ANNOT_NUMBER)) internal_error("annot out of range");
+	if (known_annotation_types_started == FALSE) {
+		for (int i=0; i<MAX_ANNOT_NUMBER; i++) known_annotation_types[i] = NULL;
+		known_annotation_types_started = TRUE;
+	}
+	if (known_annotation_types[id]) internal_error("annot declared twice");
+	known_annotation_types[id] = CREATE(parse_node_annotation_type);
+	known_annotation_types[id]->writer_function = f;
+}
+
+void Annotations::write_annotations(text_stream *OUT, parse_node *PN) {
+	parse_node_annotation *pna;
+	if (PN)
+		for (pna=PN->annotations; pna; pna=pna->next_annotation) {
+			int id = pna->annotation_id;
+			if ((id < 0) || (id >= MAX_ANNOT_NUMBER)) internal_error("annot out of range");
+			if (known_annotation_types[id] == NULL) internal_error("undeclared annot");
+			if (known_annotation_types[id]->writer_function)
+				(*(known_annotation_types[id]->writer_function))(OUT, PN);
+		}
+}
+
+@h Annotations.
 
 =
 typedef struct parse_node_annotation {
@@ -20,6 +99,8 @@ and attached to some suitcase. All is has is its ID:
 
 =
 parse_node_annotation *Annotations::new(int id) {
+	if ((id < 0) || (id >= MAX_ANNOT_NUMBER)) internal_error("annot out of range");
+	if (known_annotation_types[id] == NULL) internal_error("undeclared annot");
 	parse_node_annotation *pna = CREATE(parse_node_annotation);
 	pna->annotation_id = id;
 	pna->annotation_integer = 0;
@@ -166,15 +247,6 @@ void Annotations::copy(parse_node *to, parse_node *from) {
 		latest = pna_copy;
 	}
 }
-
-@h Annotations used by the syntax module.
-
-@e heading_level_ANNOT from 1 /* int: for HEADING nodes, a hierarchical level, 0 (highest) to 9 (lowest) */
-@e language_element_ANNOT /* int: this node is not really a sentence, but a language definition Use */
-@e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
-@e implied_heading_ANNOT /* int: set only for the heading of implied inclusions */
-
-@d MAX_ANNOT_NUMBER (NO_DEFINED_ANNOT_VALUES+1)
 
 @h Annotation permissions.
 As a piece of defensive coding, //syntax// will not allow arbitrary annotations

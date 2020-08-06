@@ -278,7 +278,7 @@ parse_node *ExParser::Subtrees::to_specification(int SV_not_SN, wording W, parse
 parse_node *ExParser::Subtrees::to_specification_inner(int SV_not_SN, wording W, parse_node *A, parse_node *B) {
 	parse_node *spec;
 	parse_node *subject_noun_phrase = NULL, *verb_phrase = NULL;
-	verb_usage *vu = NULL; preposition *prep = NULL;
+	verb_usage *vu = NULL;
 	int verb_phrase_negated = FALSE;
 
 	if (Node::is(A, AMBIGUITY_NT)) {
@@ -345,7 +345,6 @@ has the standard form, but we check it anyway.
 	vu = Node::get_vu(verb_phrase);
 	if (vu == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "verb null");
 	verb_phrase_negated = (VerbUsages::is_used_negatively(vu))?TRUE:FALSE;
-	prep = Node::get_prep(verb_phrase);
 
 @ There's a delicate little manoeuvre here. We have to be careful because
 the tense and negation operators do not commute with each other: consider

@@ -22,6 +22,12 @@ MAKE_ANNOTATION_FUNCTIONS(problem_falls_under, parse_node)
 =
 void ProblemsModule::start(void) {
 	Annotations::allow_for_category(L2_NCAT, problem_falls_under_ANNOT);
+	Annotations::declare_type(problem_falls_under_ANNOT,
+		ProblemsModule::write_problem_falls_under_ANNOT);
 }
 void ProblemsModule::end(void) {
+}
+void ProblemsModule::write_problem_falls_under_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_problem_falls_under(p))
+		WRITE("{under: '%W'}", Node::get_text(Node::get_problem_falls_under(p)));
 }
