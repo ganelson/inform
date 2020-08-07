@@ -39,9 +39,9 @@ control_structure_phrase *ControlStructures::new(text_stream *mnemonic) {
 @ Some cryptic mnemonics for logging the invocation tree:
 
 =
-void ControlStructures::log(control_structure_phrase *csp) {
-	if (csp == NULL) LOG("---");
-	else LOG("%S", csp->mnemonic);
+void ControlStructures::log(text_stream *OUT, control_structure_phrase *csp) {
+	if (csp == NULL) WRITE("---");
+	else WRITE("%S", csp->mnemonic);
 }
 
 @ The following set is built in to the Inform language; Basic Inform and such

@@ -241,31 +241,30 @@ concisely and without fuss.
 
 =
 void Calculus::Terms::log(pcalc_term *pt) {
+	Calculus::Terms::write(DL, pt);
+}
+void Calculus::Terms::write(text_stream *OUT, pcalc_term *pt) {
 	if (pt == NULL) {
-		LOG("<null-term>");
+		WRITE("<null-term>");
 	} else if (pt->constant) {
 		parse_node *spec = pt->constant;
-		if (pt->cinder >= 0) { LOG("const_%d", pt->cinder); return; }
-		if (Wordings::nonempty(Node::get_text(spec))) { LOG("'%W'", Node::get_text(spec)); return; }
+		if (pt->cinder >= 0) { WRITE("const_%d", pt->cinder); return; }
+		if (Wordings::nonempty(Node::get_text(spec))) { WRITE("'%W'", Node::get_text(spec)); return; }
 		if (Node::is(spec, CONSTANT_NT)) {
 			instance *I = Rvalues::to_object_instance(spec);
-			if (I) { LOG("$O", I); return; }
+			if (I) { Instances::write(OUT, I); return; }
 		}
-		LOG("$P", spec);
+		Node::log_node(OUT, spec);
 	} else if (pt->function) {
 		binary_predicate *bp = pt->function->bp;
 		i6_schema *fn = BinaryPredicates::get_term_as_function_of_other(bp, 0);
 		if (fn == NULL) fn = BinaryPredicates::get_term_as_function_of_other(bp, 1);
 		if (fn == NULL) internal_error("Function of non-functional predicate");
-		if (Streams::I6_escapes_enabled(DL)) {
-			Calculus::Schemas::log_applied(fn, &(pt->function->fn_of));
-		} else {
-			LOG("{$i:$0}", fn, &(pt->function->fn_of));
-		}
+		Calculus::Schemas::write_applied(OUT, fn, &(pt->function->fn_of));
 	} else if (pt->variable >= 0) {
 		int j = pt->variable;
-		if (j<26) LOG("%c", pcalc_vars[j]); else LOG("<bad-var=%d>", j);
+		if (j<26) WRITE("%c", pcalc_vars[j]); else WRITE("<bad-var=%d>", j);
 	} else {
-		LOG("<bad-term>");
+		WRITE("<bad-term>");
 	}
 }

@@ -245,11 +245,18 @@ void Instances::register_as_adjectival_constant(instance *I, property *P) {
 
 =
 void Instances::log(instance *I) {
-	if (I== NULL) { LOG("<null instance>"); return; }
-	if (Streams::I6_escapes_enabled(DL) == FALSE) LOG("I%d", I->allocation_id);
-	Nouns::log(I->tag);
-	if (!(Kinds::Compare::le(Instances::to_kind(I), K_object)))
-		LOG("[$u]", Instances::to_kind(I));
+	Instances::write(DL, I);
+}
+
+void Instances::write(OUTPUT_STREAM, instance *I) {
+	if (I== NULL) { WRITE("<null instance>"); return; }
+	if (Streams::I6_escapes_enabled(DL) == FALSE) WRITE("I%d", I->allocation_id);
+	Nouns::write(OUT, I->tag);
+	if (!(Kinds::Compare::le(Instances::to_kind(I), K_object))) {
+		WRITE("[");
+		Kinds::Textual::write(OUT, Instances::to_kind(I));
+		WRITE("]");
+	}
 }
 
 @h As subjects.

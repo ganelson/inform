@@ -186,9 +186,9 @@ quantifier *Quantifiers::get_negation(quantifier *quant) {
 @ Logging a quantifier:
 
 =
-void Quantifiers::log(quantifier *quant, int parameter) {
-	if (quant == NULL) { LOG("<NULL-QUANTIFIER>"); return; }
-	LOG(quant->log_text, parameter);
+void Quantifiers::log(OUTPUT_STREAM, quantifier *quant, int parameter) {
+	if (quant == NULL) { WRITE("<NULL-QUANTIFIER>"); return; }
+	WRITE(quant->log_text, parameter);
 }
 
 @h Acting on quantifiers.

@@ -396,70 +396,7 @@ int ParseTreeUsage::allow_in_assertions(parse_node *p) {
 
 @
 
-@d PARSE_TREE_LOGGER_SYNTAX_CALLBACK ParseTreeUsage::log_node
-
 =
-void ParseTreeUsage::log_node(OUTPUT_STREAM, parse_node *pn) {
-	if (Node::get_meaning(pn)) WRITE("$M", Node::get_meaning(pn));
-	else WRITE("$N", pn->node_type);
-	if (Wordings::nonempty(Node::get_text(pn))) {
-		TEMPORARY_TEXT(text)
-		WRITE_TO(text, "%W", Node::get_text(pn));
-		Str::truncate(text, 60);
-		WRITE("'%S'", text);
-		DISCARD_TEXT(text)
-	}
-
-	if (Node::get_kind_of_value(pn)) WRITE("-$u", Node::get_kind_of_value(pn));
-	if (ParseTreeUsage::is_lvalue(pn)) Lvalues::log(pn);
-	else if (ParseTreeUsage::is_rvalue(pn)) Rvalues::log(pn);
-	else if (ParseTreeUsage::is_condition(pn)) Conditions::log(pn);
-	if (Node::get_vu(pn)) { WRITE("-vu:"); VerbsAtRunTime::log(Node::get_vu(pn)); }
-
-	int show_eval = FALSE, show_refers = FALSE;
-	if (Annotations::read_int(pn, creation_site_ANNOT))
-		WRITE(" (created here)");
-	switch(pn->node_type) {
-		case ADJECTIVE_NT: show_eval = TRUE; break;
-		case HEADING_NT: WRITE(" (level %d)", Annotations::read_int(pn, heading_level_ANNOT)); break;
-		case COMMON_NOUN_NT: show_refers = TRUE; break;
-		case KIND_NT: show_refers = TRUE; break;
-		case RELATIONSHIP_NT: break;
-		case PROPER_NOUN_NT:
-			if (Annotations::read_int(pn, multiplicity_ANNOT))
-				WRITE(" (x%d)", Annotations::read_int(pn, multiplicity_ANNOT));
-			show_refers = TRUE;
-			break;
-		case TOKEN_NT: WRITE(" [%d/%d]", Annotations::read_int(pn, slash_class_ANNOT),
-			Annotations::read_int(pn, slash_dash_dash_ANNOT)); break;
-		case INVOCATION_LIST_NT:
-		case CODE_BLOCK_NT: {
-			control_structure_phrase *csp = Node::get_control_structure_used(pn);
-			WRITE("  "); ControlStructures::log(csp); WRITE(" ");
-			if (pn->node_type == INVOCATION_LIST_NT)
-				WRITE("%d", Annotations::read_int(pn, indentation_level_ANNOT));
-			else WRITE(" ");
-			WRITE("  ");
-			break;
-		}
-	}
-	if (Node::get_kind_required_by_context(pn))
-		WRITE(" requires:$u", Node::get_kind_required_by_context(pn));
-
-	if (show_refers) {
-		if (Node::get_subject(pn)) { WRITE(" refers:$j", Node::get_subject(pn)); }
-		if (Node::get_evaluation(pn)) { WRITE(" eval:$P", Node::get_evaluation(pn)); }
-	}
-	if ((show_eval) && (Node::get_evaluation(pn))) {
-		WRITE(" eval:$P", Node::get_evaluation(pn));
-	}
-	if (Node::get_defn_language(pn))
-		WRITE(" language:%J", Node::get_defn_language(pn));
-	if (Node::get_creation_proposition(pn))
-		WRITE(" (creation $D)", Node::get_creation_proposition(pn));
-}
-
-@ =
 void ParseTreeUsage::verify(void) {
 	VerifyTree::verify_integrity(Task::syntax_tree());
 	VerifyTree::verify_structure(Task::syntax_tree());

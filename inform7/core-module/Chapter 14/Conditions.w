@@ -202,19 +202,6 @@ void Conditions::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 	}
 }
 
-@ And the log:
-
-=
-void Conditions::log(parse_node *spec) {
-	if (Node::get_condition_tense(spec))
-		Occurrence::log(DL, Node::get_condition_tense(spec));
-	if (Node::is(spec, TEST_PROPOSITION_NT))
-		LOG("(test: $D)", Specifications::to_proposition(spec));
-	if (Specifications::is_description(spec)) {
-		LOG("(st: $D)", Descriptions::to_proposition(spec));
-	}
-}
-
 @h Specificity.
 We will need a way of determining which of two conditions is more complex,
 so that action-based rules with "when..." clauses tacked on can be sorted:

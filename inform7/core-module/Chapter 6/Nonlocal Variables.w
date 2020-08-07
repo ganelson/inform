@@ -169,10 +169,13 @@ to have the "initial value" property.
 
 =
 void NonlocalVariables::log(nonlocal_variable *nlv) {
-	if (nlv== NULL) { LOG("<null variable>"); return; }
-	LOG("'%W'(%s)[$u]", nlv->name,
-		(nlv->constant_at_run_time)?"const":"var",
-		nlv->nlv_kind);
+	NonlocalVariables::write(DL, nlv);
+}
+
+void NonlocalVariables::write(OUTPUT_STREAM, nonlocal_variable *nlv) {
+	if (nlv == NULL) { WRITE("<null variable>"); return; }
+	WRITE("'%W'(%s)", nlv->name, (nlv->constant_at_run_time)?"const":"var");
+	Kinds::Textual::write(OUT, nlv->nlv_kind);
 }
 
 @ It turns out to be convenient to have this routine around. Note that

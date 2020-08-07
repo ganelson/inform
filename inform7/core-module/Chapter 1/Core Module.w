@@ -631,7 +631,8 @@ MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 	Annotations::declare_type(classified_ANNOT, NULL);
 	Annotations::declare_type(clears_pronouns_ANNOT, NULL);
 	Annotations::declare_type(colon_block_command_ANNOT, NULL);
-	Annotations::declare_type(condition_tense_ANNOT, NULL);
+	Annotations::declare_type(condition_tense_ANNOT,
+		CoreModule::write_condition_tense_ANNOT);
 	Annotations::declare_type(constant_action_name_ANNOT, NULL);
 	Annotations::declare_type(constant_action_pattern_ANNOT, NULL);
 	Annotations::declare_type(constant_activity_ANNOT, NULL);
@@ -640,11 +641,14 @@ MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 	Annotations::declare_type(constant_enumeration_ANNOT, NULL);
 	Annotations::declare_type(constant_equation_ANNOT, NULL);
 	Annotations::declare_type(constant_grammar_verb_ANNOT, NULL);
-	Annotations::declare_type(constant_instance_ANNOT, NULL);
-	Annotations::declare_type(constant_local_variable_ANNOT, NULL);
+	Annotations::declare_type(constant_instance_ANNOT,
+		CoreModule::write_constant_instance_ANNOT);
+	Annotations::declare_type(constant_local_variable_ANNOT,
+		CoreModule::write_constant_local_variable_ANNOT);
 	Annotations::declare_type(constant_named_action_pattern_ANNOT, NULL);
 	Annotations::declare_type(constant_named_rulebook_outcome_ANNOT, NULL);
-	Annotations::declare_type(constant_nonlocal_variable_ANNOT, NULL);
+	Annotations::declare_type(constant_nonlocal_variable_ANNOT,
+		CoreModule::write_constant_nonlocal_variable_ANNOT);
 	Annotations::declare_type(constant_number_ANNOT, NULL);
 	Annotations::declare_type(constant_property_ANNOT, NULL);
 	Annotations::declare_type(constant_rule_ANNOT, NULL);
@@ -655,14 +659,19 @@ MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 	Annotations::declare_type(constant_text_ANNOT, NULL);
 	Annotations::declare_type(constant_use_option_ANNOT, NULL);
 	Annotations::declare_type(constant_verb_form_ANNOT, NULL);
-	Annotations::declare_type(control_structure_used_ANNOT, NULL);
+	Annotations::declare_type(control_structure_used_ANNOT,
+		CoreModule::write_control_structure_used_ANNOT);
 	Annotations::declare_type(converted_SN_ANNOT, NULL);
-	Annotations::declare_type(creation_proposition_ANNOT, NULL);
-	Annotations::declare_type(creation_site_ANNOT, NULL);
-	Annotations::declare_type(defn_language_ANNOT, NULL);
+	Annotations::declare_type(creation_proposition_ANNOT,
+		CoreModule::write_creation_proposition_ANNOT);
+	Annotations::declare_type(creation_site_ANNOT,
+		CoreModule::write_creation_site_ANNOT);
+	Annotations::declare_type(defn_language_ANNOT,
+		CoreModule::write_defn_language_ANNOT);
 	Annotations::declare_type(end_control_structure_used_ANNOT, NULL);
 	Annotations::declare_type(epistemological_status_ANNOT, NULL);
-	Annotations::declare_type(evaluation_ANNOT, NULL);
+	Annotations::declare_type(evaluation_ANNOT,
+		CoreModule::write_evaluation_ANNOT);
 	Annotations::declare_type(explicit_iname_ANNOT, NULL);
 	Annotations::declare_type(explicit_literal_ANNOT, NULL);
 	Annotations::declare_type(explicit_vh_ANNOT, NULL);
@@ -674,26 +683,33 @@ MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 	Annotations::declare_type(grammar_value_ANNOT, NULL);
 	Annotations::declare_type(implicit_in_creation_of_ANNOT, NULL);
 	Annotations::declare_type(implicitness_count_ANNOT, NULL);
-	Annotations::declare_type(indentation_level_ANNOT, NULL);
+	Annotations::declare_type(indentation_level_ANNOT,
+		CoreModule::write_indentation_level_ANNOT);
 	Annotations::declare_type(interpretation_of_subject_ANNOT, NULL);
 	Annotations::declare_type(is_phrase_option_ANNOT, NULL);
-	Annotations::declare_type(kind_of_new_variable_ANNOT, NULL);
-	Annotations::declare_type(kind_of_value_ANNOT, NULL);
-	Annotations::declare_type(kind_required_by_context_ANNOT, NULL);
+	Annotations::declare_type(kind_of_new_variable_ANNOT,
+		CoreModule::write_kind_of_new_variable_ANNOT);
+	Annotations::declare_type(kind_of_value_ANNOT,
+		CoreModule::write_kind_of_value_ANNOT);
+	Annotations::declare_type(kind_required_by_context_ANNOT,
+		CoreModule::write_kind_required_by_context_ANNOT);
 	Annotations::declare_type(kind_resulting_ANNOT, NULL);
 	Annotations::declare_type(kind_variable_declarations_ANNOT, NULL);
 	Annotations::declare_type(rule_placement_sense_ANNOT, NULL);
 	Annotations::declare_type(lpe_options_ANNOT, NULL);
 	Annotations::declare_type(modal_verb_ANNOT, NULL);
-	Annotations::declare_type(multiplicity_ANNOT, NULL);
+	Annotations::declare_type(multiplicity_ANNOT,
+		CoreModule::write_multiplicity_ANNOT);
 	Annotations::declare_type(new_relation_here_ANNOT, NULL);
-	Annotations::declare_type(nothing_object_ANNOT, NULL);
+	Annotations::declare_type(nothing_object_ANNOT,
+		CoreModule::write_nothing_object_ANNOT);
 	Annotations::declare_type(nowhere_ANNOT, NULL);
 	Annotations::declare_type(phrase_invoked_ANNOT, NULL);
 	Annotations::declare_type(phrase_option_ANNOT, NULL);
 	Annotations::declare_type(phrase_options_invoked_ANNOT, NULL);
 	Annotations::declare_type(property_name_used_as_noun_ANNOT, NULL);
-	Annotations::declare_type(proposition_ANNOT, NULL);
+	Annotations::declare_type(proposition_ANNOT,
+		CoreModule::write_proposition_ANNOT);
 	Annotations::declare_type(prep_ANNOT, NULL);
 	Annotations::declare_type(quant_ANNOT, NULL);
 	Annotations::declare_type(quantification_parameter_ANNOT, NULL);
@@ -706,13 +722,17 @@ MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 	Annotations::declare_type(say_adjective_ANNOT, NULL);
 	Annotations::declare_type(say_verb_ANNOT, NULL);
 	Annotations::declare_type(say_verb_negated_ANNOT, NULL);
-	Annotations::declare_type(self_object_ANNOT, NULL);
-	Annotations::declare_type(slash_class_ANNOT, NULL);
-	Annotations::declare_type(slash_dash_dash_ANNOT, NULL);
+	Annotations::declare_type(self_object_ANNOT,
+		CoreModule::write_self_object_ANNOT);
+	Annotations::declare_type(slash_class_ANNOT,
+		CoreModule::write_slash_class_ANNOT);
+	Annotations::declare_type(slash_dash_dash_ANNOT,
+		CoreModule::write_slash_dash_dash_ANNOT);
 	Annotations::declare_type(ssp_closing_segment_wn_ANNOT, NULL);
 	Annotations::declare_type(ssp_segment_count_ANNOT, NULL);
 	Annotations::declare_type(subject_ANNOT, NULL);
-	Annotations::declare_type(subject_term_ANNOT, NULL);
+	Annotations::declare_type(subject_term_ANNOT,
+		CoreModule::write_subject_term_ANNOT);
 	Annotations::declare_type(suppress_newlines_ANNOT, NULL);
 	Annotations::declare_type(table_cell_unspecified_ANNOT, NULL);
 	Annotations::declare_type(tense_marker_ANNOT, NULL);
@@ -724,7 +744,7 @@ MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 	Annotations::declare_type(unit_ANNOT, NULL);
 	Annotations::declare_type(unproven_ANNOT, NULL);
 	Annotations::declare_type(verb_problem_issued_ANNOT, NULL);
-	Annotations::declare_type(vu_ANNOT, NULL);
+	Annotations::declare_type(vu_ANNOT, CoreModule::write_vu_ANNOT);
 	Annotations::declare_type(you_can_ignore_ANNOT, NULL);
 
 @ =
@@ -747,7 +767,11 @@ void CoreModule::write_colon_block_command_ANNOT(text_stream *OUT, parse_node *p
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_condition_tense_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_condition_tense(p)) {
+		WRITE(" {condition tense: ");
+		Occurrence::log(OUT, Node::get_condition_tense(p));
+		WRITE("}");
+	}
 }
 void CoreModule::write_constant_action_name_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -774,10 +798,21 @@ void CoreModule::write_constant_grammar_verb_ANNOT(text_stream *OUT, parse_node 
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_constant_instance_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_constant_instance(p)) {
+		WRITE(" {instance: ");
+		Instances::write(OUT, Node::get_constant_instance(p));
+		WRITE("}");
+	}
 }
 void CoreModule::write_constant_local_variable_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	local_variable *lvar = Node::get_constant_local_variable(p);
+	if (lvar) {
+		WRITE(" {local: ");
+		LocalVariables::write(OUT, lvar);
+		WRITE(" ");
+		Kinds::Textual::write(OUT, LocalVariables::unproblematic_kind(lvar));
+		WRITE("}");
+	}
 }
 void CoreModule::write_constant_named_action_pattern_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -786,7 +821,12 @@ void CoreModule::write_constant_named_rulebook_outcome_ANNOT(text_stream *OUT, p
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_constant_nonlocal_variable_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	nonlocal_variable *q = Node::get_constant_nonlocal_variable(p);
+	if (q) {
+		WRITE(" {nonlocal: ");
+		NonlocalVariables::write(OUT, q);
+		WRITE("}");
+	}
 }
 void CoreModule::write_constant_number_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -819,19 +859,25 @@ void CoreModule::write_constant_verb_form_ANNOT(text_stream *OUT, parse_node *p)
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_control_structure_used_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	control_structure_phrase *csp = Node::get_control_structure_used(p);
+	if (csp) {
+		WRITE(" {"); ControlStructures::log(OUT, csp); WRITE("}");
+	}
 }
 void CoreModule::write_converted_SN_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_creation_proposition_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_creation_proposition(p))
+		WRITE(" {creation: $D}", Node::get_creation_proposition(p));
 }
 void CoreModule::write_creation_site_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Annotations::read_int(p, creation_site_ANNOT))
+		WRITE(" {created here}");
 }
 void CoreModule::write_defn_language_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_defn_language(p))
+		WRITE(" {language: %J}", Node::get_defn_language(p));
 }
 void CoreModule::write_end_control_structure_used_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -840,7 +886,8 @@ void CoreModule::write_epistemological_status_ANNOT(text_stream *OUT, parse_node
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_evaluation_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_evaluation(p))
+		WRITE(" {eval: $P}", Node::get_evaluation(p));
 }
 void CoreModule::write_explicit_iname_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -876,7 +923,8 @@ void CoreModule::write_implicitness_count_ANNOT(text_stream *OUT, parse_node *p)
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_indentation_level_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Annotations::read_int(p, indentation_level_ANNOT) > 0)
+		WRITE(" {indent: %d}", Annotations::read_int(p, indentation_level_ANNOT));
 }
 void CoreModule::write_interpretation_of_subject_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -885,13 +933,25 @@ void CoreModule::write_is_phrase_option_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_kind_of_new_variable_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_kind_of_new_variable(p)) {
+		WRITE(" {new var: ");
+		Kinds::Textual::write(OUT, Node::get_kind_of_new_variable(p));
+		WRITE("}");
+	}
 }
 void CoreModule::write_kind_of_value_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_kind_of_value(p)) {
+		WRITE(" {kind: ");
+		Kinds::Textual::write(OUT, Node::get_kind_of_value(p));
+		WRITE("}");
+	}
 }
 void CoreModule::write_kind_required_by_context_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_kind_required_by_context(p)) {
+		WRITE(" {required: ");
+		Kinds::Textual::write(OUT, Node::get_kind_required_by_context(p));
+		WRITE("}");
+	}
 }
 void CoreModule::write_kind_resulting_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -909,13 +969,14 @@ void CoreModule::write_modal_verb_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_multiplicity_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Annotations::read_int(p, multiplicity_ANNOT))
+		WRITE(" {multiplicity %d}", Annotations::read_int(p, multiplicity_ANNOT));
 }
 void CoreModule::write_new_relation_here_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_nothing_object_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Annotations::read_int(p, nothing_object_ANNOT)) LOG(" {nothing}");
 }
 void CoreModule::write_nowhere_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -933,7 +994,11 @@ void CoreModule::write_property_name_used_as_noun_ANNOT(text_stream *OUT, parse_
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_proposition_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_proposition(p)) {
+		WRITE(" {proposition: ");
+		Calculus::Propositions::write(OUT, Node::get_proposition(p));
+		WRITE("}");
+	}
 }
 void CoreModule::write_prep_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -972,13 +1037,15 @@ void CoreModule::write_say_verb_negated_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_self_object_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Annotations::read_int(p, self_object_ANNOT)) LOG(" {self}");
 }
 void CoreModule::write_slash_class_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Annotations::read_int(p, slash_class_ANNOT) > 0)
+		WRITE(" {slash: %d}", Annotations::read_int(p, slash_class_ANNOT));
 }
 void CoreModule::write_slash_dash_dash_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Annotations::read_int(p, slash_dash_dash_ANNOT) > 0)
+		WRITE(" {slash-dash-dash: %d}", Annotations::read_int(p, slash_dash_dash_ANNOT));
 }
 void CoreModule::write_ssp_closing_segment_wn_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -990,7 +1057,8 @@ void CoreModule::write_subject_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_subject_term_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_subject(p))
+		WRITE(" {refers: $j}", Node::get_subject(p));
 }
 void CoreModule::write_suppress_newlines_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
@@ -1026,7 +1094,8 @@ void CoreModule::write_verb_problem_issued_ANNOT(text_stream *OUT, parse_node *p
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_vu_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
+	if (Node::get_vu(p))
+		VerbUsages::write_usage(OUT, Node::get_vu(p));
 }
 void CoreModule::write_you_can_ignore_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));

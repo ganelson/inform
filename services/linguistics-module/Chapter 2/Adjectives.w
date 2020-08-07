@@ -152,8 +152,10 @@ To identify an adjective in the debugging log:
 
 =
 void Adjectives::log(adjective *adj) {
-	if (adj == NULL) { LOG("<null adjectival phrase>"); return; }
+	Adjectives::write(DL, adj);
+}
+void Adjectives::write(OUTPUT_STREAM, adjective *adj) {
+	if (adj == NULL) { WRITE("<null adjectival phrase>"); return; }
 	wording W = Adjectives::get_nominative_singular(adj);
-	if (Streams::I6_escapes_enabled(DL)) LOG("'%W'", W);
-	else LOG("A%d'%W'", adj->allocation_id, W);
+	WRITE("A%d'%W'", adj->allocation_id, W);
 }

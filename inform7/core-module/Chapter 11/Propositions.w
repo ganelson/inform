@@ -169,16 +169,19 @@ logged as just |[ ]|.
 =
 int log_addresses = FALSE;
 void Calculus::Propositions::log(pcalc_prop *prop) {
+	Calculus::Propositions::write(DL, prop);
+}
+void Calculus::Propositions::write(OUTPUT_STREAM, pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
-	LOG("[ ");
+	WRITE("[ ");
 	TRAVERSE_PROPOSITION(p, prop) {
 		char *bridge = Calculus::Propositions::debugging_log_text_between(p_prev, p);
-		if (bridge[0]) LOG("%s ", bridge);
-		if (log_addresses) LOG("%08x=", (unsigned int) p);
-		Calculus::Atoms::log(p);
-		LOG(" ");
+		if (bridge[0]) WRITE("%s ", bridge);
+		if (log_addresses) WRITE("%08x=", (unsigned int) p);
+		Calculus::Atoms::write(OUT, p);
+		WRITE(" ");
 	}
-	LOG("]");
+	WRITE("]");
 }
 
 @h Validity.

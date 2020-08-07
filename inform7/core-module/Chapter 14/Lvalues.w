@@ -186,24 +186,6 @@ void Lvalues::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 	}
 }
 
-@ And the log.
-
-=
-void Lvalues::log(parse_node *spec) {
-	switch (Node::get_type(spec)) {
-		case LOCAL_VARIABLE_NT: {
-			local_variable *lvar = Node::get_constant_local_variable(spec);
-			LOG("(%~L;$u)", lvar, LocalVariables::unproblematic_kind(lvar));
-			break;
-		}
-		case NONLOCAL_VARIABLE_NT: {
-			nonlocal_variable *q = Node::get_constant_nonlocal_variable(spec);
-			LOG("($Z)", q);
-			break;
-		}
-	}
-}
-
 @h Compilation.
 
 =

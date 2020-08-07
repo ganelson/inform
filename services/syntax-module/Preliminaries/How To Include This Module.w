@@ -101,9 +101,6 @@ which nodes in a syntax tree can be parents of which other nodes: see
 and |EVEN_MORE_PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK| adds permissions for nodes
 to be parents of each other: see //NodeType::make_parentage_allowed_table//.
 
-(*) |PARSE_TREE_LOGGER_SYNTAX_CALLBACK| provides an alternative way to log
-an individual node, i.e., to the debugging log.
-
 (*) |PROBLEM_SYNTAX_CALLBACK| is called when a syntax error is found, and can
 prevent this from being issued to the terminal as an error message: see
 //Sentences::syntax_problem//.

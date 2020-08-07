@@ -457,23 +457,6 @@ void Rvalues::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 	}
 }
 
-@ And for the log:
-
-=
-void Rvalues::log(parse_node *spec) {
-	switch (Node::get_type(spec)) {
-		case CONSTANT_NT: {
-			instance *I = Rvalues::to_instance(spec);
-			if (I) LOG("(%~I)", I);
-			if (Rvalues::is_object(spec)) {
-				if (Annotations::read_int(spec, self_object_ANNOT)) LOG("(-self-)");
-				else if (Annotations::read_int(spec, nothing_object_ANNOT)) LOG("(-nothing-)");
-				else LOG("($O)", Rvalues::to_instance(spec));
-			}
-		}
-	}
-}
-
 @h Compilation.
 First: clearly everything in this family evaluates, but what kind does the
 result have?

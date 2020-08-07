@@ -365,11 +365,23 @@ void Calculus::Schemas::sch_type_parameter(pcalc_term *pt) {
 
 =
 void Calculus::Schemas::log(i6_schema *sch) {
-	if (sch == NULL) LOG("<null schema>");
-	else LOG("<schema: %S>", &(sch->prototype));
+	Calculus::Schemas::write(DL, sch);
+}
+
+void Calculus::Schemas::write(OUTPUT_STREAM, i6_schema *sch) {
+	if (sch == NULL) WRITE("<null schema>");
+	else WRITE("<schema: %S>", &(sch->prototype));
 }
 
 void Calculus::Schemas::log_applied(i6_schema *sch, pcalc_term *pt1) {
-	if (sch == NULL) { LOG("<null schema>"); return; }
-	else LOG("<%S : $0>", &(sch->prototype), pt1);
+	Calculus::Schemas::write_applied(DL, sch, pt1);
+}
+
+void Calculus::Schemas::write_applied(OUTPUT_STREAM, i6_schema *sch, pcalc_term *pt1) {
+	if (sch == NULL) { WRITE("<null schema>"); return; }
+	else {
+		WRITE("<%S : ", &(sch->prototype));
+		Calculus::Terms::write(OUT, pt1);
+		WRITE(">");
+	}
 }

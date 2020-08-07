@@ -444,60 +444,67 @@ Logging atomic propositions divides into cases:
 
 =
 void Calculus::Atoms::log(pcalc_prop *prop) {
-	if (prop == NULL) { LOG("<null-atom>"); return; }
+	Calculus::Atoms::write(DL, prop);
+}
+void Calculus::Atoms::write(text_stream *OUT, pcalc_prop *prop) {
+	if (prop == NULL) { WRITE("<null-atom>"); return; }
 	switch(prop->element) {
 		case PREDICATE_ATOM:
 			switch(prop->arity) {
 				case 1: @<Log some suitable textual name for this unary predicate@>; break;
 				case 2: @<Log some suitable textual name for this binary predicate@>; break;
-				default: LOG("?exotic-predicate-arity=%d?", prop->arity); break;
+				default: WRITE("?exotic-predicate-arity=%d?", prop->arity); break;
 			}
 			break;
 		case QUANTIFIER_ATOM: {
 			quantifier *quant = prop->quant;
-			Quantifiers::log(quant, prop->quantification_parameter);
-			LOG(" "); @<Log a comma-separated list of terms for this atomic proposition@>;
+			Quantifiers::log(OUT, quant, prop->quantification_parameter);
+			WRITE(" "); @<Log a comma-separated list of terms for this atomic proposition@>;
 			return;
 		}
 		case CALLED_ATOM: {
 			wording W = Calculus::Atoms::CALLED_get_name(prop);
-			LOG("called='%W'", W);
-			if (prop->assert_kind) LOG("($u)", prop->assert_kind);
+			WRITE("called='%W'", W);
+			if (prop->assert_kind) {
+				WRITE("(");
+				Kinds::Textual::write(OUT, prop->assert_kind);
+				WRITE(")");
+			}
 			break;
 		}
 		case KIND_ATOM:
-			if (Streams::I6_escapes_enabled(DL) == FALSE) LOG("kind=");
-			LOG("$u", prop->assert_kind);
-			if ((Streams::I6_escapes_enabled(DL) == FALSE) && (prop->composited)) LOG("_c");
-			if ((Streams::I6_escapes_enabled(DL) == FALSE) && (prop->unarticled)) LOG("_u");
+			if (Streams::I6_escapes_enabled(DL) == FALSE) WRITE("kind=");
+			Kinds::Textual::write(OUT, prop->assert_kind);
+			if ((Streams::I6_escapes_enabled(DL) == FALSE) && (prop->composited)) WRITE("_c");
+			if ((Streams::I6_escapes_enabled(DL) == FALSE) && (prop->unarticled)) WRITE("_u");
 			break;
-		case ISAKIND_ATOM: LOG("is-a-kind"); break;
-		case ISAVAR_ATOM: LOG("is-a-var"); break;
-		case ISACONST_ATOM: LOG("is-a-const"); break;
-		case EVERYWHERE_ATOM: LOG("everywhere"); break;
-		case NOWHERE_ATOM: LOG("nowhere"); break;
-		case HERE_ATOM: LOG("here"); break;
-		case NEGATION_OPEN_ATOM: LOG("NOT["); break;
-		case NEGATION_CLOSE_ATOM: LOG("NOT]"); break;
-		case DOMAIN_OPEN_ATOM: LOG("IN["); break;
-		case DOMAIN_CLOSE_ATOM: LOG("IN]"); break;
-		default: LOG("?bad-atom?"); break;
+		case ISAKIND_ATOM: WRITE("is-a-kind"); break;
+		case ISAVAR_ATOM: WRITE("is-a-var"); break;
+		case ISACONST_ATOM: WRITE("is-a-const"); break;
+		case EVERYWHERE_ATOM: WRITE("everywhere"); break;
+		case NOWHERE_ATOM: WRITE("nowhere"); break;
+		case HERE_ATOM: WRITE("here"); break;
+		case NEGATION_OPEN_ATOM: WRITE("NOT["); break;
+		case NEGATION_CLOSE_ATOM: WRITE("NOT]"); break;
+		case DOMAIN_OPEN_ATOM: WRITE("IN["); break;
+		case DOMAIN_CLOSE_ATOM: WRITE("IN]"); break;
+		default: WRITE("?bad-atom?"); break;
 	}
 	if (prop->arity > 0) {
-		LOG("("); @<Log a comma-separated list of terms for this atomic proposition@>; LOG(")");
+		WRITE("("); @<Log a comma-separated list of terms for this atomic proposition@>; WRITE(")");
 	}
 }
 
 @<Log some suitable textual name for this unary predicate@> =
 	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(prop->predicate);
-	if (UnaryPredicates::get_parity(tr) == FALSE) LOG("not-");
-	Adjectives::log(UnaryPredicates::get_adj(tr));
+	if (UnaryPredicates::get_parity(tr) == FALSE) WRITE("not-");
+	Adjectives::write(OUT, UnaryPredicates::get_adj(tr));
 
 @ And more easily:
 
 @<Log some suitable textual name for this binary predicate@> =
 	binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(prop->predicate);
-	if (bp == NULL) LOG("?bad-bp?"); else LOG("%S", BinaryPredicates::get_log_name(bp));
+	if (bp == NULL) WRITE("?bad-bp?"); else WRITE("%S", BinaryPredicates::get_log_name(bp));
 
 @ Just a diagnostic way of printing the terms in an atomic proposition, by
 their index numbers. (They are numbered from 0 to $A-1$, where $A$ is the
@@ -506,6 +513,6 @@ arity.)
 @<Log a comma-separated list of terms for this atomic proposition@> =
 	int t;
 	for (t=0; t<prop->arity; t++) {
-		if (t>0) LOG(", ");
-		Calculus::Terms::log(&(prop->terms[t]));
+		if (t>0) WRITE(", ");
+		Calculus::Terms::write(OUT, &(prop->terms[t]));
 	}

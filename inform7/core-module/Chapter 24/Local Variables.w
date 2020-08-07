@@ -849,10 +849,15 @@ int LocalVariables::permit_as_new_local(parse_node *found, int as_calling) {
 
 =
 void LocalVariables::log(local_variable *lvar) {
-	if (lvar->allocated == FALSE) { LOG("LV<unallocated>"); return; }
-	if (Wordings::nonempty(lvar->varname)) LOG("LV\"%W\"", lvar->varname);
-	else LOG("LV<nameless>");
-	LOG("-$u", lvar->kind_as_declared);
+	LocalVariables::write(DL, lvar);
+}
+
+void LocalVariables::write(OUTPUT_STREAM, local_variable *lvar) {
+	if (lvar->allocated == FALSE) { WRITE("LV<unallocated>"); return; }
+	if (Wordings::nonempty(lvar->varname)) WRITE("LV\"%W\"", lvar->varname);
+	else WRITE("LV<nameless>");
+	WRITE("-");
+	Kinds::Textual::write(OUT, lvar->kind_as_declared);
 }
 
 @ And for run-time debugging in a similar vein:

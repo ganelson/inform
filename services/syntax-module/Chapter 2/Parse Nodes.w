@@ -335,9 +335,6 @@ text in the debugging log.
 void Node::log_node(OUTPUT_STREAM, void *vpn) {
 	parse_node *pn = (parse_node *) vpn;
 	if (pn == NULL) { WRITE("<null-parse-node>\n"); return; }
-	#ifdef PARSE_TREE_LOGGER_SYNTAX_CALLBACK
-	PARSE_TREE_LOGGER_SYNTAX_CALLBACK(OUT, pn);
-	#else
 	NodeType::log(OUT, (int) pn->node_type);
 	if (Wordings::nonempty(Node::get_text(pn))) {
 		TEMPORARY_TEXT(text)
@@ -346,7 +343,6 @@ void Node::log_node(OUTPUT_STREAM, void *vpn) {
 		WRITE("'%S'", text);
 		DISCARD_TEXT(text)
 	}
-	#endif
 	Annotations::write_annotations(OUT, pn);
 	int a = 0;
 	while ((pn->next_alternative) && (a<9)) a++, pn = pn->next_alternative;

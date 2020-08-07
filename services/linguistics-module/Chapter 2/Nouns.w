@@ -169,9 +169,13 @@ int Nouns::is_common(noun *N) {
 
 =
 void Nouns::log(noun *N) {
-	if (N == NULL) { LOG("<untagged>"); return; }
+	Nouns::write(DL, N);
+}
+
+void Nouns::write(OUTPUT_STREAM, noun *N) {
+	if (N == NULL) { WRITE("<untagged>"); return; }
 	wording W = Nouns::nominative_singular(N);
-	if (Wordings::nonempty(W)) LOG("'%W'", W);
+	if (Wordings::nonempty(W)) WRITE("'%W'", W);
 }
 
 @h Attaching some wording to a noun.
