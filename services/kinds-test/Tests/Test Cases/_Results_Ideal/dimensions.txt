@@ -1,0 +1,36 @@
+'n = number': number
+'t = text': text
+'l = length': length
+'m = mass': mass
+'x = area': area
+'p = pressure': pressure
+'n + t': nothing
+'t + t': nothing
+'l + l': length
+'l - l': length
+'l * l': (length)2
+'l over l': number
+'l % l': length
+'l to the nearest l': length
+'l + n': nothing
+'l - n': nothing
+'l * n': length
+'l over n': length
+'l % n': length
+'l to the nearest n': nothing
+'n + l': nothing
+'n - l': nothing
+'n * l': length
+'n over l': (length)-1
+'n % l': number
+'n to the nearest l': nothing
+'l + m': nothing
+'l * m': (length).(mass)
+'m * m': (mass)2
+'l * l': (length)2
+'length * length = area': area
+'l * l': area
+'pressure * area = mass': mass
+'p * x': mass
+'x * p': mass
+'m over x': pressure

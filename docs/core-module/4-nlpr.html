@@ -135,10 +135,7 @@ puts the (quite complicated) result into a <a href="4-nlpr.html#SP3" class="inte
 sends that to <a href="6-lp.html" class="internal">Literal Patterns</a>.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LP_SCALED_UP</span><span class="plain-syntax">    </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">LP_SCALED_DOWN</span><span class="plain-syntax"> -1</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">LP_SCALED_AT</span><span class="plain-syntax">    </span><span class="constant-syntax">2</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SINGULAR_LPN</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">SINGULAR_LPN</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLURAL_LPN</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">ABANDON_LPN</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax"> for error recovery only</span>
 </pre>
@@ -168,7 +165,7 @@ sends that to <a href="6-lp.html" class="internal">Literal Patterns</a>.
 <span class="reserved-syntax">lp_specification</span><span class="plain-syntax"> </span><span class="identifier-syntax">glps</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LPRequests::initialise</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">LPRequests::initialise</span></span>:<br/><a href="4-nlpr.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">lp_specification</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lps</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">lps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">scaled_dir</span><span class="plain-syntax"> = </span><span class="constant-syntax">LP_SCALED_UP</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">lps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">scaled_dir</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LP_SCALED_UP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">lps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">scale_factor</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">lps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">scale_factor_as_double</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">.0;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">lps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">equivalent_value_as_double</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">.0;</span>

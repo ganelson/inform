@@ -1,0 +1,34 @@
+'n = number': number
+'r = real number': real number
+'n + n': number
+'n + r': real number
+'r + n': real number
+'r + r': real number
+'n - n': number
+'n - r': real number
+'r - n': real number
+'r - r': real number
+'n * n': number
+'n * r': real number
+'r * n': real number
+'r * r': real number
+'n over n': number
+'n over r': real number
+'r over n': real number
+'r over r': real number
+'n % n': number
+'n % r': real number
+'r % n': real number
+'r % r': real number
+'n to the nearest n': number
+'n to the nearest r': real number
+'r to the nearest n': real number
+'r to the nearest r': real number
+'- n': number
+'- r': real number
+'square root of n': number
+'square root of r': real number
+'real square root of n': real number
+'real square root of r': real number
+'cube root of n': number
+'cube root of r': real number

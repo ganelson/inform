@@ -1,0 +1,22 @@
+-cases [Main] 'services/kinds-test/Tests/Test Cases'
+
+-recipe [Main]
+
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	set: $K = inform7/internal/Inter/BasicInformKit/kinds/Core.kindt
+
+	mkdir: $PATH/_Results_Actual
+	step: services/kinds-test/Tangled/kinds-test -load $K -interpret $PATH/$CASE.txt >$A 2>&1
+	or: 'produced errors in kinds-test' $A
+
+	show: $A
+
+	exists: $I
+	or: 'passed without errors but no blessed output existed'
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end

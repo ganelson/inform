@@ -477,6 +477,16 @@ void Kinds::Textual::log(kind *K) {
 	Kinds::Textual::write(DL, K);
 }
 
+void Kinds::Textual::logger(OUTPUT_STREAM, void *vK) {
+	kind *K = (kind *) vK;
+	Kinds::Textual::write(OUT, K);
+}
+
+void Kinds::Textual::writer(OUTPUT_STREAM, char *format_string, void *vK) {
+	kind *K = (kind *) vK;
+	Kinds::Textual::write(OUT, K);
+}
+
 @ Thus we have a basic pretty-printer...
 
 =

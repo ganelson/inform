@@ -59,10 +59,6 @@ int LPRequests::specifies_SMF(int task, parse_node *V, wording *NPs) {
 puts the (quite complicated) result into a //lp_specification// object, and
 sends that to //Literal Patterns//.
 
-@d LP_SCALED_UP    1
-@d LP_SCALED_DOWN -1
-@d LP_SCALED_AT    2
-
 @d SINGULAR_LPN 1
 @d PLURAL_LPN 2
 @d ABANDON_LPN 4 /* for error recovery only */

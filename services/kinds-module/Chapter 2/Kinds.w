@@ -714,7 +714,9 @@ matched up with the inference subject already existing.
 	noun *nt = Nouns::new_common_noun(W, NEUTER_GENDER,
 		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
 		KIND_SLOW_MC, STORE_POINTER_kind_constructor(K->construct), L);
+	#ifdef CORE_MODULE
 	Sentences::Headings::initialise_noun_resolution(nt);
+	#endif
 	Kinds::Constructors::attach_noun(K->construct, nt);
  	if (Kinds::Compare::le(super, K_object))
  		Kinds::Behaviour::set_range_number(K, no_kinds_of_object++);

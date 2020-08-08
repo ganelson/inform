@@ -37,19 +37,14 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unit_sequence, 50)
 
 =
 void KindsModule::start(void) {
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
+	Writers::register_logger('u', &Kinds::Textual::logger);
+	Writers::register_logger('Q', Kinds::Dimensions::logger);
+	Writers::register_writer('u', &Kinds::Textual::writer);
 	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
 }
 void KindsModule::end(void) {
 }
 
-@<Register this module's memory allocation reasons@> =
-	;
-
-@<Register this module's stream writers@> =
-	;
 
 @
 
@@ -63,6 +58,3 @@ void KindsModule::end(void) {
 	Log::declare_aspect(KIND_CHECKING_DA, L"kind checking", FALSE, FALSE);
 	Log::declare_aspect(KIND_CREATIONS_DA, L"kind creations", FALSE, FALSE);
 	Log::declare_aspect(MATCHING_DA, L"matching", FALSE, FALSE);
-
-@<Register this module's debugging log writers@> =
-	;

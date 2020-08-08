@@ -1,0 +1,34 @@
+N = number.
+R = real number.
+N + N.
+N + R.
+R + N.
+R + R.
+N - N.
+N - R.
+R - N.
+R - R.
+N * N.
+N * R.
+R * N.
+R * R.
+N over N.
+N over R.
+R over N.
+R over R.
+N % N.
+N % R.
+R % N.
+R % R.
+N to the nearest N.
+N to the nearest R.
+R to the nearest N.
+R to the nearest R.
+- N.
+- R.
+square root of N.
+square root of R.
+real square root of N.
+real square root of R.
+cube root of N.
+cube root of R.

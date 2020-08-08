@@ -9,9 +9,9 @@ INDULGENTCC = clang -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g
 
 CCOPTS = -DPLATFORM_MACOS=1 -mmacosx-version-min=10.6 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
-MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -ferror-limit=1000
+MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -ferror-limit=1000
 
-FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format
+FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt
 
 LINK = clang $(CCOPTS) -g
 LINKEROPTS = 
@@ -44,7 +44,7 @@ force:
 
 define make-me
 	cd $(SANDBOX); $(INDULGENTCC) -std=c99 *.c -D$(INFORM6OS)
-	$(LINK) -o $(ME)/Tangled/$(ME) $(I6SOURCE) $(LINKEROPTS)
+	$(LINK) -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(I6SOURCE) $(LINKEROPTS)
 endef
 
 .PHONY: test
@@ -93,7 +93,7 @@ $(INTERPRETERS)/dumb-frotz/dumb-frotz: \
 	cd $(INTERPRETERS)/dumb-frotz; $(INDULGENTCC) variable.c
 	cd $(INTERPRETERS)/dumb-frotz; $(INDULGENTCC) profiling.c
 	cd $(INTERPRETERS)/dumb-frotz; $(INDULGENTCC) main.c
-	cd $(INTERPRETERS)/dumb-frotz; $(LINK) -o dumb-frotz *.o $(LINKEROPTS)
+	cd $(INTERPRETERS)/dumb-frotz; $(LINK) -o dumb-frotz$(EXEEXTENSION) *.o $(LINKEROPTS)
 
 $(INTERPRETERS)/dumb-glulx/glulxe/glulxe: \
 	$(INTERPRETERS)/dumb-glulx/cheapglk/*.c \

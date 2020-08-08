@@ -681,15 +681,14 @@ void Kinds::Dimensions::index_unit_sequence(OUTPUT_STREAM, unit_sequence *deriv,
 @ ...and logging.
 
 =
-void Kinds::Dimensions::log_unit_sequence(unit_sequence *deriv) {
-	if (deriv == NULL) { LOG("<null-us>"); return; }
-	if (deriv->no_unit_pairs == 0) { LOG("dimensionless"); return; }
-
-	int j;
-	for (j=0; j<deriv->no_unit_pairs; j++) {
-		if (j>0) LOG(".");
-		LOG("($u)", deriv->unit_pairs[j].fund_unit);
-		if (deriv->unit_pairs[j].power != 1) LOG("%d", deriv->unit_pairs[j].power);
+void Kinds::Dimensions::logger(OUTPUT_STREAM, void *vUS) {
+	unit_sequence *deriv = (unit_sequence *) vUS;
+	if (deriv == NULL) { WRITE("<null-us>"); return; }
+	if (deriv->no_unit_pairs == 0) { WRITE("dimensionless"); return; }
+	for (int j=0; j<deriv->no_unit_pairs; j++) {
+		if (j>0) WRITE(".");
+		WRITE("(%u)", deriv->unit_pairs[j].fund_unit);
+		if (deriv->unit_pairs[j].power != 1) WRITE("%d", deriv->unit_pairs[j].power);
 	}
 }
 
@@ -1243,8 +1242,8 @@ kind *Kinds::Dimensions::arithmetic_on_kinds(kind *K1, kind *K2, int op) {
 				break;
 			}
 			return NULL;
-		case UNARY_MINUS_OPERATION:
 		case REMAINDER_OPERATION:
+		case UNARY_MINUS_OPERATION:
 			result = *operand1;
 			break;
 		case ROOT_OPERATION:

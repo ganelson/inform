@@ -53,6 +53,10 @@ no need for rescaling with real arithmetic.
 We can't know the values of |M| they end up with until all have been
 defined.
 
+@d LP_SCALED_UP    1
+@d LP_SCALED_DOWN -1
+@d LP_SCALED_AT    2
+
 =
 typedef struct scaling_transformation {
 	int use_integer_scaling; /* or if not, use real */

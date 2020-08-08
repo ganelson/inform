@@ -1,0 +1,45 @@
+new unit length.
+new unit mass.
+new unit area.
+new unit pressure.
+
+N = number.
+T = text.
+L = length.
+M = mass.
+X = area.
+P = pressure.
+
+N + T.
+T + T.
+
+L + L.
+L - L.
+L * L.
+L over L.
+L % L.
+L to the nearest L.
+L + N.
+L - N.
+L * N.
+L over N.
+L % N.
+L to the nearest N.
+N + L.
+N - L.
+N * L.
+N over L.
+N % L.
+N to the nearest L.
+
+L + M.
+L * M.
+M * M.
+
+L * L.
+length * length = area.
+L * L.
+pressure * area = mass.
+P * X.
+X * P.
+M over X.

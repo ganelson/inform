@@ -157,5 +157,5 @@ void Adjectives::log(adjective *adj) {
 void Adjectives::write(OUTPUT_STREAM, adjective *adj) {
 	if (adj == NULL) { WRITE("<null adjectival phrase>"); return; }
 	wording W = Adjectives::get_nominative_singular(adj);
-	WRITE("A%d'%W'", adj->allocation_id, W);
+	WRITE("'%W'", W);
 }

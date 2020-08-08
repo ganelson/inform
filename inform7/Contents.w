@@ -16,7 +16,7 @@ Import: services/problems
 Import: services/inflections
 Import: services/lexicon
 Import: services/linguistics
-Import: kinds
+Import: services/kinds
 Import: inter/bytecode
 Import: inbuild/supervisor
 Import: core

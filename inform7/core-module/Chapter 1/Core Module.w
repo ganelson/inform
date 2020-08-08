@@ -214,12 +214,10 @@ COMPILE_WRITER(local_variable *, LocalVariables::log)
 COMPILE_WRITER_I(int, World::Inferences::log_kind)
 COMPILE_WRITER(instance *, Instances::log)
 COMPILE_WRITER(pcalc_prop *, Calculus::Atoms::log)
-COMPILE_WRITER(unit_sequence *, Kinds::Dimensions::log_unit_sequence)
 COMPILE_WRITER(equation *, Equations::log)
 COMPILE_WRITER(phrase *, Phrases::log)
 COMPILE_WRITER(unary_predicate *, UnaryPredicates::log)
 COMPILE_WRITER(ph_usage_data *, Phrases::Usage::log)
-COMPILE_WRITER(kind *, Kinds::Textual::log)
 COMPILE_WRITER(property *, Properties::log)
 COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
 COMPILE_WRITER(noun *, Nouns::log)
@@ -380,12 +378,10 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	REGISTER_WRITER_I('n', World::Inferences::log_kind)
 	REGISTER_WRITER('O', Instances::log);
 	REGISTER_WRITER('o', Calculus::Atoms::log);
-	REGISTER_WRITER('Q', Kinds::Dimensions::log_unit_sequence);
 	REGISTER_WRITER('q', Equations::log);
 	REGISTER_WRITER('R', Phrases::log);
 	REGISTER_WRITER('r', UnaryPredicates::log);
 	REGISTER_WRITER('U', Phrases::Usage::log);
-	REGISTER_WRITER('u', Kinds::Textual::log);
 	REGISTER_WRITER('Y', Properties::log);
 	REGISTER_WRITER('Z', NonlocalVariables::log);
 	REGISTER_WRITER('z', Nouns::log);
