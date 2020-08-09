@@ -63,7 +63,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">kinds</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the kinds module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Kinds, definiteness, and safety</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Kinds and knowledge</a></li><li><a href="P-wtmd.html#SP5">&#167;5. A strongly typed language mixing static and dynamic typing</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Casting and coercion</a></li><li><a href="P-wtmd.html#SP8">&#167;8. What this module offers</a></li><li><a href="P-wtmd.html#SP11">&#167;11. Making new kinds</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Where kind constructors come from</a></li><li><a href="P-wtmd.html#SP13">&#167;13. Making new kind constructors</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Kinds, definiteness, and safety</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Kinds and knowledge</a></li><li><a href="P-wtmd.html#SP5">&#167;5. A strongly typed language mixing static and dynamic typing</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Casting and coercion</a></li><li><a href="P-wtmd.html#SP8">&#167;8. What this module offers</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Making new kinds</a></li><li><a href="P-wtmd.html#SP13">&#167;13. Where kind constructors come from</a></li><li><a href="P-wtmd.html#SP14">&#167;14. Making new kind constructors</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The kinds module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -212,10 +212,27 @@ phrases with Inter inclusions is the equivalent in Inform.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. What this module offers. </b>The <a href="index.html" class="internal">kinds</a> module provides the Inform type system as a stand-alone utility,
-at least in principle.
+and one way to toy with it in isolation is to run test "programs" through the
+<a href="../kinds-test/index.html" class="internal">kinds-test</a> tool. This is like a calculator, but for kinds and not values.
+A "program" is a series of descriptions of kinds, and the output consists of
+their evaluations. As a simple example:
 </p>
 
-<p class="commentary">A kind is represented by a <a href="2-knd.html#SP1" class="internal">kind</a> object. Clearly some, like <span class="extract"><span class="extract-syntax">number</span></span>, are
+<pre class="displayed-code all-displayed-code code-font">
+<span class="element-syntax">'number'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
+<span class="element-syntax">'list of texts'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of texts</span>
+<span class="element-syntax">'phrase number -&gt; text'</span><span class="plain-syntax">:</span><span class="string-syntax"> phrase number -&gt; text</span>
+<span class="element-syntax">'arithmetic value'</span><span class="plain-syntax">:</span><span class="string-syntax"> arithmetic value</span>
+<span class="element-syntax">'relation of numbers to truth states'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of numbers to truth states</span>
+<span class="element-syntax">'relation of numbers to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of numbers</span>
+</pre>
+<p class="commentary">This is more of a test than it appears. In each line <a href="../kinds-test/index.html" class="internal">kinds-test</a> has read in
+the textual description in quotes, parsed it into a <a href="2-knd.html#SP1" class="internal">kind</a> object using the &lt;k-kind&gt;
+Preform nonterminal, then printed it out with <a href="2-dk.html#SP22" class="internal">Kinds::Textual::write</a> (or
+in fact by using the <span class="extract"><span class="extract-syntax">%u</span></span> string escape, which amounts to the same thing).
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>A kind is represented by a <a href="2-knd.html#SP1" class="internal">kind</a> object. Clearly some, like <span class="extract"><span class="extract-syntax">number</span></span>, are
 atomic while others, like <span class="extract"><span class="extract-syntax">relation of numbers to texts</span></span>, are composite. Each
 <a href="2-knd.html#SP1" class="internal">kind</a> object is formally a "construction" resulting from applying a
 <a href="2-kc2.html#SP2" class="internal">kind_constructor</a> to other kinds.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> Each different possible constructor has
@@ -246,24 +263,31 @@ but "list of K" is not. We call constructors of higher arity "proper".
 <ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> This term follows the traditional usage of "type constructor". Haskell and
 some other functional languages mean something related but different by this.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">kind</span></span> pointers actually point to tree structures, then, showing the
-construction. <span class="extract"><span class="extract-syntax">relation of texts to lists of times</span></span> looks like so:
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Here is <a href="../kinds-test/index.html" class="internal">kinds-test</a> exercising the construction system. Note that
+it has "functions" to extract the first and second term of a construction.
+(The REPL language of <a href="../kinds-test/index.html" class="internal">kinds-test</a> has quite a number of functions like
+this, for testing different features of <a href="index.html" class="internal">kinds</a>.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    relation of K to L</span>
-<span class="plain-syntax">        text</span>
-<span class="plain-syntax">        list of K</span>
-<span class="plain-syntax">            time</span>
+<span class="element-syntax">'x = object'</span><span class="plain-syntax">:</span><span class="string-syntax"> object</span>
+<span class="element-syntax">'first term of x'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
+<span class="element-syntax">'second term of x'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
+<span class="element-syntax">'y = list of numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of numbers</span>
+<span class="element-syntax">'first term of y'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
+<span class="element-syntax">'second term of y'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
+<span class="element-syntax">'z = relation of texts to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers</span>
+<span class="element-syntax">'first term of z'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
+<span class="element-syntax">'second term of z'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
+<span class="element-syntax">'w = phrase ( relation of texts to numbers , text ) -&gt; truth state'</span><span class="plain-syntax">:</span><span class="string-syntax"> phrase (relation of texts to numbers, text) -&gt; truth state</span>
+<span class="element-syntax">'first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers, text</span>
+<span class="element-syntax">'first term of first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers</span>
+<span class="element-syntax">'first term of first term of first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
+<span class="element-syntax">'second term of first term of first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
+<span class="element-syntax">'second term of first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
+<span class="element-syntax">'second term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> truth state</span>
 </pre>
-<p class="commentary">It would be neat if there were exactly one <span class="extract"><span class="extract-syntax">kind</span></span> structure somewhere in
-memory for each different kind. In practice (i) this would be tricky to
-arrange, and (ii) we want to abstract equality through a function called
-<a href="2-kc.html#SP9" class="internal">Kinds::Compare::eq</a>. Judicious use of caches makes the memory cost of
-duplication negligible.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>In principle we could imagine constructors needing arbitrarily large
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>In principle we could imagine constructors needing arbitrarily large
 arity, or needing different arity in different usages, so the scheme of
 having fixed arities in the range 0 to 2 looks limited. In practice we get
 around that by using "punctuation nodes" in a kind tree. For example,
@@ -284,7 +308,7 @@ and cannot be expressed in Inform source text, or occur in isolation. No
 Inform variable can have kind <span class="extract"><span class="extract-syntax">CON_NIL</span></span>, for example.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Making new kinds. </b>When we need a new <span class="extract"><span class="extract-syntax">kind *</span></span> value inside our code, what do we do? The
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Making new kinds. </b>When we need a new <span class="extract"><span class="extract-syntax">kind *</span></span> value inside our code, what do we do? The
 answer depends on how simple it is.
 </p>
 
@@ -307,7 +331,7 @@ and <span class="extract"><span class="extract-syntax">relation of numbers to te
 <p class="commentary">For the constructor values <span class="extract"><span class="extract-syntax">CON_list_of</span></span> and so on, again see <a href="2-fk.html" class="internal">Familiar Kinds</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Where kind constructors come from. </b>The built-in kind constructors, such as "number" or "list of K", are not really
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Where kind constructors come from. </b>The built-in kind constructors, such as "number" or "list of K", are not really
 built in. They are read in from configuration files &mdash; these are not written
 in Inform source text, and look more like dictionaries of key-value pairs,
 though they're simpler in syntax than XML.
@@ -322,7 +346,7 @@ in practice built-in kinds always need some run-time support written in Inter
 code.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Making new kind constructors. </b>When Inform acts on sentences like these:
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Making new kind constructors. </b>When Inform acts on sentences like these:
 </p>
 
 <blockquote>

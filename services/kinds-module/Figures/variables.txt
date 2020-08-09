@@ -1,0 +1,5 @@
+'q': Q
+'list of relations of q to r': list of relations of Qs to Rs
+'substitute number for q in q': number
+'substitute number for q in list of q': list of numbers
+'substitute number for q in list of relations of q to q': list of relations of numbers

@@ -1,0 +1,6 @@
+number.
+list of texts.
+phrase number -> text.
+arithmetic value.
+relation of numbers to truth states.
+relation of numbers to numbers.

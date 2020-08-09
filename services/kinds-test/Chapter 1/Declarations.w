@@ -66,21 +66,12 @@ void Declarations::parse(parse_node *p) {
 
 @
 
-@e symbol_CLASS
 @e kind_relationship_CLASS
-@d SYMBOL_MC 0x80
-@d EXACT_PARSING_BITMAP
-	(SYMBOL_MC + KIND_SLOW_MC)
+@d EXACT_PARSING_BITMAP (KIND_SLOW_MC)
 
 =
-DECLARE_CLASS(symbol)
 DECLARE_CLASS(kind_relationship)
 
-typedef struct symbol {
-	wording symbol_name;
-	kind *symbol_kind;
-	CLASS_DEFINITION
-} symbol;
 typedef struct kind_relationship {
 	struct kind *sub;
 	struct kind *super;
@@ -96,8 +87,7 @@ typedef struct kind_relationship {
 	new enum ... |                             ==> @<Create new enum@>
 	new kind ... of <kind-eval> |              ==> @<Create new base@>
 	<kind-eval> * <kind-eval> = <kind-eval> |  ==> @<New arithmetic rule@>
-	<existing-symbol> = ... |                  ==> @<Symbol already exists error@>
-	... = <kind-eval> |                        ==> @<Create symbol@>
+	<k-formal-kind-variable> = <kind-eval> |   ==> @<Set kind variable@>
 	<kind-eval> |                              ==> @<Show REPL result@>
 	<kind-condition> |                         ==> @<Show kind condition@>
 	... which varies |                         ==> { -, - }
@@ -122,22 +112,12 @@ typedef struct kind_relationship {
 	weaken <kind-eval> |                       ==> @<Weaken kind@>
 	super of <kind-eval> |                     ==> @<Super kind@>
 	substitute <kind-eval> for <k-formal-kind-variable> in <kind-eval> | ==> @<Substitute@>
-	<existing-symbol> |                        ==> { - , ((symbol *) RP[1])->symbol_kind }
 	<k-kind> |                                 ==> { pass 1 }
 	<k-formal-kind-variable>                   ==> { pass 1 }
 
 <kind-condition> ::=
-	<kind-eval> <= <kind-eval>                 ==> @<Test le@>
-	
-
-<existing-symbol> internal {
-	parse_node *results = Lexicon::retrieve(SYMBOL_MC, W);
-	if (results) {
-		symbol *S = RETRIEVE_POINTER_symbol(Lexicon::get_data(Node::get_meaning(results)));
-		if (S) { ==> { -, S }; return TRUE; }
-	}
-	==> { fail nonterminal };
-}
+	<kind-eval> <= <kind-eval> |               ==> @<Test le@>
+	<kind-eval> is definite                    ==> @<Test definiteness@>
 
 @<Show REPL result@> =
 	kind *K = RP[1];
@@ -173,17 +153,11 @@ typedef struct kind_relationship {
 	Kinds::Dimensions::make_unit_derivation(K1, K2, K);
 	@<Show result@>;
 
-@<Symbol already exists error@> =
-	symbol *S = RP[1];
-	PRINT("Symbol already exists: '%W'\n", S->symbol_name);
-	==> { fail }
-
-@<Create symbol@> =
-	kind *K = RP[1];
-	symbol *S = CREATE(symbol);
-	S->symbol_name = GET_RW(<declaration-line>, 1);
-	S->symbol_kind = K;
-	Lexicon::register(SYMBOL_MC, S->symbol_name, STORE_POINTER_symbol(S));
+@<Set kind variable@> =
+	kind *KV = RP[1];
+	kind *K = RP[2];
+	kind_vars[KV->kind_variable_number] = K;
+	==> { -, K }
 	@<Show result@>;
 
 @<Show result@> =
@@ -291,6 +265,10 @@ typedef struct kind_relationship {
 	kind *K1 = RP[1];
 	kind *K2 = RP[2];
 	==> { Kinds::Compare::le(K1, K2), - }
+
+@<Test definiteness@> =
+	kind *K = RP[1];
+	==> { Kinds::Behaviour::definite(K), - }
 
 @<Substitute@> =
 	kind *K1 = RP[1];

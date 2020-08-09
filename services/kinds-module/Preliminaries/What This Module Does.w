@@ -136,9 +136,17 @@ phrases with Inter inclusions is the equivalent in Inform.
 
 @h What this module offers.
 The //kinds// module provides the Inform type system as a stand-alone utility,
-at least in principle.
+and one way to toy with it in isolation is to run test "programs" through the
+//kinds-test// tool. This is like a calculator, but for kinds and not values.
+A "program" is a series of descriptions of kinds, and the output consists of
+their evaluations. As a simple example:
+= (text from Figures/basics.txt as REPL)
+This is more of a test than it appears. In each line //kinds-test// has read in
+the textual description in quotes, parsed it into a //kind// object using the <k-kind>
+Preform nonterminal, then printed it out with //Kinds::Textual::write// (or
+in fact by using the |%u| string escape, which amounts to the same thing).
 
-A kind is represented by a //kind// object. Clearly some, like |number|, are
+@ A kind is represented by a //kind// object. Clearly some, like |number|, are
 atomic while others, like |relation of numbers to texts|, are composite. Each
 //kind// object is formally a "construction" resulting from applying a
 //kind_constructor// to other kinds.[1] Each different possible constructor has
@@ -165,19 +173,12 @@ but "list of K" is not. We call constructors of higher arity "proper".
 [1] This term follows the traditional usage of "type constructor". Haskell and
 some other functional languages mean something related but different by this.
 
-@ |kind| pointers actually point to tree structures, then, showing the
-construction. |relation of texts to lists of times| looks like so:
-= (text)
-	relation of K to L
-		text
-		list of K
-			time
-=
-It would be neat if there were exactly one |kind| structure somewhere in
-memory for each different kind. In practice (i) this would be tricky to
-arrange, and (ii) we want to abstract equality through a function called
-//Kinds::Compare::eq//. Judicious use of caches makes the memory cost of
-duplication negligible.
+@ Here is //kinds-test// exercising the construction system. Note that
+it has "functions" to extract the first and second term of a construction.
+(The REPL language of //kinds-test// has quite a number of functions like
+this, for testing different features of //kinds//.)
+
+= (text from Figures/construction.txt as REPL)
 
 @ In principle we could imagine constructors needing arbitrarily large
 arity, or needing different arity in different usages, so the scheme of

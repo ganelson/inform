@@ -1,0 +1,16 @@
+'x = object': object
+'first term of x': nothing
+'second term of x': nothing
+'y = list of numbers': list of numbers
+'first term of y': number
+'second term of y': nothing
+'z = relation of texts to numbers': relation of texts to numbers
+'first term of z': text
+'second term of z': number
+'w = phrase ( relation of texts to numbers , text ) -> truth state': phrase (relation of texts to numbers, text) -> truth state
+'first term of w': relation of texts to numbers, text
+'first term of first term of w': relation of texts to numbers
+'first term of first term of first term of w': text
+'second term of first term of first term of w': number
+'second term of first term of w': text
+'second term of w': truth state

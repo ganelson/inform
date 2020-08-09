@@ -1,0 +1,4 @@
+number is definite.
+arithmetic value is definite.
+phrase number -> text is definite.
+phrase arithmetic value -> text is definite.
