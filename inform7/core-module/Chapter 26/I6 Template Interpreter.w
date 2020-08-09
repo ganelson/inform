@@ -39,6 +39,11 @@ void I6T::interpret_kindt(filename *segment_file) {
 	I6T::interpreter_shared(Task::syntax_tree(), KINDT_MODE, NULL, NULL, NULL, -1, segment_file);
 }
 
+int do_not_generate_index = FALSE; /* Set by the |-no-index| command line option */
+void I6T::disable_or_enable_index(int which) {
+	do_not_generate_index = which;
+}
+
 void I6T::interpret_indext(filename *indext_file) {
 	if (do_not_generate_index == FALSE)
 		I6T::interpreter_shared(Task::syntax_tree(), INDEXT_MODE, NULL, NULL, NULL, -1, indext_file);

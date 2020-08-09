@@ -85,18 +85,16 @@ entire process of compiling an Inform 7 project, doing a good deal of the
 work itself, but also calling numerous other modules.
 </p>
 
-<p class="commentary">When an Inform project is being compiled, the sequence of operation is as
-follows:
+<p class="commentary">When <a href="../supervisor-module/index.html" class="internal">supervisor</a> decides that an Inform project is being compiled, it uses
+the <a href="../words-module/index.html" class="internal">words</a> and <a href="../syntax-module/index.html" class="internal">syntax</a> modules to build a parse tree for the project and
+any extensions it needs, and works out dependencies on kits of Inter code. We
+don't need to deal with any of that. For <a href="index.html" class="internal">core</a>, the business starts when
+<a href="../supervisor-module/index.html" class="internal">supervisor</a> calls <a href="1-wtc.html#SP3" class="internal">Task::carry_out</a>. The process is a long multi-stage one,
+run as a production line: see <a href="1-htc.html" class="internal">How To Compile</a> for a detailed list of steps,
+but roughly:
 </p>
 
-<ul class="items"><li>&#9679; <a href="1-mr.html#SP1" class="internal">CoreMain::main</a> asks the <a href="../supervisor-module/index.html" class="internal">supervisor</a> module what to do.
-</li><li>&#9679; <a href="../supervisor-module/index.html" class="internal">supervisor</a> uses the <a href="../words-module/index.html" class="internal">words</a> and <a href="../syntax-module/index.html" class="internal">syntax</a> modules to build a parse
-tree for the project and any extensions it needs, and works out dependencies
-on kits of Inter code.
-</li><li>&#9679; All being well, <a href="../supervisor-module/index.html" class="internal">supervisor</a> then calls <a href="1-wtc.html#SP2" class="internal">Task::carry_out</a> to ask <a href="index.html" class="internal">core</a>
-to compile this parse tree. The process is a long multi-stage one, run as a
-production line: see <a href="1-htc.html" class="internal">How To Compile</a> for a detailed list of steps.
-</li><li>&#9679; The tree is subdivided into <a href="27-cm.html" class="internal">Compilation Units</a>. The project's own
+<ul class="items"><li>&#9679; The tree is subdivided into <a href="27-cm.html" class="internal">Compilation Units</a>. The project's own
 source text is one unit, as is each extension used.
 </li><li>&#9679; A minimal set of kinds, such as "number", verbs, such as "to mean", relations,
 such as "meaning", and so on, is created. See in particular <a href="3-bv.html" class="internal">Booting Verbs</a>.

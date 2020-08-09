@@ -186,7 +186,7 @@ whatever was named in column 1: see below.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableUndefined</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableUndefined</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">    </span><span class="string-syntax">"you can only use 'defined by' in terms of a table"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="string-syntax">"which lists the value names in the first column."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, - };</span>
@@ -217,7 +217,7 @@ whatever was named in column 1: see below.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableDefiningTheImpossible</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"you can only use 'defined by' to set up values and things"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"as created with sentences like 'The tree species are defined by Table 1.' "</span>
@@ -266,7 +266,7 @@ whatever was named in column 1: see below.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableDefiningObject</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"you can only use 'defined by' to set up values and things"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"as created with sentences like 'The tree species are defined by Table 1.' "</span>
@@ -283,7 +283,7 @@ whatever was named in column 1: see below.
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"K is $u\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="2-sq.html#SP3" class="function-link"><span class="function-syntax">Problems::quote_kind</span></a><span class="plain-syntax">(2, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableOfBuiltInKind</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"You wrote %1, but this would mean making each of the names in "</span>
@@ -296,7 +296,7 @@ whatever was named in column 1: see below.
 <span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::Behaviour::is_uncertainly_defined</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="2-sq.html#SP3" class="function-link"><span class="function-syntax">Problems::quote_kind</span></a><span class="plain-syntax">(2, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableOfExistingKind</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"You wrote %1, but this would mean making each of the names in "</span>
@@ -316,7 +316,7 @@ whatever was named in column 1: see below.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="11-pr.html#SP22" class="function-link"><span class="function-syntax">Calculus::Propositions::contains_quantifier</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><a href="14-sp.html#SP3" class="function-link"><span class="function-syntax">Specifications::to_proposition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">what</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableOfQuantifiedKind</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"you can't use 'defined by' a table while also talking about the "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"number of things to be defined"</span><span class="plain-syntax">,</span>
@@ -442,7 +442,7 @@ of the contents.)
 <span class="plain-syntax">    </span><a href="2-sq.html#SP4" class="function-link"><span class="function-syntax">Problems::quote_kind_of</span></a><span class="plain-syntax">(3, </span><span class="identifier-syntax">evaluation</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-sq.html#SP3" class="function-link"><span class="function-syntax">Problems::quote_kind</span></a><span class="plain-syntax">(4, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_number</span><span class="plain-syntax">(5, &amp;</span><span class="identifier-syntax">row_count</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableCreatedClash</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TableCreatedClash</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"You wrote %1, and row %5 of the first column of that table is %2, which "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"I ought to create as a new value of %4. But I can't do that: it already "</span>

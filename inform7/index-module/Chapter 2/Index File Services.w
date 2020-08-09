@@ -569,6 +569,11 @@ to show, hide and colour things:
 			i, current_index_page->allocation_id+1, i);
 
 @ =
+int do_not_update_census = FALSE; /* Set by the |-no-update-census| command line option */
+void Index::disable_or_enable_census(int which) {
+	do_not_update_census = which;
+}
+
 void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"C")) {
 		Sentences::Headings::index(OUT);

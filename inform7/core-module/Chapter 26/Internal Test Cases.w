@@ -59,6 +59,11 @@ internal_test_case *InternalTests::new(int code, wording W) {
 	return itc;
 }
 
+filename *internal_test_output_file = NULL;
+void InternalTests::set_file(filename *F) {
+	 internal_test_output_file = F;
+}
+
 text_stream *itc_save_DL = NULL, *itc_save_OUT = NULL;
 
 void InternalTests::InternalTestCases_routine(void) {

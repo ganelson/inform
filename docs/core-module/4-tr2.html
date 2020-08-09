@@ -119,7 +119,7 @@ it can generate a range of possibilities.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_UnknownInternalTest</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_UnknownInternalTest</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"that's an internal test case which I don't know"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"so I am taking no action."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">NO_INTT</span><span class="plain-syntax">, - };</span>
@@ -129,7 +129,7 @@ it can generate a range of possibilities.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TestQuoted</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TestQuoted</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"test scenarios must have unquoted names"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"so 'test garden with ...' is allowed but not 'test \"garden\" with...'"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">NO_INTT</span><span class="plain-syntax">, - };</span>
@@ -139,7 +139,7 @@ it can generate a range of possibilities.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TestMultiWord</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TestMultiWord</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"test scenarios must have single-word names"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"so 'test garden with ...' is allowed but not 'test garden gate with...'"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">NO_INTT</span><span class="plain-syntax">, - };</span>
@@ -222,7 +222,7 @@ more elaborate:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TestDoubleWith</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TestDoubleWith</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"the second 'with' should be 'holding'"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"as in 'test frogs with \"get frogs\" holding net' rather than "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"'test frogs with \"get frogs\" with net'."</span><span class="plain-syntax">);</span>
@@ -232,7 +232,7 @@ more elaborate:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP5" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TestBadRequirements</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TestBadRequirements</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"I didn't recognise the requirements for this test scenario"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which should be 'test ... with ... in ...' or '... "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"holding ...'"</span><span class="plain-syntax">);</span>

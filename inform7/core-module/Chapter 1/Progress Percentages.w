@@ -23,6 +23,11 @@ The Inform application can intercept and parse these lines to display a
 progress bar with a rubric beneath it.
 
 =
+int show_progress_indicator = TRUE; /* Produce percentage of progress messages */
+void ProgressBar::enable_or_disable(int which) {
+	show_progress_indicator = which;
+}
+
 int last_progress_pc = -100;
 int progress_stage_from[] = { 0, 5, 15, 20, 40, 100 };
 char *progress_stage_name[] = {

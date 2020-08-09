@@ -3,6 +3,24 @@
 To receive an instruction to compile something from Inbuild, and then to
 sort out the many locations then used in the host filing system.
 
+@h Timers.
+We keep track of about how long the compiler spends on each task, for the
+sake of better diagnostics.
+
+=
+stopwatch_timer *inform7_timer = NULL, *supervisor_timer = NULL;
+
+void Task::start_timers(void) {
+	inform7_timer = Time::start_stopwatch(NULL, I"inform7 run");
+	supervisor_timer = Time::start_stopwatch(inform7_timer, I"supervisor");
+}
+void Task::stop_timers(void) {
+	Time::stop_stopwatch(inform7_timer);
+}
+void Task::log_stopwatch(void) {
+	Time::log_timing(inform7_timer, inform7_timer->time_taken);
+}
+
 @h Task data.
 When Inbuild (a copy of which is included in the Inform 7 executable) decides
 that an Inform source text must be compiled, it calls |Task::carry_out|. By

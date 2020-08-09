@@ -21,15 +21,13 @@ while not being included in either //inbuild// or //inter//. It manages the
 entire process of compiling an Inform 7 project, doing a good deal of the
 work itself, but also calling numerous other modules.
 
-When an Inform project is being compiled, the sequence of operation is as
-follows:
-(*) //CoreMain::main// asks the //supervisor// module what to do.
-(*) //supervisor// uses the //words// and //syntax// modules to build a parse
-tree for the project and any extensions it needs, and works out dependencies
-on kits of Inter code.
-(*) All being well, //supervisor// then calls //Task::carry_out// to ask //core//
-to compile this parse tree. The process is a long multi-stage one, run as a
-production line: see //How To Compile// for a detailed list of steps.
+When //supervisor// decides that an Inform project is being compiled, it uses
+the //words// and //syntax// modules to build a parse tree for the project and
+any extensions it needs, and works out dependencies on kits of Inter code. We
+don't need to deal with any of that. For //core//, the business starts when
+//supervisor// calls //Task::carry_out//. The process is a long multi-stage one,
+run as a production line: see //How To Compile// for a detailed list of steps,
+but roughly:
 (*) The tree is subdivided into //Compilation Units//. The project's own
 source text is one unit, as is each extension used.
 (*) A minimal set of kinds, such as "number", verbs, such as "to mean", relations,

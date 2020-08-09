@@ -77,28 +77,28 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     65.7% in compilation to Inter</span>
-<span class="plain-syntax">         24.9% in </span><a href="../core-module/22-cs.html#SP11" class="internal">Phrases::Manager::compile_first_block</a>
-<span class="plain-syntax">          8.3% in </span><a href="../core-module/22-cs.html#SP15" class="internal">Phrases::Manager::compile_as_needed</a>
-<span class="plain-syntax">          7.0% in </span><a href="../core-module/17-rs.html#SP7" class="internal">Strings::compile_responses</a>
-<span class="plain-syntax">          6.2% in </span><a href="../core-module/16-cmw2.html#SP2" class="internal">World::Compile::compile</a>
-<span class="plain-syntax">          4.6% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
-<span class="plain-syntax">          3.3% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
+<span class="plain-syntax">     65.3% in compilation to Inter</span>
+<span class="plain-syntax">         24.8% in </span><a href="../core-module/22-cs.html#SP11" class="internal">Phrases::Manager::compile_first_block</a>
+<span class="plain-syntax">          8.2% in </span><a href="../core-module/22-cs.html#SP15" class="internal">Phrases::Manager::compile_as_needed</a>
+<span class="plain-syntax">          6.9% in </span><a href="../core-module/17-rs.html#SP7" class="internal">Strings::compile_responses</a>
+<span class="plain-syntax">          5.9% in </span><a href="../core-module/16-cmw2.html#SP2" class="internal">World::Compile::compile</a>
+<span class="plain-syntax">          4.4% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
+<span class="plain-syntax">          3.0% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
 <span class="plain-syntax">          2.1% in </span><a href="../core-module/22-cs.html#SP14" class="internal">Phrases::Manager::RulePrintingRule_routine</a>
 <span class="plain-syntax">          1.9% in </span><a href="../core-module/22-cs.html#SP13" class="internal">Phrases::Manager::rulebooks_array</a>
-<span class="plain-syntax">          0.9% in </span><a href="../core-module/7-vart.html#SP4" class="internal">VerbsAtRunTime::ConjugateVerb</a>
+<span class="plain-syntax">          1.1% in </span><a href="../core-module/7-vart.html#SP4" class="internal">VerbsAtRunTime::ConjugateVerb</a>
 <span class="plain-syntax">          0.7% in </span><a href="../core-module/22-cs.html#SP4" class="internal">Phrases::Manager::traverse</a>
 <span class="plain-syntax">          0.3% in </span><a href="../core-module/22-cs.html#SP13" class="internal">Phrases::Manager::compile_rulebooks</a>
 <span class="plain-syntax">          0.3% in </span><a href="../core-module/22-cs.html#SP7" class="internal">Phrases::Manager::parse_rule_parameters</a>
-<span class="plain-syntax">          0.3% in </span><a href="../core-module/7-rlt.html#SP23" class="internal">Relations::compile_defined_relations</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
 <span class="plain-syntax">          0.1% in </span><a href="../if-module/5-gv.html#SP26" class="internal">PL::Parsing::Verbs::compile_all</a>
-<span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP8" class="internal">Task::make_built_in_kind_constructors</a>
+<span class="plain-syntax">          0.1% in </span><a href="../core-module/7-rlt.html#SP23" class="internal">Relations::compile_defined_relations</a>
+<span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/16-cmw.html#SP1" class="internal">World::complete</a>
-<span class="plain-syntax">          3.5% not specifically accounted for</span>
-<span class="plain-syntax">     31.7% in running Inter pipeline</span>
-<span class="plain-syntax">         10.3% in step preparation</span>
-<span class="plain-syntax">         10.1% in inter step 2/12: link</span>
+<span class="plain-syntax">          4.1% not specifically accounted for</span>
+<span class="plain-syntax">     32.3% in running Inter pipeline</span>
+<span class="plain-syntax">         10.5% in inter step 2/12: link</span>
+<span class="plain-syntax">         10.4% in step preparation</span>
 <span class="plain-syntax">          7.5% in inter step 12/12: generate inform6 -&gt; auto.inf</span>
 <span class="plain-syntax">          0.3% in inter step 9/12: make-identifiers-unique</span>
 <span class="plain-syntax">          0.1% in inter step 10/12: reconcile-verbs</span>
@@ -107,9 +107,9 @@ which take more than 1/1000th of the total running time.
 <span class="plain-syntax">          0.1% in inter step 6/12: assimilate</span>
 <span class="plain-syntax">          0.1% in inter step 7/12: resolve-external-symbols</span>
 <span class="plain-syntax">          0.1% in inter step 8/12: inspect-plugs</span>
-<span class="plain-syntax">          2.2% not specifically accounted for</span>
+<span class="plain-syntax">          2.3% not specifically accounted for</span>
 <span class="plain-syntax">      2.1% in supervisor</span>
-<span class="plain-syntax">      0.4% not specifically accounted for</span>
+<span class="plain-syntax">      0.2% not specifically accounted for</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Memory consumption. </b>The following gives some idea of which classes of object have the most
 instances, and also of how Inform's memory tends to be used in practice.
@@ -118,7 +118,7 @@ represent less than 1/1000th of the total.
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">Total memory consumption was 257142K = 251 MB</span>
+<span class="plain-syntax">Total memory consumption was 257143K = 251 MB</span>
 
 <span class="plain-syntax">62.5% was used for 1330464 objects, in 273362 frames in 201 x 800K = 160800K = 157 MB:</span>
 
@@ -332,7 +332,7 @@ represent less than 1/1000th of the total.
 
 <span class="plain-syntax">37.4% was used for memory not allocated for objects:</span>
 
-<span class="plain-syntax">    15.8%  text stream storage                      41850780 bytes in 263280 claims</span>
+<span class="plain-syntax">    15.8%  text stream storage                      41851968 bytes in 263280 claims</span>
 <span class="plain-syntax">     3.5%  dictionary storage                       9264640 bytes in 16345 claims</span>
 <span class="plain-syntax">     ----  sorting                                  1048 bytes in 3 claims</span>
 <span class="plain-syntax">     2.7%  source text                              7200000 bytes in 3 claims</span>
@@ -460,7 +460,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the player is passive'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I34'yourself'}}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'passive' {creation: [ A94'passive'(x) ^ A94'passive'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'passive' {creation: [ 'passive'(x) ^ 'passive'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'the character movement rules are a rulebook'</span>
 <span class="plain-syntax">                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT {kind: rulebook}} {created here}</span>
@@ -667,7 +667,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'an ice cream cone is always edible'</span>
 <span class="plain-syntax">                VERB_NT'is always' {certainty:certain} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'edible' {creation: [ A63'edible'(x) ^ A63'edible'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'edible' {creation: [ 'edible'(x) ^ 'edible'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'an ice cream cone has an infection color'</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT}</span>
@@ -807,13 +807,13 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the felt door is open'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I90'felt door'}}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'open' {creation: [ A80'open'(x) ^ A80'open'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'open' {creation: [ 'open'(x) ^ 'open'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'the felt door is lockable and unlocked'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I90'felt door'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ A84'lockable'(x) ^ A84'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ A86'unlocked'(x) ^ A86'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'the key to the city unlocks the felt door'</span>
 <span class="plain-syntax">                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}} {created here}</span>
@@ -841,7 +841,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the statue is scenery in memorial square'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'statue' {kind: object} {instance: I93'statue'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'scenery in memorial square' {creation: [ A67'scenery'(x) ^ is('memorial square', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in memorial square'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'scenery in memorial square' {creation: [ 'scenery'(x) ^ is('memorial square', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in memorial square'}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "nancy" or "johnson" or "mrs" as the statue'</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"nancy" or "johnson" or "mrs"'</span>
@@ -882,7 +882,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the slot is scenery in the post office'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'scenery in the post office' {creation: [ A67'scenery'(x) ^ is('the post office', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in the post office'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'scenery in the post office' {creation: [ 'scenery'(x) ^ is('the post office', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in the post office'}</span>
 <span class="plain-syntax">            SENTENCE_NT'the slot is a container'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'}}</span>
@@ -910,8 +910,8 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'it' {eval: CONSTANT_NT'iron gate' {kind: door} {instance: I99'iron gate'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ A84'lockable'(x) ^ A84'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ A86'unlocked'(x) ^ A86'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
 <span class="plain-syntax">            RULE_NT'before printing the name of the iron gate while not opening '</span>
 <span class="plain-syntax">            SENTENCE_NT'cold comfort ice cream is north of a metal door'</span>
 <span class="plain-syntax">                VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}</span>
@@ -928,7 +928,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'a poster is fixed in place in cold comfort'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'poster' {indefinite 'a' n/m/f nom/acc s} {eval: CONSTANT_NT'poster' {kind: object} {instance: I102'poster'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'fixed in place in cold comfort' {creation: [ A65'fixed in place'(x) ^ is('cold comfort', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'fixed in place in cold comfort'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'fixed in place in cold comfort' {creation: [ 'fixed in place'(x) ^ is('cold comfort', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'fixed in place in cold comfort'}</span>
 <span class="plain-syntax">            SENTENCE_NT'"A poster fills one wall with the blazing promise of treats '</span>
 <span class="plain-syntax">            SENTENCE_NT'the description of the poster is "Coming soon! Thai ice crea'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
@@ -945,8 +945,8 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'metal door' {kind: door} {instance: I101'metal door'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ A84'lockable'(x) ^ A84'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ A86'unlocked'(x) ^ A86'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'the key to the city unlocks the metal door'</span>
 <span class="plain-syntax">                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}}</span>
@@ -979,8 +979,8 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I105'glass door'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ A84'lockable'(x) ^ A84'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ A86'unlocked'(x) ^ A86'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'the key to the city unlocks the glass door'</span>
 <span class="plain-syntax">                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}}</span>
@@ -1006,14 +1006,14 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the emergency box is fixed in place'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I108'emergency box'}}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'fixed in place' {creation: [ A65'fixed in place'(x) ^ A65'fixed in place'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'fixed in place' {creation: [ 'fixed in place'(x) ^ 'fixed in place'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'"A fire-red box with a glass front faces the sidewalk, with '</span>
 <span class="plain-syntax">            SENTENCE_NT'the emergency box is closed and transparent'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I108'emergency box'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'closed' {creation: [ A81'closed'(x) ^ A81'closed'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'transparent' {creation: [ A78'transparent'(x) ^ A78'transparent'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'closed' {creation: [ 'closed'(x) ^ 'closed'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'transparent' {creation: [ 'transparent'(x) ^ 'transparent'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "glass" as the box'</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"glass"'</span>
@@ -1045,8 +1045,8 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I107'bronze gates'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ A84'lockable'(x) ^ A84'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ A86'unlocked'(x) ^ A86'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'the description of the bronze gates is "Erected during the m'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'description of the bronze gates' {definite 'the' n/m/f s/p nom/acc}</span>
@@ -1063,7 +1063,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the incongruous sign is scenery in the public library'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'incongruous sign' {kind: object} {instance: I111'incongruous sign'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'scenery in the public library' {creation: [ A67'scenery'(x) ^ is('the public library', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in the public library'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'scenery in the public library' {creation: [ 'scenery'(x) ^ is('the public library', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in the public library'}</span>
 <span class="plain-syntax">            SENTENCE_NT'the description of the incongruous sign is "Eating and drink'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'description of the incongruous sign' {definite 'the' n/m/f s/p nom/acc}</span>
@@ -1118,7 +1118,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                                AND_NT','</span>
 <span class="plain-syntax">                                    PROPER_NOUN_NT'town hall' {eval: CONSTANT_NT'town hall' {kind: object} {instance: I112'town hall'}}</span>
 <span class="plain-syntax">                                    PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'public library' {kind: object} {instance: I110'public library'}}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'indoors' {creation: [ A127'indoors'(x) ^ A127'indoors'(x) ^ A127'indoors'(x) ^ A127'indoors'(x) ^ A127'indoors'(x) ^ A127'indoors'(x) ^ A127'indoors'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'indoors' {creation: [ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ]}</span>
 <span class="plain-syntax">            SENTENCE_NT'use full-length room descriptions'</span>
 <span class="plain-syntax">                VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'full-length room descriptions'</span>
@@ -1481,7 +1481,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'a door is usually scenery'</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'scenery' {creation: [ A67'scenery'(x) ^ A67'scenery'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'scenery' {creation: [ 'scenery'(x) ^ 'scenery'(x) ]}</span>
 <span class="plain-syntax">            RULE_NT'to make delimiter ( index - a number ) of ( count - a number'</span>
 <span class="plain-syntax">            RULE_NT'to say optional comma'</span>
 <span class="plain-syntax">            SENTENCE_NT'test me with go to cold comfort / z / z / z / z / ask vaness'</span>

@@ -52,7 +52,7 @@ divided up into "modules", many shared between two or even all three tools.
 |                           (standard C library)                        |
 +-----------------------------------------------------------------------+
 =
-The three tools each use a "services" library, made up of seven modules
+The three tools each use a "services" library, made up of a variety of modules
 providing services useful for natural language-based programs (though only
 //inform7// needs them all). At one time this was going to be called "Second
 Foundation" or possibly "Foundation and Empire", because there is also
