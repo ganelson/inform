@@ -1,9 +1,7 @@
-[Kinds::Interpreter::] Kind Interpreter.
+[KindCommands::] Kind Commands.
 
 To read in details of the built-in kinds from template files,
 setting them up ready for use.
-
-@h Definitions.
 
 @ Everyone loves a mini-language, so here is one. At the top level:
 
@@ -215,7 +213,7 @@ errors or generate I6 code which fails to compile through I6.
 @h Setting up the interpreter.
 
 =
-void Kinds::Interpreter::start(void) {
+void KindCommands::start(void) {
 }
 
 @h The kind command despatcher.
@@ -231,36 +229,36 @@ colons.)
 =
 kind_constructor *constructor_described = NULL;
 
-void Kinds::Interpreter::despatch_kind_command(parse_node_tree *T, text_stream *command) {
-	if (Kinds::Interpreter::recording_a_kind_template()) {
-		if (Str::eq_wide_string(command, L"*END")) Kinds::Interpreter::end_kind_template();
-		else Kinds::Interpreter::record_into_kind_template(command);
+void KindCommands::despatch(parse_node_tree *T, text_stream *command) {
+	if (KindCommands::recording_a_kind_template()) {
+		if (Str::eq_wide_string(command, L"*END")) KindCommands::end_kind_template();
+		else KindCommands::record_into_kind_template(command);
 		return;
 	}
 
 	if (Str::get_last_char(command) == ':') {
-		if (Kinds::Interpreter::recording_a_kind_macro()) Kinds::Interpreter::end_kind_macro();
+		if (KindCommands::recording_a_kind_macro()) KindCommands::end_kind_macro();
 		Str::delete_last_character(command); /* remove the terminal colon */
 		@<Deal with the heading at the top of a kind command block@>;
 		return;
 	}
 
-	single_kind_command stc = Kinds::Interpreter::parse_kind_command(command);
+	single_kind_command stc = KindCommands::parse_kind_command(command);
 
-	if (Kinds::Interpreter::recording_a_kind_macro()) Kinds::Interpreter::record_into_kind_macro(stc);
-	else if (constructor_described) Kinds::Interpreter::apply_kind_command(T, stc, constructor_described);
+	if (KindCommands::recording_a_kind_macro()) KindCommands::record_into_kind_macro(stc);
+	else if (constructor_described) KindCommands::apply_kind_command(T, stc, constructor_described);
 	else internal_error("kind command describes unspecified kind");
 }
 
 @<Deal with the heading at the top of a kind command block@> =
-	if (Str::get_first_char(command) == '#') Kinds::Interpreter::begin_kind_macro(command);
-	else if (Str::get_first_char(command) == '*') Kinds::Interpreter::begin_kind_template(command);
+	if (Str::get_first_char(command) == '#') KindCommands::begin_kind_macro(command);
+	else if (Str::get_first_char(command) == '*') KindCommands::begin_kind_template(command);
 	else {
 		TEMPORARY_TEXT(name)
 		Str::copy(name, command);
 		int should_know = FALSE;
 		if (Str::get_first_char(name) == '+') { Str::delete_first_character(name); should_know = TRUE; }
-		int do_know = Kinds::known_name(name);
+		int do_know = FamiliarKinds::is_known(name);
 		if ((do_know == FALSE) && (should_know == TRUE))
 			internal_error("kind command describes kind with no known name");
 		if ((do_know == TRUE) && (should_know == FALSE))
@@ -281,7 +279,7 @@ void Kinds::Interpreter::despatch_kind_command(parse_node_tree *T, text_stream *
 Each command is read in as text, parsed and stored into a modest structure.
 
 =
-single_kind_command Kinds::Interpreter::parse_kind_command(text_stream *whole_command) {
+single_kind_command KindCommands::parse_kind_command(text_stream *whole_command) {
 	TEMPORARY_TEXT(command)
 	TEMPORARY_TEXT(argument)
 	single_kind_command stc;
@@ -327,7 +325,7 @@ begin with those characters, but that doesn't matter for the things we need.
 		Str::copy(argument, mr.exp[1]);
 		Regexp::dispose_of(&mr);
 	} else {
-		Kinds::Interpreter::kind_command_error(whole_command, "kind command without argument");
+		KindCommands::kind_command_error(whole_command, "kind command without argument");
 	}
 
 @ The following is clearly inefficient, but is not worth optimising. It makes
@@ -342,19 +340,19 @@ so we neglect it.
 			stc.which_kind_command = &(table_of_kind_commands[i]);
 
 	if (stc.which_kind_command == NULL)
-		Kinds::Interpreter::kind_command_error(command, "no such kind command");
+		KindCommands::kind_command_error(command, "no such kind command");
 
 @<Parse a boolean argument for a kind command@> =
 	if (Str::eq_wide_string(argument, L"yes")) stc.boolean_argument = TRUE;
 	else if (Str::eq_wide_string(argument, L"no")) stc.boolean_argument = FALSE;
-	else Kinds::Interpreter::kind_command_error(command, "boolean kind command takes yes/no argument");
+	else KindCommands::kind_command_error(command, "boolean kind command takes yes/no argument");
 
 @<Parse a CCM argument for a kind command@> =
 	if (Str::eq_wide_string(argument, L"none")) stc.ccm_argument = NONE_CCM;
 	else if (Str::eq_wide_string(argument, L"literal")) stc.ccm_argument = LITERAL_CCM;
 	else if (Str::eq_wide_string(argument, L"quantitative")) stc.ccm_argument = NAMED_CONSTANT_CCM;
 	else if (Str::eq_wide_string(argument, L"special")) stc.ccm_argument = SPECIAL_CCM;
-	else Kinds::Interpreter::kind_command_error(command, "kind command with unknown constant-compilation-method");
+	else KindCommands::kind_command_error(command, "kind command with unknown constant-compilation-method");
 
 @<Parse a textual argument for a kind command@> =
 	Str::copy(stc.textual_argument, argument);
@@ -365,7 +363,7 @@ so we neglect it.
 	Feeds::feed_text(argument);
 	wording W = Feeds::end(id);
 	if (Wordings::length(W) >= 30)
-		Kinds::Interpreter::kind_command_error(command, "too many words in kind command");
+		KindCommands::kind_command_error(command, "too many words in kind command");
 	else
 		stc.vocabulary_argument = WordAssemblages::from_wording(W);
 
@@ -382,14 +380,14 @@ so we neglect it.
 	stc.constructor_argument = Str::duplicate(argument);
 
 @<Parse a template name argument for a kind command@> =
-	stc.template_argument = Kinds::Interpreter::parse_kind_template_name(argument);
+	stc.template_argument = KindCommands::parse_kind_template_name(argument);
 	if (stc.template_argument == NULL)
-		Kinds::Interpreter::kind_command_error(command, "unknown template name in kind command");
+		KindCommands::kind_command_error(command, "unknown template name in kind command");
 
 @<Parse a macro name argument for a kind command@> =
-	stc.macro_argument = Kinds::Interpreter::parse_kind_macro_name(argument);
+	stc.macro_argument = KindCommands::parse_kind_macro_name(argument);
 	if (stc.macro_argument == NULL)
-		Kinds::Interpreter::kind_command_error(command, "unknown template name in kind command");
+		KindCommands::kind_command_error(command, "unknown template name in kind command");
 
 @h Source text templates.
 These are passages of I7 source text which can be inserted into the main
@@ -430,13 +428,13 @@ template must be reformatted thus to work:
 @ So, to begin:
 
 =
-kind_template_definition *Kinds::Interpreter::new_kind_template(text_stream *name) {
+kind_template_definition *KindCommands::new_kind_template(text_stream *name) {
 	kind_template_definition *ttd = CREATE(kind_template_definition);
 	ttd->template_name = Str::duplicate(name);
 	return ttd;
 }
 
-kind_template_definition *Kinds::Interpreter::parse_kind_template_name(text_stream *name) {
+kind_template_definition *KindCommands::parse_kind_template_name(text_stream *name) {
 	kind_template_definition *ttd;
 	LOOP_OVER(ttd, kind_template_definition)
 		if (Str::eq(name, ttd->template_name))
@@ -445,32 +443,32 @@ kind_template_definition *Kinds::Interpreter::parse_kind_template_name(text_stre
 }
 
 @ Here is the code which records templates, reading them as one line of plain
-text at a time. (In the above example, |Kinds::Interpreter::record_into_kind_template| would be
+text at a time. (In the above example, |KindCommands::record_into_kind_template| would be
 called just once, with the single source text line.)
 
 =
 kind_template_definition *current_kind_template = NULL; /* the one now being recorded */
 
-int Kinds::Interpreter::recording_a_kind_template(void) {
+int KindCommands::recording_a_kind_template(void) {
 	if (current_kind_template) return TRUE;
 	return FALSE;
 }
 
-void Kinds::Interpreter::begin_kind_template(text_stream *name) {
+void KindCommands::begin_kind_template(text_stream *name) {
 	if (current_kind_template) internal_error("first stt still recording");
-	if (Kinds::Interpreter::parse_kind_template_name(name))
+	if (KindCommands::parse_kind_template_name(name))
 		internal_error("duplicate definition of source text template");
-	current_kind_template = Kinds::Interpreter::new_kind_template(name);
-	current_kind_template->template_text = Kinds::Interpreter::begin_recording_kind_text();
+	current_kind_template = KindCommands::new_kind_template(name);
+	current_kind_template->template_text = KindCommands::begin_recording_kind_text();
 }
 
-void Kinds::Interpreter::record_into_kind_template(text_stream *line) {
-	Kinds::Interpreter::record_kind_text(line);
+void KindCommands::record_into_kind_template(text_stream *line) {
+	KindCommands::record_kind_text(line);
 }
 
-void Kinds::Interpreter::end_kind_template(void) {
+void KindCommands::end_kind_template(void) {
 	if (current_kind_template == NULL) internal_error("no stt currently recording");
-	Kinds::Interpreter::end_recording_kind_text();
+	KindCommands::end_recording_kind_text();
 	current_kind_template = NULL;
 }
 
@@ -478,7 +476,7 @@ void Kinds::Interpreter::end_kind_template(void) {
 and squeeze it into the main source text.
 
 =
-void Kinds::Interpreter::transcribe_kind_template(parse_node_tree *T,
+void KindCommands::transcribe_kind_template(parse_node_tree *T,
 	kind_template_definition *ttd, kind_constructor *con) {
 	if (ttd == NULL) internal_error("tried to transcribe missing source text template");
 	#ifdef CORE_MODULE
@@ -543,10 +541,10 @@ not matter, since such things never come into kind definitions.
 	else internal_error("no such source text template wildcard");
 
 @<Transcribe the kind's name@> =
-	Kinds::Interpreter::transcribe_constructor_name(template_line_buffer, con, FALSE);
+	KindCommands::transcribe_constructor_name(template_line_buffer, con, FALSE);
 
 @<Transcribe the kind's name in lower case@> =
-	Kinds::Interpreter::transcribe_constructor_name(template_line_buffer, con, TRUE);
+	KindCommands::transcribe_constructor_name(template_line_buffer, con, TRUE);
 
 @<Transcribe the kind's weak ID@> =
 	WRITE_TO(template_line_buffer, "%d", con->weak_kind_ID);
@@ -560,7 +558,7 @@ not matter, since such things never come into kind definitions.
 @ Where:
 
 =
-void Kinds::Interpreter::transcribe_constructor_name(OUTPUT_STREAM, kind_constructor *con, int lower_case) {
+void KindCommands::transcribe_constructor_name(OUTPUT_STREAM, kind_constructor *con, int lower_case) {
 	wording W = EMPTY_WORDING;
 	if (con->dt_tag) W = Kinds::Constructors::get_name(con, FALSE);
 	if (Wordings::nonempty(W)) {
@@ -588,14 +586,14 @@ under names.
 =
 kind_macro_definition *current_kind_macro = NULL; /* the one now being recorded */
 
-kind_macro_definition *Kinds::Interpreter::new_kind_macro(text_stream *name) {
+kind_macro_definition *KindCommands::new_kind_macro(text_stream *name) {
 	kind_macro_definition *tmd = CREATE(kind_macro_definition);
 	tmd->kind_macro_line_count = 0;
 	tmd->kind_macro_name = Str::duplicate(name);
 	return tmd;
 }
 
-kind_macro_definition *Kinds::Interpreter::parse_kind_macro_name(text_stream *name) {
+kind_macro_definition *KindCommands::parse_kind_macro_name(text_stream *name) {
 	kind_macro_definition *tmd;
 	LOOP_OVER(tmd, kind_macro_definition)
 		if (Str::eq(name, tmd->kind_macro_name))
@@ -606,18 +604,18 @@ kind_macro_definition *Kinds::Interpreter::parse_kind_macro_name(text_stream *na
 @ And here once again is the code to record macros:
 
 =
-int Kinds::Interpreter::recording_a_kind_macro(void) {
+int KindCommands::recording_a_kind_macro(void) {
 	if (current_kind_macro) return TRUE;
 	return FALSE;
 }
 
-void Kinds::Interpreter::begin_kind_macro(text_stream *name) {
-	if (Kinds::Interpreter::parse_kind_macro_name(name))
+void KindCommands::begin_kind_macro(text_stream *name) {
+	if (KindCommands::parse_kind_macro_name(name))
 		internal_error("duplicate definition of kind command macro");
-	current_kind_macro = Kinds::Interpreter::new_kind_macro(name);
+	current_kind_macro = KindCommands::new_kind_macro(name);
 }
 
-void Kinds::Interpreter::record_into_kind_macro(single_kind_command stc) {
+void KindCommands::record_into_kind_macro(single_kind_command stc) {
 	if (current_kind_macro == NULL)
 		internal_error("kind macro not being recorded");
 	if (current_kind_macro->kind_macro_line_count >= MAX_KIND_MACRO_LENGTH)
@@ -625,7 +623,7 @@ void Kinds::Interpreter::record_into_kind_macro(single_kind_command stc) {
 	current_kind_macro->kind_macro_line[current_kind_macro->kind_macro_line_count++] = stc;
 }
 
-void Kinds::Interpreter::end_kind_macro(void) {
+void KindCommands::end_kind_macro(void) {
 	if (current_kind_macro == NULL) internal_error("ended kind macro outside one");
 	current_kind_macro = NULL;
 }
@@ -634,13 +632,13 @@ void Kinds::Interpreter::end_kind_macro(void) {
 commands in sequence to the relevant kind.
 
 =
-void Kinds::Interpreter::play_back_kind_macro(parse_node_tree *T, kind_macro_definition *macro, kind_constructor *con) {
+void KindCommands::play_back_kind_macro(parse_node_tree *T, kind_macro_definition *macro, kind_constructor *con) {
 	if (macro == NULL) internal_error("no such kind macro to play back");
 	LOGIF(KIND_CREATIONS, "Macro %S on %S (%d lines)\n",
 		macro->kind_macro_name, con->name_in_template_code, macro->kind_macro_line_count);
 	LOG_INDENT;
 	for (int i=0; i<macro->kind_macro_line_count; i++)
-		Kinds::Interpreter::apply_kind_command(T, macro->kind_macro_line[i], con);
+		KindCommands::apply_kind_command(T, macro->kind_macro_line[i], con);
 	LOG_OUTDENT;
 	LOGIF(KIND_CREATIONS, "Macro %S ended\n", macro->kind_macro_name);
 }
@@ -656,24 +654,24 @@ text_stream *kind_recording = NULL;
 @ And here is recording mode:
 
 =
-text_stream *Kinds::Interpreter::begin_recording_kind_text(void) {
+text_stream *KindCommands::begin_recording_kind_text(void) {
 	kind_recording = Str::new();
 	return kind_recording;
 }
 
-void Kinds::Interpreter::record_kind_text(text_stream *line) {
+void KindCommands::record_kind_text(text_stream *line) {
 	if (kind_recording == NULL) internal_error("can't record outside recording");
 	WRITE_TO(kind_recording, "%S\n", line);
 }
 
-void Kinds::Interpreter::end_recording_kind_text(void) {
+void KindCommands::end_recording_kind_text(void) {
 	kind_recording = NULL;
 }
 
 @h Error messages.
 
 =
-void Kinds::Interpreter::kind_command_error(text_stream *command, char *error) {
+void KindCommands::kind_command_error(text_stream *command, char *error) {
 	LOG("Kind command error found at: %S\n", command);
 	internal_error(error);
 }
@@ -721,7 +719,7 @@ We take a single kind command and apply it to a given kind.
 @d template_variable_number_KCC 40
 
 =
-void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_command stc, kind_constructor *con) {
+void KindCommands::apply_kind_command(parse_node_tree *T, single_kind_command stc, kind_constructor *con) {
 	if (stc.which_kind_command == NULL) internal_error("null STC command");
 	LOGIF(KIND_CREATIONS, "apply: %s (%d/%d/%S/%S) to %d/%S\n",
 		stc.which_kind_command->text_of_command,
@@ -743,10 +741,10 @@ void Kinds::Interpreter::apply_kind_command(parse_node_tree *T, single_kind_comm
 @<Apply kind macros or transcribe kind templates on request@> =
 	switch (tcc) {
 		case apply_template_KCC:
-			Kinds::Interpreter::transcribe_kind_template(T, stc.template_argument, con);
+			KindCommands::transcribe_kind_template(T, stc.template_argument, con);
 			return;
 		case apply_macro_KCC:
-			Kinds::Interpreter::play_back_kind_macro(T, stc.macro_argument, con);
+			KindCommands::play_back_kind_macro(T, stc.macro_argument, con);
 			return;
 	}
 
@@ -914,7 +912,7 @@ At one time it was useful to do some mopping-up work after a round of kind
 commands, so the following hook was devised; but at present it's not needed.
 
 =
-void Kinds::Interpreter::batch_done(void) {
+void KindCommands::batch_done(void) {
 }
 
 @ And that completes the kind interpreter.

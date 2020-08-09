@@ -4,8 +4,6 @@ A grammar line is a list of tokens to specify a textual pattern.
 For example, the Inform source for a grammar line might be "take [something]
 out", which is a sequence of three tokens.
 
-@h Definitions.
-
 @ A grammar line is in turn a sequence of tokens. If it matches, it will
 result in 0, 1 or 2 parameters, though only if the grammar verb owning
 the line is a genuine |GV_IS_COMMAND| command grammar will the case of

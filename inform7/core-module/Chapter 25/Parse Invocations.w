@@ -53,7 +53,7 @@ the phrase under, and must make the actual registration.
 =
 phrase *last_phrase_where_rp_problemed = NULL;
 void Phrases::Parser::register_phrasal(unsigned int phrase_mc, phrase *ph, wording W) {
-	LOGIF(PHRASE_REGISTRATION, "Register phrasal on <%W>: $u\n", W,
+	LOGIF(PHRASE_REGISTRATION, "Register phrasal on <%W>: %u\n", W,
 		Phrases::TypeData::kind(&(ph->type_data)));
 
 	@<Vet phrase text for suitability@>;
@@ -375,7 +375,7 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 	if (t) as_parsed = <<rp>>;
 	else as_parsed = Specifications::new_UNKNOWN(XW);
 
-	LOGIF(MATCHING, "(%d/%d) Expected kind $u: parsed token %W (cons %d) to $P\n",
+	LOGIF(MATCHING, "(%d/%d) Expected kind %u: parsed token %W (cons %d) to $P\n",
 		i+1, N, probable_noun_phrase_context, XW, cons, as_parsed);
 
 	probable_noun_phrase_context = save_probable_noun_phrase_context;

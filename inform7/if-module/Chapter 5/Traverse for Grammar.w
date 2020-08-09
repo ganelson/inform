@@ -3,8 +3,6 @@
 To create and manipulate grammar, primarily by parsing and acting
 upon Understand... sentences in the source text.
 
-@h Definitions.
-
 @ We cache grammar occurring in the source text in conditions, and so forth:
 
 =

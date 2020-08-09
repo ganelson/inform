@@ -130,7 +130,7 @@ result is a bitmap of these:
 	@<Infer uniqueness if not specified@>;
 
 	LOGIF(RELATION_DEFINITIONS,
-		"Relation defn: '%W' %s %s %s (%s $u, %s $u)\n",
+		"Relation defn: '%W' %s %s %s (%s %u, %s %u)\n",
 			RR.RW,
 			(RR.symmetric)?"symmetric":"asymmetric",
 			(RR.equivalence)?"equivalence":"non-equivalence",

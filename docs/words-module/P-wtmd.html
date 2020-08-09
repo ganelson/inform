@@ -85,8 +85,8 @@ The function <a href="3-tff.html#SP2" class="internal">TextFromFiles::feed_open_
 converting it to a numbered stream of words. For indexing and error reporting
 purposes, we must not forget where these words came from: the function returns
 a <a href="3-tff.html#SP1" class="internal">source_file</a> object representing the file as an origin, and the lexer
-assigns each word a <a href="3-lxr.html#SP3" class="internal">source_location</a> which is simply its SF together with
-a line number. <a href="3-lxr.html#SP20" class="internal">Lexer::word_location</a> returns this for a given word number.
+assigns each word a <a href="3-lxr.html#SP2" class="internal">source_location</a> which is simply its SF together with
+a line number. <a href="3-lxr.html#SP19" class="internal">Lexer::word_location</a> returns this for a given word number.
 </p>
 
 <p class="commentary">Word numbers count upwards from 1 and are contiguous: for example &mdash;
@@ -98,7 +98,7 @@ a line number. <a href="3-lxr.html#SP20" class="internal">Lexer::word_location</
 </pre>
 <p class="commentary">Repetitions are frequent: a typical source text of 50,000 words has an
 unquoted<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> vocabulary of only about 2000 different words. Inform generates
-a <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> object for each of these distinct words, and <a href="3-lxr.html#SP20" class="internal">Lexer::word</a>
+a <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> object for each of these distinct words, and <a href="3-lxr.html#SP19" class="internal">Lexer::word</a>
 returns the VE for a given word number. In the above example,
 </p>
 
@@ -138,7 +138,7 @@ there are exotica such as <span class="extract"><span class="extract-syntax">COL
 
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Lexical errors occur if words are too long, or quoted text continues without
 a close quote right to the end of a file, and so on. These are sent to the
-function <a href="3-lxr.html#SP31" class="internal">Lexer::lexer_problem_handler</a>, but can be intercepted by the
+function <a href="3-lxr.html#SP30" class="internal">Lexer::lexer_problem_handler</a>, but can be intercepted by the
 user (see <a href="P-htitm.html" class="internal">How To Include This Module</a>).
 </p>
 
@@ -162,7 +162,7 @@ is three words.
 
 <p class="commentary">However, multi-word snippets of text which have a joint meaning are almost
 always contiguous. The text "a little lamb" is word numbers 19, 20, 21. We
-deal with this using the <a href="3-wrd.html#SP2" class="internal">wording</a> type: it's essentially a pair of integers,
+deal with this using the <a href="3-wrd.html#SP1" class="internal">wording</a> type: it's essentially a pair of integers,
 <span class="extract"><span class="extract-syntax">(19, 21)</span></span>, and thus is very quick to form, compare, copy and pass as a
 parameter. <a href="3-wrd.html" class="internal">Wordings</a> provides an extensive API for this.
 </p>
@@ -177,13 +177,13 @@ may not occur as such anywhere in the source.
 of the <a href="index.html" class="internal">words</a> module has two options:
 </p>
 
-<ul class="items"><li>&#9679; Create a <a href="2-wa.html#SP2" class="internal">word_assemblage</a> object. This can represent any discontiguous
+<ul class="items"><li>&#9679; Create a <a href="2-wa.html#SP1" class="internal">word_assemblage</a> object. This can represent any discontiguous
 list of word numbers: thus, the text "lamb went everywhere" could be a WA
 of numbers (21, 26, 23) in our example above.
-</li><li>&#9679; Use <a href="3-lxr.html#SP30" class="internal">Lexer::splice_words</a> to create duplicate snippets of text in the
+</li><li>&#9679; Use <a href="3-lxr.html#SP29" class="internal">Lexer::splice_words</a> to create duplicate snippets of text in the
 word stream, with new numbers. For example, call this on "lamb", then "went",
 then "everywhere"; the three new word numbers will then be contiguous, and
-can be represented by a <a href="3-wrd.html#SP2" class="internal">wording</a>:
+can be represented by a <a href="3-wrd.html#SP1" class="internal">wording</a>:
 </li></ul>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Mary had a  little lamb .   Everywhere that Mary went ,  the lamb lamb went everywhere</span>
@@ -202,10 +202,10 @@ lexing so that we now have
 </pre>
 <p class="commentary">and now the word assemblage (21, 34, 35, 36, 37) would indeed represent "lamb
 tian with haricot beans". The return value of <a href="3-fds.html#SP3" class="internal">Feeds::feed_text</a> is the
-<a href="3-wrd.html#SP2" class="internal">wording</a> (34, 37).
+<a href="3-wrd.html#SP1" class="internal">wording</a> (34, 37).
 </p>
 
-<p class="commentary">These new words do not originate in a file; their <a href="3-lxr.html#SP3" class="internal">source_location</a> therefore
+<p class="commentary">These new words do not originate in a file; their <a href="3-lxr.html#SP2" class="internal">source_location</a> therefore
 has a null <a href="3-tff.html#SP1" class="internal">source_file</a>. Words which have been spliced, however, and thus
 duplicated in the word stream (like "lamb went everywhere", 30-32), retain
 their original origins.
@@ -217,14 +217,14 @@ converted into the other two:
 </p>
 
 <ul class="items"><li>&#9679; Use <a href="3-fds.html#SP3" class="internal">Feeds::feed_text</a> to turn a <span class="extract"><span class="extract-syntax">text_stream</span></span> to a <span class="extract"><span class="extract-syntax">wording</span></span>.
-</li><li>&#9679; Use <a href="2-wa.html#SP4" class="internal">WordAssemblages::from_wording</a> to turn a <span class="extract"><span class="extract-syntax">wording</span></span> to a <span class="extract"><span class="extract-syntax">word_assemblage</span></span>.
-</li><li>&#9679; Use <a href="2-wa.html#SP7" class="internal">WordAssemblages::to_wording</a> to turn a <span class="extract"><span class="extract-syntax">word_assemblage</span></span> to a <span class="extract"><span class="extract-syntax">wording</span></span>.
-</li><li>&#9679; Use <a href="3-wrd.html#SP22" class="internal">Wordings::writer</a> or use the formatted <span class="extract"><span class="extract-syntax">WRITE</span></span> escape <span class="extract"><span class="extract-syntax">%W</span></span> to
+</li><li>&#9679; Use <a href="2-wa.html#SP3" class="internal">WordAssemblages::from_wording</a> to turn a <span class="extract"><span class="extract-syntax">wording</span></span> to a <span class="extract"><span class="extract-syntax">word_assemblage</span></span>.
+</li><li>&#9679; Use <a href="2-wa.html#SP6" class="internal">WordAssemblages::to_wording</a> to turn a <span class="extract"><span class="extract-syntax">word_assemblage</span></span> to a <span class="extract"><span class="extract-syntax">wording</span></span>.
+</li><li>&#9679; Use <a href="3-wrd.html#SP21" class="internal">Wordings::writer</a> or use the formatted <span class="extract"><span class="extract-syntax">WRITE</span></span> escape <span class="extract"><span class="extract-syntax">%W</span></span> to
 write a <span class="extract"><span class="extract-syntax">wording</span></span> into a <span class="extract"><span class="extract-syntax">text_stream</span></span>.
-</li><li>&#9679; Use <a href="2-wa.html#SP9" class="internal">WordAssemblages::writer</a> or use the formatted <span class="extract"><span class="extract-syntax">WRITE</span></span> escape <span class="extract"><span class="extract-syntax">%A</span></span> to
+</li><li>&#9679; Use <a href="2-wa.html#SP8" class="internal">WordAssemblages::writer</a> or use the formatted <span class="extract"><span class="extract-syntax">WRITE</span></span> escape <span class="extract"><span class="extract-syntax">%A</span></span> to
 write a <span class="extract"><span class="extract-syntax">word_assemblage</span></span> into a <span class="extract"><span class="extract-syntax">text_stream</span></span>.
 </li></ul>
-<p class="commentary">As a general design goal, all Inform code uses <a href="3-wrd.html#SP2" class="internal">wording</a> to identify names
+<p class="commentary">As a general design goal, all Inform code uses <a href="3-wrd.html#SP1" class="internal">wording</a> to identify names
 of things: this is fastest and most efficient on memory.
 </p>
 

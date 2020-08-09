@@ -1,0 +1,5 @@
+Q.
+list of relations of Q to R.
+substitute number for Q in Q.
+substitute number for Q in list of Q.
+substitute number for Q in list of relations of Q to Q.

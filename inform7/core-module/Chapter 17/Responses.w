@@ -2,8 +2,6 @@
 
 In this section we keep track of response texts.
 
-@h Definitions.
-
 @ Responses are texts -- which may be either literals or text substitutions --
 occurring inside the body of rules, and marked out (A), (B), (C), ... within
 that rule. This enables them to be manipulated or changed.

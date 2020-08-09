@@ -67,11 +67,9 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">if</a></li><li><a href="index.html#2">Chapter 2: Bibliographic Data</a></li><li><b>Bibliographic Data</b></li></ul></div>
 <p class="purpose">To manage the special variables providing bibliographic data on the work of IF being generated (title, author's name and so forth), and to write the Library Card in the index.</p>
 
-<ul class="toc"><li><a href="2-bd.html#SP1">&#167;1. Definitions</a></li><li><a href="2-bd.html#SP15">&#167;15. Bibliographic text</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-bd.html#SP14">&#167;14. Bibliographic text</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Definitions. </b></p>
-
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Much of this section is best understood by reference to the Treaty of
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Much of this section is best understood by reference to the Treaty of
 Babel, a cross-IF-system standard for bibliographic data and packaging
 agreed between the major IF design systems in 2006. Inform aims to comply
 fully with the Treaty and the code below should be maintained as such.
@@ -93,17 +91,17 @@ the end of a successful compilation.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">episode_number</span><span class="plain-syntax"> = -1; </span><span class="comment-syntax"> for a work which is part of a numbered series</span>
 <span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">series_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>This is organised as a plugin since it's all broadly IF-based, and not
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>This is organised as a plugin since it's all broadly IF-based, and not
 something you'd expect in a general programming language. But the main
 effect is only to make a small number of variables special.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGIN_REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">PLUGIN_NEW_VARIABLE_NOTIFY</span><span class="plain-syntax">, </span><a href="2-bd.html#SP5" class="function-link"><span class="function-syntax">PL::Bibliographic::bibliographic_new_variable_notify</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGIN_REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">PLUGIN_NEW_VARIABLE_NOTIFY</span><span class="plain-syntax">, </span><a href="2-bd.html#SP4" class="function-link"><span class="function-syntax">PL::Bibliographic::bibliographic_new_variable_notify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following grammar contains the names of all of the bibliographic
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The following grammar contains the names of all of the bibliographic
 variables &mdash; those used to set entries on the Library Card about a project.
 As usual, Inform uses these English wordings to detect the creation of the
 variables in the Standard Rules, which are in English: so there's no point
@@ -121,7 +119,7 @@ in translating this nonterminal to other languages.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">release</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">number</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And we read them here:
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And we read them here:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">STORY_TITLE_BIBV</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span>
@@ -133,7 +131,7 @@ in translating this nonterminal to other languages.
 <span class="definition-keyword">define</span> <span class="Preform-constant-syntax">RELEASE_NUMBER_BIBV</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">6</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::bibliographic_new_variable_notify</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::Bibliographic::bibliographic_new_variable_notify</span></span>:<br/><a href="2-bd.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::bibliographic_new_variable_notify</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::Bibliographic::bibliographic_new_variable_notify</span></span>:<br/><a href="2-bd.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-bibliographic-variables&gt;(q-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">STORY_TITLE_BIBV:</span><span class="plain-syntax"> </span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">q</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -149,7 +147,7 @@ in translating this nonterminal to other languages.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The following is called in response to the bibliographic sentence. That in
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The following is called in response to the bibliographic sentence. That in
 fact has already been parsed by Inbuild, so we simply extract the results,
 and set the "story title" and "story author" variables accordingly.
 </p>
@@ -182,7 +180,7 @@ and set the "story title" and "story author" variables accordingly.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>This unattractive routine performs a string comparison of the author's name
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This unattractive routine performs a string comparison of the author's name
 against one that's supplied, case sensitively, and is used when deciding
 whether to print credits at run-time for extensions written by the same
 person as the author of the main work.
@@ -198,7 +196,7 @@ person as the author of the main work.
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">w1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-bd.html#SP15" class="function-link"><span class="function-syntax">PL::Bibliographic::compile_bibliographic_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">Lexer::word_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">w1</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><a href="2-bd.html#SP14" class="function-link"><span class="function-syntax">PL::Bibliographic::compile_bibliographic_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">Lexer::word_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">w1</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">)) </span><span class="identifier-syntax">result</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">result</span><span class="plain-syntax">;</span>
@@ -206,7 +204,7 @@ person as the author of the main work.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Inform probably shouldn't support this sentence, which does nothing other
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Inform probably shouldn't support this sentence, which does nothing other
 than to fill in two pieces of rarely-used bibliographic data (which could
 just as easily be variables). But two of the larger worked examples we were
 trying Inform out on, in the early days, belonged to a sequence called
@@ -229,10 +227,10 @@ which must match:
 
 <span class="Preform-function-syntax">&lt;episode-sentence-object&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">episode</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;quoted-text-without-subs&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { R[1], -, &lt;&lt;series&gt;&gt; = R[2] }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">episode</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadEpisode problem</span><span class="named-paragraph-number">8.1</span></a></span><span class="Preform-constant-syntax">;</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">episode</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadEpisode problem</span><span class="named-paragraph-number">7.1</span></a></span><span class="Preform-constant-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadEpisode problem</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadEpisode problem</span><span class="named-paragraph-number">7.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -245,8 +243,8 @@ which must match:
 <span class="plain-syntax">        </span><span class="string-syntax">"plain text without [substitutions]."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { -1, - };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>This handles the special meaning "The story is episode...".
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP7">&#167;7</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>This handles the special meaning "The story is episode...".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -268,7 +266,7 @@ which must match:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>In the I6 template layer, some of the bibliographic variables are actually
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>In the I6 template layer, some of the bibliographic variables are actually
 compiled to constants, used early on at run-time to print the banner.
 </p>
 
@@ -278,21 +276,21 @@ compiled to constants, used early on at run-time to print the banner.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BEGIN_COMPILATION_MODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">COMPILATION_MODE_ENTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPILE_TEXT_TO_I6_CMODE</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 Story constant</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">story_headline_VAR</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_2" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 Headline constant</span><span class="named-paragraph-number">10.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">story_author_VAR</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_3" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 Story Author constant</span><span class="named-paragraph-number">10.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">story_release_number_VAR</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_4" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 Release directive</span><span class="named-paragraph-number">10.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP10_5" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 serial number, based on the date</span><span class="named-paragraph-number">10.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 Story constant</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">story_headline_VAR</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 Headline constant</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">story_author_VAR</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 Story Author constant</span><span class="named-paragraph-number">9.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">story_release_number_VAR</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP9_4" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 Release directive</span><span class="named-paragraph-number">9.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP9_5" class="named-paragraph-link"><span class="named-paragraph">Compile the I6 serial number, based on the date</span><span class="named-paragraph-number">9.5</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">END_COMPILATION_MODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">encode_constant_text_bibliographically</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b>If the author doesn't name a work, then its title is properly "", not
+<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b>If the author doesn't name a work, then its title is properly "", not
 "Welcome": that's just something we use to provide a readable banner.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 Story constant</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 Story constant</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -306,11 +304,11 @@ compiled to constants, used early on at run-time to print the banner.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Emit::named_generic_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">v1</span><span class="plain-syntax">, </span><span class="identifier-syntax">v2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b>And similarly here:
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_2"></a><b>&#167;9.2.  </b>And similarly here:
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 Headline constant</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 Headline constant</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -325,11 +323,11 @@ compiled to constants, used early on at run-time to print the banner.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Emit::named_generic_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">v1</span><span class="plain-syntax">, </span><span class="identifier-syntax">v2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3"></a><b>&#167;10.3.  </b>This time we compile nothing if no author is provided:
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_3"></a><b>&#167;9.3.  </b>This time we compile nothing if no author is provided:
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 Story Author constant</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 Story Author constant</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -348,11 +346,11 @@ compiled to constants, used early on at run-time to print the banner.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_4"></a><b>&#167;10.4.  </b>Similarly (but numerically):
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_4"></a><b>&#167;9.4.  </b>Similarly (but numerically):
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 Release directive</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 Release directive</span><span class="named-paragraph-number">9.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -364,13 +362,13 @@ compiled to constants, used early on at run-time to print the banner.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_5"></a><b>&#167;10.5.  </b>This innocuous code &mdash; if Inform runs on 25 June 2013, we compile the serial
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_5"></a><b>&#167;9.5.  </b>This innocuous code &mdash; if Inform runs on 25 June 2013, we compile the serial
 number "130625" &mdash; is actually controversial: quite a few users feel they
 should be able to fake the date-stamp with dates of their own choosing.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 serial number, based on the date</span><span class="named-paragraph-number">10.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the I6 serial number, based on the date</span><span class="named-paragraph-number">9.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -383,8 +381,8 @@ should be able to fake the date-stamp with dates of their own choosing.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">SN</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The Library Card is part of the Contents index, and is intended as a
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The Library Card is part of the Contents index, and is intended as a
 natural way to present bibliographic data to the user. In effect, it's a
 simplified form of the iFiction record, without the XML overhead.
 </p>
@@ -394,35 +392,35 @@ simplified form of the iFiction record, without the XML overhead.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Index::anchor</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"LCARD"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::begin_html_table</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"*bg_images/indexcard.png"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story title"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Untitled"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story author"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_author_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Anonymous"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story headline"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_headline_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"An Interactive Fiction"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story genre"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_genre_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Fiction"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story title"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Untitled"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story author"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_author_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Anonymous"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story headline"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_headline_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"An Interactive Fiction"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story genre"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_genre_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Fiction"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">episode_number</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">episode_text</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">episode_text</span><span class="plain-syntax">, </span><span class="string-syntax">"%d of %w"</span><span class="plain-syntax">, </span><span class="identifier-syntax">episode_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">series_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Episode"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">episode_text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Episode"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">episode_text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">episode_text</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Release number"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_release_number_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"1"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story creation year"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_creation_year_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"(This year)"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Release number"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_release_number_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"1"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story creation year"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_creation_year_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"(This year)"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">lang</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Projects::get_language_of_play</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::project</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="string-syntax">"English"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="string-syntax">"%X"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">work</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Language of play"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Language of play"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">lang</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"IFID number"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><a href="2-ifi.html#SP2" class="function-link"><span class="function-syntax">PL::Bibliographic::IFID::read_uuid</span></a><span class="plain-syntax">());</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP12" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story description"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_description_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"None"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"IFID number"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><a href="2-ifi.html#SP1" class="function-link"><span class="function-syntax">PL::Bibliographic::IFID::read_uuid</span></a><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP11" class="function-link"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Story description"</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_description_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"None"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::end_html_table</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>This uses:
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>This uses:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::library_card_entry</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></span>:<br/><a href="2-bd.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">field</span><span class="plain-syntax">, </span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::library_card_entry</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PL::Bibliographic::library_card_entry</span></span>:<br/><a href="2-bd.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">field</span><span class="plain-syntax">, </span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">col</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"303030"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nlv</span><span class="plain-syntax"> == </span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax">) </span><span class="identifier-syntax">col</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"803030"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::first_html_column_nowrap</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
@@ -435,14 +433,14 @@ simplified form of the iFiction record, without the XML overhead.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::begin_colour</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">col</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">, </span><span class="string-syntax">"class=\"typewritten\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"b"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-bd.html#SP14" class="function-link"><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-bd.html#SP13" class="function-link"><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"b"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::end_colour</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::end_html_row</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The Index also likes to print the name and authorship at the top of the
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The Index also likes to print the name and authorship at the top of the
 Contents listing, so:
 </p>
 
@@ -451,29 +449,29 @@ Contents listing, so:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">story_author_VAR</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Contents"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><a href="2-bd.html#SP14" class="function-link"><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Untitled"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-bd.html#SP13" class="function-link"><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_title_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Untitled"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" by "</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-bd.html#SP14" class="function-link"><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_author_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Anonymous"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-bd.html#SP13" class="function-link"><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">story_author_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Anonymous"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>And both of those features use:
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>And both of those features use:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span></span>:<br/><a href="2-bd.html#SP12">&#167;12</a>, <a href="2-bd.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">PL::Bibliographic::index_bibliographic_variable</span></span>:<br/><a href="2-bd.html#SP11">&#167;11</a>, <a href="2-bd.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BEGIN_COMPILATION_MODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">COMPILATION_MODE_ENTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPILE_TEXT_TO_XML_CMODE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">NonlocalVariables::has_initial_value_set</span><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NonlocalVariables::treat_as_plain_text_word</span><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="2-bd.html#SP15" class="function-link"><span class="function-syntax">PL::Bibliographic::compile_bibliographic_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Lexer::word_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)));</span>
+<span class="plain-syntax">        </span><a href="2-bd.html#SP14" class="function-link"><span class="function-syntax">PL::Bibliographic::compile_bibliographic_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Lexer::word_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">END_COMPILATION_MODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Bibliographic text. </b>"Bibliographic text" is text used in bibliographic data about the work
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Bibliographic text. </b>"Bibliographic text" is text used in bibliographic data about the work
 of IF compiled: for instance, in the iFiction record, or in the Library
 Card section of the HTML index. Note that the exact output format depends
 on global variables, which allow the bibliographic text writing code to
@@ -482,24 +480,24 @@ therefore splits into one of three independent methods.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::compile_bibliographic_text</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">PL::Bibliographic::compile_bibliographic_text</span></span>:<br/><a href="2-bd.html#SP7">&#167;7</a>, <a href="2-bd.html#SP14">&#167;14</a><br/>Release Instructions - <a href="2-ri.html#SP12">&#167;12</a>, <a href="2-ri.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Bibliographic::compile_bibliographic_text</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">PL::Bibliographic::compile_bibliographic_text</span></span>:<br/><a href="2-bd.html#SP6">&#167;6</a>, <a href="2-bd.html#SP13">&#167;13</a><br/>Release Instructions - <a href="2-ri.html#SP11">&#167;11</a>, <a href="2-ri.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEST_COMPILATION_MODE</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPILE_TEXT_TO_XML_CMODE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP15_1" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as XML respecting Treaty of Babel rules</span><span class="named-paragraph-number">15.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP14_1" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as XML respecting Treaty of Babel rules</span><span class="named-paragraph-number">14.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEST_COMPILATION_MODE</span><span class="plain-syntax">(</span><span class="identifier-syntax">TRUNCATE_TEXT_CMODE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP15_4" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as a truncated filename</span><span class="named-paragraph-number">15.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP14_4" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as a truncated filename</span><span class="named-paragraph-number">14.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEST_COMPILATION_MODE</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPILE_TEXT_TO_I6_CMODE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP15_3" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as an I6 string</span><span class="named-paragraph-number">15.3</span></a></span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP15_2" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as HTML</span><span class="named-paragraph-number">15.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP14_3" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as an I6 string</span><span class="named-paragraph-number">14.3</span></a></span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-bd.html#SP14_2" class="named-paragraph-link"><span class="named-paragraph">Compile bibliographic text as HTML</span><span class="named-paragraph-number">14.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b>This looks like a standard routine for converting ISO Latin-1 to UTF-8
+<p class="commentary firstcommentary"><a id="SP14_1"></a><b>&#167;14.1.  </b>This looks like a standard routine for converting ISO Latin-1 to UTF-8
 with XML escapes, but there are a few conventions on whitespace, too, in order
 to comply with a strict reading of the Treaty of Babel. (This is intended
 for fields in iFiction records.)
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as XML respecting Treaty of Babel rules</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as XML respecting Treaty of Babel rules</span><span class="named-paragraph-number">14.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -542,12 +540,12 @@ for fields in iFiction records.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_2"></a><b>&#167;15.2.  </b>In the HTML version, we want to respect the forcing of newlines, and
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP14">&#167;14</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14_2"></a><b>&#167;14.2.  </b>In the HTML version, we want to respect the forcing of newlines, and
 also the <span class="extract"><span class="extract-syntax">[']</span></span> escape to obtain a literal single quotation mark.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as HTML</span><span class="named-paragraph-number">15.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as HTML</span><span class="named-paragraph-number">14.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -583,12 +581,12 @@ also the <span class="extract"><span class="extract-syntax">[']</span></span> es
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_3"></a><b>&#167;15.3.  </b>In the Inform 6 string version, we suppress the forcing of newlines, but
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP14">&#167;14</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14_3"></a><b>&#167;14.3.  </b>In the Inform 6 string version, we suppress the forcing of newlines, but
 otherwise it's much the same.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as an I6 string</span><span class="named-paragraph-number">15.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as an I6 string</span><span class="named-paragraph-number">14.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -614,8 +612,8 @@ otherwise it's much the same.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_4"></a><b>&#167;15.4.  </b>This code is used to work out a good filename for something given a name
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP14">&#167;14</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14_4"></a><b>&#167;14.4.  </b>This code is used to work out a good filename for something given a name
 inside Inform. For instance, if a project is called
 </p>
 
@@ -651,7 +649,7 @@ German eszet will be barbarously shortened to a single "s", but life is
 just too short to care overmuch about this.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as a truncated filename</span><span class="named-paragraph-number">15.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile bibliographic text as a truncated filename</span><span class="named-paragraph-number">14.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -686,7 +684,7 @@ just too short to care overmuch about this.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">black_chars_written</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"story"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP15">&#167;15</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-bd.html#SP14">&#167;14</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="2-ifi.html">&#10094;</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-ifi.html">ifi</a></li><li class="progresscurrent">bd</li><li class="progresssection"><a href="2-ri.html">ri</a></li><li class="progresschapter"><a href="3-tnt.html">3</a></li><li class="progresschapter"><a href="4-act.html">4</a></li><li class="progresschapter"><a href="5-itg.html">5</a></li><li class="progressnext"><a href="2-ri.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

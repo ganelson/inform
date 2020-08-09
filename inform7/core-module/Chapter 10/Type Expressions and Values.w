@@ -3,8 +3,6 @@
 To parse two forms of noun: a noun phrase in a sentence, and a
 description of what text can be written in a given situation.
 
-@h Definitions.
-
 @ Inform recognises many noun-like constructions, some of which -- out of a noun
 context -- look like adjectives, actions or other excerpts which aren't at all
 evidently nouns. These many ways to describe nouns are gathered up into two

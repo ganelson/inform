@@ -2,8 +2,6 @@
 
 To make a built-in kind of value for times of day, such as "11:22 AM".
 
-@h Definitions.
-
 @ "Men can do nothing without the make-believe of a beginning. Even Science,
 the strict measurer, is obliged to start with a make-believe unit, and must fix
 on a point in the stars' unceasing journey when his sidereal clock shall pretend

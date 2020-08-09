@@ -3,8 +3,6 @@
 To build and modify structures representing propositions in
 predicate calculus.
 
-@h Definitions.
-
 @ We now begin on the data structures to hold propositions. Now a properly
 constructed proposition has a natural tree structure -- one can regard
 quantification, negation, and conjunction as higher nodes, and predicates

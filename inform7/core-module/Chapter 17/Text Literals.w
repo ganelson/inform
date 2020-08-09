@@ -2,8 +2,6 @@
 
 In this section we compile text constants.
 
-@h Definitions.
-
 @ It might not seem necessary to do much about literal text, since we're
 compiling to what is already a high-enough level language to take care
 of that for us -- that is, it seems reasonable just to translate

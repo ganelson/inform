@@ -2,8 +2,6 @@
 
 To render the spatial map of rooms as an EPS (Encapsulated PostScript) file.
 
-@h Definitions.
-
 @ EPS-format files are vector art, rather than raster art, and are produced
 with the intention that authors can tidy them up afterwards using programs
 like Adobe Illustrator. By default they aren't produced, so that the following
@@ -679,7 +677,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 			if ((scope_k) &&
 				((Kinds::Compare::le(scope_k, K_room)) ||
 					(Kinds::Compare::le(scope_k, K_region)))) {
-				LOGIF(SPATIAL_MAP, "Setting for kind $u\n", scope_k);
+				LOGIF(SPATIAL_MAP, "Setting for kind %u\n", scope_k);
 			} else bad_scope = TRUE;
 			break;
 		case INSTANCE_MAP_SCOPE:

@@ -4,8 +4,6 @@ To tidy up |INVOCATION_LIST_NT| nodes into a list of children under the
 relevant |RULE_NT| node, and so turn each rule definition into a single
 subtree.
 
-@h Definitions.
-
 @ Initially, the phrases (|INVOCATION_LIST_NT|) making up a rule (|RULE_NT|) are
 simply listed after it in the parse tree, but we want them to become its
 children: this is the only thing the $A$-grammar does with rules, which

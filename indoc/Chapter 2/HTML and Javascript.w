@@ -2,8 +2,6 @@
 
 HTML utility code.
 
-@h Definitions.
-
 @ Keeping track of which images are referred to in the HTML we generate:
 
 =

@@ -3,8 +3,6 @@
 A plugin to provide a geographical model, linking rooms and doors
 together in oppositely-paired directions.
 
-@h Definitions.
-
 @ The map is a complicated data structure, both because it amounts to a
 ternary relation (though being implemented by many binary ones) and because
 of an ambiguity: a map connection from a room R can lead to another room S,

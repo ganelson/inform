@@ -3,8 +3,6 @@
 To create one |phrase| object for each phrase declaration in the
 source text.
 
-@h Definitions.
-
 @ As noted in the introduction to this chapter, a |phrase| structure is
 created for each "To..." definition and each rule in the source text. It is
 divided internally into five substructures, the PHTD, PHUD, PHRCD, PHSF

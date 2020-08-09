@@ -5,8 +5,6 @@ of kinds, in order to speed up loops; and instance counts within kinds, in order
 to speed up relation storage; and the object-kind hierarchy, in order to speed
 up run-time checking of the type safety of property usage.
 
-@h Definitions.
-
 @ Every subject contains a pointer to its own unique copy of the following
 structure, but it only has relevance if the subject represents an object:
 

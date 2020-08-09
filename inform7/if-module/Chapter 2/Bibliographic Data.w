@@ -4,8 +4,6 @@ To manage the special variables providing bibliographic data on the
 work of IF being generated (title, author's name and so forth), and to write
 the Library Card in the index.
 
-@h Definitions.
-
 @ Much of this section is best understood by reference to the Treaty of
 Babel, a cross-IF-system standard for bibliographic data and packaging
 agreed between the major IF design systems in 2006. Inform aims to comply

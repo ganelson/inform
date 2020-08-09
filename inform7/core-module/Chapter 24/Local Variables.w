@@ -3,8 +3,6 @@
 Local variables are used for call parameters, temporary values,
 and other ephemeral workspace.
 
-@h Definitions.
-
 @ Each phrase has its own "slate" of local variables. For example, in
 the definition "..." of:
 
@@ -891,7 +889,7 @@ exists to fix that:
 =
 void LocalVariables::set_kind(local_variable *lvar, kind *K) {
 	if (lvar == NULL) internal_error("Tried to set kind of nonexistent local variable");
-	LOGIF(LOCAL_VARIABLES, "Kind of local $k set to $u\n", lvar, K);
+	LOGIF(LOCAL_VARIABLES, "Kind of local $k set to %u\n", lvar, K);
 	lvar->kind_as_declared = K;
 }
 

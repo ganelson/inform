@@ -3,8 +3,6 @@
 To write the iFiction record for the work of IF compiled, its
 release instructions and its picture manifest, if any.
 
-@h Definitions.
-
 @ Much of this section is best understood by reference to the Treaty of
 Babel, a cross-IF-system standard for bibliographic data and packaging
 agreed between the major IF design systems in 2006. Inform aims to comply

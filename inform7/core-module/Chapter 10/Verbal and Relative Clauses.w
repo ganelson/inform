@@ -4,8 +4,6 @@ To break down an excerpt into NP and VP-like clauses, perhaps with
 a primary verb (to make a sentence), perhaps only a relative clause (to make
 a more complex NP).
 
-@h Definitions.
-
 @ This is a global mode for the S-parser: see below.
 
 =

@@ -3,8 +3,6 @@
 To define one binary predicate for each map direction, such as
 "mapped north of".
 
-@h Definitions.
-
 @ This section creates a family of implicit relations (implemented as binary
 predicates) corresponding to the different directions.
 
@@ -240,7 +238,7 @@ int PL::MapDirections::REL_typecheck(binary_predicate *bp,
 	for (t=0; t<2; t++)
 		if ((Kinds::Compare::compatible(kinds_of_terms[t], K_room) == NEVER_MATCH) &&
 			(Kinds::Compare::compatible(kinds_of_terms[t], K_door) == NEVER_MATCH)) {
-		LOG("Term %d is $u but should be a room or door\n", t, kinds_of_terms[t]);
+		LOG("Term %d is %u but should be a room or door\n", t, kinds_of_terms[t]);
 		Calculus::Propositions::Checker::issue_bp_typecheck_error(bp, kinds_of_terms[0], kinds_of_terms[1], tck);
 		return NEVER_MATCH;
 	}

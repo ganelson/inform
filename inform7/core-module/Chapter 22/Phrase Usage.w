@@ -4,8 +4,6 @@ To parse the preamble of a phrase declaration to a phrase usage
 (PHUD) structure containing a mostly textual representation of the
 conditions for its usage.
 
-@h Definitions.
-
 @ As we've seen, phrases can be categorised according to their "effect".
 We need one more code:
 
@@ -334,7 +332,7 @@ mode, we can get that value back again if we look it up by name.
 				"for every setting where it might be needed, and we can't "
 				"predict in advance which one '%2' might need to be.");
 			Problems::issue_problem_end();
-			LOG("CPHR failed at %d, $u\n", cphr->allocation_id, cphr->cphr_kind);
+			LOG("CPHR failed at %d, %u\n", cphr->allocation_id, cphr->cphr_kind);
 		}
 		if (<<written>>) {
 			phud.explicit_name_used_in_maths = TRUE;

@@ -2,8 +2,6 @@
 
 To define, map to I6 and index individual actions.
 
-@h Definitions.
-
 @ An action is an impulse to do something within the model world, and which
 may not be possible. Much of the work of designing an interactive fiction
 consists in responding to the actions of the player, sometimes in ways
@@ -680,7 +678,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 
 	stv = StackedVariables::add_empty(an->owned_by_an, NW, K);
 
-	LOGIF(ACTION_CREATIONS, "Created action variable for $l: %W ($u)\n",
+	LOGIF(ACTION_CREATIONS, "Created action variable for $l: %W (%u)\n",
 		an, Node::get_text(cnode->down->next), K);
 
 	if (Wordings::nonempty(MW)) {
@@ -1138,9 +1136,9 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 		LOG("%d token values supplied\n", tok_values);
 		{	int i;
 			for (i=0; i<tok_values; i++)
-				LOG("Token value %d: $u\n", i, tok_value_kinds[i]);
-			LOG("Expected noun K: $u\n", an->noun_kind);
-			LOG("Expected second K: $u\n", an->second_kind);
+				LOG("Token value %d: %u\n", i, tok_value_kinds[i]);
+			LOG("Expected noun K: %u\n", an->noun_kind);
+			LOG("Expected second K: %u\n", an->second_kind);
 			LOG("Noun access level: %d\n", an->noun_access);
 			LOG("Second access level: %d\n", an->second_access);
 		}

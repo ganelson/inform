@@ -2,8 +2,6 @@
 
 To manage variables whose scope is wider than the current rule.
 
-@h Definitions.
-
 @ Though the following structure is rather cluttered, the idea is simple
 enough: a non-local variable -- it may be global, or may belong to a rulebook,
 an action, or an activity -- is like a property, but simpler. It belongs to

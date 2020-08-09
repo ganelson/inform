@@ -4,8 +4,6 @@ The different data structures for elements of the model world are
 all unified by a single concept, the inference subject, about which facts
 can be known.
 
-@h Definitions.
-
 @ "Creating a program often means that you have to create a small
 universe" (Donald Knuth).
 
@@ -427,7 +425,7 @@ void InferenceSubjects::log(inference_subject *infs) {
 
 	wording W = InferenceSubjects::get_name_text(infs);
 	kind *K = InferenceSubjects::as_nonobject_kind(infs);
-	if (K) { LOG("infs'$u'-k", K); return; }
+	if (K) { LOG("infs'%u'-k", K); return; }
 
 	if (Wordings::nonempty(W)) { LOG("infs'%W'", W); return; }
 

@@ -3,8 +3,6 @@
 To keep track of the state of things so that it will be
 possible in future to ask questions concerning the past.
 
-@h Definitions.
-
 @ Some conditions stored in SPs, and also some actions stored in APs, are
 evaluated in the past tense, and to do this we need to lodge them into
 storage: the following simple structures are used for this.

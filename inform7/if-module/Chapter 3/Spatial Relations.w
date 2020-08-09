@@ -3,8 +3,6 @@
 A continuation of the Spatial plugin which defines the binary
 predicates corresponding to basic spatial relationships.
 
-@h Definitions.
-
 @ So this section of code is all about the following:
 
 = (early code)

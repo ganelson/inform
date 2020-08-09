@@ -4,8 +4,6 @@ To construct the Lexicon portion of the Phrasebook page of the
 Index, which gives brief definitions and references for nouns, adjectives
 and verbs used in source text for the current project.
 
-@h Definitions.
-
 @ The lexicon is the part of the Index which gives an alphabetised list of
 adjectives, nouns, verbs and other words which can be used in descriptions
 of things: it's the nearest thing to an index of the meanings inside Inform.

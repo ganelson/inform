@@ -3,8 +3,6 @@
 The mechanism by which Inform records the characteristics of different
 kinds.
 
-@h Definitions.
-
 @ Constructors are divided into four:
 
 @d KIND_VARIABLE_GRP 1 /* just |CON_KIND_VARIABLE| on its own */
@@ -26,6 +24,8 @@ kind interpreter (see next section) to give the I6 template the ability to
 forge new kind constructors.
 
 @d LOWEST_INDEX_PRIORITY 100
+
+@d MAX_KIND_CONSTRUCTION_ARITY 2
 
 =
 typedef struct kind_constructor {
@@ -173,7 +173,7 @@ but will be the constructor for "door" for kinds like this one:
 kind_constructor *Kinds::Constructors::new(parse_node_tree *T, kind_constructor *super, text_stream *source_name,
 	text_stream *initialisation_macro) {
 	kind_constructor *con = CREATE(kind_constructor);
-	kind_constructor **pC = Kinds::known_constructor_name(source_name);
+	kind_constructor **pC = FamiliarKinds::known_con(source_name);
 	if (pC) *pC = con;
 
 	if (super == Kinds::get_construct(K_value)) @<Fill in a new constructor@>
@@ -191,7 +191,7 @@ kind_constructor *Kinds::Constructors::new(parse_node_tree *T, kind_constructor 
 	#endif
 	con->where_defined_in_source_text = current_sentence;
 
-	kind **pK = Kinds::known_kind_name(source_name);
+	kind **pK = FamiliarKinds::known_kind(source_name);
 	if (pK) *pK = Kinds::base_construction(con);
 	return con;
 }
@@ -305,11 +305,11 @@ I6 template files.
 	con->indexed_grey_if_empty = FALSE;
 	con->documentation_reference = NULL;
 
-	Kinds::Interpreter::play_back_kind_macro(T,
-		Kinds::Interpreter::parse_kind_macro_name(I"#DEFAULTS"), con);
+	KindCommands::play_back_kind_macro(T,
+		KindCommands::parse_kind_macro_name(I"#DEFAULTS"), con);
 	if (Str::len(initialisation_macro) > 0)
-		Kinds::Interpreter::play_back_kind_macro(T,
-			Kinds::Interpreter::parse_kind_macro_name(initialisation_macro), con);
+		KindCommands::play_back_kind_macro(T,
+			KindCommands::parse_kind_macro_name(initialisation_macro), con);
 
 @ However, if we create our constructor as a subkind, like so:
 
@@ -458,8 +458,8 @@ require running macros in the kind interpreter:
 =
 int Kinds::Constructors::convert_to_unit(parse_node_tree *T, kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
-		Kinds::Interpreter::play_back_kind_macro(T,
-			Kinds::Interpreter::parse_kind_macro_name(I"#UNIT"), con);
+		KindCommands::play_back_kind_macro(T,
+			KindCommands::parse_kind_macro_name(I"#UNIT"), con);
 		return TRUE;
 	}
 	if (Kinds::Constructors::is_arithmetic(con)) return TRUE; /* i.e., if it succeeded */
@@ -468,11 +468,11 @@ int Kinds::Constructors::convert_to_unit(parse_node_tree *T, kind_constructor *c
 
 int Kinds::Constructors::convert_to_enumeration(parse_node_tree *T, kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
-		Kinds::Interpreter::play_back_kind_macro(T,
-			Kinds::Interpreter::parse_kind_macro_name(I"#ENUMERATION"), con);
+		KindCommands::play_back_kind_macro(T,
+			KindCommands::parse_kind_macro_name(I"#ENUMERATION"), con);
 		if (con->linguistic)
-			Kinds::Interpreter::play_back_kind_macro(T,
-				Kinds::Interpreter::parse_kind_macro_name(I"#LINGUISTIC"), con);
+			KindCommands::play_back_kind_macro(T,
+				KindCommands::parse_kind_macro_name(I"#LINGUISTIC"), con);
 		return TRUE;
 	}
 	if (Kinds::Constructors::is_enumeration(con)) return TRUE; /* i.e., if it succeeded */
@@ -483,8 +483,8 @@ int Kinds::Constructors::convert_to_enumeration(parse_node_tree *T, kind_constru
 
 =
 void Kinds::Constructors::convert_to_real(parse_node_tree *T, kind_constructor *con) {
-	Kinds::Interpreter::play_back_kind_macro(T,
-		Kinds::Interpreter::parse_kind_macro_name(I"#REAL"), con);
+	KindCommands::play_back_kind_macro(T,
+		KindCommands::parse_kind_macro_name(I"#REAL"), con);
 }
 
 @ A few base kinds are marked as "linguistic", which simply enables us to fence

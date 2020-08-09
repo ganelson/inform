@@ -58,18 +58,16 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#6">Chapter 6: Nouns</a></li><li><b>Using Excerpt Meanings</b></li></ul></div>
 <p class="purpose">To register and deregister meanings for excerpts of text as nouns, adjectives, imperative phrases and other usages.</p>
 
-<ul class="toc"><li><a href="6-uem.html#SP1">&#167;1. Definitions</a></li><li><a href="6-uem.html#SP3">&#167;3. Meaning codes</a></li><li><a href="6-uem.html#SP8">&#167;8. Debugging log</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="6-uem.html#SP2">&#167;2. Meaning codes</a></li><li><a href="6-uem.html#SP7">&#167;7. Debugging log</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Definitions. </b></p>
-
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>One meaning we find it convenient to have direct access to: the meaning
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>One meaning we find it convenient to have direct access to: the meaning
 of the noun "player".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">meaning_of_player</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Meaning codes. </b>This is where we define the meaning codes used by Inform.
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Meaning codes. </b>This is where we define the meaning codes used by Inform.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">VOID_PHRASE_MC</span><span class="plain-syntax">			</span><span class="constant-syntax">0x00000010</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">award # points</span></span>
@@ -88,7 +86,7 @@ of the noun "player".
 <span class="definition-keyword">define</span> <span class="constant-syntax">SAY_PHRASE_MC</span><span class="plain-syntax">			</span><span class="constant-syntax">0x00020000</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">say # in words</span></span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PHRASE_CONSTANT_MC</span><span class="plain-syntax">		</span><span class="constant-syntax">0x00040000</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">doubling function</span></span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The second set of MCs signal the contexts in which particular words are
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The second set of MCs signal the contexts in which particular words are
 found. They are used to mark <span class="extract"><span class="extract-syntax">vocabulary_entry</span></span> structures of individual
 words, whose <span class="extract"><span class="extract-syntax">flags</span></span> field is a bitmap combination of some or all of the
 following. (The six highest bits are defined in the <span class="extract"><span class="extract-syntax">words</span></span> module.)
@@ -96,11 +94,11 @@ following. (The six highest bits are defined in the <span class="extract"><span 
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ACTION_PARTICIPLE_MC</span><span class="plain-syntax">		</span><span class="constant-syntax">0x02000000</span><span class="plain-syntax"> </span><span class="comment-syntax"> a word like "taking"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::case_sensitivity</span></a>
-<span class="definition-keyword">define</span> <span class="constant-syntax">EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::allow_blank</span></a>
-<span class="definition-keyword">define</span> <span class="constant-syntax">EM_IGNORE_DEFINITE_ARTICLE_TEST_LEXICON_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP5" class="function-link"><span class="function-syntax">UseExcerptMeanings::ignore_definite_article</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP4" class="function-link"><span class="function-syntax">UseExcerptMeanings::case_sensitivity</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP4" class="function-link"><span class="function-syntax">UseExcerptMeanings::allow_blank</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">EM_IGNORE_DEFINITE_ARTICLE_TEST_LEXICON_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP4" class="function-link"><span class="function-syntax">UseExcerptMeanings::ignore_definite_article</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UseExcerptMeanings::case_sensitivity</span><span class="plain-syntax">(</span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mc</span><span class="plain-syntax">) {</span>
@@ -118,7 +116,7 @@ following. (The six highest bits are defined in the <span class="extract"><span 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>We decide which form of parsing to use with the following bitmaps.
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>We decide which form of parsing to use with the following bitmaps.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">EXACT_PARSING_BITMAP</span>
@@ -131,9 +129,9 @@ following. (The six highest bits are defined in the <span class="extract"><span 
 <span class="definition-keyword">define</span> <span class="constant-syntax">PARAMETRISED_PARSING_BITMAP</span>
 <span class="plain-syntax">    (</span><span class="constant-syntax">VOID_PHRASE_MC</span><span class="plain-syntax"> + </span><span class="constant-syntax">VALUE_PHRASE_MC</span><span class="plain-syntax"> + </span><span class="constant-syntax">COND_PHRASE_MC</span><span class="plain-syntax"> + </span><span class="constant-syntax">SAY_PHRASE_MC</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEM_LEXICON_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP7" class="function-link"><span class="function-syntax">UseExcerptMeanings::linguistics_problem_handler</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEM_LEXICON_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP6" class="function-link"><span class="function-syntax">UseExcerptMeanings::linguistics_problem_handler</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UseExcerptMeanings::linguistics_problem_handler</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">err_no</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ref</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">) {</span>
@@ -147,10 +145,10 @@ following. (The six highest bits are defined in the <span class="extract"><span 
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Debugging log. </b>Here we log a general bitmap made up from meaning codes:
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Debugging log. </b>Here we log a general bitmap made up from meaning codes:
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LOG_UNENUMERATED_NODE_TYPES_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP8" class="function-link"><span class="function-syntax">UseExcerptMeanings::log_meaning_code</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LOG_UNENUMERATED_NODE_TYPES_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="6-uem.html#SP7" class="function-link"><span class="function-syntax">UseExcerptMeanings::log_meaning_code</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UseExcerptMeanings::log_meaning_code</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mc</span><span class="plain-syntax">) {</span>

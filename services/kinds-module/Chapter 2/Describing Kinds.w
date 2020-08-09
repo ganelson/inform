@@ -3,8 +3,6 @@
 Translating kind structures to and from textual or run-time
 descriptions.
 
-@h Definitions.
-
 @ We shall need these when parsing (see below):
 
 @d NORMAL_KIND_PARSING 1

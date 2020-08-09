@@ -3,8 +3,6 @@
 To create and subsequently parse against the list of phrase options
 with which the user can choose to invoke a To phrase.
 
-@h Definitions.
-
 @ A "phrase option" is a sort of modifier tacked on to the instruction to
 do something, changing how it works but not enough to merit an entirely new
 phrase. It's like an argument passed to a routine which specifies optional

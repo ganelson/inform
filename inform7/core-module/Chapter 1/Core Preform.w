@@ -76,19 +76,6 @@ to be marked with NT incidence bits. (See //words: Nonterminal Incidences//.)
 void CorePreform::set_core_internal_NTIs(void) {
 	NTI::give_nt_reserved_incidence_bit(<s-adjective>, ADJECTIVE_RES_NT_BIT);
 	NTI::give_nt_reserved_incidence_bit(<s-instance-name>, PROPER_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-kind>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-kind-of-kind>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-base-kind>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-kind-construction>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-kind-variable-texts>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-kind-variable>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-formal-kind-variable>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-irregular-kind-construction>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-variable-definition>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-single-material>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-optional-material>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-tupled-material>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-tuple-list>, COMMON_NOUN_RES_NT_BIT);
 }
 
 @ Later on, the //words// module calls the following function to mark that a

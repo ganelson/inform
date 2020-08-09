@@ -7,8 +7,6 @@ sentence in predicate calculus. In this section we reject such propositions
 on the grounds that they violate type-checking requirements on relations --
 in this example, the equality relation.
 
-@h Definitions.
-
 @ We can unambiguously find the kind of value of any constant $C$, so if a
 proposition's terms are all constant then type-checking is easy. ${\it is}(4, |score|)$
 good, ${\it is}(4, |"fish"|)$ bad. The subtlety comes in interpreting
@@ -169,7 +167,7 @@ treat it as a piece of nonsense, like "if Wednesday is not custard".
 				if (old_kind) {
 					if (Kinds::Compare::compatible(old_kind, new_kind) == NEVER_MATCH) {
 						if (tck->log_to_I6_text)
-							LOG("%c is both $u and $u\n", pcalc_vars[v], old_kind, new_kind);
+							LOG("%c is both %u and %u\n", pcalc_vars[v], old_kind, new_kind);
 						Calculus::Propositions::Checker::issue_kind_typecheck_error(old_kind, new_kind, tck, pl);
 						return NEVER_MATCH;
 					}
@@ -260,7 +258,7 @@ but not meaningless.
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
 	if (Kinds::Compare::compatible(actually_find, need_to_find) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
-			LOG("Term $0 is $u not $u\n", &(pl->terms[0]), actually_find, need_to_find);
+			LOG("Term $0 is %u not %u\n", &(pl->terms[0]), actually_find, need_to_find);
 		Calculus::Propositions::Checker::issue_kind_typecheck_error(actually_find, need_to_find, tck, pl);
 		return NEVER_MATCH;
 	}
@@ -314,7 +312,7 @@ would work instead. If it would, we make the change within the proposition.
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
 	if (Kinds::Compare::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
-			LOG("Term $0 is $u not an object\n", &(pl->terms[0]), actually_find);
+			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
 		StandardProblems::tcp_problem(_p_(PM_EverywhereMisapplied), tck,
 			"that seems to say that a value - specifically, %4 - is everywhere. "
@@ -329,7 +327,7 @@ would work instead. If it would, we make the change within the proposition.
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
 	if (Kinds::Compare::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
-			LOG("Term $0 is $u not an object\n", &(pl->terms[0]), actually_find);
+			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
 		StandardProblems::tcp_problem(_p_(PM_NowhereMisapplied), tck,
 			"that seems to say that a value - specifically, %4 - is nowhere. "
@@ -346,7 +344,7 @@ apply |HERE| incorrectly, but just in case:
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
 	if (Kinds::Compare::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
-			LOG("Term $0 is $u not an object\n", &(pl->terms[0]), actually_find);
+			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
 		StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
 			"that seems to say that a value - specifically, %4 - is here. "
@@ -364,7 +362,7 @@ of success.
 	Calculus::Variables::determine_status(prop, var_states, NULL);
 	for (j=0; j<26; j++)
 		if (var_states[j] != UNUSED_VST) {
-			LOG("%c%s - $u. ", pcalc_vars[j],
+			LOG("%c%s - %u. ", pcalc_vars[j],
 				(var_states[j] == FREE_VST)?" (free)":"",
 				vta.assigned_kinds[j]); c++;
 		}
@@ -403,7 +401,7 @@ kind *Calculus::Propositions::Checker::kind_of_term_inner(pcalc_term *pt, variab
 		kind *kind_to = Calculus::Propositions::Checker::approximate_argument_kind(bp, 1 - pt->function->from_term);
 		if ((kind_from) && (Kinds::Compare::compatible(kind_found, kind_from) == NEVER_MATCH)) {
 			if (tck->log_to_I6_text)
-				LOG("Term $0 applies function to $u not $u\n", pt, kind_found, kind_from);
+				LOG("Term $0 applies function to %u not %u\n", pt, kind_found, kind_from);
 			Calculus::Propositions::Checker::issue_bp_typecheck_error(bp, kind_found, kind_to, tck);
 			kind_found = kind_from; /* the better to recover */
 		}
@@ -444,7 +442,7 @@ int Calculus::Propositions::Checker::type_check_unary_predicate(pcalc_prop *pl, 
 	if ((aph) && (Adjectives::Meanings::applicable_to(aph, K) == FALSE)) {
 	wording W = Adjectives::get_nominative_singular(aph);
 	if (tck->log_to_I6_text)
-			LOG("Adjective '%W' undefined on $u\n", W, K);
+			LOG("Adjective '%W' undefined on %u\n", W, K);
 		Problems::quote_wording(4, W);
 		Problems::quote_kind(5, K);
 		StandardProblems::tcp_problem(_p_(PM_AdjectiveMisapplied), tck,
@@ -476,7 +474,7 @@ int Calculus::Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl,
 	int result = BinaryPredicates::typecheck(bp, kinds_of_terms, kinds_required, tck);
 	if (result == NEVER_MATCH_SAYING_WHY_NOT) {
 		kind *kinds_dereferencing_properties[2];
-		LOG("0 = $u. 1 = $u\n", kinds_of_terms[0], kinds_of_terms[1]);
+		LOG("0 = %u. 1 = %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 		kinds_dereferencing_properties[0] = Kinds::dereference_properties(kinds_of_terms[0]);
 		kinds_dereferencing_properties[1] = kinds_of_terms[1];
 		int r2 = BinaryPredicates::typecheck(bp, kinds_dereferencing_properties, kinds_required, tck);
@@ -498,7 +496,7 @@ int Calculus::Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl,
 					Calculus::Propositions::Checker::kind_of_term(&(pl->terms[1].function->fn_of), vta, tck),
 					tck);
 			else {
-				LOG("($u, $u) failed in $2\n", kinds_of_terms[0], kinds_of_terms[1], bp);
+				LOG("(%u, %u) failed in $2\n", kinds_of_terms[0], kinds_of_terms[1], bp);
 				Problems::quote_kind(4, kinds_of_terms[0]);
 				Problems::quote_kind(5, kinds_of_terms[1]);
 				StandardProblems::tcp_problem(_p_(PM_ComparisonFailed), tck,
@@ -567,7 +565,7 @@ required.
 		if (kinds_required[i])
 			if (Kinds::Compare::compatible(kinds_of_terms[i], kinds_required[i]) == NEVER_MATCH) {
 				if (tck->log_to_I6_text)
-					LOG("Term %d is $u not $u\n",
+					LOG("Term %d is %u not %u\n",
 						i, kinds_of_terms[i], kinds_required[i]);
 				Calculus::Propositions::Checker::issue_bp_typecheck_error(bp,
 					kinds_of_terms[0], kinds_of_terms[1], tck);

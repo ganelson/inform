@@ -2,8 +2,6 @@
 
 In this section we compile text with substitutions.
 
-@h Definitions.
-
 @ Text containing substitutions, such as "You pick up [the noun] thoughtfully.",
 are compiled as routines rather than Z-machine strings. Each is stored in one
 of the following structures. Unlike literal text, a text routine might lead

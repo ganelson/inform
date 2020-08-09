@@ -4,8 +4,6 @@ To register the names associated with sound resource numbers, which
 are defined to allow the final story file to play sound effects, and to produce
 the index of sound effects.
 
-@h Definitions.
-
 @ To be viable, sound files have to be of a format which Blorb recognises,
 and in any case we only allow two formats: AIFF (uncompressed) and OGG
 (compressed).

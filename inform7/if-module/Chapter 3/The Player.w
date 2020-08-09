@@ -2,8 +2,6 @@
 
 A plugin to give a special role to the player object.
 
-@h Definitions.
-
 @ Altogether we keep track of four objects, though the first pair often coincide,
 and so do the second pair. (|I_yourself| is constant once set, like |K_room| and
 other such "constants" in the Inform source code.)

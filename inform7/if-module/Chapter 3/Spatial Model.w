@@ -3,8 +3,6 @@
 A plugin which constructs the fundamental spatial model used by
 IF, to represent containment, support, carrying, wearing, and incorporation.
 
-@h Definitions.
-
 @ The "spatial model" is the aspect of the IF model world which represents
 containment, support, carrying, wearing, and incorporation; say, a button
 which is part of a shirt which is in a tumble-drier which is in a room
@@ -675,12 +673,12 @@ when it's legitimately a door.
 		@<Issue a problem message, since the choices are irreconcilable@>;
 
 @<Accept the geography choice, since it only refines what we already know@> =
-	LOGIF(KIND_CHANGES, "Accepting geography choice of kind of $O as $u\n",
+	LOGIF(KIND_CHANGES, "Accepting geography choice of kind of $O as %u\n",
 		I, geography_choice);
 	Calculus::Propositions::Abstract::assert_kind_of_object(I, geography_choice);
 
 @<Issue a problem message, since the choices are irreconcilable@> =
-	LOG("Choices: designer $u, geography $u.\n", designers_choice, geography_choice);
+	LOG("Choices: designer %u, geography %u.\n", designers_choice, geography_choice);
 	parse_node *decider = Instances::get_creating_sentence(I);
 	if (sentence_setting_kind) decider = sentence_setting_kind;
 	if (Kinds::Compare::eq(designers_choice, K_person))

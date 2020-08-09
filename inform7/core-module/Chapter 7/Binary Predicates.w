@@ -3,8 +3,6 @@
 To create and manage binary predicates, which are the underlying
 data structures beneath Inform's relations.
 
-@h Definitions.
-
 @ A "binary predicate" (the term comes from logic) is a property $B$
 such that for any combination $x$ and $y$, and at any given moment at
 run-time, $B(x, y)$ is either true or false.

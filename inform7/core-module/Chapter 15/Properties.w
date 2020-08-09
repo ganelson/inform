@@ -4,8 +4,6 @@ Elements of the model world, such as objects, have properties
 associated with them. Here we look after the identities of these different
 properties.
 
-@h Definitions.
-
 @ The English word "property" is a little vague. It can mean a particular
 property of a given thing -- say, the weight of a car -- or it
 can mean the measurement in general terms as applied to a range of
@@ -407,7 +405,7 @@ void Properties::log(property *prn) {
 		property *neg = Properties::EitherOr::get_negation(prn);
 		if (neg) { LOG("=~"); Properties::log_basic_pname(neg); }
 	} else {
-		LOG("=$u", Properties::Valued::kind(prn));
+		LOG("=%u", Properties::Valued::kind(prn));
 	}
 }
 

@@ -3,8 +3,6 @@
 When a measurement adjective like "tall" is defined, so is a
 comparative relation like "taller than".
 
-@h Definitions.
-
 @ This section handles the |PROPERTY_COMPARISON_KBP| relations. Unlike the
 other relations to do with property values, these do not correspond exactly
 with the properties. Some properties, like "carrying capacity", might
@@ -45,7 +43,7 @@ int Properties::ComparativeRelations::REL_typecheck(binary_predicate *bp,
 
 	if ((kinds_required[0]) &&
 		(Kinds::Compare::compatible(kinds_of_terms[0], kinds_required[0]) == NEVER_MATCH)) {
-		LOG("Term 0 is $u not $u\n", kinds_of_terms[0], kinds_required[0]);
+		LOG("Term 0 is %u not %u\n", kinds_of_terms[0], kinds_required[0]);
 		Calculus::Propositions::Checker::issue_bp_typecheck_error(bp,
 			kinds_of_terms[0], kinds_of_terms[1], tck);
 		return NEVER_MATCH;

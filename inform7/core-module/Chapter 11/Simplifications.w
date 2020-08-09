@@ -4,8 +4,6 @@ A set of operations each of which takes a proposition and either
 leaves it unchanged or replaces it with a simpler one logically equivalent
 to the original.
 
-@h Definitions.
-
 @ Recall the three rules for simplification routines: they take a proposition
 $\Sigma$ (which they are allowed to destroy or modify) and return $\Sigma'$,
 but such that:

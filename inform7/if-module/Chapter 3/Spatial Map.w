@@ -4,8 +4,6 @@ To fit the map of the rooms in the game into a cubical grid,
 preserving distances and angles where possible, and so to give each
 room approximate coordinate locations.
 
-@h Definitions.
-
 @ We assign $(x, y, z)$ coordinates to each room, aiming to make the
 descriptive map connections ("The Ballroom is east of the Old Kitchens")
 as plausible as possible in coordinate terms. This is potentially a

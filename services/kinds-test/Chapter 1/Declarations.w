@@ -21,29 +21,17 @@ match any text.
 <comma-divisible-sentence> ::=
 	... ==> { fail }
 
-@h Loading kinds.
-
-=
-void Declarations::load_kinds(text_stream *arg) {
-	filename *F = Filenames::from_text(arg);
-	TextFiles::read(F, FALSE, "unable to read kinds file", TRUE,
-		&Declarations::load_kinds_helper, NULL, NULL);
-}
-
-void Declarations::load_kinds_helper(text_stream *text, text_file_position *tfp, void *state) {
-	if ((Str::get_first_char(text) == '!') ||
-		(Str::get_first_char(text) == 0)) return; /* skip blanks and comments */
-	Kinds::Interpreter::despatch_kind_command(NULL, text);
-}
-
-@h Loading from a file.
+@h A sort of REPL.
 The following function reads a file whose name is in |arg|, feeds it into
 the lexer, builds a syntax tree of its sentences, and then walks through
 that tree, applying the Preform nonterminal <declaration-line> to each
-sentence.
+sentence. In effect, this is a read-evaluate-print loop.
 
 =
 parse_node_tree *syntax_tree = NULL;
+
+kind *kind_vars[27];
+
 void Declarations::load_from_file(text_stream *arg) {
 	filename *F = Filenames::from_text(arg);
 	feed_t FD = Feeds::begin();
@@ -52,7 +40,21 @@ void Declarations::load_from_file(text_stream *arg) {
 	if (sf == NULL) { PRINT("File has failed to open\n"); return; }
 	syntax_tree = SyntaxTree::new();
 	Sentences::break(syntax_tree, W);
+
+	for (int i=1; i<=26; i++) {
+		kind_vars[i] = Kinds::variable_construction(i, NULL);
+	}
+
 	SyntaxTree::traverse(syntax_tree, Declarations::parse);
+}
+
+@
+
+@d KIND_VARIABLE_FROM_CONTEXT Declarations::kv
+
+=
+kind *Declarations::kv(int v) {
+	return kind_vars[v];
 }
 
 void Declarations::parse(parse_node *p) {
@@ -65,45 +67,68 @@ void Declarations::parse(parse_node *p) {
 @
 
 @e symbol_CLASS
+@e kind_relationship_CLASS
 @d SYMBOL_MC 0x80
 @d EXACT_PARSING_BITMAP
 	(SYMBOL_MC + KIND_SLOW_MC)
 
 =
 DECLARE_CLASS(symbol)
+DECLARE_CLASS(kind_relationship)
 
 typedef struct symbol {
 	wording symbol_name;
 	kind *symbol_kind;
 	CLASS_DEFINITION
 } symbol;
+typedef struct kind_relationship {
+	struct kind *sub;
+	struct kind *super;
+	CLASS_DEFINITION
+} kind_relationship;
+
 
 @ =
 <declaration-line> ::=
-	new unit <k-kind> |                                   ==> @<Kind already exists error@>
-	new unit ... |                                        ==> @<Create new unit@>
-	new enum <k-kind> |                                   ==> @<Kind already exists error@>
-	new enum ... |                                        ==> @<Create new enum@>
-	<k-kind> * <k-kind> = <k-kind> |                      ==> @<New arithmetic rule@>
-	<existing-symbol> = ... |                             ==> @<Symbol already exists error@>
-	... = <existing-kind> |                               ==> @<Create symbol@>
-	<existing-symbol> + <existing-symbol> |               ==> @<Show plus@>
-	<existing-symbol> - <existing-symbol> |               ==> @<Show minus@>
-	<existing-symbol> * <existing-symbol> |               ==> @<Show times@>
-	<existing-symbol> over <existing-symbol> |            ==> @<Show divide@>
-	<existing-symbol> % <existing-symbol> |               ==> @<Show remainder@>
-	<existing-symbol> to the nearest <existing-symbol> |  ==> @<Show approx@>
-	- <existing-symbol> |                                 ==> @<Show unary minus@>
-	square root of <existing-symbol> |                    ==> @<Show square root@>
-	real square root of <existing-symbol> |               ==> @<Show real square root@>
-	cube root of <existing-symbol> |                      ==> @<Show cube root@>
-	<existing-symbol> |                                   ==> @<Show symbol@>
-	... which varies |                                    ==> { -, - }
-	...                                                   ==> @<Fail with error@>
+	new unit <kind-eval> |                     ==> @<Kind already exists error@>
+	new unit ... |                             ==> @<Create new unit@>
+	new enum <kind-eval> |                     ==> @<Kind already exists error@>
+	new enum ... |                             ==> @<Create new enum@>
+	new kind ... of <kind-eval> |              ==> @<Create new base@>
+	<kind-eval> * <kind-eval> = <kind-eval> |  ==> @<New arithmetic rule@>
+	<existing-symbol> = ... |                  ==> @<Symbol already exists error@>
+	... = <kind-eval> |                        ==> @<Create symbol@>
+	<kind-eval> |                              ==> @<Show REPL result@>
+	<kind-condition> |                         ==> @<Show kind condition@>
+	... which varies |                         ==> { -, - }
+	...                                        ==> @<Fail with error@>
 
-<existing-kind> ::=
-	<k-kind> |  ==> { pass 1 }
-	...         ==> @<No such kind error@>;
+<kind-eval> ::=
+	( <kind-eval> ) |                          ==> { pass 1 }
+	<kind-eval> + <kind-eval> |                ==> @<Perform plus@>
+	<kind-eval> - <kind-eval> |                ==> @<Perform minus@>
+	<kind-eval> * <kind-eval> |                ==> @<Perform times@>
+	<kind-eval> over <kind-eval> |             ==> @<Perform divide@>
+	<kind-eval> % <kind-eval> |                ==> @<Perform remainder@>
+	<kind-eval> to the nearest <kind-eval> |   ==> @<Perform approx@>
+	- <kind-eval> |                            ==> @<Perform unary minus@>
+	square root of <kind-eval> |               ==> @<Perform square root@>
+	real square root of <kind-eval> |          ==> @<Perform real square root@>
+	cube root of <kind-eval> |                 ==> @<Perform cube root@>
+	max of <kind-eval> and <kind-eval> |       ==> @<Perform max@>
+	first term of <kind-eval> |                ==> @<Extract first term@>
+	second term of <kind-eval> |               ==> @<Extract second term@>
+	dereference <kind-eval> |                  ==> @<Dereference kind@>
+	weaken <kind-eval> |                       ==> @<Weaken kind@>
+	super of <kind-eval> |                     ==> @<Super kind@>
+	substitute <kind-eval> for <k-formal-kind-variable> in <kind-eval> | ==> @<Substitute@>
+	<existing-symbol> |                        ==> { - , ((symbol *) RP[1])->symbol_kind }
+	<k-kind> |                                 ==> { pass 1 }
+	<k-formal-kind-variable>                   ==> { pass 1 }
+
+<kind-condition> ::=
+	<kind-eval> <= <kind-eval>                 ==> @<Test le@>
+	
 
 <existing-symbol> internal {
 	parse_node *results = Lexicon::retrieve(SYMBOL_MC, W);
@@ -113,6 +138,13 @@ typedef struct symbol {
 	}
 	==> { fail nonterminal };
 }
+
+@<Show REPL result@> =
+	kind *K = RP[1];
+	PRINT("'%W': %u\n", W, K);
+
+@<Show kind condition@> =
+	PRINT("'%W': %s\n", W, R[1]?"true":"false");
 
 @<Kind already exists error@> =
 	kind *K = RP[1];
@@ -126,6 +158,13 @@ typedef struct symbol {
 @<Create new enum@> =
 	kind *K = Kinds::new_base(syntax_tree, GET_RW(<declaration-line>, 1), K_value);
 	Kinds::Behaviour::convert_to_enumeration(syntax_tree, K);
+
+@<Create new base@> =
+	kind *X = RP[1];
+	kind *K = Kinds::new_base(syntax_tree, GET_RW(<declaration-line>, 1), X);
+	kind_relationship *KR = CREATE(kind_relationship);
+	KR->sub = K;
+	KR->super = X;
 
 @<New arithmetic rule@> =
 	kind *K1 = (kind *) RP[1];
@@ -147,62 +186,6 @@ typedef struct symbol {
 	Lexicon::register(SYMBOL_MC, S->symbol_name, STORE_POINTER_symbol(S));
 	@<Show result@>;
 
-@<Show symbol@> =
-	symbol *S = RP[1];
-	kind *K = S->symbol_kind;
-	@<Show result@>;
-
-@<Show plus@> =
-	int op = PLUS_OPERATION;
-	@<Show arithmetic@>;
-
-@<Show minus@> =
-	int op = MINUS_OPERATION;
-	@<Show arithmetic@>;
-
-@<Show times@> =
-	int op = TIMES_OPERATION;
-	@<Show arithmetic@>;
-
-@<Show divide@> =
-	int op = DIVIDE_OPERATION;
-	@<Show arithmetic@>;
-
-@<Show remainder@> =
-	int op = REMAINDER_OPERATION;
-	@<Show arithmetic@>;
-
-@<Show approx@> =
-	int op = APPROXIMATION_OPERATION;
-	@<Show arithmetic@>;
-
-@<Show arithmetic@> =
-	symbol *S1 = RP[1];
-	symbol *S2 = RP[2];
-	kind *K = Kinds::Dimensions::arithmetic_on_kinds(S1->symbol_kind, S2->symbol_kind, op);
-	@<Show result@>;
-
-@<Show unary minus@> =
- 	int op = UNARY_MINUS_OPERATION;
-	@<Show unary arithmetic@>;
-
-@<Show square root@> =
- 	int op = ROOT_OPERATION;
-	@<Show unary arithmetic@>;
-
-@<Show real square root@> =
- 	int op = REALROOT_OPERATION;
-	@<Show unary arithmetic@>;
-
-@<Show cube root@> =
- 	int op = CUBEROOT_OPERATION;
-	@<Show unary arithmetic@>;
-
-@<Show unary arithmetic@> =
-	symbol *S1 = RP[1];
-	kind *K = Kinds::Dimensions::arithmetic_on_kinds(S1->symbol_kind, NULL, op);
-	@<Show result@>;
-
 @<Show result@> =
 	PRINT("'%W': %u\n", W, K);
 
@@ -213,3 +196,135 @@ typedef struct symbol {
 @<Fail with error@> =
 	PRINT("Declaration not understood: '%W'\n", W);
 	==> { fail }
+
+@<Perform plus@> =
+	int op = PLUS_OPERATION;
+	@<Perform arithmetic@>;
+
+@<Perform minus@> =
+	int op = MINUS_OPERATION;
+	@<Perform arithmetic@>;
+
+@<Perform times@> =
+	int op = TIMES_OPERATION;
+	@<Perform arithmetic@>;
+
+@<Perform divide@> =
+	int op = DIVIDE_OPERATION;
+	@<Perform arithmetic@>;
+
+@<Perform remainder@> =
+	int op = REMAINDER_OPERATION;
+	@<Perform arithmetic@>;
+
+@<Perform approx@> =
+	int op = APPROXIMATION_OPERATION;
+	@<Perform arithmetic@>;
+
+@<Perform arithmetic@> =
+	kind *K1 = RP[1];
+	kind *K2 = RP[2];
+	==> { - , Kinds::Dimensions::arithmetic_on_kinds(K1, K2, op) }
+
+@<Perform unary minus@> =
+ 	int op = UNARY_MINUS_OPERATION;
+	@<Perform unary arithmetic@>;
+
+@<Perform square root@> =
+ 	int op = ROOT_OPERATION;
+	@<Perform unary arithmetic@>;
+
+@<Perform real square root@> =
+ 	int op = REALROOT_OPERATION;
+	@<Perform unary arithmetic@>;
+
+@<Perform cube root@> =
+ 	int op = CUBEROOT_OPERATION;
+	@<Perform unary arithmetic@>;
+
+@<Perform unary arithmetic@> =
+	kind *K = RP[1];
+	==> { - , Kinds::Dimensions::arithmetic_on_kinds(K, NULL, op) }
+
+@<Perform max@> =
+	kind *K1 = RP[1];
+	kind *K2 = RP[2];
+	==> { - , Kinds::Compare::max(K1, K2) }
+
+@<Extract first term@> =
+	kind *K = RP[1];
+	switch (Kinds::arity_of_constructor(K)) {
+		case 0: ==> { -, NULL }; break;
+		case 1: ==> { -, Kinds::unary_construction_material(K) }; break;
+		case 2: {
+			kind *X, *Y;
+			Kinds::binary_construction_material(K, &X, &Y);
+			==> { -, X }; break;
+		}
+	}
+
+@<Extract second term@> =
+	kind *K = RP[1];
+	switch (Kinds::arity_of_constructor(K)) {
+		case 0: ==> { -, NULL }; break;
+		case 1: ==> { -, NULL }; break;
+		case 2: {
+			kind *X, *Y;
+			Kinds::binary_construction_material(K, &X, &Y);
+			==> { -, Y }; break;
+		}
+	}
+
+@<Weaken kind@> =
+	kind *K = RP[1];
+	==> { - , Kinds::weaken(K) }
+
+@<Dereference kind@> =
+	kind *K = RP[1];
+	==> { - , Kinds::dereference_properties(K) }
+
+@<Super kind@> =
+	kind *K = RP[1];
+	==> { - , Kinds::Compare::super(K) }
+
+@<Test le@> =
+	kind *K1 = RP[1];
+	kind *K2 = RP[2];
+	==> { Kinds::Compare::le(K1, K2), - }
+
+@<Substitute@> =
+	kind *K1 = RP[1];
+	kind *KV = RP[2];
+	kind *K2 = RP[3];
+	kind *slate[27];
+	for (int i=1; i<=26; i++) slate[i] = NULL;
+	slate[KV->kind_variable_number] = K1;
+	int changed;
+	==> { -, Kinds::substitute(K2, slate, &changed) }
+
+@
+
+@d KINDS_TEST_WITHIN Declarations::le
+@d KINDS_SUPER Declarations::super
+@d KINDS_COMPATIBLE Declarations::compatible
+
+=
+int Declarations::le(kind *K1, kind *K2) {
+	while (K1) {
+		if (Kinds::Compare::eq(K1, K2)) return TRUE;
+		K1 = Declarations::super(K1);
+	}
+	return FALSE;
+}
+kind *Declarations::super(kind *K1) {
+	kind_relationship *KR;
+	LOOP_OVER(KR, kind_relationship)
+		if (Kinds::Compare::eq(K1, KR->sub))
+			return KR->super;
+	return NULL;
+}
+int Declarations::compatible(kind *from, kind *to) {
+	if (Declarations::le(from, to)) return ALWAYS_MATCH;
+	if (Declarations::le(to, from)) return SOMETIMES_MATCH;
+	return NEVER_MATCH;
+}

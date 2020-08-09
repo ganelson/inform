@@ -6,8 +6,6 @@ it is void, determines a condition or returns a value (and if so, what
 kind of value); and also what parameters it takes (possibly values, possible
 other types used by inline definitions) and their types in turn.
 
-@h Definitions.
-
 @ Inform is an unusual language in that it does not distinguish between
 functions, control structures and keywords: they are all phrases. This
 means that the functional description of what a phrase does has to be more

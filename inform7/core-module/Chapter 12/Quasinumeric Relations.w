@@ -3,8 +3,6 @@
 To define the binary predicates corresponding to numerical
 comparisons.
 
-@h Definitions.
-
 @ The inequality relations $<$, $>$, $\leq$, and $\geq$, which can be
 applied not only to numbers but also to units (height, length and so on).
 
@@ -74,7 +72,7 @@ int Calculus::QuasinumericRelations::REL_typecheck(binary_predicate *bp,
 	if ((Kinds::Compare::compatible(kinds_of_terms[0], kinds_of_terms[1]) == NEVER_MATCH) &&
 		(Kinds::Compare::compatible(kinds_of_terms[1], kinds_of_terms[0]) == NEVER_MATCH)) {
 		if (tck->log_to_I6_text)
-			LOG("Unable to apply inequality of $u and $u\n", kinds_of_terms[0], kinds_of_terms[1]);
+			LOG("Unable to apply inequality of %u and %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 		Problems::quote_kind(4, kinds_of_terms[0]);
 		Problems::quote_kind(5, kinds_of_terms[1]);
 		StandardProblems::tcp_problem(_p_(PM_InequalityFailed), tck,
@@ -150,7 +148,7 @@ int Calculus::QuasinumericRelations::REL_compile(int task, binary_predicate *bp,
 						Calculus::Schemas::modify(asch->schema, "*_1(*1, *2) <= 0");
 				}
 			} else if (problem_count == 0) {
-				LOG("$0 and $0; $u and $u\n", &(asch->pt0), &(asch->pt1), st[0], st[1]);
+				LOG("$0 and $0; %u and %u\n", &(asch->pt0), &(asch->pt1), st[0], st[1]);
 				internal_error("null kind in equality test");
 			}
 			return TRUE;

@@ -5,8 +5,6 @@ tokens correspond in a 1-to-1 way with I6 tokens: here we determine the I7
 type a token represents (if any) and compile it to its I6 grammar token
 equivalent as needed.
 
-@h Definitions.
-
 @ I7 tokens are (at present) stored simply as parse tree nodes of type
 |TOKEN_NT|, with meaningful information hidden in annotations. At one
 time I thought this was a simple arrangement, but it now seems obfuscatory,
@@ -844,7 +842,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			if (i6s) {
 				kind *K = BinaryPredicates::term_kind(bp, 1);
 				if (Kinds::Compare::lt(K, K_object)) {
-					LOGIF(GRAMMAR_CONSTRUCTION, "Term 1 of BP is $u\n", K);
+					LOGIF(GRAMMAR_CONSTRUCTION, "Term 1 of BP is %u\n", K);
 					Produce::inv_primitive(Emit::tree(), OBJECTLOOPX_BIP);
 					Produce::down(Emit::tree());
 						Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);

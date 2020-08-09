@@ -2,8 +2,6 @@
 
 To construct the Actions index page.
 
-@h Definitions.
-
 @ The following modest structure is used for the indexing of command verbs,
 and is too deeply boring to comment upon. These are the headwords of commands
 which can be typed at run-time, like QUIT or INVENTORY. For indexing purposes,

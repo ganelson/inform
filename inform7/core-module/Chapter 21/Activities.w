@@ -127,7 +127,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 
 	if ((Kinds::Behaviour::definite(creation_kind) == FALSE) &&
 		(Kinds::Compare::eq(creation_kind, K_nil) == FALSE)) {
-		LOG("I'm reading the kind as: $u\n", creation_kind);
+		LOG("I'm reading the kind as: %u\n", creation_kind);
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityIndefinite),
 			"this is an activity on a kind which isn't definite",
 			"and doesn't tell me enough about what sort of value the activity "

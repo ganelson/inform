@@ -1,0 +1,21 @@
+new kind thing of object.
+new kind device of thing.
+new kind vehicle of thing.
+super of device.
+super of super of device.
+super of super of super of device.
+max of thing and device.
+max of device and thing.
+max of device and object.
+max of device and vehicle.
+max of thing and text.
+weaken thing.
+weaken device.
+weaken relation of things to texts.
+object <= text.
+object <= thing.
+thing <= object.
+device <= thing.
+device <= object.
+dereference number valued property.
+dereference list of number valued properties.

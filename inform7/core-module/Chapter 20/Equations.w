@@ -2,8 +2,6 @@
 
 To manage and compile equations, which relate numerical quantities.
 
-@h Definitions.
-
 @ As with tables, equations are detected early on in Inform's run but not
 parsed for their contents until later, so we store several word ranges.
 Also as with tables, each can have a number, a name or both.
@@ -1298,7 +1296,7 @@ integers to reals.
 	R = Kinds::FloatingPoint::integer_equivalent(R);
 	if (Kinds::Compare::eq(L, R) == FALSE) {
 		result = FALSE;
-		LOG("Tried to equate $u and $u\n", L, R);
+		LOG("Tried to equate %u and %u\n", L, R);
 		StandardProblems::equation_problem(_p_(PM_EquationIncomparable), eqn, "",
 			"this equation tries to set two values equal which have "
 			"different kinds from each other.");

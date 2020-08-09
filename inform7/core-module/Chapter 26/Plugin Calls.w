@@ -114,6 +114,12 @@ int Plugins::Call::new_variable_notify(nonlocal_variable *q) {
 }
 
 int Plugins::Call::new_base_kind_notify(kind *K, text_stream *d, wording W) {
+	if (<property-name>(W)) {
+		property *P = <<rp>>;
+		Properties::Valued::set_kind(P, K);
+		Instances::make_kind_coincident(K, P);
+		if (Kinds::Compare::eq(K, K_grammatical_gender)) P_grammatical_gender = P;
+	}
 	PLUGINS_CALL(PLUGIN_NEW_BASE_KIND_NOTIFY, K, d, W);
 }
 

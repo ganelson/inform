@@ -3,8 +3,6 @@
 To keep track of a dangerous form of super-assertion called an
 implication, which is allowed to generalise about properties.
 
-@h Definitions.
-
 @ Implications are structures are used to store the information in sentences
 like "Something worn is usually wearable and initially carried." The
 "something worn" part must turn out to be a description of a category of

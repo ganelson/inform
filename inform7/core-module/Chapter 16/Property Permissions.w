@@ -4,8 +4,6 @@ To enforce the domain of properties: for instance, that a door can
 be open or closed but that an animal cannot, or that a person can have a
 carrying capacity but that a door cannot.
 
-@h Definitions.
-
 @ Properties are pieces of data attached to their "owners", but they also
 have a common identity wherever they turn up. For example, the property
 "carrying capacity" is owned by any person and also by any container, but

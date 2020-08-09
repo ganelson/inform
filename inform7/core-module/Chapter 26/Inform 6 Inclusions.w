@@ -3,8 +3,6 @@
 To include Inform 6 code almost verbatim in the output, as instructed
 by low-level Inform 7 sentences.
 
-@h Definitions.
-
 @ Inclusions are a very low-level language feature: rather like the way some
 C compilers, such as |gcc|, allow assembly-language code to be inserted at
 crucial points in the middle of C, so Inform 7 allows fragments of I6 code

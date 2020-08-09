@@ -3,8 +3,6 @@
 To provide routines to help build the various HTML index files,
 none of which are actually created in this section.
 
-@h Definitions.
-
 @ If only we had an index file, we could look it up under "index file"...
 
 The Index of a project is a set of HTML files describing its milieu: the

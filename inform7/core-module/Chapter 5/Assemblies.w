@@ -3,8 +3,6 @@
 To build the complex multi-object assemblies which result from
 allowing the source text to say things like "in every room is a vehicle".
 
-@h Definitions.
-
 @ Assemblies are made when an object of a given kind is created, and when
 generalisations about that kind mean that further creations are also
 needed. For instance: if a generalisation has said that every container

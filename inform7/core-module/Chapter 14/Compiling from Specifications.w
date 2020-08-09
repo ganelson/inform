@@ -3,8 +3,6 @@
 To compile specifications into Inform 6 values, conditions or void
 expressions.
 
-@h Definitions.
-
 @ In a more traditional compiler, the code-generator would be something of a
 landmark -- one of the three or four most important stations. Here it's
 something of an anticlimax, partly because traditional "code" -- values

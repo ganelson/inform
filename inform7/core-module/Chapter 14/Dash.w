@@ -3,8 +3,6 @@
 Dash is the part of Inform most nearly like a typechecker in a
 conventional compiler.
 
-@h Definitions.
-
 @ Dash is the second typechecking algorithm to be used in Inform, installed in
 early 2015: the first had served since 2003, but became unwieldy after so many
 exceptional cases had been added to it, and was impossible to adapt to the
@@ -175,7 +173,7 @@ int Dash::check_value(parse_node *p, kind *K) {
 	parse_node *vn = Node::new(RVALUE_CONTEXT_NT);
 	if (K) Node::set_kind_required_by_context(vn, K);
 	vn->down = p;
-	if (K) LOGIF(MATCHING, "Dash (1): value of kind $u\n", K);
+	if (K) LOGIF(MATCHING, "Dash (1): value of kind %u\n", K);
 	if (K == NULL) LOGIF(MATCHING, "Dash (1): value\n");
 	return Dash::funnel_to_level_2(vn, FALSE);
 }
@@ -184,7 +182,7 @@ int Dash::check_value_silently(parse_node *p, kind *K) {
 	parse_node *vn = Node::new(RVALUE_CONTEXT_NT);
 	if (K) Node::set_kind_required_by_context(vn, K);
 	vn->down = p;
-	if (K) LOGIF(MATCHING, "Dash (1): value of kind $u\n", K);
+	if (K) LOGIF(MATCHING, "Dash (1): value of kind %u\n", K);
 	if (K == NULL) LOGIF(MATCHING, "Dash (1): value\n");
 	return Dash::funnel_to_level_2(vn, TRUE);
 }
@@ -1105,7 +1103,7 @@ with it.)
 	parse_node *L, *R;
 	kind *kind_wanted, *left_kind, *right_kind, *kind_produced;
 	@<Work out the kinds of the operands, and what we want, and what we get@>;
-	LOGIF(MATCHING, "$u (~) $u = $u\n", left_kind, right_kind, kind_produced);
+	LOGIF(MATCHING, "%u (~) %u = %u\n", left_kind, right_kind, kind_produced);
 
 	if (kind_produced) Node::set_kind_resulting(inv, kind_produced);
 	else @<Fail the invocation for a dimensional problem@>;
@@ -1285,7 +1283,7 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 				K = Properties::Valued::kind(<<rp>>);
 		}
 
-		LOGIF(MATCHING, "(4I.b) reparsed as: $u (vs spec $P)\n", K, ith_spec);
+		LOGIF(MATCHING, "(4I.b) reparsed as: %u (vs spec $P)\n", K, ith_spec);
 		if ((K) && (Specifications::is_kind_like(ith_spec))) {
 			kind *ikind = Specifications::to_kind(ith_spec);
 			if (Kinds::Behaviour::definite(K)) {
@@ -1364,7 +1362,7 @@ against a definition like:
 					(ph->type_data.token_sequence[i].construct != NEW_LOCAL_PT_CONSTRUCT)) {
 					parse_node *token_spec = Invocations::get_token_as_parsed(inv, i);
 					kind *kind_read = Specifications::to_kind(token_spec);
-					LOGIF(MATCHING, "Token %d: $P: kind $u: template $u\n", i,
+					LOGIF(MATCHING, "Token %d: $P: kind %u: template %u\n", i,
 						token_spec, kind_read, ph->type_data.token_sequence[i].token_kind);
 					switch(Kinds::Compare::compatible(kind_read, ph->type_data.token_sequence[i].token_kind)) {
 						case NEVER_MATCH:
@@ -1406,7 +1404,7 @@ against a definition like:
 		int changed = FALSE;
 		kind *K = Kinds::substitute(Node::get_kind_resulting(inv), NULL, &changed);
 		if (changed) {
-			LOGIF(MATCHING, "(4I.c) amended kind returned to $u\n", K);
+			LOGIF(MATCHING, "(4I.c) amended kind returned to %u\n", K);
 			Node::set_kind_resulting(inv, K);
 		} else @<Disallow an undeclared kind variable as return kind@>;
 	}
@@ -1607,7 +1605,7 @@ literal can mean are too generous.)
 			if (Dash::test_flag(new_inv, PASSED_DASHFLAG)) break;
 		if (new_inv) kind_found = Node::get_kind_resulting(new_inv);
 	}
-	LOGIF(MATCHING, "Kinds found: $u, wanted: $u\n", kind_found, kind_wanted);
+	LOGIF(MATCHING, "Kinds found: %u, wanted: %u\n", kind_found, kind_wanted);
 
 	if (((K_understanding) && (Kinds::Compare::eq(kind_wanted, K_understanding)) &&
 		(Kinds::Compare::eq(kind_found, K_understanding) == FALSE))
@@ -1644,7 +1642,7 @@ to a number.
 	LOG_DASH("(4I.e)");
 	int outcome_test = ALWAYS_MATCH;
 	if (kind_needed) {
-		LOGIF(MATCHING, "Checking returned $u against desired $u\n",
+		LOGIF(MATCHING, "Checking returned %u against desired %u\n",
 			Node::get_kind_resulting(inv), kind_needed);
 		outcome_test = Kinds::Compare::compatible(
 			Node::get_kind_resulting(inv), kind_needed);
@@ -1965,7 +1963,7 @@ a property when recovering from other problems.
 		kind *col_kind = Specifications::to_kind(p->down->next);
 		kind *col_contents_kind = Kinds::unary_construction_material(col_kind);
 		kind *key_kind = Specifications::to_kind(p->down->next->next);
-		LOGIF(MATCHING, "Kinds: col $u, contents $u, key $u\n",
+		LOGIF(MATCHING, "Kinds: col %u, contents %u, key %u\n",
 			col_kind, col_contents_kind, key_kind);
 		if ((Kinds::get_construct(col_kind) != CON_table_column) ||
 			(col_contents_kind == NULL)) {
@@ -2084,7 +2082,7 @@ int Dash::set_up_any_local_required(parse_node *inv) {
 
 			int changed = FALSE;
 			K = Kinds::substitute(K, NULL, &changed);
-			if (changed) LOGIF(MATCHING, "(4A.c.1) Local var amended to $u\n", K);
+			if (changed) LOGIF(MATCHING, "(4A.c.1) Local var amended to %u\n", K);
 			Invocations::set_token_variable_kind(inv, i, K);
 		}
 	}
@@ -2138,7 +2136,7 @@ of a relation.
 	}
 	if (seems_to_be == NULL) seems_to_be = Specifications::to_kind(initial_value);
 
-	LOGIF(LOCAL_VARIABLES, "New variable %W from $P ($P) seems to be: $u\n",
+	LOGIF(LOCAL_VARIABLES, "New variable %W from $P ($P) seems to be: %u\n",
 		W, initial_value, iv_spec, seems_to_be);
 	if (seems_to_be == NULL) @<Fail: the initial value of the local is unknown@>;
 
@@ -2147,13 +2145,13 @@ of a relation.
 		@<Fail: the initial value of the local is the empty list@>;
 	if (Kinds::Behaviour::definite(seems_to_be) == FALSE)
 		@<Fail: the initial value can't be stored@>;
-	LOGIF(MATCHING, "(4A.c.1) Local variable seems to have kind: $u\n", seems_to_be);
+	LOGIF(MATCHING, "(4A.c.1) Local variable seems to have kind: %u\n", seems_to_be);
 
 	K = seems_to_be;
 	if (Kinds::Compare::lt(K, K_object))
 		while (Kinds::Compare::eq(Kinds::Compare::super(K), K_object) == FALSE)
 			K = Kinds::Compare::super(K);
-	LOGIF(MATCHING, "(4A.c.1) Local variable inferred to have kind: $u\n", K);
+	LOGIF(MATCHING, "(4A.c.1) Local variable inferred to have kind: %u\n", K);
 
 @<Fail: the initial value of the local is unknown@> =
 	THIS_IS_AN_ORDINARY_PROBLEM;
@@ -2445,7 +2443,7 @@ any children it may have.
 =
 int Dash::typecheck_single_node(parse_node *p, kind *kind_expected, int condition_context) {
 	LOG_DASH("(5)");
-	LOGIF(MATCHING, "Kind expected: $u, condition expected: %d\n", kind_expected, condition_context);
+	LOGIF(MATCHING, "Kind expected: %u, condition expected: %d\n", kind_expected, condition_context);
 	int outcome = ALWAYS_MATCH; /* drops to |SOMETIMES_MATCH| if a need for run-time checking is realised */
 
 	if ((Rvalues::is_nothing_object_constant(p)) &&
@@ -2489,7 +2487,7 @@ helpful about what exactly is wrong.
 	LOG_DASH("(5.a)");
 	if (Node::is(p, UNKNOWN_NT)) {
 		THIS_IS_A_GROSS_PROBLEM;
-		LOG("(5.a) problem message:\nfound: $Texpected: $u", p, kind_expected);
+		LOG("(5.a) problem message:\nfound: $Texpected: %u", p, kind_expected);
 		#ifdef IF_MODULE
 		if (Kinds::Compare::eq(kind_expected, K_stored_action))
 			@<Unknown found text occurs as an action to try@>;
@@ -2993,10 +2991,10 @@ it to a constant value, using the "description of..." constructor.
 		domain = Kinds::unary_construction_material(kind_expected);
 	}
 	if ((domain) && (Specifications::is_description(p))) {
-		LOGIF(MATCHING, "(5.d.3) requiring description of $u\n", domain);
+		LOGIF(MATCHING, "(5.d.3) requiring description of %u\n", domain);
 		kind *K = Specifications::to_kind(p);
 		if (K == NULL) K = K_object;
-		LOGIF(MATCHING, "(5.d.3) finding description of $u\n", K);
+		LOGIF(MATCHING, "(5.d.3) finding description of %u\n", K);
 		int made_match = TRUE;
 		if (Kinds::Compare::compatible(K, domain) == NEVER_MATCH) made_match = FALSE;
 		@<Throw out the wrong sort of description with a seldom-seen problem message@>;
@@ -3174,7 +3172,7 @@ it says the value has the wrong kind.
 				"values: it's %4, a kind which isn't sayable.");
 		Problems::issue_problem_end();
 	} else {
-		LOG("Found: $u; Expected: $u\n", Specifications::to_kind(p),
+		LOG("Found: %u; Expected: %u\n", Specifications::to_kind(p),
 			kind_expected);
 		Problems::quote_kind(4, Specifications::to_kind(p));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TypeMismatch));
@@ -3371,7 +3369,7 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 	parse_node *vts;
 	kind *kind_found = NULL;
 	if (spec == NULL) return TRUE;
-	LOGIF(ACTION_PATTERN_PARSING, "Validating parameter in action pattern: $P ($u)\n", spec, K);
+	LOGIF(ACTION_PATTERN_PARSING, "Validating parameter in action pattern: $P (%u)\n", spec, K);
 	if (Node::is(spec, UNKNOWN_NT)) goto DontValidate;
 
 	if (Specifications::is_description(spec)) {
@@ -3405,7 +3403,7 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 
 	DontValidate:
 		LOGIF(ACTION_PATTERN_PARSING,
-			"Fails to validate for type-checking reasons: wanted $u, found $u\n",
+			"Fails to validate for type-checking reasons: wanted %u, found %u\n",
 			K, kind_found);
 		last_spec_failing_to_validate = Node::duplicate(spec);
 		last_kind_failing_to_validate = K;
@@ -3500,7 +3498,7 @@ void Dash::experiment(wording W, int full) {
 	}
 	LOG("$m\n", test_tree);
 	if (K) {
-		LOG("Dash: value of kind $u\n", K);
+		LOG("Dash: value of kind %u\n", K);
 		if (full) Dash::tracing_phrases(NULL);
 		int rv = Dash::check_value(test_tree, K);
 		char *trv = "ALWAYS";

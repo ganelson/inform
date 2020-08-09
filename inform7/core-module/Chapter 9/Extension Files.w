@@ -3,8 +3,6 @@
 To keep details of the extensions currently loaded, their authors,
 titles, versions and rubrics, and to index and credit them suitably.
 
-@h Definitions.
-
 @ Extensions are files of source text, normally combined with an appendix
 of documentation, provided by third parties for users to include with the
 source text of their own projects. Extensions are intended to provide general

@@ -3,8 +3,6 @@
 To declare that a given proposition is a true statement about the
 state of the world when play begins.
 
-@h Definitions.
-
 @ Inside Inform, the term "the model" means the collection of the following:
 
 (1) The inference subjects capable of holding properties, divided into:

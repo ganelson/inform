@@ -4,8 +4,6 @@ I7 is has no Dijkstra-like conscience about compiling code which
 is full of |jump| statements, and these require labels to jump to. This
 section provides those labels, and other related unique-ID-number counters.
 
-@h Definitions.
-
 @ For clarity we give each label in the compiled code its own unique name
 (even though this is not strictly necessary since I6 labels have only local
 scope to their routines), and this means allowing for sets of labels with

@@ -164,7 +164,7 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 @<Check that this is a kind where it makes sense to enumerate new values@> =
 	if ((Kinds::Compare::le(K, K_object) == FALSE) &&
 		(Kinds::Behaviour::has_named_constant_values(K) == FALSE)) {
-		LOG("K is $u\n", K);
+		LOG("K is %u\n", K);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
 		StandardProblems::handmade_problem(Task::syntax_tree(),

@@ -3,8 +3,6 @@
 To register the names associated with external files, and build
 the small I6 arrays associated with each.
 
-@h Definitions.
-
 @ Each file can be text or binary, has a name, and can be owned by a this
 project, by an unspecified other project, or by a project named by IFID.
 

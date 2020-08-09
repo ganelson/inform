@@ -3,8 +3,6 @@
 Terms are the representations of values in predicate calculus:
 variables, constants or functions of other terms.
 
-@h Definitions.
-
 @ Recall that a "term" can be anything which is a constant, can be a
 variable, or can be a function $f_B(t)$ of another term $t$. Our
 representation of this as a data structure therefore falls into three

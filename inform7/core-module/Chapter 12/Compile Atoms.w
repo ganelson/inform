@@ -4,8 +4,6 @@ In this section, given an atom of a proposition we compile I6 code
 as required for any of three possible outcomes: (i) to test whether it is
 true, (ii) to make it henceforth true, or (iii) to make it henceforth false.
 
-@h Definitions.
-
 @ The compilation method is to look at the atom, work out a suitable I6
 schema involving code to be applied to the one or two terms attaching to
 the atom, and then expand this. In some circumstances, the process of
@@ -290,7 +288,7 @@ adjective apparatus.
 		case NOW_ATOM_FALSE_TASK: atask = NOW_ADJECTIVE_FALSE_TASK; break;
 	}
 
-	LOGIF(PREDICATE_CALCULUS_WORKINGS, "Unary predicate: $o, on: $u\n", pl, pl->terms[0].term_checked_as_kind);
+	LOGIF(PREDICATE_CALCULUS_WORKINGS, "Unary predicate: $o, on: %u\n", pl, pl->terms[0].term_checked_as_kind);
 	asch.schema = Adjectives::Meanings::get_i6_schema(aph, pl->terms[0].term_checked_as_kind, atask);
 	return asch;
 

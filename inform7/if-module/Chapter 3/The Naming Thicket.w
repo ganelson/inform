@@ -4,8 +4,6 @@ Inform has a thicket of properties to do with names: not just the
 name itself, but whether it is a plural, a proper name, and so on. Here we
 look after these properties, and give them their initial states.
 
-@h Definitions.
-
 @ A few properties are treated specially by Inform, and need to have their
 references stored in global variables. They are set as they are created,
 during the parsing of assertions in the Standard Rules.

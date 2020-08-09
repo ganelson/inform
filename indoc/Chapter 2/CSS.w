@@ -2,8 +2,6 @@
 
 Cascading style sheets for HTML output.
 
-@h Definitions.
-
 @ The whole idea of a CSS file is to provide styling independent from content,
 and since |indoc| generates content, it shouldn't meddle with CSS files at
 all. It does so for two reasons:

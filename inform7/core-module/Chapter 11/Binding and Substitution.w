@@ -3,8 +3,6 @@
 To substitute constants into propositions in place of variables,
 and to apply quantifiers to bind any unbound variables.
 
-@h Definitions.
-
 @ In any given proposition:
 
 (a) a variable is unused if it is never mentioned as, or in, any term,

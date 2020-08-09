@@ -4,8 +4,6 @@ To create, manage, compile and index rulebooks, the content of which
 is a linked list of booked rules together with some general conventions as to
 how they are to be used.
 
-@h Definitions.
-
 @ A rulebook consists of some general properties together with a linked list
 of booked rules, which constitute its entries. Some rulebooks are created
 explicitly by the user's source text, some are created explicitly by the

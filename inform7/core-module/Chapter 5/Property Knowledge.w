@@ -58,7 +58,7 @@ equal. So the proposition has to pass typechecking.
 For both these reasons, then, we perform a simple type-check here.
 
 @<The value doesn't match the kind of the variable@> =
-	LOG("Variable: $u; constant: $u\n", kind_as_declared, constant_kind);
+	LOG("Variable: %u; constant: %u\n", kind_as_declared, constant_kind);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, q->name);
 	Problems::quote_wording(3, Node::get_text(val));

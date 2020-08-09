@@ -3,8 +3,6 @@
 Blocks of code are used to give conditionals and loops greater
 scope, as in more traditional programming languages.
 
-@h Definitions.
-
 @ During code compilation, we must keep track of statement blocks: those
 forming the body of "if", "while" or "repeat". The phrase as a whole does
 not count as a block as such, unlike in C; and, again unlike in C, an

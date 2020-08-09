@@ -4,8 +4,6 @@ To keep a small database indicating the physical dimensions of
 numerical values, and how they combine: for instance, allowing us to
 specify that a length times a length is an area.
 
-@h Definitions.
-
 @ Dimension in this sense is a term drawn from physics. The idea is that when
 quantities are multiplied together, their natures are combined as well as
 the actual numbers involved. For instance, in
@@ -332,7 +330,7 @@ void Kinds::Dimensions::record_multiplication_rule(kind *left, kind *right, kind
 
 	for (dimr = dimrs->multiplications; dimr; dimr = dimr->next)
 		if (dimr->right == right) {
-			Kinds::problem_handler(DimensionRedundant_KINDERROR, NULL, NULL, NULL);
+			KindsModule::problem_handler(DimensionRedundant_KINDERROR, NULL, NULL, NULL);
 			return;
 		}
 
@@ -374,13 +372,13 @@ void Kinds::Dimensions::dim_set_multiplication(kind *left, kind *right,
 	if ((Kinds::is_proper_constructor(left)) ||
 		(Kinds::is_proper_constructor(right)) ||
 		(Kinds::is_proper_constructor(outcome))) {
-		Kinds::problem_handler(DimensionNotBaseKOV_KINDERROR, NULL, NULL, NULL);
+		KindsModule::problem_handler(DimensionNotBaseKOV_KINDERROR, NULL, NULL, NULL);
 		return;
 	}
 	if ((Kinds::Behaviour::is_quasinumerical(left) == FALSE) ||
 		(Kinds::Behaviour::is_quasinumerical(right) == FALSE) ||
 		(Kinds::Behaviour::is_quasinumerical(outcome) == FALSE)) {
-		Kinds::problem_handler(NonDimensional_KINDERROR, NULL, NULL, NULL);
+		KindsModule::problem_handler(NonDimensional_KINDERROR, NULL, NULL, NULL);
 		return;
 	}
 	Kinds::Dimensions::record_multiplication_rule(left, right, outcome);
@@ -571,7 +569,7 @@ to deal with |UNKNOWN_NT| explicitly.
 accident, but we'll be careful:
 
 @<Trip a unit sequence overflow@> =
-	Kinds::problem_handler(UnitSequenceOverflow_KINDERROR, NULL, NULL, NULL);
+	KindsModule::problem_handler(UnitSequenceOverflow_KINDERROR, NULL, NULL, NULL);
 	return;
 
 @ The second operation is taking roots.
@@ -786,7 +784,7 @@ the Kinds index page more helpful. But we must reject a contradiction.
 		Kinds::Behaviour::get_dimensional_form(terms[1]), 1, &product);
 	if (Kinds::Dimensions::compare_unit_sequences(&product,
 		Kinds::Behaviour::get_dimensional_form(terms[2])) == FALSE)
-		Kinds::problem_handler(DimensionsInconsistent_KINDERROR, NULL, NULL, NULL);
+		KindsModule::problem_handler(DimensionsInconsistent_KINDERROR, NULL, NULL, NULL);
 
 @h Classifying the units.
 Some of the derived units are dimensionless, others not. Number
@@ -949,19 +947,19 @@ void Kinds::Dimensions::log_unit_analysis(void) {
 	LOG("Dimensionless: ");
 	int c = 0; kind *R;
 	LOOP_OVER_BASE_KINDS(R)
-		if (Kinds::Dimensions::dimensionless(R)) { if (c++ > 0) LOG(", "); LOG("$u", R); }
+		if (Kinds::Dimensions::dimensionless(R)) { if (c++ > 0) LOG(", "); LOG("%u", R); }
 	LOG("\nBase units: ");
 	c = 0;
 	LOOP_OVER_BASE_KINDS(R)
 		if ((Kinds::Dimensions::dimensionless(R) == FALSE) &&
 			(Kinds::Dimensions::kind_is_derived(R) == FALSE) &&
 			(Kinds::Behaviour::is_quasinumerical(R)))
-		{ if (c++ > 0) LOG(", "); LOG("$u", R); }
+		{ if (c++ > 0) LOG(", "); LOG("%u", R); }
 	LOG("\nDerived units:\n");
 	LOOP_OVER_BASE_KINDS(R)
 		if ((Kinds::Dimensions::kind_is_derived(R)) && (Kinds::is_intermediate(R) == FALSE)) {
 			unit_sequence *deriv = Kinds::Behaviour::get_dimensional_form(R);
-			LOG("$u = $Q\n", R, deriv);
+			LOG("%u = $Q\n", R, deriv);
 		}
 }
 

@@ -11,7 +11,7 @@ void Phrases::TypeData::Textual::log(ph_type_data *phtd) {
 	LOG("  PHTD: register as <%W>\n  %s\n", phtd->registration_text,
 		Phrases::TypeData::describe_manner_of_return(phtd->manner_of_return, phtd, NULL));
 	if (phtd->manner_of_return == DECIDES_VALUE_MOR)
-		LOG("  decides value of kind $u\n", phtd->return_kind);
+		LOG("  decides value of kind %u\n", phtd->return_kind);
 	@<Log the word sequence@>;
 	@<Log the token sequence@>;
 	Phrases::TypeData::log_inline_details(phtd->as_inline);
@@ -42,7 +42,7 @@ void Phrases::TypeData::Textual::log_briefly(ph_type_data *phtd) {
 	LOG("\"%W\"", phtd->registration_text);
 	switch(phtd->manner_of_return) {
 		case DECIDES_CONDITION_MOR: LOG("(=condition)"); break;
-		case DECIDES_VALUE_MOR: LOG("(=$u)", phtd->return_kind); break;
+		case DECIDES_VALUE_MOR: LOG("(=%u)", phtd->return_kind); break;
 	}
 }
 

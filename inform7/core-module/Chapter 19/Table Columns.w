@@ -2,8 +2,6 @@
 
 To manage the named columns which appear in tables.
 
-@h Definitions.
-
 @ Tables are the most important data structure in Inform. They imitate
 printed tables in books or scientific papers, and the data inside them is
 arranged in columns, each of which is headed by a name.
@@ -78,7 +76,7 @@ table_column *Tables::Columns::new_table_column(wording W) {
 void Tables::Columns::log(table_column *tc) {
 	LOG("'%W'/", Nouns::nominative_singular(tc->name));
 	if (tc->kind_stored_in_column == NULL) LOG("unknown");
-	else LOG("$u", tc->kind_stored_in_column);
+	else LOG("%u", tc->kind_stored_in_column);
 }
 
 @ Keeping track of the kind of the entries in a column is a little tricky.
@@ -106,7 +104,7 @@ void Tables::Columns::set_kind(table_column *tc, table *t, kind *K) {
 			@<Issue a problem message for a description heading@>;
 	tc->kind_stored_in_column = K;
 	tc->table_from_which_kind_inferred = t;
-	LOGIF(TABLES, "Table column $C contains kind $u, according to $B\n",
+	LOGIF(TABLES, "Table column $C contains kind %u, according to $B\n",
 		tc, tc->kind_stored_in_column, t);
 	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)))
 		Tables::Relations::supply_kind_for_listed_in_tc(tc->listed_in_predicate, K_snippet);
@@ -330,7 +328,7 @@ void Tables::Columns::check_explicit_headings(table *t, int i, table_column_usag
 		kind *EK = NULL;
 		if (<k-kind-articled>(tcu->kind_declaration_text)) {
 			EK = <<rp>>;
-			LOGIF(TABLES, "$B col %d '%W' claims $u\n", t, i, tcu->kind_declaration_text, EK);
+			LOGIF(TABLES, "$B col %d '%W' claims %u\n", t, i, tcu->kind_declaration_text, EK);
 			if (K == NULL)
 				Tables::Columns::set_kind(tcu->column_identity, t, EK);
 			else if (!(Kinds::Compare::eq(K, EK)))
@@ -506,7 +504,7 @@ happens:
 =
 void Tables::Columns::approve_kind(table *t, int i, table_column_usage *tcu) {
 	kind *K = Tables::Columns::get_kind(tcu->column_identity);
-	LOGIF(TABLES, "Column %d '%W' has kind $u with data:\n$T",
+	LOGIF(TABLES, "Column %d '%W' has kind %u with data:\n$T",
 		i, Nouns::nominative_singular(tcu->column_identity->name), K, tcu->entries);
 	if ((Kinds::get_construct(K) == CON_list_of) &&
 		(Kinds::Compare::eq(Kinds::unary_construction_material(K), K_value))) {

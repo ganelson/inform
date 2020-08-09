@@ -3,8 +3,6 @@
 Here we generate Inform 6 code to execute the phrase(s) called
 for by an invocation list.
 
-@h Definitions.
-
 @ This represents the tokens being used when invoking a phrase:
 
 =

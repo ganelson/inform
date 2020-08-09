@@ -4,8 +4,6 @@ Scenes are periods of time during play: at any given moment, several
 may be going on, or none. They are started and stopped when certain conditions
 are met, or by virtue of having been anchored together.
 
-@h Definitions.
-
 @ Scenes are gated intervals of time, but there are more than two gates: for
 while there is only one past, there are many possible futures. These gates
 are called "ends" in the code below, and are numbered end 0 (the beginning),

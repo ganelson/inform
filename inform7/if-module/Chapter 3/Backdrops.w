@@ -3,8 +3,6 @@
 A plugin to provide support for backdrop objects, which are present
 as scenery in multiple rooms at once.
 
-@h Definitions.
-
 @ While we normally assume that nothing can be in more than one place at
 once, backdrops are an exception. These are intended to represent widely
 spread, probably background, things, such as the sky, and they placing one

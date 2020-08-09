@@ -2,8 +2,6 @@
 
 To store the circumstances in which a rule phrase should fire.
 
-@h Definitions.
-
 @ Runtime context data is the context in which a phrase is allowed to run,
 though it's only used for rules. For example,
 

@@ -4,8 +4,6 @@ To break down a stream of characters into a numbered sequence of
 words, literal strings and literal I6 inclusions, removing comments and
 unnecessary whitespace.
 
-@h Definitions.
-
 @ Lexical analysis is the process of reading characters from the source
 text files and forming them into globs which we call "words": the part of
 Inform which does this is the "lexical analyser", or lexer for short. The

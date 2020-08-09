@@ -3,8 +3,6 @@
 To manage constant values of enumerated kinds, including kinds of
 object.
 
-@h Definitions.
-
 @ Instances are named constants of kinds which have a finite range (unlike
 "number", say), and where the possibilities are entirely up to the source
 text to specify (unlike "truth state", say), and where the values form
@@ -94,7 +92,7 @@ instance *Instances::new(wording W, kind *K) {
 	@<Add the new instance to its enumeration@>;
 	Instances::iname(I);
 	latest_instance = I;
-	LOGIF(OBJECT_CREATIONS, "Created instance: $O (kind $u) (inter %n)\n", I, K, Instances::iname(I));
+	LOGIF(OBJECT_CREATIONS, "Created instance: $O (kind %u) (inter %n)\n", I, K, Instances::iname(I));
 	Plugins::Call::new_named_instance_notify(I);
 	if ((Kinds::Compare::eq(K, K_grammatical_gender)) &&
 		(no_ggs_recorded < NO_GRAMMATICAL_GENDERS))
@@ -439,14 +437,14 @@ are allowed to refine it. Such revisions are allowed to specialise the kind
 void Instances::set_kind(instance *I, kind *new) {
 	PROTECTED_MODEL_PROCEDURE;
 	if (I == NULL) {
-		LOG("Tried to set kind to $u\n", new);
+		LOG("Tried to set kind to %u\n", new);
 		internal_error("Tried to set the kind of a null object");
 	}
 	kind *existing = Instances::to_kind(I);
 	int m = Kinds::Compare::compatible(existing, new);
 	if (m == ALWAYS_MATCH) return;
 	if (m == NEVER_MATCH) {
-		LOG("Tried to set kind of $O (existing $u) to $u\n", I, existing, new);
+		LOG("Tried to set kind of $O (existing %u) to %u\n", I, existing, new);
 		@<Issue a problem message for a contradictory change of kind@>;
 		return;
 	}
@@ -454,7 +452,7 @@ void Instances::set_kind(instance *I, kind *new) {
 	InferenceSubjects::falls_within(I->as_subject, Kinds::Knowledge::as_subject(new));
 	Assertions::Assemblies::satisfies_generalisations(I->as_subject);
 	I->instance_of_set_at = current_sentence;
-	LOGIF(KIND_CHANGES, "Setting kind of $O to $u\n", I, new);
+	LOGIF(KIND_CHANGES, "Setting kind of $O to %u\n", I, new);
 }
 
 @<Issue a problem message for a contradictory change of kind@> =

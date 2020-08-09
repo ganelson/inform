@@ -3,8 +3,6 @@
 To look after the value or action on which a rulebook acts, and the
 possible outcomes it produces.
 
-@h Definitions.
-
 @ When a rulebook is being worked through at run-time, a special value or
 situation normally gives it a focus -- something to work on. Rulebooks
 can have two types:

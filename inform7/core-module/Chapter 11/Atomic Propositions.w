@@ -3,8 +3,6 @@
 To build and modify atoms, the syntactic pieces from which
 propositions are built up.
 
-@h Definitions.
-
 @ As the description in the Introduction showed, propositions are complicated
 data structures. Roughly speaking, they are made up of small independent pieces
 which can be combined in a variety of ways into larger assemblies. In this

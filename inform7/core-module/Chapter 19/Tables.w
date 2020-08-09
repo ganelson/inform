@@ -3,8 +3,6 @@
 To manage and compile tables, which are two-dimensional arrays with
 associative look-up facilities provided at run-time.
 
-@h Definitions.
-
 @ This is how a table is stored. Note that the limit on columns per table
 must not rise to 100 or beyond because that would break the system of table
 column ID numbers used at run-time.

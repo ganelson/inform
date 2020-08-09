@@ -5,8 +5,6 @@ such as text substitutions, it does so in the context of a "stack frame".
 This provides for local "let" values, manages loop blocks, and in general
 looks after any information shared between a whole sequence of invocations.
 
-@h Definitions.
-
 @ As we've seen, each phrase has its own stack frame, which is a structure
 inside the |phrase| structure. But they can also exist independently, for
 other occasions when compilation occurs. They keep track of which variables
@@ -243,7 +241,7 @@ The following is the routine called to make this note.
 pointer_allocation *Frames::add_allocation(kind *K, char *proto) {
 	ph_stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) {
-		LOG("Tried to allocate: $u\n", K);
+		LOG("Tried to allocate: %u\n", K);
 		internal_error("tried to allocate block kind outside all stack frames");
 	}
 	pointer_allocation *pall = CREATE(pointer_allocation);

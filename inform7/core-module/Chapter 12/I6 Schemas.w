@@ -3,8 +3,6 @@
 To create, and later expand upon, short prototypes of I6 syntax for
 such run-time tasks as the setting, unsetting or testing of a relation.
 
-@h Definitions.
-
 @ An I6 schema is an intermediate-level code for the final stages of
 compiling to Inform 6 syntax. Its "prototype" is a C string encoded as
 ISO Latin-1, in which the asterisk |*| acts as an escape character.

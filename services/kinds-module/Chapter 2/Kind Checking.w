@@ -3,8 +3,6 @@
 To test whether two kinds are equivalent to each other, or failing
 that, whether they are compatible with each other.
 
-@h Definitions.
-
 @ We say that a kind $K_L$ is a subkind of $K_R$ if its values can
 be used without modification at run-time in code which expects a value of
 $K_R$, and write
@@ -141,7 +139,6 @@ to the kind "number" even if that's the current value of X.
 
 =
 int Kinds::Compare::eq(kind *K1, kind *K2) {
-	int i;
 	if (K1 == NULL) { if (K2 == NULL) return TRUE; return FALSE; }
 	if (K2 == NULL) return FALSE;
 	if (K1->construct != K2->construct) return FALSE;
@@ -152,7 +149,7 @@ int Kinds::Compare::eq(kind *K1, kind *K2) {
 			K1->intermediate_result, K2->intermediate_result) == FALSE)) return FALSE;
 	if (Kinds::get_variable_number(K1) != Kinds::get_variable_number(K2))
 		return FALSE;
-	for (i=0; i<MAX_KIND_CONSTRUCTION_ARITY; i++)
+	for (int i=0; i<MAX_KIND_CONSTRUCTION_ARITY; i++)
 		if (Kinds::Compare::eq(K1->kc_args[i], K2->kc_args[i]) == FALSE)
 			return FALSE;
 	return TRUE;
@@ -257,7 +254,7 @@ where $K_F = K_T$ are frequent and not interesting enough to be logged.
 int Kinds::Compare::compatible(kind *from, kind *to) {
 	if (Kinds::Compare::eq(from, to)) return ALWAYS_MATCH;
 
-	LOGIF(KIND_CHECKING, "(Is the kind $u compatible with $u?", from, to);
+	LOGIF(KIND_CHECKING, "(Is the kind %u compatible with %u?", from, to);
 
 	switch(Kinds::Compare::test_kind_relation(from, to, TRUE)) {
 		case NEVER_MATCH: LOGIF(KIND_CHECKING, " No)\n"); return NEVER_MATCH;
@@ -400,7 +397,7 @@ a declaration usage of the variable K.
 			if (Kinds::Compare::test_kind_relation(other_k,
 				Kinds::get_variable_stipulation(var_k), comp) != ALWAYS_MATCH)
 				return NEVER_MATCH;
-			LOGIF(KIND_CHECKING, "Inferring kind variable %d from $u (declaration $u)\n",
+			LOGIF(KIND_CHECKING, "Inferring kind variable %d from %u (declaration %u)\n",
 				vn, other_k, Kinds::get_variable_stipulation(var_k));
 			values_of_kind_variables[vn] = other_k;
 			kind_variable_declaration *kvd = CREATE(kind_variable_declaration);
@@ -419,7 +416,7 @@ make a value-checking pass later.
 	switch(kind_checker_mode) {
 		case MATCH_KIND_VARIABLES_INFERRING_VALUES: return ALWAYS_MATCH;
 		case MATCH_KIND_VARIABLES_AS_VALUES:
-			LOGIF(KIND_CHECKING, "Checking $u against kind variable %d (=$u)\n",
+			LOGIF(KIND_CHECKING, "Checking %u against kind variable %d (=%u)\n",
 				other_k, vn, values_of_kind_variables[vn]);
 			if (Kinds::Compare::test_kind_relation(other_k, values_of_kind_variables[vn], comp) == NEVER_MATCH)
 				return NEVER_MATCH;
@@ -434,7 +431,7 @@ void Kinds::Compare::show_variables(void) {
 	for (i=1; i<=26; i++) {
 		kind *K = values_of_kind_variables[i];
 		if (K == NULL) continue;
-		LOG("%c=$u ", 'A'+i-1, K);
+		LOG("%c=%u ", 'A'+i-1, K);
 	}
 	LOG("\n");
 }
@@ -445,7 +442,7 @@ void Kinds::Compare::show_frame_variables(void) {
 		kind *K = Kinds::variable_from_context(i);
 		if (K) {
 			if (shown++ == 0) LOGIF(MATCHING, "Stack frame uses kind variables: ");
-			LOGIF(MATCHING, "%c=$u ", 'A'+i-1, K);
+			LOGIF(MATCHING, "%c=%u ", 'A'+i-1, K);
 		}
 	}
 	if (shown == 0) LOGIF(MATCHING, "Stack frame sets no kind variables");
@@ -458,7 +455,7 @@ void Kinds::Compare::make_subkind(kind *sub, kind *super) {
 	PROTECTED_MODEL_PROCEDURE;
 	#endif
 	if (sub == NULL) {
-		LOG("Tried to set kind to $u\n", super);
+		LOG("Tried to set kind to %u\n", super);
 		internal_error("Tried to set the kind of a null kind");
 	}
 	if (Kinds::Compare::lt(sub, K_object) == FALSE) return;
@@ -468,16 +465,16 @@ void Kinds::Compare::make_subkind(kind *sub, kind *super) {
 	kind *existing = Kinds::Compare::super(sub);
 	switch (Kinds::Compare::compatible(existing, super)) {
 		case NEVER_MATCH:
-			LOG("Tried to make $u a kind of $u\n", sub, super);
+			LOG("Tried to make %u a kind of %u\n", sub, super);
 			if (problem_count == 0)
-				Kinds::problem_handler(KindUnalterable_KINDERROR,
+				KindsModule::problem_handler(KindUnalterable_KINDERROR,
 					Kinds::Behaviour::get_superkind_set_at(sub), super, existing);
 			return;
 		case SOMETIMES_MATCH:
 			#ifdef KINDS_TEST_WITHIN
 			if (KINDS_TEST_WITHIN(super, sub)) {
 				if (problem_count == 0)
-					Kinds::problem_handler(KindsCircular_KINDERROR,
+					KindsModule::problem_handler(KindsCircular_KINDERROR,
 						Kinds::Behaviour::get_superkind_set_at(super), super, existing);
 				return;
 			}
@@ -486,7 +483,7 @@ void Kinds::Compare::make_subkind(kind *sub, kind *super) {
 			KINDS_MOVE_WITHIN(sub, super);
 			#endif
 			Kinds::Behaviour::set_superkind_set_at(sub, current_sentence);
-			LOGIF(KIND_CHANGES, "Making $u a subkind of $u\n", sub, super);
+			LOGIF(KIND_CHANGES, "Making %u a subkind of %u\n", sub, super);
 	}
 }
 
@@ -512,8 +509,8 @@ void Kinds::Compare::log_poset(int n) {
 		int c = 0;
 		LOOP_OVER_BASE_KINDS(B) {
 			if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::eq(A, B) == FALSE)) {
-				if (c++ == 0) LOG("$u <= ", A); else LOG(", ");
-				LOG("$u", B);
+				if (c++ == 0) LOG("%u <= ", A); else LOG(", ");
+				LOG("%u", B);
 			}
 		}
 		if (c > 0) LOG("\n");
@@ -528,8 +525,8 @@ void Kinds::Compare::log_poset(int n) {
 			if ((Kinds::Compare::compatible(A, B) == ALWAYS_MATCH) &&
 				(Kinds::Compare::le(A, B) == FALSE) &&
 				(Kinds::Compare::eq(A, K_value) == FALSE)) {
-				if (c++ == 0) LOG("$u --> ", A); else LOG(", ");
-				LOG("$u", B);
+				if (c++ == 0) LOG("%u --> ", A); else LOG(", ");
+				LOG("%u", B);
 			}
 		}
 		if (c > 0) LOG("\n");
@@ -540,7 +537,7 @@ void Kinds::Compare::log_poset(int n) {
 	kind *A, *B;
 	LOOP_OVER_BASE_KINDS(A) {
 		for (B = A; B; B = Kinds::Compare::super(B))
-			LOG("$u -> ", B);
+			LOG("%u -> ", B);
 		LOG("\n");
 	}
 
@@ -549,16 +546,16 @@ void Kinds::Compare::log_poset(int n) {
 	kind *A, *B, *C;
 	LOOP_OVER_BASE_KINDS(A)
 		if (Kinds::Compare::le(A, A) == FALSE)
-			LOG("Reflexivity violated: $u\n", A);
+			LOG("Reflexivity violated: %u\n", A);
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
 			if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::le(B, A)) && (Kinds::Compare::eq(A, B) == FALSE))
-				LOG("Antisymmetry violated: $u, $u\n", A, B);
+				LOG("Antisymmetry violated: %u, %u\n", A, B);
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
 			LOOP_OVER_BASE_KINDS(C)
 				if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::le(B, C)) && (Kinds::Compare::le(A, C) == FALSE))
-					LOG("Transitivity violated: $u, $u, $u\n", A, B, C);
+					LOG("Transitivity violated: %u, %u, %u\n", A, B, C);
 
 @<Check the maximum function@> =
 	LOG("Looking for maximum violations.\n");
@@ -566,19 +563,19 @@ void Kinds::Compare::log_poset(int n) {
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
 			if (Kinds::Compare::eq(Kinds::Compare::max(A, B), Kinds::Compare::max(B, A)) == FALSE)
-				LOG("Fail symmetry: max($u, $u) = $u, but max($u, $u) = $u\n",
+				LOG("Fail symmetry: max(%u, %u) = %u, but max(%u, %u) = %u\n",
 					A, B, Kinds::Compare::max(A, B), B, A, Kinds::Compare::max(B, A));
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
 			if (Kinds::Compare::le(A, Kinds::Compare::max(A, B)) == FALSE)
-				LOG("Fail maximality(A): max($u, $u) = $u\n", A, B, Kinds::Compare::max(A, B));
+				LOG("Fail maximality(A): max(%u, %u) = %u\n", A, B, Kinds::Compare::max(A, B));
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
 			if (Kinds::Compare::le(B, Kinds::Compare::max(A, B)) == FALSE)
-				LOG("Fail maximality(B): max($u, $u) = $u\n", A, B, Kinds::Compare::max(A, B));
+				LOG("Fail maximality(B): max(%u, %u) = %u\n", A, B, Kinds::Compare::max(A, B));
 	LOOP_OVER_BASE_KINDS(A)
 		if (Kinds::Compare::eq(Kinds::Compare::max(A, A), A) == FALSE)
-				LOG("Fail: max($u, $u) = $u\n",
+				LOG("Fail: max(%u, %u) = %u\n",
 					A, A, Kinds::Compare::max(A, A));
 
 @
@@ -604,9 +601,9 @@ void Kinds::Compare::log_poset(int n) {
 		Kinds::binary_construction(CON_TUPLE_ENTRY, K_object, K_nil), K_object);
 	int i, j;
 	for (i=0; i<SIZE_OF_GRAB_BAG; i++) for (j=i+1; j<SIZE_OF_GRAB_BAG; j++) {
-		if (Kinds::Compare::le(tests[i], tests[j])) LOG("$u <= $u\n", tests[i], tests[j]);
-		if (Kinds::Compare::le(tests[j], tests[i])) LOG("$u <= $u\n", tests[j], tests[i]);
+		if (Kinds::Compare::le(tests[i], tests[j])) LOG("%u <= %u\n", tests[i], tests[j]);
+		if (Kinds::Compare::le(tests[j], tests[i])) LOG("%u <= %u\n", tests[j], tests[i]);
 		kind *M = Kinds::Compare::max(tests[i], tests[j]);
-		if (Kinds::Compare::eq(M, K_value) == FALSE) LOG("max($u, $u) = $u\n", tests[i], tests[j], M);
+		if (Kinds::Compare::eq(M, K_value) == FALSE) LOG("max(%u, %u) = %u\n", tests[i], tests[j], M);
 	}
 	#endif

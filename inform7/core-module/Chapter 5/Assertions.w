@@ -1402,7 +1402,7 @@ contradicted.
 	if (Specifications::is_new_variable_like(val))
 		constant_kind = Specifications::kind_of_new_variable_like(val);
 	if (Kinds::Compare::le(constant_kind, kind_as_declared) == FALSE) {
-		LOG("$u, $u\n", kind_as_declared, constant_kind);
+		LOG("%u, %u\n", kind_as_declared, constant_kind);
 		Problems::quote_source(1, current_sentence);
 		if (nlv)
 			Problems::quote_wording(2, nlv->name);

@@ -4,8 +4,6 @@ The second of four ways phrases are invoked: as definitions of
 adjectives which can be used as unary predicates in the calculus. (And we also
 look after adjectives arising from I6 or I7 conditions, and from I6 routines.)
 
-@h Definitions.
-
 @ A typical example would be:
 
 >> Definition: A container is significant if it contains a clue.

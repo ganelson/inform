@@ -85,7 +85,7 @@ void I6T::interpreter_shared(parse_node_tree *T, int int_mode, OUTPUT_STREAM, wc
 				@<Read rest of line as argument@>;
 				if ((Str::get_first_char(argument) == '!') ||
 					(Str::get_first_char(argument) == 0)) continue; /* skip blanks and comments */
-				Kinds::Interpreter::despatch_kind_command(T, argument);
+				KindCommands::despatch(T, argument);
 				continue;
 			}
 			if (cr == '{') {

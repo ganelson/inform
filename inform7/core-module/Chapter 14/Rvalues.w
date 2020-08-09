@@ -578,7 +578,7 @@ void Rvalues::compile(value_holster *VH, parse_node *spec_found) {
 			int ccm = Kinds::Behaviour::get_constant_compilation_method(kind_of_constant);
 			switch(ccm) {
 				case NONE_CCM: /* constant values of this kind cannot exist */
-					LOG("SP: $P; kind: $u\n", spec_found, kind_of_constant);
+					LOG("SP: $P; kind: %u\n", spec_found, kind_of_constant);
 					internal_error("Tried to compile CONSTANT SP for a disallowed kind");
 					return;
 				case LITERAL_CCM: @<Compile a literal-compilation-mode constant@>; return;
@@ -757,7 +757,7 @@ kinds of value:
 		return;
 	}
 
-	LOG("Kov is $u\n", kind_of_constant);
+	LOG("Kov is %u\n", kind_of_constant);
 	internal_error("no special ccm provided");
 
 @ The interesting, read "unfortunate", case is that of constant property

@@ -4,8 +4,6 @@ To manage the individual pieces of information gathered, with
 varying degrees of certainty, from assertion sentences. This is mostly
 information about which objects have what properties.
 
-@h Definitions.
-
 @ Inform reads a natural language description of a world. As it runs through, it
 collects together the assertions made in this description (such as "On the
 table is a hat"), which are sometimes vague (where is this table?), sometimes
@@ -302,7 +300,7 @@ void World::Inferences::verify_prop_states(inference_subject *infs) {
 		kind *PK = Properties::Valued::kind(prn);
 		kind *VK = Specifications::to_kind(val);
 		if (Kinds::Compare::compatible(VK, PK) != ALWAYS_MATCH) {
-			LOG("Property value given as $u not $u\n", VK, PK);
+			LOG("Property value given as %u not %u\n", VK, PK);
 			current_sentence = inf->inferred_from;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_property(2, prn);

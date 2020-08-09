@@ -3,8 +3,6 @@
 To manage the possible notations with which literal values can
 be written.
 
-@h Definitions.
-
 @ Literals are excerpts of text which explicitly specify values, rather than
 by indirectly naming them. "15" is a literal but "the score" is not, even
 if it happens to have the value 15. Inform contains specific code to parse

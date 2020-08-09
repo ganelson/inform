@@ -3,8 +3,6 @@
 In this section we compile I6 arrays for constant lists arising
 from braced literals.
 
-@h Definitions.
-
 @ Every literal list in the source text, such as
 
 >> {2, 12, 13}

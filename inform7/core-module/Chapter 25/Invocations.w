@@ -5,8 +5,6 @@ indicate which phrase they intend by means of a list of "invocations".
 This list goes on to record the outcome of type-checking and provides
 instructions for code generation, as we see here.
 
-@h Definitions.
-
 @ An invocation is a request to perform a particular phrase with a
 particular set of parameters. For instance, to perform "award (N - a number)
 points" with $N$ set to 100.
@@ -177,7 +175,7 @@ void Invocations::log(parse_node *inv) {
 		if (Wordings::nonempty(OW))
 			LOG(" [0x%x %W]", Invocations::get_phrase_options_bitmap(inv), OW);
 		kind_variable_declaration *kvd = Node::get_kind_variable_declarations(inv);
-		for (; kvd; kvd=kvd->next) LOG(" %c=$u", 'A'+kvd->kv_number-1, kvd->kv_value);
+		for (; kvd; kvd=kvd->next) LOG(" %c=%u", 'A'+kvd->kv_number-1, kvd->kv_value);
 	}
 }
 

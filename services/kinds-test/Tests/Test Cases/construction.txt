@@ -1,0 +1,16 @@
+X = object.
+first term of X.
+second term of X.
+Y = list of numbers.
+first term of Y.
+second term of Y.
+Z = relation of texts to numbers.
+first term of Z.
+second term of Z.
+W = phrase (relation of texts to numbers, text) -> truth state.
+first term of W.
+first term of first term of W.
+first term of first term of first term of W.
+second term of first term of first term of W.
+second term of first term of W.
+second term of W.

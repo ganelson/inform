@@ -2,8 +2,6 @@
 
 To manage arbitrary assemblies of vocabulary, if a little slowly.
 
-@h Definitions.
-
 @ When putting names together out of fragments, we will need to string words
 together in ways not laid out in the source text, and the following structure is
 a convenient holder for such composites.

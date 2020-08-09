@@ -225,7 +225,7 @@ void Adjectives::Meanings::log_meanings(adjective *aph) {
 	int n;
 	if (aph == NULL) { LOG("<null-APH>\n"); return; }
 	for (n=1, am = aph->adjective_meanings.possible_meanings; am; n++, am = am->next_meaning)
-		LOG("%d: %W (domain:$j) (dk:$u)\n", n, am->adjective_index_text,
+		LOG("%d: %W (domain:$j) (dk:%u)\n", n, am->adjective_index_text,
 			am->domain_infs, am->domain_kind);
 }
 
@@ -1006,7 +1006,7 @@ known in order to sort.
 
 @<Compile adjective definition for this atomic kind of value@> =
 	wording W = Adjectives::get_nominative_singular(aph);
-	LOGIF(VARIABLE_CREATIONS, "Compiling support code for %W applying to $u, task %d\n",
+	LOGIF(VARIABLE_CREATIONS, "Compiling support code for %W applying to %u, task %d\n",
 		W, K, T);
 
 	inter_name *iname = Adjectives::Meanings::iname(aph, T, Kinds::RunTime::weak_id(K));

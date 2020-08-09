@@ -337,7 +337,7 @@ frame for the can't exit closed containers rule, not to the local stack frame.
 	}
 	if (reference_exists == FALSE)
 		COMPILATION_MODE_EXIT(TABLE_EXISTENCE_CMODE_ISSBM);
-	LOGIF(MATCHING, "Expanding $P into '%W' with %d, $u%s%s\n",
+	LOGIF(MATCHING, "Expanding $P into '%W' with %d, %u%s%s\n",
 		supplied, BRW, tok, kind_required,
 		changed?" (after kind substitution)":"",
 		by_value_not_reference?" (by value)":" (by reference)");

@@ -4,8 +4,6 @@ To register the names associated with picture resource numbers, which
 are defined to allow the final story file to display pictures, and to produce
 the thumbnail index of figures.
 
-@h Definitions.
-
 @ To be viable, figures have to be of an image format which Blorb recognises,
 and in any case we only allow two formats: JPEG and PNG.
 

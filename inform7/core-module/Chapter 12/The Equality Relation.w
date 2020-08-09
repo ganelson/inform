@@ -2,8 +2,6 @@
 
 To define that prince among predicates, the equality relation.
 
-@h Definitions.
-
 @ This predicate expresses the meaning of $a=b$, and plays a very special role
 in our calculus.
 
@@ -52,7 +50,7 @@ any kind.
 =
 int Calculus::Equality::REL_typecheck(binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
-	LOGIF(MATCHING, "Typecheck $u '==' $u\n", kinds_of_terms[0], kinds_of_terms[1]);
+	LOGIF(MATCHING, "Typecheck %u '==' %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 	if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[0], K_understanding)) &&
 			(Kinds::Compare::eq(kinds_of_terms[1], K_text))) {
 			LOGIF(MATCHING, "No!\n");
@@ -90,7 +88,7 @@ for a fairly common mistake:
 	property *prn = Properties::Conditions::get_coinciding_property(kinds_of_terms[1]);
 	if (prn == NULL) {
 		if (tck->log_to_I6_text)
-			LOG("Comparison of object with $u value\n", kinds_of_terms[1]);
+			LOG("Comparison of object with %u value\n", kinds_of_terms[1]);
 		Problems::quote_kind(4, kinds_of_terms[1]);
 		StandardProblems::tcp_problem(_p_(PM_NonPropertyCompared), tck,
 			"taken literally that says that an object is the same as a "
@@ -117,7 +115,7 @@ and scenes are not.
 	if ((Kinds::Compare::compatible(kinds_of_terms[0], kinds_of_terms[1]) == NEVER_MATCH) &&
 		(Kinds::Compare::compatible(kinds_of_terms[1], kinds_of_terms[0]) == NEVER_MATCH)) {
 		if (tck->log_to_I6_text)
-			LOG("Unable to compare $u with $u\n", kinds_of_terms[0], kinds_of_terms[1]);
+			LOG("Unable to compare %u with %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 		return NEVER_MATCH_SAYING_WHY_NOT;
 	}
 
@@ -205,7 +203,7 @@ int Calculus::Equality::REL_compile(int task, binary_predicate *bp, annotated_i6
 				Calculus::Schemas::modify(asch->schema, "%S",
 					Kinds::RunTime::interpret_test_equality(st[0], st[1]));
 			else if (problem_count == 0) {
-				LOG("$0 and $0; $u and $u\n", &(asch->pt0), &(asch->pt1), st[0], st[1]);
+				LOG("$0 and $0; %u and %u\n", &(asch->pt0), &(asch->pt1), st[0], st[1]);
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCompareValues),
 					"that would involve comparing things which don't mean "
 					"anything to me",

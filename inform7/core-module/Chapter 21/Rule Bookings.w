@@ -5,8 +5,6 @@ them as being looseleaf pages, of which we have an unlimited supply: any
 rule can be written on them, and they can be bound into any rulebook at
 any specified position.
 
-@h Definitions.
-
 @ Bookings are simple structures. They record which rule is to appear, and
 whether it's to appear at the front, middle, or back of the rulebook:
 

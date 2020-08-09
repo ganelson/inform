@@ -174,7 +174,7 @@ be caught later on Inform's run.
 	}
 
 	if (safe == FALSE) {
-		LOG("Property value given as $u not $u\n", kinds_of_terms[1], val_kind);
+		LOG("Property value given as %u not %u\n", kinds_of_terms[1], val_kind);
 		Problems::quote_kind(4, kinds_of_terms[1]);
 		Problems::quote_kind(5, val_kind);
 		if (Kinds::get_construct(kinds_of_terms[1]) == CON_property)
@@ -197,7 +197,7 @@ be caught later on Inform's run.
 
 @<Require the subject to be able to have properties@> =
 	if (Kinds::Behaviour::has_properties(kinds_of_terms[0]) == FALSE) {
-		LOG("Property value for impossible domain $u\n", kinds_of_terms[0]);
+		LOG("Property value for impossible domain %u\n", kinds_of_terms[0]);
 		Problems::quote_kind(4, kinds_of_terms[0]);
 		Problems::quote_property(5, prn);
 		StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,

@@ -3,8 +3,6 @@
 To define the provision relation, which determines which properties
 can be held by which objects.
 
-@h Definitions.
-
 @ As we've seen, assertions assigning properties ("A scene has a time called
 the expected duration") result in properties being created -- here "expected
 duration" -- and then in suitable propositions being asserted as true.

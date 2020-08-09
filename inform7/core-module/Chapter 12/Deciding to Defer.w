@@ -4,8 +4,6 @@ To decide whether a proposition can be compiled immediately, in the
 body of the current routine, or whether it must be deferred to a routine of
 its own, which is called from the current routine.
 
-@h Definitions.
-
 @ So far in this chapter, we have written code which suggests that there
 are basically only three ways to compile a proposition: as a test
 ("if the tree is blossoming"), as code forcing it to be true ("now
@@ -403,7 +401,7 @@ void Calculus::Deferrals::emit_test_if_var_matches_description(parse_node *var, 
 	kind *K = Specifications::to_kind(var);
 	prop = Calculus::Propositions::concatenate(
 		Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0)), prop);
-	LOGIF(DESCRIPTION_COMPILATION, "[VMD: $P ($u) matches $D]\n", var, K, prop);
+	LOGIF(DESCRIPTION_COMPILATION, "[VMD: $P (%u) matches $D]\n", var, K, prop);
 	if (Calculus::Propositions::Checker::type_check(prop,
 		Calculus::Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);

@@ -14,8 +14,6 @@ number values. And so on. Probably a better name for this structure would
 be simply "grammar", but that might be confusing in other ways, and
 anyway the ship has sailed.
 
-@h Definitions.
-
 @ There are five different sorts of grammar verb, then, and only the first
 of these is associated with a genuine typed-by-the-player command verb:
 
@@ -111,7 +109,7 @@ void PL::Parsing::Verbs::log(grammar_verb *gv) {
 			break;
 		case GV_IS_TOKEN: LOG("token=%W", gv->name); break;
 		case GV_IS_OBJECT: LOG("object"); break;
-		case GV_IS_VALUE: LOG("value=$u", gv->kind_understood); break;
+		case GV_IS_VALUE: LOG("value=%u", gv->kind_understood); break;
 		case GV_IS_CONSULT: LOG("consult"); break;
 		case GV_IS_PROPERTY_NAME: LOG("property-name"); break;
 		default: LOG("<unknown>"); break;

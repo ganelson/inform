@@ -2,8 +2,6 @@
 
 To cope with promotions from integer to floating-point arithmetic.
 
-@h Definitions.
-
 @ If we do have floating-point arithmetic available, we need to be able to
 play off between real and integer versions of the same kind -- for example,
 using real arithmetic to approximately carry out integer calculations, or vice
@@ -25,7 +23,7 @@ generalised_kind Kinds::FloatingPoint::new_gk(kind *K) {
 }
 
 void Kinds::FloatingPoint::log_gk(generalised_kind gK) {
-	LOG("$u", gK.valid_kind);
+	LOG("%u", gK.valid_kind);
 	if (gK.promotion == 1) { LOG("=>real"); }
 	if (gK.promotion == -1) { LOG("=>int"); }
 }

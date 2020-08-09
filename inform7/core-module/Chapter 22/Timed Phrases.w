@@ -4,8 +4,6 @@ Another way phrases can be invoked is as timed events, which need
 no special Inform data structure and are simply compiled into a pair of
 timetable I6 arrays to be processed at run-time.
 
-@h Definitions.
-
 @ The timing of an event records the time at which a phrase should
 spontaneously happen. This is ordinarily a time value, in minutes from 12
 midnight, for a phrase happening at a specific time -- for instance, one

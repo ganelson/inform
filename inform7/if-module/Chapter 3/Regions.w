@@ -3,8 +3,6 @@
 A plugin providing support for grouping rooms together into named
 and nestable regions.
 
-@h Definitions.
-
 @ The relation "R in S" behaves so differently for regions that we need to
 define it separately, even though there's no difference in English syntax. So:
 

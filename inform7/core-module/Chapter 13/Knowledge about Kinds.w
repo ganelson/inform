@@ -147,16 +147,19 @@ kind *Kinds::Knowledge::super(kind *K) {
 }
 
 int Kinds::Knowledge::test_within(kind *sub, kind *super) {
-	return InferenceSubjects::is_within(Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
+	return InferenceSubjects::is_within(
+		Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
 }
 
 void Kinds::Knowledge::move_within(kind *sub, kind *super) {
-	InferenceSubjects::falls_within(Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
+	if (Kinds::Compare::le(super, K_object))
+		InferenceSubjects::falls_within(
+			Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
 }
 
 @h Problems with kinds.
 
-@d KINDS_PROBLEM_HANDLER Kinds::Knowledge::kinds_problem_handler
+@d PROBLEM_KINDS_CALLBACK Kinds::Knowledge::kinds_problem_handler
 
 =
 void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2) {

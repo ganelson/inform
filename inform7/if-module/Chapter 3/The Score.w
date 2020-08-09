@@ -2,8 +2,6 @@
 
 A plugin to support the maximum score variable.
 
-@h Definitions.
-
 @ For many years this was a defined I6 constant, but then people sent in bug
 reports asking why it wouldn't change in play.
 

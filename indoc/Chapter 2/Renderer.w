@@ -2,8 +2,6 @@
 
 The general output apparatus for writing a block of documentation.
 
-@h Definitions.
-
 @ The output mechanism produces documentation in chunks called "blocks", and
 it has a buffer which stores one block at a time. Each block contains a
 list of paragraphs, numbered from 0.

@@ -3,8 +3,6 @@
 Phrases defined with a list of invocations, rather than inline,
 have to be compiled to I6 routines, and this is where we organise that.
 
-@h Definitions.
-
 @ The nature of the phrase currently being compiled provides a sort of
 context for how we read the definition -- for example, that it makes no
 sense to write "end the action" in a phrase which isn't an action-based
@@ -360,7 +358,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 	if (Kinds::Behaviour::uses_pointer_values(switch_kind)) pointery = TRUE;
 
-	LOG("Switch val is $T for kind $u pointery %d\n", val, switch_kind, pointery);
+	LOG("Switch val is $T for kind %u pointery %d\n", val, switch_kind, pointery);
 
 	local_variable *lvar = NULL;
 	int downs = 0;
@@ -398,7 +396,7 @@ henceforth to be true, so we simply compile empty code in that case.
 							kind *case_kind = Specifications::to_kind(case_spec);
 							instance *I = Rvalues::to_object_instance(case_spec);
 							if (I) case_kind = Instances::to_kind(I);
-							LOGIF(MATCHING, "(h.3) switch kind is $u, case kind is $u\n", switch_kind, case_kind);
+							LOGIF(MATCHING, "(h.3) switch kind is %u, case kind is %u\n", switch_kind, case_kind);
 							if ((Node::get_kind_of_value(case_spec) == NULL) && (I == NULL)) {
 								Problems::quote_source(1, current_sentence);
 								Problems::quote_kind(2, switch_kind);

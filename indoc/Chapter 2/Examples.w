@@ -2,8 +2,6 @@
 
 Keeping track of the metadata on and sequencing of the examples.
 
-@h Definitions.
-
 @ Examples are created in no particular order, and their allocation numbers
 do not necessarily correspond to the numbering displayed in the final
 documentation produced. We'll occasionally refer to ENO, or "example

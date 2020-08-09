@@ -3,8 +3,6 @@
 To register and deregister meanings for excerpts of text as
 nouns, adjectives, imperative phrases and other usages.
 
-@h Definitions.
-
 @ One meaning we find it convenient to have direct access to: the meaning
 of the noun "player".
 

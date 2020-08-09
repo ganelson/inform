@@ -3,8 +3,6 @@
 To write support code for the Standard Library's "group together"
 phrases.
 
-@h Definitions.
-
 @ This section exists to support phrases such as:
 
 >> To group (OS - description of objects) together giving articles: ...

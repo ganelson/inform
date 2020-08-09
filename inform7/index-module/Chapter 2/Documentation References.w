@@ -2,8 +2,6 @@
 
 To enable index or results pages to link into documentation.
 
-@h Definitions.
-
 @ Documentation is arranged in a series of HTML pages identified by
 section number 0, 1, 2, ..., and the index contains little blue help
 icons which link into this. In order to give these links the correct

@@ -2,8 +2,6 @@
 
 To provide the names of phrases as first-class values.
 
-@h Definitions.
-
 @ A few "To..." phrases have names, and can therefore be used as values in their
 own right, a functional-programming sort of device. For example:
 

@@ -4,8 +4,6 @@ To define adjectives such as large, wide or roomy, which make
 implicit comparisons of the size of some numerical property, and which
 (unlike other adjectives) lead to comparative and superlative forms.
 
-@h Definitions.
-
 @ A typical example would be:
 
 >> Definition: A container is roomy if its carrying capacity is 10 or more.

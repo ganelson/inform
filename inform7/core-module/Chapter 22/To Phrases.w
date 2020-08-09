@@ -3,8 +3,6 @@
 To manage the sorting of To... phrases in logical precedence order,
 and keep track of which kinds they are being applied to.
 
-@h Definitions.
-
 @ "To" phrases are compiled only when they are needed, and they can be
 compiled in variant forms depending on the kinds of their arguments; so
 we use the following chits to keep track of what's outstanding:

@@ -3,8 +3,6 @@
 To manage the scalings and offsets used when storing arithmetic
 values at run-time, and/or when using scaled units to refer to them.
 
-@h Definitions.
-
 @ Some literal patterns allow us to give values using scaled units. For
 example, "1 g" and "1 kg" might both define constant values of the same
 kind, but the "1" is read differently in the two cases: it's worth 1000
@@ -157,7 +155,7 @@ some existing notation, in which case the |equiv| flag is set.
 		(sc->scaling_mode == LP_SCALED_DOWN) ||
 		(equiv) ||
 		((sc->scaling_mode == LP_SCALED_AT) && (sc->use_integer_scaling == FALSE))))
-		Kinds::problem_handler(LPCantScaleYet_KINDERROR, NULL, NULL, NULL);
+		KindsModule::problem_handler(LPCantScaleYet_KINDERROR, NULL, NULL, NULL);
 	sc->int_M = sc->int_scalar;
 
 @ The harder case, when some scalings already exist for this kind. Firstly,
@@ -168,7 +166,7 @@ scalings (metric units such as mm, km, etc.) already have their |M| value.
 @<Determine M for a subsequent scaling of the list@> =
 	if (((sc->int_scalar != 1) || (sc->real_scalar != 1.0)) &&
 		((alt) && (sc->scaling_mode == LP_SCALED_AT)))
-		Kinds::problem_handler(LPCantScaleTwice_KINDERROR, NULL, NULL, NULL);
+		KindsModule::problem_handler(LPCantScaleTwice_KINDERROR, NULL, NULL, NULL);
 
 	if (equiv)
 		@<Calculate the multiplier for this equivalent scaling@>

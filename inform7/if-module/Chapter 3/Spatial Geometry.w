@@ -2,8 +2,6 @@
 
 To deal with vectors and cuboids in a three-dimensional integer lattice.
 
-@h Definitions.
-
 @ We will store 3-vectors in the obvious way:
 
 =

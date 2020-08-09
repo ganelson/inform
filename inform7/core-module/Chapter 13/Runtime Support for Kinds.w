@@ -3,8 +3,6 @@
 To compile I6 material needed at runtime to enable kinds
 to function as they should.
 
-@h Definitions.
-
 @ In order to be able to give a reasonably complete description of a kind of
 value at run-time, we need to store small data structures describing them,
 and the following keeps track of which ones we need to make:
@@ -333,7 +331,7 @@ data, not merely the pointer to them, which is a "deep copy".
 
 =
 text_stream *Kinds::RunTime::interpret_test_equality(kind *left, kind *right) {
-	LOGIF(KIND_CHECKING, "Interpreting equality test of kinds $u, $u\n", left, right);
+	LOGIF(KIND_CHECKING, "Interpreting equality test of kinds %u, %u\n", left, right);
 
 	if ((Kinds::Compare::eq(left, K_truth_state)) || (Kinds::Compare::eq(right, K_truth_state)))
 		return I"(*1 && true) == (*2 && true)";
@@ -946,7 +944,7 @@ inter_name *Kinds::RunTime::iname(kind *K) {
 		else if (Kinds::get_construct(K) == CON_table_column) @<Run out inter kind for column@>
 		else if (Kinds::get_construct(K) == CON_relation) @<Run out inter kind for relation@>
 		else {
-			LOG("Unfortunate kind is: $u\n", K);
+			LOG("Unfortunate kind is: %u\n", K);
 			internal_error("unable to represent kind in inter");
 		}
 		if (icon < 0) internal_error("icon unset");

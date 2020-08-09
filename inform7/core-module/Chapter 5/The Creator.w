@@ -770,7 +770,7 @@ if nothing has already been said:
 
 @<Issue an unable-to-create problem message@> =
 	if (problem_count_when_creator_started == problem_count) {
-		LOG("%W: $u\n$T\n", W, create_as, current_sentence);
+		LOG("%W: %u\n$T\n", W, create_as, current_sentence);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_kind(3, create_as);

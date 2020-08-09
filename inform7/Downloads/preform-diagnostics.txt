@@ -7544,7 +7544,7 @@
         property {...} 
           (hits 34/34) (matched: 'property initial appearance') constraint DS = {19} extremes [2, infinity)
 
-<property-name> internal hits 69/340 nti 23 constraint (none) extremes [1, infinity)
+<property-name> internal hits 69/426 nti 23 constraint (none) extremes [1, infinity)
 
 <either-or-property-name> internal hits 0/44 nti 24 constraint (none) extremes [1, infinity)
 

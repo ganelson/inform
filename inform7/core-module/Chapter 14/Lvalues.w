@@ -584,7 +584,7 @@ if simply setting.
 
 =
 char *Lvalues::interpret_store(node_type_t storage_class, kind *left, kind *right, int inc) {
-	LOGIF(KIND_CHECKING, "Interpreting assignment of kinds $u, $u\n", left, right);
+	LOGIF(KIND_CHECKING, "Interpreting assignment of kinds %u, %u\n", left, right);
 	kind_constructor *L = NULL, *R = NULL;
 	if ((left) && (right)) { L = left->construct; R = right->construct; }
 	int form = STORE_WORD_TO_WORD;

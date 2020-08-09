@@ -5,8 +5,6 @@ none. The text "doing something" matches every action, while "throwing
 something at a door in a dark room" is seldom matched. Here we parse such
 text into a data structure called an |action_pattern|.
 
-@h Definitions.
-
 @ Action patterns are essentially a conjunction of specifications -- the
 action must be this, and the noun must be that, and... While
 they allow disjunction in the choice of action, all of that code is a
@@ -1080,7 +1078,7 @@ description.
 			}
 		}
 	}
-	LOGIF(ACTION_PATTERN_PARSING, "Necessary kinds: $u, $u\n", K[0], K[1]);
+	LOGIF(ACTION_PATTERN_PARSING, "Necessary kinds: %u, %u\n", K[0], K[1]);
 	for (entry = anl; entry; prev = entry, entry = entry->next) {
 		if ((entry->delete_this_link == FALSE) && (entry->action_listed)) {
 			int poor_choice = FALSE;
@@ -1572,7 +1570,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			instance *I = Specifications::object_exactly_described_if_any(spec);
 			if ((I) && (Instances::of_kind(I, K_region))) {
 				LOGIF(ACTION_PATTERN_PARSING,
-					"$P on $u : $T\n", spec, verify_as_kind, current_sentence);
+					"$P on %u : $T\n", spec, verify_as_kind, current_sentence);
 				if (adapt_region) {
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 					Produce::down(Emit::tree());

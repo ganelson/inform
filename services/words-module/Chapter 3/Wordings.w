@@ -2,8 +2,6 @@
 
 To manage contiguous word ranges.
 
-@h Definitions.
-
 @ Wordings are an efficient representation of a multi-word name for
 something, using the fact that almost all names derive from contiguous
 runs of words in the source text.

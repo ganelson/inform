@@ -2,8 +2,6 @@
 
 Finding out how a volume divides up into chapters and sections.
 
-@h Definitions.
-
 @ Projects are divided into volumes, which are divided into chapters, which
 in turn are divided into sections.
 

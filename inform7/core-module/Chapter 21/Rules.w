@@ -4,8 +4,6 @@ Rule structures abstract the Inform 7 concept of a rule, which may
 be defined either by an Inform 6 routine or by higher-level source text
 from a phrase structure.
 
-@h Definitions.
-
 @ Rules are not the same thing as phrases. While most do have phrase-like
 definitions,
 
