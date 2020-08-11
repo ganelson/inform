@@ -39,7 +39,7 @@ properties only if its kind passes this test:
 int Kinds::Knowledge::has_properties(kind *K) {
 	if (K == NULL) return FALSE;
 	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
-	if (Kinds::Compare::le(K, K_object)) return TRUE;
+	if (Kinds::Behaviour::is_object(K)) return TRUE;
 	return FALSE;
 }
 
@@ -120,7 +120,7 @@ void Kinds::Knowledge::emit_recursive(inference_subject *within) {
 void Kinds::Knowledge::emit(inference_subject *infs) {
 	kind *K = InferenceSubjects::as_kind(infs);
 	if ((Kinds::Knowledge::has_properties(K)) &&
-		(Kinds::Compare::le(K, K_object) == FALSE))
+		(Kinds::Behaviour::is_object(K) == FALSE))
 		Properties::Emit::emit_subject(infs);
 	Properties::OfValues::check_allowable(K);
 }
@@ -150,7 +150,7 @@ int Kinds::Knowledge::compatible(kind *from, kind *to) {
 }
 
 kind *Kinds::Knowledge::super(kind *K) {
-	if (Kinds::Compare::le(K, K_object)) {
+	if (Kinds::Behaviour::is_object(K)) {
 		inference_subject *infs = Kinds::Knowledge::as_subject(K);
 		return InferenceSubjects::as_kind(InferenceSubjects::narrowest_broader_subject(infs));
 	}
@@ -158,7 +158,7 @@ kind *Kinds::Knowledge::super(kind *K) {
 }
 
 void Kinds::Knowledge::move_within(kind *sub, kind *super) {
-	if (Kinds::Compare::le(super, K_object))
+	if (Kinds::Behaviour::is_object(super))
 		InferenceSubjects::falls_within(
 			Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
 }

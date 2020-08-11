@@ -348,7 +348,7 @@ instance *InferenceSubjects::as_instance(inference_subject *infs) {
 instance *InferenceSubjects::as_object_instance(inference_subject *infs) {
 	if ((infs) && (infs->kind_of_infs == INST_SUB)) {
 		instance *nc = RETRIEVE_POINTER_instance(infs->represents);
-		if (Kinds::Compare::le(Instances::to_kind(nc), K_object))
+		if (Kinds::Behaviour::is_object(Instances::to_kind(nc)))
 			return nc;
 	}
 	return NULL;

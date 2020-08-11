@@ -77,8 +77,8 @@ For both these reasons, then, we perform a simple type-check here.
 		Problems::issue_problem_segment(
 			"The sentence %1 tells me that '%2', which is %4 that varies, "
 			"should start out with the value '%3', but this is %5 and not %4.");
-		if ((Kinds::Compare::le(constant_kind, K_object)) &&
-			(!Kinds::Compare::le(kind_as_declared, K_object)))
+		if ((Kinds::Behaviour::is_object(constant_kind)) &&
+			(!Kinds::Behaviour::is_object(kind_as_declared)))
 			Problems::issue_problem_segment(
 				" %PIn sentences like this, when I can't understand some text, "
 				"I often assume that it's meant to be a new object. So it may "

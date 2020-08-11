@@ -82,12 +82,12 @@ int Properties::ProvisionRelation::REL_compile(int task, binary_predicate *bp,
 		property *prn = Rvalues::to_property(asch->pt1.constant);
 		if (K) {
 			if (prn) {
-				if (Kinds::Compare::le(K, K_object))
+				if (Kinds::Behaviour::is_object(K))
 					@<Compile an I6 run-time test of property provision@>
 				else
 					@<Determine the result now, since we know already, and compile only the outcome@>;
 				return TRUE;
-			} else if (Kinds::Compare::le(K, K_object)) {
+			} else if (Kinds::Behaviour::is_object(K)) {
 				kind *PK = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
 				if (Kinds::get_construct(PK) == CON_property) {
 					if (Kinds::Compare::eq(K_truth_state, Kinds::unary_construction_material(PK)))

@@ -94,7 +94,7 @@ instance *Rvalues::to_instance(parse_node *spec) { CONV_TO(instance) }
 =
 int Rvalues::is_object(parse_node *spec) {
 	if ((Node::is(spec, CONSTANT_NT)) &&
-		(Kinds::Compare::le(Node::get_kind_of_value(spec), K_object)))
+		(Kinds::Behaviour::is_object(Node::get_kind_of_value(spec))))
 		return TRUE;
 	return FALSE;
 }
@@ -662,7 +662,7 @@ kinds of value:
 		if (N) Emit::holster(VH, N);
 		return;
 	}
-	if (Kinds::Compare::le(kind_of_constant, K_object)) {
+	if (Kinds::Behaviour::is_object(kind_of_constant)) {
 		if (Annotations::read_int(spec_found, self_object_ANNOT)) {
 			if (Holsters::data_acceptable(VH)) {
 				Emit::holster(VH, Hierarchy::find(SELF_HL));

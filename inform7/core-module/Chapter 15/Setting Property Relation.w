@@ -164,7 +164,7 @@ be caught later on Inform's run.
 	int compatible = Kinds::Compare::compatible(kinds_of_terms[1], val_kind);
 	if (compatible == ALWAYS_MATCH) safe = TRUE;
 	if (compatible == SOMETIMES_MATCH) {
-		if (Kinds::Compare::le(val_kind, K_object) == FALSE) safe = TRUE;
+		if (Kinds::Behaviour::is_object(val_kind) == FALSE) safe = TRUE;
 		#ifdef IF_MODULE
 		if ((Kinds::Compare::eq(val_kind, K_direction)) ||
 			(Kinds::Compare::eq(val_kind, K_room)) ||
@@ -226,7 +226,7 @@ int Properties::SettingRelations::REL_compile(int task,
 	binary_predicate *bp, annotated_i6_schema *asch) {
 	kind *K = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
 
-	if (Kinds::Compare::le(K, K_object)) return FALSE;
+	if (Kinds::Behaviour::is_object(K)) return FALSE;
 
 	property *prn = bp->set_property;
 	switch (task) {

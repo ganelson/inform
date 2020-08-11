@@ -266,8 +266,8 @@ if it turns out to be news, we infer |IS_ROOM_INF| with certainty.
 =
 int PL::Spatial::spatial_set_kind_notify(instance *I, kind *k) {
 	kind *kw = Instances::to_kind(I);
-	if ((!(Kinds::Compare::le(kw, K_room))) &&
-		(Kinds::Compare::le(k, K_room)))
+	if ((!(Kinds::Behaviour::is_object_of_kind(kw, K_room))) &&
+		(Kinds::Behaviour::is_object_of_kind(k, K_room)))
 		World::Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), CERTAIN_CE,
 			NULL, NULL);
 	return FALSE;
@@ -665,7 +665,7 @@ when it's legitimately a door.
 	parse_node *sentence_setting_kind = Instances::get_kind_set_sentence(I);
 	if ((designers_choice == NULL) ||
 		((geography_certainty == CERTAIN_CE) &&
-			(Kinds::Compare::le(geography_choice, designers_choice))))
+			(Kinds::Behaviour::is_object_of_kind(geography_choice, designers_choice))))
 		@<Accept the geography choice, since it only refines what we already know@>
 	else if ((geography_certainty == CERTAIN_CE) &&
 			(!((Kinds::Compare::eq(designers_choice, K_door)) &&

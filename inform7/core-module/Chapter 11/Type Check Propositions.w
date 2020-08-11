@@ -162,7 +162,7 @@ treat it as a piece of nonsense, like "if Wednesday is not custard".
 			int v = pl->terms[0].variable;
 			if (v >= 0) {
 				kind *new_kind = pl->assert_kind;
-				if (Kinds::Compare::le(new_kind, K_object)) new_kind = K_object;
+				if (Kinds::Behaviour::is_object(new_kind)) new_kind = K_object;
 				kind *old_kind = vta.assigned_kinds[v];
 				if (old_kind) {
 					if (Kinds::Compare::compatible(old_kind, new_kind) == NEVER_MATCH) {
@@ -254,7 +254,7 @@ but not meaningless.
 
 @<A KIND atom is not allowed if it can be proved to be false@> =
 	kind *need_to_find = pl->assert_kind;
-	if (Kinds::Compare::le(need_to_find, K_object)) need_to_find = K_object;
+	if (Kinds::Behaviour::is_object(need_to_find)) need_to_find = K_object;
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
 	if (Kinds::Compare::compatible(actually_find, need_to_find) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)

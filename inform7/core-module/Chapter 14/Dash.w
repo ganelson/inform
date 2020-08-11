@@ -1459,7 +1459,7 @@ mistake having been made.
 		if ((lvar) && (LocalVariables::protected(lvar)))
 			outcome = NEVER_MATCH;
 		else {
-			if (Kinds::Compare::le(Specifications::to_kind(target_spec), K_object))
+			if (Kinds::Behaviour::is_object(Specifications::to_kind(target_spec)))
 				@<Step (4I.d.1) Police an assignment to an object@>;
 
 			if (ph->type_data.token_sequence[0].construct != NEW_LOCAL_PT_CONSTRUCT)
@@ -1865,7 +1865,7 @@ us there.
 	inference_subject *owning_subject = InferenceSubjects::from_specification(the_owner);
 	if (owning_subject == NULL) owning_subject = Kinds::Knowledge::as_subject(K2);
 	if (World::Permissions::find(owning_subject, prn, TRUE) == NULL) {
-		if ((Kinds::Compare::le(K2, K_object) == FALSE) ||
+		if ((Kinds::Behaviour::is_object(K2) == FALSE) ||
 			((Rvalues::is_object(the_owner)) &&
 				(Rvalues::is_self_object_constant(the_owner) == FALSE)))
 			@<Issue a problem message for not being allowed this property@>;
@@ -3380,7 +3380,7 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 	if (Specifications::is_description(spec)) Dash::check_condition(spec);
 	else Dash::check_value(spec, NULL); /* to force a generic return kind to be evaluated */
 	kind_found = Specifications::to_kind(spec);
-	if ((Kinds::get_construct(kind_found) == CON_property) && (Kinds::Compare::le(K, K_object)))
+	if ((Kinds::get_construct(kind_found) == CON_property) && (Kinds::Behaviour::is_object(K)))
 		return TRUE;
 	if ((K_understanding) && (Kinds::Compare::eq(kind_found, K_snippet)) &&
 		(Kinds::Compare::eq(K, K_understanding)))

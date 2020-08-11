@@ -427,7 +427,7 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 	if (Specifications::is_description(spec)) {
 		kind *K = Specifications::to_kind(spec);
 		if ((K_understanding) &&
-			(Kinds::Compare::le(K, K_object) == FALSE) &&
+			(Kinds::Behaviour::is_object(K) == FALSE) &&
 			(Kinds::Compare::eq(K, K_understanding) == FALSE) &&
 			(Kinds::Behaviour::request_I6_GPR(K) == FALSE)) {
 			Problems::quote_source(1, current_sentence);
@@ -911,7 +911,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						continue_loop_on_fail = FALSE;
 					} else {
 						kind *K = BinaryPredicates::term_kind(bp, 1);
-						if (Kinds::Compare::le(K, K_object) == FALSE) {
+						if (Kinds::Behaviour::is_object(K) == FALSE) {
 							Problems::quote_source(1, current_sentence);
 							Problems::quote_source(2, pn);
 							Problems::quote_kind(3, K);
@@ -1050,7 +1050,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 	if (Specifications::is_kind_like(spec)) {
 		kind *K = Node::get_kind_of_value(spec);
 		if ((K_understanding) &&
-			(Kinds::Compare::le(K, K_object) == FALSE) &&
+			(Kinds::Behaviour::is_object(K) == FALSE) &&
 			(Kinds::Compare::eq(K, K_understanding) == FALSE)) {
 			if (Kinds::Behaviour::offers_I6_GPR(K)) {
 				text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
@@ -1212,7 +1212,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							else
 								Emit::array_iname_entry(Kinds::RunTime::get_kind_GPR_iname(K));
 						}
-					} else if (Kinds::Compare::le(K, K_object)) {
+					} else if (Kinds::Behaviour::is_object(K)) {
 						if (code_mode) {
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);
 							Produce::down(Emit::tree());

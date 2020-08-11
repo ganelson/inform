@@ -64,7 +64,7 @@ int Calculus::Equality::REL_typecheck(binary_predicate *bp,
 
 	if (Plugins::Call::typecheck_equality(kinds_of_terms[0], kinds_of_terms[1]))
 		return ALWAYS_MATCH;
-	if ((Kinds::Compare::le(kinds_of_terms[0], K_object)) &&
+	if ((Kinds::Behaviour::is_object(kinds_of_terms[0])) &&
 		(Properties::Conditions::name_can_coincide_with_property(kinds_of_terms[1])))
 		@<Apply rule for "is" applied to an object and a value@>
 	else if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[1], K_understanding)) &&
@@ -190,7 +190,7 @@ int Calculus::Equality::REL_compile(int task, binary_predicate *bp, annotated_i6
 	st[0] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
 	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
 
-	if ((Kinds::Compare::le(st[0], K_object)) &&
+	if ((Kinds::Behaviour::is_object(st[0])) &&
 		(Properties::Conditions::name_can_coincide_with_property(st[1])) && (Properties::Conditions::get_coinciding_property(st[1])))
 		@<Handle the case of setting a property of A separately@>;
 
@@ -315,7 +315,7 @@ one that's more helpfully specific and return |TRUE|.
 
 @<Issue problem message for being unable to set equal@> =
 	if (Rvalues::to_instance(asch->pt0.constant)) {
-		if (Kinds::Compare::le(Specifications::to_kind(asch->pt0.constant), K_object))
+		if (Kinds::Behaviour::is_object(Specifications::to_kind(asch->pt0.constant)))
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantEquateValues),
 				"equality is not something I can change",
 				"so either those are already the same or are different, and I "

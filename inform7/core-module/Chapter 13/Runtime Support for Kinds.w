@@ -39,7 +39,7 @@ kinds being compiled to an I6 |Class|.
 
 =
 inter_name *Kinds::RunTime::I6_classname(kind *K) {
-	if (Kinds::Compare::le(K, K_object)) return Kinds::RunTime::iname(K);
+	if (Kinds::Behaviour::is_object(K)) return Kinds::RunTime::iname(K);
 	internal_error("no I6 classname available");
 	return NULL;
 }
@@ -59,7 +59,7 @@ noun *Kinds::RunTime::register(kind *K, kind *super, wording W, general_pointer 
 		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
 		KIND_SLOW_MC, data, Task::language_of_syntax());
 	Sentences::Headings::initialise_noun_resolution(nt);
- 	if (Kinds::Compare::le(super, K_object))
+ 	if (Kinds::Behaviour::is_object(super))
  		Kinds::Behaviour::set_range_number(K, no_kinds_of_object++);
  	return nt;
 }
@@ -1105,7 +1105,7 @@ void Kinds::RunTime::compile_nnci(inter_name *name, int val) {
 void Kinds::RunTime::compile_instance_counts(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
-		if ((Kinds::Behaviour::is_an_enumeration(K)) || (Kinds::Compare::le(K, K_object))) {
+		if ((Kinds::Behaviour::is_an_enumeration(K)) || (Kinds::Behaviour::is_object(K))) {
 			TEMPORARY_TEXT(ICN)
 			WRITE_TO(ICN, "ICOUNT_");
 			Kinds::Textual::write(ICN, K);

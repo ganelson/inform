@@ -142,7 +142,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 @<Forbid generalisation about fixed kinds@> =
 	kind *instance_kind = InferenceSubjects::as_nonobject_kind(k);
 	if ((instance_kind) &&
-		(Kinds::Compare::le(instance_kind, K_object) == FALSE) &&
+		(Kinds::Behaviour::is_object(instance_kind) == FALSE) &&
 		(Kinds::Behaviour::has_named_constant_values(instance_kind) == FALSE)) {
 		LOG("$T", look_for);
 		LOG("$T", what_to_make);

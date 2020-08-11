@@ -63,7 +63,7 @@ and it seems best to reject the extra complexity needed.
 
 =
 void Properties::OfValues::check_allowable(kind *K) {
-	if (Kinds::Compare::le(K, K_object)) return;
+	if (Kinds::Behaviour::is_object(K)) return;
 	if (Kinds::Behaviour::definite(K) == FALSE) return;
 	property *prn;
 	property_permission *pp;

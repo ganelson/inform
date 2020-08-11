@@ -18,7 +18,7 @@ void Phrases::Phrasal::define_adjective_by_phrase(parse_node *p, phrase *ph, wor
 			Calculus::Schemas::modify(sch, "(%n(*1))", Phrases::iname(ph));
 			*CW = def->domain_calling;
 			*K = Adjectives::Meanings::get_domain_forcing(def->am_of_def);
-			if ((*K == NULL) || (Kinds::Compare::le(*K, K_object)))
+			if ((*K == NULL) || (Kinds::Behaviour::is_object(*K)))
 				*K = K_object;
 			return;
 		}

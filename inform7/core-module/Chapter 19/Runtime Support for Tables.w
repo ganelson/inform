@@ -321,7 +321,7 @@ should return |FALSE|; if in any doubt, we must return |TRUE|.
 =
 int Tables::Support::requires_blanks_bitmap(kind *K) {
 	if (K == NULL) return FALSE;
-	if (Kinds::Compare::le(K, K_object)) return FALSE;
+	if (Kinds::Behaviour::is_object(K)) return FALSE;
 	if (Kinds::Behaviour::is_an_enumeration(K)) return FALSE;
 	return TRUE;
 }

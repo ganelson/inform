@@ -128,7 +128,7 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 	@<Determine the kind of what to make@>;
 	@<Check that this is a kind where it makes sense to enumerate new values@>;
 	K = Kinds::weaken(K, K_object);
-	if (!(Kinds::Compare::le(K, K_object))) Kinds::RunTime::set_defined_by_table(K, t);
+	if (!(Kinds::Behaviour::is_object(K))) Kinds::RunTime::set_defined_by_table(K, t);
 	t->kind_defined_in_this_table = K;
 	Tables::Columns::set_kind(t->columns[0].column_identity, t, K);
 	@<Create values for this kind as enumerated by names in the first column@>;
@@ -139,7 +139,7 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 	int defining_objects = FALSE;
 	if (Specifications::is_kind_like(what)) {
 		K = Specifications::to_kind(what);
-		if (Kinds::Compare::le(K, K_object)) defining_objects = TRUE;
+		if (Kinds::Behaviour::is_object(K)) defining_objects = TRUE;
 	} else if (Specifications::object_exactly_described_if_any(what)) {
 		@<Issue PM_TableDefiningObject problem@>
 		return;
@@ -162,7 +162,7 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 		"define a single specific object, as here, is not allowed.");
 
 @<Check that this is a kind where it makes sense to enumerate new values@> =
-	if ((Kinds::Compare::le(K, K_object) == FALSE) &&
+	if ((Kinds::Behaviour::is_object(K) == FALSE) &&
 		(Kinds::Behaviour::has_named_constant_values(K) == FALSE)) {
 		LOG("K is %u\n", K);
 		Problems::quote_source(1, current_sentence);

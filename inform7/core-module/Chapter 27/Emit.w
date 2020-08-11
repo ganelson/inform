@@ -549,7 +549,7 @@ inter_name *Emit::named_iname_constant(inter_name *name, kind *K, inter_name *in
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	inter_symbol *alias = (iname)?InterNames::to_symbol(iname):NULL;
 	if (alias == NULL) {
-		if (Kinds::Compare::le(K, K_object)) alias = Site::veneer_symbol(Emit::tree(), NOTHING_VSYMB);
+		if (Kinds::Behaviour::is_object(K)) alias = Site::veneer_symbol(Emit::tree(), NOTHING_VSYMB);
 		else internal_error("can't handle a null alias");
 	}
 	inter_ti val1 = 0, val2 = 0;

@@ -1123,7 +1123,7 @@ this ought to be allowed...
 		return;
 	}
 
-	if (Kinds::Compare::le(Specifications::to_kind(Node::get_evaluation(px)), K_object))
+	if (Kinds::Behaviour::is_object(Specifications::to_kind(Node::get_evaluation(px))))
 		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_KindRelated),
 			"something described only by its kind should not be given a "
 			"specific place or role in the world",
@@ -1505,7 +1505,7 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 @<Case 40 - COMMON NOUN vs PROPER NOUN@> =
 	parse_node *spec = Node::get_evaluation(py);
 	@<Silently pass sentences like "The colours are red and blue."@>;
-	if (Kinds::Compare::le(Specifications::to_kind(Node::get_evaluation(py)), K_object))
+	if (Kinds::Behaviour::is_object(Specifications::to_kind(Node::get_evaluation(py))))
 		Assertions::issue_value_equation_problem(py, px);
 	else Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_CommonIsProper),
 		"this seems to say that a general description is something else",

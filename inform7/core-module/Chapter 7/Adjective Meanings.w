@@ -271,11 +271,11 @@ int Adjectives::Meanings::applicable_to(adjective *aph,
 				am->setting_domain = FALSE;
 			}
 			kind *am_kind = Adjectives::Meanings::get_domain(am);
-			if (Kinds::Compare::le(am_kind, K_object)) {
+			if (Kinds::Behaviour::is_object(am_kind)) {
 				if (K == NULL) return TRUE;
-				if (Kinds::Compare::le(K, K_object)) return TRUE;
+				if (Kinds::Behaviour::is_object(K)) return TRUE;
 			} else {
-				if ((K) && (Kinds::Compare::le(K, K_object) == FALSE) &&
+				if ((K) && (Kinds::Behaviour::is_object(K) == FALSE) &&
 					(Kinds::Compare::compatible(K, am_kind) == ALWAYS_MATCH))
 					return TRUE;
 			}
@@ -588,7 +588,7 @@ disambiguation is used when applying adjectives to objects.
 
 =
 void Adjectives::Meanings::set_domain_from_kind(adjective_meaning *am, kind *K) {
-	if ((K == NULL) || (Kinds::Compare::le(K, K_object))) K = K_object;
+	if ((K == NULL) || (Kinds::Behaviour::is_object(K))) K = K_object;
 	am->domain_infs = Kinds::Knowledge::as_subject(K);
 	am->domain_kind = K;
 	am->domain_text = EMPTY_WORDING;
@@ -845,7 +845,7 @@ i6_schema *Adjectives::Meanings::set_i6_schema(adjective_meaning *am,
 	int T, int via_support) {
 	kind *K = Adjectives::Meanings::get_domain(am);
 	if (K == NULL) K = K_object;
-	if (Kinds::Compare::le(K, K_object)) via_support = TRUE;
+	if (Kinds::Behaviour::is_object(K)) via_support = TRUE;
 	am->task_via_support_routine[T] = via_support;
 	return &(am->i6s_for_runtime_task[T]);
 }

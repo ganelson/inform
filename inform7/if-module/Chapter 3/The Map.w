@@ -211,14 +211,14 @@ int PL::Map::map_set_subkind_notify(kind *sub, kind *super) {
 				"geography of the physical world.");
 		return TRUE;
 	}
-	if ((K_backdrop) && (sub == K_door) && (Kinds::Compare::le(super, K_backdrop))) {
+	if ((K_backdrop) && (sub == K_door) && (Kinds::Behaviour::is_object_of_kind(super, K_backdrop))) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DoorAdrift),
 				"'door' is not allowed to be a kind of 'backdrop'",
 				"because it's too fundamental to the way Inform maps out the "
 				"geography of the physical world.");
 		return TRUE;
 	}
-	if ((K_backdrop) && (sub == K_backdrop) && (Kinds::Compare::le(super, K_door))) {
+	if ((K_backdrop) && (sub == K_backdrop) && (Kinds::Behaviour::is_object_of_kind(super, K_door))) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BackdropAdrift),
 				"'backdrop' is not allowed to be a kind of 'door'",
 				"because it's too fundamental to the way Inform maps out the "
@@ -287,8 +287,8 @@ no need to translate this to other languages.)
 @ =
 int PL::Map::map_set_kind_notify(instance *I, kind *k) {
 	kind *kw = Instances::to_kind(I);
-	if ((!(Kinds::Compare::le(kw, K_direction))) &&
-		(Kinds::Compare::le(k, K_direction))) {
+	if ((!(Kinds::Behaviour::is_object_of_kind(kw, K_direction))) &&
+		(Kinds::Behaviour::is_object_of_kind(k, K_direction))) {
 		wording IW = Instances::get_name(I, FALSE);
 		@<Vet the direction name for acceptability@>;
 		if (<notable-map-directions>(IW)) {
@@ -342,7 +342,7 @@ void PL::Map::build_exits_array(void) {
 	instance *I;
 	int d = 0;
 	LOOP_OVER_OBJECT_INSTANCES(I) {
-		if (Kinds::Compare::le(Instances::to_kind(I), K_direction)) {
+		if (Kinds::Behaviour::is_object_of_kind(Instances::to_kind(I), K_direction)) {
 			PF_I(map, I)->direction_index = d++;
 		}
 	}

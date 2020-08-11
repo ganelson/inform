@@ -296,7 +296,7 @@ void Properties::EitherOr::ADJ_compiling_soon(adjective_meaning *am, property *p
 	Adjectives::Meanings::set_ready_flag(am);
 
 	kind *K = Adjectives::Meanings::get_domain(am);
-	if (Kinds::Compare::le(K, K_object))
+	if (Kinds::Behaviour::is_object(K))
 		@<Set the schemata for an either/or property adjective with objects as domain@>
 	else
 		@<Set the schemata for an either/or property adjective with some other domain@>;

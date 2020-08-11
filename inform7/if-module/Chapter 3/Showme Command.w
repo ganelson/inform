@@ -43,7 +43,7 @@ void PL::Showme::compile_SHOWME_details(void) {
 void PL::Showme::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol *na_s) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::le(K, K_object))
+		if (Kinds::Behaviour::is_object(K))
 			PL::Showme::compile_SHOWME_type_subj(val, Kinds::Knowledge::as_subject(K), t_0_s, na_s);
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
@@ -173,7 +173,7 @@ routine for colours; and the best thing is to print nothing at all.
 	if (K) {
 		int require_nonzero = FALSE;
 		if ((Properties::Valued::is_used_for_non_typesafe_relation(prn)) ||
-			(Kinds::Compare::le(K, K_object)))
+			(Kinds::Behaviour::is_object(K)))
 			require_nonzero = TRUE;
 		if (require_nonzero) {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);

@@ -931,13 +931,13 @@ by any GPR existing because of the above routines.)
 =
 void PL::Parsing::Verbs::set_parsing_grammar(kind *K, grammar_verb *gv) {
 	if (K == NULL) return;
-	if (Kinds::Compare::le(K, K_object)) internal_error("wrong way to handle object grammar");
+	if (Kinds::Behaviour::is_object(K)) internal_error("wrong way to handle object grammar");
 	K->construct->understand_as_values = gv;
 }
 
 grammar_verb *PL::Parsing::Verbs::get_parsing_grammar(kind *K) {
 	if (K == NULL) return NULL;
-	if (Kinds::Compare::le(K, K_object)) internal_error("wrong way to handle object grammar");
+	if (Kinds::Behaviour::is_object(K)) internal_error("wrong way to handle object grammar");
 	return K->construct->understand_as_values;
 }
 

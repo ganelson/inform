@@ -830,7 +830,7 @@ an instance of the kind "bystander".
 int LocalVariables::permit_as_new_local(parse_node *found, int as_calling) {
 	if (Node::is(found, AMBIGUITY_NT)) found = found->down;
 	if ((Specifications::is_kind_like(found)) &&
-		(Kinds::Compare::le(Specifications::to_kind(found), K_object) == FALSE)) return FALSE;
+		(Kinds::Behaviour::is_object(Specifications::to_kind(found)) == FALSE)) return FALSE;
 	if ((Node::is(found, UNKNOWN_NT)) ||
 		(Node::is(found, NONLOCAL_VARIABLE_NT)) ||
 		(Specifications::is_description(found)) ||
@@ -1048,7 +1048,7 @@ void LocalVariables::end_condition_emit(void) {
 				Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
 				kind *K = LocalVariables::kind(lvar);
 				if ((K == NULL) ||
-					(Kinds::Compare::le(K, K_object)) ||
+					(Kinds::Behaviour::is_object(K)) ||
 					(Kinds::Behaviour::definite(K) == FALSE) ||
 					(Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING, "'called' value") != TRUE))
 					Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);

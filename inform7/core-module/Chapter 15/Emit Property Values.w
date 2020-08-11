@@ -48,7 +48,7 @@ each one is marked when visited.
 
 @<Compile the actual object@> =
 	@<Annotate with the spatial depth@>;
-	if ((I) && (Kinds::Compare::le(Instances::to_kind(I), K_object))) words_used++;
+	if ((I) && (Kinds::Behaviour::is_object(Instances::to_kind(I)))) words_used++;
 	@<Append any inclusions the source text requested@>;
 	Properties::begin_traverse();
 	@<Emit inferred object properties@>;
@@ -56,7 +56,7 @@ each one is marked when visited.
 
 @<Annotate with the spatial depth@> =
 	#ifdef IF_MODULE
-	if ((I) && (Kinds::Compare::le(Instances::to_kind(I), K_object))) {
+	if ((I) && (Kinds::Behaviour::is_object(Instances::to_kind(I)))) {
 		int AC = PL::Spatial::get_definition_depth(I);
 		if (AC > 0) Produce::annotate_i(iname, ARROW_COUNT_IANN, (inter_ti) AC);
 	}

@@ -141,7 +141,7 @@ full, whereas a "tuna fish" (an object) can be called just "tuna".
 @<Make a noun for the new instance@> =
 	int exact_parsing = TRUE, any_parsing = TRUE;
 	if ((cp) && (Properties::Conditions::of_what(cp))) any_parsing = FALSE;
-	if (Kinds::Compare::le(K, K_object)) exact_parsing = FALSE;
+	if (Kinds::Behaviour::is_object(K)) exact_parsing = FALSE;
 
 	if (any_parsing) {
 		if (exact_parsing)
@@ -172,7 +172,7 @@ for objects within kinds is certainly useful, but it's harder to do and will
 be done later on: see the "Instance Counts" plugin.
 
 @<Add the new instance to its enumeration@> =
-	if (!(Kinds::Compare::le(K, K_object))) {
+	if (!(Kinds::Behaviour::is_object(K))) {
 		if (Kinds::Behaviour::has_named_constant_values(K) == FALSE)
 			internal_error("tried to make an instance value for impossible kind");
 		I->enumeration_index = Kinds::Behaviour::new_enumerated_value(Task::syntax_tree(), K);
@@ -250,7 +250,7 @@ void Instances::write(OUTPUT_STREAM, instance *I) {
 	if (I== NULL) { WRITE("<null instance>"); return; }
 	if (Streams::I6_escapes_enabled(DL) == FALSE) WRITE("I%d", I->allocation_id);
 	Nouns::write(OUT, I->tag);
-	if (!(Kinds::Compare::le(Instances::to_kind(I), K_object))) {
+	if (!(Kinds::Behaviour::is_object(Instances::to_kind(I)))) {
 		WRITE("[");
 		Kinds::Textual::write(OUT, Instances::to_kind(I));
 		WRITE("]");
@@ -368,7 +368,7 @@ instance *Instances::parse_object(wording W) {
 		parse_node *pn = RETRIEVE_POINTER_parse_node(Nouns::meaning(nt));
 		if (Node::is(pn, CONSTANT_NT)) {
 			kind *K = Node::get_kind_of_value(pn);
-			if (Kinds::Compare::le(K, K_object))
+			if (Kinds::Behaviour::is_object(K))
 				return Node::get_constant_instance(pn);
 		}
 	}
@@ -705,7 +705,7 @@ int Instances::SUBJ_compile_all(void) {
 	LOOP_OVER_OBJECTS_IN_COMPILATION_SEQUENCE(I)
 		Instances::SUBJ_compile(Instances::as_subject(I));
 	LOOP_OVER(I, instance)
-		if (Kinds::Compare::le(Instances::to_kind(I), K_object) == FALSE)
+		if (Kinds::Behaviour::is_object(Instances::to_kind(I)) == FALSE)
 			Instances::SUBJ_compile(Instances::as_subject(I));
 	#ifdef IF_MODULE
 	PL::Naming::compile_small_names();

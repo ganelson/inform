@@ -240,8 +240,8 @@ this means using up heap memory allocated dynamically at run-time.
 @<Work out the kinds of the terms in the relation@> =
 
 	rvno = TRUE;
-	if ((Kinds::Compare::le(RR->terms[0].domain, K_object)) &&
-		(Kinds::Compare::le(RR->terms[1].domain, K_object))) rvno = FALSE;
+	if ((Kinds::Behaviour::is_object(RR->terms[0].domain)) &&
+		(Kinds::Behaviour::is_object(RR->terms[1].domain))) rvno = FALSE;
 
 	if (Wordings::empty(RR->CONW)) {
 		if ((Kinds::Compare::lt(RR->terms[0].domain, K_object) == FALSE) &&
@@ -283,12 +283,12 @@ omitted from the index.
 		storage_kind = RR->terms[0].domain;
 		if (RR->terms[1].domain) PK = RR->terms[1].domain;
 	}
-	if ((PK) && (Kinds::Compare::le(PK, K_object) == FALSE)) Properties::Valued::set_kind(prn, PK);
+	if ((PK) && (Kinds::Behaviour::is_object(PK) == FALSE)) Properties::Valued::set_kind(prn, PK);
 	if (storage_kind) storage_infs = Kinds::Knowledge::as_subject(storage_kind);
 	else storage_infs = NULL;
-	if (Kinds::Compare::le(storage_kind, K_object) == FALSE) bp->storage_kind = storage_kind;
+	if (Kinds::Behaviour::is_object(storage_kind) == FALSE) bp->storage_kind = storage_kind;
 	if (((RR->terms[0].unique) || (RR->terms[1].unique)) && (PK) &&
-		(Kinds::Compare::le(PK, K_object) == FALSE))
+		(Kinds::Behaviour::is_object(PK) == FALSE))
 		Properties::Valued::now_used_for_non_typesafe_relation(prn);
 
 @<Issue a problem message since this won't be stored in a property@> =
@@ -314,7 +314,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 @<Complete as an asymmetric one-to-one BP@> =
 	bp->form_of_relation = Relation_OtoO;
 	provide_prn = TRUE;
-	if (Kinds::Compare::le(storage_kind, K_object)) {
+	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->make_true_function = Calculus::Schemas::new("Relation_Now1to1(*2,%n,*1)", i6_prn_name);
 		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*2,%n,*1)", i6_prn_name);
 	} else {
@@ -329,7 +329,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 @<Complete as a one-to-various BP@> =
 	bp->form_of_relation = Relation_OtoV;
 	provide_prn = TRUE;
-	if (Kinds::Compare::le(storage_kind, K_object)) {
+	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->make_true_function = Calculus::Schemas::new("*2.%n = *1", i6_prn_name);
 		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*2,%n,*1)", i6_prn_name);
 	} else {
@@ -344,7 +344,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 @<Complete as a various-to-one BP@> =
 	bp->form_of_relation = Relation_VtoO;
 	provide_prn = TRUE;
-	if (Kinds::Compare::le(storage_kind, K_object)) {
+	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->make_true_function = Calculus::Schemas::new("*1.%n = *2", i6_prn_name);
 		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*1,%n,*2)", i6_prn_name);
 	} else {
@@ -374,7 +374,7 @@ another".
 @<Complete as a symmetric one-to-one BP@> =
 	bp->form_of_relation = Relation_Sym_OtoO;
 	provide_prn = TRUE;
-	if (Kinds::Compare::le(storage_kind, K_object)) {
+	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->make_true_function = Calculus::Schemas::new("Relation_NowS1to1(*2,%n,*1)", i6_prn_name);
 		bp->make_false_function = Calculus::Schemas::new("Relation_NowSN1to1(*2,%n,*1)", i6_prn_name);
 	} else {
@@ -405,7 +405,7 @@ other in groups".
 	bp->form_of_relation = Relation_Equiv;
 	bp->arbitrary = TRUE;
 	provide_prn = TRUE;
-	if (Kinds::Compare::le(storage_kind, K_object)) {
+	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->test_function = Calculus::Schemas::new("(*1.%n == *2.%n)", i6_prn_name, i6_prn_name);
 		bp->make_true_function = Calculus::Schemas::new("Relation_NowEquiv(*1,%n,*2)", i6_prn_name);
 		bp->make_false_function = Calculus::Schemas::new("Relation_NowNEquiv(*1,%n,*2)", i6_prn_name);
@@ -448,7 +448,7 @@ have the form $B(x, f_1(x))$.
 		i6_schema *f0 = NULL, *f1 = NULL;
 		if (RR->terms[0].unique) {
 			if (RR->terms[1].domain) {
-				if (Kinds::Compare::le(RR->terms[1].domain, K_object))
+				if (Kinds::Behaviour::is_object(RR->terms[1].domain))
 					f0 = Calculus::Schemas::new("(*1.%n)", i6_prn_name);
 				else
 					f0 = Calculus::Schemas::new("(GProperty(%k, *1, %n))",
@@ -456,7 +456,7 @@ have the form $B(x, f_1(x))$.
 			}
 		} else if (RR->terms[1].unique) {
 			if (RR->terms[0].domain) {
-				if (Kinds::Compare::le(RR->terms[0].domain, K_object))
+				if (Kinds::Behaviour::is_object(RR->terms[0].domain))
 					f1 = Calculus::Schemas::new("(*1.%n)", i6_prn_name);
 				else
 					f1 = Calculus::Schemas::new("(GProperty(%k, *1, %n))",
@@ -490,7 +490,7 @@ to have a name:
 int Relations::check_finite_range(kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
 	if (K == NULL) return TRUE; /* to recover from earlier problems */
-	if ((Kinds::Compare::le(K, K_object)) || (Kinds::Behaviour::definite(K) == FALSE))
+	if ((Kinds::Behaviour::is_object(K)) || (Kinds::Behaviour::definite(K) == FALSE))
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RangeOverlyBroad),
 			"relations aren't allowed to range over all 'objects' or all 'values'",
 			"as these are too broad. A relation has to be between two kinds of "
@@ -1801,7 +1801,7 @@ in turn.
 =
 void Relations::equivalence_relation_add_properties(binary_predicate *bp) {
 	kind *k = BinaryPredicates::term_kind(bp, 1);
-	if (Kinds::Compare::le(k, K_object)) {
+	if (Kinds::Behaviour::is_object(k)) {
 		instance *I;
 		LOOP_OVER_INSTANCES(I, k) {
 			inference_subject *infs = Instances::as_subject(I);

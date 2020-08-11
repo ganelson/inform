@@ -60,7 +60,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 	kind *R = Specifications::to_kind(nft->the_filter);
 	kind *K = NonlocalVariables::kind(I6_noun_VAR);
 	NonlocalVariables::set_kind(I6_noun_VAR, R);
-	if (Kinds::Compare::le(R, K_object) == FALSE) nft->parse_using_gpr = TRUE;
+	if (Kinds::Behaviour::is_object(R) == FALSE) nft->parse_using_gpr = TRUE;
 
 	packaging_state save = Routines::begin(nft->nft_iname);
 	if (nft->parse_using_gpr) {
@@ -261,7 +261,7 @@ int PL::Parsing::Tokens::Filters::new_id(parse_node *spec, int global_scope, int
 			"for instance by being applied to several previous turns in a row.");
 
 	kind *K = Specifications::to_kind(spec);
-	if ((Kinds::Compare::le(K, K_object) == FALSE) && (Kinds::Behaviour::request_I6_GPR(K) == FALSE) && (global_scope))
+	if ((Kinds::Behaviour::is_object(K) == FALSE) && (Kinds::Behaviour::request_I6_GPR(K) == FALSE) && (global_scope))
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this is a kind of value I can't understand in command grammar",
 			"so the '[any ...]' part will have to go.");

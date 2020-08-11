@@ -1543,7 +1543,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 		}
 	}
 	else if ((Specifications::is_kind_like(spec)) &&
-			(Kinds::Compare::le(Specifications::to_kind(spec), K_object) == FALSE)) {
+			(Kinds::Behaviour::is_object(Specifications::to_kind(spec)) == FALSE)) {
 			force_proposition = FALSE;
 		}
 	else if (ParseTreeUsage::is_rvalue(spec)) {
@@ -1774,7 +1774,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			if (kind_of_noun == NULL) kind_of_noun = K_object;
 		}
 
-		if (Kinds::Compare::le(kind_of_noun, K_object)) {
+		if (Kinds::Behaviour::is_object(kind_of_noun)) {
 			if (ap.noun_spec) {
 				CPMC_NEEDED(NOUN_MATCHES_AS_OBJECT_CPMC, NULL);
 			}
@@ -1787,7 +1787,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			kind_of_second = PL::Actions::get_data_type_of_second_noun(ap.action->action_listed);
 			if (kind_of_second == NULL) kind_of_second = K_object;
 		}
-		if (Kinds::Compare::le(kind_of_second, K_object)) {
+		if (Kinds::Behaviour::is_object(kind_of_second)) {
 			if (ap.second_spec) {
 				CPMC_NEEDED(SECOND_MATCHES_AS_OBJECT_CPMC, NULL);
 			}

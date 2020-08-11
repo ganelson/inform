@@ -550,7 +550,7 @@ void PL::Parsing::understand_the_command(wording W, wording ASW) {
 void PL::Parsing::understand_property_block(property *pr, int level, inference_subject *subj, wording WHENW) {
 	if ((Properties::is_either_or(pr) == FALSE) &&
 		(Str::len(Kinds::Behaviour::get_recognition_only_GPR(Properties::Valued::kind(pr))) == 0) &&
-		((Kinds::Compare::le(Properties::Valued::kind(pr), K_object)) ||
+		((Kinds::Behaviour::is_object(Properties::Valued::kind(pr))) ||
 			(Kinds::Behaviour::request_I6_GPR(Properties::Valued::kind(pr)) == FALSE))) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadReferringProperty),
 			"that property is of a kind which I can't recognise in "
@@ -667,7 +667,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 					RetryValue:
 					LOGIF(GRAMMAR_CONSTRUCTION, "Understand as specification: $T", spec);
 					if ((Specifications::is_kind_like(spec)) &&
-						(Kinds::Compare::le(Specifications::to_kind(spec), K_object) == FALSE)) goto ImpreciseProblemMessage;
+						(Kinds::Behaviour::is_object(Specifications::to_kind(spec)) == FALSE)) goto ImpreciseProblemMessage;
 					if (ParseTreeUsage::is_phrasal(spec)) goto ImpreciseProblemMessage;
 					if (Rvalues::is_nothing_object_constant(spec)) goto ImpreciseProblemMessage;
 					if (ParseTreeUsage::is_rvalue(spec)) {

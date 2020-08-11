@@ -322,7 +322,7 @@ interpret no indication of a kind as meaning "object".
 	} else {
 		instance *nc = Instances::new(NW, K);
 		current_interpretation_as_infs[v] = Instances::as_subject(nc);
-		if ((K == NULL) || (Kinds::Compare::le(K, K_object)))
+		if ((K == NULL) || (Kinds::Behaviour::is_object(K)))
 			current_interpretation_as_spec[v] = Rvalues::from_instance(nc);
 		else
 			current_interpretation_as_spec[v] = Rvalues::from_instance(nc);

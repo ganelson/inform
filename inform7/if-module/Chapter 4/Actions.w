@@ -945,8 +945,8 @@ void PL::Actions::act_parse_definition(parse_node *p) {
 	}
 
 	if (an->max_parameters >= 2) {
-		if ((Kinds::Compare::le(an->noun_kind, K_object) == FALSE) &&
-			(Kinds::Compare::le(an->second_kind, K_object) == FALSE)) {
+		if ((Kinds::Behaviour::is_object(an->noun_kind) == FALSE) &&
+			(Kinds::Behaviour::is_object(an->second_kind) == FALSE)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionBothValues),
 				"this action definition asks to have a single action apply "
 				"to two different things which are not objects",
@@ -1001,7 +1001,7 @@ int PL::Actions::can_be_compiled_in_past_tense(action_name *an) {
 	if (an->min_parameters > 1) return FALSE;
 	if (an->max_parameters > 1) return FALSE;
 	if ((an->max_parameters == 1) &&
-		(Kinds::Compare::le(an->noun_kind, K_object) == FALSE))
+		(Kinds::Behaviour::is_object(an->noun_kind) == FALSE))
 			return FALSE;
 	return TRUE;
 }
@@ -1095,7 +1095,7 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 			case REQUIRES_ACCESS:
 			case REQUIRES_POSSESSION:
 			case DOESNT_REQUIRE_ACCESS:
-				if (Kinds::Compare::le(tok_value_kinds[0], K_object) == FALSE) {
+				if (Kinds::Behaviour::is_object(tok_value_kinds[0]) == FALSE) {
 					failed_on =
 						"the thing you suggest this action should act on "
 						"is not an object at all";
@@ -1121,7 +1121,7 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 			case REQUIRES_ACCESS:
 			case REQUIRES_POSSESSION:
 			case DOESNT_REQUIRE_ACCESS:
-				if (Kinds::Compare::le(tok_value_kinds[1], K_object) == FALSE) {
+				if (Kinds::Behaviour::is_object(tok_value_kinds[1]) == FALSE) {
 					failed_on =
 						"the second thing you suggest this action should act on "
 						"is not an object at all";
@@ -1334,7 +1334,7 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 	if (n > 0) {
 		K = an->second_kind; var = s_s;
 	}
-	if (Kinds::Compare::le(K, K_object) == FALSE)
+	if (Kinds::Behaviour::is_object(K) == FALSE)
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
 	Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
 	Produce::down(Emit::tree());
@@ -1518,7 +1518,7 @@ void PL::Actions::act_index_something(OUTPUT_STREAM, action_name *an, int argc) 
 	HTML::begin_colour(OUT, I"000080");
 	if (argc == 0) K = an->noun_kind;
 	if (argc == 1) K = an->second_kind;
-	if (Kinds::Compare::le(K, K_object)) WRITE("something");
+	if (Kinds::Behaviour::is_object(K)) WRITE("something");
 	else if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) WRITE("some text");
 	else Kinds::Textual::write(OUT, K);
 	HTML::end_colour(OUT);

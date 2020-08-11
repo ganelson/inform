@@ -716,13 +716,13 @@ pcalc_prop *Calculus::Simplifications::region_containment(pcalc_prop *prop, int 
 				int regionality = FALSE, backdropping = FALSE;
 				if (pl->terms[j].constant) {
 					kind *KR = Specifications::to_kind(pl->terms[j].constant);
-					if (Kinds::Compare::le(KR, K_region)) {
+					if (Kinds::Behaviour::is_object_of_kind(KR, K_region)) {
 						regionality = TRUE;
 					}
 				}
 				if (pl->terms[1-j].constant) {
 					kind *KB = Specifications::to_kind(pl->terms[1-j].constant);
-					if (Kinds::Compare::le(KB, K_backdrop)) backdropping = TRUE;
+					if (Kinds::Behaviour::is_object_of_kind(KB, K_backdrop)) backdropping = TRUE;
 				}
 				if ((regionality) && (!backdropping)) {
 					pl->predicate = STORE_POINTER_binary_predicate(R_regional_containment);

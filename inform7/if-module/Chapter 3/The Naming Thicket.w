@@ -329,7 +329,7 @@ vague, and might cause Inform at run-time to spuriously group unrelated things
 together in lists.
 
 @<Assert the printed plural name property for kinds other than thing or kinds of room@> =
-	if ((Kinds::Compare::le(K, K_room) == FALSE) &&
+	if ((Kinds::Behaviour::is_object_of_kind(K, K_room) == FALSE) &&
 		(Kinds::Compare::eq(K, K_thing) == FALSE) &&
 		(World::Inferences::get_prop_state_without_inheritance(
 			subj, P_printed_plural_name, NULL) == NULL)) {

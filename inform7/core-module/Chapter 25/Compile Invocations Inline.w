@@ -729,7 +729,7 @@ the problem messages are phrased differently if something goes wrong.
 
 	if (allow_me == ALWAYS_MATCH) {
 		Specifications::Compiler::emit_to_kind(supplied, kind_needed);
-	} else if ((allow_me == SOMETIMES_MATCH) && (Kinds::Compare::le(kind_needed, K_object))) {
+	} else if ((allow_me == SOMETIMES_MATCH) && (Kinds::Behaviour::is_object(kind_needed))) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CHECKKINDRETURNED_HL));
 		Produce::down(Emit::tree());
 			Specifications::Compiler::emit_to_kind(supplied, kind_needed);

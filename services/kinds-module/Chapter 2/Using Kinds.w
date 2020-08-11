@@ -40,6 +40,13 @@ int Kinds::Behaviour::is_object(kind *K) {
 	return FALSE;
 }
 
+int Kinds::Behaviour::is_object_of_kind(kind *K, kind *L) {
+	if ((Kinds::Compare::le(K, K_object)) && (Kinds::Compare::le(K, L)) &&
+		(Kinds::Compare::eq(K, K_nil) == FALSE))
+		return TRUE;
+	return FALSE;
+}
+
 @h Definiteness.
 A kind like "number" is definite. One way to be indefinite is to be a
 kind of kind, like "arithmetic value":

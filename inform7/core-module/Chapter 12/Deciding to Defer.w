@@ -734,7 +734,7 @@ a loop traverses.
 =
 int Calculus::Deferrals::has_finite_domain(kind *K) {
 	if (K == NULL) return FALSE;
-	if (Kinds::Compare::le(K, K_object)) return TRUE;
+	if (Kinds::Behaviour::is_object(K)) return TRUE;
 	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
 	if (Str::len(K->construct->loop_domain_schema) > 0) return TRUE;
 	return FALSE;
@@ -891,7 +891,7 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 	inter_symbol *val_var_s = LocalVariables::declare_this(v1, FALSE, 8);
 	inter_symbol *aux_var_s = LocalVariables::declare_this(v2, FALSE, 8);
 
-	if (Kinds::Compare::le(K, K_object)) {
+	if (Kinds::Behaviour::is_object(K)) {
 		pcalc_prop *domain_prop = NULL; int use_as_is = FALSE;
 		if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) use_as_is = TRUE;
 		else {

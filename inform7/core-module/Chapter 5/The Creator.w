@@ -225,7 +225,7 @@ in the node's subject, so this case is easy.
 		else if (Specifications::is_kind_like(spec)) found = Specifications::to_kind(spec);
 		if (found) {
 			*governing = p;
-			if (Kinds::Compare::le(found, K_object)) return K_object;
+			if (Kinds::Behaviour::is_object(found)) return K_object;
 		}
 		return found;
 	}
@@ -416,7 +416,7 @@ from the tree.
 	}
 	if (<creation-problem-diagnosis>(W)) W = EMPTY_WORDING;
 	Node::set_text(p, W);
-	if (((create_as == NULL) || (Kinds::Compare::le(create_as, K_object))) &&
+	if (((create_as == NULL) || (Kinds::Behaviour::is_object(create_as))) &&
 		(prevailing_mood != INITIALLY_CE) &&
 		(prevailing_mood != CERTAIN_CE)) {
 		instance *recent_creation = NULL;
@@ -844,7 +844,7 @@ void Assertions::Creator::convert_instance_to_nounphrase(parse_node *p, binary_p
 	kind *instance_kind = K_object;
 	if (Specifications::is_kind_like(Node::get_evaluation(p)))
 		instance_kind = Specifications::to_kind(Node::get_evaluation(p));
-	if ((Kinds::Compare::le(instance_kind, K_object) == FALSE) &&
+	if ((Kinds::Behaviour::is_object(instance_kind) == FALSE) &&
 		(Kinds::Behaviour::has_named_constant_values(instance_kind) == FALSE))
 		@<Point out that it's impossible to create values implicitly for this kind@>;
 	@<Calculate the instance count, that is, the number of duplicates to be made@>;
@@ -924,7 +924,7 @@ to a different vehicle object.
 	wording NW = EMPTY_WORDING, NAW = EMPTY_WORDING;
 	int propriety = FALSE;
 	@<Confect a name for the new object, if that's the bag we're into@>;
-	if (Kinds::Compare::le(instance_kind, K_object) == FALSE)
+	if (Kinds::Behaviour::is_object(instance_kind) == FALSE)
 		@<Check that the new name is non-empty and distinct from all existing ones@>;
 	NW = Wordings::truncate(NW, 32); /* truncate to the maximum length */
 	parse_node *pz = Node::new(PROPER_NOUN_NT);
@@ -954,7 +954,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 	inference_subject *owner = Node::get_implicit_in_creation_of(current_sentence);
 	if ((owner) && (instance_count == 1) &&
 		((confect_name_flag) ||
-		(Kinds::Compare::le(instance_kind, K_object) == FALSE) || (Wordings::nonempty(CW)))) {
+		(Kinds::Behaviour::is_object(instance_kind) == FALSE) || (Wordings::nonempty(CW)))) {
 		wording OW = InferenceSubjects::get_name_text(owner);
 
 		inference_subject *subject_here = Node::get_subject(p);
