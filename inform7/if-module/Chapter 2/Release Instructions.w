@@ -748,9 +748,9 @@ int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variabl
 					nlv));
 		kind *K = NonlocalVariables::kind(nlv);
 		if (Node::is(val, UNKNOWN_NT)) {
-			if (Kinds::Compare::eq(K, K_number)) WRITE("0");
+			if (Kinds::eq(K, K_number)) WRITE("0");
 		} else {
-			if (Kinds::Compare::eq(K, K_number)) {
+			if (Kinds::eq(K, K_number)) {
 				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 				Specifications::Compiler::compile_constant_to_kind_vh(&VH, val, K);
 				inter_ti v1 = 0, v2 = 0;
@@ -776,9 +776,9 @@ int PL::Bibliographic::Release::write_var_to_text(OUTPUT_STREAM, nonlocal_variab
 					nlv));
 		kind *K = NonlocalVariables::kind(nlv);
 		if (Node::is(val, UNKNOWN_NT)) {
-			if (Kinds::Compare::eq(K, K_number)) WRITE("0");
+			if (Kinds::eq(K, K_number)) WRITE("0");
 		} else {
-			if (Kinds::Compare::eq(K, K_number)) {
+			if (Kinds::eq(K, K_number)) {
 				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 				Specifications::Compiler::compile_constant_to_kind_vh(&VH, val, K);
 				inter_ti v1 = 0, v2 = 0;

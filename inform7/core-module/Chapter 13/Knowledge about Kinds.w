@@ -64,7 +64,7 @@ int Kinds::Knowledge::emit_element_of_condition(inference_subject *infs, inter_s
 		Produce::up(Emit::tree());
 		return TRUE;
 	}
-	if (Kinds::Compare::eq(K, K_object)) {
+	if (Kinds::eq(K, K_object)) {
 		Produce::val_symbol(Emit::tree(), K_value, t0_s);
 		return TRUE;
 	}
@@ -129,38 +129,27 @@ void Kinds::Knowledge::emit(inference_subject *infs) {
 kinds:
 
 @d HIERARCHY_GET_SUPER_KINDS_CALLBACK Kinds::Knowledge::super
-@d HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK Kinds::Knowledge::compatible
+@d HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK Kinds::Knowledge::allow_sometimes
 @d HIERARCHY_MOVE_KINDS_CALLBACK Kinds::Knowledge::move_within
 
 =
-int Kinds::Knowledge::compatible(kind *from, kind *to) {
-	inference_subject *from_subj = Kinds::Knowledge::as_subject(from);
-	inference_subject *to_subj = Kinds::Knowledge::as_subject(to);
-
-	if ((InferenceSubjects::is_within(from_subj, Kinds::Knowledge::as_subject(K_object))) &&
-		(InferenceSubjects::is_within(to_subj, Kinds::Knowledge::as_subject(K_object)))) {
-		if (from_subj == to_subj) return ALWAYS_MATCH;
-		if (to_subj == NULL) return ALWAYS_MATCH;
-		if (from_subj == NULL) return SOMETIMES_MATCH;
-		if (InferenceSubjects::is_strictly_within(from_subj, to_subj)) return ALWAYS_MATCH;
-		if (InferenceSubjects::is_strictly_within(to_subj, from_subj)) return SOMETIMES_MATCH;
-		return NEVER_MATCH;
-	}
-	return NO_DECISION_ON_MATCH;
-}
-
 kind *Kinds::Knowledge::super(kind *K) {
-	if (Kinds::Behaviour::is_object(K)) {
-		inference_subject *infs = Kinds::Knowledge::as_subject(K);
-		return InferenceSubjects::as_kind(InferenceSubjects::narrowest_broader_subject(infs));
-	}
-	return NULL;
+	inference_subject *infs = Kinds::Knowledge::as_subject(K);
+	return InferenceSubjects::as_kind(InferenceSubjects::narrowest_broader_subject(infs));
 }
 
 void Kinds::Knowledge::move_within(kind *sub, kind *super) {
 	if (Kinds::Behaviour::is_object(super))
 		InferenceSubjects::falls_within(
 			Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
+}
+
+int Kinds::Knowledge::allow_sometimes(kind *from) {
+	while (from) {
+		if (Kinds::eq(from, K_object)) return TRUE;
+		from = Latticework::super(from);
+	}
+	return FALSE;
 }
 
 @h Problems with kinds.

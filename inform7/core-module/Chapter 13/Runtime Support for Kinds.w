@@ -92,13 +92,13 @@ int Kinds::RunTime::emit_default_value_as_val(kind *K, wording W, char *storage_
 }
 int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 	wording W, char *storage_name) {
-	if (Kinds::Compare::eq(K, K_value))
+	if (Kinds::eq(K, K_value))
 		@<"Value" is too vague to be the kind of a variable@>;
 	if (Kinds::Behaviour::definite(K) == FALSE)
 		@<This is a kind not intended for end users at all@>;
 
 	if ((Kinds::get_construct(K) == CON_list_of) ||
-		(Kinds::Compare::eq(K, K_stored_action)) ||
+		(Kinds::eq(K, K_stored_action)) ||
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
 		if (Kinds::get_construct(K) == CON_list_of) {
@@ -110,7 +110,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 			Emit::array_numeric_entry(0);
 			Emit::array_end(save);
 			if (N) Emit::holster(VH, N);
-		} else if (Kinds::Compare::eq(K, K_stored_action)) {
+		} else if (Kinds::eq(K, K_stored_action)) {
 			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
@@ -150,7 +150,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		return TRUE;
 	}
 
-	if (Kinds::Compare::eq(K, K_text)) {
+	if (Kinds::eq(K, K_text)) {
 		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
 		packaging_state save = Emit::named_late_array_begin(N, K_value);
@@ -247,7 +247,7 @@ void Kinds::RunTime::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 	if (K == NULL) return;
 	if (K->construct->stored_as) K = K->construct->stored_as;
 
-	if (Kinds::Compare::eq(K, K_object)) { *v1 = LITERAL_IVAL; *v2 = 0; return; }
+	if (Kinds::eq(K, K_object)) { *v1 = LITERAL_IVAL; *v2 = 0; return; }
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K) {
@@ -265,24 +265,24 @@ void Kinds::RunTime::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 
 	if (Kinds::Behaviour::is_an_enumeration(K)) return;
 
-	if (Kinds::Compare::eq(K, K_rulebook_outcome)) {
+	if (Kinds::eq(K, K_rulebook_outcome)) {
 		Emit::to_ival(v1, v2, Rulebooks::Outcomes::get_default_value());
 		return;
 	}
 
-	if (Kinds::Compare::eq(K, K_action_name)) {
+	if (Kinds::eq(K, K_action_name)) {
 		inter_name *wait = PL::Actions::double_sharp(PL::Actions::Wait());
 		Emit::to_ival(v1, v2, wait);
 		return;
 	}
 
-	if (Kinds::Compare::eq(K, K_table)) {
+	if (Kinds::eq(K, K_table)) {
 		inter_name *empty = Hierarchy::find(EMPTY_TABLE_HL);
 		Emit::to_ival(v1, v2, empty);
 		return;
 	}
 
-	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) {
+	if ((K_understanding) && (Kinds::eq(K, K_understanding))) {
 		inter_name *empty = Hierarchy::find(DEFAULTTOPIC_HL);
 		Emit::to_ival(v1, v2, empty);
 		return;
@@ -349,7 +349,7 @@ data, not merely the pointer to them, which is a "deep copy".
 text_stream *Kinds::RunTime::interpret_test_equality(kind *left, kind *right) {
 	LOGIF(KIND_CHECKING, "Interpreting equality test of kinds %u, %u\n", left, right);
 
-	if ((Kinds::Compare::eq(left, K_truth_state)) || (Kinds::Compare::eq(right, K_truth_state)))
+	if ((Kinds::eq(left, K_truth_state)) || (Kinds::eq(right, K_truth_state)))
 		return I"(*1 && true) == (*2 && true)";
 
 	kind_constructor *L = NULL, *R = NULL;
@@ -388,8 +388,8 @@ int Kinds::RunTime::cast_possible(kind *from, kind *to) {
 	to = Kinds::weaken(to, K_object);
 	if ((to) && (from) && (to->construct != from->construct) &&
 		(Kinds::Behaviour::definite(to)) && (Kinds::Behaviour::definite(from)) &&
-		(Kinds::Compare::eq(from, K_object) == FALSE) &&
-		(Kinds::Compare::eq(to, K_object) == FALSE) &&
+		(Kinds::eq(from, K_object) == FALSE) &&
+		(Kinds::eq(to, K_object) == FALSE) &&
 		(to->construct != CON_property))
 		return TRUE;
 	return FALSE;
@@ -616,7 +616,7 @@ is the root of all evil, I'm leaving it quadratic.
 
 @<Find or make a runtime kind structure for the kind@> =
 	LOOP_OVER(rks, runtime_kind_structure)
-		if (Kinds::Compare::eq(K, rks->kind_described))
+		if (Kinds::eq(K, rks->kind_described))
 			break;
 	if (rks == NULL) @<Create a new runtime kind ID structure@>;
 
@@ -935,6 +935,7 @@ int Kinds::RunTime::base_represented_in_inter(kind *K) {
 	if ((Kinds::Behaviour::is_kind_of_kind(K) == FALSE) &&
 		(Kinds::is_proper_constructor(K) == FALSE) &&
 		(K != K_void) &&
+		(K != K_unknown) &&
 		(K != K_nil)) return TRUE;
 	return FALSE;
 }
@@ -954,7 +955,7 @@ inter_name *Kinds::RunTime::iname(kind *K) {
 	if (Kinds::RunTime::base_represented_in_inter(K) == FALSE) {
 		kind_interaction *KI;
 		LOOP_OVER(KI, kind_interaction)
-			if (Kinds::Compare::eq(K, KI->noted_kind))
+			if (Kinds::eq(K, KI->noted_kind))
 				return KI->noted_iname;
 	}
 	inter_name *S = Kinds::RunTime::iname_inner(K);
@@ -1074,7 +1075,8 @@ void Kinds::RunTime::emit(kind *K) {
 	if (K == K_truth_state) dt = INT2_IDT;
 	if (K == K_text) dt = TEXT_IDT;
 	if (K == K_table) dt = TABLE_IDT;
-	kind *S = Kinds::Compare::super(K);
+	kind *S = Latticework::super(K);
+	if ((S) && (Kinds::conforms_to(S, K_object) == FALSE)) S = NULL;
 	if (S) {
 		Kinds::RunTime::emit(S);
 		dt = ENUM_IDT;

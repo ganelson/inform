@@ -41,7 +41,7 @@ property *Properties::Conditions::new(inference_subject *infs, wording NW, parse
 					common_kind = K;
 					CKW = PW;
 				} else {
-					if (Kinds::Compare::eq(K, common_kind) == FALSE) {
+					if (Kinds::eq(K, common_kind) == FALSE) {
 						mixed_kind = TRUE;
 						NKW = PW;
 					}

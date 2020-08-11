@@ -171,7 +171,7 @@ void Phrases::TypeData::Textual::write_HTML_representation(OUTPUT_STREAM,
 			HTML::begin_colour(OUT, I"E00060");
 			WRITE("a temporary named value");
 			if ((phtd->token_sequence[ix].token_kind) &&
-				(Kinds::Compare::eq(phtd->token_sequence[ix].token_kind, K_value) == FALSE)) {
+				(Kinds::eq(phtd->token_sequence[ix].token_kind, K_value) == FALSE)) {
 				WRITE(" holding ");
 				Kinds::Textual::write_articled(OUT, phtd->token_sequence[ix].token_kind);
 			}
@@ -562,7 +562,7 @@ wording Phrases::TypeData::Textual::phtd_parse_return_data(ph_type_data *phtd, w
 		}
 		if (mor >= 0) Phrases::TypeData::set_mor(phtd, mor, K);
 	} else internal_error("to phrase without to");
-	if (Kinds::Compare::eq(phtd->return_kind, K_truth_state)) {
+	if (Kinds::eq(phtd->return_kind, K_truth_state)) {
 		if (no_truth_state_returns++ > 0)
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TruthStateToDecide),
 			"phrases are not allowed to decide a truth state",

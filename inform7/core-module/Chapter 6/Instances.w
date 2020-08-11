@@ -94,7 +94,7 @@ instance *Instances::new(wording W, kind *K) {
 	latest_instance = I;
 	LOGIF(OBJECT_CREATIONS, "Created instance: $O (kind %u) (inter %n)\n", I, K, Instances::iname(I));
 	Plugins::Call::new_named_instance_notify(I);
-	if ((Kinds::Compare::eq(K, K_grammatical_gender)) &&
+	if ((Kinds::eq(K, K_grammatical_gender)) &&
 		(no_ggs_recorded < NO_GRAMMATICAL_GENDERS))
 		grammatical_genders[no_ggs_recorded++] = I;
 	Assertions::Assemblies::satisfies_generalisations(I->as_subject);
@@ -425,7 +425,7 @@ kind *Instances::to_kind(instance *I) {
 
 int Instances::of_kind(instance *I, kind *match) {
 	if ((I == NULL) || (match == NULL)) return FALSE;
-	return Kinds::Compare::le(Instances::to_kind(I), match);
+	return Kinds::conforms_to(Instances::to_kind(I), match);
 }
 
 @ Ordinarily, instances never change their kind, but instances of "object"
@@ -441,7 +441,7 @@ void Instances::set_kind(instance *I, kind *new) {
 		internal_error("Tried to set the kind of a null object");
 	}
 	kind *existing = Instances::to_kind(I);
-	int m = Kinds::Compare::compatible(existing, new);
+	int m = Kinds::compatible(existing, new);
 	if (m == ALWAYS_MATCH) return;
 	if (m == NEVER_MATCH) {
 		LOG("Tried to set kind of $O (existing %u) to %u\n", I, existing, new);

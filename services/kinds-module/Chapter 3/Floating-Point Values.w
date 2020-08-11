@@ -140,11 +140,11 @@ int Kinds::FloatingPoint::uses_floating_point(kind *K) {
 }
 
 kind *Kinds::FloatingPoint::real_equivalent(kind *K) {
-	if (Kinds::Compare::eq(K, K_number)) return K_real_number;
+	if (Kinds::eq(K, K_number)) return K_real_number;
 	return K;
 }
 
 kind *Kinds::FloatingPoint::integer_equivalent(kind *K) {
-	if (Kinds::Compare::eq(K, K_real_number)) return K_number;
+	if (Kinds::eq(K, K_real_number)) return K_number;
 	return K;
 }

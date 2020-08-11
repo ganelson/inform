@@ -355,7 +355,7 @@ source text: so any single link would be potentially misleading.
 @<Definition of noun entry@> =
 	kind *K = RETRIEVE_POINTER_kind(lex->entry_refers_to);
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		K = Kinds::Compare::super(K);
+		K = Latticework::super(K);
 		wording W = Kinds::Behaviour::get_name(K, FALSE);
 		if (Wordings::nonempty(W)) {
 			@<Begin definition text@>;
@@ -376,7 +376,7 @@ source text: so any single link would be potentially misleading.
 	kind *K = Instances::to_kind(I);
 	int define_noun = TRUE;
 	#ifdef IF_MODULE
-	if (Kinds::Compare::eq(K, K_thing)) define_noun = FALSE;
+	if (Kinds::eq(K, K_thing)) define_noun = FALSE;
 	#endif
 	if (define_noun) {
 		wording W = Kinds::Behaviour::get_name(K, FALSE);

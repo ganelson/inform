@@ -215,7 +215,7 @@ int PL::Counting::kind_of_object_count(kind *K) {
 	LOOP_OVER_BASE_KINDS(IK)
 		if (Kinds::Behaviour::is_subkind_of_object(IK)) {
 			c++;
-			if (Kinds::Compare::eq(IK, K)) return c;
+			if (Kinds::eq(IK, K)) return c;
 		}
 	return 0;
 }

@@ -693,8 +693,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 						}
 					} else if (Specifications::is_description(spec)) {
 						if ((Descriptions::to_instance(spec) == NULL) &&
-							(Kinds::Compare::lt(Specifications::to_kind(spec),
-								K_object) == FALSE)
+							(Kinds::Behaviour::is_subkind_of_object(Specifications::to_kind(spec)) == FALSE)
 							&& (Descriptions::number_of_adjectives_applied_to(spec) == 1)
 							&& (UnaryPredicates::get_parity(Calculus::Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL)))) {
 							adjective *aph =

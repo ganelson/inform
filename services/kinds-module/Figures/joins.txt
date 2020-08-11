@@ -6,12 +6,12 @@
 'meet of number and real number': number
 'meet of real number and number': number
 'join of number and arithmetic value': arithmetic value
-'join of text and arithmetic value': value
+'join of text and arithmetic value': sayable value
 'join of thing and device': thing
 'join of device and thing': thing
 'join of device and object': object
 'join of device and vehicle': thing
-'join of thing and text': value
+'join of thing and text': sayable value
 'join of list of devices and list of vehicles': list of things
 'meet of devices and vehicles': nothing
 'meet of devices and things': device

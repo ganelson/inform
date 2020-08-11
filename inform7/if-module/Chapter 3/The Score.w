@@ -37,8 +37,8 @@ void PL::Score::compile_max_score(void) {
 	LOOP_OVER(t, table) {
 		if ((<rankings-table-name>(t->table_name_text)) &&
 			(Tables::get_no_columns(t) >= 2) &&
-			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
-			(Kinds::Compare::eq(Tables::kind_of_ith_column(t, 1), K_text))) {
+			(Kinds::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
+			(Kinds::eq(Tables::kind_of_ith_column(t, 1), K_text))) {
 			inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
 			Emit::named_iname_constant(iname, K_value, Tables::identifier(t));
 			parse_node *PN = Tables::cells_in_ith_column(t, 0);

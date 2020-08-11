@@ -1,7 +1,6 @@
-[Kinds::Compare::] Kind Checking.
+[Latticework::] The Lattice of Kinds.
 
-To test whether two kinds are equivalent to each other, or failing
-that, whether they are compatible with each other.
+Placing a partial order on kinds according to whether one conforms to another.
 
 @ We say that a kind $K_L$ is a subkind of $K_R$ if its values can
 be used without modification at run-time in code which expects a value of
@@ -17,11 +16,6 @@ under this relation:
 (b) it is antisymmetric ($K\leq L$ and $L\leq K$ imply $K=L$);
 (c) it is transitive ($K\leq L$ and $L\leq M$ imply $K\leq M$).
 
-We test compatibility with the routine |Kinds::Compare::le|, and for convenience
-we also have |Kinds::Compare::eq| to test equality and |Kinds::Compare::lt| for the case
-when $K\leq L$ but $K\noteq L$, that is, for $K<L$. The main aim of this
-section is to define those routines.
-
 @ To say that $K_L$ is compatible with $K_R$ is a weaker statement.
 This is the test Inform uses to see whether it will allow $K_L$ values to
 be used where $K_R$ values are expected. Clearly if $K_L\leq K_R$ then
@@ -31,7 +25,7 @@ at run-time, but snippet is not $\leq$ text. Compatibility lacks the
 elegant formal properties of $\leq$: for example, "value" is compatible
 with "text" which is in turn compatible with "value".
 
-This test is performed by |Kinds::Compare::compatible|. As we will see, the two
+This test is performed by |Kinds::compatible|. As we will see, the two
 relations are similarly defined, and they share most of the code.
 
 @ A function $f$ on kinds is covariant if $K\leq L$ implies $f(K)\leq f(L)$,
@@ -98,86 +92,38 @@ typedef struct kind_variable_declaration {
 	CLASS_DEFINITION
 } kind_variable_declaration;
 
-@ The following constants will be used to represent the results of kind
-checking:
-
-@d ALWAYS_MATCH    2 /* provably correct at compile time */
-@d SOMETIMES_MATCH 1 /* provably reduced to a check feasible at run-time */
-@d NEVER_MATCH     0 /* provably incorrect at compile time */
-@d NO_DECISION_ON_MATCH     -1 /* none of the above */
-
-@h Conformance.
-
-=
-int Kinds::Compare::le(kind *from, kind *to) {
-	if (Kinds::Compare::test_kind_relation(from, to, FALSE) == ALWAYS_MATCH) return TRUE;
-	return FALSE;
-}
-
-int Kinds::Compare::lt(kind *from, kind *to) {
-	if (Kinds::Compare::eq(from, to)) return FALSE;
-	return Kinds::Compare::le(from, to);
-}
-
-@ The following determines whether or not two kinds are the same. Clearly
-all base kinds are different from each other, but in some programming
-languages it's an interesting question whether different sequences of
-constructors applied to these bases can ever produce an equivalent kind.
-Most of the interesting cases are to do with unions (which Inform
-disallows as type unsafe) and records (which Inform supports by its
-"combination" operator). For example, is "combination (number, text)"
-the same as "combination (text, number)"? One might also consider
-whether |->| (function mapping) ought to be an associative operation, as
-it would be in a language like Haskell which curried all functions.
-
-At any rate, for Inform the answer is no: every different sequence of kind
-constructors produces a different kind.
-
-With kind variables, we take the "name" approach rather than the
-"structural" approach: that is, the kind "X" (a variable) is not equivalent
-to the kind "number" even if that's the current value of X.
-
-=
-int Kinds::Compare::eq(kind *K1, kind *K2) {
-	if (K1 == NULL) { if (K2 == NULL) return TRUE; return FALSE; }
-	if (K2 == NULL) return FALSE;
-	if (K1->construct != K2->construct) return FALSE;
-	if ((K1->intermediate_result) && (K2->intermediate_result == NULL)) return FALSE;
-	if ((K1->intermediate_result == NULL) && (K2->intermediate_result)) return FALSE;
-	if ((K1->intermediate_result) &&
-		(Kinds::Dimensions::compare_unit_sequences(
-			K1->intermediate_result, K2->intermediate_result) == FALSE)) return FALSE;
-	if (Kinds::get_variable_number(K1) != Kinds::get_variable_number(K2))
-		return FALSE;
-	for (int i=0; i<MAX_KIND_CONSTRUCTION_ARITY; i++)
-		if (Kinds::Compare::eq(K1->kc_args[i], K2->kc_args[i]) == FALSE)
-			return FALSE;
-	return TRUE;
-}
-
 @ It turns out to be useful to be able to "increment" a kind $K$, by trying to
 find the $S$ such that $K < S$ but there is no $S'$ with $K<S'<S$. This is only
 well-defined for kinds of object, and otherwise returns |NULL|.
 
 =
-kind *Kinds::Compare::super(kind *K) {
+kind *Latticework::super(kind *K) {
+	if (Kinds::eq(K, K_real_arithmetic_value)) return K_arithmetic_value;
+	if (Kinds::eq(K, K_enumerated_value)) return K_sayable_value;
+	if (Kinds::eq(K, K_arithmetic_value)) return K_sayable_value;
+	if (Kinds::eq(K, K_pointer_value)) return K_sayable_value;
+	if (Kinds::eq(K, K_sayable_value)) return K_stored_value;
+	if (Kinds::eq(K, K_stored_value)) return K_value;
+	if (Kinds::eq(K, K_value)) return NULL;
+	if (Kinds::eq(K, K_nil)) return NULL;
+	if (Kinds::eq(K, K_void)) return NULL;
 	#ifdef HIERARCHY_GET_SUPER_KINDS_CALLBACK
-	return HIERARCHY_GET_SUPER_KINDS_CALLBACK(K);
-	#else
-	return NULL;
+	kind *S = HIERARCHY_GET_SUPER_KINDS_CALLBACK(K);
+	if (S) return S;
 	#endif
-}
-
-@ This tests whether $K_1\subseteq K_2$, regarding super-kind relationships
-as implying set containment.
-
-=
-int Kinds::Compare::subkind(kind *K1, kind *K2) {
-	while (K1) {
-		if (Kinds::Compare::eq(K1, K2)) return TRUE;
-		K1 = Kinds::Compare::super(K1);
-	}
-	return FALSE;
+	if (Kinds::Constructors::compatible(K->construct, K_real_arithmetic_value->construct, FALSE))
+		return K_real_arithmetic_value;
+	if (Kinds::Constructors::compatible(K->construct, K_enumerated_value->construct, FALSE))
+		return K_enumerated_value;
+	if (Kinds::Constructors::compatible(K->construct, K_arithmetic_value->construct, FALSE))
+		return K_arithmetic_value;
+	if (Kinds::Constructors::compatible(K->construct, K_pointer_value->construct, FALSE))
+		return K_pointer_value;
+	if (Kinds::Constructors::compatible(K->construct, K_sayable_value->construct, FALSE))
+		return K_sayable_value;
+	if (Kinds::Constructors::compatible(K->construct, K_stored_value->construct, FALSE))
+		return K_stored_value;
+	return K_value;
 }
 
 @ The join of $K_1\lor K_2$ is by definition the kind $M$ such that
@@ -193,15 +139,15 @@ can't be performed: in such cases we give up and return |value|, which at
 least is $\geq K_1, K_2$.
 
 =
-kind *Kinds::Compare::join(kind *K1, kind *K2) {
-	return Kinds::Compare::j_or_m(K1, K2, 1);
+kind *Latticework::join(kind *K1, kind *K2) {
+	return Latticework::j_or_m(K1, K2, 1);
 }
 
-kind *Kinds::Compare::meet(kind *K1, kind *K2) {
-	return Kinds::Compare::j_or_m(K1, K2, -1);
+kind *Latticework::meet(kind *K1, kind *K2) {
+	return Latticework::j_or_m(K1, K2, -1);
 }
 
-kind *Kinds::Compare::j_or_m(kind *K1, kind *K2, int direction) {
+kind *Latticework::j_or_m(kind *K1, kind *K2, int direction) {
 	if (K1 == NULL) return K2;
 	if (K2 == NULL) return K1;
 	kind_constructor *con = K1->construct;
@@ -211,64 +157,30 @@ kind *Kinds::Compare::j_or_m(kind *K1, kind *K2, int direction) {
 		kind *ka[MAX_KIND_CONSTRUCTION_ARITY];
 		for (int i=0; i<a1; i++)
 			if (con->variance[i] == COVARIANT)
-				ka[i] = Kinds::Compare::j_or_m(K1->kc_args[i], K2->kc_args[i], direction);
+				ka[i] = Latticework::j_or_m(K1->kc_args[i], K2->kc_args[i], direction);
 			else
-				ka[i] = Kinds::Compare::j_or_m(K1->kc_args[i], K2->kc_args[i], -direction);
+				ka[i] = Latticework::j_or_m(K1->kc_args[i], K2->kc_args[i], -direction);
 		if (a1 == 1) return Kinds::unary_construction(con, ka[0]);
 		else return Kinds::binary_construction(con, ka[0], ka[1]);
 	} else {
-		if ((Kinds::Compare::eq(K1, K_nil))) return (direction > 0)?K2:K1;
-		if ((Kinds::Compare::eq(K2, K_nil))) return (direction > 0)?K1:K2;
+		if ((Kinds::eq(K1, K_nil))) return (direction > 0)?K2:K1;
+		if ((Kinds::eq(K2, K_nil))) return (direction > 0)?K1:K2;
 		if ((Kinds::FloatingPoint::uses_floating_point(K1) == FALSE) &&
 			(Kinds::FloatingPoint::uses_floating_point(K2)) &&
-			(Kinds::Compare::eq(Kinds::FloatingPoint::real_equivalent(K1), K2)))
+			(Kinds::eq(Kinds::FloatingPoint::real_equivalent(K1), K2)))
 			return (direction > 0)?K2:K1;
 		if ((Kinds::FloatingPoint::uses_floating_point(K2) == FALSE) &&
 			(Kinds::FloatingPoint::uses_floating_point(K1)) &&
-			(Kinds::Compare::eq(Kinds::FloatingPoint::real_equivalent(K2), K1)))
+			(Kinds::eq(Kinds::FloatingPoint::real_equivalent(K2), K1)))
 			return (direction > 0)?K1:K2;
-		if (Kinds::Compare::le(K1, K2)) return (direction > 0)?K2:K1;
-		if (Kinds::Compare::le(K2, K1)) return (direction > 0)?K1:K2;
+		if (Kinds::conforms_to(K1, K2)) return (direction > 0)?K2:K1;
+		if (Kinds::conforms_to(K2, K1)) return (direction > 0)?K1:K2;
 		if (direction > 0)
-			for (kind *K = K1; K; K = Kinds::Compare::super(K))
-				if (Kinds::Compare::le(K2, K))
+			for (kind *K = K1; K; K = Latticework::super(K))
+				if (Kinds::conforms_to(K2, K))
 					return K;
 	}
 	return (direction > 0)?K_value:K_nil;
-}
-
-@h Kind compatibility.
-Now for a more interesting question. If $K_F$ and $K_T$ are kinds, what
-values do they have in common? |Kinds::Compare::compatible| returns
-
-(a) |ALWAYS_MATCH| if a value of kind $K_F$ can always be used when a value
-of kind $K_T$ is expected,
-(b) |SOMETIMES_MATCH| if it sometimes can, but this needs to be protected
-by run-time checking in individual cases, or
-(c) |NEVER_MATCH| if it never can.
-
-For example, a value of kind "vehicle" can always be used when a value of
-kind "object" is expected; a value of kind "object" can only sometimes
-be used when a "vehicle" is expected, and any attempt to use it should
-be guarded by run-time checking that is indeed a vehicle; a value of kind
-"number" can never be used when a "scene" is expected.
-
-The outer routine is just a logging mechanism for the real routine. Cases
-where $K_F = K_T$ are frequent and not interesting enough to be logged.
-
-=
-int Kinds::Compare::compatible(kind *from, kind *to) {
-	if (Kinds::Compare::eq(from, to)) return ALWAYS_MATCH;
-
-	LOGIF(KIND_CHECKING, "(Is the kind %u compatible with %u?", from, to);
-
-	switch(Kinds::Compare::test_kind_relation(from, to, TRUE)) {
-		case NEVER_MATCH: LOGIF(KIND_CHECKING, " No)\n"); return NEVER_MATCH;
-		case ALWAYS_MATCH: LOGIF(KIND_CHECKING, " Yes)\n"); return ALWAYS_MATCH;
-		case SOMETIMES_MATCH: LOGIF(KIND_CHECKING, " Sometimes)\n"); return SOMETIMES_MATCH;
-	}
-
-	internal_error("bad return value from Kinds::Compare::compatible"); return NEVER_MATCH;
 }
 
 @h Common code.
@@ -276,7 +188,7 @@ So the following routine tests $\leq$ if |comp| is |FALSE|, returning
 |ALWAYS_MATCH| if and only if $\leq$ holds; and otherwise it tests compatibility.
 
 =
-int Kinds::Compare::test_kind_relation(kind *from, kind *to, int allow_casts) {
+int Latticework::order_relation(kind *from, kind *to, int allow_casts) {
 	if (Kinds::get_variable_number(to) > 0) {
 		kind *var_k = to, *other_k = from;
 		@<Deal separately with matches against kind variables@>;
@@ -288,17 +200,19 @@ int Kinds::Compare::test_kind_relation(kind *from, kind *to, int allow_casts) {
 	@<Deal separately with the sayability of lists@>;
 	@<Deal separately with the special role of value@>;
 	@<Deal separately with the special role of the unknown kind@>;
-	@<Deal separately with compatibility within the objects hierarchy@>;
 	@<The general case of compatibility@>;
 }
 
-@ A list is sayable if and only if its contents are.
+@ A list is sayable if and only if it is empty, or its contents are sayable.
 
 @<Deal separately with the sayability of lists@> =
 	if ((Kinds::get_construct(from) == CON_list_of) &&
-		(Kinds::Compare::eq(to, K_sayable_value)))
-		return Kinds::Compare::test_kind_relation(
-			Kinds::unary_construction_material(from), K_sayable_value, allow_casts);
+		(Kinds::eq(to, K_sayable_value))) {
+		kind *CK = Kinds::unary_construction_material(from);
+		if (Kinds::eq(CK, K_nil)) return ALWAYS_MATCH;
+		if (CK == NULL) return ALWAYS_MATCH; /* for an internal test case making dodgy lists */
+		return Latticework::order_relation(CK, K_sayable_value, allow_casts);
+	}
 
 @ "Value" is special because, for every kind $K$, we have $K\leq V$ -- it
 represents a supremum in our partially ordered set of kinds.
@@ -312,8 +226,8 @@ everything -- which is one reason compatibility isn't a partial ordering:
 different kinds.
 
 @<Deal separately with the special role of value@> =
-	if (Kinds::Compare::eq(to, K_value)) return ALWAYS_MATCH;
-	if (Kinds::Compare::eq(from, K_nil)) return ALWAYS_MATCH;
+	if (Kinds::eq(to, K_value)) return ALWAYS_MATCH;
+	if (Kinds::eq(from, K_nil)) return ALWAYS_MATCH;
 
 @ |NULL| as a kind means "unknown". It's compatible only with itself
 and, of course, "value".
@@ -322,34 +236,52 @@ and, of course, "value".
 	if ((to == NULL) && (from == NULL)) return ALWAYS_MATCH;
 	if ((to == NULL) || (from == NULL)) return NEVER_MATCH;
 
-@ Here both our kinds are $\leq$ "object".
-
-@<Deal separately with compatibility within the objects hierarchy@> =
-	#ifdef HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK
-	int m = HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK(from, to);
-	if (m != NO_DECISION_ON_MATCH) return m;
-	#endif
-
 @<The general case of compatibility@> =
-	if (Kinds::Constructors::compatible(from->construct, to->construct, allow_casts) == FALSE)
-		return NEVER_MATCH;
 	int f_a = Kinds::Constructors::arity(from->construct);
 	int t_a = Kinds::Constructors::arity(to->construct);
 	int arity = (f_a < t_a)?f_a:t_a;
-	int i, o = ALWAYS_MATCH, this_o = NEVER_MATCH;
+	int o = ALWAYS_MATCH;
+	if (from->construct != to->construct)
+		o = Latticework::construct_viable(from, to, allow_casts);
+	int i, this_o = NEVER_MATCH, fallen = FALSE;
 	for (i=0; i<arity; i++) {
 		if (Kinds::Constructors::variance(from->construct, i) == COVARIANT)
-			this_o = Kinds::Compare::test_kind_relation(from->kc_args[i], to->kc_args[i], allow_casts);
+			this_o = Latticework::order_relation(from->kc_args[i], to->kc_args[i], allow_casts);
 		else {
-			this_o = Kinds::Compare::test_kind_relation(to->kc_args[i], from->kc_args[i], allow_casts);
+			this_o = Latticework::order_relation(to->kc_args[i], from->kc_args[i], allow_casts);
 		}
 		switch (this_o) {
 			case NEVER_MATCH: o = this_o; break;
-			case SOMETIMES_MATCH: if (o != NEVER_MATCH) o = this_o; break;
+			case SOMETIMES_MATCH: if (o != NEVER_MATCH) { o = this_o; fallen = TRUE; } break;
 		}
 	}
-	if ((o == SOMETIMES_MATCH) && (to->construct != CON_list_of)) return NEVER_MATCH;
+	if ((o == fallen) && (to->construct != CON_list_of)) return NEVER_MATCH;
 	return o;
+
+@ =
+int Latticework::construct_viable(kind *from, kind *to, int allow_casts) {
+	kind *K = from;
+	while (K) {
+		if (Kinds::eq(K, to)) return ALWAYS_MATCH;
+		K = Latticework::super(K);
+	}
+	if ((allow_casts) && (Kinds::Constructors::find_cast(from->construct, to->construct)))
+		return ALWAYS_MATCH;
+	K = to;
+	while (K) {
+		if (Kinds::eq(K, from)) {
+			#ifdef HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK
+			if (HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK(from))
+				return SOMETIMES_MATCH;
+			#endif
+			#ifndef HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK
+			return SOMETIMES_MATCH;
+			#endif
+		}
+		K = Latticework::super(K);
+	}
+	return NEVER_MATCH;
+}
 
 @ Recall that kind variables are identified by a number in the range 1 ("A")
 to 26 ("Z"), and that it is also possible to assign them a domain, or a
@@ -401,7 +333,7 @@ a declaration usage of the variable K.
 @<Act on a declaration usage, where inference is allowed@> =
 	switch(kind_checker_mode) {
 		case MATCH_KIND_VARIABLES_INFERRING_VALUES:
-			if (Kinds::Compare::test_kind_relation(other_k,
+			if (Latticework::order_relation(other_k,
 				Kinds::get_variable_stipulation(var_k), allow_casts) != ALWAYS_MATCH)
 				return NEVER_MATCH;
 			LOGIF(KIND_CHECKING, "Inferring kind variable %d from %u (declaration %u)\n",
@@ -425,14 +357,16 @@ make a value-checking pass later.
 		case MATCH_KIND_VARIABLES_AS_VALUES:
 			LOGIF(KIND_CHECKING, "Checking %u against kind variable %d (=%u)\n",
 				other_k, vn, values_of_kind_variables[vn]);
-			if (Kinds::Compare::test_kind_relation(other_k, values_of_kind_variables[vn], allow_casts) == NEVER_MATCH)
+			if (Latticework::order_relation(other_k, values_of_kind_variables[vn], allow_casts) == NEVER_MATCH)
 				return NEVER_MATCH;
 			else
 				return ALWAYS_MATCH;
 	}
 
-@ =
-void Kinds::Compare::show_variables(void) {
+@
+
+=
+void Latticework::show_variables(void) {
 	LOG("Variables: ");
 	int i;
 	for (i=1; i<=26; i++) {
@@ -443,7 +377,7 @@ void Kinds::Compare::show_variables(void) {
 	LOG("\n");
 }
 
-void Kinds::Compare::show_frame_variables(void) {
+void Latticework::show_frame_variables(void) {
 	int shown = 0;
 	for (int i=1; i<=26; i++) {
 		kind *K = Kinds::variable_from_context(i);
@@ -454,39 +388,4 @@ void Kinds::Compare::show_frame_variables(void) {
 	}
 	if (shown == 0) LOGIF(MATCHING, "Stack frame sets no kind variables");
 	LOGIF(MATCHING, "\n");
-}
-
-@ =
-void Kinds::Compare::make_subkind(kind *sub, kind *super) {
-	#ifdef PROTECTED_MODEL_PROCEDURE
-	PROTECTED_MODEL_PROCEDURE;
-	#endif
-	if (sub == NULL) {
-		LOG("Tried to set kind to %u\n", super);
-		internal_error("Tried to set the kind of a null kind");
-	}
-	#ifdef HIERARCHY_VETO_MOVE_KINDS_CALLBACK
-	if (HIERARCHY_VETO_MOVE_KINDS_CALLBACK(sub, super)) return;
-	#endif
-	kind *existing = Kinds::Compare::super(sub);
-	switch (Kinds::Compare::compatible(existing, super)) {
-		case NEVER_MATCH:
-			LOG("Tried to make %u a kind of %u\n", sub, super);
-			if (problem_count == 0)
-				KindsModule::problem_handler(KindUnalterable_KINDERROR,
-					Kinds::Behaviour::get_superkind_set_at(sub), super, existing);
-			return;
-		case SOMETIMES_MATCH:
-			if (Kinds::Compare::subkind(super, sub)) {
-				if (problem_count == 0)
-					KindsModule::problem_handler(KindsCircular_KINDERROR,
-						Kinds::Behaviour::get_superkind_set_at(super), super, existing);
-				return;
-			}
-			#ifdef HIERARCHY_MOVE_KINDS_CALLBACK
-			HIERARCHY_MOVE_KINDS_CALLBACK(sub, super);
-			#endif
-			Kinds::Behaviour::set_superkind_set_at(sub, current_sentence);
-			LOGIF(KIND_CHANGES, "Making %u a subkind of %u\n", sub, super);
-	}
 }

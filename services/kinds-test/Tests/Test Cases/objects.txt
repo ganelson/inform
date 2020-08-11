@@ -4,11 +4,11 @@ new kind vehicle of thing.
 super of device.
 super of super of device.
 super of super of super of device.
-max of thing and device.
-max of device and thing.
-max of device and object.
-max of device and vehicle.
-max of thing and text.
+join of thing and device.
+join of device and thing.
+join of device and object.
+join of device and vehicle.
+join of thing and text.
 weaken thing.
 weaken device.
 weaken relation of things to texts.

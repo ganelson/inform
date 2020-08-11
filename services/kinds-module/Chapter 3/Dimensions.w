@@ -382,8 +382,8 @@ void Kinds::Dimensions::dim_set_multiplication(kind *left, kind *right,
 		return;
 	}
 	Kinds::Dimensions::record_multiplication_rule(left, right, outcome);
-	if ((Kinds::Compare::eq(left, outcome)) && (Kinds::Compare::eq(right, K_number))) return;
-	if ((Kinds::Compare::eq(right, outcome)) && (Kinds::Compare::eq(left, K_number))) return;
+	if ((Kinds::eq(left, outcome)) && (Kinds::eq(right, K_number))) return;
+	if ((Kinds::eq(right, outcome)) && (Kinds::eq(left, K_number))) return;
 	Kinds::Dimensions::make_unit_derivation(left, right, outcome);
 }
 
@@ -464,7 +464,7 @@ int Kinds::Dimensions::compare_unit_sequences(unit_sequence *ik1, unit_sequence 
 	if ((ik1 == NULL) || (ik2 == NULL)) return FALSE;
 	if (ik1->no_unit_pairs != ik2->no_unit_pairs) return FALSE;
 	for (i=0; i<ik1->no_unit_pairs; i++)
-		if ((Kinds::Compare::eq(ik1->unit_pairs[i].fund_unit, ik2->unit_pairs[i].fund_unit) == FALSE) ||
+		if ((Kinds::eq(ik1->unit_pairs[i].fund_unit, ik2->unit_pairs[i].fund_unit) == FALSE) ||
 			(ik1->unit_pairs[i].power != ik2->unit_pairs[i].power))
 				return FALSE;
 	return TRUE;
@@ -506,7 +506,7 @@ void Kinds::Dimensions::multiply_unit_sequences(unit_sequence *us1, int s1, unit
 	while (TRUE) {
 		@<If we have no current term from sequence 1, and it hasn't run out, fetch a new one@>;
 		@<If we have no current term from sequence 2, and it hasn't run out, fetch a new one@>;
-		if (Kinds::Compare::eq(t1, t2)) {
+		if (Kinds::eq(t1, t2)) {
 			if (t1 == NULL) break; /* both sequences have now run out */
 			@<Both terms refer to the same fundamental unit, so combine these into the result@>;
 		} else {
@@ -608,7 +608,7 @@ void Kinds::Dimensions::dim_substitute(unit_sequence *existing, kind *fundamenta
 	int i, j, p = 0, found = FALSE;
 	if (existing == NULL) return;
 	for (i=0; i<existing->no_unit_pairs; i++)
-		if (Kinds::Compare::eq(existing->unit_pairs[i].fund_unit, fundamental)) {
+		if (Kinds::eq(existing->unit_pairs[i].fund_unit, fundamental)) {
 			p = existing->unit_pairs[i].power;
 			found = TRUE;
 			@<Remove the B term from the existing sequence@>;
@@ -794,8 +794,8 @@ unit sequence must be dimensionless.
 =
 int Kinds::Dimensions::dimensionless(kind *K) {
 	if (K == NULL) return FALSE;
-	if (Kinds::Compare::eq(K, K_number)) return TRUE;
-	if (Kinds::Compare::eq(K, K_real_number)) return TRUE;
+	if (Kinds::eq(K, K_number)) return TRUE;
+	if (Kinds::eq(K, K_real_number)) return TRUE;
 	if (Kinds::Behaviour::is_quasinumerical(K) == FALSE) return FALSE;
 	return Kinds::Dimensions::us_dimensionless(Kinds::Behaviour::get_dimensional_form(K));
 }
@@ -872,7 +872,7 @@ void Kinds::Dimensions::index_dimensional_rules(OUTPUT_STREAM) {
 scaling this can appear to be much lower.
 
 @<Index the minimum positive value for a quasinumerical kind@> =
-	if (Kinds::Compare::eq(R, K_number)) WRITE("1");
+	if (Kinds::eq(R, K_number)) WRITE("1");
 	else {
 		text_stream *p = Kinds::Behaviour::get_index_minimum_value(R);
 		if (Str::len(p) > 0) WRITE("%S", p);
@@ -881,7 +881,7 @@ scaling this can appear to be much lower.
 	}
 
 @<Index the maximum positive value for a quasinumerical kind@> =
-	if (Kinds::Compare::eq(R, K_number)) {
+	if (Kinds::eq(R, K_number)) {
 		if (TargetVMs::is_16_bit(Task::vm())) WRITE("32767");
 		else WRITE("2147483647");
 	} else {
@@ -1284,15 +1284,15 @@ another angle. So we make an exception.
 
 @<Handle calculations entirely between dimensionless units more delicately@> =
 	if (Kinds::Dimensions::arithmetic_op_is_unary(op)) {
-		if ((op == REALROOT_OPERATION) && (Kinds::Compare::eq(K1, K_number)))
+		if ((op == REALROOT_OPERATION) && (Kinds::eq(K1, K_number)))
 			return K_real_number;
 		if (Kinds::Dimensions::dimensionless(K1)) return K1;
 	} else {
 		if ((Kinds::Dimensions::dimensionless(K1)) &&
 			(Kinds::Dimensions::dimensionless(K2))) {
-			if (Kinds::Compare::eq(K2, K_number)) return K1;
-			if (Kinds::Compare::eq(K1, K_number)) return K2;
-			if (Kinds::Compare::eq(K1, K2)) return K1;
+			if (Kinds::eq(K2, K_number)) return K1;
+			if (Kinds::eq(K1, K_number)) return K2;
+			if (Kinds::eq(K1, K2)) return K1;
 		}
 	}
 

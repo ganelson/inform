@@ -339,7 +339,7 @@ void Extensions::Files::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 			if (Lexer::file_of_origin(Wordings::first_wn(Node::get_text(S))) == E->read_into_file) {
 				wording W = Kinds::Behaviour::get_name(K, FALSE);
 				kc = Extensions::Files::document_headword(OUT, kc, E, "Kinds", I"kind", W);
-				kind *S = Kinds::Compare::super(K);
+				kind *S = Latticework::super(K);
 				if (S) {
 					W = Kinds::Behaviour::get_name(S, FALSE);
 					if (Wordings::nonempty(W)) WRITE(" (a kind of %+W)", W);

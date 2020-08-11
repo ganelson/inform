@@ -428,7 +428,7 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 		kind *K = Specifications::to_kind(spec);
 		if ((K_understanding) &&
 			(Kinds::Behaviour::is_object(K) == FALSE) &&
-			(Kinds::Compare::eq(K, K_understanding) == FALSE) &&
+			(Kinds::eq(K, K_understanding) == FALSE) &&
 			(Kinds::Behaviour::request_I6_GPR(K) == FALSE)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(pn));
@@ -1051,7 +1051,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		kind *K = Node::get_kind_of_value(spec);
 		if ((K_understanding) &&
 			(Kinds::Behaviour::is_object(K) == FALSE) &&
-			(Kinds::Compare::eq(K, K_understanding) == FALSE)) {
+			(Kinds::eq(K, K_understanding) == FALSE)) {
 			if (Kinds::Behaviour::offers_I6_GPR(K)) {
 				text_stream *i6_gpr_name = Kinds::Behaviour::get_explicit_I6_GPR(K);
 				if (code_mode) {

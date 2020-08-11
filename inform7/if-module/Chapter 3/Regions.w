@@ -149,7 +149,7 @@ int PL::Regions::regions_new_property_notify(property *prn) {
 
 @ =
 int PL::Regions::regions_estimate_property_usage(kind *k, int *words_used) {
- 	if (Kinds::Compare::eq(k, K_region)) *words_used += 2;
+ 	if (Kinds::eq(k, K_region)) *words_used += 2;
 	return FALSE;
 }
 

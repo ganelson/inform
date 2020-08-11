@@ -24,12 +24,12 @@ index-priority:0
 
 #BASE-KIND:
 group:3
-instance-of:VALUE_TY
+conforms-to:VALUE_TY
 index-priority:3
 
 #KIND-CONSTRUCTOR:
 group:4
-instance-of:VALUE_TY
+conforms-to:VALUE_TY
 index-priority:8
 
 *UNDERSTOOD-VARIABLE:
@@ -44,14 +44,10 @@ plural:values
 
 +POINTER_VALUE_TY:
 apply-macro:#KIND-OF-KIND
-singular:pointer value
-plural:pointer values
 ! Matches any value whose runtime representation is a pointer to a block
 
-+WORD_VALUE_TY:
++STORED_VALUE_TY:
 apply-macro:#KIND-OF-KIND
-singular:word value
-plural:word values
 ! Matches any value whose runtime representation is a single word
 
 +ARITHMETIC_VALUE_TY:
@@ -74,18 +70,18 @@ apply-macro:#KIND-OF-KIND
 singular:sayable value
 plural:sayable values
 
-COMBINED_VALUE_TY:
-apply-macro:#KIND-OF-KIND
-singular:combined value of any arity
-plural:combined values of any arity
+!COMBINED_VALUE_TY:
+!apply-macro:#KIND-OF-KIND
+!singular:combined value of any arity
+!plural:combined values of any arity
 
 +OBJECT_TY:
 apply-macro:#BASE-KIND
 singular:object
 plural:objects
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 
 i6-printing-routine:PrintShortName
@@ -103,9 +99,9 @@ apply-macro:#BASE-KIND
 singular:number
 plural:numbers
 
-instance-of:WORD_VALUE_TY
-instance-of:ARITHMETIC_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:ARITHMETIC_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 comparison-routine:signed
 can-exchange:yes
@@ -127,10 +123,10 @@ apply-macro:#BASE-KIND
 singular:real number
 plural:real numbers
 
-instance-of:WORD_VALUE_TY
-instance-of:ARITHMETIC_VALUE_TY
-instance-of:REAL_ARITHMETIC_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:ARITHMETIC_VALUE_TY
+conforms-to:REAL_ARITHMETIC_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 comparison-routine:REAL_NUMBER_TY_Compare
 default-value:0
 can-exchange:yes
@@ -153,8 +149,8 @@ apply-macro:#BASE-KIND
 singular:truth state
 plural:truth states
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:false
 can-exchange:yes
 
@@ -175,8 +171,9 @@ apply-macro:#BASE-KIND
 singular:text
 plural:texts
 
-instance-of:POINTER_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:POINTER_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 multiple-block:yes
 heap-size-estimate:256
@@ -199,8 +196,8 @@ apply-macro:#BASE-KIND
 singular:snippet
 plural:snippets
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:101
 
 i6-printing-routine:PrintSnippet
@@ -216,8 +213,8 @@ apply-macro:#BASE-KIND
 singular:unicode character
 plural:unicode characters
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:32
 
 constant-compilation-method:literal
@@ -231,8 +228,8 @@ apply-macro:#BASE-KIND
 singular:use option
 plural:use options
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 
 loop-domain-schema:for (*1=0: *1<NO_USE_OPTIONS: *1++)
@@ -249,8 +246,8 @@ apply-macro:#BASE-KIND
 singular:response
 plural:responses
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 
 loop-domain-schema:for (*1=1: *1<=NO_RESPONSES: *1++)
@@ -267,8 +264,8 @@ apply-macro:#BASE-KIND
 singular:verb
 plural:verbs
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 
 loop-domain-schema:for (*2=0, *1=TableOfVerbs-->*2: *1: *2++, *1=TableOfVerbs-->*2)
@@ -286,8 +283,8 @@ apply-macro:#BASE-KIND
 singular:table name
 plural:table names
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:TheEmptyTable
 
 loop-domain-schema:for (*2=0, *1=TableOfTables-->*2: *1: *2++, *1=TableOfTables-->*2)
@@ -306,7 +303,7 @@ apply-macro:#BASE-KIND
 singular:equation name
 plural:equation names
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 default-value:0
 
 i6-printing-routine:DA_Number
@@ -323,8 +320,8 @@ apply-macro:#BASE-KIND
 singular:rulebook outcome
 plural:rulebook outcomes
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 
 i6-printing-routine:RulebookOutcomePrintingRule
 constant-compilation-method:special
@@ -336,8 +333,8 @@ index-priority:6
 +INTERMEDIATE_TY:
 apply-macro:#BASE-KIND
 
-instance-of:WORD_VALUE_TY
-instance-of:ARITHMETIC_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:ARITHMETIC_VALUE_TY
 
 i6-printing-routine:DA_Number
 i6-printing-routine-actions:DA_Number
@@ -349,16 +346,22 @@ index-priority:0
 +NIL_TY:
 apply-macro:#BASE-KIND
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 
 description:nothing
+index-priority:0
+! Represents a lack of arguments, or of results
+
++UNKNOWN_TY:
+apply-macro:#BASE-KIND
+description:unknown
 index-priority:0
 ! Represents a lack of arguments, or of results
 
 +VOID_TY:
 apply-macro:#BASE-KIND
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 
 description:nothing
 index-priority:0
@@ -374,8 +377,8 @@ singular:phrase k -> l
 plural:phrases k -> l
 constructor-arity:contravariant list, covariant optional
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 
 i6-printing-routine:SayPhraseName
 constant-compilation-method:special
@@ -386,7 +389,7 @@ index-default-value:<i>always the default value of L</i>
 apply-macro:#KIND-CONSTRUCTOR
 constructor-arity:covariant, covariant
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 
 index-priority:0
 ! Represents an entry in a multiple
@@ -397,7 +400,7 @@ constructor-arity:covariant
 singular:variable-pointer | k variable-pointer
 plural:variable-pointers | k variable-pointers
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 
 index-priority:0
 ! Represents a variable name
@@ -408,8 +411,9 @@ singular:relation | relation of k to l | relation of k
 plural:relations | relations of k to l | relations of k
 constructor-arity:covariant, covariant
 
-instance-of:POINTER_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:POINTER_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 multiple-block:yes
 heap-size-estimate:8
@@ -429,8 +433,8 @@ singular:rule | k based rule | rule producing l | k based rule producing l
 plural:rules | k based rules | rules producing l | k based rules producing l
 constructor-arity:contravariant optional, covariant optional
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 cast:RULEBOOK_TY
 default-value:LITTLE_USED_DO_NOTHING_R
 
@@ -449,8 +453,8 @@ singular:rulebook | k based rulebook | rulebook producing l | k based rulebook p
 plural:rulebooks | k based rulebooks | rulebooks producing l | k based rulebooks producing l
 constructor-arity:contravariant optional, covariant optional
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value: 0
 
 constant-compilation-method:special
@@ -467,7 +471,7 @@ singular:activity | activity on k
 plural:activities | activities on k
 constructor-arity:contravariant optional
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 default-value:PRINTING_THE_NAME_ACT
 
 constant-compilation-method:special
@@ -483,8 +487,9 @@ singular:list of k
 plural:lists of k
 constructor-arity:covariant
 
-instance-of:POINTER_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:POINTER_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 multiple-block:yes
 heap-size-estimate:256
@@ -506,7 +511,7 @@ singular:description of k
 plural:descriptions of k
 constructor-arity:covariant
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 default-value:Prop_Falsity
 
 constant-compilation-method:special
@@ -522,7 +527,7 @@ singular:property | k valued property
 plural:properties | k valued properties
 constructor-arity:covariant
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 
 constant-compilation-method:special
 i6-printing-routine:PROPERTY_TY_Say
@@ -535,7 +540,7 @@ singular:table column | k valued table column
 plural:table columns | k valued table columns
 constructor-arity:covariant
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 
 constant-compilation-method:special
 
@@ -547,9 +552,10 @@ singular:combination | combination k | combination k and l
 plural:combinations | combinations k | combinations k and l
 constructor-arity:covariant list, covariant list
 
-instance-of:POINTER_VALUE_TY
-instance-of:COMBINED_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:POINTER_VALUE_TY
+conforms-to:STORED_VALUE_TY
+!conforms-to:COMBINED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:0
 multiple-block:yes
 heap-size-estimate:256
@@ -570,7 +576,7 @@ specification-text:A way to combine a fixed small number of values, of possibly 
 
 #NEW:
 apply-macro:#BASE-KIND
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 is-incompletely-defined:yes
 named-values-created-with-assertions:yes
 can-coincide-with-property:yes
@@ -582,8 +588,8 @@ description:a designed type
 ! at which point one of the following macros is applied to the type:
 
 #ENUMERATION:
-instance-of:ENUMERATED_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:ENUMERATED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 is-incompletely-defined:no
 named-values-created-with-assertions:yes
 default-value:1
@@ -600,8 +606,8 @@ apply-template:*UNDERSTOOD-VARIABLE
 index-priority:7
 
 #UNIT:
-instance-of:ARITHMETIC_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:ARITHMETIC_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 is-incompletely-defined:no
 comparison-routine:signed
 can-exchange:yes
@@ -615,5 +621,5 @@ constant-compilation-method:literal
 apply-template:*UNDERSTOOD-VARIABLE
 
 #REAL:
-instance-of:ARITHMETIC_VALUE_TY
-instance-of:REAL_ARITHMETIC_VALUE_TY
+conforms-to:ARITHMETIC_VALUE_TY
+conforms-to:REAL_ARITHMETIC_VALUE_TY

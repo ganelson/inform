@@ -538,7 +538,6 @@ void Hierarchy::establish(inter_tree *I) {
 
 @h Kinds.
 
-@e UNKNOWN_TY_HL
 @e K_UNCHECKED_HL
 @e K_UNCHECKED_FUNCTION_HL
 @e K_TYPELESS_INT_HL
@@ -591,7 +590,6 @@ void Hierarchy::establish(inter_tree *I) {
 	submodule_identity *kinds = Packaging::register_submodule(I"kinds");
 
 	location_requirement generic_kinds = HierarchyLocations::generic_submodule(I, kinds);
-	HierarchyLocations::con(I, UNKNOWN_TY_HL, I"UNKNOWN_TY", Translation::same(), generic_kinds);
 	HierarchyLocations::con(I, K_UNCHECKED_HL, I"K_unchecked", Translation::same(), generic_kinds);
 	HierarchyLocations::con(I, K_UNCHECKED_FUNCTION_HL, I"K_unchecked_function", Translation::same(), generic_kinds);
 	HierarchyLocations::con(I, K_TYPELESS_INT_HL, I"K_typeless_int", Translation::same(), generic_kinds);

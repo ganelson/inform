@@ -1,10 +1,10 @@
 The Brahms Conservatoire is a room.
 
-To split (X - K) to (Y - word value of kind K):
-	say "Word version with [X] to [Y].";
+To split (X - K) to (Y - arithmetic value of kind K):
+	say "Arithmetic version with [X] to [Y].";
 
-To split (X - K) to (Y - pointer value of kind K):
-	say "Pointer version with [X] to [Y].";
+To split (X - K) to (Y - sayable value of kind K):
+	say "Sayable version with [X] to [Y].";
 
 When play begins:
 	split 3 to 3;

@@ -3,9 +3,9 @@ apply-macro:#BASE-KIND
 singular:time
 plural:times
 
-instance-of:WORD_VALUE_TY
-instance-of:ARITHMETIC_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:ARITHMETIC_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:540
 comparison-routine:signed
 can-exchange:yes

@@ -360,7 +360,7 @@ through here, but it isn't exactly an everyday sentence.
 	if (ox) Instances::set_kind(ox, pl->assert_kind);
 	else {
 		kind *K = InferenceSubjects::as_kind(subj);
-		if (K) Kinds::Compare::make_subkind(K, pl->assert_kind);
+		if (K) Kinds::make_subkind(K, pl->assert_kind);
 	}
 
 @h Asserting HERE, NOWHERE and EVERYWHERE.
@@ -602,7 +602,7 @@ need to risk setting the kind here at this stage.
 void Calculus::Propositions::Assert::cautiously_set_kind(inference_subject *inst, kind *k) {
 	if ((inst == NULL) || (k == NULL)) return;
 	#ifdef IF_MODULE
-	if (Kinds::Compare::eq(k, K_thing)) return;
+	if (Kinds::eq(k, K_thing)) return;
 	#endif
 	instance *instance_wo = InferenceSubjects::as_object_instance(inst);
 	if (instance_wo == NULL) return;

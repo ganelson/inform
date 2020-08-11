@@ -518,8 +518,8 @@ instance *PL::Map::get_value_of_opposite_property(instance *I) {
 
 =
 int PL::Map::map_estimate_property_usage(kind *k, int *words_used) {
-	if (Kinds::Compare::eq(k, K_door)) *words_used += 14;
-	if (Kinds::Compare::eq(k, K_room)) *words_used += 2;
+	if (Kinds::eq(k, K_door)) *words_used += 14;
+	if (Kinds::eq(k, K_room)) *words_used += 2;
 	return FALSE;
 }
 

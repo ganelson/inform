@@ -325,7 +325,7 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 			#ifdef IF_MODULE
 				int pto = permit_trying_omission;
 				if ((Specifications::is_kind_like(to_match)) &&
-					(Kinds::Compare::eq(Specifications::to_kind(to_match), K_stored_action))) {
+					(Kinds::eq(Specifications::to_kind(to_match), K_stored_action))) {
 					permit_trying_omission = TRUE;
 					@<Parse the action in a try phrase@>;
 				} else {

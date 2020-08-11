@@ -171,7 +171,7 @@ pcalc_prop *Calculus::Simplifications::use_listed_in(pcalc_prop *prop, int *chan
 				parse_node *tab = spec->down->next;
 				table_column *tc = Rvalues::to_table_column(col);
 				kind *K = Tables::Columns::get_kind(tc);
-				if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) K = K_snippet;
+				if ((K_understanding) && (Kinds::eq(K, K_understanding))) K = K_snippet;
 				int nv = Calculus::Variables::find_unused(prop);
 				pcalc_term nv_term = Calculus::Terms::new_variable(nv);
 				prop = Calculus::Propositions::insert_atom(prop, pl_prev,
@@ -572,7 +572,7 @@ outer subexpression -- the one which is governed by the quantifier.
 		if ((gpl != pl) && (gpl->element == KIND_ATOM) && (v == gpl->terms[0].variable)) {
 			/* i.e., |gpl| now points to a different kind atom on the same variable */
 			kind *later_kind = gpl->assert_kind;
-			if ((later_kind) && (Kinds::Compare::le(early_kind, later_kind))) {
+			if ((later_kind) && (Kinds::conforms_to(early_kind, later_kind))) {
 				prop = Calculus::Propositions::delete_atom(prop, gpl_prev);
 				PROPOSITION_EDITED_REPEATING_CURRENT(gpl, prop);
 			}
@@ -637,7 +637,7 @@ the proposition is going to fail type-checking anyway.)
 				if (ParseTreeUsage::is_rvalue(spec)) {
 					kind *K = Rvalues::to_kind(spec);
 					if ((K) && (Kinds::Behaviour::is_subkind_of_object(early_kind) == FALSE) &&
-						(Kinds::Compare::le(early_kind, K))) {
+						(Kinds::conforms_to(early_kind, K))) {
 						prop = Calculus::Propositions::delete_atom(prop, pl_prev);
 						PROPOSITION_EDITED_REPEATING_CURRENT(pl, prop);
 					}
@@ -941,7 +941,7 @@ pcalc_prop *Calculus::Simplifications::not_related_to_something(pcalc_prop *prop
 				binary_predicate *bp = NULL;
 				pcalc_term KIND_term = kind_atom->terms[0];
 				if (KIND_term.function) bp = KIND_term.function->bp;
-				if ((bp) && (Kinds::Compare::eq(K, BinaryPredicates::term_kind(bp, 1)))) {
+				if ((bp) && (Kinds::eq(K, BinaryPredicates::term_kind(bp, 1)))) {
 					parse_node *new_nothing =
 						Lvalues::new_actual_NONLOCAL_VARIABLE(i6_nothing_VAR);
 					prop = Calculus::Propositions::ungroup_after(prop, pl_prev, NULL); /* remove negation grouping */
@@ -1115,7 +1115,7 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 			PREDICATE_ATOM, &bp_atom,
 			END_PROP_HERE, NULL)) &&
 			((Calculus::Atoms::is_forall_quantifier(q_atom)) || (Calculus::Atoms::is_notall_quantifier(q_atom))) &&
-			(Kinds::Compare::eq(k_atom->assert_kind, K_room)) &&
+			(Kinds::eq(k_atom->assert_kind, K_room)) &&
 			(bp_atom->arity == 2) &&
 			(RETRIEVE_POINTER_binary_predicate(bp_atom->predicate) == R_equality)) {
 			int j, v = k_atom->terms[0].variable;
@@ -1145,7 +1145,7 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 			PREDICATE_ATOM, &bp_atom,
 			END_PROP_HERE, NULL)) &&
 			(Calculus::Atoms::is_nonexistence_quantifier(q_atom)) &&
-			(Kinds::Compare::eq(k_atom->assert_kind, K_room)) &&
+			(Kinds::eq(k_atom->assert_kind, K_room)) &&
 			(Calculus::Atoms::is_composited(k_atom)) &&
 			(bp_atom->arity == 2) &&
 			(RETRIEVE_POINTER_binary_predicate(bp_atom->predicate) == R_equality)) {
@@ -1184,7 +1184,7 @@ pcalc_prop *Calculus::Simplifications::everywhere_and_nowhere(pcalc_prop *prop, 
 			((Calculus::Atoms::is_forall_quantifier(q_atom)) ||
 				(Calculus::Atoms::is_notall_quantifier(q_atom)) ||
 				(Calculus::Atoms::is_nonexistence_quantifier(q_atom))) &&
-			(Kinds::Compare::eq(k_atom->assert_kind, K_room)) &&
+			(Kinds::eq(k_atom->assert_kind, K_room)) &&
 			(bp_atom->arity == 2)) {
 			binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(bp_atom->predicate);
 			if (((Calculus::Atoms::is_nonexistence_quantifier(q_atom) == FALSE) && (bp == R_containment)) ||

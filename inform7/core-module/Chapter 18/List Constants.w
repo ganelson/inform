@@ -142,7 +142,7 @@ kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
 		spec = NonlocalVariables::substitute_constants(spec);
 		kind *E = NULL;
 		@<Work out the entry kind E@>;
-		if (Kinds::Compare::eq(K, K_nil)) K = E;
+		if (Kinds::eq(K, K_nil)) K = E;
 		else @<Revise K in the light of E@>;
 	}
 	if (ll->kinds_known_to_be_inconsistent) K = K_nil;
@@ -176,8 +176,8 @@ incomparable, and "thing" being the max of "person" and "door").
 
 @<Revise K in the light of E@> =
 	kind *previous_K = K;
-	K = Kinds::Compare::join(E, K);
-	if (Kinds::Compare::eq(K, K_value)) {
+	K = Latticework::join(E, K);
+	if (Kinds::Behaviour::definite(K) == FALSE) {
 		if (issue_problems) @<Issue a list entry kind mismatch problem@>;
 		ll->kinds_known_to_be_inconsistent = TRUE;
 		break;

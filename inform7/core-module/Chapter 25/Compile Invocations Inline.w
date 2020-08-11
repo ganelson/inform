@@ -322,7 +322,7 @@ The reference to "cage" in that text is to a local variable on the stack
 frame for the can't exit closed containers rule, not to the local stack frame.
 
 @<Compile the token value@> =
-	if (Kinds::Compare::eq(kind_required, K_text))
+	if (Kinds::eq(kind_required, K_text))
 		COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
 	if (by_value_not_reference == TRUE)
 		COMPILATION_MODE_ENTER(DEREFERENCE_POINTERS_CMODE);
@@ -421,8 +421,8 @@ proposition.
 
 @<Inline command "ranger-routine"@> =
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
-	if ((Kinds::Compare::eq(K, K_number)) ||
-		(Kinds::Compare::eq(K, K_time)))
+	if ((Kinds::eq(K, K_number)) ||
+		(Kinds::eq(K, K_time)))
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GENERATERANDOMNUMBER_HL));
 	else if (K) Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_ranger_iname(K));
 	else @<Issue an inline no-such-kind problem@>;
@@ -720,10 +720,10 @@ the problem messages are phrased differently if something goes wrong.
 	int mor = Phrases::TypeData::get_mor(&(phrase_being_compiled->type_data));
 
 	int allow_me = ALWAYS_MATCH;
-	if ((kind_needed) && (Kinds::Compare::eq(kind_needed, K_nil) == FALSE) &&
-		(Kinds::Compare::eq(kind_needed, K_void) == FALSE))
-		allow_me = Kinds::Compare::compatible(kind_supplied, kind_needed);
-	else if ((mor == DECIDES_CONDITION_MOR) && (Kinds::Compare::eq(kind_supplied, K_truth_state)))
+	if ((kind_needed) && (Kinds::eq(kind_needed, K_nil) == FALSE) &&
+		(Kinds::eq(kind_needed, K_void) == FALSE))
+		allow_me = Kinds::compatible(kind_supplied, kind_needed);
+	else if ((mor == DECIDES_CONDITION_MOR) && (Kinds::eq(kind_supplied, K_truth_state)))
 		allow_me = ALWAYS_MATCH;
 	else @<Issue a problem for returning a value when none was asked@>;
 
@@ -1293,9 +1293,9 @@ result would be the same without the optimisation.
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand2,
 		Node::get_kind_variable_declarations(inv));
 
-	if (Kinds::Compare::eq(K, K_text)) @<Inline say text@>;
-	if (Kinds::Compare::eq(K, K_number)) @<Inline say number@>;
-	if (Kinds::Compare::eq(K, K_unicode_character)) @<Inline say unicode character@>;
+	if (Kinds::eq(K, K_text)) @<Inline say text@>;
+	if (Kinds::eq(K, K_number)) @<Inline say number@>;
+	if (Kinds::eq(K, K_unicode_character)) @<Inline say unicode character@>;
 	if (K) {
 		Produce::inv_call_iname(Emit::tree(), Kinds::Behaviour::get_iname(K));
 		Produce::down(Emit::tree());

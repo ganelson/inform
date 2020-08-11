@@ -48,7 +48,7 @@ int allow_figure_creations = FALSE;
 int PL::Figures::figures_new_named_instance_notify(instance *nc) {
 	if (K_figure_name == NULL) return FALSE;
 	kind *K = Instances::to_kind(nc);
-	if (Kinds::Compare::eq(K, K_figure_name)) {
+	if (Kinds::eq(K, K_figure_name)) {
 		if (allow_figure_creations == FALSE)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BackdoorFigureCreation),
 				"this is not the way to create a new figure name",

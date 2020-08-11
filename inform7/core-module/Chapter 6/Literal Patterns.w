@@ -2745,7 +2745,7 @@ the LPs under each named possibility.
 
 	literal_pattern_name *lpn3;
 	for (lpn3 = lpn2; lpn3; lpn3 = lpn3->next)
-		if (Kinds::Compare::eq(K, lpn3->can_use_this_lp->kind_specified))
+		if (Kinds::eq(K, lpn3->can_use_this_lp->kind_specified))
 			lpn3->lpn_compiled_already = TRUE;
 
 @h I7 phrases to pack and unpack the value.

@@ -121,7 +121,7 @@ kind "scene" is created, and this is where that happens.
 
 =
 int PL::Scenes::scenes_new_named_instance_notify(instance *I) {
-	if ((K_scene) && (Kinds::Compare::eq(Instances::to_kind(I), K_scene))) {
+	if ((K_scene) && (Kinds::eq(Instances::to_kind(I), K_scene))) {
 		PL::Scenes::new_scene(I);
 		return TRUE;
 	}
@@ -174,7 +174,7 @@ to translate this to other languages.)
 scene *PL::Scenes::from_named_constant(instance *I) {
 	if (K_scene == NULL) return NULL;
 	kind *K = Instances::to_kind(I);
-	if (Kinds::Compare::eq(K, K_scene))
+	if (Kinds::eq(K, K_scene))
 		return RETRIEVE_POINTER_scene(Instances::get_connection(I));
 	return NULL;
 }
@@ -1121,7 +1121,7 @@ of them:
 	instance *I = Rvalues::to_instance(spec);
 	if (((I) && (Instances::of_kind(I, K_scene))) ||
 		((Specifications::is_description(spec)) &&
-			(Kinds::Compare::eq(Specifications::to_kind(spec), K_scene)))) {
+			(Kinds::eq(Specifications::to_kind(spec), K_scene)))) {
 		==> { -, spec };
 	} else return FALSE;
 

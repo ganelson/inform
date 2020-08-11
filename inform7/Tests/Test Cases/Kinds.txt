@@ -6,5 +6,3 @@ Test kind (internal) with 1.
 Test kind (internal) with 2.
 Test kind (internal) with 3.
 Test kind (internal) with 4.
-Test kind (internal) with 5.
-Test kind (internal) with 6.

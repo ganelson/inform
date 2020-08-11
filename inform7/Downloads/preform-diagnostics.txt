@@ -8848,7 +8848,7 @@
         yourself 
           (hits 1/1) (matched: 'yourself') constraint CS = {19} extremes [1, 1]
 
-<notable-player-variables> hits 6/6390 nti 20 constraint CS = {20} extremes [1, 3]
+<notable-player-variables> hits 6/6378 nti 20 constraint CS = {20} extremes [1, 3]
     English:
         player 
           (hits 2/9) (matched: 'player') constraint CS = {20} extremes [1, 1]

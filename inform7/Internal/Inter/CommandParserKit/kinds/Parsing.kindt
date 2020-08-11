@@ -3,7 +3,7 @@ apply-macro:#BASE-KIND
 singular:topic
 plural:topics
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 cast:TEXT_TY
 default-value:DefaultTopic
 

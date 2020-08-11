@@ -249,7 +249,7 @@ in fact by using the <span class="extract"><span class="extract-syntax">%u</span
 <p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>A kind is represented by a <a href="2-knd.html#SP1" class="internal">kind</a> object. Clearly some, like <span class="extract"><span class="extract-syntax">number</span></span>, are
 atomic while others, like <span class="extract"><span class="extract-syntax">relation of numbers to texts</span></span>, are composite. Each
 <a href="2-knd.html#SP1" class="internal">kind</a> object is formally a "construction" resulting from applying a
-<a href="2-kc2.html#SP2" class="internal">kind_constructor</a> to other kinds.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> Each different possible constructor has
+<a href="2-kc.html#SP2" class="internal">kind_constructor</a> to other kinds.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> Each different possible constructor has
 a fixed "arity", the number of other kinds it builds on. For example, to make
 the kind <span class="extract"><span class="extract-syntax">relation of texts to lists of times</span></span>, we need four constructions
 in a row:
@@ -342,7 +342,7 @@ be, there's no way to know what format of data a <span class="extract"><span cla
 
 <p class="commentary">The kinds module has to ask the parent tool for the current meanings of these
 variables, which may have all kinds of scoping considerations beyond our
-understanding here. See <a href="2-knd.html#SP19" class="internal">Kinds::variable_from_context</a>.
+understanding here. See <a href="2-knd.html#SP20" class="internal">Kinds::variable_from_context</a>.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Indeed, in early functional languages type variables were sometimes written
@@ -389,7 +389,7 @@ value of <span class="extract"><span class="extract-syntax">K</span></span> and 
 <a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> Also known as strong behavioural subtyping. This only applies to definite
 kinds, because no value ever has an indefinite kind.
 <a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Conformance is tested with the function <a href="2-kc.html#SP8" class="internal">Kinds::Compare::le</a>, and the
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Conformance is tested with the function <a href="2-knd.html#SP22" class="internal">Kinds::conforms_to</a>, and the
 following shows it in action.
 </p>
 
@@ -424,7 +424,7 @@ code; so it would violate Liskov substitution to have <span class="extract"><spa
 </li><li>(b) The "list of K" constructor is covariant, in that \(K\leq L\) means
 <span class="extract"><span class="extract-syntax">list of K</span></span> \(\leq\) <span class="extract"><span class="extract-syntax">list of L</span></span>, whereas the "phrase K -&gt; L" constructor
 is contravariant in the first term, covariant in the second. See
-<a href="2-kc.html#SP14" class="internal">Kinds::Compare::test_kind_relation</a> for more.
+<a href="2-tlok.html#SP9" class="internal">Latticework::order_relation</a> for more.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>The indefinite <span class="extract"><span class="extract-syntax">arithmetic kind</span></span> used by Inform is a good example of what
 in other languages would be called a protocol. Here we see conformance:
@@ -438,7 +438,7 @@ in other languages would be called a protocol. Here we see conformance:
 <span class="element-syntax">'text &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
 <span class="element-syntax">'arithmetic value &lt;= value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
 <span class="element-syntax">'value &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'arithmetic value &lt;= sayable value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'arithmetic value &lt;= sayable value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
 </pre>
 <p class="commentary">Note that <span class="extract"><span class="extract-syntax">arithmetic value</span></span> does not conform to <span class="extract"><span class="extract-syntax">sayable value</span></span> &mdash; it is true
 that every value on which arithmetic can be performed can also be said, but
@@ -563,7 +563,7 @@ code.
     <p>A weight is a kind of value. A mammal is a kind of animal.</p>
 </blockquote>
 
-<p class="commentary">it in fact makes new <a href="2-kc2.html#SP2" class="internal">kind_constructor</a> objects, not new <a href="2-knd.html#SP1" class="internal">kind</a> objects.
+<p class="commentary">it in fact makes new <a href="2-kc.html#SP2" class="internal">kind_constructor</a> objects, not new <a href="2-knd.html#SP1" class="internal">kind</a> objects.
 </p>
 
 <p class="commentary">"Weight" and "mammal" are base constructors, i.e., they have arity 0.

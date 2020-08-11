@@ -3,12 +3,12 @@
 'new kind vehicle of thing': ok
 'super of device': thing
 'super of super of device': object
-'super of super of super of device': nothing
-'max of thing and device': thing
-'max of device and thing': thing
-'max of device and object': object
-'max of device and vehicle': thing
-'max of thing and text': value
+'super of super of super of device': sayable value
+'join of thing and device': thing
+'join of device and thing': thing
+'join of device and object': object
+'join of device and vehicle': thing
+'join of thing and text': sayable value
 'weaken thing': object
 'weaken device': object
 'weaken relation of things to texts': relation of objects to texts

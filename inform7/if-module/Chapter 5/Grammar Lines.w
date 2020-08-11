@@ -668,7 +668,7 @@ parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
 		if (spec) {
 			if ((Specifications::is_kind_like(spec)) &&
 				(K_understanding) &&
-				(Kinds::Compare::eq(Specifications::to_kind(spec), K_understanding))) { /* "[text]" token */
+				(Kinds::eq(Specifications::to_kind(spec), K_understanding))) { /* "[text]" token */
 				int usb_contribution = i - 100;
 				if (usb_contribution >= 0) usb_contribution = -1;
 				usb_contribution = 100*usb_contribution + (line_length-1-i);

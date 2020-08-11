@@ -47,7 +47,7 @@ int allow_exf_creations = FALSE;
 int PL::Files::files_new_named_instance_notify(instance *nc) {
 	if (K_external_file == NULL) return FALSE;
 	kind *K = Instances::to_kind(nc);
-	if (Kinds::Compare::eq(K, K_external_file)) {
+	if (Kinds::eq(K, K_external_file)) {
 		if (allow_exf_creations == FALSE)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BackdoorFileCreation),
 				"this is not the way to create a new external file",

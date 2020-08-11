@@ -3,9 +3,9 @@ apply-macro:#BASE-KIND
 singular:scene
 plural:scenes
 
-instance-of:WORD_VALUE_TY
-instance-of:ENUMERATED_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:ENUMERATED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 named-values-created-with-assertions:yes
 default-value: 0
 

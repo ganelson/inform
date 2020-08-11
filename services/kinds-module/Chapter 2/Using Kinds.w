@@ -35,20 +35,21 @@ void Kinds::Behaviour::set_range_number(kind *K, int r) {
 
 =
 int Kinds::Behaviour::is_object(kind *K) {
-	if ((Kinds::Compare::le(K, K_object)) && (Kinds::Compare::eq(K, K_nil) == FALSE))
+	if ((Kinds::conforms_to(K, K_object)) && (Kinds::eq(K, K_nil) == FALSE))
 		return TRUE;
 	return FALSE;
 }
 
 int Kinds::Behaviour::is_subkind_of_object(kind *K) {
-	if ((Kinds::Compare::lt(K, K_object)) && (Kinds::Compare::eq(K, K_nil) == FALSE))
+	if ((Kinds::conforms_to(K, K_object)) && (Kinds::eq(K, K_object) == FALSE) &&
+		(Kinds::eq(K, K_nil) == FALSE))
 		return TRUE;
 	return FALSE;
 }
 
 int Kinds::Behaviour::is_object_of_kind(kind *K, kind *L) {
-	if ((Kinds::Compare::le(K, K_object)) && (Kinds::Compare::le(K, L)) &&
-		(Kinds::Compare::eq(K, K_nil) == FALSE))
+	if ((Kinds::conforms_to(K, K_object)) && (Kinds::conforms_to(K, L)) &&
+		(Kinds::eq(K, K_nil) == FALSE))
 		return TRUE;
 	return FALSE;
 }
@@ -85,10 +86,10 @@ int Kinds::Behaviour::semidefinite(kind *K) {
 	if (K->construct == CON_NIL) return FALSE;
 	if (Kinds::Constructors::is_definite(K->construct) == FALSE) return FALSE;
 	int i, arity = Kinds::Constructors::arity(K->construct);
-	if ((K->construct == CON_TUPLE_ENTRY) && (Kinds::Compare::eq(K->kc_args[1], K_nil))) arity = 1;
+	if ((K->construct == CON_TUPLE_ENTRY) && (Kinds::eq(K->kc_args[1], K_nil))) arity = 1;
 	if (K->construct == CON_phrase) {
 		for (i=0; i<arity; i++)
-			if ((Kinds::Compare::eq(K->kc_args[i], K_nil) == FALSE) &&
+			if ((Kinds::eq(K->kc_args[i], K_nil) == FALSE) &&
 				(Kinds::Behaviour::semidefinite(K->kc_args[i]) == FALSE))
 				return FALSE;
 	} else {
@@ -424,42 +425,42 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 	}
 	if (K->construct->pr_iname) return K->construct->pr_iname;
 
-	if (Kinds::Compare::eq(K, K_use_option)) {
+	if (Kinds::eq(K, K_use_option)) {
 		K->construct->pr_iname = Hierarchy::find(PRINT_USE_OPTION_HL);
 		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
-	if (Kinds::Compare::eq(K, K_table))  {
+	if (Kinds::eq(K, K_table))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_TABLE_HL);
 		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
-	if (Kinds::Compare::eq(K, K_rulebook_outcome))  {
+	if (Kinds::eq(K, K_rulebook_outcome))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_RULEBOOK_OUTCOME_HL);
 		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
-	if (Kinds::Compare::eq(K, K_response))  {
+	if (Kinds::eq(K, K_response))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_RESPONSE_HL);
 		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
-	if (Kinds::Compare::eq(K, K_figure_name))  {
+	if (Kinds::eq(K, K_figure_name))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_FIGURE_NAME_HL);
 		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
-	if (Kinds::Compare::eq(K, K_sound_name))  {
+	if (Kinds::eq(K, K_sound_name))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_SOUND_NAME_HL);
 		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
-	if (Kinds::Compare::eq(K, K_external_file))  {
+	if (Kinds::eq(K, K_external_file))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_EXTERNAL_FILE_NAME_HL);
 		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
 		return K->construct->pr_iname;
 	}
-	if (Kinds::Compare::eq(K, K_scene))  {
+	if (Kinds::eq(K, K_scene))  {
 		K->construct->pr_iname = Hierarchy::find(PRINT_SCENE_HL);
 		Hierarchy::make_available(Emit::tree(), K->construct->pr_iname);
 		return K->construct->pr_iname;
@@ -476,9 +477,9 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 	if (Kinds::Behaviour::is_quasinumerical(K)) {
 		R = Kinds::Behaviour::package(K); external = FALSE;
 	}
-	if (Kinds::Compare::eq(K, K_time)) external = TRUE;
-	if (Kinds::Compare::eq(K, K_number)) external = TRUE;
-	if (Kinds::Compare::eq(K, K_real_number)) external = TRUE;
+	if (Kinds::eq(K, K_time)) external = TRUE;
+	if (Kinds::eq(K, K_number)) external = TRUE;
+	if (Kinds::eq(K, K_real_number)) external = TRUE;
 	if (Str::len(X) == 0) X = I"DecimalNumber";
 
 	if (R) {

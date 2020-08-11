@@ -44,7 +44,7 @@ int allow_sound_creations = FALSE;
 int PL::Sounds::sounds_new_named_instance_notify(instance *nc) {
 	if (K_sound_name == NULL) return FALSE;
 	kind *K = Instances::to_kind(nc);
-	if (Kinds::Compare::eq(K, K_sound_name)) {
+	if (Kinds::eq(K, K_sound_name)) {
 		if (allow_sound_creations == FALSE)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BackdoorSoundCreation),
 				"this is not the way to create a new sound name",

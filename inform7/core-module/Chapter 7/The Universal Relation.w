@@ -42,7 +42,7 @@ Universality is tricky to check.
 int Relations::Universal::REL_typecheck(binary_predicate *bp,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	if (bp == R_meaning) {
-		if (Kinds::Compare::eq(kinds_of_terms[0], K_verb) == FALSE) {
+		if (Kinds::eq(kinds_of_terms[0], K_verb) == FALSE) {
 			Problems::quote_kind(4, kinds_of_terms[0]);
 			StandardProblems::tcp_problem(_p_(...), tck,
 				"that asks whether something means something, and in Inform 'to mean' "
@@ -79,7 +79,7 @@ int Relations::Universal::REL_typecheck(binary_predicate *bp,
 		Kinds::binary_construction_material(kinds_of_terms[0], &rleft, &rright);
 		kind *cleft = NULL, *cright = NULL;
 		Kinds::binary_construction_material(kinds_of_terms[1], &cleft, &cright);
-		if (Kinds::Compare::compatible(cleft, rleft) == NEVER_MATCH) {
+		if (Kinds::compatible(cleft, rleft) == NEVER_MATCH) {
 			Problems::quote_kind(5, kinds_of_terms[0]);
 			Problems::quote_kind(4, cleft);
 			StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
@@ -87,7 +87,7 @@ int Relations::Universal::REL_typecheck(binary_predicate *bp,
 				"the left-hand value here is %4.");
 			return NEVER_MATCH;
 		}
-		if (Kinds::Compare::compatible(cright, rright) == NEVER_MATCH) {
+		if (Kinds::compatible(cright, rright) == NEVER_MATCH) {
 			Problems::quote_kind(5, kinds_of_terms[0]);
 			Problems::quote_kind(4, cright);
 			StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,

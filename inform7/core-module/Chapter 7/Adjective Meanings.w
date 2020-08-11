@@ -276,7 +276,7 @@ int Adjectives::Meanings::applicable_to(adjective *aph,
 				if (Kinds::Behaviour::is_object(K)) return TRUE;
 			} else {
 				if ((K) && (Kinds::Behaviour::is_object(K) == FALSE) &&
-					(Kinds::Compare::compatible(K, am_kind) == ALWAYS_MATCH))
+					(Kinds::compatible(K, am_kind) == ALWAYS_MATCH))
 					return TRUE;
 			}
 		}
@@ -633,7 +633,7 @@ void Adjectives::Meanings::set_definition_domain(adjective_meaning *am, int earl
 		K = Rvalues::to_kind(supplied);
 	if (K == NULL) @<Reject domain of adjective@>;
 	if (Kinds::Behaviour::is_kind_of_kind(K)) @<Reject domain as vague@>;
-	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) @<Reject domain as topic@>;
+	if ((K_understanding) && (Kinds::eq(K, K_understanding))) @<Reject domain as topic@>;
 	@<Set the domain INFS as needed@>;
 }
 
@@ -747,8 +747,8 @@ int Adjectives::Meanings::compare(adjective_meaning *am1, adjective_meaning *am2
 	kind *K1 = InferenceSubjects::as_nonobject_kind(am1->domain_infs);
 	kind *K2 = InferenceSubjects::as_nonobject_kind(am2->domain_infs);
 	if ((K1) && (K2)) {
-		int c1 = Kinds::Compare::compatible(K1, K2);
-		int c2 = Kinds::Compare::compatible(K2, K1);
+		int c1 = Kinds::compatible(K1, K2);
+		int c2 = Kinds::compatible(K2, K1);
 		if ((c1 == ALWAYS_MATCH) && (c2 != ALWAYS_MATCH)) return 1;
 		if ((c1 != ALWAYS_MATCH) && (c2 == ALWAYS_MATCH)) return -1;
 	}

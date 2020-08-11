@@ -342,7 +342,7 @@ int Rvalues::is_CONSTANT_construction(parse_node *spec, kind_constructor *con) {
 
 int Rvalues::is_CONSTANT_of_kind(parse_node *spec, kind *K) {
 	if ((Node::is(spec, CONSTANT_NT)) &&
-		(Kinds::Compare::eq(Node::get_kind_of_value(spec), K)))
+		(Kinds::eq(Node::get_kind_of_value(spec), K)))
 		return TRUE;
 	return FALSE;
 }
@@ -361,7 +361,7 @@ doesn't need to be especially rapid.
 	}
 
 @d KCOMPARE_CONSTANTS_USING(DATA, STRUCTURE, FETCH)
-	if (Kinds::Compare::eq(K1, K_##DATA)) {
+	if (Kinds::eq(K1, K_##DATA)) {
 		STRUCTURE *x1 = FETCH(spec1);
 		STRUCTURE *x2 = FETCH(spec2);
 		if (x1 == x2) return TRUE;
@@ -369,7 +369,7 @@ doesn't need to be especially rapid.
 	}
 
 @d KKCOMPARE_CONSTANTS_USING(DATA, STRUCTURE, FETCH)
-	if (Kinds::Compare::le(K1, K_##DATA)) {
+	if (Kinds::conforms_to(K1, K_##DATA)) {
 		STRUCTURE *x1 = FETCH(spec1);
 		STRUCTURE *x2 = FETCH(spec2);
 		if (x1 == x2) return TRUE;
@@ -385,9 +385,9 @@ int Rvalues::compare_CONSTANT(parse_node *spec1, parse_node *spec2) {
 	if (Node::is(spec2, CONSTANT_NT) == FALSE) return FALSE;
 	kind *K1 = Node::get_kind_of_value(spec1);
 	kind *K2 = Node::get_kind_of_value(spec2);
-	if ((Kinds::Compare::le(K1, K2) == FALSE) &&
-		(Kinds::Compare::le(K2, K1) == FALSE)) return FALSE;
-	if (Kinds::Compare::eq(K1, K_text)) {
+	if ((Kinds::conforms_to(K1, K2) == FALSE) &&
+		(Kinds::conforms_to(K2, K1) == FALSE)) return FALSE;
+	if (Kinds::eq(K1, K_text)) {
 		if (Wordings::match_perhaps_quoted(
 			Node::get_text(spec1), Node::get_text(spec2))) return TRUE;
 		return FALSE;
@@ -640,7 +640,7 @@ kinds of value:
 		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 		return;
 	}
-	if (Kinds::Compare::eq(kind_of_constant, K_equation)) {
+	if (Kinds::eq(kind_of_constant, K_equation)) {
 		equation *eqn = Rvalues::to_equation(spec_found);
 		inter_name *N = Equations::identifier(eqn);
 		if (N) Emit::holster(VH, N);
@@ -703,13 +703,13 @@ kinds of value:
 			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) rb->allocation_id);
 		return;
 	}
-	if (Kinds::Compare::eq(kind_of_constant, K_rulebook_outcome)) {
+	if (Kinds::eq(kind_of_constant, K_rulebook_outcome)) {
 		named_rulebook_outcome *rbno =
 			Rvalues::to_named_rulebook_outcome(spec_found);
 		Emit::holster(VH, rbno->nro_iname);
 		return;
 	}
-	if (Kinds::Compare::eq(kind_of_constant, K_table)) {
+	if (Kinds::eq(kind_of_constant, K_table)) {
 		table *t = Rvalues::to_table(spec_found);
 		Emit::holster(VH, Tables::identifier(t));
 		return;
@@ -720,12 +720,12 @@ kinds of value:
 			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) Tables::Columns::get_id(tc));
 		return;
 	}
-	if (Kinds::Compare::eq(kind_of_constant, K_text)) {
+	if (Kinds::eq(kind_of_constant, K_text)) {
 		Strings::compile_general(VH, spec_found);
 		return;
 	}
 	#ifdef IF_MODULE
-	if ((K_understanding) && (Kinds::Compare::eq(kind_of_constant, K_understanding))) {
+	if ((K_understanding) && (Kinds::eq(kind_of_constant, K_understanding))) {
 		if (Wordings::empty(Node::get_text(spec_found)))
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
 		inter_ti v1 = 0, v2 = 0;
@@ -736,18 +736,18 @@ kinds of value:
 		return;
 	}
 	#endif
-	if (Kinds::Compare::eq(kind_of_constant, K_use_option)) {
+	if (Kinds::eq(kind_of_constant, K_use_option)) {
 		use_option *uo = Rvalues::to_use_option(spec_found);
 		if (Holsters::data_acceptable(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) uo->allocation_id);
 		return;
 	}
-	if (Kinds::Compare::eq(kind_of_constant, K_verb)) {
+	if (Kinds::eq(kind_of_constant, K_verb)) {
 		verb_form *vf = Rvalues::to_verb_form(spec_found);
 		Emit::holster(VH, VerbsAtRunTime::form_iname(vf));
 		return;
 	}
-	if (Kinds::Compare::eq(kind_of_constant, K_response)) {
+	if (Kinds::eq(kind_of_constant, K_response)) {
 		rule *R = Rvalues::to_rule(spec_found);
 		int c = Annotations::read_int(spec_found, response_code_ANNOT);
 		inter_name *iname = Strings::response_constant_iname(R, c);

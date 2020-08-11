@@ -24,9 +24,9 @@ property *Properties::Valued::obtain_within_kind(wording W, kind *K) {
 	if (<property-name>(W)) {
 		prn = <<rp>>;
 		kind *existing_kind = prn->property_value_kind;
-		switch(Kinds::Compare::compatible(K, existing_kind)) {
+		switch(Kinds::compatible(K, existing_kind)) {
 			case SOMETIMES_MATCH:
-				if (Kinds::Compare::compatible(existing_kind, K) != ALWAYS_MATCH)
+				if (Kinds::compatible(existing_kind, K) != ALWAYS_MATCH)
 					@<Issue an incompatible property kind message@>;
 				prn->property_value_kind = K; /* widen the kind of the property to make this fit */
 				break;
@@ -154,7 +154,7 @@ then say that a thing has a weight: that makes a property also called
 =
 void Properties::Valued::make_coincide_with_kind(property *prn, kind *K) {
 	Properties::Valued::set_kind(prn, K);
-	if (Kinds::Compare::eq(K, K_grammatical_gender)) P_grammatical_gender = prn;
+	if (Kinds::eq(K, K_grammatical_gender)) P_grammatical_gender = prn;
 	prn->also_a_type = TRUE;
 	if (Properties::Conditions::name_can_coincide_with_property(K))
 		Instances::make_kind_coincident(K, prn);

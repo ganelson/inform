@@ -165,7 +165,7 @@ treat it as a piece of nonsense, like "if Wednesday is not custard".
 				if (Kinds::Behaviour::is_object(new_kind)) new_kind = K_object;
 				kind *old_kind = vta.assigned_kinds[v];
 				if (old_kind) {
-					if (Kinds::Compare::compatible(old_kind, new_kind) == NEVER_MATCH) {
+					if (Kinds::compatible(old_kind, new_kind) == NEVER_MATCH) {
 						if (tck->log_to_I6_text)
 							LOG("%c is both %u and %u\n", pcalc_vars[v], old_kind, new_kind);
 						Calculus::Propositions::Checker::issue_kind_typecheck_error(old_kind, new_kind, tck, pl);
@@ -256,7 +256,7 @@ but not meaningless.
 	kind *need_to_find = pl->assert_kind;
 	if (Kinds::Behaviour::is_object(need_to_find)) need_to_find = K_object;
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::Compare::compatible(actually_find, need_to_find) == NEVER_MATCH) {
+	if (Kinds::compatible(actually_find, need_to_find) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is %u not %u\n", &(pl->terms[0]), actually_find, need_to_find);
 		Calculus::Propositions::Checker::issue_kind_typecheck_error(actually_find, need_to_find, tck, pl);
@@ -305,12 +305,12 @@ would work instead. If it would, we make the change within the proposition.
 
 @<An ISAKIND atom needs its term to be an object@> =
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::Compare::compatible(actually_find, K_object) == NEVER_MATCH)
+	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH)
 		internal_error("ISAKIND atom misapplied");
 
 @<An EVERYWHERE atom needs its term to be an object@> =
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::Compare::compatible(actually_find, K_object) == NEVER_MATCH) {
+	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
@@ -325,7 +325,7 @@ would work instead. If it would, we make the change within the proposition.
 
 @<A NOWHERE atom needs its term to be an object@> =
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::Compare::compatible(actually_find, K_object) == NEVER_MATCH) {
+	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
@@ -342,7 +342,7 @@ apply |HERE| incorrectly, but just in case:
 
 @<A HERE atom needs its term to be an object@> =
 	kind *actually_find = Calculus::Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::Compare::compatible(actually_find, K_object) == NEVER_MATCH) {
+	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
 		if (tck->log_to_I6_text)
 			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
 		Problems::quote_kind(4, actually_find);
@@ -399,7 +399,7 @@ kind *Calculus::Propositions::Checker::kind_of_term_inner(pcalc_term *pt, variab
 		kind *kind_found = Calculus::Propositions::Checker::kind_of_term(&(pt->function->fn_of), vta, tck);
 		kind *kind_from = Calculus::Propositions::Checker::approximate_argument_kind(bp, pt->function->from_term);
 		kind *kind_to = Calculus::Propositions::Checker::approximate_argument_kind(bp, 1 - pt->function->from_term);
-		if ((kind_from) && (Kinds::Compare::compatible(kind_found, kind_from) == NEVER_MATCH)) {
+		if ((kind_from) && (Kinds::compatible(kind_found, kind_from) == NEVER_MATCH)) {
 			if (tck->log_to_I6_text)
 				LOG("Term $0 applies function to %u not %u\n", pt, kind_found, kind_from);
 			Calculus::Propositions::Checker::issue_bp_typecheck_error(bp, kind_found, kind_to, tck);
@@ -563,7 +563,7 @@ required.
 	int i;
 	for (i=0; i<2; i++)
 		if (kinds_required[i])
-			if (Kinds::Compare::compatible(kinds_of_terms[i], kinds_required[i]) == NEVER_MATCH) {
+			if (Kinds::compatible(kinds_of_terms[i], kinds_required[i]) == NEVER_MATCH) {
 				if (tck->log_to_I6_text)
 					LOG("Term %d is %u not %u\n",
 						i, kinds_of_terms[i], kinds_required[i]);

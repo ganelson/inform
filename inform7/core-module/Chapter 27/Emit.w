@@ -209,7 +209,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 	if (K == K_value) return;
 	dval_written *dw;
 	LOOP_OVER(dw, dval_written)
-		if (Kinds::Compare::eq(K, dw->K_written))
+		if (Kinds::eq(K, dw->K_written))
 			return;
 	dw = CREATE(dval_written);
 	dw->K_written = K; dw->v1 = 0; dw->v2 = 0;
@@ -585,8 +585,6 @@ inter_name *Emit::named_numeric_constant_signed(inter_name *name, int val) {
 	Packaging::exit(Emit::tree(), save);
 	return name;
 }
-
-// inter_bookmark current_inter_bookmark;
 
 void Emit::early_comment(text_stream *text) {
 /*	inter_ti ID = Inter::Warehouse::create_text(Inter::Tree::warehouse(Emit::tree()), Inter::Bookmarks::package(Packaging::at(Emit::tree())));

@@ -158,7 +158,7 @@ to_phrase_request *Routines::ToPhrases::make_request(phrase *ph, kind *K,
 	LOOP_OVER(req, to_phrase_request)
 		if (ph == req->requested_phrase) {
 			nr++;
-			if (Kinds::Compare::eq(K, req->requested_exact_kind)) return req;
+			if (Kinds::eq(K, req->requested_exact_kind)) return req;
 		}
 	if (Kinds::Behaviour::semidefinite(K) == FALSE)
 		@<Issue a problem message for undetermined kinds@>;

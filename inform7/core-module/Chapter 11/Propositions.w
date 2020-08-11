@@ -497,7 +497,7 @@ kind *Calculus::Propositions::describes_kind(pcalc_prop *prop) {
 	pcalc_prop *p = prop;
 	while ((p = Calculus::Propositions::prop_seek_atom(p, ISAKIND_ATOM, 1)) != NULL) {
 		if ((Calculus::Terms::variable_underlying(&(p->terms[0])) == 0) &&
-			(Kinds::Compare::eq(p->assert_kind, K_value))) return p->assert_kind;
+			(Kinds::eq(p->assert_kind, K_value))) return p->assert_kind;
 		p = p->next;
 	}
 	p = prop;

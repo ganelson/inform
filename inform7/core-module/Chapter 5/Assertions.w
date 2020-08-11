@@ -21,7 +21,7 @@ void Assertions::make_existential(parse_node *py) {
 				break;
 			case COMMON_NOUN_NT:
 				if ((InferenceSubjects::is_a_kind_of_object(Node::get_subject(py))) ||
-					(Kinds::Compare::eq(K_object, InferenceSubjects::as_kind(Node::get_subject(py)))))
+					(Kinds::eq(K_object, InferenceSubjects::as_kind(Node::get_subject(py)))))
 					Assertions::Creator::convert_instance_to_nounphrase(py, NULL);
 				else
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ThereIsVague),
@@ -1370,7 +1370,7 @@ allow one case, where the declaration is redundant and harmless.)
 			(Specifications::is_new_variable_like(g_spec)) ||
 			(Specifications::is_description(g_spec)))
 		&& (a_kind)) {
-		if (Kinds::Compare::eq(a_kind, g_kind))
+		if (Kinds::eq(a_kind, g_kind))
 			@<This sentence redundantly specifies the kind of value for a value@>;
 		if (Kinds::get_construct(a_kind) == CON_description)
 			@<Issue problem for trying to use a description as a literal@>;
@@ -1401,7 +1401,7 @@ contradicted.
 	kind *constant_kind = Specifications::to_kind(val);
 	if (Specifications::is_new_variable_like(val))
 		constant_kind = Specifications::kind_of_new_variable_like(val);
-	if (Kinds::Compare::le(constant_kind, kind_as_declared) == FALSE) {
+	if (Kinds::conforms_to(constant_kind, kind_as_declared) == FALSE) {
 		LOG("%u, %u\n", kind_as_declared, constant_kind);
 		Problems::quote_source(1, current_sentence);
 		if (nlv)
@@ -1419,7 +1419,7 @@ contradicted.
 			"declared as %4, is instead %3 - but that would be a contradiction.");
 		Problems::issue_problem_end();
 	} else {
-		if (Kinds::Compare::eq(kind_as_declared, constant_kind) == FALSE)
+		if (Kinds::eq(kind_as_declared, constant_kind) == FALSE)
 			NonlocalVariables::set_kind(nlv, constant_kind);
 	}
 	return;
@@ -1430,7 +1430,7 @@ In the case of texts, we cause the text to be compiled into the I6 story
 file: this may possibly be useful to I6 hackers.
 
 @<This sentence redundantly specifies the kind of value for a value@> =
-	if ((var_set == FALSE) && (Kinds::Compare::eq(a_kind, K_number))) {
+	if ((var_set == FALSE) && (Kinds::eq(a_kind, K_number))) {
 		Problems::quote_source(1, current_sentence);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_Sarcasm1));
 		Problems::issue_problem_segment(
@@ -1438,7 +1438,7 @@ file: this may possibly be useful to I6 hackers.
 			"I think perhaps I could manage without this sentence.");
 		Problems::issue_problem_end();
 	}
-	if ((var_set == FALSE) && (Kinds::Compare::eq(a_kind, K_text))) {
+	if ((var_set == FALSE) && (Kinds::eq(a_kind, K_text))) {
 		Strings::TextLiterals::compile_literal(NULL, TRUE, Node::get_text(px));
 	}
 	return;
@@ -1446,7 +1446,7 @@ file: this may possibly be useful to I6 hackers.
 @ My, aren't we charming?
 
 @<Dabble further in ruthless sarcasm@> =
-	if (Kinds::Compare::eq(a_kind, K_number)) {
+	if (Kinds::eq(a_kind, K_number)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(px));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_Sarcasm2));
@@ -1454,7 +1454,7 @@ file: this may possibly be useful to I6 hackers.
 		Problems::issue_problem_end();
 		return;
 	}
-	if (Kinds::Compare::eq(a_kind, K_text)) {
+	if (Kinds::eq(a_kind, K_text)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(px));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_Sarcasm3));
@@ -1521,7 +1521,7 @@ message.
 	if (Rvalues::to_instance(spec)) {
 		kind *c_kind = Instances::to_kind(Rvalues::to_instance(spec));
 		kind *v_kind = Specifications::to_kind(Node::get_evaluation(px));
-		if ((v_kind == NULL) || (Kinds::Compare::eq(c_kind, v_kind))) return;
+		if ((v_kind == NULL) || (Kinds::eq(c_kind, v_kind))) return;
 	}
 
 @h Case 41. In general, an object simply can't be set equal to a value, but
@@ -1802,7 +1802,7 @@ need to switch interpretations to avoid the problem message.
 	Problems::quote_kind_of(4, Node::get_evaluation(px));
 	Problems::quote_kind_of(5, Node::get_evaluation(py));
 
-	if (Kinds::Compare::eq(Specifications::to_kind(Node::get_evaluation(px)),
+	if (Kinds::eq(Specifications::to_kind(Node::get_evaluation(px)),
 			Specifications::to_kind(Node::get_evaluation(py)))) {
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SimilarValuesEquated));
 		Problems::issue_problem_segment(

@@ -42,7 +42,7 @@ heap, like "stored action".
 
 = (early code)
 kind *K_value = NULL;
-kind *K_word_value = NULL;
+kind *K_stored_value = NULL;
 kind *K_pointer_value = NULL;
 kind *K_sayable_value = NULL;
 
@@ -82,8 +82,10 @@ represented by the |CON_TUPLE_ENTRY| constructor on its own, but it isn't.
 = (early code)
 kind *K_nil = NULL;
 kind *K_void = NULL;
+kind *K_unknown = NULL;
 kind_constructor *CON_NIL = NULL;
 kind_constructor *CON_VOID = NULL;
+kind_constructor *CON_UNKNOWN = NULL;
 kind_constructor *CON_TUPLE_ENTRY = NULL;
 
 @ It was mentioned above that two special constructors carry additional
@@ -193,6 +195,7 @@ kind_constructor **FamiliarKinds::known_con(text_stream *sn) {
 	IDENTIFIERS_CORRESPOND("RULEBOOK_TY", &CON_rulebook);
 	IDENTIFIERS_CORRESPOND("TABLE_COLUMN_TY", &CON_table_column);
 	IDENTIFIERS_CORRESPOND("TUPLE_ENTRY_TY", &CON_TUPLE_ENTRY);
+	IDENTIFIERS_CORRESPOND("UNKNOWN_TY", &CON_UNKNOWN);
 	IDENTIFIERS_CORRESPOND("VARIABLE_TY", &CON_variable);
 	return NULL;
 }
@@ -205,6 +208,7 @@ kind **FamiliarKinds::known_kind(text_stream *sn) {
 	IDENTIFIERS_CORRESPOND("NUMBER_TY", &K_number);
 	IDENTIFIERS_CORRESPOND("OBJECT_TY", &K_object);
 	IDENTIFIERS_CORRESPOND("POINTER_VALUE_TY", &K_pointer_value);
+	IDENTIFIERS_CORRESPOND("STORED_VALUE_TY", &K_stored_value);
 	IDENTIFIERS_CORRESPOND("REAL_ARITHMETIC_VALUE_TY", &K_real_arithmetic_value);
 	IDENTIFIERS_CORRESPOND("REAL_NUMBER_TY", &K_real_number);
 	IDENTIFIERS_CORRESPOND("RESPONSE_TY", &K_response);
@@ -214,11 +218,11 @@ kind **FamiliarKinds::known_kind(text_stream *sn) {
 	IDENTIFIERS_CORRESPOND("TABLE_TY", &K_table);
 	IDENTIFIERS_CORRESPOND("TRUTH_STATE_TY", &K_truth_state);
 	IDENTIFIERS_CORRESPOND("UNDERSTANDING_TY", &K_understanding);
+	IDENTIFIERS_CORRESPOND("UNKNOWN_TY", &K_unknown);
 	IDENTIFIERS_CORRESPOND("UNICODE_CHARACTER_TY", &K_unicode_character);
 	IDENTIFIERS_CORRESPOND("USE_OPTION_TY", &K_use_option);
 	IDENTIFIERS_CORRESPOND("VALUE_TY", &K_value);
 	IDENTIFIERS_CORRESPOND("VERB_TY", &K_verb);
-	IDENTIFIERS_CORRESPOND("WORD_VALUE_TY", &K_word_value);
 	IDENTIFIERS_CORRESPOND("NIL_TY", &K_nil);
 	IDENTIFIERS_CORRESPOND("VOID_TY", &K_void);
 	return NULL;

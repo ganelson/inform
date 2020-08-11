@@ -134,7 +134,7 @@ void Specifications::Compiler::emit_to_kind(parse_node *value, kind *K_wanted) {
 	kind *K_found = Specifications::to_kind(value);
 	Kinds::RunTime::notify_of_use(K_found);
 
-	if ((K_understanding) && (Kinds::Compare::eq(K_wanted, K_understanding)) && (Kinds::Compare::eq(K_found, K_text))) {
+	if ((K_understanding) && (Kinds::eq(K_wanted, K_understanding)) && (Kinds::eq(K_found, K_text))) {
 		Node::set_kind_of_value(value, K_understanding);
 		K_found = K_understanding;
 	}
@@ -183,7 +183,7 @@ void Specifications::Compiler::emit_constant_to_kind_as_val(parse_node *value, k
 parse_node *Specifications::Compiler::cast_constant(parse_node *value, kind *to) {
 	#ifdef REAL_LITERALS
 	kind *from = Specifications::to_kind(value);
-	if ((Kinds::Compare::eq(from, K_number)) && (Kinds::Compare::eq(to, K_real_number))) {
+	if ((Kinds::eq(from, K_number)) && (Kinds::eq(to, K_real_number))) {
 		wording W = Node::get_text(value);
 		if (<s-literal-real-number>(W)) value = <<rp>>;
 		else internal_error("can't parse integer as real");

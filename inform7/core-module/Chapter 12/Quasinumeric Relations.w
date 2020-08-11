@@ -69,8 +69,8 @@ void Calculus::QuasinumericRelations::REL_create_second_stock(void) {
 =
 int Calculus::QuasinumericRelations::REL_typecheck(binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
-	if ((Kinds::Compare::compatible(kinds_of_terms[0], kinds_of_terms[1]) == NEVER_MATCH) &&
-		(Kinds::Compare::compatible(kinds_of_terms[1], kinds_of_terms[0]) == NEVER_MATCH)) {
+	if ((Kinds::compatible(kinds_of_terms[0], kinds_of_terms[1]) == NEVER_MATCH) &&
+		(Kinds::compatible(kinds_of_terms[1], kinds_of_terms[0]) == NEVER_MATCH)) {
 		if (tck->log_to_I6_text)
 			LOG("Unable to apply inequality of %u and %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 		Problems::quote_kind(4, kinds_of_terms[0]);

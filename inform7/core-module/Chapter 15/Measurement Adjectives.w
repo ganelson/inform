@@ -171,7 +171,7 @@ and issue a problem.
 			mdef->region_threshold = 0;
 			return;
 		}
-		if (Kinds::Compare::compatible(mdef->region_kind,
+		if (Kinds::compatible(mdef->region_kind,
 			Properties::Valued::kind(mdef->prop)) != ALWAYS_MATCH) {
 			StandardProblems::definition_problem(Task::syntax_tree(), _p_(PM_GradingWrongKOV),
 				mdef->measurement_node,

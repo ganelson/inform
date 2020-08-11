@@ -87,7 +87,7 @@ int PL::Backdrops::object_is_scenery(instance *I) {
 
 =
 int PL::Backdrops::backdrops_estimate_property_usage(kind *k, int *words_used) {
-	if (Kinds::Compare::eq(k, K_backdrop)) *words_used += 2;
+	if (Kinds::eq(k, K_backdrop)) *words_used += 2;
 	return FALSE;
 }
 

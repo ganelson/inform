@@ -24,7 +24,7 @@ void Assertions::PropertyKnowledge::igv_dash(nonlocal_variable *q, parse_node *v
 	kind *kind_as_declared = NonlocalVariables::kind(q);
 	kind *constant_kind = Specifications::to_kind(val);
 
-	int outcome = Kinds::Compare::compatible(constant_kind, kind_as_declared);
+	int outcome = Kinds::compatible(constant_kind, kind_as_declared);
 	int throw_problem = FALSE;
 	if (outcome == NEVER_MATCH) throw_problem = TRUE;
 	if ((verification_stage) && (outcome == SOMETIMES_MATCH)) throw_problem = TRUE;

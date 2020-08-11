@@ -132,7 +132,7 @@ kind_command_definition table_of_kind_commands[] = {
 
 	{ "cast", cast_KCC, CONSTRUCTOR_KCA },
 	{ "comparison-schema", comparison_schema_KCC, CONSTRUCTOR_KCA },
-	{ "instance-of", instance_of_KCC, CONSTRUCTOR_KCA },
+	{ "conforms-to", conforms_to_KCC, CONSTRUCTOR_KCA },
 
 	{ "modifying-adjective", modifying_adjective_KCC, VOCABULARY_KCA },
 	{ "plural", plural_KCC, VOCABULARY_KCA },
@@ -704,7 +704,7 @@ We take a single kind command and apply it to a given kind.
 @d index_minimum_value_KCC 25
 @d indexed_grey_if_empty_KCC 26
 @d index_priority_KCC 27
-@d instance_of_KCC 28
+@d conforms_to_KCC 28
 @d is_incompletely_defined_KCC 29
 @d is_template_variable_KCC 30
 @d loop_domain_schema_KCC 31
@@ -798,7 +798,7 @@ void KindCommands::apply_kind_command(parse_node_tree *T, single_kind_command st
 		dtcr->cast_from_kind = NULL;
 		return;
 	}
-	if (tcc == instance_of_KCC) {
+	if (tcc == conforms_to_KCC) {
 		kind_constructor_instance *dti = CREATE(kind_constructor_instance);
 		dti->next_instance_rule = con->first_instance_rule;
 		con->first_instance_rule = dti;

@@ -253,7 +253,7 @@ value of |K| and therefore on the current context.
 [3] Also known as strong behavioural subtyping. This only applies to definite
 kinds, because no value ever has an indefinite kind.
 
-@ Conformance is tested with the function //Kinds::Compare::le//, and the
+@ Conformance is tested with the function //Kinds::conforms_to//, and the
 following shows it in action.
  
 = (text from Figures/conformance.txt as REPL)
@@ -265,7 +265,7 @@ code; so it would violate Liskov substitution to have |number| $\leq$ |real numb
 (b) The "list of K" constructor is covariant, in that $K\leq L$ means
 |list of K| $\leq$ |list of L|, whereas the "phrase K -> L" constructor
 is contravariant in the first term, covariant in the second. See
-//Kinds::Compare::test_kind_relation// for more.
+//Latticework::order_relation// for more.
  
 @ The indefinite |arithmetic kind| used by Inform is a good example of what
 in other languages would be called a protocol. Here we see conformance:

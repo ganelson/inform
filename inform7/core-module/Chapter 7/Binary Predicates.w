@@ -1095,7 +1095,7 @@ void BinaryPredicates::describe_for_problems(OUTPUT_STREAM, binary_predicate *bp
 	kind *K0 = BinaryPredicates::term_kind(bp, 0); if (K0 == NULL) K0 = K_object;
 	kind *K1 = BinaryPredicates::term_kind(bp, 1); if (K1 == NULL) K1 = K_object;
 	WRITE(" (between ");
-	if (Kinds::Compare::eq(K0, K1)) {
+	if (Kinds::eq(K0, K1)) {
 		Kinds::Textual::write_plural(OUT, K0);
 	} else {
 		Kinds::Textual::write_articled(OUT, K0);

@@ -371,12 +371,7 @@ of the kind which the constructor makes:
 
 =
 #ifdef CORE_MODULE
-inter_name *UNKNOWN_TY_iname = NULL;
 void Kinds::Constructors::compile_I6_constants(void) {
-	UNKNOWN_TY_iname = Hierarchy::find(UNKNOWN_TY_HL);
-	Emit::named_numeric_constant(UNKNOWN_TY_iname, (inter_ti) UNKNOWN_NT);
-	Hierarchy::make_available(Emit::tree(), UNKNOWN_TY_iname);
-
 	kind_constructor *con;
 	LOOP_OVER(con, kind_constructor) {
 		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
@@ -392,8 +387,7 @@ void Kinds::Constructors::compile_I6_constants(void) {
 	Hierarchy::make_available(Emit::tree(), hwm);
 }
 inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
-	if (UNKNOWN_TY_iname == NULL) internal_error("no unknown yet");
-	return UNKNOWN_TY_iname;
+	return CON_UNKNOWN->con_iname;
 }
 package_request *Kinds::Constructors::package(kind_constructor *con) {
 	if (con->kc_package == NULL) {
@@ -417,7 +411,6 @@ package_request *Kinds::Constructors::package(kind_constructor *con) {
 	return con->kc_package;
 }
 inter_name *Kinds::Constructors::iname(kind_constructor *con) {
-	if (UNKNOWN_TY_iname == NULL) internal_error("no con symbols yet");
 	return con->con_iname;
 }
 inter_name *Kinds::Constructors::first_instance_iname(kind_constructor *con) {

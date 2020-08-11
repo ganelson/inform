@@ -3,7 +3,7 @@ apply-macro:#BASE-KIND
 singular:described action
 plural:described actions
 
-instance-of:WORD_VALUE_TY
+conforms-to:STORED_VALUE_TY
 
 constant-compilation-method:special
 
@@ -16,8 +16,9 @@ apply-macro:#BASE-KIND
 singular:action
 plural:actions
 
-instance-of:POINTER_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:POINTER_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 comparison-schema:DESCRIPTION_OF_ACTION_TY>>>*=-((STORED_ACTION_TY_Adopt(*1), (SAT_Tmp-->0=(*2)), STORED_ACTION_TY_Unadopt()))
 multiple-block:no
 heap-size-estimate:16
@@ -38,8 +39,8 @@ apply-macro:#BASE-KIND
 singular:action name
 plural:action names
 
-instance-of:WORD_VALUE_TY
-instance-of:SAYABLE_VALUE_TY
+conforms-to:STORED_VALUE_TY
+conforms-to:SAYABLE_VALUE_TY
 default-value:##Wait
 
 loop-domain-schema:for (*2=0,*1=ActionNumberIndexed(*2): *2<AD_RECORDS: *2++,*1=ActionNumberIndexed(*2))

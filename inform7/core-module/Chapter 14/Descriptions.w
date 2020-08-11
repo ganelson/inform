@@ -381,7 +381,9 @@ the number of atoms in the proposition. So we simply use it as a sorting key.
 	kind *k1 = Descriptions::explicit_kind(spec1);
 	kind *k2 = Descriptions::explicit_kind(spec2);
 	if ((k1) && (k2)) {
-		if (Kinds::Compare::lt(k1, k2)) return 1;
-		if (Kinds::Compare::lt(k2, k1)) return -1;
+		if (Kinds::ne(k1, k2)) {
+			if (Kinds::conforms_to(k1, k2)) return 1;
+			if (Kinds::conforms_to(k2, k1)) return -1;
+		}
 	}
 

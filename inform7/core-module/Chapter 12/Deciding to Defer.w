@@ -1018,7 +1018,7 @@ int Calculus::Deferrals::write_loop_schema(i6_schema *sch, kind *K) {
 		return TRUE;
 	}
 
-	if (Kinds::Compare::eq(K, K_object)) {
+	if (Kinds::eq(K, K_object)) {
 		Calculus::Schemas::modify(sch, "objectloop (*1 ofclass Object)");
 		return TRUE;
 	}

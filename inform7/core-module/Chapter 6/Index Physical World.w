@@ -249,9 +249,9 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 			#ifdef IF_MODULE
 			wording W = Kinds::Behaviour::get_name(k, FALSE);
 			if ((Wordings::nonempty(W)) &&
-				(Kinds::Compare::eq(k, K_object) == FALSE) &&
-				(Kinds::Compare::eq(k, K_thing) == FALSE) &&
-				(Kinds::Compare::eq(k, K_room) == FALSE)) {
+				(Kinds::eq(k, K_object) == FALSE) &&
+				(Kinds::eq(k, K_thing) == FALSE) &&
+				(Kinds::eq(k, K_room) == FALSE)) {
 				WRITE(" - <i>%+W</i>", W);
 			}
 			#endif
@@ -274,7 +274,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	if (K) {
 		kind *K2;
 		LOOP_OVER_BASE_KINDS(K2)
-			if (Kinds::Compare::eq(Kinds::Compare::super(K2), K))
+			if (Kinds::eq(Latticework::super(K2), K))
 				Data::Objects::index(OUT, NULL, K2, depth+1, details);
 	} else {
 		#ifdef IF_MODULE
@@ -297,12 +297,12 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	int i = 0;
 	while ((IK != K_object) && (IK)) {
 		i++;
-		IK = Kinds::Compare::super(IK);
+		IK = Latticework::super(IK);
 	}
 	int j;
 	for (j=i-1; j>=0; j--) {
 		int k; IK = Instances::to_kind(I);
-		for (k=0; k<j; k++) IK = Kinds::Compare::super(IK);
+		for (k=0; k<j; k++) IK = Latticework::super(IK);
 		if (j != i-1) WRITE(" &gt; ");
 		wording W = Kinds::Behaviour::get_name(IK, FALSE);
 		WRITE("%+W", W);

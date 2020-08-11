@@ -1558,7 +1558,7 @@ above: it forces the template layer to generate the cache when first used.
 	kind *left_kind = BinaryPredicates::term_kind(bp, 0);
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
 	if ((bp->fast_route_finding) &&
-		(Kinds::Compare::eq(left_kind, right_kind)) &&
+		(Kinds::eq(left_kind, right_kind)) &&
 		(Kinds::Behaviour::is_subkind_of_object(left_kind)) &&
 		(left_count == right_count)) {
 		if (left_count < 256) {

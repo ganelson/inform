@@ -47,7 +47,7 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 							@<Index possible values of an enumerated kind@>;
 							HTML_CLOSE("p"); break;
 					}
-					if (Kinds::Compare::eq(K, K_object)) @<Recurse to index subkinds of object@>;
+					if (Kinds::eq(K, K_object)) @<Recurse to index subkinds of object@>;
 				}
 			}
 		}
@@ -74,7 +74,7 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 @<Recurse to index subkinds of object@> =
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::eq(Kinds::Compare::super(K), K_object))
+		if (Kinds::eq(Latticework::super(K), K_object))
 			Data::Objects::index(OUT, NULL, K, 2, (pass == 1)?FALSE:TRUE);
 
 @ An atypical row:
@@ -222,10 +222,9 @@ row.
 	WRITE("<i>Matches:</i> ");
 	kind *K2;
 	LOOP_OVER_BASE_KINDS(K2) {
-		if ((Kinds::Behaviour::is_kind_of_kind(K2)) &&
-			(Kinds::Compare::le(K, K2)) &&
-			(Kinds::Compare::eq(K2, K_word_value) == FALSE) &&
-			(Kinds::Compare::eq(K2, K_pointer_value) == FALSE)) {
+		if ((Kinds::Behaviour::is_kind_of_kind(K2)) && (Kinds::conforms_to(K, K2))
+			 && (Kinds::eq(K2, K_pointer_value) == FALSE)
+			 && (Kinds::eq(K2, K_stored_value) == FALSE)) {
 			if (f) WRITE(", ");
 			Kinds::Index::index_kind(OUT, K2, FALSE, TRUE);
 			f = TRUE;

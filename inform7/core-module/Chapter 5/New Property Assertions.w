@@ -56,7 +56,7 @@ automatically creates it.
 	return prn;
 
 @<Disallow this kind as a new owner of a value property@> =
-	if ((Kinds::Compare::eq(K, K_action_name)) ||
+	if ((Kinds::eq(K, K_action_name)) ||
 		(Kinds::get_construct(K) == CON_activity) ||
 		(Kinds::get_construct(K) == CON_rulebook))
 	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ValueCantHaveVProperties2),
@@ -105,7 +105,7 @@ void NewPropertyAssertions::recursively_call(parse_node *owner_ref,
 	@<Issue a problem message if the property kind is just "value"@>;
 	kind *current_kind = Properties::Valued::kind(prn);
 	if (current_kind == NULL) Properties::Valued::set_kind(prn, K);
-	else if (Kinds::Compare::eq(current_kind, K) == FALSE)
+	else if (Kinds::eq(current_kind, K) == FALSE)
 		@<Issue a problem message for giving the wrong kind of an existing property@>;
 
 @<Find the kind of value being asked for@> =
@@ -153,7 +153,7 @@ void NewPropertyAssertions::recursively_call(parse_node *owner_ref,
 	return;
 
 @<Issue a problem message if the property kind is just "value"@> =
-	if (Kinds::Compare::eq(K, K_value)) {
+	if (Kinds::eq(K, K_value)) {
 		if (prn == P_variable_initial_value) return;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(kind_ref));

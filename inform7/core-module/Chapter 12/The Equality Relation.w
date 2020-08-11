@@ -51,8 +51,8 @@ any kind.
 int Calculus::Equality::REL_typecheck(binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	LOGIF(MATCHING, "Typecheck %u '==' %u\n", kinds_of_terms[0], kinds_of_terms[1]);
-	if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[0], K_understanding)) &&
-			(Kinds::Compare::eq(kinds_of_terms[1], K_text))) {
+	if ((K_understanding) && (Kinds::eq(kinds_of_terms[0], K_understanding)) &&
+			(Kinds::eq(kinds_of_terms[1], K_text))) {
 			LOGIF(MATCHING, "No!\n");
 		StandardProblems::tcp_problem(_p_(PM_TextIsNotTopic), tck,
 			"though they look the same, because both are written in double "
@@ -67,14 +67,14 @@ int Calculus::Equality::REL_typecheck(binary_predicate *bp,
 	if ((Kinds::Behaviour::is_object(kinds_of_terms[0])) &&
 		(Properties::Conditions::name_can_coincide_with_property(kinds_of_terms[1])))
 		@<Apply rule for "is" applied to an object and a value@>
-	else if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[1], K_understanding)) &&
-			(Kinds::Compare::eq(kinds_of_terms[0], K_snippet)))
+	else if ((K_understanding) && (Kinds::eq(kinds_of_terms[1], K_understanding)) &&
+			(Kinds::eq(kinds_of_terms[0], K_snippet)))
 		return ALWAYS_MATCH;
-	else if ((K_understanding) && (Kinds::Compare::eq(kinds_of_terms[0], K_understanding)) &&
-			(Kinds::Compare::eq(kinds_of_terms[1], K_snippet)))
+	else if ((K_understanding) && (Kinds::eq(kinds_of_terms[0], K_understanding)) &&
+			(Kinds::eq(kinds_of_terms[1], K_snippet)))
 		return ALWAYS_MATCH;
-	else if ((Kinds::Compare::eq(kinds_of_terms[1], K_text)) &&
-			(Kinds::Compare::eq(kinds_of_terms[0], K_response)))
+	else if ((Kinds::eq(kinds_of_terms[1], K_text)) &&
+			(Kinds::eq(kinds_of_terms[0], K_response)))
 		return ALWAYS_MATCH;
 	else
 		@<Allow comparison only where left domain and right domain are not disjoint@>;
@@ -112,8 +112,8 @@ and scenes are not.
 		return ALWAYS_MATCH;
 	if (Calculus::Equality::both_terms_of_same_construction(kinds_of_terms[0], kinds_of_terms[1], CON_activity))
 		return ALWAYS_MATCH;
-	if ((Kinds::Compare::compatible(kinds_of_terms[0], kinds_of_terms[1]) == NEVER_MATCH) &&
-		(Kinds::Compare::compatible(kinds_of_terms[1], kinds_of_terms[0]) == NEVER_MATCH)) {
+	if ((Kinds::compatible(kinds_of_terms[0], kinds_of_terms[1]) == NEVER_MATCH) &&
+		(Kinds::compatible(kinds_of_terms[1], kinds_of_terms[0]) == NEVER_MATCH)) {
 		if (tck->log_to_I6_text)
 			LOG("Unable to compare %u with %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 		return NEVER_MATCH_SAYING_WHY_NOT;
@@ -194,7 +194,7 @@ int Calculus::Equality::REL_compile(int task, binary_predicate *bp, annotated_i6
 		(Properties::Conditions::name_can_coincide_with_property(st[1])) && (Properties::Conditions::get_coinciding_property(st[1])))
 		@<Handle the case of setting a property of A separately@>;
 
-	if ((Kinds::Compare::eq(st[0], K_response)) && (Kinds::Compare::eq(st[1], K_text)))
+	if ((Kinds::eq(st[0], K_response)) && (Kinds::eq(st[1], K_text)))
 		@<Handle the case of setting a response separately@>;
 
 	switch (task) {
@@ -292,11 +292,11 @@ lantern is bright".
 	}
 
 @<Make a further check that kinds permit this assignment@> =
-	if (Kinds::Compare::compatible(st[1], st[0]) == NEVER_MATCH) {
+	if (Kinds::compatible(st[1], st[0]) == NEVER_MATCH) {
 		kind *dst[2];
 		dst[0] = Kinds::dereference_properties(st[0]);
 		dst[1] = Kinds::dereference_properties(st[1]);
-		if (Kinds::Compare::compatible(dst[1], dst[0]) == NEVER_MATCH) {
+		if (Kinds::compatible(dst[1], dst[0]) == NEVER_MATCH) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind(2, st[1]);
 			Problems::quote_kind(3, st[0]);
@@ -332,7 +332,7 @@ one that's more helpfully specific and return |TRUE|.
 	}
 
 @<Add kind-checking code for run-time checking@> =
-	if ((Kinds::Compare::compatible(st[1], st[0]) == SOMETIMES_MATCH) &&
+	if ((Kinds::compatible(st[1], st[0]) == SOMETIMES_MATCH) &&
 		(Kinds::Behaviour::is_subkind_of_object(st[0]))) {
 		TEMPORARY_TEXT(TEMP)
 		WRITE_TO(TEMP,

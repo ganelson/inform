@@ -27,7 +27,7 @@ pcalc_prop *Calculus::Propositions::Abstract::to_make_a_const(void) {
 
 pcalc_prop *Calculus::Propositions::Abstract::to_create_something(kind *K, wording W) {
 	pcalc_prop *prop = Calculus::Atoms::QUANTIFIER_new(exists_quantifier, 0, 0);
-	if ((K) && (Kinds::Compare::eq(K, K_object) == FALSE))
+	if ((K) && (Kinds::eq(K, K_object) == FALSE))
 		prop = Calculus::Propositions::concatenate(prop,
 			Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0)));
 	if (Wordings::nonempty(W))

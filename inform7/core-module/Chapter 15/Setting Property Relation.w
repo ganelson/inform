@@ -161,15 +161,15 @@ be caught later on Inform's run.
 
 @<Require the value to be type-safe for storage in the property@> =
 	int safe = FALSE;
-	int compatible = Kinds::Compare::compatible(kinds_of_terms[1], val_kind);
+	int compatible = Kinds::compatible(kinds_of_terms[1], val_kind);
 	if (compatible == ALWAYS_MATCH) safe = TRUE;
 	if (compatible == SOMETIMES_MATCH) {
 		if (Kinds::Behaviour::is_object(val_kind) == FALSE) safe = TRUE;
 		#ifdef IF_MODULE
-		if ((Kinds::Compare::eq(val_kind, K_direction)) ||
-			(Kinds::Compare::eq(val_kind, K_room)) ||
-			(Kinds::Compare::eq(val_kind, K_container)) ||
-			(Kinds::Compare::eq(val_kind, K_supporter))) safe = TRUE;
+		if ((Kinds::eq(val_kind, K_direction)) ||
+			(Kinds::eq(val_kind, K_room)) ||
+			(Kinds::eq(val_kind, K_container)) ||
+			(Kinds::eq(val_kind, K_supporter))) safe = TRUE;
 		#endif
 	}
 

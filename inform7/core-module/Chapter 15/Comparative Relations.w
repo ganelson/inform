@@ -42,7 +42,7 @@ int Properties::ComparativeRelations::REL_typecheck(binary_predicate *bp,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 
 	if ((kinds_required[0]) &&
-		(Kinds::Compare::compatible(kinds_of_terms[0], kinds_required[0]) == NEVER_MATCH)) {
+		(Kinds::compatible(kinds_of_terms[0], kinds_required[0]) == NEVER_MATCH)) {
 		LOG("Term 0 is %u not %u\n", kinds_of_terms[0], kinds_required[0]);
 		Calculus::Propositions::Checker::issue_bp_typecheck_error(bp,
 			kinds_of_terms[0], kinds_of_terms[1], tck);
@@ -94,7 +94,7 @@ so symmetrically; we rewrite the annotated schema on the fly.
 	kind *st[2];
 	st[0] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
 	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
-	if ((Kinds::Compare::eq(st[0], st[1]) == FALSE) &&
+	if ((Kinds::eq(st[0], st[1]) == FALSE) &&
 		(Properties::Conditions::name_can_coincide_with_property(st[1]))) {
 		property *prn = Properties::Conditions::get_coinciding_property(st[1]);
 		if (prn) {

@@ -1031,7 +1031,7 @@ description.
 		if (Wordings::nonempty(entry->parameter[1])) {
 			if ((entry->action_listed != NULL)
 				&& (K_understanding)
-				&& (Kinds::Compare::eq(PL::Actions::get_data_type_of_second_noun(entry->action_listed), K_understanding))
+				&& (Kinds::eq(PL::Actions::get_data_type_of_second_noun(entry->action_listed), K_understanding))
 				&& (<understanding-action-irregular-operand>(entry->parameter[1]))) {
 				trial_ap.second_spec = Rvalues::from_grammar_verb(NULL); /* Why no GV here? */
 				Node::set_text(trial_ap.second_spec, entry->parameter[1]);
@@ -1084,11 +1084,11 @@ description.
 			int poor_choice = FALSE;
 			if ((K[0]) && (PL::Actions::get_max_parameters(entry->action_listed) >= 1)) {
 				kind *L = PL::Actions::get_data_type_of_noun(entry->action_listed);
-				if (Kinds::Compare::compatible(L, K[0]) == FALSE) poor_choice = TRUE;
+				if (Kinds::compatible(L, K[0]) == FALSE) poor_choice = TRUE;
 			}
 			if ((K[1]) && (PL::Actions::get_max_parameters(entry->action_listed) >= 2)) {
 				kind *L = PL::Actions::get_data_type_of_second_noun(entry->action_listed);
-				if (Kinds::Compare::compatible(L, K[1]) == FALSE) poor_choice = TRUE;
+				if (Kinds::compatible(L, K[1]) == FALSE) poor_choice = TRUE;
 			}
 			if (poor_choice) {
 				if (((prev) && (prev->word_position == entry->word_position) &&
@@ -1143,14 +1143,14 @@ the case when the first action name in the list is |NULL|).
 				if (entry->parc >= 1) {
 					kind *K = PL::Actions::get_data_type_of_noun(this);
 					kind *A = kinds_observed_in_list[0];
-					if ((A) && (K) && (Kinds::Compare::eq(A, K) == FALSE))
+					if ((A) && (K) && (Kinds::eq(A, K) == FALSE))
 						immiscible = TRUE;
 					kinds_observed_in_list[0] = K;
 				}
 				if (entry->parc >= 2) {
 					kind *K = PL::Actions::get_data_type_of_second_noun(this);
 					kind *A = kinds_observed_in_list[1];
-					if ((A) && (K) && (Kinds::Compare::eq(A, K) == FALSE))
+					if ((A) && (K) && (Kinds::eq(A, K) == FALSE))
 						immiscible = TRUE;
 					kinds_observed_in_list[1] = K;
 				}
@@ -1375,8 +1375,8 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 	LOGIF(EXPRESSIONS, "Compiling from action name list:\n$L\n", anl);
 
 	int flag_bits = 0;
-	if (Kinds::Compare::eq(Specifications::to_kind(spec0), K_text)) flag_bits += 16;
-	if (Kinds::Compare::eq(Specifications::to_kind(spec1), K_text)) flag_bits += 32;
+	if (Kinds::eq(Specifications::to_kind(spec0), K_text)) flag_bits += 16;
+	if (Kinds::eq(Specifications::to_kind(spec1), K_text)) flag_bits += 32;
 	if (flag_bits > 0) Kinds::RunTime::ensure_basic_heap_present();
 
 	if (ap->request) flag_bits += 1;
@@ -1406,10 +1406,10 @@ text when the action expects that.
 
 =
 void PL::Actions::Patterns::emit_try_action_parameter(parse_node *spec, kind *required_kind) {
-	if ((K_understanding) && (Kinds::Compare::eq(required_kind, K_understanding))) {
+	if ((K_understanding) && (Kinds::eq(required_kind, K_understanding))) {
 		kind *K = Specifications::to_kind(spec);
-		if ((Kinds::Compare::compatible(K, K_understanding)) ||
-			(Kinds::Compare::compatible(K, K_text))) {
+		if ((Kinds::compatible(K, K_understanding)) ||
+			(Kinds::compatible(K, K_text))) {
 			required_kind = NULL;
 		}
 	}

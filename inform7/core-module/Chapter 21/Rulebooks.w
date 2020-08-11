@@ -466,7 +466,7 @@ void Rulebooks::add_variable(rulebook *rb, parse_node *cnode) {
 		return;
 	}
 
-	if (Kinds::Compare::eq(K, K_value)) {
+	if (Kinds::eq(K, K_value)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(cnode->down));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RulebookVariableVague));
@@ -1252,7 +1252,7 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 	WRITE(" ... ");
 	if (av) WRITE(" activity"); else {
 		if ((rb) && (Rulebooks::get_parameter_kind(rb)) &&
-			(Kinds::Compare::eq(Rulebooks::get_parameter_kind(rb), K_action_name) == FALSE)) {
+			(Kinds::eq(Rulebooks::get_parameter_kind(rb), K_action_name) == FALSE)) {
 			WRITE(" ");
 			Kinds::Textual::write_articled(OUT, Rulebooks::get_parameter_kind(rb));
 			WRITE(" based");

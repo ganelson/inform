@@ -115,6 +115,7 @@ typedef struct kind_relationship {
 	weaken <kind-eval> |                       ==> @<Weaken kind@>
 	super of <kind-eval> |                     ==> @<Super kind@>
 	substitute <kind-eval> for <k-formal-kind-variable> in <kind-eval> | ==> @<Substitute@>
+	void |                                     ==> { -, K_void }
 	<k-kind> |                                 ==> { pass 1 }
 	<k-formal-kind-variable>                   ==> { pass 1 }
 
@@ -132,7 +133,7 @@ typedef struct kind_relationship {
 @<Show compatibility@> =
 	kind *K1 = RP[1];
 	kind *K2 = RP[2];
-	switch (Kinds::Compare::compatible(K1, K2)) {
+	switch (Kinds::compatible(K1, K2)) {
 		case NEVER_MATCH:     PRINT("'%<W?': never\n", W); break;
 		case ALWAYS_MATCH:    PRINT("'%<W?': always\n", W); break;
 		case SOMETIMES_MATCH: PRINT("'%<W?': sometimes\n", W); break;
@@ -235,12 +236,12 @@ typedef struct kind_relationship {
 @<Perform join@> =
 	kind *K1 = RP[1];
 	kind *K2 = RP[2];
-	==> { - , Kinds::Compare::join(K1, K2) }
+	==> { - , Latticework::join(K1, K2) }
 
 @<Perform meet@> =
 	kind *K1 = RP[1];
 	kind *K2 = RP[2];
-	==> { - , Kinds::Compare::meet(K1, K2) }
+	==> { - , Latticework::meet(K1, K2) }
 
 @<Extract first term@> =
 	kind *K = RP[1];
@@ -276,12 +277,12 @@ typedef struct kind_relationship {
 
 @<Super kind@> =
 	kind *K = RP[1];
-	==> { - , Kinds::Compare::super(K) }
+	==> { - , Latticework::super(K) }
 
 @<Test le@> =
 	kind *K1 = RP[1];
 	kind *K2 = RP[2];
-	==> { Kinds::Compare::le(K1, K2), - }
+	==> { Kinds::conforms_to(K1, K2), - }
 
 @<Test definiteness@> =
 	kind *K = RP[1];
@@ -300,12 +301,12 @@ typedef struct kind_relationship {
 @
 
 @d HIERARCHY_GET_SUPER_KINDS_CALLBACK Declarations::super
-@d HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK Declarations::compatible
+@d HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK Declarations::sometimes
 
 =
 int Declarations::le(kind *K1, kind *K2) {
 	while (K1) {
-		if (Kinds::Compare::eq(K1, K2)) return TRUE;
+		if (Kinds::eq(K1, K2)) return TRUE;
 		K1 = Declarations::super(K1);
 	}
 	return FALSE;
@@ -313,12 +314,14 @@ int Declarations::le(kind *K1, kind *K2) {
 kind *Declarations::super(kind *K1) {
 	kind_relationship *KR;
 	LOOP_OVER(KR, kind_relationship)
-		if (Kinds::Compare::eq(K1, KR->sub))
+		if (Kinds::eq(K1, KR->sub))
 			return KR->super;
 	return NULL;
 }
-int Declarations::compatible(kind *from, kind *to) {
-	if (Declarations::le(from, to)) return ALWAYS_MATCH;
-	if (Declarations::le(to, from)) return SOMETIMES_MATCH;
-	return NO_DECISION_ON_MATCH;
+int Declarations::sometimes(kind *from) {
+	while (from) {
+		if (Kinds::eq(from, K_object)) return TRUE;
+		from = Latticework::super(from);
+	}
+	return FALSE;
 }

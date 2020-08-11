@@ -128,7 +128,7 @@ the values given there.
 	if (Kinds::FloatingPoint::uses_floating_point(K)) 			bits += TB_COLUMN_REAL;
 	if (Kinds::Behaviour::uses_pointer_values(K)) 				bits += TB_COLUMN_ALLOCATED;
 
-	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)))  bits = TB_COLUMN_TOPIC;
+	if ((K_understanding) && (Kinds::eq(K, K_understanding)))  bits = TB_COLUMN_TOPIC;
 
 	if (Tables::Support::requires_blanks_bitmap(K) == FALSE) 	bits += TB_COLUMN_NOBLANKBITS;
 	if (t->preserve_row_order_at_run_time) 						bits += TB_COLUMN_DONTSORTME;

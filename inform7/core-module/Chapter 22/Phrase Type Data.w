@@ -401,7 +401,7 @@ void Phrases::TypeData::into_stack_frame(ph_stack_frame *phsf,
 		}
 	}
 
-	if (Kinds::Compare::eq(ret, K_nil)) Frames::set_kind_returned(phsf, NULL);
+	if (Kinds::eq(ret, K_nil)) Frames::set_kind_returned(phsf, NULL);
 	else Frames::set_kind_returned(phsf, ret);
 }
 
@@ -497,7 +497,7 @@ false positives in the case of kind variables, etc.
 
 @<These are worryingly similar in wording, so check the return kinds@> =
 	if ((phtd1->manner_of_return != phtd2->manner_of_return) ||
-		((Kinds::Compare::eq(phtd1->return_kind, phtd2->return_kind) == FALSE) &&
+		((Kinds::eq(phtd1->return_kind, phtd2->return_kind) == FALSE) &&
 			(Kinds::Behaviour::definite(phtd1->return_kind))))
 		return CONFLICTED_PH;
 

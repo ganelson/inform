@@ -204,7 +204,7 @@ routine for colours; and the best thing is to print nothing at all.
 	Produce::up(Emit::tree());
 	DISCARD_TEXT(T)
 
-	if (Kinds::Compare::eq(K, K_text)) {
+	if (Kinds::eq(K, K_text)) {
 		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);

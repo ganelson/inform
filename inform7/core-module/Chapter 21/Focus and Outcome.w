@@ -468,7 +468,7 @@ void Rulebooks::Outcomes::initialise_focus(focus *foc, kind *parameter_kind) {
 	foc->rules_always_test_actor = FALSE;
 
 	int parametrisation = PARAMETER_FOCUS;
-	if (Kinds::Compare::eq(parameter_kind, K_action_name)) parametrisation = ACTION_FOCUS;
+	if (Kinds::eq(parameter_kind, K_action_name)) parametrisation = ACTION_FOCUS;
 	else if (Kinds::Behaviour::definite(parameter_kind) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RulebookIndefinite),
 			"this is a rulebook for values of a kind which isn't definite",

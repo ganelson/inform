@@ -494,7 +494,7 @@ of the symbols:
 @<Assign the given value to this symbol on a temporary basis@> =
 	for (equation_symbol *ev = eqn->symbol_list; ev; ev = ev->next)
 		if (Wordings::match_cs(W, ev->name)) {
-			if (Kinds::Compare::eq(K, ev->var_kind) == FALSE) {
+			if (Kinds::eq(K, ev->var_kind) == FALSE) {
 				StandardProblems::equation_symbol_problem(_p_(PM_EquationSymbolBadSub), eqn, W,
 					"you're using 'where' to substitute something into this "
 					"symbol which has the wrong kind of value.");
@@ -1294,7 +1294,7 @@ integers to reals.
 	kind *R = Kinds::FloatingPoint::underlying(tok->enode_operands[1]->gK_after);
 	L = Kinds::FloatingPoint::integer_equivalent(L);
 	R = Kinds::FloatingPoint::integer_equivalent(R);
-	if (Kinds::Compare::eq(L, R) == FALSE) {
+	if (Kinds::eq(L, R) == FALSE) {
 		result = FALSE;
 		LOG("Tried to equate %u and %u\n", L, R);
 		StandardProblems::equation_problem(_p_(PM_EquationIncomparable), eqn, "",
@@ -1374,7 +1374,7 @@ of dimensions; if $n=0$ then we have a dimensionless value, and choose
 				"raise-to-power symbol can only be used to power a value using "
 				"real rather than integer arithmetic.");
 		}
-	} else if ((Kinds::Compare::eq(Kinds::FloatingPoint::underlying(power->gK_after), K_number) == FALSE) ||
+	} else if ((Kinds::eq(Kinds::FloatingPoint::underlying(power->gK_after), K_number) == FALSE) ||
 		(power->eqn_type != CONSTANT_EQN)) {
 		result = FALSE;
 		StandardProblems::equation_problem(_p_(PM_EquationDimensionPower), eqn, "",
@@ -1701,16 +1701,16 @@ casting between quasinumerical kinds, we'll have to return to this.)
 
 @<Check that the kind of the local variable matches that of the symbol@> =
 	kind *K = LocalVariables::kind(ev->local_map);
-	if (Kinds::Compare::eq(K, K_value)) {
+	if (Kinds::eq(K, K_value)) {
 		K = ev->var_kind;
 		LocalVariables::set_kind(ev->local_map, K);
 	}
-	if ((Kinds::Compare::eq(K, K_number)) &&
-		(Kinds::Compare::eq(ev->var_kind, K_real_number))) {
+	if ((Kinds::eq(K, K_number)) &&
+		(Kinds::eq(ev->var_kind, K_real_number))) {
 		K = K_real_number;
 		ev->promote_local_to_real = TRUE;
 	}
-	if (Kinds::Compare::eq(K, ev->var_kind) == FALSE) {
+	if (Kinds::eq(K, ev->var_kind) == FALSE) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		Problems::quote_wording(3, eqn->equation_text);

@@ -188,7 +188,7 @@ int PL::Player::player_detect_bodysnatching(inference_subject *body, int *snatch
 	kind *KP = Instances::to_kind(player_character_object);
 	kind *KY = Instances::to_kind(I_yourself);
 
-	if (Kinds::Compare::lt(KP, KY)) {
+	if ((Kinds::conforms_to(KP, KY)) && (Kinds::ne(KP, KY))) {
 		if (body == Instances::as_subject(player_character_object)) {
 			*snatcher = FALSE; *counterpart = Instances::as_subject(I_yourself); return TRUE; }
 		if (body == Instances::as_subject(I_yourself)) {

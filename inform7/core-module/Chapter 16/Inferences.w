@@ -299,7 +299,7 @@ void World::Inferences::verify_prop_states(inference_subject *infs) {
 		parse_node *val = World::Inferences::get_property_value(inf);
 		kind *PK = Properties::Valued::kind(prn);
 		kind *VK = Specifications::to_kind(val);
-		if (Kinds::Compare::compatible(VK, PK) != ALWAYS_MATCH) {
+		if (Kinds::compatible(VK, PK) != ALWAYS_MATCH) {
 			LOG("Property value given as %u not %u\n", VK, PK);
 			current_sentence = inf->inferred_from;
 			Problems::quote_source(1, current_sentence);

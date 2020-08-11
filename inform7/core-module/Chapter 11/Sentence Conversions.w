@@ -347,7 +347,7 @@ is irregular because it differs from "something" and "someone".)
 @<Deal with the English irregularity concerning -where words@> =
 	#ifdef IF_MODULE
 	pcalc_prop *k_atom = Calculus::Propositions::composited_kind(object_phrase_prop);
-	if ((k_atom) && (Kinds::Compare::eq(k_atom->assert_kind, K_room)) &&
+	if ((k_atom) && (Kinds::eq(k_atom->assert_kind, K_room)) &&
 		(verb_phrase_relation == R_equality) && (room_containment_predicate)) {
 		Calculus::Atoms::set_composited(k_atom, FALSE);
 		verb_phrase_relation = BinaryPredicates::get_reversal(room_containment_predicate);

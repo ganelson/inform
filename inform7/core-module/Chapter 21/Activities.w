@@ -126,7 +126,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	creation_kind = Kinds::unary_construction_material(creation_kind);
 
 	if ((Kinds::Behaviour::definite(creation_kind) == FALSE) &&
-		(Kinds::Compare::eq(creation_kind, K_nil) == FALSE)) {
+		(Kinds::eq(creation_kind, K_nil) == FALSE)) {
 		LOG("I'm reading the kind as: %u\n", creation_kind);
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityIndefinite),
 			"this is an activity on a kind which isn't definite",
@@ -143,9 +143,9 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	future_action_flag = <<future>>;
 
 	if (<<any>>) {
-		if (Kinds::Compare::eq(creation_kind, K_nil)) creation_kind = K_object;
+		if (Kinds::eq(creation_kind, K_nil)) creation_kind = K_object;
 	} else {
-		if (Kinds::Compare::eq(creation_kind, K_nil) == FALSE) {
+		if (Kinds::eq(creation_kind, K_nil) == FALSE) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityMisnamed),
 				"the name of this activity implies that it acts on nothing",
 				"which doesn't fit with what you say about it. For example, "
@@ -306,7 +306,7 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 		Problems::issue_problem_end();
 		return;
 	}
-	if (Kinds::Compare::eq(Specifications::to_kind(spec), K_value)) {
+	if (Kinds::eq(Specifications::to_kind(spec), K_value)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(cnode->down));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarValue));

@@ -407,7 +407,7 @@ henceforth to be true, so we simply compile empty code in that case.
 									"specifically, it has to be %2.");
 								Problems::issue_problem_end();
 								case_spec = Rvalues::new_nothing_object_constant();
-							} else if (Kinds::Compare::compatible(case_kind, switch_kind) != ALWAYS_MATCH) {
+							} else if (Kinds::compatible(case_kind, switch_kind) != ALWAYS_MATCH) {
 								Problems::quote_source(1, current_sentence);
 								Problems::quote_kind(2, case_kind);
 								Problems::quote_kind(3, switch_kind);

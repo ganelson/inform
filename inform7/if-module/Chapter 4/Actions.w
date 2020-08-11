@@ -126,7 +126,7 @@ int PL::Actions::actions_new_base_kind_notify(kind *new_base, text_stream *name,
 int PL::Actions::actions_compile_constant(value_holster *VH, kind *K, parse_node *spec) {
 	if (Plugins::Manage::plugged_in(actions_plugin) == FALSE)
 		internal_error("actions plugin inactive");
-	if (Kinds::Compare::eq(K, K_action_name)) {
+	if (Kinds::eq(K, K_action_name)) {
 		action_name *an = Rvalues::to_action_name(spec);
 		if (Holsters::data_acceptable(VH)) {
 			inter_name *N = PL::Actions::iname(an);
@@ -134,12 +134,12 @@ int PL::Actions::actions_compile_constant(value_holster *VH, kind *K, parse_node
 		}
 		return TRUE;
 	}
-	if (Kinds::Compare::eq(K, K_description_of_action)) {
+	if (Kinds::eq(K, K_description_of_action)) {
 		action_pattern *ap = Node::get_constant_action_pattern(spec);
 		PL::Actions::Patterns::compile_pattern_match(VH, *ap, FALSE);
 		return TRUE;
 	}
-	if (Kinds::Compare::eq(K, K_stored_action)) {
+	if (Kinds::eq(K, K_stored_action)) {
 		action_pattern *ap = Node::get_constant_action_pattern(spec);
 		if (TEST_COMPILATION_MODE(CONSTANT_CMODE))
 			PL::Actions::Patterns::as_stored_action(VH, ap);
@@ -152,7 +152,7 @@ int PL::Actions::actions_compile_constant(value_holster *VH, kind *K, parse_node
 }
 
 int PL::Actions::actions_offered_property(kind *K, parse_node *owner, parse_node *what) {
-	if (Kinds::Compare::eq(K, K_action_name)) {
+	if (Kinds::eq(K, K_action_name)) {
 		action_name *an = Rvalues::to_action_name(owner);
 		if (an == NULL) internal_error("failed to extract action-name structure");
 		if (global_pass_state.pass == 1) PL::Actions::an_add_variable(an, what);
@@ -175,8 +175,8 @@ int PL::Actions::actions_offered_specification(parse_node *owner, wording W) {
 
 =
 int PL::Actions::actions_typecheck_equality(kind *K1, kind *K2) {
-	if ((Kinds::Compare::eq(K1, K_stored_action)) &&
-		(Kinds::Compare::eq(K2, K_description_of_action)))
+	if ((Kinds::eq(K1, K_stored_action)) &&
+		(Kinds::eq(K2, K_description_of_action)))
 		return TRUE;
 	return FALSE;
 }
@@ -657,7 +657,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 		return;
 	}
 
-	if (Kinds::Compare::eq(K, K_value)) {
+	if (Kinds::eq(K, K_value)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(cnode->down));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionVarValue));
@@ -859,7 +859,7 @@ It's convenient to define a single action clause first:
 
 @<Check action kind@> =
 	int A = R[1]; kind *K = RP[1];
-	if (Kinds::Compare::eq(K, K_thing)) {
+	if (Kinds::eq(K, K_thing)) {
 		if (A == UNRESTRICTED_ACCESS) A = REQUIRES_ACCESS;
 		==> { A, K_object };
 	} else if (Kinds::Behaviour::is_subkind_of_object(K)) {
@@ -1083,7 +1083,7 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 			case UNRESTRICTED_ACCESS: {
 				kind *supplied_data_type = tok_value_kinds[0];
 				kind *desired_data_type = an->noun_kind;
-				if (Kinds::Compare::compatible(supplied_data_type, desired_data_type)
+				if (Kinds::compatible(supplied_data_type, desired_data_type)
 					!= ALWAYS_MATCH) {
 					failed_on =
 						"the thing you suggest this action should act on "
@@ -1109,7 +1109,7 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 			case UNRESTRICTED_ACCESS: {
 				kind *supplied_data_type = tok_value_kinds[1];
 				kind *desired_data_type = an->second_kind;
-				if (Kinds::Compare::compatible(supplied_data_type, desired_data_type)
+				if (Kinds::compatible(supplied_data_type, desired_data_type)
 					!= ALWAYS_MATCH) {
 					failed_on =
 						"the second thing you suggest this action should act on "
@@ -1339,7 +1339,7 @@ void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inte
 	Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
-		if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) {
+		if ((K_understanding) && (Kinds::eq(K, K_understanding))) {
 			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
@@ -1519,7 +1519,7 @@ void PL::Actions::act_index_something(OUTPUT_STREAM, action_name *an, int argc) 
 	if (argc == 0) K = an->noun_kind;
 	if (argc == 1) K = an->second_kind;
 	if (Kinds::Behaviour::is_object(K)) WRITE("something");
-	else if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding))) WRITE("some text");
+	else if ((K_understanding) && (Kinds::eq(K, K_understanding))) WRITE("some text");
 	else Kinds::Textual::write(OUT, K);
 	HTML::end_colour(OUT);
 	WRITE(" ");

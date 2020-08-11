@@ -561,11 +561,13 @@ to miss out on this detail.
 	WRITE("%c", 'A' + vn - 1);
 	if (plural_form) WRITE("s");
 	kind *S = Kinds::get_variable_stipulation(K);
-	if ((S) && (Kinds::Compare::eq(S, K_value) == FALSE)) {
+	if ((S) && (Kinds::eq(S, K_value) == FALSE)) {
 		WRITE(" ["); Kinds::Textual::write(OUT, S); WRITE("]"); }
 
 @<Write base kinds out to the stream@> =
-	WRITE("%W", Kinds::Behaviour::get_name(K, plural_form));
+	if (Kinds::eq(K, K_pointer_value)) WRITE("pointer value");
+	else if (Kinds::eq(K, K_stored_value)) WRITE("stored value");
+	else WRITE("%W", Kinds::Behaviour::get_name(K, plural_form));
 
 @<Write constructor kinds out to the stream@> =
 	kind *first_base = NULL, *second_base = NULL;
@@ -586,7 +588,7 @@ state valued property", we'll also write it: it's a much more familiar
 usage.
 
 @<Make a special case for either/or properties@> =
-	if ((con == CON_property) && (Kinds::Compare::eq(first_base, K_truth_state))) {
+	if ((con == CON_property) && (Kinds::eq(first_base, K_truth_state))) {
 		WRITE("either/or property");
 		return;
 	}
@@ -597,17 +599,17 @@ usage.
 	@<Determine the possible forms for writing this constructor@>;
 	k_present = 1; l_present = 1;
 	if ((con == CON_rule) || (con == CON_rulebook)) {
-		if (Kinds::Compare::eq(first_base, K_action_name)) k_present = 0;
+		if (Kinds::eq(first_base, K_action_name)) k_present = 0;
 	} else {
-		if (Kinds::Compare::eq(first_base, K_nil)) k_present = 0;
-		if (Kinds::Compare::eq(first_base, K_void)) k_present = 0;
+		if (Kinds::eq(first_base, K_nil)) k_present = 0;
+		if (Kinds::eq(first_base, K_void)) k_present = 0;
 	}
-	if ((con == CON_property) && (Kinds::Compare::eq(first_base, K_value))) k_present = 0;
-	if ((con == CON_table_column) && (Kinds::Compare::eq(first_base, K_value))) k_present = 0;
-	if ((con == CON_relation) && (Kinds::Compare::eq(first_base, second_base))) l_present = 0;
+	if ((con == CON_property) && (Kinds::eq(first_base, K_value))) k_present = 0;
+	if ((con == CON_table_column) && (Kinds::eq(first_base, K_value))) k_present = 0;
+	if ((con == CON_relation) && (Kinds::eq(first_base, second_base))) l_present = 0;
 	if (Kinds::Constructors::arity(con) == 1) l_present = 0;
-	else if (Kinds::Compare::eq(second_base, K_nil)) l_present = 0;
-	else if (Kinds::Compare::eq(second_base, K_void)) l_present = 0;
+	else if (Kinds::eq(second_base, K_nil)) l_present = 0;
+	else if (Kinds::eq(second_base, K_void)) l_present = 0;
 	if (choice_from[k_present][l_present] == -1) {
 		if ((k_present == 0) && (choice_from[1][l_present] >= 0)) k_present++;
 		else if ((l_present == 0) && (choice_from[k_present][1] >= 0)) l_present++;

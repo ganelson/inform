@@ -298,7 +298,7 @@ kind *Kinds::substitute_inner(kind *K, kind **meanings, int *changed, int contra
 	int N = Kinds::get_variable_number(K);
 	if (N > 0) {
 		*changed = TRUE;
-		if ((contra) && (way_in == CONTRAVARIANT) && (Kinds::Compare::eq(meanings[N], K_value)))
+		if ((contra) && (way_in == CONTRAVARIANT) && (Kinds::eq(meanings[N], K_value)))
 			return K_nil;
 		return meanings[N];
 	}
@@ -349,7 +349,7 @@ kind *Kinds::weaken(kind *K, kind *W) {
 			return Kinds::binary_construction(K->construct, Kinds::weaken(X, W), Kinds::weaken(Y, W));
 		}
 	} else {
-		if ((K) && (Kinds::Compare::lt(K, W)) && (Kinds::Compare::eq(K, K_nil) == FALSE)) return W;
+		if ((K) && (Kinds::conforms_to(K, W)) && (Kinds::eq(K, K_nil) == FALSE)) return W;
 	}
 	return K;
 }
@@ -404,9 +404,7 @@ kind *Kinds::new_base(parse_node_tree *T, wording W, kind *super) {
 	NEW_BASE_KINDS_CALLBACK(K, super, Kinds::Behaviour::get_name_in_template_code(K), W);
 	#endif
 
-	#ifdef HIERARCHY_MOVE_KINDS_CALLBACK
-	HIERARCHY_MOVE_KINDS_CALLBACK(K, super);
-	#endif
+	Kinds::make_subkind_inner(K, super);
 
 	latest_base_kind_of_value = K;
 	LOGIF(KIND_CREATIONS, "Created base kind %u\n", K);
@@ -424,6 +422,54 @@ kind *Kinds::new_base(parse_node_tree *T, wording W, kind *super) {
 		KIND_SLOW_MC, STORE_POINTER_kind_constructor(K->construct), NULL);
 	#endif
 	Kinds::Constructors::attach_noun(K->construct, nt);
+
+@h Making subkinds.
+This does not need to be done at creation time.
+
+=
+void Kinds::make_subkind(kind *sub, kind *super) {
+	#ifdef PROTECTED_MODEL_PROCEDURE
+	PROTECTED_MODEL_PROCEDURE;
+	#endif
+	if (sub == NULL) {
+		LOG("Tried to set kind to %u\n", super);
+		internal_error("Tried to set the kind of a null kind");
+	}
+	#ifdef HIERARCHY_VETO_MOVE_KINDS_CALLBACK
+	if (HIERARCHY_VETO_MOVE_KINDS_CALLBACK(sub, super)) return;
+	#endif
+	kind *existing = Latticework::super(sub);
+	switch (Kinds::compatible(existing, super)) {
+		case NEVER_MATCH:
+			LOG("Tried to make %u a kind of %u\n", sub, super);
+			if (problem_count == 0)
+				KindsModule::problem_handler(KindUnalterable_KINDERROR,
+					Kinds::Behaviour::get_superkind_set_at(sub), super, existing);
+			break;
+		case SOMETIMES_MATCH:
+			Kinds::make_subkind_inner(sub, super);
+			break;
+	}
+}
+
+void Kinds::make_subkind_inner(kind *sub, kind *super) {
+	kind *K = super;
+	while (K) {
+		if (Kinds::eq(K, sub)) {
+			if (problem_count == 0)
+				KindsModule::problem_handler(KindsCircular_KINDERROR,
+					Kinds::Behaviour::get_superkind_set_at(super), super,
+					Latticework::super(sub));
+			return;
+		}
+		K = Latticework::super(K);
+	}
+	#ifdef HIERARCHY_MOVE_KINDS_CALLBACK
+	HIERARCHY_MOVE_KINDS_CALLBACK(sub, super);
+	#endif
+	Kinds::Behaviour::set_superkind_set_at(sub, current_sentence);
+	LOGIF(KIND_CHANGES, "Making %u a subkind of %u\n", sub, super);
+}
 
 @h Annotating vocabulary.
 
@@ -452,4 +498,78 @@ kind *Kinds::variable_from_context(int v) {
 	#ifndef KIND_VARIABLE_FROM_CONTEXT
 	return NULL;
 	#endif
+}
+
+@h Equality.
+It may well happen that there are two different //kind// structures in memory
+which both mean (say) "list of texts", so we cannot simply test if two
+|kind *| pointers are equal when we want to ask if they represent the same
+kind.
+
+The following determines whether or not two kinds are the same. Clearly
+all base kinds are different from each other, but in some programming
+languages it's an interesting question whether different sequences of
+constructors applied to these bases can ever produce an equivalent kind.
+Most of the interesting cases are to do with unions (which Inform
+disallows as type unsafe) and records (which Inform supports only by its
+"combination" operator). For example, is "combination (number, text)"
+the same as "combination (text, number)"? One might also consider
+whether |->| (function mapping) ought to be an associative operation, as
+it would be in a language like Haskell which curried all functions.
+
+At any rate, for Inform the answer is no: every different sequence of kind
+constructors produces a different kind.
+
+With kind variables, we take the "name" approach rather than the
+"structural" approach: that is, the kind "X" (a variable) is not equivalent
+to the kind "number" even if that's the current value of X.
+
+=
+int Kinds::eq(kind *K1, kind *K2) {
+	if (K1 == NULL) { if (K2 == NULL) return TRUE; return FALSE; }
+	if (K2 == NULL) return FALSE;
+	if (K1->construct != K2->construct) return FALSE;
+	if ((K1->intermediate_result) && (K2->intermediate_result == NULL)) return FALSE;
+	if ((K1->intermediate_result == NULL) && (K2->intermediate_result)) return FALSE;
+	if ((K1->intermediate_result) &&
+		(Kinds::Dimensions::compare_unit_sequences(
+			K1->intermediate_result, K2->intermediate_result) == FALSE)) return FALSE;
+	if (Kinds::get_variable_number(K1) != Kinds::get_variable_number(K2))
+		return FALSE;
+	for (int i=0; i<MAX_KIND_CONSTRUCTION_ARITY; i++)
+		if (Kinds::eq(K1->kc_args[i], K2->kc_args[i]) == FALSE)
+			return FALSE;
+	return TRUE;
+}
+
+int Kinds::ne(kind *K1, kind *K2) {
+	return (Kinds::eq(K1, K2))?FALSE:TRUE;
+}
+
+@h Conformance and compatibility.
+For the distinction between these, see //What This Module Does//.
+
+@d ALWAYS_MATCH    2 /* provably correct at compile time */
+@d SOMETIMES_MATCH 1 /* provably reduced to a check feasible at run-time */
+@d NEVER_MATCH     0 /* provably incorrect at compile time */
+
+=
+int Kinds::conforms_to(kind *from, kind *to) {
+	if (Latticework::order_relation(from, to, FALSE) == ALWAYS_MATCH)
+		return TRUE;
+	return FALSE;
+}
+
+int Kinds::compatible(kind *from, kind *to) {
+	if (Kinds::eq(from, to)) return ALWAYS_MATCH;
+
+	LOGIF(KIND_CHECKING, "(Is the kind %u compatible with %u?", from, to);
+
+	switch(Latticework::order_relation(from, to, TRUE)) {
+		case NEVER_MATCH: LOGIF(KIND_CHECKING, " No)\n"); return NEVER_MATCH;
+		case ALWAYS_MATCH: LOGIF(KIND_CHECKING, " Yes)\n"); return ALWAYS_MATCH;
+		case SOMETIMES_MATCH: LOGIF(KIND_CHECKING, " Sometimes)\n"); return SOMETIMES_MATCH;
+	}
+
+	internal_error("bad return value from Kinds::compatible"); return NEVER_MATCH;
 }

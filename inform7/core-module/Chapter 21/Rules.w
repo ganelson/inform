@@ -397,7 +397,7 @@ about the kind of the rule; and this enables us to check for incompatibilities.
 void Rules::set_kind_from(rule *R, rulebook *RB) {
 	kind *K = Rulebooks::contains_kind(RB);
 	if (R->kind_of_rule) {
-		if (Kinds::Compare::compatible(R->kind_of_rule, K) != ALWAYS_MATCH) {
+		if (Kinds::compatible(R->kind_of_rule, K) != ALWAYS_MATCH) {
 			kind *B1 = NULL, *B2 = NULL, *P1 = NULL, *P2 = NULL;
 			Kinds::binary_construction_material(R->kind_of_rule, &B1, &P1);
 			Kinds::binary_construction_material(K, &B2, &P2);
@@ -480,14 +480,14 @@ void Rules::check_placement_safety(void) {
 				kind *B1 = NULL, *B2 = NULL, *P1 = NULL, *P2 = NULL;
 				Kinds::binary_construction_material(KR, &B1, &P1);
 				Kinds::binary_construction_material(KS, &B2, &P2);
-				if (Kinds::Compare::eq(B1, NULL)) B1 = K_void;
-				if (Kinds::Compare::eq(B2, NULL)) B2 = K_void;
-				if (Kinds::Compare::eq(P1, NULL)) P1 = K_void;
-				if (Kinds::Compare::eq(P2, NULL)) P2 = K_void;
-				if (Kinds::Compare::eq(B2, K_void)) B2 = B1;
+				if (Kinds::eq(B1, NULL)) B1 = K_void;
+				if (Kinds::eq(B2, NULL)) B2 = K_void;
+				if (Kinds::eq(P1, NULL)) P1 = K_void;
+				if (Kinds::eq(P2, NULL)) P2 = K_void;
+				if (Kinds::eq(B2, K_void)) B2 = B1;
 				kind *K1 = Kinds::binary_construction(CON_rule, B1, P1);
 				kind *K2 = Kinds::binary_construction(CON_rule, B2, P2);
-				if (Kinds::Compare::compatible(K2, K1) != ALWAYS_MATCH) {
+				if (Kinds::compatible(K2, K1) != ALWAYS_MATCH) {
 					Problems::quote_source(1, ac->where_imposed);
 					Problems::quote_wording(2, ac->substituted_rule->name);
 					Problems::quote_wording(3, R->name);

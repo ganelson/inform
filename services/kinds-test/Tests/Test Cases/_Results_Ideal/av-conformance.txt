@@ -5,4 +5,4 @@
 'text <= arithmetic value?': false
 'arithmetic value <= value?': true
 'value <= arithmetic value?': false
-'arithmetic value <= sayable value?': false
+'arithmetic value <= sayable value?': true

@@ -199,7 +199,7 @@ int Dash::funnel_to_level_2(parse_node *p, int silently) {
 	if (!silently) DASH_MODE_ENTER(ISSUE_PROBLEMS_DMODE);
 	initial_problem_count = problem_count;
 	DASH_MODE_CREATE(NULL);
-	Kinds::Compare::show_frame_variables();
+	Latticework::show_frame_variables();
 	int rv = Dash::typecheck_recursive(p, NULL, TRUE);
 	END_DASH_MODE;
 	return rv;
@@ -354,7 +354,7 @@ from a text substitution.)
 		int changed = FALSE;
 		K = Kinds::substitute(K, NULL, &changed, FALSE);
 		Problems::quote_kind(3, K);
-		if (Kinds::Compare::eq(K, K_real_number)) real_found = TRUE;
+		if (Kinds::eq(K, K_real_number)) real_found = TRUE;
 		if (ParseTreeUsage::is_lvalue(itpt->as_parsed))
 			@<Produce the token for an lvalue@>
 		else if (Node::is(itpt->as_parsed, PHRASE_TO_DECIDE_VALUE_NT))
@@ -1131,8 +1131,8 @@ reported in a problem message; so we only issue this problem message when
 L and R are more definite.
 
 @<Fail the invocation for a dimensional problem@> =
-	if ((left_kind) && (Kinds::Compare::eq(left_kind, K_value) == FALSE) &&
-		(right_kind) && (Kinds::Compare::eq(right_kind, K_value) == FALSE)) {
+	if ((left_kind) && (Kinds::eq(left_kind, K_value) == FALSE) &&
+		(right_kind) && (Kinds::eq(right_kind, K_value) == FALSE)) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			LOG("So the inv subtree is:\n$T\n", inv);
 			Problems::quote_source(1, current_sentence);
@@ -1286,7 +1286,7 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 		if ((K) && (Specifications::is_kind_like(ith_spec))) {
 			kind *ikind = Specifications::to_kind(ith_spec);
 			if (Kinds::Behaviour::definite(K)) {
-				if (Kinds::Compare::compatible(K, ikind) == ALWAYS_MATCH) {
+				if (Kinds::compatible(K, ikind) == ALWAYS_MATCH) {
 					LOGIF(MATCHING, "(4I.b) allows name-of token: $P\n", reparsed);
 					Invocations::set_token_as_parsed(inv, i, Node::duplicate(reparsed));
 					outcome = ALWAYS_MATCH;
@@ -1352,7 +1352,7 @@ against a definition like:
 		int pass, save_kcm = kind_checker_mode;
 		for (pass = 1; pass <= 2; pass++) {
 			LOGIF(MATCHING, "(4I.c) prototype check pass %d\n", pass);
-			if (Log::aspect_switched_on(MATCHING_DA)) Kinds::Compare::show_variables();
+			if (Log::aspect_switched_on(MATCHING_DA)) Latticework::show_variables();
 			if (pass == 1) kind_checker_mode = MATCH_KIND_VARIABLES_INFERRING_VALUES;
 			else kind_checker_mode = MATCH_KIND_VARIABLES_AS_VALUES;
 			int i;
@@ -1363,7 +1363,7 @@ against a definition like:
 					kind *kind_read = Specifications::to_kind(token_spec);
 					LOGIF(MATCHING, "Token %d: $P: kind %u: template %u\n", i,
 						token_spec, kind_read, ph->type_data.token_sequence[i].token_kind);
-					switch(Kinds::Compare::compatible(kind_read, ph->type_data.token_sequence[i].token_kind)) {
+					switch(Kinds::compatible(kind_read, ph->type_data.token_sequence[i].token_kind)) {
 						case NEVER_MATCH:
 							LOGIF(MATCHING, "(4I.c) failed at token %d\n", i);
 							outcome = NEVER_MATCH;
@@ -1478,7 +1478,7 @@ has similar type-checking needs.
 	instance *target_wo = Rvalues::to_object_instance(target);
 	property *prn = NULL;
 	int make_check = FALSE;
-	if (Kinds::Compare::eq(Node::get_kind_of_value(new_value_spec), K_value))
+	if (Kinds::eq(Node::get_kind_of_value(new_value_spec), K_value))
 		@<Maybe we're changing an object to a value of a kind coinciding with a property@>;
 	if (Rvalues::is_CONSTANT_construction(new_value_spec, CON_property))
 		@<Maybe we're changing an object to a named either/or property or condition state@>;
@@ -1606,9 +1606,9 @@ literal can mean are too generous.)
 	}
 	LOGIF(MATCHING, "Kinds found: %u, wanted: %u\n", kind_found, kind_wanted);
 
-	if (((K_understanding) && (Kinds::Compare::eq(kind_wanted, K_understanding)) &&
-		(Kinds::Compare::eq(kind_found, K_understanding) == FALSE))
-		|| (Kinds::Compare::compatible(kind_found, kind_wanted) == NEVER_MATCH)) {
+	if (((K_understanding) && (Kinds::eq(kind_wanted, K_understanding)) &&
+		(Kinds::eq(kind_found, K_understanding) == FALSE))
+		|| (Kinds::compatible(kind_found, kind_wanted) == NEVER_MATCH)) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(target));
@@ -1643,7 +1643,7 @@ to a number.
 	if (kind_needed) {
 		LOGIF(MATCHING, "Checking returned %u against desired %u\n",
 			Node::get_kind_resulting(inv), kind_needed);
-		outcome_test = Kinds::Compare::compatible(
+		outcome_test = Kinds::compatible(
 			Node::get_kind_resulting(inv), kind_needed);
 	}
 	switch (outcome_test) {
@@ -1832,7 +1832,7 @@ and allowed only in phrases using the |table-reference| token.
 			"since the entry is taken from something which isn't a list.");
 		return NEVER_MATCH;
 	}
-	if (Kinds::Compare::eq(K2, K_number) == FALSE) {
+	if (Kinds::eq(K2, K_number) == FALSE) {
 		THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NonNumericListEntry),
 			"that doesn't make sense to me as a list entry",
@@ -1972,7 +1972,7 @@ a property when recovering from other problems.
 				"since the entry is taken from something which isn't a table.");
 			return NEVER_MATCH;
 		}
-		if (Kinds::Compare::compatible(key_kind, col_contents_kind) == NEVER_MATCH) {
+		if (Kinds::compatible(key_kind, col_contents_kind) == NEVER_MATCH) {
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind(2, col_contents_kind);
@@ -2075,7 +2075,7 @@ int Dash::set_up_any_local_required(parse_node *inv) {
 	for (int i=0, N = Invocations::get_no_tokens(inv); i<N; i++) {
 		kind *K = Invocations::get_token_variable_kind(inv, i);
 		if (K) {
-			if ((i == 0) && (N >= 2) && (Kinds::Compare::eq(K, K_value)) &&
+			if ((i == 0) && (N >= 2) && (Kinds::eq(K, K_value)) &&
 				(Phrases::TypeData::is_a_let_assignment(Node::get_phrase_invoked(inv))))
 				@<Infer the kind of the new variable@>;
 
@@ -2140,7 +2140,7 @@ of a relation.
 	if (seems_to_be == NULL) @<Fail: the initial value of the local is unknown@>;
 
 	if ((Kinds::get_construct(seems_to_be) == CON_list_of) &&
-		(Kinds::Compare::eq(Kinds::unary_construction_material(seems_to_be), K_nil)))
+		(Kinds::eq(Kinds::unary_construction_material(seems_to_be), K_nil)))
 		@<Fail: the initial value of the local is the empty list@>;
 	if (Kinds::Behaviour::definite(seems_to_be) == FALSE)
 		@<Fail: the initial value can't be stored@>;
@@ -2148,8 +2148,8 @@ of a relation.
 
 	K = seems_to_be;
 	if (Kinds::Behaviour::is_subkind_of_object(K))
-		while (Kinds::Compare::eq(Kinds::Compare::super(K), K_object) == FALSE)
-			K = Kinds::Compare::super(K);
+		while (Kinds::eq(Latticework::super(K), K_object) == FALSE)
+			K = Latticework::super(K);
 	LOGIF(MATCHING, "(4A.c.1) Local variable inferred to have kind: %u\n", K);
 
 @<Fail: the initial value of the local is unknown@> =
@@ -2302,7 +2302,7 @@ int Dash::failed(parse_node **list_of_possible_readings, int no_of_possible_read
 	if (problem_count == ec) {
 		kind *K = Node::get_kind_resulting(most_likely_to_have_been_intended);
 		kind *W = kind_needed;
-		if ((K) && (W) && (Kinds::Compare::compatible(K, W) == NEVER_MATCH)) {
+		if ((K) && (W) && (Kinds::compatible(K, W) == NEVER_MATCH)) {
 			THIS_IS_AN_ORDINARY_PROBLEM;
 			wording PW = Node::get_text(list_of_possible_readings[0]);
 			if (!(Wordings::eq(PM_BadIntermediateKind_wording, PW))) {
@@ -2488,7 +2488,7 @@ helpful about what exactly is wrong.
 		THIS_IS_A_GROSS_PROBLEM;
 		LOG("(5.a) problem message:\nfound: $Texpected: %u", p, kind_expected);
 		#ifdef IF_MODULE
-		if (Kinds::Compare::eq(kind_expected, K_stored_action))
+		if (Kinds::eq(kind_expected, K_stored_action))
 			@<Unknown found text occurs as an action to try@>;
 		#endif
 		Problems::quote_source_eliding_begin(1, current_sentence);
@@ -2785,7 +2785,7 @@ common misunderstanding.
 		"text that I couldn't understand - '%2'. ");
 
 @<Issue a problem message for miscellaneous suspicious wordings@> =
-	if (Kinds::Compare::eq(kind_expected, K_use_option)) {
+	if (Kinds::eq(kind_expected, K_use_option)) {
 		<unknown-use-option-diagnosis>(Node::get_text(p));
 	} else if (Kinds::get_construct(kind_expected) == CON_activity) {
 		<unknown-activity-diagnosis>(Node::get_text(p));
@@ -2826,7 +2826,7 @@ stack frame, and this is unlikely to be what anyone wanted.
 		if (Properties::is_value_property(prn)) {
 	LOG_DASH("(5.b.2b)");
 			kind *kind_if_coerced = Properties::Valued::kind(prn);
-			int verdict = Kinds::Compare::compatible(kind_if_coerced, kind_expected);
+			int verdict = Kinds::compatible(kind_if_coerced, kind_expected);
 			if (verdict != NEVER_MATCH) {
 	LOG_DASH("(5.b.2c)");
 				@<Coerce into a property of the "self" object@>;
@@ -2910,7 +2910,7 @@ action value, which is a specific action.
 @<Step (5.d.1) Coerce TEST ACTION to constant action@> =
 	LOG_DASH("(5.d.1)");
 	if ((Conditions::is_TEST_ACTION(p)) && (kind_expected) &&
-		(Kinds::Compare::compatible(K_stored_action, kind_expected))) {
+		(Kinds::compatible(K_stored_action, kind_expected))) {
 		action_pattern *ap = Node::get_constant_action_pattern(p->down);
 		if (PL::Actions::Patterns::is_unspecific(ap)) {
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
@@ -2951,7 +2951,7 @@ action value, which is a specific action.
 	if ((condition_context) &&
 		(Node::is(p, CONSTANT_NT))) {
 		kind *E = Specifications::to_kind(p);
-		if (Kinds::Compare::compatible(E, K_stored_action)) {
+		if (Kinds::compatible(E, K_stored_action)) {
 			parse_node *val = Node::duplicate(p);
 			Node::copy_in_place(p, Node::new(TEST_VALUE_NT));
 			Node::set_text(p, Node::get_text(val));
@@ -2970,7 +2970,7 @@ different representations at run-time.
 @<Step (5.d.2) Coerce constant TEXT and TEXT ROUTINE to UNDERSTANDING@> =
 	LOG_DASH("(5.d.2)");
 	if ((Rvalues::is_CONSTANT_of_kind(p, K_text)) &&
-		(K_understanding) && (Kinds::Compare::eq(kind_expected, K_understanding))) {
+		(K_understanding) && (Kinds::eq(kind_expected, K_understanding))) {
 		Node::set_kind_of_value(p, K_understanding);
 	}
 
@@ -2995,7 +2995,7 @@ it to a constant value, using the "description of..." constructor.
 		if (K == NULL) K = K_object;
 		LOGIF(MATCHING, "(5.d.3) finding description of %u\n", K);
 		int made_match = TRUE;
-		if (Kinds::Compare::compatible(K, domain) == NEVER_MATCH) made_match = FALSE;
+		if (Kinds::compatible(K, domain) == NEVER_MATCH) made_match = FALSE;
 		@<Throw out the wrong sort of description with a seldom-seen problem message@>;
 		quantifier *q = Descriptions::get_quantifier(p);
 		if ((q) && (q != not_exists_quantifier) && (q != for_all_quantifier))
@@ -3122,7 +3122,7 @@ conclusion about the return kind of the phrase.
 		if (Node::is(p, PHRASE_TO_DECIDE_VALUE_NT)) {
 			LOGIF(MATCHING, "(5.e.2) exempting phrase from return value checking for now\n");
 		} else {
-			switch (Kinds::Compare::compatible(
+			switch (Kinds::compatible(
 				Specifications::to_kind(p),
 				kind_expected)) {
 				case NEVER_MATCH:
@@ -3156,7 +3156,7 @@ it says the value has the wrong kind.
 			"You wrote %1, but '%2' is a temporary name for %4 (created by 'let' "
 			"or 'repeat'), whereas I was expecting to find %3 there.");
 		Problems::issue_problem_end();
-	} else if (Kinds::Compare::eq(kind_expected, K_sayable_value)) {
+	} else if (Kinds::eq(kind_expected, K_sayable_value)) {
 		Problems::quote_kind(4, Specifications::to_kind(p));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AllSayInvsFailed));
 		if (Wordings::empty(Node::get_text(p)))
@@ -3229,7 +3229,7 @@ same species as well.
 				"You wrote %1, but '%2' is used in a context where I'd expect to see "
 				"a (single) specific example of %3, not a description.");
 			if ((Specifications::is_kind_like(p)) &&
-				(Kinds::Compare::eq(Specifications::to_kind(p), K_time)))
+				(Kinds::eq(Specifications::to_kind(p), K_time)))
 				Problems::issue_problem_segment(
 					" %P(If you meant the current time, this is called 'time "
 					"of day' in Inform to avoid confusing it with the various "
@@ -3382,20 +3382,20 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 	kind_found = Specifications::to_kind(spec);
 	if ((Kinds::get_construct(kind_found) == CON_property) && (Kinds::Behaviour::is_object(K)))
 		return TRUE;
-	if ((K_understanding) && (Kinds::Compare::eq(kind_found, K_snippet)) &&
-		(Kinds::Compare::eq(K, K_understanding)))
+	if ((K_understanding) && (Kinds::eq(kind_found, K_snippet)) &&
+		(Kinds::eq(K, K_understanding)))
 		return TRUE;
-	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)) &&
+	if ((K_understanding) && (Kinds::eq(K, K_understanding)) &&
 		(Node::is(spec, CONSTANT_NT) == FALSE) &&
-		(Kinds::Compare::eq(kind_found, K_text)))
+		(Kinds::eq(kind_found, K_text)))
 		goto DontValidate;
 	vts = Specifications::from_kind(K);
 	if (Dash::compatible_with_description(spec, vts) == NEVER_MATCH) {
-		if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)) && (Node::is(spec, CONSTANT_NT))) {
+		if ((K_understanding) && (Kinds::eq(K, K_understanding)) && (Node::is(spec, CONSTANT_NT))) {
 			vts = Specifications::from_kind(K_snippet);
 			if (Dash::compatible_with_description(spec, vts) != NEVER_MATCH) return TRUE;
 		}
-		if (Kinds::Compare::eq(kind_found, K_value)) return TRUE; /* pick up later in type-checking */
+		if (Kinds::eq(kind_found, K_value)) return TRUE; /* pick up later in type-checking */
 		goto DontValidate;
 	}
 	return TRUE;
@@ -3450,7 +3450,7 @@ int Dash::compatible_with_description(parse_node *from_spec, parse_node *to_spec
 	kind *to = Specifications::to_kind(to_spec);
 
 	int result = NEVER_MATCH;
-	if ((from) && (to)) result = Kinds::Compare::compatible(from, to);
+	if ((from) && (to)) result = Kinds::compatible(from, to);
 	else if (to) result = SOMETIMES_MATCH;
 
 	if ((Descriptions::is_qualified(to_spec)) || (Descriptions::to_instance(to_spec)))

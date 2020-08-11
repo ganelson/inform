@@ -49,19 +49,20 @@ would be
 The following alphabetical list has references to fuller explanations:
 
 (*) |HIERARCHY_GET_SUPER_KINDS_CALLBACK| is called to ask what the superkind
-of a kind is. See //Kinds::Compare::super//.
+of a kind is. See //Latticework::super//.
 
-(*) |HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK| is called to ask if one kind
-satisfies an is-a relationship with another. See //Kinds::Compare::test_kind_relation//.
+(*) |HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK| is called to ask if q
+kind can contain sometimes-matching subkind instances. See
+//Latticework::order_relation//.
 
 (*) |HIERARCHY_MOVE_KINDS_CALLBACK| is called to ask us to put make one
-kind a subkind of another. See //Kinds::Compare::make_subkind// and
+kind a subkind of another. See //Kinds::make_subkind// and
 //Kinds::new_base// -- there are two ways this can happen.
 
 (*) |HIERARCHY_VETO_MOVE_KINDS_CALLBACK| is called to give the parent tool a
 chance to veto any proposed subkind. (Inform uses this, for example, to catch
 the case of somebody making "region" a subkind of some other kind of object.)
-See //Kinds::Compare::make_subkind//.
+See //Kinds::make_subkind//.
 
 (*) |NEW_BASE_KINDS_CALLBACK| is called when a new base kind (properly
 speaking, a new arity-0 kind constructor) is made. See //Kinds::new_base//

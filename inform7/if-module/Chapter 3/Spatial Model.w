@@ -606,10 +606,10 @@ is the "geography choice" for its kind.
 	@<Determine the geography choice@>;
 
 	if ((geography_choice) &&
-		(Kinds::Compare::eq(geography_choice, designers_choice) == FALSE))
+		(Kinds::eq(geography_choice, designers_choice) == FALSE))
 		@<Attempt to reconcile the two choices@>;
 
-	if (Kinds::Compare::eq(Instances::to_kind(I), K_object))
+	if (Kinds::eq(Instances::to_kind(I), K_object))
 		Calculus::Propositions::Abstract::assert_kind_of_object(I, K_thing);
 
 @ By this point, any explicit information is reflected in the hierarchy of
@@ -625,10 +625,10 @@ or "region".
 		kind *K = InferenceSubjects::as_kind(infs);
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			f = K;
-			if ((Kinds::Compare::eq(f, K_container)) ||
-				(Kinds::Compare::eq(f, K_supporter)) ||
-				(Kinds::Compare::eq(f, K_door)) ||
-				(Kinds::Compare::eq(f, K_person)))
+			if ((Kinds::eq(f, K_container)) ||
+				(Kinds::eq(f, K_supporter)) ||
+				(Kinds::eq(f, K_door)) ||
+				(Kinds::eq(f, K_person)))
 				designers_choice = f;
 		}
 	}
@@ -668,8 +668,8 @@ when it's legitimately a door.
 			(Kinds::Behaviour::is_object_of_kind(geography_choice, designers_choice))))
 		@<Accept the geography choice, since it only refines what we already know@>
 	else if ((geography_certainty == CERTAIN_CE) &&
-			(!((Kinds::Compare::eq(designers_choice, K_door)) &&
-				(Kinds::Compare::eq(geography_choice, K_room)))))
+			(!((Kinds::eq(designers_choice, K_door)) &&
+				(Kinds::eq(geography_choice, K_room)))))
 		@<Issue a problem message, since the choices are irreconcilable@>;
 
 @<Accept the geography choice, since it only refines what we already know@> =
@@ -681,10 +681,10 @@ when it's legitimately a door.
 	LOG("Choices: designer %u, geography %u.\n", designers_choice, geography_choice);
 	parse_node *decider = Instances::get_creating_sentence(I);
 	if (sentence_setting_kind) decider = sentence_setting_kind;
-	if (Kinds::Compare::eq(designers_choice, K_person))
+	if (Kinds::eq(designers_choice, K_person))
 		@<Issue a problem message for implied containment by a person@>
-	else if ((Kinds::Compare::eq(designers_choice, K_supporter)) &&
-				(Kinds::Compare::eq(geography_choice, K_container)))
+	else if ((Kinds::eq(designers_choice, K_supporter)) &&
+				(Kinds::eq(geography_choice, K_container)))
 		@<Issue a problem message for simultaneous containment and support@>
 	else
 		@<Issue a more generic problem message for irreconcilable kinds@>;

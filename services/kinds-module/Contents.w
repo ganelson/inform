@@ -14,7 +14,7 @@ Chapter 1: Starting Up
 Chapter 2: Kinds
 	Kinds
 	Familiar Kinds
-	Kind Checking
+	The Lattice of Kinds
 	Kind Constructors
 	Using Kinds
 	Describing Kinds

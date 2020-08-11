@@ -90,7 +90,7 @@ int Properties::ProvisionRelation::REL_compile(int task, binary_predicate *bp,
 			} else if (Kinds::Behaviour::is_object(K)) {
 				kind *PK = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
 				if (Kinds::get_construct(PK) == CON_property) {
-					if (Kinds::Compare::eq(K_truth_state, Kinds::unary_construction_material(PK)))
+					if (Kinds::eq(K_truth_state, Kinds::unary_construction_material(PK)))
 						Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, true, *2)");
 					else
 						Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, false, *2)");

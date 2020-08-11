@@ -337,7 +337,7 @@ void InternalTests::log_poset(int n) {
 	LOOP_OVER_BASE_KINDS(A) {
 		int c = 0;
 		LOOP_OVER_BASE_KINDS(B) {
-			if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::eq(A, B) == FALSE)) {
+			if ((Kinds::conforms_to(A, B)) && (Kinds::eq(A, B) == FALSE)) {
 				if (c++ == 0) LOG("%u <= ", A); else LOG(", ");
 				LOG("%u", B);
 			}
@@ -351,9 +351,9 @@ void InternalTests::log_poset(int n) {
 	LOOP_OVER_BASE_KINDS(A) {
 		int c = 0;
 		LOOP_OVER_BASE_KINDS(B) {
-			if ((Kinds::Compare::compatible(A, B) == ALWAYS_MATCH) &&
-				(Kinds::Compare::le(A, B) == FALSE) &&
-				(Kinds::Compare::eq(A, K_value) == FALSE)) {
+			if ((Kinds::compatible(A, B) == ALWAYS_MATCH) &&
+				(Kinds::conforms_to(A, B) == FALSE) &&
+				(Kinds::eq(A, K_value) == FALSE)) {
 				if (c++ == 0) LOG("%u --> ", A); else LOG(", ");
 				LOG("%u", B);
 			}
@@ -365,7 +365,7 @@ void InternalTests::log_poset(int n) {
 	LOG("The superkind function applied to base kinds:\n");
 	kind *A, *B;
 	LOOP_OVER_BASE_KINDS(A) {
-		for (B = A; B; B = Kinds::Compare::super(B))
+		for (B = A; B; B = Latticework::super(B))
 			LOG("%u -> ", B);
 		LOG("\n");
 	}
@@ -374,16 +374,16 @@ void InternalTests::log_poset(int n) {
 	LOG("Looking for partially ordered set violations.\n");
 	kind *A, *B, *C;
 	LOOP_OVER_BASE_KINDS(A)
-		if (Kinds::Compare::le(A, A) == FALSE)
+		if (Kinds::conforms_to(A, A) == FALSE)
 			LOG("Reflexivity violated: %u\n", A);
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
-			if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::le(B, A)) && (Kinds::Compare::eq(A, B) == FALSE))
+			if ((Kinds::conforms_to(A, B)) && (Kinds::conforms_to(B, A)) && (Kinds::eq(A, B) == FALSE))
 				LOG("Antisymmetry violated: %u, %u\n", A, B);
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
 			LOOP_OVER_BASE_KINDS(C)
-				if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::le(B, C)) && (Kinds::Compare::le(A, C) == FALSE))
+				if ((Kinds::conforms_to(A, B)) && (Kinds::conforms_to(B, C)) && (Kinds::conforms_to(A, C) == FALSE))
 					LOG("Transitivity violated: %u, %u, %u\n", A, B, C);
 
 @<Check the maximum function@> =
@@ -391,21 +391,21 @@ void InternalTests::log_poset(int n) {
 	kind *A, *B;
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::eq(Kinds::Compare::join(A, B), Kinds::Compare::join(B, A)) == FALSE)
+			if (Kinds::eq(Latticework::join(A, B), Latticework::join(B, A)) == FALSE)
 				LOG("Fail symmetry: max(%u, %u) = %u, but max(%u, %u) = %u\n",
-					A, B, Kinds::Compare::join(A, B), B, A, Kinds::Compare::join(B, A));
+					A, B, Latticework::join(A, B), B, A, Latticework::join(B, A));
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::le(A, Kinds::Compare::join(A, B)) == FALSE)
-				LOG("Fail maximality(A): max(%u, %u) = %u\n", A, B, Kinds::Compare::join(A, B));
+			if (Kinds::conforms_to(A, Latticework::join(A, B)) == FALSE)
+				LOG("Fail maximality(A): max(%u, %u) = %u\n", A, B, Latticework::join(A, B));
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::le(B, Kinds::Compare::join(A, B)) == FALSE)
-				LOG("Fail maximality(B): max(%u, %u) = %u\n", A, B, Kinds::Compare::join(A, B));
+			if (Kinds::conforms_to(B, Latticework::join(A, B)) == FALSE)
+				LOG("Fail maximality(B): max(%u, %u) = %u\n", A, B, Latticework::join(A, B));
 	LOOP_OVER_BASE_KINDS(A)
-		if (Kinds::Compare::eq(Kinds::Compare::join(A, A), A) == FALSE)
+		if (Kinds::eq(Latticework::join(A, A), A) == FALSE)
 				LOG("Fail: max(%u, %u) = %u\n",
-					A, A, Kinds::Compare::join(A, A));
+					A, A, Latticework::join(A, A));
 
 @
 
@@ -430,10 +430,10 @@ void InternalTests::log_poset(int n) {
 		Kinds::binary_construction(CON_TUPLE_ENTRY, K_object, K_nil), K_object);
 	int i, j;
 	for (i=0; i<SIZE_OF_GRAB_BAG; i++) for (j=i+1; j<SIZE_OF_GRAB_BAG; j++) {
-		if (Kinds::Compare::le(tests[i], tests[j])) LOG("%u <= %u\n", tests[i], tests[j]);
-		if (Kinds::Compare::le(tests[j], tests[i])) LOG("%u <= %u\n", tests[j], tests[i]);
-		kind *M = Kinds::Compare::join(tests[i], tests[j]);
-		if (Kinds::Compare::eq(M, K_value) == FALSE) LOG("max(%u, %u) = %u\n", tests[i], tests[j], M);
+		if (Kinds::conforms_to(tests[i], tests[j])) LOG("%u <= %u\n", tests[i], tests[j]);
+		if (Kinds::conforms_to(tests[j], tests[i])) LOG("%u <= %u\n", tests[j], tests[i]);
+		kind *M = Latticework::join(tests[i], tests[j]);
+		if (Kinds::eq(M, K_value) == FALSE) LOG("max(%u, %u) = %u\n", tests[i], tests[j], M);
 	}
 	#endif
 

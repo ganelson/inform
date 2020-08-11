@@ -6,70 +6,69 @@
   Home
   1. 1
   The subkind relation on (base) kinds:
-  pointer value <= value
-  word value <= value
-  arithmetic value <= value
-  real arithmetic value <= value
-  enumerated value <= value
-  sayable value <= value
-  combined value of any arity <= value
-  object <= value, word value, sayable value
-  number <= value, word value, arithmetic value, sayable value
-  real number <= value, word value, arithmetic value, real arithmetic value, sayable value
-  truth state <= value, word value, sayable value
-  text <= value, pointer value, sayable value
-  snippet <= value, word value, sayable value
-  unicode character <= value, word value, sayable value
-  use option <= value, word value, sayable value
-  response <= value, word value, sayable value
-  verb <= value, word value, sayable value
-  table name <= value, word value, sayable value
-  equation name <= value, word value
-  rulebook outcome <= value, word value, sayable value
-  nothing <= value, pointer value, word value, arithmetic value, real arithmetic value, enumerated value, sayable value, combined value of any arity, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, void, phrase value -> value, value, value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, external file, described action, action, action name, time, scene, figure name, sound name, topic, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, man, woman, animal, device, vehicle, player's holdall, command parser error
-  void <= value, word value
-  phrase value -> value <= value, word value, sayable value
-  value, value <= value, word value
-  values variable-pointer <= value, word value
-  relation of values <= value, pointer value, sayable value
-  values based rule producing values <= value, word value, sayable value
-  values based rulebook producing values <= value, word value, sayable value
-  activity on values <= value, word value
-  list of nothing <= value, pointer value
-  description of values <= value, word value
-  property <= value, word value
-  table column <= value, word value
-  combination value and value <= value, pointer value, sayable value, combined value of any arity
-  external file <= value, word value, enumerated value, sayable value
-  described action <= value, word value
-  action <= value, pointer value, sayable value
-  action name <= value, word value, sayable value
-  time <= value, word value, arithmetic value, sayable value
-  scene <= value, word value, enumerated value, sayable value
-  figure name <= value, word value, enumerated value, sayable value
-  sound name <= value, word value, enumerated value, sayable value
-  topic <= value, word value
-  natural language <= value, word value, enumerated value, sayable value
-  grammatical tense <= value, word value, enumerated value, sayable value
-  narrative viewpoint <= value, word value, enumerated value, sayable value
-  grammatical case <= value, word value, enumerated value, sayable value
-  grammatical gender <= value, word value, enumerated value, sayable value
-  room <= value, word value, sayable value, object
-  thing <= value, word value, sayable value, object
-  direction <= value, word value, sayable value, object
-  door <= value, word value, sayable value, object, thing
-  container <= value, word value, sayable value, object, thing
-  supporter <= value, word value, sayable value, object, thing
-  backdrop <= value, word value, sayable value, object, thing
-  person <= value, word value, sayable value, object, thing
-  region <= value, word value, sayable value, object
-  man <= value, word value, sayable value, object, thing, person
-  woman <= value, word value, sayable value, object, thing, person
-  animal <= value, word value, sayable value, object, thing, person
-  device <= value, word value, sayable value, object, thing
-  vehicle <= value, word value, sayable value, object, thing, container
-  player's holdall <= value, word value, sayable value, object, thing, container
-  command parser error <= value, word value, enumerated value, sayable value
+  pointer value <= value, stored value, sayable value
+  stored value <= value
+  arithmetic value <= value, stored value, sayable value
+  real arithmetic value <= value, stored value, arithmetic value, sayable value
+  enumerated value <= value, stored value, sayable value
+  sayable value <= value, stored value
+  object <= value, stored value, sayable value
+  number <= value, stored value, arithmetic value, sayable value
+  real number <= value, stored value, arithmetic value, real arithmetic value, sayable value
+  truth state <= value, stored value, sayable value
+  text <= value, pointer value, stored value, sayable value
+  snippet <= value, stored value, sayable value
+  unicode character <= value, stored value, sayable value
+  use option <= value, stored value, sayable value
+  response <= value, stored value, sayable value
+  verb <= value, stored value, sayable value
+  table name <= value, stored value, sayable value
+  equation name <= value, stored value
+  rulebook outcome <= value, stored value, sayable value
+  nothing <= value, pointer value, stored value, arithmetic value, real arithmetic value, enumerated value, sayable value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, void, phrase value -> value, value, value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, external file, described action, action, action name, time, scene, figure name, sound name, topic, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, man, woman, animal, device, vehicle, player's holdall, command parser error
+  void <= value
+  phrase value -> value <= value, stored value, sayable value
+  value, value <= value, stored value
+  values variable-pointer <= value, stored value
+  relation of values <= value, pointer value, stored value, sayable value
+  values based rule producing values <= value, stored value, sayable value
+  values based rulebook producing values <= value, stored value, sayable value
+  activity on values <= value, stored value
+  list of nothing <= value, pointer value, stored value, sayable value
+  description of values <= value, stored value
+  property <= value, stored value
+  table column <= value, stored value
+  combination value and value <= value, pointer value, stored value, sayable value
+  external file <= value, stored value, enumerated value, sayable value
+  described action <= value, stored value
+  action <= value, pointer value, stored value, sayable value
+  action name <= value, stored value, sayable value
+  time <= value, stored value, arithmetic value, sayable value
+  scene <= value, stored value, enumerated value, sayable value
+  figure name <= value, stored value, enumerated value, sayable value
+  sound name <= value, stored value, enumerated value, sayable value
+  topic <= value, stored value
+  natural language <= value, stored value, enumerated value, sayable value
+  grammatical tense <= value, stored value, enumerated value, sayable value
+  narrative viewpoint <= value, stored value, enumerated value, sayable value
+  grammatical case <= value, stored value, enumerated value, sayable value
+  grammatical gender <= value, stored value, enumerated value, sayable value
+  room <= value, stored value, sayable value, object
+  thing <= value, stored value, sayable value, object
+  direction <= value, stored value, sayable value, object
+  door <= value, stored value, sayable value, object, thing
+  container <= value, stored value, sayable value, object, thing
+  supporter <= value, stored value, sayable value, object, thing
+  backdrop <= value, stored value, sayable value, object, thing
+  person <= value, stored value, sayable value, object, thing
+  region <= value, stored value, sayable value, object
+  man <= value, stored value, sayable value, object, thing, person
+  woman <= value, stored value, sayable value, object, thing, person
+  animal <= value, stored value, sayable value, object, thing, person
+  device <= value, stored value, sayable value, object, thing
+  vehicle <= value, stored value, sayable value, object, thing, container
+  player's holdall <= value, stored value, sayable value, object, thing, container
+  command parser error <= value, stored value, enumerated value, sayable value
   
   2. 2
   The (always) compatibility relation on (base) kinds, where it differs from <=:
@@ -81,100 +80,72 @@
   3. 3
   The superkind function applied to base kinds:
   value ->
-  pointer value ->
-  word value ->
-  arithmetic value ->
-  real arithmetic value ->
-  enumerated value ->
-  sayable value ->
-  combined value of any arity ->
-  object ->
-  number ->
-  real number ->
-  truth state ->
-  text ->
-  snippet ->
-  unicode character ->
-  use option ->
-  response ->
-  verb ->
-  table name ->
-  equation name ->
-  rulebook outcome ->
+  pointer value -> sayable value -> stored value -> value ->
+  stored value -> value ->
+  arithmetic value -> sayable value -> stored value -> value ->
+  real arithmetic value -> arithmetic value -> sayable value -> stored value -> value ->
+  enumerated value -> sayable value -> stored value -> value ->
+  sayable value -> stored value -> value ->
+  object -> sayable value -> stored value -> value ->
+  number -> arithmetic value -> sayable value -> stored value -> value ->
+  real number -> real arithmetic value -> arithmetic value -> sayable value -> stored value -> value ->
+  truth state -> sayable value -> stored value -> value ->
+  text -> pointer value -> sayable value -> stored value -> value ->
+  snippet -> sayable value -> stored value -> value ->
+  unicode character -> sayable value -> stored value -> value ->
+  use option -> sayable value -> stored value -> value ->
+  response -> sayable value -> stored value -> value ->
+  verb -> sayable value -> stored value -> value ->
+  table name -> sayable value -> stored value -> value ->
+  equation name -> stored value -> value ->
+  rulebook outcome -> sayable value -> stored value -> value ->
   nothing ->
   void ->
-  phrase value -> value ->
-  value, value ->
-  values variable-pointer ->
-  relation of values ->
-  values based rule producing values ->
-  values based rulebook producing values ->
-  activity on values ->
-  list of nothing ->
-  description of values ->
-  property ->
-  table column ->
-  combination value and value ->
-  external file ->
-  described action ->
-  action ->
-  action name ->
-  time ->
-  scene ->
-  figure name ->
-  sound name ->
-  topic ->
-  natural language ->
-  grammatical tense ->
-  narrative viewpoint ->
-  grammatical case ->
-  grammatical gender ->
-  room -> object ->
-  thing -> object ->
-  direction -> object ->
-  door -> thing -> object ->
-  container -> thing -> object ->
-  supporter -> thing -> object ->
-  backdrop -> thing -> object ->
-  person -> thing -> object ->
-  region -> object ->
-  man -> person -> thing -> object ->
-  woman -> person -> thing -> object ->
-  animal -> person -> thing -> object ->
-  device -> thing -> object ->
-  vehicle -> container -> thing -> object ->
-  player's holdall -> container -> thing -> object ->
-  command parser error ->
+  phrase value -> value -> sayable value -> stored value -> value ->
+  value, value -> stored value -> value ->
+  values variable-pointer -> stored value -> value ->
+  relation of values -> pointer value -> sayable value -> stored value -> value ->
+  values based rule producing values -> sayable value -> stored value -> value ->
+  values based rulebook producing values -> sayable value -> stored value -> value ->
+  activity on values -> stored value -> value ->
+  list of nothing -> pointer value -> sayable value -> stored value -> value ->
+  description of values -> stored value -> value ->
+  property -> stored value -> value ->
+  table column -> stored value -> value ->
+  combination value and value -> pointer value -> sayable value -> stored value -> value ->
+  external file -> enumerated value -> sayable value -> stored value -> value ->
+  described action -> stored value -> value ->
+  action -> pointer value -> sayable value -> stored value -> value ->
+  action name -> sayable value -> stored value -> value ->
+  time -> arithmetic value -> sayable value -> stored value -> value ->
+  scene -> enumerated value -> sayable value -> stored value -> value ->
+  figure name -> enumerated value -> sayable value -> stored value -> value ->
+  sound name -> enumerated value -> sayable value -> stored value -> value ->
+  topic -> stored value -> value ->
+  natural language -> enumerated value -> sayable value -> stored value -> value ->
+  grammatical tense -> enumerated value -> sayable value -> stored value -> value ->
+  narrative viewpoint -> enumerated value -> sayable value -> stored value -> value ->
+  grammatical case -> enumerated value -> sayable value -> stored value -> value ->
+  grammatical gender -> enumerated value -> sayable value -> stored value -> value ->
+  room -> object -> sayable value -> stored value -> value ->
+  thing -> object -> sayable value -> stored value -> value ->
+  direction -> object -> sayable value -> stored value -> value ->
+  door -> thing -> object -> sayable value -> stored value -> value ->
+  container -> thing -> object -> sayable value -> stored value -> value ->
+  supporter -> thing -> object -> sayable value -> stored value -> value ->
+  backdrop -> thing -> object -> sayable value -> stored value -> value ->
+  person -> thing -> object -> sayable value -> stored value -> value ->
+  region -> object -> sayable value -> stored value -> value ->
+  man -> person -> thing -> object -> sayable value -> stored value -> value ->
+  woman -> person -> thing -> object -> sayable value -> stored value -> value ->
+  animal -> person -> thing -> object -> sayable value -> stored value -> value ->
+  device -> thing -> object -> sayable value -> stored value -> value ->
+  vehicle -> container -> thing -> object -> sayable value -> stored value -> value ->
+  player's holdall -> container -> thing -> object -> sayable value -> stored value -> value ->
+  command parser error -> enumerated value -> sayable value -> stored value -> value ->
   
   4. 4
   Looking for partially ordered set violations.
-  
-  5. 5
-  Looking for maximum violations.
-  Fail maximality(A): max(number, real number) = real number
-  Fail maximality(B): max(real number, number) = real number
-  
-  6. 6
-  max(container, door) = thing
-  container <= thing
-  max(container, thing) = thing
-  door <= thing
-  max(door, thing) = thing
-  max(list of containers, list of doors) = list of things
-  max(list of containers, list of people) = list of things
-  list of containers <= list of things
-  max(list of containers, list of things) = list of things
-  max(list of doors, list of people) = list of things
-  list of doors <= list of things
-  max(list of doors, list of things) = list of things
-  list of people <= list of things
-  max(list of people, list of things) = list of things
-  phrase object -> door <= phrase door -> object
-  max(phrase door -> object, phrase object -> door) = phrase door -> object
-  phrase object -> object <= phrase door -> object
-  max(phrase door -> object, phrase object -> object) = phrase door -> object
-  phrase object -> door <= phrase object -> object
-  max(phrase object -> door, phrase object -> object) = phrase object -> object
   
   
 > >   Home

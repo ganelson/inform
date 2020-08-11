@@ -102,7 +102,7 @@ kind *Tables::Columns::to_kind(table_column *tc) {
 void Tables::Columns::set_kind(table_column *tc, table *t, kind *K) {
 	if (Kinds::get_construct(K) == CON_description)
 			@<Issue a problem message for a description heading@>;
-	if (Kinds::Compare::eq(tc->kind_stored_in_column, K)) {
+	if (Kinds::eq(tc->kind_stored_in_column, K)) {
 		LOGIF(TABLES, "Table column $C continues to have kind %u, according to $B\n",
 			tc, K, t);
 	} else {
@@ -111,7 +111,7 @@ void Tables::Columns::set_kind(table_column *tc, table *t, kind *K) {
 		tc->kind_stored_in_column = K;
 	}
 	tc->table_from_which_kind_inferred = t;
-	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)))
+	if ((K_understanding) && (Kinds::eq(K, K_understanding)))
 		Tables::Relations::supply_kind_for_listed_in_tc(tc->listed_in_predicate, K_snippet);
 	else Tables::Relations::supply_kind_for_listed_in_tc(tc->listed_in_predicate, K);
 }
@@ -336,7 +336,7 @@ void Tables::Columns::check_explicit_headings(table *t, int i, table_column_usag
 			LOGIF(TABLES, "$B col %d '%W' claims %u\n", t, i, tcu->kind_declaration_text, EK);
 			if (K == NULL)
 				Tables::Columns::set_kind(tcu->column_identity, t, EK);
-			else if (!(Kinds::Compare::eq(K, EK)))
+			else if (!(Kinds::eq(K, EK)))
 				@<Issue a problem message for a heading inconsistency@>;
 		} else @<Issue a problem message for an incomprehensible column heading@>;
 	} else {
@@ -382,7 +382,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 			if (CK == NULL) {
 				Tables::Columns::set_kind(tcu->column_identity, t, K);
 				return;
-			} else if (Kinds::Compare::eq(K, CK) == FALSE)
+			} else if (Kinds::eq(K, CK) == FALSE)
 				@<Issue a problem for an inconsistent kind for this column@>;
 		}
 	} else {
@@ -399,12 +399,12 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 		Tables::Columns::set_kind(tcu->column_identity, t, K);
 	} else {
 		int allow_refinement = TRUE;
-		if ((K_understanding) && (Kinds::Compare::eq(CK, K_understanding))) {
+		if ((K_understanding) && (Kinds::eq(CK, K_understanding))) {
 			CK = K_text; /* make sure the entries are texts... */
 			allow_refinement = FALSE; /* ...and don't allow any change to the kind */
 		}
-		if (Kinds::Compare::eq(K, CK) == FALSE) {
-			kind *max_K = Kinds::Compare::join(K, CK);
+		if (Kinds::eq(K, CK) == FALSE) {
+			kind *max_K = Latticework::join(K, CK);
 			if (Kinds::Behaviour::definite(max_K) == FALSE) {
 				Problems::quote_kind(4, K);
 				Problems::quote_kind(5, CK);
@@ -514,7 +514,7 @@ void Tables::Columns::approve_kind(table *t, int i, table_column_usage *tcu) {
 	LOGIF(TABLES, "Column %d '%W' has kind %u with data:\n$T",
 		i, Nouns::nominative_singular(tcu->column_identity->name), K, tcu->entries);
 	if ((Kinds::get_construct(K) == CON_list_of) &&
-		(Kinds::Compare::eq(Kinds::unary_construction_material(K), K_nil))) {
+		(Kinds::eq(Kinds::unary_construction_material(K), K_nil))) {
 		StandardProblems::table_problem(_p_(PM_TableColumnEmptyLists),
 			t, NULL, tcu->entries,
 			"In %1, the column %3 seems to consist only of empty lists. "
