@@ -107,7 +107,7 @@ later on.)
 
 @<Simplify the initial kind of the instance@> =
 	if (K == NULL) K = K_object;
-	K = Kinds::weaken(K);
+	K = Kinds::weaken(K, K_object);
 
 @<Initialise the instance except for its noun@> =
 	I->instance_package = NULL;

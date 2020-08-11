@@ -1186,7 +1186,7 @@ void Relations::compile_relation_records(void) {
 	#ifdef IF_MODULE
 	if ((dbp == R_containment) && (K == NULL)) K = K_object;
 	#endif
-	if (Kinds::Behaviour::compile_domain_possible(K)) {
+	if (Calculus::Deferrals::has_finite_domain(K)) {
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
 			Calculus::Schemas::emit_expand_from_locals(&loop_schema, Z1_lv, Z2_lv, TRUE);
@@ -1286,7 +1286,7 @@ void Relations::compile_relation_records(void) {
 	#ifdef IF_MODULE
 	if ((dbp == R_containment) && (K == NULL)) K = K_object;
 	#endif
-	if (Kinds::Behaviour::compile_domain_possible(K)) {
+	if (Calculus::Deferrals::has_finite_domain(K)) {
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
 			Calculus::Schemas::emit_expand_from_locals(&loop_schema, Z1_lv, Z2_lv, TRUE);
@@ -1326,7 +1326,7 @@ void Relations::compile_relation_records(void) {
 	if ((dbp == R_containment) && (KL == NULL)) KL = K_object;
 	if ((dbp == R_containment) && (KR == NULL)) KR = K_object;
 	#endif
-	if ((Kinds::Behaviour::compile_domain_possible(KL)) && (Kinds::Behaviour::compile_domain_possible(KL))) {
+	if ((Calculus::Deferrals::has_finite_domain(KL)) && (Calculus::Deferrals::has_finite_domain(KL))) {
 		i6_schema loop_schema_L, loop_schema_R;
 		if ((Calculus::Deferrals::write_loop_schema(&loop_schema_L, KL)) &&
 			(Calculus::Deferrals::write_loop_schema(&loop_schema_R, KR))) {

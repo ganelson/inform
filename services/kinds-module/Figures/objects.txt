@@ -1,3 +1,6 @@
+'new kind thing of object': ok
+'new kind device of thing': ok
+'new kind vehicle of thing': ok
 'super of device': thing
 'super of super of device': object
 'super of super of super of device': nothing
@@ -9,10 +12,10 @@
 'weaken thing': object
 'weaken device': object
 'weaken relation of things to texts': relation of objects to texts
-'object <= text': false
-'object <= thing': false
-'thing <= object': true
-'device <= thing': true
-'device <= object': true
+'object <= text?': false
+'object <= thing?': false
+'thing <= object?': true
+'device <= thing?': true
+'device <= object?': true
 'dereference number valued property': number
 'dereference list of number valued properties': list of numbers

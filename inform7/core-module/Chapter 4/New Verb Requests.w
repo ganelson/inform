@@ -93,7 +93,6 @@ int NewVerbRequests::verb_means_SMF(int task, parse_node *V, wording *NPs) {
 
 =
 void NewVerbRequests::parse_new(int usage, parse_node *V) {
-// LOG("Usage %d at $T\n$T\n$T\n", usage, V, V->next, V->next->next);
 	wording PW = EMPTY_WORDING; /* wording of the parts of speech */
 	verb_meaning vm = VerbMeanings::meaninglessness(); int meaning_given = FALSE;
 	int priority = -1;
@@ -127,7 +126,6 @@ cleared.)
 	l = Lcon::set_person(l, THIRD_PERSON);
 	l = Lcon::set_number(l, SINGULAR_NUMBER);
 	Stock::add_form_to_usage(gu, l);
-	LOG("So W is %W\n", W);
 	VerbUsages::new(WordAssemblages::from_wording(W), FALSE, gu, NULL);
 
 @<Handle a new verbal verb@> =

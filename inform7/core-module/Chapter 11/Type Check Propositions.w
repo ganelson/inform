@@ -424,7 +424,7 @@ function.
 kind *Calculus::Propositions::Checker::approximate_argument_kind(binary_predicate *bp, int i) {
 	kind *K = BinaryPredicates::term_kind(bp, i);
 	if (K == NULL) return K_object;
-	return Kinds::weaken(K);
+	return Kinds::weaken(K, K_object);
 }
 
 @h Type-checking predicates.
@@ -519,7 +519,7 @@ produce a |kinds_required| which is |NULL|.
 
 @<Work out what kinds we should have found@> =
 	for (int i=0; i<2; i++) {
-		kind *K = Kinds::weaken(BinaryPredicates::term_kind(bp, i));
+		kind *K = Kinds::weaken(BinaryPredicates::term_kind(bp, i), K_object);
 		if (K == NULL) K = K_object;
 		kinds_required[i] = K;
 	}

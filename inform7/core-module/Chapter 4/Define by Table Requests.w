@@ -127,7 +127,7 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 	kind *K = NULL;
 	@<Determine the kind of what to make@>;
 	@<Check that this is a kind where it makes sense to enumerate new values@>;
-	K = Kinds::weaken(K);
+	K = Kinds::weaken(K, K_object);
 	if (!(Kinds::Compare::le(K, K_object))) Kinds::RunTime::set_defined_by_table(K, t);
 	t->kind_defined_in_this_table = K;
 	Tables::Columns::set_kind(t->columns[0].column_identity, t, K);

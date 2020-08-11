@@ -437,7 +437,7 @@ void Kinds::Scalings::compile_scale_and_add(inter_symbol *var, inter_symbol *sgn
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, sgn_var);
-				Produce::val(Emit::tree(), K_object, LITERAL_IVAL, 1);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());

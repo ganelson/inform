@@ -386,8 +386,10 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 		if (tcu->kind_name_entries > 0)
 			@<Issue a problem for a value lower in the column than a kind name@>;
 	}
-	kind *CK = Kinds::weaken(Tables::Columns::get_kind(tcu->column_identity));
-	K = Kinds::weaken(K);
+	kind *CK = Kinds::weaken(Tables::Columns::get_kind(tcu->column_identity), K_object);
+	K = Kinds::weaken(K, K_object);
+	if ((global_pass_state.pass >= 2) && (CK) && (Kinds::Behaviour::definite(CK) == FALSE))
+		CK = NULL;
 	if (CK == NULL) {
 		Tables::Columns::set_kind(tcu->column_identity, t, K);
 	} else {
@@ -507,7 +509,7 @@ void Tables::Columns::approve_kind(table *t, int i, table_column_usage *tcu) {
 	LOGIF(TABLES, "Column %d '%W' has kind %u with data:\n$T",
 		i, Nouns::nominative_singular(tcu->column_identity->name), K, tcu->entries);
 	if ((Kinds::get_construct(K) == CON_list_of) &&
-		(Kinds::Compare::eq(Kinds::unary_construction_material(K), K_value))) {
+		(Kinds::Compare::eq(Kinds::unary_construction_material(K), K_nil))) {
 		StandardProblems::table_problem(_p_(PM_TableColumnEmptyLists),
 			t, NULL, tcu->entries,
 			"In %1, the column %3 seems to consist only of empty lists. "

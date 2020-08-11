@@ -711,7 +711,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a random thing matching a description", spec);
 		kind *K = Calculus::Propositions::describes_kind(prop);
-		if ((K) && (Kinds::Behaviour::compile_domain_possible(K) == FALSE))
+		if ((K) && (Calculus::Deferrals::has_finite_domain(K) == FALSE))
 			@<Issue random impossible problem@>
 		else
 			Calculus::Deferrals::emit_call_to_deferred_desc(prop, RANDOM_OF_DEFER, NULL_GENERAL_POINTER, NULL);
@@ -725,6 +725,20 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 		"so can't be done. For instance, 'a random person' is fine - "
 		"it's clear exactly who all the people are, and the supply is "
 		"limited - but not 'a random text'.");
+
+@ Some kinds are such that all legal values can efficiently be looped through
+at run-time, some are not: we can sensibly loop over all scenes, but not
+over all texts. We use the term "domain" to mean the set of values which
+a loop traverses.
+
+=
+int Calculus::Deferrals::has_finite_domain(kind *K) {
+	if (K == NULL) return FALSE;
+	if (Kinds::Compare::le(K, K_object)) return TRUE;
+	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
+	if (Str::len(K->construct->loop_domain_schema) > 0) return TRUE;
+	return FALSE;
+}
 
 @ And similarly for "total of":
 

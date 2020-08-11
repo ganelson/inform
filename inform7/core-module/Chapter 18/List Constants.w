@@ -71,7 +71,7 @@ literal_list *Lists::empty_literal_list(wording W) {
 		ll = CREATE(literal_list);
 		ll->list_compiled = FALSE;
 	}
-	ll->unbraced_text = W; ll->entry_kind = K_value;
+	ll->unbraced_text = W; ll->entry_kind = K_nil;
 	ll->listed_within_code = FALSE;
 	ll->kinds_known_to_be_inconsistent = FALSE;
 	ll->ll_iname = NULL;
@@ -129,7 +129,7 @@ kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
 			ll->list_text = Diagrams::new_UNPARSED_NOUN(ll->unbraced_text);
 		current_sentence = ll->list_text;
 	}
-	kind *K = K_value;
+	kind *K = K_nil;
 	llist_entry *lle;
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry) {
 		parse_node *spec = lle->llist_entry_value;
@@ -142,10 +142,10 @@ kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
 		spec = NonlocalVariables::substitute_constants(spec);
 		kind *E = NULL;
 		@<Work out the entry kind E@>;
-		if (Kinds::Compare::eq(K, K_value)) K = E;
+		if (Kinds::Compare::eq(K, K_nil)) K = E;
 		else @<Revise K in the light of E@>;
 	}
-	if (ll->kinds_known_to_be_inconsistent) K = K_value;
+	if (ll->kinds_known_to_be_inconsistent) K = K_nil;
 	ll->entry_kind = K;
 	current_sentence = cs;
 	return Kinds::unary_construction(CON_list_of, K);

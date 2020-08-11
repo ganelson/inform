@@ -132,7 +132,7 @@ void Emit::kind(inter_name *iname, inter_ti TID, inter_name *super,
 	inter_ti operands[MAX_KIND_ARITY];
 	if (arity > MAX_KIND_ARITY) internal_error("kind arity too high");
 	for (int i=0; i<arity; i++) {
-		if (operand_kinds[i] == K_nil) operands[i] = 0;
+		if ((operand_kinds[i] == K_nil) || (operand_kinds[i] == K_void)) operands[i] = 0;
 		else {
 			inter_symbol *S = Produce::kind_to_symbol(operand_kinds[i]);
 			operands[i] = Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), S);

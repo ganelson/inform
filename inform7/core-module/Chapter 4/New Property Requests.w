@@ -229,7 +229,7 @@ differently as a result.
 			owner_infs = Kinds::Knowledge::as_subject(Specifications::to_kind(<<rp>>));
 	}
 	kind *K = InferenceSubjects::domain(owner_infs);
-	if ((K) && (Kinds::Behaviour::has_properties(K) == FALSE))
+	if ((K) && (Kinds::Knowledge::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of an either/or or condition@>;
 
 @<Disallow this kind as a new owner of an either/or or condition@> =

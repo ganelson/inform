@@ -44,6 +44,7 @@ void Declarations::load_from_file(text_stream *arg) {
 	for (int i=1; i<=26; i++) {
 		kind_vars[i] = Kinds::variable_construction(i, NULL);
 	}
+	kind_checker_mode = MATCH_KIND_VARIABLES_AS_UNIVERSAL;
 
 	SyntaxTree::traverse(syntax_tree, Declarations::parse);
 }
@@ -90,6 +91,7 @@ typedef struct kind_relationship {
 	<k-formal-kind-variable> = <kind-eval> |   ==> @<Set kind variable@>
 	<kind-eval> |                              ==> @<Show REPL result@>
 	<kind-condition> |                         ==> @<Show kind condition@>
+	<kind-eval> compatible with <kind-eval> |  ==> @<Show compatibility@>
 	... which varies |                         ==> { -, - }
 	...                                        ==> @<Fail with error@>
 
@@ -121,10 +123,19 @@ typedef struct kind_relationship {
 
 @<Show REPL result@> =
 	kind *K = RP[1];
-	PRINT("'%W': %u\n", W, K);
+	PRINT("'%<W': %u\n", W, K);
 
 @<Show kind condition@> =
-	PRINT("'%W': %s\n", W, R[1]?"true":"false");
+	PRINT("'%<W?': %s\n", W, R[1]?"true":"false");
+
+@<Show compatibility@> =
+	kind *K1 = RP[1];
+	kind *K2 = RP[2];
+	switch (Kinds::Compare::compatible(K1, K2)) {
+		case NEVER_MATCH:     PRINT("'%<W?': never\n", W); break;
+		case ALWAYS_MATCH:    PRINT("'%<W?': always\n", W); break;
+		case SOMETIMES_MATCH: PRINT("'%<W?': sometimes\n", W); break;
+	}
 
 @<Kind already exists error@> =
 	kind *K = RP[1];
@@ -134,10 +145,12 @@ typedef struct kind_relationship {
 @<Create new unit@> =
 	kind *K = Kinds::new_base(syntax_tree, GET_RW(<declaration-line>, 1), K_value);
 	Kinds::Behaviour::convert_to_unit(syntax_tree, K);
+	PRINT("'%<W': ok\n", W);
 
 @<Create new enum@> =
 	kind *K = Kinds::new_base(syntax_tree, GET_RW(<declaration-line>, 1), K_value);
 	Kinds::Behaviour::convert_to_enumeration(syntax_tree, K);
+	PRINT("'%<W': ok\n", W);
 
 @<Create new base@> =
 	kind *X = RP[1];
@@ -145,23 +158,21 @@ typedef struct kind_relationship {
 	kind_relationship *KR = CREATE(kind_relationship);
 	KR->sub = K;
 	KR->super = X;
+	PRINT("'%<W': ok\n", W);
 
 @<New arithmetic rule@> =
 	kind *K1 = (kind *) RP[1];
 	kind *K2 = (kind *) RP[2];
 	kind *K = (kind *) RP[3];
 	Kinds::Dimensions::make_unit_derivation(K1, K2, K);
-	@<Show result@>;
+	PRINT("'%<W': %u\n", W, K);
 
 @<Set kind variable@> =
 	kind *KV = RP[1];
 	kind *K = RP[2];
 	kind_vars[KV->kind_variable_number] = K;
 	==> { -, K }
-	@<Show result@>;
-
-@<Show result@> =
-	PRINT("'%W': %u\n", W, K);
+	PRINT("'%<W': %u\n", W, K);
 
 @<No such kind error@> =
 	PRINT("No such kind as '%W'\n", W);
@@ -251,7 +262,7 @@ typedef struct kind_relationship {
 
 @<Weaken kind@> =
 	kind *K = RP[1];
-	==> { - , Kinds::weaken(K) }
+	==> { - , Kinds::weaken(K, K_object) }
 
 @<Dereference kind@> =
 	kind *K = RP[1];
@@ -278,13 +289,12 @@ typedef struct kind_relationship {
 	for (int i=1; i<=26; i++) slate[i] = NULL;
 	slate[KV->kind_variable_number] = K1;
 	int changed;
-	==> { -, Kinds::substitute(K2, slate, &changed) }
+	==> { -, Kinds::substitute(K2, slate, &changed, FALSE) }
 
 @
 
-@d KINDS_TEST_WITHIN Declarations::le
-@d KINDS_SUPER Declarations::super
-@d KINDS_COMPATIBLE Declarations::compatible
+@d HIERARCHY_GET_SUPER_KINDS_CALLBACK Declarations::super
+@d HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK Declarations::compatible
 
 =
 int Declarations::le(kind *K1, kind *K2) {
@@ -304,5 +314,5 @@ kind *Declarations::super(kind *K1) {
 int Declarations::compatible(kind *from, kind *to) {
 	if (Declarations::le(from, to)) return ALWAYS_MATCH;
 	if (Declarations::le(to, from)) return SOMETIMES_MATCH;
-	return NEVER_MATCH;
+	return NO_DECISION_ON_MATCH;
 }

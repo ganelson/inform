@@ -1,7 +1,8 @@
-Inform 7 build 6M27 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 20 words long.
-I've also read Standard Rules by Graham Nelson, which is 42500 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32113 words long.
 Problem__ PM_CantLetEmptyList
   >--> The phrase 'let Y be {}' (source text, line 4) tries to use 'let' to
     give a temporary name to the empty list '{ }', but because it's empty, I
@@ -10,6 +11,6 @@ Problem__ PM_CantLetEmptyList
     I was trying to match this phrase:
       let (y - a new name) be ({ } - value) 
     I recognised:
-    { } = a list of values
+    { } = a list of nothing
     The name 'y' doesn't yet exist.
-Inform 7 has finished: 57 centiseconds used.
+Inform 7 has finished.

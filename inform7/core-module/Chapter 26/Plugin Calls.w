@@ -101,8 +101,8 @@ void Plugins::Call::initialise_calls(void) {
 
 @ And here goes:
 
-@d NEW_BASE_KIND_NOTIFY Plugins::Call::new_base_kind_notify
-@d NEW_SUBKIND_NOTIFY Plugins::Call::set_subkind_notify
+@d NEW_BASE_KINDS_CALLBACK Plugins::Call::new_base_kind_notify
+@d HIERARCHY_VETO_MOVE_KINDS_CALLBACK Plugins::Call::set_subkind_notify
 
 =
 int Plugins::Call::name_to_early_infs(wording W, inference_subject **infs) {
@@ -113,7 +113,8 @@ int Plugins::Call::new_variable_notify(nonlocal_variable *q) {
 	PLUGINS_CALL(PLUGIN_NEW_VARIABLE_NOTIFY, q);
 }
 
-int Plugins::Call::new_base_kind_notify(kind *K, text_stream *d, wording W) {
+int Plugins::Call::new_base_kind_notify(kind *K, kind *super, text_stream *d, wording W) {
+	@<Renew the subject if necessary to cope with an early subject creation@>;
 	if (<property-name>(W)) {
 		property *P = <<rp>>;
 		Properties::Valued::set_kind(P, K);
@@ -123,6 +124,22 @@ int Plugins::Call::new_base_kind_notify(kind *K, text_stream *d, wording W) {
 	PLUGINS_CALL(PLUGIN_NEW_BASE_KIND_NOTIFY, K, d, W);
 }
 
+@ This is used to overcome a timing problem. A few inference subjects need to
+be defined early in Inform's run to set up relations -- "thing", for example.
+So when we do finally create "thing" as a kind of object, it needs to be
+matched up with the inference subject already existing.
+
+@<Renew the subject if necessary to cope with an early subject creation@> =
+	inference_subject *revised = NULL;
+	if (Wordings::nonempty(W)) Plugins::Call::name_to_early_infs(W, &revised);
+	if (revised) {
+		InferenceSubjects::renew(revised,
+			Kinds::Knowledge::as_subject(super), KIND_SUB,
+				STORE_POINTER_kind_constructor(K->construct), LIKELY_CE);
+		Kinds::Knowledge::set_subject(K, revised);
+	}
+
+@ =
 int Plugins::Call::compile_constant(value_holster *VH, kind *K, parse_node *spec) {
 	PLUGINS_CALL(PLUGIN_COMPILE_CONSTANT, VH, K, spec);
 }
@@ -148,6 +165,7 @@ int Plugins::Call::set_kind_notify(instance *I, kind *k) {
 }
 
 int Plugins::Call::set_subkind_notify(kind *sub, kind *super) {
+	if (Kinds::Compare::lt(sub, K_object) == FALSE) return TRUE;
 	PLUGINS_CALL(PLUGIN_SET_SUBKIND_NOTIFY, sub, super);
 }
 

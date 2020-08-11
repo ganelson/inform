@@ -1,0 +1,22 @@
+new kind thing of object.
+new kind device of thing.
+new kind vehicle of thing.
+new unit length.
+
+number <= number.
+number <= real number.
+value <= number.
+object <= text.
+object <= thing.
+thing <= object.
+device <= thing.
+device <= object.
+
+list of devices <= thing.
+list of devices <= list of things.
+relation of things to texts <= relation of devices to texts.
+relation of devices to texts <= relation of things to texts.
+phrase thing -> text <= phrase device -> text.
+phrase device -> text <= phrase thing -> text.
+phrase text -> thing <= phrase text -> device.
+phrase text -> device <= phrase text -> thing.

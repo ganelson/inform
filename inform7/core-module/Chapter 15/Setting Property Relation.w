@@ -196,7 +196,7 @@ be caught later on Inform's run.
 	}
 
 @<Require the subject to be able to have properties@> =
-	if (Kinds::Behaviour::has_properties(kinds_of_terms[0]) == FALSE) {
+	if (Kinds::Knowledge::has_properties(kinds_of_terms[0]) == FALSE) {
 		LOG("Property value for impossible domain %u\n", kinds_of_terms[0]);
 		Problems::quote_kind(4, kinds_of_terms[0]);
 		Problems::quote_property(5, prn);

@@ -106,7 +106,7 @@ checking:
 @d NEVER_MATCH     0 /* provably incorrect at compile time */
 @d NO_DECISION_ON_MATCH     -1 /* none of the above */
 
-@h Subkinds.
+@h Conformance.
 
 =
 int Kinds::Compare::le(kind *from, kind *to) {
@@ -161,11 +161,23 @@ well-defined for kinds of object, and otherwise returns |NULL|.
 
 =
 kind *Kinds::Compare::super(kind *K) {
-	#ifdef KINDS_SUPER
-	return KINDS_SUPER(K);
+	#ifdef HIERARCHY_GET_SUPER_KINDS_CALLBACK
+	return HIERARCHY_GET_SUPER_KINDS_CALLBACK(K);
 	#else
 	return NULL;
 	#endif
+}
+
+@ This tests whether $K_1\subseteq K_2$, regarding super-kind relationships
+as implying set containment.
+
+=
+int Kinds::Compare::subkind(kind *K1, kind *K2) {
+	while (K1) {
+		if (Kinds::Compare::eq(K1, K2)) return TRUE;
+		K1 = Kinds::Compare::super(K1);
+	}
+	return FALSE;
 }
 
 @ The maximum of $K_1$ and $K_2$ is by definition the kind $M$ such that
@@ -203,16 +215,14 @@ kind *Kinds::Compare::traverse_kind_poset(kind *K1, kind *K2, int direction) {
 		if (a1 == 1) return Kinds::unary_construction(con, ka[0]);
 		else return Kinds::binary_construction(con, ka[0], ka[1]);
 	} else {
+		if ((Kinds::Compare::eq(K1, K_nil))) return (direction > 0)?K2:K1;
+		if ((Kinds::Compare::eq(K2, K_nil))) return (direction > 0)?K1:K2;
 		if (Kinds::Compare::le(K1, K2)) return (direction > 0)?K2:K1;
 		if (Kinds::Compare::le(K2, K1)) return (direction > 0)?K1:K2;
-		if (direction > 0) {
-			if ((Kinds::Compare::le(K1, K_object)) && (Kinds::Compare::le(K2, K_object))) {
-				kind *K;
-				for (K = K1; K; K = Kinds::Compare::super(K))
-					if (Kinds::Compare::le(K2, K))
-						return K;
-			}
-		}
+		if (direction > 0)
+			for (kind *K = K1; K; K = Kinds::Compare::super(K))
+				if (Kinds::Compare::le(K2, K))
+					return K;
 	}
 	return K_value;
 }
@@ -270,7 +280,7 @@ So the following routine tests $\leq$ if |comp| is |FALSE|, returning
 |ALWAYS_MATCH| if and only if $\leq$ holds; and otherwise it tests compatibility.
 
 =
-int Kinds::Compare::test_kind_relation(kind *from, kind *to, int comp) {
+int Kinds::Compare::test_kind_relation(kind *from, kind *to, int allow_casts) {
 	if (Kinds::get_variable_number(to) > 0) {
 		kind *var_k = to, *other_k = from;
 		@<Deal separately with matches against kind variables@>;
@@ -292,7 +302,7 @@ int Kinds::Compare::test_kind_relation(kind *from, kind *to, int comp) {
 	if ((Kinds::get_construct(from) == CON_list_of) &&
 		(Kinds::Compare::eq(to, K_sayable_value)))
 		return Kinds::Compare::test_kind_relation(
-			Kinds::unary_construction_material(from), K_sayable_value, comp);
+			Kinds::unary_construction_material(from), K_sayable_value, allow_casts);
 
 @ "Value" is special because, for every kind $K$, we have $K\leq V$ -- it
 represents a supremum in our partially ordered set of kinds.
@@ -307,7 +317,8 @@ different kinds.
 
 @<Deal separately with the special role of value@> =
 	if (Kinds::Compare::eq(to, K_value)) return ALWAYS_MATCH;
-	if ((comp) && (Kinds::Compare::eq(from, K_value))) return ALWAYS_MATCH;
+	if ((allow_casts) && (Kinds::Compare::eq(from, K_nil))) return ALWAYS_MATCH;
+//	if ((allow_casts) && (Kinds::Compare::eq(from, K_value))) return ALWAYS_MATCH;
 
 @ |NULL| as a kind means "unknown". It's compatible only with itself
 and, of course, "value".
@@ -319,13 +330,13 @@ and, of course, "value".
 @ Here both our kinds are $\leq$ "object".
 
 @<Deal separately with compatibility within the objects hierarchy@> =
-	#ifdef KINDS_COMPATIBLE
-	int m = KINDS_COMPATIBLE(from, to);
+	#ifdef HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK
+	int m = HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK(from, to);
 	if (m != NO_DECISION_ON_MATCH) return m;
 	#endif
 
 @<The general case of compatibility@> =
-	if (Kinds::Constructors::compatible(from->construct, to->construct, comp) == FALSE)
+	if (Kinds::Constructors::compatible(from->construct, to->construct, allow_casts) == FALSE)
 		return NEVER_MATCH;
 	int f_a = Kinds::Constructors::arity(from->construct);
 	int t_a = Kinds::Constructors::arity(to->construct);
@@ -333,9 +344,12 @@ and, of course, "value".
 	int i, o = ALWAYS_MATCH, this_o = NEVER_MATCH;
 	for (i=0; i<arity; i++) {
 		if (Kinds::Constructors::variance(from->construct, i) == COVARIANT)
-			this_o = Kinds::Compare::test_kind_relation(from->kc_args[i], to->kc_args[i], comp);
-		else
-			this_o = Kinds::Compare::test_kind_relation(to->kc_args[i], from->kc_args[i], comp);
+			/* if ((allow_casts) && (Kinds::Compare::eq(from->kc_args[i], K_value))) this_o = ALWAYS_MATCH;
+			else */ this_o = Kinds::Compare::test_kind_relation(from->kc_args[i], to->kc_args[i], allow_casts);
+		else {
+			/* if ((allow_casts) && (Kinds::Compare::eq(to->kc_args[i], K_value))) this_o = ALWAYS_MATCH;
+			else */ this_o = Kinds::Compare::test_kind_relation(to->kc_args[i], from->kc_args[i], allow_casts);
+		}
 		switch (this_o) {
 			case NEVER_MATCH: o = this_o; break;
 			case SOMETIMES_MATCH: if (o != NEVER_MATCH) o = this_o; break;
@@ -395,7 +409,7 @@ a declaration usage of the variable K.
 	switch(kind_checker_mode) {
 		case MATCH_KIND_VARIABLES_INFERRING_VALUES:
 			if (Kinds::Compare::test_kind_relation(other_k,
-				Kinds::get_variable_stipulation(var_k), comp) != ALWAYS_MATCH)
+				Kinds::get_variable_stipulation(var_k), allow_casts) != ALWAYS_MATCH)
 				return NEVER_MATCH;
 			LOGIF(KIND_CHECKING, "Inferring kind variable %d from %u (declaration %u)\n",
 				vn, other_k, Kinds::get_variable_stipulation(var_k));
@@ -418,7 +432,7 @@ make a value-checking pass later.
 		case MATCH_KIND_VARIABLES_AS_VALUES:
 			LOGIF(KIND_CHECKING, "Checking %u against kind variable %d (=%u)\n",
 				other_k, vn, values_of_kind_variables[vn]);
-			if (Kinds::Compare::test_kind_relation(other_k, values_of_kind_variables[vn], comp) == NEVER_MATCH)
+			if (Kinds::Compare::test_kind_relation(other_k, values_of_kind_variables[vn], allow_casts) == NEVER_MATCH)
 				return NEVER_MATCH;
 			else
 				return ALWAYS_MATCH;
@@ -458,9 +472,8 @@ void Kinds::Compare::make_subkind(kind *sub, kind *super) {
 		LOG("Tried to set kind to %u\n", super);
 		internal_error("Tried to set the kind of a null kind");
 	}
-	if (Kinds::Compare::lt(sub, K_object) == FALSE) return;
-	#ifdef NEW_SUBKIND_NOTIFY
-	if (NEW_SUBKIND_NOTIFY(sub, super)) return;
+	#ifdef HIERARCHY_VETO_MOVE_KINDS_CALLBACK
+	if (HIERARCHY_VETO_MOVE_KINDS_CALLBACK(sub, super)) return;
 	#endif
 	kind *existing = Kinds::Compare::super(sub);
 	switch (Kinds::Compare::compatible(existing, super)) {
@@ -471,139 +484,16 @@ void Kinds::Compare::make_subkind(kind *sub, kind *super) {
 					Kinds::Behaviour::get_superkind_set_at(sub), super, existing);
 			return;
 		case SOMETIMES_MATCH:
-			#ifdef KINDS_TEST_WITHIN
-			if (KINDS_TEST_WITHIN(super, sub)) {
+			if (Kinds::Compare::subkind(super, sub)) {
 				if (problem_count == 0)
 					KindsModule::problem_handler(KindsCircular_KINDERROR,
 						Kinds::Behaviour::get_superkind_set_at(super), super, existing);
 				return;
 			}
-			#endif
-			#ifdef KINDS_MOVE_WITHIN
-			KINDS_MOVE_WITHIN(sub, super);
+			#ifdef HIERARCHY_MOVE_KINDS_CALLBACK
+			HIERARCHY_MOVE_KINDS_CALLBACK(sub, super);
 			#endif
 			Kinds::Behaviour::set_superkind_set_at(sub, current_sentence);
 			LOGIF(KIND_CHANGES, "Making %u a subkind of %u\n", sub, super);
 	}
 }
-
-@h Unit tests.
-Some internal test cases check that the hierarchy of kinds is behaving as we expect:
-
-=
-void Kinds::Compare::log_poset(int n) {
-	switch (n) {
-		case 1: @<Display the subkind relation of base kinds@>; break;
-		case 2: @<Display the compatibility relation of base kinds@>; break;
-		case 3: @<Display the results of the superkind function@>; break;
-		case 4: @<Check for poset violations@>; break;
-		case 5: @<Check the maximum function@>; break;
-		case 6: @<Some miscellaneous tests with a grab bag of kinds@>; break;
-	}
-}
-
-@<Display the subkind relation of base kinds@> =
-	LOG("The subkind relation on (base) kinds:\n");
-	kind *A, *B;
-	LOOP_OVER_BASE_KINDS(A) {
-		int c = 0;
-		LOOP_OVER_BASE_KINDS(B) {
-			if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::eq(A, B) == FALSE)) {
-				if (c++ == 0) LOG("%u <= ", A); else LOG(", ");
-				LOG("%u", B);
-			}
-		}
-		if (c > 0) LOG("\n");
-	}
-
-@<Display the compatibility relation of base kinds@> =
-	LOG("The (always) compatibility relation on (base) kinds, where it differs from <=:\n");
-	kind *A, *B;
-	LOOP_OVER_BASE_KINDS(A) {
-		int c = 0;
-		LOOP_OVER_BASE_KINDS(B) {
-			if ((Kinds::Compare::compatible(A, B) == ALWAYS_MATCH) &&
-				(Kinds::Compare::le(A, B) == FALSE) &&
-				(Kinds::Compare::eq(A, K_value) == FALSE)) {
-				if (c++ == 0) LOG("%u --> ", A); else LOG(", ");
-				LOG("%u", B);
-			}
-		}
-		if (c > 0) LOG("\n");
-	}
-
-@<Display the results of the superkind function@> =
-	LOG("The superkind function applied to base kinds:\n");
-	kind *A, *B;
-	LOOP_OVER_BASE_KINDS(A) {
-		for (B = A; B; B = Kinds::Compare::super(B))
-			LOG("%u -> ", B);
-		LOG("\n");
-	}
-
-@<Check for poset violations@> =
-	LOG("Looking for partially ordered set violations.\n");
-	kind *A, *B, *C;
-	LOOP_OVER_BASE_KINDS(A)
-		if (Kinds::Compare::le(A, A) == FALSE)
-			LOG("Reflexivity violated: %u\n", A);
-	LOOP_OVER_BASE_KINDS(A)
-		LOOP_OVER_BASE_KINDS(B)
-			if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::le(B, A)) && (Kinds::Compare::eq(A, B) == FALSE))
-				LOG("Antisymmetry violated: %u, %u\n", A, B);
-	LOOP_OVER_BASE_KINDS(A)
-		LOOP_OVER_BASE_KINDS(B)
-			LOOP_OVER_BASE_KINDS(C)
-				if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::le(B, C)) && (Kinds::Compare::le(A, C) == FALSE))
-					LOG("Transitivity violated: %u, %u, %u\n", A, B, C);
-
-@<Check the maximum function@> =
-	LOG("Looking for maximum violations.\n");
-	kind *A, *B;
-	LOOP_OVER_BASE_KINDS(A)
-		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::eq(Kinds::Compare::max(A, B), Kinds::Compare::max(B, A)) == FALSE)
-				LOG("Fail symmetry: max(%u, %u) = %u, but max(%u, %u) = %u\n",
-					A, B, Kinds::Compare::max(A, B), B, A, Kinds::Compare::max(B, A));
-	LOOP_OVER_BASE_KINDS(A)
-		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::le(A, Kinds::Compare::max(A, B)) == FALSE)
-				LOG("Fail maximality(A): max(%u, %u) = %u\n", A, B, Kinds::Compare::max(A, B));
-	LOOP_OVER_BASE_KINDS(A)
-		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::le(B, Kinds::Compare::max(A, B)) == FALSE)
-				LOG("Fail maximality(B): max(%u, %u) = %u\n", A, B, Kinds::Compare::max(A, B));
-	LOOP_OVER_BASE_KINDS(A)
-		if (Kinds::Compare::eq(Kinds::Compare::max(A, A), A) == FALSE)
-				LOG("Fail: max(%u, %u) = %u\n",
-					A, A, Kinds::Compare::max(A, A));
-
-@
-
-@d SIZE_OF_GRAB_BAG 11
-
-@<Some miscellaneous tests with a grab bag of kinds@> =
-	#ifdef IF_MODULE
-	kind *tests[SIZE_OF_GRAB_BAG];
-	tests[0] = K_number;
-	tests[1] = K_container;
-	tests[2] = K_door;
-	tests[3] = K_thing;
-	tests[4] = Kinds::unary_construction(CON_list_of, K_container);
-	tests[5] = Kinds::unary_construction(CON_list_of, K_door);
-	tests[6] = Kinds::unary_construction(CON_list_of, K_person);
-	tests[7] = Kinds::unary_construction(CON_list_of, K_thing);
-	tests[8] = Kinds::binary_construction(CON_phrase,
-		Kinds::binary_construction(CON_TUPLE_ENTRY, K_door, K_nil), K_object);
-	tests[9] = Kinds::binary_construction(CON_phrase,
-		Kinds::binary_construction(CON_TUPLE_ENTRY, K_object, K_nil), K_door);
-	tests[10] = Kinds::binary_construction(CON_phrase,
-		Kinds::binary_construction(CON_TUPLE_ENTRY, K_object, K_nil), K_object);
-	int i, j;
-	for (i=0; i<SIZE_OF_GRAB_BAG; i++) for (j=i+1; j<SIZE_OF_GRAB_BAG; j++) {
-		if (Kinds::Compare::le(tests[i], tests[j])) LOG("%u <= %u\n", tests[i], tests[j]);
-		if (Kinds::Compare::le(tests[j], tests[i])) LOG("%u <= %u\n", tests[j], tests[i]);
-		kind *M = Kinds::Compare::max(tests[i], tests[j]);
-		if (Kinds::Compare::eq(M, K_value) == FALSE) LOG("max(%u, %u) = %u\n", tests[i], tests[j], M);
-	}
-	#endif

@@ -6501,7 +6501,7 @@ ROOT_NT
                                                 CONSTANT_NT'" "' {kind: text}
                                 INVOCATION_LIST_NT'carry out the printing the plural name activity with the ite'
                                     INVOCATION_NT'carry out the printing the plural name activity with the ite'
-                                        RVALUE_CONTEXT_NT'printing the plural name' {required: activity on values}
+                                        RVALUE_CONTEXT_NT'printing the plural name' {required: activity}
                                             CONSTANT_NT'printing the plural name' {kind: activity on objects}{meaning: {printing the plural name = ACTIVITY_MC}}
                                         RVALUE_CONTEXT_NT'item' {required: value}
                                             LOCAL_VARIABLE_NT'item' {local: LV"item"-thing thing}
@@ -7019,7 +7019,7 @@ ROOT_NT
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'carry out the printing the locale description activity with '
                                     INVOCATION_NT'carry out the printing the locale description activity with '
-                                        RVALUE_CONTEXT_NT'printing the locale description' {required: activity on values}
+                                        RVALUE_CONTEXT_NT'printing the locale description' {required: activity}
                                             CONSTANT_NT'printing the locale description' {kind: activity on objects}{meaning: {printing the locale description = ACTIVITY_MC}}
                                         RVALUE_CONTEXT_NT'o' {required: value}
                                             LOCAL_VARIABLE_NT'o' {local: LV"o"-object object}
@@ -7118,7 +7118,7 @@ ROOT_NT
                                             NONLOCAL_VARIABLE_NT'parameter-object' {nonlocal: 'parameter-object'(var)object}{meaning: {parameter-object = VARIABLE_MC}}
                                 INVOCATION_LIST_NT'carry out the choosing notable locale objects activity with '
                                     INVOCATION_NT'carry out the choosing notable locale objects activity with '
-                                        RVALUE_CONTEXT_NT'choosing notable locale objects' {required: activity on values}
+                                        RVALUE_CONTEXT_NT'choosing notable locale objects' {required: activity}
                                             CONSTANT_NT'choosing notable locale objects' {kind: activity on objects}{meaning: {choosing notable locale objects = ACTIVITY_MC}}
                                         RVALUE_CONTEXT_NT'domain' {required: value}
                                             LOCAL_VARIABLE_NT'domain' {local: LV"domain"-object object}
@@ -7146,7 +7146,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'carry out the printing a locale paragraph about activity wit' {indent: 2}
                                             INVOCATION_NT'carry out the printing a locale paragraph about activity wit'
-                                                RVALUE_CONTEXT_NT'printing a locale paragraph about' {required: activity on values}
+                                                RVALUE_CONTEXT_NT'printing a locale paragraph about' {required: activity}
                                                     CONSTANT_NT'printing a locale paragraph about' {kind: activity on objects}{meaning: {printing a locale paragraph about = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'notable-object entry' {required: value}
                                                     TABLE_ENTRY_NT'notable-object entry'
@@ -7221,7 +7221,7 @@ ROOT_NT
                                                             CONDITION_CONTEXT_NT'the item is not marked for listing'
                                         INVOCATION_LIST_NT'begin the listing nondescript items activity with the domain' {indent: 2}
                                             INVOCATION_NT'begin the listing nondescript items activity with the domain'
-                                                RVALUE_CONTEXT_NT'listing nondescript items' {required: activity on values}
+                                                RVALUE_CONTEXT_NT'listing nondescript items' {required: activity}
                                                     CONSTANT_NT'listing nondescript items' {kind: activity on objects}{meaning: {listing nondescript items = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'domain' {required: value}
                                                     LOCAL_VARIABLE_NT'domain' {local: LV"domain"-object object}
@@ -7233,7 +7233,7 @@ ROOT_NT
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'abandon the listing nondescript items activity with the doma' {indent: 3}
                                                     INVOCATION_NT'abandon the listing nondescript items activity with the doma'
-                                                        RVALUE_CONTEXT_NT'listing nondescript items' {required: activity on values}
+                                                        RVALUE_CONTEXT_NT'listing nondescript items' {required: activity}
                                                             CONSTANT_NT'listing nondescript items' {kind: activity on objects}{meaning: {listing nondescript items = ACTIVITY_MC}}
                                                         RVALUE_CONTEXT_NT'domain' {required: value}
                                                             LOCAL_VARIABLE_NT'domain' {local: LV"domain"-object object}
@@ -7246,7 +7246,7 @@ ROOT_NT
                                                                     PHRASE_TO_DECIDE_VALUE_NT'handling the listing nondescript items activity with the dom'
                                                                         INVOCATION_LIST_NT'handling the listing nondescript items activity with the dom'
                                                                             INVOCATION_NT'handling the listing nondescript items activity with the dom'
-                                                                                RVALUE_CONTEXT_NT'listing nondescript items' {required: activity on values}
+                                                                                RVALUE_CONTEXT_NT'listing nondescript items' {required: activity}
                                                                                     CONSTANT_NT'listing nondescript items' {kind: activity on objects}{meaning: {listing nondescript items = ACTIVITY_MC}}
                                                                                 RVALUE_CONTEXT_NT'domain' {required: value}
                                                                                     LOCAL_VARIABLE_NT'domain' {local: LV"domain"-object object}
@@ -7388,7 +7388,7 @@ ROOT_NT
                                                             INVOCATION_NT'unfilter list recursion'
                                                 INVOCATION_LIST_NT'end the listing nondescript items activity with the domain' {indent: 3}
                                                     INVOCATION_NT'end the listing nondescript items activity with the domain'
-                                                        RVALUE_CONTEXT_NT'listing nondescript items' {required: activity on values}
+                                                        RVALUE_CONTEXT_NT'listing nondescript items' {required: activity}
                                                             CONSTANT_NT'listing nondescript items' {kind: activity on objects}{meaning: {listing nondescript items = ACTIVITY_MC}}
                                                         RVALUE_CONTEXT_NT'domain' {required: value}
                                                             LOCAL_VARIABLE_NT'domain' {local: LV"domain"-object object}
@@ -7520,7 +7520,7 @@ ROOT_NT
                                                         INVOCATION_NT'conditional paragraph break'
                                         INVOCATION_LIST_NT'carry out the writing a paragraph about activity with the it' {indent: 2}
                                             INVOCATION_NT'carry out the writing a paragraph about activity with the it'
-                                                RVALUE_CONTEXT_NT'writing a paragraph about' {required: activity on values}
+                                                RVALUE_CONTEXT_NT'writing a paragraph about' {required: activity}
                                                     CONSTANT_NT'writing a paragraph about' {kind: activity on objects}{meaning: {writing a paragraph about = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'item' {required: value}
                                                     LOCAL_VARIABLE_NT'item' {local: LV"item"-thing thing}
@@ -8829,7 +8829,7 @@ ROOT_NT
                                             INVOCATION_NT'continue the action'
                                 INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun'
                                     INVOCATION_NT'carry out the implicitly taking activity with the noun'
-                                        RVALUE_CONTEXT_NT'implicitly taking' {required: activity on values}
+                                        RVALUE_CONTEXT_NT'implicitly taking' {required: activity}
                                             CONSTANT_NT'implicitly taking' {kind: activity on objects}{meaning: {implicitly taking = ACTIVITY_MC}}
                                         RVALUE_CONTEXT_NT'noun' {required: value}
                                             NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
@@ -9078,7 +9078,7 @@ ROOT_NT
                                             INVOCATION_NT'continue the action'
                                 INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun'
                                     INVOCATION_NT'carry out the implicitly taking activity with the noun'
-                                        RVALUE_CONTEXT_NT'implicitly taking' {required: activity on values}
+                                        RVALUE_CONTEXT_NT'implicitly taking' {required: activity}
                                             CONSTANT_NT'implicitly taking' {kind: activity on objects}{meaning: {implicitly taking = ACTIVITY_MC}}
                                         RVALUE_CONTEXT_NT'noun' {required: value}
                                             NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
@@ -9401,7 +9401,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun' {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the noun'
-                                                RVALUE_CONTEXT_NT'implicitly taking' {required: activity on values}
+                                                RVALUE_CONTEXT_NT'implicitly taking' {required: activity}
                                                     CONSTANT_NT'implicitly taking' {kind: activity on objects}{meaning: {implicitly taking = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'noun' {required: value}
                                                     NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
@@ -11115,7 +11115,7 @@ ROOT_NT
                                                             PHRASE_TO_DECIDE_VALUE_NT'handling the printing the name of a dark room activity'
                                                                 INVOCATION_LIST_NT'handling the printing the name of a dark room activity'
                                                                     INVOCATION_NT'handling the printing the name of a dark room activity'
-                                                                        RVALUE_CONTEXT_NT'printing the name of a dark room' {required: activity on values}
+                                                                        RVALUE_CONTEXT_NT'printing the name of a dark room' {required: activity}
                                                                             CONSTANT_NT'printing the name of a dark room' {kind: activity}{meaning: {printing the name of a dark room = ACTIVITY_MC}}
                                             CODE_BLOCK_NT
                                                 CODE_BLOCK_NT'say "Darkness" ( a )' {SAY}
@@ -11249,7 +11249,7 @@ ROOT_NT
                                                             PHRASE_TO_DECIDE_VALUE_NT'handling the printing the description of a dark room activit'
                                                                 INVOCATION_LIST_NT'handling the printing the description of a dark room activit'
                                                                     INVOCATION_NT'handling the printing the description of a dark room activit'
-                                                                        RVALUE_CONTEXT_NT'printing the description of a dark room' {required: activity on values}
+                                                                        RVALUE_CONTEXT_NT'printing the description of a dark room' {required: activity}
                                                                             CONSTANT_NT'printing the description of a dark room' {kind: activity}{meaning: {printing the description of a dark room = ACTIVITY_MC}}
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'now the prior named object is nothing' {indent: 3} {NOW}
@@ -15850,7 +15850,7 @@ ROOT_NT
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'carry out the issuing the response text activity with r'
                                         INVOCATION_NT'carry out the issuing the response text activity with r'
-                                            RVALUE_CONTEXT_NT'issuing the response text' {required: activity on values}
+                                            RVALUE_CONTEXT_NT'issuing the response text' {required: activity}
                                                 CONSTANT_NT'issuing the response text' {kind: activity on responses}{meaning: {issuing the response text = ACTIVITY_MC}}
                                             RVALUE_CONTEXT_NT'r' {required: value}
                                                 LOCAL_VARIABLE_NT'r' {local: LV"r"-response response}
@@ -17871,7 +17871,7 @@ ROOT_NT
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'carry out the refusing keys activity with the locked-thing'
                                         INVOCATION_NT'carry out the refusing keys activity with the locked-thing'
-                                            RVALUE_CONTEXT_NT'refusing keys' {required: activity on values}
+                                            RVALUE_CONTEXT_NT'refusing keys' {required: activity}
                                                 CONSTANT_NT'refusing keys' {kind: activity on objects}{meaning: {refusing keys = ACTIVITY_MC}}
                                             RVALUE_CONTEXT_NT'locked-thing' {required: value}
                                                 LOCAL_VARIABLE_NT'locked-thing' {local: LV"locked-thing"-object object}
@@ -18302,7 +18302,7 @@ ROOT_NT
                                     CODE_BLOCK_NT'otherwise' {indent: 1} {O}
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun' {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the noun'
-                                                RVALUE_CONTEXT_NT'implicitly taking' {required: activity on values}
+                                                RVALUE_CONTEXT_NT'implicitly taking' {required: activity}
                                                     CONSTANT_NT'implicitly taking' {kind: activity on objects}{meaning: {implicitly taking = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'noun' {required: value}
                                                     NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
@@ -18332,7 +18332,7 @@ ROOT_NT
                                     CODE_BLOCK_NT'otherwise' {indent: 1} {O}
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the second nou' {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the second nou'
-                                                RVALUE_CONTEXT_NT'implicitly taking' {required: activity on values}
+                                                RVALUE_CONTEXT_NT'implicitly taking' {required: activity}
                                                     CONSTANT_NT'implicitly taking' {kind: activity on objects}{meaning: {implicitly taking = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'second noun' {required: value}
                                                     NONLOCAL_VARIABLE_NT'second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}

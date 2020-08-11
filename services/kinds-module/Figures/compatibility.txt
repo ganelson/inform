@@ -1,0 +1,23 @@
+'new kind thing of object': ok
+'new kind device of thing': ok
+'new kind vehicle of thing': ok
+'new unit length': ok
+'number compatible with number?': always
+'number compatible with real number?': always
+'value compatible with number?': never
+'object compatible with text?': never
+'object compatible with thing?': sometimes
+'thing compatible with object?': always
+'device compatible with thing?': always
+'device compatible with object?': always
+'list of devices compatible with thing?': never
+'list of devices compatible with list of things?': always
+'relation of things to texts compatible with relation of devices to texts?': never
+'relation of devices to texts compatible with relation of things to texts?': always
+'phrase thing -> text compatible with phrase device -> text?': always
+'phrase device -> text compatible with phrase thing -> text?': never
+'phrase text -> thing compatible with phrase text -> device?': never
+'phrase text -> device compatible with phrase text -> thing?': always
+'activity on numbers compatible with activity?': always
+'first term of activity': nothing
+'activity on numbers compatible with activity on values?': never

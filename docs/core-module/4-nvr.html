@@ -20,20 +20,6 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script>
-MathJax = {
-	tex: {
-		inlineMath: '$', '$'], ['\\(', '\\)'
-	},
-	svg: {
-		fontCache: 'global'
-	}
-};
-</script>
-<script type="text/javascript" id="MathJax-script" async
-	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
-
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -182,7 +168,6 @@ they come to the same thing in the end.
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">NewVerbRequests::parse_new</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">NewVerbRequests::parse_new</span></span>:<br/><a href="4-nvr.html#SP2">&#167;2</a>, <a href="4-nvr.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">usage</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
-<span class="comment-syntax"> LOG("Usage %d at </span>\(T\n\)<span class="comment-syntax">T\n$T\n", usage, V, V-&gt;next, V-&gt;next-&gt;next);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">PW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">; </span><span class="comment-syntax"> wording of the parts of speech</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">verb_meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">vm</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VerbMeanings::meaninglessness</span><span class="plain-syntax">(); </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning_given</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">priority</span><span class="plain-syntax"> = -1;</span>
@@ -219,7 +204,6 @@ cleared.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">l</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lcon::set_person</span><span class="plain-syntax">(</span><span class="identifier-syntax">l</span><span class="plain-syntax">, </span><span class="identifier-syntax">THIRD_PERSON</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">l</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lcon::set_number</span><span class="plain-syntax">(</span><span class="identifier-syntax">l</span><span class="plain-syntax">, </span><span class="identifier-syntax">SINGULAR_NUMBER</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Stock::add_form_to_usage</span><span class="plain-syntax">(</span><span class="identifier-syntax">gu</span><span class="plain-syntax">, </span><span class="identifier-syntax">l</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"So W is %W\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VerbUsages::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">WordAssemblages::from_wording</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">), </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">gu</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nvr.html#SP5">&#167;5</a>.</li></ul>

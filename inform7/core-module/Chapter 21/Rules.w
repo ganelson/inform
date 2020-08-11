@@ -190,9 +190,9 @@ kind *Rules::to_kind(rule *R) {
 	kind *K = R->kind_of_rule;
 	if (K == NULL) {
 		if (Plugins::Manage::plugged_in(actions_plugin))
-			K = Kinds::binary_construction(CON_rule, K_action_name, K_nil);
+			K = Kinds::binary_construction(CON_rule, K_action_name, K_void);
 		else
-			K = Kinds::binary_construction(CON_rule, K_nil, K_nil);
+			K = Kinds::binary_construction(CON_rule, K_void, K_void);
 	}
 	return K;
 }
@@ -480,11 +480,11 @@ void Rules::check_placement_safety(void) {
 				kind *B1 = NULL, *B2 = NULL, *P1 = NULL, *P2 = NULL;
 				Kinds::binary_construction_material(KR, &B1, &P1);
 				Kinds::binary_construction_material(KS, &B2, &P2);
-				if (Kinds::Compare::eq(B1, NULL)) B1 = K_nil;
-				if (Kinds::Compare::eq(B2, NULL)) B2 = K_nil;
-				if (Kinds::Compare::eq(P1, NULL)) P1 = K_nil;
-				if (Kinds::Compare::eq(P2, NULL)) P2 = K_nil;
-				if (Kinds::Compare::eq(B2, K_nil)) B2 = B1;
+				if (Kinds::Compare::eq(B1, NULL)) B1 = K_void;
+				if (Kinds::Compare::eq(B2, NULL)) B2 = K_void;
+				if (Kinds::Compare::eq(P1, NULL)) P1 = K_void;
+				if (Kinds::Compare::eq(P2, NULL)) P2 = K_void;
+				if (Kinds::Compare::eq(B2, K_void)) B2 = B1;
 				kind *K1 = Kinds::binary_construction(CON_rule, B1, P1);
 				kind *K2 = Kinds::binary_construction(CON_rule, B2, P2);
 				if (Kinds::Compare::compatible(K2, K1) != ALWAYS_MATCH) {

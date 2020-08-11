@@ -915,7 +915,7 @@ this because the |token_kind| for these two tokens remain
 @<Substitute for any kind variables in the match specification@> =
 	int changed = FALSE;
 	kind *substituted = Kinds::substitute(
-		phtd->token_sequence[i].token_kind, declarations, &changed);
+		phtd->token_sequence[i].token_kind, declarations, &changed, TRUE);
 	if (changed)
 		phtd->token_sequence[i].to_match =
 			Specifications::from_kind(substituted);

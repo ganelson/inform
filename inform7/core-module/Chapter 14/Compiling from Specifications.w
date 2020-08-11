@@ -156,7 +156,7 @@ void Specifications::Compiler::compile_constant_to_kind_vh(value_holster *VH, pa
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
-	Specifications::Compiler::compile_inner(VH, Kinds::Behaviour::cast_constant(value, K_wanted));
+	Specifications::Compiler::compile_inner(VH, Specifications::Compiler::cast_constant(value, K_wanted));
 	END_COMPILATION_MODE;
 }
 
@@ -165,7 +165,7 @@ void Specifications::Compiler::emit_constant_to_kind(parse_node *value, kind *K_
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
-	parse_node *casted = Kinds::Behaviour::cast_constant(value, K_wanted);
+	parse_node *casted = Specifications::Compiler::cast_constant(value, K_wanted);
 	END_COMPILATION_MODE;
 	Specifications::Compiler::emit(casted);
 }
@@ -175,9 +175,21 @@ void Specifications::Compiler::emit_constant_to_kind_as_val(parse_node *value, k
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
-	parse_node *casted = Kinds::Behaviour::cast_constant(value, K_wanted);
+	parse_node *casted = Specifications::Compiler::cast_constant(value, K_wanted);
 	END_COMPILATION_MODE;
 	Specifications::Compiler::emit_as_val(K_value, casted);
+}
+
+parse_node *Specifications::Compiler::cast_constant(parse_node *value, kind *to) {
+	#ifdef REAL_LITERALS
+	kind *from = Specifications::to_kind(value);
+	if ((Kinds::Compare::eq(from, K_number)) && (Kinds::Compare::eq(to, K_real_number))) {
+		wording W = Node::get_text(value);
+		if (<s-literal-real-number>(W)) value = <<rp>>;
+		else internal_error("can't parse integer as real");
+	}
+	#endif
+	return value;
 }
 
 void Specifications::Compiler::emit(parse_node *spec) {

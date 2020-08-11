@@ -265,11 +265,11 @@ void KindCommands::despatch(parse_node_tree *T, text_stream *command) {
 			internal_error("kind command describes already-known kind");
 		constructor_described =
 			Kinds::Constructors::new(T, Kinds::get_construct(K_value), name, NULL);
-		#ifdef NEW_BASE_KIND_NOTIFY
+		#ifdef NEW_BASE_KINDS_CALLBACK
 		if ((constructor_described != CON_KIND_VARIABLE) &&
 			(constructor_described != CON_INTERMEDIATE)) {
-			NEW_BASE_KIND_NOTIFY(
-				Kinds::base_construction(constructor_described), name, EMPTY_WORDING);
+			NEW_BASE_KINDS_CALLBACK(
+				Kinds::base_construction(constructor_described), NULL, name, EMPTY_WORDING);
 		}
 		#endif
 		DISCARD_TEXT(name)

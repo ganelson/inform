@@ -352,7 +352,7 @@ from a text substitution.)
 	if (ParseTreeUsage::is_value(itpt->as_parsed)) {
 		kind *K = Specifications::to_kind(itpt->as_parsed);
 		int changed = FALSE;
-		K = Kinds::substitute(K, NULL, &changed);
+		K = Kinds::substitute(K, NULL, &changed, FALSE);
 		Problems::quote_kind(3, K);
 		if (Kinds::Compare::eq(K, K_real_number)) real_found = TRUE;
 		if (ParseTreeUsage::is_lvalue(itpt->as_parsed))
@@ -865,7 +865,6 @@ again, and so on forever.)
 
 	BEGIN_DASH_MODE;
 	DASH_MODE_EXIT(ISSUE_PROBLEMS_DMODE);
-/*	DASH_MODE_EXIT(ISSUE_INTERESTING_PROBLEMS_DMODE); */
 	int rv = Dash::typecheck_recursive(inv, context, FALSE);
 	END_DASH_MODE;
 
@@ -1402,7 +1401,7 @@ against a definition like:
 
 	if (Kinds::contains(Node::get_kind_resulting(inv), CON_KIND_VARIABLE)) {
 		int changed = FALSE;
-		kind *K = Kinds::substitute(Node::get_kind_resulting(inv), NULL, &changed);
+		kind *K = Kinds::substitute(Node::get_kind_resulting(inv), NULL, &changed, FALSE);
 		if (changed) {
 			LOGIF(MATCHING, "(4I.c) amended kind returned to %u\n", K);
 			Node::set_kind_resulting(inv, K);
@@ -2081,7 +2080,7 @@ int Dash::set_up_any_local_required(parse_node *inv) {
 				@<Infer the kind of the new variable@>;
 
 			int changed = FALSE;
-			K = Kinds::substitute(K, NULL, &changed);
+			K = Kinds::substitute(K, NULL, &changed, FALSE);
 			if (changed) LOGIF(MATCHING, "(4A.c.1) Local var amended to %u\n", K);
 			Invocations::set_token_variable_kind(inv, i, K);
 		}
@@ -2141,7 +2140,7 @@ of a relation.
 	if (seems_to_be == NULL) @<Fail: the initial value of the local is unknown@>;
 
 	if ((Kinds::get_construct(seems_to_be) == CON_list_of) &&
-		(Kinds::Compare::eq(Kinds::unary_construction_material(seems_to_be), K_value)))
+		(Kinds::Compare::eq(Kinds::unary_construction_material(seems_to_be), K_nil)))
 		@<Fail: the initial value of the local is the empty list@>;
 	if (Kinds::Behaviour::definite(seems_to_be) == FALSE)
 		@<Fail: the initial value can't be stored@>;

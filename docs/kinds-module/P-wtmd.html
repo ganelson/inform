@@ -17,6 +17,20 @@
 
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+MathJax = {
+	tex: {
+		inlineMath: '$', '$'], ['\\(', '\\)'
+	},
+	svg: {
+		fontCache: 'global'
+	}
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -63,7 +77,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">kinds</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the kinds module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Kinds, definiteness, and safety</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Kinds and knowledge</a></li><li><a href="P-wtmd.html#SP5">&#167;5. A strongly typed language mixing static and dynamic typing</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Casting and coercion</a></li><li><a href="P-wtmd.html#SP8">&#167;8. What this module offers</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Making new kinds</a></li><li><a href="P-wtmd.html#SP13">&#167;13. Where kind constructors come from</a></li><li><a href="P-wtmd.html#SP14">&#167;14. Making new kind constructors</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Kinds, definiteness, and safety</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Kinds and knowledge</a></li><li><a href="P-wtmd.html#SP5">&#167;5. A strongly typed language mixing static and dynamic typing</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Casting and coercion</a></li><li><a href="P-wtmd.html#SP8">&#167;8. What this module offers</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Kind variables</a></li><li><a href="P-wtmd.html#SP14">&#167;14. Conformance</a></li><li><a href="P-wtmd.html#SP17">&#167;17. Compatibility</a></li><li><a href="P-wtmd.html#SP19">&#167;19. Making new kinds</a></li><li><a href="P-wtmd.html#SP20">&#167;20. Where kind constructors come from</a></li><li><a href="P-wtmd.html#SP21">&#167;21. Making new kind constructors</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The kinds module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -270,22 +284,22 @@ this, for testing different features of <a href="index.html" class="internal">ki
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'x = object'</span><span class="plain-syntax">:</span><span class="string-syntax"> object</span>
-<span class="element-syntax">'first term of x'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
-<span class="element-syntax">'second term of x'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
-<span class="element-syntax">'y = list of numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of numbers</span>
-<span class="element-syntax">'first term of y'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
-<span class="element-syntax">'second term of y'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
-<span class="element-syntax">'z = relation of texts to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers</span>
-<span class="element-syntax">'first term of z'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
-<span class="element-syntax">'second term of z'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
-<span class="element-syntax">'w = phrase ( relation of texts to numbers , text ) -&gt; truth state'</span><span class="plain-syntax">:</span><span class="string-syntax"> phrase (relation of texts to numbers, text) -&gt; truth state</span>
-<span class="element-syntax">'first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers, text</span>
-<span class="element-syntax">'first term of first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers</span>
-<span class="element-syntax">'first term of first term of first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
-<span class="element-syntax">'second term of first term of first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
-<span class="element-syntax">'second term of first term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
-<span class="element-syntax">'second term of w'</span><span class="plain-syntax">:</span><span class="string-syntax"> truth state</span>
+<span class="element-syntax">'X = object'</span><span class="plain-syntax">:</span><span class="string-syntax"> object</span>
+<span class="element-syntax">'first term of X'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
+<span class="element-syntax">'second term of X'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
+<span class="element-syntax">'Y = list of numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of numbers</span>
+<span class="element-syntax">'first term of Y'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
+<span class="element-syntax">'second term of Y'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
+<span class="element-syntax">'Z = relation of texts to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers</span>
+<span class="element-syntax">'first term of Z'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
+<span class="element-syntax">'second term of Z'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
+<span class="element-syntax">'W = phrase (relation of texts to numbers, text) -&gt; truth state'</span><span class="plain-syntax">:</span><span class="string-syntax"> phrase (relation of texts to numbers, text) -&gt; truth state</span>
+<span class="element-syntax">'first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers, text</span>
+<span class="element-syntax">'first term of first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers</span>
+<span class="element-syntax">'first term of first term of first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
+<span class="element-syntax">'second term of first term of first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
+<span class="element-syntax">'second term of first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
+<span class="element-syntax">'second term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> truth state</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>In principle we could imagine constructors needing arbitrarily large
 arity, or needing different arity in different usages, so the scheme of
@@ -308,7 +322,197 @@ and cannot be expressed in Inform source text, or occur in isolation. No
 Inform variable can have kind <span class="extract"><span class="extract-syntax">CON_NIL</span></span>, for example.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Making new kinds. </b>When we need a new <span class="extract"><span class="extract-syntax">kind *</span></span> value inside our code, what do we do? The
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Kind variables. </b>The 26 letters A to Z, written in upper case, can serve as kind variables &mdash;
+placeholders for kinds. In practice A is best avoided because it looks too
+much like an indefinite article, but it's very rare to need more than two.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
+Phrase definitions in the standard Inform extensions use only K and L.
+</p>
+
+<p class="commentary">The meaning of, say, "list of K" depends on context. If K is currently set to,
+say, <span class="extract"><span class="extract-syntax">number</span></span>, then "list of K" means <span class="extract"><span class="extract-syntax">list of number</span></span>; if it has no current
+setting, then K remains a placeholder and the result is <span class="extract"><span class="extract-syntax">list of K</span></span>. Note that
+the same variable can occur more than once, as for example in <span class="extract"><span class="extract-syntax">phrase K -&gt; K</span></span>.
+A kind with variables is always indefinite &mdash; unless one knows what <span class="extract"><span class="extract-syntax">K</span></span> will
+be, there's no way to know what format of data a <span class="extract"><span class="extract-syntax">list of K</span></span> value has.
+</p>
+
+<p class="commentary">A process called "substitution" enables <span class="extract"><span class="extract-syntax">list of K</span></span> to be transformed to
+<span class="extract"><span class="extract-syntax">list of numbers</span></span>, or whatever may be. See <a href="2-knd.html#SP14" class="internal">Kinds::substitute</a>.
+</p>
+
+<p class="commentary">The kinds module has to ask the parent tool for the current meanings of these
+variables, which may have all kinds of scoping considerations beyond our
+understanding here. See <a href="2-knd.html#SP19" class="internal">Kinds::variable_from_context</a>.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Indeed, in early functional languages type variables were sometimes written
+as <span class="extract"><span class="extract-syntax">*</span></span>, <span class="extract"><span class="extract-syntax">**</span></span>, <span class="extract"><span class="extract-syntax">***</span></span>, and so on, a syntax making clear that nobody expected
+to see many of them at once. Type variables always have very local scope.
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>In <a href="../kinds-test/index.html" class="internal">kinds-test</a>, the 26 variables are initially unset, but can be given
+values by writing <span class="extract"><span class="extract-syntax">K = number</span></span>, or similar. For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="element-syntax">'Q'</span><span class="plain-syntax">:</span><span class="string-syntax"> Q</span>
+<span class="element-syntax">'list of relations of Q to R'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of relations of Qs to Rs</span>
+<span class="element-syntax">'substitute number for Q in Q'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
+<span class="element-syntax">'substitute number for Q in list of Q'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of numbers</span>
+<span class="element-syntax">'substitute number for Q in list of relations of Q to Q'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of relations of numbers</span>
+<span class="element-syntax">'X = relation of Y to Y'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of Ys</span>
+<span class="element-syntax">'X is definite?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'X = relation of numbers to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of numbers</span>
+<span class="element-syntax">'X is definite?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Conformance. </b>The set of all kinds has a sort of ordering<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> called "conformance": we write
+\(K\leq L\) if \(K\) conforms to \(L\). For any kinds \(K, L, M\) not making use of
+kind variables<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> it is true that:
+</p>
+
+<ul class="items"><li>(a) \(K \leq K\) &mdash; reflexivity.
+</li><li>(b) If \(K\leq L\) and \(L\leq M\) then \(K\leq M\) &mdash; transitivity.
+</li><li>(c) \(K \leq\) <span class="extract"><span class="extract-syntax">value</span></span> &mdash; there is a top element.
+</li><li>(d) If \(K \leq L\) then a value of kind \(K\) can always be substituted for a
+value of kind \(L\) without modification &mdash; the Liskov substitution principle.<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> It need not be antisymmetric and only has joins to a limited extent, so
+it is formally not a semilattice, nor even a partial ordering.
+<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Introducing kind variables complicates the picture, because whether or not
+<span class="extract"><span class="extract-syntax">list of K</span></span> conforms to <span class="extract"><span class="extract-syntax">list of arithmetic values</span></span> depends on the current
+value of <span class="extract"><span class="extract-syntax">K</span></span> and therefore on the current context.
+<a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> Also known as strong behavioural subtyping. This only applies to definite
+kinds, because no value ever has an indefinite kind.
+<a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Conformance is tested with the function <a href="2-kc.html#SP8" class="internal">Kinds::Compare::le</a>, and the
+following shows it in action.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="element-syntax">'new kind thing of object'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'new kind device of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'new kind vehicle of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'number &lt;= number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'number &lt;= real number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'value &lt;= number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'object &lt;= text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'object &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'thing &lt;= object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'device &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'device &lt;= object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'list of devices &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'list of devices &lt;= list of things?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'relation of things to texts &lt;= relation of devices to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'relation of devices to texts &lt;= relation of things to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'phrase thing -&gt; text &lt;= phrase device -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'phrase device -&gt; text &lt;= phrase thing -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'phrase text -&gt; thing &lt;= phrase text -&gt; device?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'phrase text -&gt; device &lt;= phrase text -&gt; thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+</pre>
+<p class="commentary">Note that:
+</p>
+
+<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">number</span></span> does not conform to <span class="extract"><span class="extract-syntax">real number</span></span>. It can be cast to a real
+number, and this happens implicitly in Inform, but the cast requires explicit
+code; so it would violate Liskov substitution to have <span class="extract"><span class="extract-syntax">number</span></span> \(\leq\) <span class="extract"><span class="extract-syntax">real number</span></span>.
+</li><li>(b) The "list of K" constructor is covariant, in that \(K\leq L\) means
+<span class="extract"><span class="extract-syntax">list of K</span></span> \(\leq\) <span class="extract"><span class="extract-syntax">list of L</span></span>, whereas the "phrase K -&gt; L" constructor
+is contravariant in the first term, covariant in the second. See
+<a href="2-kc.html#SP15" class="internal">Kinds::Compare::test_kind_relation</a> for more.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>The indefinite <span class="extract"><span class="extract-syntax">arithmetic kind</span></span> used by Inform is a good example of what
+in other languages would be called a protocol. Here we see conformance:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'number &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'real number &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'length &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'text &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'arithmetic value &lt;= value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="element-syntax">'value &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+<span class="element-syntax">'arithmetic value &lt;= sayable value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
+</pre>
+<p class="commentary">Note that <span class="extract"><span class="extract-syntax">arithmetic value</span></span> does not conform to <span class="extract"><span class="extract-syntax">sayable value</span></span> &mdash; it is true
+that every value on which arithmetic can be performed can also be said, but
+this is not why. This example shows that \(K\leq L \Rightarrow K\leq M\) does
+not necessarily mean that \(L\leq M\).
+</p>
+
+<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Compatibility. </b>A related but different question is "compatibility". This asks whether a
+value of kind \(K\) can be used where \(L\) is expected, but
+</p>
+
+<ul class="items"><li>(i) It is now okay if explicit code to perform a conversion would be needed;
+</li><li>(ii) There are now three possible answers &mdash; always, never and sometimes, where
+"sometimes" means that code can be compiled which would test compatibility at
+run time rather than compile time;
+</li><li>(iii) <span class="extract"><span class="extract-syntax">value</span></span>, anomalously, is compatible with everything.
+</li></ul>
+<p class="commentary">Note that \(K\leq L\) certainly means \(K\) is compatible with \(L\), but there
+are many other compatible cases. For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="element-syntax">'new kind thing of object'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'new kind device of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'new kind vehicle of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
+<span class="element-syntax">'number compatible with number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'number compatible with real number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'value compatible with number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
+<span class="element-syntax">'object compatible with text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
+<span class="element-syntax">'object compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> sometimes</span>
+<span class="element-syntax">'thing compatible with object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'device compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'device compatible with object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'list of devices compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
+<span class="element-syntax">'list of devices compatible with list of things?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'relation of things to texts compatible with relation of devices to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
+<span class="element-syntax">'relation of devices to texts compatible with relation of things to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'phrase thing -&gt; text compatible with phrase device -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'phrase device -&gt; text compatible with phrase thing -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
+<span class="element-syntax">'phrase text -&gt; thing compatible with phrase text -&gt; device?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
+<span class="element-syntax">'phrase text -&gt; device compatible with phrase text -&gt; thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'activity on numbers compatible with activity?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
+<span class="element-syntax">'first term of activity'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
+<span class="element-syntax">'activity on numbers compatible with activity on values?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
+</pre>
+<p class="commentary">Note that <span class="extract"><span class="extract-syntax">number</span></span> is compatible with <span class="extract"><span class="extract-syntax">real number</span></span>. Run-time code will be
+needed to convert the value, but the answer is "always". We also see that
+"device" is always compatible with "thing" &mdash; every device is a thing &mdash;
+but also that "thing" is sometimes compatible with "device". If we pass a
+thing to a function expecting to see a device, run-time code can check whether
+the value passed is indeed a device, and reject the call with a run-time error
+if not.
+</p>
+
+<p class="commentary">The anomaly over <span class="extract"><span class="extract-syntax">value</span></span> looks and is odd.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>We support a sort of hybrid kinds system, in which some base kinds have
+subkinds and superkinds, while others do not.
+</p>
+
+<p class="commentary">In Inform, <span class="extract"><span class="extract-syntax">object</span></span> sits at the top of a hierarchy of subkinds &mdash; that is,
+the kinds allowed to have subkinds are <span class="extract"><span class="extract-syntax">object</span></span> itself, subkinds of <span class="extract"><span class="extract-syntax">object</span></span>,
+their subkinds in turn, and so on. In a typical work of parser IF, <span class="extract"><span class="extract-syntax">woman</span></span>
+is a subkind of <span class="extract"><span class="extract-syntax">person</span></span> which is a subkind of <span class="extract"><span class="extract-syntax">thing</span></span> which is a subkind of
+<span class="extract"><span class="extract-syntax">object</span></span>. On the other hand, <span class="extract"><span class="extract-syntax">number</span></span> and <span class="extract"><span class="extract-syntax">text</span></span>, for example, have no subkinds.
+This means that <span class="extract"><span class="extract-syntax">object</span></span> plays a unique role in the Inform type system, in a
+way which pervades the compiler's source code. But the <a href="index.html" class="internal">kinds</a> module itself
+takes no position on this, and <span class="extract"><span class="extract-syntax">object</span></span> (which need not even exist) plays no
+special role here.
+</p>
+
+<p class="commentary">Indeed, by default there are no subkinds at all, unless the parent tool uses
+the <span class="extract"><span class="extract-syntax">HIERARCHY_*_KINDS_CALLBACK</span></span> functions &mdash; see <a href="P-htitm.html" class="internal">How To Include This Module</a>.
+For convenience, <a href="../kinds-test/index.html" class="internal">kinds-test</a> uses the same convention as Inform, i.e., that
+only objects have subkinds.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Making new kinds. </b>When we need a new <span class="extract"><span class="extract-syntax">kind *</span></span> value inside our code, what do we do? The
 answer depends on how simple it is.
 </p>
 
@@ -331,7 +535,7 @@ and <span class="extract"><span class="extract-syntax">relation of numbers to te
 <p class="commentary">For the constructor values <span class="extract"><span class="extract-syntax">CON_list_of</span></span> and so on, again see <a href="2-fk.html" class="internal">Familiar Kinds</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Where kind constructors come from. </b>The built-in kind constructors, such as "number" or "list of K", are not really
+<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Where kind constructors come from. </b>The built-in kind constructors, such as "number" or "list of K", are not really
 built in. They are read in from configuration files &mdash; these are not written
 in Inform source text, and look more like dictionaries of key-value pairs,
 though they're simpler in syntax than XML.
@@ -346,7 +550,7 @@ in practice built-in kinds always need some run-time support written in Inter
 code.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Making new kind constructors. </b>When Inform acts on sentences like these:
+<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Making new kind constructors. </b>When Inform acts on sentences like these:
 </p>
 
 <blockquote>

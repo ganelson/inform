@@ -161,11 +161,11 @@ And similarly for the others here, except "either/or property", which is a
 	stored actions | 			                                     ==> @<Stored action if it exists@>
 	object-based rulebook producing <indefinite-article> <k-kind> |  ==> { -, Kinds::binary_construction(CON_rulebook, K_object, RP[2]) }
 	object-based rulebook producing <k-kind> |                       ==> { -, Kinds::binary_construction(CON_rulebook, K_object, RP[1]) }
-	object-based rulebook |                                          ==> { -, Kinds::binary_construction(CON_rulebook, K_object, K_nil) }
+	object-based rulebook |                                          ==> { -, Kinds::binary_construction(CON_rulebook, K_object, K_void) }
 	action-based rulebook |                                          ==> @<Action rulebook if it exists@>
 	object-based rule producing <indefinite-article> <k-kind> |      ==> { -, Kinds::binary_construction(CON_rule, K_object, RP[2]) }
 	object-based rule producing <k-kind> |                           ==> { -, Kinds::binary_construction(CON_rule, K_object, RP[1]) }
-	object-based rule |                                              ==> { -, Kinds::binary_construction(CON_rule, K_object, K_nil) }
+	object-based rule |                                              ==> { -, Kinds::binary_construction(CON_rule, K_object, K_void) }
 	action-based rule |                                              ==> @<Action rule if it exists@>
 	either-or property                                               ==> { -, Kinds::unary_construction(CON_property, K_truth_state) }
 
@@ -175,11 +175,11 @@ And similarly for the others here, except "either/or property", which is a
 
 @<Action rulebook if it exists@> =
 	if (K_action_name == NULL) { ==> { fail production }; }
-	==> { -, Kinds::binary_construction(CON_rulebook, K_action_name, K_nil) };
+	==> { -, Kinds::binary_construction(CON_rulebook, K_action_name, K_void) };
 
 @<Action rule if it exists@> =
 	if (K_action_name == NULL) { ==> { fail production }; }
-	==> { -, Kinds::binary_construction(CON_rule, K_action_name, K_nil) };
+	==> { -, Kinds::binary_construction(CON_rule, K_action_name, K_void) };
 
 @ This loop looks a little slow, but there are only about 10 proper constructors.
 
@@ -208,6 +208,10 @@ unspecified because a short form of the constructor is used (e.g.,
 
 @<See if this partial kind-constructor match works out@> =
 	kind *KX = K_value, *KY = K_value;
+	if (con->variance[0] == CONTRAVARIANT)
+		KX = K_nil;
+	if ((Kinds::Constructors::arity(con) == 2) && (con->variance[1] == CONTRAVARIANT))
+		KY = K_nil;
 
 	@<The rule and rulebook constructors default to actions for X@>;
 	if (Wordings::nonempty(X)) {
@@ -237,8 +241,8 @@ unspecified because a short form of the constructor is used (e.g.,
 
 @<The rule and rulebook constructors default to actions for X@> =
 	if ((con == CON_rule) || (con == CON_rulebook)) {
-		if (K_action_name) KX = K_action_name; else KX = K_nil;
-		KY = K_nil;
+		if (K_action_name) KX = K_action_name; else KX = K_void;
+		KY = K_void;
 	}
 
 @ And...
@@ -527,7 +531,8 @@ to miss out on this detail.
 
 @<Write punctuation kinds out to the stream@> =
 	kind_constructor *con = Kinds::get_construct(K);
-	if (con == CON_NIL) { WRITE("nothing<nil>"); return; }
+	if (con == CON_VOID) { WRITE("void"); return; }
+	if (con == CON_NIL) { WRITE("nil"); return; }
 	if (con == CON_TUPLE_ENTRY) { @<Describe a continuing tuple@>; return; }
 	if (con == CON_KIND_VARIABLE) { @<Describe a kind variable, either by name or by value@>; return; }
 	if (con == CON_INTERMEDIATE) {
@@ -595,12 +600,14 @@ usage.
 		if (Kinds::Compare::eq(first_base, K_action_name)) k_present = 0;
 	} else {
 		if (Kinds::Compare::eq(first_base, K_nil)) k_present = 0;
+		if (Kinds::Compare::eq(first_base, K_void)) k_present = 0;
 	}
 	if ((con == CON_property) && (Kinds::Compare::eq(first_base, K_value))) k_present = 0;
 	if ((con == CON_table_column) && (Kinds::Compare::eq(first_base, K_value))) k_present = 0;
 	if ((con == CON_relation) && (Kinds::Compare::eq(first_base, second_base))) l_present = 0;
 	if (Kinds::Constructors::arity(con) == 1) l_present = 0;
 	else if (Kinds::Compare::eq(second_base, K_nil)) l_present = 0;
+	else if (Kinds::Compare::eq(second_base, K_void)) l_present = 0;
 	if (choice_from[k_present][l_present] == -1) {
 		if ((k_present == 0) && (choice_from[1][l_present] >= 0)) k_present++;
 		else if ((l_present == 0) && (choice_from[k_present][1] >= 0)) l_present++;
@@ -645,6 +652,7 @@ usage.
 void Kinds::Textual::desc_base(OUTPUT_STREAM, kind_constructor *con, int b, kind *K, int substituting) {
 	if (K == NULL) { WRITE("nothing"); return; }
 	if (K == K_nil) { WRITE("nothing"); return; }
+	if (K == K_void) { WRITE("nothing"); return; }
 	int pluralised = TRUE;
 	int tupled = Kinds::Constructors::tupling(con, b);
 	int bracketed = FALSE;

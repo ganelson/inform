@@ -48,6 +48,22 @@ int Kinds::RunTime::I6_classnumber(kind *K) {
 	return Kinds::Behaviour::get_range_number(K);
 }
 
+@ And here is where those range numbers come from:
+
+@d REGISTER_NOUN_KINDS_CALLBACK Kinds::RunTime::register
+
+=
+int no_kinds_of_object = 1;
+noun *Kinds::RunTime::register(kind *K, kind *super, wording W, general_pointer data) {
+	noun *nt = Nouns::new_common_noun(W, NEUTER_GENDER,
+		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
+		KIND_SLOW_MC, data, Task::language_of_syntax());
+	Sentences::Headings::initialise_noun_resolution(nt);
+ 	if (Kinds::Compare::le(super, K_object))
+ 		Kinds::Behaviour::set_range_number(K, no_kinds_of_object++);
+ 	return nt;
+}
+
 @h Default values.
 When we create a new variable (or other storage object) of a given kind, but
 never say what its value is to be, Inform tries to initialise it to the
@@ -367,8 +383,21 @@ text_stream *Kinds::RunTime::interpret_test_equality(kind *left, kind *right) {
 @h Casts at runtime.
 
 =
+int Kinds::RunTime::cast_possible(kind *from, kind *to) {
+	from = Kinds::weaken(from, K_object);
+	to = Kinds::weaken(to, K_object);
+	if ((to) && (from) && (to->construct != from->construct) &&
+		(Kinds::Behaviour::definite(to)) && (Kinds::Behaviour::definite(from)) &&
+		(Kinds::Compare::eq(from, K_object) == FALSE) &&
+		(Kinds::Compare::eq(to, K_object) == FALSE) &&
+		(to->construct != CON_property))
+		return TRUE;
+	return FALSE;
+}
+
+@ =
 int Kinds::RunTime::cast_call(OUTPUT_STREAM, kind *from, kind *to) {
-	if (Kinds::Behaviour::cast_possible(from, to)) {
+	if (Kinds::RunTime::cast_possible(from, to)) {
 		if (Str::len(Kinds::Behaviour::get_name_in_template_code(to)) == 0) {
 			WRITE("(");
 			return TRUE;
@@ -391,7 +420,7 @@ int Kinds::RunTime::cast_call(OUTPUT_STREAM, kind *from, kind *to) {
 }
 
 int Kinds::RunTime::emit_cast_call(kind *from, kind *to, int *down) {
-	if (Kinds::Behaviour::cast_possible(from, to)) {
+	if (Kinds::RunTime::cast_possible(from, to)) {
 		if (Str::len(Kinds::Behaviour::get_name_in_template_code(to)) == 0) {
 			return TRUE;
 		}
@@ -905,6 +934,7 @@ each such kind, and needed at run-time.
 int Kinds::RunTime::base_represented_in_inter(kind *K) {
 	if ((Kinds::Behaviour::is_kind_of_kind(K) == FALSE) &&
 		(Kinds::is_proper_constructor(K) == FALSE) &&
+		(K != K_void) &&
 		(K != K_nil)) return TRUE;
 	return FALSE;
 }

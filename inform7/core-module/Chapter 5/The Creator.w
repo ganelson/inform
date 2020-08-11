@@ -132,8 +132,8 @@ The other way to find the kinds is to look at what the two sides explicitly say:
 	binary_predicate *bp = Assertions::Creator::bp_of_subtree(py);
 	if (bp == NULL) bp = Assertions::Creator::bp_of_subtree(px);
 	if (bp) {
-		kindx = Kinds::weaken(BinaryPredicates::term_kind(bp, 0));
-		kindy = Kinds::weaken(BinaryPredicates::term_kind(bp, 1));
+		kindx = Kinds::weaken(BinaryPredicates::term_kind(bp, 0), K_object);
+		kindy = Kinds::weaken(BinaryPredicates::term_kind(bp, 1), K_object);
 		#ifdef IF_MODULE
 		if ((bp == R_containment) ||
 			(BinaryPredicates::get_reversal(bp) == R_containment)) { kindx = K_object; kindy = K_object; }
@@ -235,7 +235,7 @@ in the node's subject, so this case is easy.
 		if ((Node::is(spec, CONSTANT_NT)) ||
 			(Lvalues::is_constant_NONLOCAL_VARIABLE(spec))) {
 			*governing = p;
-			return Kinds::weaken(Specifications::to_kind(spec));
+			return Kinds::weaken(Specifications::to_kind(spec), K_object);
 		}
 	}
 
@@ -671,7 +671,8 @@ to abbreviated forms of object names are normally allowed.
 
 @<Create a new variable@> =
 	kind *domain = Node::get_kind_of_value(governing_spec);
-	if (domain == NULL) domain = Kinds::weaken(Specifications::to_kind(governing_spec));
+	if (domain == NULL)
+		domain = Kinds::weaken(Specifications::to_kind(governing_spec), K_object);
 	if (Specifications::is_new_variable_like(governing_spec))
 		domain = Specifications::kind_of_new_variable_like(governing_spec);
 	if ((K_understanding) && (Kinds::contains(domain, Kinds::get_construct(K_understanding))))
@@ -700,7 +701,7 @@ them by asserting propositions to be true; we act directly.
 	kind *basis = NULL, *producing = NULL;
 	Kinds::binary_construction_material(create_as, &basis, &producing);
 	if (Kinds::Compare::eq(basis, K_value)) basis = K_action_name;
-	if (Kinds::Compare::eq(producing, K_value)) producing = K_nil;
+	if (Kinds::Compare::eq(producing, K_value)) producing = K_void;
 	create_as = Kinds::binary_construction(CON_rulebook, basis, producing);
 	if (governor)
 		Node::set_evaluation(governor,

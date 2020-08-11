@@ -48,7 +48,7 @@ automatically creates it.
 	inference_subject *owner_infs = Node::get_subject(owner_ref);
 	kind *K = InferenceSubjects::domain(owner_infs);
 	Kinds::Behaviour::convert_to_enumeration(Task::syntax_tree(), K);
-	if ((K) && (Kinds::Behaviour::has_properties(K) == FALSE))
+	if ((K) && (Kinds::Knowledge::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of a value property@>;
 	property *prn = Properties::Valued::obtain(Node::get_text(p));
 	Calculus::Propositions::Assert::assert_true_about(Calculus::Propositions::Abstract::to_provide_property(prn),

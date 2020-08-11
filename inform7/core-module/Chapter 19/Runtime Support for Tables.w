@@ -130,7 +130,7 @@ the values given there.
 
 	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)))  bits = TB_COLUMN_TOPIC;
 
-	if (Kinds::Behaviour::requires_blanks_bitmap(K) == FALSE) 	bits += TB_COLUMN_NOBLANKBITS;
+	if (Tables::Support::requires_blanks_bitmap(K) == FALSE) 	bits += TB_COLUMN_NOBLANKBITS;
 	if (t->preserve_row_order_at_run_time) 						bits += TB_COLUMN_DONTSORTME;
 
 	Emit::array_numeric_entry((inter_ti) (Tables::Columns::get_id(tc) + bits));
@@ -199,7 +199,7 @@ case.)
 			current_sentence = t->table_created_at->source_table;
 			for (int j=0; j<t->no_columns; j++) {
 				table_column *tc = t->columns[j].column_identity;
-				if (Kinds::Behaviour::requires_blanks_bitmap(Tables::Columns::get_kind(tc)) == FALSE)
+				if (Tables::Support::requires_blanks_bitmap(Tables::Columns::get_kind(tc)) == FALSE)
 					continue;
 				int current_bit = 1, byte_so_far = 0;
 				@<Compile blank bits for entries from the source text@>;
@@ -312,4 +312,16 @@ void Tables::Support::compile_print_table_names(void) {
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Routines::end(save);
+}
+
+@ The issue here is whether the value |IMPROBABLE_VALUE| can, despite its
+improbability, be valid for this kind. If we can prove that it is not, we
+should return |FALSE|; if in any doubt, we must return |TRUE|.
+
+=
+int Tables::Support::requires_blanks_bitmap(kind *K) {
+	if (K == NULL) return FALSE;
+	if (Kinds::Compare::le(K, K_object)) return FALSE;
+	if (Kinds::Behaviour::is_an_enumeration(K)) return FALSE;
+	return TRUE;
 }

@@ -113,8 +113,6 @@ kind *Kinds::binary_construction(kind_constructor *con, kind *X, kind *Y) {
 	no_constructed_kinds_created++;
 	if (con == CON_phrase) {
 		if ((X == NULL) || (Y == NULL)) internal_error("bad function kind");
-		if ((X->construct == CON_TUPLE_ENTRY) && (X->kc_args[0] == K_nil))
-			internal_error("nil nil");
 		if (Y->construct == CON_TUPLE_ENTRY) internal_error("bizarre");
 	}
 	return K;
@@ -155,8 +153,7 @@ rather than as:
 =
 kind *Kinds::function_kind(int no_args, kind **args, kind *return_K) {
 	kind *arguments_K = K_nil;
-	int i;
-	for (i=no_args-1; i>=0; i--)
+	for (int i=no_args-1; i>=0; i--)
 		arguments_K = Kinds::binary_construction(CON_TUPLE_ENTRY, args[i], arguments_K);
 	if (return_K == NULL) return_K = K_nil;
 	return Kinds::binary_construction(CON_phrase, arguments_K, return_K);
@@ -273,8 +270,7 @@ Here we look through a kind tree in search of a given constructor at any node.
 int Kinds::contains(kind *K, kind_constructor *con) {
 	if (K == NULL) return FALSE;
 	if (K->construct == con) return TRUE;
-	int i;
-	for (i=0; i<MAX_KIND_CONSTRUCTION_ARITY; i++)
+	for (int i=0; i<MAX_KIND_CONSTRUCTION_ARITY; i++)
 		if (Kinds::contains(K->kc_args[i], con))
 			return TRUE;
 	return FALSE;
@@ -293,11 +289,17 @@ We set the flag indicated by |changed| to |TRUE| if we make any change,
 assuming that it was originally |FALSE| before the first use of this function.
 
 =
-kind *Kinds::substitute(kind *K, kind **meanings, int *changed) {
+kind *Kinds::substitute(kind *K, kind **meanings, int *changed, int contra) {
+	return Kinds::substitute_inner(K, meanings, changed, contra, COVARIANT);
+}
+kind *Kinds::substitute_inner(kind *K, kind **meanings, int *changed, int contra,
+	int way_in) {
 	if (meanings == NULL) meanings = values_of_kind_variables;
 	int N = Kinds::get_variable_number(K);
 	if (N > 0) {
 		*changed = TRUE;
+		if ((contra) && (way_in == CONTRAVARIANT) && (Kinds::Compare::eq(meanings[N], K_value)))
+			return K_nil;
 		return meanings[N];
 	}
 	if (Kinds::is_proper_constructor(K)) {
@@ -306,15 +308,21 @@ kind *Kinds::substitute(kind *K, kind **meanings, int *changed) {
 		int a = Kinds::arity_of_constructor(K);
 		if (a == 1) {
 			X = Kinds::unary_construction_material(K);
-			X_after = Kinds::substitute(X, meanings, &tx);
+			X_after = Kinds::substitute_inner(X, meanings, &tx, contra,
+				Kinds::Constructors::variance(Kinds::get_construct(K), 0));
 			if (tx) {
 				*changed = TRUE;
 				return Kinds::unary_construction(K->construct, X_after);
 			}
 		} else {
 			Kinds::binary_construction_material(K, &X, &Y);
-			X_after = Kinds::substitute(X, meanings, &tx);
-			Y_after = Kinds::substitute(Y, meanings, &ty);
+			int vx = Kinds::Constructors::variance(Kinds::get_construct(K), 0);
+			int vy = Kinds::Constructors::variance(Kinds::get_construct(K), 1);
+			if (Kinds::get_construct(K) == CON_TUPLE_ENTRY) {
+				vx = way_in; vy = way_in;
+			}
+			X_after = Kinds::substitute_inner(X, meanings, &tx, contra, vx);
+			Y_after = Kinds::substitute_inner(Y, meanings, &ty, contra, vy);
 			if ((tx) || (ty)) {
 				*changed = TRUE;
 				return Kinds::binary_construction(K->construct, X_after, Y_after);
@@ -325,23 +333,23 @@ kind *Kinds::substitute(kind *K, kind **meanings, int *changed) {
 }
 
 @h Weakening.
-This operation corresponds to rounding kinds up to "object": that is, any
-subkind of "object" is replaced by "object".
+This operation corresponds to rounding kinds up to |W|: that is, any
+subkind of |W| is replaced by |W|.
 
 =
-kind *Kinds::weaken(kind *K) {
+kind *Kinds::weaken(kind *K, kind *W) {
 	if (Kinds::is_proper_constructor(K)) {
 		kind *X = NULL, *Y = NULL;
 		int a = Kinds::arity_of_constructor(K);
 		if (a == 1) {
 			X = Kinds::unary_construction_material(K);
-			return Kinds::unary_construction(K->construct, Kinds::weaken(X));
+			return Kinds::unary_construction(K->construct, Kinds::weaken(X, W));
 		} else {
 			Kinds::binary_construction_material(K, &X, &Y);
-			return Kinds::binary_construction(K->construct, Kinds::weaken(X), Kinds::weaken(Y));
+			return Kinds::binary_construction(K->construct, Kinds::weaken(X, W), Kinds::weaken(Y, W));
 		}
 	} else {
-		if ((K) && (Kinds::Compare::lt(K, K_object))) return K_object;
+		if ((K) && (Kinds::Compare::lt(K, W))) return W;
 	}
 	return K;
 }
@@ -381,7 +389,6 @@ The word range is the name ("texture", "musical instrument"), and |super|
 is the super-kind ("value", "thing").
 
 =
-int no_kinds_of_object = 1;
 kind *Kinds::new_base(parse_node_tree *T, wording W, kind *super) {
 	#ifdef PROTECTED_MODEL_PROCEDURE
 	PROTECTED_MODEL_PROCEDURE;
@@ -389,56 +396,34 @@ kind *Kinds::new_base(parse_node_tree *T, wording W, kind *super) {
 
 	kind *K = Kinds::base_construction(
 		Kinds::Constructors::new(T, Kinds::get_construct(super), NULL, I"#NEW"));
-	@<Renew the subject if necessary to cope with an early subject creation@>;
-
-	#ifdef KINDS_MOVE_WITHIN
-	KINDS_MOVE_WITHIN(K, super);
-	#endif
 
 	@<Use the source-text name to attach a noun to the constructor@>;
 
 	FamiliarKinds::notice_new_kind(K, W);
-	#ifdef NEW_BASE_KIND_NOTIFY
-	NEW_BASE_KIND_NOTIFY(K, Kinds::Behaviour::get_name_in_template_code(K), W);
+	#ifdef NEW_BASE_KINDS_CALLBACK
+	NEW_BASE_KINDS_CALLBACK(K, super, Kinds::Behaviour::get_name_in_template_code(K), W);
 	#endif
+
+	#ifdef HIERARCHY_MOVE_KINDS_CALLBACK
+	HIERARCHY_MOVE_KINDS_CALLBACK(K, super);
+	#endif
+
 	latest_base_kind_of_value = K;
 	LOGIF(KIND_CREATIONS, "Created base kind %u\n", K);
 	return K;
 }
 
-@ This is used to overcome a timing problem. A few inference subjects need to
-be defined early in Inform's run to set up relations -- "thing", for example.
-So when we do finally create "thing" as a kind of object, it needs to be
-matched up with the inference subject already existing.
-
-@<Renew the subject if necessary to cope with an early subject creation@> =
-	#ifdef CORE_MODULE
-	inference_subject *revised = NULL;
-	if (Wordings::nonempty(W)) Plugins::Call::name_to_early_infs(W, &revised);
-	if (revised) {
-		InferenceSubjects::renew(revised,
-			Kinds::Knowledge::as_subject(super), KIND_SUB,
-				STORE_POINTER_kind_constructor(K->construct), LIKELY_CE);
-		Kinds::Knowledge::set_subject(K, revised);
-	}
-	#endif
-
 @<Use the source-text name to attach a noun to the constructor@> =
-	unsigned int mc = KIND_SLOW_MC;
-	if (Kinds::Compare::le(super, K_object)) mc = NOUN_MC;
-	NATURAL_LANGUAGE_WORDS_TYPE *L = NULL;
-	#ifdef CORE_MODULE
-	L = Task::language_of_syntax();
+	noun *nt = NULL;
+	#ifdef REGISTER_NOUN_KINDS_CALLBACK
+	nt = REGISTER_NOUN_KINDS_CALLBACK(K, super, W, STORE_POINTER_kind_constructor(K->construct));
 	#endif
-	noun *nt = Nouns::new_common_noun(W, NEUTER_GENDER,
+	#ifndef REGISTER_NOUN_KINDS_CALLBACK
+	nt = Nouns::new_common_noun(W, NEUTER_GENDER,
 		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
-		KIND_SLOW_MC, STORE_POINTER_kind_constructor(K->construct), L);
-	#ifdef CORE_MODULE
-	Sentences::Headings::initialise_noun_resolution(nt);
+		KIND_SLOW_MC, STORE_POINTER_kind_constructor(K->construct), NULL);
 	#endif
 	Kinds::Constructors::attach_noun(K->construct, nt);
- 	if (Kinds::Compare::le(super, K_object))
- 		Kinds::Behaviour::set_range_number(K, no_kinds_of_object++);
 
 @h Annotating vocabulary.
 

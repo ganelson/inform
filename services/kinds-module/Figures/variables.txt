@@ -1,5 +1,9 @@
-'q': Q
-'list of relations of q to r': list of relations of Qs to Rs
-'substitute number for q in q': number
-'substitute number for q in list of q': list of numbers
-'substitute number for q in list of relations of q to q': list of relations of numbers
+'Q': Q
+'list of relations of Q to R': list of relations of Qs to Rs
+'substitute number for Q in Q': number
+'substitute number for Q in list of Q': list of numbers
+'substitute number for Q in list of relations of Q to Q': list of relations of numbers
+'X = relation of Y to Y': relation of Ys
+'X is definite?': false
+'X = relation of numbers to numbers': relation of numbers
+'X is definite?': true

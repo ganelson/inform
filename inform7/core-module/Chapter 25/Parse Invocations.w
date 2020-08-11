@@ -281,7 +281,6 @@ parser needs our help in the first place.)
 
 @<Parse the ith token into the invocation@> =
 	parse_node *to_match = phtd->token_sequence[i].to_match;
-
 	wording X = Articles::remove_the(token_text[i]);
 
 	if (phtd->token_sequence[i].construct == NEW_LOCAL_PT_CONSTRUCT) {

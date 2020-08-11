@@ -283,7 +283,7 @@ kind *Rulebooks::to_kind(rulebook *rb) {
 rulebook *Rulebooks::new_automatic(wording W, kind *basis,
 	int oc, int ata, int ubfaa, int rda, package_request *R) {
 	rulebook *rb = Rulebooks::new(
-		Kinds::binary_construction(CON_rulebook, basis, K_nil), W, R);
+		Kinds::binary_construction(CON_rulebook, basis, K_void), W, R);
 	Rulebooks::Outcomes::set_default_outcome(&(rb->my_outcomes), oc);
 	Rulebooks::Outcomes::set_focus_ata(&(rb->my_focus), ata);
 	rb->automatically_generated = TRUE;

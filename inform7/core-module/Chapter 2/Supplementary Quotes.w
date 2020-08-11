@@ -107,6 +107,7 @@ void Problems::quote_table(int t, table *tab) {
 =
 void Problems::quote_kind(int t, kind *K) {
 	if ((K == NULL) || (Kinds::Compare::eq(K, K_nil))) Problems::quote_text(t, "nothing");
+	else if ((K == NULL) || (Kinds::Compare::eq(K, K_void))) Problems::quote_text(t, "nothing");
 	else Problems::problem_quote(t, (void *) K, Problems::expand_kind);
 }
 

@@ -1,0 +1,7 @@
+'K <= K?': true
+'K <= value?': true
+'value <= K?': true
+'list of number <= list of K?': true
+'list of K <= list of number?': true
+'relation of K to K <= relation of K to L?': true
+'relation of K to L <= relation of K to K?': true

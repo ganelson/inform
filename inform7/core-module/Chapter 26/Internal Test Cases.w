@@ -161,7 +161,7 @@ void InternalTests::InternalTestCases_routine(void) {
 				break;
 			case KIND_INTT:
 				@<Begin reporting on the internal test case@>;
-				Kinds::Compare::log_poset(
+				InternalTests::log_poset(
 					Vocabulary::get_literal_number_value(
 						Lexer::word(
 							Wordings::first_wn(
@@ -315,4 +315,125 @@ void InternalTests::emit_showme(parse_node *spec) {
 		Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_problem_logging());
 	}
 	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;
+
+@ And here's a test of the kinds system (though in practice test cases for the
+//kinds-test// tool probably now does a better job):
+
+=
+void InternalTests::log_poset(int n) {
+	switch (n) {
+		case 1: @<Display the subkind relation of base kinds@>; break;
+		case 2: @<Display the compatibility relation of base kinds@>; break;
+		case 3: @<Display the results of the superkind function@>; break;
+		case 4: @<Check for poset violations@>; break;
+		case 5: @<Check the maximum function@>; break;
+		case 6: @<Some miscellaneous tests with a grab bag of kinds@>; break;
+	}
+}
+
+@<Display the subkind relation of base kinds@> =
+	LOG("The subkind relation on (base) kinds:\n");
+	kind *A, *B;
+	LOOP_OVER_BASE_KINDS(A) {
+		int c = 0;
+		LOOP_OVER_BASE_KINDS(B) {
+			if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::eq(A, B) == FALSE)) {
+				if (c++ == 0) LOG("%u <= ", A); else LOG(", ");
+				LOG("%u", B);
+			}
+		}
+		if (c > 0) LOG("\n");
+	}
+
+@<Display the compatibility relation of base kinds@> =
+	LOG("The (always) compatibility relation on (base) kinds, where it differs from <=:\n");
+	kind *A, *B;
+	LOOP_OVER_BASE_KINDS(A) {
+		int c = 0;
+		LOOP_OVER_BASE_KINDS(B) {
+			if ((Kinds::Compare::compatible(A, B) == ALWAYS_MATCH) &&
+				(Kinds::Compare::le(A, B) == FALSE) &&
+				(Kinds::Compare::eq(A, K_value) == FALSE)) {
+				if (c++ == 0) LOG("%u --> ", A); else LOG(", ");
+				LOG("%u", B);
+			}
+		}
+		if (c > 0) LOG("\n");
+	}
+
+@<Display the results of the superkind function@> =
+	LOG("The superkind function applied to base kinds:\n");
+	kind *A, *B;
+	LOOP_OVER_BASE_KINDS(A) {
+		for (B = A; B; B = Kinds::Compare::super(B))
+			LOG("%u -> ", B);
+		LOG("\n");
+	}
+
+@<Check for poset violations@> =
+	LOG("Looking for partially ordered set violations.\n");
+	kind *A, *B, *C;
+	LOOP_OVER_BASE_KINDS(A)
+		if (Kinds::Compare::le(A, A) == FALSE)
+			LOG("Reflexivity violated: %u\n", A);
+	LOOP_OVER_BASE_KINDS(A)
+		LOOP_OVER_BASE_KINDS(B)
+			if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::le(B, A)) && (Kinds::Compare::eq(A, B) == FALSE))
+				LOG("Antisymmetry violated: %u, %u\n", A, B);
+	LOOP_OVER_BASE_KINDS(A)
+		LOOP_OVER_BASE_KINDS(B)
+			LOOP_OVER_BASE_KINDS(C)
+				if ((Kinds::Compare::le(A, B)) && (Kinds::Compare::le(B, C)) && (Kinds::Compare::le(A, C) == FALSE))
+					LOG("Transitivity violated: %u, %u, %u\n", A, B, C);
+
+@<Check the maximum function@> =
+	LOG("Looking for maximum violations.\n");
+	kind *A, *B;
+	LOOP_OVER_BASE_KINDS(A)
+		LOOP_OVER_BASE_KINDS(B)
+			if (Kinds::Compare::eq(Kinds::Compare::max(A, B), Kinds::Compare::max(B, A)) == FALSE)
+				LOG("Fail symmetry: max(%u, %u) = %u, but max(%u, %u) = %u\n",
+					A, B, Kinds::Compare::max(A, B), B, A, Kinds::Compare::max(B, A));
+	LOOP_OVER_BASE_KINDS(A)
+		LOOP_OVER_BASE_KINDS(B)
+			if (Kinds::Compare::le(A, Kinds::Compare::max(A, B)) == FALSE)
+				LOG("Fail maximality(A): max(%u, %u) = %u\n", A, B, Kinds::Compare::max(A, B));
+	LOOP_OVER_BASE_KINDS(A)
+		LOOP_OVER_BASE_KINDS(B)
+			if (Kinds::Compare::le(B, Kinds::Compare::max(A, B)) == FALSE)
+				LOG("Fail maximality(B): max(%u, %u) = %u\n", A, B, Kinds::Compare::max(A, B));
+	LOOP_OVER_BASE_KINDS(A)
+		if (Kinds::Compare::eq(Kinds::Compare::max(A, A), A) == FALSE)
+				LOG("Fail: max(%u, %u) = %u\n",
+					A, A, Kinds::Compare::max(A, A));
+
+@
+
+@d SIZE_OF_GRAB_BAG 11
+
+@<Some miscellaneous tests with a grab bag of kinds@> =
+	#ifdef IF_MODULE
+	kind *tests[SIZE_OF_GRAB_BAG];
+	tests[0] = K_number;
+	tests[1] = K_container;
+	tests[2] = K_door;
+	tests[3] = K_thing;
+	tests[4] = Kinds::unary_construction(CON_list_of, K_container);
+	tests[5] = Kinds::unary_construction(CON_list_of, K_door);
+	tests[6] = Kinds::unary_construction(CON_list_of, K_person);
+	tests[7] = Kinds::unary_construction(CON_list_of, K_thing);
+	tests[8] = Kinds::binary_construction(CON_phrase,
+		Kinds::binary_construction(CON_TUPLE_ENTRY, K_door, K_nil), K_object);
+	tests[9] = Kinds::binary_construction(CON_phrase,
+		Kinds::binary_construction(CON_TUPLE_ENTRY, K_object, K_nil), K_door);
+	tests[10] = Kinds::binary_construction(CON_phrase,
+		Kinds::binary_construction(CON_TUPLE_ENTRY, K_object, K_nil), K_object);
+	int i, j;
+	for (i=0; i<SIZE_OF_GRAB_BAG; i++) for (j=i+1; j<SIZE_OF_GRAB_BAG; j++) {
+		if (Kinds::Compare::le(tests[i], tests[j])) LOG("%u <= %u\n", tests[i], tests[j]);
+		if (Kinds::Compare::le(tests[j], tests[i])) LOG("%u <= %u\n", tests[j], tests[i]);
+		kind *M = Kinds::Compare::max(tests[i], tests[j]);
+		if (Kinds::Compare::eq(M, K_value) == FALSE) LOG("max(%u, %u) = %u\n", tests[i], tests[j], M);
+	}
+	#endif
 

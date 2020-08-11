@@ -1,0 +1,26 @@
+new kind thing of object.
+new kind device of thing.
+new kind vehicle of thing.
+new unit length.
+
+number compatible with number.
+number compatible with real number.
+value compatible with number.
+object compatible with text.
+object compatible with thing.
+thing compatible with object.
+device compatible with thing.
+device compatible with object.
+
+list of devices compatible with thing.
+list of devices compatible with list of things.
+relation of things to texts compatible with relation of devices to texts.
+relation of devices to texts compatible with relation of things to texts.
+phrase thing -> text compatible with phrase device -> text.
+phrase device -> text compatible with phrase thing -> text.
+phrase text -> thing compatible with phrase text -> device.
+phrase text -> device compatible with phrase text -> thing.
+
+activity on numbers compatible with activity.
+first term of activity.
+activity on numbers compatible with activity on values.

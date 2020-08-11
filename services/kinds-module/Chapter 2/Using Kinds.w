@@ -31,6 +31,15 @@ void Kinds::Behaviour::set_range_number(kind *K, int r) {
 	K->construct->class_number = r;
 }
 
+@h Being an object.
+
+=
+int Kinds::Behaviour::is_object(kind *K) {
+	if ((Kinds::Compare::le(K, K_object)) && (Kinds::Compare::eq(K, K_nil) == FALSE))
+		return TRUE;
+	return FALSE;
+}
+
 @h Definiteness.
 A kind like "number" is definite. One way to be indefinite is to be a
 kind of kind, like "arithmetic value":
@@ -60,11 +69,20 @@ int Kinds::Behaviour::definite(kind *K) {
 int Kinds::Behaviour::semidefinite(kind *K) {
 	if (K == NULL) return TRUE;
 	if (K->construct == CON_KIND_VARIABLE) return TRUE;
+	if (K->construct == CON_NIL) return FALSE;
 	if (Kinds::Constructors::is_definite(K->construct) == FALSE) return FALSE;
 	int i, arity = Kinds::Constructors::arity(K->construct);
-	for (i=0; i<arity; i++)
-		if (Kinds::Behaviour::semidefinite(K->kc_args[i]) == FALSE)
-			return FALSE;
+	if ((K->construct == CON_TUPLE_ENTRY) && (Kinds::Compare::eq(K->kc_args[1], K_nil))) arity = 1;
+	if (K->construct == CON_phrase) {
+		for (i=0; i<arity; i++)
+			if ((Kinds::Compare::eq(K->kc_args[i], K_nil) == FALSE) &&
+				(Kinds::Behaviour::semidefinite(K->kc_args[i]) == FALSE))
+				return FALSE;
+	} else {
+		for (i=0; i<arity; i++)
+			if (Kinds::Behaviour::semidefinite(K->kc_args[i]) == FALSE)
+				return FALSE;
+	}
 	return TRUE;
 }
 
@@ -221,19 +239,6 @@ int Kinds::Behaviour::get_highest_valid_value_as_integer(kind *K) {
 	return con->next_free_value - 1;
 }
 
-@h (E) Knowledge about values of this kind.
-Some values can have properties attached -- scenes, for instance -- while
-others can't -- numbers or times, for instance. In general $v$ can have
-properties only if its kind passes this test:
-
-=
-int Kinds::Behaviour::has_properties(kind *K) {
-	if (K == NULL) return FALSE;
-	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
-	if (Kinds::Compare::le(K, K_object)) return TRUE;
-	return FALSE;
-}
-
 @h (G) Performing arithmetic.
 Comparisons made by calling an I6 routine are slower in the VM than using the
 standard |<| or |>| operators for signed comparison, so we use them only if
@@ -366,33 +371,6 @@ int Kinds::Behaviour::get_heap_size_estimate(kind *K) {
 	return K->construct->heap_size_estimate;
 }
 
-@ =
-int Kinds::Behaviour::cast_possible(kind *from, kind *to) {
-	from = Kinds::weaken(from);
-	to = Kinds::weaken(to);
-	if ((to) && (from) && (to->construct != from->construct) &&
-		(Kinds::Behaviour::definite(to)) && (Kinds::Behaviour::definite(from)) &&
-		(Kinds::Compare::eq(from, K_object) == FALSE) &&
-		(Kinds::Compare::eq(to, K_object) == FALSE) &&
-		(to->construct != CON_property))
-		return TRUE;
-	return FALSE;
-}
-
-@ =
-parse_node *Kinds::Behaviour::cast_constant(parse_node *value, kind *to) {
-	#ifdef REAL_LITERALS
-	kind *from = Specifications::to_kind(value);
-	if (Kinds::Behaviour::cast_possible(from, to))
-		if ((Kinds::Compare::eq(from, K_number)) && (Kinds::Compare::eq(to, K_real_number))) {
-			wording W = Node::get_text(value);
-			if (<s-literal-real-number>(W)) value = <<rp>>;
-			else internal_error("can't parse integer as real");
-		}
-	#endif
-	return value;
-}
-
 @ And the following returns the name of an I6 routine to determine if two
 values of $K$ are different from each other; or |NULL| to say that it's
 sufficient to apply |~=| to the values.
@@ -410,32 +388,6 @@ inter_name *Kinds::Behaviour::get_distinguisher_as_iname(kind *K) {
 	return Produce::find_by_name(Emit::tree(), N);
 }
 #endif
-
-@ Some kinds are such that all legal values can efficiently be looped through
-at run-time, some are not: we can sensibly loop over all scenes, but not
-over all texts. We use the term "domain" to mean the set of values which
-a loop traverses.
-
-=
-int Kinds::Behaviour::compile_domain_possible(kind *K) {
-	if (K == NULL) return FALSE;
-	if (Kinds::Compare::le(K, K_object)) return TRUE;
-	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
-	if (Str::len(K->construct->loop_domain_schema) > 0) return TRUE;
-	return FALSE;
-}
-
-@ See "Tables.i6t"; the issue is whether the value |IMPROBABLE_VALUE| can,
-despite its improbability, be valid for this kind. If we can prove that it is
-not, we should return |FALSE|; if in any doubt, we must return |TRUE|.
-
-=
-int Kinds::Behaviour::requires_blanks_bitmap(kind *K) {
-	if (K == NULL) return FALSE;
-	if (Kinds::Compare::le(K, K_object)) return FALSE;
-	if (Kinds::Behaviour::is_an_enumeration(K)) return FALSE;
-	return TRUE;
-}
 
 @ Can values of this kind be serialised out to a file and read back in again
 by some other Inform story file, or by this one running on a different day?
@@ -574,14 +526,12 @@ if not, it returns |NULL|.
 =
 text_stream *Kinds::Behaviour::get_explicit_I6_GPR(kind *K) {
 	if (K == NULL) internal_error("Kinds::Behaviour::get_explicit_I6_GPR on null kind");
-	if (Kinds::Compare::le(K, K_object)) internal_error("wrong way to handle object grammar");
 	return K->construct->explicit_i6_GPR;
 }
 
 #ifdef CORE_MODULE
 inter_name *Kinds::Behaviour::get_explicit_I6_GPR_iname(kind *K) {
 	if (K == NULL) internal_error("Kinds::Behaviour::get_explicit_I6_GPR on null kind");
-	if (Kinds::Compare::le(K, K_object)) internal_error("wrong way to handle object grammar");
 	if (Str::len(K->construct->explicit_i6_GPR) > 0)
 		return Produce::find_by_name(Emit::tree(), K->construct->explicit_i6_GPR);
 	return NULL;
@@ -602,7 +552,6 @@ this will be allowed or not.
 =
 int Kinds::Behaviour::request_I6_GPR(kind *K) {
 	if (K == NULL) return FALSE;
-	if (Kinds::Compare::le(K, K_object)) internal_error("wrong way to handle object grammar");
 	if (K->construct->has_i6_GPR == FALSE) return FALSE; /* can't oblige */
 	K->construct->I6_GPR_needed = TRUE; /* make note to oblige later */
 	return TRUE;

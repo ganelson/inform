@@ -1,0 +1,4 @@
+'number is definite?': true
+'arithmetic value is definite?': false
+'phrase number -> text is definite?': true
+'phrase arithmetic value -> text is definite?': false

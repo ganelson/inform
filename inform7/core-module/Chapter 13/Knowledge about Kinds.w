@@ -31,6 +31,18 @@ inference_subject *Kinds::Knowledge::create_for_constructor(kind_constructor *co
 		KIND_SUB, STORE_POINTER_kind_constructor(con), LIKELY_CE);
 }
 
+@ Some values can have properties attached -- scenes, for instance -- while
+others can't -- numbers or times, for instance. In general a value can have
+properties only if its kind passes this test:
+
+=
+int Kinds::Knowledge::has_properties(kind *K) {
+	if (K == NULL) return FALSE;
+	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
+	if (Kinds::Compare::le(K, K_object)) return TRUE;
+	return FALSE;
+}
+
 @ This is one of Inform's sets of inference subjects, and here are the
 routines to support them:
 
@@ -107,7 +119,7 @@ void Kinds::Knowledge::emit_recursive(inference_subject *within) {
 
 void Kinds::Knowledge::emit(inference_subject *infs) {
 	kind *K = InferenceSubjects::as_kind(infs);
-	if ((Kinds::Behaviour::has_properties(K)) &&
+	if ((Kinds::Knowledge::has_properties(K)) &&
 		(Kinds::Compare::le(K, K_object) == FALSE))
 		Properties::Emit::emit_subject(infs);
 	Properties::OfValues::check_allowable(K);
@@ -116,10 +128,9 @@ void Kinds::Knowledge::emit(inference_subject *infs) {
 @ We use the hierarchy of inference subjects to represent the hierarchy of
 kinds:
 
-@d KINDS_SUPER Kinds::Knowledge::super
-@d KINDS_COMPATIBLE Kinds::Knowledge::compatible
-@d KINDS_TEST_WITHIN Kinds::Knowledge::test_within
-@d KINDS_MOVE_WITHIN Kinds::Knowledge::move_within
+@d HIERARCHY_GET_SUPER_KINDS_CALLBACK Kinds::Knowledge::super
+@d HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK Kinds::Knowledge::compatible
+@d HIERARCHY_MOVE_KINDS_CALLBACK Kinds::Knowledge::move_within
 
 =
 int Kinds::Knowledge::compatible(kind *from, kind *to) {
@@ -144,11 +155,6 @@ kind *Kinds::Knowledge::super(kind *K) {
 		return InferenceSubjects::as_kind(InferenceSubjects::narrowest_broader_subject(infs));
 	}
 	return NULL;
-}
-
-int Kinds::Knowledge::test_within(kind *sub, kind *super) {
-	return InferenceSubjects::is_within(
-		Kinds::Knowledge::as_subject(sub), Kinds::Knowledge::as_subject(super));
 }
 
 void Kinds::Knowledge::move_within(kind *sub, kind *super) {

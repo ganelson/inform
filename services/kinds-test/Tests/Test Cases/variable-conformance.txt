@@ -1,0 +1,7 @@
+K <= K.
+K <= value.
+value <= K.
+list of number <= list of K.
+list of K <= list of number.
+relation of K to K <= relation of K to L.
+relation of K to L <= relation of K to K.

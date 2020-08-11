@@ -48,9 +48,31 @@ would be
 =
 The following alphabetical list has references to fuller explanations:
 
+(*) |HIERARCHY_GET_SUPER_KINDS_CALLBACK| is called to ask what the superkind
+of a kind is. See //Kinds::Compare::super//.
+
+(*) |HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK| is called to ask if one kind
+satisfies an is-a relationship with another. See //Kinds::Compare::test_kind_relation//.
+
+(*) |HIERARCHY_MOVE_KINDS_CALLBACK| is called to ask us to put make one
+kind a subkind of another. See //Kinds::Compare::make_subkind// and
+//Kinds::new_base// -- there are two ways this can happen.
+
+(*) |HIERARCHY_VETO_MOVE_KINDS_CALLBACK| is called to give the parent tool a
+chance to veto any proposed subkind. (Inform uses this, for example, to catch
+the case of somebody making "region" a subkind of some other kind of object.)
+See //Kinds::Compare::make_subkind//.
+
+(*) |NEW_BASE_KINDS_CALLBACK| is called when a new base kind (properly
+speaking, a new arity-0 kind constructor) is made. See //Kinds::new_base//
+and //KindCommands::despatch// -- there are two ways this can happen.
+
 (*) |NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK| is called when the kind "natural
 language" is created (if it is): see //FamiliarKinds::notice_new_kind//.
 
 (*) |PROBLEM_KINDS_CALLBACK| is called when a syntax error is found, and can
 prevent this from being issued to the terminal as an error message: see
 //KindsModule::problem_handler//.
+
+(*) |REGISTER_NOUN_KINDS_CALLBACK|, if provided, can register a common noun
+for a new base kind with the lexicon itself. See //Kinds::new_base//.

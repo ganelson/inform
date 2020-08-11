@@ -1,5 +1,7 @@
 Home is a room.
 
+Use MAX_QTEXT_SIZE of 10000.
+
 Test kind (internal) with 1.
 Test kind (internal) with 2.
 Test kind (internal) with 3.

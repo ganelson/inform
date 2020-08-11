@@ -81,7 +81,9 @@ represented by the |CON_TUPLE_ENTRY| constructor on its own, but it isn't.
 
 = (early code)
 kind *K_nil = NULL;
+kind *K_void = NULL;
 kind_constructor *CON_NIL = NULL;
+kind_constructor *CON_VOID = NULL;
 kind_constructor *CON_TUPLE_ENTRY = NULL;
 
 @ It was mentioned above that two special constructors carry additional
@@ -184,6 +186,7 @@ kind_constructor **FamiliarKinds::known_con(text_stream *sn) {
 	IDENTIFIERS_CORRESPOND("LIST_OF_TY", &CON_list_of);
 	IDENTIFIERS_CORRESPOND("PHRASE_TY", &CON_phrase);
 	IDENTIFIERS_CORRESPOND("NIL_TY", &CON_NIL);
+	IDENTIFIERS_CORRESPOND("VOID_TY", &CON_VOID);
 	IDENTIFIERS_CORRESPOND("PROPERTY_TY", &CON_property);
 	IDENTIFIERS_CORRESPOND("RELATION_TY", &CON_relation);
 	IDENTIFIERS_CORRESPOND("RULE_TY", &CON_rule);
@@ -217,6 +220,7 @@ kind **FamiliarKinds::known_kind(text_stream *sn) {
 	IDENTIFIERS_CORRESPOND("VERB_TY", &K_verb);
 	IDENTIFIERS_CORRESPOND("WORD_VALUE_TY", &K_word_value);
 	IDENTIFIERS_CORRESPOND("NIL_TY", &K_nil);
+	IDENTIFIERS_CORRESPOND("VOID_TY", &K_void);
 	return NULL;
 }
 

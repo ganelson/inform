@@ -355,6 +355,15 @@ description:nothing
 index-priority:0
 ! Represents a lack of arguments, or of results
 
++VOID_TY:
+apply-macro:#BASE-KIND
+
+instance-of:WORD_VALUE_TY
+
+description:nothing
+index-priority:0
+! Represents a lack of arguments, or of results
+
 +KIND_VARIABLE_TY:
 apply-macro:#KIND-VARIABLE
 description:a variable denoting a kind

@@ -272,7 +272,7 @@ the presence of annotations can change what we do.
 	int changed = FALSE;
 	kind *kind_required =
 		Kinds::substitute(ph->type_data.token_sequence[tok].token_kind,
-		kind_vars_inline, &changed);
+			kind_vars_inline, &changed, FALSE);
 	@<If the token has to be an lvalue, reject it if it isn't@>;
 	@<Compile the token value@>;
 	Frames::temporarily_set_kvs(saved);
@@ -720,7 +720,8 @@ the problem messages are phrased differently if something goes wrong.
 	int mor = Phrases::TypeData::get_mor(&(phrase_being_compiled->type_data));
 
 	int allow_me = ALWAYS_MATCH;
-	if ((kind_needed) && (Kinds::Compare::eq(kind_needed, K_nil) == FALSE))
+	if ((kind_needed) && (Kinds::Compare::eq(kind_needed, K_nil) == FALSE) &&
+		(Kinds::Compare::eq(kind_needed, K_void) == FALSE))
 		allow_me = Kinds::Compare::compatible(kind_supplied, kind_needed);
 	else if ((mor == DECIDES_CONDITION_MOR) && (Kinds::Compare::eq(kind_supplied, K_truth_state)))
 		allow_me = ALWAYS_MATCH;

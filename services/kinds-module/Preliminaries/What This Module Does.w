@@ -198,6 +198,124 @@ used here: |CON_TUPLE_ENTRY| and |CON_NIL|. These are called "punctuation",
 and cannot be expressed in Inform source text, or occur in isolation. No
 Inform variable can have kind |CON_NIL|, for example.
 
+@h Kind variables.
+The 26 letters A to Z, written in upper case, can serve as kind variables --
+placeholders for kinds. In practice A is best avoided because it looks too
+much like an indefinite article, but it's very rare to need more than two.[1]
+Phrase definitions in the standard Inform extensions use only K and L.
+
+The meaning of, say, "list of K" depends on context. If K is currently set to,
+say, |number|, then "list of K" means |list of number|; if it has no current
+setting, then K remains a placeholder and the result is |list of K|. Note that
+the same variable can occur more than once, as for example in |phrase K -> K|.
+A kind with variables is always indefinite -- unless one knows what |K| will
+be, there's no way to know what format of data a |list of K| value has.
+
+A process called "substitution" enables |list of K| to be transformed to
+|list of numbers|, or whatever may be. See //Kinds::substitute//.
+
+The kinds module has to ask the parent tool for the current meanings of these
+variables, which may have all kinds of scoping considerations beyond our
+understanding here. See //Kinds::variable_from_context//. 
+
+[1] Indeed, in early functional languages type variables were sometimes written
+as |*|, |**|, |***|, and so on, a syntax making clear that nobody expected
+to see many of them at once. Type variables always have very local scope.
+
+@ In //kinds-test//, the 26 variables are initially unset, but can be given
+values by writing |K = number|, or similar. For example:
+
+= (text from Figures/variables.txt as REPL)
+
+@h Conformance.
+The set of all kinds has a sort of ordering[1] called "conformance": we write
+$K\leq L$ if $K$ conforms to $L$. For any kinds $K, L, M$ not making use of
+kind variables[2] it is true that:
+
+(a) $K \leq K$ -- reflexivity.
+(b) If $K\leq L$ and $L\leq M$ then $K\leq M$ -- transitivity.
+(c) $K \leq$ |value| -- there is a top element.
+(d) If $K \leq L$ then a value of kind $K$ can always be substituted for a
+value of kind $L$ without modification -- the Liskov substitution principle.[3]
+
+[1] It need not be antisymmetric and only has joins to a limited extent, so
+it is formally not a semilattice, nor even a partial ordering.
+
+[2] Introducing kind variables complicates the picture, because whether or not
+|list of K| conforms to |list of arithmetic values| depends on the current
+value of |K| and therefore on the current context.
+
+[3] Also known as strong behavioural subtyping. This only applies to definite
+kinds, because no value ever has an indefinite kind.
+
+@ Conformance is tested with the function //Kinds::Compare::le//, and the
+following shows it in action.
+ 
+= (text from Figures/conformance.txt as REPL)
+
+Note that:
+(a) |number| does not conform to |real number|. It can be cast to a real
+number, and this happens implicitly in Inform, but the cast requires explicit
+code; so it would violate Liskov substitution to have |number| $\leq$ |real number|.
+(b) The "list of K" constructor is covariant, in that $K\leq L$ means
+|list of K| $\leq$ |list of L|, whereas the "phrase K -> L" constructor
+is contravariant in the first term, covariant in the second. See
+//Kinds::Compare::test_kind_relation// for more.
+ 
+@ The indefinite |arithmetic kind| used by Inform is a good example of what
+in other languages would be called a protocol. Here we see conformance:
+ 
+= (text from Figures/av-conformance.txt as REPL)
+
+Note that |arithmetic value| does not conform to |sayable value| -- it is true
+that every value on which arithmetic can be performed can also be said, but
+this is not why. This example shows that $K\leq L \Rightarrow K\leq M$ does
+not necessarily mean that $L\leq M$.
+
+@h Compatibility.
+A related but different question is "compatibility". This asks whether a
+value of kind $K$ can be used where $L$ is expected, but
+
+(i) It is now okay if explicit code to perform a conversion would be needed;
+(ii) There are now three possible answers -- always, never and sometimes, where
+"sometimes" means that code can be compiled which would test compatibility at
+run time rather than compile time;
+(iii) |value|, anomalously, is compatible with everything.
+
+Note that $K\leq L$ certainly means $K$ is compatible with $L$, but there
+are many other compatible cases. For example:
+
+= (text from Figures/compatibility.txt as REPL)
+
+Note that |number| is compatible with |real number|. Run-time code will be
+needed to convert the value, but the answer is "always". We also see that
+"device" is always compatible with "thing" -- every device is a thing --
+but also that "thing" is sometimes compatible with "device". If we pass a
+thing to a function expecting to see a device, run-time code can check whether
+the value passed is indeed a device, and reject the call with a run-time error
+if not.
+
+The anomaly over |value| looks and is odd.
+
+
+@ We support a sort of hybrid kinds system, in which some base kinds have
+subkinds and superkinds, while others do not.
+
+In Inform, |object| sits at the top of a hierarchy of subkinds -- that is,
+the kinds allowed to have subkinds are |object| itself, subkinds of |object|,
+their subkinds in turn, and so on. In a typical work of parser IF, |woman|
+is a subkind of |person| which is a subkind of |thing| which is a subkind of
+|object|. On the other hand, |number| and |text|, for example, have no subkinds.
+This means that |object| plays a unique role in the Inform type system, in a
+way which pervades the compiler's source code. But the //kinds// module itself
+takes no position on this, and |object| (which need not even exist) plays no
+special role here.
+
+Indeed, by default there are no subkinds at all, unless the parent tool uses
+the |HIERARCHY_*_KINDS_CALLBACK| functions -- see //How To Include This Module//.
+For convenience, //kinds-test// uses the same convention as Inform, i.e., that
+only objects have subkinds.
+
 @h Making new kinds.
 When we need a new |kind *| value inside our code, what do we do? The
 answer depends on how simple it is.

@@ -1,0 +1,8 @@
+new unit length.
+number <= arithmetic value.
+real number <= arithmetic value.
+length <= arithmetic value.
+text <= arithmetic value.
+arithmetic value <= value.
+value <= arithmetic value.
+arithmetic value <= sayable value.

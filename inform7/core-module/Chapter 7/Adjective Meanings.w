@@ -577,7 +577,7 @@ void Adjectives::Meanings::set_domain_from_instance(adjective_meaning *am,
 		am->domain_kind = K_object;
 	} else {
 		am->domain_infs = Instances::as_subject(I);
-		am->domain_kind = Kinds::weaken(Instances::to_kind(I));
+		am->domain_kind = Kinds::weaken(Instances::to_kind(I), K_object);
 	}
 	am->domain_text = EMPTY_WORDING;
 }

@@ -20,7 +20,7 @@ possibility by widening the kind, when this can be done.)
 property *Properties::Valued::obtain_within_kind(wording W, kind *K) {
 	property *prn = NULL;
 	if (K == NULL) K = K_object;
-	K = Kinds::weaken(K);
+	K = Kinds::weaken(K, K_object);
 	if (<property-name>(W)) {
 		prn = <<rp>>;
 		kind *existing_kind = prn->property_value_kind;
