@@ -924,7 +924,7 @@ properties) and for kinds (which do, but differently).
 	@<Extract the raw text of a specification@>;
 	if (Specifications::is_kind_like(owner)) {
 		kind *K = Specifications::to_kind(owner);
-		if (Kinds::Compare::lt(K, K_object) == FALSE) {
+		if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) {
 			TEMPORARY_TEXT(st)
 			WRITE_TO(st, "%+W", Wordings::one_word(Wordings::first_wn(W)));
 			Kinds::Behaviour::set_specification_text(K, st);

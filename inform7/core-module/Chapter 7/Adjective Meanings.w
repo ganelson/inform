@@ -709,7 +709,7 @@ can't be avoided.
 @<Set the domain INFS as needed@> =
 	instance *I = Rvalues::to_object_instance(supplied);
 	if (I) supplied = Rvalues::from_instance(I);
-	else if (Kinds::Compare::lt(K, K_object))
+	else if (Kinds::Behaviour::is_subkind_of_object(K))
 		supplied = Specifications::from_kind(K);
 	am->domain_infs = InferenceSubjects::from_specification(supplied);
 	am->domain_kind = K;

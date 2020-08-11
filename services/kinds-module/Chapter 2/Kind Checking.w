@@ -180,43 +180,53 @@ int Kinds::Compare::subkind(kind *K1, kind *K2) {
 	return FALSE;
 }
 
-@ The maximum of $K_1$ and $K_2$ is by definition the kind $M$ such that
+@ The join of $K_1\lor K_2$ is by definition the kind $M$ such that
 $K_1\leq M$ and $K_2\leq M$, and there is no $M'<M$ with the same property.
-This is similarly not well-defined in some cases, in which case we simply
-return "value" as a safe answer.
+Note however:
+(a) If one of $K_1$, $K_2$ uses floating-point and the other doesn't, then
+we promote the one which doesn't before taking the join. This is useful
+when inferring the kind of a constant list or column which mixes floating-point
+and integer literals; recall that |number| $\not\leq$ |real number|, so
+without this promotion there would be no way to join such kinds.
+(b) The set of kinds is not entirely a semilattice and therefore some joins
+can't be performed: in such cases we give up and return |value|, which at
+least is $\geq K_1, K_2$.
 
 =
-kind *Kinds::Compare::max(kind *K1, kind *K2) {
-	if ((Kinds::FloatingPoint::uses_floating_point(K1) == FALSE) &&
-		(Kinds::FloatingPoint::uses_floating_point(K2)) &&
-		(Kinds::Compare::eq(Kinds::FloatingPoint::real_equivalent(K1), K2)))
-		return K2;
-	if ((Kinds::FloatingPoint::uses_floating_point(K2) == FALSE) &&
-		(Kinds::FloatingPoint::uses_floating_point(K1)) &&
-		(Kinds::Compare::eq(Kinds::FloatingPoint::real_equivalent(K2), K1)))
-		return K1;
-	return Kinds::Compare::traverse_kind_poset(K1, K2, 1);
+kind *Kinds::Compare::join(kind *K1, kind *K2) {
+	return Kinds::Compare::j_or_m(K1, K2, 1);
 }
 
-kind *Kinds::Compare::traverse_kind_poset(kind *K1, kind *K2, int direction) {
+kind *Kinds::Compare::meet(kind *K1, kind *K2) {
+	return Kinds::Compare::j_or_m(K1, K2, -1);
+}
+
+kind *Kinds::Compare::j_or_m(kind *K1, kind *K2, int direction) {
 	if (K1 == NULL) return K2;
 	if (K2 == NULL) return K1;
 	kind_constructor *con = K1->construct;
 	int a1 = Kinds::Constructors::arity(con), a2 = Kinds::Constructors::arity(K2->construct);
 	if ((a1 > 0) || (a2 > 0)) {
 		if (K2->construct != con) return K_value;
-		int i;
 		kind *ka[MAX_KIND_CONSTRUCTION_ARITY];
-		for (i=0; i<a1; i++)
+		for (int i=0; i<a1; i++)
 			if (con->variance[i] == COVARIANT)
-				ka[i] = Kinds::Compare::traverse_kind_poset(K1->kc_args[i], K2->kc_args[i], direction);
+				ka[i] = Kinds::Compare::j_or_m(K1->kc_args[i], K2->kc_args[i], direction);
 			else
-				ka[i] = Kinds::Compare::traverse_kind_poset(K1->kc_args[i], K2->kc_args[i], -direction);
+				ka[i] = Kinds::Compare::j_or_m(K1->kc_args[i], K2->kc_args[i], -direction);
 		if (a1 == 1) return Kinds::unary_construction(con, ka[0]);
 		else return Kinds::binary_construction(con, ka[0], ka[1]);
 	} else {
 		if ((Kinds::Compare::eq(K1, K_nil))) return (direction > 0)?K2:K1;
 		if ((Kinds::Compare::eq(K2, K_nil))) return (direction > 0)?K1:K2;
+		if ((Kinds::FloatingPoint::uses_floating_point(K1) == FALSE) &&
+			(Kinds::FloatingPoint::uses_floating_point(K2)) &&
+			(Kinds::Compare::eq(Kinds::FloatingPoint::real_equivalent(K1), K2)))
+			return (direction > 0)?K2:K1;
+		if ((Kinds::FloatingPoint::uses_floating_point(K2) == FALSE) &&
+			(Kinds::FloatingPoint::uses_floating_point(K1)) &&
+			(Kinds::Compare::eq(Kinds::FloatingPoint::real_equivalent(K2), K1)))
+			return (direction > 0)?K1:K2;
 		if (Kinds::Compare::le(K1, K2)) return (direction > 0)?K2:K1;
 		if (Kinds::Compare::le(K2, K1)) return (direction > 0)?K1:K2;
 		if (direction > 0)
@@ -224,21 +234,7 @@ kind *Kinds::Compare::traverse_kind_poset(kind *K1, kind *K2, int direction) {
 				if (Kinds::Compare::le(K2, K))
 					return K;
 	}
-	return K_value;
-}
-
-@ A variation on this is the accumulated maximum, used for example when
-inferring the kinds of table columns by looking through entries one by one.
-This is needed because the empty list has kind "list of values", and yet
-should be considered for these purposes as a subkind of "list of texts".
-
-=
-kind *Kinds::Compare::accumulative_max(kind *K1, kind *K2) {
-	if ((Kinds::Behaviour::definite(K1) == TRUE) && (Kinds::Behaviour::definite(K2) == FALSE) &&
-		(Kinds::Compare::compatible(K2, K1) == ALWAYS_MATCH)) return K1;
-	else if ((Kinds::Behaviour::definite(K2) == TRUE) && (Kinds::Behaviour::definite(K1) == FALSE) &&
-		(Kinds::Compare::compatible(K1, K2) == ALWAYS_MATCH)) return K2;
-	return Kinds::Compare::max(K1, K2);
+	return (direction > 0)?K_value:K_nil;
 }
 
 @h Kind compatibility.
@@ -317,8 +313,7 @@ different kinds.
 
 @<Deal separately with the special role of value@> =
 	if (Kinds::Compare::eq(to, K_value)) return ALWAYS_MATCH;
-	if ((allow_casts) && (Kinds::Compare::eq(from, K_nil))) return ALWAYS_MATCH;
-//	if ((allow_casts) && (Kinds::Compare::eq(from, K_value))) return ALWAYS_MATCH;
+	if (Kinds::Compare::eq(from, K_nil)) return ALWAYS_MATCH;
 
 @ |NULL| as a kind means "unknown". It's compatible only with itself
 and, of course, "value".
@@ -344,11 +339,9 @@ and, of course, "value".
 	int i, o = ALWAYS_MATCH, this_o = NEVER_MATCH;
 	for (i=0; i<arity; i++) {
 		if (Kinds::Constructors::variance(from->construct, i) == COVARIANT)
-			/* if ((allow_casts) && (Kinds::Compare::eq(from->kc_args[i], K_value))) this_o = ALWAYS_MATCH;
-			else */ this_o = Kinds::Compare::test_kind_relation(from->kc_args[i], to->kc_args[i], allow_casts);
+			this_o = Kinds::Compare::test_kind_relation(from->kc_args[i], to->kc_args[i], allow_casts);
 		else {
-			/* if ((allow_casts) && (Kinds::Compare::eq(to->kc_args[i], K_value))) this_o = ALWAYS_MATCH;
-			else */ this_o = Kinds::Compare::test_kind_relation(to->kc_args[i], from->kc_args[i], allow_casts);
+			this_o = Kinds::Compare::test_kind_relation(to->kc_args[i], from->kc_args[i], allow_casts);
 		}
 		switch (this_o) {
 			case NEVER_MATCH: o = this_o; break;

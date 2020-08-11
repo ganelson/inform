@@ -116,14 +116,14 @@ would be
 <ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">HIERARCHY_GET_SUPER_KINDS_CALLBACK</span></span> is called to ask what the superkind
 of a kind is. See <a href="2-kc.html#SP10" class="internal">Kinds::Compare::super</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">HIERARCHY_IS_COMPATIBLE_KINDS_CALLBACK</span></span> is called to ask if one kind
-satisfies an is-a relationship with another. See <a href="2-kc.html#SP15" class="internal">Kinds::Compare::test_kind_relation</a>.
+satisfies an is-a relationship with another. See <a href="2-kc.html#SP14" class="internal">Kinds::Compare::test_kind_relation</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">HIERARCHY_MOVE_KINDS_CALLBACK</span></span> is called to ask us to put make one
-kind a subkind of another. See <a href="2-kc.html#SP17" class="internal">Kinds::Compare::make_subkind</a> and
+kind a subkind of another. See <a href="2-kc.html#SP16" class="internal">Kinds::Compare::make_subkind</a> and
 <a href="2-knd.html#SP17" class="internal">Kinds::new_base</a> &mdash; there are two ways this can happen.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">HIERARCHY_VETO_MOVE_KINDS_CALLBACK</span></span> is called to give the parent tool a
 chance to veto any proposed subkind. (Inform uses this, for example, to catch
 the case of somebody making "region" a subkind of some other kind of object.)
-See <a href="2-kc.html#SP17" class="internal">Kinds::Compare::make_subkind</a>.
+See <a href="2-kc.html#SP16" class="internal">Kinds::Compare::make_subkind</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">NEW_BASE_KINDS_CALLBACK</span></span> is called when a new base kind (properly
 speaking, a new arity-0 kind constructor) is made. See <a href="2-knd.html#SP17" class="internal">Kinds::new_base</a>
 and <a href="4-kc.html#SP13" class="internal">KindCommands::despatch</a> &mdash; there are two ways this can happen.

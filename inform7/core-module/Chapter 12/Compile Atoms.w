@@ -187,7 +187,7 @@ the I6 |ofclass| operator.
 @<Make an annotated schema for a KIND atom@> =
 	switch(task) {
 		case TEST_ATOM_TASK:
-			if (Kinds::Compare::lt(pl->assert_kind, K_object))
+			if (Kinds::Behaviour::is_subkind_of_object(pl->assert_kind))
 				Calculus::Schemas::modify(sch, "*1 ofclass %n",
 					Kinds::RunTime::I6_classname(pl->assert_kind));
 			else {

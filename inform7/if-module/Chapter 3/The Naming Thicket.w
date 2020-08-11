@@ -167,7 +167,7 @@ from sentences, and this can include I6 properties with no I7 analogue.
 @<Add naming properties implicit from context@> =
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			wording W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Task::project()));
 			wording PW = Kinds::Behaviour::get_name_in_play(K, TRUE, Projects::get_language_of_play(Task::project()));
 			inference_subject *subj = Kinds::Knowledge::as_subject(K);

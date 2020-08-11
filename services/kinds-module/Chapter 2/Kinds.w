@@ -349,7 +349,7 @@ kind *Kinds::weaken(kind *K, kind *W) {
 			return Kinds::binary_construction(K->construct, Kinds::weaken(X, W), Kinds::weaken(Y, W));
 		}
 	} else {
-		if ((K) && (Kinds::Compare::lt(K, W))) return W;
+		if ((K) && (Kinds::Compare::lt(K, W)) && (Kinds::Compare::eq(K, K_nil) == FALSE)) return W;
 	}
 	return K;
 }

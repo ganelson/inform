@@ -234,9 +234,14 @@ kind variables[2] it is true that:
 
 (a) $K \leq K$ -- reflexivity.
 (b) If $K\leq L$ and $L\leq M$ then $K\leq M$ -- transitivity.
-(c) $K \leq$ |value| -- there is a top element.
+(c) |K_nil| $\leq K \leq$ |value| -- there are top and bottom elements.
 (d) If $K \leq L$ then a value of kind $K$ can always be substituted for a
 value of kind $L$ without modification -- the Liskov substitution principle.[3]
+
+|K_nil| is a kind which exists only for kind-checking purposes: it represents
+"a member of the empty set", and therefore no value can ever have it. This
+differs from |K_void|, which means "the absence of a value". A rule producing
+no result, for example, has as production kind |K_void|.
 
 [1] It need not be antisymmetric and only has joins to a limited extent, so
 it is formally not a semilattice, nor even a partial ordering.

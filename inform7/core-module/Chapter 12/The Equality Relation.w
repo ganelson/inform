@@ -333,7 +333,7 @@ one that's more helpfully specific and return |TRUE|.
 
 @<Add kind-checking code for run-time checking@> =
 	if ((Kinds::Compare::compatible(st[1], st[0]) == SOMETIMES_MATCH) &&
-		(Kinds::Compare::lt(st[0], K_object))) {
+		(Kinds::Behaviour::is_subkind_of_object(st[0]))) {
 		TEMPORARY_TEXT(TEMP)
 		WRITE_TO(TEMP,
 			"; if (~~(*1 ofclass %n)) RunTimeProblem(RTP_WRONGASSIGNEDKIND, *1, \"*?\", \"",

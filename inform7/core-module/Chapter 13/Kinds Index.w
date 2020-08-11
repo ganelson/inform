@@ -33,7 +33,7 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 	for (priority = 1; priority <= LOWEST_INDEX_PRIORITY; priority++) {
 		kind *K;
 		LOOP_OVER_BASE_KINDS(K) {
-			if (Kinds::Compare::lt(K, K_object)) continue;
+			if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 			if (priority == Kinds::Behaviour::get_index_priority(K)) {
 				if ((priority == 8) || (Kinds::Behaviour::definite(K))) {
 					switch (pass) {

@@ -1672,7 +1672,7 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 
 	if (<k-kind>(LW)) {
 		kind *K = <<rp>>;
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			if (VH)
 				Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
 			else

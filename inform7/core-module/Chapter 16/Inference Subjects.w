@@ -358,7 +358,7 @@ kind *InferenceSubjects::as_nonobject_kind(inference_subject *infs) {
 	if ((infs) && (infs->kind_of_infs == KIND_SUB)) {
 		kind *K = Kinds::base_construction(
 			RETRIEVE_POINTER_kind_constructor(infs->represents));
-		if (Kinds::Compare::lt(K, K_object)) return NULL;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) return NULL;
 		return K;
 	}
 	return NULL;
@@ -402,7 +402,7 @@ int InferenceSubjects::is_a_kind_of_object(inference_subject *infs) {
 	if ((infs) && (infs->kind_of_infs == KIND_SUB)) {
 		kind *K = Kinds::base_construction(
 			RETRIEVE_POINTER_kind_constructor(infs->represents));
-		if (Kinds::Compare::lt(K, K_object)) return TRUE;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) return TRUE;
 	}
 	return FALSE;
 }

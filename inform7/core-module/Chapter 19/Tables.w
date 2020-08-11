@@ -85,7 +85,7 @@ void Tables::check_tables_for_kind_clashes(void) {
 	table *t;
 	LOOP_OVER(t, table) {
 		if ((Wordings::nonempty(t->table_name_text)) && (<k-kind-articled>(t->table_name_text)) &&
-			(Kinds::Compare::lt(<<rp>>, K_object))) {
+			(Kinds::Behaviour::is_subkind_of_object(<<rp>>))) {
 			Problems::quote_table(1, t);
 			Problems::quote_wording(2, t->table_name_text);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableCoincidesWithKind));

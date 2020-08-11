@@ -673,7 +673,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 			break;
 		case KIND_MAP_SCOPE:
 			scope_k = <<kind:kscope>>;
-			if (Kinds::Compare::lt(scope_k, K_object) == FALSE) scope_k = NULL;
+			if (Kinds::Behaviour::is_subkind_of_object(scope_k) == FALSE) scope_k = NULL;
 			if ((scope_k) &&
 				((Kinds::Behaviour::is_object_of_kind(scope_k, K_room)) ||
 					(Kinds::Behaviour::is_object_of_kind(scope_k, K_region)))) {

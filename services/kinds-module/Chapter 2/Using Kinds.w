@@ -40,6 +40,12 @@ int Kinds::Behaviour::is_object(kind *K) {
 	return FALSE;
 }
 
+int Kinds::Behaviour::is_subkind_of_object(kind *K) {
+	if ((Kinds::Compare::lt(K, K_object)) && (Kinds::Compare::eq(K, K_nil) == FALSE))
+		return TRUE;
+	return FALSE;
+}
+
 int Kinds::Behaviour::is_object_of_kind(kind *K, kind *L) {
 	if ((Kinds::Compare::le(K, K_object)) && (Kinds::Compare::le(K, L)) &&
 		(Kinds::Compare::eq(K, K_nil) == FALSE))

@@ -102,10 +102,15 @@ kind *Tables::Columns::to_kind(table_column *tc) {
 void Tables::Columns::set_kind(table_column *tc, table *t, kind *K) {
 	if (Kinds::get_construct(K) == CON_description)
 			@<Issue a problem message for a description heading@>;
-	tc->kind_stored_in_column = K;
+	if (Kinds::Compare::eq(tc->kind_stored_in_column, K)) {
+		LOGIF(TABLES, "Table column $C continues to have kind %u, according to $B\n",
+			tc, K, t);
+	} else {
+		LOGIF(TABLES, "Table column $C set to kind %u, according to $B\n",
+			tc, K, t);
+		tc->kind_stored_in_column = K;
+	}
 	tc->table_from_which_kind_inferred = t;
-	LOGIF(TABLES, "Table column $C contains kind %u, according to $B\n",
-		tc, tc->kind_stored_in_column, t);
 	if ((K_understanding) && (Kinds::Compare::eq(K, K_understanding)))
 		Tables::Relations::supply_kind_for_listed_in_tc(tc->listed_in_predicate, K_snippet);
 	else Tables::Relations::supply_kind_for_listed_in_tc(tc->listed_in_predicate, K);
@@ -399,7 +404,7 @@ void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,
 			allow_refinement = FALSE; /* ...and don't allow any change to the kind */
 		}
 		if (Kinds::Compare::eq(K, CK) == FALSE) {
-			kind *max_K = Kinds::Compare::accumulative_max(K, CK);
+			kind *max_K = Kinds::Compare::join(K, CK);
 			if (Kinds::Behaviour::definite(max_K) == FALSE) {
 				Problems::quote_kind(4, K);
 				Problems::quote_kind(5, CK);

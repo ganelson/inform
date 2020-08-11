@@ -636,7 +636,7 @@ the proposition is going to fail type-checking anyway.)
 				parse_node *spec = pl->terms[0].constant;
 				if (ParseTreeUsage::is_rvalue(spec)) {
 					kind *K = Rvalues::to_kind(spec);
-					if ((K) && (Kinds::Compare::lt(early_kind, K_object) == FALSE) &&
+					if ((K) && (Kinds::Behaviour::is_subkind_of_object(early_kind) == FALSE) &&
 						(Kinds::Compare::le(early_kind, K))) {
 						prop = Calculus::Propositions::delete_atom(prop, pl_prev);
 						PROPOSITION_EDITED_REPEATING_CURRENT(pl, prop);
@@ -937,7 +937,7 @@ pcalc_prop *Calculus::Simplifications::not_related_to_something(pcalc_prop *prop
 			KIND_ATOM, &kind_atom,
 			NEGATION_CLOSE_ATOM, NULL)) {
 			kind *K = kind_atom->assert_kind;
-			if (Kinds::Compare::lt(K, K_object)) {
+			if (Kinds::Behaviour::is_subkind_of_object(K)) {
 				binary_predicate *bp = NULL;
 				pcalc_term KIND_term = kind_atom->terms[0];
 				if (KIND_term.function) bp = KIND_term.function->bp;

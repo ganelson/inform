@@ -21,7 +21,7 @@ the kind.
 @<Assign each kind of object a corresponding documentation symbol@> =
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			wording W = Kinds::Behaviour::get_name(K, FALSE);
 			if (Wordings::nonempty(W)) {
 				TEMPORARY_TEXT(temp)
@@ -232,7 +232,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 @<Elaborate the name of the object being indexed@> =
 	if (I) {
 		kind *k = Instances::to_kind(I);
-		if (Kinds::Compare::lt(k, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(k)) {
 			wording W = Kinds::Behaviour::get_name_in_play(k, FALSE, Projects::get_language_of_play(Task::project()));
 			if (Wordings::nonempty(W)) {
 				WRITE(", a kind of %+W", W);

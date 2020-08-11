@@ -86,12 +86,12 @@ a problem in practice; the number seldom exceeds a few hundred.
 	instance *I;
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::lt(K, K_object))
+		if (Kinds::Behaviour::is_subkind_of_object(K))
 			LOOP_OVER_OBJECT_INSTANCES(I)
 				INSTANCE_COUNT(I, K) = -1;
 
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			int ix_count = 0;
 			LOOP_OVER_INSTANCES(I, K)
 				INSTANCE_COUNT(I, K) = ix_count++;
@@ -193,7 +193,7 @@ inter_name *PL::Counting::instance_count_iname(kind *K) {
 int PL::Counting::counting_compile_model_tables(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			inter_name *iname = PL::Counting::first_instance(K);
 			instance *next = PL::Counting::next_instance_of(NULL, K);
 			if (next) {
@@ -213,7 +213,7 @@ int PL::Counting::kind_of_object_count(kind *K) {
 	if (K == NULL) return 0;
 	kind *IK;
 	LOOP_OVER_BASE_KINDS(IK)
-		if (Kinds::Compare::lt(IK, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(IK)) {
 			c++;
 			if (Kinds::Compare::eq(IK, K)) return c;
 		}
@@ -262,7 +262,7 @@ for the relation-route-finding code at run time.
 @<Create the two instance properties for each kind of object@> =
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			inference_subject *subj = Kinds::Knowledge::as_subject(K);
 			inter_name *count_iname = PL::Counting::instance_count_iname(K);
 
@@ -283,7 +283,7 @@ for the relation-route-finding code at run time.
 		for (infs = Kinds::Knowledge::as_subject(Instances::to_kind(I));
 			infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 			kind *K = InferenceSubjects::as_kind(infs);
-			if (Kinds::Compare::lt(K, K_object)) {
+			if (Kinds::Behaviour::is_subkind_of_object(K)) {
 				inference_subject *subj = Kinds::Knowledge::as_subject(K);
 				PF_S(counting, subj)->has_instances = TRUE;
 				@<Fill in this IK-Count property@>;
@@ -332,7 +332,7 @@ records the next instance in compilation order:
 
 @ =
 inter_name *PL::Counting::instance_count_property_symbol(kind *K) {
-	if (Kinds::Compare::lt(K, K_object)) {
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		inference_subject *subj = Kinds::Knowledge::as_subject(K);
 		property *P = PF_S(counting, subj)->instance_count_prop;
 		if (P) return Properties::iname(P);
@@ -350,7 +350,7 @@ int PL::Counting::counting_estimate_property_usage(kind *k, int *words_used) {
 	for (infs = InferenceSubjects::narrowest_broader_subject(Kinds::Knowledge::as_subject(k));
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 		kind *k2 = InferenceSubjects::as_kind(infs);
-		if (Kinds::Compare::lt(k2, K_object))
+		if (Kinds::Behaviour::is_subkind_of_object(k2))
 			*words_used += 4;
 	}
 	return FALSE;

@@ -391,21 +391,21 @@ void InternalTests::log_poset(int n) {
 	kind *A, *B;
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::eq(Kinds::Compare::max(A, B), Kinds::Compare::max(B, A)) == FALSE)
+			if (Kinds::Compare::eq(Kinds::Compare::join(A, B), Kinds::Compare::join(B, A)) == FALSE)
 				LOG("Fail symmetry: max(%u, %u) = %u, but max(%u, %u) = %u\n",
-					A, B, Kinds::Compare::max(A, B), B, A, Kinds::Compare::max(B, A));
+					A, B, Kinds::Compare::join(A, B), B, A, Kinds::Compare::join(B, A));
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::le(A, Kinds::Compare::max(A, B)) == FALSE)
-				LOG("Fail maximality(A): max(%u, %u) = %u\n", A, B, Kinds::Compare::max(A, B));
+			if (Kinds::Compare::le(A, Kinds::Compare::join(A, B)) == FALSE)
+				LOG("Fail maximality(A): max(%u, %u) = %u\n", A, B, Kinds::Compare::join(A, B));
 	LOOP_OVER_BASE_KINDS(A)
 		LOOP_OVER_BASE_KINDS(B)
-			if (Kinds::Compare::le(B, Kinds::Compare::max(A, B)) == FALSE)
-				LOG("Fail maximality(B): max(%u, %u) = %u\n", A, B, Kinds::Compare::max(A, B));
+			if (Kinds::Compare::le(B, Kinds::Compare::join(A, B)) == FALSE)
+				LOG("Fail maximality(B): max(%u, %u) = %u\n", A, B, Kinds::Compare::join(A, B));
 	LOOP_OVER_BASE_KINDS(A)
-		if (Kinds::Compare::eq(Kinds::Compare::max(A, A), A) == FALSE)
+		if (Kinds::Compare::eq(Kinds::Compare::join(A, A), A) == FALSE)
 				LOG("Fail: max(%u, %u) = %u\n",
-					A, A, Kinds::Compare::max(A, A));
+					A, A, Kinds::Compare::join(A, A));
 
 @
 
@@ -432,7 +432,7 @@ void InternalTests::log_poset(int n) {
 	for (i=0; i<SIZE_OF_GRAB_BAG; i++) for (j=i+1; j<SIZE_OF_GRAB_BAG; j++) {
 		if (Kinds::Compare::le(tests[i], tests[j])) LOG("%u <= %u\n", tests[i], tests[j]);
 		if (Kinds::Compare::le(tests[j], tests[i])) LOG("%u <= %u\n", tests[j], tests[i]);
-		kind *M = Kinds::Compare::max(tests[i], tests[j]);
+		kind *M = Kinds::Compare::join(tests[i], tests[j]);
 		if (Kinds::Compare::eq(M, K_value) == FALSE) LOG("max(%u, %u) = %u\n", tests[i], tests[j], M);
 	}
 	#endif

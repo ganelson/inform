@@ -150,10 +150,10 @@ void Relations::new(binary_predicate *bp,
 		@<Add in the reducing functions@>;
 	}
 
-	if ((Kinds::Compare::lt(RR->terms[0].domain, K_object)) || (Kinds::Compare::lt(RR->terms[1].domain, K_object))) {
+	if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain)) || (Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain))) {
 		relation_guard *rg = CREATE(relation_guard);
-		rg->check_L = NULL; if (Kinds::Compare::lt(RR->terms[0].domain, K_object)) rg->check_L = RR->terms[0].domain;
-		rg->check_R = NULL; if (Kinds::Compare::lt(RR->terms[1].domain, K_object)) rg->check_R = RR->terms[1].domain;
+		rg->check_L = NULL; if (Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain)) rg->check_L = RR->terms[0].domain;
+		rg->check_R = NULL; if (Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain)) rg->check_R = RR->terms[1].domain;
 		rg->inner_test = bp->test_function;
 		rg->inner_make_true = bp->make_true_function;
 		rg->inner_make_false = bp->make_false_function;
@@ -244,9 +244,9 @@ this means using up heap memory allocated dynamically at run-time.
 		(Kinds::Behaviour::is_object(RR->terms[1].domain))) rvno = FALSE;
 
 	if (Wordings::empty(RR->CONW)) {
-		if ((Kinds::Compare::lt(RR->terms[0].domain, K_object) == FALSE) &&
+		if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain) == FALSE) &&
 			(Relations::check_finite_range(RR->terms[0].domain) == FALSE)) dynamic = TRUE;
-		if ((Kinds::Compare::lt(RR->terms[1].domain, K_object) == FALSE) &&
+		if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain) == FALSE) &&
 			(RR->symmetric == FALSE) &&
 			(Relations::check_finite_range(RR->terms[1].domain) == FALSE)) dynamic = TRUE;
 	}
@@ -1526,10 +1526,10 @@ this is done by the routine |Relations::relation_range| (below).
 	kind *left_kind = BinaryPredicates::term_kind(bp, 0);
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
 
-	if ((Kinds::Compare::lt(left_kind, K_object)) && (left_count > 0)) {
+	if ((Kinds::Behaviour::is_subkind_of_object(left_kind)) && (left_count > 0)) {
 		Emit::array_iname_entry(PL::Counting::instance_count_property_symbol(left_kind));
 	} else Emit::array_numeric_entry(0);
-	if ((Kinds::Compare::lt(right_kind, K_object)) && (right_count > 0)) {
+	if ((Kinds::Behaviour::is_subkind_of_object(right_kind)) && (right_count > 0)) {
 		Emit::array_iname_entry(PL::Counting::instance_count_property_symbol(right_kind));
 	} else Emit::array_numeric_entry(0);
 
@@ -1559,7 +1559,7 @@ above: it forces the template layer to generate the cache when first used.
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
 	if ((bp->fast_route_finding) &&
 		(Kinds::Compare::eq(left_kind, right_kind)) &&
-		(Kinds::Compare::lt(left_kind, K_object)) &&
+		(Kinds::Behaviour::is_subkind_of_object(left_kind)) &&
 		(left_count == right_count)) {
 		if (left_count < 256) {
 			v2v_iname = iname;

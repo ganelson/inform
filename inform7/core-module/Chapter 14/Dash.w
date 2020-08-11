@@ -2147,7 +2147,7 @@ of a relation.
 	LOGIF(MATCHING, "(4A.c.1) Local variable seems to have kind: %u\n", seems_to_be);
 
 	K = seems_to_be;
-	if (Kinds::Compare::lt(K, K_object))
+	if (Kinds::Behaviour::is_subkind_of_object(K))
 		while (Kinds::Compare::eq(Kinds::Compare::super(K), K_object) == FALSE)
 			K = Kinds::Compare::super(K);
 	LOGIF(MATCHING, "(4A.c.1) Local variable inferred to have kind: %u\n", K);
@@ -2446,7 +2446,7 @@ int Dash::typecheck_single_node(parse_node *p, kind *kind_expected, int conditio
 	int outcome = ALWAYS_MATCH; /* drops to |SOMETIMES_MATCH| if a need for run-time checking is realised */
 
 	if ((Rvalues::is_nothing_object_constant(p)) &&
-		(kind_expected) && (Kinds::Compare::lt(kind_expected, K_object)))
+		(kind_expected) && (Kinds::Behaviour::is_subkind_of_object(kind_expected)))
 		@<Disallow "nothing" as a match for a description requiring a kind of object@>;
 
 	@<Step (5.a) Deal with the UNKNOWN_NT@>;

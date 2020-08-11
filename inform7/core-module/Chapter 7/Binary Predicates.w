@@ -416,10 +416,10 @@ matches the specific necessary kind of object if there is one.
 void BinaryPredicates::add_term_as_call_parameter(ph_stack_frame *phsf, bp_term_details bptd) {
 	kind *K = BinaryPredicates::kind_of_term(&bptd);
 	kind *PK = K;
-	if ((PK == NULL) || (Kinds::Compare::lt(PK, K_object))) PK = K_object;
+	if ((PK == NULL) || (Kinds::Behaviour::is_subkind_of_object(PK))) PK = K_object;
 	inter_symbol *lv_s = LocalVariables::add_call_parameter_as_symbol(phsf,
 		bptd.called_name, PK);
-	if (Kinds::Compare::lt(K, K_object)) {
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), NOT_BIP);

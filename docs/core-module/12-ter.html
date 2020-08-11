@@ -463,7 +463,7 @@ one that's more helpfully specific and return <span class="extract"><span class=
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Kinds::Compare::compatible</span><span class="plain-syntax">(</span><span class="identifier-syntax">st</span><span class="plain-syntax">[1], </span><span class="identifier-syntax">st</span><span class="plain-syntax">[0]) == </span><span class="identifier-syntax">SOMETIMES_MATCH</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::Compare::lt</span><span class="plain-syntax">(</span><span class="identifier-syntax">st</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::Behaviour::is_subkind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">st</span><span class="plain-syntax">[0]))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"; if (~~(*1 ofclass %n)) RunTimeProblem(RTP_WRONGASSIGNEDKIND, *1, \"*?\", \""</span><span class="plain-syntax">,</span>

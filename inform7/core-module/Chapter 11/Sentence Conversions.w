@@ -177,13 +177,13 @@ we apply it independently to the SP and OP:
 
 @<Find meanings of the SP and OP as propositions and terms@> =
 	kind *subject_K = BinaryPredicates::term_kind(verb_phrase_relation, 0);
-	if (Kinds::Compare::lt(subject_K, K_object)) subject_K = NULL;
+	if (Kinds::Behaviour::is_subkind_of_object(subject_K)) subject_K = NULL;
  	subject_phrase_prop =
  		Calculus::Propositions::FromSentences::NP_subtree_to_proposition(&subject_phrase_term, subject_phrase_subtree,
 			subject_K);
 
 	kind *object_K = BinaryPredicates::term_kind(verb_phrase_relation, 1);
-	if (Kinds::Compare::lt(object_K, K_object)) object_K = NULL;
+	if (Kinds::Behaviour::is_subkind_of_object(object_K)) object_K = NULL;
 	object_phrase_prop =
 		Calculus::Propositions::FromSentences::NP_subtree_to_proposition(&object_phrase_term, object_phrase_subtree,
 			object_K);

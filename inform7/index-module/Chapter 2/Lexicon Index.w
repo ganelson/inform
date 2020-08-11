@@ -150,7 +150,7 @@ source text.
 @<Stock the lexicon with nouns from kinds of object@> =
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			wording W = Kinds::Behaviour::get_name(K, FALSE);
 			if (Wordings::nonempty(W)) {
 				index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
@@ -354,7 +354,7 @@ source text: so any single link would be potentially misleading.
 
 @<Definition of noun entry@> =
 	kind *K = RETRIEVE_POINTER_kind(lex->entry_refers_to);
-	if (Kinds::Compare::lt(K, K_object)) {
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		K = Kinds::Compare::super(K);
 		wording W = Kinds::Behaviour::get_name(K, FALSE);
 		if (Wordings::nonempty(W)) {

@@ -862,7 +862,7 @@ It's convenient to define a single action clause first:
 	if (Kinds::Compare::eq(K, K_thing)) {
 		if (A == UNRESTRICTED_ACCESS) A = REQUIRES_ACCESS;
 		==> { A, K_object };
-	} else if (Kinds::Compare::lt(K, K_object)) {
+	} else if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		@<Issue PM_ActionMisapplied problem@>;
 	} else if (A != UNRESTRICTED_ACCESS) {
 		@<Issue PM_ActionMisapplied problem@>;

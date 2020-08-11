@@ -691,7 +691,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 		K = Kinds::unary_construction_material(K);
 		if ((K) && (Kinds::Behaviour::is_an_enumeration(K)) &&
 			(Specifications::to_proposition(spec) == NULL) &&
-			(Kinds::Compare::lt(Specifications::to_kind(spec), K_object) == FALSE) &&
+			(Kinds::Behaviour::is_subkind_of_object(Specifications::to_kind(spec)) == FALSE) &&
 			(Descriptions::to_instance(spec) == NULL) &&
 			(Descriptions::number_of_adjectives_applied_to(spec) == 0)) {
 			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
@@ -1011,7 +1011,7 @@ return |TRUE| or |FALSE| to indicate success.
 int Calculus::Deferrals::write_loop_schema(i6_schema *sch, kind *K) {
 	if (K == NULL) return FALSE;
 
-	if (Kinds::Compare::lt(K, K_object)) {
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		if (PL::Counting::optimise_loop(sch, K) == FALSE)
 			Calculus::Schemas::modify(sch, "objectloop (*1 ofclass %n)",
 				Kinds::RunTime::I6_classname(K));

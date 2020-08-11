@@ -841,7 +841,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 
 			if (i6s) {
 				kind *K = BinaryPredicates::term_kind(bp, 1);
-				if (Kinds::Compare::lt(K, K_object)) {
+				if (Kinds::Behaviour::is_subkind_of_object(K)) {
 					LOGIF(GRAMMAR_CONSTRUCTION, "Term 1 of BP is %u\n", K);
 					Produce::inv_primitive(Emit::tree(), OBJECTLOOPX_BIP);
 					Produce::down(Emit::tree());

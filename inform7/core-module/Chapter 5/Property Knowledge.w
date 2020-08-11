@@ -64,7 +64,7 @@ For both these reasons, then, we perform a simple type-check here.
 	Problems::quote_wording(3, Node::get_text(val));
 	Problems::quote_kind(4, kind_as_declared);
 	Problems::quote_kind(5, constant_kind);
-	if ((Kinds::Compare::lt(kind_as_declared, K_object)) &&
+	if ((Kinds::Behaviour::is_subkind_of_object(kind_as_declared)) &&
 		(Rvalues::is_nothing_object_constant(val))) {
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_QuantityKindNothing));
 		Problems::issue_problem_segment(

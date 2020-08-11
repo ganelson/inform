@@ -171,7 +171,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		internal_error("thwarted on gdv inter");
 	}
 
-	if (Kinds::Compare::lt(K, K_object))
+	if (Kinds::Behaviour::is_subkind_of_object(K))
 		@<The kind must have no instances, or it would have worked@>;
 
 	return FALSE;
@@ -256,7 +256,7 @@ void Kinds::RunTime::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 		return;
 	}
 
-	if (Kinds::Compare::lt(K, K_object)) {
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		#ifdef IF_MODULE
 		if (Task::wraps_existing_storyfile()) { *v1 = LITERAL_IVAL; *v2 = 0; return; } /* see above */
 		#endif
@@ -1060,7 +1060,7 @@ inter_name *Kinds::RunTime::constructed_kind_name(kind *K) {
 	wording W = Feeds::feed_text(KT);
 	DISCARD_TEXT(KT)
 	int v = -2;
-	if (Kinds::Compare::lt(K, K_object)) v = Kinds::RunTime::I6_classnumber(K);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) v = Kinds::RunTime::I6_classnumber(K);
 	return Hierarchy::make_iname_with_memo_and_value(KIND_CLASS_HL, R2, W, v);
 }
 
@@ -1134,7 +1134,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 void Kinds::RunTime::compile_data_type_support_routines(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Compare::lt(K, K_object)) continue;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::stored_as(K) == NULL)
 			if (Kinds::Behaviour::is_an_enumeration(K)) {
 				inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
@@ -1145,7 +1145,7 @@ void Kinds::RunTime::compile_data_type_support_routines(void) {
 	}
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::is_built_in(K)) continue;
-		if (Kinds::Compare::lt(K, K_object)) continue;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::is_an_enumeration(K)) continue;
 		if (Kinds::Behaviour::stored_as(K) == NULL) {
 			inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K);
@@ -1496,7 +1496,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 		Produce::down(Emit::tree());
 
 	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Compare::lt(K, K_object)) continue;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
 				Kinds::RunTime::emit_weak_id_as_val(K);
@@ -1554,7 +1554,7 @@ which have to be given some type-safe value to start out at.
 		Produce::down(Emit::tree());
 
 	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Compare::lt(K, K_object)) continue;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::definite(K)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
@@ -1625,7 +1625,7 @@ unless the two values are genuinely equal.
 		Produce::down(Emit::tree());
 
 	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Compare::lt(K, K_object)) continue;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if ((Kinds::Behaviour::definite(K)) &&
 			(Kinds::Behaviour::uses_signed_comparisons(K) == FALSE)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
@@ -1681,7 +1681,7 @@ unless the two values are genuinely equal.
 		Produce::down(Emit::tree());
 
 	LOOP_OVER_BASE_KINDS(K) {
-		if (Kinds::Compare::lt(K, K_object)) continue;
+		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 		if (Kinds::Behaviour::is_an_enumeration(K)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
@@ -1737,7 +1737,7 @@ storing pointers to blocks on the heap.
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 		LOOP_OVER_BASE_KINDS(K) {
-			if (Kinds::Compare::lt(K, K_object)) continue;
+			if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 			if (Kinds::Behaviour::uses_pointer_values(K)) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
@@ -1827,7 +1827,7 @@ void Kinds::RunTime::I7_Kind_Name_routine(void) {
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);

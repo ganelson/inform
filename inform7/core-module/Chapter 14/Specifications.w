@@ -82,7 +82,7 @@ inference_subject *Specifications::to_subject(parse_node *spec) {
 			infs = InferenceSubjects::from_specification(val);
 		} else {
 			kind *K = Calculus::Variables::kind_of_variable_0(prop);
-			if (Kinds::Compare::lt(K, K_object) == FALSE) K = K_object;
+			if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) K = K_object;
 			infs = Kinds::Knowledge::as_subject(K);
 		}
 	} else infs = InferenceSubjects::from_specification(spec);

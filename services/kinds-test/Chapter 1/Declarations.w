@@ -107,7 +107,8 @@ typedef struct kind_relationship {
 	square root of <kind-eval> |               ==> @<Perform square root@>
 	real square root of <kind-eval> |          ==> @<Perform real square root@>
 	cube root of <kind-eval> |                 ==> @<Perform cube root@>
-	max of <kind-eval> and <kind-eval> |       ==> @<Perform max@>
+	join of <kind-eval> and <kind-eval> |      ==> @<Perform join@>
+	meet of <kind-eval> and <kind-eval> |      ==> @<Perform meet@>
 	first term of <kind-eval> |                ==> @<Extract first term@>
 	second term of <kind-eval> |               ==> @<Extract second term@>
 	dereference <kind-eval> |                  ==> @<Dereference kind@>
@@ -231,10 +232,15 @@ typedef struct kind_relationship {
 	kind *K = RP[1];
 	==> { - , Kinds::Dimensions::arithmetic_on_kinds(K, NULL, op) }
 
-@<Perform max@> =
+@<Perform join@> =
 	kind *K1 = RP[1];
 	kind *K2 = RP[2];
-	==> { - , Kinds::Compare::max(K1, K2) }
+	==> { - , Kinds::Compare::join(K1, K2) }
+
+@<Perform meet@> =
+	kind *K1 = RP[1];
+	kind *K2 = RP[2];
+	==> { - , Kinds::Compare::meet(K1, K2) }
 
 @<Extract first term@> =
 	kind *K = RP[1];

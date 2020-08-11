@@ -371,10 +371,16 @@ kind variables<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> it is
 
 <ul class="items"><li>(a) \(K \leq K\) &mdash; reflexivity.
 </li><li>(b) If \(K\leq L\) and \(L\leq M\) then \(K\leq M\) &mdash; transitivity.
-</li><li>(c) \(K \leq\) <span class="extract"><span class="extract-syntax">value</span></span> &mdash; there is a top element.
+</li><li>(c) <span class="extract"><span class="extract-syntax">K_nil</span></span> \(\leq K \leq\) <span class="extract"><span class="extract-syntax">value</span></span> &mdash; there are top and bottom elements.
 </li><li>(d) If \(K \leq L\) then a value of kind \(K\) can always be substituted for a
 value of kind \(L\) without modification &mdash; the Liskov substitution principle.<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
 </li></ul>
+<p class="commentary"><span class="extract"><span class="extract-syntax">K_nil</span></span> is a kind which exists only for kind-checking purposes: it represents
+"a member of the empty set", and therefore no value can ever have it. This
+differs from <span class="extract"><span class="extract-syntax">K_void</span></span>, which means "the absence of a value". A rule producing
+no result, for example, has as production kind <span class="extract"><span class="extract-syntax">K_void</span></span>.
+</p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> It need not be antisymmetric and only has joins to a limited extent, so
 it is formally not a semilattice, nor even a partial ordering.
 <a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Introducing kind variables complicates the picture, because whether or not
@@ -418,7 +424,7 @@ code; so it would violate Liskov substitution to have <span class="extract"><spa
 </li><li>(b) The "list of K" constructor is covariant, in that \(K\leq L\) means
 <span class="extract"><span class="extract-syntax">list of K</span></span> \(\leq\) <span class="extract"><span class="extract-syntax">list of L</span></span>, whereas the "phrase K -&gt; L" constructor
 is contravariant in the first term, covariant in the second. See
-<a href="2-kc.html#SP15" class="internal">Kinds::Compare::test_kind_relation</a> for more.
+<a href="2-kc.html#SP14" class="internal">Kinds::Compare::test_kind_relation</a> for more.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>The indefinite <span class="extract"><span class="extract-syntax">arithmetic kind</span></span> used by Inform is a good example of what
 in other languages would be called a protocol. Here we see conformance:

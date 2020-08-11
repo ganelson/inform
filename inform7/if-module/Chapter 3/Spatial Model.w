@@ -623,7 +623,7 @@ or "region".
 	for (infs = Kinds::Knowledge::as_subject(Instances::to_kind(I));
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 		kind *K = InferenceSubjects::as_kind(infs);
-		if (Kinds::Compare::lt(K, K_object)) {
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			f = K;
 			if ((Kinds::Compare::eq(f, K_container)) ||
 				(Kinds::Compare::eq(f, K_supporter)) ||

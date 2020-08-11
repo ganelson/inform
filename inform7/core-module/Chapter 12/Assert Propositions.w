@@ -528,8 +528,8 @@ these kind atoms.
 	#endif
 		kind *K0 = BinaryPredicates::term_kind(bp, 0);
 		kind *K1 = BinaryPredicates::term_kind(bp, 1);
-		if (Kinds::Compare::lt(K0, K_object)) Calculus::Propositions::Assert::cautiously_set_kind(subj0, K0);
-		if (Kinds::Compare::lt(K1, K_object)) Calculus::Propositions::Assert::cautiously_set_kind(subj1, K1);
+		if (Kinds::Behaviour::is_subkind_of_object(K0)) Calculus::Propositions::Assert::cautiously_set_kind(subj0, K0);
+		if (Kinds::Behaviour::is_subkind_of_object(K1)) Calculus::Propositions::Assert::cautiously_set_kind(subj1, K1);
 	#ifdef IF_MODULE
 	}
 	#endif

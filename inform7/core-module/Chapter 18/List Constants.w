@@ -176,7 +176,7 @@ incomparable, and "thing" being the max of "person" and "door").
 
 @<Revise K in the light of E@> =
 	kind *previous_K = K;
-	K = Kinds::Compare::max(E, K);
+	K = Kinds::Compare::join(E, K);
 	if (Kinds::Compare::eq(K, K_value)) {
 		if (issue_problems) @<Issue a list entry kind mismatch problem@>;
 		ll->kinds_known_to_be_inconsistent = TRUE;

@@ -1,4 +1,4 @@
-  
+   Home
   Welcome
   An Interactive Fiction
   Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
@@ -26,7 +26,7 @@
   table name <= value, word value, sayable value
   equation name <= value, word value
   rulebook outcome <= value, word value, sayable value
-  nothing <= value, word value
+  nothing <= value, pointer value, word value, arithmetic value, real arithmetic value, enumerated value, sayable value, combined value of any arity, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, void, phrase value -> value, value, value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, external file, described action, action, action name, time, scene, figure name, sound name, topic, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, man, woman, animal, device, vehicle, player's holdall, command parser error
   void <= value, word value
   phrase value -> value <= value, word value, sayable value
   value, value <= value, word value
@@ -76,7 +76,6 @@
   number --> real number
   text --> topic
   snippet --> text
-  nothing --> pointer value, arithmetic value, real arithmetic value, enumerated value, sayable value, combined value of any arity, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, void, phrase value -> value, value, value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, external file, described action, action, action name, time, scene, figure name, sound name, topic, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, man, woman, animal, device, vehicle, player's holdall, command parser error
   values based rulebook producing values --> values based rule producing values
   
   3. 3
@@ -153,108 +152,7 @@
   5. 5
   Looking for maximum violations.
   Fail maximality(A): max(number, real number) = real number
-  Fail maximality(A): max(nothing, pointer value) = pointer value
-  Fail maximality(A): max(nothing, arithmetic value) = arithmetic value
-  Fail maximality(A): max(nothing, real arithmetic value) = real arithmetic value
-  Fail maximality(A): max(nothing, enumerated value) = enumerated value
-  Fail maximality(A): max(nothing, sayable value) = sayable value
-  Fail maximality(A): max(nothing, combined value of any arity) = combined value of any arity
-  Fail maximality(A): max(nothing, object) = object
-  Fail maximality(A): max(nothing, number) = number
-  Fail maximality(A): max(nothing, real number) = real number
-  Fail maximality(A): max(nothing, truth state) = truth state
-  Fail maximality(A): max(nothing, text) = text
-  Fail maximality(A): max(nothing, snippet) = snippet
-  Fail maximality(A): max(nothing, unicode character) = unicode character
-  Fail maximality(A): max(nothing, use option) = use option
-  Fail maximality(A): max(nothing, response) = response
-  Fail maximality(A): max(nothing, verb) = verb
-  Fail maximality(A): max(nothing, table name) = table name
-  Fail maximality(A): max(nothing, equation name) = equation name
-  Fail maximality(A): max(nothing, rulebook outcome) = rulebook outcome
-  Fail maximality(A): max(nothing, void) = void
-  Fail maximality(A): max(nothing, external file) = external file
-  Fail maximality(A): max(nothing, described action) = described action
-  Fail maximality(A): max(nothing, action) = action
-  Fail maximality(A): max(nothing, action name) = action name
-  Fail maximality(A): max(nothing, time) = time
-  Fail maximality(A): max(nothing, scene) = scene
-  Fail maximality(A): max(nothing, figure name) = figure name
-  Fail maximality(A): max(nothing, sound name) = sound name
-  Fail maximality(A): max(nothing, topic) = topic
-  Fail maximality(A): max(nothing, natural language) = natural language
-  Fail maximality(A): max(nothing, grammatical tense) = grammatical tense
-  Fail maximality(A): max(nothing, narrative viewpoint) = narrative viewpoint
-  Fail maximality(A): max(nothing, grammatical case) = grammatical case
-  Fail maximality(A): max(nothing, grammatical gender) = grammatical gender
-  Fail maximality(A): max(nothing, room) = room
-  Fail maximality(A): max(nothing, thing) = thing
-  Fail maximality(A): max(nothing, direction) = direction
-  Fail maximality(A): max(nothing, door) = door
-  Fail maximality(A): max(nothing, container) = container
-  Fail maximality(A): max(nothing, supporter) = supporter
-  Fail maximality(A): max(nothing, backdrop) = backdrop
-  Fail maximality(A): max(nothing, person) = person
-  Fail maximality(A): max(nothing, region) = region
-  Fail maximality(A): max(nothing, man) = man
-  Fail maximality(A): max(nothing, woman) = woman
-  Fail maximality(A): max(nothing, animal) = animal
-  Fail maximality(A): max(nothing, device) = device
-  Fail maximality(A): max(nothing, vehicle) = vehicle
-  Fail maximality(A): max(nothing, player's holdall) = player's holdall
-  Fail maximality(A): max(nothing, command parser error) = command parser error
-  Fail maximality(B): max(pointer value, nothing) = pointer value
-  Fail maximality(B): max(arithmetic value, nothing) = arithmetic value
-  Fail maximality(B): max(real arithmetic value, nothing) = real arithmetic value
-  Fail maximality(B): max(enumerated value, nothing) = enumerated value
-  Fail maximality(B): max(sayable value, nothing) = sayable value
-  Fail maximality(B): max(combined value of any arity, nothing) = combined value of any arity
-  Fail maximality(B): max(object, nothing) = object
-  Fail maximality(B): max(number, nothing) = number
   Fail maximality(B): max(real number, number) = real number
-  Fail maximality(B): max(real number, nothing) = real number
-  Fail maximality(B): max(truth state, nothing) = truth state
-  Fail maximality(B): max(text, nothing) = text
-  Fail maximality(B): max(snippet, nothing) = snippet
-  Fail maximality(B): max(unicode character, nothing) = unicode character
-  Fail maximality(B): max(use option, nothing) = use option
-  Fail maximality(B): max(response, nothing) = response
-  Fail maximality(B): max(verb, nothing) = verb
-  Fail maximality(B): max(table name, nothing) = table name
-  Fail maximality(B): max(equation name, nothing) = equation name
-  Fail maximality(B): max(rulebook outcome, nothing) = rulebook outcome
-  Fail maximality(B): max(void, nothing) = void
-  Fail maximality(B): max(external file, nothing) = external file
-  Fail maximality(B): max(described action, nothing) = described action
-  Fail maximality(B): max(action, nothing) = action
-  Fail maximality(B): max(action name, nothing) = action name
-  Fail maximality(B): max(time, nothing) = time
-  Fail maximality(B): max(scene, nothing) = scene
-  Fail maximality(B): max(figure name, nothing) = figure name
-  Fail maximality(B): max(sound name, nothing) = sound name
-  Fail maximality(B): max(topic, nothing) = topic
-  Fail maximality(B): max(natural language, nothing) = natural language
-   Home
-  Fail maximality(B): max(grammatical tense, nothing) = grammatical tense
-  Fail maximality(B): max(narrative viewpoint, nothing) = narrative viewpoint
-  Fail maximality(B): max(grammatical case, nothing) = grammatical case
-  Fail maximality(B): max(grammatical gender, nothing) = grammatical gender
-  Fail maximality(B): max(room, nothing) = room
-  Fail maximality(B): max(thing, nothing) = thing
-  Fail maximality(B): max(direction, nothing) = direction
-  Fail maximality(B): max(door, nothing) = door
-  Fail maximality(B): max(container, nothing) = container
-  Fail maximality(B): max(supporter, nothing) = supporter
-  Fail maximality(B): max(backdrop, nothing) = backdrop
-  Fail maximality(B): max(person, nothing) = person
-  Fail maximality(B): max(region, nothing) = region
-  Fail maximality(B): max(man, nothing) = man
-  Fail maximality(B): max(woman, nothing) = woman
-  Fail maximality(B): max(animal, nothing) = animal
-  Fail maximality(B): max(device, nothing) = device
-  Fail maximality(B): max(vehicle, nothing) = vehicle
-  Fail maximality(B): max(player's holdall, nothing) = player's holdall
-  Fail maximality(B): max(command parser error, nothing) = command parser error
   
   6. 6
   max(container, door) = thing

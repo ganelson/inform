@@ -165,7 +165,7 @@ int Plugins::Call::set_kind_notify(instance *I, kind *k) {
 }
 
 int Plugins::Call::set_subkind_notify(kind *sub, kind *super) {
-	if (Kinds::Compare::lt(sub, K_object) == FALSE) return TRUE;
+	if (Kinds::Behaviour::is_subkind_of_object(sub) == FALSE) return TRUE;
 	PLUGINS_CALL(PLUGIN_SET_SUBKIND_NOTIFY, sub, super);
 }
 
