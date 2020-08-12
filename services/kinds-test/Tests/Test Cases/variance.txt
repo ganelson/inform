@@ -1,0 +1,14 @@
+new kind larger of object.
+new kind smaller of larger.
+
+smaller <= larger.
+larger <= smaller.
+
+list of smaller <= list of larger.
+list of larger <= list of smaller.
+relation of larger to texts <= relation of smaller to texts.
+relation of smaller to texts <= relation of larger to texts.
+phrase larger -> text <= phrase smaller -> text.
+phrase smaller -> text <= phrase larger -> text.
+phrase text -> larger <= phrase text -> smaller.
+phrase text -> smaller <= phrase text -> larger.

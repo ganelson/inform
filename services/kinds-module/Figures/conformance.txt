@@ -12,9 +12,3 @@
 'device <= object?': true
 'list of devices <= thing?': false
 'list of devices <= list of things?': true
-'relation of things to texts <= relation of devices to texts?': false
-'relation of devices to texts <= relation of things to texts?': true
-'phrase thing -> text <= phrase device -> text?': true
-'phrase device -> text <= phrase thing -> text?': false
-'phrase text -> thing <= phrase text -> device?': false
-'phrase text -> device <= phrase text -> thing?': true

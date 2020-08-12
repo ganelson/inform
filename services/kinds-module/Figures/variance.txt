@@ -1,0 +1,12 @@
+'new kind larger of object': ok
+'new kind smaller of larger': ok
+'smaller <= larger?': true
+'larger <= smaller?': false
+'list of smaller <= list of larger?': true
+'list of larger <= list of smaller?': false
+'relation of larger to texts <= relation of smaller to texts?': false
+'relation of smaller to texts <= relation of larger to texts?': true
+'phrase larger -> text <= phrase smaller -> text?': true
+'phrase smaller -> text <= phrase larger -> text?': false
+'phrase text -> larger <= phrase text -> smaller?': false
+'phrase text -> smaller <= phrase text -> larger?': true
