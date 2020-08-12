@@ -2,99 +2,88 @@
 
 Placing a partial order on kinds according to whether one conforms to another.
 
-@ We say that a kind $K_L$ is a subkind of $K_R$ if its values can
-be used without modification at run-time in code which expects a value of
-$K_R$, and write
-$$ K_L \leq K_R. $$
-There are many pairs of kinds where neither is compatible with the other:
-for instance, it is true neither that rulebook $\leq$ text nor that text $\leq$ rulebook. So
-we're using the notation $\leq$ here by analogy with partially-ordered sets
-rather than with numbers. The universe of kinds does indeed form a poset
-under this relation:
+@h Conformance.
+If we write $K\leq L$ to mean that $K$ conforms to $L$, then $\leq$ provides
+an ordering on kinds. For any kinds $K, L, M$ not making use of kind variables[1]
+it is true that:
 
-(a) it is reflexive ($K\leq K$);
-(b) it is antisymmetric ($K\leq L$ and $L\leq K$ imply $K=L$);
-(c) it is transitive ($K\leq L$ and $L\leq M$ imply $K\leq M$).
+(*) $K \leq K$ -- reflexivity.
+(*) If $K\leq L$ and $L\leq M$ then $K\leq M$ -- transitivity.
+(*) |K_nil| $\leq K \leq$ |value| -- there are top and bottom elements.[2]
+(*) If $K \leq L$ then a value of kind $K$ can always be substituted for a
+value of kind $L$ without modification -- the Liskov substitution principle.[3]
+(*) There is a join $K\lor L$ and a meet $K\land L$ such that
+$K\land L\leq K, L\leq K\lor L$, where $K\lor L$ is minimal and $K\land L$
+maximal with that property.
 
-@ To say that $K_L$ is compatible with $K_R$ is a weaker statement.
-This is the test Inform uses to see whether it will allow $K_L$ values to
-be used where $K_R$ values are expected. Clearly if $K_L\leq K_R$ then
-they must be compatible, but there are other possibilities. For example,
-snippets can be used as texts if suitably modified ("cast")
-at run-time, but snippet is not $\leq$ text. Compatibility lacks the
-elegant formal properties of $\leq$: for example, "value" is compatible
-with "text" which is in turn compatible with "value".
+[1] Introducing kind variables complicates the picture, because whether or not
+|list of K| conforms to |list of arithmetic values| depends on the current
+value of |K| and therefore on the current context.
 
-This test is performed by |Kinds::compatible|. As we will see, the two
-relations are similarly defined, and they share most of the code.
+[2] |K_nil| is a kind which exists only for kind-checking purposes, meaning
+"a member of the empty set". Clearly no value can ever have this. This
+differs from |K_void|, which means "the absence of a value". Neither can ever
+be the kind of a variable, of course.
 
-@ A function $f$ on kinds is covariant if $K\leq L$ implies $f(K)\leq f(L)$,
-and contravariant if $K\leq L$ implies $f(L)\leq f(K)$. Of course there's
-no reason a function needs to be either, but the ones provided by our
-kind constructors (such "list of", which maps K to list of K) always are.
+[3] Also known as strong behavioural subtyping. This only applies to definite
+kinds, because no value ever has an indefinite kind.
 
+@ In general there is no guarantee of antisymmetry, i.e., that $K\leq L$
+and $L\leq K$ must mean $K = L$, nor that $K\lor L$ or $K\land L$ are unique.
+We could imagine creating indefinite kinds |rhyming with lumber value| and
+|calculator value| such that |number| and |real number| would conform to both.
+If so, then either one of |rhyming with lumber value| and |calculator value|
+could equally well serve as $K\lor L$. The set of kinds is therefore not
+formally a lattice.
+
+As it happens, however, Inform's choice of indefinite kinds is made in
+such a way that this does not happen. The upshot is that although the set of
+kinds is not necessarily a lattice, it often will be in practice, and we use
+the language of lattices -- hence, words like "join" and "meet" -- as a guide.
+
+@ Conformance is tested with the function //Kinds::conforms_to//, and the
+following shows it in action.
+ 
+= (text from Figures/conformance.txt as REPL)
+
+@ The indefinite |arithmetic kind| used by Inform is a good example of what
+in other languages would be called a protocol. Here we see conformance:
+ 
+= (text from Figures/av-conformance.txt as REPL)
+
+@ Here we see covariance versus contravariance:
+ 
+= (text from Figures/variance.txt as REPL)
+
+(*) A constructor $\phi$ is "covariant" -- meaning, goes the same way -- if
+$K\leq L$ means $\phi(K)\leq\phi(L)$. 
+(*) It is "contravariant" -- goes the opposite way -- if $K\leq L$ means
+$\phi(L)\leq\phi(K)$. 
+
+Note that "list of ..." is covariant; "phrase ... -> ..." is contravariant in
+the first term, but covariant in the second. To see why, consider a function
+$f: K\to L$, and then considering expanding or contracting the sets $K$ and $L$.
+It's no problem if $L$ grows larger -- $f$ can still be used -- but if $L$
+shrinks then $f$ might map outside it, which is unsafe. But the reverse is true
+for $K$. If $K$ shrinks we can still use $f$, but if it grows then we may not
+be able to. If $K_1\leq K\leq K_2$ and $L_1\leq L\leq L_2$, then a function
+$f:K\to L$ is also a function $K_1\to L_2$, but not $K_2\to L_1$.
+
+See //Latticework::order_relation// for more.
+ 
 @d COVARIANT 1
 @d CONTRAVARIANT -1
 
-@ Kind checking can happen for many reasons, but the most difficult case
-occurs when matching phrase prototypes (a task carried out by the main
-specification matcher in the next chapter). This is difficult because
-it involves kind variables:
+@h Lattice operations.
+Every $K$ other than |value|, |K_nil| and |K_void| has a minimal element $K^+$
+such that $K\leq K^+$ but $K\neq K^+$: we call this the "superkind" of $K$.
+Assuming kinds form a lattice, this will be unique. The following function
+returns the superkind, or |NULL| for special cases which do not have one.
 
->> To add (new entry - K) to (L - list of values of kind K) ...
-
-This matches "add 23 to L" if "L" is a list of numbers, but not if it
-is a list of times.
-
-Since kind variables can be changed only when matching phrase prototypes,
-and this is not a recursive process, we can store the current definitions
-of A to Z in a single array.
-
-@d MAX_KIND_VARIABLES 27 /* we number them from 1 (A) to 26 (Z) */
-
-= (early code)
-kind *values_of_kind_variables[MAX_KIND_VARIABLES];
-
-@ In theory the kind-checker only needs to read the values of A to Z, not
-to write them. If Q is currently equal to "number", then it should check
-kinds against Q exactly as if it were checking against "number". It can
-indeed do this -- that's the |MATCH_KIND_VARIABLES_AS_VALUES| mode. It can
-also ignore the values of kind variables and treat them as names, so that
-Q matches only against Q, regardless of its current value; that's the
-|MATCH_KIND_VARIABLES_AS_SYMBOLS| mode. Or it can match anything
-against Q, which is |MATCH_KIND_VARIABLES_AS_UNIVERSAL| mode.
-
-More interestingly, the kind-checker can also set the values of A to Z.
-This is convenient since checking their correctness is more or less the same
-thing as inferring what they seem to be in a given situation. So this is
-|MATCH_KIND_VARIABLES_INFERRING_VALUES| mode.
-
-@d MATCH_KIND_VARIABLES_AS_SYMBOLS 0
-@d MATCH_KIND_VARIABLES_INFERRING_VALUES 1
-@d MATCH_KIND_VARIABLES_AS_VALUES 2
-@d MATCH_KIND_VARIABLES_AS_UNIVERSAL 3
-
-=
-int kind_checker_mode = MATCH_KIND_VARIABLES_AS_SYMBOLS;
-
-@ When the kind-checker does choose a value for a variable, it not only
-sets the relevant entry in the above array but also creates a note that
-this has been done. (If a phrase is correctly matched by the specification
-matcher, a linked list of these notes is attached to the results: thus
-a match of "add 23 to L" in the example above would produce a successful
-result plus a note that K has to be "list of numbers".)
-
-=
-typedef struct kind_variable_declaration {
-	int kv_number; /* must be from 1 to 26 */
-	struct kind *kv_value; /* must be a definite non-|NULL| kind */
-	struct kind_variable_declaration *next;
-	CLASS_DEFINITION
-} kind_variable_declaration;
-
-@ It turns out to be useful to be able to "increment" a kind $K$, by trying to
-find the $S$ such that $K < S$ but there is no $S'$ with $K<S'<S$. This is only
-well-defined for kinds of object, and otherwise returns |NULL|.
+It is in this function that the basic conformance facts are expressed. We
+hard-code that for the built-in indefinite kinds, and give the client tool
+a chance to provide other conformances. For Inform, for example, the callback
+function is what tells us that the superkind of |man| is |person|.
 
 =
 kind *Latticework::super(kind *K) {
@@ -126,17 +115,17 @@ kind *Latticework::super(kind *K) {
 	return K_value;
 }
 
-@ The join of $K_1\lor K_2$ is by definition the kind $M$ such that
-$K_1\leq M$ and $K_2\leq M$, and there is no $M'<M$ with the same property.
-Note however:
-(a) If one of $K_1$, $K_2$ uses floating-point and the other doesn't, then
-we promote the one which doesn't before taking the join. This is useful
-when inferring the kind of a constant list or column which mixes floating-point
-and integer literals; recall that |number| $\not\leq$ |real number|, so
-without this promotion there would be no way to join such kinds.
-(b) The set of kinds is not entirely a semilattice and therefore some joins
-can't be performed: in such cases we give up and return |value|, which at
-least is $\geq K_1, K_2$.
+@ Joins are defined above. So are meets, though in practice they are never useful
+to us except as a way of calculating joins: the two are dual to each other as
+they pass through contravariant constructors.
+
+The main use of this for Inform is to handle literals such as:
+
+>> { 1, 2.1415, "frog" }
+
+The kind of this is by definition the join of the kinds of the values in the
+list, which as it happens is |K_sayable_value| -- an indefinite kind, so that
+such a list can't be constructed as data.
 
 =
 kind *Latticework::join(kind *K1, kind *K2) {
@@ -151,7 +140,8 @@ kind *Latticework::j_or_m(kind *K1, kind *K2, int direction) {
 	if (K1 == NULL) return K2;
 	if (K2 == NULL) return K1;
 	kind_constructor *con = K1->construct;
-	int a1 = Kinds::Constructors::arity(con), a2 = Kinds::Constructors::arity(K2->construct);
+	int a1 = Kinds::Constructors::arity(con);
+	int a2 = Kinds::Constructors::arity(K2->construct);
 	if ((a1 > 0) || (a2 > 0)) {
 		if (K2->construct != con) return K_value;
 		kind *ka[MAX_KIND_CONSTRUCTION_ARITY];
@@ -163,29 +153,125 @@ kind *Latticework::j_or_m(kind *K1, kind *K2, int direction) {
 		if (a1 == 1) return Kinds::unary_construction(con, ka[0]);
 		else return Kinds::binary_construction(con, ka[0], ka[1]);
 	} else {
-		if ((Kinds::eq(K1, K_nil))) return (direction > 0)?K2:K1;
-		if ((Kinds::eq(K2, K_nil))) return (direction > 0)?K1:K2;
-		if ((Kinds::FloatingPoint::uses_floating_point(K1) == FALSE) &&
-			(Kinds::FloatingPoint::uses_floating_point(K2)) &&
-			(Kinds::eq(Kinds::FloatingPoint::real_equivalent(K1), K2)))
-			return (direction > 0)?K2:K1;
-		if ((Kinds::FloatingPoint::uses_floating_point(K2) == FALSE) &&
-			(Kinds::FloatingPoint::uses_floating_point(K1)) &&
-			(Kinds::eq(Kinds::FloatingPoint::real_equivalent(K2), K1)))
-			return (direction > 0)?K1:K2;
+		@<Deal with nil@>;
+		@<Deal with floating-point promotions@>;
 		if (Kinds::conforms_to(K1, K2)) return (direction > 0)?K2:K1;
 		if (Kinds::conforms_to(K2, K1)) return (direction > 0)?K1:K2;
-		if (direction > 0)
+		if (direction > 0) {
 			for (kind *K = K1; K; K = Latticework::super(K))
 				if (Kinds::conforms_to(K2, K))
 					return K;
+			return K_value;
+		} else {
+			return K_nil;
+		}
 	}
-	return (direction > 0)?K_value:K_nil;
 }
 
+@ This ensures that $K\land$ |K_nil| $ = $ |K_nil|, and that
+$K\lor$ |K_nil| $ = K$.
+
+@<Deal with nil@> =
+	if ((Kinds::eq(K1, K_nil))) return (direction > 0)?K2:K1;
+	if ((Kinds::eq(K2, K_nil))) return (direction > 0)?K1:K2;
+
+@ If one of $K_1$, $K_2$ uses floating-point and the other doesn't, then
+we promote the one which doesn't before taking the join. This is useful
+when inferring the kind of a constant list or column which mixes floating-point
+and integer literals; recall that |number| $\not\leq$ |real number|, so
+without this promotion there would be no way to join such kinds.
+
+@<Deal with floating-point promotions@> =
+	if ((Kinds::FloatingPoint::uses_floating_point(K1) == FALSE) &&
+		(Kinds::FloatingPoint::uses_floating_point(K2)) &&
+		(Kinds::eq(Kinds::FloatingPoint::real_equivalent(K1), K2)))
+		return (direction > 0)?K2:K1;
+	if ((Kinds::FloatingPoint::uses_floating_point(K2) == FALSE) &&
+		(Kinds::FloatingPoint::uses_floating_point(K1)) &&
+		(Kinds::eq(Kinds::FloatingPoint::real_equivalent(K2), K1)))
+		return (direction > 0)?K1:K2;
+
+@h Compatibility.
+A related but different question is "compatibility". This asks whether a
+value of kind $K$ can be used where $L$ is expected, but:
+
+(i) It is now okay if explicit code to perform a conversion would be needed; and
+(ii) There are now three possible answers -- always, never and sometimes, where
+"sometimes" means that code can be compiled which would test compatibility at
+run time rather than compile time.
+
+Conformance implies compatibility but not vice versa. For example:
+
+= (text from Figures/compatibility.txt as REPL)
+
+Note that |number| is compatible with |real number|. Run-time code will be
+needed to convert the value, but the answer is "always". We also see that
+|device| is always compatible with |thing| -- every device is a thing --
+but also that |thing| is sometimes compatible with |device|. If we pass a
+thing to a function expecting to see a device, run-time code can check whether
+the value passed is indeed a device, and reject the call with a run-time error
+if not.
+
+@ Kind checking can happen for many reasons, but the most difficult case
+occurs when matching phrase prototypes. This is difficult because it involves
+kind variables:
+
+>> To add (new entry - K) to (L - list of values of kind K) ...
+
+This matches "add 23 to L" if "L" is a list of numbers, but not if it
+is a list of times.
+
+Since kind variables can be changed only when matching phrase prototypes,
+and this is not a recursive process, we can store the current definitions
+of A to Z in a single array.
+
+@d MAX_KIND_VARIABLES 27 /* we number them from 1 (A) to 26 (Z) */
+
+= (early code)
+kind *values_of_kind_variables[MAX_KIND_VARIABLES];
+
+@ In theory the kind-checker only needs to read the values of |A| to |Z|, not
+to write them. If |Q| is currently equal to |number|, then it should check
+kinds against |Q| exactly as if it were checking against |number|. It can
+indeed do this -- that's the |MATCH_KIND_VARIABLES_AS_VALUES| mode. It can
+also ignore the values of kind variables and treat them as names, so that
+|Q| matches only against |Q|, regardless of its current value; that's the
+|MATCH_KIND_VARIABLES_AS_SYMBOLS| mode. Or it can match anything
+against |Q|, which is |MATCH_KIND_VARIABLES_AS_UNIVERSAL| mode.
+
+More interestingly, the kind-checker can also set the values of |A| to |Z|.
+This is convenient since checking their correctness is more or less the same
+thing as inferring what they seem to be in a given situation. So this is
+|MATCH_KIND_VARIABLES_INFERRING_VALUES| mode.
+
+@d MATCH_KIND_VARIABLES_AS_SYMBOLS 0
+@d MATCH_KIND_VARIABLES_INFERRING_VALUES 1
+@d MATCH_KIND_VARIABLES_AS_VALUES 2
+@d MATCH_KIND_VARIABLES_AS_UNIVERSAL 3
+
+=
+int kind_checker_mode = MATCH_KIND_VARIABLES_AS_SYMBOLS;
+
+@ When the kind-checker does choose a value for a variable, it not only
+sets the relevant entry in the above array but also creates a note that
+this has been done. (If a phrase is correctly matched by the specification
+matcher, a linked list of these notes is attached to the results: thus
+a match of "add 23 to L" in the example above would produce a successful
+result plus a note that |K| has to be |list of numbers|.)
+
+=
+typedef struct kind_variable_declaration {
+	int kv_number; /* must be from 1 to 26 */
+	struct kind *kv_value; /* must be a definite non-|NULL| kind */
+	struct kind_variable_declaration *next;
+	CLASS_DEFINITION
+} kind_variable_declaration;
+
 @h Common code.
-So the following routine tests $\leq$ if |comp| is |FALSE|, returning
-|ALWAYS_MATCH| if and only if $\leq$ holds; and otherwise it tests compatibility.
+So the following routine tests conformance if |comp| is |FALSE|, returning
+|ALWAYS_MATCH| if and only if |from| $\leq$ |to| holds; and otherwise it tests
+compatibility, returning |ALWAYS_MATCH|, |SOMETIMES_MATCH| or |NEVER_MATCH|
+as appropriate.
 
 =
 int Latticework::order_relation(kind *from, kind *to, int allow_casts) {
@@ -198,7 +284,7 @@ int Latticework::order_relation(kind *from, kind *to, int allow_casts) {
 		@<Deal separately with matches against kind variables@>;
 	}
 	@<Deal separately with the sayability of lists@>;
-	@<Deal separately with the special role of value@>;
+	@<Deal separately with the top and bottom of the lattice@>;
 	@<Deal separately with the special role of the unknown kind@>;
 	@<The general case of compatibility@>;
 }
@@ -214,18 +300,7 @@ int Latticework::order_relation(kind *from, kind *to, int allow_casts) {
 		return Latticework::order_relation(CK, K_sayable_value, allow_casts);
 	}
 
-@ "Value" is special because, for every kind $K$, we have $K\leq V$ -- it
-represents a supremum in our partially ordered set of kinds.
-
-But it is also used in Inform to mark places where type safety has
-deliberately been put aside. For compatibility purposes, then, giving
-something the kind "value" is a way of saying that we don't care what its
-kind is, and we always allow the usage. So "value" is compatible with
-everything -- which is one reason compatibility isn't a partial ordering:
-"value" is compatible with "number" and vice versa, yet they are
-different kinds.
-
-@<Deal separately with the special role of value@> =
+@<Deal separately with the top and bottom of the lattice@> =
 	if (Kinds::eq(to, K_value)) return ALWAYS_MATCH;
 	if (Kinds::eq(from, K_nil)) return ALWAYS_MATCH;
 
@@ -242,7 +317,7 @@ and, of course, "value".
 	int arity = (f_a < t_a)?f_a:t_a;
 	int o = ALWAYS_MATCH;
 	if (from->construct != to->construct)
-		o = Latticework::construct_viable(from, to, allow_casts);
+		o = Latticework::construct_compatible(from, to, allow_casts);
 	int i, this_o = NEVER_MATCH, fallen = FALSE;
 	for (i=0; i<arity; i++) {
 		if (Kinds::Constructors::variance(from->construct, i) == COVARIANT)
@@ -259,7 +334,7 @@ and, of course, "value".
 	return o;
 
 @ =
-int Latticework::construct_viable(kind *from, kind *to, int allow_casts) {
+int Latticework::construct_compatible(kind *from, kind *to, int allow_casts) {
 	kind *K = from;
 	while (K) {
 		if (Kinds::eq(K, to)) return ALWAYS_MATCH;
@@ -290,10 +365,10 @@ that domain. For example, in
 
 >> To add (new entry - K) to (L - list of values of kind K) ...
 
-the first appearance of "K" will be an ordinary use of a kind variable,
-whereas the second has the declaration "value" -- meaning that it can
-become any kind matching "value". (It could alternatively have had a
-more restrictive declaration like "arithmetic value".)
+the first appearance of |K| will be an ordinary use of a kind variable,
+whereas the second has the declaration |value| -- meaning that it can
+become any kind matching |value|. (It could alternatively have had a
+more restrictive declaration like |arithmetic value|.)
 
 @<Deal separately with matches against kind variables@> =
 	switch(kind_checker_mode) {
@@ -320,15 +395,15 @@ it works through the prototype:
 >> To add (new entry - K) to (L - list of values of kind K) ...
 
 in two passes. On the first pass, it tries to match the tokens "23" and
-"scores list" against "K" and "list of values of kind K" respectively
+"scores list" against |K| and |list of values of kind K| respectively
 in |MATCH_KIND_VARIABLES_INFERRING_VALUES| mode; on the second pass, it
 does the same in |MATCH_KIND_VARIABLES_AS_VALUES| mode. In this example,
 on the first pass we infer (from the kind of "scores list", which is
-indeed a list of numbers) that K must be "number"; on the second pass
-we verify that "23" is a K.
+indeed a list of numbers) that |K| must be |number|; on the second pass
+we verify that "23" is a |K|.
 
-The following shows what happens matching "values of kind K", which is
-a declaration usage of the variable K.
+The following shows what happens matching |values of kind K|, which is
+a declaration usage of the variable |K|.
 
 @<Act on a declaration usage, where inference is allowed@> =
 	switch(kind_checker_mode) {
@@ -347,7 +422,7 @@ a declaration usage of the variable K.
 		case MATCH_KIND_VARIABLES_AS_VALUES: return ALWAYS_MATCH;
 	}
 
-@ Whereas this is what happens when matching just "K". On the inference pass,
+@ Whereas this is what happens when matching just |K|. On the inference pass,
 we always make a match, which is legitimate because we know we are going to
 make a value-checking pass later.
 
@@ -357,19 +432,20 @@ make a value-checking pass later.
 		case MATCH_KIND_VARIABLES_AS_VALUES:
 			LOGIF(KIND_CHECKING, "Checking %u against kind variable %d (=%u)\n",
 				other_k, vn, values_of_kind_variables[vn]);
-			if (Latticework::order_relation(other_k, values_of_kind_variables[vn], allow_casts) == NEVER_MATCH)
+			if (Latticework::order_relation(other_k,
+				values_of_kind_variables[vn], allow_casts) == NEVER_MATCH)
 				return NEVER_MATCH;
 			else
 				return ALWAYS_MATCH;
 	}
 
-@
+@ It's easy to confused when writing a type checker, especially with variables
+getting in the way, so these logging functions can be helpful:
 
 =
 void Latticework::show_variables(void) {
 	LOG("Variables: ");
-	int i;
-	for (i=1; i<=26; i++) {
+	for (int i=1; i<=26; i++) {
 		kind *K = values_of_kind_variables[i];
 		if (K == NULL) continue;
 		LOG("%c=%u ", 'A'+i-1, K);

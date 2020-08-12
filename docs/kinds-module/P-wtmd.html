@@ -77,7 +77,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">kinds</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the kinds module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Kinds, definiteness, and safety</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Kinds and knowledge</a></li><li><a href="P-wtmd.html#SP5">&#167;5. A strongly typed language mixing static and dynamic typing</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Casting and coercion</a></li><li><a href="P-wtmd.html#SP8">&#167;8. What this module offers</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Kind variables</a></li><li><a href="P-wtmd.html#SP14">&#167;14. Conformance</a></li><li><a href="P-wtmd.html#SP17">&#167;17. Compatibility</a></li><li><a href="P-wtmd.html#SP19">&#167;19. Making new kinds</a></li><li><a href="P-wtmd.html#SP20">&#167;20. Where kind constructors come from</a></li><li><a href="P-wtmd.html#SP21">&#167;21. Making new kind constructors</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Kinds, definiteness, and safety</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Kinds and knowledge</a></li><li><a href="P-wtmd.html#SP6">&#167;6. A strongly typed language mixing static and dynamic typing</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Conformance and compatibility</a></li><li><a href="P-wtmd.html#SP9">&#167;9. Kind variables</a></li><li><a href="P-wtmd.html#SP10">&#167;10. The kinds-test REPL</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Overview of facilities</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The kinds module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -155,7 +155,30 @@ examine their complete contents.
 never needs to know whether a given value is stored as a word or as a pointer
 to data on the heap. (Indeed, this isn't even shown on the Kinds index page.)
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Kinds and knowledge. </b>Inform uses the kinds system when building its world model of knowledge, and
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>One caveat: Inform provides low-level features allowing Inter code to be
+injected directly into the compiler's output, bypassing all kind checking.
+For instance:
+</p>
+
+<blockquote>
+    <p>To decide which text is (N - a number) as text: (- {N} -).</p>
+</blockquote>
+
+<p class="commentary">is analogous to a C function like so:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">number_as_text</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<p class="commentary">This is a legal C function but the deliberate disregard of type safety &mdash; in
+the use of the <span class="extract"><span class="extract-syntax">(char *)</span></span> cast notation &mdash; is a kind of waiver, where the
+author chooses to accept the risk. In a similar way, there are no victims of
+Inform's <span class="extract"><span class="extract-syntax">(-</span></span> and <span class="extract"><span class="extract-syntax">-)</span></span> notation, only volunteers.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Kinds and knowledge. </b>Inform uses the kinds system when building its world model of knowledge, and
 not only to monitor specific computational operations. For example, if the
 source text says:
 </p>
@@ -170,7 +193,7 @@ knowledge and property ownership passes through a single-inheritance hierarchy;
 that is, each kind inherits directly from only one other kind.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. A strongly typed language mixing static and dynamic typing. </b>Programming languages with types are often classified by two criteria.
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. A strongly typed language mixing static and dynamic typing. </b>Programming languages with types are often classified by two criteria.
 One is how rigorously they maintain safety, with safer languages being
 strongly typed, and more libertarian ones weakly typed. The other is when
 types are checked, with statically typed languages being checked at compile
@@ -187,45 +210,67 @@ run-time, which it compiles explicit code to carry out. Because of this,
 Problem messages about safety violations can be issued either at compile
 time or at run-time.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Casting and coercion. </b>Using data of one kind where another is expected is called "casting", and is
-not always unsafe. Inform has no explicit syntax for casting, so all casts are
-implicit &mdash; that is, the user just goes ahead and tries it.
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Conformance and compatibility. </b>One kind \(K\) "conforms to" another kind \(L\) if values of \(K\) can always be used
+where values of \(L\) are expected. For example, in a typical work of IF produced
+by Inform, the kind <span class="extract"><span class="extract-syntax">vehicle</span></span> conforms to <span class="extract"><span class="extract-syntax">thing</span></span>. This idea can also apply
+to kinds of kinds: <span class="extract"><span class="extract-syntax">number</span></span> conforms to <span class="extract"><span class="extract-syntax">arithmetic value</span></span> which conforms to
+<span class="extract"><span class="extract-syntax">sayable value</span></span>, for example. See <a href="2-tlok.html" class="internal">The Lattice of Kinds</a> for how conformance
+produces a hierarchical order among possible kinds.
 </p>
 
-<p class="commentary">Casts can be either "converting" or "non-converting". In a non-converting cast,
-the data can be left exactly as it is. For instance, a <span class="extract"><span class="extract-syntax">vehicle</span></span> is stored at
-run-time as an object number, and so is a <span class="extract"><span class="extract-syntax">thing</span></span>, so any <span class="extract"><span class="extract-syntax">vehicle</span></span> value is
-already a <span class="extract"><span class="extract-syntax">thing</span></span> value. But to use a "snippet" as a "text" requires substantial
-code to extract the compressed, read-only string from the text and store it
-instead as a list of characters on the heap &mdash; this is a converting cast.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
+<p class="commentary">Conformance is an "is-a" relationship: thus a <span class="extract"><span class="extract-syntax">vehicle</span></span> can safely be stored in
+a variable of kind <span class="extract"><span class="extract-syntax">thing</span></span> because a vehicle is a thing. But a <span class="extract"><span class="extract-syntax">number</span></span> cannot
+be stored in a <span class="extract"><span class="extract-syntax">real number</span></span> variable directly &mdash; integers and real numbers
+have completely different data representations at run-time, so the compiler
+must generate conversion code (a "cast") to adapt the <span class="extract"><span class="extract-syntax">number</span></span> value before
+it is stored. Sometimes this is possible, sometimes not. A kind \(K\) is
+"compatible" with \(L\) if it is. Clearly conformance implies compatibility,
+but not vice versa.
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Some authors use the term "is-a" for what we call a non-converting cast.
-Thus a <span class="extract"><span class="extract-syntax">vehicle</span></span> "is-a" <span class="extract"><span class="extract-syntax">thing</span></span>, but a <span class="extract"><span class="extract-syntax">snippet</span></span> is not a <span class="extract"><span class="extract-syntax">text</span></span>.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>However, it's worth noting that while Inform source text is strongly
-typed, Inter is mostly typeless language, so that safety can be circumvented
-by defining a phrase inline using an insertion of Inter code. For instance:
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The kind <span class="extract"><span class="extract-syntax">object</span></span> is of great significance to Inform, partly for historical
+reasons, partly because run-time code represents object values in a unique way.
+The lattice of subkinds of <span class="extract"><span class="extract-syntax">object</span></span> is very well-behaved, in that any two
+subkinds will always be compatible. All of this means that <span class="extract"><span class="extract-syntax">object</span></span> plays a
+unique role in Inform's kind hierarchy.
 </p>
 
-<blockquote>
-    <p>To decide which text is (N - a number) as text: (- {N} -).</p>
-</blockquote>
-
-<p class="commentary">is analogous to a C function like so:
+<p class="commentary">But not to us. In the <a href="index.html" class="internal">kinds</a> module, <span class="extract"><span class="extract-syntax">object</span></span> is a kind like any other. It
+need not even exist.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">number_as_text</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<p class="commentary">This is a legal C program but completely unsafe to run, and even worse can be
-done if C functions are used to wrap, say, x86 assembly language. Defining
-phrases with Inter inclusions is the equivalent in Inform.
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Kind variables. </b>The 26 letters A to Z, written in upper case, can serve as kind variables &mdash;
+placeholders for kinds.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> In practice A is best avoided because it looks too
+much like an indefinite article, but it's very rare to need more than two.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
+Phrase definitions in the standard Inform extensions use only K and L.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. What this module offers. </b>The <a href="index.html" class="internal">kinds</a> module provides the Inform type system as a stand-alone utility,
+<p class="commentary">The meaning of text like "list of K" depends on context. If K is currently set to,
+say, <span class="extract"><span class="extract-syntax">number</span></span>, then "list of K" means <span class="extract"><span class="extract-syntax">list of number</span></span>; if it has no current
+setting, then K remains a placeholder and the result is <span class="extract"><span class="extract-syntax">list of K</span></span>. Note that:
+</p>
+
+<ul class="items"><li>(a) The same variable can occur more than once, as in <span class="extract"><span class="extract-syntax">phrase K -&gt; K</span></span>.
+</li><li>(b) Variables can be constrained to conform to something, as in <span class="extract"><span class="extract-syntax">arithmetic value of kind K</span></span>,
+where <span class="extract"><span class="extract-syntax">K</span></span> remains a placeholder but can only be a kind conforming to <span class="extract"><span class="extract-syntax">arithmetic value</span></span>.
+</li><li>(c) If <span class="extract"><span class="extract-syntax">K</span></span> remains unknown then any kind using <span class="extract"><span class="extract-syntax">K</span></span> is necessarily indefinite.
+So a variable cannot have the kind <span class="extract"><span class="extract-syntax">list of K</span></span>, for example.
+</li><li>(d) A process called "substitution" enables <span class="extract"><span class="extract-syntax">list of K</span></span> to be transformed to
+<span class="extract"><span class="extract-syntax">list of numbers</span></span>, or whatever may be. See <a href="2-knd.html#SP17" class="internal">Kinds::substitute</a>.
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Using letters seemed the nearest point of contact with natural
+language conventions. In English, we do say pseudo-algebraic things like
+"So, let's call our spy Mr X." &mdash; or at least we do if we lead slightly
+more exciting lives than the present author. The use of letters emphasises
+that this is some kind of reference, not a direct identification.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> At one time I was tempted by the syntax used in the early functional
+programming language Miranda (1985), which uses rows of asterisks <span class="extract"><span class="extract-syntax">*</span></span>, <span class="extract"><span class="extract-syntax">**</span></span>,
+<span class="extract"><span class="extract-syntax">***</span></span>, and so on as needed &mdash; a syntax making clear that nobody expected
+to see many of them at once. But asterisks in natural language have an air
+of censorship, of something that must not be named: compare Stéphanie de
+Genlis's gothic novella "Histoire de la duchesse de C***" (1782).
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. The kinds-test REPL. </b>The <a href="index.html" class="internal">kinds</a> module provides the Inform type system as a stand-alone utility,
 and one way to toy with it in isolation is to run test "programs" through the
 <a href="../kinds-test/index.html" class="internal">kinds-test</a> tool. This is like a calculator, but for kinds and not values.
 A "program" is a series of descriptions of kinds, and the output consists of
@@ -246,110 +291,7 @@ Preform nonterminal, then printed it out with <a href="2-dk.html#SP22" class="in
 in fact by using the <span class="extract"><span class="extract-syntax">%u</span></span> string escape, which amounts to the same thing).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>A kind is represented by a <a href="2-knd.html#SP1" class="internal">kind</a> object. Clearly some, like <span class="extract"><span class="extract-syntax">number</span></span>, are
-atomic while others, like <span class="extract"><span class="extract-syntax">relation of numbers to texts</span></span>, are composite. Each
-<a href="2-knd.html#SP1" class="internal">kind</a> object is formally a "construction" resulting from applying a
-<a href="2-kc.html#SP2" class="internal">kind_constructor</a> to other kinds.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> Each different possible constructor has
-a fixed "arity", the number of other kinds it builds on. For example, to make
-the kind <span class="extract"><span class="extract-syntax">relation of texts to lists of times</span></span>, we need four constructions
-in a row:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    (nothing) --&gt; text</span>
-<span class="plain-syntax">    (nothing) --&gt; time</span>
-<span class="plain-syntax">    time --&gt; list of times</span>
-<span class="plain-syntax">    text, list of times --&gt; relation of texts to lists of times</span>
-</pre>
-<p class="commentary">At each step there is only a finite choice of possible "kind constructions"
-which can be made, but since there can in principle be an unlimited number
-of steps, the set of all possible kinds is infinite. At each step we make
-use of 0, 1 or 2 existing kinds to make a new one: this number (0, 1 or 2)
-is the "arity" of the construction. These four steps have arities 0, 0, 1, 2,
-and use the constructors "text", "time", "list of K" and "relation of K to L".
-</p>
-
-<p class="commentary">We will often use the word "base" to refer to arity-0 constructors
-(or to the kinds which use them): thus, "text" and "time" are bases,
-but "list of K" is not. We call constructors of higher arity "proper".
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> This term follows the traditional usage of "type constructor". Haskell and
-some other functional languages mean something related but different by this.
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Here is <a href="../kinds-test/index.html" class="internal">kinds-test</a> exercising the construction system. Note that
-it has "functions" to extract the first and second term of a construction.
-(The REPL language of <a href="../kinds-test/index.html" class="internal">kinds-test</a> has quite a number of functions like
-this, for testing different features of <a href="index.html" class="internal">kinds</a>.)
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'X = object'</span><span class="plain-syntax">:</span><span class="string-syntax"> object</span>
-<span class="element-syntax">'first term of X'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
-<span class="element-syntax">'second term of X'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
-<span class="element-syntax">'Y = list of numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of numbers</span>
-<span class="element-syntax">'first term of Y'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
-<span class="element-syntax">'second term of Y'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
-<span class="element-syntax">'Z = relation of texts to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers</span>
-<span class="element-syntax">'first term of Z'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
-<span class="element-syntax">'second term of Z'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
-<span class="element-syntax">'W = phrase (relation of texts to numbers, text) -&gt; truth state'</span><span class="plain-syntax">:</span><span class="string-syntax"> phrase (relation of texts to numbers, text) -&gt; truth state</span>
-<span class="element-syntax">'first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers, text</span>
-<span class="element-syntax">'first term of first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of texts to numbers</span>
-<span class="element-syntax">'first term of first term of first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
-<span class="element-syntax">'second term of first term of first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
-<span class="element-syntax">'second term of first term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> text</span>
-<span class="element-syntax">'second term of W'</span><span class="plain-syntax">:</span><span class="string-syntax"> truth state</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>In principle we could imagine constructors needing arbitrarily large
-arity, or needing different arity in different usages, so the scheme of
-having fixed arities in the range 0 to 2 looks limited. In practice we get
-around that by using "punctuation nodes" in a kind tree. For example,
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    function K -&gt; L</span>
-<span class="plain-syntax">        CON_TUPLE_ENTRY</span>
-<span class="plain-syntax">            text</span>
-<span class="plain-syntax">            CON_TUPLE_ENTRY</span>
-<span class="plain-syntax">                text</span>
-<span class="plain-syntax">                CON_NIL</span>
-<span class="plain-syntax">        number</span>
-</pre>
-<p class="commentary">represents <span class="extract"><span class="extract-syntax">function (text, text) -&gt; number</span></span>. Note two special constructors
-used here: <span class="extract"><span class="extract-syntax">CON_TUPLE_ENTRY</span></span> and <span class="extract"><span class="extract-syntax">CON_NIL</span></span>. These are called "punctuation",
-and cannot be expressed in Inform source text, or occur in isolation. No
-Inform variable can have kind <span class="extract"><span class="extract-syntax">CON_NIL</span></span>, for example.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Kind variables. </b>The 26 letters A to Z, written in upper case, can serve as kind variables &mdash;
-placeholders for kinds. In practice A is best avoided because it looks too
-much like an indefinite article, but it's very rare to need more than two.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
-Phrase definitions in the standard Inform extensions use only K and L.
-</p>
-
-<p class="commentary">The meaning of, say, "list of K" depends on context. If K is currently set to,
-say, <span class="extract"><span class="extract-syntax">number</span></span>, then "list of K" means <span class="extract"><span class="extract-syntax">list of number</span></span>; if it has no current
-setting, then K remains a placeholder and the result is <span class="extract"><span class="extract-syntax">list of K</span></span>. Note that
-the same variable can occur more than once, as for example in <span class="extract"><span class="extract-syntax">phrase K -&gt; K</span></span>.
-A kind with variables is always indefinite &mdash; unless one knows what <span class="extract"><span class="extract-syntax">K</span></span> will
-be, there's no way to know what format of data a <span class="extract"><span class="extract-syntax">list of K</span></span> value has.
-</p>
-
-<p class="commentary">A process called "substitution" enables <span class="extract"><span class="extract-syntax">list of K</span></span> to be transformed to
-<span class="extract"><span class="extract-syntax">list of numbers</span></span>, or whatever may be. See <a href="2-knd.html#SP14" class="internal">Kinds::substitute</a>.
-</p>
-
-<p class="commentary">The kinds module has to ask the parent tool for the current meanings of these
-variables, which may have all kinds of scoping considerations beyond our
-understanding here. See <a href="2-knd.html#SP20" class="internal">Kinds::variable_from_context</a>.
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Indeed, in early functional languages type variables were sometimes written
-as <span class="extract"><span class="extract-syntax">*</span></span>, <span class="extract"><span class="extract-syntax">**</span></span>, <span class="extract"><span class="extract-syntax">***</span></span>, and so on, a syntax making clear that nobody expected
-to see many of them at once. Type variables always have very local scope.
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>In <a href="../kinds-test/index.html" class="internal">kinds-test</a>, the 26 variables are initially unset, but can be given
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>In <a href="../kinds-test/index.html" class="internal">kinds-test</a>, the 26 variables are initially unset, but can be given
 values by writing <span class="extract"><span class="extract-syntax">K = number</span></span>, or similar. For example:
 </p>
 
@@ -364,213 +306,67 @@ values by writing <span class="extract"><span class="extract-syntax">K = number<
 <span class="element-syntax">'X = relation of numbers to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of numbers</span>
 <span class="element-syntax">'X is definite?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Conformance. </b>The set of all kinds has a sort of ordering<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> called "conformance": we write
-\(K\leq L\) if \(K\) conforms to \(L\). For any kinds \(K, L, M\) not making use of
-kind variables<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> it is true that:
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Overview of facilities. </b>A kind is represented by a <span class="extract"><span class="extract-syntax">kind *</span></span> pointer. These actually point to
+small trees of <a href="2-knd.html#SP1" class="internal">kind</a> objects &mdash; see <a href="index.html" class="internal">kinds</a> &mdash; because many kinds are
+constructed out of others: thus <span class="extract"><span class="extract-syntax">list of texts</span></span> is the result of applying the
+"list of ..." construction to the kind <span class="extract"><span class="extract-syntax">text</span></span>.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Kinds not constructed from
+other kinds are called "base kinds". Briefly:
 </p>
 
-<ul class="items"><li>(a) \(K \leq K\) &mdash; reflexivity.
-</li><li>(b) If \(K\leq L\) and \(L\leq M\) then \(K\leq M\) &mdash; transitivity.
-</li><li>(c) <span class="extract"><span class="extract-syntax">K_nil</span></span> \(\leq K \leq\) <span class="extract"><span class="extract-syntax">value</span></span> &mdash; there are top and bottom elements.
-</li><li>(d) If \(K \leq L\) then a value of kind \(K\) can always be substituted for a
-value of kind \(L\) without modification &mdash; the Liskov substitution principle.<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
+<ul class="items"><li>&#9679; By convention the <span class="extract"><span class="extract-syntax">NULL</span></span> pointer means "kind unknown".
+</li><li>&#9679; Commonly needed base kinds, like <span class="extract"><span class="extract-syntax">number</span></span> or <span class="extract"><span class="extract-syntax">text</span></span>, have global variables
+set equal to them, like <span class="extract"><span class="extract-syntax">K_number</span></span> or <span class="extract"><span class="extract-syntax">K_text</span></span>. See <a href="2-fk.html" class="internal">Familiar Kinds</a>.
+</li><li>&#9679; Kinds can otherwise be made with <a href="2-knd.html#SP6" class="internal">Kinds::base_construction</a>,
+<a href="2-knd.html#SP6_3" class="internal">Kinds::unary_construction</a> or <a href="2-knd.html#SP6_3" class="internal">Kinds::binary_construction</a>. For example,
+<span class="extract"><span class="extract-syntax">list of numbers</span></span> and <span class="extract"><span class="extract-syntax">relation of numbers to texts</span></span> can be made by:
 </li></ul>
-<p class="commentary"><span class="extract"><span class="extract-syntax">K_nil</span></span> is a kind which exists only for kind-checking purposes: it represents
-"a member of the empty set", and therefore no value can ever have it. This
-differs from <span class="extract"><span class="extract-syntax">K_void</span></span>, which means "the absence of a value". A rule producing
-no result, for example, has as production kind <span class="extract"><span class="extract-syntax">K_void</span></span>.
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> It need not be antisymmetric and only has joins to a limited extent, so
-it is formally not a semilattice, nor even a partial ordering.
-<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Introducing kind variables complicates the picture, because whether or not
-<span class="extract"><span class="extract-syntax">list of K</span></span> conforms to <span class="extract"><span class="extract-syntax">list of arithmetic values</span></span> depends on the current
-value of <span class="extract"><span class="extract-syntax">K</span></span> and therefore on the current context.
-<a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> Also known as strong behavioural subtyping. This only applies to definite
-kinds, because no value ever has an indefinite kind.
-<a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Conformance is tested with the function <a href="2-knd.html#SP22" class="internal">Kinds::conforms_to</a>, and the
-following shows it in action.
-</p>
-
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'new kind thing of object'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind device of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind vehicle of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'number &lt;= number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'number &lt;= real number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'value &lt;= number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'object &lt;= text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'object &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'thing &lt;= object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'device &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'device &lt;= object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'list of devices &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'list of devices &lt;= list of things?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'relation of things to texts &lt;= relation of devices to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'relation of devices to texts &lt;= relation of things to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'phrase thing -&gt; text &lt;= phrase device -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'phrase device -&gt; text &lt;= phrase thing -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'phrase text -&gt; thing &lt;= phrase text -&gt; device?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'phrase text -&gt; device &lt;= phrase text -&gt; thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-</pre>
-<p class="commentary">Note that:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">number</span></span> does not conform to <span class="extract"><span class="extract-syntax">real number</span></span>. It can be cast to a real
-number, and this happens implicitly in Inform, but the cast requires explicit
-code; so it would violate Liskov substitution to have <span class="extract"><span class="extract-syntax">number</span></span> \(\leq\) <span class="extract"><span class="extract-syntax">real number</span></span>.
-</li><li>(b) The "list of K" constructor is covariant, in that \(K\leq L\) means
-<span class="extract"><span class="extract-syntax">list of K</span></span> \(\leq\) <span class="extract"><span class="extract-syntax">list of L</span></span>, whereas the "phrase K -&gt; L" constructor
-is contravariant in the first term, covariant in the second. See
-<a href="2-tlok.html#SP9" class="internal">Latticework::order_relation</a> for more.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>The indefinite <span class="extract"><span class="extract-syntax">arithmetic kind</span></span> used by Inform is a good example of what
-in other languages would be called a protocol. Here we see conformance:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'number &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'real number &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'length &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'text &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'arithmetic value &lt;= value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'value &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'arithmetic value &lt;= sayable value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-</pre>
-<p class="commentary">Note that <span class="extract"><span class="extract-syntax">arithmetic value</span></span> does not conform to <span class="extract"><span class="extract-syntax">sayable value</span></span> &mdash; it is true
-that every value on which arithmetic can be performed can also be said, but
-this is not why. This example shows that \(K\leq L \Rightarrow K\leq M\) does
-not necessarily mean that \(L\leq M\).
-</p>
-
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Compatibility. </b>A related but different question is "compatibility". This asks whether a
-value of kind \(K\) can be used where \(L\) is expected, but
-</p>
-
-<ul class="items"><li>(i) It is now okay if explicit code to perform a conversion would be needed;
-</li><li>(ii) There are now three possible answers &mdash; always, never and sometimes, where
-"sometimes" means that code can be compiled which would test compatibility at
-run time rather than compile time;
-</li><li>(iii) <span class="extract"><span class="extract-syntax">value</span></span>, anomalously, is compatible with everything.
-</li></ul>
-<p class="commentary">Note that \(K\leq L\) certainly means \(K\) is compatible with \(L\), but there
-are many other compatible cases. For example:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'new kind thing of object'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind device of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind vehicle of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'number compatible with number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'number compatible with real number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'value compatible with number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'object compatible with text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'object compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> sometimes</span>
-<span class="element-syntax">'thing compatible with object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'device compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'device compatible with object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'list of devices compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'list of devices compatible with list of things?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'relation of things to texts compatible with relation of devices to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'relation of devices to texts compatible with relation of things to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'phrase thing -&gt; text compatible with phrase device -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'phrase device -&gt; text compatible with phrase thing -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'phrase text -&gt; thing compatible with phrase text -&gt; device?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'phrase text -&gt; device compatible with phrase text -&gt; thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'activity on numbers compatible with activity?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'first term of activity'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
-<span class="element-syntax">'activity on numbers compatible with activity on values?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-</pre>
-<p class="commentary">Note that <span class="extract"><span class="extract-syntax">number</span></span> is compatible with <span class="extract"><span class="extract-syntax">real number</span></span>. Run-time code will be
-needed to convert the value, but the answer is "always". We also see that
-"device" is always compatible with "thing" &mdash; every device is a thing &mdash;
-but also that "thing" is sometimes compatible with "device". If we pass a
-thing to a function expecting to see a device, run-time code can check whether
-the value passed is indeed a device, and reject the call with a run-time error
-if not.
-</p>
-
-<p class="commentary">The anomaly over <span class="extract"><span class="extract-syntax">value</span></span> looks and is odd.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>We support a sort of hybrid kinds system, in which some base kinds have
-subkinds and superkinds, while others do not.
-</p>
-
-<p class="commentary">In Inform, <span class="extract"><span class="extract-syntax">object</span></span> sits at the top of a hierarchy of subkinds &mdash; that is,
-the kinds allowed to have subkinds are <span class="extract"><span class="extract-syntax">object</span></span> itself, subkinds of <span class="extract"><span class="extract-syntax">object</span></span>,
-their subkinds in turn, and so on. In a typical work of parser IF, <span class="extract"><span class="extract-syntax">woman</span></span>
-is a subkind of <span class="extract"><span class="extract-syntax">person</span></span> which is a subkind of <span class="extract"><span class="extract-syntax">thing</span></span> which is a subkind of
-<span class="extract"><span class="extract-syntax">object</span></span>. On the other hand, <span class="extract"><span class="extract-syntax">number</span></span> and <span class="extract"><span class="extract-syntax">text</span></span>, for example, have no subkinds.
-This means that <span class="extract"><span class="extract-syntax">object</span></span> plays a unique role in the Inform type system, in a
-way which pervades the compiler's source code. But the <a href="index.html" class="internal">kinds</a> module itself
-takes no position on this, and <span class="extract"><span class="extract-syntax">object</span></span> (which need not even exist) plays no
-special role here.
-</p>
-
-<p class="commentary">Indeed, by default there are no subkinds at all, unless the parent tool uses
-the <span class="extract"><span class="extract-syntax">HIERARCHY_*_KINDS_CALLBACK</span></span> functions &mdash; see <a href="P-htitm.html" class="internal">How To Include This Module</a>.
-For convenience, <a href="../kinds-test/index.html" class="internal">kinds-test</a> uses the same convention as Inform, i.e., that
-only objects have subkinds.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Making new kinds. </b>When we need a new <span class="extract"><span class="extract-syntax">kind *</span></span> value inside our code, what do we do? The
-answer depends on how simple it is.
-</p>
-
-<ul class="items"><li>(a) If it's one of the standard built-in base kinds, we should just use a
-preconstructed pointer: for example, <span class="extract"><span class="extract-syntax">K_number</span></span> can be used for <span class="extract"><span class="extract-syntax">number</span></span>.
-See <a href="2-fk.html" class="internal">Familiar Kinds</a>.
-</li><li>(b) And otherwise we call one of the functions <a href="2-knd.html#SP3" class="internal">Kinds::base_construction</a>.
-<a href="2-knd.html#SP3_3" class="internal">Kinds::unary_construction</a> or <a href="2-knd.html#SP3_3" class="internal">Kinds::binary_construction</a>, according
-to whether our constructor has arity 0, 1 or 2.
-</li></ul>
-<p class="commentary">For example, the following make valid representations of <span class="extract"><span class="extract-syntax">text</span></span>, <span class="extract"><span class="extract-syntax">list of numbers</span></span>
-and <span class="extract"><span class="extract-syntax">relation of numbers to texts</span></span> respectively:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    K_text</span>
 <span class="plain-syntax">    Kinds::unary_construction(CON_list_of, K_number)</span>
 <span class="plain-syntax">    Kinds::binary_construction(CON_relation, K_number, K_text)</span>
 </pre>
-<p class="commentary">For the constructor values <span class="extract"><span class="extract-syntax">CON_list_of</span></span> and so on, again see <a href="2-fk.html" class="internal">Familiar Kinds</a>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Where kind constructors come from. </b>The built-in kind constructors, such as "number" or "list of K", are not really
-built in. They are read in from configuration files &mdash; these are not written
-in Inform source text, and look more like dictionaries of key-value pairs,
-though they're simpler in syntax than XML.
-</p>
-
-<p class="commentary">Whole files can be read with <a href="4-kf.html#SP1" class="internal">KindFiles::load</a>, or individual commands
-issued with <a href="4-kc.html#SP13" class="internal">KindCommands::despatch</a>.
-</p>
-
-<p class="commentary">Inform makes use of this by placing such files inside kits of Inter, because
-in practice built-in kinds always need some run-time support written in Inter
-code.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Making new kind constructors. </b>When Inform acts on sentences like these:
-</p>
-
-<blockquote>
-    <p>A weight is a kind of value. A mammal is a kind of animal.</p>
-</blockquote>
-
-<p class="commentary">it in fact makes new <a href="2-kc.html#SP2" class="internal">kind_constructor</a> objects, not new <a href="2-knd.html#SP1" class="internal">kind</a> objects.
-</p>
-
-<p class="commentary">"Weight" and "mammal" are base constructors, i.e., they have arity 0.
-High-level Inform source is not currently able to define new constructors of
-higher arity, though kind configuration files do.
-</p>
-
+<ul class="items"><li>&#9679; Kinds for functions are a bit laborious to put together, so <a href="2-knd.html#SP7" class="internal">Kinds::function_kind</a>
+is a convenience.
+</li><li>&#9679; As with kinds, commonly needed constructors, like <span class="extract"><span class="extract-syntax">CON_list_of</span></span> or
+<span class="extract"><span class="extract-syntax">CON_relation</span></span>, are available as global values. Again see <a href="2-fk.html" class="internal">Familiar Kinds</a>.
+</li><li>&#9679; Two different <span class="extract"><span class="extract-syntax">kind *</span></span> values can represent the same kind, so don't test
+whether \(K\) is the same kind as \(L\) by the pointer comparison <span class="extract"><span class="extract-syntax">K == L</span></span>. Instead
+call <a href="2-knd.html#SP24" class="internal">Kinds::eq</a> or its negation <a href="2-knd.html#SP24" class="internal">Kinds::ne</a>.
+</li><li>&#9679; Call <a href="2-knd.html#SP25" class="internal">Kinds::conforms_to</a> to test whether \(K\) conforms to \(L\). This is
+either true or not true. To find a kind able to hold values of either \(K\) or \(L\),
+call <a href="2-tlok.html#SP7" class="internal">Latticework::join</a>.
+</li><li>&#9679; Call <a href="2-knd.html#SP25" class="internal">Kinds::compatible</a> to test whether \(K\) is compatible with \(L\),
+but note that the reply is three-valued: always, sometimes or never.
+</li><li>&#9679; Inform makes frequent use of "weakening", where we deliberately weaken a
+kind (i.e., make it less restrictive) by ignoring distinctions between subkinds
+of some \(W\). For example, the weakening of <span class="extract"><span class="extract-syntax">list of things</span></span> with respect to
+<span class="extract"><span class="extract-syntax">object</span></span> is <span class="extract"><span class="extract-syntax">list of objects</span></span>. See <a href="2-knd.html#SP18" class="internal">Kinds::weaken</a>.
+</li><li>&#9679; An extensive API of functions is provided in <a href="2-uk.html" class="internal">Using Kinds</a> to test whether
+given kinds have given properties. The most important is <a href="2-uk.html#SP4" class="internal">Kinds::Behaviour::definite</a>,
+which determines whether \(K\) is definite.
+</li><li>&#9679; New base kinds can be created either by calling <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>,<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> or in
+the process of reading in kind configuration files.<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> New constructors can only
+be made the latter way. See <a href="4-kf.html#SP1" class="internal">KindFiles::load</a>, which sends individual commands
+to <a href="4-kc.html#SP13" class="internal">KindCommands::despatch</a>, which in turn deals with the low-level code in
+the <a href="4-kc2.html" class="internal">Kind Constructors</a> section.<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
+</li><li>&#9679; It is possible to move kinds within the lattice of kinds, i.e., to change
+their hierarchical relationship, even after creation. See <a href="2-knd.html#SP21" class="internal">Kinds::make_subkind</a>.
+Inform does this very sparingly and only with kinds of object.<sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup>
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> "List of ..." is what is called a "kind constructor". This term follows the
+traditional usage of "type constructor", but note that Haskell and some other
+functional languages mean something related but different by this.
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> So, for examole, Inform acts on text like "A weight is a kind of value." by
+calling <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>.
+<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Inform's built-in kinds like <span class="extract"><span class="extract-syntax">number</span></span> or <span class="extract"><span class="extract-syntax">text</span></span> all come from such files,
+not by calls to <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>.
+<a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> Inform stores these kind configuration files inside kits of Inter, because
+in practice built-in kinds always need run-time support written in Inter code,
+so the two naturally go together.
+<a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:9"><p class="inwebfootnote"><sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup> For instance, after "Puzzle is a kind of thing. Toy is a kind of thing.
+Puzzle is a kind of toy.", Inform moves <span class="extract"><span class="extract-syntax">puzzle</span></span> to be a subkind of <span class="extract"><span class="extract-syntax">toy</span></span>,
+when it had been created as a subkind of <span class="extract"><span class="extract-syntax">thing</span></span>. It is very arguable that
+allowing this is a bad idea, but that ship has sailed.
+<a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresschapter"><a href="2-knd.html">2</a></li><li class="progresschapter"><a href="3-dmn.html">3</a></li><li class="progresschapter"><a href="4-kf.html">4</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

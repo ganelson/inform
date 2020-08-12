@@ -15,15 +15,15 @@ Chapter 2: Kinds
 	Kinds
 	Familiar Kinds
 	The Lattice of Kinds
-	Kind Constructors
-	Using Kinds
 	Describing Kinds
+	Using Kinds
 
 Chapter 3: Arithmetic
 	Dimensions
 	Floating-Point Values
 	Scaled Arithmetic Values
 
-Chapter 4: Preloading Interpreter
+Chapter 4: Constructors
 	Kind Files
 	Kind Commands
+	Kind Constructors

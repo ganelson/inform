@@ -3,9 +3,7 @@
 To recognise certain kind names as familiar built-in ones.
 
 @ In the Inform source code, we're clearly going to need to refer to some
-of these kinds. The compiler provides support for, say, parsing times of
-day, or for indexing scenes, which go beyond the generic facilities it
-provides for kinds created in source text. We adopt two naming conventions:
+kinds explicitly, and we need a way to do that. We adopt two naming conventions:
 
 (i) Kinds are written as |K_source_text_name|, that is, |K_| followed by
 the name of the kind in I7 source text, with spaces made into underscores.
@@ -14,97 +12,73 @@ which are initially |NULL|, but which, once set, are never changed.
 
 (ii) Constructors are likewise written as |CON_source_text_name| if they can
 be created in source text; or by |CON_TEMPLATE_NAME|, that is, |CON_|
-followed by the constructor's identifier as given in the I6 template file
-which created it (but with the |_TY| suffix removed) if not. For instance,
-|CON_list_of| means the constructor able to make, e.g., "list of texts";
-|CON_TUPLE_ENTRY| refers to the constructor created by the |TUPLE_ENTRY_TY|
-block in the |Load-Core.i6t| template file. These are all |kind_constructor
-*| global variables which are initially |NULL|, but which, once set, are
-never changed.
+followed by the constructor's identifier as given in the command
+which created it (but with the |_TY| suffix removed) if not. These are all
+|kind_constructor *| global variables which are initially |NULL|, but which,
+once set, are never changed.
 
 We will now define all of the |K_...| and |CON_...| used by the core of
-Inform. (Others are created and used within specific plugins.)
+Inform. The //kinds// module does not need all of these to be created: for
+example, in a Basic Inform compilation, |stored action| never will be.
+The variable |K_stored_action| will then remain |NULL|, but will also never
+be used for anything, so no harm is done.
 
-@ We begin with some base kinds which are "kinds of kinds" useful in
-generic programming.
+@ We begin with the protocol-like "kinds of kinds", the superheroes of the
+kinds world. There are seven, always a good number for this sort of thing:[1]
 
-|K_value| is a superhero, or perhaps a supervillain: it matches values of
-every kind. Not being a kind in its own right, it can't be the kind of a
-variable -- which is just as well, since no use of such a variable could
-ever be safe.
-
-The finer distinctions |K_word_value| and |K_pointer_value| are used to
-divide all run-time data into two very different storage implementations:
-(a) those where instances are stored as word-value data, where a single I6 value
-holds the whole thing, like "number";
-(b) those where instances are stored as pointers to larger blocks of data on the
-heap, like "stored action".
+[1] Compare Samurai, Seals, or Dwarfs.
 
 = (early code)
 kind *K_value = NULL;
 kind *K_stored_value = NULL;
 kind *K_pointer_value = NULL;
 kind *K_sayable_value = NULL;
-
-@ The following refer to values subject to arithmetic operations (drawn with a
-little calculator icon in the Kinds index), and those which are implemented as
-enumerations of named constants. (This includes, e.g., scenes and figure names
-but not objects, whose run-time storage is not a simple numerical enumeration,
-or truth states, which are stored as 0 and 1 not 1 and 2. In particular, it
-isn't the same thing as having a finite range in the Kinds index.)
-
-= (early code)
 kind *K_arithmetic_value = NULL;
-kind *K_real_arithmetic_value = NULL; /* those using real, not integer, arithmetic */
+kind *K_real_arithmetic_value = NULL;
 kind *K_enumerated_value = NULL;
 
-@ Next, the two constructors used to punctuate tuples, that is, collections
-$(K_1, K_2, ..., K_n)$ of kinds of value. |CON_NIL| represents the empty
-tuple, where $n=0$; while |CON_TUPLE_ENTRY| behaves like a kind constructor
-with arity 2, its two bases being the first item and the rest, respectively.
-Thus we store $(A, B, C)$ as
+@ Next, some awkward punctuation-like special base kinds needed in order
+to construct things. These are used in combination to make tuples, that is,
+collections $(K_1, K_2, ..., K_n)$ of kinds of value.
+
+= (early code)
+kind *K_nil = NULL;
+kind_constructor *CON_NIL = NULL;
+kind_constructor *CON_TUPLE_ENTRY = NULL;
+
+@ Thus we store $(A, B, C)$ as
 = (text)
-	CON_TUPLE_ENTRY(A, CON_TUPLE_ENTRY(B, CON_TUPLE_ENTRY(C, CON_NIL)))
+	CON_TUPLE_ENTRY
+		A
+		CON_TUPLE_ENTRY
+			B
+			CON_TUPLE_ENTRY
+				C
+				CON_NIL
 =
 This traditional LISP-like device enables us to store tuples of arbitrary
 size without need for any constructor of arity greater than 2.
 
-(a) Inform has no "nil" or "void" kind visible to the writer of source
-text, though it does occasionally use a kind it calls |K_nil| internally
-to represent this idea -- for instance for a rulebook producing nothing;
-|K_nil| is the kind constructed by |CON_NIL|.
+@ |K_unknown| plays no role in the type system -- as noted in //What This Module Does//,
+the way to express "unknown kind" is to use the value |NULL|. The purpose of
+|K_unknown| is purely so that run-time code generated by Inform has a way
+to mark out empty lists as having entries of no known kind.
 
-(b) Inform does allow combinations, but they're identified by trees headed
-by the constructor |CON_combination|, which then uses punctuation in its own
-subtree. You might guess that an ordered pair of a text and a time would be
-represented by the |CON_TUPLE_ENTRY| constructor on its own, but it isn't.
-
-= (early code)
-kind *K_nil = NULL;
+=
 kind *K_void = NULL;
-kind *K_unknown = NULL;
-kind_constructor *CON_NIL = NULL;
 kind_constructor *CON_VOID = NULL;
+kind *K_unknown = NULL;
 kind_constructor *CON_UNKNOWN = NULL;
-kind_constructor *CON_TUPLE_ENTRY = NULL;
 
-@ It was mentioned above that two special constructors carry additional
-annotations with them. The first of these is |CON_INTERMEDIATE|, used to
-represent kinds which are brought into being through uncompleted arithmetic
-operations: see "Dimensions.w" for a full discussion. Such a node in a
-kind tree might represent "area divided by time squared", say, and it must
-be annotated to show exactly which intermediate kind is meant.
+@ |CON_INTERMEDIATE| is used to represent kinds which are brought into being
+through uncompleted arithmetic operations: see //Dimensions// for a full
+discussion.
 
 = (early code)
 kind_constructor *CON_INTERMEDIATE = NULL;
 
-@ While that doesn't significantly change the kinds system, the second special
-constructor certainly does. This is |CON_KIND_VARIABLE|, annotated to show
-which of the 26 kind variables it represents in any given situation. These
-variables are, in effect, wildcards; each is marked with a "kind of kind"
-as its range of possible values. (Thus a typical use of this constructor
-might result in a kind node labelled as L, which can be any kind matching
-"arithmetic value".)
+@ |CON_KIND_VARIABLE| is used to formally represent kind variables, such as
+the letter |K|:
 
 = (early code)
 kind_constructor *CON_KIND_VARIABLE = NULL;
@@ -143,13 +117,12 @@ kind shouldn't be used for storage, it's hidden from the user.
 
 (b) |K_understanding| is used to hold the result of a grammar token. An actual
 constant value specification of this kind stores a |grammar_verb *| pointer.
-It's an untidy internal device which may well be removed later.
 
 = (early code)
 kind *K_rulebook_outcome = NULL;
 kind *K_understanding = NULL;
 
-@ Finally, the constructors used by Inform authors:
+@ Finally, the standard set of constructors:
 
 = (early code)
 kind_constructor *CON_list_of = NULL;
@@ -164,19 +137,17 @@ kind_constructor *CON_table_column = NULL;
 kind_constructor *CON_combination = NULL;
 kind_constructor *CON_variable = NULL;
 
-@h Kind names in the I6 template.
-We defined some "constant" kinds and constructors above, to provide
-values like |K_number| for use in this C source code. We will also want to
-refer to these kinds in the Inform 6 source code for the template, where
-they will have identifiers such as |NUMBER_TY|. (If anything it's the other
-way round, since the template creates these kinds at run-time, using the
-kind interpreter -- of which, more later.)
+@h Kind names in Inter code.
+We defined some "constant" kinds and constructors above, to provide values
+like |K_number| for use in this C source code. We will also want to refer to
+these kinds in the Inter code generated by Inform, where they will have
+identifiers such as |NUMBER_TY|.
 
 So we need a way of pairing up names in these two source codes, and here
 it is. There is no need for speed here.
 
-@d IDENTIFIERS_CORRESPOND(text_of_I6_name, pointer_to_I7_structure)
-	if ((sn) && (Str::eq_narrow_string(sn, text_of_I6_name))) return pointer_to_I7_structure;
+@d IDENTIFIERS_CORRESPOND(text_of_I6_name, what_have_you)
+	if ((sn) && (Str::eq_narrow_string(sn, text_of_I6_name))) return what_have_you;
 
 =
 kind_constructor **FamiliarKinds::known_con(text_stream *sn) {
@@ -237,7 +208,8 @@ int FamiliarKinds::is_known(text_stream *sn) {
 @h Kind names in source text.
 Inform creates the "natural language" kind in source text, not by loading it
 from a file, but we still need to refer to it in the compiler. Similarly for
-"grammatical gender". The others here are only 
+"grammatical gender". The others here are not referred to in the compiler,
+but are indexed together.
 
 =
 <notable-linguistic-kinds> ::=

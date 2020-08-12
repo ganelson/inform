@@ -2,7 +2,8 @@
 
 To build tree structures which represent Inform's universe of kinds.
 
-@ Finally, then, it's time to define what a kind node looks like:
+@h Construction.
+Kinds are represented by pointers to trees made up of //kind// objects, like so:
 
 =
 typedef struct kind {
@@ -12,6 +13,53 @@ typedef struct kind {
 	struct kind *kc_args[MAX_KIND_CONSTRUCTION_ARITY]; /* used if arity positive, or for |CON_KIND_VARIABLE| */
 } kind;
 
+@ Some kinds, like |number|, are atomic while others, like |relation of numbers to texts|,
+are composite. Each //kind// object is formally a "construction" resulting from
+applying a //kind_constructor// to other kinds. Each different possible constructor
+has a fixed "arity", the number of other kinds it builds on. For example, to make
+the kind |relation of texts to lists of times|, we need four constructions in
+a row:
+= (text)
+	(nothing) --> text
+	(nothing) --> time
+	time --> list of times
+	text, list of times --> relation of texts to lists of times
+=
+At each step there is only a finite choice of possible "kind constructions"
+which can be made, but since there can in principle be an unlimited number
+of steps, the set of all possible kinds is infinite. At each step we make
+use of 0, 1 or 2 existing kinds to make a new one: this number (0, 1 or 2)
+is the "arity" of the construction. These four steps have arities 0, 0, 1, 2,
+and use the constructors "text", "time", "list of ..." and "relation of ... to ...".
+
+We will often use the word "base" to refer to arity-0 constructors
+(or to the kinds which use them): thus, "text" and "time" are bases,
+but "list of ..." is not. We call constructors of higher arity "proper".
+
+@ Here is //kinds-test// exercising the construction system. Note that
+it has "functions" to extract the first and second term of a construction.
+(The REPL language of //kinds-test// has quite a number of functions like
+this, for testing different features of //kinds//.)
+
+= (text from Figures/construction.txt as REPL)
+
+@ In principle we could imagine constructors needing arbitrarily large
+arity, or needing different arity in different usages, so the scheme of
+having fixed arities in the range 0 to 2 looks limited. In practice we get
+around that by using "punctuation nodes" in a kind tree. For example,
+= (text)
+	function ... -> ...
+		CON_TUPLE_ENTRY
+			text
+			CON_TUPLE_ENTRY
+				text
+				CON_NIL
+		number
+=
+represents |function (text, text) -> number|. Note two special constructors
+used here: |CON_TUPLE_ENTRY| and |CON_NIL|. These cannot occur in isolation.
+No Inform variable can have kind |CON_TUPLE_ENTRY|, for example.
+
 @ We keep some statistics for tracking memory usage:
 
 =
@@ -19,8 +67,7 @@ int no_base_kinds_created = 0;
 int no_intermediate_kinds_created = 0;
 int no_constructed_kinds_created = 0;
 
-@h Constructing kinds.
-All kind structures are obtained by one of the following. First, a base
+@ All kind structures are obtained by one of the following. First, a base
 construction, one with arity 0. This makes a kind tree with a single leaf
 node, of course, and that's something we need very often. So we create it
 only on the first request, and cache the pointer to it with the constructor;
@@ -68,11 +115,8 @@ kind *Kinds::intermediate_construction(unit_sequence *ik) {
 	return K;
 }
 
-@ Kind variables A to Z (where |N| is 1 to 26 below) can usually stand for
-any kind, but can also be marked with a "declaration", usually
-constraining what kind of value they are allowed to hold. For example, K
-might be marked as being an arithmetical kind of value. See "Kind
-Checking.w".
+@ The following constructs "formal variables", that is, placeholders for the
+kinds whose values will be stored in the kind variables |A| to |Z|.
 
 =
 kind *Kinds::variable_construction(int N, kind *declaration) {
@@ -242,7 +286,7 @@ int Kinds::arity_of_constructor(kind *K) {
 	return 0;
 }
 
-@ Given, say, "list of numbers", the following returns "number":
+@ Given, say, |list of numbers|, the following returns |number|:
 
 =
 kind *Kinds::unary_construction_material(kind *K) {

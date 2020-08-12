@@ -1,15 +1,6 @@
 [Kinds::Textual::] Describing Kinds.
 
-Translating kind structures to and from textual or run-time
-descriptions.
-
-@ We shall need these when parsing (see below):
-
-@d NORMAL_KIND_PARSING 1
-@d PHRASE_TOKEN_KIND_PARSING 2
-
-=
-int kind_parsing_mode = NORMAL_KIND_PARSING;
+Translating kinds to and from textual descriptions.
 
 @ For speed, we parse some kind names as single words, and others as common
 nouns, which is slower:
@@ -18,16 +9,16 @@ nouns, which is slower:
 @d KIND_FAST_MC				0x01000000 /* number, text, relation, rule, ... */
 
 @h The K-grammar.
-This innermost of Inform's grammars is used to match the names of kinds. It's
-a nicely unambiguous and clean language, with a specification closer to
-traditional computer-science norms -- this is not an accident: it allows for
-awkward functional-programming needs in a way which vaguer natural language
-syntax would not.
+This is a Preform grammar for textual descriptions of kinds. In effect it's
+a mini-language of its own, with a specification closer to traditional
+computer-science norms than Inform's free-wheeling approach -- this is not
+an accident. It allows for awkward functional-programming needs in a way
+which vaguer natural language syntax would not.
 
-All K-grammar nonterminals begin with the "k-" prefix, and their result
-pointers are to |kind| structures.
+All K-grammar nonterminals begin with the "k-" prefix, and their pointer results
+are to //kind//| structures.
 
-The K-grammar actually has two modes: normal, and phrase-token-mode. Normal
+@ The K-grammar actually has two modes: normal, and phrase-token-mode. Normal
 mode is aptly named: it's almost always the one we're using. Phrase token
 mode is used only when parsing definitions of phrases, like so:
 
@@ -38,6 +29,14 @@ specifications, but in such a way that any kinds mentioned are parsed in
 phrase-token-mode. The difference is that this enables them to refer to kind
 variables such as K which are still being defined; in normal mode, that would
 only be allowed if K already existed.
+
+@d NORMAL_KIND_PARSING 1
+@d PHRASE_TOKEN_KIND_PARSING 2
+
+=
+int kind_parsing_mode = NORMAL_KIND_PARSING;
+
+@ This tests which mode we are in, consuming no words:
 
 =
 <if-parsing-phrase-tokens> internal 0 {
@@ -103,7 +102,7 @@ the kinds which are their current values:
 
 @ Some base kinds with one-word names have that word flagged with a direct
 pointer to the kind, for speed of parsing. Names of base kinds, such as
-"number" or "vehicle", can be registered in two different ways (according
+|number| or |vehicle|, can be registered in two different ways (according
 to whether they come from the source text or from template files), so we then
 make two further checks:
 
@@ -111,7 +110,8 @@ make two further checks:
 <k-base-kind> internal {
 	kind *K = NULL;
 	if (Wordings::empty(W)) { ==> { fail nonterminal }; }
-	if (Wordings::length(W) == 1) K = Kinds::read_kind_marking_from_vocabulary(Lexer::word(Wordings::first_wn(W)));
+	if (Wordings::length(W) == 1)
+		K = Kinds::read_kind_marking_from_vocabulary(Lexer::word(Wordings::first_wn(W)));
 	if (K == NULL) {
 		if (<definite-article>(Wordings::first_word(W))) { ==> { fail nonterminal }; }
 		parse_node *p = Lexicon::retrieve(KIND_SLOW_MC, W);
@@ -137,21 +137,14 @@ make two further checks:
 	==> { fail nonterminal };
 }
 
-@
-
-=
-kind_constructor *Kinds::Textual::em_to_kc(excerpt_meaning *em) {
-	return NULL;
-}
-
-@ "Object based rulebook" has been on a voyage of unhyphenation: in the
-early public beta of Inform 7, it was "object-based-rulebook" (at that
-time, built-in kinds had to have one-word names); then it became "object-based
+@ "Object based rulebook" has been on a voyage of unhyphenation: in the early
+public beta of Inform 7, it was "object-based-rulebook" (at that time,
+built-in kinds had to have one-word names); then it became "object-based
 rulebook", when one-word adjectives were allowed to modify the names of
 built-in kinds; and now it is preferably "object based rulebook". But the
-previous syntax is permitted as an alias to keep old source text working.
-And similarly for the others here, except "either/or property", which is a
-2010 addition.
+previous syntax is permitted as an alias to keep old source text working. And
+similarly for the others here, except "either/or property", which is a 2010
+addition.
 
 =
 <k-irregular-kind-construction> ::=
@@ -383,17 +376,7 @@ int Kinds::Textual::parse_kind_variable_name_singular(wchar_t *p) {
 }
 
 @ Kind variables are written with the letters A to Z. That provides for only
-26 of them, but it's very, very rare to need more than 2, in practice. At
-one time I was tempted by the syntax used in the early functional programming
-language Miranda (1985), which uses rows of asterisks |*|, |**|, |***|, and
-so on as needed. But using the letters seemed fractionally closer to natural
-language conventions. In English, we do say pseudo-algebraic things like
-"So, let's call our spy Mr X." -- or at least we do if we lead slightly
-more exciting lives than the present author. The use of letters emphasises
-that this is some kind of reference, not a direct identification. Whereas
-when we use asterisks, it's with an air of censorship, of something that
-must not be named (compare St\'ephanie de Genlis's gothic novella "Histoire
-de la duchesse de C***", 1782).
+26 of them, but it's very, very rare to need more than 2, in practice.
 
 The following nonterminal matches only those kind variables whose values are
 actually set, and it returns those values. This is how kind variables are
@@ -645,13 +628,16 @@ usage.
 	int i;
 	for (i=from; i<=to; i++) {
 		if (i > from) WRITE(" ");
-		if (Lexer::word(k1+i) == CAPITAL_K_V) Kinds::Textual::desc_base(OUT, con, 0, first_base, substituting);
-		else if (Lexer::word(k1+i) == CAPITAL_L_V) Kinds::Textual::desc_base(OUT, con, 1, second_base, substituting);
+		if (Lexer::word(k1+i) == CAPITAL_K_V)
+			Kinds::Textual::desc_base(OUT, con, 0, first_base, substituting);
+		else if (Lexer::word(k1+i) == CAPITAL_L_V)
+			Kinds::Textual::desc_base(OUT, con, 1, second_base, substituting);
 		else WRITE("%V", Lexer::word(k1+i));
 	}
 
 @ =
-void Kinds::Textual::desc_base(OUTPUT_STREAM, kind_constructor *con, int b, kind *K, int substituting) {
+void Kinds::Textual::desc_base(OUTPUT_STREAM, kind_constructor *con,
+	int b, kind *K, int substituting) {
 	if (K == NULL) { WRITE("nothing"); return; }
 	if (K == K_nil) { WRITE("nothing"); return; }
 	if (K == K_void) { WRITE("nothing"); return; }
@@ -661,9 +647,11 @@ void Kinds::Textual::desc_base(OUTPUT_STREAM, kind_constructor *con, int b, kind
 	if ((tupled > 1) && (Kinds::get_construct(K) == CON_TUPLE_ENTRY)) {
 		kind *first_base = NULL, *second_base = NULL;
 		Kinds::binary_construction_material(K, &first_base, &second_base);
-		if ((second_base) && (Kinds::get_construct(second_base) == CON_TUPLE_ENTRY)) bracketed = TRUE;
+		if ((second_base) && (Kinds::get_construct(second_base) == CON_TUPLE_ENTRY)) 
+			bracketed = TRUE;
 	}
-	if ((b == 1) && (con == CON_phrase) && (Kinds::get_construct(K) == CON_phrase)) bracketed = TRUE;
+	if ((b == 1) && (con == CON_phrase) && (Kinds::get_construct(K) == CON_phrase))
+		bracketed = TRUE;
 	if (bracketed) WRITE("(");
 	if ((tupled > 1) || (con == CON_phrase)) pluralised = FALSE;
 	Kinds::Textual::write_inner(OUT, K, pluralised, substituting);

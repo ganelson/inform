@@ -11,7 +11,8 @@ wording Kinds::Behaviour::get_name(kind *K, int plural_form) {
 	return Kinds::Constructors::get_name(K->construct, plural_form);
 }
 
-wording Kinds::Behaviour::get_name_in_play(kind *K, int plural_form, NATURAL_LANGUAGE_WORDS_TYPE *nl) {
+wording Kinds::Behaviour::get_name_in_play(kind *K, int plural_form,
+	NATURAL_LANGUAGE_WORDS_TYPE *nl) {
 	if (K == NULL) return EMPTY_WORDING;
 	return Kinds::Constructors::get_name_in_play(K->construct, plural_form, nl);
 }
@@ -112,9 +113,8 @@ int Kinds::Behaviour::involves_var(kind *K, int v) {
 }
 
 @h (A) How this came into being.
-Some kinds are built in (in that the I6 template files create them, using
-the kind interpreter), while others arise from "X is a kind of value"
-sentences in the source text.
+A kind is "built in" if it was created via commands in a configuration file:
+see //Kind Files//. It otherwise arises by being defined in source text.
 
 Note that a kind of object counts as built-in by this test, even though it
 might be a kind of object created in the source text, because at the end of
@@ -522,9 +522,11 @@ inter_name *Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(kind *K) {
 	if (K == NULL) K = K_number;
 	if (K->construct->trace_iname) return K->construct->trace_iname;
 	if (Str::len(K->construct->name_of_printing_rule_ACTIONS) > 0)
-		K->construct->trace_iname = Produce::find_by_name(Emit::tree(), K->construct->name_of_printing_rule_ACTIONS);
+		K->construct->trace_iname = 
+			Produce::find_by_name(Emit::tree(), K->construct->name_of_printing_rule_ACTIONS);
 	else
-		K->construct->trace_iname = Produce::find_by_name(Emit::tree(), I"DA_Name");
+		K->construct->trace_iname =
+			Produce::find_by_name(Emit::tree(), I"DA_Name");
 	return K->construct->trace_iname;
 }
 #endif
@@ -534,8 +536,8 @@ sentences, others can't. Thus "[time]" is a valid Understand token, but
 "[stored action]" is not.
 
 Some kinds provide have a GPR ("general parsing routine", an I6 piece of
-jargon) defined somewhere in the template: if so, this returns its name;
-if not, it returns |NULL|.
+jargon) defined in some Inter kit: if so, this returns the GPR's name; if
+not, it returns |NULL|.
 
 =
 text_stream *Kinds::Behaviour::get_explicit_I6_GPR(kind *K) {
@@ -579,8 +581,7 @@ int Kinds::Behaviour::needs_I6_GPR(kind *K) {
 	return K->construct->I6_GPR_needed;
 }
 
-@ For the following, see the explanation in "Texts.i6t" in the template: a
-recognition-only GPR is used for matching specific data in the course of
+@ A recognition-only GPR is used for matching specific data in the course of
 parsing names of objects, but not as a grammar token in its own right.
 
 =
@@ -640,9 +641,7 @@ int Kinds::Behaviour::indexed_grey_if_empty(kind *K) {
 }
 
 @ And every kind is allowed to have the specification pseudo-property -- a little
-text used only on the index pages, and not existing at run-time. This is
-set explicitly in the source text, but initialised for built-in kinds from
-the I6 template files.
+text used only on the index pages, and not existing at run-time.
 
 =
 void Kinds::Behaviour::set_specification_text(kind *K, text_stream *desc) {

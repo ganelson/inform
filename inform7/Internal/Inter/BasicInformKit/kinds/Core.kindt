@@ -70,11 +70,6 @@ apply-macro:#KIND-OF-KIND
 singular:sayable value
 plural:sayable values
 
-!COMBINED_VALUE_TY:
-!apply-macro:#KIND-OF-KIND
-!singular:combined value of any arity
-!plural:combined values of any arity
-
 +OBJECT_TY:
 apply-macro:#BASE-KIND
 singular:object
