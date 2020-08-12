@@ -261,12 +261,12 @@ be more varied.
 
 <k-tupled-material> ::=
 	( <k-tuple-list> ) |               ==> { pass 1 }
-	nothing |                          ==> { -, K_nil }
-	<k-single-material>                ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_nil) }
+	nothing |                          ==> { -, K_void }
+	<k-single-material>                ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_void) }
 
 <k-tuple-list> ::=
 	<k-single-material> , <k-tuple-list> |  ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], RP[2]) }
-	<k-single-material>                     ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_nil) }
+	<k-single-material>                     ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_void) }
 
 @ The following looks at a word range and tries to find text making a kind
 construction: if it does, it adjusts the word ranges to the kind(s) being
@@ -499,6 +499,7 @@ void Kinds::Textual::write_articled(OUTPUT_STREAM, kind *K) {
 void Kinds::Textual::write_inner(OUTPUT_STREAM, kind *K, int plural_form, int substituting) {
 	if (K == NULL) { WRITE("nothing"); return; }
 	if (K == K_nil) { WRITE("nothing"); return; }
+	if (K == K_void) { WRITE("nothing"); return; }
 	kind_constructor *con = NULL;
 	if (Kinds::is_proper_constructor(K)) con = Kinds::get_construct(K);
 	@<Write punctuation kinds out to the stream@>;
@@ -530,7 +531,7 @@ to miss out on this detail.
 	kind *head = NULL, *tail = NULL;
 	Kinds::binary_construction_material(K, &head, &tail);
 	Kinds::Textual::write_inner(OUT, head, FALSE, substituting);
-	if (Kinds::get_construct(tail) != CON_NIL) {
+	if (Kinds::get_construct(tail) != CON_VOID) {
 		WRITE(", ");
 		Kinds::Textual::write_inner(OUT, tail, FALSE, substituting);
 	}

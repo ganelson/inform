@@ -53,7 +53,7 @@ around that by using "punctuation nodes" in a kind tree. For example,
 			text
 			CON_TUPLE_ENTRY
 				text
-				CON_NIL
+				CON_VOID
 		number
 =
 represents |function (text, text) -> number|. Note two special constructors
@@ -183,7 +183,7 @@ one argument, comes out as:
 	CON_phrase
 		CON_TUPLE_ENTRY
 			X
-			CON_NIL
+			CON_VOID
 		Y
 =
 rather than as:
@@ -196,7 +196,7 @@ rather than as:
 
 =
 kind *Kinds::function_kind(int no_args, kind **args, kind *return_K) {
-	kind *arguments_K = K_nil;
+	kind *arguments_K = K_void;
 	for (int i=no_args-1; i>=0; i--)
 		arguments_K = Kinds::binary_construction(CON_TUPLE_ENTRY, args[i], arguments_K);
 	if (return_K == NULL) return_K = K_nil;
@@ -393,7 +393,7 @@ kind *Kinds::weaken(kind *K, kind *W) {
 			return Kinds::binary_construction(K->construct, Kinds::weaken(X, W), Kinds::weaken(Y, W));
 		}
 	} else {
-		if ((K) && (Kinds::conforms_to(K, W)) && (Kinds::eq(K, K_nil) == FALSE)) return W;
+		if ((K) && (Kinds::conforms_to(K, W)) && (Kinds::eq(K, K_nil) == FALSE) && (Kinds::eq(K, K_void) == FALSE)) return W;
 	}
 	return K;
 }

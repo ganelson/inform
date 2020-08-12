@@ -25,8 +25,9 @@
   table name <= value, stored value, sayable value
   equation name <= value, stored value
   rulebook outcome <= value, stored value, sayable value
-  nothing <= value, pointer value, stored value, arithmetic value, real arithmetic value, enumerated value, sayable value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, void, phrase value -> value, value, value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, external file, described action, action, action name, time, scene, figure name, sound name, topic, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, man, woman, animal, device, vehicle, player's holdall, command parser error
-  void <= value
+  nothing <= value, pointer value, stored value, arithmetic value, real arithmetic value, enumerated value, sayable value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, , nothing, phrase value -> value, value, value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, external file, described action, action, action name, time, scene, figure name, sound name, topic, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, man, woman, animal, device, vehicle, player's holdall, command parser error
+   <= value
+  nothing <= value
   phrase value -> value <= value, stored value, sayable value
   value, value <= value, stored value
   values variable-pointer <= value, stored value
@@ -100,7 +101,8 @@
   equation name -> stored value -> value ->
   rulebook outcome -> sayable value -> stored value -> value ->
   nothing ->
-  void ->
+   -> value ->
+  nothing ->
   phrase value -> value -> sayable value -> stored value -> value ->
   value, value -> stored value -> value ->
   values variable-pointer -> stored value -> value ->

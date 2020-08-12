@@ -36,21 +36,23 @@ void Kinds::Behaviour::set_range_number(kind *K, int r) {
 
 =
 int Kinds::Behaviour::is_object(kind *K) {
-	if ((Kinds::conforms_to(K, K_object)) && (Kinds::eq(K, K_nil) == FALSE))
+	if ((Kinds::conforms_to(K, K_object)) && (Kinds::eq(K, K_nil) == FALSE) && (Kinds::eq(K, K_void) == FALSE))
 		return TRUE;
 	return FALSE;
 }
 
 int Kinds::Behaviour::is_subkind_of_object(kind *K) {
 	if ((Kinds::conforms_to(K, K_object)) && (Kinds::eq(K, K_object) == FALSE) &&
-		(Kinds::eq(K, K_nil) == FALSE))
+		(Kinds::eq(K, K_nil) == FALSE) &&
+		(Kinds::eq(K, K_void) == FALSE))
 		return TRUE;
 	return FALSE;
 }
 
 int Kinds::Behaviour::is_object_of_kind(kind *K, kind *L) {
 	if ((Kinds::conforms_to(K, K_object)) && (Kinds::conforms_to(K, L)) &&
-		(Kinds::eq(K, K_nil) == FALSE))
+		(Kinds::eq(K, K_nil) == FALSE) &&
+		(Kinds::eq(K, K_void) == FALSE))
 		return TRUE;
 	return FALSE;
 }
@@ -87,7 +89,7 @@ int Kinds::Behaviour::semidefinite(kind *K) {
 	if (K->construct == CON_NIL) return FALSE;
 	if (Kinds::Constructors::is_definite(K->construct) == FALSE) return FALSE;
 	int i, arity = Kinds::Constructors::arity(K->construct);
-	if ((K->construct == CON_TUPLE_ENTRY) && (Kinds::eq(K->kc_args[1], K_nil))) arity = 1;
+	if ((K->construct == CON_TUPLE_ENTRY) && (Kinds::eq(K->kc_args[1], K_void))) arity = 1;
 	if (K->construct == CON_phrase) {
 		for (i=0; i<arity; i++)
 			if ((Kinds::eq(K->kc_args[i], K_nil) == FALSE) &&
